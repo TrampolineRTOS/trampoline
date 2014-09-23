@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Collection of macros for using C++11 std::thread.                        *
+//  Collection of macros for using C++11 std::thread.                          *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *

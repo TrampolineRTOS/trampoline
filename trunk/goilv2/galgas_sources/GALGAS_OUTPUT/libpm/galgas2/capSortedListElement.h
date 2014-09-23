@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  GALGAS_enumerable : Base class for GALGAS enumerable object              *
+//  GALGAS_enumerable : Base class for GALGAS enumerable object                *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -29,7 +29,7 @@
 //-----------------------------------------------------------------------------*
 
 #include "utilities/C_SharedObject.h"
-#include "typeComparisonResult.h"
+#include "galgas2/typeComparisonResult.h"
 
 //-----------------------------------------------------------------------------*
 
@@ -75,7 +75,7 @@ class capSortedListElement {
   public : capSortedListElement copy (void) ;
 
 //--- Description
- public : void description (C_String & ioString, const PMSInt32 inIndentation) const ;
+ public : void description (C_String & ioString, const int32_t inIndentation) const ;
 
 //--- Virtual method that comparing element for sorting
   public : typeComparisonResult compareForSorting (const capSortedListElement & inOperand) ;

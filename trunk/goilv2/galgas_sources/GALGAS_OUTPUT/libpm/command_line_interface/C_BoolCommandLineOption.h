@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Generic Boolean Command Line Interface Option                            *
+//  Generic Boolean Command Line Interface Option                              *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -28,7 +28,7 @@
 
 //-----------------------------------------------------------------------------*
 
-#include "command_line_interface/C_CommandLineOption.h"
+#include "C_CommandLineOption.h"
 #include "utilities/M_machine.h"
 #include "strings/C_String.h"
 
@@ -58,7 +58,7 @@ class C_BoolCommandLineOption : public C_CommandLineOption {
                                                       bool & outFound,
                                                       bool & outCocoaOutput) ;
   public : static void printUsageOfBoolOptions (void) ;
-  public : static void printBoolOptions (const PMUInt32 inDisplayLength) ;
+  public : static void printBoolOptions (const uint32_t inDisplayLength) ;
 
 //--- Option introspection
   public : static void getBoolOptionNameList (TC_UniqueArray <C_String> & outArray) ;

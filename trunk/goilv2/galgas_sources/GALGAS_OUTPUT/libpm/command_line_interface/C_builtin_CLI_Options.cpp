@@ -1,9 +1,9 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Generic Command Line Interface Options                                   *
-//   --help : Display help information                                       *
-//   --version : Display software current version                            *
-//   --no-color: Do not issue colored messages                               *
+//  Generic Command Line Interface Options                                     *
+//   --help : Display help information                                         *
+//   --version : Display software current version                              *
+//   --no-color: Do not issue colored messages                                 *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *

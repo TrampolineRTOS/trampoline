@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Generic String Command Line Interface Option                             *
+//  Generic String Command Line Interface Option                               *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -85,10 +85,10 @@ void C_StringCommandLineOption::
 setStringOptionForCommandString (const char * inCommandString,
                                  bool & outFound,
                                  bool & outCommandLineOptionStringIsValid) {
-  const PMUInt32 optionLength = (PMUInt32) (strlen (inCommandString) & PMUINT32_MAX) ;
+  const uint32_t optionLength = (uint32_t) (strlen (inCommandString) & UINT32_MAX) ;
   outCommandLineOptionStringIsValid = optionLength > 4 ;
 //--- Find '=' character
-  PMUInt32 equalSignIndex = 0 ;
+  uint32_t equalSignIndex = 0 ;
   if (outCommandLineOptionStringIsValid) {
     outFound = false ;
     while ((equalSignIndex < optionLength) && outCommandLineOptionStringIsValid && ! outFound) {
@@ -135,16 +135,16 @@ printUsageOfStringOptions (void) {
 
 //-----------------------------------------------------------------------------*
 
-void C_StringCommandLineOption::printStringOptions (const PMUInt32 inDisplayLength) {
+void C_StringCommandLineOption::printStringOptions (const uint32_t inDisplayLength) {
   C_StringCommandLineOption * p = gFirst ;
   while (p != NULL) {
-    PMUInt32 charCount = 0 ;
+    uint32_t charCount = 0 ;
     if (p->mCommandChar != '\0') {
       co.setForeColor (kBlueForeColor) ;
       co.setTextAttribute (kBoldTextAttribute) ;
       co << "-" << cStringWithCharacter (p->mCommandChar) << "=string" ;
       co.setTextAttribute (kAllAttributesOff) ;
-      charCount += 2 + (PMUInt32) strlen ("=string") ;
+      charCount += 2 + (uint32_t) strlen ("=string") ;
       if (p->mCommandString [0] != '\0') {
         co << ", " ;
         charCount += 2 ;
@@ -155,13 +155,13 @@ void C_StringCommandLineOption::printStringOptions (const PMUInt32 inDisplayLeng
       co.setTextAttribute (kBoldTextAttribute) ;
       co << "--" << p->mCommandString << "=string" ;
       co.setTextAttribute (kAllAttributesOff) ;
-      charCount += 2 + (PMUInt32) (strlen (p->mCommandString) + strlen ("=string")) ;
+      charCount += 2 + (uint32_t) (strlen (p->mCommandString) + strlen ("=string")) ;
     }
     if (charCount > inDisplayLength) {
       co << "\n" ;
       charCount = 0 ;
     }
-    for (PMUInt32 i=charCount ; i<=inDisplayLength ; i++) {
+    for (uint32_t i=charCount ; i<=inDisplayLength ; i++) {
       co << " " ;
     }
     co << p->mComment  << " (default value: '"
@@ -205,7 +205,7 @@ utf32 C_StringCommandLineOption::getStringOptionInvocationLetter (const C_String
   bool found = false ;
   while ((p != NULL) && not found) {
     found = (inDomainName == p->mDomainName) && (inIdentifier == p->mIdentifier) ;
-    result = TO_UNICODE ((PMUInt32) p->mCommandChar) ;
+    result = TO_UNICODE ((uint32_t) p->mCommandChar) ;
     p = p->mNext ;
 }
   return result ;

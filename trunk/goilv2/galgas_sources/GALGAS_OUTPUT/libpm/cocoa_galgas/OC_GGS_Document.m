@@ -827,12 +827,10 @@
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
 //---
-  OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayController.selectedObjects objectAtIndex:0] ;
-  if (selectedObject.documentData == mDocumentData) {
-    [super saveDocument:inSender] ;
-  }else{
-    [selectedObject.documentData performSaveToURL:nil] ;
-  }
+  NSURL * url = [self fileURL] ;
+  [self setFileURL:mDocumentData.fileURL] ;
+  [super saveDocument:inSender] ;
+  [self setFileURL:url] ;
 }
 
 //-----------------------------------------------------------------------------*
@@ -843,7 +841,7 @@
 
 - (BOOL) writeToURL: (NSURL *) inAbsoluteURL
          ofType: (NSString *) inTypeName
-         error: (NSError **) outError {
+         error: (NSError * macroAutoreleasingInARC *) outError {
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s, URL %@", __PRETTY_FUNCTION__, inAbsoluteURL) ;
   #endif
@@ -861,7 +859,7 @@
     ofType:(NSString *)documentTypeName
     forSaveOperation:(NSSaveOperationType)saveOperationType
     originalContentsURL: (NSURL *) inOriginalURL
-    error: (NSError **) outError {
+    error: (NSError * macroAutoreleasingInARC *) outError {
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
@@ -955,7 +953,7 @@
 
 - (BOOL) readFromURL:(NSURL *) inAbsoluteURL
          ofType:(NSString *) inTypeName
-         error:(NSError **)outError {
+         error:(NSError * macroAutoreleasingInARC *) outError {
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif

@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  unicode_character : an implementation of Unicode character               *
+//  unicode_character : an implementation of Unicode character                 *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -53,13 +53,13 @@ bool isUnicodeNumber (const utf32 inUnicodeCharacter) ;
 bool isUnicodeDecimalDigit (const utf32 inUnicodeCharacter) ;
 
 //--- Returns decimal value, or zero
-PMUInt32 unicodeDecimalValue (const utf32 inUnicodeCharacter) ;
+uint32_t unicodeDecimalValue (const utf32 inUnicodeCharacter) ;
 
 //--- Returns true if ascii hex digit
 bool isUnicodeASCIIHexDigit (const utf32 inUnicodeCharacter) ;
 
 //--- Returns hex value, or zero
-PMUInt32 ASCIIHexValue (const utf32 inUnicodeCharacter) ;
+uint32_t ASCIIHexValue (const utf32 inUnicodeCharacter) ;
 
 //--- Returns true if unicode separator
 bool isUnicodeSeparator (const utf32 inUnicodeCharacter) ;
@@ -98,14 +98,14 @@ utf32 unicodeCharacterForSingleByteCharacter (const char inChar, const PMStringE
 
 char singleByteCharacterForUnicodeCharacter (const utf32 inUnicodeChar, const PMStringEncoding inStringEncoding) ;
 
-PMSInt32 UTF8StringFromUTF32Character (const utf32 inUnicodeChar, char outSequence [5]) ;
+int32_t UTF8StringFromUTF32Character (const utf32 inUnicodeChar, char outSequence [5]) ;
 
 //--- inEndOfStringPtr points just beyond the last available byte
 #ifdef __cplusplus
   class C_Data ;
-  utf32 utf32CharacterForPointer (const PMUInt8 * inDataString,
-                                  PMSInt32 & ioIndex,
-                                  const PMSInt32 inLength,
+  utf32 utf32CharacterForPointer (const uint8_t * inDataString,
+                                  int32_t & ioIndex,
+                                  const int32_t inLength,
                                   bool & ioOK) ;
 #endif
 

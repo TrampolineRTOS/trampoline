@@ -1,8 +1,8 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  GALGAS_filewrapper : class for GALGAS file wrappers                      *
+//  GALGAS_filewrapper : class for GALGAS file wrappers                        *
 //                                                                             *
-//  Started february 23th, 2008.                                             *
+//  Started february 23th, 2008.                                               *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -33,7 +33,7 @@
 cRegularFileWrapper::cRegularFileWrapper (const char * inName,
                                           const char * inExtension,
                                           const bool inIsTextFile,
-                                          const PMUInt32 inFileLength,
+                                          const uint32_t inFileLength,
                                           const char * inContents) :
 mName (inName),
 mExtension (inExtension),
@@ -45,9 +45,9 @@ mContents (inContents) {
 //-----------------------------------------------------------------------------*
 
 cDirectoryWrapper::cDirectoryWrapper (const char * inDirectoryName,
-                                      const PMUInt32 inFileCount,
+                                      const uint32_t inFileCount,
                                       const cRegularFileWrapper * * const inFiles,
-                                      const PMUInt32 inDirectoryCount,
+                                      const uint32_t inDirectoryCount,
                                       const cDirectoryWrapper * * inDirectories) :
 mDirectoryName (inDirectoryName),
 mFileCount (inFileCount),
@@ -225,17 +225,17 @@ typeComparisonResult GALGAS_filewrapper::objectCompare (const GALGAS_filewrapper
 static void enumerateWrapper (C_String & ioString,
                               const cDirectoryWrapper * inDir,
                               const C_String & inPath,
-                              const PMSInt32 inIndentation) {
+                              const int32_t inIndentation) {
   const C_String currentPath = inPath + inDir->mDirectoryName + "/" ;
   ioString << "\n" ;
-  for (PMSInt32 i=0 ; i<inIndentation ; i++) { ioString << " " ; }
+  for (int32_t i=0 ; i<inIndentation ; i++) { ioString << " " ; }
   ioString << "'" << currentPath << "'" ;
-  for (PMUInt32 i=0 ; i<inDir->mFileCount ; i++) {
+  for (uint32_t i=0 ; i<inDir->mFileCount ; i++) {
     ioString << "\n" ;
-    for (PMSInt32 j=0 ; j<inIndentation ; j++) { ioString << " " ; }
+    for (int32_t j=0 ; j<inIndentation ; j++) { ioString << " " ; }
     ioString << "'" << currentPath << inDir->mFiles [i]->mName << "'" ;
   }
-  for (PMUInt32 i=0 ; i<inDir->mDirectoryCount ; i++) {
+  for (uint32_t i=0 ; i<inDir->mDirectoryCount ; i++) {
     enumerateWrapper (ioString,
                       inDir->mDirectories [i],
                       currentPath,
@@ -246,7 +246,7 @@ static void enumerateWrapper (C_String & ioString,
 //-----------------------------------------------------------------------------*
 
 void GALGAS_filewrapper::description (C_String & ioString,
-                                      const PMSInt32 inIndentation) const {
+                                      const int32_t inIndentation) const {
   ioString << "<@filewrapper" ;
   if (isValid ()) {
     enumerateWrapper (ioString, mRootDirectoryPtr, "", inIndentation + 2) ;
@@ -273,13 +273,13 @@ static const cDirectoryWrapper * findDirectoryInDirectory (const cDirectoryWrapp
   const cDirectoryWrapper * result = NULL ;
   // printf ("    Searching '%s'\n", inSearchedDir.cString (HERE)) ;
   if (inDir != NULL) {
-    PMSInt32 first = 0 ;
-    PMSInt32 last = (PMSInt32) inDir->mDirectoryCount - 1 ;
+    int32_t first = 0 ;
+    int32_t last = (int32_t) inDir->mDirectoryCount - 1 ;
     bool found = false ;
     while ((first <= last) && ! found) {
-      const PMSInt32 mid = (first + last) / 2 ;
+      const int32_t mid = (first + last) / 2 ;
       // printf ("*** Trying index %d: '%s'\n", mid, inDir->mDirectories [mid]->mDirectoryName) ;
-      const PMSInt32 c = inSearchedDir.compare (inDir->mDirectories [mid]->mDirectoryName) ;
+      const int32_t c = inSearchedDir.compare (inDir->mDirectories [mid]->mDirectoryName) ;
       if (c > 0) {
         first = mid + 1 ;
       }else if (c < 0) {
@@ -300,13 +300,13 @@ static const cRegularFileWrapper * findFileInDirectory (const cDirectoryWrapper 
   const cRegularFileWrapper * result = NULL ;
   // printf ("    Searching '%s'\n", inSearchedDir.cString (HERE)) ;
   if (inDir != NULL) {
-    PMSInt32 first = 0 ;
-    PMSInt32 last = (PMSInt32) inDir->mFileCount - 1 ;
+    int32_t first = 0 ;
+    int32_t last = (int32_t) inDir->mFileCount - 1 ;
     bool found = false ;
     while ((first <= last) && ! found) {
-      const PMSInt32 mid = (first + last) / 2 ;
+      const int32_t mid = (first + last) / 2 ;
       // printf ("*** Trying index %d: '%s'\n", mid, inDir->mDirectories [mid]->mDirectoryName) ;
-      const PMSInt32 c = inSearchedFile.compare (inDir->mFiles [mid]->mName) ;
+      const int32_t c = inSearchedFile.compare (inDir->mFiles [mid]->mName) ;
       if (c > 0) {
         first = mid + 1 ;
       }else if (c < 0) {
@@ -327,7 +327,7 @@ static const cDirectoryWrapper *  getDirectory (const C_String & inDirectory,
   TC_UniqueArray <C_String> componentArray ;
   inDirectory.componentsSeparatedByString ("/", componentArray) ;
   const cDirectoryWrapper * dir = inRootDirectoryPtr ;
-  for (PMSInt32 i=1 ; i<componentArray.count () ; i++) {
+  for (int32_t i=1 ; i<componentArray.count () ; i++) {
     dir = findDirectoryInDirectory (dir, componentArray (i COMMA_HERE)) ;
   }
   return dir ;
@@ -411,10 +411,10 @@ GALGAS_data GALGAS_filewrapper::reader_binaryFileContentsAtPath (const GALGAS_st
         errorMessage << "binaryFileContentsAtPath: the '" << inPath.stringValue () << "' path does not exist" ;
         inCompiler->onTheFlyRunTimeError (errorMessage COMMA_THERE) ;
       }else{
-        const PMUInt8 * sourcePtr = (const PMUInt8 *) file->mContents ;
-        const PMUInt32 sourceLength = file->mFileLength ;
+        const uint8_t * sourcePtr = (const uint8_t *) file->mContents ;
+        const uint32_t sourceLength = file->mFileLength ;
         C_Data data ;
-        data.appendDataFromPointer (sourcePtr, (PMSInt32) sourceLength) ;
+        data.appendDataFromPointer (sourcePtr, (int32_t) sourceLength) ;
         result = GALGAS_data (data) ;
       }
     }
@@ -460,7 +460,7 @@ GALGAS_string GALGAS_filewrapper::reader_absolutePathForPath (const GALGAS_strin
     TC_UniqueArray <C_String> componentArray ;
     absolutePath.componentsSeparatedByString ("/", componentArray) ;
   //--- Remove empty components (but the first one)
-    PMSInt32 componentIndex = 1 ;
+    int32_t componentIndex = 1 ;
     while (componentIndex < componentArray.count ()) {
       if (componentArray (componentIndex COMMA_HERE).length () == 0) {
         componentArray.removeObjectAtIndex (componentIndex COMMA_HERE) ;

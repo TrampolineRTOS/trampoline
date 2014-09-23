@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//     BDD package (implementation of ROBDD)                                 *
+//     BDD package (implementation of ROBDD)                                   *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -33,41 +33,44 @@
 #include <string.h>
 #include <limits.h>
 
+//-----------------------------------------------------------------------------*
+
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Cache for AND Operation
 #endif
+
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  And computation cache                                                    *
+//  And computation cache                                                      *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
 typedef struct {
-  public : PMUInt64 mOperands ;
-  public : PMUInt32 mResult ;
+  public : uint64_t mOperands ;
+  public : uint32_t mResult ;
 } tStructANDOperationCacheEntry ;
 
-//---------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
-static const PMSInt32 kANDOperationCacheInitialSize = 262145 ;
+static const int32_t kANDOperationCacheInitialSize = 262145 ;
 
-//---------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
-static PMUInt64 * gANDOperationCacheOperandMap ;
-static PMUInt32 * gANDOperationCacheResultMap ;
-static PMUInt32 gANDOperationMapSize ;
-static PMUInt32 gANDOperationCacheMapUsedEntryCount ;
-static PMUInt64 gANDOperationCacheTrivialOperationCount ;
+static uint64_t * gANDOperationCacheOperandMap ;
+static uint32_t * gANDOperationCacheResultMap ;
+static uint32_t gANDOperationMapSize ;
+static uint32_t gANDOperationCacheMapUsedEntryCount ;
+static uint64_t gANDOperationCacheTrivialOperationCount ;
 static bool gANDOperationCacheExpandable = true ;
-static PMUInt32 gANDOperationCacheMaxPowerOfTwoSize = 31 ;
+static uint32_t gANDOperationCacheMaxPowerOfTwoSize = 31 ;
 
-//---------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
-PMUInt32 ANDCacheMemoryUsage (void) {
-  return (gANDOperationMapSize * (PMUInt32) (sizeof (PMUInt32) + sizeof (PMUInt64))) / 1000000 ;
+uint32_t ANDCacheMemoryUsage (void) {
+  return (gANDOperationMapSize * (uint32_t) (sizeof (uint32_t) + sizeof (uint64_t))) / 1000000 ;
 }
 
-//---------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void releaseANDOperationCache (void) {
   gANDOperationCacheMapUsedEntryCount = 0 ;
@@ -77,48 +80,48 @@ void releaseANDOperationCache (void) {
   gANDOperationCacheExpandable = true ;
 }
 
-//---------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void clearANDOperationCache (void) {
   gANDOperationCacheMapUsedEntryCount = 0 ;
-  for (PMUInt32 i=0 ; i<gANDOperationMapSize ; i++) {
+  for (uint32_t i=0 ; i<gANDOperationMapSize ; i++) {
     gANDOperationCacheOperandMap [i] = 0 ;
   }
 }
 
-//---------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
-static inline PMUInt64 getOperands (const PMUInt32 inOperand1,
-                                    const PMUInt32 inOperand2) {
-  PMUInt64 operands = inOperand1 ;
+static inline uint64_t getOperands (const uint32_t inOperand1,
+                                    const uint32_t inOperand2) {
+  uint64_t operands = inOperand1 ;
   operands <<= 32 ;
   operands |= inOperand2 ;
   return operands ;
 }
 
-//---------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
-static bool searchInANDOperationCache (const PMUInt32 inOperand1,
-                                       const PMUInt32 inOperand2,
-                                       PMUInt32 & outResult) {
+static bool searchInANDOperationCache (const uint32_t inOperand1,
+                                       const uint32_t inOperand2,
+                                       uint32_t & outResult) {
   if (0 == gANDOperationMapSize) {
     gANDOperationMapSize = kANDOperationCacheInitialSize ;
     // tStructANDOperationCacheEntry temp [5] ;
     // printf ("tStructANDOperationCacheEntry: %ld bytes\n", sizeof (tStructANDOperationCacheEntry)) ;
     // printf ("tStructANDOperationCacheEntry [5]: %ld bytes\n", sizeof (temp)) ;
-    macroMyNewPODArray (gANDOperationCacheOperandMap, PMUInt64, gANDOperationMapSize) ;
-    macroMyNewPODArray (gANDOperationCacheResultMap, PMUInt32, gANDOperationMapSize) ;
+    macroMyNewPODArray (gANDOperationCacheOperandMap, uint64_t, gANDOperationMapSize) ;
+    macroMyNewPODArray (gANDOperationCacheResultMap, uint32_t, gANDOperationMapSize) ;
     clearANDOperationCache () ;
     if (C_BDD::displaysInformationMessages ()) {
       printf ("BDD package info: AND cache allocated to %u %03u %03u (%u MB)\n",
               gANDOperationMapSize / 1000000,
               (gANDOperationMapSize / 1000) % 1000,
               gANDOperationMapSize % 1000,
-              (gANDOperationMapSize * (PMUInt32) (sizeof (PMUInt32) + sizeof (PMUInt64))) / 1000000) ;
+              (gANDOperationMapSize * (uint32_t) (sizeof (uint32_t) + sizeof (uint64_t))) / 1000000) ;
     }
   }
-  const PMUInt64 operands = getOperands (inOperand1, inOperand2) ;
-  const PMUInt64 idx = operands % gANDOperationMapSize ;
+  const uint64_t operands = getOperands (inOperand1, inOperand2) ;
+  const uint64_t idx = operands % gANDOperationMapSize ;
   const bool found = gANDOperationCacheOperandMap [idx] == operands ;
   if (found) {
     outResult = gANDOperationCacheResultMap [idx] ;
@@ -126,21 +129,21 @@ static bool searchInANDOperationCache (const PMUInt32 inOperand1,
   return found ;
 }
 
-//---------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
-static void reallocANDOperationCache (const PMUInt32 inNewSize) {
+static void reallocANDOperationCache (const uint32_t inNewSize) {
   if (0 < inNewSize) {
     gANDOperationCacheMapUsedEntryCount = 0 ;
-    PMUInt64 * newCache = NULL ;
-    macroMyNewPODArray (newCache, PMUInt64, inNewSize) ;
-    for (PMUInt32 i=0 ; i<inNewSize ; i++) {
+    uint64_t * newCache = NULL ;
+    macroMyNewPODArray (newCache, uint64_t, inNewSize) ;
+    for (uint32_t i=0 ; i<inNewSize ; i++) {
       newCache [i] = 0 ;
     }
-    PMUInt32 * newResult = NULL ;
-    macroMyNewPODArray (newResult, PMUInt32, inNewSize) ;
-    for (PMUInt32 i=0 ; i<gANDOperationMapSize ; i++) {
+    uint32_t * newResult = NULL ;
+    macroMyNewPODArray (newResult, uint32_t, inNewSize) ;
+    for (uint32_t i=0 ; i<gANDOperationMapSize ; i++) {
       if (gANDOperationCacheOperandMap [i] != 0) {
-        const PMUInt64 newIndex = gANDOperationCacheOperandMap [i] % inNewSize ;
+        const uint64_t newIndex = gANDOperationCacheOperandMap [i] % inNewSize ;
         gANDOperationCacheMapUsedEntryCount += newCache [newIndex] == 0 ;
         newCache [newIndex] = gANDOperationCacheOperandMap [i] ;
         newResult [newIndex] = gANDOperationCacheResultMap [i] ;
@@ -156,18 +159,18 @@ static void reallocANDOperationCache (const PMUInt32 inNewSize) {
               gANDOperationMapSize / 1000000,
               (gANDOperationMapSize / 1000) % 1000,
               gANDOperationMapSize % 1000,
-              (gANDOperationMapSize * (PMUInt32) (sizeof (PMUInt32) + sizeof (PMUInt64))) / 1000000) ;
+              (gANDOperationMapSize * (uint32_t) (sizeof (uint32_t) + sizeof (uint64_t))) / 1000000) ;
     }
   }
 }
 
-//---------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
-static void enterInANDOperationCache (const PMUInt32 inOperand1,
-                                      const PMUInt32 inOperand2,
-                                      const PMUInt32 inResult) {
-  const PMUInt64 operands = getOperands (inOperand1, inOperand2) ;
-  const PMUInt64 idx = operands % gANDOperationMapSize ;
+static void enterInANDOperationCache (const uint32_t inOperand1,
+                                      const uint32_t inOperand2,
+                                      const uint32_t inResult) {
+  const uint64_t operands = getOperands (inOperand1, inOperand2) ;
+  const uint64_t idx = operands % gANDOperationMapSize ;
   const bool entryWasUnused = gANDOperationCacheOperandMap [idx] == 0 ;
   gANDOperationCacheOperandMap [idx] = operands ;
   gANDOperationCacheResultMap [idx] = inResult ;
@@ -176,11 +179,11 @@ static void enterInANDOperationCache (const PMUInt32 inOperand1,
     gANDOperationCacheMapUsedEntryCount ++ ;
     if (gANDOperationCacheExpandable &&
         ((gANDOperationCacheMapUsedEntryCount + gANDOperationCacheMapUsedEntryCount / 4) > gANDOperationMapSize)) {
-      const PMUInt32 newSize = getPrimeGreaterThan (gANDOperationMapSize + 1) ;
+      const uint32_t newSize = getPrimeGreaterThan (gANDOperationMapSize + 1) ;
       if (newSize < (1U << gANDOperationCacheMaxPowerOfTwoSize)) {
-        PMUInt32 newMemoryUsage = C_BDD::currentMemoryUsage () ;
+        uint32_t newMemoryUsage = C_BDD::currentMemoryUsage () ;
         newMemoryUsage -= ANDCacheMemoryUsage () ;
-        newMemoryUsage += (PMUInt32) ((newSize * (sizeof (PMUInt64) + sizeof (PMUInt32))) / 1000000) ;
+        newMemoryUsage += (uint32_t) ((newSize * (sizeof (uint64_t) + sizeof (uint32_t))) / 1000000) ;
         if (newMemoryUsage < C_BDD::maximumMemoryUsage ()) {
           reallocANDOperationCache (newSize) ;
         }else{
@@ -207,7 +210,7 @@ static void enterInANDOperationCache (const PMUInt32 inOperand1,
 
 //-----------------------------------------------------------------------------*
 
-void C_BDD::setANDOperationCacheMaxSize (const PMUInt32 inPowerOfTwo) {
+void C_BDD::setANDOperationCacheMaxSize (const uint32_t inPowerOfTwo) {
   gANDOperationCacheMaxPowerOfTwoSize = inPowerOfTwo ;
   if (C_BDD::displaysInformationMessages ()) {
     printf ("BDD package info: AND cache max size limited < 2 ** %u\n", gANDOperationCacheMaxPowerOfTwoSize) ;
@@ -220,22 +223,22 @@ void C_BDD::setANDOperationCacheMaxSize (const PMUInt32 inPowerOfTwo) {
   #pragma mark AND operation
 #endif
 
-//---------------------------------------------------------------------*
-//                                                                     *
-//                        Operation AND                                *
-//                                                                     *
-//---------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//                                                                             *
+//                        Operation AND                                        *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
-PMUInt32 internalANDoperation (const PMUInt32 opf,
-                               const PMUInt32 opg) {
+uint32_t internalANDoperation (const uint32_t opf,
+                               const uint32_t opg) {
 //  MF_Assert ((opf >> 1) < gUniqueTableSize, "(opf >> 1) (%lld) should be < gUniqueTableSize (%lld)", (opf >> 1), gUniqueTableSize) ;
 //  MF_Assert ((opg >> 1) < gUniqueTableSize, "(opg >> 1) (%lld) should be < gUniqueTableSize (%lld)", (opg >> 1), gUniqueTableSize) ;
-  PMUInt32 result ;
-  PMUInt32 f = opf ;
-  PMUInt32 g = opg ;
+  uint32_t result ;
+  uint32_t f = opf ;
+  uint32_t g = opg ;
 //--- Simplification 1 : si f > g, and (f, g) -> and (g, f) ;
   if (f > g) {
-    const PMUInt32 tempo = g ; g = f ; f = tempo ;
+    const uint32_t tempo = g ; g = f ; f = tempo ;
   }
 //--- Test trivial 1 : and (0, g) -> 0 ;
   if (f == 0) {
@@ -256,12 +259,12 @@ PMUInt32 internalANDoperation (const PMUInt32 opf,
 //--- Effectuer le calcul
   }else if (! searchInANDOperationCache (f, g, result)) {
   //--- Faire l'operation
-    const PMUInt32 nodeF = nodeIndexForRoot (f COMMA_HERE) ;
-    const PMUInt32 nodeG = nodeIndexForRoot (g COMMA_HERE) ;
-    const PMUInt32 compF = f & 1 ;
-    const PMUInt32 compG = g & 1 ;
-    const PMUInt32 varF = gNodeArray [nodeF].mVariableIndex ;
-    const PMUInt32 varG = gNodeArray [nodeG].mVariableIndex ;
+    const uint32_t nodeF = nodeIndexForRoot (f COMMA_HERE) ;
+    const uint32_t nodeG = nodeIndexForRoot (g COMMA_HERE) ;
+    const uint32_t compF = f & 1 ;
+    const uint32_t compG = g & 1 ;
+    const uint32_t varF = gNodeArray [nodeF].mVariableIndex ;
+    const uint32_t varG = gNodeArray [nodeG].mVariableIndex ;
   //--- Compute
     if (varF < varG) {
       result = find_or_add (varG,

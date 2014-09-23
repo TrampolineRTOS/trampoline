@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  AC_GALGAS_root : root type for all GALGAS types                          *
+//  AC_GALGAS_root : root type for all GALGAS types                            *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *

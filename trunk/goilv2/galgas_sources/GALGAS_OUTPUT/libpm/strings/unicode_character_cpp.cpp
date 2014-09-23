@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  unicode_character : an implementation of Unicode character               *
+//  unicode_character : an implementation of Unicode character                 *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -24,7 +24,7 @@
 //-----------------------------------------------------------------------------*
 
 #include "strings/unicode_character_cpp.h"
-#include "strings/cUnicodeData.h"
+#include "cUnicodeData.h"
 #include "strings/C_String.h"
 
 //-----------------------------------------------------------------------------*

@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Declaration of 'mainForLIBPM' routine prototype.                         *
+//  Declaration of 'mainForLIBPM' routine prototype.                           *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *

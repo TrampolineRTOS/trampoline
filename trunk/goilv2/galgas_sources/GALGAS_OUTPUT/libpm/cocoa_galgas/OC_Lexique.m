@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  'OC_Lexique'                                                             *
+//  'OC_Lexique'                                                               *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -723,7 +723,7 @@ scanner_cocoa_routine_enterHexDigitIntoASCIIcharacter (BOOL * ioScanningOk,
       * ioValue = tempo ;
     }
   }else{
-    ioScanningOk = NO ;
+    *ioScanningOk = NO ;
   }
 }
 
@@ -738,12 +738,12 @@ scanner_cocoa_routine_enterDigitIntoASCIIcharacter (BOOL * ioScanningOk,
     tempo *= 10  ;
     tempo += inChar - '0' ;
     if (tempo > 255) {
-      ioScanningOk = NO ;
+      *ioScanningOk = NO ;
     }else{
       * ioValue = tempo ;
     }
   }else{
-    ioScanningOk = NO ;
+    *ioScanningOk = NO ;
   }
 }
 
@@ -799,7 +799,7 @@ scanner_cocoa_function_toUpper (const utf32 c) {
 void
 scanner_cocoa_routine_negateSInt (BOOL * ioScanningOk, 
                                   SInt32 * ioValue) {
-  if (*ioValue == PMSINT32_MIN) {
+  if (*ioValue == INT32_MIN) {
     * ioScanningOk = YES ;
   }else{
     * ioValue = - * ioValue ;
@@ -811,7 +811,7 @@ scanner_cocoa_routine_negateSInt (BOOL * ioScanningOk,
 void
 scanner_cocoa_routine_negateSInt64 (BOOL * ioScanningOk, 
                                     SInt64 * ioValue) {
-  if (* ioValue == PMSINT64_MIN) {
+  if (* ioValue == INT64_MIN) {
     * ioScanningOk = NO ;
   }else{
     * ioValue = - * ioValue ;
@@ -824,7 +824,7 @@ void
 scanner_cocoa_routine_convertUIntToSInt (BOOL * ioScanningOk, 
                                   const UInt32 inValue,
                                   SInt32 * outValue) {
-  if (inValue > PMSINT32_MAX) {
+  if (inValue > INT32_MAX) {
     * ioScanningOk = NO ;
   }else{
     * outValue = (SInt32) inValue ;
@@ -837,7 +837,7 @@ void
 scanner_cocoa_routine_convertUInt64ToSInt64 (BOOL * ioScanningOk, 
                                              const UInt64 inValue,
                                              SInt64 * outValue) {
-  if (inValue > PMSINT64_MAX) {
+  if (inValue > INT64_MAX) {
   }else{
     * outValue = (SInt64) inValue ;
   }
@@ -853,7 +853,7 @@ scanner_cocoa_routine_enterDigitIntoUInt (BOOL * ioScanningOk,
     * ioScanningOk = NO ;
   }else{
     const UInt32 digit = UNICODE_VALUE (inCharacter) - '0' ;
-    const UInt32 max = PMUINT32_MAX / 10 ;
+    const UInt32 max = UINT32_MAX / 10 ;
     if (* ioValue > max) {
       * ioScanningOk = NO ;
     }else if ((* ioValue == max) && (digit > 5)) {
@@ -874,7 +874,7 @@ scanner_cocoa_routine_enterDigitIntoUInt64 (BOOL * ioScanningOk,
     * ioScanningOk = NO ;
   }else{
     const UInt64 digit = UNICODE_VALUE (inCharacter) - '0' ;
-    const UInt64 max = PMUINT64_MAX / 10 ;
+    const UInt64 max = UINT64_MAX / 10 ;
     if (* ioValue > max) {
       * ioScanningOk = NO ;
     }else if ((*ioValue == max) && (digit > 5)) {
@@ -904,7 +904,7 @@ scanner_cocoa_routine_enterHexDigitIntoUInt (BOOL * ioScanningOk,
   if (! carOk) {
     * ioScanningOk = NO ;
   }else{
-    const UInt32 max = PMUINT32_MAX >> 4 ;
+    const UInt32 max = UINT32_MAX >> 4 ;
     if (*ioValue > max) {
       * ioScanningOk = NO ;
     }else{
@@ -932,7 +932,7 @@ scanner_cocoa_routine_enterHexDigitIntoUInt64 (BOOL * ioScanningOk,
   if (! carOk) {
     * ioScanningOk = NO ;
   }else{
-    const UInt64 max = PMUINT64_MAX >> 4 ;
+    const UInt64 max = UINT64_MAX >> 4 ;
     if (*ioValue > max) {
       * ioScanningOk = NO ;
     }else{
@@ -949,7 +949,7 @@ scanner_cocoa_routine_convertDecimalStringIntoUInt (BOOL * ioScanningOk,
                                                     UInt32 * outValue) {
   * outValue = 0 ;
   bool ok = true ;
-  const UInt32 max = PMUINT32_MAX / 10 ;
+  const UInt32 max = UINT32_MAX / 10 ;
   UInt32 i ;
   for (i=0 ; (i<[inDecimalString length]) && ok ; i++) {
     const UInt32 c = [inDecimalString characterAtIndex:i] ;
@@ -986,7 +986,7 @@ scanner_cocoa_routine_convertDecimalStringIntoSInt (BOOL * ioScanningOk,
       * ioScanningOk = NO ;
     }else{
       const SInt32 digit = (SInt32) (UNICODE_VALUE (c) - '0') ;
-      const SInt32 max = PMSINT32_MAX / 10 ;
+      const SInt32 max = INT32_MAX / 10 ;
       if (*outValue > max) {
         * ioScanningOk = NO ;
         ok = false ;
@@ -1015,11 +1015,11 @@ scanner_cocoa_routine_convertDecimalStringIntoUInt64 (BOOL * ioScanningOk,
       * ioScanningOk = NO ;
     }else{
       const UInt64 digit = (UInt64) (UNICODE_VALUE (c) - '0') ;
-      const UInt64 max = PMUINT32_MAX / 10 ;
+      const UInt64 max = UINT32_MAX / 10 ;
       if (*outValue > max) {
         * ioScanningOk = NO ;
         ok = false ;
-      }else if ((*outValue == max) && (digit > (PMUINT64_MAX % 10))) {
+      }else if ((*outValue == max) && (digit > (UINT64_MAX % 10))) {
         * ioScanningOk = NO ;
         ok = false ;
       }else{
@@ -1073,7 +1073,7 @@ scanner_cocoa_routine_enterBinDigitIntoUInt (BOOL * ioScanningOk,
   if ((UNICODE_VALUE (inCharacter) < '0') || (UNICODE_VALUE (inCharacter) > '1')) {
     * ioScanningOk = NO ;
   }else{
-    const UInt32 max = PMUINT32_MAX >> 1 ;
+    const UInt32 max = UINT32_MAX >> 1 ;
     if (* ioValue > max) {
       * ioScanningOk = NO ;
     }else{
@@ -1117,7 +1117,7 @@ scanner_cocoa_routine_enterOctDigitIntoUInt (BOOL * ioScanningOk,
   if ((UNICODE_VALUE (inCharacter) < '0') || (UNICODE_VALUE (inCharacter) > '7')) {
     * ioScanningOk = NO ;
   }else{
-    const PMUInt32 max = PMUINT32_MAX >> 3 ;
+    const uint32_t max = UINT32_MAX >> 3 ;
     if (*ioValue > max) {
       * ioScanningOk = NO ;
     }else{
@@ -1161,7 +1161,7 @@ scanner_cocoa_routine_multiplyUInt (BOOL * ioScanningOk,
   const UInt64 factor = inFactor ;
   const UInt64 value = *ioValue ;
   const UInt64 result = factor * value ;
-  if (result > PMUINT32_MAX) {
+  if (result > UINT32_MAX) {
     * ioScanningOk = NO ;
   }else{
     * ioValue = (UInt32) result ;
@@ -1202,7 +1202,7 @@ scanner_cocoa_routine_convertHexStringIntoUInt (BOOL * ioScanningOk,
                                                 UInt32 * outValue) {
   *outValue = 0 ;
   bool ok = true ;
-  const UInt32 max = PMUINT32_MAX >> 4 ;
+  const UInt32 max = UINT32_MAX >> 4 ;
   UInt32 i ;
   for (i=0 ; (i<[inHexString length]) && ok ; i++) {
     const UInt32 c = [inHexString characterAtIndex:i] ;
@@ -1233,7 +1233,7 @@ scanner_cocoa_routine_convertHexStringIntoUInt64 (BOOL * ioScanningOk,
                                                   UInt64 * outValue) {
   *outValue = 0 ;
   bool ok = true ;
-  const UInt64 max = PMUINT64_MAX >> 4 ;
+  const UInt64 max = UINT64_MAX >> 4 ;
   UInt32 i ;
   for (i=0 ; (i<[inHexString length]) && ok ; i++) {
     const UInt32 c = [inHexString characterAtIndex:i] ;
@@ -1264,7 +1264,7 @@ scanner_cocoa_routine_convertHexStringIntoSInt (BOOL * ioScanningOk,
                                                 SInt32 * outValue) {
   *outValue = 0 ;
   bool ok = true ;
-  const SInt32 max = PMSINT32_MAX >> 4 ;
+  const SInt32 max = INT32_MAX >> 4 ;
   UInt32 i ;
   for (i=0 ; (i<[inHexString length]) && ok ; i++) {
     const UInt32 c = [inHexString characterAtIndex:i] ;

@@ -1,17 +1,22 @@
-//----------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #import "PMDebug.h"
 
-//----------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 static PMDebug * gDebugObject ;
 
-//----------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void noteObjectAllocation (NSObject * inObject) {
   if (nil == gDebugObject) {
     gDebugObject = [PMDebug new] ;
-    const BOOL ok = [NSBundle loadNibNamed:@"PMDebug" owner:gDebugObject] ;
+    #ifdef MAC_OS_X_VERSION_10_8
+      NSArray * objects = nil ;
+      const BOOL ok = [[NSBundle mainBundle] loadNibNamed:@"PMDebug" owner:gDebugObject topLevelObjects:& objects] ;
+    #else
+      const BOOL ok = [NSBundle loadNibNamed:@"PMDebug" owner:gDebugObject] ;
+    #endif
     if (! ok) {
 //      presentErrorWindow (__FILE__, __LINE__, @"Cannot load 'PMDebug' nib file") ;
     }
@@ -19,36 +24,41 @@ void noteObjectAllocation (NSObject * inObject) {
   [gDebugObject pmNoteObjectAllocation:inObject] ;
 }
 
-//----------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void noteObjectDeallocation (NSObject * inObject) {
   [gDebugObject pmNoteObjectDeallocation:inObject] ;
 }
 
-//----------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 
 @implementation PMDebug
 
-//----------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 @synthesize mAllocationStatsWindowVisibleAtLaunch ;
 @synthesize mAllocatedObjectCount ;
 @synthesize mTotalAllocatedObjectCount ;
 @synthesize mDisplayFilter ;
 
-//----------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) showAllocationWindow {
   [mAllocationStatsWindow makeKeyAndOrderFront:nil] ;
 }
 
-//----------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void showAllocationStatsWindow (void) {
   if (nil == gDebugObject) {
     gDebugObject = [PMDebug new] ;
-    const BOOL ok = [NSBundle loadNibNamed:@"PMDebug" owner:gDebugObject] ;
+    #ifdef MAC_OS_X_VERSION_10_8
+      NSArray * objects = nil ;
+      const BOOL ok = [[NSBundle mainBundle] loadNibNamed:@"PMDebug" owner:gDebugObject topLevelObjects:& objects] ;
+    #else
+      const BOOL ok = [NSBundle loadNibNamed:@"PMDebug" owner:gDebugObject] ;
+    #endif
     if (! ok) {
 //      presentErrorWindow (__FILE__, __LINE__, @"Cannot load 'PMDebug' nib file") ;
     }
@@ -56,9 +66,9 @@ void showAllocationStatsWindow (void) {
   [gDebugObject showAllocationWindow] ;
 }
 
-//----------------------------------------------------------------------------*
-//    init                                                                    *
-//----------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//    init                                                                     *
+//-----------------------------------------------------------------------------*
 
 - (instancetype) init {
   //  NSLog (@"%s %p", __PRETTY_FUNCTION__, self) ;
@@ -78,9 +88,9 @@ void showAllocationStatsWindow (void) {
   return self ;
 }
 
-//----------------------------------------------------------------------------*
-//    awakeFromNib                                                            *
-//----------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//    awakeFromNib                                                             *
+//-----------------------------------------------------------------------------*
 
 - (void) awakeFromNib {
   // NSLog (@"%s %p %p", __PRETTY_FUNCTION__, self, mDebugMenu) ;
@@ -128,9 +138,9 @@ void showAllocationStatsWindow (void) {
   #endif
 }
 
-//----------------------------------------------------------------------------*
-//    applicationWillTerminateAction:                                         *
-//----------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//    applicationWillTerminateAction:                                          *
+//-----------------------------------------------------------------------------*
 
 - (void) applicationWillTerminateAction: (NSNotification *) inNotification {
   // NSLog (@"%s", __PRETTY_FUNCTION__) ;
@@ -146,9 +156,9 @@ void showAllocationStatsWindow (void) {
   ] ;
 }
 
-//----------------------------------------------------------------------------*
-//    triggerRefreshAllocationStatsDisplay                                    *
-//----------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//    triggerRefreshAllocationStatsDisplay                                     *
+//-----------------------------------------------------------------------------*
 
 - (void) triggerRefreshAllocationStatsDisplay {
   [mLock lock] ;
@@ -179,9 +189,9 @@ void showAllocationStatsWindow (void) {
   }
 }
 
-//----------------------------------------------------------------------------*
-//    refreshAllocationStats                                                 *
-//----------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//    refreshAllocationStats                                                  *
+//-----------------------------------------------------------------------------*
 
 - (void) refreshAllocationStats {
   // NSLog (@"%s", __PRETTY_FUNCTION__) ;
@@ -212,9 +222,9 @@ void showAllocationStatsWindow (void) {
   [mStatsTableView reloadData] ;
 }
 
-//----------------------------------------------------------------------------*
-//    refreshTimerDidFire:                                                    *
-//----------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//    refreshTimerDidFire:                                                     *
+//-----------------------------------------------------------------------------*
 
 #if ! __has_feature(objc_arc)
   - (void) refreshTimerDidFire: (NSTimer *) inTimer {
@@ -223,9 +233,9 @@ void showAllocationStatsWindow (void) {
   }
 #endif
 
-//----------------------------------------------------------------------------*
-//    collectExhaustively:                                                    *
-//----------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//    collectExhaustively:                                                     *
+//-----------------------------------------------------------------------------*
 
 #if ! __has_feature(objc_arc)
   - (void) collectExhaustively: (id) inSender {
@@ -233,9 +243,9 @@ void showAllocationStatsWindow (void) {
   }
 #endif
 
-//----------------------------------------------------------------------------*
-//    didChangeValueForKey:                                                   *
-//----------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//    didChangeValueForKey:                                                    *
+//-----------------------------------------------------------------------------*
 
 - (void) didChangeValueForKey: (NSString *) inKey {
   [super didChangeValueForKey:inKey] ;
@@ -244,9 +254,9 @@ void showAllocationStatsWindow (void) {
   }
 }
 
-//----------------------------------------------------------------------------*
-//    pmNoteObjectAllocation:                                                 *
-//----------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//    pmNoteObjectAllocation:                                                  *
+//-----------------------------------------------------------------------------*
 
 - (void) pmNoteObjectAllocation: (NSObject *) inObject {
   [mLock lock] ;
@@ -259,9 +269,9 @@ void showAllocationStatsWindow (void) {
   [self triggerRefreshAllocationStatsDisplay] ;
 }
 
-//----------------------------------------------------------------------------*
-//    pmNoteObjectDeallocation:                                               *
-//----------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//    pmNoteObjectDeallocation:                                                *
+//-----------------------------------------------------------------------------*
 
 - (void) pmNoteObjectDeallocation: (NSObject *) inObject {
   [mLock lock] ;
@@ -272,9 +282,9 @@ void showAllocationStatsWindow (void) {
   [self triggerRefreshAllocationStatsDisplay] ;
 }
 
-//----------------------------------------------------------------------------*
-//    T A B L E   V I E W    D A T A    S O U R C E                           *
-//----------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//    T A B L E   V I E W    D A T A    S O U R C E                            *
+//-----------------------------------------------------------------------------*
 
 - (id) tableView: (NSTableView *) aTableView
        objectValueForTableColumn: (NSTableColumn *) aTableColumn
@@ -289,7 +299,7 @@ void showAllocationStatsWindow (void) {
   return (NSInteger) [mAllocationStatsDataSource count] ;
 }
 
-//----------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 @end
 

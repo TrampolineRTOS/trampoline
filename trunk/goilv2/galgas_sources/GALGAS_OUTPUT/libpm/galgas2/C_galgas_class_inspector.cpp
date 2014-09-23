@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  GALGAS introspection classes                                             *
+//  GALGAS introspection classes                                               *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *

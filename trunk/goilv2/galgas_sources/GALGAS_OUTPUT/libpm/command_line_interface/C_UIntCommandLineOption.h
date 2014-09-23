@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Generic Unsigned Command Line Interface Option                           *
+//  Generic Unsigned Command Line Interface Option                             *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -28,7 +28,7 @@
 
 //-----------------------------------------------------------------------------*
 
-#include "command_line_interface/C_CommandLineOption.h"
+#include "C_CommandLineOption.h"
 #include "utilities/M_machine.h"
 #include "strings/C_String.h"
 
@@ -41,16 +41,16 @@ class C_UIntCommandLineOption : public C_CommandLineOption {
                                     const char inChar,
                                     const char * inString,
                                     const char * inComment,
-                                    const PMUInt32 inDefaultValue) ;
+                                    const uint32_t inDefaultValue) ;
 //--- No Copy
   private : C_UIntCommandLineOption (const C_UIntCommandLineOption &) ;
   private : C_UIntCommandLineOption & operator = (const C_UIntCommandLineOption &) ;
 
 //--- Attributes
   private : C_UIntCommandLineOption * mNext ;
-  public : PMUInt32 mValue ;
-  public : inline PMUInt32 reader_value (void) const { return mValue ; }
-  public : const PMUInt32 mDefaultValue ;
+  public : uint32_t mValue ;
+  public : inline uint32_t reader_value (void) const { return mValue ; }
+  public : const uint32_t mDefaultValue ;
 
 //--- Static methods
   public : static void setUIntOptionForCommandChar (const char * inCommandCommandLineOptionString,
@@ -60,7 +60,7 @@ class C_UIntCommandLineOption : public C_CommandLineOption {
                                                       bool & outFound,
                                                       bool & outCommandLineOptionStringIsValid)  ;
   public : static void printUsageOfUIntOptions (void) ;
-  public : static void printUIntOptions (const PMUInt32 inDisplayLength) ;
+  public : static void printUIntOptions (const uint32_t inDisplayLength) ;
 
 //--- Option introspection
   public : static void getUIntOptionNameList (TC_UniqueArray <C_String> & outArray) ;

@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  'C_HTML_FileWrite' : a class for stream writing html text files          *
-//    (with facility for outputing C++ code)                                 *
+//  'C_HTML_FileWrite' : a class for stream writing html text files            *
+//    (with facility for outputing C++ code)                                   *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -57,9 +57,11 @@ class C_HTML_FileWrite : public C_TextFileWrite {
   public : void outputRawData (const char * in_Cstring) ;
 
 //--- General stream methods
-  protected : virtual void
-  performActualCharArrayOutput (const char * inCharArray,
-                                const PMSInt32 inArrayCount) ;
+  protected : virtual void performActualCharArrayOutput (const char * inCharArray,
+                                                         const int32_t inArrayCount) ;
+
+  protected : virtual void performActualUnicodeArrayOutput (const utf32 * inCharArray,
+                                                            const int32_t inArrayCount) ;
 
 //--- Method for writing a HTML table
   public : void appendCppTitleComment (const C_String & inCommentString,

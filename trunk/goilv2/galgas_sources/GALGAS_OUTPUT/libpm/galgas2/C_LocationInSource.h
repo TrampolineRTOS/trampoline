@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  'C_LocationInSource'                                                     *
+//  'C_LocationInSource'                                                       *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -36,14 +36,14 @@ class C_String ;
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//                 Class for referencing a location in source text           *
+//                 Class for referencing a location in source text             *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
 class C_LocationInSource {
-  private : PMSInt32 mIndex ;
-  private : PMSInt32 mLineNumber ;
-  private : PMSInt32 mColumnNumber ;
+  private : int32_t mIndex ;
+  private : int32_t mLineNumber ;
+  private : int32_t mColumnNumber ;
   private : const C_SourceTextInString * mSourceText ;
 
 //---  
@@ -55,9 +55,9 @@ class C_LocationInSource {
   public : C_LocationInSource & operator = (const C_LocationInSource & inObject) ;
 
   public : C_LocationInSource (const C_SourceTextInString * inSourceText,
-                               const PMSInt32 inIndex,
-                               const PMSInt32 inLine,
-                               const PMSInt32 inColumn) ;
+                               const int32_t inIndex,
+                               const int32_t inLine,
+                               const int32_t inColumn) ;
 
   public : void gotoNextLocation (const bool inPreviousCharWasEndOfLine) ;
 
@@ -65,11 +65,11 @@ class C_LocationInSource {
 
   public : void resetWithSourceText (const C_SourceTextInString * inSourceText) ;
 
-  public : inline PMSInt32 index (void) const { return mIndex ; }
+  public : inline int32_t index (void) const { return mIndex ; }
 
-  public : inline PMSInt32 lineNumber (void) const { return mLineNumber ; }
+  public : inline int32_t lineNumber (void) const { return mLineNumber ; }
 
-  public : inline PMSInt32 columnNumber (void) const { return mColumnNumber ; }
+  public : inline int32_t columnNumber (void) const { return mColumnNumber ; }
 
   public : C_String sourceFilePath (void) const ;
 } ;

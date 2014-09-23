@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  GALGAS_bool : this class implements introspection for GALGAS types       *
+//  GALGAS_bool : this class implements introspection for GALGAS types         *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -23,12 +23,12 @@
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-#include "predefined-types.h"
+#include "galgas2/predefined-types.h"
 #include "galgas2/C_Compiler.h"
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//                     'GALGAS_type' class                                   *
+//                     'GALGAS_type' class                                     *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -66,7 +66,7 @@ GALGAS_type::~ GALGAS_type (void) {
 //-----------------------------------------------------------------------------*
 
 void GALGAS_type::description (C_String & ioString,
-                               const PMSInt32 /* inIndentation */) const {
+                               const int32_t /* inIndentation */) const {
   ioString << "<@type: " ;
   if (NULL == mTypeDescriptor) {
     ioString << "not built" ;
@@ -82,7 +82,7 @@ GALGAS_typelist GALGAS_type::constructor_typeList (LOCATION_ARGS) {
   TC_UniqueArray <C_galgas_type_descriptor *> typeList ;
   C_galgas_type_descriptor::typeListRoot (typeList) ;
   GALGAS_typelist result = GALGAS_typelist::constructor_emptyList (THERE) ;
-  for (PMSInt32 i=0 ; i<typeList.count () ; i++) {
+  for (int32_t i=0 ; i<typeList.count () ; i++) {
     result.addAssign_operation (GALGAS_type (typeList (i COMMA_THERE)) COMMA_HERE) ;
   }
   return result ;

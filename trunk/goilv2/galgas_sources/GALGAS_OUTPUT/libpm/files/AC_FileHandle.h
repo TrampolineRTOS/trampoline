@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  'AC_FileHandle' : an abstract class for handling files handles           *
+//  'AC_FileHandle' : an abstract class for handling files handles             *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *

@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  'C_SourceTextInString'                                                   *
+//  'C_SourceTextInString'                                                     *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -36,7 +36,7 @@ class C_LocationInSource ;
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//                 Classes for handling source text                          *
+//                 Classes for handling source text                            *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -57,9 +57,9 @@ class C_SourceTextInString : public C_SharedObject {
   public : const C_String mSourceString ;
   private : const bool mShowSourceOnDetailledErrorMessage ;
 
-  public : PMSInt32 sourceLength (void) const ;
-  public : utf32 readCharOrNul (const PMSInt32 inIndex COMMA_LOCATION_ARGS) const ;
-  public : const utf32 * temporaryUTF32StringAtIndex (const PMSInt32 inIndex, const PMSInt32 inRequiredLength COMMA_LOCATION_ARGS) const ;
+  public : int32_t sourceLength (void) const ;
+  public : utf32 readCharOrNul (const int32_t inIndex COMMA_LOCATION_ARGS) const ;
+  public : const utf32 * temporaryUTF32StringAtIndex (const int32_t inIndex, const int32_t inRequiredLength COMMA_LOCATION_ARGS) const ;
   public : C_String getLineForLocation (const C_LocationInSource & inLocation) const ;
   public : void appendSourceContents (C_String & ioMessage) const ;
 } ;

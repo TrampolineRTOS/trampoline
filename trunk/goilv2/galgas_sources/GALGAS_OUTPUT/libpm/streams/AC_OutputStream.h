@@ -1,10 +1,10 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  AC_OutputStream : an abstract output stream class                        *
+//  AC_OutputStream : an abstract output stream class                          *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
-//  Copyright (C) 1997, ..., 2009 Pierre Molinaro.                             *
+//  Copyright (C) 1997, ..., 2014 Pierre Molinaro.                             *
 //                                                                             *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
 //                                                                             *
@@ -51,7 +51,7 @@ class AC_OutputStream {
 
 //--- Appending C string
   public : void appendCString (const char * inCstring) ;
-  public : void appendCString (const char * inCstring, const PMSInt32 inCount) ;
+  public : void appendCString (const char * inCstring, const int32_t inCount) ;
 
 //--- Appending UTF32 string
   public : void appendUTF32String (const utf32 * inUTF32String) ;
@@ -59,19 +59,19 @@ class AC_OutputStream {
 //--- Appending character
   public : void appendUnicodeCharacter (const utf32 inUnicodeCharacter COMMA_LOCATION_ARGS) ;
 
-//--- Appending PMUInt64 in Hex
-  public : void appendUnsignedHex  (const PMUInt64 inValue) ;
-  public : void appendUnsignedHex2 (const PMUInt64 inValue) ;
-  public : void appendUnsignedHex4 (const PMUInt64 inValue) ;
-  public : void appendUnsignedHex8 (const PMUInt64 inValue) ;
+//--- Appending uint64_t in Hex
+  public : void appendUnsignedHex  (const uint64_t inValue) ;
+  public : void appendUnsignedHex2 (const uint64_t inValue) ;
+  public : void appendUnsignedHex4 (const uint64_t inValue) ;
+  public : void appendUnsignedHex8 (const uint64_t inValue) ;
 
-//--- Appending PMUInt64
-  public : void appendUnsignedWithZeroFill (const PMUInt64 inValue, const PMUInt32 inWidth) ;
-  public : void appendUnsigned (const PMUInt64 inValue) ;
-  public : void appendUnsignedHex16 (const PMUInt64 inValue) ;
+//--- Appending uint64_t
+  public : void appendUnsignedWithZeroFill (const uint64_t inValue, const uint32_t inWidth) ;
+  public : void appendUnsigned (const uint64_t inValue) ;
+  public : void appendUnsignedHex16 (const uint64_t inValue) ;
 
 //--- Appending Sint64
-  public : void appendSigned (const PMSInt64 inValue) ;
+  public : void appendSigned (const int64_t inValue) ;
 
 //--- Appending Double
   public : void appendDouble (const double inValue) ;
@@ -91,22 +91,22 @@ class AC_OutputStream {
   public : virtual void flush (void) ;
 
 //--- Abstract method for output single byte characters
-  public : void genericCharArrayOutput (const char * inCharArray, const PMSInt32 inArrayCount) ;
+  public : void genericCharArrayOutput (const char * inCharArray, const int32_t inArrayCount) ;
 
   protected : virtual void
-  performActualCharArrayOutput (const char * inCharArray, const PMSInt32 inArrayCount) = 0 ;
+  performActualCharArrayOutput (const char * inCharArray, const int32_t inArrayCount) = 0 ;
 
 //--- Abstract method for output unicode characters
-  public : void genericUnicodeArrayOutput (const utf32 * inCharArray, const PMSInt32 inArrayCount) ;
+  public : void genericUnicodeArrayOutput (const utf32 * inCharArray, const int32_t inArrayCount) ;
 
   protected : virtual void
-  performActualUnicodeArrayOutput (const utf32 * inCharArray, const PMSInt32 inArrayCount) = 0 ;
+  performActualUnicodeArrayOutput (const utf32 * inCharArray, const int32_t inArrayCount) = 0 ;
 
 //--- Writing spaces
-  public : void appendSpaces (const PMSInt32 inSpaceCount) ;
+  public : void appendSpaces (const int32_t inSpaceCount) ;
 
 //--- Writing a string several times
-  public : void writeStringMultiple (const C_String & inString, const PMSInt32 inRepeatCount) ;
+  public : void writeStringMultiple (const C_String & inString, const int32_t inRepeatCount) ;
 
 //--- Methods for writing comment
   public : void appendTitleComment (const C_String & inLineCommentPrefix,
@@ -124,7 +124,7 @@ class AC_OutputStream {
                                          const bool inIncludeLGPLtext) ;
 
 //--- Methods for writing C and C++ code
-  public : void appendCLiteralStringConstant (const C_String & inString, const PMSInt32 inLineMaxLength) ;
+  public : void appendCLiteralStringConstant (const C_String & inString, const int32_t inLineMaxLength) ;
   public : void appendCLiteralStringConstant (const C_String & inCstring) ;
   public : void appendCLiteralCharConstant (const utf32 c) ;
 
@@ -142,29 +142,29 @@ class AC_OutputStream {
   public : void append_C_SpaceLineComment (void) ;
   
 //--- Handle indentation
-  public : void incIndentation (const PMSInt32 inIncrement) {
+  public : void incIndentation (const int32_t inIncrement) {
     mIndentation += inIncrement ;
   }
-  public : PMSInt32 indentation (void) const {
+  public : int32_t indentation (void) const {
     return mIndentation ;
   }
 
 //--- Private data
-  private : PMSInt32 mIndentation ;
+  private : int32_t mIndentation ;
   private : bool mStartingLine ;
 } ;
 
 //-----------------------------------------------------------------------------*
 
-C_String cStringWithUnsigned (const PMUInt64 inValue) ;
+C_String cStringWithUnsigned (const uint64_t inValue) ;
 
 //-----------------------------------------------------------------------------*
 
-C_String cHexStringWithUnsigned (const PMUInt64 inValue) ;
+C_String cHexStringWithUnsigned (const uint64_t inValue) ;
 
 //-----------------------------------------------------------------------------*
 
-C_String cStringWithSigned (const PMSInt64 inValue) ;
+C_String cStringWithSigned (const int64_t inValue) ;
 
 //-----------------------------------------------------------------------------*
 

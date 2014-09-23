@@ -42,17 +42,17 @@ class C_Lexique ;
 
 class cTemplateDelimiter {
   public : const utf32 * mStartString ;
-  public : const PMSInt32 mStartStringLength ;
+  public : const int32_t mStartStringLength ;
   public : const utf32 * mEndString ;
-  public : const PMSInt32 mEndStringLength ;
+  public : const int32_t mEndStringLength ;
   public : void (* mReplacementFunction) (C_Lexique & inLexique, const C_String & inElementString, C_String & ioTemplateString) ;
   public : const bool mDiscardStartString ;
 
 //--- Constructor
   public : cTemplateDelimiter (const utf32 * inStartString,
-                               const PMSInt32 inStartStringLength,
+                               const int32_t inStartStringLength,
                                const utf32 * inEndString,
-                               const PMSInt32 inEndStringLength,
+                               const int32_t inEndStringLength,
                                void (* inReplacementFunction) (C_Lexique & inLexique, const C_String & inElementString, C_String & ioTemplateString),
                                const bool inDiscardStartString) ;
 

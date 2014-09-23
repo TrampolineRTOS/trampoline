@@ -1,13 +1,13 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Definition of the general purpose inf template routine                   *
+//  Definition of the general purpose inf template routine                     *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
-//  Copyright (C) 1997 Pierre Molinaro.                                      *
+//  Copyright (C) 1997 Pierre Molinaro.                                        *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
 //  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
-//  ECN, Ecole Centrale de Nantes                                            *
+//  ECN, Ecole Centrale de Nantes                                              *
 //                                                                             *
 //  This library is free software; you can redistribute it and/or modify it    *
 //  under the terms of the GNU Lesser General Public License as published      *
@@ -24,13 +24,13 @@
 #ifndef TEMPLATE_INF_ROUTINE_DEFINED
 #define TEMPLATE_INF_ROUTINE_DEFINED
 
-//---------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class T>
 inline T TF_inf (const T inOperand1, const T inOperand2) {
   return (inOperand1 < inOperand2) ? inOperand1 : inOperand2 ;
 }
 
-//---------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #endif

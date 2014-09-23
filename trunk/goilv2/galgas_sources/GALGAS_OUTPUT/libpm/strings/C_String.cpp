@@ -70,15 +70,15 @@ static const utf32 kEmptyUTF32String [1] = {TO_UNICODE (0)} ;
 //-----------------------------------------------------------------------------*
 
 class cEmbeddedString : public C_SharedObject {
-  public : PMUInt32 mCapacity ; // Maximun allowed length of the following C string
-  public : PMUInt32 mLength ; // Current length of the following C string
+  public : uint32_t mCapacity ; // Maximun allowed length of the following C string
+  public : uint32_t mLength ; // Current length of the following C string
   public : char * mEncodedCString ;
   public : utf32 * mString ; // Zero terminated string
 
-  public : cEmbeddedString (const PMUInt32 inCapacity COMMA_LOCATION_ARGS) ;
+  public : cEmbeddedString (const uint32_t inCapacity COMMA_LOCATION_ARGS) ;
 
   public : cEmbeddedString (const cEmbeddedString * inEmbeddedString,
-                            const PMUInt32 inCapacity
+                            const uint32_t inCapacity
                             COMMA_LOCATION_ARGS) ;
 
   public : ~cEmbeddedString (void) ;
@@ -91,14 +91,14 @@ class cEmbeddedString : public C_SharedObject {
     public : void checkEmbeddedString (LOCATION_ARGS) const ;
   #endif
 
-  public : void reallocEmbeddedString (const PMUInt32 inCapacity) ;
+  public : void reallocEmbeddedString (const uint32_t inCapacity) ;
 } ;
 
 //-----------------------------------------------------------------------------*
 
-static PMUInt32 stringGoodSize (const PMUInt32 inCurrentCapacity,
-                                const PMUInt32 inCapacity) {
-  PMUInt32 newCapacity = (inCurrentCapacity < 128) ? 128 : inCurrentCapacity ;
+static uint32_t stringGoodSize (const uint32_t inCurrentCapacity,
+                                const uint32_t inCapacity) {
+  uint32_t newCapacity = (inCurrentCapacity < 128) ? 128 : inCurrentCapacity ;
   while (newCapacity < inCapacity) {
     newCapacity <<= 1 ;
   }
@@ -107,13 +107,13 @@ static PMUInt32 stringGoodSize (const PMUInt32 inCurrentCapacity,
 
 //-----------------------------------------------------------------------------*
 
-cEmbeddedString::cEmbeddedString (const PMUInt32 inCapacity COMMA_LOCATION_ARGS) :
+cEmbeddedString::cEmbeddedString (const uint32_t inCapacity COMMA_LOCATION_ARGS) :
 C_SharedObject (THERE),
 mCapacity (0),
 mLength (0),
 mEncodedCString (NULL),
 mString (NULL) {
-  const PMUInt32 newCapacity = stringGoodSize (0, inCapacity) ;
+  const uint32_t newCapacity = stringGoodSize (0, inCapacity) ;
   macroMyNewPODArray (mString, utf32, newCapacity) ;
   mCapacity = newCapacity ;
   mString [0] = TO_UNICODE ('\0') ;
@@ -122,7 +122,7 @@ mString (NULL) {
 //-----------------------------------------------------------------------------*
 
 cEmbeddedString::cEmbeddedString (const cEmbeddedString * inEmbeddedString,
-                                  const PMUInt32 inCapacity
+                                  const uint32_t inCapacity
                                   COMMA_LOCATION_ARGS) :
 C_SharedObject (THERE),
 mCapacity (0),
@@ -132,11 +132,11 @@ mString (NULL) {
   macroValidPointer (inEmbeddedString) ;
   macroValidPointer (inEmbeddedString->mString) ;
   MF_Assert (inCapacity > inEmbeddedString->mLength, "inCapacity (%lld) < inEmbeddedString->mLength (%lld)", inCapacity, inEmbeddedString->mLength) ;
-  const PMUInt32 newCapacity = stringGoodSize (inEmbeddedString->mCapacity, inCapacity) ;
+  const uint32_t newCapacity = stringGoodSize (inEmbeddedString->mCapacity, inCapacity) ;
   macroMyNewPODArray (mString, utf32, newCapacity) ;
   mCapacity = newCapacity ;
   MF_Assert (inEmbeddedString->mLength < mCapacity, "inEmbeddedString->mLength (%lld) >= mCapacity (%lld)", inEmbeddedString->mLength, mCapacity) ;
-  for (PMUInt32 i=0 ; i<=inEmbeddedString->mLength ; i++) {
+  for (uint32_t i=0 ; i<=inEmbeddedString->mLength ; i++) {
     mString [i] = inEmbeddedString->mString [i] ;
   }
   mLength = inEmbeddedString->mLength ;
@@ -156,19 +156,19 @@ cEmbeddedString::~cEmbeddedString (void) {
     MF_Assert (retainCount () >= 1, "retainCount () == %lld < 1", retainCount (), 0) ;
     if (mCapacity == 0) {
       MF_AssertThere (UNICODE_VALUE (mString [0]) == '\0', "mString [0] (%lld) != '\\0'",
-                      (PMSInt32) UNICODE_VALUE (mString [0]), '\0') ;
+                      (int32_t) UNICODE_VALUE (mString [0]), '\0') ;
       MF_AssertThere (mLength == 0, "mLength (%ld) != 0", mLength, 0) ;
     }else{
       MF_AssertThere (mLength <= mCapacity, "mLength (%ld) > mCapacity (%ld)", mLength, mCapacity) ;
       MF_AssertThere (UNICODE_VALUE (mString [mLength]) == '\0',
                       "mString [mLength] == %ld != '\\0'",
-                      (PMSInt32) UNICODE_VALUE (mString [mLength]), '\0') ;
+                      (int32_t) UNICODE_VALUE (mString [mLength]), '\0') ;
       if (mEncodedCString != NULL) {
         macroValidPointer (mEncodedCString) ;
-        for (PMUInt32 i=0 ; i<=mLength ; i++) {
-          MF_AssertThere (UNICODE_VALUE (mString [i]) == (PMUInt32) mEncodedCString [i],
+        for (uint32_t i=0 ; i<=mLength ; i++) {
+          MF_AssertThere (UNICODE_VALUE (mString [i]) == (uint32_t) mEncodedCString [i],
                           "mString [i] (%ld) != mEncodedCString [i] (%ld)",
-                          UNICODE_VALUE (mString [i]), (PMUInt32) mEncodedCString [i]) ;
+                          UNICODE_VALUE (mString [i]), (uint32_t) mEncodedCString [i]) ;
         }
       }
     }
@@ -177,12 +177,12 @@ cEmbeddedString::~cEmbeddedString (void) {
 
 //-----------------------------------------------------------------------------*
 
-void cEmbeddedString::reallocEmbeddedString (const PMUInt32 inCapacity) {
+void cEmbeddedString::reallocEmbeddedString (const uint32_t inCapacity) {
   #ifndef DO_NOT_GENERATE_CHECKINGS
     checkEmbeddedString (HERE) ;
   #endif
   if (inCapacity > mCapacity) {
-    const PMUInt32 newCapacity = stringGoodSize (mCapacity, inCapacity) ;
+    const uint32_t newCapacity = stringGoodSize (mCapacity, inCapacity) ;
     macroMyReallocPODArray (mString, utf32, newCapacity) ;
     mCapacity = newCapacity ;
     #ifndef DO_NOT_GENERATE_CHECKINGS
@@ -212,7 +212,7 @@ mEmbeddedString (NULL) {
 C_String::C_String (const char * inCstring) :
 mEmbeddedString (NULL) {
   if (inCstring != NULL) {
-    genericCharArrayOutput (inCstring, (PMSInt32) (strlen (inCstring) & PMUINT32_MAX)) ;
+    genericCharArrayOutput (inCstring, (int32_t) (strlen (inCstring) & UINT32_MAX)) ;
   }
 }
 
@@ -245,7 +245,7 @@ C_String::~C_String (void) {
 
 //-----------------------------------------------------------------------------*
 
-PMUInt32 C_String::capacity (void) const {
+uint32_t C_String::capacity (void) const {
   return (mEmbeddedString == NULL) ? 0 : mEmbeddedString->mCapacity ;
 }
 
@@ -276,10 +276,10 @@ void C_String::releaseString (void) {
 
 //-----------------------------------------------------------------------------*
 
-PMUInt32 C_String::hash (void) const {
-  PMUInt32 h = 0 ;
+uint32_t C_String::hash (void) const {
+  uint32_t h = 0 ;
   if (mEmbeddedString != NULL) {
-    for (PMUInt32 i=0 ; i<mEmbeddedString->mLength ; i++) {
+    for (uint32_t i=0 ; i<mEmbeddedString->mLength ; i++) {
       h <<= 3 ;
       h ^= UNICODE_VALUE (mEmbeddedString->mString [i]) ;
     }
@@ -304,13 +304,13 @@ PMUInt32 C_String::hash (void) const {
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-utf32 C_String::operator () (const PMSInt32 inIndex COMMA_LOCATION_ARGS) const {
+utf32 C_String::operator () (const int32_t inIndex COMMA_LOCATION_ARGS) const {
   #ifndef DO_NOT_GENERATE_CHECKINGS
     checkString (THERE) ;
   #endif
   macroValidSharedObjectThere (mEmbeddedString, cEmbeddedString) ;
   MF_AssertThere (inIndex >= 0, "inIndex (%ld) < 0", inIndex, 0) ;
-  MF_AssertThere ((PMUInt32) inIndex < mEmbeddedString->mLength,
+  MF_AssertThere ((uint32_t) inIndex < mEmbeddedString->mLength,
                  "inIndex (%ld) >= string length (%ld)",
                  inIndex, mEmbeddedString->mLength) ;
   return mEmbeddedString->mString [inIndex] ;
@@ -318,9 +318,9 @@ utf32 C_String::operator () (const PMSInt32 inIndex COMMA_LOCATION_ARGS) const {
 
 //-----------------------------------------------------------------------------*
 
-utf32 C_String::readCharOrNul (const PMSInt32 inIndex COMMA_LOCATION_ARGS) const {
+utf32 C_String::readCharOrNul (const int32_t inIndex COMMA_LOCATION_ARGS) const {
   MF_AssertThere (inIndex >= 0, "inIndex (%ld) < 0", inIndex, 0) ;
-  return ((mEmbeddedString == NULL) || ((PMUInt32) inIndex >= mEmbeddedString->mLength))
+  return ((mEmbeddedString == NULL) || ((uint32_t) inIndex >= mEmbeddedString->mLength))
     ? TO_UNICODE ('\0')
     : mEmbeddedString->mString [inIndex] ;
 }
@@ -332,7 +332,7 @@ utf32 C_String::readCharOrNul (const PMSInt32 inIndex COMMA_LOCATION_ARGS) const
 //-----------------------------------------------------------------------------*
 
 utf32 C_String::lastCharacter (LOCATION_ARGS) const {
-  const PMUInt32 stringLength = mEmbeddedString->mLength ;
+  const uint32_t stringLength = mEmbeddedString->mLength ;
   MF_AssertThere (stringLength > 0, "length == 0", 0, 0) ;
   return (stringLength == 0) ? TO_UNICODE ('\0') : mEmbeddedString->mString [stringLength - 1] ;
 }
@@ -345,7 +345,7 @@ bool C_String::containsCharacter (const utf32 inCharacter) const {
   #endif
   bool found = false ;
   if (NULL != mEmbeddedString) {
-    for (PMUInt32 i=0 ; (i<mEmbeddedString->mLength) && ! found ; i++) {
+    for (uint32_t i=0 ; (i<mEmbeddedString->mLength) && ! found ; i++) {
       found = UNICODE_VALUE (mEmbeddedString->mString [i]) == UNICODE_VALUE (inCharacter) ;
     }
   }
@@ -354,11 +354,11 @@ bool C_String::containsCharacter (const utf32 inCharacter) const {
 
 //-----------------------------------------------------------------------------*
 
-PMSInt32 C_String::length (void) const {
+int32_t C_String::length (void) const {
   #ifndef DO_NOT_GENERATE_CHECKINGS
     checkString (HERE) ;
   #endif
-  return (mEmbeddedString == NULL) ? 0 : (PMSInt32) mEmbeddedString->mLength ;
+  return (mEmbeddedString == NULL) ? 0 : (int32_t) mEmbeddedString->mLength ;
 }
 
 //-----------------------------------------------------------------------------*
@@ -368,13 +368,13 @@ const char * C_String::cString (UNUSED_LOCATION_ARGS) const {
   if (NULL != mEmbeddedString) {
     macroValidSharedObject (mEmbeddedString, cEmbeddedString) ;
     if (NULL == mEmbeddedString->mEncodedCString) {
-      PMUInt32 allocatedSize = mEmbeddedString->mLength + 1 ;
+      uint32_t allocatedSize = mEmbeddedString->mLength + 1 ;
       macroMyReallocPODArray (mEmbeddedString->mEncodedCString, char, allocatedSize) ;
-      PMUInt32 idx = 0 ;
-      for (PMUInt32 i=0 ; i<mEmbeddedString->mLength ; i++) {
+      uint32_t idx = 0 ;
+      for (uint32_t i=0 ; i<mEmbeddedString->mLength ; i++) {
         char buffer [5] ;
-        const PMSInt32 n = UTF8StringFromUTF32Character (mEmbeddedString->mString [i], buffer) ;
-        for (PMSInt32 j=0 ; j<n ; j++) {
+        const int32_t n = UTF8StringFromUTF32Character (mEmbeddedString->mString [i], buffer) ;
+        for (int32_t j=0 ; j<n ; j++) {
           if (allocatedSize == idx) {
             allocatedSize *= 2 ;
             macroMyReallocPODArray (mEmbeddedString->mEncodedCString, char, allocatedSize) ;
@@ -413,7 +413,7 @@ const utf32 * C_String::utf32String (UNUSED_LOCATION_ARGS) const {
 
 //-----------------------------------------------------------------------------*
 
-void C_String::insulateEmbeddedString (const PMUInt32 inNewCapacity) {
+void C_String::insulateEmbeddedString (const uint32_t inNewCapacity) {
   if (mEmbeddedString == NULL) {
     macroMyNew (mEmbeddedString, cEmbeddedString (inNewCapacity COMMA_HERE)) ;
   }else{
@@ -475,7 +475,7 @@ void C_String::setFromString (const C_String & inString) {
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-void C_String::setCapacity (const PMUInt32 inNewCapacity) {
+void C_String::setCapacity (const uint32_t inNewCapacity) {
   #ifndef DO_NOT_GENERATE_CHECKINGS
     checkString (HERE) ;
   #endif
@@ -511,23 +511,23 @@ void C_String::setCapacity (const PMUInt32 inNewCapacity) {
 //-----------------------------------------------------------------------------*
 
 void C_String::performActualUnicodeArrayOutput (const utf32 * inUTF32CharArray,
-                                                const PMSInt32 inArrayCount) {
+                                                const int32_t inArrayCount) {
   #ifndef DO_NOT_GENERATE_CHECKINGS
     checkString (HERE) ;
   #endif
   if (inArrayCount > 0) {
-    const PMSInt32 kNewLength = length () + inArrayCount ;
-    insulateEmbeddedString ((PMUInt32) (kNewLength + 1)) ;
+    const int32_t kNewLength = length () + inArrayCount ;
+    insulateEmbeddedString ((uint32_t) (kNewLength + 1)) ;
     MF_Assert (mEmbeddedString->retainCount () == 1, "mEmbeddedString->retainCount () == (%lld) != 1", mEmbeddedString->retainCount () == 1, 0) ;
-    for (PMSInt32 i=0 ; i<inArrayCount ; i++) {
-      mEmbeddedString->mString [mEmbeddedString->mLength + (PMUInt32) i] = inUTF32CharArray [i] ;
+    for (int32_t i=0 ; i<inArrayCount ; i++) {
+      mEmbeddedString->mString [mEmbeddedString->mLength + (uint32_t) i] = inUTF32CharArray [i] ;
     }
-    mEmbeddedString->mLength = (PMUInt32) kNewLength ;
+    mEmbeddedString->mLength = (uint32_t) kNewLength ;
     mEmbeddedString->mString [kNewLength] = TO_UNICODE ('\0') ;
     #ifndef DO_NOT_GENERATE_CHECKINGS
       checkString (HERE) ;
     #endif
-    MF_Assert (capacity () > (PMUInt32) kNewLength, "capacity (%lld) <= kNewLength (%lld)", capacity (), kNewLength) ;
+    MF_Assert (capacity () > (uint32_t) kNewLength, "capacity (%lld) <= kNewLength (%lld)", capacity (), kNewLength) ;
     macroUniqueSharedObject (mEmbeddedString) ;
   }
 }
@@ -535,46 +535,46 @@ void C_String::performActualUnicodeArrayOutput (const utf32 * inUTF32CharArray,
 //-----------------------------------------------------------------------------*
 
 void C_String::performActualCharArrayOutput (const char * inCharArray,
-                                             const PMSInt32 inArrayCount) {
+                                             const int32_t inArrayCount) {
   #ifndef DO_NOT_GENERATE_CHECKINGS
     checkString (HERE) ;
   #endif
   if (inArrayCount != 0) {
-    insulateEmbeddedString ((PMUInt32) (length () + inArrayCount + 1)) ;
-    PMSInt32 idx = 0 ;
-    PMSInt32 newLength = (PMSInt32) mEmbeddedString->mLength ;
+    insulateEmbeddedString ((uint32_t) (length () + inArrayCount + 1)) ;
+    int32_t idx = 0 ;
+    int32_t newLength = (int32_t) mEmbeddedString->mLength ;
     bool ok = true ;
     while ((idx < inArrayCount) && ok) {
       if ((inCharArray [idx] & 0x80) == 0) { // ASCII
-        mEmbeddedString->mString [newLength] = TO_UNICODE ((PMUInt32) inCharArray [idx]) ;
+        mEmbeddedString->mString [newLength] = TO_UNICODE ((uint32_t) inCharArray [idx]) ;
         idx ++ ;
         newLength ++ ;
       }else{
-        const utf32 unicodeChar = utf32CharacterForPointer ((const PMUInt8 *) inCharArray, idx, inArrayCount, ok) ;
+        const utf32 unicodeChar = utf32CharacterForPointer ((const uint8_t *) inCharArray, idx, inArrayCount, ok) ;
         mEmbeddedString->mString [newLength] = unicodeChar ;
         newLength ++ ;
       }
     }
-    mEmbeddedString->mLength = (PMUInt32) newLength ;
+    mEmbeddedString->mLength = (uint32_t) newLength ;
     mEmbeddedString->mString [newLength] = TO_UNICODE ('\0') ;
     #ifndef DO_NOT_GENERATE_CHECKINGS
       checkString (HERE) ;
     #endif
-    MF_Assert (capacity () > (PMUInt32) newLength, "capacity (%lld) <= kNewLength (%lld)", capacity (), newLength) ;
+    MF_Assert (capacity () > (uint32_t) newLength, "capacity (%lld) <= kNewLength (%lld)", capacity (), newLength) ;
     macroUniqueSharedObject (mEmbeddedString) ;
   }
 }
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   setCharacterAtIndex                                                     *
+//   setCharacterAtIndex                                                       *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
 
 void C_String::
 setUnicodeCharacterAtIndex (const utf32 inCharacter,
-                            const PMSInt32 inIndex
+                            const int32_t inIndex
                             COMMA_LOCATION_ARGS) {
   #ifndef DO_NOT_GENERATE_CHECKINGS
     checkString (HERE) ;
@@ -582,7 +582,7 @@ setUnicodeCharacterAtIndex (const utf32 inCharacter,
   macroValidPointerThere (mEmbeddedString) ;
   MF_AssertThere (inIndex >= 0, "inIndex (%ld) < 0", inIndex, 0) ;
   if (NULL != mEmbeddedString) {
-    MF_AssertThere ((PMUInt32) inIndex < mEmbeddedString->mLength,
+    MF_AssertThere ((uint32_t) inIndex < mEmbeddedString->mLength,
                     "inIndex (%ld) >= string length (%ld)",
                     inIndex, mEmbeddedString->mLength) ;
     insulateEmbeddedString (mEmbeddedString->mCapacity) ;
@@ -593,13 +593,13 @@ setUnicodeCharacterAtIndex (const utf32 inCharacter,
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   S U P P R E S S    C H A R A C T E R S                                  *
+//   S U P P R E S S    C H A R A C T E R S                                    *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
 void C_String::
-suppress (const PMSInt32 inLocation,
-          const PMSInt32 inLength COMMA_LOCATION_ARGS) {
+suppress (const int32_t inLocation,
+          const int32_t inLength COMMA_LOCATION_ARGS) {
   if (inLength > 0) {
     insulateEmbeddedString (mEmbeddedString->mCapacity) ;
     #ifndef DO_NOT_GENERATE_CHECKINGS
@@ -607,21 +607,21 @@ suppress (const PMSInt32 inLocation,
     #endif
     macroValidPointerThere (mEmbeddedString) ;
     MF_AssertThere (inLocation >= 0, "inLocation (%ld) < 0", inLocation, 0) ;
-    MF_AssertThere ((PMUInt32) inLocation <= mEmbeddedString->mLength,
+    MF_AssertThere ((uint32_t) inLocation <= mEmbeddedString->mLength,
                    "inLocation (%ld) > mLength (%ld)",
                     inLocation, mEmbeddedString->mLength) ;
-    MF_AssertThere ((PMUInt32) inLength <= mEmbeddedString->mLength,
+    MF_AssertThere ((uint32_t) inLength <= mEmbeddedString->mLength,
                    "inLength (%ld) > string length (%ld)",
                     inLength, mEmbeddedString->mLength) ;
-    const PMSInt32 longueurAdeplacer = 1 + ((PMSInt32) mEmbeddedString->mLength) - inLength - inLocation ;
+    const int32_t longueurAdeplacer = 1 + ((int32_t) mEmbeddedString->mLength) - inLength - inLocation ;
     if ((inLocation >= 0) && (longueurAdeplacer > 0)) {
       ::memmove (& mEmbeddedString->mString [inLocation],
                  & mEmbeddedString->mString [inLocation + inLength],
                  ((size_t) longueurAdeplacer) * sizeof (utf32)) ;
-      MF_Assert (mEmbeddedString->mLength >= (PMUInt32) inLength,
+      MF_Assert (mEmbeddedString->mLength >= (uint32_t) inLength,
                "mLength (%lld) < inLength (%lld)",
                 mEmbeddedString->mLength, inLength) ;
-      mEmbeddedString->mLength -= (PMUInt32) inLength ;
+      mEmbeddedString->mLength -= (uint32_t) inLength ;
       #ifndef DO_NOT_GENERATE_CHECKINGS
         checkString (HERE) ;
       #endif
@@ -638,18 +638,18 @@ suppress (const PMSInt32 inLocation,
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   G E T    L I N E S    A R R A Y                                         *
+//   G E T    L I N E S    A R R A Y                                           *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
 void C_String::linesArray (TC_UniqueArray <C_String> & outStringArray) const {
-  const PMSInt32 currentStringLength = length () ;
+  const int32_t currentStringLength = length () ;
   if (currentStringLength > 0) {
-    PMSInt32 index = outStringArray.count () ;
+    int32_t index = outStringArray.count () ;
     outStringArray.addObject (C_String ()) ;
     typedef enum {kAppendToCurrentLine, kGotCarriageReturn, kGotLineFeed} enumState ;
     enumState state = kAppendToCurrentLine ;
-    for (PMSInt32 i=0 ; i<currentStringLength ; i++) {
+    for (int32_t i=0 ; i<currentStringLength ; i++) {
       const utf32 c = mEmbeddedString->mString [i] ;
       switch (state) {
       case kAppendToCurrentLine :
@@ -705,17 +705,17 @@ void C_String::linesArray (TC_UniqueArray <C_String> & outStringArray) const {
 
 //-----------------------------------------------------------------------------*
 
-void C_String::lineAndColumnFromIndex (const PMSInt32 inIndex,
-                                       PMSInt32 & outLineNumber,
-                                       PMSInt32 & outColumnNumber,
+void C_String::lineAndColumnFromIndex (const int32_t inIndex,
+                                       int32_t & outLineNumber,
+                                       int32_t & outColumnNumber,
                                        C_String & outLineContents) const {
-  const PMSInt32 receiverLength = length () ;
+  const int32_t receiverLength = length () ;
   if (inIndex < receiverLength) {
     const utf32 * ptr = utf32String (HERE) ;
     outLineNumber = 0 ;
     outColumnNumber = 0 ;
-    PMSInt32 startOfLineIndex = 0 ;
-    PMSInt32 idx = 0 ;
+    int32_t startOfLineIndex = 0 ;
+    int32_t idx = 0 ;
     bool parseLine = true ;
     while ((idx < receiverLength) && parseLine) {
       while ((idx < receiverLength) && parseLine) {
@@ -737,7 +737,7 @@ void C_String::lineAndColumnFromIndex (const PMSInt32 inIndex,
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   C O N T A I N S   S T R I N G                                           *
+//   C O N T A I N S   S T R I N G                                             *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -756,7 +756,7 @@ bool C_String::containsString (const C_String & inSearchedString) const {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   componentsSeparatedByString                                             *
+//   componentsSeparatedByString                                               *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -767,13 +767,13 @@ void C_String::componentsSeparatedByString (const C_String & inSeparatorString,
   if (sourcePtr == NULL) {
     outResult.addObject (C_String ()) ;
   }else{
-    const PMSInt32 splitStringLength = inSeparatorString.length () ;
+    const int32_t splitStringLength = inSeparatorString.length () ;
     const utf32 * separator = inSeparatorString.utf32String (HERE) ;
     if (splitStringLength > 0) {
       const utf32 * p = ::utf32_strstr (sourcePtr, separator) ;
       while (p != NULL) {
         C_String s ;
-        s.genericUnicodeArrayOutput (sourcePtr, (PMSInt32) ((p - sourcePtr) & PMUINT32_MAX)) ;
+        s.genericUnicodeArrayOutput (sourcePtr, (int32_t) ((p - sourcePtr) & INT32_MAX)) ;
         outResult.addObject (s) ;
         sourcePtr = p + splitStringLength ;
         p = ::utf32_strstr (sourcePtr, separator) ;
@@ -785,7 +785,7 @@ void C_String::componentsSeparatedByString (const C_String & inSeparatorString,
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   componentsJoinedByString                                                *
+//   componentsJoinedByString                                                  *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -795,7 +795,7 @@ componentsJoinedByString (const TC_UniqueArray <C_String> & inComponentArray,
   C_String result ;
   if (inComponentArray.count () > 0) {
     result << (inComponentArray (0 COMMA_HERE)) ;
-    for (PMSInt32 i=1 ; i<inComponentArray.count () ; i++) {
+    for (int32_t i=1 ; i<inComponentArray.count () ; i++) {
       result << (inSeparator) ;
       result << (inComponentArray (i COMMA_HERE)) ;
     }
@@ -805,21 +805,21 @@ componentsJoinedByString (const TC_UniqueArray <C_String> & inComponentArray,
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   stringByDeletingTailFromString                                          *
+//   stringByDeletingTailFromString                                            *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
 C_String C_String::
 stringByDeletingTailFromString (const C_String & inSearchedString) const {
   C_String result = * this ;
-  const PMSInt32 searchedStringLength = inSearchedString.length () ;
+  const int32_t searchedStringLength = inSearchedString.length () ;
   if (searchedStringLength > 0) {
     const utf32 * sourcePtr = utf32String (HERE) ;
     const utf32 * p = ::utf32_strstr (sourcePtr,
                                       inSearchedString.utf32String (HERE)) ;
     if (p != NULL) {
       result.setLengthToZero () ;
-      result.genericUnicodeArrayOutput (sourcePtr, (PMSInt32) ((p - sourcePtr) & PMUINT32_MAX)) ;
+      result.genericUnicodeArrayOutput (sourcePtr, (int32_t) ((p - sourcePtr) & INT32_MAX)) ;
     }
   }
   return result ;
@@ -827,7 +827,7 @@ stringByDeletingTailFromString (const C_String & inSearchedString) const {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   S U B S T I T U T E    C H A R A C T E R    B Y    S T R I N G          *
+//   S U B S T I T U T E    C H A R A C T E R    B Y    S T R I N G            *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -836,10 +836,10 @@ stringByDeletingTailFromString (const C_String & inSearchedString) const {
 C_String C_String::
 stringByReplacingCharacterByString (const utf32 inCharacter,
                                     const C_String & inString) const {
-  const PMSInt32 stringLength = length () ;
+  const int32_t stringLength = length () ;
   C_String resultingString ;
   bool previousCharIsSubstituteChar = false ;
-  for (PMSInt32 i=0 ; i<stringLength ; i++) {
+  for (int32_t i=0 ; i<stringLength ; i++) {
     const utf32 c = ((*this).operator () (i COMMA_HERE)) ;
     if (previousCharIsSubstituteChar) {
       if (UNICODE_VALUE (c) == UNICODE_VALUE (inCharacter)) {
@@ -864,14 +864,14 @@ stringByReplacingCharacterByString (const utf32 inCharacter,
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   S U B S T I T U T E    S T R I N G    B Y    S T R I N G                *
+//   S U B S T I T U T E    S T R I N G    B Y    S T R I N G                  *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
 C_String C_String::
 stringByReplacingStringByString (const C_String inSearchedString,
                                  const C_String & inReplacementString,
-                                 PMUInt32 & outReplacementCount,
+                                 uint32_t & outReplacementCount,
                                  bool & outOk
                                  COMMA_UNUSED_LOCATION_ARGS) const {
   C_String result ;
@@ -882,10 +882,10 @@ stringByReplacingStringByString (const C_String inSearchedString,
     //printf ("SEARCHED STRING: '%s' (length %d)\n", inSearchedString.cString (HERE), inSearchedString.length (HERE)) ; 
     //printf ("REPLACEMENT STRING '%s'\n", inReplacementString.cString (HERE)) ; 
     const utf32 * sourceString = utf32String (HERE) ;
-    const PMSInt32 sourceLength = length () ;
+    const int32_t sourceLength = length () ;
     const utf32 * searchedString = inSearchedString.utf32String (HERE) ;
-    const PMSInt32 searchedStringLength = inSearchedString.length () ;
-    PMSInt32 index = 0 ;
+    const int32_t searchedStringLength = inSearchedString.length () ;
+    int32_t index = 0 ;
     while (index <= (sourceLength - searchedStringLength)) {
       const bool found = utf32_strncmp (& sourceString [index], searchedString, searchedStringLength) == 0 ;
       //printf ("AT INDEX %d, found: %d\n", index, found) ;
@@ -906,13 +906,13 @@ stringByReplacingStringByString (const C_String inSearchedString,
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   G E T    L A S T   O C C U R R E N C E   O F   A   C H A R              *
+//   G E T    L A S T   O C C U R R E N C E   O F   A   C H A R                *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-PMSInt32 C_String::
+int32_t C_String::
 lastOccurrenceIndexOfChar (const utf32 inChar) const {
-  PMSInt32 result = length () ;
+  int32_t result = length () ;
   const utf32 * ptr = utf32String (HERE) ;
   bool notFound = true ;
   while ((result > 0) && notFound) {
@@ -928,17 +928,17 @@ lastOccurrenceIndexOfChar (const utf32 inChar) const {
 //-----------------------------------------------------------------------------*
 
 C_String C_String::
-subString (const PMSInt32 inStartIndex,
-           const PMSInt32 inLength) const {
+subString (const int32_t inStartIndex,
+           const int32_t inLength) const {
   C_String s ;
   if (inLength > 0) {
-    PMSInt32 last = inStartIndex + inLength ;
-    const PMSInt32 receiver_length = length () ;
+    int32_t last = inStartIndex + inLength ;
+    const int32_t receiver_length = length () ;
     if (last > receiver_length) {
       last = receiver_length ;
     }
     const utf32 * ptr = utf32String (HERE) ;
-    for (PMSInt32 i=inStartIndex ; i<last ; i++) {
+    for (int32_t i=inStartIndex ; i<last ; i++) {
       s.appendUnicodeCharacter (ptr [i] COMMA_HERE) ;
     }
   }
@@ -950,12 +950,12 @@ subString (const PMSInt32 inStartIndex,
 C_String C_String::
 stringByCapitalizingFirstCharacter (void) const {
   C_String s ;
-  const PMSInt32 receiver_length = length () ;
-  s.setCapacity ((PMUInt32) receiver_length) ;
+  const int32_t receiver_length = length () ;
+  s.setCapacity ((uint32_t) receiver_length) ;
   const utf32 * ptr = utf32String (HERE) ;
   if (receiver_length > 0) {
     s.appendUnicodeCharacter (unicodeToUpper (ptr [0]) COMMA_HERE) ;
-    for (PMSInt32 i=1 ; i<receiver_length ; i++) {
+    for (int32_t i=1 ; i<receiver_length ; i++) {
       s.appendUnicodeCharacter (ptr [i] COMMA_HERE) ;
     }
   }
@@ -967,10 +967,10 @@ stringByCapitalizingFirstCharacter (void) const {
 C_String C_String::
 lowercaseString (void) const {
   C_String s ;
-  const PMSInt32 receiver_length = length () ;
-  s.setCapacity ((PMUInt32) receiver_length) ;
+  const int32_t receiver_length = length () ;
+  s.setCapacity ((uint32_t) receiver_length) ;
   const utf32 * ptr = utf32String (HERE) ;
-  for (PMSInt32 i=0 ; i<receiver_length ; i++) {
+  for (int32_t i=0 ; i<receiver_length ; i++) {
     s.appendUnicodeCharacter (unicodeToLower (ptr [i]) COMMA_HERE) ;
   }
   return s ;
@@ -980,11 +980,11 @@ lowercaseString (void) const {
 
 C_String C_String::stringByTrimmingSeparators (void) const {
   C_String s ;
-  const PMSInt32 receiver_length = length () ;
-  s.setCapacity ((PMUInt32) receiver_length) ;
+  const int32_t receiver_length = length () ;
+  s.setCapacity ((uint32_t) receiver_length) ;
   const utf32 * ptr = utf32String (HERE) ;
 //--- Trim left
-  PMSInt32 idx = 0 ;
+  int32_t idx = 0 ;
   while ((idx < receiver_length) && ((UNICODE_VALUE (ptr [idx]) == ' ') || (UNICODE_VALUE (ptr [idx]) == '\n'))) {
     idx ++ ;
   }
@@ -1011,10 +1011,10 @@ C_String C_String::stringByTrimmingSeparators (void) const {
 C_String C_String::
 uppercaseString (void) const {
   C_String s ;
-  const PMSInt32 receiver_length = length () ;
-  s.setCapacity ((PMUInt32) receiver_length) ;
+  const int32_t receiver_length = length () ;
+  s.setCapacity ((uint32_t) receiver_length) ;
   const utf32 * ptr = utf32String (HERE) ;
-  for (PMSInt32 i=0 ; i<receiver_length ; i++) {
+  for (int32_t i=0 ; i<receiver_length ; i++) {
     s.appendUnicodeCharacter (unicodeToUpper (ptr [i]) COMMA_HERE) ;
   }
   return s ;
@@ -1025,10 +1025,10 @@ uppercaseString (void) const {
 C_String C_String::
 reversedString (void) const {
   C_String s ;
-  const PMSInt32 receiver_length = length () ;
-  s.setCapacity ((PMUInt32) receiver_length) ;
+  const int32_t receiver_length = length () ;
+  s.setCapacity ((uint32_t) receiver_length) ;
   const utf32 * ptr = utf32String (HERE) ;
-  for (PMSInt32 i=receiver_length-1 ; i>=0 ; i--) {
+  for (int32_t i=receiver_length-1 ; i>=0 ; i--) {
     s.appendUnicodeCharacter (ptr [i] COMMA_HERE) ;
   }
   return s ;
@@ -1036,11 +1036,11 @@ reversedString (void) const {
 
 //-----------------------------------------------------------------------------*
 
-PMUInt32 C_String::unsignedIntegerValue (void) const {
-  PMUInt32 result = 0 ;
+uint32_t C_String::unsignedIntegerValue (void) const {
+  uint32_t result = 0 ;
   bool ok = true ;
-  for (PMSInt32 i=0 ; (i < length ()) && ok ; i++) {
-    const PMUInt32 c = UNICODE_VALUE (this->operator () (i COMMA_HERE)) ;
+  for (int32_t i=0 ; (i < length ()) && ok ; i++) {
+    const uint32_t c = UNICODE_VALUE (this->operator () (i COMMA_HERE)) ;
     ok = (c >= '0') && (c <= '9') ;
     if (ok) {
       result *= 10 ;
@@ -1052,12 +1052,12 @@ PMUInt32 C_String::unsignedIntegerValue (void) const {
 
 //-----------------------------------------------------------------------------*
 
-PMUInt32 C_String::currentColumn (void) const {
-  PMUInt32 result = 0 ;
+uint32_t C_String::currentColumn (void) const {
+  uint32_t result = 0 ;
   bool found = false ;
-  const PMSInt32 receiver_length = length () ;
+  const int32_t receiver_length = length () ;
   const utf32 * ptr = utf32String (HERE) ;
-  for (PMSInt32 i=receiver_length-1 ; (i>=0) && ! found ; i--) {
+  for (int32_t i=receiver_length-1 ; (i>=0) && ! found ; i--) {
     found = UNICODE_VALUE (ptr [i]) == '\n' ;
     if (! found) {
       result ++ ;
@@ -1068,8 +1068,8 @@ PMUInt32 C_String::currentColumn (void) const {
 
 //-----------------------------------------------------------------------------*
 
-void C_String::appendSpacesUntilColumn (const PMUInt32 inColumn) {
-  for (PMUInt32 i=currentColumn () ; i<inColumn ; i++) {
+void C_String::appendSpacesUntilColumn (const uint32_t inColumn) {
+  for (uint32_t i=currentColumn () ; i<inColumn ; i++) {
     appendUnicodeCharacter (TO_UNICODE (' ') COMMA_HERE) ;
   }
 }
@@ -1078,9 +1078,9 @@ void C_String::appendSpacesUntilColumn (const PMUInt32 inColumn) {
 
 C_String C_String::
 stringWithRepeatedCharacter (const utf32 inRepeatedCharacter,
-                             const PMUInt32 inCount) {
+                             const uint32_t inCount) {
   C_String result ;
-  for (PMUInt32 i=0 ; i<inCount ; i++) {
+  for (uint32_t i=0 ; i<inCount ; i++) {
     result.appendUnicodeCharacter (inRepeatedCharacter COMMA_HERE) ;
   }
   return result ;
@@ -1091,10 +1091,10 @@ stringWithRepeatedCharacter (const utf32 inRepeatedCharacter,
 C_String C_String::
 identifierRepresentation (void) const {
   C_String s ;
-  const PMSInt32 receiver_length = length () ;
-  s.setCapacity ((PMUInt32) receiver_length) ;
+  const int32_t receiver_length = length () ;
+  s.setCapacity ((uint32_t) receiver_length) ;
   const utf32 * ptr = utf32String (HERE) ;
-  for (PMSInt32 i=0 ; i<receiver_length ; i++) {
+  for (int32_t i=0 ; i<receiver_length ; i++) {
     const utf32 c = ptr [i] ;
     if (isalpha ((int) UNICODE_VALUE (c))) {
       s.appendUnicodeCharacter (c COMMA_HERE) ;
@@ -1119,7 +1119,7 @@ C_String C_String::utf32Representation (void) const {
 
 C_String C_String::HTMLRepresentation (void) const {
   C_String result ;
-  for (PMSInt32 i=0 ; i<length () ; i++) {
+  for (int32_t i=0 ; i<length () ; i++) {
     const utf32 c = this->operator () (i COMMA_HERE) ;
     if (UNICODE_VALUE (c) == '&') {
       result << "&amp;" ;
@@ -1138,12 +1138,12 @@ C_String C_String::HTMLRepresentation (void) const {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   S T R I N G    C O M P A R E                                            *
+//   S T R I N G    C O M P A R E                                              *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-PMSInt32 C_String::compare (const char * const inCstring) const {
-  PMSInt32 result = 0 ;
+int32_t C_String::compare (const char * const inCstring) const {
+  int32_t result = 0 ;
   const utf32 * myStringPtr = utf32String (HERE) ;
   if (inCstring == NULL) {
     result = 1 ;
@@ -1157,8 +1157,8 @@ PMSInt32 C_String::compare (const char * const inCstring) const {
 
 //-----------------------------------------------------------------------------*
 
-PMSInt32 C_String::compare (const C_String & inString) const {
-  PMSInt32 result = 0 ;
+int32_t C_String::compare (const C_String & inString) const {
+  int32_t result = 0 ;
   const utf32 * myStringPtr = utf32String (HERE) ;
   const utf32 * otherStringPtr = inString.utf32String (HERE) ;
   if (myStringPtr == NULL) {
@@ -1173,8 +1173,8 @@ PMSInt32 C_String::compare (const C_String & inString) const {
 
 //-----------------------------------------------------------------------------*
 
-PMSInt32 C_String::compareStringByLength (const C_String & inString) const {
-  PMSInt32 result ;
+int32_t C_String::compareStringByLength (const C_String & inString) const {
+  int32_t result ;
   const utf32 * myStringPtr = utf32String (HERE) ;
   const utf32 * otherStringPtr = inString.utf32String (HERE) ;
   if (otherStringPtr == myStringPtr) {
@@ -1206,7 +1206,7 @@ bool C_String::operator != (const C_String & inString) const {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   +    O P E R A T O R                                                    *
+//   +    O P E R A T O R                                                      *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -1226,7 +1226,7 @@ C_String C_String::operator + (const char * inOperand) const {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   pathExtension                                                           *
+//   pathExtension                                                             *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -1234,14 +1234,14 @@ C_String C_String::
 pathExtension (void) const {
   const utf32 * source = utf32String (HERE) ;
   C_String result ;
-  PMSInt32 receiver_length = length ();
+  int32_t receiver_length = length ();
 //--- Suppress training '/'
   while ((receiver_length > 1) && (UNICODE_VALUE (source [receiver_length - 1]) == '/')) {
     receiver_length -- ;
   }
 //--- Search last '.'
   bool found = false ;
-  PMSInt32 lastOccurrenceIndex = receiver_length ;
+  int32_t lastOccurrenceIndex = receiver_length ;
   while ((lastOccurrenceIndex > 0) && ! found) {
     lastOccurrenceIndex -- ;
     found = UNICODE_VALUE (source [lastOccurrenceIndex]) == '.' ;
@@ -1256,7 +1256,7 @@ pathExtension (void) const {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   stringByDeletingPathExtension                                           *
+//   stringByDeletingPathExtension                                             *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -1264,14 +1264,14 @@ C_String C_String::
 stringByDeletingPathExtension (void) const {
   const utf32 * source = utf32String (HERE) ;
   C_String result ;
-  PMSInt32 receiver_length = length ();
+  int32_t receiver_length = length ();
 //--- Suppress training '/'
   while ((receiver_length > 1) && (UNICODE_VALUE (source [receiver_length - 1]) == '/')) {
     receiver_length -- ;
   }
 //--- Search last '.'
   bool found = false ;
-  PMSInt32 lastOccurrenceIndex = receiver_length ;
+  int32_t lastOccurrenceIndex = receiver_length ;
   while ((lastOccurrenceIndex > 0) && ! found) {
     lastOccurrenceIndex -- ;
     found = UNICODE_VALUE (source [lastOccurrenceIndex]) == '.' ;
@@ -1284,7 +1284,7 @@ stringByDeletingPathExtension (void) const {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   stringByDeletingLastPathComponent                                       *
+//   stringByDeletingLastPathComponent                                         *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -1292,14 +1292,14 @@ C_String C_String::
 stringByDeletingLastPathComponent (void) const {
   const utf32 * source = utf32String (HERE) ;
   C_String result ;
-  PMSInt32 receiver_length = length ();
+  int32_t receiver_length = length ();
 //--- Suppress training '/'
   while ((receiver_length > 1) && (UNICODE_VALUE (source [receiver_length - 1]) == '/')) {
     receiver_length -- ;
   }
 //--- Search last '/'
   bool found = false ;
-  PMSInt32 lastOccurrenceIndex = receiver_length ;
+  int32_t lastOccurrenceIndex = receiver_length ;
   while ((lastOccurrenceIndex > 0) && ! found) {
     lastOccurrenceIndex -- ;
     found = UNICODE_VALUE (source [lastOccurrenceIndex]) == '/' ;
@@ -1312,7 +1312,7 @@ stringByDeletingLastPathComponent (void) const {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   stringByAppendingPathComponent                                          *
+//   stringByAppendingPathComponent                                            *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -1332,7 +1332,7 @@ stringByAppendingPathComponent (const C_String & inPathComponent) const {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   lastPathComponent                                                       *
+//   lastPathComponent                                                         *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -1340,14 +1340,14 @@ C_String C_String::
 lastPathComponent (void) const {
   const utf32 * source = utf32String (HERE) ;
   C_String result ;
-  PMSInt32 receiver_length = length ();
+  int32_t receiver_length = length ();
 //--- Suppress training '/'
   while ((receiver_length > 1) && (UNICODE_VALUE (source [receiver_length - 1]) == '/')) {
     receiver_length -- ;
   }
 //--- Search last '/'
   bool found = false ;
-  PMSInt32 lastOccurrenceIndex = receiver_length ;
+  int32_t lastOccurrenceIndex = receiver_length ;
   while ((lastOccurrenceIndex > 0) && ! found) {
     lastOccurrenceIndex -- ;
     found = UNICODE_VALUE (source [lastOccurrenceIndex]) == '/' ;
@@ -1369,16 +1369,16 @@ C_String C_String::lastPathComponentWithoutExtension (void) const {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   M D 5                                                                   *
+//   M D 5                                                                     *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
 C_String C_String::md5 (void) const {
   C_String result ;
-  PMUInt8 digest [16] ;
-  ::md5 ((PMUInt8 *) cString (HERE), (PMUInt32) length (), digest);
+  uint8_t digest [16] ;
+  ::md5 ((uint8_t *) cString (HERE), (uint32_t) length (), digest);
   char s [10] ;
-  for (PMUInt32 i=0 ; i<16 ; i++) {
+  for (uint32_t i=0 ; i<16 ; i++) {
     sprintf (s, "%02X", digest [i]) ;
     result << s ;
   }
@@ -1387,11 +1387,11 @@ C_String C_String::md5 (void) const {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   R I G H T    S U B    S T R I N G                                       *
+//   R I G H T    S U B    S T R I N G                                         *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-C_String C_String::rightSubString (const PMSInt32 inLength) const  {
+C_String C_String::rightSubString (const int32_t inLength) const  {
   C_String result ;
   if (length () <= inLength) {
     result = *this ;
@@ -1403,11 +1403,11 @@ C_String C_String::rightSubString (const PMSInt32 inLength) const  {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   L E F T    S U B    S T R I N G                                         *
+//   L E F T    S U B    S T R I N G                                           *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-C_String C_String::leftSubString (const PMSInt32 inLength) const  {
+C_String C_String::leftSubString (const int32_t inLength) const  {
   C_String result ;
   if (length () <= inLength) {
     result = *this ;
@@ -1419,21 +1419,21 @@ C_String C_String::leftSubString (const PMSInt32 inLength) const  {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   A S S I G N M E N T    O P E R A T O R S                                *
+//   A S S I G N M E N T    O P E R A T O R S                                  *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
 C_String & C_String::operator = (const char * inSource) {
   setLengthToZero () ;
   if (inSource != NULL) {
-    genericCharArrayOutput (inSource, (PMSInt32) (strlen (inSource) & PMUINT32_MAX)) ;
+    genericCharArrayOutput (inSource, (int32_t) (strlen (inSource) & UINT32_MAX)) ;
   }
   return * this ;
 }
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   S E T   F R O M    S T R I N G                                          *
+//   S E T   F R O M    S T R I N G                                            *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -1444,14 +1444,14 @@ void C_String::setFromCstring (const char * inCstring) {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   X M L    E S C A P E D    S T R I N G                                   *
+//   X M L    E S C A P E D    S T R I N G                                     *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
 //--- Returns a string where ", ', <, > and & have been replaced by &quot;, &apos;, &lt;, &gt; and &amp;
 C_String C_String::XMLEscapedString (void) const {
   C_String result ;
-  for (PMSInt32 i=0 ; i<length () ; i++) {
+  for (int32_t i=0 ; i<length () ; i++) {
     const utf32 c = this->operator () (i COMMA_HERE) ;
     switch (UNICODE_VALUE (c)) {
     case '"'  : result << "&quot;" ; break ;
@@ -1483,12 +1483,12 @@ C_String C_String::stringByStandardizingPath (void) const {
     path.componentsSeparatedByString ("/", componentArray) ;
     #ifdef TRACE_stringByStandardizingPath
       printf ("----- Decomposition of '%s':\n", path.cString (HERE)) ;
-      for (PMSInt32 i=0 ; i<componentArray.count () ; i++) {
+      for (int32_t i=0 ; i<componentArray.count () ; i++) {
         printf ("  '%s'\n", componentArray (i COMMA_HERE).cString (HERE)) ;
       }
     #endif
   //--- Remove empty components (but the first one)
-    PMSInt32 componentIndex = 1 ;
+    int32_t componentIndex = 1 ;
     while (componentIndex < componentArray.count ()) {
       if (componentArray (componentIndex COMMA_HERE).length () == 0) {
         componentArray.removeObjectAtIndex (componentIndex COMMA_HERE) ;
@@ -1498,7 +1498,7 @@ C_String C_String::stringByStandardizingPath (void) const {
     }
     #ifdef TRACE_stringByStandardizingPath
       printf ("-- After removing empty components:\n") ;
-      for (PMSInt32 i=0 ; i<componentArray.count () ; i++) {
+      for (int32_t i=0 ; i<componentArray.count () ; i++) {
         printf ("  '%s'\n", componentArray (i COMMA_HERE).cString (HERE)) ;
       }
     #endif
@@ -1513,7 +1513,7 @@ C_String C_String::stringByStandardizingPath (void) const {
     }
     #ifdef TRACE_stringByStandardizingPath
       printf ("-- After removing '.' components:\n") ;
-      for (PMSInt32 i=0 ; i<componentArray.count () ; i++) {
+      for (int32_t i=0 ; i<componentArray.count () ; i++) {
         printf ("  '%s'\n", componentArray (i COMMA_HERE).cString (HERE)) ;
       }
     #endif
@@ -1533,7 +1533,7 @@ C_String C_String::stringByStandardizingPath (void) const {
     }
     #ifdef TRACE_stringByStandardizingPath
       printf ("-- After removing '..' components:\n") ;
-      for (PMSInt32 i=0 ; i<componentArray.count () ; i++) {
+      for (int32_t i=0 ; i<componentArray.count () ; i++) {
         printf ("  '%s'\n", componentArray (i COMMA_HERE).cString (HERE)) ;
       }
     #endif
@@ -1550,13 +1550,13 @@ C_String C_String::stringByStandardizingPath (void) const {
 //-----------------------------------------------------------------------------*
   
 bool C_String::parseUTF8 (const C_Data & inDataString,
-                          const PMSInt32 inOffset,
+                          const int32_t inOffset,
                           C_String & outString) {
   bool ok = true ;
-  PMSInt32 idx = inOffset ;
+  int32_t idx = inOffset ;
   bool foundCR = false ;
   while ((idx < inDataString.length ()) && ok) {
-    const PMUInt8 c = inDataString (idx COMMA_HERE) ;
+    const uint8_t c = inDataString (idx COMMA_HERE) ;
     if (c == 0x00) { // NUL
       idx = inDataString.length () ; // For exiting loop
     }else if (c == 0x0A) { // LF
@@ -1593,7 +1593,7 @@ bool C_String::parseUTF8 (const C_Data & inDataString,
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Exception generated by readTextFile method when a read error occurs      *
+//  Exception generated by readTextFile method when a read error occurs        *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -1616,28 +1616,28 @@ const char * C_TextReadException::what (void) const throw () {
 
 //-----------------------------------------------------------------------------*
 
-static inline PMUInt32 minimum (const PMUInt32 inA, const PMUInt32 inB) { return inA < inB ? inA : inB ; }
+static inline uint32_t minimum (const uint32_t inA, const uint32_t inB) { return inA < inB ? inA : inB ; }
 
 //-----------------------------------------------------------------------------*
 
-PMUInt32 C_String::LevenshteinDistanceFromString (const C_String & inOperand) const {
-  const PMSInt32 myLength = length () ;
-  const PMSInt32 operandLength = inOperand.length () ;
+uint32_t C_String::LevenshteinDistanceFromString (const C_String & inOperand) const {
+  const int32_t myLength = length () ;
+  const int32_t operandLength = inOperand.length () ;
   // for all i and j, d[i,j] will hold the Levenshtein distance between
   // the first i characters of s and the first j characters of t;
   // note that d has (m+1)x(n+1) values
-  TC_UniqueArray2 <PMUInt32> distance (myLength + 1, operandLength + 1) ;
+  TC_UniqueArray2 <uint32_t> distance (myLength + 1, operandLength + 1) ;
 
-  for (PMSInt32 i=0 ; i<=myLength ; i++) {
-    distance.setObjectAtIndexes ((PMUInt32) i, i, 0 COMMA_HERE) ;
+  for (int32_t i=0 ; i<=myLength ; i++) {
+    distance.setObjectAtIndexes ((uint32_t) i, i, 0 COMMA_HERE) ;
   }
  
-  for (PMSInt32 j=0 ; j<=operandLength ; j++) {
-    distance.setObjectAtIndexes ((PMUInt32) j, 0, j COMMA_HERE) ;
+  for (int32_t j=0 ; j<=operandLength ; j++) {
+    distance.setObjectAtIndexes ((uint32_t) j, 0, j COMMA_HERE) ;
   }
  
-  for (PMSInt32 j=1 ; j<=operandLength ; j++) {
-    for (PMSInt32 i=1 ; i<=myLength ; i++) {
+  for (int32_t j=1 ; j<=operandLength ; j++) {
+    for (int32_t i=1 ; i<=myLength ; i++) {
       if (UNICODE_VALUE (this->operator () (i-1 COMMA_HERE)) == UNICODE_VALUE (inOperand (j-1 COMMA_HERE))) {
         distance (i, j COMMA_HERE) = distance (i-1, j-1 COMMA_HERE) ;       // no operation required
       }else{

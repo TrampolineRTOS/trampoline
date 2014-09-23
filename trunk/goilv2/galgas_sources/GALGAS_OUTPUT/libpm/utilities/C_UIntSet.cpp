@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  C_UIntSet : algorithms on sets of PMUInt32                               *
+//  C_UIntSet : algorithms on sets of uint32_t                                 *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -23,7 +23,7 @@
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-#include "utilities/C_UIntSet.h"
+#include "C_UIntSet.h"
 
 //-----------------------------------------------------------------------------*
 
@@ -33,27 +33,27 @@ mDefinition () {
 
 //-----------------------------------------------------------------------------*
 
-C_UIntSet::C_UIntSet (const PMUInt32 inValue) :
+C_UIntSet::C_UIntSet (const uint32_t inValue) :
 mDefinition () {
   add (inValue) ;
 }
 
 //-----------------------------------------------------------------------------*
 
-void C_UIntSet::add (const PMUInt32 inNodeIndex) {
-  const PMSInt32 idx = (PMSInt32) (inNodeIndex >> 6) ;
+void C_UIntSet::add (const uint32_t inNodeIndex) {
+  const int32_t idx = (int32_t) (inNodeIndex >> 6) ;
   while (idx >= mDefinition.count ()) {
     mDefinition.addObject (0) ;
   }
-  mDefinition (idx COMMA_HERE) |= ((PMUInt64) 1) << (inNodeIndex & 63) ;
+  mDefinition (idx COMMA_HERE) |= ((uint64_t) 1) << (inNodeIndex & 63) ;
 }
 
 //-----------------------------------------------------------------------------*
 
-void C_UIntSet::remove (const PMUInt32 inNodeIndex) {
-  const PMSInt32 idx = (PMSInt32) (inNodeIndex >> 6) ;
+void C_UIntSet::remove (const uint32_t inNodeIndex) {
+  const int32_t idx = (int32_t) (inNodeIndex >> 6) ;
   if (idx < mDefinition.count ()) {
-    mDefinition (idx COMMA_HERE) &= ~ (((PMUInt64) 1) << (inNodeIndex & 63)) ;
+    mDefinition (idx COMMA_HERE) &= ~ (((uint64_t) 1) << (inNodeIndex & 63)) ;
     while ((mDefinition.count () > 0) && (mDefinition.lastObject (HERE) == 0)) {
       mDefinition.removeLastObject (HERE) ;
     }
@@ -64,9 +64,9 @@ void C_UIntSet::remove (const PMUInt32 inNodeIndex) {
 
 void C_UIntSet::getBoolValueArray (TC_UniqueArray <bool> & outBoolValueArray) const {
   outBoolValueArray.setCountToZero () ;
-  for (PMSInt32 i=0 ; i<mDefinition.count () ; i++) {
-    for (PMUInt32 j=0 ; j<64 ; j++) {
-      outBoolValueArray.addObject ((mDefinition (i COMMA_HERE) & (((PMUInt64) 1) << j)) != 0) ;
+  for (int32_t i=0 ; i<mDefinition.count () ; i++) {
+    for (uint32_t j=0 ; j<64 ; j++) {
+      outBoolValueArray.addObject ((mDefinition (i COMMA_HERE) & (((uint64_t) 1) << j)) != 0) ;
     }
   }
 //---
@@ -77,12 +77,12 @@ void C_UIntSet::getBoolValueArray (TC_UniqueArray <bool> & outBoolValueArray) co
   
 //-----------------------------------------------------------------------------*
 
-void C_UIntSet::getValueArray (TC_UniqueArray <PMUInt32> & outValueArray) const {
+void C_UIntSet::getValueArray (TC_UniqueArray <uint32_t> & outValueArray) const {
   outValueArray.setCountToZero () ;
-  PMUInt32 idx = 0 ;
-  for (PMSInt32 i=0 ; i<mDefinition.count () ; i++) {
-    for (PMUInt32 j=0 ; j<64 ; j++) {
-      const bool exists = (mDefinition (i COMMA_HERE) & (((PMUInt64) 1) << j)) != 0 ;
+  uint32_t idx = 0 ;
+  for (int32_t i=0 ; i<mDefinition.count () ; i++) {
+    for (uint32_t j=0 ; j<64 ; j++) {
+      const bool exists = (mDefinition (i COMMA_HERE) & (((uint64_t) 1) << j)) != 0 ;
       if (exists) {
         outValueArray.addObject (idx) ;
       }
@@ -93,22 +93,22 @@ void C_UIntSet::getValueArray (TC_UniqueArray <PMUInt32> & outValueArray) const 
   
 //-----------------------------------------------------------------------------*
 
-bool C_UIntSet::contains (const PMUInt32 inNodeIndex) const {
-  const PMSInt32 idx = (PMSInt32) (inNodeIndex >> 6) ;
+bool C_UIntSet::contains (const uint32_t inNodeIndex) const {
+  const int32_t idx = (int32_t) (inNodeIndex >> 6) ;
   bool result = idx < mDefinition.count () ;
   if (result) {
-    result = (mDefinition (idx COMMA_HERE) & (((PMUInt64) 1) << (inNodeIndex & 63))) != 0 ;
+    result = (mDefinition (idx COMMA_HERE) & (((uint64_t) 1) << (inNodeIndex & 63))) != 0 ;
   }
   return result ;
 }
 
 //-----------------------------------------------------------------------------*
 
-PMUInt32 C_UIntSet::firstValueNotIsSet (void) const {
-  PMUInt32 result = 0 ;
+uint32_t C_UIntSet::firstValueNotIsSet (void) const {
+  uint32_t result = 0 ;
   if (mDefinition.count () > 0) {
-    result = 64 * (((PMUInt32) mDefinition.count ()) - 1) ;
-    PMUInt64 v = mDefinition.lastObject (HERE) ;
+    result = 64 * (((uint32_t) mDefinition.count ()) - 1) ;
+    uint64_t v = mDefinition.lastObject (HERE) ;
     while (v != 0) {
       result ++ ;
       v >>= 1 ;
@@ -119,10 +119,10 @@ PMUInt32 C_UIntSet::firstValueNotIsSet (void) const {
 
 //-----------------------------------------------------------------------------*
 
-PMUInt32 C_UIntSet::count (void) const {
-  PMUInt32 result = 0 ;
-  for (PMSInt32 i=0 ; i<mDefinition.count () ; i++) {
-    PMUInt64 v = mDefinition (i COMMA_HERE) ;
+uint32_t C_UIntSet::count (void) const {
+  uint32_t result = 0 ;
+  for (int32_t i=0 ; i<mDefinition.count () ; i++) {
+    uint64_t v = mDefinition (i COMMA_HERE) ;
     while (v != 0) {
       result += (v & 1) != 0 ;
       v >>= 1 ;
@@ -137,7 +137,7 @@ void C_UIntSet::operator &= (const C_UIntSet & inOther) {
   while (mDefinition.count () > inOther.mDefinition.count ()) {
     mDefinition.removeLastObject (HERE) ;
   }
-  for (PMSInt32 i=0 ; i<mDefinition.count () ; i++) {
+  for (int32_t i=0 ; i<mDefinition.count () ; i++) {
     mDefinition (i COMMA_HERE) &= inOther.mDefinition (i COMMA_HERE) ;
   }
   while ((mDefinition.count () > 0) && (mDefinition.lastObject (HERE) == 0)) {
@@ -151,22 +151,22 @@ void C_UIntSet::operator |= (const C_UIntSet & inOther) {
   while (mDefinition.count () < inOther.mDefinition.count ()) {
     mDefinition.addObject (0) ;
   }
-  for (PMSInt32 i=0 ; i<inOther.mDefinition.count () ; i++) {
+  for (int32_t i=0 ; i<inOther.mDefinition.count () ; i++) {
     mDefinition (i COMMA_HERE) |= inOther.mDefinition (i COMMA_HERE) ;
   }
 }
 
 //-----------------------------------------------------------------------------*
 
-static inline PMSInt32 minSInt32 (const PMSInt32 inA, const PMSInt32 inB) {
+static inline int32_t minSInt32 (const int32_t inA, const int32_t inB) {
   return (inA < inB) ? inA : inB ;
 }
 
 //-----------------------------------------------------------------------------*
 
 void C_UIntSet::operator -= (const C_UIntSet & inOther) {
-  const PMSInt32 n = minSInt32 (mDefinition.count (), inOther.mDefinition.count ()) ;
-  for (PMSInt32 i=0 ; i<n ; i++) {
+  const int32_t n = minSInt32 (mDefinition.count (), inOther.mDefinition.count ()) ;
+  for (int32_t i=0 ; i<n ; i++) {
     mDefinition (i COMMA_HERE) &= ~ inOther.mDefinition (i COMMA_HERE) ;
   }
   while ((mDefinition.count () > 0) && (mDefinition.lastObject (HERE) == 0)) {
@@ -178,7 +178,7 @@ void C_UIntSet::operator -= (const C_UIntSet & inOther) {
 
 bool C_UIntSet::operator == (const C_UIntSet & inOther) const {
   bool result = mDefinition.count () == inOther.mDefinition.count () ;
-  for (PMSInt32 i=0 ; (i<mDefinition.count ()) && result ; i++) {
+  for (int32_t i=0 ; (i<mDefinition.count ()) && result ; i++) {
     result = mDefinition (i COMMA_HERE) == inOther.mDefinition (i COMMA_HERE) ;
   }
   return result ;

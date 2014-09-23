@@ -1,14 +1,22 @@
-//----------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #import <Foundation/Foundation.h>
 
-//----------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+
+#if __has_feature(objc_arc)
+  #define macroAutoreleasingInARC __autoreleasing
+#else
+  #define macroAutoreleasingInARC
+#endif
+
+//-----------------------------------------------------------------------------*
 
 void showAllocationStatsWindow (void) ;
 void noteObjectAllocation (NSObject * inObject) ;
 void noteObjectDeallocation (NSObject * inObject) ;
 
-//----------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 @interface PMDebug : NSObject
 #if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_5
@@ -46,4 +54,4 @@ void noteObjectDeallocation (NSObject * inObject) ;
 - (void) showAllocationWindow ;
 @end
 
-//----------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*

@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   GALGAS_data : this class implements the GALGAS 'data' native type       *
+//   GALGAS_data : this class implements the GALGAS 'data' native type         *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -37,7 +37,7 @@
 #include <ctype.h>
 
 //-----------------------------------------------------------------------------*
-//   GALGAS_data                                                             *
+//   GALGAS_data                                                               *
 //-----------------------------------------------------------------------------*
 
 GALGAS_data::GALGAS_data (void) :
@@ -84,7 +84,7 @@ GALGAS_data GALGAS_data::constructor_dataWithContentsOfFile (const GALGAS_string
 typeComparisonResult GALGAS_data::objectCompare (const GALGAS_data & inOperand) const {
   typeComparisonResult result = kOperandNotValid ;
   if (isValid () && inOperand.isValid ()) {
-    const PMSInt32 r = mData.compareWithData (inOperand.mData) ;
+    const int32_t r = mData.compareWithData (inOperand.mData) ;
     if (r < 0) {
       result = kFirstOperandLowerThanSecond ;
     }else if (r > 0) {
@@ -99,7 +99,7 @@ typeComparisonResult GALGAS_data::objectCompare (const GALGAS_data & inOperand) 
 //-----------------------------------------------------------------------------*
 
 void GALGAS_data::description (C_String & ioString,
-                               const PMSInt32 /* inIndentation */) const {
+                               const int32_t /* inIndentation */) const {
   ioString << "<@data:" ;
   if (isValid ()) {
     ioString << "length=" << cStringWithSigned (mData.length ()) ;
@@ -114,7 +114,7 @@ void GALGAS_data::description (C_String & ioString,
 GALGAS_uint GALGAS_data::reader_length (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
   if (isValid ()) {
-    result = GALGAS_uint ((PMUInt32) mData.length ()) ;
+    result = GALGAS_uint ((uint32_t) mData.length ()) ;
   }
   return result ;
 }
@@ -125,7 +125,7 @@ GALGAS_string GALGAS_data::reader_cStringRepresentation (UNUSED_LOCATION_ARGS) c
   GALGAS_string result ;
   if (isValid ()) {
     C_String s (cStringWithUnsigned (mData (0 COMMA_HERE))) ;
-    for (PMSInt32 i=1 ; i<mData.length () ; i++) {
+    for (int32_t i=1 ; i<mData.length () ; i++) {
       s << ", " << cStringWithUnsigned (mData (i COMMA_HERE)) ;
       if ((i % 16) == 0) {
         s << "\n" ;
@@ -145,7 +145,7 @@ void GALGAS_data::modifier_appendByte (GALGAS_uint inArgument0,
     if (inArgument0.uintValue () > 255) {
       inCompiler->onTheFlyRunTimeError ("'@data appendByte' modifier invoked with value greater than 255" COMMA_THERE) ;
     }else{
-      const PMUInt8 byte = (PMUInt8) (inArgument0.uintValue () & PMUINT8_MAX) ;
+      const uint8_t byte = (uint8_t) (inArgument0.uintValue () & UINT8_MAX) ;
       mData.appendByte (byte) ;
     }
   }
@@ -160,9 +160,9 @@ void GALGAS_data::modifier_appendShortBE (GALGAS_uint inArgument0,
     if (inArgument0.uintValue () > 0xFFFF) {
       inCompiler->onTheFlyRunTimeError ("'@data appendShortBE' modifier invoked with value greater than 0xFFFF" COMMA_THERE) ;
     }else{
-      const PMUInt32 value = inArgument0.uintValue () & 0xFFFFU ;
-      mData.appendByte ((PMUInt8) ((value >> 8) & PMUINT8_MAX)) ;
-      mData.appendByte ((PMUInt8) (value & 255)) ;
+      const uint32_t value = inArgument0.uintValue () & 0xFFFFU ;
+      mData.appendByte ((uint8_t) ((value >> 8) & UINT8_MAX)) ;
+      mData.appendByte ((uint8_t) (value & 255)) ;
     }
   }
 }
@@ -176,9 +176,9 @@ void GALGAS_data::modifier_appendShortLE (GALGAS_uint inArgument0,
     if (inArgument0.uintValue () > 0xFFFF) {
       inCompiler->onTheFlyRunTimeError ("'@data appendShortLE' modifier invoked with value greater than 0xFFFF" COMMA_THERE) ;
     }else{
-      const PMUInt32 value = inArgument0.uintValue () & 0xFFFFU ;
-      mData.appendByte ((PMUInt8) (value & 255)) ;
-      mData.appendByte ((PMUInt8) ((value >> 8) & PMUINT8_MAX)) ;
+      const uint32_t value = inArgument0.uintValue () & 0xFFFFU ;
+      mData.appendByte ((uint8_t) (value & 255)) ;
+      mData.appendByte ((uint8_t) ((value >> 8) & UINT8_MAX)) ;
     }
   }
 }
@@ -188,11 +188,11 @@ void GALGAS_data::modifier_appendShortLE (GALGAS_uint inArgument0,
 void GALGAS_data::modifier_appendUIntBE (GALGAS_uint inArgument0
                                          COMMA_UNUSED_LOCATION_ARGS) {
   if (inArgument0.isValid ()) {
-    const PMUInt32 value = inArgument0.uintValue () ;
-    mData.appendByte ((PMUInt8) (value >> 24)) ;
-    mData.appendByte ((PMUInt8) ((value >> 16) & 255)) ;
-    mData.appendByte ((PMUInt8) ((value >> 8) & 255)) ;
-    mData.appendByte ((PMUInt8) (value & 255)) ;
+    const uint32_t value = inArgument0.uintValue () ;
+    mData.appendByte ((uint8_t) (value >> 24)) ;
+    mData.appendByte ((uint8_t) ((value >> 16) & 255)) ;
+    mData.appendByte ((uint8_t) ((value >> 8) & 255)) ;
+    mData.appendByte ((uint8_t) (value & 255)) ;
   }
 }
 
@@ -201,11 +201,11 @@ void GALGAS_data::modifier_appendUIntBE (GALGAS_uint inArgument0
 void GALGAS_data::modifier_appendUIntLE (GALGAS_uint inArgument0
                                          COMMA_UNUSED_LOCATION_ARGS) {
   if (inArgument0.isValid ()) {
-    const PMUInt32 value = inArgument0.uintValue () ;
-    mData.appendByte ((PMUInt8) (value & 255)) ;
-    mData.appendByte ((PMUInt8) ((value >> 8) & 255)) ;
-    mData.appendByte ((PMUInt8) ((value >> 16) & 255)) ;
-    mData.appendByte ((PMUInt8) (value >> 24)) ;
+    const uint32_t value = inArgument0.uintValue () ;
+    mData.appendByte ((uint8_t) (value & 255)) ;
+    mData.appendByte ((uint8_t) ((value >> 8) & 255)) ;
+    mData.appendByte ((uint8_t) ((value >> 16) & 255)) ;
+    mData.appendByte ((uint8_t) (value >> 24)) ;
   }
 }
 
@@ -215,12 +215,12 @@ void GALGAS_data::modifier_appendUTF_38_String (GALGAS_string inString
                                                 COMMA_UNUSED_LOCATION_ARGS) {
   if (inString.isValid ()) {
     const C_String s = inString.stringValue () ;
-    for (PMSInt32 i=0 ; i<s.length () ; i++) {
+    for (int32_t i=0 ; i<s.length () ; i++) {
       const utf32 c = s (i COMMA_HERE) ;
       char sequence [5] ;
-      const PMSInt32 n = UTF8StringFromUTF32Character (c, sequence) ;
-      for (PMSInt32 j=0 ; j<n ; j++) {
-        mData.appendByte ((PMUInt8) sequence [j]) ;
+      const int32_t n = UTF8StringFromUTF32Character (c, sequence) ;
+      for (int32_t j=0 ; j<n ; j++) {
+        mData.appendByte ((uint8_t) sequence [j]) ;
       }
     }
     mData.appendByte (0) ;
@@ -384,7 +384,7 @@ class cCollectionElement_data : public cCollectionElement {
   public : virtual cCollectionElement * copy (void) ;
 
 //--- Description
- public : virtual void description (C_String & ioString, const PMSInt32 inIndentation) const ;
+ public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
 //-----------------------------------------------------------------------------*
@@ -405,7 +405,7 @@ bool cCollectionElement_data::isValid (void) const {
 
 typeComparisonResult cCollectionElement_data::compare (const cCollectionElement * inOperand) const {
   const cCollectionElement_data * operand = (const cCollectionElement_data *) inOperand ;
-  macroValidSharedObject (operand, const cCollectionElement_data) ;
+  macroValidSharedObject (operand, cCollectionElement_data) ;
   return mAttribute_data.objectCompare (operand->mAttribute_data) ;
 }
 
@@ -419,13 +419,13 @@ cCollectionElement * cCollectionElement_data::copy (void) {
 
 //-----------------------------------------------------------------------------*
 
-void cCollectionElement_data::description (C_String & ioString, const PMSInt32 inIndentation) const {
+void cCollectionElement_data::description (C_String & ioString, const int32_t inIndentation) const {
   mAttribute_data.description (ioString, inIndentation) ;
 }
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//     cEnumerator_data class                                                *
+//     cEnumerator_data class                                                  *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -437,11 +437,11 @@ void cCollectionElement_data::description (C_String & ioString, const PMSInt32 i
 
 void GALGAS_data::populateEnumerationArray (capCollectionElementArray & inEnumerationArray,
                                             const typeEnumerationOrder inEnumerationOrder) const {
-  const PMSInt32 count = mData.length () ;
-  inEnumerationArray.setCapacity ((PMUInt32) count) ;
+  const int32_t count = mData.length () ;
+  inEnumerationArray.setCapacity ((uint32_t) count) ;
   switch (enumerationOrderValue (inEnumerationOrder)) {
   case kENUMERATION_UP:
-    for (PMSInt32 i=0 ; i<count ; i++) {
+    for (int32_t i=0 ; i<count ; i++) {
       cCollectionElement_data * p = NULL ;
       macroMyNew (p, cCollectionElement_data (GALGAS_uint (mData (i COMMA_HERE)) COMMA_HERE)) ;
       capCollectionElement object ;
@@ -451,7 +451,7 @@ void GALGAS_data::populateEnumerationArray (capCollectionElementArray & inEnumer
     }
     break ;
   case kENUMERATION_DOWN:
-    for (PMSInt32 i=0 ; i<count ; i++) {
+    for (int32_t i=0 ; i<count ; i++) {
       cCollectionElement_data * p = NULL ;
       macroMyNew (p, cCollectionElement_data (GALGAS_uint (mData (mData.length () - i - 1 COMMA_HERE)) COMMA_HERE)) ;
       capCollectionElement object ;
@@ -478,7 +478,7 @@ cGenericAbstractEnumerator () {
 
 GALGAS_uint cEnumerator_data::current_data (LOCATION_ARGS) const {
   const cCollectionElement_data * p = (const cCollectionElement_data *) (currentObjectPtr (THERE)) ;
-  macroValidSharedObject (p, const cCollectionElement_data) ;
+  macroValidSharedObject (p, cCollectionElement_data) ;
   return p->attribute_data () ;
 }
 
@@ -486,7 +486,7 @@ GALGAS_uint cEnumerator_data::current_data (LOCATION_ARGS) const {
 
 GALGAS_uint cEnumerator_data::current (LOCATION_ARGS) const {
   const cCollectionElement_data * p = (const cCollectionElement_data *) (currentObjectPtr (THERE)) ;
-  macroValidSharedObject (p, const cCollectionElement_data) ;
+  macroValidSharedObject (p, cCollectionElement_data) ;
   return p->attribute_data () ;
 }
 

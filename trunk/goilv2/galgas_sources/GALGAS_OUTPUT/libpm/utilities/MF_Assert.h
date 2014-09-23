@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Definition of 'MF_Assert' and related routine prototypes                 *
+//  Definition of 'MF_Assert' and related routine prototypes                   *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -34,8 +34,8 @@
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void runtime_error_routine (const char * const inMessage,
-                              const PMSInt64 inParameter1,
-                              const PMSInt64 inParameter2
+                              const int64_t inParameter1,
+                              const int64_t inParameter2
                               COMMA_LOCATION_ARGS) __attribute__ ((__noreturn__)) ;
   #define MF_RunTimeError(message,par1,par2) { runtime_error_routine (message, par1, par2 COMMA_HERE) ; }
   #define MF_RunTimeErrorThere(message,par1,par2) { runtime_error_routine (message, par1, par2 COMMA_THERE) ; }
@@ -46,7 +46,7 @@
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//            Macro 'MF_Assert'  definition                                  *
+//            Macro 'MF_Assert'  definition                                    *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 

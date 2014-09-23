@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  C_SharedObject : Base class for GALGAS object handling                   *
+//  C_SharedObject : Base class for GALGAS object handling                     *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -41,16 +41,16 @@ class C_SharedObject {
   #endif
 
 //--- Object index
-  public : const PMUInt32 mObjectIndex ;
+  public : const uint32_t mObjectIndex ;
 
 //--- Link between existing instances
   private : C_SharedObject * mPtrToPreviousObject ;
   private : C_SharedObject * mPtrToNextObject ;
 
 //--- Retain count
-  private : mutable PMSInt32 mRetainCount ;
+  private : mutable int32_t mRetainCount ;
 
-  public : inline PMSInt32 retainCount (void) const { return mRetainCount ; }
+  public : inline int32_t retainCount (void) const { return mRetainCount ; }
 
   public : static void retain (const C_SharedObject * inObject COMMA_LOCATION_ARGS) ;
 
@@ -77,13 +77,13 @@ class C_SharedObject {
 } ;
 
 //-----------------------------------------------------------------------------*
-//   macroValidSharedObject                                                  *
+//   macroValidSharedObject                                                    *
 //-----------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroValidSharedObject(OBJECT,TYPE) { \
     macroValidPointer (OBJECT) ; \
-    if (dynamic_cast <TYPE *> (OBJECT) == NULL) { \
+    if (dynamic_cast <const TYPE *> (OBJECT) == NULL) { \
       MF_RunTimeError ("'"#OBJECT"' is not an instance of '"#TYPE" *'", 0, 0) ; \
     } \
   }
@@ -92,13 +92,13 @@ class C_SharedObject {
 #endif
 
 //-----------------------------------------------------------------------------*
-//   macroValidSharedObjectThere                                             *
+//   macroValidSharedObjectThere                                               *
 //-----------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroValidSharedObjectThere(OBJECT,TYPE) { \
     macroValidPointerThere (OBJECT) ; \
-    if (dynamic_cast <TYPE *> (OBJECT) == NULL) { \
+    if (dynamic_cast <const TYPE *> (OBJECT) == NULL) { \
       MF_RunTimeErrorThere ("'"#OBJECT"' is not an instance of '"#TYPE" *'", 0, 0) ; \
     } \
   }
@@ -107,70 +107,70 @@ class C_SharedObject {
 #endif
 
 //-----------------------------------------------------------------------------*
-//   macroNullOrValidSharedObject                                            *
+//   macroNullOrValidSharedObject                                              *
 //-----------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroNullOrValidSharedObject(OBJECT,TYPE) \
     if (NULL != (OBJECT)) { \
       macroValidPointer (OBJECT) ; \
-      MF_Assert (dynamic_cast <TYPE *> (OBJECT) != NULL, "'"#OBJECT"' is not an instance of '"#TYPE" *'", 0, 0) ; \
+      MF_Assert (dynamic_cast <const TYPE *> (OBJECT) != NULL, "'"#OBJECT"' is not an instance of '"#TYPE" *'", 0, 0) ; \
     }
 #else
   #define macroNullOrValidSharedObject(OBJECT,TYPE)
 #endif
 
 //-----------------------------------------------------------------------------*
-//   macroNullOrValidSharedObjectThere                                       *
+//   macroNullOrValidSharedObjectThere                                         *
 //-----------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroNullOrValidSharedObjectThere(OBJECT,TYPE) \
     if (NULL != (OBJECT)) { \
       macroValidPointerThere (OBJECT) ; \
-      MF_AssertThere (dynamic_cast <TYPE *> (OBJECT) != NULL, "'"#OBJECT"' is not an instance of '"#TYPE" *'", 0, 0) ; \
+      MF_AssertThere (dynamic_cast <const TYPE *> (OBJECT) != NULL, "'"#OBJECT"' is not an instance of '"#TYPE" *'", 0, 0) ; \
     }
 #else
   #define macroNullOrValidSharedObjectThere(OBJECT,TYPE)
 #endif
 
 //-----------------------------------------------------------------------------*
-//   macroAssignSharedObject                                                 *
+//   macroAssignSharedObject                                                   *
 //-----------------------------------------------------------------------------*
 
 #define macroAssignSharedObject(TARGET_PTR,SOURCE_PTR) \
   { C_SharedObject::retainRelease (SOURCE_PTR, TARGET_PTR COMMA_HERE) ; TARGET_PTR = SOURCE_PTR ; }
 
 //-----------------------------------------------------------------------------*
-//   macroAssignSharedObjectThere                                            *
+//   macroAssignSharedObjectThere                                              *
 //-----------------------------------------------------------------------------*
 
 #define macroAssignSharedObjectThere(TARGET_PTR,SOURCE_PTR) \
   { C_SharedObject::retainRelease (SOURCE_PTR, TARGET_PTR COMMA_THERE) ; TARGET_PTR = SOURCE_PTR ; }
 
 //-----------------------------------------------------------------------------*
-//   macroDetachSharedObject                                                 *
+//   macroDetachSharedObject                                                   *
 //-----------------------------------------------------------------------------*
 
 #define macroDetachSharedObject(PTR) \
   { C_SharedObject::release (PTR COMMA_HERE) ; PTR = NULL ; }
 
 //-----------------------------------------------------------------------------*
-//   macroDetachSharedObjectThere                                            *
+//   macroDetachSharedObjectThere                                              *
 //-----------------------------------------------------------------------------*
 
 #define macroDetachSharedObjectThere(PTR) \
   { C_SharedObject::release (PTR COMMA_THERE) ; PTR = NULL ; }
 
 //-----------------------------------------------------------------------------*
-//   macroUniqueSharedObject                                                 *
+//   macroUniqueSharedObject                                                   *
 //-----------------------------------------------------------------------------*
 
 #define macroUniqueSharedObject(PTR) \
   { MF_Assert ((PTR)->retainCount () == 1, "retainCount () == %ld != 1", (PTR)->retainCount (), 0) ; }
 
 //-----------------------------------------------------------------------------*
-//   macroUniqueSharedObjectThere                                            *
+//   macroUniqueSharedObjectThere                                              *
 //-----------------------------------------------------------------------------*
 
 #define macroUniqueSharedObjectThere(PTR) \

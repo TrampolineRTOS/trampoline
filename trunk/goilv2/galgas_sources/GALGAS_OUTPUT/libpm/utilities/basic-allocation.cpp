@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Implementation of routines for handling dynamic allocation checking.     *
+//  Implementation of routines for handling dynamic allocation checking.       *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -45,7 +45,7 @@
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//                   Parametrage de la gestion memoire                       *
+//                   Parametrage de la gestion memoire                         *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -76,9 +76,9 @@
 
 #ifdef USE_SMALL_BLOCK_FREE_LIST
   typedef struct cBlock {
-    PMSInt32 mTag ;
+    int32_t mTag ;
     struct cBlock * mNext ;
-    PMSInt32 mPadding [14] ;
+    int32_t mPadding [14] ;
   }cBlock ;
 #endif
 
@@ -99,7 +99,7 @@
 #ifdef USE_SMALL_BLOCK_FREE_LIST
  void * myAllocRoutine (const size_t inSizeInBytes) {
   void * ptr = NULL ;
-  if (inSizeInBytes <= (sizeof (cBlock) - sizeof (PMSInt32))) {
+  if (inSizeInBytes <= (sizeof (cBlock) - sizeof (int32_t))) {
     if (gFreeList == NULL) {
       cBlock * p = (cBlock *) ::malloc (sizeof (cBlock)) ;
       p->mTag = 0 ;
@@ -113,7 +113,7 @@
   #ifdef GENERATE_BLOCK_SIZE_STATS
     noteAllocatedPointerSize (inSizeInBytes) ;
   #endif
-    cBlock * p = (cBlock *) ::malloc (inSizeInBytes + sizeof (PMSInt32)) ;
+    cBlock * p = (cBlock *) ::malloc (inSizeInBytes + sizeof (int32_t)) ;
     p->mTag = 1 ;
     ptr = & (p->mNext) ;
   }
@@ -152,7 +152,7 @@ void myFreeRoutine (void * inPointer) {
   #if CALL_MALLOC_DEBUG
     malloc_debug (4) ;
   #endif
-  PMSInt32 * p = (PMSInt32 *) inPointer ;
+  int32_t * p = (int32_t *) inPointer ;
   p -- ;
   cBlock * ptr = (cBlock *) p ;
   if (ptr->mTag == 0) {
@@ -186,8 +186,8 @@ void myFreeRoutine (void * inPointer) {
     public : struct cAllocatedSizeDescriptorNode * mInfPtr ;
     public : struct cAllocatedSizeDescriptorNode * mSupPtr ;
     public : size_t mAllocatedSize ;
-    public : PMUInt32 mCount ;
-    public : PMSInt16 mBalance ;    
+    public : uint32_t mCount ;
+    public : int16_t mBalance ;    
   } cAllocatedSizeDescriptorNode ; 
 #endif
 
@@ -203,10 +203,10 @@ void myFreeRoutine (void * inPointer) {
     if (b->mBalance >= 0) {
       a->mBalance ++ ;
     }else{
-      a->mBalance = (PMSInt16) (a->mBalance + 1 - b->mBalance) ;
+      a->mBalance = (int16_t) (a->mBalance + 1 - b->mBalance) ;
     }
     if (a->mBalance > 0) {
-      b->mBalance = (PMSInt16) (b->mBalance + a->mBalance + 1) ;
+      b->mBalance = (int16_t) (b->mBalance + a->mBalance + 1) ;
     }else{
       b->mBalance ++ ;
     }
@@ -224,14 +224,14 @@ void myFreeRoutine (void * inPointer) {
     b->mSupPtr = a;
    //--- recalculer l'equilibrage 
     if (b->mBalance > 0) {
-      a->mBalance = (PMSInt16) (a->mBalance - b->mBalance - 1) ;
+      a->mBalance = (int16_t) (a->mBalance - b->mBalance - 1) ;
     }else{
       a->mBalance -- ;
     }
     if (a->mBalance >= 0) {
       b->mBalance -- ;
     }else{
-      b->mBalance = (PMSInt16) (b->mBalance + a->mBalance - 1) ;
+      b->mBalance = (int16_t) (b->mBalance + a->mBalance - 1) ;
     }
     a = b ;
   }
@@ -317,7 +317,7 @@ void myFreeRoutine (void * inPointer) {
 
 #ifdef GENERATE_BLOCK_SIZE_STATS
   static void internalVisitNode (cAllocatedSizeDescriptorNode * inRoot,
-                                 PMUInt32 & ioNodeCount) {
+                                 uint32_t & ioNodeCount) {
     if (inRoot != NULL) {
       internalVisitNode (inRoot->mInfPtr, ioNodeCount) ;
       printf ("|%11lu |%13u |\n", inRoot->mAllocatedSize, inRoot->mCount) ;
@@ -333,7 +333,7 @@ void displayAllocatedBlockSizeStats (void) {
   #ifdef GENERATE_BLOCK_SIZE_STATS
     printf ("*- Allocated block size statistics -*\n") ;
     printf ("|       Size |        Count |\n") ;
-    PMUInt32 nodeCount = 0 ;
+    uint32_t nodeCount = 0 ;
     internalVisitNode (gAllocatedSizeTreeRoot, nodeCount) ;
     printf ("|------------|--------------|\n") ;
     printf ("%u different sizes\n", nodeCount) ;

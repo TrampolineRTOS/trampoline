@@ -83,7 +83,7 @@ AC_GALGAS_class & AC_GALGAS_class::operator = (const AC_GALGAS_class & inSource)
 //-----------------------------------------------------------------------------*
 
 void AC_GALGAS_class::description (C_String & ioString,
-                                const PMSInt32 inIndentation) const {
+                                const int32_t inIndentation) const {
   ioString << "<@"
            << staticTypeDescriptor ()->mGalgasTypeName
            << ":" ;

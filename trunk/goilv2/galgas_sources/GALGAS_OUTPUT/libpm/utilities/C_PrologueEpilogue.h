@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  GALGAS prologue / epilogue handling class                                *
+//  GALGAS prologue / epilogue handling class                                  *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -28,7 +28,7 @@
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//                 Prologue / Epilogue Action class                          *
+//                 Prologue / Epilogue Action class                            *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 

@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  AC_GALGAS_graph : Base class for GALGAS graph                            *
+//  AC_GALGAS_graph : Base class for GALGAS graph                              *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -28,9 +28,9 @@
 
 //-----------------------------------------------------------------------------*
 
-#include "AC_GALGAS_root.h"
-#include "typeComparisonResult.h"
-#include "cCollectionElement.h"
+#include "galgas2/AC_GALGAS_root.h"
+#include "galgas2/typeComparisonResult.h"
+#include "galgas2/cCollectionElement.h"
 
 //-----------------------------------------------------------------------------*
 
@@ -47,7 +47,7 @@ class GALGAS__32_stringlist ;
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  A C _ G A L G A S _ g r a p h                                            *
+//  A C _ G A L G A S _ g r a p h                                              *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -62,7 +62,7 @@ class AC_GALGAS_graph : public AC_GALGAS_root {
   public : virtual ~ AC_GALGAS_graph (void) ;
 
 //--- count
-  public : VIRTUAL_IN_DEBUG PMUInt32 count (void) const ;
+  public : VIRTUAL_IN_DEBUG uint32_t count (void) const ;
 
 //--- isValid
   public : VIRTUAL_IN_DEBUG inline bool isValid (void) const { return mSharedGraph != NULL ; }
@@ -105,7 +105,7 @@ class AC_GALGAS_graph : public AC_GALGAS_root {
 
 //--- Description
   public : VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const PMSInt32 inIndentation) const ;
+                                              const int32_t inIndentation) const ;
 
 //--- Internal methods for handling graph
   protected : VIRTUAL_IN_DEBUG void reversedGraphFromGraph (const AC_GALGAS_graph & inGraph

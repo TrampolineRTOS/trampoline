@@ -5,11 +5,15 @@
 //  Created by Pierre Molinaro on 06/07/09.
 //  Copyright 2009 ECN / IRCCyN. All rights reserved.
 //
+//-----------------------------------------------------------------------------*
 
 #import "OC_GGS_CommandLineOption.h"
 
+//-----------------------------------------------------------------------------*
 
 @implementation OC_GGS_CommandLineOption
+
+//-----------------------------------------------------------------------------*
 
 - (id) initWithDomainName: (NSString *) inDomainName
        identifier: (NSString *) inIdentifier
@@ -29,17 +33,25 @@
   return self ;
 }
 
+//-----------------------------------------------------------------------------*
+
 - (NSString *) identifier {
   return mIdentifier ;
 }
+
+//-----------------------------------------------------------------------------*
 
 - (char) commandChar {
   return mCommandChar ;
 }
 
+//-----------------------------------------------------------------------------*
+
 - (NSString *) commandString {
   return mCommandString ;
 }
+
+//-----------------------------------------------------------------------------*
 
 - (NSString *) title {
   return ([mDefaultValue length] == 0)
@@ -47,5 +59,7 @@
     : [NSString stringWithFormat:@"%@ (default value: %@)", mComment, mDefaultValue]
   ;
 }
+
+//-----------------------------------------------------------------------------*
 
 @end

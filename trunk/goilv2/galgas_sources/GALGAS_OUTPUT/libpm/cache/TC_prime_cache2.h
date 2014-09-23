@@ -49,72 +49,72 @@ class TC_prime_cache2 {
 
 //--- Cache entry type
   protected : class cCacheEntry {
-    public : PMSInt mOperand1 ;
-    public : PMSInt mOperand2 ;
+    public : intptr_t mOperand1 ;
+    public : intptr_t mOperand2 ;
     public : RESULT mResult ;
   } ;
 
 //--- Cache read
-  public : inline void getCacheEntry (const PMSInt inOperand1,
-                                      const PMSInt inOperand2,
+  public : inline void getCacheEntry (const intptr_t inOperand1,
+                                      const intptr_t inOperand2,
                                       bool & outCacheSuccess,
-                                      PMSInt32 & outHashCode,
+                                      int32_t & outHashCode,
                                       RESULT & outResult) ;
 
 //--- Cache write
-  public : inline void writeCacheEntry (const PMSInt inOperand1,
-                                        const PMSInt inOperand2,
-                                        const PMSInt inHashCode,
+  public : inline void writeCacheEntry (const intptr_t inOperand1,
+                                        const intptr_t inOperand2,
+                                        const intptr_t inHashCode,
                                         const RESULT inResult) ;
 
 //--- Clear all cache entries
   public : void clearAllCacheEntries (void) ;
 
 //--- Realloc cache
-  public : void reallocCache (const PMSInt32 inCacheNewSize) ;
+  public : void reallocCache (const int32_t inCacheNewSize) ;
 
 //--- Get cache size (in bytes)
-  public : PMUInt32 getCacheSizeInBytes (void) const ;
+  public : uint32_t getCacheSizeInBytes (void) const ;
 
 //--- Cache array pointer
   protected : cCacheEntry * mCache ;
 
 //--- Cache size
-  protected : PMSInt32 mCacheSize ;
+  protected : int32_t mCacheSize ;
 
 //--- Integer square root of cache size
-  protected : PMSInt32 mCacheSizeIntegerSquareRoot ;
+  protected : int32_t mCacheSizeIntegerSquareRoot ;
 
 //--- Default cache (size 1) ;
   protected : cCacheEntry mDefaultCache ;
 
 //--- Cache successes
-  protected : PMUInt64 mCacheSuccessCount ;
-  public : PMUInt64 getCacheSuccessCount (void) const { return mCacheSuccessCount ; }
+  protected : uint64_t mCacheSuccessCount ;
+  public : uint64_t getCacheSuccessCount (void) const { return mCacheSuccessCount ; }
 
 //--- Cache miss
-  protected : PMUInt64 mCacheMissCount ;
-  public : PMUInt64 getCacheMissCount (void) const { return mCacheMissCount ; }
+  protected : uint64_t mCacheMissCount ;
+  public : uint64_t getCacheMissCount (void) const { return mCacheMissCount ; }
 
 //--- Cache override
-  protected : PMUInt64 mCacheOverridesCount ;
-  public : PMUInt64 getCacheOverrideCount (void) const { return mCacheOverridesCount ; }
+  protected : uint64_t mCacheOverridesCount ;
+  public : uint64_t getCacheOverrideCount (void) const { return mCacheOverridesCount ; }
 
 //--- Get cache entries count
-  public : PMSInt32 getCacheEntriesCount (void) {
+  public : int32_t getCacheEntriesCount (void) {
     return mCacheSize ;
   }
 
 //--- Get cache size in kbytes
-  public : PMSInt32 getCacheSizeInKBytes (void) {
-    return (mCacheSize * (PMSInt32) sizeof (cCacheEntry)) / 1024 ;
+  public : int32_t getCacheSizeInKBytes (void) {
+    return (mCacheSize * (int32_t) sizeof (cCacheEntry)) / 1024 ;
   }
 
 //--- Get unused entries count
-  public : PMUInt64 getUnusedCacheEntriesCount (void) const {
-    PMUInt64 unusedEntriesCount = 0 ;
-    for (PMSInt32 i=0 ; i<mCacheSize ; i++) {
-      unusedEntriesCount += (PMUInt64) (mCache [i].mOperand1 == 0) ;
+  public : uint64_t getUnusedCacheEntriesCount (void) const {
+    uint64_t unusedEntriesCount = 0 ;
+    for (int32_t i=0 ; i<mCacheSize ; i++) {
+      unusedEntriesCount += (uint64_t) (mCache [i].mOperand1 == 0) ;
     }
     return unusedEntriesCount ;
   }
@@ -150,14 +150,14 @@ TC_prime_cache2 <RESULT>::~TC_prime_cache2 (void) {
 //-----------------------------------------------------------------------------*
 
 template <class RESULT>
-PMUInt32 TC_prime_cache2 <RESULT>::getCacheSizeInBytes (void) const {
-  return ((PMUInt32) mCacheSize) * sizeof (cCacheEntry) ;
+uint32_t TC_prime_cache2 <RESULT>::getCacheSizeInBytes (void) const {
+  return (uint32_t) (((size_t) mCacheSize) * sizeof (cCacheEntry)) ;
 }
 
 //-----------------------------------------------------------------------------*
 
 template <class RESULT>
-void TC_prime_cache2 <RESULT>::reallocCache (const PMSInt32 inCacheSize) {
+void TC_prime_cache2 <RESULT>::reallocCache (const int32_t inCacheSize) {
   if (inCacheSize <= 1) {
     if (mCacheSize > 1) {
       delete [] mCache ;
@@ -165,20 +165,20 @@ void TC_prime_cache2 <RESULT>::reallocCache (const PMSInt32 inCacheSize) {
     mCache = & mDefaultCache ;
     mCacheSize = 1 ;
   }else{
-    const PMSInt32 newCacheSize = (PMSInt32) getPrimeGreaterThan ((PMUInt32) inCacheSize) ;
+    const int32_t newCacheSize = (int32_t) getPrimeGreaterThan ((uint32_t) inCacheSize) ;
     if (newCacheSize != mCacheSize) {
       cCacheEntry * newCache = new cCacheEntry [newCacheSize] ;
       if (newCache != NULL) {
         cCacheEntry * previousCache = mCache ;
         mCache = newCache ;
-        const PMSInt32 previousCacheSize = mCacheSize ;
+        const int32_t previousCacheSize = mCacheSize ;
         mCacheSize = newCacheSize ;
-        mCacheSizeIntegerSquareRoot = (PMSInt32) ::sqrt (mCacheSize) ;
+        mCacheSizeIntegerSquareRoot = (int32_t) ::sqrt (mCacheSize) ;
         clearAllCacheEntries () ;
         bool cacheSuccess ;
-        PMSInt32 hashCode ;
+        int32_t hashCode ;
         RESULT cacheResult ;
-        for (PMSInt32 i=0 ; i<previousCacheSize ; i++) {
+        for (int32_t i=0 ; i<previousCacheSize ; i++) {
           if (previousCache [i].mOperand1 != 0) {
             getCacheEntry (previousCache [i].mOperand1,
                            previousCache [i].mOperand2,
@@ -204,13 +204,13 @@ void TC_prime_cache2 <RESULT>::reallocCache (const PMSInt32 inCacheSize) {
 //-----------------------------------------------------------------------------*
 
 template <class RESULT>
-void TC_prime_cache2 <RESULT>::getCacheEntry (const PMSInt inOperand1,
-                                              const PMSInt inOperand2,
+void TC_prime_cache2 <RESULT>::getCacheEntry (const intptr_t inOperand1,
+                                              const intptr_t inOperand2,
                                               bool & outCacheSuccess,
-                                              PMSInt32 & outHashCode,
+                                              int32_t & outHashCode,
                                               RESULT & outResult) {
 //--- Compute hash code
-  outHashCode = (PMSInt32) (((PMUInt32) ((inOperand2 * mCacheSizeIntegerSquareRoot) + inOperand1)) % ((PMUInt32) mCacheSize)) ;
+  outHashCode = (int32_t) (((uint32_t) ((inOperand2 * mCacheSizeIntegerSquareRoot) + inOperand1)) % ((uint32_t) mCacheSize)) ;
 //--- Cache success ?
   outCacheSuccess = (inOperand1 == mCache [outHashCode].mOperand1)
                  && (inOperand2 == mCache [outHashCode].mOperand2) ;
@@ -224,9 +224,9 @@ void TC_prime_cache2 <RESULT>::getCacheEntry (const PMSInt inOperand1,
 //-----------------------------------------------------------------------------*
 
 template <class RESULT>
-void TC_prime_cache2 <RESULT>::writeCacheEntry (const PMSInt inOperand1,
-                                                const PMSInt inOperand2,
-                                                const PMSInt inHashCode,
+void TC_prime_cache2 <RESULT>::writeCacheEntry (const intptr_t inOperand1,
+                                                const intptr_t inOperand2,
+                                                const intptr_t inHashCode,
                                                 const RESULT inResult) {
 //--- Cache overrides ?
   mCacheOverridesCount += (mCache [inHashCode].mOperand1 != 0) ;
@@ -241,7 +241,7 @@ void TC_prime_cache2 <RESULT>::writeCacheEntry (const PMSInt inOperand1,
 
 template <class RESULT>
 void TC_prime_cache2 <RESULT>::clearAllCacheEntries (void) {
-  for (PMSInt32 i=0 ; i<mCacheSize ; i++) {
+  for (int32_t i=0 ; i<mCacheSize ; i++) {
     mCache [i].mOperand1 = 0 ;
     mCache [i].mOperand2 = 0 ;
   }

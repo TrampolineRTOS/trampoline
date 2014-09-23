@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Generic Command Line Interface Option                                    *
+//  Generic Command Line Interface Option                                      *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *

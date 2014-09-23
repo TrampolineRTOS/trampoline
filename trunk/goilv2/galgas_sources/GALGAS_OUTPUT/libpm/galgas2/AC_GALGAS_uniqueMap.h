@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  AC_GALGAS_uniqueMap : Base class for GALGAS map                          *
+//  AC_GALGAS_uniqueMap : Base class for GALGAS map                            *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -28,8 +28,8 @@
 
 //-----------------------------------------------------------------------------*
 
-#include "AC_GALGAS_root.h"
-#include "typeComparisonResult.h"
+#include "galgas2/AC_GALGAS_root.h"
+#include "galgas2/typeComparisonResult.h"
 
 //-----------------------------------------------------------------------------*
 
@@ -55,7 +55,7 @@ class cSharedProxy ;
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//                    Data structures for map automaton                      *
+//                    Data structures for map automaton                        *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -75,7 +75,7 @@ typedef struct {
 //-----------------------------------------------------------------------------*
 
 typedef struct {
-  const PMUInt32 mTargetStateIndex ;
+  const uint32_t mTargetStateIndex ;
   const mapAutomatonIssueEnum mIssue ;
   const char * mIssueMessage ;
 } cMapAutomatonTransition ;
@@ -83,9 +83,9 @@ typedef struct {
 //-----------------------------------------------------------------------------*
 
 typedef struct {
-  const PMUInt32 mFirstStateIndex ;
-  const PMUInt32 mLastStateIndex ;
-  const PMUInt32 mResultingStateIndex ;
+  const uint32_t mFirstStateIndex ;
+  const uint32_t mLastStateIndex ;
+  const uint32_t mResultingStateIndex ;
   const mapAutomatonIssueEnum mIssue ;
   const char * mIssueMessage ;
 }cBranchOverrideTransformationDescriptor ;
@@ -93,9 +93,9 @@ typedef struct {
 //-----------------------------------------------------------------------------*
 
 typedef struct {
-  const PMUInt32 mFirstCandidateStateIndex ;
-  const PMUInt32 mSecondCandidateStateIndex ;
-  const PMUInt32 mResultingStateIndex ;
+  const uint32_t mFirstCandidateStateIndex ;
+  const uint32_t mSecondCandidateStateIndex ;
+  const uint32_t mResultingStateIndex ;
   const mapAutomatonIssueEnum mIssue ;
   const char * mIssueMessage ;
 }cBranchOverrideCompatibilityDescriptor ;
@@ -103,13 +103,13 @@ typedef struct {
 //-----------------------------------------------------------------------------*
 
 typedef struct {
-  PMUInt32 mInitialStateIndex ;
-  PMUInt32 mResultingStateIndex ;
+  uint32_t mInitialStateIndex ;
+  uint32_t mResultingStateIndex ;
 }cOverrideStateDescriptor ;
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//     M A P    P R O X Y                                                    *
+//     M A P    P R O X Y                                                      *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -182,7 +182,7 @@ class AC_GALGAS_uniqueMapProxy : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of reader 'description'
   public : VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const PMSInt32 inIndentation) const ;
+                                              const int32_t inIndentation) const ;
 
 //--------------------------------- Comparison
   public : typeComparisonResult objectCompare (const AC_GALGAS_uniqueMapProxy & inOperand) const ;
@@ -191,7 +191,7 @@ class AC_GALGAS_uniqueMapProxy : public AC_GALGAS_root {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//     M A P                                                                 *
+//     M A P                                                                   *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -207,7 +207,7 @@ class AC_GALGAS_uniqueMap : public AC_GALGAS_root {
   public : AC_GALGAS_uniqueMap & operator = (const AC_GALGAS_uniqueMap & inSource) ;
 
 //--- count
-  public : VIRTUAL_IN_DEBUG PMUInt32 count (void) const ;
+  public : VIRTUAL_IN_DEBUG uint32_t count (void) const ;
 
 //--- isValid
   public : VIRTUAL_IN_DEBUG inline bool isValid (void) const { return mSharedMap != NULL ; }
@@ -232,7 +232,7 @@ class AC_GALGAS_uniqueMap : public AC_GALGAS_root {
 //--------------------------------- Insert
   protected : VIRTUAL_IN_DEBUG void performInsert (capCollectionElement & inAttributes,
                                                    C_Compiler * inCompiler,
-                                                   const PMUInt32 inInitialState,
+                                                   const uint32_t inInitialState,
                                                    const char * inInitialStateName,
                                                    const char * inInsertErrorMessage,
                                                    const char * inShadowErrorMessage
@@ -254,13 +254,13 @@ class AC_GALGAS_uniqueMap : public AC_GALGAS_root {
 
   protected : VIRTUAL_IN_DEBUG const cCollectionElement * performSearch (const GALGAS_lstring & inKey,
                                                                          C_Compiler * inCompiler,
-                                                                         const PMUInt32 inActionIndex,
+                                                                         const uint32_t inActionIndex,
                                                                          const cMapAutomatonTransition inTransitionArray [],
-                                                                         const PMUInt32 inAutomatonActionCount,
+                                                                         const uint32_t inAutomatonActionCount,
                                                                          const char * inAutomatonStateNames [],
                                                                          const char * inAutomatonActionNames [],
                                                                          #ifndef DO_NOT_GENERATE_CHECKINGS
-                                                                           const PMUInt32 inAutomatonStateCount,
+                                                                           const uint32_t inAutomatonStateCount,
                                                                          #endif
                                                                          const char * inSearchErrorMessage
                                                                          COMMA_LOCATION_ARGS) ;
@@ -303,7 +303,7 @@ class AC_GALGAS_uniqueMap : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of reader 'description'
   public : VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const PMSInt32 inIndentation) const ;
+                                              const int32_t inIndentation) const ;
 
 //--------------------------------- Comparison
   public : typeComparisonResult objectCompare (const AC_GALGAS_uniqueMap & inOperand) const ;
@@ -325,9 +325,9 @@ class AC_GALGAS_uniqueMap : public AC_GALGAS_root {
 
 //--------------------------------- Open override for block
   public : VIRTUAL_IN_DEBUG void openOverride (const cBranchOverrideTransformationDescriptor inBranchBehaviourArray [],
-                                               const PMUInt32 inBranchBehaviourSize,
+                                               const uint32_t inBranchBehaviourSize,
                                                const cBranchOverrideCompatibilityDescriptor inBranchCombinationArray [],
-                                               const PMUInt32 inBranchCombinationSize,
+                                               const uint32_t inBranchCombinationSize,
                                                const char * inBlockName,
                                                C_Compiler * inCompiler
                                                COMMA_LOCATION_ARGS) ;
@@ -344,7 +344,7 @@ class AC_GALGAS_uniqueMap : public AC_GALGAS_root {
   public : VIRTUAL_IN_DEBUG void closeBranch (const GALGAS_location & inErrorLocation,
                                               const cMapAutomatonFinalIssue inAutomatonFinalIssueArray [],
                                               #ifndef DO_NOT_GENERATE_CHECKINGS
-                                                const PMUInt32 inAutomatonStateCount,
+                                                const uint32_t inAutomatonStateCount,
                                               #endif
                                               C_Compiler * inCompiler
                                               COMMA_LOCATION_ARGS) ;

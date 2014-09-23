@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  'C_TextFileWrite' : a class for stream writing text files                *
+//  'C_TextFileWrite' : a class for stream writing text files                  *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -41,7 +41,7 @@ mBufferLength (0) {
 }
 
 //-----------------------------------------------------------------------------*
-//                                Close                                      *
+//                                Close                                        *
 //-----------------------------------------------------------------------------*
 
 bool C_TextFileWrite::close (void) {
@@ -58,8 +58,8 @@ bool C_TextFileWrite::close (void) {
 }
 
 //-----------------------------------------------------------------------------*
-//                             Destructor                                    *
-// Cannot call the virtual 'close' method in destructor                      *
+//                             Destructor                                      *
+// Cannot call the virtual 'close' method in destructor                        *
 //-----------------------------------------------------------------------------*
 
 C_TextFileWrite::~C_TextFileWrite (void) {
@@ -70,11 +70,11 @@ C_TextFileWrite::~C_TextFileWrite (void) {
 }
 
 //-----------------------------------------------------------------------------*
-//                  Write a character string into the file                   *
+//                  Write a character string into the file                     *
 //-----------------------------------------------------------------------------*
 
 void C_TextFileWrite::performActualCharArrayOutput (const char * inCharArray,
-                                                    const PMSInt32 inArrayCount) {
+                                                    const int32_t inArrayCount) {
   if ((mFilePtr != NULL) && (inArrayCount > 0)) {
     if ((mBufferLength + inArrayCount) < kFileBufferSize) {
       ::memcpy (& mBuffer [mBufferLength], inCharArray, (size_t) inArrayCount) ;
@@ -92,11 +92,11 @@ void C_TextFileWrite::performActualCharArrayOutput (const char * inCharArray,
 //-----------------------------------------------------------------------------*
 
 void C_TextFileWrite::performActualUnicodeArrayOutput (const utf32 * inCharArray,
-                                                       const PMSInt32 inArrayCount) {
+                                                       const int32_t inArrayCount) {
   if ((mFilePtr != NULL) && (inArrayCount > 0)) {
-    for (PMSInt32 i=0 ; i<inArrayCount ; i++) {
+    for (int32_t i=0 ; i<inArrayCount ; i++) {
       char buffer [5] ;
-      const PMSInt32 length = UTF8StringFromUTF32Character (inCharArray [i], buffer) ;
+      const int32_t length = UTF8StringFromUTF32Character (inCharArray [i], buffer) ;
       if ((mBufferLength + length) > kFileBufferSize) {
         ::fprintf (mFilePtr, "%.*s", (int) mBufferLength, mBuffer) ;
         mBufferLength = 0 ;
@@ -108,7 +108,7 @@ void C_TextFileWrite::performActualUnicodeArrayOutput (const utf32 * inCharArray
 }
 
 //-----------------------------------------------------------------------------*
-//                   Flush print                                             *
+//                   Flush print                                               *
 //-----------------------------------------------------------------------------*
 
 void C_TextFileWrite::flush (void) {

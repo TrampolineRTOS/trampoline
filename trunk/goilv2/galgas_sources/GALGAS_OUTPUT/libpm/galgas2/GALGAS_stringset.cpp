@@ -23,9 +23,9 @@
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-#include "predefined-types.h"
+#include "galgas2/predefined-types.h"
 #include "utilities/MF_MemoryControl.h"
-#include "cCollectionElement.h"
+#include "galgas2/cCollectionElement.h"
 #include "galgas2/C_Compiler.h"
 
 //-----------------------------------------------------------------------------*
@@ -55,7 +55,7 @@ class cCollectionElement_stringset : public cCollectionElement {
   public : virtual cCollectionElement * copy (void) ;
 
 //--- Description
- public : virtual void description (C_String & ioString, const PMSInt32 inIndentation) const ;
+ public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
 //-----------------------------------------------------------------------------*
@@ -76,7 +76,7 @@ bool cCollectionElement_stringset::isValid (void) const {
 
 typeComparisonResult cCollectionElement_stringset::compare (const cCollectionElement * inOperand) const {
   const cCollectionElement_stringset * operand = (const cCollectionElement_stringset *) inOperand ;
-  macroValidSharedObject (operand, const cCollectionElement_stringset) ;
+  macroValidSharedObject (operand, cCollectionElement_stringset) ;
   return mAttribute_key.objectCompare (operand->mAttribute_key) ;
 }
 
@@ -91,7 +91,7 @@ cCollectionElement * cCollectionElement_stringset::copy (void) {
 
 //-----------------------------------------------------------------------------*
 
-void cCollectionElement_stringset::description (C_String & ioString, const PMSInt32 inIndentation) const {
+void cCollectionElement_stringset::description (C_String & ioString, const int32_t inIndentation) const {
   mAttribute_key.description (ioString, inIndentation) ;
 }
 
@@ -104,13 +104,13 @@ void cCollectionElement_stringset::description (C_String & ioString, const PMSIn
 class cStringsetNode {
   public : cStringsetNode * mInfPtr ;
   public : cStringsetNode * mSupPtr ;
-  public : PMSInt32 mBalance ;
+  public : int32_t mBalance ;
   public : C_String mKey ;
 
 //---  
   public : cStringsetNode (const C_String & inString) ;
   public : cStringsetNode (const cStringsetNode * inNode,
-                           PMUInt32 & ioCount) ;
+                           uint32_t & ioCount) ;
 
 //--- No copy
   private : cStringsetNode (const cStringsetNode &) ;
@@ -132,7 +132,7 @@ mKey (inString) {
 //-----------------------------------------------------------------------------*
 
 cStringsetNode::cStringsetNode (const cStringsetNode * inNode,
-                                PMUInt32 & ioCount) :
+                                uint32_t & ioCount) :
 mInfPtr (NULL),
 mSupPtr (NULL),
 mBalance (0),
@@ -215,7 +215,7 @@ static void recursiveAddEntry (cStringsetNode * & ioRootPtr,
     outEntryAdded = true ;
   }else{
     macroValidPointer (ioRootPtr) ;
-    const PMSInt32 comparaison = ioRootPtr->mKey.compare (inKey) ;
+    const int32_t comparaison = ioRootPtr->mKey.compare (inKey) ;
     if (comparaison > 0) {
       recursiveAddEntry (ioRootPtr->mInfPtr, inKey, outEntryAdded, ioExtension) ;
       if (ioExtension) {
@@ -339,7 +339,7 @@ static void internalRemoveRecursively (cStringsetNode * & ioRoot,
                                        bool & outKeyHasBeenRemoved,
                                        bool & ioBranchHasBeenRemoved) {
   if (ioRoot != NULL) {
-    const PMSInt32 comparaison = ioRoot->mKey.compare (inKeyToRemove) ;
+    const int32_t comparaison = ioRoot->mKey.compare (inKeyToRemove) ;
     if (comparaison > 0) {
       internalRemoveRecursively (ioRoot->mInfPtr, inKeyToRemove, outKeyHasBeenRemoved, ioBranchHasBeenRemoved);
       if (ioBranchHasBeenRemoved) {
@@ -393,11 +393,11 @@ static void internalRemoveRecursively (cStringsetNode * & ioRoot,
 class cSharedStringsetRoot : public C_SharedObject {
 //--- Private data members
   private : cStringsetNode * mRoot ;
-  private : PMUInt32 mEntryCount ;
+  private : uint32_t mEntryCount ;
 
 //--- Accessors
   public : inline const cStringsetNode * root (void) const { return mRoot ; }
-  public : inline PMUInt32 count (void) const { return mEntryCount ; }
+  public : inline uint32_t count (void) const { return mEntryCount ; }
 
 //--- Default constructor
   public : cSharedStringsetRoot (LOCATION_ARGS) ;
@@ -412,7 +412,7 @@ class cSharedStringsetRoot : public C_SharedObject {
 //--- In debug mode : check methods
   #ifndef DO_NOT_GENERATE_CHECKINGS
     public : void countStringSetNodes (const cStringsetNode * inNode,
-                                       PMUInt32 & ioCount) const ;
+                                       uint32_t & ioCount) const ;
     public : void checkStringset (LOCATION_ARGS) const ;
   #endif
 
@@ -461,7 +461,7 @@ cSharedStringsetRoot::~cSharedStringsetRoot (void) {
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void cSharedStringsetRoot::countStringSetNodes (const cStringsetNode * inNode,
-                                                  PMUInt32 & ioCount) const {
+                                                  uint32_t & ioCount) const {
     if (NULL != inNode) {
       countStringSetNodes (inNode->mInfPtr, ioCount) ;
       ioCount ++ ;
@@ -474,7 +474,7 @@ cSharedStringsetRoot::~cSharedStringsetRoot (void) {
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void cSharedStringsetRoot::checkStringset (LOCATION_ARGS) const {
-    PMUInt32 count = 0 ;
+    uint32_t count = 0 ;
     countStringSetNodes (mRoot, count) ;
     MF_AssertThere (count == mEntryCount, "count %lld != mEntryCount %lld", count, mEntryCount) ;
   }
@@ -525,7 +525,7 @@ C_String cSharedStringsetRoot::rootKey (void) const {
 //-----------------------------------------------------------------------------*
 
 void cSharedStringsetRoot::copyFrom (const cSharedStringsetRoot * inSharedRootToCopy) {
-  macroValidSharedObject (inSharedRootToCopy, const cSharedStringsetRoot) ;
+  macroValidSharedObject (inSharedRootToCopy, cSharedStringsetRoot) ;
   if (NULL != inSharedRootToCopy->mRoot) {
     macroMyNew (mRoot, cStringsetNode (inSharedRootToCopy->mRoot, mEntryCount)) ;
   }
@@ -567,7 +567,7 @@ bool cSharedStringsetRoot::hasKey (const C_String & inKey) const {
   bool found = false ;
   const cStringsetNode * p = mRoot ;
   while ((p != NULL) && ! found) {
-    const PMSInt32 comparaison = p->mKey.compare (inKey) ;
+    const int32_t comparaison = p->mKey.compare (inKey) ;
     if (comparaison > 0) {
       p = p->mInfPtr ;
     }else if (comparaison < 0) {
@@ -653,7 +653,7 @@ GALGAS_stringset & GALGAS_stringset::operator = (const GALGAS_stringset & inSour
 //-----------------------------------------------------------------------------*
 
 void GALGAS_stringset::description (C_String & ioString,
-                                    const PMSInt32 /* inIndentation */) const {
+                                    const int32_t /* inIndentation */) const {
   ioString << "<@stringset:" ;
   if (NULL == mSharedRoot) {
     ioString << "not built" ;
@@ -742,24 +742,24 @@ GALGAS_stringset GALGAS_stringset::operator_and (const GALGAS_stringset & inOper
     #endif
     result = constructor_emptySet (THERE) ;
     if (NULL != mSharedRoot) {
-      const PMUInt32 leftCount = mSharedRoot->count () ;
-      TC_UniqueArray <C_String> leftList ((PMSInt32) leftCount COMMA_THERE) ;
+      const uint32_t leftCount = mSharedRoot->count () ;
+      TC_UniqueArray <C_String> leftList ((int32_t) leftCount COMMA_THERE) ;
       mSharedRoot->buildOrderedKeyList (leftList) ;
-      const PMUInt32 rightCount = (NULL == inOperand2.mSharedRoot) ? 0 : inOperand2.mSharedRoot->count () ;
-      TC_UniqueArray <C_String> rightList ((PMSInt32) rightCount COMMA_THERE) ;
+      const uint32_t rightCount = (NULL == inOperand2.mSharedRoot) ? 0 : inOperand2.mSharedRoot->count () ;
+      TC_UniqueArray <C_String> rightList ((int32_t) rightCount COMMA_THERE) ;
       if (NULL != inOperand2.mSharedRoot) {
         inOperand2.mSharedRoot->buildOrderedKeyList (rightList) ;
       }
-      PMUInt32 leftIndex = 0 ;
-      PMUInt32 rightIndex = 0 ;
+      uint32_t leftIndex = 0 ;
+      uint32_t rightIndex = 0 ;
       while ((leftIndex < leftCount) && (rightIndex < rightCount)) {
-        const PMSInt32 cmp = leftList ((PMSInt32) leftIndex COMMA_THERE).compare (rightList ((PMSInt32) rightIndex COMMA_THERE)) ;
+        const int32_t cmp = leftList ((int32_t) leftIndex COMMA_THERE).compare (rightList ((int32_t) rightIndex COMMA_THERE)) ;
         if (cmp < 0) {
           leftIndex ++ ;
         }else if (cmp > 0) {
           rightIndex ++ ;
         }else{
-          result.addAssign_operation (GALGAS_string (leftList ((PMSInt32) leftIndex COMMA_THERE)) COMMA_HERE) ;
+          result.addAssign_operation (GALGAS_string (leftList ((int32_t) leftIndex COMMA_THERE)) COMMA_HERE) ;
           leftIndex ++ ;
           rightIndex ++ ;
         }
@@ -788,13 +788,13 @@ GALGAS_stringset GALGAS_stringset::operator_or (const GALGAS_stringset & inOpera
       inOperand2.checkStringset (HERE) ;
     #endif
     result = *this ;
-    const PMUInt32 rightCount = (NULL == inOperand2.mSharedRoot) ? 0 : inOperand2.mSharedRoot->count () ;
-    TC_UniqueArray <C_String> rightList ((PMSInt32) rightCount COMMA_THERE) ;
+    const uint32_t rightCount = (NULL == inOperand2.mSharedRoot) ? 0 : inOperand2.mSharedRoot->count () ;
+    TC_UniqueArray <C_String> rightList ((int32_t) rightCount COMMA_THERE) ;
     if (NULL != inOperand2.mSharedRoot) {
       inOperand2.mSharedRoot->buildOrderedKeyList (rightList) ;
     }
-    for (PMUInt32 i=0 ; i<rightCount ; i++) {
-      result.addAssign_operation (GALGAS_string (rightList ((PMSInt32) i COMMA_THERE)) COMMA_HERE) ;
+    for (uint32_t i=0 ; i<rightCount ; i++) {
+      result.addAssign_operation (GALGAS_string (rightList ((int32_t) i COMMA_THERE)) COMMA_HERE) ;
     }
     #ifndef DO_NOT_GENERATE_CHECKINGS
       result.checkStringset (HERE) ;
@@ -820,14 +820,14 @@ GALGAS_stringset GALGAS_stringset::substract_operation (const GALGAS_stringset &
       inOperand2.checkStringset (HERE) ;
     #endif
     result = constructor_emptySet (THERE) ;
-    const PMUInt32 leftCount = (NULL == mSharedRoot) ? 0 : mSharedRoot->count () ;
-    TC_UniqueArray <C_String> leftList ((PMSInt32) leftCount COMMA_THERE) ;
+    const uint32_t leftCount = (NULL == mSharedRoot) ? 0 : mSharedRoot->count () ;
+    TC_UniqueArray <C_String> leftList ((int32_t) leftCount COMMA_THERE) ;
     if (NULL != mSharedRoot) {
       mSharedRoot->buildOrderedKeyList (leftList) ;
     }
-    for (PMUInt32 i=0 ; i<leftCount ; i++) {
-      if ((NULL != inOperand2.mSharedRoot) && ! inOperand2.mSharedRoot->hasKey (leftList ((PMSInt32) i COMMA_HERE))) {
-        result.addAssign_operation (GALGAS_string (leftList ((PMSInt32) i COMMA_HERE)) COMMA_HERE) ;
+    for (uint32_t i=0 ; i<leftCount ; i++) {
+      if ((NULL != inOperand2.mSharedRoot) && ! inOperand2.mSharedRoot->hasKey (leftList ((int32_t) i COMMA_HERE))) {
+        result.addAssign_operation (GALGAS_string (leftList ((int32_t) i COMMA_HERE)) COMMA_HERE) ;
       }
     }
     #ifndef DO_NOT_GENERATE_CHECKINGS
@@ -969,7 +969,7 @@ cGenericAbstractEnumerator () {
 
 GALGAS_string cEnumerator_stringset::current_key (LOCATION_ARGS) const {
   const cCollectionElement_stringset * p = (const cCollectionElement_stringset *) currentObjectPtr (THERE) ;
-  macroValidSharedObject (p, const cCollectionElement_stringset) ;
+  macroValidSharedObject (p, cCollectionElement_stringset) ;
   return p->attribute_key () ;
 }
 
@@ -977,7 +977,7 @@ GALGAS_string cEnumerator_stringset::current_key (LOCATION_ARGS) const {
 
 GALGAS_string cEnumerator_stringset::current (LOCATION_ARGS) const {
   const cCollectionElement_stringset * p = (const cCollectionElement_stringset *) currentObjectPtr (THERE) ;
-  macroValidSharedObject (p, const cCollectionElement_stringset) ;
+  macroValidSharedObject (p, cCollectionElement_stringset) ;
   return p->attribute_key () ;
 }
 
@@ -990,11 +990,11 @@ GALGAS_string cEnumerator_stringset::current (LOCATION_ARGS) const {
 typeComparisonResult GALGAS_stringset::objectCompare (const GALGAS_stringset & inOperand) const {
   typeComparisonResult result = kOperandNotValid ;
   if (isValid () && inOperand.isValid ()) {
-    const PMSInt32 count1 = (PMSInt32) mSharedRoot->count () ;
+    const int32_t count1 = (int32_t) mSharedRoot->count () ;
     const cStringsetNode * root1 = mSharedRoot->root () ;
-    const PMSInt32 count2 = (PMSInt32) inOperand.mSharedRoot->count () ;
+    const int32_t count2 = (int32_t) inOperand.mSharedRoot->count () ;
     const cStringsetNode * root2 = inOperand.mSharedRoot->root () ;
-    PMSInt32 r = 0 ;
+    int32_t r = 0 ;
     if (root1 != root2) {
       r = count1 - count2 ;
       if (r == 0) {
@@ -1002,7 +1002,7 @@ typeComparisonResult GALGAS_stringset::objectCompare (const GALGAS_stringset & i
         mSharedRoot->buildOrderedKeyList (leftList) ;
         TC_UniqueArray <C_String> rightList (count2 COMMA_HERE) ;
         inOperand.mSharedRoot->buildOrderedKeyList (rightList) ;
-        for (PMSInt32 i=0 ; (i<count1) && (r == 0) ; i++) {
+        for (int32_t i=0 ; (i<count1) && (r == 0) ; i++) {
           r = leftList (i COMMA_HERE).compare (rightList (i COMMA_HERE)) ;
         }
       }

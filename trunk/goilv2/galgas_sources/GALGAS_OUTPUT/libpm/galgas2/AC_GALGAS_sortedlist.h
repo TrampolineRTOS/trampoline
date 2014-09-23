@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  AC_GALGAS_sortedlist : base class for GALGAS sorted list                 *
+//  AC_GALGAS_sortedlist : base class for GALGAS sorted list                   *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -28,8 +28,8 @@
 
 //-----------------------------------------------------------------------------*
 
-#include "AC_GALGAS_root.h"
-#include "typeComparisonResult.h"
+#include "galgas2/AC_GALGAS_root.h"
+#include "galgas2/typeComparisonResult.h"
 
 //-----------------------------------------------------------------------------*
 
@@ -62,7 +62,7 @@ class AC_GALGAS_sortedlist : public AC_GALGAS_root {
   public : VIRTUAL_IN_DEBUG bool isValid (void) const { return NULL != mSharedRoot ; }
 
 //--- count
-  public : VIRTUAL_IN_DEBUG PMUInt32 count (void) const ;
+  public : VIRTUAL_IN_DEBUG uint32_t count (void) const ;
 
 //--------------------------------- Create a new sorted list
   protected : VIRTUAL_IN_DEBUG void createNewEmptySortedList (LOCATION_ARGS) ;
@@ -72,7 +72,7 @@ class AC_GALGAS_sortedlist : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of reader 'description'
   public : virtual void description (C_String & ioString,
-                                     const PMSInt32 inIndentation) const ;
+                                     const int32_t inIndentation) const ;
 
 //--- Enumeration handling
   protected : void populateEnumerationArray (capCollectionElementArray & inEnumerationArray,

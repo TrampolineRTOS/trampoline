@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  'C_TextFileWrite' : a class for stream writing text files                *
+//  'C_TextFileWrite' : a class for stream writing text files                  *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -38,7 +38,7 @@
 
 //-----------------------------------------------------------------------------*
 
-const PMSInt32 kFileBufferSize = 10000 ;
+const int32_t kFileBufferSize = 10000 ;
 
 //-----------------------------------------------------------------------------*
 
@@ -57,10 +57,10 @@ class C_TextFileWrite : public AC_OutputStream, public AC_FileHandleForWriting {
   
 //--- General stream methods
   protected : virtual void performActualCharArrayOutput (const char * inCharArray,
-                                                         const PMSInt32 inArrayCount) ;
+                                                         const int32_t inArrayCount) ;
 
   protected : virtual void performActualUnicodeArrayOutput (const utf32 * inCharArray,
-                                                            const PMSInt32 inArrayCount) ;
+                                                            const int32_t inArrayCount) ;
 
 //--- Flush print
   public : virtual void flush (void) ;
@@ -69,7 +69,7 @@ class C_TextFileWrite : public AC_OutputStream, public AC_FileHandleForWriting {
   public : virtual bool close (void) ;
 
 //--- Private attributes
-  private : PMSInt32 mBufferLength ;
+  private : int32_t mBufferLength ;
   private : char mBuffer [kFileBufferSize + 1] ;
 } ;
 

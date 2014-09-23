@@ -5,8 +5,11 @@
 //  Created by Pierre Molinaro on 06/07/09.
 //  Copyright 2009 ECN / IRCCyN. All rights reserved.
 //
+//-----------------------------------------------------------------------------*
 
 #import <Cocoa/Cocoa.h>
+
+//-----------------------------------------------------------------------------*
 
 #ifdef __cplusplus
   extern "C" {
@@ -19,3 +22,5 @@ void enterDefaultCommandLineOptions (NSMutableArray * ioBoolOptionArray,
 #ifdef __cplusplus
   }
 #endif
+
+//-----------------------------------------------------------------------------*

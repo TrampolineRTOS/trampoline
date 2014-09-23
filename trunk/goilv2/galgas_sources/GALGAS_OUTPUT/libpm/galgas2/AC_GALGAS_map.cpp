@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  AC_GALGAS_map : Base class for GALGAS map                                *
+//  AC_GALGAS_map : Base class for GALGAS map                                  *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -23,9 +23,9 @@
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-#include "predefined-types.h"
-#include "capCollectionElement.h"
-#include "C_galgas_type_descriptor.h"
+#include "galgas2/predefined-types.h"
+#include "galgas2/capCollectionElement.h"
+#include "galgas2/C_galgas_type_descriptor.h"
 #include "utilities/MF_MemoryControl.h"
 #include "galgas2/C_Compiler.h"
 #include "strings/unicode_string_routines.h"
@@ -37,19 +37,19 @@ class cMapNode ;
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  c S h a r e d M a p R o o t                                              *
+//  c S h a r e d M a p R o o t                                                *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
 class cSharedMapRoot : public C_SharedObject {
 //--------------------------------- Attributes
   private : cMapNode * mRoot ;
-  private : PMUInt32 mCount ;
+  private : uint32_t mCount ;
   protected : cSharedMapRoot * mOverridenMap ;
 
 //--------------------------------- Accessors
   public : inline const cMapNode * root (void) const { return mRoot ; }
-  public : inline PMUInt32 count (void) const { return mCount ; }
+  public : inline uint32_t count (void) const { return mCount ; }
 
 //--------------------------------- Constructor
   protected : cSharedMapRoot (LOCATION_ARGS) ;
@@ -84,7 +84,7 @@ class cSharedMapRoot : public C_SharedObject {
                                                         const cSharedMapRoot * inFirstMap) const ;
 
   private : VIRTUAL_IN_DEBUG cMapNode * findEntryInMapAtLevel (const C_String & inKey,
-                                                               const PMUInt32 inLevel,
+                                                               const uint32_t inLevel,
                                                                const cSharedMapRoot * inFirstMap) const ;
 
   public : VIRTUAL_IN_DEBUG void findNearestKey (const C_String & inKey,
@@ -135,8 +135,8 @@ class cSharedMapRoot : public C_SharedObject {
 
 //--------------------------------- Implementation of reader 'description'
   public : VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const PMSInt32 inIndentation,
-                                              const PMUInt32 inLevel) const ;
+                                              const int32_t inIndentation,
+                                              const uint32_t inLevel) const ;
 
 //--------------------------------- Internal method for enumeration
   protected : VIRTUAL_IN_DEBUG void populateEnumerationArray (capCollectionElementArray & ioEnumerationArray,
@@ -157,14 +157,14 @@ class cSharedMapRoot : public C_SharedObject {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  c M a p N o d e                                                          *
+//  c M a p N o d e                                                            *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
 class cMapNode {
   public : cMapNode * mInfPtr ;
   public : cMapNode * mSupPtr ;
-  public : PMSInt32 mBalance ;
+  public : int32_t mBalance ;
   public : const C_String mKey ;
   public : capCollectionElement mAttributes ;
 
@@ -226,7 +226,7 @@ cMapNode::~cMapNode (void) {
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static void checkNode (const cMapNode * inNode,
-                         PMUInt32 & ioCount) {
+                         uint32_t & ioCount) {
     if (NULL != inNode) {
      checkNode (inNode->mInfPtr, ioCount) ;
      if (inNode->mAttributes.ptr () != NULL) {
@@ -241,7 +241,7 @@ cMapNode::~cMapNode (void) {
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void cSharedMapRoot::checkMap (LOCATION_ARGS) const {
-    PMUInt32 n = 0 ;
+    uint32_t n = 0 ;
     checkNode (mRoot, n) ;
     MF_AssertThere (n == mCount, "n (%lld) != mCount (%lld)", n, mCount) ;
   }
@@ -313,8 +313,8 @@ void AC_GALGAS_map::makeNewEmptyMapWithMapToOverride (const AC_GALGAS_map & inMa
 
 static void internalDescription (cMapNode * inNode,
                                  C_String & ioString,
-                                 const PMSInt32 inIndentation,
-                                 PMUInt32 & ioIdx) {
+                                 const int32_t inIndentation,
+                                 uint32_t & ioIdx) {
   if (NULL != inNode) {
     internalDescription (inNode->mInfPtr, ioString, inIndentation, ioIdx) ;
     ioString << "\n" ;
@@ -330,8 +330,8 @@ static void internalDescription (cMapNode * inNode,
 //-----------------------------------------------------------------------------*
 
 void cSharedMapRoot::description (C_String & ioString,
-                                  const PMSInt32 inIndentation,
-                                  const PMUInt32 inLevel) const {
+                                  const int32_t inIndentation,
+                                  const uint32_t inLevel) const {
   if (inLevel > 0) {
     ioString << "\n" ;
     ioString.writeStringMultiple ("| ", inIndentation + 1) ;
@@ -341,19 +341,19 @@ void cSharedMapRoot::description (C_String & ioString,
            << cStringWithUnsigned (count ())
            << " object" << ((count () > 1) ? "s" : "")
            << "): " ;
-  PMUInt32 idx = 0 ;
+  uint32_t idx = 0 ;
   internalDescription (mRoot, ioString, inIndentation, idx) ;
 }
 
 //-----------------------------------------------------------------------------*
 
 void AC_GALGAS_map::description (C_String & ioString,
-                                 const PMSInt32 inIndentation) const {
+                                 const int32_t inIndentation) const {
   ioString << "<map @"
            << staticTypeDescriptor ()->mGalgasTypeName ;
   if (isValid ()) {
     const cSharedMapRoot * currentMap = mSharedMap ;
-    PMUInt32 level = 0 ;
+    uint32_t level = 0 ;
     while (NULL != currentMap) {
       currentMap->description (ioString, inIndentation, level) ;
       level ++ ;
@@ -374,17 +374,17 @@ void AC_GALGAS_map::description (C_String & ioString,
 //-----------------------------------------------------------------------------*
 
 cMapNode * cSharedMapRoot::findEntryInMapAtLevel (const C_String & inKey,
-                                                  const PMUInt32 inLevel,
+                                                  const uint32_t inLevel,
                                                   const cSharedMapRoot * inFirstMap) const {
   cMapNode * result = NULL ;
   const cSharedMapRoot * currentMap = inFirstMap ;
-  PMUInt32 level = 0 ;
+  uint32_t level = 0 ;
   while ((NULL != currentMap) && (NULL == result)) {
     if (inLevel == level) {
       cMapNode * currentNode = currentMap->mRoot ;
       while ((currentNode != NULL) && (NULL == result)) {
         macroValidPointer (currentNode) ;
-        const PMSInt32 comparaison = currentNode->mKey.compare (inKey) ;
+        const int32_t comparaison = currentNode->mKey.compare (inKey) ;
         if (comparaison > 0) {
           currentNode = currentNode->mInfPtr ;
         }else if (comparaison < 0) {
@@ -410,7 +410,7 @@ cMapNode * cSharedMapRoot::findEntryInMap (const C_String & inKey,
     cMapNode * currentNode = currentMap->mRoot ;
     while ((currentNode != NULL) && (NULL == result)) {
       macroValidPointer (currentNode) ;
-      const PMSInt32 comparaison = currentNode->mKey.compare (inKey) ;
+      const int32_t comparaison = currentNode->mKey.compare (inKey) ;
       if (comparaison > 0) {
         currentNode = currentNode->mInfPtr ;
       }else if (comparaison < 0) {
@@ -498,7 +498,7 @@ static void rotateLeft (cMapNode * & ioRootPtr) {
   ioRootPtr = b ;
 }
 
-//---------------------------------------------------------------------
+//-----------------------------------------------------------------------------*
 
 static void rotateRight (cMapNode * & ioRootPtr) {
   cMapNode * b = ioRootPtr->mInfPtr ;
@@ -531,7 +531,7 @@ static bool internalInsertOrReplace (cMapNode * & ioRootPtr,
     anObjectHasBeenAdded = true ;
   }else{
     macroValidPointer (ioRootPtr) ;
-    const PMSInt32 comparaison = ioRootPtr->mKey.compare (inKey) ;
+    const int32_t comparaison = ioRootPtr->mKey.compare (inKey) ;
     if (comparaison > 0) {
       anObjectHasBeenAdded = internalInsertOrReplace (ioRootPtr->mInfPtr, inKey, ioAttributeArray, ioExtension) ;
       if (ioExtension) {
@@ -575,7 +575,7 @@ void cSharedMapRoot::performInsertOrReplace (const capCollectionElement & inAttr
 //--- If all attributes are built, perform insertion
   if (inAttributes.isValid ()) {
     const cMapElement * p = (cMapElement *) inAttributes.ptr () ;
-    macroValidSharedObject (p, const cMapElement) ;
+    macroValidSharedObject (p, cMapElement) ;
     const GALGAS_string string_key = p->mAttribute_lkey.mAttribute_string ;
     const C_String key = string_key.stringValue () ;
   //--- Insert or replace
@@ -630,7 +630,7 @@ void cSharedMapRoot::copyFrom (const cSharedMapRoot * inSource) {
   #ifndef DO_NOT_GENERATE_CHECKINGS
     inSource->checkMap (HERE) ;
   #endif
-  macroValidSharedObject (inSource, const cSharedMapRoot) ;
+  macroValidSharedObject (inSource, cSharedMapRoot) ;
   mCount = inSource->mCount ;
   if (NULL != inSource->mRoot) {
     macroMyNew (mRoot, cMapNode (inSource->mRoot)) ;
@@ -675,7 +675,7 @@ static cMapNode * internalInsert (cMapNode * & ioRootPtr,
     matchingEntry = ioRootPtr ;
   }else{
     macroValidPointer (ioRootPtr) ;
-    const PMSInt32 comparaison = ioRootPtr->mKey.compare (inKey) ;
+    const int32_t comparaison = ioRootPtr->mKey.compare (inKey) ;
     if (comparaison > 0) {
       matchingEntry = internalInsert (ioRootPtr->mInfPtr, inKey, inAttributes, outEntryAlreadyExists, ioExtension) ;
       if (ioExtension) {
@@ -738,7 +738,7 @@ cMapNode * cSharedMapRoot::performInsert (const capCollectionElement & inAttribu
       result = matchingEntry ;
       mCount ++ ;
       const C_String shadowErrorMessage (inShadowErrorMessage) ;
-      const PMSInt32 shadowErrorMessageLength = shadowErrorMessage.length () ;
+      const int32_t shadowErrorMessageLength = shadowErrorMessage.length () ;
       if (shadowErrorMessageLength > 0) {
         matchingEntry = findEntryInMap (key, mOverridenMap) ;
         if (NULL != matchingEntry) {
@@ -801,8 +801,8 @@ GALGAS_uint AC_GALGAS_map::reader_count (UNUSED_LOCATION_ARGS) const {
 
 //-----------------------------------------------------------------------------*
 
-PMUInt32 AC_GALGAS_map::count (void) const {
-  PMUInt32 result = 0 ;
+uint32_t AC_GALGAS_map::count (void) const {
+  uint32_t result = 0 ;
   if (isValid ()) {
     result = mSharedMap->count () ;
   }
@@ -933,7 +933,7 @@ GALGAS_location AC_GALGAS_map::reader_locationForKey (const GALGAS_string & inKe
 //-----------------------------------------------------------------------------*
 
 GALGAS_uint cSharedMapRoot::levels (UNUSED_LOCATION_ARGS) const {
-  PMUInt32 levelCount = 0 ;
+  uint32_t levelCount = 0 ;
   const cSharedMapRoot * currentMap = this ;
   while (NULL != currentMap) {
     currentMap = currentMap->mOverridenMap ;
@@ -1024,11 +1024,11 @@ GALGAS_bool AC_GALGAS_map::reader_hasKey (const GALGAS_string & inKey
 
 static void findNearestKeyForNode (const C_String & inKey,
                                    const cMapNode * inCurrentNode,
-                                   PMUInt32 & ioBestDistance,
+                                   uint32_t & ioBestDistance,
                                    TC_UniqueArray <C_String> & ioNearestKeyArray) {
   if (NULL != inCurrentNode) {
     macroValidPointer (inCurrentNode) ;
-    const PMUInt32 distance = inCurrentNode->mKey.LevenshteinDistanceFromString (inKey) ;
+    const uint32_t distance = inCurrentNode->mKey.LevenshteinDistanceFromString (inKey) ;
     // printf ("inCurrentNode->mKey '%s', distance %u\n", inCurrentNode->mKey.cString (HERE), distance) ;
     if (ioBestDistance > distance) {
       ioBestDistance = distance ;
@@ -1047,7 +1047,7 @@ static void findNearestKeyForNode (const C_String & inKey,
 void cSharedMapRoot::findNearestKey (const C_String & inKey,
                                      TC_UniqueArray <C_String> & ioNearestKeyArray) const {
   ioNearestKeyArray.setCountToZero () ;
-  PMUInt32 bestDistance = PMUINT32_MAX ;
+  uint32_t bestDistance = UINT32_MAX ;
   const cSharedMapRoot * currentMap = this ;
   while (NULL != currentMap) {
     findNearestKeyForNode (inKey, currentMap->mRoot, bestDistance, ioNearestKeyArray) ;
@@ -1107,7 +1107,7 @@ const cMapElement * cSharedMapRoot::searchForReadingAttribute (const GALGAS_stri
     cMapNode * node = findEntryInMap (key, this) ;
     if (NULL != node) {
       result = (const cMapElement *) node->mAttributes.ptr () ;
-      macroValidSharedObject (result, const cMapElement) ;
+      macroValidSharedObject (result, cMapElement) ;
     }else{
     //--- Build error message
       C_String message ;
@@ -1307,7 +1307,7 @@ static cMapNode * internalRemoveEntry (const C_String & inKeyToRemove,
                                        bool & ioBranchHasBeenRemoved) {
   cMapNode * removedNode = NULL ;
   if (ioRoot != NULL) {
-    const PMSInt32 comparaison = ioRoot->mKey.compare (inKeyToRemove) ;
+    const int32_t comparaison = ioRoot->mKey.compare (inKeyToRemove) ;
     if (comparaison > 0) {
       removedNode = internalRemoveEntry (inKeyToRemove, ioRoot->mInfPtr, ioBranchHasBeenRemoved);
       if (ioBranchHasBeenRemoved) {
@@ -1363,8 +1363,8 @@ void cSharedMapRoot::performRemove (GALGAS_lstring & inKey,
       C_String message ;
       bool perCentFound = false ;
       const C_String removeErrorMessage (inRemoveErrorMessage) ;
-      const PMSInt32 errorMessageLength = removeErrorMessage.length () ;
-      for (PMSInt32 i=0 ; i<errorMessageLength ; i++) {
+      const int32_t errorMessageLength = removeErrorMessage.length () ;
+      for (int32_t i=0 ; i<errorMessageLength ; i++) {
         const utf32 c = removeErrorMessage (i COMMA_HERE) ;
         if (perCentFound) {
           if (UNICODE_VALUE (c) == 'K') {
@@ -1423,12 +1423,12 @@ typeComparisonResult cSharedMapRoot::mapCompare (const cSharedMapRoot * inOperan
   }else{
     capCollectionElementArray array ; populateEnumerationArray (array, kEnumeration_up) ;
     capCollectionElementArray operandArray ; inOperand->populateEnumerationArray (operandArray, kEnumeration_up) ;
-    for (PMUInt32 i=0 ; (i<array.count ()) && (kOperandEqual == r) ; i++) {
+    for (uint32_t i=0 ; (i<array.count ()) && (kOperandEqual == r) ; i++) {
       r = array.objectAtIndex (i COMMA_HERE).compare (operandArray.objectAtIndex (i COMMA_HERE)) ;
     }
     if (kOperandEqual == r) {
-      const PMSInt32 n1 = (NULL == mOverridenMap) ? 0 : (PMSInt32) mOverridenMap->count () ;
-      const PMSInt32 n2 = (NULL == inOperand->mOverridenMap) ? 0 : (PMSInt32) inOperand->mOverridenMap->count () ;
+      const int32_t n1 = (NULL == mOverridenMap) ? 0 : (int32_t) mOverridenMap->count () ;
+      const int32_t n2 = (NULL == inOperand->mOverridenMap) ? 0 : (int32_t) inOperand->mOverridenMap->count () ;
       if (n1 < n2) {
         r = kFirstOperandLowerThanSecond ;
       }else if (n1 > n2) {

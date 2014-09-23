@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   GALGAS_double                                                           *
+//   GALGAS_double                                                             *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -23,7 +23,7 @@
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-#include "predefined-types.h"
+#include "galgas2/predefined-types.h"
 #include "galgas2/C_Compiler.h"
 
 //-----------------------------------------------------------------------------*
@@ -70,7 +70,7 @@ GALGAS_double GALGAS_double::constructor_doubleWithBinaryImage (const GALGAS_uin
   GALGAS_double result ;
   if (inImage.isValid ()) {
     union {
-      PMUInt64 unsignedIntegerValue ;
+      uint64_t unsignedIntegerValue ;
       double   doubleValue ;
     } ;
     unsignedIntegerValue = inImage.uint64Value () ;
@@ -85,7 +85,7 @@ GALGAS_uint_36__34_ GALGAS_double::reader_binaryImage (UNUSED_LOCATION_ARGS) con
   GALGAS_uint_36__34_ result ;
   if (isValid ()) {
     union {
-      PMUInt64 unsignedIntegerValue ;
+      uint64_t unsignedIntegerValue ;
       double   doubleValue ;
     } ;
     doubleValue = mDoubleValue ;
@@ -249,14 +249,14 @@ GALGAS_double GALGAS_double::reader_power (const GALGAS_double & inExponant,
 GALGAS_uint GALGAS_double::reader_uint (C_Compiler * inCompiler
                                         COMMA_LOCATION_ARGS) const {
   GALGAS_uint result ;
-  if ((mDoubleValue > (double) PMUINT32_MAX) || (mDoubleValue < 0.0)) {
+  if ((mDoubleValue > (double) UINT32_MAX) || (mDoubleValue < 0.0)) {
     C_String s ;
     s << "Cannot convert @double (" ;
     s.appendDouble (mDoubleValue) ;
     s << ") to @uint" ;
     inCompiler->onTheFlyRunTimeError (s COMMA_THERE) ;
   }else{
-    result = GALGAS_uint ((PMUInt32) (lround (mDoubleValue) & PMUINT32_MAX)) ;
+    result = GALGAS_uint ((uint32_t) (lround (mDoubleValue) & INT32_MAX)) ;
   }
   return result ;
 }
@@ -266,14 +266,14 @@ GALGAS_uint GALGAS_double::reader_uint (C_Compiler * inCompiler
 GALGAS_uint_36__34_ GALGAS_double::reader_uint_36__34_ (C_Compiler * inCompiler
                                                         COMMA_LOCATION_ARGS) const {
   GALGAS_uint_36__34_ result ;
-  if ((mDoubleValue > (double) PMUINT64_MAX) || (mDoubleValue < 0.0)) {
+  if ((mDoubleValue > (double) UINT64_MAX) || (mDoubleValue < 0.0)) {
     C_String s ;
     s << "Cannot convert @double (" ;
     s.appendDouble (mDoubleValue) ;
     s << ") to @uint64" ;
     inCompiler->onTheFlyRunTimeError (s COMMA_THERE) ;
   }else{
-    result = GALGAS_uint_36__34_ ((PMUInt64) lround (mDoubleValue)) ;
+    result = GALGAS_uint_36__34_ ((uint64_t) lround (mDoubleValue)) ;
   }
   return result ;
 }
@@ -283,14 +283,14 @@ GALGAS_uint_36__34_ GALGAS_double::reader_uint_36__34_ (C_Compiler * inCompiler
 GALGAS_sint GALGAS_double::reader_sint (C_Compiler * inCompiler
                                           COMMA_LOCATION_ARGS) const {
   GALGAS_sint result ;
-  if ((mDoubleValue > (double) PMSINT32_MAX) || (mDoubleValue < (double) PMSINT32_MIN)) {
+  if ((mDoubleValue > (double) INT32_MAX) || (mDoubleValue < (double) INT32_MIN)) {
     C_String s ;
     s << "Cannot convert @double (" ;
     s.appendDouble (mDoubleValue) ;
     s << ") to @sint" ;
     inCompiler->onTheFlyRunTimeError (s COMMA_THERE) ;
   }else{
-    result = GALGAS_sint ((PMSInt32) (lround (mDoubleValue) & PMUINT32_MAX)) ;
+    result = GALGAS_sint ((int32_t) (lround (mDoubleValue) & UINT32_MAX)) ;
   }
   return result ;
 }
@@ -300,7 +300,7 @@ GALGAS_sint GALGAS_double::reader_sint (C_Compiler * inCompiler
 GALGAS_sint_36__34_ GALGAS_double::reader_sint_36__34_ (C_Compiler * inCompiler
                                                           COMMA_LOCATION_ARGS) const {
   GALGAS_sint_36__34_ result ;
-  if ((mDoubleValue > (double) PMSINT64_MAX) || (mDoubleValue < (double) PMSINT64_MIN)) {
+  if ((mDoubleValue > (double) INT64_MAX) || (mDoubleValue < (double) INT64_MIN)) {
     C_String s ;
     s << "Cannot convert @double (" ;
     s.appendDouble (mDoubleValue) ;
@@ -331,7 +331,7 @@ typeComparisonResult GALGAS_double::objectCompare (const GALGAS_double & inOpera
 //-----------------------------------------------------------------------------*
 
 void GALGAS_double::description (C_String & ioString,
-                               const PMSInt32 /* inIndentation */) const {
+                               const int32_t /* inIndentation */) const {
   ioString << "<@double:" ;
   if (isValid ()) {
     ioString.appendDouble (mDoubleValue) ;
@@ -419,7 +419,7 @@ GALGAS_double GALGAS_double::modulo_operation (const GALGAS_double & inOperand,
                                                COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_double result ;
   if (isValid () && inOperand.isValid ()) {
-    const PMUInt64 times = (PMUInt64) (mDoubleValue / inOperand.mDoubleValue) ;
+    const uint64_t times = (uint64_t) (mDoubleValue / inOperand.mDoubleValue) ;
     result = GALGAS_double (mDoubleValue - ((double) times) * inOperand.mDoubleValue) ;
   }
   return result ;

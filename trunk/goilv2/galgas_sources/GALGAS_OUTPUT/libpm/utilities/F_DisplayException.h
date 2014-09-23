@@ -1,10 +1,10 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Routine 'F_default_display_exception'.                                   *
+//  Routine 'F_default_display_exception'.                                     *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
-//  Copyright (C) 1997 Pierre Molinaro.                                      *
+//  Copyright (C) 1997 Pierre Molinaro.                                        *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
 //  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
 //  ECN, École Centrale de Nantes (France)                                     *
@@ -34,7 +34,7 @@
 
 //-----------------------------------------------------------------------------*
 
-void F_default_display_exception (const M_STD_NAMESPACE exception & inException) ;
+void F_default_display_exception (const ::std:: exception & inException) ;
 
 void F_default_display_unknown_exception (void) ;
 

@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Handing unsigned integer of arbitrary size                               *
+//  Handing unsigned integer of arbitrary size                                 *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -33,7 +33,7 @@ mHigh (0) {
 
 //-----------------------------------------------------------------------------*
 
-PMUInt128::PMUInt128 (const PMUInt64 inValue) :
+PMUInt128::PMUInt128 (const uint64_t inValue) :
 mLow (inValue),
 mHigh (0) {
 }
@@ -51,7 +51,7 @@ bool PMUInt128::isZero (void) const {
 
 //-----------------------------------------------------------------------------*
 
-bool PMUInt128::valueAtBitIndex (const PMUInt32 inIndex) const {
+bool PMUInt128::valueAtBitIndex (const uint32_t inIndex) const {
   bool result = false ;
   if (inIndex < 64) {
     result = ((mLow >> inIndex) & 1) != 0 ;
@@ -63,16 +63,16 @@ bool PMUInt128::valueAtBitIndex (const PMUInt32 inIndex) const {
 
 //-----------------------------------------------------------------------------*
 
-void PMUInt128::setValueAtBitIndex (const bool inValue, const PMUInt32 inIndex) {
+void PMUInt128::setValueAtBitIndex (const bool inValue, const uint32_t inIndex) {
   if (inIndex < 64) {
-    const PMUInt64 mask = ((PMUInt64) 1) << inIndex ;
+    const uint64_t mask = ((uint64_t) 1) << inIndex ;
     if (inValue) {
       mLow |= mask ;
     }else{
       mLow &= ~mask ;
     }
   }else if (inIndex < 128) {
-    const PMUInt64 mask = ((PMUInt64) 1) << (inIndex - 64) ;
+    const uint64_t mask = ((uint64_t) 1) << (inIndex - 64) ;
     if (inValue) {
       mHigh |= mask ;
     }else{
@@ -104,9 +104,9 @@ PMUInt128 & PMUInt128::operator -- (void) {
 //-----------------------------------------------------------------------------*
 
 void PMUInt128::operator += (const PMUInt128 & inValue) {
-  const PMUInt64 previousLow = mLow ;
+  const uint64_t previousLow = mLow ;
   mLow += inValue.mLow ;
-  const PMUInt64 carry = mLow < previousLow ;
+  const uint64_t carry = mLow < previousLow ;
   mHigh += inValue.mHigh + carry ;
 }
 
@@ -132,7 +132,7 @@ bool PMUInt128::operator != (const PMUInt128 & inValue) const {
 
 //-----------------------------------------------------------------------------*
 
-bool PMUInt128::operator > (const PMUInt32 inOperand) const {
+bool PMUInt128::operator > (const uint32_t inOperand) const {
   bool result = mHigh > 0 ;
   if (! result) {
     result = mLow > inOperand ;
@@ -142,40 +142,40 @@ bool PMUInt128::operator > (const PMUInt32 inOperand) const {
 
 //-----------------------------------------------------------------------------*
 
-void PMUInt128::operator *= (const PMUInt32 inMultiplicand) {
-  const PMUInt64 p0 = (mLow & PMUINT32_MAX) * inMultiplicand ;
-  const PMUInt64 p1 = (mLow >> 32) * inMultiplicand + (p0 >> 32) ;
-  const PMUInt64 p2 = (mHigh & PMUINT32_MAX) * inMultiplicand + (p1 >> 32) ;
-  const PMUInt64 p3 = (mHigh >> 32) * inMultiplicand + (p2 >> 32) ;
-  mLow = (p0 & PMUINT32_MAX) + (p1 << 32) ;
-  mHigh = (p2 & PMUINT32_MAX) + (p3 << 32) ;
+void PMUInt128::operator *= (const uint32_t inMultiplicand) {
+  const uint64_t p0 = (mLow & UINT32_MAX) * inMultiplicand ;
+  const uint64_t p1 = (mLow >> 32) * inMultiplicand + (p0 >> 32) ;
+  const uint64_t p2 = (mHigh & UINT32_MAX) * inMultiplicand + (p1 >> 32) ;
+  const uint64_t p3 = (mHigh >> 32) * inMultiplicand + (p2 >> 32) ;
+  mLow = (p0 & UINT32_MAX) + (p1 << 32) ;
+  mHigh = (p2 & UINT32_MAX) + (p3 << 32) ;
 }
 
 //-----------------------------------------------------------------------------*
 
-void PMUInt128::divideBy (const PMUInt32 inDivisor,
-                          PMUInt32 & outRemainder) {
-  const PMUInt64 d3 = mHigh >> 32 ;
-  const PMUInt64 q3 = d3 / inDivisor ; 
-  const PMUInt64 r3 = d3 % inDivisor ; 
-  const PMUInt64 d2 = (mHigh & PMUINT32_MAX) + (r3 << 32) ;
-  const PMUInt64 q2 = d2 / inDivisor ; 
-  const PMUInt64 r2 = d2 % inDivisor ; 
-  const PMUInt64 d1 = (mLow >> 32) + (r2 << 32) ;
-  const PMUInt64 q1 = d1 / inDivisor ; 
-  const PMUInt64 r1 = d1 % inDivisor ; 
-  const PMUInt64 d0 = (mLow & PMUINT32_MAX) + (r1 << 32) ;
-  const PMUInt64 q0 = d0 / inDivisor ; 
-  const PMUInt64 r0 = d0 % inDivisor ; 
+void PMUInt128::divideBy (const uint32_t inDivisor,
+                          uint32_t & outRemainder) {
+  const uint64_t d3 = mHigh >> 32 ;
+  const uint64_t q3 = d3 / inDivisor ; 
+  const uint64_t r3 = d3 % inDivisor ; 
+  const uint64_t d2 = (mHigh & UINT32_MAX) + (r3 << 32) ;
+  const uint64_t q2 = d2 / inDivisor ; 
+  const uint64_t r2 = d2 % inDivisor ; 
+  const uint64_t d1 = (mLow >> 32) + (r2 << 32) ;
+  const uint64_t q1 = d1 / inDivisor ; 
+  const uint64_t r1 = d1 % inDivisor ; 
+  const uint64_t d0 = (mLow & UINT32_MAX) + (r1 << 32) ;
+  const uint64_t q0 = d0 / inDivisor ; 
+  const uint64_t r0 = d0 % inDivisor ; 
   mHigh = (q3 << 32) + q2 ;
   mLow = (q1 << 32) + q0 ;
-  outRemainder = (PMUInt32) r0 ;
+  outRemainder = (uint32_t) r0 ;
 }
 
 //-----------------------------------------------------------------------------*
 
-void PMUInt128::operator /= (const PMUInt32 inMultiplicand) {
-  PMUInt32 unusedRemainder ;
+void PMUInt128::operator /= (const uint32_t inMultiplicand) {
+  uint32_t unusedRemainder ;
   divideBy (inMultiplicand, unusedRemainder) ;
 }
 
@@ -187,14 +187,14 @@ C_String PMUInt128::decimalString (void) const {
     result << "0" ;
   }else{
     PMUInt128 value = *this ;
-    TC_UniqueArray <PMUInt32> values ;
+    TC_UniqueArray <uint32_t> values ;
     while (! value.isZero ()) {
-      PMUInt32 remainder = 0 ;
+      uint32_t remainder = 0 ;
       value.divideBy (1000, remainder) ;
       values.addObject (remainder) ;
     }
     result = cStringWithUnsigned (values.lastObject (HERE)) ;
-    for (PMSInt32 i=values.count () - 2 ; i>=0 ; i--) {
+    for (int32_t i=values.count () - 2 ; i>=0 ; i--) {
       char s [8] ;
       sprintf (s, " %03u", values (i COMMA_HERE)) ;
       result << s ;

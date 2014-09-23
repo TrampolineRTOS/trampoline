@@ -21,7 +21,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "md5.h"
+#include "utilities/md5.h"
 
 #define S11 7
 #define S12 12

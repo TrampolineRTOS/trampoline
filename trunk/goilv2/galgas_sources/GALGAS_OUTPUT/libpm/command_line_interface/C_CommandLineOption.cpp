@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Generic Command Line Interface Option                                    *
+//  Generic Command Line Interface Option                                      *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -28,7 +28,7 @@
 
 //-----------------------------------------------------------------------------*
 
-#include "command_line_interface/C_CommandLineOption.h"
+#include "C_CommandLineOption.h"
 
 //-----------------------------------------------------------------------------*
 

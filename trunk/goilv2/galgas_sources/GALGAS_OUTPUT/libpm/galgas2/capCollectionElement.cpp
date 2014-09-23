@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  GALGAS_enumerable : Base class for GALGAS enumerable object              *
+//  GALGAS_enumerable : Base class for GALGAS enumerable object                *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -23,8 +23,8 @@
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-#include "capCollectionElement.h"
-#include "cCollectionElement.h"
+#include "galgas2/capCollectionElement.h"
+#include "galgas2/cCollectionElement.h"
 #include "strings/C_String.h"
 
 //-----------------------------------------------------------------------------*
@@ -105,7 +105,7 @@ void capCollectionElement::insulate (void) {
 
 //-----------------------------------------------------------------------------*
 
-void capCollectionElement::description (C_String & ioString, const PMSInt32 inIndentation) const {
+void capCollectionElement::description (C_String & ioString, const int32_t inIndentation) const {
   if (NULL == mPtr) {
     ioString << "NULL" ;
   }else{

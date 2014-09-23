@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Class for date handling.                                                 *
+//  Class for date handling.                                                   *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -45,18 +45,18 @@ class C_DateTime {
   public : virtual ~C_DateTime (void) ;
 
 //--- Get date components
-  public : PMSInt32 getYearCount (void) const { return 1900 + mDate.tm_year ; } // (1900, ...)
-  public : PMSInt32 getMonthCount (void) const { return 1 + mDate.tm_mon ; } // (1, 12)
-  public : PMSInt32 getDayOfMonth (void) const { return mDate.tm_mday ; } // (1, 31)
-  public : PMSInt32 getHourOfDay (void) const { return mDate.tm_hour ; } // (0, 23)
-  public : PMSInt32 getMinuteOfHour (void) const { return mDate.tm_min ; } // (0, 59)
-  public : PMSInt32 getSecondOfMinute (void) const { return mDate.tm_sec ; } // (0, 59)
-  public : PMSInt32 getDayOfWeek (void) const { return mDate.tm_wday ; } // 0 = dimanche
+  public : int32_t getYearCount (void) const { return 1900 + mDate.tm_year ; } // (1900, ...)
+  public : int32_t getMonthCount (void) const { return 1 + mDate.tm_mon ; } // (1, 12)
+  public : int32_t getDayOfMonth (void) const { return mDate.tm_mday ; } // (1, 31)
+  public : int32_t getHourOfDay (void) const { return mDate.tm_hour ; } // (0, 23)
+  public : int32_t getMinuteOfHour (void) const { return mDate.tm_min ; } // (0, 59)
+  public : int32_t getSecondOfMinute (void) const { return mDate.tm_sec ; } // (0, 59)
+  public : int32_t getDayOfWeek (void) const { return mDate.tm_wday ; } // 0 = dimanche
   public : const char * getDayName (void) const ;
   public : const char * getMonthName (void) const ;
 
 //--- Date comparisons
-  public : PMSInt32 compare (const C_DateTime & inDate) const ;
+  public : int32_t compare (const C_DateTime & inDate) const ;
   public : bool operator == (const C_DateTime & inDate) const ;
   public : bool operator != (const C_DateTime & inDate) const ;
   public : bool operator <= (const C_DateTime & inDate) const ;

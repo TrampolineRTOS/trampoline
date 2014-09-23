@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  'cIndexingDictionary': dictionary for indexing soures                    *
+//  'cIndexingDictionary': dictionary for indexing soures                      *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -54,12 +54,12 @@ class cIndexingDictionary {
   private : cIndexingDictionary & operator = (const cIndexingDictionary &) ;
 
 //--- Add indexed entry
-  public : void addIndexedKey (const PMUInt32 inIndexingKind,
+  public : void addIndexedKey (const uint32_t inIndexingKind,
                                const C_String & inIndexedKey,
                                const C_String & inSourceFilePath,
-                               const PMUInt32 inTokenLineInSource,
-                               const PMUInt32 inTokenLocationInSource,
-                               const PMUInt32 inTokenLengthInSource) ;
+                               const uint32_t inTokenLineInSource,
+                               const uint32_t inTokenLocationInSource,
+                               const uint32_t inTokenLengthInSource) ;
 
 //--- Generate Index file (in a plist format)
   public : void generateIndexFile (const C_String & inOutputIndexFilePath) const ;

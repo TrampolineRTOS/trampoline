@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  GALGAS_enumerable : Base class for GALGAS enumerable object              *
+//  GALGAS_enumerable : Base class for GALGAS enumerable object                *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -28,7 +28,7 @@
 
 //-----------------------------------------------------------------------------*
 
-#include "cCollectionElement.h"
+#include "galgas2/cCollectionElement.h"
 
 //-----------------------------------------------------------------------------*
 

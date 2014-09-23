@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  'GALGAS_location'                                                        *
+//  'GALGAS_location'                                                          *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -23,7 +23,7 @@
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-#include "predefined-types.h"
+#include "galgas2/predefined-types.h"
 #include "galgas2/C_Compiler.h"
 
 //-----------------------------------------------------------------------------*
@@ -112,7 +112,7 @@ GALGAS_bool GALGAS_location::reader_isNowhere (UNUSED_LOCATION_ARGS) const {
 typeComparisonResult GALGAS_location::objectCompare (const GALGAS_location & inOperand) const {
   typeComparisonResult result = kOperandNotValid ;
   if (isValid () && inOperand.isValid ()) {
-    PMSInt32 r = mStartLocationInSource.index () - inOperand.mStartLocationInSource.index () ;
+    int32_t r = mStartLocationInSource.index () - inOperand.mStartLocationInSource.index () ;
     if (r == 0) {
       r = mEndLocationInSource.index () - inOperand.mEndLocationInSource.index () ;
     }
@@ -139,7 +139,7 @@ typeComparisonResult GALGAS_location::objectCompare (const GALGAS_location & inO
 //-----------------------------------------------------------------------------*
 
 void GALGAS_location::description (C_String & ioString,
-                                   const PMSInt32 /* inIndentation */) const {
+                                   const int32_t /* inIndentation */) const {
   ioString << "<@location:" ;
   if (isValid ()) {
     if (NULL == mSourceText) {
@@ -183,7 +183,7 @@ GALGAS_uint GALGAS_location::reader_locationIndex (C_Compiler * inCompiler
     if (NULL == mSourceText) {
       inCompiler->onTheFlyRunTimeError ("'locationIndex' reader cannot be called on a nowhere @location object" COMMA_THERE) ;
     }else{
-      result = GALGAS_uint ((PMUInt32) mEndLocationInSource.index ()) ;
+      result = GALGAS_uint ((uint32_t) mEndLocationInSource.index ()) ;
     }
   }
   return result ;
@@ -198,7 +198,7 @@ GALGAS_uint GALGAS_location::reader_column (C_Compiler * inCompiler
     if (NULL == mSourceText) {
       inCompiler->onTheFlyRunTimeError ("'column' reader cannot be called on a nowhere @location object" COMMA_THERE) ;
     }else{
-      result = GALGAS_uint ((PMUInt32) mEndLocationInSource.columnNumber ()) ;
+      result = GALGAS_uint ((uint32_t) mEndLocationInSource.columnNumber ()) ;
     }
   }
   return result ;
@@ -213,7 +213,7 @@ GALGAS_uint GALGAS_location::reader_line (C_Compiler * inCompiler
     if (NULL == mSourceText) {
       inCompiler->onTheFlyRunTimeError ("'line' reader cannot be called on a nowhere @location object" COMMA_THERE) ;
     }else{
-      result = GALGAS_uint ((PMUInt32) mEndLocationInSource.lineNumber ()) ;
+      result = GALGAS_uint ((uint32_t) mEndLocationInSource.lineNumber ()) ;
     }
   }
   return result ;

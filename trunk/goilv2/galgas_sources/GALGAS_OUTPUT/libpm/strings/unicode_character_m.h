@@ -41,12 +41,12 @@ typedef UInt32 utf32 ;
 
 //-----------------------------------------------------------------------------*
 
-typedef UInt8  PMUInt8  ;
-typedef UInt16 PMUInt16 ;
-typedef UInt32 PMUInt32 ;
-typedef SInt32 PMSInt32 ;
-typedef UInt64 PMUInt64 ;
-typedef SInt64 PMSInt64 ;
+typedef UInt8  uint8_t  ;
+typedef UInt16 uint16_t ;
+typedef UInt32 uint32_t ;
+typedef SInt32 int32_t ;
+typedef UInt64 uint64_t ;
+typedef SInt64 int64_t ;
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
@@ -55,22 +55,22 @@ typedef SInt64 PMSInt64 ;
 //-----------------------------------------------------------------------------*
 
 //--- Signed integer max
-#define PMSINT8_MAX       0x7F
-#define PMSINT16_MAX      0x7FFF
-#define PMSINT32_MAX      0x7FFFFFFFL
-#define PMSINT64_MAX      0x7FFFFFFFFFFFFFFFLL
+// #define PMSINT8_MAX       0x7F
+// #define PMSINT16_MAX      0x7FFF
+// #define INT32_MAX      0x7FFFFFFFL
+// #define INT64_MAX      0x7FFFFFFFFFFFFFFFLL
 
 //--- Signed integer min
-#define PMSINT8_MIN       (~PMSINT8_MAX)
-#define PMSINT16_MIN      (~PMSINT16_MAX)
-#define PMSINT32_MIN      (~PMSINT32_MAX)
-#define PMSINT64_MIN      (~PMSINT64_MAX)
+//#define PMSINT8_MIN       (~PMSINT8_MAX)
+// #define PMSINT16_MIN      (~PMSINT16_MAX)
+// #define INT32_MIN      (~INT32_MAX)
+// #define INT64_MIN      (~INT64_MAX)
 
 //--- Unsigned integer max
-#define PMUINT8_MAX       0xFFU
-#define PMUINT16_MAX      0xFFFFU
-#define PMUINT32_MAX      0xFFFFFFFFUL
-#define PMUINT64_MAX      0xFFFFFFFFFFFFFFFFULL    
+// #define UINT8_MAX       0xFFU
+// #define UINT16_MAX      0xFFFFU
+// #define UINT32_MAX      0xFFFFFFFFUL
+// #define UINT64_MAX      0xFFFFFFFFFFFFFFFFULL    
 
 //-----------------------------------------------------------------------------*
 

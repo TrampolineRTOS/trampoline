@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  'cIndexingDictionary': dictionary for indexing soures                    *
+//  'cIndexingDictionary': dictionary for indexing soures                      *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -42,7 +42,7 @@
 class cIndexEntryNode {
   public : cIndexEntryNode * mInfPtr ;
   public : cIndexEntryNode * mSupPtr ;
-  public : PMSInt32 mBalance ;
+  public : int32_t mBalance ;
   public : const C_String mKey ;
   public : TC_UniqueArray <C_String> mDescriptorArray ;
 
@@ -127,7 +127,7 @@ cIndexEntryNode * cIndexingDictionary::findOrAddEntry (cIndexEntryNode * & ioRoo
     result = ioRootPtr ;
   }else{
     macroValidPointer (ioRootPtr) ;
-    const PMSInt32 comparaison = ioRootPtr->mKey.compare (inKey) ;
+    const int32_t comparaison = ioRootPtr->mKey.compare (inKey) ;
     if (comparaison > 0) {
       result = findOrAddEntry (ioRootPtr->mInfPtr, inKey, ioExtension) ;
       if (ioExtension) {
@@ -188,16 +188,16 @@ cIndexingDictionary::~ cIndexingDictionary (void) {
 
 //-----------------------------------------------------------------------------*
 
-void cIndexingDictionary::addIndexedKey (const PMUInt32 inIndexingKind,
+void cIndexingDictionary::addIndexedKey (const uint32_t inIndexingKind,
                                          const C_String & inIndexedKey,
                                          const C_String & inSourceFilePath,
-                                         const PMUInt32 inTokenLineInSource,
-                                         const PMUInt32 inTokenLocationInSource,
-                                         const PMUInt32 inTokenLengthInSource) {
+                                         const uint32_t inTokenLineInSource,
+                                         const uint32_t inTokenLocationInSource,
+                                         const uint32_t inTokenLengthInSource) {
   // printf ("INDEXING '%s', kind %d, file '%s' at [%d, %d]\n", inIndexedKey.cString (HERE), inIndexingKind, inSourceFilePath.cString (HERE), inTokenLocationInSource, inTokenLocationInSource + inTokenLengthInSource) ;
 //--- File Path registering
 //  bool extension = false ; // Unused here
-//  const PMUInt32 filePathID = findOrAddFilePath (mFilePathRoot, inSourceFilePath, extension) ;
+//  const uint32_t filePathID = findOrAddFilePath (mFilePathRoot, inSourceFilePath, extension) ;
 //--- Entry registering
   bool extension = false ;
   cIndexEntryNode * entryNode = findOrAddEntry (mEntryRoot, inIndexedKey, extension) ;
@@ -223,7 +223,7 @@ static void enumerateEntries (const cIndexEntryNode * inNode,
     enumerateEntries (inNode->mInfPtr, ioContents) ;
     ioContents << "<key>" << inNode->mKey.HTMLRepresentation () << "</key>" ;
     ioContents << "<array>" ;
-    for (PMSInt32 i=0 ; i<inNode->mDescriptorArray.count () ; i++) {
+    for (int32_t i=0 ; i<inNode->mDescriptorArray.count () ; i++) {
       ioContents << "<string>" << inNode->mDescriptorArray (i COMMA_HERE).HTMLRepresentation () << "</string>" ;
     }
     ioContents << "</array>" ;

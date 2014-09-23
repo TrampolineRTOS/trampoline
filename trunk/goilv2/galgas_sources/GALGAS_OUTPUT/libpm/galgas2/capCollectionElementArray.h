@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  capCollectionElementArray                                                *
+//  capCollectionElementArray                                                  *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -28,7 +28,7 @@
 
 //-----------------------------------------------------------------------------*
 
-#include "capCollectionElement.h"
+#include "galgas2/capCollectionElement.h"
 
 //-----------------------------------------------------------------------------*
 
@@ -41,7 +41,7 @@ class capCollectionElementArray {
   public : capCollectionElementArray (void) ;
 
 //--- Default constructor
-  public : capCollectionElementArray (const PMUInt32 inCapacity) ;
+  public : capCollectionElementArray (const uint32_t inCapacity) ;
 
 //--- Virtual destructor
   public : virtual ~ capCollectionElementArray (void) ;
@@ -51,7 +51,7 @@ class capCollectionElementArray {
   public : capCollectionElementArray & operator = (const capCollectionElementArray & inSource) ;
 
 //--- Set capacity
-  public : void setCapacity (const PMUInt32 inNewCapacity) ;
+  public : void setCapacity (const uint32_t inNewCapacity) ;
 
 //--- Add Object (at index mCount, the end of array)
 //    Array should be allocated (with setCapacity)
@@ -59,38 +59,38 @@ class capCollectionElementArray {
   public : void addObject (const capCollectionElement & inObject) ;
 
   public : void addObjectAtIndex (const capCollectionElement & inObject,
-                                  const PMUInt32 inInsertionIndex,
+                                  const uint32_t inInsertionIndex,
                                   C_Compiler * inCompiler
                                   COMMA_LOCATION_ARGS) ;
 
 //--- Replace Object
 //    Argument object should not be NULL
   public : void replaceObjectAtIndex (const capCollectionElement & inObject,
-                                      const PMUInt32 inIndex
+                                      const uint32_t inIndex
                                       COMMA_LOCATION_ARGS) ;
 
 //--- Get object
   #ifndef DO_NOT_GENERATE_CHECKINGS 
-    public : capCollectionElement objectAtIndex (const PMUInt32 inIndex COMMA_LOCATION_ARGS) const ;
+    public : capCollectionElement objectAtIndex (const uint32_t inIndex COMMA_LOCATION_ARGS) const ;
   #else
-    public : inline capCollectionElement objectAtIndex (const PMUInt32 inIndex) const {
+    public : inline capCollectionElement objectAtIndex (const uint32_t inIndex) const {
       return mArray [inIndex] ;
     }
   #endif
 
 //--- Get object pointer for writing (perform implicitly an "insulate" action)
-  public : cCollectionElement * pointerAtIndex (const PMUInt32 inIndex
+  public : cCollectionElement * pointerAtIndex (const uint32_t inIndex
                                                 COMMA_LOCATION_ARGS) ;
 
 //--- Get object pointer for reading
-  public : const cCollectionElement * pointerAtIndexForReadAccess (const PMUInt32 inIndex
+  public : const cCollectionElement * pointerAtIndexForReadAccess (const uint32_t inIndex
                                                                    COMMA_LOCATION_ARGS) const ;
 
 //--- Get count
-  public : inline PMUInt32 count (void) const { return mCount ; }
+  public : inline uint32_t count (void) const { return mCount ; }
 
 //--- Remove an object
-  public : void removeObjectAtIndex (const PMUInt32 inIndex) ;
+  public : void removeObjectAtIndex (const uint32_t inIndex) ;
 
 //--- Prepend object (insert them from index 0)
   public : void predendObject (const capCollectionElement & inObject) ;
@@ -103,8 +103,8 @@ class capCollectionElementArray {
 
 //--- Attributes
   private : capCollectionElement * mArray ;
-  private : PMUInt32 mCapacity ;
-  private : PMUInt32 mCount ;
+  private : uint32_t mCapacity ;
+  private : uint32_t mCount ;
 } ;
 
 //-----------------------------------------------------------------------------*

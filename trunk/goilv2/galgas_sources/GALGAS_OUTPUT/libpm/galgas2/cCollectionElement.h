@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  GALGAS_enumerable : Base class for GALGAS enumerable object              *
+//  GALGAS_enumerable : Base class for GALGAS enumerable object                *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -29,7 +29,7 @@
 //-----------------------------------------------------------------------------*
 
 #include "utilities/C_SharedObject.h"
-#include "typeComparisonResult.h"
+#include "galgas2/typeComparisonResult.h"
 
 //-----------------------------------------------------------------------------*
 
@@ -55,7 +55,7 @@ class cCollectionElement : public C_SharedObject {
   public : virtual cCollectionElement * copy (void) = 0 ;
 
 //--- Description
-  public : virtual void description (C_String & ioString, const PMSInt32 inIndentation) const = 0 ;
+  public : virtual void description (C_String & ioString, const int32_t inIndentation) const = 0 ;
 } ;
 
 //-----------------------------------------------------------------------------*

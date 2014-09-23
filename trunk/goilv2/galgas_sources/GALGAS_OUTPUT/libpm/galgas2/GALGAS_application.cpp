@@ -30,7 +30,7 @@
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//                     'GALGAS_application' class                            *
+//                     'GALGAS_application' class                              *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -64,7 +64,7 @@ typeComparisonResult GALGAS_application::objectCompare (const GALGAS_application
 //-----------------------------------------------------------------------------*
 
 void GALGAS_application::description (C_String & ioString,
-                                      const PMSInt32 /* inIndentation */) const {
+                                      const int32_t /* inIndentation */) const {
   ioString << "<@application:not built>" ;
 }
 
@@ -74,7 +74,7 @@ GALGAS__32_stringlist GALGAS_application::constructor_boolOptionNameList (LOCATI
   GALGAS__32_stringlist result = GALGAS__32_stringlist::constructor_emptyList (THERE) ;
   TC_UniqueArray <C_String> array ;
   C_BoolCommandLineOption::getBoolOptionNameList (array) ;
-  for (PMSInt32 i=0 ; i<array.count () ; i+=2) {
+  for (int32_t i=0 ; i<array.count () ; i+=2) {
     result.addAssign_operation (GALGAS_string (array (i COMMA_THERE)), GALGAS_string (array (i+1 COMMA_THERE)) COMMA_THERE) ;
   }
   return result ;
@@ -125,7 +125,7 @@ GALGAS__32_stringlist GALGAS_application::constructor_uintOptionNameList (LOCATI
   GALGAS__32_stringlist result = GALGAS__32_stringlist::constructor_emptyList (THERE) ;
   TC_UniqueArray <C_String> array ;
   C_UIntCommandLineOption::getUIntOptionNameList (array) ;
-  for (PMSInt32 i=0 ; i<array.count () ; i+=2) {
+  for (int32_t i=0 ; i<array.count () ; i+=2) {
     result.addAssign_operation (GALGAS_string (array (i COMMA_THERE)), GALGAS_string (array (i+1 COMMA_THERE)) COMMA_THERE) ;
   }
   return result ;
@@ -176,7 +176,7 @@ GALGAS__32_stringlist GALGAS_application::constructor_stringOptionNameList (LOCA
   GALGAS__32_stringlist result = GALGAS__32_stringlist::constructor_emptyList (THERE) ;
   TC_UniqueArray <C_String> array ;
   C_StringCommandLineOption::getStringOptionNameList (array) ;
-  for (PMSInt32 i=0 ; i<array.count () ; i+=2) {
+  for (int32_t i=0 ; i<array.count () ; i+=2) {
     result.addAssign_operation (GALGAS_string (array (i COMMA_THERE)), GALGAS_string (array (i+1 COMMA_THERE)) COMMA_THERE) ;
   }
   return result ;

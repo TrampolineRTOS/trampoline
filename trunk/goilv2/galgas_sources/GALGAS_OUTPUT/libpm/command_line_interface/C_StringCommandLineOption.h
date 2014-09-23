@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Generic String Command Line Interface Option                             *
+//  Generic String Command Line Interface Option                               *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -28,7 +28,7 @@
 
 //-----------------------------------------------------------------------------*
 
-#include "command_line_interface/C_CommandLineOption.h"
+#include "C_CommandLineOption.h"
 #include "strings/C_String.h"
 
 //-----------------------------------------------------------------------------*
@@ -59,7 +59,7 @@ class C_StringCommandLineOption : public C_CommandLineOption {
                                                         bool & outFound,
                                                         bool & outCommandLineOptionStringIsValid)  ;
   public : static void printUsageOfStringOptions (void) ;
-  public : static void printStringOptions (const PMUInt32 inDisplayLength) ;
+  public : static void printStringOptions (const uint32_t inDisplayLength) ;
 
   public : static void releaseStrings (void) ; // Called at the end of main routine
 

@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  'C_SourceTextInString'                                                   *
+//  'C_SourceTextInString'                                                     *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -40,21 +40,21 @@ mShowSourceOnDetailledErrorMessage (inShowSourceOnDetailledErrorMessage) {
 
 //-----------------------------------------------------------------------------*
 
-PMSInt32 C_SourceTextInString::sourceLength (void) const {
+int32_t C_SourceTextInString::sourceLength (void) const {
   return mSourceString.length () ;
 }
 
 //-----------------------------------------------------------------------------*
 
-utf32 C_SourceTextInString::readCharOrNul (const PMSInt32 inIndex COMMA_LOCATION_ARGS) const {
+utf32 C_SourceTextInString::readCharOrNul (const int32_t inIndex COMMA_LOCATION_ARGS) const {
   return mSourceString.readCharOrNul (inIndex COMMA_THERE) ;
 }
 
 //-----------------------------------------------------------------------------*
 
 const utf32 * C_SourceTextInString::
-temporaryUTF32StringAtIndex (const PMSInt32 inIndex,
-                             const PMSInt32 /* inRequiredLength */
+temporaryUTF32StringAtIndex (const int32_t inIndex,
+                             const int32_t /* inRequiredLength */
                              COMMA_LOCATION_ARGS) const {
   return & (mSourceString.utf32String (THERE)) [inIndex] ;
 }
@@ -63,9 +63,9 @@ temporaryUTF32StringAtIndex (const PMSInt32 inIndex,
 
 C_String C_SourceTextInString::
 getLineForLocation (const C_LocationInSource & inLocation) const {
-  const PMSInt32 sourceTextLength = mSourceString.length () ;
-  PMSInt32 index = 0 ;
-  PMSInt32 currentLine = 1 ;
+  const int32_t sourceTextLength = mSourceString.length () ;
+  int32_t index = 0 ;
+  int32_t currentLine = 1 ;
   if (sourceTextLength > 0) {
     while (currentLine < inLocation.lineNumber ()) {
       if (UNICODE_VALUE (mSourceString.readCharOrNul (index COMMA_HERE)) == '\n') {
@@ -76,7 +76,7 @@ getLineForLocation (const C_LocationInSource & inLocation) const {
   }
 //--- Get error line text
   C_String errorLine ;
-  for (PMSInt32 i=index ; (i<sourceTextLength) && (UNICODE_VALUE (mSourceString.readCharOrNul (i COMMA_HERE)) != '\n') ; i++) {
+  for (int32_t i=index ; (i<sourceTextLength) && (UNICODE_VALUE (mSourceString.readCharOrNul (i COMMA_HERE)) != '\n') ; i++) {
     const utf32 character = mSourceString (i COMMA_HERE) ;
     errorLine.appendUnicodeCharacter (character COMMA_HERE) ;
   }

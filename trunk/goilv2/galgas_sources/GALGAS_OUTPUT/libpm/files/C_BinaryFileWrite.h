@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  'C_BinaryFileWrite' : a class for stream writing binary files            *
+//  'C_BinaryFileWrite' : a class for stream writing binary files              *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *

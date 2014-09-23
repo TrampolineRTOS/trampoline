@@ -1,26 +1,26 @@
-#---------------------------------------------------------------*
+#------------------------------------------------------------------------------*
 
 #--- LIBPM directory
 LIBPM_DIRECTORY_PATH := ../galgas_sources/GALGAS_OUTPUT/libpm
 
-#---------------------------------------------------------------*
-#                                                               *
-#     Project source files directories                          *
-#                                                               *
-#---------------------------------------------------------------*
+#------------------------------------------------------------------------------*
+#                                                                              *
+#     Project source files directories                                         *
+#                                                                              *
+#------------------------------------------------------------------------------*
 
 SOURCES_DIR := ../galgas_sources/GALGAS_OUTPUT
 SOURCES_DIR += ../galgas_sources/GALGAS_OUTPUT/include-files
 
-#---------------------------------------------------------------*
-#                                                               *
-#     Source files names list (without their actual path)       *
-#                                                               *
-#---------------------------------------------------------------*
+#------------------------------------------------------------------------------*
+#                                                                              *
+#     Source files names list (without their actual path)                      *
+#                                                                              *
+#------------------------------------------------------------------------------*
 
 SOURCES :=
 
-#---------------------------------------------------------------*
+#------------------------------------------------------------------------------*
 
 #--- Hand-coded files ---------------------
 
@@ -52,11 +52,11 @@ SOURCES += goil_cpu_level_include.cpp
 SOURCES += goil_program.cpp
 
 
-#---------------------------------------------------------------*
-#                                                               *
-#     Files from LIBPM                                          *
-#                                                               *
-#---------------------------------------------------------------*
+#------------------------------------------------------------------------------*
+#                                                                              *
+#     Files from LIBPM                                                         *
+#                                                                              *
+#------------------------------------------------------------------------------*
 
 #--- Command Line Option
 SOURCES += C_CommandLineOption.cpp
@@ -64,19 +64,16 @@ SOURCES += C_BoolCommandLineOption.cpp
 SOURCES += C_UIntCommandLineOption.cpp
 SOURCES += C_StringCommandLineOption.cpp
 SOURCES += C_builtin_CLI_Options.cpp
-SOURCES += C_galgas_CLI_Options.cpp
 SOURCES += F_Analyze_CLI_Options.cpp
 
 #--- BDD
-SOURCES += C_Display_BDD.cpp
 SOURCES += C_BDD.cpp
 SOURCES += C_BDD-find-or-add.cpp
 SOURCES += C_BDD-single-operand-ops.cpp
 SOURCES += C_BDD-and-operation.cpp
-SOURCES += C_BDD_Set1.cpp
-SOURCES += C_BDD_Set2.cpp
-SOURCES += C_BDD_Set3.cpp
-SOURCES += C_BDD_Descriptor.cpp
+SOURCES += C_RelationSingleType.cpp
+SOURCES += C_RelationConfiguration.cpp
+SOURCES += C_Relation.cpp
 
 #--- Files
 SOURCES += C_FileManager.cpp
@@ -118,10 +115,11 @@ SOURCES += PMUInt128.cpp
 SOURCES += C_UIntSet.cpp
 SOURCES += C_DirectedGraph.cpp
 
-#---------------------------------------------------------------*
-#    G A L G A S    2                                           *
-#---------------------------------------------------------------*
+#------------------------------------------------------------------------------*
+#    G A L G A S    2                                                          *
+#------------------------------------------------------------------------------*
 
+SOURCES += C_galgas_CLI_Options.cpp
 SOURCES += typeComparisonResult.cpp
 SOURCES += C_Compiler.cpp
 SOURCES += C_Lexique.cpp
@@ -151,6 +149,8 @@ SOURCES += AC_GALGAS_graph.cpp
 SOURCES += acPtr_class.cpp
 SOURCES += cPtr_object.cpp
 
+SOURCES += predefined-types.cpp
+SOURCES += scanner_actions.cpp
 SOURCES += GALGAS_application.cpp
 SOURCES += GALGAS_binaryset.cpp
 SOURCES += GALGAS_bool.cpp
@@ -168,17 +168,15 @@ SOURCES += GALGAS_type.cpp
 SOURCES += GALGAS_object.cpp
 SOURCES += GALGAS_uint.cpp
 SOURCES += GALGAS_uint_36__34_.cpp
-SOURCES += predefined-types.cpp
-SOURCES += scanner_actions.cpp
 
 
-#---------------------------------------------------------------*
-#                                                               *
-#     Command line options                                      *
-#                                                               *
-#---------------------------------------------------------------*
+#------------------------------------------------------------------------------*
+#                                                                              *
+#     Command line options                                                     *
+#                                                                              *
+#------------------------------------------------------------------------------*
 
 USER_COMMAND_LINE_OPTIONS :=
 USER_COMMAND_LINE_OPTIONS += -DLIBPM_MULTI_THREADING=0
 
-#---------------------------------------------------------------*
+#------------------------------------------------------------------------------*

@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  'C_FileManager' : a class for handling files,                            *
-//  independantly from platform                                              *
+//  'C_FileManager' : a class for handling files,                              *
+//  independantly from platform                                                *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -113,10 +113,10 @@ class C_FileManager {
                                                            bool & outOk) ;
 
 //--- File permissions
-  public : static PMSInt32 filePosixPermissions (const C_String & inFilePath) ;
+  public : static int32_t filePosixPermissions (const C_String & inFilePath) ;
 
-  public : static PMSInt32 setFilePosixPermissions (const C_String & inFilePath,
-                                                    const PMSInt32 inNewFilePosixPermissions) ;
+  public : static int32_t setFilePosixPermissions (const C_String & inFilePath,
+                                                    const int32_t inNewFilePosixPermissions) ;
 
 //--- File modification time
   public : static C_DateTime fileModificationTime (const C_String & inFilePath) ;

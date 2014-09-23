@@ -3,7 +3,7 @@
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
-//  Copyright (C) 2003, ..., 2010 Pierre Molinaro.                             *
+//  Copyright (C) 2003, ..., 2014 Pierre Molinaro.                             *
 //                                                                             *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
 //                                                                             *
@@ -27,7 +27,6 @@
 //-----------------------------------------------------------------------------*
 
 #define GGS_selected_tab                     @"GGS_selected_tab"
-#define GGS_show_ruler                       @"GGS_show_ruler"
 #define GGS_enable_completion                @"GGS_enable_completion"
 #define GGS_build_text_font                  @"GGS_build_window_text_font"
 #define GGS_indexed_color                    @"GGS_colors"
@@ -121,8 +120,6 @@ extern OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
 
 - (IBAction) clearSourceDocumentPreferencesEntries: (id) inSender ;
 
-- (IBAction) setTextRulerVisible: (id) inSender ;
-
 - (IBAction) showAllocationWindow: (id) inSender ;
 
 - (void) updateSourceTextPreferenceCount ;
@@ -130,8 +127,6 @@ extern OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
 - (NSArray *) commandLineItemArray ;
 
 - (void) windowDidMove: (NSNotification *) aNotification ;
-
-- (double) ruleThickness ;
 
 - (NSTabView *) preferencesTabView ;
 

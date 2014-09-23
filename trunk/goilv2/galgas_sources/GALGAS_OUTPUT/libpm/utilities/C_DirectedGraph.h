@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  C_DirectedGraph : algorithms on ordered graphs                           *
+//  C_DirectedGraph : algorithms on ordered graphs                             *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -29,14 +29,14 @@
 //-----------------------------------------------------------------------------*
 
 #include "collections/TC_Array.h"
-#include "utilities/C_UIntSet.h"
+#include "C_UIntSet.h"
 #include "strings/C_String.h"
 
 //-----------------------------------------------------------------------------*
 
 typedef struct {
-  PMUInt32 mSource ;
-  PMUInt32 mTarget ;
+  uint32_t mSource ;
+  uint32_t mTarget ;
 } cEdge ;
 
 //-----------------------------------------------------------------------------*
@@ -49,52 +49,52 @@ class C_DirectedGraph {
   public : static void example (void) ;
   
 //--- Methods
-  public : void addNode (const PMUInt32 inNodeIndex) ;
+  public : void addNode (const uint32_t inNodeIndex) ;
 
   public : void addNodes (const C_UIntSet inNodes) ;
 
-  public : void removeNode (const PMUInt32 inNodeIndex) ;
+  public : void removeNode (const uint32_t inNodeIndex) ;
 
-  public : void addEdge (const PMUInt32 inSourceNodeIndex,
-                         const PMUInt32 inTargetNodeIndex) ;
+  public : void addEdge (const uint32_t inSourceNodeIndex,
+                         const uint32_t inTargetNodeIndex) ;
 
   public : void print (void) const ;
 
 //--- Accessors
-  public : PMUInt32 unusedNodeIndex (void) const ;
+  public : uint32_t unusedNodeIndex (void) const ;
 
   public : C_String graphvizString (const TC_UniqueArray <C_String> & inNodeNameArray) const ;
   
   public : void getNodeBoolArray (TC_UniqueArray <bool> & outNodes) const ;
   
-  public : void getNodeValueArray (TC_UniqueArray <PMUInt32> & outNodes) const ;
+  public : void getNodeValueArray (TC_UniqueArray <uint32_t> & outNodes) const ;
   
-  public : bool isNodeDefined (const PMUInt32 inNodeIndex) const ;
+  public : bool isNodeDefined (const uint32_t inNodeIndex) const ;
   
-  public : PMUInt32 nodeCount (void) const ;
+  public : uint32_t nodeCount (void) const ;
   
-  public : PMUInt32 edgeCount (void) const ;
+  public : uint32_t edgeCount (void) const ;
   
-  public : void getNodesWithNoPredecessor (TC_UniqueArray <PMUInt32> & outNodes) const ;
+  public : void getNodesWithNoPredecessor (TC_UniqueArray <uint32_t> & outNodes) const ;
   
-  public : void getNodesWithNoSuccessor (TC_UniqueArray <PMUInt32> & outNodes) const ;
+  public : void getNodesWithNoSuccessor (TC_UniqueArray <uint32_t> & outNodes) const ;
   
-  public : void getNodesInvolvedInCircularities (TC_UniqueArray <PMUInt32> & outNodes) const ;
+  public : void getNodesInvolvedInCircularities (TC_UniqueArray <uint32_t> & outNodes) const ;
   
   public : void getDominators (TC_UniqueArray <C_UIntSet> & outDominators
                                COMMA_LOCATION_ARGS) const ;
   
   public : void removeEdgesToDominator (LOCATION_ARGS) ;
   
-  public : void removeEdgesToNode (const PMUInt32 inNodeIndex COMMA_LOCATION_ARGS) ;
+  public : void removeEdgesToNode (const uint32_t inNodeIndex COMMA_LOCATION_ARGS) ;
   
   public : void getEdges (TC_UniqueArray <cEdge> & outEdges) const ;
   
-  public : void topologicalSort (TC_UniqueArray <PMUInt32> & outSortedNodes,
-                                 TC_UniqueArray <PMUInt32> & outUnsortedNodes) const ;
+  public : void topologicalSort (TC_UniqueArray <uint32_t> & outSortedNodes,
+                                 TC_UniqueArray <uint32_t> & outUnsortedNodes) const ;
   
-  public : void depthFirstTopologicalSort (TC_UniqueArray <PMUInt32> & outSortedNodes,
-                                           TC_UniqueArray <PMUInt32> & outUnsortedNodes) const ;
+  public : void depthFirstTopologicalSort (TC_UniqueArray <uint32_t> & outSortedNodes,
+                                           TC_UniqueArray <uint32_t> & outUnsortedNodes) const ;
   
   public : C_DirectedGraph reversedGraph (void) const ;
   
