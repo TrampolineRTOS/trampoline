@@ -1,11 +1,13 @@
-% let REAL := exists api_func::ACTUAL default ( api_func::API )
+% 
+
+let api_func::FUNC_NAME := exists api_func::ACTUAL default ( api_func::NAME )
 %
-  .global % !REAL %
-% !REAL %:
-  li   r0,% !api_sec::ID_PREFIX %ServiceId_% !api_func::API %  /* load the service id in r0 */
+  .global % !api_func::FUNC_NAME %
+% !api_func::FUNC_NAME %:
+  li   r0,% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME %  /* load the service id in r0 */
   sc                            /* system call               */
   blr                           /* returns                   */
   
-  .type % !REAL %,@function
-  .size % !REAL %,$-% !REAL %
+  .type % !api_func::FUNC_NAME %,@function
+  .size % !api_func::FUNC_NAME %,$-% !api_func::FUNC_NAME %
 

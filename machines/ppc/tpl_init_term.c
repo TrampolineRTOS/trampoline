@@ -27,11 +27,13 @@
 #include "tpl_machine_interface.h"
 #include "tpl_os_internal_types.h"
 #include "tpl_os_definitions.h"
-#include "tpl_os_it.h"
-#include "tpl_os_it_kernel.h"
+#include "tpl_os_interrupt.h"
+#include "tpl_os_interrupt_kernel.h"
 #include "tpl_assembler.h"
 #include "tpl_os_error.h"
 #include "tpl_os.h"
+
+extern P2FUNC(void, OS_CODE, CallTerminateTask);
 
 #define OS_START_SEC_VAR_32BIT
 #include "tpl_memmap.h"
@@ -49,9 +51,9 @@ extern CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)
 
 #define OS_START_SEC_VAR_32BIT
 #include "tpl_memmap.h"
-VAR(u32, OS_VAR) tpl_msr_start_value;
-VAR(u32, OS_VAR) tpl_register_r2;
-VAR(u32, OS_VAR) tpl_register_r13;
+VAR(uint32, OS_VAR) tpl_msr_start_value;
+VAR(uint32, OS_VAR) tpl_register_r2;
+VAR(uint32, OS_VAR) tpl_register_r13;
 VAR(ppc_integer_context, OS_VAR) idle_task_context = {
   { /* r0 */   0,
     /* sp */   0,
@@ -170,8 +172,8 @@ FUNC(void, OS_CODE) tpl_init_context(
    * the behaviour is controled
    */   
   *stack++ = (IS_ROUTINE == proc->type) ?
-                (u32)(CallTerminateISR2) :
-                (u32)(CallTerminateTask); /*  lr  */
+                (uint32)(CallTerminateISR2) :
+                (uint32)(CallTerminateTask); /*  lr  */
 
   *stack++ = 0; /*  cr  */
   *stack++ = 0; /*  r0  */
@@ -212,7 +214,7 @@ FUNC(void, OS_CODE) tpl_sleep(void)
 
 FUNC(void, OS_CODE) tpl_init_machine(void)
 {
-/*  VAR(u8, AUTOMATIC) i; */
+/*  VAR(uint8, AUTOMATIC) i; */
 
     /* initializes the TaskLock counter */
 /*  tpl_user_task_lock = FALSE;
@@ -230,7 +232,7 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
   tpl_msr_start_value = 0;
 
   
-  idle_task_context.gpr[1] = ((u32)(idle_stack)) + SIZE_OF_IDLE_STACK - 48;
+  idle_task_context.gpr[1] = ((uint32)(idle_stack)) + SIZE_OF_IDLE_STACK - 48;
 /*  INTC.MCR.B.HVEN_PRC0 = 0;
   INTC.MCR.B.VTES_PRC0 = 0;
   INTC.IACKR_PRC0.R = (uint32_t)(&InterruptVectortable[0]);

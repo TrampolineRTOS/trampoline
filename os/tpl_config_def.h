@@ -85,6 +85,25 @@
  */
 #define ARCH_AVR        8
 
+/**
+ * @def MPC5516
+ */
+#define MPC5516 ((ARCH_PPC << 16) | 1)
+
+/**
+ * @def MPC5604
+ */
+#define MPC5604 ((ARCH_PPC << 16) | 2)
+
+/**
+ * @def MPC5668
+ */
+#define MPC5668 ((ARCH_PPC << 16) | 3)
+
+/**
+ * @def MPC5643
+ */
+#define MPC5643 ((ARCH_PPC << 16) | 4)
 
 #endif
 /* End of file tpl_config_def.h */

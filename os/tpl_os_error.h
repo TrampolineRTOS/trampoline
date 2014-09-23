@@ -1114,7 +1114,7 @@ tpl_service.parameters.id.ioc_id = (iocid);
 /*  No Task and extended error checking (WITH_OS_EXTENDED == YES).
     Since there is no task, there is no task level calling  */
 #if (TASK_COUNT == 0) && (WITH_OS_EXTENDED == YES)
-#   define CHECK_TASK_CALL_LEVEL_ERROR(result)                          \
+#   define CHECK_TASK_CALL_LEVEL_ERROR(a_core_id,result)                          \
     if (result == (tpl_status)E_OK)                                     \
     {                                                                   \
         result = (tpl_status)E_OS_CALLEVEL;                             \
@@ -1123,9 +1123,9 @@ tpl_service.parameters.id.ioc_id = (iocid);
 
 /*  Any Task and extended error checking (WITH_OS_EXTENDED == YES). */
 #if (TASK_COUNT > 0) && (WITH_OS_EXTENDED == YES)
-#   define CHECK_TASK_CALL_LEVEL_ERROR(result)                          \
+#   define CHECK_TASK_CALL_LEVEL_ERROR(a_core_id,result)                          \
     if ((result == (tpl_status)E_OK) &&                                 \
-        (tpl_current_os_state(CORE_ID_OR_NOTHING(core_id)) !=           \
+        (tpl_current_os_state(CORE_ID_OR_NOTHING(a_core_id)) !=           \
          (tpl_os_state)OS_TASK))                                        \
     {                                                                   \
         result = (tpl_status)E_OS_CALLEVEL;                             \
@@ -1134,7 +1134,7 @@ tpl_service.parameters.id.ioc_id = (iocid);
 
 /*  no extended error checking (WITH_OS_EXTENDED == NO).    */
 #if WITH_OS_EXTENDED == NO
-#   define CHECK_TASK_CALL_LEVEL_ERROR(result)
+#   define CHECK_TASK_CALL_LEVEL_ERROR(a_core_id,result)
 #endif
 
 /**

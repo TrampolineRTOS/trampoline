@@ -114,7 +114,7 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
   /* check interrupts are not disabled by user */
   CHECK_INTERRUPT_LOCK(result)
   /* check we are at the task level */
-  CHECK_TASK_CALL_LEVEL_ERROR(result)
+  CHECK_TASK_CALL_LEVEL_ERROR(core_id,result)
   /* check the task does not own a resource */
   CHECK_RUNNING_OWNS_REZ_ERROR(core_id, result)
 
@@ -163,7 +163,7 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
   STORE_TASK_ID(task_id)
 
   /*  Check a call level error    */
-  CHECK_TASK_CALL_LEVEL_ERROR(result)
+  CHECK_TASK_CALL_LEVEL_ERROR(core_id,result)
   /*  Check a task_id error       */
   CHECK_TASK_ID_ERROR(task_id,result)
   /*  Check no resource is held by the terminating task   */
@@ -246,7 +246,7 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
   STORE_SERVICE(OSServiceId_Schedule)
 
   /*  Check a call level error    */
-  CHECK_TASK_CALL_LEVEL_ERROR(result)
+  CHECK_TASK_CALL_LEVEL_ERROR(core_id,result)
   /*  Check no resource is held by the calling task   */
   CHECK_RUNNING_OWNS_REZ_ERROR(core_id, result)
 

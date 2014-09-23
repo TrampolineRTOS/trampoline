@@ -28,8 +28,8 @@
 
 #include "tpl_os_custom_types.h"
 
-typedef uint32 tpl_stack_word;
-typedef uint32 tpl_stack_size;
+typedef u32 tpl_stack_word;
+typedef u32 tpl_stack_size;
 
 /*
  * Integer context of the PowerPC
@@ -169,7 +169,7 @@ extern VAR(tpl_stack_word, OS_VAR)
 
 extern VAR(ppc_integer_context, OS_VAR) idle_task_context;
 
-extern VAR(uint8, OS_VAR) tpl_keep_prio[15];
+extern VAR(u8, OS_VAR) tpl_keep_prio[15];
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
