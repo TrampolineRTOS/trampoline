@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  'C_ColoredConsole' : a class for colored console output                  *
+//  'C_ColoredConsole' : a class for colored console output                    *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -27,7 +27,7 @@
 #define CLASS_COLORED_CONSOLE_DEFINED
 
 //-----------------------------------------------------------------------------*
-//                     FORE COLOR ENUMERATION                                *
+//                     FORE COLOR ENUMERATION                                  *
 //-----------------------------------------------------------------------------*
 
 typedef enum {
@@ -42,7 +42,7 @@ typedef enum {
 } consoleForeColorEnum ;
 
 //-----------------------------------------------------------------------------*
-//                     BACKGROUND COLOR ENUMERATION                          *
+//                     BACKGROUND COLOR ENUMERATION                            *
 //-----------------------------------------------------------------------------*
 
 typedef enum {
@@ -57,7 +57,7 @@ typedef enum {
 } consoleBackgroundColorEnum ;
 
 //-----------------------------------------------------------------------------*
-//                     TEXT ATTRIBUTES ENUMERATION                           *
+//                     TEXT ATTRIBUTES ENUMERATION                             *
 //-----------------------------------------------------------------------------*
 
 typedef enum {

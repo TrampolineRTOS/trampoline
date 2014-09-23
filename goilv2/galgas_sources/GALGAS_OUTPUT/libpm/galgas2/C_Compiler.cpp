@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  'C_Compiler' : the compiler base class ;                                 *
+//  'C_Compiler' : the compiler base class ;                                   *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -34,7 +34,7 @@
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//        Syntax error message for 'end of source':                          *
+//        Syntax error message for 'end of source':                            *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -75,7 +75,7 @@ bool C_Compiler::performLogFileRead (void) {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//        Constructor and destructor                                         *
+//        Constructor and destructor                                           *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -314,8 +314,8 @@ void C_Compiler::semanticErrorWith_K_message (const GALGAS_lstring & inKey,
   C_String message ;
   bool perCentFound = false ;
   const C_String searchErrorMessage (in_K_ErrorMessage) ;
-  const PMSInt32 errorMessageLength = searchErrorMessage.length () ;
-  for (PMSInt32 i=0 ; i<errorMessageLength ; i++) {
+  const int32_t errorMessageLength = searchErrorMessage.length () ;
+  for (int32_t i=0 ; i<errorMessageLength ; i++) {
     const utf32 c = searchErrorMessage (i COMMA_HERE) ;
     if (perCentFound) {
       if (UNICODE_VALUE (c) == 'K') {
@@ -331,7 +331,7 @@ void C_Compiler::semanticErrorWith_K_message (const GALGAS_lstring & inKey,
 //--- Add nearest keys, if any
   if (ioNearestKeyArray.count () > 0) {
     message << " (do you mean '" << ioNearestKeyArray (0 COMMA_HERE) << "'" ;
-    for (PMSInt32 i=2 ; i<ioNearestKeyArray.count () ; i++) {
+    for (int32_t i=2 ; i<ioNearestKeyArray.count () ; i++) {
       message << ", '" << ioNearestKeyArray (i-1 COMMA_HERE) << "'" ;
     }
     if (ioNearestKeyArray.count () > 1) {
@@ -355,8 +355,8 @@ void C_Compiler::semanticErrorWith_K_L_message (const GALGAS_lstring & inKey,
   C_String message ;
   bool perCentFound = false ;
   const C_String searchErrorMessage (in_K_L_ErrorMessage) ;
-  const PMSInt32 errorMessageLength = searchErrorMessage.length () ;
-  for (PMSInt32 i=0 ; i<errorMessageLength ; i++) {
+  const int32_t errorMessageLength = searchErrorMessage.length () ;
+  for (int32_t i=0 ; i<errorMessageLength ; i++) {
     const utf32 c = searchErrorMessage (i COMMA_HERE) ;
     if (perCentFound) {
       if (UNICODE_VALUE (c) == 'K') {
@@ -450,7 +450,7 @@ GALGAS_location C_Compiler::here (void) const {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   C H E C K    A N D    G E N E R A T E   F I L E                         *
+//   C H E C K    A N D    G E N E R A T E   F I L E                           *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -552,10 +552,10 @@ generateFileWithPatternFromPathes (const C_String & inStartPath,
       f << generatedZone1 << kSTART_OF_USER_ZONE_1 << inDefaultUserZone1 << kEND_OF_USER_ZONE_1
         << inGeneratedZone2 << kSTART_OF_USER_ZONE_2 << inDefaultUserZone2 << kEND_OF_USER_ZONE_2
         << inGeneratedZone3 ;
-      for (PMSInt32 i=0 ; i<inGeneratedZone2.length () ; i++) {
+      for (int32_t i=0 ; i<inGeneratedZone2.length () ; i++) {
         incrementGeneratedLileCount (UNICODE_VALUE (inGeneratedZone2 (i COMMA_HERE)) == '\n') ;
       }
-      for (PMSInt32 i=0 ; i<inGeneratedZone3.length () ; i++) {
+      for (int32_t i=0 ; i<inGeneratedZone3.length () ; i++) {
         incrementGeneratedLileCount (UNICODE_VALUE (inGeneratedZone3 (i COMMA_HERE)) == '\n') ;
       }
       if (verboseOptionOn || veryVerboseOptionOn) {
@@ -575,7 +575,6 @@ generateFileWithPatternFromPathes (const C_String & inStartPath,
     C_String firstGeneratedPart ;
     C_String secondGeneratedPart ;
     logFileRead (fullPathName) ;
-//    addDependancyOutputFilePath (fullPathName) ;
     C_String s = C_FileManager::stringWithContentOfFile (fullPathName) ;
     TC_UniqueArray <C_String> stringArray ;
     s.componentsSeparatedByString (kSTART_OF_USER_ZONE_1, stringArray) ;
@@ -604,16 +603,16 @@ generateFileWithPatternFromPathes (const C_String & inStartPath,
     if (! ok) {
       ggs_printError (NULL, C_LocationInSource (), C_String ("BAD FILE '") + fullPathName + "'.\n" COMMA_HERE) ;
     }else if ((firstGeneratedPart == inGeneratedZone2) && (secondGeneratedPart == inGeneratedZone3)) {
-      for (PMSInt32 i=0 ; i<inGeneratedZone2.length () ; i++) {
+      for (int32_t i=0 ; i<inGeneratedZone2.length () ; i++) {
         incrementCheckedFileCount (UNICODE_VALUE (inGeneratedZone2 (i COMMA_HERE)) == '\n') ;
       }
-      for (PMSInt32 i=0 ; i<inGeneratedZone3.length () ; i++) {
+      for (int32_t i=0 ; i<inGeneratedZone3.length () ; i++) {
         incrementCheckedFileCount (UNICODE_VALUE (inGeneratedZone3 (i COMMA_HERE)) == '\n') ;
       }
-      for (PMSInt32 i=0 ; i<firstUserPart.length () ; i++) {
+      for (int32_t i=0 ; i<firstUserPart.length () ; i++) {
         incrementPreservedLileCount (UNICODE_VALUE (firstUserPart (i COMMA_HERE)) == '\n') ;
       }
-      for (PMSInt32 i=0 ; i<secondUserPart.length () ; i++) {
+      for (int32_t i=0 ; i<secondUserPart.length () ; i++) {
         incrementPreservedLileCount (UNICODE_VALUE (secondUserPart (i COMMA_HERE)) == '\n') ;
       }
     }else if (performGeneration ()) {
@@ -629,16 +628,16 @@ generateFileWithPatternFromPathes (const C_String & inStartPath,
         << inGeneratedZone2
         << kSTART_OF_USER_ZONE_2 << secondUserPart << kEND_OF_USER_ZONE_2
         << inGeneratedZone3 ;
-      for (PMSInt32 i=0 ; i<inGeneratedZone2.length () ; i++) {
+      for (int32_t i=0 ; i<inGeneratedZone2.length () ; i++) {
         incrementGeneratedLileCount (UNICODE_VALUE (inGeneratedZone2 (i COMMA_HERE)) == '\n') ;
       }
-      for (PMSInt32 i=0 ; i<inGeneratedZone3.length () ; i++) {
+      for (int32_t i=0 ; i<inGeneratedZone3.length () ; i++) {
         incrementGeneratedLileCount (UNICODE_VALUE (inGeneratedZone3 (i COMMA_HERE)) == '\n') ;
       }
-      for (PMSInt32 i=0 ; i<firstUserPart.length () ; i++) {
+      for (int32_t i=0 ; i<firstUserPart.length () ; i++) {
         incrementGeneratedLileCount (UNICODE_VALUE (firstUserPart (i COMMA_HERE)) == '\n') ;
       }
-      for (PMSInt32 i=0 ; i<secondUserPart.length () ; i++) {
+      for (int32_t i=0 ; i<secondUserPart.length () ; i++) {
         incrementGeneratedLileCount (UNICODE_VALUE (secondUserPart (i COMMA_HERE)) == '\n') ;
       }
       if (verboseOptionOn || veryVerboseOptionOn) {
@@ -748,25 +747,25 @@ void C_Compiler::enterPragma (const GALGAS_lstring & inPragmaName,
 
 //-----------------------------------------------------------------------------*
 
-PMSInt32 C_Compiler::checkedVariableListEntryCount (void) const {
+int32_t C_Compiler::checkedVariableListEntryCount (void) const {
   return mCheckedVariableList.count () ;
 }
 
 
 //-----------------------------------------------------------------------------*
 
-C_String C_Compiler::checkedVariableAtIndex (const PMSInt32 inIndex COMMA_LOCATION_ARGS) const {
+C_String C_Compiler::checkedVariableAtIndex (const int32_t inIndex COMMA_LOCATION_ARGS) const {
   return mCheckedVariableList (inIndex COMMA_THERE) ;
 }
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   T R A C E                                                               *
+//   T R A C E                                                                 *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
 static C_TextFileWrite * gTraceFile = NULL ;
-static PMUInt32 gTraceIndex ;
+static uint32_t gTraceIndex ;
 
 //-----------------------------------------------------------------------------*
 

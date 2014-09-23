@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  acPtr_class : Base class for GALGAS class                                *
+//  acPtr_class : Base class for GALGAS class                                  *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -42,7 +42,7 @@ class acPtr_class : public C_SharedObject {
   public : acPtr_class (LOCATION_ARGS) ;
 
   public : virtual void description (C_String & ioString,
-                                     const PMSInt32 inIndentation) const = 0 ;
+                                     const int32_t inIndentation) const = 0 ;
 
   public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const = 0 ;
 

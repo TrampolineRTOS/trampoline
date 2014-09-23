@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  C_SharedObject : Base class for GALGAS object handling                   *
+//  C_SharedObject : Base class for GALGAS object handling                     *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -36,8 +36,8 @@
 
 //-----------------------------------------------------------------------------*
 
-static PMUInt32 gCreationIndex ;
-static PMUInt32 gObjectCurrentCount ;
+static uint32_t gCreationIndex ;
+static uint32_t gObjectCurrentCount ;
 
 //--- List of existing objects
 static C_SharedObject * gFirstObject ;
@@ -93,7 +93,7 @@ C_SharedObject::~ C_SharedObject (void) {
 
 void C_SharedObject::retain (const C_SharedObject * inObject COMMA_LOCATION_ARGS) {
   if (inObject != NULL) {
-    macroValidSharedObjectThere (inObject, const C_SharedObject) ;
+    macroValidSharedObjectThere (inObject, C_SharedObject) ;
     inObject->mRetainCount ++ ;
   }
 }
@@ -102,7 +102,7 @@ void C_SharedObject::retain (const C_SharedObject * inObject COMMA_LOCATION_ARGS
 
 void C_SharedObject::release (const C_SharedObject * inObject COMMA_LOCATION_ARGS) {
   if (inObject != NULL) {
-    macroValidSharedObjectThere (inObject, const C_SharedObject) ;
+    macroValidSharedObjectThere (inObject, C_SharedObject) ;
     MF_AssertThere (inObject->mRetainCount > 0, "mRetainCount should be > 0)", 0, 0) ;
     inObject->mRetainCount -- ;
     if (inObject->mRetainCount == 0) {

@@ -18,6 +18,8 @@ COMPILER_OPTIONS += -W
 #COMPILER_OPTIONS += -Wshadow
 #COMPILER_OPTIONS += -Wcast-qual
 COMPILER_OPTIONS += -Wwrite-strings
+COMPILER_OPTIONS += -ffunction-sections
+COMPILER_OPTIONS += -fdata-sections
 
 #--- Options for release mode
 COMPILER_OPTIONS_RELEASE := $(COMPILER_OPTIONS_RELEASE_FOR_THIS_CHAIN)

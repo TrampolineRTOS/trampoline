@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  C_UIntSet : algorithms on sets of PMUInt32                               *
+//  C_UIntSet : algorithms on sets of uint32_t                                 *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -37,12 +37,12 @@ class C_UIntSet {
   public : C_UIntSet (void) ;
 
 //--- Singleton
-  public : C_UIntSet (const PMUInt32 inValue) ;
+  public : C_UIntSet (const uint32_t inValue) ;
 
 //--- Methods
-  public : void add (const PMUInt32 inNodeIndex) ;
+  public : void add (const uint32_t inNodeIndex) ;
 
-  public : void remove (const PMUInt32 inNodeIndex) ;
+  public : void remove (const uint32_t inNodeIndex) ;
 
   public : void operator &= (const C_UIntSet & inOther) ;
 
@@ -57,20 +57,20 @@ class C_UIntSet {
 //--- Accessors
   public : void getBoolValueArray (TC_UniqueArray <bool> & outBoolValueArray) const ;
   
-  public : void getValueArray (TC_UniqueArray <PMUInt32> & outValueArray) const ;
+  public : void getValueArray (TC_UniqueArray <uint32_t> & outValueArray) const ;
   
-  public : bool contains (const PMUInt32 inNodeIndex) const ;
+  public : bool contains (const uint32_t inNodeIndex) const ;
   
-  public : PMUInt32 firstValueNotIsSet (void) const ;
+  public : uint32_t firstValueNotIsSet (void) const ;
   
-  public : PMUInt32 count (void) const ;
+  public : uint32_t count (void) const ;
   
   public : inline bool isEmpty (void) const {
     return mDefinition.count () == 0 ;
   }
   
 //--- Attributes
-  private : TC_Array <PMUInt64> mDefinition ;
+  private : TC_Array <uint64_t> mDefinition ;
 } ;
 
 //-----------------------------------------------------------------------------*

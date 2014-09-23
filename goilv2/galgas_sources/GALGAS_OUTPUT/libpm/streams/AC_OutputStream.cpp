@@ -1,10 +1,10 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  AC_OutputStream : an abstract output stream class                        *
+//  AC_OutputStream : an abstract output stream class                          *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
-//  Copyright (C) 1997, ..., 2009 Pierre Molinaro.                             *
+//  Copyright (C) 1997, ..., 2014 Pierre Molinaro.                             *
 //                                                                             *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
 //                                                                             *
@@ -55,19 +55,19 @@ void AC_OutputStream::flush (void) {
 
 void AC_OutputStream::appendCString (const char * inCstring) {
   if (inCstring != NULL) {
-    genericCharArrayOutput (inCstring, (PMSInt32) (strlen (inCstring) & PMUINT32_MAX)) ;
+    genericCharArrayOutput (inCstring, (int32_t) (strlen (inCstring) & UINT32_MAX)) ;
   }
 }
 
 //-----------------------------------------------------------------------------*
 
-void AC_OutputStream::genericCharArrayOutput (const char * inCharArray, const PMSInt32 inArrayCount) {
+void AC_OutputStream::genericCharArrayOutput (const char * inCharArray, const int32_t inArrayCount) {
   if (mIndentation == 0) {
     performActualCharArrayOutput (inCharArray, inArrayCount) ;
   }else if (inArrayCount > 0) {
-    for (PMSInt32 i=0 ; i<inArrayCount ; i++) {
+    for (int32_t i=0 ; i<inArrayCount ; i++) {
       if (mStartingLine) {
-        for (PMSInt32 j=0 ; j<mIndentation ; j++) {
+        for (int32_t j=0 ; j<mIndentation ; j++) {
           performActualCharArrayOutput (" ", 1) ;
         }
       }
@@ -79,13 +79,13 @@ void AC_OutputStream::genericCharArrayOutput (const char * inCharArray, const PM
 
 //-----------------------------------------------------------------------------*
 
-void AC_OutputStream::genericUnicodeArrayOutput (const utf32 * inCharArray, const PMSInt32 inArrayCount) {
+void AC_OutputStream::genericUnicodeArrayOutput (const utf32 * inCharArray, const int32_t inArrayCount) {
   if (mIndentation == 0) {
     performActualUnicodeArrayOutput (inCharArray, inArrayCount) ;
   }else if (inArrayCount > 0) {
-    for (PMSInt32 i=0 ; i<inArrayCount ; i++) {
+    for (int32_t i=0 ; i<inArrayCount ; i++) {
       if (mStartingLine) {
-        for (PMSInt32 j=0 ; j<mIndentation ; j++) {
+        for (int32_t j=0 ; j<mIndentation ; j++) {
           const utf32 space [1] = {TO_UNICODE (' ')} ;
           performActualUnicodeArrayOutput (space, 1) ;
         }
@@ -130,7 +130,7 @@ AC_OutputStream & AC_OutputStream::operator << (const char * inCstring) {
 
 //-----------------------------------------------------------------------------*
 
-void AC_OutputStream::appendCString (const char * inCstring, const PMSInt32 inCount) {
+void AC_OutputStream::appendCString (const char * inCstring, const int32_t inCount) {
   genericCharArrayOutput (inCstring, inCount) ;
 }
 
@@ -190,40 +190,40 @@ appendUnicodeCharacter (const utf32 inUnicodeCharacter COMMA_UNUSED_LOCATION_ARG
 void AC_OutputStream::appendDouble (const double inValue) {
   char s [40] = "" ;
   snprintf (s, 39, "%g", inValue) ;
-  genericCharArrayOutput (s, (PMSInt32) (strlen (s) & PMUINT32_MAX)) ;
+  genericCharArrayOutput (s, (int32_t) (strlen (s) & UINT32_MAX)) ;
 }
 
 //-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark PMUInt64
+  #pragma mark uint64_t
 #endif
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  WARNING: in gcc 3.x printf for 64-bit integer crashes!                   *
-//  So we use an auxiliary function printfUINT64 and only 32-bit printing    *
+//  WARNING: in gcc 3.x printf for 64-bit integer crashes!                     *
+//  So we use an auxiliary function printfUINT64 and only 32-bit printing      *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
 static void
 printfUINT64 (char ioString [],
-              const PMUInt64 inValue,
-              PMSInt32 & ioLength) {
-  const PMUInt64 quotient = inValue / 10ULL ;
+              const uint64_t inValue,
+              int32_t & ioLength) {
+  const uint64_t quotient = inValue / 10UL ;
   if (quotient != 0) {
     printfUINT64 (ioString, quotient, ioLength) ;
   }
-  const PMUInt32 v = (PMUInt32) ((inValue % 10ULL) & PMUINT32_MAX) ;
+  const uint32_t v = (uint32_t) ((inValue % 10UL) & UINT32_MAX) ;
   ioString [ioLength] = (char) (('0' + v) & 255) ;
   ioLength ++ ;
 }
 
 //-----------------------------------------------------------------------------*
 
-void AC_OutputStream::appendUnsigned (const PMUInt64 inValue) {
+void AC_OutputStream::appendUnsigned (const uint64_t inValue) {
   char s [30] = "" ;
-  PMSInt32 length = 0 ;
+  int32_t length = 0 ;
   printfUINT64 (s, inValue, length) ;
   s [length] = '\0' ;
   MF_Assert (length < 30, "C string overflow", 0, 0) ;
@@ -234,23 +234,23 @@ void AC_OutputStream::appendUnsigned (const PMUInt64 inValue) {
 
 static void
 printfUINT64Hex (char ioString [],
-                 const PMUInt64 inValue,
+                 const uint64_t inValue,
                  int & ioLength) {
-  const PMUInt64 quotient = inValue >> 4 ;
+  const uint64_t quotient = inValue >> 4 ;
   if (quotient != 0) {
     printfUINT64Hex (ioString, quotient, ioLength) ;
   }
-  const PMUInt32 v = (PMUInt32) (inValue & 15ULL) ;
+  const uint32_t v = (uint32_t) (inValue & 15UL) ;
   sprintf (& ioString [ioLength], "%X", v) ;
   ioLength ++ ;
 }
 
 //-----------------------------------------------------------------------------*
 
-void AC_OutputStream::appendUnsignedHex16 (const PMUInt64 inValue) {
+void AC_OutputStream::appendUnsignedHex16 (const uint64_t inValue) {
   int length = 0 ;
   char s [32] ;
-  printfUINT64Hex (s, (PMUInt64) inValue, length) ;
+  printfUINT64Hex (s, (uint64_t) inValue, length) ;
   MF_Assert (length < 32, "C string overflow", 0, 0) ;
   genericCharArrayOutput (s, length) ;
 }
@@ -258,24 +258,24 @@ void AC_OutputStream::appendUnsignedHex16 (const PMUInt64 inValue) {
 //-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark << PMSInt64
+  #pragma mark << int64_t
 #endif
 
 //-----------------------------------------------------------------------------*
 
-void AC_OutputStream::appendSigned (const PMSInt64 inValue) {
-  PMSInt32 length = 0 ;
+void AC_OutputStream::appendSigned (const int64_t inValue) {
+  int32_t length = 0 ;
   char s [30] = "" ;
   if (inValue >= 0) {
-    printfUINT64 (s, (PMUInt64) inValue, length) ;
-  }else if (inValue == PMSINT64_MIN) {
+    printfUINT64 (s, (uint64_t) inValue, length) ;
+  }else if (inValue == INT64_MIN) {
     s [0] = '-' ;
     length = 1 ;
-    printfUINT64 (s, (PMUInt64) PMSINT64_MIN, length) ;
+    printfUINT64 (s, (uint64_t) INT64_MIN, length) ;
   }else{
     s [0] = '-' ;
     length = 1 ;
-    printfUINT64 (s, (PMUInt64) (- inValue), length) ;
+    printfUINT64 (s, (uint64_t) (- inValue), length) ;
   }
   s [length] = '\0' ;
   MF_Assert (length < 30, "C string overflow", 0, 0) ;
@@ -297,48 +297,48 @@ void AC_OutputStream::appendBool (const bool inValue) {
 //-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark << PMUInt32
+  #pragma mark << uint32_t
 #endif
 
 //-----------------------------------------------------------------------------*
 
 void AC_OutputStream::
-appendUnsignedWithZeroFill (const PMUInt64 inValue, const PMUInt32 inWidth) {
+appendUnsignedWithZeroFill (const uint64_t inValue, const uint32_t inWidth) {
   char s [32] = "" ;
-  snprintf (s, 31, "%0*llu", inWidth, inValue) ;
+  snprintf (s, 31, "%0*llu", inWidth, (unsigned long long) inValue) ;
   appendCString (s) ;
 }
 
 //-----------------------------------------------------------------------------*
 
-void AC_OutputStream::appendUnsignedHex (const PMUInt64 inValue) {
+void AC_OutputStream::appendUnsignedHex (const uint64_t inValue) {
   char s [32] = "" ;
-  snprintf (s, 31, "%llX", inValue) ;
-  genericCharArrayOutput (s, (PMSInt32) (strlen (s) & PMUINT32_MAX)) ;
+  snprintf (s, 31, "%llX", (unsigned long long) inValue) ;
+  genericCharArrayOutput (s, (int32_t) (strlen (s) & UINT32_MAX)) ;
 }
 
 //-----------------------------------------------------------------------------*
 
-void AC_OutputStream::appendUnsignedHex2 (const PMUInt64 inValue) {
+void AC_OutputStream::appendUnsignedHex2 (const uint64_t inValue) {
   char s [32] = "" ;
-  snprintf (s, 31, "%02llX", inValue & 0xFF) ;
-  genericCharArrayOutput (s, (PMSInt32) (strlen (s) & PMUINT32_MAX)) ;
+  snprintf (s, 31, "%02llX", (unsigned long long) (inValue & 0xFF)) ;
+  genericCharArrayOutput (s, (int32_t) (strlen (s) & UINT32_MAX)) ;
 }
 
 //-----------------------------------------------------------------------------*
 
-void AC_OutputStream::appendUnsignedHex4 (const PMUInt64 inValue) {
+void AC_OutputStream::appendUnsignedHex4 (const uint64_t inValue) {
   char s [32] = "" ;
-  snprintf (s, 31, "%04llX", inValue & 0xFFFF) ;
-  genericCharArrayOutput (s, (PMSInt32) (strlen (s) & PMUINT32_MAX)) ;
+  snprintf (s, 31, "%04llX", (unsigned long long) (inValue & 0xFFFF)) ;
+  genericCharArrayOutput (s, (int32_t) (strlen (s) & UINT32_MAX)) ;
 }
 
 //-----------------------------------------------------------------------------*
 
-void AC_OutputStream::appendUnsignedHex8 (const PMUInt64 inValue) {
+void AC_OutputStream::appendUnsignedHex8 (const uint64_t inValue) {
   char s [32] = "" ;
-  snprintf (s, 31, "%08llX", inValue) ;
-  genericCharArrayOutput (s, (PMSInt32) (strlen (s) & PMUINT32_MAX)) ;
+  snprintf (s, 31, "%08llX", (unsigned long long) (inValue)) ;
+  genericCharArrayOutput (s, (int32_t) (strlen (s) & UINT32_MAX)) ;
 }
 
 //-----------------------------------------------------------------------------*
@@ -352,14 +352,14 @@ void AC_OutputStream::appendUnsignedHex8 (const PMUInt64 inValue) {
 void AC_OutputStream::appendPointer (const void * inValue) {
   char s [30] = "" ;
   snprintf (s, 29, "%p", inValue) ;
-  genericCharArrayOutput (s, (PMSInt32) (strlen (s) & PMUINT32_MAX)) ;
+  genericCharArrayOutput (s, (int32_t) (strlen (s) & UINT32_MAX)) ;
 }
 
 //-----------------------------------------------------------------------------*
 
 void AC_OutputStream::
-appendSpaces (const PMSInt32 inSpaceCount) {
-  for (PMSInt32 i=0 ; i<inSpaceCount ; i++) {
+appendSpaces (const int32_t inSpaceCount) {
+  for (int32_t i=0 ; i<inSpaceCount ; i++) {
     appendUnicodeCharacter (TO_UNICODE (' ') COMMA_HERE) ;
   }
 }
@@ -367,24 +367,24 @@ appendSpaces (const PMSInt32 inSpaceCount) {
 //-----------------------------------------------------------------------------*
 
 void AC_OutputStream::
-writeStringMultiple (const C_String & inString, const PMSInt32 inRepeatCount) {
-  for (PMSInt32 i=0 ; i<inRepeatCount ; i++) {
+writeStringMultiple (const C_String & inString, const int32_t inRepeatCount) {
+  for (int32_t i=0 ; i<inRepeatCount ; i++) {
     *this << inString ;
   }
 }
 
 //-----------------------------------------------------------------------------*
-//                          Comments                                         *
+//                          Comments                                           *
 //-----------------------------------------------------------------------------*
 
-static const PMSInt32 kCommentMaxLength = 77 ;
+static const int32_t kCommentMaxLength = 79 ;
 
 //-----------------------------------------------------------------------------*
 
 void AC_OutputStream::
 appendHyphenLineCommentWithoutExtraBlankLine (const C_String & inLineCommentPrefix) {
   *this << inLineCommentPrefix ;
-  for (PMSInt32 i=0 ; i<(kCommentMaxLength-2) ; i++) {
+  for (int32_t i=0 ; i<(kCommentMaxLength-2) ; i++) {
     *this << "-" ;
   }
   *this << "*\n";
@@ -415,16 +415,16 @@ appendComment (const C_String & inLineCommentPrefix,
 void AC_OutputStream::
 appendCenterJustifiedComment (const C_String & inLineCommentPrefix,
                               const C_String & inCommentString) {
-  const PMSInt32 commentLength = inCommentString.length () ;
-  const PMSInt32 n = (kCommentMaxLength - 3 - commentLength) / 2 ;
+  const int32_t commentLength = inCommentString.length () ;
+  const int32_t n = (kCommentMaxLength - 3 - commentLength) / 2 ;
   
   *this << inLineCommentPrefix ;
-  for (PMSInt32 i=0 ; i<n ; i++) {
+  for (int32_t i=0 ; i<n ; i++) {
    *this << " " ;
   }
   *this << inCommentString ;
-  const PMSInt32 fin = kCommentMaxLength - n - commentLength - 2 ;
-  for (PMSInt32 j=0 ; j<fin ; j++) {
+  const int32_t fin = kCommentMaxLength - n - commentLength - 2 ;
+  for (int32_t j=0 ; j<fin ; j++) {
     *this << " " ;
   }
   *this << "*\n" ;
@@ -435,7 +435,7 @@ appendCenterJustifiedComment (const C_String & inLineCommentPrefix,
 void AC_OutputStream::
 appendSpaceLineComment (const C_String & inLineCommentPrefix) {
   *this << inLineCommentPrefix ;
-  for (PMSInt32 i=0 ; i<(kCommentMaxLength-2) ; i++) {
+  for (int32_t i=0 ; i<(kCommentMaxLength-2) ; i++) {
     *this << " " ;
   }
   *this << "*\n";
@@ -450,12 +450,12 @@ appendCppHyphenLineComment (const C_String & inLineCommentPrefix) {
 }
 
 //-----------------------------------------------------------------------------*
-//                          C Comments                                       *
+//                          C Comments                                         *
 //-----------------------------------------------------------------------------*
 
 void AC_OutputStream::append_C_HyphenLineComment (void) {
   *this << "/*" ;
-  for (PMSInt32 i=0 ; i<(kCommentMaxLength-4) ; i++) {
+  for (int32_t i=0 ; i<(kCommentMaxLength-4) ; i++) {
     *this << "-" ;
   }
   *this << "*/\n" ;
@@ -465,14 +465,14 @@ void AC_OutputStream::append_C_HyphenLineComment (void) {
 
 void AC_OutputStream::append_C_SpaceLineComment (void) {
   *this << "/*" ;
-  for (PMSInt32 i=0 ; i<(kCommentMaxLength-4) ; i++) {
+  for (int32_t i=0 ; i<(kCommentMaxLength-4) ; i++) {
     *this << " " ;
   }
   *this << "*/\n" ;
 }
 
 //-----------------------------------------------------------------------------*
-//                        C++ Comments                                       *
+//                        C++ Comments                                         *
 //-----------------------------------------------------------------------------*
 
 void AC_OutputStream::
@@ -527,11 +527,11 @@ appendCppHyphenLineComment (void) {
 static void
 internalWriteCstringConstant (AC_OutputStream & ioStream,
                               const C_String & inString,
-                              const PMSInt32 inStringLength,
-                              const PMSInt32 inLineMaxLength) {
+                              const int32_t inStringLength,
+                              const int32_t inLineMaxLength) {
   ioStream << "\"" ;
-  PMSInt32 currentColumn = 0 ;
-  for (PMSInt32 i=0 ; i<inStringLength ; i++) {
+  int32_t currentColumn = 0 ;
+  for (int32_t i=0 ; i<inStringLength ; i++) {
     if (currentColumn > inLineMaxLength) {
       ioStream << "\"\n  \"" ;
       currentColumn = 0 ;
@@ -580,10 +580,10 @@ internalWriteCstringConstant (AC_OutputStream & ioStream,
         ioStream.appendUnicodeCharacter (c COMMA_HERE) ;
       }else{
         char buffer [5] ;
-        const PMSInt32 n = UTF8StringFromUTF32Character (c, buffer) ;
-        for (PMSInt32 j=0 ; j<n ; j++) {
+        const int32_t n = UTF8StringFromUTF32Character (c, buffer) ;
+        for (int32_t j=0 ; j<n ; j++) {
           ioStream << "\\x" ;
-          ioStream.appendUnsignedHex2 ((PMUInt32) buffer [j]) ;
+          ioStream.appendUnsignedHex2 ((uint32_t) buffer [j]) ;
           ioStream << "\"\""  ;
         }
       }
@@ -604,7 +604,7 @@ appendCLiteralStringConstant (const C_String & inString) {
 
 void AC_OutputStream::
 appendCLiteralStringConstant (const C_String & inString,
-                              const PMSInt32 inLineMaxLength) {
+                              const int32_t inLineMaxLength) {
   internalWriteCstringConstant (*this, inString, inString.length (), inLineMaxLength) ;
 }
 
@@ -711,7 +711,7 @@ appendFileHeaderComment (const C_String & inLineCommentPrefix,
 
 //-----------------------------------------------------------------------------*
 
-C_String cStringWithUnsigned (const PMUInt64 inValue) {
+C_String cStringWithUnsigned (const uint64_t inValue) {
   C_String result ;
   result.appendUnsigned (inValue) ;
   return result ;
@@ -725,7 +725,7 @@ C_String cStringWithUnsigned (const PMUInt64 inValue) {
 
 //-----------------------------------------------------------------------------*
 
-C_String cHexStringWithUnsigned (const PMUInt64 inValue) {
+C_String cHexStringWithUnsigned (const uint64_t inValue) {
   C_String result = "0x" ;
   result.appendUnsignedHex16 (inValue) ;
   return result ;
@@ -739,7 +739,7 @@ C_String cHexStringWithUnsigned (const PMUInt64 inValue) {
 
 //-----------------------------------------------------------------------------*
 
-C_String cStringWithSigned (const PMSInt64 inValue) {
+C_String cStringWithSigned (const int64_t inValue) {
   C_String result ;
   result.appendSigned (inValue) ;
   return result ;
@@ -755,7 +755,7 @@ C_String cStringWithSigned (const PMSInt64 inValue) {
 
 C_String cStringWithCharacter (const char inValue) {
   C_String result ;
-  result.appendUnicodeCharacter (TO_UNICODE ((PMUInt32) inValue) COMMA_HERE) ;
+  result.appendUnicodeCharacter (TO_UNICODE ((uint32_t) inValue) COMMA_HERE) ;
   return result ;
 }
 

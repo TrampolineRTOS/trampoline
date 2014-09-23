@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   GALGAS_bool : this class implements the GALGAS 'bool' native type       *
+//   GALGAS_bool : this class implements the GALGAS 'bool' native type         *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -23,12 +23,12 @@
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-#include "predefined-types.h"
+#include "galgas2/predefined-types.h"
 #include "galgas2/C_Compiler.h"
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//                     'GALGAS_bool' class                                   *
+//                     'GALGAS_bool' class                                     *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -146,7 +146,7 @@ GALGAS_string GALGAS_bool::reader_ocString (UNUSED_LOCATION_ARGS) const {
 //-----------------------------------------------------------------------------*
 
 GALGAS_uint GALGAS_bool::reader_uint (UNUSED_LOCATION_ARGS) const {
-  return GALGAS_uint ((PMUInt32) (mBoolValue ? 1 : 0)) ;
+  return GALGAS_uint ((uint32_t) (mBoolValue ? 1 : 0)) ;
 }
 
 //-----------------------------------------------------------------------------*
@@ -170,7 +170,7 @@ GALGAS_sint_36__34_ GALGAS_bool::reader_sint_36__34_ (UNUSED_LOCATION_ARGS) cons
 //-----------------------------------------------------------------------------*
 
 void GALGAS_bool::description (C_String & ioString,
-                               const PMSInt32 /* inIndentation */) const {
+                               const int32_t /* inIndentation */) const {
   ioString << "<@bool:" ;
   if (isValid ()) {
     ioString << (mBoolValue ? "true" : "false") ;

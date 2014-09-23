@@ -1,8 +1,8 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  unicode_string_routines: this file implements PMUInt32 * string routines,*
-//  that are in direct correspondance with char * C string routines of C     *
-//  library.                                                                 *
+//  unicode_string_routines: this file implements uint32_t * string routines,  *
+//  that are in direct correspondance with char * C string routines of C       *
+//  library.                                                                   *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -35,12 +35,12 @@
 //--- From GLIBC, version 2.7 http://ftp.gnu.org/gnu/glibc/glibc-2.7.tar.bz2
 // glibc/wcsmbs/wcscmp.c
 
-PMSInt32 utf32_strcmp (const utf32 * inString1, const utf32 * inString2) {
-  PMSInt32 c1, c2;
+int32_t utf32_strcmp (const utf32 * inString1, const utf32 * inString2) {
+  int32_t c1, c2;
   do{
-    c1 = (PMSInt32) UNICODE_VALUE (*inString1) ;
+    c1 = (int32_t) UNICODE_VALUE (*inString1) ;
     inString1 ++ ;
-    c2 = (PMSInt32) UNICODE_VALUE (*inString2) ;
+    c2 = (int32_t) UNICODE_VALUE (*inString2) ;
     inString2 ++ ;
     if (c1 == 0) return c1 - c2 ;
   }while (c1 == c2) ;
@@ -49,12 +49,12 @@ PMSInt32 utf32_strcmp (const utf32 * inString1, const utf32 * inString2) {
 
 //-----------------------------------------------------------------------------*
 
-PMSInt32 utf32_char_strcmp (const utf32 * inString1, const char * inString2) {
-  PMSInt32 c1, c2;
+int32_t utf32_char_strcmp (const utf32 * inString1, const char * inString2) {
+  int32_t c1, c2;
   do{
-    c1 = (PMSInt32) UNICODE_VALUE (*inString1) ;
+    c1 = (int32_t) UNICODE_VALUE (*inString1) ;
     inString1 ++ ;
-    c2 = (PMSInt32) (*inString2) ;
+    c2 = (int32_t) (*inString2) ;
     inString2 ++ ;
     if (c1 == 0) return c1 - c2 ;
   }while (c1 == c2) ;
@@ -63,14 +63,14 @@ PMSInt32 utf32_char_strcmp (const utf32 * inString1, const char * inString2) {
 
 //-----------------------------------------------------------------------------*
 
-PMSInt32 utf32_strncmp (const utf32 * inString1, const utf32 * inString2, const PMSInt32 inLength) {
+int32_t utf32_strncmp (const utf32 * inString1, const utf32 * inString2, const int32_t inLength) {
   if (inLength == 0) return 0 ;
-  PMSInt32 c1, c2;
-  PMSInt32 remaining = inLength ;
+  int32_t c1, c2;
+  int32_t remaining = inLength ;
   do{
-    c1 = (PMSInt32) UNICODE_VALUE (*inString1) ;
+    c1 = (int32_t) UNICODE_VALUE (*inString1) ;
     inString1 ++ ;
-    c2 = (PMSInt32) UNICODE_VALUE (*inString2) ;
+    c2 = (int32_t) UNICODE_VALUE (*inString2) ;
     inString2 ++ ;
     if (c1 == 0) return c1 - c2 ;
     remaining -- ;
@@ -80,16 +80,16 @@ PMSInt32 utf32_strncmp (const utf32 * inString1, const utf32 * inString2, const 
 
 //-----------------------------------------------------------------------------*
 
-PMSInt32 utf32_char_strncmp (const utf32 * inString1,
+int32_t utf32_char_strncmp (const utf32 * inString1,
                            const char * inString2,
-                           const PMSInt32 inLength) {
+                           const int32_t inLength) {
   if (inLength == 0) return 0 ;
-  PMSInt32 c1, c2;
-  PMSInt32 remaining = inLength ;
+  int32_t c1, c2;
+  int32_t remaining = inLength ;
   do{
-    c1 = (PMSInt32) UNICODE_VALUE (*inString1) ;
+    c1 = (int32_t) UNICODE_VALUE (*inString1) ;
     inString1 ++ ;
-    c2 = (PMSInt32) (*inString2) ;
+    c2 = (int32_t) (*inString2) ;
     inString2 ++ ;
     if (c1 == 0) return c1 - c2 ;
     remaining -- ;
@@ -99,8 +99,8 @@ PMSInt32 utf32_char_strncmp (const utf32 * inString1,
 
 //-----------------------------------------------------------------------------*
 
-PMSInt32 utf32_strlen (const utf32 * inString) {
-  PMSInt32 result = 0 ;
+int32_t utf32_strlen (const utf32 * inString) {
+  int32_t result = 0 ;
   while (UNICODE_VALUE (* inString) != 0) {
     inString ++ ;
     result ++ ;
@@ -156,22 +156,5 @@ utf32_strstr (const utf32 * haystack, const utf32 * needle) {
     }
   } while (1);
 }
-
-//-----------------------------------------------------------------------------*
-
-/*const utf32 *
-utf32_strstr (const utf32 * haystack, const utf32 * needle) {
-  utf32 c, sc;
-  if (UNICODE_VALUE (c = *needle++) != 0) {
-    const PMSInt32 len = utf32_strlen (needle);
-    do {
-      do {
-      if (UNICODE_VALUE (sc = *haystack++) == 0) return (NULL);
-      } while (UNICODE_VALUE (sc) != UNICODE_VALUE (c));
-    } while (utf32_strncmp (haystack, needle, len) != 0) ;
-    haystack-- ;
-  }
-  return haystack ;
-}*/
 
 //-----------------------------------------------------------------------------*

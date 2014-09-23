@@ -39,7 +39,7 @@
 class cProductionNameDescriptor {
   public : const char * mName ;
   public : const char * mFileName ;
-  public : const PMUInt32 mLineNumber ;
+  public : const uint32_t mLineNumber ;
 } ;
 
 //-----------------------------------------------------------------------------*

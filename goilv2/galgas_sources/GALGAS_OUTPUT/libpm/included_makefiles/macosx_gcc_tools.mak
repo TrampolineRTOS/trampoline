@@ -22,7 +22,7 @@ ifeq ($(LEOPARD_SDK), directory)
 else
   ifeq ($(SNOW_LEOPARD_SDK), directory)
     COMPILER_TOOL := gcc -m64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk
-    LINKER_TOOL   := g++ -m64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk -mmacosx-version-min=10.5
+    LINKER_TOOL   := g++ -Wl,-dead_strip -m64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk -mmacosx-version-min=10.5
     STRIP_TOOL    := strip -A -n -r -u
     SUDO_TOOL     := sudo
     COMPILATION_MESSAGE := 64-Bit Compiling for Mac OS X Snow Leopard

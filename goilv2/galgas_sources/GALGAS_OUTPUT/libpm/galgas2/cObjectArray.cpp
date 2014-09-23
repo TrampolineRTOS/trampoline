@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  cObjectArray                                                             *
+//  cObjectArray                                                               *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -23,7 +23,7 @@
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-#include "cObjectArray.h"
+#include "galgas2/cObjectArray.h"
 #include "galgas2/predefined-types.h"
 
 //-----------------------------------------------------------------------------*
@@ -35,7 +35,7 @@ mArray (NULL),
 mCount (0) {
   mCount = inObjectList.count () ;
   macroMyNewArray (mArray, GALGAS_object, mCount) ;
-  for (PMUInt32 i=0 ; i<mCount ; i++) {
+  for (uint32_t i=0 ; i<mCount ; i++) {
     mArray [i] = inObjectList.reader_mValueAtIndex (GALGAS_uint (i), inCompiler COMMA_THERE) ;
   }
 }
@@ -49,7 +49,7 @@ cObjectArray::~cObjectArray (void) {
 
 //-----------------------------------------------------------------------------*
 
-GALGAS_object cObjectArray::objectAtIndex (const PMUInt32 inIndex
+GALGAS_object cObjectArray::objectAtIndex (const uint32_t inIndex
                                            COMMA_LOCATION_ARGS) const {
   MF_AssertThere (inIndex < mCount, "inIndex (%ld) >= mCount (%ld)", inIndex, mCount) ;
   return mArray [inIndex] ;

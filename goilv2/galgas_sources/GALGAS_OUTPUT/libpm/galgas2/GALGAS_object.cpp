@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  GALGAS_object : Base class for GALGAS object handling                    *
+//  GALGAS_object : Base class for GALGAS object handling                      *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -23,8 +23,8 @@
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-#include "predefined-types.h"
-#include "cPtr_object.h"
+#include "galgas2/predefined-types.h"
+#include "galgas2/cPtr_object.h"
 
 //-----------------------------------------------------------------------------*
 
@@ -82,7 +82,7 @@ const AC_GALGAS_root * GALGAS_object::embeddedObject (void) const {
 //-----------------------------------------------------------------------------*
 
 void GALGAS_object::description (C_String & /* ioString */,
-                                 const PMSInt32 /* inIndentation */) const {
+                                 const int32_t /* inIndentation */) const {
 }
 
 //-----------------------------------------------------------------------------*

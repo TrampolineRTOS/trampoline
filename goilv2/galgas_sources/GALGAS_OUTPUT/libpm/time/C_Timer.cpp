@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Timer class.                                                             *
+//  Timer class.                                                               *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -81,7 +81,7 @@ void C_Timer::startTimer (void) {
 
 //-----------------------------------------------------------------------------*
 
-PMUInt32 C_Timer::msFromStart (void) const {
+uint32_t C_Timer::msFromStart (void) const {
   #ifdef LIBPM_USES_TIMEVAL_STRUCT
     timeval t ;
     if (mRunning) {
@@ -91,13 +91,13 @@ PMUInt32 C_Timer::msFromStart (void) const {
     }else{
       timersub (& mEnd, & mStart, & t) ;
     }
-    const PMUInt32 duration = ((PMUInt32) t.tv_sec) * 1000 + (PMUInt32) (t.tv_usec / 1000) ;
+    const uint32_t duration = ((uint32_t) t.tv_sec) * 1000 + (uint32_t) (t.tv_usec / 1000) ;
   #else
-    PMUInt32 duration ;
+    uint32_t duration ;
     if (mRunning) {
-      duration = (PMUInt32) (::clock () - mStart) ;
+      duration = (uint32_t) (::clock () - mStart) ;
     }else{
-      duration = (PMUInt32) (mEnd - mStart) ;
+      duration = (uint32_t) (mEnd - mStart) ;
     }
     duration /= CLOCKS_PER_SEC / 1000 ;
   #endif
@@ -107,10 +107,10 @@ PMUInt32 C_Timer::msFromStart (void) const {
 //-----------------------------------------------------------------------------*
 
 C_String C_Timer::timeString (void) const {
-  const PMUInt32 d = msFromStart () ;
-  const PMUInt32 ms = d % 1000 ;
-  const PMUInt32 secondes = (d / 1000) % 60 ; // (PMUInt32) ((((PMUInt32) duration.tv_sec) % 60) & PMUINT32_MAX) ;
-  const PMUInt32 minutes  = d / 60000 ; // (PMUInt32) ((((PMUInt32) duration.tv_sec) / 60) & PMUINT32_MAX) ;
+  const uint32_t d = msFromStart () ;
+  const uint32_t ms = d % 1000 ;
+  const uint32_t secondes = (d / 1000) % 60 ; // (uint32_t) ((((uint32_t) duration.tv_sec) % 60) & UINT32_MAX) ;
+  const uint32_t minutes  = d / 60000 ; // (uint32_t) ((((uint32_t) duration.tv_sec) / 60) & UINT32_MAX) ;
   C_String result ;
   if (minutes > 0) {
     result.appendUnsigned (minutes) ;
@@ -137,20 +137,20 @@ AC_OutputStream & operator << (AC_OutputStream & inStream,
     }else{
       timersub (& inTimer.mEnd, & inTimer.mStart, & duration) ;
     }
-    const PMUInt32 cs = (PMUInt32) (duration.tv_usec / 10000) ;
-    const PMUInt32 secondes = (PMUInt32) ((((PMUInt32) duration.tv_sec) % 60) & PMUINT32_MAX) ;
-    const PMUInt32 minutes  = (PMUInt32) ((((PMUInt32) duration.tv_sec) / 60) & PMUINT32_MAX) ;
+    const uint32_t cs = (uint32_t) (duration.tv_usec / 10000) ;
+    const uint32_t secondes = (uint32_t) ((((uint32_t) duration.tv_sec) % 60) & UINT32_MAX) ;
+    const uint32_t minutes  = (uint32_t) ((((uint32_t) duration.tv_sec) / 60) & UINT32_MAX) ;
   #else
-    PMUInt32 duration ;
+    uint32_t duration ;
     if (inTimer.mRunning) {
-      duration = (PMUInt32) (::clock () - inTimer.mStart) ;
+      duration = (uint32_t) (::clock () - inTimer.mStart) ;
     }else{
-      duration = (PMUInt32) (inTimer.mEnd - inTimer.mStart) ;
+      duration = (uint32_t) (inTimer.mEnd - inTimer.mStart) ;
     }
     duration /= CLOCKS_PER_SEC / 100 ;
-    const PMUInt32 cs = (PMUInt32) (duration % 100) ;
-    const PMUInt32 secondes = (PMUInt32) ((duration / 100) % 60) ;
-    const PMUInt32 minutes = (PMUInt32) (duration / 6000) ;
+    const uint32_t cs = (uint32_t) (duration % 100) ;
+    const uint32_t secondes = (uint32_t) ((duration / 100) % 60) ;
+    const uint32_t minutes = (uint32_t) (duration / 6000) ;
   #endif
   if (minutes > 0) {
     inStream.appendUnsigned (minutes) ;

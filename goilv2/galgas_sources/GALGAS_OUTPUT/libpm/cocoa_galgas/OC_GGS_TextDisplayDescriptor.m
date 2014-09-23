@@ -118,8 +118,8 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
     mScrollView.borderType = NSBezelBorder ;
     mRulerView = [OC_GGS_RulerViewForTextView new] ;
     [mScrollView setVerticalRulerView:mRulerView] ;
-    [mScrollView.verticalRulerView setRuleThickness:gCocoaApplicationDelegate.ruleThickness] ;
-    [mScrollView setRulersVisible:[[NSUserDefaults standardUserDefaults] boolForKey:GGS_show_ruler]] ;
+    [mScrollView.verticalRulerView setRuleThickness:50.0] ;
+    [mScrollView setRulersVisible:YES] ;
     [mScrollView setHasVerticalRuler:YES] ;
     OC_GGS_Scroller * scroller = [OC_GGS_Scroller new] ;
     [scroller setIsSourceTextViewScroller:YES] ;
@@ -258,7 +258,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//        G O T O    L I N E    A N D     C O L U M N                        *
+//        G O T O    L I N E    A N D     C O L U M N                          *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 

@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  'C_ErrorOut' : a class for console output                                *
+//  'C_ErrorOut' : a class for console output                                  *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -35,7 +35,7 @@ C_ErrorOut::C_ErrorOut (void) {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//                  Flush output                                             *
+//                  Flush output                                               *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -45,13 +45,13 @@ void C_ErrorOut::flush (void) {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//                  Write a character string on the console                  *
+//                  Write a character string on the console                    *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
 void C_ErrorOut::
 performActualCharArrayOutput (const char * inCharArray,
-                              const PMSInt32 inArrayCount) {
+                              const int32_t inArrayCount) {
   if (inArrayCount > 0) {
     ::fprintf (stderr, "%.*s", (int) inArrayCount, inCharArray) ;
   }
@@ -61,8 +61,8 @@ performActualCharArrayOutput (const char * inCharArray,
 
 void C_ErrorOut::
 performActualUnicodeArrayOutput (const utf32 * inCharArray,
-                                 const PMSInt32 inArrayCount) {
-  for (PMSInt32 i=0 ; i<inArrayCount ; i++) {
+                                 const int32_t inArrayCount) {
+  for (int32_t i=0 ; i<inArrayCount ; i++) {
     char buffer [5] ;
     UTF8StringFromUTF32Character (inCharArray [i], buffer) ;
     fprintf (stderr, "%s", buffer) ;
@@ -71,7 +71,7 @@ performActualUnicodeArrayOutput (const utf32 * inCharArray,
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  C O N S O L E    O U T    G L O B A L   V A R I A B L E                  *
+//  C O N S O L E    O U T    G L O B A L   V A R I A B L E                    *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 

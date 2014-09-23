@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  GALGAS introspection classes                                             *
+//  GALGAS introspection classes                                               *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -27,7 +27,7 @@
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  GALGAS function descriptor (for function introspection)                  *
+//  GALGAS function descriptor (for function introspection)                    *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -39,7 +39,7 @@ C_galgas_function_descriptor::
 C_galgas_function_descriptor (const char * inFunctionName,
                               const functionPrototypeForIntrospection inFunctionPointer,
                               const C_galgas_type_descriptor * inResultType,
-                              const PMUInt32 inParameterCount,
+                              const uint32_t inParameterCount,
                               const C_galgas_type_descriptor * * inParameterTypeList) :
 mNextFunction (gGalgasFunctionListRoot),
 mFunctionName (inFunctionName),

@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Built-in GALGAS Command Line Interface Options                           *
+//  Built-in GALGAS Command Line Interface Options                             *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -114,9 +114,9 @@ C_StringCommandLineOption gOption_galgas_5F_builtin_5F_options_mode ("galgas_cli
 
 //-----------------------------------------------------------------------------*
 
-static PMUInt32 gMode ;
-static PMUInt32 gContextHelpStartLocation ;
-static PMUInt32 gContextHelpEndLocation ;
+static uint32_t gMode ;
+static uint32_t gContextHelpStartLocation ;
+static uint32_t gContextHelpEndLocation ;
 static C_String gCurrentlyCompiledBaseFilePath ;
 
 //-----------------------------------------------------------------------------*
@@ -165,13 +165,13 @@ bool executionModeIsIndexing (void) {
 
 //-----------------------------------------------------------------------------*
 
-PMUInt32 contextHelpStartLocation (void) {
+uint32_t contextHelpStartLocation (void) {
   return gContextHelpStartLocation ;
 }
 
 //-----------------------------------------------------------------------------*
 
-PMUInt32 contextHelpEndLocation (void) {
+uint32_t contextHelpEndLocation (void) {
   return gContextHelpEndLocation ;
 }
 

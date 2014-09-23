@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  capCollectionElementArray                                                *
+//  capCollectionElementArray                                                  *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -52,14 +52,14 @@ class cObjectArray {
   private : cObjectArray & operator = (const cObjectArray & inSource) ;
 
 //--- Object count
-  public : inline PMUInt32 count (void) const { return mCount ; }
+  public : inline uint32_t count (void) const { return mCount ; }
 
 //--- Object at index
-  public : GALGAS_object objectAtIndex (const PMUInt32 inIndex COMMA_LOCATION_ARGS) const ;
+  public : GALGAS_object objectAtIndex (const uint32_t inIndex COMMA_LOCATION_ARGS) const ;
 
 //--- Attributes
   private : GALGAS_object * mArray ;
-  private : PMUInt32 mCount ;
+  private : uint32_t mCount ;
 } ;
 
 //-----------------------------------------------------------------------------*

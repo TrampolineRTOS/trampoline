@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  'GALGAS_sint64' : galgas sint64                                          *
+//  'GALGAS_sint64' : galgas sint64                                            *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -23,13 +23,13 @@
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-#include "predefined-types.h"
+#include "galgas2/predefined-types.h"
 #include "galgas2/C_Compiler.h"
 #include "files/C_TextFileWrite.h"
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//               GALGAS_sint64                                               *
+//               GALGAS_sint64                                                 *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -46,7 +46,7 @@ GALGAS_sint_36__34_ GALGAS_sint_36__34_::constructor_default (UNUSED_LOCATION_AR
 
 //-----------------------------------------------------------------------------*
 
-GALGAS_sint_36__34_::GALGAS_sint_36__34_ (const PMSInt64 inValue) :
+GALGAS_sint_36__34_::GALGAS_sint_36__34_ (const int64_t inValue) :
 mIsValid (true),
 mSInt64Value (inValue) {
   if (traceIsEnabled ()) {
@@ -73,13 +73,13 @@ typeComparisonResult GALGAS_sint_36__34_::objectCompare (const GALGAS_sint_36__3
 //-----------------------------------------------------------------------------*
 
 GALGAS_sint_36__34_ GALGAS_sint_36__34_::constructor_max (UNUSED_LOCATION_ARGS) {
-  return GALGAS_sint_36__34_ (PMSINT64_MAX) ;
+  return GALGAS_sint_36__34_ (INT64_MAX) ;
 }
 
 //-----------------------------------------------------------------------------*
 
 GALGAS_sint_36__34_ GALGAS_sint_36__34_::constructor_min (UNUSED_LOCATION_ARGS) {
-  return GALGAS_sint_36__34_ (PMSINT64_MIN) ;
+  return GALGAS_sint_36__34_ (INT64_MIN) ;
 }
 
 //-----------------------------------------------------------------------------*
@@ -90,7 +90,7 @@ GALGAS_uint_36__34_ GALGAS_sint_36__34_::reader_uint_36__34_ (C_Compiler * inCom
   if (mSInt64Value < 0) {
     inCompiler->onTheFlyRunTimeError ("cannot convert a negative sint64 into an uint64" COMMA_THERE) ;
   }else{
-    result = GALGAS_uint_36__34_ ((PMUInt64) mSInt64Value) ;
+    result = GALGAS_uint_36__34_ ((uint64_t) mSInt64Value) ;
   }
   return result ;
 }
@@ -102,10 +102,10 @@ GALGAS_uint GALGAS_sint_36__34_::reader_uint (C_Compiler * inCompiler
   GALGAS_uint result ;
   if (mSInt64Value < 0) {
     inCompiler->onTheFlyRunTimeError ("cannot convert a negative sint64 into an uint" COMMA_THERE) ;
-  }else if (mSInt64Value > ((PMSInt64) PMUINT32_MAX)) {
+  }else if (mSInt64Value > ((int64_t) UINT32_MAX)) {
     inCompiler->onTheFlyRunTimeError ("conversion to unsigned value overflow" COMMA_THERE) ;
   }else{
-    result = GALGAS_uint ((PMUInt32) (mSInt64Value & PMUINT32_MAX)) ;
+    result = GALGAS_uint ((uint32_t) (mSInt64Value & UINT32_MAX)) ;
   }
   return result ;
 }
@@ -115,12 +115,12 @@ GALGAS_uint GALGAS_sint_36__34_::reader_uint (C_Compiler * inCompiler
 GALGAS_sint GALGAS_sint_36__34_::reader_sint (C_Compiler * inCompiler
                                                 COMMA_LOCATION_ARGS) const {
   GALGAS_sint result ;
-  if (mSInt64Value < PMSINT32_MIN) {
+  if (mSInt64Value < INT32_MIN) {
     inCompiler->onTheFlyRunTimeError ("conversion from 64-bit signed value to 32-bit signed value overflow" COMMA_THERE) ;
-  }else if (mSInt64Value > PMSINT32_MAX) {
+  }else if (mSInt64Value > INT32_MAX) {
     inCompiler->onTheFlyRunTimeError ("conversion from 64-bit signed value to 32-bit signed value overflow" COMMA_THERE) ;
   }else{
-    result = GALGAS_sint ((PMSInt32) (mSInt64Value & PMUINT32_MAX)) ;
+    result = GALGAS_sint ((int32_t) (mSInt64Value & UINT32_MAX)) ;
   }
   return result ;
 }
@@ -142,7 +142,7 @@ GALGAS_string GALGAS_sint_36__34_::reader_string (UNUSED_LOCATION_ARGS) const {
 //-----------------------------------------------------------------------------*
 
 void GALGAS_sint_36__34_::description (C_String & ioString,
-                                       const PMSInt32 /* inIndentation */) const {
+                                       const int32_t /* inIndentation */) const {
   ioString << "<@sint64:" ;
   ioString.appendSigned (mSInt64Value) ;
   ioString << ">" ;
@@ -153,7 +153,7 @@ void GALGAS_sint_36__34_::description (C_String & ioString,
 void GALGAS_sint_36__34_::increment_operation (C_Compiler * inCompiler 
                                                  COMMA_LOCATION_ARGS) {
   if (isValid ()) {
-    if (mSInt64Value == PMSINT64_MAX) {
+    if (mSInt64Value == INT64_MAX) {
       inCompiler->onTheFlyRunTimeError ("++ operation overflow" COMMA_THERE) ;
       drop () ;
     }else{
@@ -168,7 +168,7 @@ void GALGAS_sint_36__34_::decrement_operation (C_Compiler * inCompiler
                                                  COMMA_LOCATION_ARGS) {
   if (isValid ()) {
   //--- Overflow ?
-    if (mSInt64Value == PMSINT64_MIN) {
+    if (mSInt64Value == INT64_MIN) {
       inCompiler->onTheFlyRunTimeError ("-- operation underflow" COMMA_THERE) ;
       drop () ;
     }else{
@@ -184,7 +184,7 @@ GALGAS_sint_36__34_ GALGAS_sint_36__34_::add_operation (const GALGAS_sint_36__34
                                                             COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_sint_36__34_ result ;
   if (isValid () && inOperand2.isValid ()) {
-    const PMSInt64 v = mSInt64Value + inOperand2.mSInt64Value ;
+    const int64_t v = mSInt64Value + inOperand2.mSInt64Value ;
     result = GALGAS_sint_36__34_ (v) ;
   }
   return result ;
@@ -197,7 +197,7 @@ GALGAS_sint_36__34_ GALGAS_sint_36__34_::substract_operation (const GALGAS_sint_
                                                                   COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_sint_36__34_ result ;
   if (isValid () && inOperand2.isValid ()) {
-    const PMSInt64 v = mSInt64Value - inOperand2.mSInt64Value ;
+    const int64_t v = mSInt64Value - inOperand2.mSInt64Value ;
     result = GALGAS_sint_36__34_ (v) ;
   }
   return result ;
@@ -205,18 +205,18 @@ GALGAS_sint_36__34_ GALGAS_sint_36__34_::substract_operation (const GALGAS_sint_
 
 //-----------------------------------------------------------------------------*
 
-static void product (const PMUInt64 inOperand1,
-                     const PMUInt64 inOperand2,
-                     PMUInt64 & outResult,
+static void product (const uint64_t inOperand1,
+                     const uint64_t inOperand2,
+                     uint64_t & outResult,
                      bool & outOverflow) {
-  const PMUInt64 lowWord1 = inOperand1 & PMUINT32_MAX ;
-  const PMUInt64 highWord1 = inOperand1 >> 32 ;
-  const PMUInt64 lowWord2 = inOperand2 & PMUINT32_MAX ;
-  const PMUInt64 highWord2 = inOperand2 >> 32 ;
-  const PMUInt64 lowResult = lowWord1 * lowWord2 ;
-  const PMUInt64 crossResult = (lowWord1 * highWord2) + (lowWord2 * highWord1) + (lowResult >> 32) ;
-  const PMUInt64 highResult = (highWord1 * highWord2) + (crossResult >> 32) ;
-  outResult = (crossResult << 32) + (lowResult & PMUINT32_MAX) ;
+  const uint64_t lowWord1 = inOperand1 & UINT32_MAX ;
+  const uint64_t highWord1 = inOperand1 >> 32 ;
+  const uint64_t lowWord2 = inOperand2 & UINT32_MAX ;
+  const uint64_t highWord2 = inOperand2 >> 32 ;
+  const uint64_t lowResult = lowWord1 * lowWord2 ;
+  const uint64_t crossResult = (lowWord1 * highWord2) + (lowWord2 * highWord1) + (lowResult >> 32) ;
+  const uint64_t highResult = (highWord1 * highWord2) + (crossResult >> 32) ;
+  outResult = (crossResult << 32) + (lowResult & UINT32_MAX) ;
   outOverflow = highResult > 0 ;
 }
 
@@ -227,37 +227,37 @@ GALGAS_sint_36__34_ GALGAS_sint_36__34_::multiply_operation (const GALGAS_sint_3
                                                                  COMMA_LOCATION_ARGS) const {
   GALGAS_sint_36__34_ result ;
   if (isValid () && inOperand2.isValid ()) {
-    PMUInt64 operand1 ;
-    if (mSInt64Value == PMSINT64_MIN) {
-      operand1 = (PMUInt64) PMSINT64_MIN ;
+    uint64_t operand1 ;
+    if (mSInt64Value == INT64_MIN) {
+      operand1 = (uint64_t) INT64_MIN ;
     }else if (mSInt64Value < 0) {
-      operand1 = (PMUInt64) (- mSInt64Value) ;
+      operand1 = (uint64_t) (- mSInt64Value) ;
     }else{
-      operand1 = (PMUInt64) mSInt64Value ;
+      operand1 = (uint64_t) mSInt64Value ;
     }
-    PMUInt64 operand2 ;
-    if (inOperand2.mSInt64Value == PMSINT64_MIN) {
-      operand2 = (PMUInt64) PMSINT64_MIN ;
+    uint64_t operand2 ;
+    if (inOperand2.mSInt64Value == INT64_MIN) {
+      operand2 = (uint64_t) INT64_MIN ;
     }else if (inOperand2.mSInt64Value < 0) {
-      operand2 = (PMUInt64) (- inOperand2.mSInt64Value) ;
+      operand2 = (uint64_t) (- inOperand2.mSInt64Value) ;
     }else{
-      operand2 = (PMUInt64) inOperand2.mSInt64Value ;
+      operand2 = (uint64_t) inOperand2.mSInt64Value ;
     }
     bool resultIsPositive = (mSInt64Value >= 0) == (inOperand2.mSInt64Value >= 0) ;
-    PMUInt64 unsignedResult ;
+    uint64_t unsignedResult ;
     bool overflow ;
     product (operand1, operand2, unsignedResult, overflow) ;
-    PMSInt64 resultValue = 0 ;
+    int64_t resultValue = 0 ;
     if (! overflow) {
       if (resultIsPositive) {
-        overflow = unsignedResult > ((PMUInt64) PMSINT64_MAX) ;
-        resultValue = (PMSInt64) unsignedResult ;
+        overflow = unsignedResult > ((uint64_t) INT64_MAX) ;
+        resultValue = (int64_t) unsignedResult ;
       }else{
         overflow = unsignedResult > (1LLU << 63) ;
         if (unsignedResult == (1LLU << 63)) {
-          resultValue = PMSINT64_MIN ;
+          resultValue = INT64_MIN ;
         }else{
-          resultValue = - ((PMSInt64) unsignedResult) ;
+          resultValue = - ((int64_t) unsignedResult) ;
         }
       }
     }
@@ -279,7 +279,7 @@ GALGAS_sint_36__34_ GALGAS_sint_36__34_::divide_operation (const GALGAS_sint_36_
   if (isValid () && inOperand2.isValid ()) {
     if (inOperand2.mSInt64Value == 0) {
       inCompiler->onTheFlyRunTimeError ("divide by zero" COMMA_THERE) ;
-    }else if ((mSInt64Value == PMSINT32_MIN) && (inOperand2.mSInt64Value == -1)) {
+    }else if ((mSInt64Value == INT32_MIN) && (inOperand2.mSInt64Value == -1)) {
       inCompiler->onTheFlyRunTimeError ("/ operation overflow" COMMA_THERE) ;
     }else{
       result = GALGAS_sint_36__34_ (mSInt64Value / inOperand2.mSInt64Value) ;
@@ -310,7 +310,7 @@ GALGAS_sint_36__34_ GALGAS_sint_36__34_::operator_unary_minus (C_Compiler * inCo
                                                                    COMMA_LOCATION_ARGS) const {
   GALGAS_sint_36__34_ result ;
   if (isValid ()) {
-    if (mSInt64Value == PMSINT32_MIN) {
+    if (mSInt64Value == INT32_MIN) {
       inCompiler->onTheFlyRunTimeError ("unary '-' operation underflow" COMMA_THERE) ;
     }else{
       result = GALGAS_sint_36__34_ (- mSInt64Value) ;

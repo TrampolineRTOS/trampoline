@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  GALGAS_enumerable : Base class for GALGAS enumerable object              *
+//  GALGAS_enumerable : Base class for GALGAS enumerable object                *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -23,7 +23,7 @@
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-#include "cGenericAbstractEnumerator.h"
+#include "galgas2/cGenericAbstractEnumerator.h"
 
 //-----------------------------------------------------------------------------*
 

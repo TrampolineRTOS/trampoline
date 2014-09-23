@@ -28,14 +28,14 @@
 
 //-----------------------------------------------------------------------------*
 
-#include "capCollectionElementArray.h"
+#include "galgas2/capCollectionElementArray.h"
 
 //-----------------------------------------------------------------------------*
 
 class cGenericAbstractEnumerator {
 //--- Private data members
   protected : capCollectionElementArray mEnumerationArray ;
-  private : PMUInt32 mIndex ;
+  private : uint32_t mIndex ;
 
 //--- Constructor
   protected : cGenericAbstractEnumerator (void) ;
@@ -52,8 +52,8 @@ class cGenericAbstractEnumerator {
   public : inline bool hasNextObject (void) const { return (mIndex + 1) < mEnumerationArray.count () ; }
   public : inline void gotoNextObject (void) { mIndex ++ ; }
   public : inline void rewind (void) { mIndex = 0 ; }
-  public : inline PMUInt32 index (void) const { return mIndex ; }
-  public : inline void gotoIndex (const PMUInt32 inIndex) { mIndex = inIndex ; }
+  public : inline uint32_t index (void) const { return mIndex ; }
+  public : inline void gotoIndex (const uint32_t inIndex) { mIndex = inIndex ; }
   protected : const cCollectionElement * currentObjectPtr (LOCATION_ARGS) const ;
 } ;
 

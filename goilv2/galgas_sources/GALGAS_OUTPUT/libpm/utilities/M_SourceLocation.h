@@ -1,10 +1,10 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Collection of macros for determining a location in a source file.        *
+//  Collection of macros for determining a location in a source file.          *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
-//  Copyright (C) 1997 Pierre Molinaro.                                      *
+//  Copyright (C) 1997 Pierre Molinaro.                                        *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
 //  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
 //  ECN, École Centrale de Nantes (France)                                     *
@@ -35,8 +35,8 @@
   #define COMMA_HERE , HERE
   #define THERE IN_SOURCE_FILE, IN_SOURCE_LINE
   #define COMMA_THERE , THERE
-  #define LOCATION_ARGS const char * IN_SOURCE_FILE, const PMSInt32 IN_SOURCE_LINE
-  #define UNUSED_LOCATION_ARGS const char *, const PMSInt32
+  #define LOCATION_ARGS const char * IN_SOURCE_FILE, const int32_t IN_SOURCE_LINE
+  #define UNUSED_LOCATION_ARGS const char *, const int32_t
   #define COMMA_LOCATION_ARGS , LOCATION_ARGS
   #define COMMA_UNUSED_LOCATION_ARGS , UNUSED_LOCATION_ARGS
 #else

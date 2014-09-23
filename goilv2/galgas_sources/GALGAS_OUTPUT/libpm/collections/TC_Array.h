@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   G E N E R I C     A R R A Y                                             *
+//   G E N E R I C     A R R A Y                                               *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -24,7 +24,7 @@
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   Template class predeclaration                                           *
+//   Template class predeclaration                                             *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -32,7 +32,7 @@ template <typename TYPE> class TC_Array ;
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   swap function for TC_Array <TYPE> classes                               *
+//   swap function for TC_Array <TYPE> classes                                 *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -41,7 +41,7 @@ template <typename TYPE> void swap (TC_Array <TYPE> & ioOperand1,
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   Template class declaration                                              *
+//   Template class declaration                                                *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -53,7 +53,8 @@ template <typename TYPE> class TC_Array : public TC_UniqueArray <TYPE> {
   public : TC_Array (const int inAllocatedSize COMMA_LOCATION_ARGS) ;
   
 //--- Allocation Constructor (array initialized with inValue)
-  public : TC_Array (const int inAllocatedSize, const TYPE & inValue COMMA_LOCATION_ARGS) ;
+  public : TC_Array (const int inAllocatedSize,
+                     const TYPE & inValue COMMA_LOCATION_ARGS) ;
   
 //--- Handle Copy
   public : TC_Array (const TC_Array <TYPE> &) ;
@@ -66,7 +67,7 @@ template <typename TYPE> class TC_Array : public TC_UniqueArray <TYPE> {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   Default Constructor                                                     *
+//   Default Constructor                                                       *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -77,7 +78,7 @@ TC_UniqueArray <TYPE> () {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   Allocation Constructor                                                  *
+//   Allocation Constructor                                                    *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -89,7 +90,7 @@ TC_UniqueArray <TYPE> (inAllocatedSize COMMA_THERE) {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   Allocation Constructor                                                  *
+//   Allocation Constructor                                                    *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -101,7 +102,7 @@ TC_UniqueArray <TYPE> (inAllocatedSize, inValue COMMA_THERE) {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   Copy Constructor                                                        *
+//   Copy Constructor                                                          *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -110,7 +111,7 @@ TC_Array <TYPE>::TC_Array (const TC_Array <TYPE> & inOperand) :
 TC_UniqueArray <TYPE> () {
   if (inOperand.mCount > 0) {
     macroMyNewArray (this->mArray, TYPE, inOperand.mCount) ;
-    for (PMSInt32 i=0 ; i<inOperand.mCount ; i++) {
+    for (int32_t i=0 ; i<inOperand.mCount ; i++) {
       this->mArray [i] = inOperand.mArray [i] ;
     }
     this->mCount = inOperand.mCount ;
@@ -120,7 +121,7 @@ TC_UniqueArray <TYPE> () {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   Assignment Operator                                                     *
+//   Assignment Operator                                                       *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -131,7 +132,7 @@ TC_Array <TYPE> & TC_Array <TYPE>::operator = (const TC_Array <TYPE> & inOperand
     macroMyNewArray (this->mArray, TYPE, inOperand.mCount) ;
     this->mCapacity = inOperand.mCount ;
   }
-  for (PMSInt32 i=0 ; i<inOperand.mCount ; i++) {
+  for (int32_t i=0 ; i<inOperand.mCount ; i++) {
     this->mArray [i] = inOperand.mArray [i] ;
   }
   this->mCount = inOperand.mCount ;
@@ -140,7 +141,7 @@ TC_Array <TYPE> & TC_Array <TYPE>::operator = (const TC_Array <TYPE> & inOperand
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   swap function for TC_Array <TYPE> classes                               *
+//   swap function for TC_Array <TYPE> classes                                 *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 

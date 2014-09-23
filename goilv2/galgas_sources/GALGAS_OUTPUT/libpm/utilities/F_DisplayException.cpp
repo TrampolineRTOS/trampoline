@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Routine 'F_default_display_exception'.                                   *
+//  Routine 'F_default_display_exception'.                                     *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -46,12 +46,12 @@
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//         'F_default_display_exception' for WIN 32                          *
+//         'F_default_display_exception' for WIN 32                            *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
 #ifdef COMPILE_FOR_WIN32
-  void F_default_display_exception (const M_STD_NAMESPACE exception & inException) {
+  void F_default_display_exception (const ::std:: exception & inException) {
     ::MessageBox ((HWND__ *) NULL,
                   inException.what (),
                   "C++ exception",
@@ -61,12 +61,12 @@
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//         'F_default_display_exception' for UNIX                            *
+//         'F_default_display_exception' for UNIX                              *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
 #ifdef UNIX_TOOL
-  void F_default_display_exception (const M_STD_NAMESPACE exception & inException) {
+  void F_default_display_exception (const ::std:: exception & inException) {
     co.flush () ;
     ce << "\n*** Exception: " << inException.what () << " ***\n" ;
   }
@@ -74,7 +74,7 @@
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//     'F_default_display_unknown_exception' for WIN 32                      *
+//     'F_default_display_unknown_exception' for WIN 32                        *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -89,7 +89,7 @@
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//     'F_default_display_unknown_exception' for UNIX                        *
+//     'F_default_display_unknown_exception' for UNIX                          *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 

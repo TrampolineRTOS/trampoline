@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  GALGAS Type Inspector (for introspection)                                *
+//  GALGAS Type Inspector (for introspection)                                  *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -32,7 +32,7 @@
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  GALGAS type reference (for type introspection)                           *
+//  GALGAS type reference (for type introspection)                             *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -40,9 +40,9 @@ class C_galgas_type_descriptor {
 //--- Attributes
   private : C_galgas_type_descriptor * mNextType ;
   private : C_galgas_type_descriptor * mPreviousType ;
-  private : PMSInt32 mBalance ;
+  private : int32_t mBalance ;
   public : const char * const mGalgasTypeName ; // Without the leading '@'
-  public : const PMSInt32 mSlotID ;
+  public : const int32_t mSlotID ;
   public : const C_galgas_type_descriptor * mSuperclassDescriptor ;
 
 //--- Constructor

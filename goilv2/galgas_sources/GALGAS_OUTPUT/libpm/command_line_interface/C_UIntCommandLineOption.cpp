@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Generic Unsigned Command Line Interface Option                           *
+//  Generic Unsigned Command Line Interface Option                             *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -43,7 +43,7 @@ C_UIntCommandLineOption::C_UIntCommandLineOption (const char * inDomainName,
                                                   const char inChar,
                                                   const char * inString,
                                                   const char * inComment,
-                                                  const PMUInt32 inDefaultValue) :
+                                                  const uint32_t inDefaultValue) :
 C_CommandLineOption (inDomainName, inIdentifier, inChar, inString, inComment),
 mNext (NULL),
 mValue (inDefaultValue),
@@ -62,13 +62,13 @@ void C_UIntCommandLineOption::
 setUIntOptionForCommandChar (const char * inCommandCommandLineOptionString,
                              bool & outFound,
                              bool & outCommandLineOptionStringIsValid) {
-  const PMUInt32 optionLength = (PMUInt32) (strlen (inCommandCommandLineOptionString) & PMUINT32_MAX) ;
+  const uint32_t optionLength = (uint32_t) (strlen (inCommandCommandLineOptionString) & UINT32_MAX) ;
   outCommandLineOptionStringIsValid = (optionLength > 2) && (inCommandCommandLineOptionString [1] == '=') ;
-  PMUInt32 optionValue = 0 ;
-  for (PMUInt32 i=2 ; (i<optionLength) && outCommandLineOptionStringIsValid ; i++) {
+  uint32_t optionValue = 0 ;
+  for (uint32_t i=2 ; (i<optionLength) && outCommandLineOptionStringIsValid ; i++) {
     outCommandLineOptionStringIsValid = (inCommandCommandLineOptionString [i] >= '0') && (inCommandCommandLineOptionString [i] <= '9') ;
     optionValue *= 10 ;
-    optionValue += (PMUInt32) (inCommandCommandLineOptionString [i] - '0') ;
+    optionValue += (uint32_t) (inCommandCommandLineOptionString [i] - '0') ;
   }
   outFound = false ;
   C_UIntCommandLineOption * p = gFirst ;
@@ -89,10 +89,10 @@ void C_UIntCommandLineOption::
 setUIntOptionForCommandString (const char * inCommandCommandLineOptionString,
                                bool & outFound,
                                bool & outCommandLineOptionStringIsValid) {
-  const PMUInt32 optionLength = (PMUInt32) (strlen (inCommandCommandLineOptionString) & PMUINT32_MAX) ;
+  const uint32_t optionLength = (uint32_t) (strlen (inCommandCommandLineOptionString) & UINT32_MAX) ;
   outCommandLineOptionStringIsValid = optionLength > 2 ;
 //--- Find '=' character
-  PMUInt32 equalSignIndex = 0 ;
+  uint32_t equalSignIndex = 0 ;
   if (outCommandLineOptionStringIsValid) {
     bool found = false ;
     while ((equalSignIndex < optionLength) && outCommandLineOptionStringIsValid && !found) {
@@ -104,11 +104,11 @@ setUIntOptionForCommandString (const char * inCommandCommandLineOptionString,
     outCommandLineOptionStringIsValid = found && (equalSignIndex > 0) && (equalSignIndex < (optionLength - 1)) ;
   }
 //--- Compute option value
-  PMUInt32 optionValue = 0 ;
-  for (PMUInt32 i=equalSignIndex+1 ; (i<optionLength) && outCommandLineOptionStringIsValid ; i++) {
+  uint32_t optionValue = 0 ;
+  for (uint32_t i=equalSignIndex+1 ; (i<optionLength) && outCommandLineOptionStringIsValid ; i++) {
     outCommandLineOptionStringIsValid = (inCommandCommandLineOptionString [i] >= '0') && (inCommandCommandLineOptionString [i] <= '9') ;
     optionValue *= 10 ;
-    optionValue += (PMUInt32) (inCommandCommandLineOptionString [i] - '0') ;
+    optionValue += (uint32_t) (inCommandCommandLineOptionString [i] - '0') ;
   }
 //--- Search option
   outFound = false ;
@@ -144,16 +144,16 @@ void C_UIntCommandLineOption::printUsageOfUIntOptions (void) {
 
 //-----------------------------------------------------------------------------*
 
-void C_UIntCommandLineOption::printUIntOptions (const PMUInt32 inDisplayLength) {
+void C_UIntCommandLineOption::printUIntOptions (const uint32_t inDisplayLength) {
   C_UIntCommandLineOption * p = gFirst ;
   while (p != NULL) {
-    PMUInt32 charCount = 0 ;
+    uint32_t charCount = 0 ;
     if (p->mCommandChar != '\0') {
       co.setForeColor (kBlueForeColor) ;
       co.setTextAttribute (kBoldTextAttribute) ;
       co << "-" << cStringWithCharacter (p->mCommandChar) << "=number" ;
       co.setTextAttribute (kAllAttributesOff) ;
-      charCount += 2 + (PMUInt32) strlen ("=number") ;
+      charCount += 2 + (uint32_t) strlen ("=number") ;
       if (p->mCommandString [0] != '\0') {
         co << ", " ;
         charCount += 2 ;
@@ -164,13 +164,13 @@ void C_UIntCommandLineOption::printUIntOptions (const PMUInt32 inDisplayLength) 
       co.setTextAttribute (kBoldTextAttribute) ;
       co << "--" << p->mCommandString << "=number" ;
       co.setTextAttribute (kAllAttributesOff) ;
-      charCount += 2 + (PMUInt32) (strlen (p->mCommandString) + strlen ("=number")) ;
+      charCount += 2 + (uint32_t) (strlen (p->mCommandString) + strlen ("=number")) ;
     }
     if (charCount > inDisplayLength) {
       co << "\n" ;
       charCount = 0 ;
     }
-    for (PMUInt32 i=charCount ; i<=inDisplayLength ; i++) {
+    for (uint32_t i=charCount ; i<=inDisplayLength ; i++) {
       co << " " ;
     }
     co << p->mComment << " (default value: "
@@ -200,7 +200,7 @@ utf32 C_UIntCommandLineOption::getUIntOptionInvocationLetter (const C_String & i
   bool found = false ;
   while ((p != NULL) && not found) {
     found = (inDomainName == p->mDomainName) && (inIdentifier == p->mIdentifier) ;
-    result = TO_UNICODE ((PMUInt32) p->mCommandChar) ;
+    result = TO_UNICODE ((uint32_t) p->mCommandChar) ;
     p = p->mNext ;
 }
   return result ;

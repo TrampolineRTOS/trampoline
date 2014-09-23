@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  'C_TCPSocketOut' : a class for sending data as TCP socket client         *
+//  'C_TCPSocketOut' : a class for sending data as TCP socket client           *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -52,7 +52,7 @@ mSocket (-1) {
 
 //-----------------------------------------------------------------------------*
 
-bool C_TCPSocketOut::connect (const PMUInt16 inServerPort,
+bool C_TCPSocketOut::connect (const uint16_t inServerPort,
                               const C_String & inHostName) {
   bool ok = mSocket == -1 ;
 //---
@@ -84,7 +84,7 @@ bool C_TCPSocketOut::connect (const PMUInt16 inServerPort,
 //-----------------------------------------------------------------------------*
 
 void C_TCPSocketOut::performActualCharArrayOutput (const char * inCharArray,
-                                                   const PMSInt32 inArrayCount) {
+                                                   const int32_t inArrayCount) {
   if ((mSocket >=0) && (inArrayCount > 0)) {
     ssize_t sentByteCount = 0 ;
     bool ok = true ;
@@ -103,11 +103,11 @@ void C_TCPSocketOut::performActualCharArrayOutput (const char * inCharArray,
 //-----------------------------------------------------------------------------*
 
 void C_TCPSocketOut::performActualUnicodeArrayOutput (const utf32 * inCharArray,
-                                                      const PMSInt32 inArrayCount) {
-  for (PMSInt32 i=0 ; i<inArrayCount ; i++) {
+                                                      const int32_t inArrayCount) {
+  for (int32_t i=0 ; i<inArrayCount ; i++) {
     char buffer [5] ;
     UTF8StringFromUTF32Character (inCharArray [i], buffer) ;
-    performActualCharArrayOutput (buffer, (PMSInt32) strlen (buffer)) ;
+    performActualCharArrayOutput (buffer, (int32_t) strlen (buffer)) ;
   }
 }
 

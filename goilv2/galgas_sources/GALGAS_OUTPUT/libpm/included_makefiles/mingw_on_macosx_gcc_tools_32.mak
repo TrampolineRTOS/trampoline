@@ -13,7 +13,7 @@ TOOL_CHAIN_INSTALL_PATH := /usr/local/$(TOOL_CHAIN_ARCHIVE)
 MINGW_TOOL_PATH := $(TOOL_CHAIN_INSTALL_PATH)/win32-gcc/bin
 COMPILER_PATH := $(MINGW_TOOL_PATH)/i586-mingw32-gcc
 COMPILER_TOOL := $(COMPILER_PATH) -m32 -D_WIN32_WINNT=0x501
-LINKER_TOOL   := $(MINGW_TOOL_PATH)/i586-mingw32-g++ -m32 --enable-auto-import
+LINKER_TOOL   := $(MINGW_TOOL_PATH)/i586-mingw32-g++ -m32 --enable-auto-import -Wl,--gc-sections
 STRIP_TOOL    := $(MINGW_TOOL_PATH)/i586-mingw32-strip --strip-all
 
 SUDO_TOOL     := sudo

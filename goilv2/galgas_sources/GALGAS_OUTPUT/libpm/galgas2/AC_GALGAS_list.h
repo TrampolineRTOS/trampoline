@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  AC_GALGAS_list : Base class for GALGAS list                              *
+//  AC_GALGAS_list : Base class for GALGAS list                                *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -28,9 +28,9 @@
 
 //-----------------------------------------------------------------------------*
 
-#include "AC_GALGAS_root.h"
-#include "typeComparisonResult.h"
-#include "cCollectionElement.h"
+#include "galgas2/AC_GALGAS_root.h"
+#include "galgas2/typeComparisonResult.h"
+#include "galgas2/cCollectionElement.h"
 
 //-----------------------------------------------------------------------------*
 
@@ -47,7 +47,7 @@ class GALGAS_range ;
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  A C _ G A L G A S _ l i s t                                              *
+//  A C _ G A L G A S _ l i s t                                                *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -65,7 +65,7 @@ class AC_GALGAS_list : public AC_GALGAS_root {
   public : virtual ~ AC_GALGAS_list (void) ;
 
 //--- count
-  public : VIRTUAL_IN_DEBUG PMUInt32 count (void) const ;
+  public : VIRTUAL_IN_DEBUG uint32_t count (void) const ;
 
 //--- isValid
   public : VIRTUAL_IN_DEBUG inline bool isValid (void) const { return mSharedList != NULL ; }
@@ -93,7 +93,7 @@ class AC_GALGAS_list : public AC_GALGAS_root {
 
 //--- Description
   public : VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const PMSInt32 inIndentation) const ;
+                                              const int32_t inIndentation) const ;
 
 //--- introspection
   public : virtual const C_galgas_type_descriptor * staticTypeDescriptor (void) const = 0 ;
@@ -102,14 +102,14 @@ class AC_GALGAS_list : public AC_GALGAS_root {
   protected : VIRTUAL_IN_DEBUG void addObject (const capCollectionElement & inElementToAdd) ;
   
   protected : VIRTUAL_IN_DEBUG void addObjectAtIndex (const capCollectionElement & inElementToAdd,
-                                                      const PMUInt32 inInsertionIndex,
+                                                      const uint32_t inInsertionIndex,
                                                       C_Compiler * inCompiler
                                                       COMMA_LOCATION_ARGS) ;
   
   private : VIRTUAL_IN_DEBUG void insulateList (LOCATION_ARGS) ;
   
   protected : VIRTUAL_IN_DEBUG void removeObjectAtIndex (capCollectionElement & outAttributes,
-                                                         const PMUInt32 inRemoveIndex,
+                                                         const uint32_t inRemoveIndex,
                                                          C_Compiler * inCompiler
                                                          COMMA_LOCATION_ARGS) ;
 
@@ -187,12 +187,12 @@ class cListMapElement : public cCollectionElement {
   public : virtual cCollectionElement * copy (void) ;
 
 //--- Description
-  public : virtual void description (C_String & ioString, const PMSInt32 inIndentation) const ;
+  public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  A C _ G A L G A S _ l i s t m a p                                        *
+//  A C _ G A L G A S _ l i s t m a p                                          *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -214,7 +214,7 @@ class AC_GALGAS_listmap : public AC_GALGAS_root {
   public : AC_GALGAS_listmap & operator = (const AC_GALGAS_listmap & inSource) ;
 
 //--- count
-  public : VIRTUAL_IN_DEBUG PMUInt32 count (void) const ;
+  public : VIRTUAL_IN_DEBUG uint32_t count (void) const ;
 
 //--- isValid
   public : VIRTUAL_IN_DEBUG inline bool isValid (void) const { return mSharedListMap != NULL ; }
@@ -233,7 +233,7 @@ class AC_GALGAS_listmap : public AC_GALGAS_root {
 
 //--------------------------------- Implementation of reader 'description'
   public : virtual void description (C_String & ioString,
-                                     const PMSInt32 inIndentation) const ;
+                                     const int32_t inIndentation) const ;
 
 //--- Internal methods for enumeration
   protected : virtual void populateEnumerationArray (capCollectionElementArray & inEnumerationArray,

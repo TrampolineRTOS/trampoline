@@ -5,8 +5,11 @@
 //  Created by Pierre Molinaro on 27/11/11.
 //  Copyright (c) 2011 IRCCyN. All rights reserved.
 //
+//-----------------------------------------------------------------------------*
 
 #import <AppKit/AppKit.h>
+
+//-----------------------------------------------------------------------------*
 
 @interface OC_GGS_Scroller : NSScroller {
    @private NSArray * mIssueArray ; // Of PMIssueDescriptor
@@ -16,3 +19,5 @@
 - (void) setIssueArray: (NSArray *) inIssueArray ;
 - (void) setIsSourceTextViewScroller: (BOOL) inIsSourceTextViewScroller ;
 @end
+
+//-----------------------------------------------------------------------------*

@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  'C_Lexique' : an abstract lexique class ;                                *
-//  Galgas generated scanner classes inherit from this class.                *
+//  'C_Lexique' : an abstract lexique class ;                                  *
+//  Galgas generated scanner classes inherit from this class.                  *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -39,7 +39,7 @@ class cIndexingDictionary ;
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//                 Lexique class                                             *
+//                 Lexique class                                               *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -63,7 +63,7 @@ class C_Lexique : public C_Compiler {
   private : C_Lexique & operator = (const C_Lexique &) ;
 
 //--- Indexing
-  public : void enterIndexing (const PMUInt32 inIndexingKind) ;
+  public : void enterIndexing (const uint32_t inIndexingKind) ;
   public : void enableIndexing (void) ;
   public : void generateIndexFile (void) ;
   protected : cIndexingDictionary * mIndexingDictionary ;
@@ -72,8 +72,8 @@ class C_Lexique : public C_Compiler {
   protected : virtual C_String indexingDirectory (void) const = 0 ;
 
 //--- Template String
-  protected : PMSInt32 findTemplateDelimiterIndex (const cTemplateDelimiter inTemplateDelimiterArray [],
-                                                   const PMSInt32 inTemplateDelimiterArrayLength) ;
+  protected : int32_t findTemplateDelimiterIndex (const cTemplateDelimiter inTemplateDelimiterArray [],
+                                                   const int32_t inTemplateDelimiterArrayLength) ;
   
 //--- Token list
   private : cToken * mFirstToken ;
@@ -96,11 +96,11 @@ class C_Lexique : public C_Compiler {
 
 //--- Advance
   protected : void advance (void) ; // One character
-  protected : void advance (const PMSInt32 inCount) ; // Several characters
+  protected : void advance (const int32_t inCount) ; // Several characters
 
 //--- For Debugging parser
   private : C_String mTriggerNonTerminalSymbolList ;
-  private : PMUInt16 mDebugDepthCounter ;
+  private : uint16_t mDebugDepthCounter ;
   private : bool mDebugIsRunning ;
 
   public : void enterProduction (const char * inProductionName,
@@ -140,18 +140,18 @@ class C_Lexique : public C_Compiler {
   protected : void lexicalWarning (const C_String & messageAlerte COMMA_LOCATION_ARGS) ;
 
 //--- Handling syntax error
-  protected : void parsingError (const TC_UniqueArray <PMSInt16> & inExpectedTerminalsArray,
-                                 const PMSInt16 inCurrentTokenCode
+  protected : void parsingError (const TC_UniqueArray <int16_t> & inExpectedTerminalsArray,
+                                 const int16_t inCurrentTokenCode
                                  COMMA_LOCATION_ARGS) ;
 
-  protected : virtual void appendTerminalMessageToSyntaxErrorMessage (const PMSInt16 inTerminalSymbol,
-                                                                      C_String & ioErrorMessage) = 0 ;
+//--- Get message for terminal
+  protected : virtual C_String getMessageForTerminal (const int16_t inTerminalSymbol) const = 0 ;
 
 //--- Static method for searching a string in an ordered list
 //    returns -1 if not found, and associated code if found
-  protected : static PMSInt16 searchInList (const C_String & inString,
+  protected : static int16_t searchInList (const C_String & inString,
                                             const C_unicode_lexique_table_entry inTable [],
-                                            const PMSInt16 inTableSize) ;
+                                            const int16_t inTableSize) ;
 
 //--- Get Token String
   public : virtual C_String getCurrentTokenString (const cToken * inTokenPtr) const = 0 ;
@@ -167,11 +167,11 @@ class C_Lexique : public C_Compiler {
   protected : bool testForInputUTF32Char (const utf32 inTestCharacter) ;
 
   protected : bool testForInputUTF32String (const utf32 * inTestString,
-                                            const PMSInt32 inStringLength,
+                                            const int32_t inStringLength,
                                             const bool inAdvanceOnMatch) ;
 
   protected : bool notTestForInputUTF32String (const utf32 * inTestString,
-                                               const PMSInt32 inStringLength,
+                                               const int32_t inStringLength,
                                                const utf32 * inEndOfFileErrorMessage
                                                COMMA_LOCATION_ARGS) ;
 
@@ -179,51 +179,51 @@ class C_Lexique : public C_Compiler {
 
 //--- Methods for parsing during second pass
   public : void acceptTerminal (FORMAL_ARG_ACCEPT_TERMINAL COMMA_LOCATION_ARGS) ;
-  public : PMSInt16 nextProductionIndex (void) ;
-  public : virtual PMSInt16 terminalVocabularyCount (void) const = 0 ;
+  public : int16_t nextProductionIndex (void) ;
+  public : virtual int16_t terminalVocabularyCount (void) const = 0 ;
 
 //--- Perform top down parsing (called by LL (1) parser)
-  public : bool performTopDownParsing (const PMSInt16 inProductions [],
+  public : bool performTopDownParsing (const int16_t inProductions [],
                                        const cProductionNameDescriptor inProductionNames [],
-                                       const PMSInt16 inProductionIndexes [],
-                                       const PMSInt16 inFirstProductionIndex [],
-                                       const PMSInt16 inDecisionTable [],
-                                       const PMSInt16 inDecisionTableIndexes [],
-                                       const PMSInt16 inProgramCounterInitialValue) ;
+                                       const int16_t inProductionIndexes [],
+                                       const int16_t inFirstProductionIndex [],
+                                       const int16_t inDecisionTable [],
+                                       const int16_t inDecisionTableIndexes [],
+                                       const int16_t inProgramCounterInitialValue) ;
 
-  private : void buildExpectedTerminalsArrayOnSyntaxError (const PMSInt16 inErrorProgramCounter,
-                                                           const PMSInt32 inErrorStackCount,
-                                                           const TC_Array <PMSInt16> & inCurrentStack,
-                                                           const TC_Array <PMSInt16> & inErrorStack,
-                                                           const PMSInt16 inProductions [],
-                                                           const PMSInt16 inProductionIndexes [],
-                                                           const PMSInt16 inFirstProductionIndex [],
-                                                           const PMSInt16 inDecisionTable [],
-                                                           const PMSInt16 inDecisionTableIndexes [],
-                                                           TC_UniqueArray <PMSInt16> & outExpectedTerminalsArray) ;
+  private : void buildExpectedTerminalsArrayOnSyntaxError (const int16_t inErrorProgramCounter,
+                                                           const int32_t inErrorStackCount,
+                                                           const TC_Array <int16_t> & inCurrentStack,
+                                                           const TC_Array <int16_t> & inErrorStack,
+                                                           const int16_t inProductions [],
+                                                           const int16_t inProductionIndexes [],
+                                                           const int16_t inFirstProductionIndex [],
+                                                           const int16_t inDecisionTable [],
+                                                           const int16_t inDecisionTableIndexes [],
+                                                           TC_UniqueArray <int16_t> & outExpectedTerminalsArray) ;
 
-  private : bool acceptTerminalForErrorSignaling (const PMSInt16 inTerminal,
-                                                  const PMSInt16 inProductions [],
-                                                  const PMSInt16 inProductionIndexes [],
-                                                  const PMSInt16 inFirstProductionIndex [],
-                                                  const PMSInt16 inDecisionTable [],
-                                                  const PMSInt16 inDecisionTableIndexes [],
-                                                  const TC_Array <PMSInt16> & inErrorStack,
-                                                  const PMSInt16 inErrorProgramCounter) ;
+  private : bool acceptTerminalForErrorSignaling (const int16_t inTerminal,
+                                                  const int16_t inProductions [],
+                                                  const int16_t inProductionIndexes [],
+                                                  const int16_t inFirstProductionIndex [],
+                                                  const int16_t inDecisionTable [],
+                                                  const int16_t inDecisionTableIndexes [],
+                                                  const TC_Array <int16_t> & inErrorStack,
+                                                  const int16_t inErrorProgramCounter) ;
 
 //--- Perform bottom up parsing (called by SLR and LR(1) parsers)
-  public : bool performBottomUpParsing (const PMSInt16 inActionTable [],
+  public : bool performBottomUpParsing (const int16_t inActionTable [],
                                         const char * inNonTerminalSymbolNames [],
-                                        const PMUInt32 inActionTableIndex [],
-                                        const PMSInt16 * inSuccessorTable [],
-                                        const PMSInt16 inProductionsTable []) ;
+                                        const uint32_t inActionTableIndex [],
+                                        const int16_t * inSuccessorTable [],
+                                        const int16_t inProductionsTable []) ;
 
 //--- Scanner pure virtual methods
   protected : virtual bool parseLexicalToken (void) = 0 ;
 
 //--- Execution array built during first pass, and used by second pass parsing
-  private : TC_UniqueArray <PMSInt16> mArrayForSecondPassParsing ;
-  private : PMSInt32 mIndexForSecondPassParsing ;
+  private : TC_UniqueArray <int16_t> mArrayForSecondPassParsing ;
+  private : int32_t mIndexForSecondPassParsing ;
 } ;
 
 //-----------------------------------------------------------------------------*

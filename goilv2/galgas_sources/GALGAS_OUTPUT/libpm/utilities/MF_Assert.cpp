@@ -40,15 +40,15 @@
 //-----------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
-  static const PMUInt32 K_EXCEPTION_STRING_SIZE = 2000 ;
+  static const uint32_t K_EXCEPTION_STRING_SIZE = 2000 ;
 #endif
 
 //-----------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void runtime_error_routine (const char * const inMessage,
-                              const PMSInt64 inParameter1,
-                              const PMSInt64 inParameter2
+                              const int64_t inParameter1,
+                              const int64_t inParameter2
                               COMMA_LOCATION_ARGS) {
     char exceptionMessage [K_EXCEPTION_STRING_SIZE] ;
     snprintf (exceptionMessage, K_EXCEPTION_STRING_SIZE - 1, inMessage, inParameter1, inParameter2) ;

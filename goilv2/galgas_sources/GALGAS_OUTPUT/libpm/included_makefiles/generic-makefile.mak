@@ -121,12 +121,15 @@ clean:
 #                                                                            *
 #----------------------------------------------------------------------------*
 
-CURL := curl --fail --location --output
+CURL_ARGUMENTS :=
+CURL_ARGUMENTS += $(shell $(LIBPM_DIRECTORY_PATH)/included_makefiles/get_system_ftp_proxy.py)
+CURL_ARGUMENTS += --fail
+CURL_ARGUMENTS += --location
 
 #----------------------------------------------------------------------------*
 
 $(TOOL_CHAIN_ARCHIVE).tar.bz2:
-	$(CURL) $(TOOL_CHAIN_ARCHIVE).tar.bz2 $(TOOL_CHAIN_URL)
+	curl $(CURL_ARGUMENTS) --output $(TOOL_CHAIN_ARCHIVE).tar.bz2 $(TOOL_CHAIN_URL)
 
 #----------------------------------------------------------------------------*
 

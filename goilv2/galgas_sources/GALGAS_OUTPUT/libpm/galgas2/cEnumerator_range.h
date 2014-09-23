@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  'cEnumerator_range' : galgas range enumerator                            *
+//  'cEnumerator_range' : galgas range enumerator                              *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -59,9 +59,9 @@ class cEnumerator_range {
 //---- Attributes
   private : const bool mIsValid ;
   private : const bool mAscending ;
-  private : const PMSInt64 mStart ;
-  private : const PMSInt64 mLength ;
-  private : PMSInt64 mCurrent ;
+  private : const int64_t mStart ;
+  private : const int64_t mLength ;
+  private : int64_t mCurrent ;
 } ;
 
 

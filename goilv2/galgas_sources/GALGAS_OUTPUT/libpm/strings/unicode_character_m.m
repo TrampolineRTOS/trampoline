@@ -23,8 +23,8 @@
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-#import "strings/unicode_character_m.h"
-#import "strings/cUnicodeData.h"
+#import "unicode_character_m.h"
+#import "cUnicodeData.h"
 
 //-----------------------------------------------------------------------------*
 

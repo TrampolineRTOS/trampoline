@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  'C_FileManager' : a class for handling files,                            *
-//  independantly from platform                                              *
+//  'C_FileManager' : a class for handling files,                              *
+//  independantly from platform                                                *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -49,7 +49,7 @@
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   Converting into Unix Path                                               *
+//   Converting into Unix Path                                                 *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -66,8 +66,8 @@
 #ifdef COMPILE_FOR_WIN32
   C_String C_FileManager::unixPathWithNativePath (const C_String & inFilePath) {
     C_String result ;
-    const PMSInt32 pathLength = inFilePath.length () ;
-    PMSInt32 firstChar = 0 ;
+    const int32_t pathLength = inFilePath.length () ;
+    int32_t firstChar = 0 ;
     if ((pathLength > 3)
      && isalpha ((int) UNICODE_VALUE (inFilePath (0 COMMA_HERE)))
      && (UNICODE_VALUE (inFilePath (1 COMMA_HERE)) == ':')
@@ -77,7 +77,7 @@
       result << "/" ;
       firstChar = 3 ;
     }
-    for (PMSInt32 i=firstChar ; i<pathLength ; i++) {
+    for (int32_t i=firstChar ; i<pathLength ; i++) {
       const utf32 c = inFilePath (i COMMA_HERE) ;
       if (UNICODE_VALUE (c) == '\\') {
         result << "/" ;
@@ -97,7 +97,7 @@
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   Converting into Native Path                                             *
+//   Converting into Native Path                                               *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -114,8 +114,8 @@
 #ifdef COMPILE_FOR_WIN32
   C_String C_FileManager::nativePathWithUnixPath (const C_String & inFilePath) {
     C_String winPath ;
-      const PMSInt32 fileLength = inFilePath.length () ;
-      PMSInt32 firstChar = 0 ;
+      const int32_t fileLength = inFilePath.length () ;
+      int32_t firstChar = 0 ;
       if ((fileLength > 3)
        && (UNICODE_VALUE (inFilePath (0 COMMA_HERE)) == '/')
        && isalpha ((int) UNICODE_VALUE (inFilePath (1 COMMA_HERE)))
@@ -124,7 +124,7 @@
         winPath << ":\\" ;
         firstChar = 3 ;
       }
-      for (PMSInt32 i=firstChar ; i<fileLength ; i++) {
+      for (int32_t i=firstChar ; i<fileLength ; i++) {
         const utf32 c = inFilePath (i COMMA_HERE) ;
         winPath.appendUnicodeCharacter ((UNICODE_VALUE (c) == '/') ? TO_UNICODE ('\\') : c COMMA_HERE) ;
       }
@@ -177,22 +177,22 @@ bool C_FileManager::binaryDataWithContentOfFile (const C_String & inFilePath,
   }
 
 //--- Get file size
-  PMSInt32 fileSize = 0 ;
+  int32_t fileSize = 0 ;
   if (ok) {
-    fileSize = (PMSInt32) (ftell (inputFile) & PMUINT32_MAX) ;
+    fileSize = (int32_t) (ftell (inputFile) & INT32_MAX) ;
     ok = fileSize != -1 ;
   }
 
 //--- Rewind file
   if (ok) {
-    ok = ::fseek (inputFile, 0L, 0) == 0 ;
+    ok = ::fseek (inputFile, 0, 0) == 0 ;
   }
 
 //--- Read file
   if (ok) {
-    PMUInt8 * binaryData = NULL ;
-    macroMyNewArray (binaryData, PMUInt8, fileSize) ;
-    const PMSInt32 sizeRead = (PMSInt32) (fread (binaryData, 1, (PMUInt32) fileSize, inputFile) & PMUINT32_MAX) ;
+    uint8_t * binaryData = NULL ;
+    macroMyNewArray (binaryData, uint8_t, fileSize) ;
+    const int32_t sizeRead = (int32_t) (fread (binaryData, 1, (uint32_t) fileSize, inputFile) & UINT32_MAX) ;
     ok = sizeRead == fileSize ;
     if (ok) {
       outBinaryData.setDataFromPointer (binaryData, fileSize) ;
@@ -200,7 +200,7 @@ bool C_FileManager::binaryDataWithContentOfFile (const C_String & inFilePath,
   }
 //--- Close file
   if (inputFile != NULL) {
-    const PMSInt32 result = ::fclose (inputFile) ;
+    const int32_t result = ::fclose (inputFile) ;
     inputFile = NULL ;
     if (ok) {
       ok = result == 0 ;
@@ -218,11 +218,11 @@ bool C_FileManager::binaryDataWithContentOfFile (const C_String & inFilePath,
 //-----------------------------------------------------------------------------*
   
 static bool parseUTF32LE (const C_Data & inDataString,
-                          const PMSInt32 inOffset,
+                          const int32_t inOffset,
                           C_String & outString) {
   bool ok = (inDataString.length () % 4) == 0 ;
-  for (PMSInt32 i=inOffset ; (i<inDataString.length ()) && ok ; i+=4) {
-    PMUInt32 n = inDataString (i+3 COMMA_HERE) ;
+  for (int32_t i=inOffset ; (i<inDataString.length ()) && ok ; i+=4) {
+    uint32_t n = inDataString (i+3 COMMA_HERE) ;
     n <<= 8 ;
     n |= inDataString (i+2 COMMA_HERE) ;
     n <<= 8 ;
@@ -241,11 +241,11 @@ static bool parseUTF32LE (const C_Data & inDataString,
 //-----------------------------------------------------------------------------*
   
 static bool parseUTF32BE (const C_Data & inDataString,
-                          const PMSInt32 inOffset,
+                          const int32_t inOffset,
                           C_String & outString) {
   bool ok = (inDataString.length () % 4) == 0 ;
-  for (PMSInt32 i=inOffset ; (i<inDataString.length ()) && ok ; i+=4) {
-    PMUInt32 n = inDataString (i COMMA_HERE) ;
+  for (int32_t i=inOffset ; (i<inDataString.length ()) && ok ; i+=4) {
+    uint32_t n = inDataString (i COMMA_HERE) ;
     n <<= 8 ;
     n |= inDataString (i+1 COMMA_HERE) ;
     n <<= 8 ;
@@ -265,13 +265,13 @@ static bool parseUTF32BE (const C_Data & inDataString,
 // UTF-16 http://fr.wikipedia.org/wiki/UTF-16
 //    
 static bool parseUTF16LE (const C_Data & inDataString,
-                          const PMSInt32 inOffset,
+                          const int32_t inOffset,
                           C_String & outString) {
   bool ok = (inDataString.length () % 2) == 0 ;
-  // PMUInt32 utf16prefix =0 ;
+  // uint32_t utf16prefix =0 ;
   bool foundUTF16prefix = false ;
-  for (PMSInt32 i=inOffset ; (i<inDataString.length ()) && ok ; i+=2) {
-    PMUInt32 n = inDataString (i+1 COMMA_HERE) ;
+  for (int32_t i=inOffset ; (i<inDataString.length ()) && ok ; i+=2) {
+    uint32_t n = inDataString (i+1 COMMA_HERE) ;
     n <<= 8 ;
     n |= inDataString (i COMMA_HERE) ;
     if ((n & 0xDC00) == 0xD800) {
@@ -299,13 +299,13 @@ static bool parseUTF16LE (const C_Data & inDataString,
 //-----------------------------------------------------------------------------*
 
 static bool parseUTF16BE (const C_Data & inDataString,
-                          const PMSInt32 inOffset,
+                          const int32_t inOffset,
                           C_String & outString) {
   bool ok = (inDataString.length () % 2) == 0 ;
-  // PMUInt32 utf16prefix =0 ;
+  // uint32_t utf16prefix =0 ;
   bool foundUTF16prefix = false ;
-  for (PMSInt32 i=inOffset ; (i<inDataString.length ()) && ok ; i+=2) {
-    PMUInt32 n = inDataString (i COMMA_HERE) ;
+  for (int32_t i=inOffset ; (i<inDataString.length ()) && ok ; i+=2) {
+    uint32_t n = inDataString (i COMMA_HERE) ;
     i ++ ;
     n <<= 8 ;
     n |= inDataString (i COMMA_HERE) ;
@@ -334,7 +334,7 @@ static bool parseUTF16BE (const C_Data & inDataString,
 //-----------------------------------------------------------------------------*
   
 static bool searchBOMandParse (const C_Data & inDataString,
-                               const PMSInt32 inLength,
+                               const int32_t inLength,
                                PMTextFileEncoding & outTextFileEncoding,
                                C_String & outResultString) {
   bool ok = false ;
@@ -444,7 +444,7 @@ typedef struct {
 
 //-----------------------------------------------------------------------------*
   
-static const PMSInt32 kEncodingCount = 18 ;
+static const int32_t kEncodingCount = 18 ;
 
 static const encodingStruct kEncodings [kEncodingCount] = {
  {"ISO-8859-1", kISO_8859_1_FileEncoding, k8859_1_encoding},
@@ -474,9 +474,9 @@ static bool parseWithEncoding (const C_Data & inDataString,
                                C_String & outString) {
   bool foundCR = false ;
   bool ok = true ;
-  PMSInt32 idx = 0 ;
+  int32_t idx = 0 ;
   while ((idx < inDataString.length ()) && (inDataString (idx COMMA_HERE) != 0) && ok) {
-    const PMUInt8 c = inDataString (idx COMMA_HERE) ;
+    const uint8_t c = inDataString (idx COMMA_HERE) ;
     if (c == 0x0A) { // LF
       if (! foundCR) {
         outString.appendUnicodeCharacter (TO_UNICODE ('\n') COMMA_HERE) ;
@@ -507,7 +507,7 @@ static bool searchForEncodingTagAndParse (const C_Data & inDataString,
                                           C_String & outResultString) {
 //--- Copy first line
   char firstLine [1000] ;
-  PMSInt32 index = 0 ;
+  int32_t index = 0 ;
   bool eol = false ;
   while ((index < 999) && ! eol) {
     if ((inDataString (index COMMA_HERE) == 0x0A) || (inDataString (index COMMA_HERE) == 0x0D)) {
@@ -532,7 +532,7 @@ static bool searchForEncodingTagAndParse (const C_Data & inDataString,
       printf ("found UTF-8 tag in first line **\n") ;
     #endif
   }
-  for (PMSInt32 i=0 ; (i<kEncodingCount) && ! tagFound ; i++) {
+  for (int32_t i=0 ; (i<kEncodingCount) && ! tagFound ; i++) {
     tagFound = strstr (firstLine, kEncodings [i].mEncodingName) != NULL ;
     if (tagFound) {
       ok = parseWithEncoding (inDataString, kEncodings [i].mStringEncoding, outResultString) ;
@@ -550,9 +550,9 @@ static bool searchForEncodingTagAndParse (const C_Data & inDataString,
 static void parseASCIIWithReplacementCharacter (const C_Data & inDataString,
                                                 C_String & outString) {
   bool foundCR = false ;
-  PMSInt32 index = 0 ;
+  int32_t index = 0 ;
   while (index < inDataString.length ()) {
-    const PMUInt8 c = inDataString (index COMMA_HERE) ;
+    const uint8_t c = inDataString (index COMMA_HERE) ;
     index ++ ;
     if (c == 0x0A) { // LF
       if (! foundCR) {
@@ -583,11 +583,11 @@ C_String C_FileManager::stringWithContentOfFile (const C_String & inFilePath,
 //--- Read file
   C_Data stringData ;
   outOk = binaryDataWithContentOfFile (inFilePath, stringData) ;
-  const PMSInt32 length = stringData.length () ;
+  const int32_t length = stringData.length () ;
 //--- Assign C string to C_String
   C_String result_string ;
   if (outOk) {
-    result_string.setCapacity ((PMUInt32) (length + 2)) ;
+    result_string.setCapacity ((uint32_t) (length + 2)) ;
   //------------ 1- Search for BOM
     outOk = searchBOMandParse (stringData, length, outTextFileEncoding, result_string) ;
   //------------ 2- Try UTF-32BE, UTF-32LE, UTF-16BE, UTF-16LE, UTF-8 encodings
@@ -751,8 +751,8 @@ bool C_FileManager::directoryExists (const C_String & inDirectoryPath) {
 C_String C_FileManager::currentDirectory (void) {
   char * cwd = getcwd (NULL, 0) ;
   #ifdef COMPILE_FOR_WIN32
-    const PMSInt32 fileLength = (PMSInt32) strlen (cwd) ;
-    PMSInt32 firstChar = 0 ;
+    const int32_t fileLength = (int32_t) strlen (cwd) ;
+    int32_t firstChar = 0 ;
     if ((fileLength > 3)
      && isalpha (cwd [0])
      && (cwd [1] == ':')
@@ -762,7 +762,7 @@ C_String C_FileManager::currentDirectory (void) {
       cwd [2] = '/' ;
       firstChar = 3 ;
     }
-    for (PMSInt32 i=firstChar ; i<fileLength ; i++) {
+    for (int32_t i=firstChar ; i<fileLength ; i++) {
       if (cwd [i] == '\\') {
         cwd [i] = '/' ;
       }
@@ -821,7 +821,7 @@ bool C_FileManager::isAbsolutePath (const C_String & inPath) {
 //-----------------------------------------------------------------------------*
 
 C_String C_FileManager::absolutePathFromCurrentDirectory (const C_String & inPath) {
-  const PMSInt32 stringLength = inPath.length () ;
+  const int32_t stringLength = inPath.length () ;
   C_String result ;
   if ((stringLength > 0) && (UNICODE_VALUE (inPath (0 COMMA_HERE)) == '/')) {
     result = inPath ;
@@ -838,7 +838,7 @@ C_String C_FileManager::absolutePathFromCurrentDirectory (const C_String & inPat
 
 C_String C_FileManager::absolutePathFromPath (const C_String & inPath,
                                               const C_String & inFromPath) {
-  const PMSInt32 pathLength = inPath.length () ;
+  const int32_t pathLength = inPath.length () ;
   C_String result ;
   if ((pathLength > 0) && (UNICODE_VALUE (inPath (0 COMMA_HERE)) == '/')) {
     result = inPath ;
@@ -861,16 +861,16 @@ C_String C_FileManager::relativePathFromPath (const C_String & inPath,
   TC_UniqueArray <C_String> absoluteReceiverPathComponents ;
   absolutePathFromCurrentDirectory (inPath.stringByStandardizingPath ()).componentsSeparatedByString("/", absoluteReceiverPathComponents) ;
   C_String result ;
-  PMSInt32 idx = 0 ;
+  int32_t idx = 0 ;
   while ((idx < absoluteReferencePathComponents.count ())
       && (idx < absoluteReceiverPathComponents.count ())
       && (absoluteReferencePathComponents (idx COMMA_HERE) == absoluteReceiverPathComponents (idx COMMA_HERE))) {
     idx ++ ;
   }
-  for (PMSInt32 i=idx ; i<absoluteReferencePathComponents.count () ; i++) {
+  for (int32_t i=idx ; i<absoluteReferencePathComponents.count () ; i++) {
     result << "../" ;
   }
-  for (PMSInt32 i=idx ; i<absoluteReceiverPathComponents.count () ; i++) {
+  for (int32_t i=idx ; i<absoluteReceiverPathComponents.count () ; i++) {
     if (i > idx) {
       result << "/" ;
     }
@@ -946,11 +946,11 @@ C_String C_FileManager::relativePathFromPath (const C_String & inPath,
     size_t bufferSize = 128 ;
     while (loop) {
       macroMyReallocPODArray (buffer, char, bufferSize) ;
-      const PMSInt64 r = readlink (inLinkPath.cString (HERE), buffer, bufferSize) ;
+      const int64_t r = readlink (inLinkPath.cString (HERE), buffer, bufferSize) ;
       if (r < 0) { // Error
         outOk = false ;
         loop = false ;
-      }else if (r < (PMSInt64) bufferSize) { // ok
+      }else if (r < (int64_t) bufferSize) { // ok
         buffer [r] = '\0' ;
         result << buffer ;
         loop = false ;
@@ -971,7 +971,7 @@ C_String C_FileManager::relativePathFromPath (const C_String & inPath,
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Delete file                                                              *
+//  Delete file                                                                *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -999,7 +999,7 @@ C_String C_FileManager::deleteFile (const C_String & inFilePath) {
 
 static C_String recursiveSearchInDirectory (const C_String & inStartSearchPath,
                                             const C_String & inFileName,
-                                            const PMSInt32 inDirectoriesToExcludeCount,
+                                            const int32_t inDirectoriesToExcludeCount,
                                             const TC_UniqueArray <C_String> & inDirectoriesToExclude) {
   C_String result ;
   const C_String nativeStartSearchPath = C_FileManager::nativePathWithUnixPath (inStartSearchPath) ;
@@ -1021,7 +1021,7 @@ static C_String recursiveSearchInDirectory (const C_String & inStartSearchPath,
           name.appendCString (current->d_name) ;
           if (C_FileManager::directoryExists (name)) {
             bool dirOk = true ;
-            for (PMSInt32 i=0 ; (i<inDirectoriesToExcludeCount) && dirOk ; i++) {
+            for (int32_t i=0 ; (i<inDirectoriesToExcludeCount) && dirOk ; i++) {
               if (UNICODE_VALUE (inDirectoriesToExclude (i COMMA_HERE) (0 COMMA_HERE)) == '.') {
                 const char * dotPtr = strrchr (current->d_name, '.') ;
                 dirOk = (dotPtr == NULL) || (inDirectoriesToExclude (i COMMA_HERE).compare (dotPtr) != 0) ;
@@ -1058,11 +1058,11 @@ static C_String recursiveSearchInDirectory (const C_String & inStartSearchPath,
 C_String C_FileManager::findFileInDirectory (const C_String & inDirectoryPath,
                                              const C_String & inFileName,
                                              const TC_UniqueArray <C_String> & inDirectoriesToExclude) {
-  const PMSInt32 directoriesToExcludeCount = inDirectoriesToExclude.count () ;
+  const int32_t directoriesToExcludeCount = inDirectoriesToExclude.count () ;
   #ifdef DEBUG_recursiveSearchInDirectory
     co << "************* Search in directory '" << *this << "'\n"
           "** File to search '" << inFileName << "'\n'" ;
-    for (PMSInt32 i=0 ; i<directoriesToExcludeCount ; i++) {
+    for (int32_t i=0 ; i<directoriesToExcludeCount ; i++) {
       co << "** Exclude '" << inDirectoriesToExclude (i COMMA_HERE) << "'\n'" ;
     }
   #endif
@@ -1143,14 +1143,14 @@ C_DateTime C_FileManager::fileModificationTime (const C_String & inFilePath) {
 
 //-----------------------------------------------------------------------------*
 
-PMSInt32 C_FileManager::filePosixPermissions (const C_String & inFilePath) {
+int32_t C_FileManager::filePosixPermissions (const C_String & inFilePath) {
   const C_String nativePath = nativePathWithUnixPath (inFilePath) ;
 //--- Get file properties
-  PMSInt32 permissions = -1 ;
+  int32_t permissions = -1 ;
   struct stat fileProperties ;
   const int err = ::stat (nativePath.cString (HERE), & fileProperties) ;
   if (err == 0) {
-    permissions = ((PMSInt32) fileProperties.st_mode) & 0xFFF ;
+    permissions = ((int32_t) fileProperties.st_mode) & 0xFFF ;
   }
  //--- Return result
   return permissions ;
@@ -1158,12 +1158,12 @@ PMSInt32 C_FileManager::filePosixPermissions (const C_String & inFilePath) {
 
 //-----------------------------------------------------------------------------*
 
-PMSInt32 C_FileManager::setFilePosixPermissions (const C_String & inFilePath,
-                                                 const PMSInt32 inNewFilePosixPermissions) {
-  PMSInt32 newMode = -1 ; // Error Code
+int32_t C_FileManager::setFilePosixPermissions (const C_String & inFilePath,
+                                                 const int32_t inNewFilePosixPermissions) {
+  int32_t newMode = -1 ; // Error Code
   if ((inNewFilePosixPermissions & 0xFFFFF000L) == 0) {
     const C_String nativePath = nativePathWithUnixPath (inFilePath) ;
-    newMode = ::chmod (nativePath.cString (HERE), (PMUInt16) (inNewFilePosixPermissions & PMUINT16_MAX)) ;
+    newMode = ::chmod (nativePath.cString (HERE), (uint16_t) (inNewFilePosixPermissions & UINT16_MAX)) ;
   }
   return newMode ;
 }

@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  string_encodings: enum that defines all handled string encodings         *
+//  string_encodings: enum that defines all handled string encodings           *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -28,7 +28,7 @@
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   S T R I N G    E N C O D I N G S                                        *
+//   S T R I N G    E N C O D I N G S                                          *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 

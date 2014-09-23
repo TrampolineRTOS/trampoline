@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//     Get a prime integer                                                   *
+//     Get a prime integer                                                     *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -27,13 +27,13 @@
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//           Get a prime integer greater than argument                       *
+//           Get a prime integer greater than argument                         *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-PMUInt32 getPrimeGreaterThan (const PMUInt32 inValue) {
-  const PMSInt32 ARRAY_SIZE = 39 ;
-  const PMUInt32 array [ARRAY_SIZE] = {
+uint32_t getPrimeGreaterThan (const uint32_t inValue) {
+  const int32_t ARRAY_SIZE = 39 ;
+  const uint32_t array [ARRAY_SIZE] = {
           3,
         727,
        1031, // > 2**10
@@ -74,7 +74,7 @@ PMUInt32 getPrimeGreaterThan (const PMUInt32 inValue) {
   201326611,
   402653189  // > 2**28
 } ;
-  PMSInt32 i = 0 ;
+  int32_t i = 0 ;
   bool notFound = true ;
   while (notFound && (i<ARRAY_SIZE)) {
     notFound = inValue > array [i] ;

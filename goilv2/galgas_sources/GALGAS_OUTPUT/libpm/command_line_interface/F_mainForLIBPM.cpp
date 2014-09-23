@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Routine 'main' (call user supplied 'mainForLIBPM' routine).              *
+//  Routine 'main' (call user supplied 'mainForLIBPM' routine).                *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -47,58 +47,58 @@ static const char * gArgv0 ;
 
 static void
 checkDataTypesSize (int & ioReturnCode) {
-  if (sizeof (PMSInt8) != 1) {
-    co << "** INTERNAL ERROR : sizeof (PMSInt8) == " ;
-    co.appendUnsigned (sizeof (PMSInt8)) ;
+  if (sizeof (int8_t) != 1) {
+    co << "** INTERNAL ERROR : sizeof (int8_t) == " ;
+    co.appendUnsigned (sizeof (int8_t)) ;
     co << ", instead of 1 **\n" ;
     ioReturnCode = 2 ;
   }
-  if (sizeof (PMUInt8) != 1) {
-    co << "** INTERNAL ERROR : sizeof (PMUInt8) == " ;
-    co.appendUnsigned (sizeof (PMUInt8)) ;
+  if (sizeof (uint8_t) != 1) {
+    co << "** INTERNAL ERROR : sizeof (uint8_t) == " ;
+    co.appendUnsigned (sizeof (uint8_t)) ;
     co << ", instead of 1 **\n" ;
     ioReturnCode = 2 ;
   }
-  if (sizeof (PMSInt16) != 2) {
-    co << "** INTERNAL ERROR : sizeof (PMSInt16) == " ;
-    co.appendUnsigned (sizeof (PMSInt16)) ;
+  if (sizeof (int16_t) != 2) {
+    co << "** INTERNAL ERROR : sizeof (int16_t) == " ;
+    co.appendUnsigned (sizeof (int16_t)) ;
     co << ", instead of 2 **\n" ;
     ioReturnCode = 2 ;
   }
-  if (sizeof (PMUInt16) != 2) {
-    co << "** INTERNAL ERROR : sizeof (PMUInt16) == " ;
-    co.appendUnsigned (sizeof (PMUInt16)) ;
+  if (sizeof (uint16_t) != 2) {
+    co << "** INTERNAL ERROR : sizeof (uint16_t) == " ;
+    co.appendUnsigned (sizeof (uint16_t)) ;
     co << ", instead of 2 **\n" ;
     ioReturnCode = 2 ;
   }
-  if (sizeof (PMSInt32) != 4) {
-    co << "** INTERNAL ERROR : sizeof (PMSInt32) == " ;
-    co.appendUnsigned (sizeof (PMSInt32)) ;
+  if (sizeof (int32_t) != 4) {
+    co << "** INTERNAL ERROR : sizeof (int32_t) == " ;
+    co.appendUnsigned (sizeof (int32_t)) ;
     co << ", instead of 4 **\n" ;
     ioReturnCode = 2 ;
   }
-  if (sizeof (PMUInt32) != 4) {
-    co << "** INTERNAL ERROR : sizeof (PMUInt32) == " ;
-    co.appendUnsigned (sizeof (PMUInt32)) ;
+  if (sizeof (uint32_t) != 4) {
+    co << "** INTERNAL ERROR : sizeof (uint32_t) == " ;
+    co.appendUnsigned (sizeof (uint32_t)) ;
     co << ", instead of 4 **\n" ;
     ioReturnCode = 2 ;
   }
-  if (sizeof (PMSInt64) != 8) {
-    co << "** INTERNAL ERROR : sizeof (PMSInt64) == " ;
-    co.appendUnsigned (sizeof (PMSInt64)) ;
+  if (sizeof (int64_t) != 8) {
+    co << "** INTERNAL ERROR : sizeof (int64_t) == " ;
+    co.appendUnsigned (sizeof (int64_t)) ;
     co << ", instead of 8 **\n" ;
     ioReturnCode = 2 ;
   }
-  if (sizeof (PMUInt64) != 8) {
-    co << "** INTERNAL ERROR : sizeof (PMUInt64) == " ;
-    co.appendUnsigned (sizeof (PMUInt64)) ;
+  if (sizeof (uint64_t) != 8) {
+    co << "** INTERNAL ERROR : sizeof (uint64_t) == " ;
+    co.appendUnsigned (sizeof (uint64_t)) ;
     co << ", instead of 8 **\n" ;
     ioReturnCode = 2 ;
   }
   #ifdef __LP64__
-    const PMUInt32 kPointerSize = 8 ;
+    const uint32_t kPointerSize = 8 ;
   #else
-    const PMUInt32 kPointerSize = 4 ;
+    const uint32_t kPointerSize = 4 ;
   #endif
   if (sizeof (void *) != kPointerSize) {
     co << "** INTERNAL ERROR : sizeof (void *) == " ;
@@ -124,17 +124,17 @@ checkDataTypesSize (int & ioReturnCode) {
     co << " **\n" ;
     ioReturnCode = 2 ;
   }
-  if (sizeof (PMSInt) != kPointerSize) {
-    co << "** INTERNAL ERROR : sizeof (PMSInt) == " ;
-    co.appendUnsigned (sizeof (PMSInt)) ;
+  if (sizeof (intptr_t) != kPointerSize) {
+    co << "** INTERNAL ERROR : sizeof (intptr_t) == " ;
+    co.appendUnsigned (sizeof (intptr_t)) ;
     co << ", instead of " ;
     co.appendUnsigned (kPointerSize) ;
     co << " **\n" ;
     ioReturnCode = 2 ;
   }
-  if (sizeof (PMUInt) != kPointerSize) {
-    co << "** INTERNAL ERROR : sizeof (PMUInt) == " ;
-    co.appendUnsigned (sizeof (PMUInt)) ;
+  if (sizeof (uintptr_t) != kPointerSize) {
+    co << "** INTERNAL ERROR : sizeof (uintptr_t) == " ;
+    co.appendUnsigned (sizeof (uintptr_t)) ;
     co << ", instead of " ;
     co.appendUnsigned (kPointerSize) ;
     co << " **\n" ;
@@ -144,8 +144,8 @@ checkDataTypesSize (int & ioReturnCode) {
 
 //-----------------------------------------------------------------------------*
 
-// #include "PMUInt128.h"
-// #include "C_DirectedGraph.h"
+// #include "utilities/PMUInt128.h"
+// #include "galgas2/C_DirectedGraph.h"
 
 //-----------------------------------------------------------------------------*
 
@@ -175,7 +175,7 @@ int main (int argc, const char * argv []) {
         displayAllocatedBlockSizeStats () ;
         displayAllocatedBlocksInfo () ;
       #endif
-    }catch (const M_STD_NAMESPACE exception & e) {
+    }catch (const ::std:: exception & e) {
       F_default_display_exception (e) ;
       #ifndef DO_NOT_GENERATE_CHECKINGS
         C_SharedObject::checkAllObjectsHaveBeenReleased () ;

@@ -32,7 +32,7 @@
 //-----------------------------------------------------------------------------*
 
 #ifndef COMPILE_FOR_WIN32
-  static PMUInt32 g_SIGTERM_balance_count = 0 ;
+  static uint32_t g_SIGTERM_balance_count = 0 ;
 #endif
 
 //-----------------------------------------------------------------------------*

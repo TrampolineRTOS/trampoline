@@ -659,6 +659,7 @@
   }
 //--- If there is no enabled timer, create one
   if (nil == mTimerForAutosaving) {
+    // NSLog (@"Create timer %@", self.documentData.fileURL) ;
     mTimerForAutosaving = [NSTimer
       timerWithTimeInterval:5.0
       target:self
@@ -676,6 +677,7 @@
 //-----------------------------------------------------------------------------*
 
 - (void) autosaveTimerDidFire: (NSTimer *) inTimer {
+  // NSLog (@"Timer did fire %@", self.documentData.fileURL) ;
   mTimerForAutosaving = nil ;
   [documentData save] ;
 }
@@ -692,7 +694,7 @@
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//           C O M M E N T R A N G E                                         *
+//           C O M M E N T R A N G E                                           *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -743,24 +745,24 @@
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//                       U N C O M M E N T R A N G E                         *
+//                       U N C O M M E N T R A N G E                           *
 //                                                                             *
-// Cette méthode a plusieurs rôles :                                         *
-//   - supprimer les marques de commentaires des lignes concernées par la    *
-//     sélection, uniquement quand ces le commentaire commence une ligne ;   *
-//   - ajuster la sélection en conséquence ; en effet, dès que la méthode    *
-//     replaceCharactersInRange:withString: est appelée, Cocoa ramène la     *
-//     sélection à un point d'insertion. La sélection est ajustée et         *
-//     maintenue dans la variable finalSelectedRange.                        *
+// Cette méthode a plusieurs rôles :                                           *
+//   - supprimer les marques de commentaires des lignes concernées par la      *
+//     sélection, uniquement quand ces le commentaire commence une ligne ;     *
+//   - ajuster la sélection en conséquence ; en effet, dès que la méthode      *
+//     replaceCharactersInRange:withString: est appelée, Cocoa ramène la       *
+//     sélection à un point d'insertion. La sélection est ajustée et           *
+//     maintenue dans la variable finalSelectedRange.                          *
 //                                                                             *
-// Le plus difficile est l'ajustement de la sélection. Pour cela, on calcule:*
-//   - le nombre beforeSelectionCharacterCount de caractères du commentaire  *
-//     supprimé qui sont avant la sélection ; si ce nombre est > 0, on       *
-//     le début de la sélection du min entre ce nombre et le nombre de carac-*
-//     tères du commentaire ;                                                *
-//   - le nombre withinSelectionCharacterCount de caractères du commentaire  *
-//     supprimé qui sont à l'intérieur de la sélection ; si ce nombre est    *
-//     > 0, on le retranche de la longueur de la sélection.                  *
+// Le plus difficile est l'ajustement de la sélection. Pour cela, on calcule:  *
+//   - le nombre beforeSelectionCharacterCount de caractères du commentaire    *
+//     supprimé qui sont avant la sélection ; si ce nombre est > 0, on         *
+//     le début de la sélection du min entre ce nombre et le nombre de carac-  *
+//     tères du commentaire ;                                                  *
+//   - le nombre withinSelectionCharacterCount de caractères du commentaire    *
+//     supprimé qui sont à l'intérieur de la sélection ; si ce nombre est      *
+//     > 0, on le retranche de la longueur de la sélection.                    *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 

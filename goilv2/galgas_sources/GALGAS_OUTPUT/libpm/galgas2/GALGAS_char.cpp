@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   GALGAS_char                                                             *
+//   GALGAS_char                                                               *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -23,7 +23,7 @@
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-#include "predefined-types.h"
+#include "galgas2/predefined-types.h"
 #include "galgas2/C_Compiler.h"
 #include "strings/unicode_character_cpp.h"
 
@@ -61,7 +61,7 @@ mCharValue (inValue) {
 typeComparisonResult GALGAS_char::objectCompare (const GALGAS_char & inOperand) const {
   typeComparisonResult result = kOperandNotValid ;
   if (isValid () && inOperand.isValid ()) {
-    const PMSInt32 r = ((PMSInt32) UNICODE_VALUE (mCharValue)) - ((PMSInt32) UNICODE_VALUE (inOperand.mCharValue)) ;
+    const int32_t r = ((int32_t) UNICODE_VALUE (mCharValue)) - ((int32_t) UNICODE_VALUE (inOperand.mCharValue)) ;
     if (r < 0) {
       result = kFirstOperandLowerThanSecond ;
     }else if (r > 0) {
@@ -76,7 +76,7 @@ typeComparisonResult GALGAS_char::objectCompare (const GALGAS_char & inOperand) 
 //-----------------------------------------------------------------------------*
 
 void GALGAS_char::description (C_String & ioString,
-                               const PMSInt32 /* inIndentation */) const {
+                               const int32_t /* inIndentation */) const {
   ioString << "<@char:" ;
   if (isValid ()) {
     if (isprint ((int) UNICODE_VALUE (mCharValue))) {

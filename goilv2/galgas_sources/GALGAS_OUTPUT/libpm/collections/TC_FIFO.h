@@ -1,47 +1,47 @@
-//---------------------------------------------------------------------------*
-//                                                                           *
-//  Declaration of the template class 'TC_FIFO'.                             *
-//                                                                           *
-//  COPY OF ITS INSTANCES IS FORBIDDEN BY REDEFINITION OF COPY CONSTRUCTOR   *
-//  AND ASSIGNMENT OPERATOR.                                                 *
-//                                                                           *
-//  This file is part of libpm library                                       *
-//                                                                           *
-//  Copyright (C) 2001 Pierre Molinaro.                                      *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                             *
-//  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes*
-//  ECN, Ecole Centrale de Nantes (France)                                   *
-//                                                                           *
-//  This library is free software; you can redistribute it and/or modify it  *
-//  under the terms of the GNU Lesser General Public License as published    *
-//  by the Free Software Foundation; either version 2 of the License, or     *
-//  (at your option) any later version.                                      *
-//                                                                           *
-//  This program is distributed in the hope it will be useful, but WITHOUT   *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
-//  more details.                                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//                                                                             *
+//  Declaration of the template class 'TC_FIFO'.                               *
+//                                                                             *
+//  COPY OF ITS INSTANCES IS FORBIDDEN BY REDEFINITION OF COPY CONSTRUCTOR     *
+//  AND ASSIGNMENT OPERATOR.                                                   *
+//                                                                             *
+//  This file is part of libpm library                                         *
+//                                                                             *
+//  Copyright (C) 2001 Pierre Molinaro.                                        *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
+//  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes  *
+//  ECN, Ecole Centrale de Nantes (France)                                     *
+//                                                                             *
+//  This library is free software; you can redistribute it and/or modify it    *
+//  under the terms of the GNU Lesser General Public License as published      *
+//  by the Free Software Foundation; either version 2 of the License, or       *
+//  (at your option) any later version.                                        *
+//                                                                             *
+//  This program is distributed in the hope it will be useful, but WITHOUT     *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
+//  more details.                                                              *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 #ifndef TEMPLATE_CLASS_FIFO_DEFINED
 #define TEMPLATE_CLASS_FIFO_DEFINED
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #include <stdio.h>
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #include "utilities/M_SourceLocation.h"
 #include "utilities/TF_Swap.h"
 #include "utilities/MF_Assert.h"
 
-//---------------------------------------------------------------------------*
-//                                                                           *
-//           FIFO template class declaration                                 *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//                                                                             *
+//           FIFO template class declaration                                   *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE> class TC_FIFO {
 //--- Constructor and destructor
@@ -53,7 +53,7 @@ template <typename TYPE> class TC_FIFO {
   private : void operator = (TC_FIFO <TYPE> &) ;
 
 //--- Length
-  public : inline PMSInt32 length (void) const { return mListLength ; }
+  public : inline int32_t length (void) const { return mListLength ; }
 
 //--- Empty ?
   public : inline bool isEmpty (void) const { return mListLength == 0 ; }
@@ -70,8 +70,8 @@ template <typename TYPE> class TC_FIFO {
   public : void getByExchangeAndSuppressLastItem (TYPE & outInfo) ;
 
 //--- Direct access
-  public : TYPE & operator () (const PMSInt32 inIndex COMMA_LOCATION_ARGS) ;
-  public : TYPE & operator () (const PMSInt32 inIndex COMMA_LOCATION_ARGS) const ;
+  public : TYPE & operator () (const int32_t inIndex COMMA_LOCATION_ARGS) ;
+  public : TYPE & operator () (const int32_t inIndex COMMA_LOCATION_ARGS) const ;
 
 //------- Element class ---------------------
   private : class TC_FIFO_element {
@@ -94,15 +94,15 @@ template <typename TYPE> class TC_FIFO {
 //--- Data members
   private : TC_FIFO_element * mFirstItem ;
   private : TC_FIFO_element * mLastItem ;
-  private : PMSInt32 mListLength ;
+  private : int32_t mListLength ;
   private : mutable TC_FIFO_element * * mItemsArray ;
 } ;
 
-//---------------------------------------------------------------------------*
-//                                                                           *
-//           FIFO template class implementation                              *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//                                                                             *
+//           FIFO template class implementation                                *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 TC_FIFO <TYPE>::TC_FIFO_element::TC_FIFO_element (void) :
@@ -110,7 +110,7 @@ mInfo (),
 mNextItem (NULL) {
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 TC_FIFO <TYPE>::TC_FIFO_element::
@@ -119,7 +119,7 @@ mInfo (inSource),
 mNextItem (NULL) {
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 TC_FIFO <TYPE>::TC_FIFO (void) :
@@ -129,7 +129,7 @@ mListLength (0),
 mItemsArray (NULL) {
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 TC_FIFO<TYPE>::
@@ -143,7 +143,7 @@ TC_FIFO<TYPE>::
   mListLength = 0 ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_FIFO<TYPE>::
@@ -160,7 +160,7 @@ insertByCopy (const TYPE & inInfo) {
   macroMyDeleteArray (mItemsArray) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_FIFO<TYPE>::
@@ -178,7 +178,7 @@ insertByExchange (TYPE & ioInfo) {
   macroMyDeleteArray (mItemsArray) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_FIFO<TYPE>::
@@ -195,7 +195,7 @@ deleteLastItem (void) {
   macroMyDeleteArray (mItemsArray) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_FIFO <TYPE>::
@@ -212,7 +212,7 @@ getByCopyAndSuppressLastItem (TYPE & outInfo) {
   macroMyDeleteArray (mItemsArray) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_FIFO<TYPE>::
@@ -230,11 +230,11 @@ getByExchangeAndSuppressLastItem (TYPE & outInfo) {
   macroMyDeleteArray (mItemsArray) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
  template <typename TYPE>
  TYPE & TC_FIFO<TYPE>::
- operator () (const PMSInt32 inIndex COMMA_LOCATION_ARGS) {
+ operator () (const int32_t inIndex COMMA_LOCATION_ARGS) {
    MF_AssertThere (inIndex >= 0, "inIndex (%ld) < 0", inIndex, 0) ;
    MF_AssertThere (inIndex < mListLength, "inIndex (%ld) >= mListLength (%ld)", inIndex, mListLength) ;
    TC_FIFO_element * p = (TC_FIFO_element *) NULL ;
@@ -246,7 +246,7 @@ getByExchangeAndSuppressLastItem (TYPE & outInfo) {
      if (mItemsArray == NULL) {
        macroMyNewArray (mItemsArray, TC_FIFO_element *, mListLength) ;
        p = mFirstItem ;
-       for (PMSInt32 i=0 ; i<mListLength ; i++) {
+       for (int32_t i=0 ; i<mListLength ; i++) {
          mItemsArray [i] = p ;
          p = p->mNextItem ;
        }
@@ -256,11 +256,11 @@ getByExchangeAndSuppressLastItem (TYPE & outInfo) {
    return p->mInfo ;
  }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
  template <typename TYPE>
  TYPE & TC_FIFO <TYPE>::
- operator () (const PMSInt32 inIndex COMMA_LOCATION_ARGS) const {
+ operator () (const int32_t inIndex COMMA_LOCATION_ARGS) const {
    MF_AssertThere (inIndex >= 0, "inIndex (%ld) < 0", inIndex, 0) ;
    MF_AssertThere (inIndex < mListLength, "inIndex (%ld) >= mListLength (%ld)", inIndex, mListLength) ;
    TC_FIFO_element * p = (TC_FIFO_element *) NULL ;
@@ -272,7 +272,7 @@ getByExchangeAndSuppressLastItem (TYPE & outInfo) {
      if (mItemsArray == NULL) {
        macroMyNewArray (mItemsArray, TC_FIFO_element *, mListLength) ;
        p = mFirstItem ;
-       for (PMSInt32 i=0 ; i<mListLength ; i++) {
+       for (int32_t i=0 ; i<mListLength ; i++) {
          mItemsArray [i] = p ;
          p = p->mNextItem ;
        }
@@ -282,6 +282,6 @@ getByExchangeAndSuppressLastItem (TYPE & outInfo) {
    return p->mInfo ;
  }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #endif

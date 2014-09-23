@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Types for comparison results                                             *
+//  Types for comparison results                                               *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *

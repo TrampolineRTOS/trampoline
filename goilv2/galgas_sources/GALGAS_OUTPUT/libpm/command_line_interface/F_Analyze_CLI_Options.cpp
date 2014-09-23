@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Routine 'F_Analyze_CLI_Options' : a way for automatic command            *
-//  line options analysis for MacOS, Win32 and Unix.                         *
+//  Routine 'F_Analyze_CLI_Options' : a way for automatic command              *
+//  line options analysis for MacOS, Win32 and Unix.                           *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -81,7 +81,7 @@ const char * compilerVersionString (void) {
 
 //-----------------------------------------------------------------------------*
 
-static const PMUInt32 kDisplayLength = 20 ;
+static const uint32_t kDisplayLength = 20 ;
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
@@ -139,11 +139,11 @@ static void print_help (int argv,
   co << ".\n" ;
   print_tool_help_message () ;
 /*  #ifndef DO_NOT_GENERATE_CHECKINGS
-    co << "sizeof (short)=" << ((PMUInt32) sizeof (short))
-       << ", sizeof (int)=" << ((PMUInt32) sizeof (int))
-       << ", sizeof (long)=" << ((PMUInt32) sizeof (long))
-       << ", sizeof (long long)=" << ((PMUInt32) sizeof (long long))
-       << ", sizeof (wchar_t)=" << ((PMUInt32) sizeof (wchar_t))
+    co << "sizeof (short)=" << ((uint32_t) sizeof (short))
+       << ", sizeof (int)=" << ((uint32_t) sizeof (int))
+       << ", sizeof (long)=" << ((uint32_t) sizeof (long))
+       << ", sizeof (long long)=" << ((uint32_t) sizeof (long long))
+       << ", sizeof (wchar_t)=" << ((uint32_t) sizeof (wchar_t))
        << "\n" ;
   #endif */
   print_usage (argv, argc) ;
@@ -156,7 +156,7 @@ static void print_help (int argv,
   C_UIntCommandLineOption::printUIntOptions (kDisplayLength) ;
   C_StringCommandLineOption::printStringOptions (kDisplayLength) ;
 
-  PMSInt32 extensionIndex = 0 ;
+  int32_t extensionIndex = 0 ;
   while (inExtensions [extensionIndex] != NULL) {
     extensionIndex ++ ;
   }
@@ -170,9 +170,9 @@ static void print_help (int argv,
     co.setTextAttribute (kBoldTextAttribute) ;
     co << "." << inExtensions [extensionIndex] ;
     co.setTextAttribute (kAllAttributesOff) ;
-    const PMUInt32 extensionLength = (PMUInt32) (strlen (inExtensions [extensionIndex]) & PMUINT32_MAX) ;
+    const uint32_t extensionLength = (uint32_t) (strlen (inExtensions [extensionIndex]) & UINT32_MAX) ;
     if (extensionLength < kDisplayLength) {
-      for (PMUInt32 i=extensionLength ; i<kDisplayLength ; i++) {
+      for (uint32_t i=extensionLength ; i<kDisplayLength ; i++) {
         co << " " ;
       }
     }else{
@@ -193,7 +193,7 @@ static void print_help (int argv,
 static void option_beginning_with_single_minus_sign (const char * inCommand,
                                                      bool & outOk) {
   outOk = false ;
-  const PMUInt32 optionLength = (PMUInt32) (strlen (inCommand) & PMUINT32_MAX) ;
+  const uint32_t optionLength = (uint32_t) (strlen (inCommand) & UINT32_MAX) ;
 //--- Search for boolean option (minus following by a character)
   if (optionLength == 2) {
     C_BoolCommandLineOption::setBoolOptionForCommandChar (inCommand [1], outOk) ;
@@ -260,7 +260,7 @@ static void option_beginning_with_double_minus_sign (const char * inCommand,
 static void analyze_one_option (const char * inCommand,
                                 TC_UniqueArray <C_String> & outSourceFileArray,
                                 bool & outOk) {
-  const PMSInt32 optionLength = (PMSInt32) (strlen (inCommand) & PMUINT32_MAX) ;
+  const int32_t optionLength = (int32_t) (strlen (inCommand) & UINT32_MAX) ;
   bool found = false ;
 //--- Begin by a '-' character ?
   if ((optionLength > 1) && (inCommand [0] == '-')) {
@@ -278,8 +278,8 @@ static void analyze_one_option (const char * inCommand,
     if (inCommand [0] != '-') {
       C_String fileName ;
       #ifdef COMPILE_FOR_WIN32
-        const PMSInt32 fileLength = (PMSInt32) strlen (inCommand) ;
-        PMSInt32 firstChar = 0 ;
+        const int32_t fileLength = (int32_t) strlen (inCommand) ;
+        int32_t firstChar = 0 ;
         if ((fileLength > 3)
          && isalpha (inCommand [0])
          && (inCommand [1] == ':')
@@ -289,7 +289,7 @@ static void analyze_one_option (const char * inCommand,
           fileName << "/" ;
           firstChar = 3 ;
         }
-        for (PMSInt32 i=firstChar ; i<fileLength ; i++) {
+        for (int32_t i=firstChar ; i<fileLength ; i++) {
           fileName.appendUnicodeCharacter (TO_UNICODE (((inCommand [i] == '\\') ? '/' : inCommand [i])) COMMA_HERE) ;
         }
       #else
@@ -323,7 +323,7 @@ static void analyze_one_option (const char * inCommand,
     ofn.lpstrFile[0] = '\0';
     ofn.nMaxFile = sizeof (szFile) ;
     char filterString [1000] = "";
-    PMSInt32 filterIndex = 0 ;
+    int32_t filterIndex = 0 ;
     while (inExtensions [filterIndex] != NULL) {
       if (filterIndex != 0) {
         strcat (filterString, ";") ;
@@ -346,8 +346,8 @@ static void analyze_one_option (const char * inCommand,
     ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY ;
     if (GetOpenFileName (& ofn)) {
       C_String fileName ;
-      const PMSInt32 fileLength = (PMSInt32) strlen (szFile) ;
-      PMSInt32 firstChar = 0 ;
+      const int32_t fileLength = (int32_t) strlen (szFile) ;
+      int32_t firstChar = 0 ;
       if ((fileLength > 3)
        && isalpha (szFile [0])
        && (szFile [1] == ':')
@@ -357,7 +357,7 @@ static void analyze_one_option (const char * inCommand,
         fileName << "/" ;
         firstChar = 3 ;
       }
-      for (PMSInt32 i=firstChar ; i<fileLength ; i++) {
+      for (int32_t i=firstChar ; i<fileLength ; i++) {
         fileName.appendUnicodeCharacter (TO_UNICODE ((szFile [i] == '\\') ? '/' : szFile [i]) COMMA_HERE) ;
       }
       outSourceFileArray.addObject (fileName) ;
@@ -382,7 +382,7 @@ void F_Analyze_CLI_Options (const int argv,
   gCompilerVersionString = inVersionString ;
 //--- Analyze command
   bool errorFound = false ;
-  for (PMSInt32 i=1 ; i<argv ; i++) {
+  for (int32_t i=1 ; i<argv ; i++) {
     bool ok = true ;
     analyze_one_option (argc [i],
                         outSourceFileArray,

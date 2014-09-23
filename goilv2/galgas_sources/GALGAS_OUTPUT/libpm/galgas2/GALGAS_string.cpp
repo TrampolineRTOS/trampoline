@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  'GALGAS_string' : class of galgas string                                 *
+//  'GALGAS_string' : class of galgas string                                   *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -23,7 +23,7 @@
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-#include "predefined-types.h"
+#include "galgas2/predefined-types.h"
 #include "galgas2/C_galgas_CLI_Options.h"
 #include "galgas2/C_Compiler.h"
 #include "command_line_interface/F_mainForLIBPM.h"
@@ -41,7 +41,7 @@
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//     GALGAS_string                                                         *
+//     GALGAS_string                                                           *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -86,7 +86,7 @@ GALGAS_string GALGAS_string::makeEmptyString (void) {
 typeComparisonResult GALGAS_string::objectCompare (const GALGAS_string & inOperand) const {
   typeComparisonResult result = kOperandNotValid ;
   if (isValid () && inOperand.isValid ()) {
-    const PMSInt32 r = mString.compare (inOperand.mString) ;
+    const int32_t r = mString.compare (inOperand.mString) ;
     if (r < 0) {
       result = kFirstOperandLowerThanSecond ;
     }else if (r > 0) {
@@ -145,7 +145,7 @@ GALGAS_bool GALGAS_string::reader_directoryExists (UNUSED_LOCATION_ARGS) const {
 GALGAS_uint GALGAS_string::reader_length (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
   if (isValid ()) {
-    result = GALGAS_uint ((PMUInt32) mString.length ()) ;
+    result = GALGAS_uint ((uint32_t) mString.length ()) ;
   }
   return result ;
 }
@@ -155,7 +155,7 @@ GALGAS_uint GALGAS_string::reader_length (UNUSED_LOCATION_ARGS) const {
 GALGAS_range GALGAS_string::reader_range (UNUSED_LOCATION_ARGS) const {
   GALGAS_range result ;
   if (isValid ()) {
-    result = GALGAS_range (GALGAS_uint (0), GALGAS_uint ((PMUInt32) mString.length ())) ;
+    result = GALGAS_range (GALGAS_uint (0), GALGAS_uint ((uint32_t) mString.length ())) ;
   }
   return result ;
 }
@@ -220,7 +220,7 @@ GALGAS_string GALGAS_string::reader_rightSubString (const GALGAS_uint & inLength
                                                     COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
   if (inLength.isValid ()) {
-    result = GALGAS_string (mString.rightSubString ((PMSInt32) inLength.uintValue ())) ;
+    result = GALGAS_string (mString.rightSubString ((int32_t) inLength.uintValue ())) ;
   }
   return result ;
 }
@@ -231,7 +231,7 @@ GALGAS_string GALGAS_string::reader_leftSubString (const GALGAS_uint & inLength
                                                    COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
   if (inLength.isValid ()) {
-    result = GALGAS_string (mString.leftSubString ((PMSInt32) inLength.uintValue ())) ;
+    result = GALGAS_string (mString.leftSubString ((int32_t) inLength.uintValue ())) ;
   }
   return result ;
 }
@@ -243,8 +243,8 @@ GALGAS_string GALGAS_string::reader_subString (const GALGAS_uint & inStart,
                                                COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
   if ((inStart.isValid ()) && (inLength.isValid ())) {
-    const PMSInt32 start = (PMSInt32) inStart.uintValue () ;
-    const PMSInt32 aLength = (PMSInt32) inLength.uintValue () ;
+    const int32_t start = (int32_t) inStart.uintValue () ;
+    const int32_t aLength = (int32_t) inLength.uintValue () ;
     result = GALGAS_string (mString.subString (start, aLength)) ;
   }
   return result ;
@@ -257,7 +257,7 @@ GALGAS_string GALGAS_string::reader_absolutePathFromPath (const GALGAS_string & 
   GALGAS_string result ;
   if (inBasePath.isValid ()) {
     const C_String path = mString ;
-    const PMSInt32 stringLength = path.length () ;
+    const int32_t stringLength = path.length () ;
     C_String r ;
     if ((stringLength > 0) && (UNICODE_VALUE (path (0 COMMA_HERE)) == '/')) {
       r = path ;
@@ -370,10 +370,10 @@ GALGAS_string GALGAS_string::reader_stringByLeftPadding (const GALGAS_uint & inP
   GALGAS_string result ;
   if ((inPaddedStringLength.isValid ()) && (inPaddingChar.isValid ())) {
     const utf32 paddingChar = inPaddingChar.charValue () ;
-    const PMSInt32 paddedStringLength = (PMSInt32) inPaddedStringLength.uintValue () ;
-    const PMSInt32 paddingLength = paddedStringLength - mString.length () ;
-    C_String s ; s.setCapacity ((PMUInt32) paddedStringLength) ;
-    for (PMSInt32 i=0 ; i<paddingLength ; i++) {
+    const int32_t paddedStringLength = (int32_t) inPaddedStringLength.uintValue () ;
+    const int32_t paddingLength = paddedStringLength - mString.length () ;
+    C_String s ; s.setCapacity ((uint32_t) paddedStringLength) ;
+    for (int32_t i=0 ; i<paddingLength ; i++) {
       s.appendUnicodeCharacter (paddingChar COMMA_HERE) ;
     }
     s << mString ;
@@ -390,11 +390,11 @@ GALGAS_string GALGAS_string::reader_stringByRightPadding (const GALGAS_uint & in
   GALGAS_string result ;
   if ((inPaddedStringLength.isValid ()) && (inPaddingChar.isValid ())) {
     const utf32 paddingChar = inPaddingChar.charValue () ;
-    const PMSInt32 paddedStringLength = (PMSInt32) inPaddedStringLength.uintValue () ;
-    const PMSInt32 paddingLength = paddedStringLength - mString.length () ;
-    C_String s ; s.setCapacity ((PMUInt32) paddedStringLength) ;
+    const int32_t paddedStringLength = (int32_t) inPaddedStringLength.uintValue () ;
+    const int32_t paddingLength = paddedStringLength - mString.length () ;
+    C_String s ; s.setCapacity ((uint32_t) paddedStringLength) ;
     s << mString ;
-    for (PMSInt32 i=0 ; i<paddingLength ; i++) {
+    for (int32_t i=0 ; i<paddingLength ; i++) {
       s.appendUnicodeCharacter (paddingChar COMMA_HERE) ;
     }
     result = GALGAS_string (s) ;
@@ -410,14 +410,14 @@ GALGAS_string GALGAS_string::reader_stringByLeftAndRightPadding (const GALGAS_ui
   GALGAS_string result ;
   if ((inPaddedStringLength.isValid ()) && (inPaddingChar.isValid ())) {
     const utf32 paddingChar = inPaddingChar.charValue () ;
-    const PMSInt32 paddedStringLength = (PMSInt32) inPaddedStringLength.uintValue () ;
-    const PMSInt32 paddingLength = paddedStringLength - mString.length () ;
-    C_String s ; s.setCapacity ((PMUInt32) paddedStringLength) ;
-    for (PMSInt32 i=0 ; i<(paddingLength / 2) ; i++) {
+    const int32_t paddedStringLength = (int32_t) inPaddedStringLength.uintValue () ;
+    const int32_t paddingLength = paddedStringLength - mString.length () ;
+    C_String s ; s.setCapacity ((uint32_t) paddedStringLength) ;
+    for (int32_t i=0 ; i<(paddingLength / 2) ; i++) {
       s.appendUnicodeCharacter (paddingChar COMMA_HERE) ;
     }
     s << mString ;
-    for (PMSInt32 i=paddingLength / 2 ; i<paddingLength ; i++) {
+    for (int32_t i=paddingLength / 2 ; i<paddingLength ; i++) {
       s.appendUnicodeCharacter (paddingChar COMMA_HERE) ;
     }
     result = GALGAS_string (s) ;
@@ -446,7 +446,7 @@ GALGAS_string GALGAS_string::reader_stringByReplacingStringByString (const GALGA
       ) ;
     }else{
       bool ok = false ;
-      PMUInt32 replacementCount = 0 ;
+      uint32_t replacementCount = 0 ;
       const C_String s = mString.stringByReplacingStringByString (inSearchedString.mString, inReplacementString.mString, replacementCount, ok COMMA_THERE) ;
       result = GALGAS_string (s) ;
     }
@@ -461,9 +461,9 @@ GALGAS_string GALGAS_string::reader_stringByRemovingCharacterAtIndex (const GALG
                                                                         COMMA_LOCATION_ARGS) const {
   GALGAS_string result ;
   if (inIndex.isValid ()) {
-    if (inIndex.uintValue () < (PMUInt32) mString.length ()) {
+    if (inIndex.uintValue () < (uint32_t) mString.length ()) {
       C_String s = mString ;
-      s.suppress ((PMSInt32) inIndex.uintValue (), 1 COMMA_THERE) ;
+      s.suppress ((int32_t) inIndex.uintValue (), 1 COMMA_THERE) ;
       result = GALGAS_string (s) ;
     }else{
       inCompiler->onTheFlyRunTimeError (
@@ -482,8 +482,8 @@ GALGAS_char GALGAS_string::reader_characterAtIndex (const GALGAS_uint & inIndex,
                                                       COMMA_LOCATION_ARGS) const {
   GALGAS_char result ;
   if (isValid () && inIndex.isValid ()) {
-    const PMSInt32 idx = (PMSInt32) inIndex.uintValue () ;
-    const PMSInt32 stringLength = mString.length () ;
+    const int32_t idx = (int32_t) inIndex.uintValue () ;
+    const int32_t stringLength = mString.length () ;
     if (idx >= stringLength) {
       C_String message ;
       message << "string index (" << cStringWithSigned (idx) << ") too large (string length: " << cStringWithSigned (stringLength) << ")" ;
@@ -509,7 +509,7 @@ GALGAS_bool GALGAS_string::reader_containsCharacter (const GALGAS_char & inChara
 //-----------------------------------------------------------------------------*
 
 void GALGAS_string::description (C_String & ioString,
-                                 const PMSInt32 /* inIndentation */) const {
+                                 const int32_t /* inIndentation */) const {
   ioString << "<@string:" ;
   if (isValid ()) {
     ioString << "\"" << mString << "\"" ;
@@ -540,7 +540,7 @@ GALGAS_stringlist GALGAS_string::reader_componentsSeparatedByString (const GALGA
     result = GALGAS_stringlist::constructor_emptyList (THERE) ;
     TC_UniqueArray <C_String> components ;
     mString.componentsSeparatedByString (inSeparator.mString, components) ;
-    for (PMSInt32 i=0 ; i<components.count () ; i++) {
+    for (int32_t i=0 ; i<components.count () ; i++) {
       result.addAssign_operation (GALGAS_string (components (i COMMA_HERE)) COMMA_HERE) ;
     }
   }
@@ -839,7 +839,7 @@ GALGAS_string GALGAS_string::constructor_stringWithSequenceOfCharacters (const G
   if ((inCount.isValid ()) && (inCharacter.isValid ())) {
     const utf32 character = inCharacter.charValue () ;
     C_String s ;
-    for (PMUInt32 i=0 ; i<inCount.uintValue () ; i++) {
+    for (uint32_t i=0 ; i<inCount.uintValue () ; i++) {
       s.appendUnicodeCharacter (character COMMA_HERE) ;
     }
     result = GALGAS_string (s) ;
@@ -1308,7 +1308,7 @@ void GALGAS_string::method_writeToExecutableFileWhenDifferentContents (GALGAS_st
 //-----------------------------------------------------------------------------*
 
 GALGAS_uint GALGAS_string::reader_capacity (UNUSED_LOCATION_ARGS) const {
-  return GALGAS_uint ((PMUInt32) mString.capacity ()) ;
+  return GALGAS_uint ((uint32_t) mString.capacity ()) ;
 }
 
 //-----------------------------------------------------------------------------*
@@ -1317,7 +1317,7 @@ void GALGAS_string::modifier_setCapacity (GALGAS_uint inNewCapacity,
                                           C_Compiler * inCompiler
                                           COMMA_LOCATION_ARGS) {
   if (inNewCapacity.isValid ()) {
-    if (inNewCapacity.uintValue () <= ((PMUInt32) PMSINT32_MAX)) {
+    if (inNewCapacity.uintValue () <= ((uint32_t) INT32_MAX)) {
       mString.setCapacity (inNewCapacity.uintValue ()) ; 
     }else{
       C_String message ;
@@ -1335,7 +1335,7 @@ void GALGAS_string::modifier_incIndentation (GALGAS_uint inIndentation,
                                              C_Compiler * /* inCompiler */
                                              COMMA_UNUSED_LOCATION_ARGS) {
   if (inIndentation.isValid ()) {
-    mString.incIndentation ((PMSInt32) inIndentation.uintValue ()) ; 
+    mString.incIndentation ((int32_t) inIndentation.uintValue ()) ; 
   }
 }
 
@@ -1345,7 +1345,7 @@ void GALGAS_string::modifier_decIndentation (GALGAS_uint inIndentation,
                                              C_Compiler * /* inCompiler */
                                              COMMA_UNUSED_LOCATION_ARGS) {
   if (inIndentation.isValid ()) {
-    mString.incIndentation (- ((PMSInt32) inIndentation.uintValue ())) ; 
+    mString.incIndentation (- ((int32_t) inIndentation.uintValue ())) ; 
   }
 }
 
@@ -1356,8 +1356,8 @@ void GALGAS_string::modifier_setCharacterAtIndex (GALGAS_char inCharacter,
                                                   C_Compiler * inCompiler
                                                   COMMA_LOCATION_ARGS) {
   if ((inCharacter.isValid ()) && (inIndex.isValid ())) {
-    const PMSInt32 idx = (PMSInt32) inIndex.uintValue () ;
-    const PMSInt32 stringLength = mString.length () ;
+    const int32_t idx = (int32_t) inIndex.uintValue () ;
+    const int32_t stringLength = mString.length () ;
     if (idx >= stringLength) {
       C_String message ;
       message << "string index (" << cStringWithSigned (idx) << ") too large (string length: " << cStringWithSigned (stringLength) << ")" ;
@@ -1427,7 +1427,7 @@ GALGAS_string GALGAS_string::constructor_CppString (const GALGAS_string & inStri
 
 GALGAS_bool GALGAS_string::reader_isDecimalUnsignedNumber (UNUSED_LOCATION_ARGS) const {
   bool isDecimalUnsignedNumber = true ;
-  for (PMSInt32 i=0 ; (i<mString.length ()) && isDecimalUnsignedNumber ; i++) {
+  for (int32_t i=0 ; (i<mString.length ()) && isDecimalUnsignedNumber ; i++) {
     const utf32 c = mString (i COMMA_HERE) ;
     isDecimalUnsignedNumber = (UNICODE_VALUE (c) >= '0') && (UNICODE_VALUE (c) <= '9') ;
   }
@@ -1439,19 +1439,19 @@ GALGAS_bool GALGAS_string::reader_isDecimalUnsignedNumber (UNUSED_LOCATION_ARGS)
 GALGAS_uint GALGAS_string::reader_decimalUnsignedNumber (C_Compiler * inCompiler
                                                            COMMA_LOCATION_ARGS) const {
   bool ok = true ;
-  const PMUInt32 max = PMUINT32_MAX / 10 ;
-  PMUInt32 decimalUnsignedValue = 0 ;
-  for (PMSInt32 i=0 ; (i<mString.length ()) && ok ; i++) {
+  const uint32_t max = UINT32_MAX / 10 ;
+  uint32_t decimalUnsignedValue = 0 ;
+  for (int32_t i=0 ; (i<mString.length ()) && ok ; i++) {
     const utf32 c = mString (i COMMA_HERE) ;
     if ((UNICODE_VALUE (c) < '0') || (UNICODE_VALUE (c) > '9')) {
       inCompiler->onTheFlyRunTimeError ("cannot convert a string to a decimal number: it contains a non-digit character" COMMA_THERE) ;
       ok = false ;
     }else{
-      const PMUInt32 digit = UNICODE_VALUE (c) - '0' ;
+      const uint32_t digit = UNICODE_VALUE (c) - '0' ;
       if (decimalUnsignedValue > max) {
         inCompiler->onTheFlyRunTimeError ("cannot convert a string to a decimal number: number is > 2**32 - 1" COMMA_THERE) ;
         ok = false ;
-      }else if ((decimalUnsignedValue == max) && (digit > (PMUINT32_MAX % 10))) {
+      }else if ((decimalUnsignedValue == max) && (digit > (UINT32_MAX % 10))) {
         inCompiler->onTheFlyRunTimeError ("cannot convert a string to a decimal number: number is > 2**32 - 1" COMMA_THERE) ;
         ok = false ;
       }else{
@@ -1646,7 +1646,7 @@ void GALGAS_string::method_makeSymbolicLinkWithPath (GALGAS_string inPath,
         bool loop = true ;
         while (loop) {
           const size_t kBufferSize = 1000 ;
-          PMUInt8 buffer [kBufferSize] ;
+          uint8_t buffer [kBufferSize] ;
           DWORD readLength = 0 ;
           loop = ReadFile (g_hChildStd_OUT_Rd, buffer, kBufferSize, & readLength, NULL) ;
           loop = readLength > 0 ;
@@ -1677,10 +1677,10 @@ void GALGAS_string::method_makeSymbolicLinkWithPath (GALGAS_string inPath,
       bool loop = true ;
       while (loop) {
         const size_t kBufferSize = 1000 ;
-        PMUInt8 buffer [kBufferSize] ;
+        uint8_t buffer [kBufferSize] ;
         const size_t readLength = fread (buffer, 1, kBufferSize, f) ;
         loop = readLength > 0 ;
-        response.appendDataFromPointer (buffer, (PMSInt32) readLength) ;
+        response.appendDataFromPointer (buffer, (int32_t) readLength) ;
       }
       pclose (f) ;
       C_String s ;

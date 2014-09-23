@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Implementation of routines for handling dynamic allocation checking.     *
+//  Implementation of routines for handling dynamic allocation checking.       *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *

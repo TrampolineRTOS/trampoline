@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Generic Boolean Command Line Interface Option                            *
+//  Generic Boolean Command Line Interface Option                              *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -110,10 +110,10 @@ printUsageOfBoolOptions (void) {
 //-----------------------------------------------------------------------------*
 
 void C_BoolCommandLineOption::
-printBoolOptions (const PMUInt32 inDisplayLength) {
+printBoolOptions (const uint32_t inDisplayLength) {
   C_BoolCommandLineOption * p = gFirst ;
   while (p != NULL) {
-    PMUInt32 charCount = 0 ;
+    uint32_t charCount = 0 ;
     if (p->mCommandChar != '\0') {
       co.setForeColor (kBlueForeColor) ;
       co.setTextAttribute (kBoldTextAttribute) ;
@@ -130,13 +130,13 @@ printBoolOptions (const PMUInt32 inDisplayLength) {
       co.setTextAttribute (kBoldTextAttribute) ;
       co << "--" << p->mCommandString ;
       co.setTextAttribute (kAllAttributesOff) ;
-      charCount += 2 + (PMUInt32) strlen (p->mCommandString) ;
+      charCount += 2 + (uint32_t) strlen (p->mCommandString) ;
     }
     if (charCount > inDisplayLength) {
       co << "\n" ;
       charCount = 0 ;
     }
-    for (PMUInt32 i=charCount ; i<=inDisplayLength ; i++) {
+    for (uint32_t i=charCount ; i<=inDisplayLength ; i++) {
       co << " " ;
     }
     co << p->mComment << "\n" ;
@@ -164,7 +164,7 @@ utf32 C_BoolCommandLineOption::getBoolOptionInvocationLetter (const C_String & i
   bool found = false ;
   while ((p != NULL) && not found) {
     found = (inDomainName == p->mDomainName) && (inIdentifier == p->mIdentifier) ;
-    result = TO_UNICODE ((PMUInt32) p->mCommandChar) ;
+    result = TO_UNICODE ((uint32_t) p->mCommandChar) ;
     p = p->mNext ;
 }
   return result ;

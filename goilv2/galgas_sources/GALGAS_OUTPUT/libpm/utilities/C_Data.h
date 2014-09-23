@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  C_Data : a class for handling arbitrary data array                       *
+//  C_Data : a class for handling arbitrary data array                         *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -34,7 +34,7 @@
 
 class C_Data {
 //--- Data
-  private : TC_Array <PMUInt8> mBinaryData ;
+  private : TC_Array <uint8_t> mBinaryData ;
 
 //--- Constructors
   public : C_Data (void) ;
@@ -43,11 +43,11 @@ class C_Data {
   public : virtual ~C_Data (void) ;
   
 //--- Length
-  public : inline PMSInt32 length (void) const { return mBinaryData.count () ; }
+  public : inline int32_t length (void) const { return mBinaryData.count () ; }
   
   public : void setLengthToZero (void) ;
 
-  public : const PMUInt8 * dataPointer (void) const { return mBinaryData.arrayPointer () ; }
+  public : const uint8_t * dataPointer (void) const { return mBinaryData.arrayPointer () ; }
 
 //--- Free
   public : void free (void) ;
@@ -56,23 +56,23 @@ class C_Data {
   public : void appendData (const C_Data & inData) ;
   
 //---
-  public : PMUInt8 operator () (const PMSInt32 inIndex
+  public : uint8_t operator () (const int32_t inIndex
                                 COMMA_LOCATION_ARGS) const ;
 
 
 //--- Data from pointer
-  public : void setDataFromPointer (PMUInt8 * & ioDataPtr,
-                                    const PMSInt32 inDataLength) ;
+  public : void setDataFromPointer (uint8_t * & ioDataPtr,
+                                    const int32_t inDataLength) ;
 
-  public : void appendDataFromPointer (const PMUInt8 * inDataPtr,
-                                       const PMSInt32 inDataLength) ;
+  public : void appendDataFromPointer (const uint8_t * inDataPtr,
+                                       const int32_t inDataLength) ;
 
-  public : void appendByte (const PMUInt8 inByte) ;
+  public : void appendByte (const uint8_t inByte) ;
 
-  public : PMSInt32 compareWithData (const C_Data & inData) const ;
+  public : int32_t compareWithData (const C_Data & inData) const ;
 
 //---
-  public : void removeLengthFromStart (const PMUInt32 inLength) ;
+  public : void removeLengthFromStart (const uint32_t inLength) ;
 
 //--- 
   public : bool operator == (const C_Data & inData) const ;

@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  unicode_character : an implementation of Unicode character               *
+//  unicode_character : an implementation of Unicode character                 *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *

@@ -1,12 +1,12 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  GALGAS_binaryset                                                         *
+//  GALGAS_binaryset                                                           *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
-//  Created january 22, 2007.                                                *
+//  Created january 22, 2007.                                                  *
 //                                                                             *
-//  Copyright (C) 2007, ..., 2013 Pierre Molinaro.                             *
+//  Copyright (C) 2007, ..., 2014 Pierre Molinaro.                             *
 //                                                                             *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
 //                                                                             *
@@ -25,7 +25,7 @@
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-#include "predefined-types.h"
+#include "galgas2/predefined-types.h"
 #include "galgas2/C_Compiler.h"
 
 //-----------------------------------------------------------------------------*
@@ -63,7 +63,7 @@ GALGAS_binaryset GALGAS_binaryset::constructor_binarySetWithBit (const GALGAS_ui
                                                                  COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_binaryset result ;
   if (inBitIndex.isValid ()) {
-    const PMUInt32 bitIndex = inBitIndex.uintValue () ;
+    const uint32_t bitIndex = inBitIndex.uintValue () ;
     const C_BDD bdd (bitIndex, true) ;
     result = GALGAS_binaryset (bdd) ;
   }
@@ -78,8 +78,8 @@ GALGAS_binaryset GALGAS_binaryset::constructor_binarySetWithPredicateString (con
   GALGAS_binaryset result ;
   if (inBitString.isValid ()) {
     const C_String bitString = inBitString.stringValue () ;
-    const PMSInt32 stringLength = bitString.length () ;
-    PMSInt32 stringIndex = 0 ;
+    const int32_t stringLength = bitString.length () ;
+    int32_t stringIndex = 0 ;
     bool ok = true ;
     C_BDD resultBDD ;
     while ((stringIndex < stringLength) && ok) {
@@ -94,8 +94,8 @@ GALGAS_binaryset GALGAS_binaryset::constructor_binarySetWithPredicateString (con
       }
       if (s.length () > 0) {
         C_BDD v ; v.setToTrue () ;
-        PMUInt32 bitIndex = 0 ;
-        for (PMSInt32 i=s.length () - 1 ; i>=0 ; i--) {
+        uint32_t bitIndex = 0 ;
+        for (int32_t i=s.length () - 1 ; i>=0 ; i--) {
           const utf32 c = s (i COMMA_HERE) ;
           if (UNICODE_VALUE (c) == '0') {
             v &= C_BDD (bitIndex, false) ;
@@ -135,11 +135,11 @@ static GALGAS_binaryset binarySetWithComparison (C_Compiler * inCompiler,
                                                  COMMA_LOCATION_ARGS) {
   GALGAS_binaryset result ;
   if ((inLeftFirstIndex.isValid ()) && (inBitCount.isValid ()) && (inRightFirstIndex.isValid ())) {
-    const PMUInt64 maxLeft = ((PMUInt64) inLeftFirstIndex.uintValue ()) + inBitCount.uintValue () ;
-    const PMUInt64 maxRight = ((PMUInt64) inRightFirstIndex.uintValue ()) + inBitCount.uintValue () ;
-    if (maxLeft > PMUINT32_MAX) {
+    const uint64_t maxLeft = ((uint64_t) inLeftFirstIndex.uintValue ()) + inBitCount.uintValue () ;
+    const uint64_t maxRight = ((uint64_t) inRightFirstIndex.uintValue ()) + inBitCount.uintValue () ;
+    if (maxLeft > UINT32_MAX) {
       inCompiler->onTheFlyRunTimeError ("left operand upper bit is greater than 2**31-1" COMMA_THERE) ;
-    }else if (maxRight > PMUINT32_MAX) {
+    }else if (maxRight > UINT32_MAX) {
       inCompiler->onTheFlyRunTimeError ("right operand upper bit is greater than 2**31-1" COMMA_THERE) ;
     }else {
       result = GALGAS_binaryset (C_BDD::varCompareVar (inLeftFirstIndex.uintValue (),
@@ -251,8 +251,8 @@ static GALGAS_binaryset binarySetWithComparisonWithConstant (C_Compiler * inComp
                                                              COMMA_LOCATION_ARGS) {
   GALGAS_binaryset result ;
   if ((inBitIndex.isValid ()) && (inBitCount.isValid ()) && (inConstant.isValid ())) {
-    const PMUInt64 maxLeft = ((PMUInt64) inBitIndex.uintValue ()) + inBitCount.uintValue () ;
-    if (maxLeft > PMUINT32_MAX) {
+    const uint64_t maxLeft = ((uint64_t) inBitIndex.uintValue ()) + inBitCount.uintValue () ;
+    if (maxLeft > UINT32_MAX) {
       inCompiler->onTheFlyRunTimeError ("left operand upper bit is greater than 2**31-1" COMMA_THERE) ;
     }else {
       result = GALGAS_binaryset (C_BDD::varCompareConst (inBitIndex.uintValue (),
@@ -366,7 +366,7 @@ GALGAS_binaryset GALGAS_binaryset::operator_xor (const GALGAS_binaryset & inOper
                                                  COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_binaryset result ;
   if (isValid () && inOperand2.isValid ()) {
-    result = GALGAS_binaryset (mBDD != inOperand2.mBDD) ;
+    result = GALGAS_binaryset (mBDD.notEqualTo (inOperand2.mBDD)) ;
   }
   return result ;
 }
@@ -402,7 +402,7 @@ GALGAS_binaryset GALGAS_binaryset::operator_tilde (UNUSED_LOCATION_ARGS) const {
 //-----------------------------------------------------------------------------*
 
 void GALGAS_binaryset::description (C_String & ioString,
-                                    const PMSInt32 /* inIndentation */) const {
+                                    const int32_t /* inIndentation */) const {
   ioString << "<@binaryset: " ;
   if (isValid ()) {
     if (mBDD.isFalse ()){
@@ -412,7 +412,7 @@ void GALGAS_binaryset::description (C_String & ioString,
     }else{
       TC_UniqueArray <C_String> stringArray ;
       mBDD.buildCompressedBigEndianStringValueArray (stringArray COMMA_HERE) ;
-      for (PMSInt32 i=0 ; i<stringArray.count () ; i++) {
+      for (int32_t i=0 ; i<stringArray.count () ; i++) {
         if (i != 0) {
           ioString << ", " ;
         }
@@ -433,9 +433,9 @@ GALGAS_bool GALGAS_binaryset::reader_containsValue (const GALGAS_uint_36__34_ & 
                                                     COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
   if ((inValue.isValid ()) && (inFirstBit.isValid ()) && (inBitCount.isValid ())) {
-     const PMUInt64 value = inValue.uint64Value () ;
-     const PMUInt32 firstBit = inFirstBit.uintValue () ;
-     const PMUInt32 bitCount = inBitCount.uintValue () ;
+     const uint64_t value = inValue.uint64Value () ;
+     const uint32_t firstBit = inFirstBit.uintValue () ;
+     const uint32_t bitCount = inBitCount.uintValue () ;
      result = GALGAS_bool (mBDD.containsValue64 (value, firstBit, bitCount)) ;
   }
   return result ;
@@ -455,11 +455,22 @@ GALGAS_binaryset GALGAS_binaryset::reader_ITE (const GALGAS_binaryset & inTHENop
 
 //-----------------------------------------------------------------------------*
 
+GALGAS_binaryset GALGAS_binaryset::reader_implies (const GALGAS_binaryset & inOperand
+                                                   COMMA_UNUSED_LOCATION_ARGS) const {
+  GALGAS_binaryset result ;
+  if (inOperand.isValid ()) {
+    result = GALGAS_binaryset ((~ mBDD) | inOperand.mBDD) ;
+  }
+  return result ;
+}
+
+//-----------------------------------------------------------------------------*
+
 GALGAS_binaryset GALGAS_binaryset::reader_equalTo (const GALGAS_binaryset & inOperand
                                                    COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_binaryset result ;
   if (inOperand.isValid ()) {
-    result = GALGAS_binaryset (mBDD == inOperand.mBDD) ;
+    result = GALGAS_binaryset (mBDD.equalTo (inOperand.mBDD)) ;
   }
   return result ;
 }
@@ -470,7 +481,7 @@ GALGAS_binaryset GALGAS_binaryset::reader_notEqualTo (const GALGAS_binaryset & i
                                                       COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_binaryset result ;
   if (inOperand.isValid ()) {
-    result = GALGAS_binaryset (mBDD != inOperand.mBDD) ;
+    result = GALGAS_binaryset (mBDD.notEqualTo (inOperand.mBDD)) ;
   }
   return result ;
 }
@@ -481,7 +492,7 @@ GALGAS_binaryset GALGAS_binaryset::reader_lowerOrEqualTo (const GALGAS_binaryset
                                                           COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_binaryset result ;
   if (inOperand.isValid ()) {
-    result = GALGAS_binaryset (mBDD <= inOperand.mBDD) ;
+    result = GALGAS_binaryset (mBDD.lowerOrEqual (inOperand.mBDD)) ;
   }
   return result ;
 }
@@ -492,7 +503,7 @@ GALGAS_binaryset GALGAS_binaryset::reader_greaterOrEqualTo (const GALGAS_binarys
                                                             COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_binaryset result ;
   if (inOperand.isValid ()) {
-    result = GALGAS_binaryset (mBDD >= inOperand.mBDD) ;
+    result = GALGAS_binaryset (mBDD.greaterOrEqual (inOperand.mBDD)) ;
   }
   return result ;
 }
@@ -503,7 +514,7 @@ GALGAS_binaryset GALGAS_binaryset::reader_strictLowerThan (const GALGAS_binaryse
                                                            COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_binaryset result ;
   if (inOperand.isValid ()) {
-    result = GALGAS_binaryset (mBDD < inOperand.mBDD) ;
+    result = GALGAS_binaryset (mBDD.lowerThan (inOperand.mBDD)) ;
   }
   return result ;
 }
@@ -514,7 +525,7 @@ GALGAS_binaryset GALGAS_binaryset::reader_strictGreaterThan (const GALGAS_binary
                                                              COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_binaryset result ;
   if (inOperand.isValid ()) {
-    result = GALGAS_binaryset (mBDD > inOperand.mBDD) ;
+    result = GALGAS_binaryset (mBDD.greaterThan (inOperand.mBDD)) ;
   }
   return result ;
 }
@@ -558,7 +569,7 @@ GALGAS_uint_36__34_ GALGAS_binaryset::reader_valueCount (const GALGAS_uint & inV
 GALGAS_uint_36__34_ GALGAS_binaryset::reader_compressedValueCount (UNUSED_LOCATION_ARGS) const {
   TC_UniqueArray <C_String> valuesArray ;
   mBDD.buildCompressedLittleEndianStringValueArray (valuesArray COMMA_HERE) ;
-  return GALGAS_uint_36__34_ ((PMUInt32) valuesArray.count ()) ;
+  return GALGAS_uint_36__34_ ((uint32_t) valuesArray.count ()) ;
 }
 
 //-----------------------------------------------------------------------------*
@@ -567,11 +578,11 @@ GALGAS_uint_36__34_list GALGAS_binaryset::reader_uint_36__34_ValueList (const GA
                                                                         COMMA_LOCATION_ARGS) const {
   GALGAS_uint_36__34_list result ;
   if (inVariableCount.isValid ()) {
-    TC_UniqueArray <PMUInt64> valuesArray ;
+    TC_UniqueArray <uint64_t> valuesArray ;
     mBDD.buildValue64Array (valuesArray, inVariableCount.uintValue ()) ;
     result = GALGAS_uint_36__34_list::constructor_emptyList (THERE) ;
-    for (PMSInt32 i=0 ; i<valuesArray.count () ; i++) {
-      const PMUInt64 v = valuesArray (i COMMA_HERE) ;
+    for (int32_t i=0 ; i<valuesArray.count () ; i++) {
+      const uint64_t v = valuesArray (i COMMA_HERE) ;
       result.addAssign_operation (GALGAS_uint_36__34_ (v) COMMA_HERE) ;
     }
   }
@@ -586,11 +597,11 @@ GALGAS_stringlist GALGAS_binaryset::reader_stringValueListWithNameList (const GA
                                                                         COMMA_LOCATION_ARGS) const {
   GALGAS_stringlist result ;
   if ((inVariableCount.isValid ()) && (inStringList.isValid ())) {
-    TC_UniqueArray <PMUInt64> valuesArray ;
+    TC_UniqueArray <uint64_t> valuesArray ;
     mBDD.buildValue64Array (valuesArray, inVariableCount.uintValue ()) ;
     result = GALGAS_stringlist::constructor_emptyList (THERE) ;
-    for (PMSInt32 i=0 ; i<valuesArray.count () ; i++) {
-      const PMUInt32 v = (PMUInt32) (valuesArray (i COMMA_HERE) & PMUINT32_MAX) ;
+    for (int32_t i=0 ; i<valuesArray.count () ; i++) {
+      const uint32_t v = (uint32_t) (valuesArray (i COMMA_HERE) & UINT32_MAX) ;
       GALGAS_uint object = GALGAS_uint (v) ;
       result.addAssign_operation (inStringList.reader_mValueAtIndex (object, inCompiler COMMA_HERE) COMMA_HERE) ;
     }
@@ -605,8 +616,8 @@ GALGAS_stringlist GALGAS_binaryset::reader_compressedStringValueList (const GALG
                                                                       COMMA_LOCATION_ARGS) const {
   GALGAS_stringlist result ;
   if (inVariableCount.isValid ()) {
-    const PMUInt32 variableCount = inVariableCount.uintValue () ;
-    const PMUInt32 actualVariableCount = mBDD.significantVariableCount () ;
+    const uint32_t variableCount = inVariableCount.uintValue () ;
+    const uint32_t actualVariableCount = mBDD.significantVariableCount () ;
     if (actualVariableCount > variableCount) {
       C_String message ;
       message << "variable count argument (" << cStringWithSigned (variableCount)
@@ -617,7 +628,7 @@ GALGAS_stringlist GALGAS_binaryset::reader_compressedStringValueList (const GALG
       TC_UniqueArray <C_String> valuesArray ;
       mBDD.buildCompressedBigEndianStringValueArray (valuesArray, variableCount COMMA_THERE) ;
       result = GALGAS_stringlist::constructor_emptyList (THERE) ;
-      for (PMSInt32 i=0 ; i<valuesArray.count () ; i++) {
+      for (int32_t i=0 ; i<valuesArray.count () ; i++) {
         const C_String v = valuesArray (i COMMA_HERE) ;
         result.addAssign_operation (GALGAS_string (v) COMMA_HERE) ;
       }
@@ -635,7 +646,7 @@ GALGAS_stringlist GALGAS_binaryset::reader_stringValueList (const GALGAS_uint & 
     TC_UniqueArray <C_String> valuesArray ;
     mBDD.buildBigEndianStringValueArray (valuesArray, inVariableCount.uintValue ()) ;
     result = GALGAS_stringlist::constructor_emptyList (THERE) ;
-    for (PMSInt32 i=0 ; i<valuesArray.count () ; i++) {
+    for (int32_t i=0 ; i<valuesArray.count () ; i++) {
       const C_String v = valuesArray (i COMMA_HERE) ;
       result.addAssign_operation (GALGAS_string (v) COMMA_HERE) ;
     }
@@ -695,94 +706,94 @@ GALGAS_binaryset GALGAS_binaryset::reader_existOnBitIndexAndBeyond (const GALGAS
 
 //-----------------------------------------------------------------------------*
 
-GALGAS_binaryset GALGAS_binaryset::reader_swap_32__31_ (const GALGAS_uint & inBitCount1,
+GALGAS_binaryset GALGAS_binaryset::reader_swap_31__30_ (const GALGAS_uint & inBitCount1,
                                                         const GALGAS_uint & inBitCount2
                                                         COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_binaryset result ;
   if ((inBitCount1.isValid ()) && (inBitCount2.isValid ())) {
-    const PMUInt32 bitSize1 = inBitCount1.uintValue () ;
-    const PMUInt32 bitSize2 = inBitCount2.uintValue () ;
-    result = GALGAS_binaryset (mBDD.swap21 (bitSize1, bitSize2)) ;
+    const uint32_t bitSize1 = inBitCount1.uintValue () ;
+    const uint32_t bitSize2 = inBitCount2.uintValue () ;
+    result = GALGAS_binaryset (mBDD.swap10 (bitSize1, bitSize2)) ;
   }
   return result ;
 }
 
 //-----------------------------------------------------------------------------*
 
-GALGAS_binaryset GALGAS_binaryset::reader_swap_31__33__32_ (const GALGAS_uint & inBitCount1,
+GALGAS_binaryset GALGAS_binaryset::reader_swap_30__32__31_ (const GALGAS_uint & inBitCount1,
                                                             const GALGAS_uint & inBitCount2,
                                                             const GALGAS_uint & inBitCount3
                                                             COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_binaryset result ;
   if ((inBitCount1.isValid ()) && (inBitCount2.isValid ()) && (inBitCount3.isValid ())) {
-    const PMUInt32 bitSize1 = inBitCount1.uintValue () ;
-    const PMUInt32 bitSize2 = inBitCount2.uintValue () ;
-    const PMUInt32 bitSize3 = inBitCount3.uintValue () ;
-    result = GALGAS_binaryset (mBDD.swap132  (bitSize1, bitSize2, bitSize3)) ;
+    const uint32_t bitSize1 = inBitCount1.uintValue () ;
+    const uint32_t bitSize2 = inBitCount2.uintValue () ;
+    const uint32_t bitSize3 = inBitCount3.uintValue () ;
+    result = GALGAS_binaryset (mBDD.swap021  (bitSize1, bitSize2, bitSize3)) ;
   }
   return result ;
 }
 
 //-----------------------------------------------------------------------------*
 
-GALGAS_binaryset GALGAS_binaryset::reader_swap_32__31__33_ (const GALGAS_uint & inBitCount1,
+GALGAS_binaryset GALGAS_binaryset::reader_swap_31__30__32_ (const GALGAS_uint & inBitCount1,
                                                             const GALGAS_uint & inBitCount2,
                                                             const GALGAS_uint & inBitCount3
                                                             COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_binaryset result ;
   if ((inBitCount1.isValid ()) && (inBitCount2.isValid ()) && (inBitCount3.isValid ())) {
-    const PMUInt32 bitSize1 = inBitCount1.uintValue () ;
-    const PMUInt32 bitSize2 = inBitCount2.uintValue () ;
-    const PMUInt32 bitSize3 = inBitCount3.uintValue () ;
-    result = GALGAS_binaryset (mBDD.swap213 (bitSize1, bitSize2, bitSize3)) ;
+    const uint32_t bitSize1 = inBitCount1.uintValue () ;
+    const uint32_t bitSize2 = inBitCount2.uintValue () ;
+    const uint32_t bitSize3 = inBitCount3.uintValue () ;
+    result = GALGAS_binaryset (mBDD.swap102 (bitSize1, bitSize2, bitSize3)) ;
   }
   return result ;
 }
 
 //-----------------------------------------------------------------------------*
 
-GALGAS_binaryset GALGAS_binaryset::reader_swap_32__33__31_ (const GALGAS_uint & inBitCount1,
+GALGAS_binaryset GALGAS_binaryset::reader_swap_31__32__30_ (const GALGAS_uint & inBitCount1,
                                                             const GALGAS_uint & inBitCount2,
                                                             const GALGAS_uint & inBitCount3
                                                             COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_binaryset result ;
   if ((inBitCount1.isValid ()) && (inBitCount2.isValid ()) && (inBitCount3.isValid ())) {
-    const PMUInt32 bitSize1 = inBitCount1.uintValue () ;
-    const PMUInt32 bitSize2 = inBitCount2.uintValue () ;
-    const PMUInt32 bitSize3 = inBitCount3.uintValue () ;
-    result = GALGAS_binaryset (mBDD.swap231 (bitSize1, bitSize2, bitSize3)) ;
+    const uint32_t bitSize1 = inBitCount1.uintValue () ;
+    const uint32_t bitSize2 = inBitCount2.uintValue () ;
+    const uint32_t bitSize3 = inBitCount3.uintValue () ;
+    result = GALGAS_binaryset (mBDD.swap120 (bitSize1, bitSize2, bitSize3)) ;
   }
   return result ;
 }
 
 //-----------------------------------------------------------------------------*
 
-GALGAS_binaryset GALGAS_binaryset::reader_swap_33__31__32_ (const GALGAS_uint & inBitCount1,
+GALGAS_binaryset GALGAS_binaryset::reader_swap_32__30__31_ (const GALGAS_uint & inBitCount1,
                                                             const GALGAS_uint & inBitCount2,
                                                             const GALGAS_uint & inBitCount3
                                                             COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_binaryset result ;
   if ((inBitCount1.isValid ()) && (inBitCount2.isValid ()) && (inBitCount3.isValid ())) {
-    const PMUInt32 bitSize1 = inBitCount1.uintValue () ;
-    const PMUInt32 bitSize2 = inBitCount2.uintValue () ;
-    const PMUInt32 bitSize3 = inBitCount3.uintValue () ;
-    result = GALGAS_binaryset (mBDD.swap321 (bitSize1, bitSize2, bitSize3)) ;
+    const uint32_t bitSize1 = inBitCount1.uintValue () ;
+    const uint32_t bitSize2 = inBitCount2.uintValue () ;
+    const uint32_t bitSize3 = inBitCount3.uintValue () ;
+    result = GALGAS_binaryset (mBDD.swap210 (bitSize1, bitSize2, bitSize3)) ;
   }
   return result ;
 }
 
 //-----------------------------------------------------------------------------*
 
-GALGAS_binaryset GALGAS_binaryset::reader_swap_33__32__31_ (const GALGAS_uint & inBitCount1,
+GALGAS_binaryset GALGAS_binaryset::reader_swap_32__31__30_ (const GALGAS_uint & inBitCount1,
                                                             const GALGAS_uint & inBitCount2,
                                                             const GALGAS_uint & inBitCount3
                                                             COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_binaryset result ;
   if ((inBitCount1.isValid ()) && (inBitCount2.isValid ()) && (inBitCount3.isValid ())) {
-    const PMUInt32 bitSize1 = inBitCount1.uintValue () ;
-    const PMUInt32 bitSize2 = inBitCount2.uintValue () ;
-    const PMUInt32 bitSize3 = inBitCount3.uintValue () ;
-    result = GALGAS_binaryset (mBDD.swap321 (bitSize1, bitSize2, bitSize3)) ;
+    const uint32_t bitSize1 = inBitCount1.uintValue () ;
+    const uint32_t bitSize2 = inBitCount2.uintValue () ;
+    const uint32_t bitSize3 = inBitCount3.uintValue () ;
+    result = GALGAS_binaryset (mBDD.swap210 (bitSize1, bitSize2, bitSize3)) ;
   }
   return result ;
 }
@@ -793,7 +804,7 @@ GALGAS_binaryset GALGAS_binaryset::reader_transitiveClosure (const GALGAS_uint &
                                                              COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_binaryset result ;
   if (inBitCount.isValid ()) {
-    const PMUInt32 bitCount = inBitCount.uintValue () ;
+    const uint32_t bitCount = inBitCount.uintValue () ;
     result = GALGAS_binaryset (mBDD.transitiveClosure (bitCount, NULL)) ;
   }
   return result ;
@@ -823,19 +834,19 @@ GALGAS_binaryset GALGAS_binaryset::reader_binarySetByTranslatingFromIndex (const
                                                                            COMMA_LOCATION_ARGS) const {
   GALGAS_binaryset result ;
   if ((inFirstIndexToTranslate.isValid ()) && (inTranslation.isValid ())) {
-    const PMUInt32 varCount = mBDD.significantVariableCount () ;
-    const PMUInt32 translation = inTranslation.uintValue () ;
+    const uint32_t varCount = mBDD.significantVariableCount () ;
+    const uint32_t translation = inTranslation.uintValue () ;
     if ((varCount == 0) || (translation == 0)) {
       result = *this ;
     }else{
-      const PMUInt32 firstIndex = inFirstIndexToTranslate.uintValue () ;
-      PMUInt32 * substitionArray = NULL ;
-      macroMyNewArray (substitionArray, PMUInt32, varCount) ;
-      for (PMUInt32 i=0 ; i<varCount ; i++) {
+      const uint32_t firstIndex = inFirstIndexToTranslate.uintValue () ;
+      uint32_t * substitionArray = NULL ;
+      macroMyNewArray (substitionArray, uint32_t, varCount) ;
+      for (uint32_t i=0 ; i<varCount ; i++) {
         substitionArray [i] = i ;
       }
-      for (PMUInt32 i=firstIndex ; i<varCount ; i++) {
-        substitionArray [i] = (PMUInt32) (substitionArray [i] + translation) ;
+      for (uint32_t i=firstIndex ; i<varCount ; i++) {
+        substitionArray [i] = (uint32_t) (substitionArray [i] + translation) ;
       }
       result = GALGAS_binaryset (mBDD.substitution (substitionArray, varCount COMMA_THERE)) ;
       macroMyDeleteArray (substitionArray) ;
@@ -851,12 +862,12 @@ GALGAS_binaryset GALGAS_binaryset::reader_existsOnBitRange (const GALGAS_uint & 
                                                             COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_binaryset result ;
   if ((inFirstIndex.isValid ()) && (inCount.isValid ())) {
-    const PMUInt32 varCount = mBDD.significantVariableCount () ;
-    const PMUInt32 count = inCount.uintValue () ;
+    const uint32_t varCount = mBDD.significantVariableCount () ;
+    const uint32_t count = inCount.uintValue () ;
     if ((varCount == 0) || (count == 0)) {
       result = *this ;
     }else{
-      const PMUInt32 firstIndex = inFirstIndex.uintValue () ;
+      const uint32_t firstIndex = inFirstIndex.uintValue () ;
       result = GALGAS_binaryset (mBDD.existsOnBitRange (firstIndex, count)) ;
     }
   }

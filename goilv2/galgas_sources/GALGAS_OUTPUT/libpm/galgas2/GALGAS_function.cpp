@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  GALGAS_function : this class implements introspection for GALGAS functions  *
+//  GALGAS_function : this class implements introspection for GALGAS functions *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -23,15 +23,15 @@
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-#include "predefined-types.h"
-#include "C_galgas_function_descriptor.h"
-#include "C_galgas_type_descriptor.h"
+#include "galgas2/predefined-types.h"
+#include "galgas2/C_galgas_function_descriptor.h"
+#include "galgas2/C_galgas_type_descriptor.h"
 #include "galgas2/C_Compiler.h"
 #include "galgas2/cObjectArray.h"
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//                     'GALGAS_function' class                               *
+//                     'GALGAS_function' class                                 *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -69,13 +69,13 @@ GALGAS_function::~ GALGAS_function (void) {
 //-----------------------------------------------------------------------------*
 
 void GALGAS_function::description (C_String & ioString,
-                                   const PMSInt32 /* inIndentation */) const {
+                                   const int32_t /* inIndentation */) const {
   ioString << "<@function:" ;
   if (NULL == mFunctionDescriptor) {
     ioString << "not built" ;
   }else{
     ioString << mFunctionDescriptor->mFunctionName << " [" ;
-    for (PMUInt32 i=0 ; i<mFunctionDescriptor->mParameterCount ; i++) {
+    for (uint32_t i=0 ; i<mFunctionDescriptor->mParameterCount ; i++) {
       if (i > 0) {
         ioString << " " ;
       }
@@ -138,7 +138,7 @@ GALGAS_function GALGAS_function::constructor_functionWithName (const GALGAS_stri
 
 GALGAS_typelist GALGAS_function::reader_formalParameterTypeList (LOCATION_ARGS) const {
   GALGAS_typelist result = GALGAS_typelist::constructor_emptyList (THERE) ;
-  for (PMUInt32 i=0 ; i<mFunctionDescriptor->mParameterCount ; i++) {
+  for (uint32_t i=0 ; i<mFunctionDescriptor->mParameterCount ; i++) {
     result.addAssign_operation (GALGAS_type (mFunctionDescriptor->mFormalParameterTypeList [i]) COMMA_HERE) ;
   }
   return result ;
@@ -176,7 +176,7 @@ GALGAS_object GALGAS_function::reader_invoke (const GALGAS_objectlist & inObject
     inCompiler->semanticErrorAtLocation (inErrorLocation, errorMessage COMMA_THERE) ;
   }
 //--- Check parameters
-  for (PMUInt32 i=0 ; (i<mFunctionDescriptor->mParameterCount) && ok ; i++) {
+  for (uint32_t i=0 ; (i<mFunctionDescriptor->mParameterCount) && ok ; i++) {
     const GALGAS_object parameter = argumentsArray.objectAtIndex (i COMMA_HERE) ;
     ok = parameter.isValid () ;
     if (ok) {

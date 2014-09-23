@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Implementation of routines for handling dynamic allocation checking.     *
+//  Implementation of routines for handling dynamic allocation checking.       *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -34,11 +34,11 @@
 
 //-----------------------------------------------------------------------------*
 
-macroDeclareMutex (gAllocationMutex) ;
+macroDeclareMutex (gAllocationMutex)
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//         Enum for describing a pointer                                     *
+//         Enum for describing a pointer                                       *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -54,10 +54,10 @@ macroDeclareMutex (gAllocationMutex) ;
 //-----------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
-  static PMUInt32 gAllocatedPODArrayCount = 0 ;
-  static PMUInt32 gReallocatedPODArrayCount = 0 ;
-  static PMUInt32 gPointerChangedOnPODArrayReallocationCount = 0 ;
-  static PMSInt32 gExistingPODArrayCount = 0 ;
+  static uint32_t gAllocatedPODArrayCount = 0 ;
+  static uint32_t gReallocatedPODArrayCount = 0 ;
+  static uint32_t gPointerChangedOnPODArrayReallocationCount = 0 ;
+  static int32_t gExistingPODArrayCount = 0 ;
 #endif
 
 //-----------------------------------------------------------------------------*
@@ -72,9 +72,9 @@ macroDeclareMutex (gAllocationMutex) ;
                                COMMA_LOCATION_ARGS) ;
   static void
   display_pointer (const void * adresse,
-                   const PMSInt32 numeroCreation, 
+                   const int32_t numeroCreation, 
                    const enumAllocation natureObjet, 
-                   const PMSInt32 numeroLigneSource, 
+                   const int32_t numeroLigneSource, 
                    const char * inSourceFileName) ;
 #endif
 
@@ -214,9 +214,9 @@ macroDeclareMutex (gAllocationMutex) ;
     public : cPointerDescriptor * mInfPtr ;
     public : cPointerDescriptor * mSupPtr ;
     public : const char * mSourceFileName ; // nom du fichier source dans lequel le pointeur a ete cree
-    public : PMSInt32 champNumeroCreation ; // numero d'ordre unique
+    public : int32_t champNumeroCreation ; // numero d'ordre unique
     public : int champNumeroLigneSource ; // ligne source
-    public : PMSInt16 mBalance ;    
+    public : int16_t mBalance ;    
     public : enumAllocation champNatureObjet ; // indique si le pointeur designe un tableau (new ... [...])
     public : void affichageRecursif (void) const ;
    } ; 
@@ -225,10 +225,10 @@ macroDeclareMutex (gAllocationMutex) ;
 //-----------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
-  static const PMSInt32 TAILLE_TABLE_RACINES = 262145 ;
+  static const int32_t TAILLE_TABLE_RACINES = 262145 ;
   static cPointerDescriptor * gPointerDescriptorTreeRoot [TAILLE_TABLE_RACINES] ;
-  static PMSInt32 gCreatedPointersCount = 0 ;
-  static PMSInt32 gPointersCurrentCount = 0 ;
+  static int32_t gCreatedPointersCount = 0 ;
+  static int32_t gPointersCurrentCount = 0 ;
   static bool gRootInited = false ;
 #endif 
 
@@ -273,9 +273,9 @@ macroDeclareMutex (gAllocationMutex) ;
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static enumResultatComparaison comparerPointeurs (const void * Pgauche,
                                                     const void * Pdroit) {
-    if ((PMSInt) Pgauche > (PMSInt) Pdroit) {
+    if ((intptr_t) Pgauche > (intptr_t) Pdroit) {
       return ClefGaucheSup ;
-    }else if ((PMSInt) Pgauche < (PMSInt) Pdroit) {
+    }else if ((intptr_t) Pgauche < (intptr_t) Pdroit) {
       return ClefDroiteSup ;
     }else{
       return ClefsEgales ;
@@ -297,10 +297,10 @@ macroDeclareMutex (gAllocationMutex) ;
     if (b->mBalance >= 0) {
       a->mBalance ++ ;
     }else{
-      a->mBalance = (PMSInt16) (a->mBalance + 1 - b->mBalance) ;
+      a->mBalance = (int16_t) (a->mBalance + 1 - b->mBalance) ;
     }
     if (a->mBalance > 0) {
-      b->mBalance = (PMSInt16) (b->mBalance + a->mBalance + 1) ;
+      b->mBalance = (int16_t) (b->mBalance + a->mBalance + 1) ;
     }else{
       b->mBalance ++ ;
     }
@@ -318,14 +318,14 @@ macroDeclareMutex (gAllocationMutex) ;
     b->mSupPtr = a;
    //--- recalculer l'equilibrage 
     if (b->mBalance > 0) {
-      a->mBalance = (PMSInt16) (a->mBalance - b->mBalance - 1) ;
+      a->mBalance = (int16_t) (a->mBalance - b->mBalance - 1) ;
     }else{
       a->mBalance -- ;
     }
     if (a->mBalance >= 0) {
       b->mBalance -- ;
     }else{
-      b->mBalance = (PMSInt16) (b->mBalance + a->mBalance - 1) ;
+      b->mBalance = (int16_t) (b->mBalance + a->mBalance - 1) ;
     }
     a = b ;
   }
@@ -548,9 +548,9 @@ macroDeclareMutex (gAllocationMutex) ;
 //-----------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
-  static PMUInt32 HashCode (const void * Ptr) {
-    const PMUInt v = (PMUInt) Ptr ;
-    return (PMUInt32) ((v % TAILLE_TABLE_RACINES) & PMUINT32_MAX) ;
+  static uint32_t HashCode (const void * Ptr) {
+    const uintptr_t v = (uintptr_t) Ptr ;
+    return (uint32_t) ((v % TAILLE_TABLE_RACINES) & UINT32_MAX) ;
   }
 #endif
 
@@ -563,7 +563,7 @@ macroDeclareMutex (gAllocationMutex) ;
     // printf ("*** registering pointer %p\n", p) ;
     if (NULL != inPointer) {
       if (! gRootInited) {
-        for (PMSInt32 i=0 ; i<TAILLE_TABLE_RACINES ; i ++) {
+        for (int32_t i=0 ; i<TAILLE_TABLE_RACINES ; i ++) {
           gPointerDescriptorTreeRoot [i] = NULL ;
         }
         gRootInited = true ;
@@ -639,29 +639,29 @@ macroDeclareMutex (gAllocationMutex) ;
     suppressionRecursiveDansArbreBinaireEquilibre (gPointerDescriptorTreeRoot [HashCode (inPointer)],
                                                    inPointer, pointerToDelete, h);
     if (pointerToDelete == NULL) {
-      runtime_error_routine ("(" __FILE__ ") Pointer (0x%X) is unknown", (PMSInt) inPointer, 0 COMMA_THERE) ;
+      runtime_error_routine ("(" __FILE__ ") Pointer (0x%X) is unknown", (intptr_t) inPointer, 0 COMMA_THERE) ;
     }
     if (NULL != pointerToDelete) {
-      const PMSInt32 numeroLigneSource = pointerToDelete->champNumeroLigneSource ;
+      const int32_t numeroLigneSource = pointerToDelete->champNumeroLigneSource ;
       const char * nomFichierSource = pointerToDelete->mSourceFileName ;
       // printf ("------- %p %d\n", pointerToDelete, pointerToDelete->champNatureObjet) ;
       switch (natureAllocation) {
       case kAllocatedByMacroMyNew :
         if (pointerToDelete->champNatureObjet != kAllocatedByMacroMyNew) {
           runtime_error_routine ("(" __FILE__ ") Appel de 'macroMyDelete' sur un pointeur declare dans '%s' ligne %d qui n'a pas ete alloue par 'macroMyNew'", 
-                                 (PMSInt) nomFichierSource, numeroLigneSource, IN_SOURCE_FILE, IN_SOURCE_LINE) ; 
+                                 (intptr_t) nomFichierSource, numeroLigneSource, IN_SOURCE_FILE, IN_SOURCE_LINE) ; 
         }
         break ;
       case kAllocatedByMacroMyNewArray :
         if (pointerToDelete->champNatureObjet != kAllocatedByMacroMyNewArray) {
           runtime_error_routine ("(" __FILE__ ") Appel de 'macroMyDeleteArray' sur un pointeur declare dans '%s' ligne %d qui n'a pas ete alloue par 'macroMyNewArray'", 
-                                 (PMSInt) nomFichierSource, numeroLigneSource, IN_SOURCE_FILE, IN_SOURCE_LINE) ;
+                                 (intptr_t) nomFichierSource, numeroLigneSource, IN_SOURCE_FILE, IN_SOURCE_LINE) ;
         }
         break ;
       case kAllocatedByMacroMyNewPODArray :
         if (pointerToDelete->champNatureObjet != kAllocatedByMacroMyNewPODArray) {
           runtime_error_routine ("(" __FILE__ ") Appel de 'macroMyDeletePODArray' sur un pointeur declare dans '%s' ligne %d qui n'a pas ete alloue par 'macroMyNewPODArray'", 
-                                 (PMSInt) nomFichierSource, numeroLigneSource, IN_SOURCE_FILE, IN_SOURCE_LINE) ;
+                                 (intptr_t) nomFichierSource, numeroLigneSource, IN_SOURCE_FILE, IN_SOURCE_LINE) ;
         }
         break ;
       default : // Alloue hors macro
@@ -682,7 +682,7 @@ macroDeclareMutex (gAllocationMutex) ;
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void routineVoidPointer (const void * inPointer COMMA_LOCATION_ARGS) {
     if (inPointer != NULL) {
-      runtime_error_routine ("pointer (%p) not NULL", (PMSInt) inPointer, 0 COMMA_THERE) ;
+      runtime_error_routine ("pointer (%p) not NULL", (intptr_t) inPointer, 0 COMMA_THERE) ;
     }
   }
 #endif
@@ -700,7 +700,7 @@ macroDeclareMutex (gAllocationMutex) ;
     }
     cPointerDescriptor * p = searchPointerDescriptor (inPointer) ;
     if (p == NULL) {
-      runtime_error_routine ("(detected by " __FILE__ ") unknown (%p) pointer", (PMSInt) inPointer, 0 COMMA_THERE) ;
+      runtime_error_routine ("(detected by " __FILE__ ") unknown (%p) pointer", (intptr_t) inPointer, 0 COMMA_THERE) ;
     }
   }
 #endif
@@ -747,9 +747,9 @@ macroDeclareMutex (gAllocationMutex) ;
 #ifndef DO_NOT_GENERATE_CHECKINGS 
   static void
   display_pointer (const void * adresse,
-                   const PMSInt32 numeroCreation, 
+                   const int32_t numeroCreation, 
                    const enumAllocation natureObjet, 
-                   const PMSInt32 numeroLigneSource, 
+                   const int32_t numeroLigneSource, 
                    const char * inSourceFileName) {
     printf ("%10p | %10u |", adresse, numeroCreation) ;
     switch (natureObjet) {
@@ -782,7 +782,7 @@ void displayAllocatedBlocksInfo (void) {
       printf ("*** Warning: %d block information datas (instead of 0):\n", gPointersCurrentCount) ;
       printf ("  address  |   number   |     kind | source line | source file\n") ;  
     }
-    for (PMSInt32 i=0 ; i<TAILLE_TABLE_RACINES ; i++) {
+    for (int32_t i=0 ; i<TAILLE_TABLE_RACINES ; i++) {
       if (gPointerDescriptorTreeRoot [i] != NULL) {
         gPointerDescriptorTreeRoot [i]->affichageRecursif () ;
       }

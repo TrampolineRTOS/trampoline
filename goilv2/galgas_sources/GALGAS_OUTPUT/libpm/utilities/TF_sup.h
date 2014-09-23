@@ -1,10 +1,10 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Definition of the general purpose sup template routine                   *
+//  Definition of the general purpose sup template routine                     *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
-//  Copyright (C) 1997 Pierre Molinaro.                                      *
+//  Copyright (C) 1997 Pierre Molinaro.                                        *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
 //  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
 //  ECN, École Centrale de Nantes (France)                                     *
@@ -24,13 +24,13 @@
 #ifndef TEMPLATE_SUP_ROUTINE_DEFINED
 #define TEMPLATE_SUP_ROUTINE_DEFINED
 
-//---------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class T>
 inline T TF_sup (const T inOperand1, const T inOperand2) {
   return (inOperand1 > inOperand2) ? inOperand1 : inOperand2 ;
 }
 
-//---------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #endif

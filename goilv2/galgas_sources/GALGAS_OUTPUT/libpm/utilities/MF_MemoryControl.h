@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Declaration of macros and routines for handling dynamic allocation       *
-//  checking.                                                                *
+//  Declaration of macros and routines for handling dynamic allocation         *
+//  checking.                                                                  *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -38,11 +38,11 @@
 
 //-----------------------------------------------------------------------------*
 
-macroDeclareExternMutex (gAllocationMutex) ;
+macroDeclareExternMutex (gAllocationMutex)
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//         User macros for allocation                                        *
+//         User macros for allocation                                          *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -188,7 +188,7 @@ macroDeclareExternMutex (gAllocationMutex) ;
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//         User macros for deallocation                                      *
+//         User macros for deallocation                                        *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -241,7 +241,7 @@ macroDeclareExternMutex (gAllocationMutex) ;
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//         Assertion macros for checking pointers                            *
+//         Assertion macros for checking pointers                              *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -261,7 +261,7 @@ macroDeclareExternMutex (gAllocationMutex) ;
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//         Assertion for checking if a pointer is void                       *
+//         Assertion for checking if a pointer is void                         *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -281,7 +281,7 @@ macroDeclareExternMutex (gAllocationMutex) ;
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//         Routine to call for displaying currently allocated pointers       *
+//         Routine to call for displaying currently allocated pointers         *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -289,7 +289,7 @@ void displayAllocatedBlocksInfo (void) ;
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//         Internal routines (do not call them directly)                     *
+//         Internal routines (do not call them directly)                       *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 

@@ -1,8 +1,8 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  unicode_string_routines: this file implements PMUInt32 * string routines,*
-//  that are in direct correspondance with char * C string routines of C     *
-//  library.                                                                 *
+//  unicode_string_routines: this file implements uint32_t * string routines,  *
+//  that are in direct correspondance with char * C string routines of C       *
+//  library.                                                                   *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -34,15 +34,15 @@
 
 //-----------------------------------------------------------------------------*
 
-PMSInt32 utf32_strcmp (const utf32 * inString1, const utf32 * inString2) ;
+int32_t utf32_strcmp (const utf32 * inString1, const utf32 * inString2) ;
 
-PMSInt32 utf32_char_strncmp (const utf32 * inString1, const char * inString2, const PMSInt32 inLength) ;
+int32_t utf32_char_strncmp (const utf32 * inString1, const char * inString2, const int32_t inLength) ;
 
-PMSInt32 utf32_strncmp (const utf32 * inString1, const utf32 * inString2, const PMSInt32 inLength) ;
+int32_t utf32_strncmp (const utf32 * inString1, const utf32 * inString2, const int32_t inLength) ;
 
-PMSInt32 utf32_strlen (const utf32 * inString) ;
+int32_t utf32_strlen (const utf32 * inString) ;
 
-PMSInt32 utf32_char_strcmp (const utf32 * inString1, const char * inString2) ;
+int32_t utf32_char_strcmp (const utf32 * inString1, const char * inString2) ;
 
 const utf32 * utf32_strstr (const utf32 * haystack, const utf32 * needle) ;
 

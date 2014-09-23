@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//     Get a prime integer                                                   *
+//     Get a prime integer                                                     *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -32,11 +32,11 @@
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//           Get a prime integer greater than argument                       *
+//           Get a prime integer greater than argument                         *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-PMUInt32 getPrimeGreaterThan (const PMUInt32 inValue) ;
+uint32_t getPrimeGreaterThan (const uint32_t inValue) ;
 
 //-----------------------------------------------------------------------------*
 

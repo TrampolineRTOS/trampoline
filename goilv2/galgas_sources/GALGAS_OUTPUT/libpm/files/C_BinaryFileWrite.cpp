@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  'C_TextFileWrite' : a class for stream writing text files                *
+//  'C_TextFileWrite' : a class for stream writing text files                  *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -39,7 +39,7 @@ AC_FileHandleForWriting (inFileName, "wb") {
 }
 
 //-----------------------------------------------------------------------------*
-//                                Close                                      *
+//                                Close                                        *
 //-----------------------------------------------------------------------------*
 
 bool C_BinaryFileWrite::close (void) {
@@ -60,8 +60,8 @@ void C_BinaryFileWrite::flush (void) {
 }
 
 //-----------------------------------------------------------------------------*
-//                             Destructor                                    *
-// Cannot call the virtual 'close' method in destructor                      *
+//                             Destructor                                      *
+// Cannot call the virtual 'close' method in destructor                        *
 //-----------------------------------------------------------------------------*
 
 C_BinaryFileWrite::~C_BinaryFileWrite (void) {

@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Handing unsigned integer of arbitrary size                               *
+//  Handing unsigned integer of arbitrary size                                 *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -35,7 +35,7 @@
 class PMUInt128 {
 //--- Constructors
   public : PMUInt128 (void) ;
-  public : PMUInt128 (const PMUInt64 inValue) ;
+  public : PMUInt128 (const uint64_t inValue) ;
 
 //--- Destructor
   public : virtual ~ PMUInt128 (void) ;
@@ -46,7 +46,7 @@ class PMUInt128 {
 //--- Comparison
   public : bool operator == (const PMUInt128 & inValue) const ;
   public : bool operator != (const PMUInt128 & inValue) const ;
-  public : bool operator > (const PMUInt32 inOperand) const ;
+  public : bool operator > (const uint32_t inOperand) const ;
 
 //--- Incrementation, decrmentation
   public : PMUInt128 & operator ++ (void) ;
@@ -57,16 +57,16 @@ class PMUInt128 {
   public : PMUInt128 operator + (const PMUInt128 & inValue) const ;
 
 //--- Multiplication
-  public : void operator *= (const PMUInt32 inMultiplicand) ;
+  public : void operator *= (const uint32_t inMultiplicand) ;
 
 //--- Division
-  public : void divideBy (const PMUInt32 inDivisor,
-                          PMUInt32 & outRemainder) ;
-  public : void operator /= (const PMUInt32 inMultiplicand) ;
+  public : void divideBy (const uint32_t inDivisor,
+                          uint32_t & outRemainder) ;
+  public : void operator /= (const uint32_t inMultiplicand) ;
 
 //--- Bit access
-  public : bool valueAtBitIndex (const PMUInt32 inIndex) const ;
-  public : void setValueAtBitIndex (const bool inValue, const PMUInt32 inIndex) ;
+  public : bool valueAtBitIndex (const uint32_t inIndex) const ;
+  public : void setValueAtBitIndex (const bool inValue, const uint32_t inIndex) ;
 
 //--- Example
   public : static void example (void) ;
@@ -74,8 +74,8 @@ class PMUInt128 {
 //--- Value as string
   public : C_String decimalString (void) const ;
 //--- Attributes
-  private : PMUInt64 mLow ;
-  private : PMUInt64 mHigh ;
+  private : uint64_t mLow ;
+  private : uint64_t mHigh ;
 } ;
 
 //-----------------------------------------------------------------------------*

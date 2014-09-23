@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  'C_Lexique' : an abstract lexique class ;                                *
-//  Galgas generated scanner classes inherit from this class.                *
+//  'C_Lexique' : an abstract lexique class ;                                  *
+//  Galgas generated scanner classes inherit from this class.                  *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -52,9 +52,9 @@
 
 cTemplateDelimiter::
 cTemplateDelimiter (const utf32 * inStartString,
-                    const PMSInt32 inStartStringLength,
+                    const int32_t inStartStringLength,
                     const utf32 * inEndString,
-                    const PMSInt32 inEndStringLength,
+                    const int32_t inEndStringLength,
                     void (* inReplacementFunction) (C_Lexique & inLexique, const C_String & inElementString, C_String & ioTemplateString),
                     const bool inDiscardStartString) :
 mStartString (inStartString),
@@ -109,7 +109,7 @@ mIndexForSecondPassParsing (0) {
   if (inSourceFileName.length () > 0) {
     MF_Assert (UNICODE_VALUE (inSourceFileName (0 COMMA_HERE)) == '/',
                "*** SOURCE FILE PATH '%s' IS NOT ABSOLUTE ***\n",
-               (PMSInt) inSourceFileName.cString (HERE),
+               (intptr_t) inSourceFileName.cString (HERE),
                0) ;
     // printf ("*** '%s'\n", inSourceFileName.cString (HERE)) ;
     /* if (mCallerCompiler != NULL) {
@@ -204,7 +204,7 @@ void C_Lexique::enterTokenFromPointer (cToken * inToken) {
   mLastToken = inToken ;
   if (executionModeIsLexicalAnalysisOnly ()) {
     C_String s ;
-    for (PMSInt32 i=inToken->mStartLocation.index () ; i<=inToken->mEndLocation.index () ; i++) {
+    for (int32_t i=inToken->mStartLocation.index () ; i<=inToken->mEndLocation.index () ; i++) {
       const utf32 c = ((sourceText () == NULL) ? TO_UNICODE ('\0') : sourceText ()->readCharOrNul (i COMMA_HERE)) ;
       if (UNICODE_VALUE (c) != '\0') {
         s.appendUnicodeCharacter (c COMMA_HERE) ;
@@ -233,8 +233,6 @@ void C_Lexique::resetForSecondPass (void) {
   mPreviousChar = TO_UNICODE ('\0') ;
   mCurrentTokenPtr = mFirstToken ;
   if (mCurrentTokenPtr != NULL) {
- //   mStartLocationForHere = mCurrentTokenPtr->mStartLocation ;
- //   mEndLocationForHere = mCurrentTokenPtr->mEndLocation ;
     mTemplateString << mCurrentTokenPtr->mTemplateStringBeforeToken ;
     mCurrentLocation = mCurrentTokenPtr->mEndLocation ;
   }
@@ -248,9 +246,9 @@ void C_Lexique::resetForSecondPass (void) {
 
 //-----------------------------------------------------------------------------*
 
-PMSInt32 C_Lexique::findTemplateDelimiterIndex (const cTemplateDelimiter inTemplateDelimiterArray [],
-                                                const PMSInt32 inTemplateDelimiterArrayLength) {
-  PMSInt32 templateIndex = 0 ;
+int32_t C_Lexique::findTemplateDelimiterIndex (const cTemplateDelimiter inTemplateDelimiterArray [],
+                                                const int32_t inTemplateDelimiterArrayLength) {
+  int32_t templateIndex = 0 ;
   bool found = false ;
   
   while ((templateIndex < inTemplateDelimiterArrayLength) && ! found) {
@@ -274,7 +272,7 @@ PMSInt32 C_Lexique::findTemplateDelimiterIndex (const cTemplateDelimiter inTempl
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   performLexicalAnalysis                                                  *
+//   performLexicalAnalysis                                                    *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -293,7 +291,7 @@ void C_Lexique::performLexicalAnalysis (void) {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//        Methods for scanning                                               *
+//        Methods for scanning                                                 *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -314,8 +312,8 @@ void C_Lexique::advance (void) {
 
 //-----------------------------------------------------------------------------*
 
-void C_Lexique::advance (const PMSInt32 inCount) {
-  for (PMSInt32 i=0 ; i<inCount ; i++) {
+void C_Lexique::advance (const int32_t inCount) {
+  for (int32_t i=0 ; i<inCount ; i++) {
     advance () ;
   }
 }
@@ -355,7 +353,7 @@ bool C_Lexique::testForCharWithFunction (bool (*inFunction) (const utf32 inUnico
 //-----------------------------------------------------------------------------*
 
 bool C_Lexique::testForInputUTF32String (const utf32 * inTestCstring,
-                                         const PMSInt32 inStringLength,
+                                         const int32_t inStringLength,
                                          const bool inAdvanceOnMatch) {
   bool ok = sourceText () != NULL ;
 //--- Test
@@ -375,7 +373,7 @@ bool C_Lexique::testForInputUTF32String (const utf32 * inTestCstring,
 //-----------------------------------------------------------------------------*
 
 bool C_Lexique::notTestForInputUTF32String (const utf32 * inTestCstring,
-                                            const PMSInt32 inStringLength,
+                                            const int32_t inStringLength,
                                             const utf32 * inEndOfFileErrorMessage
                                             COMMA_LOCATION_ARGS) {
   bool ok = UNICODE_VALUE (sourceText ()->readCharOrNul (mCurrentLocation.index () COMMA_HERE)) != '\0' ;
@@ -384,7 +382,7 @@ bool C_Lexique::notTestForInputUTF32String (const utf32 * inTestCstring,
   }else{
   //--- Test
     ok = false ;
-    for (PMSInt32 i=0 ; (i<inStringLength) && ! ok ; i++) {
+    for (int32_t i=0 ; (i<inStringLength) && ! ok ; i++) {
       ok = UNICODE_VALUE (sourceText ()->readCharOrNul (mCurrentLocation.index () + i COMMA_HERE)) != UNICODE_VALUE (* inTestCstring) ;
       inTestCstring ++ ;
     }
@@ -410,22 +408,22 @@ void C_Lexique::lexicalLog (LOCATION_ARGS) {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//                     Search in an ordered list                             *
-//          (used for searching into scanner generated tables)               *
+//                     Search in an ordered list                               *
+//          (used for searching into scanner generated tables)                 *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-PMSInt16 C_Lexique::searchInList (const C_String & inString,
+int16_t C_Lexique::searchInList (const C_String & inString,
                                   const C_unicode_lexique_table_entry inTable [],
-                                  const PMSInt16 inTableSize) {
-  const PMSInt32 searchedStringLength = inString.length () ;
-  PMSInt16 code = -1 ; // -1 means 'not found'
-  PMSInt32 bottom = 0 ;
-  PMSInt32 top = inTableSize - 1 ;
+                                  const int16_t inTableSize) {
+  const int32_t searchedStringLength = inString.length () ;
+  int16_t code = -1 ; // -1 means 'not found'
+  int32_t bottom = 0 ;
+  int32_t top = inTableSize - 1 ;
   
   while ((code < 0) && (top >= bottom)) {
-    const PMSInt32 index = (bottom + top) / 2 ;
-    PMSInt32 result = searchedStringLength - inTable [index].mEntryStringLength ;
+    const int32_t index = (bottom + top) / 2 ;
+    int32_t result = searchedStringLength - inTable [index].mEntryStringLength ;
     if (result == 0) {
       result = inString.compare (inTable [index].mEntryString) ;
     }
@@ -459,7 +457,7 @@ void C_Lexique::internalBottomUpParserError (LOCATION_ARGS) {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//           Lexical error                                                   *
+//           Lexical error                                                     *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -494,20 +492,19 @@ void C_Lexique::lexicalErrorAtLocation (const C_String & inLexicalErrorMessage,
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//                Signaler une erreur syntaxique                             *
+//                Signaler une erreur syntaxique                               *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-void C_Lexique::parsingError (const TC_UniqueArray <PMSInt16> & inExpectedTerminalsArray,
-                              const PMSInt16 inCurrentTokenCode
+void C_Lexique::parsingError (const TC_UniqueArray <int16_t> & inExpectedTerminalsArray,
+                              const int16_t inCurrentTokenCode
                               COMMA_LOCATION_ARGS) {
 //--- Build error message
-  C_String foundTokenMessage ;
-  appendTerminalMessageToSyntaxErrorMessage (inCurrentTokenCode, foundTokenMessage) ;
-  const PMSInt32 expectedTerminalsCount = inExpectedTerminalsArray.count () ;
+  C_String foundTokenMessage = getMessageForTerminal (inCurrentTokenCode) ;
+  const int32_t expectedTerminalsCount = inExpectedTerminalsArray.count () ;
   TC_UniqueArray <C_String> expectedTokenNames (expectedTerminalsCount, C_String () COMMA_HERE) ;
-  for (PMSInt32 i=0 ; i<expectedTerminalsCount ; i++) {
-    appendTerminalMessageToSyntaxErrorMessage (inExpectedTerminalsArray (i COMMA_HERE), expectedTokenNames (i COMMA_HERE)) ;
+  for (int32_t i=0 ; i<expectedTerminalsCount ; i++) {
+    expectedTokenNames (i COMMA_HERE) = getMessageForTerminal (inExpectedTerminalsArray (i COMMA_HERE)) ;
   }
 //--- Sort expected token name array
   expectedTokenNames.sortArrayUsingCompareMethod () ;
@@ -547,21 +544,20 @@ void C_Lexique::lexicalWarning (const C_String & inLexicalWarningMessage
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   Test if a terminal symbol can be accepted in current context            *
+//   Test if a terminal symbol can be accepted in current context              *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-bool C_Lexique::acceptTerminalForErrorSignaling (const PMSInt16 inTerminal,
-                                                 const PMSInt16 inProductions [],
-                                                 const PMSInt16 inProductionIndexes [],
-                                                 const PMSInt16 inFirstProductionIndex [],
-                                                 const PMSInt16 inDecisionTable [],
-                                                 const PMSInt16 inDecisionTableIndexes [],
-                                                 const TC_Array <PMSInt16> & inErrorStack,
-                                                 const PMSInt16 inErrorProgramCounter) {
+bool C_Lexique::acceptTerminalForErrorSignaling (const int16_t inTerminal,
+                                                 const int16_t inProductions [],
+                                                 const int16_t inProductionIndexes [],
+                                                 const int16_t inFirstProductionIndex [],
+                                                 const int16_t inDecisionTable [],
+                                                 const int16_t inDecisionTableIndexes [],
+                                                 const TC_Array <int16_t> & inErrorStack,
+                                                 const int16_t inErrorProgramCounter) {
   #ifdef TRACE_LL1_PARSING
-    C_String m ;
-    appendTerminalMessageToSyntaxErrorMessage (inTerminal, m) ;
+    C_String m = getMessageForTerminal (inTerminal) ;
     co << "------ Enter 'acceptTerminalForErrorSignaling' with '"
        << m
        << "' ("
@@ -571,18 +567,18 @@ bool C_Lexique::acceptTerminalForErrorSignaling (const PMSInt16 inTerminal,
     co.flush () ;
   #endif
   bool accept = false ;
-  PMSInt16 programCounter = inErrorProgramCounter ;
-  TC_Array <PMSInt16> stack = inErrorStack ;
+  int16_t programCounter = inErrorProgramCounter ;
+  TC_Array <int16_t> stack = inErrorStack ;
   bool loop = true ;
   while (loop) {
-    const PMSInt16 instruction = inProductions [programCounter] ;
+    const int16_t instruction = inProductions [programCounter] ;
     programCounter ++ ;
     if (instruction > 0) { // We reach a terminal
-      const PMSInt16 reachedTerminal = (PMSInt16) (instruction - 1) ;
+      const int16_t reachedTerminal = (int16_t) (instruction - 1) ;
       accept = reachedTerminal == inTerminal ;
       #ifdef TRACE_LL1_PARSING
         m.removeAllObjects () ;
-        appendTerminalMessageToSyntaxErrorMessage (reachedTerminal, m) ;
+        m = getMessageForTerminal (reachedTerminal) ;
         co << "reached '"
            << m
            << "' terminal"
@@ -592,14 +588,14 @@ bool C_Lexique::acceptTerminalForErrorSignaling (const PMSInt16 inTerminal,
       #endif
       loop = false ;
     }else if (instruction < 0) { // We reach a nonterminal
-      const PMSInt16 reachedNonterminal = (PMSInt16) (- instruction - 1) ;
+      const int16_t reachedNonterminal = (int16_t) (- instruction - 1) ;
       #ifdef TRACE_LL1_PARSING
         co << "reached non-terminal "
            << reachedNonterminal
            << "\n" ;
         co.flush () ;
       #endif
-      PMSInt16 nonTerminalEntry = inDecisionTableIndexes [reachedNonterminal] ;
+      int16_t nonTerminalEntry = inDecisionTableIndexes [reachedNonterminal] ;
       if (inDecisionTable [nonTerminalEntry] < 0) { // Only one rule : call it
         stack.addObject (programCounter) ;
         programCounter = inProductionIndexes [inFirstProductionIndex [reachedNonterminal]] ;
@@ -608,19 +604,19 @@ bool C_Lexique::acceptTerminalForErrorSignaling (const PMSInt16 inTerminal,
         #endif
       }else{ // More than one rule : test if terminal is accepted, and call rule
         loop = false ;
-        PMSInt16 choice = 0 ;
+        int16_t choice = 0 ;
         bool found = false ;
         while ((inDecisionTable [nonTerminalEntry] >= 0) && ! found) {
           while ((inDecisionTable [nonTerminalEntry] >= 0) && ! found) {
             found = inDecisionTable [nonTerminalEntry] == inTerminal ;
             #ifdef TRACE_LL1_PARSING
               m.removeAllObjects () ;
-              appendTerminalMessageToSyntaxErrorMessage (inDecisionTable [nonTerminalEntry], m) ;
+              m = getMessageForTerminal (inDecisionTable [nonTerminalEntry]) ;
               co << "try '" << m << "' non terminal" << (found ? " (accepted)": "") << "\n" ; co.flush () ;
             #endif
             if (found) {
-              PMSInt16 newProgramCounter = programCounter ;
-              TC_Array <PMSInt16> newStack = stack ;
+              int16_t newProgramCounter = programCounter ;
+              TC_Array <int16_t> newStack = stack ;
               newStack.addObject (newProgramCounter) ;
               newProgramCounter = inProductionIndexes [inFirstProductionIndex [reachedNonterminal] + choice] ;
               accept = acceptTerminalForErrorSignaling (inTerminal,
@@ -654,34 +650,34 @@ bool C_Lexique::acceptTerminalForErrorSignaling (const PMSInt16 inTerminal,
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   Build expected terminals array on syntax error with LL (1) parser       *
+//   Build expected terminals array on syntax error with LL (1) parser         *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-void C_Lexique::buildExpectedTerminalsArrayOnSyntaxError (const PMSInt16 inErrorProgramCounter,
-                                                          const PMSInt32 inErrorStackCount,
-                                                          const TC_Array <PMSInt16> & inStack,
-                                                          const TC_Array <PMSInt16> & inErrorStack,
-                                                          const PMSInt16 inProductions [],
-                                                          const PMSInt16 inProductionIndexes [],
-                                                          const PMSInt16 inFirstProductionIndex [],
-                                                          const PMSInt16 inDecisionTable [],
-                                                          const PMSInt16 inDecisionTableIndexes [],
-                                                          TC_UniqueArray <PMSInt16> & outExpectedTerminalsArray) {
+void C_Lexique::buildExpectedTerminalsArrayOnSyntaxError (const int16_t inErrorProgramCounter,
+                                                          const int32_t inErrorStackCount,
+                                                          const TC_Array <int16_t> & inStack,
+                                                          const TC_Array <int16_t> & inErrorStack,
+                                                          const int16_t inProductions [],
+                                                          const int16_t inProductionIndexes [],
+                                                          const int16_t inFirstProductionIndex [],
+                                                          const int16_t inDecisionTable [],
+                                                          const int16_t inDecisionTableIndexes [],
+                                                          TC_UniqueArray <int16_t> & outExpectedTerminalsArray) {
 //--- First, go to the next non terminal, terminal or end of productions rules
-  PMSInt16 programCounter = inErrorProgramCounter ;
-  const PMSInt32 countToCopy = inErrorStackCount - inErrorStack.count () ;
-  TC_Array <PMSInt16> errorStack (inErrorStackCount COMMA_HERE) ;
-  for (PMSInt32 i=0 ; i<countToCopy ; i++) {
+  int16_t programCounter = inErrorProgramCounter ;
+  const int32_t countToCopy = inErrorStackCount - inErrorStack.count () ;
+  TC_Array <int16_t> errorStack (inErrorStackCount COMMA_HERE) ;
+  for (int32_t i=0 ; i<countToCopy ; i++) {
     errorStack.addObject (inStack (i COMMA_HERE)) ;
   }
-  for (PMSInt32 i=inErrorStack.count () - 1 ; i>=0 ; i--) {
+  for (int32_t i=inErrorStack.count () - 1 ; i>=0 ; i--) {
     errorStack.addObject (inErrorStack (i COMMA_HERE)) ;
   }
   #ifdef TRACE_LL1_PARSING
     co << "------ Enter 'buildExpectedTerminalsArrayOnSyntaxError'\n"
        << "programCounter: " << programCounter << ", errorStack: " << errorStack.count() << " value(s):" ;
-    for (PMSInt32 i=0 ; i<errorStack.count() ; i++) {
+    for (int32_t i=0 ; i<errorStack.count() ; i++) {
       co << " " << errorStack (i COMMA_HERE) ;
     }
     co << "\n" ;
@@ -692,22 +688,21 @@ void C_Lexique::buildExpectedTerminalsArrayOnSyntaxError (const PMSInt16 inError
     if (inProductions [programCounter] > 0) { // We reach a terminal (when >0)
       loop = false ;
       #ifdef TRACE_LL1_PARSING
-        C_String m ;
-        appendTerminalMessageToSyntaxErrorMessage (inProductions [programCounter], m) ;
+        C_String m = getMessageForTerminal (inProductions [programCounter]) ;
         co << "Terminal '" << m << "' (" << inProductions [programCounter] << ") reached\n" ;
         co.flush () ;
       #endif
     }else if (inProductions [programCounter] < 0) { // We reach a non terminal (<0)
-      const PMSInt16 nonTerminal = (PMSInt16) (- inProductions [programCounter] - 1) ;
+      const int16_t nonTerminal = (int16_t) (- inProductions [programCounter] - 1) ;
       #ifdef TRACE_LL1_PARSING
         co << "Non-Terminal " << nonTerminal << " reached\n" ;
         co.flush () ;
       #endif
     //--- We look if we get a non terminal that has only one production rule
-      const PMSInt16 nonTerminalEntry = inDecisionTableIndexes [nonTerminal] ;
+      const int16_t nonTerminalEntry = inDecisionTableIndexes [nonTerminal] ;
       const bool onlyOneRule = inDecisionTable [nonTerminalEntry] < 0 ;
       if (onlyOneRule) { // Go to this rule
-        errorStack.addObject ((PMSInt16) (programCounter + 1)) ;
+        errorStack.addObject ((int16_t) (programCounter + 1)) ;
         programCounter = inProductionIndexes [inFirstProductionIndex [nonTerminal]] ;
         #ifdef TRACE_LL1_PARSING
           co << "Only one rule: goto " << programCounter << "\n" ;
@@ -739,17 +734,16 @@ void C_Lexique::buildExpectedTerminalsArrayOnSyntaxError (const PMSInt16 inError
       co.flush () ;
     #endif
   }else if (inProductions [programCounter] > 0) { // We reach a terminal symbol
-    const PMSInt16 terminalSymbol = (PMSInt16) (inProductions [programCounter] - 1) ;
+    const int16_t terminalSymbol = (int16_t) (inProductions [programCounter] - 1) ;
     outExpectedTerminalsArray.addObject (terminalSymbol) ;
     #ifdef TRACE_LL1_PARSING
-      C_String m ;
-      appendTerminalMessageToSyntaxErrorMessage (inProductions [programCounter], m) ;
+      C_String m = getMessageForTerminal (inProductions [programCounter]) ;
       co << "add '" << m << "' (" << inProductions [programCounter] << ") to outExpectedTerminalsArray\n" ;
       co.flush () ;
     #endif
   }else{  // We reach a non terminal symbol
-    const PMSInt16 nonTerminal = (PMSInt16) (- inProductions [programCounter] - 1) ;
-    PMSInt16 nonTerminalEntry = inDecisionTableIndexes [nonTerminal] ;
+    const int16_t nonTerminal = (int16_t) (- inProductions [programCounter] - 1) ;
+    int16_t nonTerminalEntry = inDecisionTableIndexes [nonTerminal] ;
     while (inDecisionTable [nonTerminalEntry] >= 0) {
       while (inDecisionTable [nonTerminalEntry] >= 0) {
         const bool ok = acceptTerminalForErrorSignaling (inDecisionTable [nonTerminalEntry],
@@ -762,8 +756,7 @@ void C_Lexique::buildExpectedTerminalsArrayOnSyntaxError (const PMSInt16 inError
                                                         programCounter) ;
         if (ok) {
           #ifdef TRACE_LL1_PARSING
-            C_String m ;
-            appendTerminalMessageToSyntaxErrorMessage (inDecisionTable [nonTerminalEntry], m) ;
+            C_String m = getMessageForTerminal (inDecisionTable [nonTerminalEntry]) ;
             co << "add '" << m << "' (" << inDecisionTable [nonTerminalEntry] << ") to outExpectedTerminalsArray\n" ;
             co.flush () ;
           #endif
@@ -781,12 +774,12 @@ void C_Lexique::buildExpectedTerminalsArrayOnSyntaxError (const PMSInt16 inError
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   Perform top down parsing (called by LL (1) parser)                      *
+//   Perform top down parsing (called by LL (1) parser)                        *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-static void indentForParseOnly (const PMSInt32 inIndentation) {
-  for (PMSInt32 i=1 ; i<inIndentation ; i++) {
+static void indentForParseOnly (const int32_t inIndentation) {
+  for (int32_t i=1 ; i<inIndentation ; i++) {
     co << "|  " ;
   }
   if (inIndentation > 0) {
@@ -796,13 +789,13 @@ static void indentForParseOnly (const PMSInt32 inIndentation) {
 
 //-----------------------------------------------------------------------------*
 
-bool C_Lexique::performTopDownParsing (const PMSInt16 inProductions [],
+bool C_Lexique::performTopDownParsing (const int16_t inProductions [],
                                        const cProductionNameDescriptor inProductionNames [],
-                                       const PMSInt16 inProductionIndexes [],
-                                       const PMSInt16 inFirstProductionIndex [],
-                                       const PMSInt16 inDecisionTable [],
-                                       const PMSInt16 inDecisionTableIndexes [],
-                                       const PMSInt16 inProgramCounterInitialValue) {
+                                       const int16_t inProductionIndexes [],
+                                       const int16_t inFirstProductionIndex [],
+                                       const int16_t inDecisionTable [],
+                                       const int16_t inDecisionTableIndexes [],
+                                       const int16_t inProgramCounterInitialValue) {
   bool result = false ;
 //--- Lexical analysis
   performLexicalAnalysis () ;
@@ -810,29 +803,29 @@ bool C_Lexique::performTopDownParsing (const PMSInt16 inProductions [],
   //--- Variables for generating syntax tree in a form suitable for graphviz
     const bool produceSyntaxTree = gOption_galgas_5F_builtin_5F_options_outputConcreteSyntaxTree.mValue ;
     C_String syntaxTreeDescriptionString ;
-    TC_Array <PMUInt32> productionUniqueNameStack ;
-    PMUInt32 uniqueProductionNameIndex = 0 ;
-    PMUInt32 uniqueTerminalIndex = 0 ;
-    PMUInt32 currentProductionName = 0 ;
+    TC_Array <uint32_t> productionUniqueNameStack ;
+    uint32_t uniqueProductionNameIndex = 0 ;
+    uint32_t uniqueTerminalIndex = 0 ;
+    uint32_t currentProductionName = 0 ;
     if (produceSyntaxTree) {
       syntaxTreeDescriptionString << "digraph G {\n"
                                      "  size =\"4,4\";\n" ;
     }
   //---
-    PMSInt32 indentationForParseOnly = 0 ;
+    int32_t indentationForParseOnly = 0 ;
     cToken * currentTokenPtr = mFirstToken ;
     if (executionModeIsSyntaxAnalysisOnly ()) {
       co << "*** PERFORM TOP-DOWN PARSING ONLY (--mode=syntax-only option) ***\n" ;
     }
-    TC_LinkedList <PMSInt16> listForSecondPassParsing ;
-    TC_Array <PMSInt16> stack (10000 COMMA_HERE) ;
-    TC_Array <PMSInt16> errorStack ;
-    PMSInt32 errorStackCount = 0 ;
+    TC_LinkedList <int16_t> listForSecondPassParsing ;
+    TC_Array <int16_t> stack (10000 COMMA_HERE) ;
+    TC_Array <int16_t> errorStack ;
+    int32_t errorStackCount = 0 ;
     bool loop = currentTokenPtr != NULL ;
     result = true ;
-    PMSInt16 programCounter = inProgramCounterInitialValue ;
-    PMSInt16 errorProgramCounter = inProgramCounterInitialValue ;
-    PMSInt16 currentToken = (currentTokenPtr != NULL) ? currentTokenPtr->mTokenCode : ((PMSInt16) -1) ;
+    int16_t programCounter = inProgramCounterInitialValue ;
+    int16_t errorProgramCounter = inProgramCounterInitialValue ;
+    int16_t currentToken = (currentTokenPtr != NULL) ? currentTokenPtr->mTokenCode : ((int16_t) -1) ;
     if (currentTokenPtr == NULL) {
       mCurrentLocation.resetLocation () ;
    }else{
@@ -845,7 +838,7 @@ bool C_Lexique::performTopDownParsing (const PMSInt16 inProductions [],
           currentToken = 0 ; // 0 means end of source file
         }else{
           currentTokenPtr = currentTokenPtr->mNextToken ;
-          currentToken = (currentTokenPtr != NULL) ? currentTokenPtr->mTokenCode : ((PMSInt16) 0) ;
+          currentToken = (currentTokenPtr != NULL) ? currentTokenPtr->mTokenCode : ((int16_t) 0) ;
           if (currentTokenPtr != NULL) {
             mCurrentLocation = currentTokenPtr->mEndLocation ;
           }
@@ -857,17 +850,17 @@ bool C_Lexique::performTopDownParsing (const PMSInt16 inProductions [],
         co.flush () ;
       #endif
     //--- Get instruction to do
-      const PMSInt16 instruction = inProductions [programCounter] ;
+      const int16_t instruction = inProductions [programCounter] ;
       programCounter ++ ;
     //--- Instruction is non terminal call ?
       if (instruction < 0) {
       //--- Get entry of nonterminal symbol to parse
-        const PMSInt16 nonTerminalToParse = (PMSInt16) (- instruction - 1) ;
+        const int16_t nonTerminalToParse = (int16_t) (- instruction - 1) ;
         #ifdef TRACE_LL1_PARSING
           co << "Parse non terminal " << cStringWithSigned (nonTerminalToParse) << ": " ;
           co.flush () ;
         #endif
-        PMSInt16 nonTerminalEntry = inDecisionTableIndexes [nonTerminalToParse] ;
+        int16_t nonTerminalEntry = inDecisionTableIndexes [nonTerminalToParse] ;
         if (inDecisionTable [nonTerminalEntry] < 0) { // Means only one production : don't make any choice
           #ifdef TRACE_LL1_PARSING
             co << " ok (only one production)\n" ;
@@ -900,14 +893,13 @@ bool C_Lexique::performTopDownParsing (const PMSInt16 inProductions [],
           #ifdef TRACE_LL1_PARSING
             co << " try tokens\n" ; co.flush () ;
           #endif
-          PMSInt16 choice = -1 ;
+          int16_t choice = -1 ;
           bool found = false ;
           while ((inDecisionTable [nonTerminalEntry] >= 0) && ! found) {
             while ((inDecisionTable [nonTerminalEntry] >= 0) && ! found) {
               found = currentToken == inDecisionTable [nonTerminalEntry] ;
               #ifdef TRACE_LL1_PARSING
-                C_String m ;
-                appendTerminalMessageToSyntaxErrorMessage (inDecisionTable [nonTerminalEntry], m) ;
+                C_String m = getMessageForTerminal (inDecisionTable [nonTerminalEntry]) ;
                 co << " try " << m << " (" << inDecisionTable [nonTerminalEntry]
                    << ")" << (found ? " (accepted)" : "") << "\n" ;
                 co.flush () ;
@@ -943,9 +935,9 @@ bool C_Lexique::performTopDownParsing (const PMSInt16 inProductions [],
                  << "\n" ;
               indentationForParseOnly ++ ;
             }
-            listForSecondPassParsing.insertAtBottom ((PMSInt16) (choice + 1)) ;
+            listForSecondPassParsing.insertAtBottom ((int16_t) (choice + 1)) ;
           }else{ // Syntax error
-            TC_UniqueArray <PMSInt16> expectedTerminalsArray (100 COMMA_HERE) ;
+            TC_UniqueArray <int16_t> expectedTerminalsArray (100 COMMA_HERE) ;
             buildExpectedTerminalsArrayOnSyntaxError (errorProgramCounter,
                                                       errorStackCount,
                                                       stack,
@@ -966,7 +958,7 @@ bool C_Lexique::performTopDownParsing (const PMSInt16 inProductions [],
         }
     //--- It is a terminal symbol
       }else if (instruction > 0) {
-        const PMSInt16 terminalSymbol = (PMSInt16) (instruction - 1) ;
+        const int16_t terminalSymbol = (int16_t) (instruction - 1) ;
         if (currentToken == terminalSymbol) {
           if (executionModeIsSyntaxAnalysisOnly ()) {
             indentForParseOnly (indentationForParseOnly) ;
@@ -991,7 +983,7 @@ bool C_Lexique::performTopDownParsing (const PMSInt16 inProductions [],
           #ifdef TRACE_LL1_PARSING
             co << "ERROR: TOKEN NOT EXPECTED\n" ; co.flush () ;
           #endif
-          TC_UniqueArray <PMSInt16> expectedTerminalsArray (100 COMMA_HERE) ;
+          TC_UniqueArray <int16_t> expectedTerminalsArray (100 COMMA_HERE) ;
           buildExpectedTerminalsArrayOnSyntaxError (errorProgramCounter,
                                                     errorStackCount,
                                                     stack,
@@ -1028,7 +1020,7 @@ bool C_Lexique::performTopDownParsing (const PMSInt16 inProductions [],
         loop = false ;
       }else{ // We reach the end of text, but current terminal is not "end of text"
       //--- This is a syntax error
-        TC_UniqueArray <PMSInt16> expectedTerminalsArray (100 COMMA_HERE) ;
+        TC_UniqueArray <int16_t> expectedTerminalsArray (100 COMMA_HERE) ;
         buildExpectedTerminalsArrayOnSyntaxError (errorProgramCounter,
                                                   errorStackCount,
                                                   stack,
@@ -1074,35 +1066,35 @@ bool C_Lexique::performTopDownParsing (const PMSInt16 inProductions [],
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   Test if a given terminal symbol can be accepted for signaling an error  *
-//          (for bottom-up parsing)                                          *
+//   Test if a given terminal symbol can be accepted for signaling an error    *
+//          (for bottom-up parsing)                                            *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-static bool acceptExpectedTerminalForBottomUpParsingError (const PMSInt16 inExpectedTerminal,
-                                                           const PMSInt16 inExpectedAction,
-                                                           const TC_Array <PMSInt16> & inSLRstack,
-                                                           const PMSInt16 inActionTable [],
-                                                           const PMUInt32 inActionTableIndex [],
-                                                           const PMSInt16 * inSuccessorTable [],
-                                                           const PMSInt16 inProductionsTable []) {
+static bool acceptExpectedTerminalForBottomUpParsingError (const int16_t inExpectedTerminal,
+                                                           const int16_t inExpectedAction,
+                                                           const TC_Array <int16_t> & inSLRstack,
+                                                           const int16_t inActionTable [],
+                                                           const uint32_t inActionTableIndex [],
+                                                           const int16_t * inSuccessorTable [],
+                                                           const int16_t inProductionsTable []) {
   bool accept = inExpectedAction > 1 ; // accept if it is a shift action
   if (! accept) {
-    PMSInt16 actionCode = inExpectedAction ;
-    TC_Array <PMSInt16> stack (inSLRstack) ; // Duplicate stack
+    int16_t actionCode = inExpectedAction ;
+    TC_Array <int16_t> stack (inSLRstack) ; // Duplicate stack
     bool loop = true ;
     while (loop) {
     //--- Perform reduce action
-      const PMSInt16 reduceAction = (PMSInt16) (- actionCode - 1) ;
+      const int16_t reduceAction = (int16_t) (- actionCode - 1) ;
       MF_Assert (reduceAction >= 0, "reduceAction (%lld) < 0", reduceAction, 0) ;
-      const PMSInt16 nonTerminal = inProductionsTable [2 * reduceAction] ;
-      const PMSInt32 reduceSize = inProductionsTable [2 * reduceAction + 1] ;
+      const int16_t nonTerminal = inProductionsTable [2 * reduceAction] ;
+      const int32_t reduceSize = inProductionsTable [2 * reduceAction + 1] ;
       stack.removeLastObjects (2 * reduceSize  COMMA_HERE) ;
    //--- Get Successor state
-      const PMSInt32 tempCurrentState = stack.lastObject (HERE) ;
+      const int32_t tempCurrentState = stack.lastObject (HERE) ;
       MF_Assert (tempCurrentState >= 0, "tempCurrentState (%lld) < 0", tempCurrentState, 0) ;
-      const PMSInt16 * successorTable = inSuccessorTable [tempCurrentState] ;
-      PMSInt16 newCurrentState = -1 ; 
+      const int16_t * successorTable = inSuccessorTable [tempCurrentState] ;
+      int16_t newCurrentState = -1 ; 
       while (((* successorTable) >= 0) && (newCurrentState < 0)) {
         if ((* successorTable) == nonTerminal) {
           successorTable ++ ;
@@ -1115,9 +1107,9 @@ static bool acceptExpectedTerminalForBottomUpParsingError (const PMSInt16 inExpe
       stack.addObject (-1) ; // Enter any value
       stack.addObject (newCurrentState) ; // Enter next current state
     //--- In the state, find action corresponding to expected terminal
-      const PMSInt32 currentState = stack (stack.count () - 1 COMMA_HERE) ;
+      const int32_t currentState = stack (stack.count () - 1 COMMA_HERE) ;
       MF_Assert (currentState >= 0, "currentState (%lld) < 0", currentState, 0) ;
-      const PMSInt16 * actionTable = & (inActionTable [inActionTableIndex [currentState]]) ;
+      const int16_t * actionTable = & (inActionTable [inActionTableIndex [currentState]]) ;
       actionCode = 0 ; 
       while (((* actionTable) >= 0) && (actionCode == 0)) {
         if ((* actionTable) == inExpectedTerminal) {
@@ -1139,7 +1131,7 @@ static bool acceptExpectedTerminalForBottomUpParsingError (const PMSInt16 inExpe
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   Perform bottom up parsing (called by SLR and LR (1) parsers)            *
+//   Perform bottom up parsing (called by SLR and LR (1) parsers)              *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -1147,11 +1139,11 @@ static bool acceptExpectedTerminalForBottomUpParsingError (const PMSInt16 inExpe
 
 //-----------------------------------------------------------------------------*
 
-bool C_Lexique::performBottomUpParsing (const PMSInt16 inActionTable [],
+bool C_Lexique::performBottomUpParsing (const int16_t inActionTable [],
                                         const char * inNonTerminalSymbolNames [],
-                                        const PMUInt32 inActionTableIndex [],
-                                        const PMSInt16 * inSuccessorTable [],
-                                        const PMSInt16 inProductionsTable []) {
+                                        const uint32_t inActionTableIndex [],
+                                        const int16_t * inSuccessorTable [],
+                                        const int16_t inProductionsTable []) {
   bool result = false ;
   performLexicalAnalysis () ;
   if (! executionModeIsLexicalAnalysisOnly ()) {
@@ -1164,28 +1156,28 @@ bool C_Lexique::performBottomUpParsing (const PMSInt16 inActionTable [],
     C_String syntaxTreeDescriptionString ;
     TC_Array <C_String> shiftedElementStack ;
     shiftedElementStack.addObject ("TOP") ;
-    PMUInt32 uniqueTerminalIndex = 0 ;
-    PMUInt32 currentProductionName = 0 ;
+    uint32_t uniqueTerminalIndex = 0 ;
+    uint32_t currentProductionName = 0 ;
     if (produceSyntaxTree) {
       syntaxTreeDescriptionString << "digraph G {\n"
                                      "  size =\"4,4\";\n" ;
     }
   //--- Perform first pass
-    TC_UniqueArray <TC_LinkedList <PMSInt16> > executionList (100 COMMA_HERE) ;
+    TC_UniqueArray <TC_LinkedList <int16_t> > executionList (100 COMMA_HERE) ;
     executionList.addDefaultObjectUsingSwap () ;
 
-    TC_Array <PMSInt16> stack (10000 COMMA_HERE) ;
+    TC_Array <int16_t> stack (10000 COMMA_HERE) ;
     stack.addObject (0) ; // Enter initial state
-    PMSInt32 errorSignalingUselessEntryOnTopOfStack = 0 ;
-    TC_Array <PMSInt16> poppedErrors (1000 COMMA_HERE)  ;
+    int32_t errorSignalingUselessEntryOnTopOfStack = 0 ;
+    TC_Array <int16_t> poppedErrors (1000 COMMA_HERE)  ;
     
     #ifdef CHECK_NEW_BOTTOM_UP_PARSING_ERROR_HANDLING
-      TC_Array <PMSInt16> oldErrorStack (10000 COMMA_HERE) ; // used for signaling a syntax error
+      TC_Array <int16_t> oldErrorStack (10000 COMMA_HERE) ; // used for signaling a syntax error
       oldErrorStack.addObject (0) ; // Enter initial state
     #endif
 
     cToken * currentTokenPtr = mFirstToken ;
-    PMSInt16 currentToken = (currentTokenPtr != NULL) ? currentTokenPtr->mTokenCode : ((PMSInt16) -1) ;
+    int16_t currentToken = (currentTokenPtr != NULL) ? currentTokenPtr->mTokenCode : ((int16_t) -1) ;
     if (currentTokenPtr == NULL) {
       mCurrentLocation.resetLocation () ;
     }else{
@@ -1199,17 +1191,17 @@ bool C_Lexique::performBottomUpParsing (const PMSInt16 inActionTable [],
           currentToken = 0 ; // 0 means end of source file
         }else{
           currentTokenPtr = currentTokenPtr->mNextToken ;
-          currentToken = (currentTokenPtr != NULL) ? currentTokenPtr->mTokenCode : ((PMSInt16) 0) ;
+          currentToken = (currentTokenPtr != NULL) ? currentTokenPtr->mTokenCode : ((int16_t) 0) ;
           if (currentTokenPtr != NULL) {
             mCurrentLocation = currentTokenPtr->mEndLocation ;
           }
         }
       }
     //--- Get Action code -----------------------------------
-      const PMSInt32 currentState = stack.lastObject (HERE) ;
+      const int32_t currentState = stack.lastObject (HERE) ;
       MF_Assert (currentState >= 0, "currentState (%lld) < 0", currentState, 0) ;
-      const PMSInt16 * actionTable = & (inActionTable [inActionTableIndex [currentState]]) ;
-      PMSInt16 actionCode = 0 ; 
+      const int16_t * actionTable = & (inActionTable [inActionTableIndex [currentState]]) ;
+      int16_t actionCode = 0 ; 
       while (((* actionTable) >= 0) && (actionCode == 0)) {
         if ((* actionTable) == currentToken) {
           actionTable ++ ;
@@ -1221,7 +1213,7 @@ bool C_Lexique::performBottomUpParsing (const PMSInt16 inActionTable [],
     //--- Decision from action code value
       if (actionCode > 1) {
       //--- Shift action ------------------------------------
-        actionCode = (PMSInt16) (actionCode - 2) ;
+        actionCode = (int16_t) (actionCode - 2) ;
         stack.addObject (-1) ; // Enter any value
         stack.addObject (actionCode) ; // Enter next current state
         #ifdef CHECK_NEW_BOTTOM_UP_PARSING_ERROR_HANDLING
@@ -1251,19 +1243,19 @@ bool C_Lexique::performBottomUpParsing (const PMSInt16 inActionTable [],
         // co <<  "EXTENSION executionList: " << executionList.count () << "\n" ;
       }else if (actionCode < 0) {
       //--- Reduce action ------------------------------------
-        actionCode = (PMSInt16) (- actionCode - 1) ;
+        actionCode = (int16_t) (- actionCode - 1) ;
         MF_Assert (actionCode >= 0, "actionCode (%lld) < 0", actionCode, 0) ;
-        const PMSInt16 nonTerminal = inProductionsTable [2 * actionCode] ;
-        const PMSInt32 reduceSize = inProductionsTable [2 * actionCode + 1] ;
-        const PMSInt32 executionListLength = executionList.count () ;
-        for (PMSInt32 i=executionListLength - reduceSize ; i<executionListLength ; i++) {
+        const int16_t nonTerminal = inProductionsTable [2 * actionCode] ;
+        const int32_t reduceSize = inProductionsTable [2 * actionCode + 1] ;
+        const int32_t executionListLength = executionList.count () ;
+        for (int32_t i=executionListLength - reduceSize ; i<executionListLength ; i++) {
           executionList (executionListLength -  reduceSize - 1 COMMA_HERE).mergeListAtBottom (executionList (i COMMA_HERE)) ;
         }
         executionList (executionListLength - reduceSize - 1 COMMA_HERE).insertAtTop (actionCode) ;
         executionList.removeLastObjects (reduceSize COMMA_HERE) ; 
         executionList.addDefaultObjectUsingSwap () ;
-        const PMSInt32 stackReduceSize = 2 * reduceSize ;
-        for (PMSInt32 i=0 ; i<stackReduceSize ; i++) {
+        const int32_t stackReduceSize = 2 * reduceSize ;
+        for (int32_t i=0 ; i<stackReduceSize ; i++) {
           if (errorSignalingUselessEntryOnTopOfStack > 0) {
             errorSignalingUselessEntryOnTopOfStack -- ;
           }else{
@@ -1272,17 +1264,17 @@ bool C_Lexique::performBottomUpParsing (const PMSInt16 inActionTable [],
           stack.removeLastObject (HERE) ;
         }
         if (produceSyntaxTree) {
-          for (PMSInt32 i=0 ; i<reduceSize ; i++) {
+          for (int32_t i=0 ; i<reduceSize ; i++) {
             syntaxTreeDescriptionString << "  NT" << cStringWithUnsigned (currentProductionName)
                                         << " -> " << shiftedElementStack.lastObject (HERE) << ";\n" ;
             shiftedElementStack.removeLastObject (HERE) ;
           }
         }
      //--- Get Successor state
-        const PMSInt32 tempCurrentState = stack.lastObject (HERE) ;
+        const int32_t tempCurrentState = stack.lastObject (HERE) ;
         MF_Assert (tempCurrentState >= 0, "tempCurrentState (%lld) < 0", tempCurrentState, 0) ;
-        const PMSInt16 * successorTable = inSuccessorTable [tempCurrentState] ;
-        PMSInt16 newCurrentState = -1 ; 
+        const int16_t * successorTable = inSuccessorTable [tempCurrentState] ;
+        int16_t newCurrentState = -1 ; 
         while (((* successorTable) >= 0) && (newCurrentState < 0)) {
           if ((* successorTable) == nonTerminal) {
             successorTable ++ ;
@@ -1323,25 +1315,25 @@ bool C_Lexique::performBottomUpParsing (const PMSInt16 inActionTable [],
         result = false ;
         loop = false ;
       //--- Build error stack
-        TC_Array <PMSInt16> actualErrorStack (stack.count () + poppedErrors.count () COMMA_HERE) ;
+        TC_Array <int16_t> actualErrorStack (stack.count () + poppedErrors.count () COMMA_HERE) ;
         // printf ("errorSignalingUselessEntryOnTopOfStack, %d stack.count () %d\n", errorSignalingUselessEntryOnTopOfStack, stack.count ()) ;
-        for (PMSInt32 i=0 ; i<(stack.count () - errorSignalingUselessEntryOnTopOfStack) ; i++) {
+        for (int32_t i=0 ; i<(stack.count () - errorSignalingUselessEntryOnTopOfStack) ; i++) {
           actualErrorStack.addObject (stack (i COMMA_HERE)) ;
         }
         // printf ("poppedErrors.count () %d\n", poppedErrors.count ()) ;
-        for (PMSInt32 i=poppedErrors.count () - 1 ; i>=0 ; i--) {
+        for (int32_t i=poppedErrors.count () - 1 ; i>=0 ; i--) {
           actualErrorStack.addObject (poppedErrors (i COMMA_HERE)) ;
         }
         #ifdef CHECK_NEW_BOTTOM_UP_PARSING_ERROR_HANDLING
           if (actualErrorStack != oldErrorStack) {
             printf ("****** INTERNAL ERROR: WARN PIERRE MOLINARO ************\n") ;
             printf ("oldErrorStack (old way) %d:", oldErrorStack.count ()) ;
-            for (PMSInt32 i=0 ; i<oldErrorStack.count () ; i++) {
+            for (int32_t i=0 ; i<oldErrorStack.count () ; i++) {
               printf (" %d", oldErrorStack (i COMMA_HERE)) ;
             }
             printf ("\n") ;
             printf ("actualErrorStack (new way) %d:", actualErrorStack.count ()) ;
-            for (PMSInt32 i=0 ; i<actualErrorStack.count () ; i++) {
+            for (int32_t i=0 ; i<actualErrorStack.count () ; i++) {
               printf (" %d", actualErrorStack (i COMMA_HERE)) ;
             }
             printf ("\n") ;
@@ -1351,13 +1343,13 @@ bool C_Lexique::performBottomUpParsing (const PMSInt16 inActionTable [],
           }
         #endif
       //---
-        TC_UniqueArray <PMSInt16> expectedTerminalsArray (100 COMMA_HERE) ;
-        const PMSInt32 currentErrorState = actualErrorStack.lastObject (HERE) ;
+        TC_UniqueArray <int16_t> expectedTerminalsArray (100 COMMA_HERE) ;
+        const int32_t currentErrorState = actualErrorStack.lastObject (HERE) ;
         actionTable = & (inActionTable [inActionTableIndex [currentErrorState]]) ;
         while ((* actionTable) >= 0) {
-          const PMSInt16 expectedTerminal = * actionTable ;
+          const int16_t expectedTerminal = * actionTable ;
           actionTable ++ ;
-          const PMSInt16 expectedAction = * actionTable ;
+          const int16_t expectedAction = * actionTable ;
           actionTable ++ ;
           const bool terminalAccepted = acceptExpectedTerminalForBottomUpParsingError
                                              (expectedTerminal,
@@ -1402,12 +1394,12 @@ bool C_Lexique::performBottomUpParsing (const PMSInt16 inActionTable [],
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//                         Get next production index                         *
+//                         Get next production index                           *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-PMSInt16 C_Lexique::nextProductionIndex (void) {
-  PMSInt16 result = 0 ;
+int16_t C_Lexique::nextProductionIndex (void) {
+  int16_t result = 0 ;
   if (mIndexForSecondPassParsing < mArrayForSecondPassParsing.count ()) {
     result = mArrayForSecondPassParsing (mIndexForSecondPassParsing COMMA_HERE) ;
     mIndexForSecondPassParsing ++ ;
@@ -1417,13 +1409,13 @@ PMSInt16 C_Lexique::nextProductionIndex (void) {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//   Accept current token by shifting it                                     *
+//   Accept current token by shifting it                                       *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
 void C_Lexique::acceptTerminal (FORMAL_ARG_ACCEPT_TERMINAL COMMA_LOCATION_ARGS) {
   #ifndef DO_NOT_GENERATE_CHECKINGS
-    PMSInt16 currentTokenCode = 0 ;
+    int16_t currentTokenCode = 0 ;
   #endif
   if (mCurrentTokenPtr != NULL) {
     #ifndef DO_NOT_GENERATE_CHECKINGS
@@ -1440,26 +1432,24 @@ void C_Lexique::acceptTerminal (FORMAL_ARG_ACCEPT_TERMINAL COMMA_LOCATION_ARGS) 
   }
   #ifndef DO_NOT_GENERATE_CHECKINGS
     if (currentTokenCode != inExpectedTerminal) {
-      C_String currentTokenString ;
-      appendTerminalMessageToSyntaxErrorMessage (currentTokenCode, currentTokenString) ;
-      C_String expectedTokenString ;
-      appendTerminalMessageToSyntaxErrorMessage (inExpectedTerminal, expectedTokenString) ;
+      const C_String currentTokenString = getMessageForTerminal (currentTokenCode) ;
+      const C_String expectedTokenString = getMessageForTerminal (inExpectedTerminal) ;
       MF_AssertThere (false,
                       "Internal second pass parsing error (current token:%s, expected token:%s)",
-                      (PMSInt) currentTokenString.cString (HERE),
-                      (PMSInt) expectedTokenString.cString (HERE)) ;
+                      (intptr_t) currentTokenString.cString (HERE),
+                      (intptr_t) expectedTokenString.cString (HERE)) ;
     }
   #endif
 }
 
 //-----------------------------------------------------------------------------*
 
-void C_Lexique::enterIndexing (const PMUInt32 inIndexingKind) {
+void C_Lexique::enterIndexing (const uint32_t inIndexingKind) {
   if ((NULL != mIndexingDictionary) && (sourceText ()->sourceFilePath ().length () > 0)) {
-    const PMUInt32 tokenStartLocation = (PMUInt32) mCurrentTokenPtr->mStartLocation.index () ;
-    const PMUInt32 tokenLine = (PMUInt32) mCurrentTokenPtr->mStartLocation.lineNumber () ;
-    const PMUInt32 tokenLength  = ((PMUInt32) mCurrentTokenPtr->mEndLocation.index ()) - tokenStartLocation + 1 ;
-    C_String indexedKey = sourceText ()->mSourceString.subString ((PMSInt32) tokenStartLocation, (PMSInt32) tokenLength) ;
+    const uint32_t tokenStartLocation = (uint32_t) mCurrentTokenPtr->mStartLocation.index () ;
+    const uint32_t tokenLine = (uint32_t) mCurrentTokenPtr->mStartLocation.lineNumber () ;
+    const uint32_t tokenLength  = ((uint32_t) mCurrentTokenPtr->mEndLocation.index ()) - tokenStartLocation + 1 ;
+    C_String indexedKey = sourceText ()->mSourceString.subString ((int32_t) tokenStartLocation, (int32_t) tokenLength) ;
     mIndexingDictionary->addIndexedKey (inIndexingKind,
                                         indexedKey,
                                         sourceText ()->sourceFilePath (),
@@ -1494,7 +1484,7 @@ void C_Lexique::generateIndexFile (void) {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//Handling parsing context (for parse ... rewind ... end parse ; instruction)*
+//Handling parsing context (for parse ... rewind ... end parse ; instruction)  *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -1528,7 +1518,7 @@ void C_Lexique::setParsingContext (const C_parsingContext & inContext) {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  For Debugging parser                                                     *
+//  For Debugging parser                                                       *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -1543,7 +1533,7 @@ void C_Lexique::enterProduction (const char * inProductionName,
   }
   if (mDebugIsRunning) {
     C_String message ;
-    for (PMUInt16 i=1 ; i<mDebugDepthCounter ; i++) {
+    for (uint16_t i=1 ; i<mDebugDepthCounter ; i++) {
       message << "|  " ;
     }
     message << ((mDebugDepthCounter > 0) ? "|- " : "") << inProductionName ;
@@ -1574,7 +1564,7 @@ void C_Lexique::didParseTerminal (const char * inTerminalName,
                                   const C_String & inValue) {
   if (mDebugIsRunning) {
     C_String message ;
-    for (PMUInt16 i=1 ; i<mDebugDepthCounter ; i++) {
+    for (uint16_t i=1 ; i<mDebugDepthCounter ; i++) {
       message << "|  " ;
     }
     message << ((mDebugDepthCounter > 0) ? "|- " : "") << inTerminalName ;

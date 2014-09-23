@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  AC_GALGAS_list : Base class for GALGAS list                              *
+//  AC_GALGAS_list : Base class for GALGAS list                                *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -23,7 +23,7 @@
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
-#include "predefined-types.h"
+#include "galgas2/predefined-types.h"
 #include "utilities/MF_MemoryControl.h"
 #include "utilities/M_Threads.h"
 #include "galgas2/C_Compiler.h"
@@ -35,14 +35,14 @@ class cSharedList : public C_SharedObject {
   private : capCollectionElementArray mObjectArray ;
 
 //--- Count
-  public : inline PMUInt32 count (void) const { return mObjectArray.count () ; }
+  public : inline uint32_t count (void) const { return mObjectArray.count () ; }
 
 //--- Constructor
   public : cSharedList (LOCATION_ARGS) ;
 
 //--- Internal methods
   protected : void description (C_String & ioString,
-                                const PMSInt32 inIndentation) const ;
+                                const int32_t inIndentation) const ;
 
   protected : void copyFrom (const cSharedList * inSource) ;
 
@@ -72,17 +72,17 @@ class cSharedList : public C_SharedObject {
   protected : void appendList (const cSharedList * inListToAppend) ;
 
 //--- Object handling
-  private : void setCapacity (const PMUInt32 inNewCapacity) ;
+  private : void setCapacity (const uint32_t inNewCapacity) ;
 
   protected : void addObject (const capCollectionElement & inObjectArray) ;
 
   protected : void addObjectAtIndex (const capCollectionElement & inElementToAdd,
-                                     const PMSInt32 inInsertionIndex,
+                                     const int32_t inInsertionIndex,
                                      C_Compiler * inCompiler
                                      COMMA_LOCATION_ARGS) ;
 
   protected : void removeObjectAtIndex (capCollectionElement & outObjectAttributeArray,
-                                        const PMUInt32 inRemoveIndex,
+                                        const uint32_t inRemoveIndex,
                                         C_Compiler * inCompiler
                                         COMMA_LOCATION_ARGS) ;
 
@@ -122,7 +122,7 @@ mObjectArray () {
 
 //-----------------------------------------------------------------------------*
 
-void cSharedList::setCapacity (const PMUInt32 inNewCapacity) {
+void cSharedList::setCapacity (const uint32_t inNewCapacity) {
   mObjectArray.setCapacity (inNewCapacity) ;
 }
 
@@ -137,12 +137,12 @@ void cSharedList::addObject (const capCollectionElement & inObject) {
 //-----------------------------------------------------------------------------*
 
 void cSharedList::addObjectAtIndex (const capCollectionElement & inObject,
-                                    const PMSInt32 inInsertionIndex,
+                                    const int32_t inInsertionIndex,
                                     C_Compiler * inCompiler
                                     COMMA_LOCATION_ARGS) {
   macroUniqueSharedObject (this) ;
   mObjectArray.setCapacity (mObjectArray.count () + 1) ;
-  mObjectArray.addObjectAtIndex (inObject, (PMUInt32) inInsertionIndex, inCompiler COMMA_THERE) ;
+  mObjectArray.addObjectAtIndex (inObject, (uint32_t) inInsertionIndex, inCompiler COMMA_THERE) ;
 }
 
 
@@ -150,9 +150,9 @@ void cSharedList::addObjectAtIndex (const capCollectionElement & inObject,
 
 void cSharedList::copyFrom (const cSharedList * inSource) {
   macroUniqueSharedObject (this) ;
-  const PMUInt32 n = inSource->mObjectArray.count () ;
+  const uint32_t n = inSource->mObjectArray.count () ;
   mObjectArray.setCapacity (n) ;
-  for (PMUInt32 i=0 ; i<n ; i++) {
+  for (uint32_t i=0 ; i<n ; i++) {
     mObjectArray.addObject (inSource->mObjectArray.objectAtIndex (i COMMA_HERE)) ;
   }
 }
@@ -164,7 +164,7 @@ capCollectionElement cSharedList::readObjectAtIndex (const GALGAS_uint & inIndex
                                                      COMMA_LOCATION_ARGS) const {
   capCollectionElement result ;
   if (inIndex.isValid ()) {
-    const PMUInt32 idx = inIndex.uintValue () ;
+    const uint32_t idx = inIndex.uintValue () ;
     if (idx >= mObjectArray.count ()) {
       C_String s ;
       s << "Access with index " ;
@@ -187,7 +187,7 @@ cCollectionElement * cSharedList::objectPointerAtIndex (const GALGAS_uint & inIn
   macroUniqueSharedObject (this) ;
   cCollectionElement * result = NULL ;
   if (inIndex.isValid ()) {
-    const PMUInt32 idx = inIndex.uintValue () ;
+    const uint32_t idx = inIndex.uintValue () ;
     if (idx >= mObjectArray.count ()) {
       C_String s ;
       s << "Access with index " ;
@@ -211,7 +211,7 @@ cCollectionElement * cSharedList::objectPointerAtIndex (const GALGAS_uint & inIn
 //-----------------------------------------------------------------------------*
 
 void cSharedList::removeObjectAtIndex (capCollectionElement & outObjectAttributeArray,
-                                       const PMUInt32 inRemoveIndex,
+                                       const uint32_t inRemoveIndex,
                                        C_Compiler * inCompiler
                                        COMMA_LOCATION_ARGS) {
   macroUniqueSharedObject (this) ;
@@ -228,7 +228,7 @@ void cSharedList::removeObjectAtIndex (capCollectionElement & outObjectAttribute
 //-----------------------------------------------------------------------------*
 
 void AC_GALGAS_list::removeObjectAtIndex (capCollectionElement & outAttributes,
-                                          const PMUInt32 inRemoveIndex,
+                                          const uint32_t inRemoveIndex,
                                           C_Compiler * inCompiler
                                           COMMA_LOCATION_ARGS) {
   if (NULL != mSharedList) {
@@ -331,8 +331,8 @@ void cSharedList::subListWithRange (cSharedList * & ioSharedList,
                                     COMMA_LOCATION_ARGS) const {
   bool ok = true ;
   if (inRange.isValid ()) {
-    const PMUInt32 idx = inRange.mAttribute_start.uintValue () ;
-    const PMUInt32 length = inRange.mAttribute_length.uintValue () ;
+    const uint32_t idx = inRange.mAttribute_start.uintValue () ;
+    const uint32_t length = inRange.mAttribute_length.uintValue () ;
     if ((idx + length) > mObjectArray.count ()) {
       C_String s ;
       s << "Cannot get a sub list of range ["
@@ -345,7 +345,7 @@ void cSharedList::subListWithRange (cSharedList * & ioSharedList,
       ok = false ;
     }else{
       ioSharedList->mObjectArray.setCapacity (length) ;
-      for (PMUInt32 i=0 ; i<length ; i++) {
+      for (uint32_t i=0 ; i<length ; i++) {
         ioSharedList->mObjectArray.addObject (mObjectArray.objectAtIndex (idx + i COMMA_HERE)) ;
       }
     }
@@ -363,7 +363,7 @@ void cSharedList::subListFromIndex (cSharedList * & ioSharedList,
                                     COMMA_LOCATION_ARGS) const {
   bool ok = true ;
   if (inIndex.isValid ()) {
-    const PMUInt32 idx = inIndex.uintValue () ;
+    const uint32_t idx = inIndex.uintValue () ;
     if (idx > mObjectArray.count ()) {
       C_String s ;
       s << "Cannot get a sub list from index "
@@ -373,9 +373,9 @@ void cSharedList::subListFromIndex (cSharedList * & ioSharedList,
       inCompiler->onTheFlyRunTimeError (s COMMA_THERE) ;
       ok = false ;
     }else{
-      const PMUInt32 length = mObjectArray.count () - idx ;
+      const uint32_t length = mObjectArray.count () - idx ;
       ioSharedList->mObjectArray.setCapacity (length) ;
-      for (PMUInt32 i=0 ; i<length ; i++) {
+      for (uint32_t i=0 ; i<length ; i++) {
         ioSharedList->mObjectArray.addObject (mObjectArray.objectAtIndex (idx + i COMMA_HERE)) ;
       }
     }
@@ -399,7 +399,7 @@ void cSharedList::appendList (const cSharedList * inListToAppend) {
   macroUniqueSharedObject (this) ;
   if (NULL != inListToAppend) {
     setCapacity (mObjectArray.count () + inListToAppend->count ()) ;
-    for (PMUInt32 i=0 ; i<inListToAppend->count () ; i++) {
+    for (uint32_t i=0 ; i<inListToAppend->count () ; i++) {
       mObjectArray.addObject (inListToAppend->mObjectArray.objectAtIndex (i COMMA_HERE)) ;
     }
   }
@@ -412,12 +412,12 @@ void cSharedList::populateEnumerationArray (capCollectionElementArray & inEnumer
   inEnumerationArray.setCapacity (mObjectArray.count ()) ;
   switch (enumerationOrderValue (inEnumerationOrder)) {
   case kENUMERATION_UP  :
-    for (PMUInt32 i=0 ; i<mObjectArray.count () ; i++) {
+    for (uint32_t i=0 ; i<mObjectArray.count () ; i++) {
       inEnumerationArray.addObject (mObjectArray.objectAtIndex (i COMMA_HERE)) ;
     }
     break ;
   case kENUMERATION_DOWN :
-    for (PMUInt32 i=mObjectArray.count () ; i>0 ; i--) {
+    for (uint32_t i=mObjectArray.count () ; i>0 ; i--) {
       inEnumerationArray.addObject (mObjectArray.objectAtIndex (i - 1 COMMA_HERE)) ;
     }
     break ;
@@ -450,7 +450,7 @@ void AC_GALGAS_list::detachSharedList (cSharedList * & ioSharedList) {
 }
 
 //-----------------------------------------------------------------------------*
-//    AC_GALGAS_list                                                         *
+//    AC_GALGAS_list                                                           *
 //-----------------------------------------------------------------------------*
 
 AC_GALGAS_list::AC_GALGAS_list (void) :
@@ -496,12 +496,12 @@ void AC_GALGAS_list::createNewEmptyList (LOCATION_ARGS) {
 //-----------------------------------------------------------------------------*
 
 void cSharedList::description (C_String & ioString,
-                               const PMSInt32 inIndentation) const {
+                               const int32_t inIndentation) const {
   ioString << " ("
            << cStringWithUnsigned (mObjectArray.count ())
            << " object" << ((mObjectArray.count () > 1) ? "s" : "")
            << "): " ;
-  for (PMUInt32 i=0 ; i<mObjectArray.count () ; i++) {
+  for (uint32_t i=0 ; i<mObjectArray.count () ; i++) {
     ioString << "\n" ;
     ioString.writeStringMultiple ("| ", inIndentation) ;
     ioString << "|-at " << cStringWithUnsigned (i) ;
@@ -512,7 +512,7 @@ void cSharedList::description (C_String & ioString,
 //-----------------------------------------------------------------------------*
 
 void AC_GALGAS_list::description (C_String & ioString,
-                                  const PMSInt32 inIndentation) const {
+                                  const int32_t inIndentation) const {
   ioString << "<list @"
            << staticTypeDescriptor ()->mGalgasTypeName ;
   if (isValid ()) {
@@ -534,8 +534,8 @@ void AC_GALGAS_list::populateEnumerationArray (capCollectionElementArray & inEnu
 
 //-----------------------------------------------------------------------------*
 
-PMUInt32 AC_GALGAS_list::count () const {
-  PMUInt32 result = 0 ;
+uint32_t AC_GALGAS_list::count () const {
+  uint32_t result = 0 ;
   if (isValid ()) {
     result = mSharedList->count () ;
   }
@@ -594,12 +594,12 @@ void AC_GALGAS_list::addObject (const capCollectionElement & inElementToAdd) {
 //-----------------------------------------------------------------------------*
 
 void AC_GALGAS_list::addObjectAtIndex (const capCollectionElement & inElementToAdd,
-                                       const PMUInt32 inInsertionIndex,
+                                       const uint32_t inInsertionIndex,
                                        C_Compiler * inCompiler
                                        COMMA_LOCATION_ARGS) {
   insulateList (HERE) ;
   if (NULL != mSharedList) {
-    mSharedList->addObjectAtIndex (inElementToAdd, (PMSInt32) inInsertionIndex, inCompiler COMMA_THERE) ;
+    mSharedList->addObjectAtIndex (inElementToAdd, (int32_t) inInsertionIndex, inCompiler COMMA_THERE) ;
   }
 }
 
@@ -702,7 +702,7 @@ typeComparisonResult cSharedList::listCompare (const cSharedList * inOperand) co
   }else{
     capCollectionElementArray array ; populateEnumerationArray (array, kEnumeration_up) ;
     capCollectionElementArray operandArray ; inOperand->populateEnumerationArray (operandArray, kEnumeration_up) ;
-    for (PMUInt32 i=0 ; (i<array.count ()) && (kOperandEqual == r) ; i++) {
+    for (uint32_t i=0 ; (i<array.count ()) && (kOperandEqual == r) ; i++) {
       const capCollectionElement leftObject = array.objectAtIndex (i COMMA_HERE) ;
       const capCollectionElement rightObject = operandArray.objectAtIndex (i COMMA_HERE) ;
       r = leftObject.compare (rightObject) ;
@@ -723,14 +723,14 @@ typeComparisonResult AC_GALGAS_list::objectCompare (const AC_GALGAS_list & inOpe
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  c L i s t M a p N o d e                                                  *
+//  c L i s t M a p N o d e                                                    *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
 class cListMapNode {
   public : cListMapNode * mInfPtr ;
   public : cListMapNode * mSupPtr ;
-  public : PMSInt32 mBalance ;
+  public : int32_t mBalance ;
   public : C_String mKey ;
   public : cSharedList * mSharedList ;
 
@@ -767,7 +767,7 @@ cListMapNode::~ cListMapNode (void) {
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  c L i s t M a p N o d e                                                  *
+//  c L i s t M a p N o d e                                                    *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
@@ -775,7 +775,7 @@ class cSharedListMapRoot : public C_SharedObject {
 //--- Attributes
   private : cListMapNode * mRoot ;
   public : const cListMapNode * root (void) const { return mRoot ; }
-  private : PMUInt32 mCount ;
+  private : uint32_t mCount ;
 
 //--- Default constructor
   public : cSharedListMapRoot (LOCATION_ARGS) ;
@@ -791,16 +791,16 @@ class cSharedListMapRoot : public C_SharedObject {
   public : VIRTUAL_IN_DEBUG void copyFrom (const cSharedListMapRoot * inSource) ;
 
 //--- Count
-  public : VIRTUAL_IN_DEBUG PMUInt32 count (void) const { return mCount ; }
+  public : VIRTUAL_IN_DEBUG uint32_t count (void) const { return mCount ; }
 
 //--- Description
   public : VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                              const PMSInt32 inIndentation) const ;
+                                              const int32_t inIndentation) const ;
 
   public : static void internalDescription (cListMapNode * inNode,
                                             C_String & ioString,
-                                            const PMSInt32 inIndentation,
-                                            PMUInt32 & ioIdx) ;
+                                            const int32_t inIndentation,
+                                            uint32_t & ioIdx) ;
 //--- Find or add entry
   public : VIRTUAL_IN_DEBUG void findOrAddEntry (cListMapNode * & ioRootPtr,
                                                  const C_String & inKey,
@@ -876,8 +876,8 @@ AC_GALGAS_listmap & AC_GALGAS_listmap::operator = (const AC_GALGAS_listmap & inS
 
 //-----------------------------------------------------------------------------*
 
-PMUInt32 AC_GALGAS_listmap::count (void) const {
-  PMUInt32 result = 0 ;
+uint32_t AC_GALGAS_listmap::count (void) const {
+  uint32_t result = 0 ;
   if (NULL != mSharedListMap) {
     result = mSharedListMap->count () ;
   }
@@ -955,7 +955,7 @@ typeComparisonResult cSharedListMapRoot::listmapCompare (const cSharedListMapRoo
   }else{
     capCollectionElementArray array ; populateEnumerationArray (array, kEnumeration_up) ;
     capCollectionElementArray operandArray ; inOperand->populateEnumerationArray (operandArray, kEnumeration_up) ;
-    for (PMUInt32 i=0 ; (i<array.count ()) && (kOperandEqual == result) ; i++) {
+    for (uint32_t i=0 ; (i<array.count ()) && (kOperandEqual == result) ; i++) {
       result = array.objectAtIndex (i COMMA_HERE).compare (operandArray.objectAtIndex (i COMMA_HERE)) ;
     }
   }
@@ -982,8 +982,8 @@ typeComparisonResult AC_GALGAS_listmap::objectCompare (const AC_GALGAS_listmap &
 
 void cSharedListMapRoot::internalDescription (cListMapNode * inNode,
                                               C_String & ioString,
-                                              const PMSInt32 inIndentation,
-                                              PMUInt32 & ioIdx) {
+                                              const int32_t inIndentation,
+                                              uint32_t & ioIdx) {
   if (NULL != inNode) {
     internalDescription (inNode->mInfPtr, ioString, inIndentation, ioIdx) ;
     ioString << "\n" ;
@@ -999,12 +999,12 @@ void cSharedListMapRoot::internalDescription (cListMapNode * inNode,
 //-----------------------------------------------------------------------------*
 
 void cSharedListMapRoot::description (C_String & ioString,
-                                      const PMSInt32 inIndentation) const {
+                                      const int32_t inIndentation) const {
   ioString << " ("
            << cStringWithUnsigned (count ())
            << " object" << ((count () > 1) ? "s" : "")
            << "): " ;
-  PMUInt32 idx = 0 ;
+  uint32_t idx = 0 ;
   internalDescription (mRoot, ioString, inIndentation, idx) ;
   ioString << ">" ;
 }
@@ -1012,7 +1012,7 @@ void cSharedListMapRoot::description (C_String & ioString,
 //-----------------------------------------------------------------------------*
 
 void AC_GALGAS_listmap::description (C_String & ioString,
-                                     const PMSInt32 inIndentation) const {
+                                     const int32_t inIndentation) const {
   ioString << "<@" << staticTypeDescriptor ()->mGalgasTypeName << ": " ;
   if (isValid ()) {
     mSharedListMap->description (ioString, inIndentation) ;
@@ -1054,7 +1054,7 @@ void cSharedListMapRoot::copyFrom (const cSharedListMapRoot * inSource) {
   #ifndef DO_NOT_GENERATE_CHECKINGS
     // inSource->checkMap (HERE) ;
   #endif
-  macroValidSharedObject (inSource, const cSharedListMapRoot) ;
+  macroValidSharedObject (inSource, cSharedListMapRoot) ;
   mCount = inSource->mCount ;
   if (NULL != inSource->mRoot) {
     macroMyNew (mRoot, cListMapNode (inSource->mRoot)) ;
@@ -1148,7 +1148,7 @@ void cSharedListMapRoot::findOrAddEntry (cListMapNode * & ioRootPtr,
     ioExtension = true ;
   }else{
     macroValidPointer (ioRootPtr) ;
-    const PMSInt32 comparaison = ioRootPtr->mKey.compare (inKey) ;
+    const int32_t comparaison = ioRootPtr->mKey.compare (inKey) ;
     if (comparaison > 0) {
       findOrAddEntry (ioRootPtr->mInfPtr, inKey, outEntry, ioExtension) ;
       if (ioExtension) {
@@ -1230,7 +1230,7 @@ cSharedList * cSharedListMapRoot::listForKey (const C_String & inKey) const {
   cSharedList * result = NULL ;
   const cListMapNode * p = mRoot ;
   while ((p != NULL) && (NULL == result)) {
-    const PMSInt32 comparaison = p->mKey.compare (inKey) ;
+    const int32_t comparaison = p->mKey.compare (inKey) ;
     if (comparaison > 0) {
       p = p->mInfPtr ;
     }else if (comparaison < 0) {
@@ -1296,7 +1296,7 @@ cCollectionElement * cListMapElement::copy (void) {
 //-----------------------------------------------------------------------------*
 
 void cListMapElement::description (C_String & /* ioString */,
-                                   const PMSInt32 /* inIndentation */) const {
+                                   const int32_t /* inIndentation */) const {
 }
 
 //-----------------------------------------------------------------------------*

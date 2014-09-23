@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  Implementation of routines for handling dynamic allocation checking.     *
+//  Implementation of routines for handling dynamic allocation checking.       *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -61,18 +61,18 @@
 //-----------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
-  static PMSInt32 gAllocProloguePendings = 0 ;
+  static int32_t gAllocProloguePendings = 0 ;
 #endif
 
 //-----------------------------------------------------------------------------*
 
 #ifdef REGISTER_ALLOCATION_STATS
-  static PMUInt32 gBlockAllocatedWithoutUsingMacroMyNew = 0 ;
-  static PMUInt32 gBlockAllocatedWithoutUsingMacroMyNewArray = 0 ;
-  static PMSInt32 gCurrentObjectCount = 0 ;
-  static PMUInt32 gAllocatedObjectCount = 0 ;
-  static PMSInt32 gCurrentArrayCount = 0 ;
-  static PMUInt32 gAllocatedArrayCount = 0 ;
+  static uint32_t gBlockAllocatedWithoutUsingMacroMyNew = 0 ;
+  static uint32_t gBlockAllocatedWithoutUsingMacroMyNewArray = 0 ;
+  static int32_t gCurrentObjectCount = 0 ;
+  static uint32_t gAllocatedObjectCount = 0 ;
+  static int32_t gCurrentArrayCount = 0 ;
+  static uint32_t gAllocatedArrayCount = 0 ;
 #endif
 
 //-----------------------------------------------------------------------------*

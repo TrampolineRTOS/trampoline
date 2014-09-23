@@ -5,9 +5,12 @@
 //  Created by Pierre Molinaro on 06/07/09.
 //  Copyright 2009 ECN / IRCCyN. All rights reserved.
 //
+//-----------------------------------------------------------------------------*
 
 #import "enterDefaultCommandLineOptions.h"
 #import "OC_GGS_CommandLineOption.h"
+
+//-----------------------------------------------------------------------------*
 
 void enterDefaultCommandLineOptions (NSMutableArray * ioBoolOptionArray,
                                      NSMutableArray * ioUIntOptionArray,
@@ -120,5 +123,7 @@ void enterDefaultCommandLineOptions (NSMutableArray * ioBoolOptionArray,
     defaultValue:@""
   ] ;
   [ioUIntOptionArray addObject:option] ;
-  
 }
+
+//-----------------------------------------------------------------------------*
+

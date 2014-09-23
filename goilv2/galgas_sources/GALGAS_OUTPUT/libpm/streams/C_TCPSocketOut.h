@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  'C_TCPSocketOut' : a class for sending data as TCP socket client         *
+//  'C_TCPSocketOut' : a class for sending data as TCP socket client           *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -40,15 +40,15 @@ class C_TCPSocketOut : public AC_OutputStream {
   public : virtual ~ C_TCPSocketOut (void) ;
 
 //--- Connect (call it once)
-  public : bool connect (const PMUInt16 inServerPort,
+  public : bool connect (const uint16_t inServerPort,
                          const C_String & inHostName) ;
 
 //--- General stream methods
   protected : virtual void performActualCharArrayOutput (const char * inCharArray,
-                                                         const PMSInt32 inArrayCount) ;
+                                                         const int32_t inArrayCount) ;
 
   protected : virtual void performActualUnicodeArrayOutput (const utf32 * inCharArray,
-                                                            const PMSInt32 inArrayCount) ;
+                                                            const int32_t inArrayCount) ;
 
 //---
   private : int mSocket ;

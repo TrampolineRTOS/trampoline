@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  scanner_actions:                                                         *
-//  hand-coded routines for building attribute values during scanning.       *
+//  scanner_actions:                                                           *
+//  hand-coded routines for building attribute values during scanning.         *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -32,20 +32,20 @@
 
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  S C A N N E R    A C T I O N S                                           *
+//  S C A N N E R    A C T I O N S                                             *
 //                                                                             *
 //-----------------------------------------------------------------------------*
 
 //--- Predefined scanner actions: see http://galgas.rts-software.org/doku.php?id=lex#predefined_lexical_actions
 
 void scanner_routine_multiplyUInt (C_Lexique & inLexique,
-                                  const PMUInt32 inFactor,
-                                  PMUInt32 & ioValue,
+                                  const uint32_t inFactor,
+                                  uint32_t & ioValue,
                                   const utf32 * inResultTooLargeError) ;
 
 void scanner_routine_multiplyUInt64 (C_Lexique & inLexique,
-                                    const PMUInt64 inFactor,
-                                    PMUInt64 & ioValue,
+                                    const uint64_t inFactor,
+                                    uint64_t & ioValue,
                                     const utf32 * inResultTooLargeError) ;
 
 void scanner_routine_enterCharacterIntoCharacter (C_Lexique & inLexique,
@@ -77,81 +77,81 @@ void scanner_routine_enterDigitIntoASCIIcharacter (C_Lexique & inLexique,
 
 void scanner_routine_convertDecimalStringIntoUInt (C_Lexique & inLexique,
                                                   const C_String & inDecimalString,
-                                                  PMUInt32 & outValue,
+                                                  uint32_t & outValue,
                                                   const utf32 * inNumberTooLargeError,
                                                   const utf32 * inCharacterIsNotDecimalDigitError) ;
 
 void scanner_routine_convertDecimalStringIntoSInt (C_Lexique & inLexique,
                                                   const C_String & inDecimalString,
-                                                  PMSInt32 & outValue,
+                                                  int32_t & outValue,
                                                   const utf32 * inNumberTooLargeError,
                                                   const utf32 * inCharacterIsNotDecimalDigitError) ;
 
 void scanner_routine_convertDecimalStringIntoUInt64 (C_Lexique & inLexique,
                                                     const C_String & inDecimalString,
-                                                    PMUInt64 & outValue,
+                                                    uint64_t & outValue,
                                                     const utf32 * inNumberTooLargeError,
                                                     const utf32 * inCharacterIsNotDecimalDigitError) ;
 
 void scanner_routine_convertDecimalStringIntoSInt64 (C_Lexique & inLexique,
                                                     const C_String & inDecimalString,
-                                                    PMSInt64 & outValue,
+                                                    int64_t & outValue,
                                                     const utf32 * inNumberTooLargeError,
                                                     const utf32 * inCharacterIsNotDecimalDigitError) ;
 
 void scanner_routine_enterDigitIntoUInt (C_Lexique & inLexique,
                                         const utf32 inCharacter,
-                                        PMUInt32 & ioValue,
+                                        uint32_t & ioValue,
                                         const utf32 * inNumberTooLargeError,
                                         const utf32 * inCharacterIsNotDecimalDigitError) ;
 
 void scanner_routine_enterDigitIntoUInt64 (C_Lexique & inLexique,
                                           const utf32 inCharacter,
-                                          PMUInt64 & ioValue,
+                                          uint64_t & ioValue,
                                           const utf32 * inNumberTooLargeError,
                                           const utf32 * inCharacterIsNotDecimalDigitError) ;
 
 void scanner_routine_enterHexDigitIntoUInt (C_Lexique & inLexique,
                                            const utf32 inCharacter,
-                                           PMUInt32 & ioValue,
+                                           uint32_t & ioValue,
                                            const utf32 * inNumberTooLargeError,
                                            const utf32 * inCharacterIsNotHexDigitError) ;
                              
 void scanner_routine_enterHexDigitIntoUInt64 (C_Lexique & inLexique,
                                              const utf32 inCharacter,
-                                             PMUInt64 & ioValue,
+                                             uint64_t & ioValue,
                                              const utf32 * inNumberTooLargeError,
                                              const utf32 * inCharacterIsNotHexDigitError) ;
                                
 void scanner_routine_convertUIntToSInt (C_Lexique & inLexique,
-                                        const PMUInt32 inValue,
-                                        PMSInt32 & outValue,
+                                        const uint32_t inValue,
+                                        int32_t & outValue,
                                         const utf32 * inNumberTooLargeError) ;
 
 void scanner_routine_convertUInt64ToSInt64 (C_Lexique & inLexique,
-                                           const PMUInt64 inValue,
-                                           PMSInt64 & outValue,
+                                           const uint64_t inValue,
+                                           int64_t & outValue,
                                            const utf32 * inNumberTooLargeError) ;
 
 void scanner_routine_negateSInt (C_Lexique & inLexique,
-                                PMSInt32 & ioValue,
+                                int32_t & ioValue,
                                 const utf32 * inNumberTooLargeError) ;
 
 void scanner_routine_negateSInt64 (C_Lexique & inLexique,
-                                  PMSInt64 & ioValue,
+                                  int64_t & ioValue,
                                   const utf32 * inNumberTooLargeError) ;
 
 //--- Methods introduced in GALGAS 1.4.3 (thanks to Mikael Briday)
 
 void scanner_routine_enterBinDigitIntoUInt (C_Lexique & inLexique,
                                            const utf32 inCharacter,
-                                           PMUInt32 & ioValue,
+                                           uint32_t & ioValue,
                                            const utf32 * inNumberTooLargeError,
                                            const utf32 * inCharacterIsNotBinDigitError) ;
                             
 void scanner_routine_enterBinDigitIntoUInt64 (C_Lexique & inLexique,
                                               const utf32 inCharacter,
-                                              PMUInt64 & ioValue,
+                                              uint64_t & ioValue,
                                               const utf32 * inNumberTooLargeError,
                                               const utf32 * inCharacterIsNotBinDigitError) ;
 
@@ -159,44 +159,44 @@ void scanner_routine_enterBinDigitIntoUInt64 (C_Lexique & inLexique,
 
 void scanner_routine_enterOctDigitIntoUInt (C_Lexique & inLexique,
                                            const utf32 inCharacter,
-                                           PMUInt32 & ioValue,
+                                           uint32_t & ioValue,
                                            const utf32 * inNumberTooLargeError,
                                            const utf32 * inCharacterIsNotOctDigitError) ;
                             
 void scanner_routine_enterOctDigitIntoUInt64 (C_Lexique & inLexique,
                                              const utf32 inCharacter,
-                                             PMUInt64 & ioValue,
+                                             uint64_t & ioValue,
                                              const utf32 * inNumberTooLargeError,
                                              const utf32 * inCharacterIsNotOctDigitError) ;
 
 //--- Methods introduced in GALGAS 1.7.7
 void scanner_routine_convertHexStringIntoUInt (C_Lexique & inLexique,
                                               const C_String & inDecimalString,
-                                              PMUInt32 & outValue,
+                                              uint32_t & outValue,
                                               const utf32 * inNumberTooLargeError,
                                               const utf32 * inCharacterIsNotHexDigitError) ;
 
 void scanner_routine_convertHexStringIntoUInt64 (C_Lexique & inLexique,
                                                 const C_String & inDecimalString,
-                                                PMUInt64 & outValue,
+                                                uint64_t & outValue,
                                                 const utf32 * inNumberTooLargeError,
                                                 const utf32 * inCharacterIsNotHexDigitError) ;
 
 void scanner_routine_convertHexStringIntoSInt (C_Lexique & inLexique,
                                               const C_String & inDecimalString,
-                                              PMSInt32 & outValue,
+                                              int32_t & outValue,
                                               const utf32 * inNumberTooLargeError,
                                               const utf32 * inCharacterIsNotHexDigitError) ;
 
 void scanner_routine_convertHexStringIntoSInt64 (C_Lexique & inLexique,
                                                 const C_String & inDecimalString,
-                                                PMSInt64 & outValue,
+                                                int64_t & outValue,
                                                 const utf32 * inNumberTooLargeError,
                                                 const utf32 * inCharacterIsNotHexDigitError) ;
 
 //--- Methods introduced in GALGAS 1.8.3
 void scanner_routine_convertUnsignedNumberToUnicodeChar (C_Lexique & inLexique,
-                                                        PMUInt32 & ioValue,
+                                                        uint32_t & ioValue,
                                                         utf32 & outUnicodeCharacter,
                                                         const utf32 * inUnassignedUnicodeValueError) ;
 

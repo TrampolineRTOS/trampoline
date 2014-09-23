@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  'C_ErrorOut' : a class for console output                                *
+//  'C_ErrorOut' : a class for console output                                  *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -28,7 +28,7 @@
 
 //-----------------------------------------------------------------------------*
 
-#include "streams/C_ColoredConsole.h"
+#include "C_ColoredConsole.h"
 
 //-----------------------------------------------------------------------------*
 
@@ -42,11 +42,11 @@ class C_ErrorOut : public C_ColoredConsole {
 //--- General stream method
   protected : virtual void
   performActualCharArrayOutput (const char * inCharArray,
-                                const PMSInt32 inArrayCount) ;
+                                const int32_t inArrayCount) ;
 
   protected : virtual void
   performActualUnicodeArrayOutput (const utf32 * inCharArray,
-                                   const PMSInt32 inArrayCount) ;
+                                   const int32_t inArrayCount) ;
 } ;
 
 //-----------------------------------------------------------------------------*

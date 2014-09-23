@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------*
 //                                                                             *
-//  unicode_character : an implementation of Unicode character               *
+//  unicode_character : an implementation of Unicode character                 *
 //                                                                             *
 //  This file is part of libpm library                                         *
 //                                                                             *
@@ -31,11 +31,11 @@ const utf32 UNICODE_MAX_LEGAL_UTF32_CHARACTER = TO_UNICODE (0x0010FFFF) ;
 bool isUnicodeCharacterAssigned (const utf32 inUnicodeCharacter) {
   bool result = UNICODE_VALUE (inUnicodeCharacter) <= UNICODE_VALUE (UNICODE_MAX_LEGAL_UTF32_CHARACTER) ;
   if (result) {
-    const PMUInt32 pageIndex = UNICODE_VALUE (inUnicodeCharacter) / gNamePageSize ;
+    const uint32_t pageIndex = UNICODE_VALUE (inUnicodeCharacter) / gNamePageSize ;
     if (pageIndex <= gLastNamePage) {
-      const PMUInt32 * page = gNamePages [pageIndex] ;
+      const uint32_t * page = gNamePages [pageIndex] ;
       if (page != NULL) {
-        const PMUInt32 entry = page [UNICODE_VALUE (inUnicodeCharacter) % gNamePageSize] ;
+        const uint32_t entry = page [UNICODE_VALUE (inUnicodeCharacter) % gNamePageSize] ;
         result = entry != 0 ;
       }
     }
@@ -70,15 +70,15 @@ bool isUnicodeCharacterAssigned (const utf32 inUnicodeCharacter) {
       result << "invalid unicode character \\U" ;
       result.appendUnsignedHex8 (UNICODE_VALUE (inUnicodeCharacter)) ;
     }else{
-      const PMUInt32 pageIndex = UNICODE_VALUE (inUnicodeCharacter) / gNamePageSize ;
+      const uint32_t pageIndex = UNICODE_VALUE (inUnicodeCharacter) / gNamePageSize ;
       if (pageIndex <= gLastNamePage) {
-        const PMUInt32 * page = gNamePages [pageIndex] ;
+        const uint32_t * page = gNamePages [pageIndex] ;
         if (page != NULL) {
-          PMUInt32 entry = page [UNICODE_VALUE (inUnicodeCharacter) % gNamePageSize] & kNameMask ;
+          uint32_t entry = page [UNICODE_VALUE (inUnicodeCharacter) % gNamePageSize] & kNameMask ;
           bool completed = entry == 0 ;
-          PMUInt32 idx = 0 ;
+          uint32_t idx = 0 ;
           while (! completed) {
-            const PMUInt8 nameCode = gPartNameConstruction [entry] ;
+            const uint8_t nameCode = gPartNameConstruction [entry] ;
             entry ++ ;
             idx = (idx << 6) | (nameCode & 0x3F) ;
             switch (nameCode & 0xC0) {
@@ -122,15 +122,15 @@ bool isUnicodeCharacterAssigned (const utf32 inUnicodeCharacter) {
     if (! isUnicodeCharacterAssigned (inUnicodeCharacter)) {
       [result appendFormat:@"invalid unicode character \\U%u", UNICODE_VALUE (inUnicodeCharacter)] ;
     }else{
-      const PMUInt32 pageIndex = UNICODE_VALUE (inUnicodeCharacter) / gNamePageSize ;
+      const uint32_t pageIndex = UNICODE_VALUE (inUnicodeCharacter) / gNamePageSize ;
       if (pageIndex <= gLastNamePage) {
-        const PMUInt32 * page = gNamePages [pageIndex] ;
+        const uint32_t * page = gNamePages [pageIndex] ;
         if (page != NULL) {
-          PMUInt32 entry = page [UNICODE_VALUE (inUnicodeCharacter) % gNamePageSize] & kNameMask ;
+          uint32_t entry = page [UNICODE_VALUE (inUnicodeCharacter) % gNamePageSize] & kNameMask ;
           bool completed = entry == 0 ;
-          PMUInt32 idx = 0 ;
+          uint32_t idx = 0 ;
           while (! completed) {
-            const PMUInt8 nameCode = gPartNameConstruction [entry] ;
+            const uint8_t nameCode = gPartNameConstruction [entry] ;
             entry ++ ;
             idx = (idx << 6) | (nameCode & 0x3F) ;
             switch (nameCode & 0xC0) {
@@ -168,11 +168,11 @@ bool isUnicodeCharacterAssigned (const utf32 inUnicodeCharacter) {
 
 utf32 unicodeToLower (const utf32 inUnicodeCharacter) {
   utf32 result = inUnicodeCharacter ;
-  const PMUInt32 pageIndex = UNICODE_VALUE (inUnicodeCharacter) / gToLowerPageSize ;
+  const uint32_t pageIndex = UNICODE_VALUE (inUnicodeCharacter) / gToLowerPageSize ;
   if (pageIndex <= gLastToLowerPage) {
-    const PMUInt32 * page = gToLowerPages [pageIndex] ;
+    const uint32_t * page = gToLowerPages [pageIndex] ;
     if (page != NULL) {
-      const PMUInt32 entry = page [UNICODE_VALUE (inUnicodeCharacter) % gToLowerPageSize] ;
+      const uint32_t entry = page [UNICODE_VALUE (inUnicodeCharacter) % gToLowerPageSize] ;
       if (entry != 0) {
         result = TO_UNICODE (entry) ;
       }
@@ -186,13 +186,13 @@ utf32 unicodeToLower (const utf32 inUnicodeCharacter) {
 utf32 unicodeToUpper (const utf32 inUnicodeCharacter) {
   utf32 result = inUnicodeCharacter ;
   // printf ("U+%X", inUnicodeCharacter) ;
-  const PMUInt32 pageIndex = UNICODE_VALUE (inUnicodeCharacter) / gToUpperPageSize ;
+  const uint32_t pageIndex = UNICODE_VALUE (inUnicodeCharacter) / gToUpperPageSize ;
   // printf (", pageIndex %u, lastPage %u", pageIndex, gLastToUpperPage) ;
   if (pageIndex <= gLastToUpperPage) {
-    const PMUInt32 * page = gToUpperPages [pageIndex] ;
+    const uint32_t * page = gToUpperPages [pageIndex] ;
     if (page != NULL) {
       // printf (", index %u", inUnicodeCharacter % gToUpperPageSize) ;
-      const PMUInt32 entry = page [UNICODE_VALUE (inUnicodeCharacter) % gToUpperPageSize] ;
+      const uint32_t entry = page [UNICODE_VALUE (inUnicodeCharacter) % gToUpperPageSize] ;
       // printf (", entry 0x%X", entry) ;
       if (entry != 0) {
         result = TO_UNICODE (entry) ;
@@ -207,13 +207,13 @@ utf32 unicodeToUpper (const utf32 inUnicodeCharacter) {
 
 bool isUnicodeLetter (const utf32 inUnicodeCharacter) {
   bool result = false ;
-  const PMUInt32 pageIndex = UNICODE_VALUE (inUnicodeCharacter) / gNamePageSize ;
+  const uint32_t pageIndex = UNICODE_VALUE (inUnicodeCharacter) / gNamePageSize ;
   if (pageIndex <= gLastNamePage) {
-    const PMUInt32 * page = gNamePages [pageIndex] ;
+    const uint32_t * page = gNamePages [pageIndex] ;
     if (page != NULL) {
-      const PMUInt32 entry = page [UNICODE_VALUE (inUnicodeCharacter) % gNamePageSize] ;
+      const uint32_t entry = page [UNICODE_VALUE (inUnicodeCharacter) % gNamePageSize] ;
       if (entry != 0) {
-        const PMUInt32 category = entry >> 27 ;
+        const uint32_t category = entry >> 27 ;
         result = (category >= kUnicodeCategory_Lu) && (category <= kUnicodeCategory_Lo) ;
       }
     }
@@ -225,13 +225,13 @@ bool isUnicodeLetter (const utf32 inUnicodeCharacter) {
 
 bool isUnicodeMark (const utf32 inUnicodeCharacter) {
   bool result = false ;
-  const PMUInt32 pageIndex = UNICODE_VALUE (inUnicodeCharacter) / gNamePageSize ;
+  const uint32_t pageIndex = UNICODE_VALUE (inUnicodeCharacter) / gNamePageSize ;
   if (pageIndex <= gLastNamePage) {
-    const PMUInt32 * page = gNamePages [pageIndex] ;
+    const uint32_t * page = gNamePages [pageIndex] ;
     if (page != NULL) {
-      const PMUInt32 entry = page [UNICODE_VALUE (inUnicodeCharacter) % gNamePageSize] ;
+      const uint32_t entry = page [UNICODE_VALUE (inUnicodeCharacter) % gNamePageSize] ;
       if (entry != 0) {
-        const PMUInt32 category = entry >> 27 ;
+        const uint32_t category = entry >> 27 ;
         result = (category >= kUnicodeCategory_Mn) && (category <= kUnicodeCategory_Me) ;
       }
     }
@@ -243,13 +243,13 @@ bool isUnicodeMark (const utf32 inUnicodeCharacter) {
 
 bool isUnicodeNumber (const utf32 inUnicodeCharacter) {
   bool result = false ;
-  const PMUInt32 pageIndex = UNICODE_VALUE (inUnicodeCharacter) / gNamePageSize ;
+  const uint32_t pageIndex = UNICODE_VALUE (inUnicodeCharacter) / gNamePageSize ;
   if (pageIndex <= gLastNamePage) {
-    const PMUInt32 * page = gNamePages [pageIndex] ;
+    const uint32_t * page = gNamePages [pageIndex] ;
     if (page != NULL) {
-      const PMUInt32 entry = page [UNICODE_VALUE (inUnicodeCharacter) % gNamePageSize] ;
+      const uint32_t entry = page [UNICODE_VALUE (inUnicodeCharacter) % gNamePageSize] ;
       if (entry != 0) {
-        const PMUInt32 category = entry >> 27 ;
+        const uint32_t category = entry >> 27 ;
         result = (category >= kUnicodeCategory_Nd) && (category <= kUnicodeCategory_No) ;
       }
     }
@@ -261,13 +261,13 @@ bool isUnicodeNumber (const utf32 inUnicodeCharacter) {
 
 bool isUnicodeDecimalDigit (const utf32 inUnicodeCharacter) {
   bool result = false ;
-  const PMUInt32 pageIndex = UNICODE_VALUE (inUnicodeCharacter) / gNamePageSize ;
+  const uint32_t pageIndex = UNICODE_VALUE (inUnicodeCharacter) / gNamePageSize ;
   if (pageIndex <= gLastNamePage) {
-    const PMUInt32 * page = gNamePages [pageIndex] ;
+    const uint32_t * page = gNamePages [pageIndex] ;
     if (page != NULL) {
-      const PMUInt32 entry = page [UNICODE_VALUE (inUnicodeCharacter) % gNamePageSize] ;
+      const uint32_t entry = page [UNICODE_VALUE (inUnicodeCharacter) % gNamePageSize] ;
       if (entry != 0) {
-        const PMUInt32 category = entry >> 27 ;
+        const uint32_t category = entry >> 27 ;
         result = category == kUnicodeCategory_Nd ;
       }
     }
@@ -277,13 +277,13 @@ bool isUnicodeDecimalDigit (const utf32 inUnicodeCharacter) {
 
 //-----------------------------------------------------------------------------*
 
-PMUInt32 unicodeDecimalValue (const utf32 inUnicodeCharacter) {
-  PMUInt32 result = 0 ;
-  const PMUInt32 pageIndex = UNICODE_VALUE (inUnicodeCharacter) / gNamePageSize ;
+uint32_t unicodeDecimalValue (const utf32 inUnicodeCharacter) {
+  uint32_t result = 0 ;
+  const uint32_t pageIndex = UNICODE_VALUE (inUnicodeCharacter) / gNamePageSize ;
   if (pageIndex <= gLastNamePage) {
-    const PMUInt32 * page = gNamePages [pageIndex] ;
+    const uint32_t * page = gNamePages [pageIndex] ;
     if (page != NULL) {
-      const PMUInt32 entry = page [UNICODE_VALUE (inUnicodeCharacter) % gNamePageSize] ;
+      const uint32_t entry = page [UNICODE_VALUE (inUnicodeCharacter) % gNamePageSize] ;
       if (entry != 0) {
         if ((entry >> 27) == kUnicodeCategory_Nd) {
           result = (entry >> 16) & 0xF ;
@@ -306,8 +306,8 @@ bool isUnicodeASCIIHexDigit (const utf32 inUnicodeCharacter) {
 
 //-----------------------------------------------------------------------------*
 
-PMUInt32 ASCIIHexValue (const utf32 inUnicodeCharacter) {
-  PMUInt32 result = 0 ;
+uint32_t ASCIIHexValue (const utf32 inUnicodeCharacter) {
+  uint32_t result = 0 ;
   if ((UNICODE_VALUE (inUnicodeCharacter) >= '0') && (UNICODE_VALUE (inUnicodeCharacter) <= '9')) {
     result = UNICODE_VALUE (inUnicodeCharacter) - '0' ;
   }else if ((UNICODE_VALUE (inUnicodeCharacter) >= 'A') && (UNICODE_VALUE (inUnicodeCharacter) <= 'F')) {
@@ -322,13 +322,13 @@ PMUInt32 ASCIIHexValue (const utf32 inUnicodeCharacter) {
 
 bool isUnicodeSeparator (const utf32 inUnicodeCharacter) {
   bool result = false ;
-  const PMUInt32 pageIndex = UNICODE_VALUE (inUnicodeCharacter) / gNamePageSize ;
+  const uint32_t pageIndex = UNICODE_VALUE (inUnicodeCharacter) / gNamePageSize ;
   if (pageIndex <= gLastNamePage) {
-    const PMUInt32 * page = gNamePages [pageIndex] ;
+    const uint32_t * page = gNamePages [pageIndex] ;
     if (page != NULL) {
-      const PMUInt32 entry = page [UNICODE_VALUE (inUnicodeCharacter) % gNamePageSize] ;
+      const uint32_t entry = page [UNICODE_VALUE (inUnicodeCharacter) % gNamePageSize] ;
       if (entry != 0) {
-        const PMUInt32 category = entry >> 27 ;
+        const uint32_t category = entry >> 27 ;
         result = (category >= kUnicodeCategory_Zs) && (category <= kUnicodeCategory_Zp) ;
       }
     }
@@ -340,13 +340,13 @@ bool isUnicodeSeparator (const utf32 inUnicodeCharacter) {
 
 bool isUnicodeCommand (const utf32 inUnicodeCharacter) {
   bool result = true ; // Undefined character has 'Cn' category
-  const PMUInt32 pageIndex = UNICODE_VALUE (inUnicodeCharacter) / gNamePageSize ;
+  const uint32_t pageIndex = UNICODE_VALUE (inUnicodeCharacter) / gNamePageSize ;
   if (pageIndex <= gLastNamePage) {
-    const PMUInt32 * page = gNamePages [pageIndex] ;
+    const uint32_t * page = gNamePages [pageIndex] ;
     if (page != NULL) {
-      const PMUInt32 entry = page [UNICODE_VALUE (inUnicodeCharacter) % gNamePageSize] ;
+      const uint32_t entry = page [UNICODE_VALUE (inUnicodeCharacter) % gNamePageSize] ;
       if (entry != 0) {
-        const PMUInt32 category = entry >> 27 ;
+        const uint32_t category = entry >> 27 ;
         result = (category >= kUnicodeCategory_Cc) && (category <= kUnicodeCategory_Co) ;
       }
     }
@@ -358,13 +358,13 @@ bool isUnicodeCommand (const utf32 inUnicodeCharacter) {
 
 bool isUnicodePunctuation (const utf32 inUnicodeCharacter) {
   bool result = false ;
-  const PMUInt32 pageIndex = UNICODE_VALUE (inUnicodeCharacter) / gNamePageSize ;
+  const uint32_t pageIndex = UNICODE_VALUE (inUnicodeCharacter) / gNamePageSize ;
   if (pageIndex <= gLastNamePage) {
-    const PMUInt32 * page = gNamePages [pageIndex] ;
+    const uint32_t * page = gNamePages [pageIndex] ;
     if (page != NULL) {
-      const PMUInt32 entry = page [UNICODE_VALUE (inUnicodeCharacter) % gNamePageSize] ;
+      const uint32_t entry = page [UNICODE_VALUE (inUnicodeCharacter) % gNamePageSize] ;
       if (entry != 0) {
-        const PMUInt32 category = entry >> 27 ;
+        const uint32_t category = entry >> 27 ;
         result = (category >= kUnicodeCategory_Pc) && (category <= kUnicodeCategory_Po) ;
       }
     }
@@ -376,13 +376,13 @@ bool isUnicodePunctuation (const utf32 inUnicodeCharacter) {
 
 bool isUnicodeSymbol (const utf32 inUnicodeCharacter) {
   bool result = false ;
-  const PMUInt32 pageIndex = UNICODE_VALUE (inUnicodeCharacter) / gNamePageSize ;
+  const uint32_t pageIndex = UNICODE_VALUE (inUnicodeCharacter) / gNamePageSize ;
   if (pageIndex <= gLastNamePage) {
-    const PMUInt32 * page = gNamePages [pageIndex] ;
+    const uint32_t * page = gNamePages [pageIndex] ;
     if (page != NULL) {
-      const PMUInt32 entry = page [UNICODE_VALUE (inUnicodeCharacter) % gNamePageSize] ;
+      const uint32_t entry = page [UNICODE_VALUE (inUnicodeCharacter) % gNamePageSize] ;
       if (entry != 0) {
-        const PMUInt32 category = entry >> 27 ;
+        const uint32_t category = entry >> 27 ;
         result = (category >= kUnicodeCategory_Sm) && (category <= kUnicodeCategory_So) ;
       }
     }
@@ -395,11 +395,11 @@ bool isUnicodeSymbol (const utf32 inUnicodeCharacter) {
 #ifdef __cplusplus
   utf32 unicodeCharacterFromHTMLSequence (const C_String & inString) {
     utf32 result = TO_UNICODE (0) ; // Means not found
-    PMSInt32 lowIndex = 0 ;
-    PMSInt32 highIndex = kHTMLtoUnicodeConversionTableSize - 1 ;
+    int32_t lowIndex = 0 ;
+    int32_t highIndex = kHTMLtoUnicodeConversionTableSize - 1 ;
     while ((highIndex >= lowIndex) && (UNICODE_VALUE (result) == 0)) {
-      const PMSInt32 newIndex = (highIndex + lowIndex) / 2 ;
-      const PMSInt32 c = inString.compare (kHTMLtoUnicodeConversionArray [newIndex].mDefinition) ;
+      const int32_t newIndex = (highIndex + lowIndex) / 2 ;
+      const int32_t c = inString.compare (kHTMLtoUnicodeConversionArray [newIndex].mDefinition) ;
       if (c > 0) {
         lowIndex = newIndex + 1 ;
       }else if (c < 0) {
@@ -417,10 +417,10 @@ bool isUnicodeSymbol (const utf32 inUnicodeCharacter) {
 #ifdef __OBJC__
   utf32 unicodeCharacterFromHTMLSequence (NSString * inString) {
     utf32 result = TO_UNICODE (0) ; // Means not found
-    PMSInt32 lowIndex = 0 ;
-    PMSInt32 highIndex = kHTMLtoUnicodeConversionTableSize - 1 ;
+    int32_t lowIndex = 0 ;
+    int32_t highIndex = kHTMLtoUnicodeConversionTableSize - 1 ;
     while ((highIndex >= lowIndex) && (UNICODE_VALUE (result) == 0)) {
-      const PMSInt32 newIndex = (highIndex + lowIndex) / 2 ;
+      const int32_t newIndex = (highIndex + lowIndex) / 2 ;
       const NSInteger c = [inString compare:[NSString stringWithCString:kHTMLtoUnicodeCocoaConversionArray [newIndex].mDefinition encoding:NSASCIIStringEncoding]] ;
       if (c > 0) {
         lowIndex = newIndex + 1 ;
@@ -443,8 +443,8 @@ bool isUnicodeSymbol (const utf32 inUnicodeCharacter) {
 typedef struct {
   const char * mCodeName ;
   const structConvertFromUnicodeEntry * mMappingFromUnicode ;
-  const PMUInt32 mMappingFromUnicodeSize ;
-  const PMUInt16 * mMappingToUnicode ;
+  const uint32_t mMappingFromUnicodeSize ;
+  const uint16_t * mMappingToUnicode ;
 } unicodeMappingDescriptorType ;
 
 //-----------------------------------------------------------------------------*
@@ -482,7 +482,7 @@ utf32 unicodeCharacterForSingleByteCharacter (const char inChar, const PMStringE
   if ((c & 0x80) == 0) {
     result = TO_UNICODE (c) ;
   }
-  if (((PMUInt32) inStringEncoding) < kMappingDescriptorsSize) {
+  if (((uint32_t) inStringEncoding) < kMappingDescriptorsSize) {
     result = TO_UNICODE (kMappingDescriptors [inStringEncoding].mMappingToUnicode [c - 128]) ;
   }
   return result ;
@@ -496,12 +496,12 @@ char singleByteCharacterForUnicodeCharacter (const utf32 inUnicodeChar,
  // printf ("unicode 0x%X\n", inUnicodeChar) ;
  if (UNICODE_VALUE (inUnicodeChar) < 128) {
    result = (char) (UNICODE_VALUE (inUnicodeChar) & 255) ;
- }else if (((PMUInt32) inStringEncoding) < kMappingDescriptorsSize) {
-   PMUInt32 low = 0 ;
-   PMUInt32 high = kMappingDescriptors [inStringEncoding].mMappingFromUnicodeSize ;
+ }else if (((uint32_t) inStringEncoding) < kMappingDescriptorsSize) {
+   uint32_t low = 0 ;
+   uint32_t high = kMappingDescriptors [inStringEncoding].mMappingFromUnicodeSize ;
    const structConvertFromUnicodeEntry * mapping = kMappingDescriptors [inStringEncoding].mMappingFromUnicode ;
    while ((low <= high) && (result == 0)) {
-     const PMUInt32 mid = (low + high) / 2 ;
+     const uint32_t mid = (low + high) / 2 ;
     // printf ("<%u, %u> mid %u unicode 0x%X\n", low, high, mid, mapping [mid].mUnicode) ;
      if (UNICODE_VALUE (inUnicodeChar) > mapping [mid].mUnicode) {
        low = mid + 1 ;
@@ -529,12 +529,12 @@ char singleByteCharacterForUnicodeCharacter (const utf32 inUnicodeChar,
 // 0000 0000  zzzz yyyy  xxxx xxxx -> 1110 zzzz  10yy yyxx  10xx xxxx
 // 000u uuuu  zzzz yyyy  xxxx xxxx -> 1111 0uuu  10uu zzzz  10yy yyxx  10xx xxxx
 
-PMSInt32 UTF8StringFromUTF32Character (const utf32 inUnicodeChar, char outSequence [5]) {
-  PMUInt32 codePoint = UNICODE_VALUE (inUnicodeChar) ;
+int32_t UTF8StringFromUTF32Character (const utf32 inUnicodeChar, char outSequence [5]) {
+  uint32_t codePoint = UNICODE_VALUE (inUnicodeChar) ;
   if (codePoint > UNICODE_VALUE (UNICODE_MAX_LEGAL_UTF32_CHARACTER)) {
     codePoint = UNICODE_VALUE (UNICODE_REPLACEMENT_CHARACTER) ;
   }
-  PMSInt32 resultByteCount = 0 ;
+  int32_t resultByteCount = 0 ;
   if (codePoint < 0x80) {
     outSequence [0] = (char) (codePoint & 255) ;
     outSequence [1] = 0 ;
@@ -560,7 +560,7 @@ PMSInt32 UTF8StringFromUTF32Character (const utf32 inUnicodeChar, char outSequen
   }
   
   /*printf ("TO_UNICODE (0x%X) 0x%X ->", UNICODE_VALUE (inUnicodeChar), codePoint) ;
-  for (PMSInt32 i=0 ; i<resultByteCount ; i++) {
+  for (int32_t i=0 ; i<resultByteCount ; i++) {
     printf (" 0x%02X", outSequence [i] & 0xFF) ;
   }
   printf ("\n") ;*/
@@ -575,12 +575,12 @@ PMSInt32 UTF8StringFromUTF32Character (const utf32 inUnicodeChar, char outSequen
 //-----------------------------------------------------------------------------*
 
 #ifdef __cplusplus
-  utf32 utf32CharacterForPointer (const PMUInt8 * inDataString,
-                                  PMSInt32 & ioIndex,
-                                  const PMSInt32 inLength,
+  utf32 utf32CharacterForPointer (const uint8_t * inDataString,
+                                  int32_t & ioIndex,
+                                  const int32_t inLength,
                                   bool & ioOK) {
-    PMUInt32 result = 0 ;
-    PMUInt32 c = inDataString [ioIndex] ;
+    uint32_t result = 0 ;
+    uint32_t c = inDataString [ioIndex] ;
     ioIndex ++ ;
     ioOK = true ;
     if ((c & 0x80) == 0) {
