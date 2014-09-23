@@ -35,13 +35,6 @@
 
 extern P2FUNC(void, OS_CODE, CallTerminateTask);
 
-#define OS_START_SEC_VAR_32BIT
-#include "tpl_memmap.h"
-VAR(tpl_stack_word, OS_VAR)
-  idle_stack[SIZE_OF_IDLE_STACK/sizeof(tpl_stack_word)];
-#define OS_STOP_SEC_VAR_32BIT
-#include "tpl_memmap.h"
-
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 extern CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)
@@ -54,47 +47,6 @@ extern CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)
 VAR(uint32, OS_VAR) tpl_msr_start_value;
 VAR(uint32, OS_VAR) tpl_register_r2;
 VAR(uint32, OS_VAR) tpl_register_r13;
-VAR(ppc_integer_context, OS_VAR) idle_task_context = {
-  { /* r0 */   0,
-    /* sp */   0,
-    /* r2 */   0,
-    /* r3 */   0,
-    /* r4 */   0,
-    /* r5 */   0,
-    /* r6 */   0,
-    /* r7 */   0,
-    /* r8 */   0,
-    /* r9 */   0,
-    /* r10 */  0,
-    /* r11 */  0,
-    /* r12 */  0,
-    /* r13 */  0,
-    /* r14 */  0,
-    /* r15 */  0,
-    /* r16 */  0,
-    /* r17 */  0,
-    /* r18 */  0,
-    /* r19 */  0,
-    /* r20 */  0,
-    /* r21 */  0,
-    /* r22 */  0,
-    /* r23 */  0,
-    /* r24 */  0,
-    /* r25 */  0,
-    /* r26 */  0,
-    /* r27 */  0,
-    /* r28 */  0,
-    /* r29 */  0,
-    /* r30 */  0,
-    /* r31 */  0
-  },
-  /* cr   */ 0,
-  /* xer  */ 0,
-  /* lr   */ 0,
-  /* ctr  */ 0,
-  /* srr0 */ (u32)tpl_sleep,
-  /* srr1 */ 0x00008000
-};
 #define OS_STOP_SEC_VAR_32BIT
 #include "tpl_memmap.h"
 
@@ -182,7 +134,7 @@ FUNC(void, OS_CODE) tpl_init_context(
 /**
  * TODO: document this
  */
-FUNC(void, OS_CODE) tpl_sleep(void)
+FUNC(void, OS_CODE) idle_function(void)
 {
     while (1)
     {
@@ -232,7 +184,6 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
   tpl_msr_start_value = 0;
 
   
-  idle_task_context.gpr[1] = ((uint32)(idle_stack)) + SIZE_OF_IDLE_STACK - 48;
 /*  INTC.MCR.B.HVEN_PRC0 = 0;
   INTC.MCR.B.VTES_PRC0 = 0;
   INTC.IACKR_PRC0.R = (uint32_t)(&InterruptVectortable[0]);
