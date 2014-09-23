@@ -402,12 +402,11 @@ foreach proc in PROCESSES do
 end foreach
 %
 %
-loop core from 0 to OS:NUMBER_OF_CORES - 1 do
-  if OS:NUMBER_OF_CORES == 1 then
-    let proc::KIND := "Task"
+loop core from 0 to OS::NUMBER_OF_CORES - 1 do
+  let proc::KIND := "Task"
+  if OS::NUMBER_OF_CORES == 1 then
     let proc::NAME := "IDLE_TASK"
   else
-    let proc::KIND := "Task"
     let proc::NAME := "IDLE_TASK_".[core string]
   end if
 %
