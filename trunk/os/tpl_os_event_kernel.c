@@ -101,6 +101,8 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
 FUNC(tpl_status, OS_CODE) tpl_clear_event_service(
   CONST(tpl_event_mask, AUTOMATIC) event)
 {
+  GET_CURRENT_CORE_ID(core_id)
+	
   VAR(tpl_status, AUTOMATIC) result = E_OK;
   
   LOCK_KERNEL()
@@ -112,13 +114,13 @@ FUNC(tpl_status, OS_CODE) tpl_clear_event_service(
   STORE_EVENT_MASK(event)
 
   /*  ClearEvent cannot be called from ISR level  */
-  CHECK_TASK_CALL_LEVEL_ERROR(result)
+  CHECK_TASK_CALL_LEVEL_ERROR(core_id,result)
   /*  checks the calling task is an extended one  */
   CHECK_NOT_EXTENDED_RUNNING_ERROR(result)
   
 #if EXTENDED_TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-    tpl_task_events_table[tpl_kern.running_id]->evt_set &=
+    tpl_task_events_table[(tpl_proc_id)TPL_KERN(core_id).running_id]->evt_set &=
       (tpl_event_mask)(~event);
   IF_NO_EXTENDED_ERROR_END()
 #endif
@@ -195,7 +197,7 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
   STORE_EVENT_MASK(event)
   
   /*  WaitEvent cannot be called from ISR level  */
-  CHECK_TASK_CALL_LEVEL_ERROR(result)
+  CHECK_TASK_CALL_LEVEL_ERROR(core_id,result)
   /*  checks the calling task is an extended one  */
   CHECK_NOT_EXTENDED_RUNNING_ERROR(result)
   /*  checks the task does not occupied resource(s)   */
