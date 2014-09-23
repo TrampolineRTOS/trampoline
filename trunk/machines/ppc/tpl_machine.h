@@ -134,32 +134,12 @@ typedef struct TPL_STACK tpl_stack;
 #endif
 
 /**
- * @def IDLE_ENTRY
- *
- * Entry point of the idle task. Not used in PPC port
- */
-#define IDLE_ENTRY tpl_sleep
-
-/**
  * @def SIZE_OF_IDLE_TASK
  *
  * The size of the stack of the idle task which is also the stack
  * used for machine startup
  */
-#define SIZE_OF_IDLE_STACK  200
-
-/**
- * @def IDLE_STACK
- *
- * the idle stack definition
- */
-#define OS_START_SEC_VAR_UNSPECIFIED
-#include "tpl_memmap.h"
-extern VAR(tpl_stack_word, OS_VAR)
-  idle_stack[SIZE_OF_IDLE_STACK/sizeof(tpl_stack_word)];
-#define OS_STOP_SEC_VAR_UNSPECIFIED
-#include "tpl_memmap.h"
-#define IDLE_STACK { idle_stack, SIZE_OF_IDLE_STACK }
+#define IDLE_STACK_SIZE  200
 
 /*
  * external variables

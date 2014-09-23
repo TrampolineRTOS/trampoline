@@ -30,20 +30,17 @@ $(OBJ_DIR)/%.c.o: $(A_DIR)/%.c $(OIL_OUTPUTS)
 #----------------------------------------------------------------------*
 #### Compilation rules. ASM files.
 #----------------------------------------------------------------------*
+#use the assembly directly
 $(OBJ_DIR)/%.s.o: $(A_DIR)/%.s $(OIL_OUTPUTS)
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
 	@echo assembling $<
 	$(AS) $(ASFLAGS) $< -o $@
 
-$(OBJ_DIR)/%.S.i: $(A_DIR)/%.S $(OIL_OUTPUTS)
+#call the assembly through the C compiler.
+$(OBJ_DIR)/%.S.o: $(A_DIR)/%.S $(OIL_OUTPUTS)
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
 	@echo assembling $<
-	$(AS) $(ASFLAGS) $< -o $@
-
-$(OBJ_DIR)/%.S.o: $(OBJ_DIR)/%.S.i $(OIL_OUTPUTS)
-	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
-	@echo assembling $<
-	$(AS) $(ASFLAGS) $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 #----------------------------------------------------------------------*
 #### Compilation rules. c++ files.
