@@ -32,42 +32,42 @@
  *
  * 8 bits unsigned number
  */
-typedef unsigned char   u8;
+typedef unsigned char   uint8;
 
 /**
  * @typedef s8
  *
  * 8 bits signed number
  */
-typedef signed char     s8;
+typedef signed char     sint8;
 
 /**
  * @typedef u16
  *
  * 16 bits unsigned number
  */
-typedef unsigned short  u16;
+typedef unsigned short  uint16;
 
 /**
  * @typedef s16
  *
  * 16 bits signed number
  */
-typedef signed short    s16;
+typedef signed short    sint16;
 
 /**
  * @typedef u32
  *
  * 32 bits unsigned number
  */
-typedef unsigned long   u32;
+typedef unsigned long   uint32;
 
 /**
  * @typedef s32
  *
  * 32 bits signed number
  */
-typedef signed long     s32;
+typedef signed long     sint32;
 
 #endif /* TPL_OS_STD_TYPES_H */
 
