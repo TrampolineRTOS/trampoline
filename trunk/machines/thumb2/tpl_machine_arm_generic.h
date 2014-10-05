@@ -29,6 +29,7 @@
 #include "tpl_os_std_types.h"
 #include "tpl_os_internal_types.h"
 #include "tpl_os_custom_types.h"
+#include "tpl_machine.h"
 
 /**
  * ARM internal registers symbolic names
@@ -70,30 +71,70 @@ typedef enum
     armreg_lr = 14,
   armreg_r15 = 15,
     armreg_pc = 15
-} tpl_arm_register_names;
+} tpl_arm_core_register_names;
 
 /**
  * ARM core registers
  */
-struct ARM_CONTEXT {
-  u32 r[8];
-  u32 sp;
+/*
+ * ARM_CORE_EXCEPTION_FRAME_SIZE is 36 bytes long :
+ * xpsr
+ * pc
+ * lr
+ * r12
+ * r3
+ * r2
+ * r1
+ * r0
+ * default value of EXC_RETURN
+ */
+#define ARM_CORE_EXCEPTION_FRAME_SIZE ((uint32)32)
+/* ARM_INITIAL_EXC_RETURN
+ * Default value of exception return value
+ * 0xFFFFFFF1 - Return to Handler mode, exception return uses non-floating-point state from the MSP and execution uses MSP after return.
+ * 0xFFFFFFF9 - Return to Thread mode, exception return uses non-floating-point state from MSP and execution uses MSP after return.
+ * 0xFFFFFFFD - Return to Thread mode, exception return uses non-floating-point state from the PSP and execution uses PSP after return.
+ * 0xFFFFFFE1 - Return to Handler mode, exception return uses floating-point-state from MSP and execution uses MSP after return.
+ * 0xFFFFFFE9 - Return to Thread mode, exception return uses floating-point state from MSP and execution uses MSP after return.
+ * 0xFFFFFFED - Return to Thread mode, exception return uses floating-point state from PSP and execution uses PSP after return.
+ */
+#define ARM_INITIAL_EXC_RETURN ((uint32)0xFFFFFFF9)
+
+struct ARM_CORE_CONTEXT {
+	/* General Purpose Register r4-r11 */
+	uint32 gpr[8];
+	/* Stack Pointer - r13 */
+	uint32 sp;
 };
 
 /**
  * ARM generic platform context
  */
-typedef struct ARM_CONTEXT arm_context;
+typedef struct ARM_CORE_CONTEXT arm_core_context;
+
+#ifdef WITH_FLOAT
+/*
+ * Floating Point Context
+ */
+struct ARM_FLOAT_CONTEXT {
+	/* is Single Precision Register s0-s31 */
+    double  spr[32];
+	/* Floating Point Status and Control Register */
+    double  fpscr;
+};
+
+typedef struct ARM_FLOAT_CONTEXT arm_float_context;
+#endif
 
 /**
  * default size of an element in a stack
  */
-typedef u32 tpl_stack_word;
+typedef uint32 tpl_stack_word;
 
 /**
  * type of a stack size
  */
-typedef u32 tpl_stack_size;
+typedef uint32 tpl_stack_size;
 
 /**
  * Stack definition
@@ -107,23 +148,6 @@ struct TPL_STACK {
  * Stack definition
  */
 typedef struct TPL_STACK tpl_stack;
-
-extern VAR (arm_context, OS_VAR) idle_task_context;
-
-/** 
- * Defines the context block of the task "idle"
- */
-#define IDLE_CONTEXT &idle_task_context
-
-#define SIZE_OF_IDLE_STACK 200
-
-extern VAR(tpl_stack_word, OS_VAR) idle_stack[SIZE_OF_IDLE_STACK/sizeof(tpl_stack_word)];
-
-/**
- * Defines the stack (void) of the task "idle"
- */
-#define IDLE_STACK {idle_stack,SIZE_OF_IDLE_STACK}
-
 
 /**
  * Defines the entry point of the idle task

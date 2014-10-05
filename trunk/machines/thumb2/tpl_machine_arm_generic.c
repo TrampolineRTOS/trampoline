@@ -30,24 +30,19 @@
 #if WITH_AUTOSAR == YES
 #include "tpl_as_definitions.h"
 #endif
-#include "tpl_os_it.h"
+#include "tpl_os_interrupt.h"
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
-/**
- * Stack for the idle task
- */
-VAR(tpl_stack_word, OS_VAR) idle_stack[SIZE_OF_IDLE_STACK/sizeof(tpl_stack_word)];
 
-/**
- * Context for the idle task
- */
-VAR (arm_context, OS_VAR) idle_task_context;
+extern void decPeriode(void);
+extern void test_toggle(void);
+extern FUNC(void, OS_CODE) CallTerminateTask(CONST(AppModeType, AUTOMATIC) mode);
 
 /**
  * Kernel entry counter
  */
-volatile VAR (u32, OS_VAR) nested_kernel_entrance_counter;
+volatile VAR (uint32, OS_VAR) nested_kernel_entrance_counter;
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
@@ -55,6 +50,11 @@ volatile VAR (u32, OS_VAR) nested_kernel_entrance_counter;
 #include "tpl_memmap.h"
 
 FUNC (void, OS_CODE) tpl_init_machine_generic (void)
+{
+
+}
+
+FUNC (void, OS_CODE) tpl_init_machine_specific (void)
 {
          nested_kernel_entrance_counter = 0;
 }
@@ -114,44 +114,98 @@ void tpl_disable_interrupts(void)
 FUNC(void, OS_CODE) tpl_init_context(
     CONST(tpl_proc_id, OS_APPL_DATA) proc_id)
 {
-  struct ARM_CONTEXT *core_context;
+	VAR(int, AUTOMATIC) i;
+//	CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA) the_proc = tpl_stat_proc_table[proc_id];
+//	P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA) l_tpl_core_context = the_proc->context;
+//	P2VAR(tpl_stack_word, AUTOMATIC, OS_APPL_DATA) stack = the_proc->stack.stack_zone;
+
+//  VAR(int, AUTOMATIC) i;
   const tpl_proc_static *the_proc;
+  //CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA) *the_proc;
+  struct ARM_CORE_CONTEXT *l_tpl_context;
+//  struct TPL_CONTEXT *l_tpl_context;
+  
+  //P2VAR(TPL_CONTEXT, AUTOMATIC, OS_APPL_DATA) l_tpl_context;
+  P2VAR(tpl_stack_word, AUTOMATIC, OS_APPL_DATA) stack;
 
   /* initialize shortcuts */
   the_proc = tpl_stat_proc_table[proc_id];
-  core_context = the_proc->context;
-
-  /* setup entry point */
-  core_context->r[armreg_pc] = (u32)(the_proc->entry);
-  /* setup initial stack pointer */
-  core_context->r[armreg_sp] = ((u32)the_proc->stack.stack_zone)
-      + the_proc->stack.stack_size;
-  /* task runs at a defined processor mode */
-  core_context->sp = USER_TASKS_ARM_MODE; /* macro defined into subarch part */
+  l_tpl_context = the_proc->context;
+  stack = the_proc->stack.stack_zone;
+  /* ptr#tpl_stack_word = ptr#tpl_proc_static->tpl_stack.ptr#tpl_stack_word
+   * ptr#tpl_stack_word = ptr#tpl_stack_word
+   */
 
   /*
-   * set the return address of the task/isr. This is usefull in case the
+   * Initialize context
+   */
+
+  /* Set GPRs to 0 */
+  for (i = 0; i < 8; i++ )
+  {
+	  l_tpl_context->gpr[i] = 0;
+  }
+  /* sp : setup initial stack pointer.
+   * The SP points to (stack_zone + stack_size - ARM_CORE_EXCEPTION_FRAME_SIZE)
+   * ARM_CORE_EXCEPTION_FRAME_SIZE is the frame pushed by the core at each exception.
+   * This frame consists in pushing xpsr, pc, lr, r12, r3, r2, r1, r0
+   *  */
+  l_tpl_context->sp = ((uint32)the_proc->stack.stack_zone) + ((uint32)the_proc->stack.stack_size) - ARM_CORE_EXCEPTION_FRAME_SIZE;
+
+  /* Build the process stack context in the following order :
+   * psr, pc, lr, r12, r3, r2, r1, r0
+   * Starts at the top of the stack
+   */
+  stack += (the_proc->stack.stack_size - ARM_CORE_EXCEPTION_FRAME_SIZE) >> 2;
+  /* push EXC_RETURN value on top of stack */
+//  *stack++ = (uint32)ARM_INITIAL_EXC_RETURN;
+  /* r0 */
+  *stack++ = (uint32)0;
+  /* r1 */
+  *stack++ = (uint32)0;
+  /* r2 */
+  *stack++ = (uint32)0;
+  /* r3 */
+  *stack++ = (uint32)0;
+  /* r12 */
+  *stack++ = (uint32)0;
+  /* lr
+   * Set the return address of the task/isr. This is usefull in case the
    * user forgets to call TerminateTask/TerminateISR
    * MISRA RULE 1,45,85 VIOLATION: the function pointer is used and stored
    * in a 32bits variable, but as the Os is dependant on the target,
    * the behaviour is controled
-   *
-   * TODO: follow ppc port code
    */
-  core_context->r[armreg_lr] = (IS_ROUTINE == the_proc->type) ?
-                                (u32)(CallTerminateISR2) :
-                                (u32)(CallTerminateTask); /*  lr  */
+  *stack++ = (IS_ROUTINE == the_proc->type) ? (uint32)(CallTerminateISR2) : (uint32)(CallTerminateTask);
+  /* pc */
+  *stack++ = (uint32)(the_proc->entry);
+  /* xpsr */
+  *stack = 0x01000000;
+
+  /* task runs at a defined processor mode */
+  //core_context->sp = USER_TASKS_ARM_MODE; /* macro defined into subarch part */
 
   /* TODO: initialize stack footprint */
+#if WITH_AUTOSAR_STACK_MONITORING == YES
+  (*(uint8 *)(the_proc->stack.stack_zone)) = OS_STACK_PATTERN;
+#endif
 }
 
-FUNC(u8, OS_CODE) tpl_check_stack_footprint (
+FUNC(uint8, OS_CODE) tpl_check_stack_footprint (
     CONST(tpl_proc_id, OS_APPL_DATA) proc_id)
 {
-	u8 tmp;
+	uint8 tmp;
 	/*to do*/
 	tmp=0;
 	return tmp;
+}
+
+/*
+ * tpl_sleep is used by the idle task
+ */
+void idle_function(void)
+{
+    while(1);
 }
 
 #define OS_STOP_SEC_CODE
