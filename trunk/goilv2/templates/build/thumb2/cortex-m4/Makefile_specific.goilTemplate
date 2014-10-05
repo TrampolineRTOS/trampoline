@@ -1,0 +1,20 @@
+LIBRARY_PATH = $(BOARD_PATH)/StdPeriph_Driver/src
+
+TEMP_SOURCE_DIRS += $(LIBRARY_PATH)
+
+# File format transformation
+OBJCOPY = arm-none-eabi-objcopy
+
+# Flash utility directory
+STLINK = ~/Rep/git/stlink
+
+img: $(EXEC)
+	$(OBJCOPY) -O ihex $(EXEC) $(EXEC).hex
+	$(OBJCOPY) -O binary $(EXEC) $(EXEC).bin
+
+# Flash the STM32F4
+burn: $(EXEC).bin
+	$(STLINK)/st-flash write $(EXEC).bin 0x8000000
+
+EXTRA_FILES_CLEAN += $(EXEC).hex
+EXTRA_FILES_CLEAN += $(EXEC).bin

@@ -1,0 +1,44 @@
+/*
+ * This configuration file adds a SOURCE attribute to ISR and COUNTER
+ * It also define a new object type: INTERRUPT
+ */
+/*
+ * Interrupt sources of the board
+ */
+CPU stm32f407_discovery {
+    INTERRUPT_COUNT nb_it {
+      IT_TABLE_SIZE = 82;
+    };
+    
+    INTERRUPT Reset {
+      ID = 1;
+    };
+    INTERRUPT NMI {
+      ID = 2;
+    };
+    INTERRUPT HardFault {
+      ID = 3;
+    };
+    INTERRUPT MemManage {
+      ID = 4;
+    };
+    INTERRUPT BusFault {
+      ID = 5;
+    };
+    INTERRUPT UsageFault {
+      ID = 6;
+    };
+    INTERRUPT SVCall {
+      ID = 11;
+    };
+    INTERRUPT DebugMonitor {
+      ID = 12;
+    };
+    INTERRUPT PendSV {
+      ID = 14;
+    };
+    INTERRUPT SysTick {
+      ID = 15;
+    };
+    
+};

@@ -1,6 +1,6 @@
-  .global % !REAL %
-% !REAL %:
-  mov r3,#% !INDEX %
-  svc #% !INDEX %
-  bx  lr
-
+  .global % !exists api_func::ACTUAL default ( api_func::NAME ) %
+  .type   % !exists api_func::ACTUAL default ( api_func::NAME ) %, \%function
+% !exists api_func::ACTUAL default ( api_func::NAME ) %:
+  mov r3,#% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME %
+  svc #% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME %
+  bx lr
