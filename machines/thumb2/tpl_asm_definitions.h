@@ -29,12 +29,14 @@
 /*
  * tpl_kern data structure offsets (for use into assembler sources)
  */
-.equ TPL_KERN_OFFSET_S_OLD ,0
-.equ TPL_KERN_OFFSET_S_RUNNING, 4
-.equ TPL_KERN_OFFSET_OLD, 8
-.equ TPL_KERN_OFFSET_RUNNING, 12
+.equ TPL_KERN_OFFSET_S_RUNNING, 0
+.equ TPL_KERN_OFFSET_S_ELECTED, 4
+.equ TPL_KERN_OFFSET_RUNNING, 8
+.equ TPL_KERN_OFFSET_ELECTED, 12
 .equ TPL_KERN_OFFSET_RUNNING_ID, 16
-.equ TPL_KERN_OFFSET_NEED_SWITCH, 20
+.equ TPL_KERN_OFFSET_ELECTED_ID, 20
+.equ TPL_KERN_OFFSET_NEED_SWITCH, 24
+.equ TPL_KERN_OFFSET_NEED_SCHEDULE, 25
 
 /*
  * ARM modes codes
@@ -54,6 +56,6 @@
 .equ CPSR_IRQ_LOCKED, 0b10000000
 .equ CPSR_FIQ_LOCKED, 0b01000000
 
-/*#endif /* TPL_ASM_DEFINITIONS_H */
+   /*#endif *//* TPL_ASM_DEFINITIONS_H */
 
 /* Enf of file tpl_asm_definitions.h */
