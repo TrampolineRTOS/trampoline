@@ -1,0 +1,65 @@
+OIL_VERSION = "2.5";
+
+IMPLEMENTATION trampoline {
+
+    /* This fix the default STACKSIZE of tasks */
+    TASK {
+        UINT32 STACKSIZE = 300 ;
+    } ;
+
+    /* This fix the default STACKSIZE of ISRs */
+    ISR {
+        UINT32 STACKSIZE = 100 ;
+    } ;
+};
+
+CPU only_one_periodic_task {
+  OS config {
+    STATUS = EXTENDED;
+    BUILD = TRUE {
+      TRAMPOLINE_BASE_PATH = "../../../../..";
+      APP_SRC = "periodic.c";
+      APP_NAME = "periodic_exe";
+      CFLAGS  = "-g -O0 -Wall -Wno-unused-but-set-variable -Wformat -std=c99 -mcpu=cortex-m4 -Wmissing-field-initializers -mthumb -mfloat-abi=soft -mfpu=fpv4-sp-d16 -nostartfiles"; 
+      ASFLAGS = "-g -Wall -mcpu=cortex-m4 -mthumb --fatal-warnings -mfloat-abi=soft -mfpu=fpv4-sp-d16";
+      LDFLAGS = "--fatal-warnings --warn-common --no-undefined -Tstm32_flash.ld -nostartfiles -L/usr/local/dev-arm/i386-Darwin-arm-gcc-4.8.2/arm-eabi/lib/thumb -lc -L/usr/local/dev-arm/i386-Darwin-arm-gcc-4.8.2/lib/gcc/arm-eabi/4.8.2 -lgcc -Map=periodic.map";
+//      LDFLAGS = "-g --fatal-warnings --warn-common  --no-undefined -L/usr/local/dev-arm/i386-Darwin-arm-gcc-4.8.2/arm-eabi/lib -lc"; 
+      COMPILER = "arm-none-eabi-gcc";
+      ASSEMBLER = "arm-none-eabi-as";
+      LINKER = "arm-none-eabi-ld";
+    };
+    SYSTEM_CALL = TRUE;
+  };
+  
+  APPMODE std {};
+  
+  ALARM one_second {
+    COUNTER = SystemCounter;
+    ACTION = ACTIVATETASK { TASK = my_periodic_task; };
+    AUTOSTART = TRUE { APPMODE = std; ALARMTIME = 10; CYCLETIME = 10; };
+  };
+  
+  ALARM stopper {
+    COUNTER = SystemCounter;
+    ACTION = ACTIVATETASK { TASK = stop; };
+    AUTOSTART = TRUE { APPMODE = std; ALARMTIME = 1000; CYCLETIME = 0; };
+  };
+    
+  TASK my_periodic_task {
+    PRIORITY = 1;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+  TASK stop {
+    PRIORITY = 3;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+  COUNTER SystemCounter {
+    MINCYCLE = 1;
+    MAXALLOWEDVALUE = 1000;
+    TICKSPERBASE = 1;
+  };
+};
