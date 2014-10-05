@@ -1,0 +1,27 @@
+/*
+ * This configuration file adds a SOURCE attribute to ISR and COUNTER
+ * It also define a new object type: INTERRUPT
+ */
+IMPLEMENTATION thumb2_interrupt {
+  TASK {
+    BOOLEAN USEFLOAT = FALSE;
+  };
+  ISR [] {
+    INTERRUPT_TYPE SOURCE;
+  };
+  COUNTER [] {
+    INTERRUPT_TYPE SOURCE;
+  };
+  INTERRUPT [] { 
+    UINT32 ID;
+  };
+  INTERRUPT_COUNT {
+    UINT32 IT_TABLE_SIZE;
+  };
+};
+
+CPU thumb2_interrupt {
+  COUNTER SystemCounter {
+    SOURCE = SysTick;
+  };
+};
