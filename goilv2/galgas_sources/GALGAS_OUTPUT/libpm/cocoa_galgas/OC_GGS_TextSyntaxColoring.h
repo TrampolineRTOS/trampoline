@@ -6,7 +6,7 @@
 //  Copyright (c) 2011 IRCCyN. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "CocoaGalgasPrefix.h"
 
 @class OC_GGS_TextDisplayDescriptor ;
 @class OC_Lexique ;

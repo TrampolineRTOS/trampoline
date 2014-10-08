@@ -1,31 +1,32 @@
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                                                                                                     *
 //  This file is part of libpm library                                         *
-//                                                                             *
+//                                                                                                                     *
 //  Copyright (C) 2003, ..., 2014 Pierre Molinaro.                             *
-//                                                                             *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
-//                                                                             *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
-//  ECN, École Centrale de Nantes (France)                                     *
-//                                                                             *
-//  This library is free software; you can redistribute it and/or modify it    *
-//  under the terms of the GNU Lesser General Public License as published      *
-//  by the Free Software Foundation; either version 2 of the License, or       *
-//  (at your option) any later version.                                        *
-//                                                                             *
-//  This program is distributed in the hope it will be useful, but WITHOUT     *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
-//  more details.                                                              *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//                                                                                                                     *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes                                          *
+//  ECN, École Centrale de Nantes (France)                                                                             *
+//                                                                                                                     *
+//  This library is free software; you can redistribute it and/or modify it                                            *
+//  under the terms of the GNU Lesser General Public License as published                                              *
+//  by the Free Software Foundation; either version 2 of the License, or                                               *
+//  (at your option) any later version.                                                                                *
+//                                                                                                                     *
+//  This program is distributed in the hope it will be useful, but WITHOUT                                             *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or                                              *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for                                           *
+//  more details.                                                                                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #import <Cocoa/Cocoa.h>
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
+#define GGS_prefix_by_tool_utility           @"PMPrefixByTimeUtility"
 #define GGS_selected_tab                     @"GGS_selected_tab"
 #define GGS_enable_completion                @"GGS_enable_completion"
 #define GGS_build_text_font                  @"GGS_build_window_text_font"
@@ -46,17 +47,17 @@
 #define GGS_template_font             @"GGS_template_font"
 #define GGS_template_foreground_color @"GGS_template_foreground_color"
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 @class OC_GGS_Document ;
 @class OC_GGS_ApplicationDelegate ;
 @class PMFontButton ;
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 extern OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 @interface OC_GGS_ApplicationDelegate : NSObject
 #if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_5
@@ -72,6 +73,9 @@ extern OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
 //--- Tool popup button
   @private IBOutlet NSPopUpButton * mToolPopUpButton ;
   @private NSMutableArray * mToolNameArray ;
+
+//--- Prefix by time utility
+  @private IBOutlet NSButton * mPrefixByTimeUtilityCheckBox ;
 
 //--- "Show ruler" checkbox
   @private IBOutlet NSButton * mEnableCompletionCheckBox ;
@@ -133,6 +137,10 @@ extern OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
 - (NSArray *) toolNameArray ;
 
 - (NSString *) compilerToolPath ;
+
+- (BOOL) prefixByToolUtility ;
+
+- (NSString *) toolUtilityPrefix ;
 @end
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*

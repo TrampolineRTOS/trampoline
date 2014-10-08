@@ -1,27 +1,27 @@
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //  'C_Compiler' : the compiler base class ;                                   *
-//                                                                             *
+//                                                                                                                     *
 //  This file is part of libpm library                                         *
-//                                                                             *
-//  Copyright (C) 2009, ..., 2012 Pierre Molinaro.                             *
-//                                                                             *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
-//                                                                             *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
-//  ECN, École Centrale de Nantes (France)                                     *
-//                                                                             *
-//  This library is free software; you can redistribute it and/or modify it    *
-//  under the terms of the GNU Lesser General Public License as published      *
-//  by the Free Software Foundation; either version 2 of the License, or       *
-//  (at your option) any later version.                                        *
-//                                                                             *
-//  This program is distributed in the hope it will be useful, but WITHOUT     *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
-//  more details.                                                              *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//  Copyright (C) 2009, ..., 2014 Pierre Molinaro.                             *
+//                                                                                                                     *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//                                                                                                                     *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes                                          *
+//  ECN, École Centrale de Nantes (France)                                                                             *
+//                                                                                                                     *
+//  This library is free software; you can redistribute it and/or modify it                                            *
+//  under the terms of the GNU Lesser General Public License as published                                              *
+//  by the Free Software Foundation; either version 2 of the License, or                                               *
+//  (at your option) any later version.                                                                                *
+//                                                                                                                     *
+//  This program is distributed in the hope it will be useful, but WITHOUT                                             *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or                                              *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for                                           *
+//  more details.                                                                                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include "command_line_interface/F_Analyze_CLI_Options.h"
 #include "files/C_TextFileWrite.h"
@@ -32,11 +32,11 @@
 #include "galgas2/predefined-types.h"
 #include "utilities/MF_MemoryControl.h"
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //        Syntax error message for 'end of source':                            *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 const utf32 C_Compiler::kEndOfSourceLexicalErrorMessage [] = {
   TO_UNICODE ('e'),
@@ -55,35 +55,39 @@ const utf32 C_Compiler::kEndOfSourceLexicalErrorMessage [] = {
   TO_UNICODE (0)
 } ;
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 bool C_Compiler::performGeneration (void) {
   return (! gOption_galgas_5F_builtin_5F_options_do_5F_not_5F_generate_5F_any_5F_file.mValue) && executionModeIsNormal () ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 bool C_Compiler::performLogFileRead (void) {
   return gOption_galgas_5F_builtin_5F_options_log_5F_file_5F_read.mValue ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========= Constructor and destructor
 #endif
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //        Constructor and destructor                                           *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_Compiler::C_Compiler (C_Compiler * inCallerCompiler,
                         const C_String & /* inDependencyFileExtension */,
                         const C_String & /* inDependencyFilePath */
                         COMMA_LOCATION_ARGS) :
 C_SharedObject (THERE),
+#ifdef USE_THREADS
+  mSemaphore (),
+  mThread (NULL),
+#endif
 mCallerCompiler (NULL),
 mSentString (),
 mSentStringIsValid (true),
@@ -97,14 +101,21 @@ mCheckedVariableList () {
   macroAssignSharedObject (mCallerCompiler, inCallerCompiler) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_Compiler::~C_Compiler (void) {
+  #ifdef USE_THREADS
+    mSemaphore.lock () ;
+    if (NULL != mThread) {
+      mThread->join () ;
+      macroMyDelete (mThread) ;
+    }
+  #endif
   macroDetachSharedObject (mSourceTextPtr) ;
   macroDetachSharedObject (mCallerCompiler) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_Compiler::sourceFilePath (void) const {
   return (mSourceTextPtr == NULL)
@@ -113,13 +124,13 @@ C_String C_Compiler::sourceFilePath (void) const {
   ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========= Sent String Management
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_string C_Compiler::sentString (void) const {
   GALGAS_string result ;
@@ -129,13 +140,13 @@ GALGAS_string C_Compiler::sentString (void) const {
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========= Template String Management
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_string C_Compiler::retrieveAndResetTemplateString (void) {
   const C_String s = mTemplateString ;
@@ -144,19 +155,19 @@ GALGAS_string C_Compiler::retrieveAndResetTemplateString (void) {
   return GALGAS_string (s) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::resetTemplateString (void) {
   mTemplateString.setLengthToZero () ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========= Scanner configuration
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::resetAndLoadSourceFromText (C_SourceTextInString * & ioSourceTextPtr) {
   macroAssignSharedObject (mSourceTextPtr, ioSourceTextPtr) ;
@@ -164,13 +175,13 @@ void C_Compiler::resetAndLoadSourceFromText (C_SourceTextInString * & ioSourceTe
   mCurrentLocation.resetWithSourceText (mSourceTextPtr) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========= On the fly semantic error Message
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::onTheFlySemanticError (const C_String & inErrorMessage
                                         COMMA_LOCATION_ARGS) {
@@ -180,13 +191,13 @@ void C_Compiler::onTheFlySemanticError (const C_String & inErrorMessage
                        COMMA_THERE) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========= On the fly semantic Warning Message
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::onTheFlySemanticWarning (const C_String & inWarningMessage
                                           COMMA_LOCATION_ARGS) {
@@ -196,13 +207,13 @@ void C_Compiler::onTheFlySemanticWarning (const C_String & inWarningMessage
                          COMMA_THERE) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========= Print Message
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::printMessage (const GALGAS_string & inMessage
                                COMMA_LOCATION_ARGS) {
@@ -211,7 +222,7 @@ void C_Compiler::printMessage (const GALGAS_string & inMessage
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::printMessage (const C_String & inMessage
                                COMMA_LOCATION_ARGS) {
@@ -220,13 +231,13 @@ void C_Compiler::printMessage (const C_String & inMessage
   ggs_printMessage (s COMMA_THERE) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========= Log File Read
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::logFileRead (const C_String & inFilePath) {
   if (performLogFileRead ()) {
@@ -234,25 +245,25 @@ void C_Compiler::logFileRead (const C_String & inFilePath) {
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========= Loop variant run time error
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::loopRunTimeVariantError (LOCATION_ARGS) {
   onTheFlyRunTimeError ("loop variant run-time error" COMMA_THERE) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========= Cast error
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::castError (const C_String & inTargetTypeName,
                             const C_galgas_type_descriptor * inObjectDynamicTypeDescriptor
@@ -262,13 +273,13 @@ void C_Compiler::castError (const C_String & inTargetTypeName,
   onTheFlyRunTimeError (m COMMA_THERE) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========= GALGAS 2 Error
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::semanticErrorAtLocation (const GALGAS_location & inErrorLocation,
                                           const C_String & inErrorMessage
@@ -285,7 +296,7 @@ void C_Compiler::semanticErrorAtLocation (const GALGAS_location & inErrorLocatio
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::emitSemanticError (const GALGAS_location & inErrorLocation,
                                     const GALGAS_string & inErrorMessage
@@ -303,7 +314,7 @@ void C_Compiler::emitSemanticError (const GALGAS_location & inErrorLocation,
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::semanticErrorWith_K_message (const GALGAS_lstring & inKey,
                                               TC_UniqueArray <C_String> & ioNearestKeyArray,
@@ -344,7 +355,7 @@ void C_Compiler::semanticErrorWith_K_message (const GALGAS_lstring & inKey,
   semanticErrorAtLocation (key_location, message COMMA_THERE) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::semanticErrorWith_K_L_message (const GALGAS_lstring & inKey,
                                                 const char * in_K_L_ErrorMessage,
@@ -376,13 +387,13 @@ void C_Compiler::semanticErrorWith_K_L_message (const GALGAS_lstring & inKey,
   semanticErrorAtLocation (key_location, message COMMA_THERE) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========= GALGAS 2 Warnings
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::semanticWarningAtLocation (const GALGAS_location & inWarningLocation,
                                             const C_String & inWarningMessage
@@ -399,7 +410,7 @@ void C_Compiler::semanticWarningAtLocation (const GALGAS_location & inWarningLoc
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::emitSemanticWarning (const GALGAS_location & inWarningLocation,
                                       const GALGAS_string & inWarningMessage
@@ -417,49 +428,97 @@ void C_Compiler::emitSemanticWarning (const GALGAS_location & inWarningLocation,
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========= Run Time Error
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::onTheFlyRunTimeError (const C_String & inRunTimeErrorMessage
                                        COMMA_LOCATION_ARGS) {
   signalRunTimeError (inRunTimeErrorMessage COMMA_THERE) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========= here
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_location C_Compiler::here (void) const {
   return GALGAS_location (mStartLocationForHere, mEndLocationForHere, mSourceTextPtr) ;
 }
 
-//-----------------------------------------------------------------------------*
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   T R A C E                                                                                                         *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+static C_TextFileWrite * gTraceFile = NULL ;
+static uint32_t gTraceIndex ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enableTraceWithPath (const C_String & inFilePath) {
+  gTraceIndex = 0 ;
+  const C_String path = inFilePath + ".trace.txt" ;
+  macroMyNew (gTraceFile, C_TextFileWrite (path)) ;
+  if (! gTraceFile->isOpened ()) {
+    printf ("**** Error: cannot create trace file at path: '%s'.\n", path.cString (HERE)) ;
+    macroMyDelete (gTraceFile) ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+bool traceIsEnabled (void) {
+  return NULL != gTraceFile ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void appendTrace (const char * inType,
+                  const bool inIsBuilt,
+                  const C_String & inStringValue) {
+  if (NULL != gTraceFile) {
+    gTraceIndex ++ ;
+    (*gTraceFile) << cStringWithUnsigned (gTraceIndex)
+                  << ":@" << inType
+                  << " [" << (inIsBuilt ? "built" : "not built")
+                  << ", " << inStringValue << "]\n" ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void closeTrace (void) {
+  macroMyDelete (gTraceFile) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========= Check And Generate File
 #endif
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//   C H E C K    A N D    G E N E R A T E   F I L E                           *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   C H E C K    A N D    G E N E R A T E   F I L E                                                                   *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #define START_OF_USER_ZONE_1  "--- START OF USER ZONE 1\n"
 #define END_OF_USER_ZONE_1    "--- END OF USER ZONE 1\n\n"
 #define START_OF_USER_ZONE_2  "--- START OF USER ZONE 2\n"
 #define END_OF_USER_ZONE_2    "--- END OF USER ZONE 2\n\n"
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::generateFile (const C_String & inLineCommentPrefix,
                                const TC_UniqueArray <C_String> & inDirectoriesToExclude,
@@ -478,7 +537,7 @@ void C_Compiler::generateFile (const C_String & inLineCommentPrefix,
                           inGeneratedZone3) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::generateFileInGALGAS_OUTPUT (const C_String & inLineCommentPrefix,
                                               const C_String & inFileName,
@@ -497,167 +556,12 @@ void C_Compiler::generateFileInGALGAS_OUTPUT (const C_String & inLineCommentPref
                           inGeneratedZone3) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
-void C_Compiler::
-generateFileWithPatternFromPathes (const C_String & inStartPath,
-                                   const TC_UniqueArray <C_String> & inDirectoriesToExclude,
-                                   const C_String & inLineCommentPrefix,
-                                   const C_String & inFileName,
-                                   const C_String & inDefaultUserZone1,
-                                   const C_String & inGeneratedZone2,
-                                   const C_String & inDefaultUserZone2,
-                                   const C_String & inGeneratedZone3) {
-  incrementGeneratedFileCount () ;
-//--- Verbose option ?
-  const bool verboseOptionOn = gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ;
-//--- Very Verbose (?)
-  const bool veryVerboseOptionOn = false ;
-//--- User zones
-  const C_String kSTART_OF_USER_ZONE_1 = C_String (inLineCommentPrefix) + START_OF_USER_ZONE_1 ;
-  const C_String kEND_OF_USER_ZONE_1   = C_String (inLineCommentPrefix) + END_OF_USER_ZONE_1 ;
-  const C_String kSTART_OF_USER_ZONE_2 = C_String (inLineCommentPrefix) + START_OF_USER_ZONE_2 ;
-  const C_String kEND_OF_USER_ZONE_2   = C_String (inLineCommentPrefix) + END_OF_USER_ZONE_2 ;
-//--- Build generated zone 1
-  C_String generatedZone1 ;
-  generatedZone1.appendFileHeaderComment (inLineCommentPrefix, C_String ("File '") + inFileName + "'", compilerVersionString (), false) ;
-//--- Start path : by default, use source file directory
-  const C_String startPath = (inStartPath.length () == 0)
-   ? sourceFilePath ().stringByDeletingLastPathComponent ()
-   : inStartPath ;
-//--- Search file in directory
-  const C_String fullPathName = C_FileManager::findFileInDirectory (startPath, inFileName, inDirectoriesToExclude) ;
-  if (fullPathName.length () == 0) {
-    if (veryVerboseOptionOn) {
-      C_String message ;
-      message << "File '" << inFileName << "' not found.\n" ;
-      ggs_printMessage (message COMMA_HERE) ;
-    }
-  //--- File does not exist : create it
-    C_String fileName = startPath ;
-    fileName.appendString ("/") ;
-    fileName.appendString (inFileName) ;
-    //printf ("inFileName '%s'\n", inFileName.cString (HERE)) ;
-    //printf ("fileName '%s'\n", fileName.cString (HERE)) ;
-    const C_String directory = fileName.stringByDeletingLastPathComponent () ;
-    C_FileManager::makeDirectoryIfDoesNotExist (directory) ;
-    if (performGeneration ()) {
-      C_TextFileWrite f (fileName) ;
-      bool ok = f.isOpened () ;
-      if (! ok) {
-        C_String message ;
-        message << "Cannot open '" << fileName << "' file in write mode." ;
-        onTheFlySemanticError (message COMMA_HERE) ;
-      }
-      f << generatedZone1 << kSTART_OF_USER_ZONE_1 << inDefaultUserZone1 << kEND_OF_USER_ZONE_1
-        << inGeneratedZone2 << kSTART_OF_USER_ZONE_2 << inDefaultUserZone2 << kEND_OF_USER_ZONE_2
-        << inGeneratedZone3 ;
-      for (int32_t i=0 ; i<inGeneratedZone2.length () ; i++) {
-        incrementGeneratedLileCount (UNICODE_VALUE (inGeneratedZone2 (i COMMA_HERE)) == '\n') ;
-      }
-      for (int32_t i=0 ; i<inGeneratedZone3.length () ; i++) {
-        incrementGeneratedLileCount (UNICODE_VALUE (inGeneratedZone3 (i COMMA_HERE)) == '\n') ;
-      }
-      if (verboseOptionOn || veryVerboseOptionOn) {
-        ggs_printFileOperationSuccess (C_String ("Created '") + fileName + "'.\n" COMMA_HERE) ;
-      }
-    }else{
-      ggs_printWarning (NULL, C_LocationInSource (), C_String ("Need to create '") + fileName + "'.\n" COMMA_HERE) ;
-    }
-  }else{
-    if (veryVerboseOptionOn) {
-      C_String message ;
-      message << "Found '" << fullPathName << "' file.\n" ;
-      ggs_printMessage (message COMMA_HERE) ;
-    }
-    C_String firstUserPart ;
-    C_String secondUserPart ;
-    C_String firstGeneratedPart ;
-    C_String secondGeneratedPart ;
-    logFileRead (fullPathName) ;
-    C_String s = C_FileManager::stringWithContentOfFile (fullPathName) ;
-    TC_UniqueArray <C_String> stringArray ;
-    s.componentsSeparatedByString (kSTART_OF_USER_ZONE_1, stringArray) ;
-    bool ok = stringArray.count () == 2 ;
-    if (ok) {
-      s = stringArray (1 COMMA_HERE) ;
-      s.componentsSeparatedByString (kEND_OF_USER_ZONE_1, stringArray) ;
-      ok = stringArray.count () == 2 ;
-    }
-    if (ok) {
-      firstUserPart = stringArray (0 COMMA_HERE) ;
-      s = stringArray (1 COMMA_HERE) ;
-      s.componentsSeparatedByString (kSTART_OF_USER_ZONE_2, stringArray) ;
-      ok = stringArray.count () == 2 ;
-    }
-    if (ok) {
-      firstGeneratedPart = stringArray (0 COMMA_HERE) ;
-      s = stringArray (1 COMMA_HERE) ;
-      s.componentsSeparatedByString (kEND_OF_USER_ZONE_2, stringArray) ;
-      ok = stringArray.count () == 2 ;
-    }
-    if (ok) {
-      secondUserPart = stringArray (0 COMMA_HERE) ;
-      secondGeneratedPart = stringArray (1 COMMA_HERE) ;
-    }
-    if (! ok) {
-      ggs_printError (NULL, C_LocationInSource (), C_String ("BAD FILE '") + fullPathName + "'.\n" COMMA_HERE) ;
-    }else if ((firstGeneratedPart == inGeneratedZone2) && (secondGeneratedPart == inGeneratedZone3)) {
-      for (int32_t i=0 ; i<inGeneratedZone2.length () ; i++) {
-        incrementCheckedFileCount (UNICODE_VALUE (inGeneratedZone2 (i COMMA_HERE)) == '\n') ;
-      }
-      for (int32_t i=0 ; i<inGeneratedZone3.length () ; i++) {
-        incrementCheckedFileCount (UNICODE_VALUE (inGeneratedZone3 (i COMMA_HERE)) == '\n') ;
-      }
-      for (int32_t i=0 ; i<firstUserPart.length () ; i++) {
-        incrementPreservedLileCount (UNICODE_VALUE (firstUserPart (i COMMA_HERE)) == '\n') ;
-      }
-      for (int32_t i=0 ; i<secondUserPart.length () ; i++) {
-        incrementPreservedLileCount (UNICODE_VALUE (secondUserPart (i COMMA_HERE)) == '\n') ;
-      }
-    }else if (performGeneration ()) {
-      C_TextFileWrite f (fullPathName) ;
-      ok = f.isOpened () ;
-      if (! ok) {
-        C_String message ;
-        message << "Cannot open '" << fullPathName << "' file in write mode." ;
-        onTheFlySemanticError (message COMMA_HERE) ;
-      }
-      f << generatedZone1
-        << kSTART_OF_USER_ZONE_1 << firstUserPart << kEND_OF_USER_ZONE_1
-        << inGeneratedZone2
-        << kSTART_OF_USER_ZONE_2 << secondUserPart << kEND_OF_USER_ZONE_2
-        << inGeneratedZone3 ;
-      for (int32_t i=0 ; i<inGeneratedZone2.length () ; i++) {
-        incrementGeneratedLileCount (UNICODE_VALUE (inGeneratedZone2 (i COMMA_HERE)) == '\n') ;
-      }
-      for (int32_t i=0 ; i<inGeneratedZone3.length () ; i++) {
-        incrementGeneratedLileCount (UNICODE_VALUE (inGeneratedZone3 (i COMMA_HERE)) == '\n') ;
-      }
-      for (int32_t i=0 ; i<firstUserPart.length () ; i++) {
-        incrementGeneratedLileCount (UNICODE_VALUE (firstUserPart (i COMMA_HERE)) == '\n') ;
-      }
-      for (int32_t i=0 ; i<secondUserPart.length () ; i++) {
-        incrementGeneratedLileCount (UNICODE_VALUE (secondUserPart (i COMMA_HERE)) == '\n') ;
-      }
-      if (verboseOptionOn || veryVerboseOptionOn) {
-        ggs_printFileOperationSuccess (C_String ("Replaced '") + fullPathName + "'.\n" COMMA_HERE) ;
-      }
-    }else{
-      ggs_printWarning (NULL, C_LocationInSource (), C_String ("Need to replace '") + fullPathName + "'.\n" COMMA_HERE) ;
-    }
-  }
-}
-
-
-//-----------------------------------------------------------------------------*
-
-void C_Compiler::
-generateFileFromPathes (const C_String & inStartPath,
-                        const TC_UniqueArray <C_String> & inDirectoriesToExclude,
-                        const C_String & inFileName,
-                        const C_String & inContents) {
-  incrementGeneratedFileCount () ;
+void C_Compiler::generateFileFromPathes (const C_String & inStartPath,
+                                        const TC_UniqueArray <C_String> & inDirectoriesToExclude,
+                                        const C_String & inFileName,
+                                        const C_String & inContents) {
 //--- Verbose option ?
   const bool verboseOptionOn = gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ;
 //--- Very Verbose (?)
@@ -725,7 +629,7 @@ generateFileFromPathes (const C_String & inStartPath,
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::enterPragma (const GALGAS_lstring & inPragmaName,
                               const GALGAS_lstring & inPragmaArgument
@@ -745,64 +649,207 @@ void C_Compiler::enterPragma (const GALGAS_lstring & inPragmaName,
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 int32_t C_Compiler::checkedVariableListEntryCount (void) const {
   return mCheckedVariableList.count () ;
 }
 
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_Compiler::checkedVariableAtIndex (const int32_t inIndex COMMA_LOCATION_ARGS) const {
   return mCheckedVariableList (inIndex COMMA_THERE) ;
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//   T R A C E                                                                 *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
-static C_TextFileWrite * gTraceFile = NULL ;
-static uint32_t gTraceIndex ;
-
-//-----------------------------------------------------------------------------*
-
-void enableTraceWithPath (const C_String & inFilePath) {
-  gTraceIndex = 0 ;
-  const C_String path = inFilePath + ".trace.txt" ;
-  macroMyNew (gTraceFile, C_TextFileWrite (path)) ;
-  if (! gTraceFile->isOpened ()) {
-    printf ("**** Error: cannot create trace file at path: '%s'.\n", path.cString (HERE)) ;
-    macroMyDelete (gTraceFile) ;
+#ifdef USE_THREADS
+  static void codeThread (C_Compiler * inCompiler,
+                          const C_String & inStartPath,
+                          const C_String & inLineCommentPrefix,
+                          const C_String & inFileName,
+                          const C_String & inDefaultUserZone1,
+                          const C_String & inGeneratedZone2,
+                          const C_String & inDefaultUserZone2,
+                          const C_String & inGeneratedZone3) {
+    inCompiler->actualGenerateFileWithPatternFromPathes (inStartPath,
+                                                         inLineCommentPrefix,
+                                                         inFileName,
+                                                         inDefaultUserZone1,
+                                                         inGeneratedZone2,
+                                                         inDefaultUserZone2,
+                                                         inGeneratedZone3) ;
   }
+#endif
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void C_Compiler::generateFileWithPatternFromPathes (const C_String & inStartPath,
+                                                    const TC_UniqueArray <C_String> & inDirectoriesToExclude,
+                                                    const C_String & inLineCommentPrefix,
+                                                    const C_String & inFileName,
+                                                    const C_String & inDefaultUserZone1,
+                                                    const C_String & inGeneratedZone2,
+                                                    const C_String & inDefaultUserZone2,
+                                                    const C_String & inGeneratedZone3) {
+  #ifdef USE_THREADS
+    inStartPath.insulate () ;
+    inLineCommentPrefix.insulate () ;
+    inLineCommentPrefix.insulate () ;
+    inFileName.insulate () ;
+    inDefaultUserZone1.insulate () ;
+    inGeneratedZone2.insulate () ;
+    inDefaultUserZone2.insulate () ;
+    inGeneratedZone3.insulate () ;
+    mSemaphore.lock () ;
+    if (NULL != mThread) {
+      mThread->join () ;
+      macroMyDelete (mThread) ;
+    }
+    macroMyNew (mThread, std::thread (codeThread, this,
+                                             inStartPath,
+                                             inLineCommentPrefix,
+                                             inFileName,
+                                             inDefaultUserZone1,
+                                             inGeneratedZone2,
+                                             inDefaultUserZone2,
+                                             inGeneratedZone3)) ;
+  #else
+    actualGenerateFileWithPatternFromPathes (inStartPath,
+                                             inDirectoriesToExclude,
+                                             inLineCommentPrefix,
+                                             inFileName,
+                                             inDefaultUserZone1,
+                                             inGeneratedZone2,
+                                             inDefaultUserZone2,
+                                             inGeneratedZone3) ;
+  #endif
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
-bool traceIsEnabled (void) {
-  return NULL != gTraceFile ;
-}
-
-//-----------------------------------------------------------------------------*
-
-void appendTrace (const char * inType,
-                  const bool inIsBuilt,
-                  const C_String & inStringValue) {
-  if (NULL != gTraceFile) {
-    gTraceIndex ++ ;
-    (*gTraceFile) << cStringWithUnsigned (gTraceIndex)
-                  << ":@" << inType
-                  << " [" << (inIsBuilt ? "built" : "not built")
-                  << ", " << inStringValue << "]\n" ;
+void C_Compiler::actualGenerateFileWithPatternFromPathes (const C_String & inStartPath,
+                                                    const TC_UniqueArray <C_String> & inDirectoriesToExclude,
+                                                    const C_String & inLineCommentPrefix,
+                                                    const C_String & inFileName,
+                                                    const C_String & inDefaultUserZone1,
+                                                    const C_String & inGeneratedZone2,
+                                                    const C_String & inDefaultUserZone2,
+                                                    const C_String & inGeneratedZone3) {
+//  const TC_UniqueArray <C_String> inDirectoriesToExclude ;
+//--- Verbose option ?
+  const bool verboseOptionOn = gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ;
+//--- Very Verbose (?)
+  const bool veryVerboseOptionOn = false ;
+//--- User zones
+  const C_String kSTART_OF_USER_ZONE_1 = C_String (inLineCommentPrefix) + START_OF_USER_ZONE_1 ;
+  const C_String kEND_OF_USER_ZONE_1   = C_String (inLineCommentPrefix) + END_OF_USER_ZONE_1 ;
+  const C_String kSTART_OF_USER_ZONE_2 = C_String (inLineCommentPrefix) + START_OF_USER_ZONE_2 ;
+  const C_String kEND_OF_USER_ZONE_2   = C_String (inLineCommentPrefix) + END_OF_USER_ZONE_2 ;
+//--- Build generated zone 1
+  C_String generatedZone1 ;
+  generatedZone1.appendFileHeaderComment (inLineCommentPrefix, C_String ("File '") + inFileName + "'", compilerVersionString (), false) ;
+//--- Start path : by default, use source file directory
+  const C_String startPath = (inStartPath.length () == 0)
+   ? sourceFilePath ().stringByDeletingLastPathComponent ()
+   : inStartPath ;
+//--- Search file in directory
+  const C_String fullPathName = C_FileManager::findFileInDirectory (startPath, inFileName, inDirectoriesToExclude) ;
+  if (fullPathName.length () == 0) {
+    if (veryVerboseOptionOn) {
+      C_String message ;
+      message << "File '" << inFileName << "' not found.\n" ;
+      ggs_printMessage (message COMMA_HERE) ;
+    }
+  //--- File does not exist : create it
+    C_String fileName = startPath ;
+    fileName.appendString ("/") ;
+    fileName.appendString (inFileName) ;
+    //printf ("inFileName '%s'\n", inFileName.cString (HERE)) ;
+    //printf ("fileName '%s'\n", fileName.cString (HERE)) ;
+    const C_String directory = fileName.stringByDeletingLastPathComponent () ;
+    C_FileManager::makeDirectoryIfDoesNotExist (directory) ;
+    if (performGeneration ()) {
+      C_TextFileWrite f (fileName) ;
+      bool ok = f.isOpened () ;
+      if (! ok) {
+        C_String message ;
+        message << "Cannot open '" << fileName << "' file in write mode." ;
+        onTheFlySemanticError (message COMMA_HERE) ;
+      }
+      f << generatedZone1 << kSTART_OF_USER_ZONE_1 << inDefaultUserZone1 << kEND_OF_USER_ZONE_1
+        << inGeneratedZone2 << kSTART_OF_USER_ZONE_2 << inDefaultUserZone2 << kEND_OF_USER_ZONE_2
+        << inGeneratedZone3 ;
+      if (verboseOptionOn || veryVerboseOptionOn) {
+        ggs_printFileCreationSuccess (C_String ("Created '") + fileName + "'.\n" COMMA_HERE) ;
+      }
+    }else{
+      ggs_printWarning (NULL, C_LocationInSource (), C_String ("Need to create '") + fileName + "'.\n" COMMA_HERE) ;
+    }
+  }else{
+    if (veryVerboseOptionOn) {
+      C_String message ;
+      message << "Found '" << fullPathName << "' file.\n" ;
+      ggs_printMessage (message COMMA_HERE) ;
+    }
+    C_String firstUserPart ;
+    C_String secondUserPart ;
+    C_String firstGeneratedPart ;
+    C_String secondGeneratedPart ;
+    logFileRead (fullPathName) ;
+    C_String s = C_FileManager::stringWithContentOfFile (fullPathName) ;
+    TC_UniqueArray <C_String> stringArray ;
+    s.componentsSeparatedByString (kSTART_OF_USER_ZONE_1, stringArray) ;
+    bool ok = stringArray.count () == 2 ;
+    if (ok) {
+      s = stringArray (1 COMMA_HERE) ;
+      s.componentsSeparatedByString (kEND_OF_USER_ZONE_1, stringArray) ;
+      ok = stringArray.count () == 2 ;
+    }
+    if (ok) {
+      firstUserPart = stringArray (0 COMMA_HERE) ;
+      s = stringArray (1 COMMA_HERE) ;
+      s.componentsSeparatedByString (kSTART_OF_USER_ZONE_2, stringArray) ;
+      ok = stringArray.count () == 2 ;
+    }
+    if (ok) {
+      firstGeneratedPart = stringArray (0 COMMA_HERE) ;
+      s = stringArray (1 COMMA_HERE) ;
+      s.componentsSeparatedByString (kEND_OF_USER_ZONE_2, stringArray) ;
+      ok = stringArray.count () == 2 ;
+    }
+    if (ok) {
+      secondUserPart = stringArray (0 COMMA_HERE) ;
+      secondGeneratedPart = stringArray (1 COMMA_HERE) ;
+    }
+    if (! ok) {
+      ggs_printError (NULL, C_LocationInSource (), C_String ("BAD FILE '") + fullPathName + "'.\n" COMMA_HERE) ;
+    }else if ((firstGeneratedPart == inGeneratedZone2) && (secondGeneratedPart == inGeneratedZone3)) {
+    }else if (performGeneration ()) {
+      C_TextFileWrite f (fullPathName) ;
+      ok = f.isOpened () ;
+      if (! ok) {
+        C_String message ;
+        message << "Cannot open '" << fullPathName << "' file in write mode." ;
+        onTheFlySemanticError (message COMMA_HERE) ;
+      }
+      f << generatedZone1
+        << kSTART_OF_USER_ZONE_1 << firstUserPart << kEND_OF_USER_ZONE_1
+        << inGeneratedZone2
+        << kSTART_OF_USER_ZONE_2 << secondUserPart << kEND_OF_USER_ZONE_2
+        << inGeneratedZone3 ;
+      if (verboseOptionOn || veryVerboseOptionOn) {
+        ggs_printFileOperationSuccess (C_String ("Replaced '") + fullPathName + "'.\n" COMMA_HERE) ;
+      }
+    }else{
+      ggs_printWarning (NULL, C_LocationInSource (), C_String ("Need to replace '") + fullPathName + "'.\n" COMMA_HERE) ;
+    }
   }
+  #ifdef USE_THREADS
+    mSemaphore.unlock () ;
+  #endif
 }
 
-//-----------------------------------------------------------------------------*
 
-void closeTrace (void) {
-  macroMyDelete (gTraceFile) ;
-}
-
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*

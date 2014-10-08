@@ -1,32 +1,32 @@
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //  'C_LocationInSource'                                                       *
-//                                                                             *
+//                                                                                                                     *
 //  This file is part of libpm library                                         *
-//                                                                             *
+//                                                                                                                     *
 //  Copyright (C) 1996, ..., 2011 Pierre Molinaro.                             *
-//                                                                             *
+//                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
 //  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
 //  ECN, École Centrale de Nantes (France)                                     *
-//                                                                             *
+//                                                                                                                     *
 //  This library is free software; you can redistribute it and/or modify it    *
 //  under the terms of the GNU Lesser General Public License as published      *
 //  by the Free Software Foundation; either version 2 of the License, or       *
 //  (at your option) any later version.                                        *
-//                                                                             *
+//                                                                                                                     *
 //  This program is distributed in the hope it will be useful, but WITHOUT     *
 //  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
 //  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
 //  more details.                                                              *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include "galgas2/C_LocationInSource.h"
 #include "galgas2/C_SourceTextInString.h"
 #include "strings/C_String.h"
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_LocationInSource::C_LocationInSource (void) :
 mIndex (0),
@@ -35,7 +35,7 @@ mColumnNumber (1),
 mSourceText () {
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_LocationInSource::C_LocationInSource (const C_SourceTextInString * inSourceText,
                                         const int32_t inIndex,
@@ -48,7 +48,7 @@ mSourceText (NULL) {
   macroAssignSharedObject (mSourceText, inSourceText) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_LocationInSource::C_LocationInSource (const C_LocationInSource & inObject) :
 mIndex (inObject.mIndex),
@@ -58,7 +58,7 @@ mSourceText (NULL) {
   macroAssignSharedObject (mSourceText, inObject.mSourceText) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_LocationInSource & C_LocationInSource::operator = (const C_LocationInSource & inObject) {
   if (this != & inObject) {
@@ -70,7 +70,7 @@ C_LocationInSource & C_LocationInSource::operator = (const C_LocationInSource & 
   return *this ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_LocationInSource::gotoNextLocation (const bool inPreviousCharWasEndOfLine) {
   mIndex ++ ;
@@ -82,7 +82,7 @@ void C_LocationInSource::gotoNextLocation (const bool inPreviousCharWasEndOfLine
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_LocationInSource::resetLocation (void) {
   mIndex = 0 ;
@@ -90,7 +90,7 @@ void C_LocationInSource::resetLocation (void) {
   mColumnNumber = 1 ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_LocationInSource::resetWithSourceText (const C_SourceTextInString * inSourceText) {
   mIndex = 0 ;
@@ -99,7 +99,7 @@ void C_LocationInSource::resetWithSourceText (const C_SourceTextInString * inSou
   macroAssignSharedObject (mSourceText, inSourceText) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_LocationInSource::sourceFilePath (void) const {
   C_String result ;
@@ -109,10 +109,10 @@ C_String C_LocationInSource::sourceFilePath (void) const {
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_LocationInSource::~C_LocationInSource (void) {
   macroDetachSharedObject (mSourceText) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*

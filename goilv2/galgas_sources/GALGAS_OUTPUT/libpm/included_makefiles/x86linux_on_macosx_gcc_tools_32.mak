@@ -4,7 +4,7 @@
 #                                                               *
 #---------------------------------------------------------------*
 
-TOOL_CHAIN_VERSION := 4.8.1
+TOOL_CHAIN_VERSION := 4.9.1
 TOOL_CHAIN_ARCHIVE := gcc-$(TOOL_CHAIN_VERSION)-for-linux32
 TOOL_CHAIN_INSTALL_PATH := /usr/local/$(TOOL_CHAIN_ARCHIVE)
 

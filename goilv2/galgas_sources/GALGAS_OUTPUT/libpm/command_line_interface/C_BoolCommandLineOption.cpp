@@ -1,42 +1,42 @@
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //  Generic Boolean Command Line Interface Option                              *
-//                                                                             *
+//                                                                                                                     *
 //  This file is part of libpm library                                         *
-//                                                                             *
+//                                                                                                                     *
 //  Copyright (C) 2009, ..., 2009 Pierre Molinaro.                             *
-//                                                                             *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
-//                                                                             *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
-//  ECN, École Centrale de Nantes (France)                                     *
-//                                                                             *
-//  This library is free software; you can redistribute it and/or modify it    *
-//  under the terms of the GNU Lesser General Public License as published      *
-//  by the Free Software Foundation; either version 2 of the License, or       *
-//  (at your option) any later version.                                        *
-//                                                                             *
-//  This program is distributed in the hope it will be useful, but WITHOUT     *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
-//  more details.                                                              *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//                                                                                                                     *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes                                          *
+//  ECN, École Centrale de Nantes (France)                                                                             *
+//                                                                                                                     *
+//  This library is free software; you can redistribute it and/or modify it                                            *
+//  under the terms of the GNU Lesser General Public License as published                                              *
+//  by the Free Software Foundation; either version 2 of the License, or                                               *
+//  (at your option) any later version.                                                                                *
+//                                                                                                                     *
+//  This program is distributed in the hope it will be useful, but WITHOUT                                             *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or                                              *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for                                           *
+//  more details.                                                                                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include <string.h>
 #include <stdio.h>
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include "command_line_interface/C_BoolCommandLineOption.h"
 #include "strings/C_String.h"
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
-static C_BoolCommandLineOption * gFirst ;
-static C_BoolCommandLineOption * gLast ;
+static C_BoolCommandLineOption * gFirstBoolCommand ;
+static C_BoolCommandLineOption * gLastBoolCommand ;
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_BoolCommandLineOption::C_BoolCommandLineOption (const char * inDomainName,
                                                   const char * inIdentifier,
@@ -46,21 +46,21 @@ C_BoolCommandLineOption::C_BoolCommandLineOption (const char * inDomainName,
 C_CommandLineOption (inDomainName, inIdentifier, inChar, inString, inComment),
 mNext (NULL),
 mValue (false) {
-  if (NULL == gFirst) {
-    gFirst = this ;
+  if (NULL == gFirstBoolCommand) {
+    gFirstBoolCommand = this ;
   }else{
-    gLast->mNext = this ;
+    gLastBoolCommand->mNext = this ;
   }
-  gLast = this ;
+  gLastBoolCommand = this ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_BoolCommandLineOption::
 setBoolOptionForCommandChar (const char inCommandChar,
                              bool & outFound) {
   outFound = false ;
-  C_BoolCommandLineOption * p = gFirst ;
+  C_BoolCommandLineOption * p = gFirstBoolCommand ;
   while ((p != NULL) && ! outFound) {
     if (p->mCommandChar == inCommandChar) {
       outFound = true ;
@@ -70,7 +70,7 @@ setBoolOptionForCommandChar (const char inCommandChar,
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_BoolCommandLineOption::setBoolOptionForCommandString (const char * inCommandString,
                                                              bool & outFound,
@@ -79,7 +79,7 @@ void C_BoolCommandLineOption::setBoolOptionForCommandString (const char * inComm
   if (outFound) {
     outCocoaOutput = true ;
   }
-  C_BoolCommandLineOption * p = gFirst ;
+  C_BoolCommandLineOption * p = gFirstBoolCommand ;
   while ((p != NULL) && ! outFound) {
     if (strcmp (p->mCommandString, inCommandString) == 0) {
       outFound = true ;
@@ -89,11 +89,11 @@ void C_BoolCommandLineOption::setBoolOptionForCommandString (const char * inComm
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_BoolCommandLineOption::
 printUsageOfBoolOptions (void) {
-  C_BoolCommandLineOption * p = gFirst ;
+  C_BoolCommandLineOption * p = gFirstBoolCommand ;
   while (p != NULL) {
     const char c = p->mCommandChar ;
     if (c != '\0') {
@@ -107,11 +107,11 @@ printUsageOfBoolOptions (void) {
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_BoolCommandLineOption::
 printBoolOptions (const uint32_t inDisplayLength) {
-  C_BoolCommandLineOption * p = gFirst ;
+  C_BoolCommandLineOption * p = gFirstBoolCommand ;
   while (p != NULL) {
     uint32_t charCount = 0 ;
     if (p->mCommandChar != '\0') {
@@ -144,10 +144,10 @@ printBoolOptions (const uint32_t inDisplayLength) {
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_BoolCommandLineOption::getBoolOptionNameList (TC_UniqueArray <C_String> & outArray) {
-  C_BoolCommandLineOption * p = gFirst ;
+  C_BoolCommandLineOption * p = gFirstBoolCommand ;
   while (p != NULL) {
     outArray.addObject (p->mDomainName) ;
     outArray.addObject (p->mIdentifier) ;
@@ -155,12 +155,12 @@ void C_BoolCommandLineOption::getBoolOptionNameList (TC_UniqueArray <C_String> &
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 utf32 C_BoolCommandLineOption::getBoolOptionInvocationLetter (const C_String & inDomainName,
                                                        const C_String & inIdentifier) {
   utf32 result = TO_UNICODE (0) ;
-  C_BoolCommandLineOption * p = gFirst ;
+  C_BoolCommandLineOption * p = gFirstBoolCommand ;
   bool found = false ;
   while ((p != NULL) && not found) {
     found = (inDomainName == p->mDomainName) && (inIdentifier == p->mIdentifier) ;
@@ -170,12 +170,12 @@ utf32 C_BoolCommandLineOption::getBoolOptionInvocationLetter (const C_String & i
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_BoolCommandLineOption::getBoolOptionInvocationString (const C_String & inDomainName,
                                                        const C_String & inIdentifier) {
   C_String result ;
-  C_BoolCommandLineOption * p = gFirst ;
+  C_BoolCommandLineOption * p = gFirstBoolCommand ;
   bool found = false ;
   while ((p != NULL) && not found) {
     found = (inDomainName == p->mDomainName) && (inIdentifier == p->mIdentifier) ;
@@ -185,12 +185,12 @@ C_String C_BoolCommandLineOption::getBoolOptionInvocationString (const C_String 
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_BoolCommandLineOption::getBoolOptionCommentString (const C_String & inDomainName,
                                                        const C_String & inIdentifier) {
   C_String result ;
-  C_BoolCommandLineOption * p = gFirst ;
+  C_BoolCommandLineOption * p = gFirstBoolCommand ;
   bool found = false ;
   while ((p != NULL) && not found) {
     found = (inDomainName == p->mDomainName) && (inIdentifier == p->mIdentifier) ;
@@ -200,4 +200,4 @@ C_String C_BoolCommandLineOption::getBoolOptionCommentString (const C_String & i
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*

@@ -1,27 +1,27 @@
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//  C_String : an implementation of fully dynamic character string             *
-//                                                                             *
-//  This file is part of libpm library                                         *
-//                                                                             *
-//  Copyright (C) 1997, ..., 2014 Pierre Molinaro.                             *
-//                                                                             *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
-//                                                                             *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
-//  ECN, École Centrale de Nantes (France)                                     *
-//                                                                             *
-//  This library is free software; you can redistribute it and/or modify it    *
-//  under the terms of the GNU Lesser General Public License as published      *
-//  by the Free Software Foundation; either version 2 of the License, or       *
-//  (at your option) any later version.                                        *
-//                                                                             *
-//  This program is distributed in the hope it will be useful, but WITHOUT     *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
-//  more details.                                                              *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//  C_String : an implementation of fully dynamic character string                                                     *
+//                                                                                                                     *
+//  This file is part of libpm library                                                                                 *
+//                                                                                                                     *
+//  Copyright (C) 1997, ..., 2014 Pierre Molinaro.                                                                     *
+//                                                                                                                     *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//                                                                                                                     *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes                                          *
+//  ECN, École Centrale de Nantes (France)                                                                             *
+//                                                                                                                     *
+//  This library is free software; you can redistribute it and/or modify it                                            *
+//  under the terms of the GNU Lesser General Public License as published                                              *
+//  by the Free Software Foundation; either version 2 of the License, or                                               *
+//  (at your option) any later version.                                                                                *
+//                                                                                                                     *
+//  This program is distributed in the hope it will be useful, but WITHOUT                                             *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or                                              *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for                                           *
+//  more details.                                                                                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include "files/C_TextFileWrite.h"
 #include "utilities/MF_MemoryControl.h"
@@ -32,7 +32,7 @@
 #include "strings/unicode_character_cpp.h"
 #include "collections/TC_UniqueArray2.h"
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include <stdlib.h>
 #include <string.h>
@@ -40,7 +40,7 @@
 #include <ctype.h>
 #include <errno.h>
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef __MINGW32__
   #include <sys/stat.h>
@@ -57,19 +57,20 @@
   #include <unistd.h>
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark cEmbeddedString
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 static const utf32 kEmptyUTF32String [1] = {TO_UNICODE (0)} ;
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 class cEmbeddedString : public C_SharedObject {
+  public : int32_t mRegisteringEnableCount ; // > 0 : registering, <= à: no registering (initial : 1)
   public : uint32_t mCapacity ; // Maximun allowed length of the following C string
   public : uint32_t mLength ; // Current length of the following C string
   public : char * mEncodedCString ;
@@ -94,7 +95,7 @@ class cEmbeddedString : public C_SharedObject {
   public : void reallocEmbeddedString (const uint32_t inCapacity) ;
 } ;
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 static uint32_t stringGoodSize (const uint32_t inCurrentCapacity,
                                 const uint32_t inCapacity) {
@@ -105,10 +106,11 @@ static uint32_t stringGoodSize (const uint32_t inCurrentCapacity,
   return newCapacity ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 cEmbeddedString::cEmbeddedString (const uint32_t inCapacity COMMA_LOCATION_ARGS) :
 C_SharedObject (THERE),
+mRegisteringEnableCount (1),
 mCapacity (0),
 mLength (0),
 mEncodedCString (NULL),
@@ -119,12 +121,13 @@ mString (NULL) {
   mString [0] = TO_UNICODE ('\0') ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 cEmbeddedString::cEmbeddedString (const cEmbeddedString * inEmbeddedString,
                                   const uint32_t inCapacity
                                   COMMA_LOCATION_ARGS) :
 C_SharedObject (THERE),
+mRegisteringEnableCount (1),
 mCapacity (0),
 mLength (0),
 mEncodedCString (NULL),
@@ -142,14 +145,14 @@ mString (NULL) {
   mLength = inEmbeddedString->mLength ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 cEmbeddedString::~cEmbeddedString (void) {
   macroMyDeletePODArray (mEncodedCString) ;
   macroMyDeletePODArray (mString) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void cEmbeddedString::checkEmbeddedString (LOCATION_ARGS) const {
@@ -175,7 +178,7 @@ cEmbeddedString::~cEmbeddedString (void) {
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void cEmbeddedString::reallocEmbeddedString (const uint32_t inCapacity) {
   #ifndef DO_NOT_GENERATE_CHECKINGS
@@ -191,23 +194,23 @@ void cEmbeddedString::reallocEmbeddedString (const uint32_t inCapacity) {
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Constructors & destructor
 #endif
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //   C O N S T R U C T O R S                                                   *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String::C_String (void) :
 mEmbeddedString (NULL) {
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String::C_String (const char * inCstring) :
 mEmbeddedString (NULL) {
@@ -216,7 +219,7 @@ mEmbeddedString (NULL) {
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String::C_String (const utf32 * inUTF32String) :
 mEmbeddedString (NULL) {
@@ -225,7 +228,7 @@ mEmbeddedString (NULL) {
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String::C_String (const C_String & inSource) : // Copy constructor
 AC_OutputStream (inSource),
@@ -233,27 +236,27 @@ mEmbeddedString (NULL) {
   macroAssignSharedObject (mEmbeddedString, inSource.mEmbeddedString) ;
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //   D E S T R U C T O R                                                       *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String::~C_String (void) {
   macroDetachSharedObject (mEmbeddedString) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 uint32_t C_String::capacity (void) const {
   return (mEmbeddedString == NULL) ? 0 : mEmbeddedString->mCapacity ;
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //   A S S I G N M E N T    O P E R A T O R S                                  *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String & C_String::operator = (const C_String & inSource) {
   #ifndef DO_NOT_GENERATE_CHECKINGS
@@ -264,7 +267,7 @@ C_String & C_String::operator = (const C_String & inSource) {
   return * this ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_String::releaseString (void) {
   #ifndef DO_NOT_GENERATE_CHECKINGS
@@ -274,7 +277,7 @@ void C_String::releaseString (void) {
   mEmbeddedString = NULL ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 uint32_t C_String::hash (void) const {
   uint32_t h = 0 ;
@@ -287,7 +290,7 @@ uint32_t C_String::hash (void) const {
   return h ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void C_String::checkString (LOCATION_ARGS) const {
@@ -298,11 +301,11 @@ uint32_t C_String::hash (void) const {
   }
 #endif
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //   G E T    M E T H O D S                                                    *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 utf32 C_String::operator () (const int32_t inIndex COMMA_LOCATION_ARGS) const {
   #ifndef DO_NOT_GENERATE_CHECKINGS
@@ -316,7 +319,7 @@ utf32 C_String::operator () (const int32_t inIndex COMMA_LOCATION_ARGS) const {
   return mEmbeddedString->mString [inIndex] ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 utf32 C_String::readCharOrNul (const int32_t inIndex COMMA_LOCATION_ARGS) const {
   MF_AssertThere (inIndex >= 0, "inIndex (%ld) < 0", inIndex, 0) ;
@@ -325,11 +328,11 @@ utf32 C_String::readCharOrNul (const int32_t inIndex COMMA_LOCATION_ARGS) const 
     : mEmbeddedString->mString [inIndex] ;
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //   lastCharacter                                                             *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 utf32 C_String::lastCharacter (LOCATION_ARGS) const {
   const uint32_t stringLength = mEmbeddedString->mLength ;
@@ -337,7 +340,7 @@ utf32 C_String::lastCharacter (LOCATION_ARGS) const {
   return (stringLength == 0) ? TO_UNICODE ('\0') : mEmbeddedString->mString [stringLength - 1] ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 bool C_String::containsCharacter (const utf32 inCharacter) const {
   #ifndef DO_NOT_GENERATE_CHECKINGS
@@ -352,7 +355,7 @@ bool C_String::containsCharacter (const utf32 inCharacter) const {
   return found ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 int32_t C_String::length (void) const {
   #ifndef DO_NOT_GENERATE_CHECKINGS
@@ -361,7 +364,7 @@ int32_t C_String::length (void) const {
   return (mEmbeddedString == NULL) ? 0 : (int32_t) mEmbeddedString->mLength ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 const char * C_String::cString (UNUSED_LOCATION_ARGS) const {
   const char * result = "" ;
@@ -395,7 +398,7 @@ const char * C_String::cString (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 const utf32 * C_String::utf32String (UNUSED_LOCATION_ARGS) const {
   const utf32 * result = kEmptyUTF32String ;
@@ -405,15 +408,42 @@ const utf32 * C_String::utf32String (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+
+bool C_String::registeringIsEnabled (void) const {
+  bool result = true ;
+  if (NULL != mEmbeddedString) {
+    macroValidSharedObject (mEmbeddedString, cEmbeddedString) ;
+    result = mEmbeddedString->mRegisteringEnableCount > 0 ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Methods that change string
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
-void C_String::insulateEmbeddedString (const uint32_t inNewCapacity) {
+void C_String::enableRegistering (void) {
+  insulate () ;
+  macroValidSharedObject (mEmbeddedString, cEmbeddedString) ;
+  mEmbeddedString->mRegisteringEnableCount ++ ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void C_String::disableRegistering (void) {
+  insulate () ;
+  macroValidSharedObject (mEmbeddedString, cEmbeddedString) ;
+  mEmbeddedString->mRegisteringEnableCount -- ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void C_String::insulateEmbeddedString (const uint32_t inNewCapacity) const {
   if (mEmbeddedString == NULL) {
     macroMyNew (mEmbeddedString, cEmbeddedString (inNewCapacity COMMA_HERE)) ;
   }else{
@@ -436,7 +466,7 @@ void C_String::insulateEmbeddedString (const uint32_t inNewCapacity) {
   macroUniqueSharedObject (mEmbeddedString) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_String::setLengthToZero (void) {
   #ifndef DO_NOT_GENERATE_CHECKINGS
@@ -457,11 +487,17 @@ void C_String::setLengthToZero (void) {
   #endif
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//   S E T   F R O M    S T R I N G                                            *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+
+void C_String::insulate (void) const {
+  insulateEmbeddedString ((uint32_t) length ()) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   S E T   F R O M    S T R I N G                                                                                    *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_String::setFromString (const C_String & inString) {
   if (this != & inString) {
@@ -469,11 +505,11 @@ void C_String::setFromString (const C_String & inString) {
   }
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//   S E T    C A P A C I T Y                                                  *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   S E T    C A P A C I T Y                                                                                          *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_String::setCapacity (const uint32_t inNewCapacity) {
   #ifndef DO_NOT_GENERATE_CHECKINGS
@@ -508,7 +544,7 @@ void C_String::setCapacity (const uint32_t inNewCapacity) {
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_String::performActualUnicodeArrayOutput (const utf32 * inUTF32CharArray,
                                                 const int32_t inArrayCount) {
@@ -519,20 +555,22 @@ void C_String::performActualUnicodeArrayOutput (const utf32 * inUTF32CharArray,
     const int32_t kNewLength = length () + inArrayCount ;
     insulateEmbeddedString ((uint32_t) (kNewLength + 1)) ;
     MF_Assert (mEmbeddedString->retainCount () == 1, "mEmbeddedString->retainCount () == (%lld) != 1", mEmbeddedString->retainCount () == 1, 0) ;
-    for (int32_t i=0 ; i<inArrayCount ; i++) {
-      mEmbeddedString->mString [mEmbeddedString->mLength + (uint32_t) i] = inUTF32CharArray [i] ;
+    if (mEmbeddedString->mRegisteringEnableCount > 0) {
+      for (int32_t i=0 ; i<inArrayCount ; i++) {
+        mEmbeddedString->mString [mEmbeddedString->mLength + (uint32_t) i] = inUTF32CharArray [i] ;
+      }
+      mEmbeddedString->mLength = (uint32_t) kNewLength ;
+      mEmbeddedString->mString [kNewLength] = TO_UNICODE ('\0') ;
+      #ifndef DO_NOT_GENERATE_CHECKINGS
+        checkString (HERE) ;
+      #endif
     }
-    mEmbeddedString->mLength = (uint32_t) kNewLength ;
-    mEmbeddedString->mString [kNewLength] = TO_UNICODE ('\0') ;
-    #ifndef DO_NOT_GENERATE_CHECKINGS
-      checkString (HERE) ;
-    #endif
     MF_Assert (capacity () > (uint32_t) kNewLength, "capacity (%lld) <= kNewLength (%lld)", capacity (), kNewLength) ;
     macroUniqueSharedObject (mEmbeddedString) ;
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_String::performActualCharArrayOutput (const char * inCharArray,
                                              const int32_t inArrayCount) {
@@ -541,22 +579,24 @@ void C_String::performActualCharArrayOutput (const char * inCharArray,
   #endif
   if (inArrayCount != 0) {
     insulateEmbeddedString ((uint32_t) (length () + inArrayCount + 1)) ;
-    int32_t idx = 0 ;
     int32_t newLength = (int32_t) mEmbeddedString->mLength ;
-    bool ok = true ;
-    while ((idx < inArrayCount) && ok) {
-      if ((inCharArray [idx] & 0x80) == 0) { // ASCII
-        mEmbeddedString->mString [newLength] = TO_UNICODE ((uint32_t) inCharArray [idx]) ;
-        idx ++ ;
-        newLength ++ ;
-      }else{
-        const utf32 unicodeChar = utf32CharacterForPointer ((const uint8_t *) inCharArray, idx, inArrayCount, ok) ;
-        mEmbeddedString->mString [newLength] = unicodeChar ;
-        newLength ++ ;
+    if (mEmbeddedString->mRegisteringEnableCount > 0) {
+      int32_t idx = 0 ;
+      bool ok = true ;
+      while ((idx < inArrayCount) && ok) {
+        if ((inCharArray [idx] & 0x80) == 0) { // ASCII
+          mEmbeddedString->mString [newLength] = TO_UNICODE ((uint32_t) inCharArray [idx]) ;
+          idx ++ ;
+          newLength ++ ;
+        }else{
+          const utf32 unicodeChar = utf32CharacterForPointer ((const uint8_t *) inCharArray, idx, inArrayCount, ok) ;
+          mEmbeddedString->mString [newLength] = unicodeChar ;
+          newLength ++ ;
+        }
       }
+      mEmbeddedString->mLength = (uint32_t) newLength ;
+      mEmbeddedString->mString [newLength] = TO_UNICODE ('\0') ;
     }
-    mEmbeddedString->mLength = (uint32_t) newLength ;
-    mEmbeddedString->mString [newLength] = TO_UNICODE ('\0') ;
     #ifndef DO_NOT_GENERATE_CHECKINGS
       checkString (HERE) ;
     #endif
@@ -565,11 +605,11 @@ void C_String::performActualCharArrayOutput (const char * inCharArray,
   }
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//   setCharacterAtIndex                                                       *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   setCharacterAtIndex                                                                                               *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 
 void C_String::
@@ -591,11 +631,11 @@ setUnicodeCharacterAtIndex (const utf32 inCharacter,
   }
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//   S U P P R E S S    C H A R A C T E R S                                    *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   S U P P R E S S    C H A R A C T E R S                                                                            *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_String::
 suppress (const int32_t inLocation,
@@ -630,17 +670,17 @@ suppress (const int32_t inLocation,
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark =============
 #endif
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//   G E T    L I N E S    A R R A Y                                           *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   G E T    L I N E S    A R R A Y                                                                                   *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_String::linesArray (TC_UniqueArray <C_String> & outStringArray) const {
   const int32_t currentStringLength = length () ;
@@ -703,7 +743,7 @@ void C_String::linesArray (TC_UniqueArray <C_String> & outStringArray) const {
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_String::lineAndColumnFromIndex (const int32_t inIndex,
                                        int32_t & outLineNumber,
@@ -735,11 +775,11 @@ void C_String::lineAndColumnFromIndex (const int32_t inIndex,
   }
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//   C O N T A I N S   S T R I N G                                             *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   C O N T A I N S   S T R I N G                                                                                     *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 bool C_String::containsString (const C_String & inSearchedString) const {
   const utf32 * source = utf32String (HERE) ;
@@ -754,11 +794,11 @@ bool C_String::containsString (const C_String & inSearchedString) const {
   return contains ;
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//   componentsSeparatedByString                                               *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   componentsSeparatedByString                                                                                       *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_String::componentsSeparatedByString (const C_String & inSeparatorString,
                                             TC_UniqueArray <C_String> & outResult) const {
@@ -783,11 +823,11 @@ void C_String::componentsSeparatedByString (const C_String & inSeparatorString,
   }
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//   componentsJoinedByString                                                  *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   componentsJoinedByString                                                                                          *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_String::
 componentsJoinedByString (const TC_UniqueArray <C_String> & inComponentArray,
@@ -803,11 +843,11 @@ componentsJoinedByString (const TC_UniqueArray <C_String> & inComponentArray,
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//   stringByDeletingTailFromString                                            *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   stringByDeletingTailFromString                                                                                    *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_String::
 stringByDeletingTailFromString (const C_String & inSearchedString) const {
@@ -825,11 +865,11 @@ stringByDeletingTailFromString (const C_String & inSearchedString) const {
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//   S U B S T I T U T E    C H A R A C T E R    B Y    S T R I N G            *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   S U B S T I T U T E    C H A R A C T E R    B Y    S T R I N G                                                    *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 //--- Substitute 'inCharacter' by 'inString' ; if the character occurs twice, suppress one
 
@@ -862,11 +902,11 @@ stringByReplacingCharacterByString (const utf32 inCharacter,
   return resultingString ;
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//   S U B S T I T U T E    S T R I N G    B Y    S T R I N G                  *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   S U B S T I T U T E    S T R I N G    B Y    S T R I N G                                                          *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_String::
 stringByReplacingStringByString (const C_String inSearchedString,
@@ -904,11 +944,11 @@ stringByReplacingStringByString (const C_String inSearchedString,
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//   G E T    L A S T   O C C U R R E N C E   O F   A   C H A R                *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   G E T    L A S T   O C C U R R E N C E   O F   A   C H A R                                                        *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 int32_t C_String::
 lastOccurrenceIndexOfChar (const utf32 inChar) const {
@@ -925,7 +965,7 @@ lastOccurrenceIndexOfChar (const utf32 inChar) const {
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_String::
 subString (const int32_t inStartIndex,
@@ -945,7 +985,7 @@ subString (const int32_t inStartIndex,
   return s ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_String::
 stringByCapitalizingFirstCharacter (void) const {
@@ -962,7 +1002,7 @@ stringByCapitalizingFirstCharacter (void) const {
   return s ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_String::
 lowercaseString (void) const {
@@ -976,7 +1016,7 @@ lowercaseString (void) const {
   return s ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_String::stringByTrimmingSeparators (void) const {
   C_String s ;
@@ -1006,7 +1046,7 @@ C_String C_String::stringByTrimmingSeparators (void) const {
   return s ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_String::
 uppercaseString (void) const {
@@ -1020,7 +1060,7 @@ uppercaseString (void) const {
   return s ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_String::
 reversedString (void) const {
@@ -1034,7 +1074,7 @@ reversedString (void) const {
   return s ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 uint32_t C_String::unsignedIntegerValue (void) const {
   uint32_t result = 0 ;
@@ -1050,7 +1090,7 @@ uint32_t C_String::unsignedIntegerValue (void) const {
   return result ;  
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 uint32_t C_String::currentColumn (void) const {
   uint32_t result = 0 ;
@@ -1066,7 +1106,7 @@ uint32_t C_String::currentColumn (void) const {
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_String::appendSpacesUntilColumn (const uint32_t inColumn) {
   for (uint32_t i=currentColumn () ; i<inColumn ; i++) {
@@ -1074,7 +1114,7 @@ void C_String::appendSpacesUntilColumn (const uint32_t inColumn) {
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_String::
 stringWithRepeatedCharacter (const utf32 inRepeatedCharacter,
@@ -1086,7 +1126,7 @@ stringWithRepeatedCharacter (const utf32 inRepeatedCharacter,
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_String::
 identifierRepresentation (void) const {
@@ -1107,7 +1147,7 @@ identifierRepresentation (void) const {
   return s ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_String::utf32Representation (void) const {
   C_String result ;
@@ -1115,7 +1155,7 @@ C_String C_String::utf32Representation (void) const {
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_String::HTMLRepresentation (void) const {
   C_String result ;
@@ -1136,11 +1176,11 @@ C_String C_String::HTMLRepresentation (void) const {
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//   S T R I N G    C O M P A R E                                              *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   S T R I N G    C O M P A R E                                                                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 int32_t C_String::compare (const char * const inCstring) const {
   int32_t result = 0 ;
@@ -1155,7 +1195,7 @@ int32_t C_String::compare (const char * const inCstring) const {
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 int32_t C_String::compare (const C_String & inString) const {
   int32_t result = 0 ;
@@ -1171,7 +1211,7 @@ int32_t C_String::compare (const C_String & inString) const {
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 int32_t C_String::compareStringByLength (const C_String & inString) const {
   int32_t result ;
@@ -1192,23 +1232,23 @@ int32_t C_String::compareStringByLength (const C_String & inString) const {
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 bool C_String::operator == (const C_String & inString) const {
   return compareStringByLength (inString) == 0 ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 bool C_String::operator != (const C_String & inString) const {
   return compareStringByLength (inString) != 0 ;
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//   +    O P E R A T O R                                                      *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   +    O P E R A T O R                                                                                              *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_String::operator + (const C_String & inOperand) const {
   C_String s = *this ;
@@ -1216,7 +1256,7 @@ C_String C_String::operator + (const C_String & inOperand) const {
   return s ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_String::operator + (const char * inOperand) const {
   C_String s = *this ;
@@ -1224,14 +1264,13 @@ C_String C_String::operator + (const char * inOperand) const {
   return s ;
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//   pathExtension                                                             *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   pathExtension                                                                                                     *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
-C_String C_String::
-pathExtension (void) const {
+C_String C_String::pathExtension (void) const {
   const utf32 * source = utf32String (HERE) ;
   C_String result ;
   int32_t receiver_length = length ();
@@ -1254,11 +1293,11 @@ pathExtension (void) const {
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//   stringByDeletingPathExtension                                             *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   stringByDeletingPathExtension                                                                                     *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_String::
 stringByDeletingPathExtension (void) const {
@@ -1282,11 +1321,11 @@ stringByDeletingPathExtension (void) const {
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//   stringByDeletingLastPathComponent                                         *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   stringByDeletingLastPathComponent                                                                                 *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_String::
 stringByDeletingLastPathComponent (void) const {
@@ -1310,11 +1349,11 @@ stringByDeletingLastPathComponent (void) const {
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//   stringByAppendingPathComponent                                            *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   stringByAppendingPathComponent                                                                                    *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_String::
 stringByAppendingPathComponent (const C_String & inPathComponent) const {
@@ -1330,11 +1369,11 @@ stringByAppendingPathComponent (const C_String & inPathComponent) const {
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//   lastPathComponent                                                         *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   lastPathComponent                                                                                                 *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_String::
 lastPathComponent (void) const {
@@ -1360,18 +1399,18 @@ lastPathComponent (void) const {
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_String::lastPathComponentWithoutExtension (void) const {
   const C_String fileNameWithExtension = lastPathComponent () ;
   return fileNameWithExtension.stringByDeletingPathExtension () ;
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//   M D 5                                                                     *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   M D 5                                                                                                             *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_String::md5 (void) const {
   C_String result ;
@@ -1385,11 +1424,25 @@ C_String C_String::md5 (void) const {
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//   R I G H T    S U B    S T R I N G                                         *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   S U B    S T R I N G    F R O M    I N D E X                                                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_String C_String::subStringFromIndex (const int32_t inStartIndex) const  {
+  C_String result ;
+  if (inStartIndex < length ()) {
+    result = subString (inStartIndex, length () - inStartIndex) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   R I G H T    S U B    S T R I N G                                                                                 *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_String::rightSubString (const int32_t inLength) const  {
   C_String result ;
@@ -1401,11 +1454,11 @@ C_String C_String::rightSubString (const int32_t inLength) const  {
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//   L E F T    S U B    S T R I N G                                           *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   L E F T    S U B    S T R I N G                                                                                   *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_String::leftSubString (const int32_t inLength) const  {
   C_String result ;
@@ -1417,11 +1470,11 @@ C_String C_String::leftSubString (const int32_t inLength) const  {
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//   A S S I G N M E N T    O P E R A T O R S                                  *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   A S S I G N M E N T    O P E R A T O R S                                                                          *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String & C_String::operator = (const char * inSource) {
   setLengthToZero () ;
@@ -1431,22 +1484,22 @@ C_String & C_String::operator = (const char * inSource) {
   return * this ;
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//   S E T   F R O M    S T R I N G                                            *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   S E T   F R O M    S T R I N G                                                                                    *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_String::setFromCstring (const char * inCstring) {
   setLengthToZero () ;
   *this << inCstring ;
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//   X M L    E S C A P E D    S T R I N G                                     *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   X M L    E S C A P E D    S T R I N G                                                                             *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 //--- Returns a string where ", ', <, > and & have been replaced by &quot;, &apos;, &lt;, &gt; and &amp;
 C_String C_String::XMLEscapedString (void) const {
@@ -1466,7 +1519,7 @@ C_String C_String::XMLEscapedString (void) const {
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_String::stringByStandardizingPath (void) const {
   #ifdef COMPILE_FOR_WIN32
@@ -1547,7 +1600,7 @@ C_String C_String::stringByStandardizingPath (void) const {
   return path ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
   
 bool C_String::parseUTF8 (const C_Data & inDataString,
                           const int32_t inOffset,
@@ -1574,7 +1627,7 @@ bool C_String::parseUTF8 (const C_Data & inDataString,
       foundCR = false ;
       idx ++ ;
     }else{
-      const utf32 uc = utf32CharacterForPointer (inDataString.dataPointer (), idx, inDataString.length (), ok) ;
+      const utf32 uc = utf32CharacterForPointer (inDataString.unsafeDataPointer (), idx, inDataString.length (), ok) ;
       outString.appendUnicodeCharacter (uc COMMA_HERE) ;
       foundCR = false ;
     }
@@ -1585,40 +1638,40 @@ bool C_String::parseUTF8 (const C_Data & inDataString,
   return ok ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========== C_TextReadException
 #endif
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//  Exception generated by readTextFile method when a read error occurs        *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//  Exception generated by readTextFile method when a read error occurs                                                *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_TextReadException::
 C_TextReadException (const char * inFileName) {
   snprintf (mErrorMessage, kTextReadExceptionStringMaxLength, "cannot open file '%s' for reading", inFileName) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 const char * C_TextReadException::what (void) const throw () {
   return mErrorMessage ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========== Symbolic links
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 static inline uint32_t minimum (const uint32_t inA, const uint32_t inB) { return inA < inB ? inA : inB ; }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 uint32_t C_String::LevenshteinDistanceFromString (const C_String & inOperand) const {
   const int32_t myLength = length () ;
@@ -1683,4 +1736,4 @@ uint32_t C_String::LevenshteinDistanceFromString (const C_String & inOperand) co
   return d[m,n]
 } */
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*

@@ -1,50 +1,49 @@
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//  Declaration of macros and routines for handling dynamic allocation         *
-//  checking.                                                                  *
-//                                                                             *
-//  This file is part of libpm library                                         *
-//                                                                             *
-//  Copyright (C) 1994, ..., 2012 Pierre Molinaro.                             *
-//                                                                             *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
-//                                                                             *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes*
-//  ECN, École Centrale de Nantes (France)                                     *
-//                                                                             *
-//  This library is free software; you can redistribute it and/or modify it    *
-//  under the terms of the GNU Lesser General Public License as published      *
-//  by the Free Software Foundation; either version 2 of the License, or       *
-//  (at your option) any later version.                                        *
-//                                                                             *
-//  This program is distributed in the hope it will be useful, but WITHOUT     *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
-//  more details.                                                              *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//  Declaration of macros and routines for handling dynamic allocation checking.                                       *
+//                                                                                                                     *
+//  This file is part of libpm library                                                                                 *
+//                                                                                                                     *
+//  Copyright (C) 1994, ..., 2012 Pierre Molinaro.                                                                     *
+//                                                                                                                     *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//                                                                                                                     *
+//  IRCCyN, Institut de Recherche en Communications et Cybern��tique de Nantes                                         *
+//  ECN, �cole Centrale de Nantes (France)                                                                             *
+//                                                                                                                     *
+//  This library is free software; you can redistribute it and/or modify it                                            *
+//  under the terms of the GNU Lesser General Public License as published                                              *
+//  by the Free Software Foundation; either version 2 of the License, or                                               *
+//  (at your option) any later version.                                                                                *
+//                                                                                                                     *
+//  This program is distributed in the hope it will be useful, but WITHOUT                                             *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or                                              *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for                                           *
+//  more details.                                                                                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef MEMORY_CONTROL_MACROS_AND_ROUTINES_DEFINED
 #define MEMORY_CONTROL_MACROS_AND_ROUTINES_DEFINED
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include "utilities/MF_Assert.h"
 #include "utilities/M_Threads.h"
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include <stdlib.h>
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 macroDeclareExternMutex (gAllocationMutex)
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//         User macros for allocation                                          *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//         User macros for allocation                                                                                  *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS 
   #define macroMyNew(inPointer,instanciation) { \
@@ -63,7 +62,7 @@ macroDeclareExternMutex (gAllocationMutex)
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS 
   #define macroMyNewArray(inPointer,type,size) { \
@@ -82,7 +81,7 @@ macroDeclareExternMutex (gAllocationMutex)
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS 
   #define macroMyNewPODArray(inPointer,type,size) { \
@@ -99,7 +98,7 @@ macroDeclareExternMutex (gAllocationMutex)
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS 
   #define macroMyReallocPODArray(inPointer,type,size) { \
@@ -115,7 +114,7 @@ macroDeclareExternMutex (gAllocationMutex)
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS 
   #define macroMyNewThere(inPointer,instanciation) { \
@@ -134,7 +133,7 @@ macroDeclareExternMutex (gAllocationMutex)
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS 
   #define macroMyNewPODArrayThere(inPointer,type,size) { \
@@ -151,7 +150,7 @@ macroDeclareExternMutex (gAllocationMutex)
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS 
   #define macroMyReallocPODArrayThere(inPointer,type,size) { \
@@ -167,7 +166,7 @@ macroDeclareExternMutex (gAllocationMutex)
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS 
   #define macroMyNewArrayThere(inPointer,type,size) { \
@@ -186,11 +185,11 @@ macroDeclareExternMutex (gAllocationMutex)
   }
 #endif
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//         User macros for deallocation                                        *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//         User macros for deallocation                                                                                *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroMyDelete(inPointer) { \
@@ -207,7 +206,7 @@ macroDeclareExternMutex (gAllocationMutex)
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroMyDeletePODArray(inPointer) { \
@@ -223,7 +222,7 @@ macroDeclareExternMutex (gAllocationMutex)
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroMyDeleteArray(inPointer) { \
@@ -239,11 +238,11 @@ macroDeclareExternMutex (gAllocationMutex)
   }
 #endif
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//         Assertion macros for checking pointers                              *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//         Assertion macros for checking pointers                                                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroValidPointer(inPointer) routineValidPointer (inPointer COMMA_HERE)
@@ -251,7 +250,7 @@ macroDeclareExternMutex (gAllocationMutex)
   #define macroValidPointer(inPointer)
 #endif 
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroValidPointerThere(inPointer) routineValidPointer (inPointer COMMA_THERE)
@@ -259,11 +258,11 @@ macroDeclareExternMutex (gAllocationMutex)
   #define macroValidPointerThere(inPointer)
 #endif 
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//         Assertion for checking if a pointer is void                         *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//         Assertion for checking if a pointer is void                                                                 *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroVoidPointer(inPointer) routineVoidPointer (inPointer COMMA_HERE)
@@ -271,7 +270,7 @@ macroDeclareExternMutex (gAllocationMutex)
   #define macroVoidPointer(inPointer)
 #endif 
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroVoidPointerThere(inPointer) routineVoidPointer (inPointer COMMA_THERE)
@@ -279,19 +278,19 @@ macroDeclareExternMutex (gAllocationMutex)
   #define macroVoidPointerThere(inPointer)
 #endif 
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//         Routine to call for displaying currently allocated pointers         *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//         Routine to call for displaying currently allocated pointers                                                 *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 void displayAllocatedBlocksInfo (void) ;
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//         Internal routines (do not call them directly)                       *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//         Internal routines (do not call them directly)                                                               *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS 
   void prologueForNew () ;
@@ -309,7 +308,7 @@ void displayAllocatedBlocksInfo (void) ;
                                      COMMA_LOCATION_ARGS) ;
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #endif
 

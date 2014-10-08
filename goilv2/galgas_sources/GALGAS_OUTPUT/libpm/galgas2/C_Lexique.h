@@ -1,47 +1,47 @@
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //  'C_Lexique' : an abstract lexique class ;                                  *
 //  Galgas generated scanner classes inherit from this class.                  *
-//                                                                             *
+//                                                                                                                     *
 //  This file is part of libpm library                                         *
-//                                                                             *
-//  Copyright (C) 1996, ..., 2010 Pierre Molinaro.                             *
-//                                                                             *
+//                                                                                                                     *
+//  Copyright (C) 1996, ..., 2014 Pierre Molinaro.                             *
+//                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
 //  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
 //  ECN, École Centrale de Nantes (France)                                     *
-//                                                                             *
+//                                                                                                                     *
 //  This library is free software; you can redistribute it and/or modify it    *
 //  under the terms of the GNU Lesser General Public License as published      *
 //  by the Free Software Foundation; either version 2 of the License, or       *
 //  (at your option) any later version.                                        *
-//                                                                             *
+//                                                                                                                     *
 //  This program is distributed in the hope it will be useful, but WITHOUT     *
 //  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
 //  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
 //  more details.                                                              *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef GALGAS_LEXIQUE_CLASS_DEFINED
 #define GALGAS_LEXIQUE_CLASS_DEFINED
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include "galgas2/C_Compiler.h"
 #include "galgas2/cProductionNameDescriptor.h"
 #include "galgas2/cTemplateDelimiter.h"
 #include "galgas2/C_galgas_io.h"
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 class cIndexingDictionary ;
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //                 Lexique class                                               *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 class C_Lexique : public C_Compiler {
 //--- Constructors and destructor
@@ -80,6 +80,12 @@ class C_Lexique : public C_Compiler {
   private : cToken * mLastToken ;
   protected : cToken * mCurrentTokenPtr ;
   protected : void enterTokenFromPointer (cToken * inToken) ;
+  protected : int32_t mLastSeparatorIndex ;
+  public : void appendLastSeparatorTo (C_String & ioString) const ;
+
+//--- Syntax directed translation : accessing current token
+  public : C_String preceedingSeparatorString (void) const ;
+  public : C_String tokenString (void) const ;
 
 //--- Current character
   protected : utf32 mCurrentChar ;
@@ -226,6 +232,6 @@ class C_Lexique : public C_Compiler {
   private : int32_t mIndexForSecondPassParsing ;
 } ;
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #endif

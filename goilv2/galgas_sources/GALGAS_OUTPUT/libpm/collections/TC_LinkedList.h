@@ -1,42 +1,42 @@
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //  Linked list template class.                                                *
-//                                                                             *
+//                                                                                                                     *
 //  COPY OF ITS INSTANCES IS FORBIDDEN BY REDEFINITION OF COPY CONSTRUCTOR     *
 //  AND ASSIGNMENT OPERATOR.                                                   *
-//                                                                             *
+//                                                                                                                     *
 //  This file is part of libpm library                                         *
-//                                                                             *
+//                                                                                                                     *
 //  Copyright (C) 2001 Pierre Molinaro.                                        *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
 //  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes  *
 //  ECN, Ecole Centrale de Nantes (France)                                     *
-//                                                                             *
+//                                                                                                                     *
 //  This library is free software; you can redistribute it and/or modify it    *
 //  under the terms of the GNU Lesser General Public License as published      *
 //  by the Free Software Foundation; either version 2 of the License, or       *
 //  (at your option) any later version.                                        *
-//                                                                             *
+//                                                                                                                     *
 //  This program is distributed in the hope it will be useful, but WITHOUT     *
 //  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
 //  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
 //  more details.                                                              *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef LINKED_LIST_TEMPLATE_CLASS_DEFINED
 #define LINKED_LIST_TEMPLATE_CLASS_DEFINED
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include "utilities/M_machine.h"
 #include "utilities/MF_MemoryControl.h"
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //   Predeclarations                                                           *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 template <typename TYPE> class TC_LinkedList ;
 
@@ -44,11 +44,11 @@ template <typename TYPE>
 void swap (TC_LinkedList <TYPE> & ioOperand1,
            TC_LinkedList <TYPE> & ioOperand2) ;
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //   Class template declaration                                                *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 template <typename TYPE> class TC_LinkedList {
 //--- Constructor and destructor
@@ -95,7 +95,7 @@ template <typename TYPE> class TC_LinkedList {
   public : void copyIntoArray (TC_UniqueArray <TYPE> & outArray) ;
 } ;
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 template <typename TYPE>
 TC_LinkedList <TYPE>::TC_LinkedList (void) :
@@ -104,14 +104,14 @@ mBottomItem ((cElement *) NULL),
 mCount (0) {
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 template <typename TYPE>
 TC_LinkedList <TYPE>::~TC_LinkedList (void) {
   makeListEmpty () ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_LinkedList <TYPE>::makeListEmpty (void) {
@@ -123,7 +123,7 @@ void TC_LinkedList <TYPE>::makeListEmpty (void) {
   mCount = 0 ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_LinkedList <TYPE>::insertAtBottom (const TYPE & inInfo) {
@@ -140,7 +140,7 @@ void TC_LinkedList <TYPE>::insertAtBottom (const TYPE & inInfo) {
   mCount ++ ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_LinkedList<TYPE> ::insertAtTop (const TYPE & inInfo) {
@@ -155,7 +155,7 @@ void TC_LinkedList<TYPE> ::insertAtTop (const TYPE & inInfo) {
   mCount ++ ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 template <typename TYPE>
 TYPE TC_LinkedList <TYPE>::getByCopyAndSuppressTopItem (LOCATION_ARGS) {
@@ -171,7 +171,7 @@ TYPE TC_LinkedList <TYPE>::getByCopyAndSuppressTopItem (LOCATION_ARGS) {
   return info ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_LinkedList <TYPE>::mergeListAtTop (TC_LinkedList <TYPE> & ioList) {
@@ -190,7 +190,7 @@ void TC_LinkedList <TYPE>::mergeListAtTop (TC_LinkedList <TYPE> & ioList) {
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_LinkedList <TYPE>::mergeListAtBottom (TC_LinkedList <TYPE> & ioList) {
@@ -209,7 +209,7 @@ void TC_LinkedList <TYPE>::mergeListAtBottom (TC_LinkedList <TYPE> & ioList) {
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_LinkedList <TYPE>::copyIntoArray (TC_UniqueArray <TYPE> & outArray) {
@@ -222,7 +222,7 @@ void TC_LinkedList <TYPE>::copyIntoArray (TC_UniqueArray <TYPE> & outArray) {
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 template <typename TYPE>
 void swap (TC_LinkedList <TYPE> & ioList1,
@@ -232,6 +232,6 @@ void swap (TC_LinkedList <TYPE> & ioList1,
   swap (ioList1.mCount, ioList2.mCount) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #endif

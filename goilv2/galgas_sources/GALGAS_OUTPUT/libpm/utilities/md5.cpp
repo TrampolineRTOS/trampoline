@@ -282,20 +282,14 @@ static void md5_encode (unsigned char *buffer, struct md5_ctx *context)
 }
 
 /* OBSOLETE */
-static void md5_memcopy (unsigned char *dest, unsigned char *src, unsigned int count)
-{
-  unsigned int i;
-  
-  for (i = 0; i < count; i++) {
+static void md5_memcopy (unsigned char *dest, unsigned char *src, unsigned int count) {
+  for (unsigned int i = 0; i < count; i++) {
     dest [i] = src [i];
   }
 }
 
-static void md5_memset (unsigned char *p, const unsigned char c, const unsigned int count)
-{
-  unsigned int i;
-
-  for (i = 0; i < count; i++) {
+static void md5_memset (unsigned char *p, const unsigned char c, const unsigned int count) {
+  for (unsigned int i = 0; i < count; i++) {
     p [i] = c;
   }
 }

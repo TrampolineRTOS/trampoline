@@ -1,35 +1,35 @@
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //  'C_FileManager' : a class for handling files,                              *
 //  independantly from platform                                                *
-//                                                                             *
+//                                                                                                                     *
 //  This file is part of libpm library                                         *
-//                                                                             *
+//                                                                                                                     *
 //  Copyright (C) 2012, ..., 2012 Pierre Molinaro.                             *
-//                                                                             *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
-//                                                                             *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
-//  ECN, École Centrale de Nantes (France)                                     *
-//                                                                             *
-//  This library is free software; you can redistribute it and/or modify it    *
-//  under the terms of the GNU Lesser General Public License as published      *
-//  by the Free Software Foundation; either version 2 of the License, or       *
-//  (at your option) any later version.                                        *
-//                                                                             *
-//  This program is distributed in the hope it will be useful, but WITHOUT     *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
-//  more details.                                                              *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//                                                                                                                     *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes                                          *
+//  ECN, École Centrale de Nantes (France)                                                                             *
+//                                                                                                                     *
+//  This library is free software; you can redistribute it and/or modify it                                            *
+//  under the terms of the GNU Lesser General Public License as published                                              *
+//  by the Free Software Foundation; either version 2 of the License, or                                               *
+//  (at your option) any later version.                                                                                *
+//                                                                                                                     *
+//  This program is distributed in the hope it will be useful, but WITHOUT                                             *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or                                              *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for                                           *
+//  more details.                                                                                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include "files/C_FileManager.h"
 #include "files/C_TextFileWrite.h"
 #include "files/C_BinaryFileWrite.h"
 #include "strings/unicode_character_base.h"
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include <stdio.h>
 #include <string.h>
@@ -41,17 +41,17 @@
   #include <sys/stat.h>
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Converting into Unix Path
 #endif
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //   Converting into Unix Path                                                 *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 //--- On Unix: do nothing
 #ifdef UNIX_TOOL
@@ -60,7 +60,7 @@
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 //--- On Windows: translate
 #ifdef COMPILE_FOR_WIN32
@@ -89,17 +89,17 @@
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Converting into Native Path
 #endif
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //   Converting into Native Path                                               *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 //--- On Unix: do nothing
 #ifdef UNIX_TOOL
@@ -108,7 +108,7 @@
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 //--- On Windows: convert
 #ifdef COMPILE_FOR_WIN32
@@ -132,37 +132,37 @@
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Open Text File
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 FILE * C_FileManager::openTextFileForReading (const C_String & inFilePath) {
   return ::fopen (nativePathWithUnixPath (inFilePath).cString (HERE), "rt") ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Open Binary File
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 FILE * C_FileManager::openBinaryFileForReading (const C_String & inFilePath) {
   return ::fopen (nativePathWithUnixPath (inFilePath).cString (HERE), "rb") ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Read binary file at once
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
   
 bool C_FileManager::binaryDataWithContentOfFile (const C_String & inFilePath,
                                                  C_Data & outBinaryData) {
@@ -209,13 +209,13 @@ bool C_FileManager::binaryDataWithContentOfFile (const C_String & inFilePath,
   return ok ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Read text file at once
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
   
 static bool parseUTF32LE (const C_Data & inDataString,
                           const int32_t inOffset,
@@ -238,7 +238,7 @@ static bool parseUTF32LE (const C_Data & inDataString,
   return ok ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
   
 static bool parseUTF32BE (const C_Data & inDataString,
                           const int32_t inOffset,
@@ -261,7 +261,7 @@ static bool parseUTF32BE (const C_Data & inDataString,
   return ok ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 // UTF-16 http://fr.wikipedia.org/wiki/UTF-16
 //    
 static bool parseUTF16LE (const C_Data & inDataString,
@@ -296,7 +296,7 @@ static bool parseUTF16LE (const C_Data & inDataString,
   return ok ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 static bool parseUTF16BE (const C_Data & inDataString,
                           const int32_t inOffset,
@@ -331,7 +331,7 @@ static bool parseUTF16BE (const C_Data & inDataString,
   return ok ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
   
 static bool searchBOMandParse (const C_Data & inDataString,
                                const int32_t inLength,
@@ -377,7 +377,7 @@ static bool searchBOMandParse (const C_Data & inDataString,
   return ok ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
   
 static bool sniffUTFEncodingAndParse (const C_Data & inDataString,
                                       PMTextFileEncoding & outTextFileEncoding,
@@ -434,7 +434,7 @@ static bool sniffUTFEncodingAndParse (const C_Data & inDataString,
   return ok ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
   
 typedef struct {
   const char * mEncodingName ;
@@ -442,7 +442,7 @@ typedef struct {
   const PMStringEncoding mStringEncoding ;
 } encodingStruct ;
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
   
 static const int32_t kEncodingCount = 18 ;
 
@@ -467,7 +467,7 @@ static const encodingStruct kEncodings [kEncodingCount] = {
  {"MacRoman", kMacRoman_FileEncoding, kMacRoman_encoding}
 } ;
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
   
 static bool parseWithEncoding (const C_Data & inDataString,
                                const PMStringEncoding inTextFileEncoding,
@@ -500,7 +500,7 @@ static bool parseWithEncoding (const C_Data & inDataString,
   return ok ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
   
 static bool searchForEncodingTagAndParse (const C_Data & inDataString,
                                           PMTextFileEncoding & outTextFileEncoding,
@@ -545,7 +545,7 @@ static bool searchForEncodingTagAndParse (const C_Data & inDataString,
   return ok ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
   
 static void parseASCIIWithReplacementCharacter (const C_Data & inDataString,
                                                 C_String & outString) {
@@ -572,7 +572,7 @@ static void parseASCIIWithReplacementCharacter (const C_Data & inDataString,
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
   
 C_String C_FileManager::stringWithContentOfFile (const C_String & inFilePath,
                                                  PMTextFileEncoding & outTextFileEncoding,
@@ -611,7 +611,7 @@ C_String C_FileManager::stringWithContentOfFile (const C_String & inFilePath,
   return result_string ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
   
 C_String C_FileManager::stringWithContentOfFile (const C_String & inFilePath) {
   bool ok = false ;
@@ -624,13 +624,13 @@ C_String C_FileManager::stringWithContentOfFile (const C_String & inFilePath) {
   return result_string ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Write to File
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 bool C_FileManager::writeStringToFile (const C_String & inString,
                                        const C_String & inFilePath) {
@@ -644,7 +644,7 @@ bool C_FileManager::writeStringToFile (const C_String & inString,
   return success ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
   
 bool C_FileManager::writeStringToExecutableFile (const C_String & inString,
                                                  const C_String & inFilePath) {
@@ -664,7 +664,7 @@ bool C_FileManager::writeStringToExecutableFile (const C_String & inString,
   return success ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
   
 bool C_FileManager::writeBinaryDataToFile (const C_Data & inBinaryData,
                                            const C_String & inFilePath) {
@@ -681,7 +681,7 @@ bool C_FileManager::writeBinaryDataToFile (const C_Data & inBinaryData,
   return success ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
   
 bool C_FileManager::writeBinaryDataToExecutableFile (const C_Data & inBinaryData,
                                                      const C_String & inFilePath) {
@@ -704,13 +704,13 @@ bool C_FileManager::writeBinaryDataToExecutableFile (const C_Data & inBinaryData
   return success ;
 }
 
- //-----------------------------------------------------------------------------*
+ //---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Make File Executable
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 bool C_FileManager::makeFileExecutable (const C_String & inFilePath) {
   const bool result = fileExistsAtPath (inFilePath) ;
@@ -725,13 +725,13 @@ bool C_FileManager::makeFileExecutable (const C_String & inFilePath) {
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Directory Handling
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 bool C_FileManager::directoryExists (const C_String & inDirectoryPath) {
   const C_String nativePath = nativePathWithUnixPath (inDirectoryPath) ;
@@ -746,7 +746,7 @@ bool C_FileManager::directoryExists (const C_String & inDirectoryPath) {
   return exists ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_FileManager::currentDirectory (void) {
   char * cwd = getcwd (NULL, 0) ;
@@ -773,7 +773,7 @@ C_String C_FileManager::currentDirectory (void) {
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 bool C_FileManager::makeDirectoryIfDoesNotExist (const C_String & inDirectoryPath) {
   const C_String s = inDirectoryPath.stringByStandardizingPath () ;
@@ -794,7 +794,7 @@ bool C_FileManager::makeDirectoryIfDoesNotExist (const C_String & inDirectoryPat
   return ok ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_FileManager::removeDirectory (const C_String & inDirectoryPath) {
  C_String errorString ;
@@ -806,19 +806,19 @@ C_String C_FileManager::removeDirectory (const C_String & inDirectoryPath) {
   return errorString ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Path Handling
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 bool C_FileManager::isAbsolutePath (const C_String & inPath) {
   return (inPath.length () > 0) && (UNICODE_VALUE (inPath (0 COMMA_HERE)) == '/') ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_FileManager::absolutePathFromCurrentDirectory (const C_String & inPath) {
   const int32_t stringLength = inPath.length () ;
@@ -831,7 +831,7 @@ C_String C_FileManager::absolutePathFromCurrentDirectory (const C_String & inPat
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 //--- If receiver is an absolute path, returns it
 //    Otherwise, prepend path argument
 //    if path argument it self is relative, current directory is prepended
@@ -852,7 +852,7 @@ C_String C_FileManager::absolutePathFromPath (const C_String & inPath,
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_FileManager::relativePathFromPath (const C_String & inPath,
                                               const C_String & inFromPath) {
@@ -879,13 +879,13 @@ C_String C_FileManager::relativePathFromPath (const C_String & inPath,
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Symbolic Link
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef COMPILE_FOR_WIN32
   bool C_FileManager::makeSymbolicLinkWithPath (const C_String & /* inPath */,
@@ -900,14 +900,14 @@ C_String C_FileManager::relativePathFromPath (const C_String & inPath,
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 // See http://www.gnu.org/s/libc/manual/html_node/Symbolic-Links.html
 
 //--- Symbolic links and Windows:
 // See http://answers.google.com/answers/threadview/id/341355.html
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef COMPILE_FOR_WIN32
   bool C_FileManager::isSymbolicLink (const C_String & /* inLinkPath */) {
@@ -915,7 +915,7 @@ C_String C_FileManager::relativePathFromPath (const C_String & inPath,
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef COMPILE_FOR_WIN32
   bool C_FileManager::isSymbolicLink (const C_String & inLinkPath) {
@@ -924,7 +924,7 @@ C_String C_FileManager::relativePathFromPath (const C_String & inPath,
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef COMPILE_FOR_WIN32
   C_String C_FileManager::stringWithSymbolicLinkContents (const C_String & /* inLinkPath */,
@@ -934,7 +934,7 @@ C_String C_FileManager::relativePathFromPath (const C_String & inPath,
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef COMPILE_FOR_WIN32
   C_String C_FileManager::stringWithSymbolicLinkContents (const C_String & inLinkPath,
@@ -963,17 +963,17 @@ C_String C_FileManager::relativePathFromPath (const C_String & inPath,
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Delete File
 #endif
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //  Delete file                                                                *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_FileManager::deleteFile (const C_String & inFilePath) {
   C_String returnValue ;
@@ -985,17 +985,17 @@ C_String C_FileManager::deleteFile (const C_String & inFilePath) {
   return returnValue ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Search a file in a directory
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 // #define DEBUG_recursiveSearchInDirectory
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 static C_String recursiveSearchInDirectory (const C_String & inStartSearchPath,
                                             const C_String & inFileName,
@@ -1053,7 +1053,7 @@ static C_String recursiveSearchInDirectory (const C_String & inStartSearchPath,
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_FileManager::findFileInDirectory (const C_String & inDirectoryPath,
                                              const C_String & inFileName,
@@ -1069,13 +1069,13 @@ C_String C_FileManager::findFileInDirectory (const C_String & inDirectoryPath,
   return recursiveSearchInDirectory (inDirectoryPath, inFileName, directoriesToExcludeCount, inDirectoriesToExclude) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Find all files in a directory
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 static void recursiveFindAllFilesInDirectory (const C_String & inStartSearchPath,
                                               const C_String & inExtension,
@@ -1102,7 +1102,7 @@ static void recursiveFindAllFilesInDirectory (const C_String & inStartSearchPath
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_FileManager::findAllFilesInDirectoryFromExtension (const C_String & inDirectoryPath,
                                                           const C_String & inExtension,
@@ -1112,13 +1112,13 @@ void C_FileManager::findAllFilesInDirectoryFromExtension (const C_String & inDir
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Files Modification Time
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_DateTime C_FileManager::fileModificationTime (const C_String & inFilePath) {
   const C_String nativePath = nativePathWithUnixPath (inFilePath) ;
@@ -1135,13 +1135,13 @@ C_DateTime C_FileManager::fileModificationTime (const C_String & inFilePath) {
   return C_DateTime (modificationTime)  ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Files permissions
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 int32_t C_FileManager::filePosixPermissions (const C_String & inFilePath) {
   const C_String nativePath = nativePathWithUnixPath (inFilePath) ;
@@ -1156,25 +1156,26 @@ int32_t C_FileManager::filePosixPermissions (const C_String & inFilePath) {
   return permissions ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 int32_t C_FileManager::setFilePosixPermissions (const C_String & inFilePath,
-                                                 const int32_t inNewFilePosixPermissions) {
+                                                const int32_t inNewFilePosixPermissions) {
   int32_t newMode = -1 ; // Error Code
-  if ((inNewFilePosixPermissions & 0xFFFFF000L) == 0) {
+  const int32_t v = inNewFilePosixPermissions & (int32_t) 0xFFFFF000 ;
+  if (v == 0) {
     const C_String nativePath = nativePathWithUnixPath (inFilePath) ;
     newMode = ::chmod (nativePath.cString (HERE), (uint16_t) (inNewFilePosixPermissions & UINT16_MAX)) ;
   }
   return newMode ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Files exists at path
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 bool C_FileManager::fileExistsAtPath (const C_String & inFilePath) {
   const C_String nativePath = nativePathWithUnixPath (inFilePath) ;
@@ -1189,5 +1190,5 @@ bool C_FileManager::fileExistsAtPath (const C_String & inFilePath) {
   return exists ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 

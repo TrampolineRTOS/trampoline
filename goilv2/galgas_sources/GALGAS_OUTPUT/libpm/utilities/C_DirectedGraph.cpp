@@ -1,35 +1,35 @@
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //  C_DirectedGraph : algorithms on ordered graphs                             *
-//                                                                             *
+//                                                                                                                     *
 //  This file is part of libpm library                                         *
-//                                                                             *
+//                                                                                                                     *
 //  Copyright (C) 2013, ..., 2013 Pierre Molinaro.                             *
-//                                                                             *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
-//                                                                             *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
-//  ECN, École Centrale de Nantes (France)                                     *
-//                                                                             *
-//  This library is free software; you can redistribute it and/or modify it    *
-//  under the terms of the GNU Lesser General Public License as published      *
-//  by the Free Software Foundation; either version 2 of the License, or       *
-//  (at your option) any later version.                                        *
-//                                                                             *
-//  This program is distributed in the hope it will be useful, but WITHOUT     *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
-//  more details.                                                              *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//                                                                                                                     *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes                                          *
+//  ECN, École Centrale de Nantes (France)                                                                             *
+//                                                                                                                     *
+//  This library is free software; you can redistribute it and/or modify it                                            *
+//  under the terms of the GNU Lesser General Public License as published                                              *
+//  by the Free Software Foundation; either version 2 of the License, or                                               *
+//  (at your option) any later version.                                                                                *
+//                                                                                                                     *
+//  This program is distributed in the hope it will be useful, but WITHOUT                                             *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or                                              *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for                                           *
+//  more details.                                                                                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include "utilities/C_DirectedGraph.h"
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include <stdio.h>
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_DirectedGraph::C_DirectedGraph (void) :
 mNodeDefinition (),
@@ -37,7 +37,7 @@ mEdges (),
 mReverseEdges () {
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_DirectedGraph C_DirectedGraph::reversedGraph (void) const {
   C_DirectedGraph result ;
@@ -50,7 +50,7 @@ C_DirectedGraph C_DirectedGraph::reversedGraph (void) const {
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_DirectedGraph::addNode (const uint32_t inNodeIndex) {
   mNodeDefinition.add (inNodeIndex) ;
@@ -63,7 +63,7 @@ void C_DirectedGraph::addNode (const uint32_t inNodeIndex) {
   #endif
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_DirectedGraph::addNodes (const C_UIntSet inNodes) {
   mNodeDefinition |= inNodes ;
@@ -77,7 +77,7 @@ void C_DirectedGraph::addNodes (const C_UIntSet inNodes) {
   #endif
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_DirectedGraph::removeNode (const uint32_t inNodeIndex) {
   if (inNodeIndex < (uint32_t) mEdges.count ()) {
@@ -100,31 +100,31 @@ void C_DirectedGraph::removeNode (const uint32_t inNodeIndex) {
   #endif
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_DirectedGraph::getNodeBoolArray (TC_UniqueArray <bool> & outNodes) const {
   mNodeDefinition.getBoolValueArray (outNodes) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_DirectedGraph::getNodeValueArray (TC_UniqueArray <uint32_t> & outNodes) const {
   mNodeDefinition.getValueArray (outNodes) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 bool C_DirectedGraph::isNodeDefined (const uint32_t inNodeIndex) const {
   return mNodeDefinition.contains (inNodeIndex) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 uint32_t C_DirectedGraph::nodeCount (void) const {
   return mNodeDefinition.count () ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 uint32_t C_DirectedGraph::edgeCount (void) const {
   uint32_t result = 0 ;
@@ -136,7 +136,7 @@ uint32_t C_DirectedGraph::edgeCount (void) const {
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 uint32_t C_DirectedGraph::unusedNodeIndex (void) const {
   uint32_t result = nodeCount () ;
@@ -146,13 +146,13 @@ uint32_t C_DirectedGraph::unusedNodeIndex (void) const {
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_DirectedGraph::graphvizString (const TC_UniqueArray <C_String> & inNodeNameArray) const {
   C_String s = "digraph G {\n" ;
   for (int32_t i=0 ; i<mEdges.count () ; i++) {
     if (isNodeDefined ((uint32_t) i)) {
-      s << "  \"" << inNodeNameArray (i COMMA_HERE) << "\" ;\n" ;
+      s << "  \"" << inNodeNameArray (i COMMA_HERE) << "\" [shape=rectangle] ;\n" ;
       const C_UIntSet targetSet = mEdges (i COMMA_HERE) ;
       TC_Array <uint32_t> targetList ; targetSet.getValueArray (targetList) ;
       for (int32_t j=0 ; j<targetList.count () ; j++) {
@@ -165,7 +165,7 @@ C_String C_DirectedGraph::graphvizString (const TC_UniqueArray <C_String> & inNo
   return s ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void C_DirectedGraph::checkGraph (LOCATION_ARGS) const {
@@ -190,7 +190,7 @@ C_String C_DirectedGraph::graphvizString (const TC_UniqueArray <C_String> & inNo
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_DirectedGraph::getEdges (TC_UniqueArray <cEdge> & outEdges) const {
   outEdges.setCountToZero () ;
@@ -203,7 +203,7 @@ void C_DirectedGraph::getEdges (TC_UniqueArray <cEdge> & outEdges) const {
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_DirectedGraph::getNodesWithNoPredecessor (TC_UniqueArray <uint32_t> & outNodes) const {
   outNodes.setCountToZero () ;
@@ -214,7 +214,7 @@ void C_DirectedGraph::getNodesWithNoPredecessor (TC_UniqueArray <uint32_t> & out
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_DirectedGraph::getNodesWithNoSuccessor (TC_UniqueArray <uint32_t> & outNodes) const {
   outNodes.setCountToZero () ;
@@ -225,7 +225,7 @@ void C_DirectedGraph::getNodesWithNoSuccessor (TC_UniqueArray <uint32_t> & outNo
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_DirectedGraph::getNodesInvolvedInCircularities (TC_UniqueArray <uint32_t> & outNodes) const {
   outNodes.setCountToZero () ;
@@ -267,7 +267,7 @@ void C_DirectedGraph::getNodesInvolvedInCircularities (TC_UniqueArray <uint32_t>
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_DirectedGraph C_DirectedGraph::subGraphFromNodes (const C_UIntSet & inStartNodes,
                                                     const C_UIntSet & inNodesToExclude) const {
@@ -298,7 +298,7 @@ C_DirectedGraph C_DirectedGraph::subGraphFromNodes (const C_UIntSet & inStartNod
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_DirectedGraph::removeEdgesToNode (const uint32_t inNodeIndex
                                          COMMA_LOCATION_ARGS) {
@@ -318,7 +318,7 @@ void C_DirectedGraph::removeEdgesToNode (const uint32_t inNodeIndex
   #endif
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_DirectedGraph::addEdge (const uint32_t inSourceNodeIndex,
                               const uint32_t inTargetNodeIndex) {
@@ -331,7 +331,7 @@ void C_DirectedGraph::addEdge (const uint32_t inSourceNodeIndex,
   #endif
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_DirectedGraph::print (void) const {
   for (int32_t i=0 ; i<mEdges.count () ; i++) {
@@ -345,7 +345,7 @@ void C_DirectedGraph::print (void) const {
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_DirectedGraph::topologicalSort (TC_UniqueArray <uint32_t> & outSortedNodes,
                                        TC_UniqueArray <uint32_t> & outUnsortedNodes) const {
@@ -385,7 +385,7 @@ void C_DirectedGraph::topologicalSort (TC_UniqueArray <uint32_t> & outSortedNode
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_DirectedGraph::depthFirstTopologicalSort (TC_UniqueArray <uint32_t> & outSortedNodes,
                                                  TC_UniqueArray <uint32_t> & outUnsortedNodes) const {
@@ -436,7 +436,7 @@ void C_DirectedGraph::depthFirstTopologicalSort (TC_UniqueArray <uint32_t> & out
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 // http://en.wikipedia.org/wiki/Dominator_(graph_theory)
 // a node d dominates a node n if every path from the start node to n must go through d
 
@@ -483,7 +483,7 @@ void C_DirectedGraph::getDominators (TC_UniqueArray <C_UIntSet> & outDominators
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_DirectedGraph::removeEdgesToDominator (LOCATION_ARGS) {
   TC_UniqueArray <C_UIntSet> dominators ; getDominators (dominators COMMA_THERE) ;
@@ -506,11 +506,11 @@ void C_DirectedGraph::removeEdgesToDominator (LOCATION_ARGS) {
   #endif
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //    E X A M P L E                                                            *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_DirectedGraph::example (void) {
   C_DirectedGraph g ;
@@ -656,4 +656,4 @@ void C_DirectedGraph::example (void) {
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*

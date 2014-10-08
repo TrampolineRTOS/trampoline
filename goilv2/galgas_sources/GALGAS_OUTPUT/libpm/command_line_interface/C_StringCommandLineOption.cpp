@@ -1,42 +1,42 @@
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //  Generic String Command Line Interface Option                               *
-//                                                                             *
+//                                                                                                                     *
 //  This file is part of libpm library                                         *
-//                                                                             *
+//                                                                                                                     *
 //  Copyright (C) 2009, ..., 2010 Pierre Molinaro.                             *
-//                                                                             *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
-//                                                                             *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
-//  ECN, École Centrale de Nantes (France)                                     *
-//                                                                             *
-//  This library is free software; you can redistribute it and/or modify it    *
-//  under the terms of the GNU Lesser General Public License as published      *
-//  by the Free Software Foundation; either version 2 of the License, or       *
-//  (at your option) any later version.                                        *
-//                                                                             *
-//  This program is distributed in the hope it will be useful, but WITHOUT     *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
-//  more details.                                                              *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//                                                                                                                     *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes                                          *
+//  ECN, École Centrale de Nantes (France)                                                                             *
+//                                                                                                                     *
+//  This library is free software; you can redistribute it and/or modify it                                            *
+//  under the terms of the GNU Lesser General Public License as published                                              *
+//  by the Free Software Foundation; either version 2 of the License, or                                               *
+//  (at your option) any later version.                                                                                *
+//                                                                                                                     *
+//  This program is distributed in the hope it will be useful, but WITHOUT                                             *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or                                              *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for                                           *
+//  more details.                                                                                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include <string.h>
 #include <stdio.h>
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include "command_line_interface/C_StringCommandLineOption.h"
 #include "utilities/C_PrologueEpilogue.h"
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
-static C_StringCommandLineOption * gFirst ;
-static C_StringCommandLineOption * gLast ;
+static C_StringCommandLineOption * gFirstStringOption ;
+static C_StringCommandLineOption * gLastStringOption ;
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_StringCommandLineOption::C_StringCommandLineOption (const char * inDomainName,
                                                       const char * inIdentifier,
@@ -48,15 +48,15 @@ C_CommandLineOption (inDomainName, inIdentifier, inChar, inString, inComment),
 mNext (NULL),
 mValue (inDefaultValue),
 mDefaultValue (inDefaultValue) {
-  if (NULL == gFirst) {
-    gFirst = this ;
+  if (NULL == gFirstStringOption) {
+    gFirstStringOption = this ;
   }else{
-    gLast->mNext = this ;
+    gLastStringOption->mNext = this ;
   }
-  gLast = this ;
+  gLastStringOption = this ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_StringCommandLineOption::
 setStringOptionForCommandChar (const char * inCommandString,
@@ -66,7 +66,7 @@ setStringOptionForCommandChar (const char * inCommandString,
   // printf ("[COMMAND STRING '%s', valid %d]\n", inCommandString, outCommandLineOptionStringIsValid) ;
   outFound = false ;
   if (outCommandLineOptionStringIsValid) {
-    C_StringCommandLineOption * p = gFirst ;
+    C_StringCommandLineOption * p = gFirstStringOption ;
     while ((p != NULL) && ! outFound) {
       outFound = inCommandString [0] == p->mCommandChar ;
       if (outFound) {
@@ -79,7 +79,7 @@ setStringOptionForCommandChar (const char * inCommandString,
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_StringCommandLineOption::
 setStringOptionForCommandString (const char * inCommandString,
@@ -102,7 +102,7 @@ setStringOptionForCommandString (const char * inCommandString,
 //--- Search option
   outFound = false ;
   if (outCommandLineOptionStringIsValid) {
-    C_StringCommandLineOption * p = gFirst ;
+    C_StringCommandLineOption * p = gFirstStringOption ;
     while ((p != NULL) && ! outFound) {
       outFound = (strlen (p->mCommandString) == equalSignIndex) && 
                  (strncmp (p->mCommandString, inCommandString, equalSignIndex) == 0) ;
@@ -115,11 +115,11 @@ setStringOptionForCommandString (const char * inCommandString,
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_StringCommandLineOption::
 printUsageOfStringOptions (void) {
-  C_StringCommandLineOption * p = gFirst ;
+  C_StringCommandLineOption * p = gFirstStringOption ;
   while (p != NULL) {
     const char c = p->mCommandChar ;
     if (c != '\0') {
@@ -133,10 +133,10 @@ printUsageOfStringOptions (void) {
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_StringCommandLineOption::printStringOptions (const uint32_t inDisplayLength) {
-  C_StringCommandLineOption * p = gFirst ;
+  C_StringCommandLineOption * p = gFirstStringOption ;
   while (p != NULL) {
     uint32_t charCount = 0 ;
     if (p->mCommandChar != '\0') {
@@ -171,24 +171,24 @@ void C_StringCommandLineOption::printStringOptions (const uint32_t inDisplayLeng
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_StringCommandLineOption::releaseStrings (void) {
-  C_StringCommandLineOption * p = gFirst ;
+  C_StringCommandLineOption * p = gFirstStringOption ;
   while (p != NULL) {
     p->mValue.releaseString () ;
     p = p->mNext ;
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_PrologueEpilogue gReleaseString (NULL, C_StringCommandLineOption::releaseStrings) ;
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_StringCommandLineOption::getStringOptionNameList (TC_UniqueArray <C_String> & outArray) {
-  C_StringCommandLineOption * p = gFirst ;
+  C_StringCommandLineOption * p = gFirstStringOption ;
   while (p != NULL) {
     outArray.addObject (p->mDomainName) ;
     outArray.addObject (p->mIdentifier) ;
@@ -196,12 +196,12 @@ void C_StringCommandLineOption::getStringOptionNameList (TC_UniqueArray <C_Strin
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 utf32 C_StringCommandLineOption::getStringOptionInvocationLetter (const C_String & inDomainName,
                                                        const C_String & inIdentifier) {
   utf32 result = TO_UNICODE (0) ;
-  C_StringCommandLineOption * p = gFirst ;
+  C_StringCommandLineOption * p = gFirstStringOption ;
   bool found = false ;
   while ((p != NULL) && not found) {
     found = (inDomainName == p->mDomainName) && (inIdentifier == p->mIdentifier) ;
@@ -211,12 +211,12 @@ utf32 C_StringCommandLineOption::getStringOptionInvocationLetter (const C_String
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_StringCommandLineOption::getStringOptionInvocationString (const C_String & inDomainName,
                                                        const C_String & inIdentifier) {
   C_String result ;
-  C_StringCommandLineOption * p = gFirst ;
+  C_StringCommandLineOption * p = gFirstStringOption ;
   bool found = false ;
   while ((p != NULL) && not found) {
     found = (inDomainName == p->mDomainName) && (inIdentifier == p->mIdentifier) ;
@@ -226,12 +226,12 @@ C_String C_StringCommandLineOption::getStringOptionInvocationString (const C_Str
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_StringCommandLineOption::getStringOptionCommentString (const C_String & inDomainName,
                                                        const C_String & inIdentifier) {
   C_String result ;
-  C_StringCommandLineOption * p = gFirst ;
+  C_StringCommandLineOption * p = gFirstStringOption ;
   bool found = false ;
   while ((p != NULL) && not found) {
     found = (inDomainName == p->mDomainName) && (inIdentifier == p->mIdentifier) ;
@@ -241,4 +241,4 @@ C_String C_StringCommandLineOption::getStringOptionCommentString (const C_String
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*

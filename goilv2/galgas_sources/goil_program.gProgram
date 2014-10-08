@@ -17,6 +17,9 @@ program goil_program :
     grammar goil_grammar in inSourceFile ;
   }
 
+  when . "goilTemplate" message "a Goil template file" ??@lstring unused inSourceFile {
+  }
+
 #  when . "epc" message "a XML source file" ??@lstring inSourceFile {
 #    @xmlNodeList root_nodes;
 #    grammar xml_parsing_grammar in inSourceFile

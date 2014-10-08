@@ -94,6 +94,7 @@ SOURCES += C_TCPSocketOut.cpp
 SOURCES += unicode_character_cpp.cpp
 SOURCES += unicode_string_routines.cpp
 SOURCES += C_String.cpp
+SOURCES += C_HTMLString.cpp
 SOURCES += md5.cpp
 
 #--- Time
@@ -146,6 +147,7 @@ SOURCES += AC_GALGAS_map.cpp
 SOURCES += AC_GALGAS_uniqueMap.cpp
 SOURCES += AC_GALGAS_class.cpp
 SOURCES += AC_GALGAS_graph.cpp
+SOURCES += AC_GALGAS_enumAssociatedValues.cpp
 SOURCES += acPtr_class.cpp
 SOURCES += cPtr_object.cpp
 
@@ -169,6 +171,13 @@ SOURCES += GALGAS_object.cpp
 SOURCES += GALGAS_uint.cpp
 SOURCES += GALGAS_uint_36__34_.cpp
 
+#------------------------------------------------------------------------------*
+#                                                                              *
+#     Link options                                                             *
+#                                                                              *
+#------------------------------------------------------------------------------*
+
+USER_LINK_OPTIONS :=
 
 #------------------------------------------------------------------------------*
 #                                                                              *

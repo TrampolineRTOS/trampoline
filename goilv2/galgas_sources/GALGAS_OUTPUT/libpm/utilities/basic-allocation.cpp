@@ -1,53 +1,53 @@
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //  Implementation of routines for handling dynamic allocation checking.       *
-//                                                                             *
+//                                                                                                                     *
 //  This file is part of libpm library                                         *
-//                                                                             *
+//                                                                                                                     *
 //  Copyright (C) 1994, ..., 2010 Pierre Molinaro.                             *
-//                                                                             *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
-//                                                                             *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
-//  ECN, École Centrale de Nantes (France)                                     *
-//                                                                             *
-//  This library is free software; you can redistribute it and/or modify it    *
-//  under the terms of the GNU Lesser General Public License as published      *
-//  by the Free Software Foundation; either version 2 of the License, or       *
-//  (at your option) any later version.                                        *
-//                                                                             *
-//  This program is distributed in the hope it will be useful, but WITHOUT     *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
-//  more details.                                                              *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//                                                                                                                     *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes                                          *
+//  ECN, École Centrale de Nantes (France)                                                                             *
+//                                                                                                                     *
+//  This library is free software; you can redistribute it and/or modify it                                            *
+//  under the terms of the GNU Lesser General Public License as published                                              *
+//  by the Free Software Foundation; either version 2 of the License, or                                               *
+//  (at your option) any later version.                                                                                *
+//                                                                                                                     *
+//  This program is distributed in the hope it will be useful, but WITHOUT                                             *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or                                              *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for                                           *
+//  more details.                                                                                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include "utilities/M_machine.h"
 #include "utilities/basic-allocation.h"
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include <stdlib.h>
 #include <stdio.h>
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 //#define GENERATE_BLOCK_SIZE_STATS
 //#define USE_SMALL_BLOCK_FREE_LIST
 //#define USE_MALLOC_GOOD_SIZE
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef USE_MALLOC_GOOD_SIZE
   #include <malloc/malloc.h>
 #endif
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //                   Parametrage de la gestion memoire                         *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 // ATTENTION : l'operateur predefini 'new' n'initialise pas la memoire allouee, tandis
 // que celui defini dans ce fichier initialise la memoire allouee a zero. 
@@ -62,17 +62,17 @@
   extern "C" { int malloc_debug (int) ; }
 #endif
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 // ALLOCATION IN RELEASE MODE                                                *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef GENERATE_BLOCK_SIZE_STATS
   static void noteAllocatedPointerSize (const size_t inSizeInBytes) ;
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef USE_SMALL_BLOCK_FREE_LIST
   typedef struct cBlock {
@@ -82,19 +82,19 @@
   }cBlock ;
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef USE_SMALL_BLOCK_FREE_LIST
   static cBlock * gFreeList ;
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Allocation routines
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef USE_SMALL_BLOCK_FREE_LIST
  void * myAllocRoutine (const size_t inSizeInBytes) {
@@ -139,13 +139,13 @@ void * myAllocRoutine (const size_t inSizeInBytes) {
 }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Dispose routines
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
   
 #ifdef USE_SMALL_BLOCK_FREE_LIST
 void myFreeRoutine (void * inPointer) {
@@ -173,7 +173,7 @@ void myFreeRoutine (void * inPointer) {
 }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Stats about block size
@@ -298,13 +298,13 @@ void myFreeRoutine (void * inPointer) {
   }
 #endif
  
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef GENERATE_BLOCK_SIZE_STATS
   static cAllocatedSizeDescriptorNode * gAllocatedSizeTreeRoot ;
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef GENERATE_BLOCK_SIZE_STATS
   static void noteAllocatedPointerSize (const size_t inSizeInBytes) {
@@ -313,7 +313,7 @@ void myFreeRoutine (void * inPointer) {
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef GENERATE_BLOCK_SIZE_STATS
   static void internalVisitNode (cAllocatedSizeDescriptorNode * inRoot,
@@ -327,7 +327,7 @@ void myFreeRoutine (void * inPointer) {
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void displayAllocatedBlockSizeStats (void) {
   #ifdef GENERATE_BLOCK_SIZE_STATS
@@ -340,4 +340,4 @@ void displayAllocatedBlockSizeStats (void) {
   #endif
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*

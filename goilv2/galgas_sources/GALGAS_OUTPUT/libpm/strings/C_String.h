@@ -1,32 +1,32 @@
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //  C_String : an implementation of fully dynamic character string             *
-//                                                                             *
+//                                                                                                                     *
 //  This file is part of libpm library                                         *
-//                                                                             *
-//  Copyright (C) 1997, ..., 2011 Pierre Molinaro.                             *
-//                                                                             *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
-//                                                                             *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
-//  ECN, École Centrale de Nantes (France)                                     *
-//                                                                             *
-//  This library is free software; you can redistribute it and/or modify it    *
-//  under the terms of the GNU Lesser General Public License as published      *
-//  by the Free Software Foundation; either version 2 of the License, or       *
-//  (at your option) any later version.                                        *
-//                                                                             *
-//  This program is distributed in the hope it will be useful, but WITHOUT     *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
-//  more details.                                                              *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//  Copyright (C) 1997, ..., 2014 Pierre Molinaro.                             *
+//                                                                                                                     *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//                                                                                                                     *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes                                          *
+//  ECN, École Centrale de Nantes (France)                                                                             *
+//                                                                                                                     *
+//  This library is free software; you can redistribute it and/or modify it                                            *
+//  under the terms of the GNU Lesser General Public License as published                                              *
+//  by the Free Software Foundation; either version 2 of the License, or                                               *
+//  (at your option) any later version.                                                                                *
+//                                                                                                                     *
+//  This program is distributed in the hope it will be useful, but WITHOUT                                             *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or                                              *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for                                           *
+//  more details.                                                                                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef CLASS_C_STRING_DEFINED
 #define CLASS_C_STRING_DEFINED
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include "utilities/M_SourceLocation.h"
 #include "collections/TC_Array.h"
@@ -36,26 +36,26 @@
 #include "utilities/TF_Swap.h"
 #include "time/C_DateTime.h"
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include <exception>
 #include <stdio.h> 
 #include <dirent.h> 
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef MACHINE_IS_DEFINED
   #error "Undefined machine"
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef UNIX_TOOL
   #include <sys/types.h>
   #include <sys/stat.h>
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 typedef enum {
   kUTF_8_FileEncoding,
@@ -83,18 +83,17 @@ typedef enum {
   kMacRoman_FileEncoding
 } PMTextFileEncoding ;
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //      Fully dynamic character string : C_String                              *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 class C_String : public AC_OutputStream {
 //--- Constructors
   public : C_String (void) ; // Empty string
   public : C_String (const char * chaineC) ; // From a C string
   public : C_String (const utf32 * inUTF32String) ;
-//  public : C_String (const int32_t inSignedValue) ; // From an int32_t
   
 //--- Virtual destructor
   public : virtual ~C_String (void) ;
@@ -115,6 +114,14 @@ class C_String : public AC_OutputStream {
 //--- Init from a string
   public : void setFromCstring (const char * inCstring) ;
   public : void setFromString (const C_String & inString) ;
+
+//--- Registering
+  public : void enableRegistering (void) ;
+  public : void disableRegistering (void) ;
+  public : bool registeringIsEnabled (void) const ;
+
+//--- Insulate
+  public : void insulate (void) const ;
 
 //--- hash code
   public : uint32_t hash (void) const ;
@@ -215,6 +222,7 @@ class C_String : public AC_OutputStream {
 //--- Get a sub string
   public : C_String leftSubString (const int32_t inLength) const ;
   public : C_String rightSubString (const int32_t inLength) const ;
+  public : C_String subStringFromIndex (const int32_t inIndex) const ;
 
 //--- String concatenation
   public : C_String operator + (const C_String & inOperand) const ;
@@ -286,7 +294,7 @@ class C_String : public AC_OutputStream {
                                                             const int32_t inArrayCount) ;
 
 //--- Private (internal) methods
-  private : void insulateEmbeddedString (const uint32_t inNewCapacity) ;
+  private : void insulateEmbeddedString (const uint32_t inNewCapacity) const ;
 
   #ifndef DO_NOT_GENERATE_CHECKINGS
     private : void checkString (LOCATION_ARGS) const ;
@@ -297,14 +305,14 @@ class C_String : public AC_OutputStream {
                                   C_String & outString) ;
 
 //---------------- Private attributes -------------
-  private : class cEmbeddedString * mEmbeddedString ;
+  private : mutable class cEmbeddedString * mEmbeddedString ;
 } ;
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //  Exception generated by readTextFile method when a read error occurs        *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 const size_t kTextReadExceptionStringMaxLength = 1000 ;
 
@@ -316,6 +324,6 @@ class C_TextReadException : public ::std::  exception {
   public : virtual const char * what (void) const throw () ;
 } ;
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #endif

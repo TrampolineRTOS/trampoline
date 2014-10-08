@@ -1,25 +1,29 @@
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//  This file is part of libpm library                                         *
-//                                                                             *
-//  Copyright (C) 2003, ..., 2014 Pierre Molinaro.                             *
-//                                                                             *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
-//                                                                             *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
-//  ECN, École Centrale de Nantes (France)                                     *
-//                                                                             *
-//  This library is free software; you can redistribute it and/or modify it    *
-//  under the terms of the GNU Lesser General Public License as published      *
-//  by the Free Software Foundation; either version 2 of the License, or       *
-//  (at your option) any later version.                                        *
-//                                                                             *
-//  This program is distributed in the hope it will be useful, but WITHOUT     *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
-//  more details.                                                              *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//  This file is part of libpm library                                                                                 *
+//                                                                                                                     *
+//  Copyright (C) 2003, ..., 2014 Pierre Molinaro.                                                                     *
+//                                                                                                                     *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//                                                                                                                     *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes                                          *
+//  ECN, École Centrale de Nantes (France)                                                                             *
+//                                                                                                                     *
+//  This library is free software; you can redistribute it and/or modify it                                            *
+//  under the terms of the GNU Lesser General Public License as published                                              *
+//  by the Free Software Foundation; either version 2 of the License, or                                               *
+//  (at your option) any later version.                                                                                *
+//                                                                                                                     *
+//  This program is distributed in the hope it will be useful, but WITHOUT                                             *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or                                              *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for                                           *
+//  more details.                                                                                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+#import "CocoaGalgasPrefix.h"
+
+//---------------------------------------------------------------------------------------------------------------------*
 
 @class OC_GGS_TextView ;
 @class OC_GGS_DelegateForSyntaxColoring ;
@@ -33,7 +37,7 @@
 @class OC_GGS_DocumentData ;
 @class OC_GGS_RulerViewForBuildOutput ;
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 @interface OC_GGS_Document : NSDocument <NSTextViewDelegate,
                                          NSSplitViewDelegate,
@@ -86,6 +90,20 @@
   @private NSMutableArray * mResultArray ;
   @private NSUInteger mResultCount ;
   @private NSTreeController * mFoundEntryTreeController ;
+//--- Search in opened directories
+  @private IBOutlet NSTableView * mExcludedDirectoryTableView ;
+  @private NSArrayController * mExcludedDirectoryArrayController ;
+  @private IBOutlet NSButton * mAddExcludedDirectoryButton ;
+  @private IBOutlet NSButton * mRemoveExcludedDirectoryButton ;
+  @private IBOutlet NSView * mExcludedDirectoryView ;
+//--- Search in an explicit directory list
+  @private IBOutlet NSView * mExplicitSearchDirectoryView ;
+  @private IBOutlet NSTableView * mExplicitSearchDirectoryTableView ;
+  @private NSArrayController *mExplicitSearchDirectoryArrayController ;
+  @private IBOutlet NSButton * mAddExplicitSearchDirectoryButton ;
+  @private IBOutlet NSButton * mRemoveExplicitSearchDirectoryButton ;
+
+  @private NSString * mBaseFilePreferenceKey ;
 }
 
 @property (assign PROPERTY_COMMA_ATOMIC) BOOL mBuildTaskIsRunning ;
@@ -140,3 +158,6 @@
 - (void) appendBuildOutputData: (NSData *) inData ;
 - (void) buildCompleted ;
 @end
+
+//---------------------------------------------------------------------------------------------------------------------*
+

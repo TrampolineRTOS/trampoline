@@ -31,6 +31,9 @@ project all_goil (2:1:3) -> "goil" :
   feature "makefile_i386_linux_on_macosx" ;
   feature "makefile_mingw_on_macosx" ;
   feature "makefile_msys_on_win32" ;
+  #specific for Mac Cocoa Version:
+  feature "LatestMacOS" ;
+  feature applicationBundleBase : "fr.irccyn.str" ;
   #
   # New templates (added by PM)
   #

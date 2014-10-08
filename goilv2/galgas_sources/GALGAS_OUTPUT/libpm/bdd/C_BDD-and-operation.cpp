@@ -1,60 +1,60 @@
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //     BDD package (implementation of ROBDD)                                   *
-//                                                                             *
+//                                                                                                                     *
 //  This file is part of libpm library                                         *
-//                                                                             *
+//                                                                                                                     *
 //  Copyright (C) 1999, ..., 2010 Pierre Molinaro.                             *
-//                                                                             *
+//                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
 //  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
 //  ECN, École Centrale de Nantes (France)                                     *
-//                                                                             *
+//                                                                                                                     *
 //  This library is free software; you can redistribute it and/or modify it    *
 //  under the terms of the GNU Lesser General Public License as published      *
 //  by the Free Software Foundation; either version 2 of the License, or       *
 //  (at your option) any later version.                                        *
-//                                                                             *
+//                                                                                                                     *
 //  This program is distributed in the hope it will be useful, but WITHOUT     *
 //  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
 //  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
 //  more details.                                                              *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include "bdd/C_BDD.h"
 #include "utilities/F_GetPrime.h"
 #include "strings/C_String.h"
 #include "bdd/C_BDD-node.h"
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include <stddef.h>
 #include <string.h>
 #include <limits.h>
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Cache for AND Operation
 #endif
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //  And computation cache                                                      *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 typedef struct {
   public : uint64_t mOperands ;
   public : uint32_t mResult ;
 } tStructANDOperationCacheEntry ;
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 static const int32_t kANDOperationCacheInitialSize = 262145 ;
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 static uint64_t * gANDOperationCacheOperandMap ;
 static uint32_t * gANDOperationCacheResultMap ;
@@ -64,13 +64,13 @@ static uint64_t gANDOperationCacheTrivialOperationCount ;
 static bool gANDOperationCacheExpandable = true ;
 static uint32_t gANDOperationCacheMaxPowerOfTwoSize = 31 ;
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 uint32_t ANDCacheMemoryUsage (void) {
   return (gANDOperationMapSize * (uint32_t) (sizeof (uint32_t) + sizeof (uint64_t))) / 1000000 ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void releaseANDOperationCache (void) {
   gANDOperationCacheMapUsedEntryCount = 0 ;
@@ -80,7 +80,7 @@ void releaseANDOperationCache (void) {
   gANDOperationCacheExpandable = true ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void clearANDOperationCache (void) {
   gANDOperationCacheMapUsedEntryCount = 0 ;
@@ -89,7 +89,7 @@ void clearANDOperationCache (void) {
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 static inline uint64_t getOperands (const uint32_t inOperand1,
                                     const uint32_t inOperand2) {
@@ -99,7 +99,7 @@ static inline uint64_t getOperands (const uint32_t inOperand1,
   return operands ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 static bool searchInANDOperationCache (const uint32_t inOperand1,
                                        const uint32_t inOperand2,
@@ -129,7 +129,7 @@ static bool searchInANDOperationCache (const uint32_t inOperand1,
   return found ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 static void reallocANDOperationCache (const uint32_t inNewSize) {
   if (0 < inNewSize) {
@@ -164,7 +164,7 @@ static void reallocANDOperationCache (const uint32_t inNewSize) {
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 static void enterInANDOperationCache (const uint32_t inOperand1,
                                       const uint32_t inOperand2,
@@ -208,7 +208,7 @@ static void enterInANDOperationCache (const uint32_t inOperand1,
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_BDD::setANDOperationCacheMaxSize (const uint32_t inPowerOfTwo) {
   gANDOperationCacheMaxPowerOfTwoSize = inPowerOfTwo ;
@@ -217,17 +217,17 @@ void C_BDD::setANDOperationCacheMaxSize (const uint32_t inPowerOfTwo) {
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark AND operation
 #endif
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //                        Operation AND                                        *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 uint32_t internalANDoperation (const uint32_t opf,
                                const uint32_t opg) {
@@ -286,4 +286,4 @@ uint32_t internalANDoperation (const uint32_t opf,
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
