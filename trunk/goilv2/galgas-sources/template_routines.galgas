@@ -1,0 +1,36 @@
+
+
+func goil_template
+  ?let @string prefix
+  ?let @TfieldMap cfg
+  ?let @string name
+  ->@string result {
+  result = ""
+  templateInvocation (
+    !@lstring. new { !name !@location.here}
+    !prefix
+    !"templates"
+    !rootTemplatesDirectory()
+    !true
+    !cfg
+    !?result
+    ?*)
+}
+
+func computeTemplate
+  ?let @string prefix
+  ?let @TfieldMap cfg
+  ?let @string name
+  ->@string result {
+  result = ""
+  templateInvocation (
+    !@lstring. new { !name !@location.here}
+    !prefix
+    !"templates"
+    !rootTemplatesDirectory()
+    !true
+    !cfg
+    !?result
+    ?*)
+}
+

@@ -1,0 +1,36 @@
+
+ # import semantics xml_types in "xml_types.ggs";
+ # import grammar xml_parsing_grammar in "xml_parsing_grammar.ggs" ;
+ # import semantics xml_to_goil in "xml_to_goil.ggs";
+
+#--- Prologue routine (sample code for GOIL templates)
+  before {
+  }
+
+#---
+  case . "oil" message "an '.oil' source file" ?sourceFilePath:@lstring inSourceFile {
+    grammar goil_grammar in inSourceFile
+  }
+
+  case . "OIL" message "an '.OIL' source file" ?sourceFilePath:@lstring inSourceFile {
+    grammar goil_grammar in inSourceFile
+  }
+
+  case . "goilTemplate" message "a Goil template file" ?sourceFilePath:@lstring unused inSourceFile {
+  }
+
+#  when . "epc" message "a XML source file" ??@lstring inSourceFile {
+#    @xmlNodeList root_nodes;
+#    grammar xml_parsing_grammar in inSourceFile
+#      ?root_nodes
+#      !false
+#      !true
+#      !false;
+#
+#    @root_obj cpu := transform_xml_to_goil(!root_nodes);
+#  }
+#
+
+#--- Epilogue routine
+  after {
+  }

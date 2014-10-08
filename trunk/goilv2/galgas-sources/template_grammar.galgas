@@ -1,0 +1,34 @@
+#---------------------------------------------------------------------------*
+#                                                                           *
+#  GOIL Template grammar                                                    *
+#                                                                           *
+#  Copyright (C) 2009, ..., 2009 Pierre Molinaro.                           *
+#                                                                           *
+#  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
+#                                                                           *
+#  This program is free software; you can redistribute it and/or modify it  *
+#  under the terms of the GNU General Public License as published by the    *
+#  Free Software Foundation.                                                *
+#                                                                           *
+#  This program is distributed in the hope it will be useful, but WITHOUT   *
+#  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
+#  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
+#   more details.                                                           *
+#                                                                           *
+#---------------------------------------------------------------------------*
+
+grammar template_grammar "LL1" {
+  syntax template_parser
+  syntax template_expression_parser
+
+   <goil_template_start_symbol>
+    ?let @string inPrefix
+    ?let @string inPath
+    ?let @string inTemplateDirectory
+    ?@TfieldMap inTemplateVariableMap
+    ?!@string ioResultingString
+    !@Tvalue returnedValue
+    !@Ttype returnedType
+}
+
+#---------------------------------------------------------------------------*

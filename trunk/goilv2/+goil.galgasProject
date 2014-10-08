@@ -1,0 +1,99 @@
+#
+# @file all_goil.ggs
+#
+# @section File description
+#
+# This file compile all the galgas sources of Goil.
+#
+# @section Copyright
+#
+# Goil OIL compiler for Trampoline
+#
+# Goil is copyright (c) IRCCyN 2005+
+# Goil is protected by the french law of intellectual property
+#
+# This software is distributed under the GNU Public Licence V2
+#
+# @section File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+
+project (2:1:4) -> "goil" {
+
+#  feature libpmAtPath : "../galgas_sources/GALGAS_OUTPUT/libpm" ;
+  %makefile-macosx
+  %makefile-unix
+  %makefile-x86linux32-on-macosx
+  %makefile-win32-on-macosx
+  %makefile-msys32-on-windows
+  #specific for Mac Cocoa Version:
+  %LatestMacOS
+  %applicationBundleBase : "fr.irccyn.str"
+  #
+  # New templates (added by PM)
+  #
+  "galgas-sources/template_semantics.galgas"
+  "galgas-sources/template_scanner.galgas"
+  "galgas-sources/template_expression_parser.galgas"
+  "galgas-sources/template_parser.galgas"
+  "galgas-sources/template_grammar.galgas"
+  "galgas-sources/template_invocation.galgas"
+  "galgas-sources/template_routines.galgas"
+  "galgas-sources/template_functions.galgas"
+
+  "galgas-sources/goil_lexique.galgas"
+  "galgas-sources/goil_options.galgas"
+  "galgas-sources/goil_syntax.galgas"
+  "galgas-sources/implementation_parser.galgas"
+  "galgas-sources/implementation_types.galgas"
+  "galgas-sources/goil_semantics.galgas"
+  "galgas-sources/goil_basic_types.galgas"
+  "galgas-sources/goil_routines.galgas"
+  "galgas-sources/systemConfig.galgas"
+
+  #
+  # XML parsing for AUTOSAR 3+
+  #
+#  lexique   "xml_parsing_lexique.ggs"  : makefile, xcode_tool, xcode_app;
+#  syntax    "xml_parsing_syntax.ggs"   : makefile, xcode_tool;
+#  grammar   "xml_parsing_grammar.ggs"  : makefile, xcode_tool;  
+#  semantics "xml_types.ggs"            : makefile, xcode_tool;
+#  semantics "xml_to_goil.ggs"          : makefile, xcode_tool;
+#  semantics "xml_utils.ggs"            : makefile, xcode_tool;
+#  semantics "xml_os.ggs"               : makefile, xcode_tool;
+#  semantics "xml_resource.ggs"         : makefile, xcode_tool;
+#  semantics "xml_schedtable.ggs"       : makefile, xcode_tool;
+#  semantics "xml_task.ggs"             : makefile, xcode_tool;
+#  semantics "xml_containers.ggs"       : makefile, xcode_tool;
+  #
+  # Post-processing and verification
+  #
+  "galgas-sources/defaults.galgas"
+  "galgas-sources/semantic_verification.galgas"
+  #
+  # Datatypes
+  #
+  "galgas-sources/goil_types_root.galgas"
+  #
+  # Code generation
+  #
+  "galgas-sources/goil_code_generation.galgas"
+  
+  "galgas-sources/goil_grammar.galgas"
+  "galgas-sources/goil_file_level_include.galgas"
+  "galgas-sources/goil_cpu_level_include.galgas"
+  "galgas-sources/goil_program.galgas"
+  
+  #
+  # Cocoa GOIL
+  #
+  "galgas-sources/cocoaGOIL.galgas"
+  
+}
+# vim:ft=ggs:ts=4:sw=4
+

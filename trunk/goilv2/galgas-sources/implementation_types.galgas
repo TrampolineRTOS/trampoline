@@ -1,0 +1,1137 @@
+#
+# @file implementation_types.ggs
+#
+# @section descr File description
+#
+# types for implementation definition.
+#
+# @section copyright Copyright
+#
+# Goil OIL compiler. Part of the Trampoline Project
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Copyright ESEO for function and data structures documentation
+# Trampoline is protected by the French intellectual property law.
+#
+# Goil is distributed under the GNU Public Licence v2
+#
+# @section infos File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#/
+
+
+
+enum @dataType {
+  case void 
+  case uint32Number 
+  case sint32Number 
+  case uint64Number 
+  case sint64Number 
+  case floatNumber 
+  case string 
+  case enumeration 
+  case boolean 
+  case identifier 
+  case objectType 
+  case structType
+}
+
+getter @dataType oilType -> @string result {
+  switch self
+  case void : result = "VOID"
+  case uint32Number : result = "UINT32"
+  case sint32Number : result = "INT32"
+  case uint64Number : result = "UINT64"
+  case sint64Number : result = "INT64"
+  case floatNumber : result = "FLOAT"
+  case string : result = "STRING"
+  case enumeration : result = "ENUM"
+  case boolean : result = "BOOLEAN"
+  case identifier : result = "IDENTIFIER"
+  case objectType : result = "OBJECT_TYPE"
+  case structType : result = "STRUCT"
+  end
+}
+
+list @uint32List { @location location @uint value }
+list @uint64List { @location location @uint64 value }
+list @sint32List { @location location @sint value }
+list @sint64List { @location location @sint64 value }
+list @floatList  { @location location @double value }
+list @numberList { @location location @object_t value }
+
+func stringWithUInt32List ?let @uint32List values ->@string result {
+  result = ""
+  for () in  values do result += [value string] between result += ", " end
+}
+ 
+func stringWithUInt64List ?let @uint64List values ->@string result {
+  result = ""
+  for () in  values do result += [value string] between result += ", " end
+}
+ 
+func stringWithSInt32List ?let @sint32List values ->@string result {
+  result = ""
+  for () in  values do result += [value string] between result += ", " end
+}
+ 
+func stringWithSInt64List ?let @sint64List values ->@string result {
+  result = ""
+  for () in  values do result += [value string] between result += ", " end
+}
+ 
+func stringWithFloatList ?let @floatList values ->@string result {
+  result = ""
+  for () in  values do result += [value string] between result += ", " end
+}
+ 
+func uint32ListWithNumberList ?let @numberList numbers ->@uint32List result {
+  result = @uint32List. emptyList
+  for () in  numbers do
+    result += !location !uint32OrError(!value !"")
+  end
+}
+  
+func sint32ListWithNumberList ?let @numberList numbers ->@sint32List result {
+  result = @sint32List. emptyList
+  for () in  numbers do
+    result += !location !sint32OrError(!value !"")
+  end
+}
+  
+func uint64ListWithNumberList ?let @numberList numbers ->@uint64List result {
+  result = @uint64List. emptyList
+  for () in  numbers do
+    result += !location !uint64OrError(!value !"")
+  end
+}
+  
+func sint64ListWithNumberList ?let @numberList numbers ->@sint64List result {
+  result = @sint64List. emptyList
+  for () in  numbers do
+    result += !location !sint64OrError(!value !"")
+  end
+}
+  
+func floatListWithNumberList ?let @numberList numbers ->@floatList result {
+  result = @floatList. emptyList
+  for () in  numbers do
+    result += !location !floatOrError(!value !"")
+  end
+}
+  
+#class @attributeRange;
+
+abstract class @attributeRange {
+  @location location
+#  method check ??@object_t unused value:
+#  end method;
+}
+
+abstract method @attributeRange enclose !@bool isWithin ?let @attributeRange value
+
+
+class @noRange : @attributeRange {
+#  override method enclose !@bool isWithin ??@attributeRange unused value:
+#    isWithin := true;
+#  end method;
+}
+
+override method @noRange enclose !@bool isWithin ?let @attributeRange unused value {
+  isWithin = true
+}
+
+class @uint32AttributeSet : @attributeRange {
+  @uint32List valueList
+
+#  override method check ??@object_t value:
+#    cast value:
+#    when == @uint32_class number do
+#      @bool numberOk := false;
+#      foreach valueList do
+#        if value == [number value] then
+#          numberOk := true;
+#        end if;
+#      end foreach;
+#      if not numberOk then
+#        error [number location]: "Attribute should be one element of the set";
+#        error [number location]: stringWithUInt32List[!valueList];
+#      end if;
+#    else
+#      error [value location]: "Attribute type should be UINT32";
+#    end cast;
+#  end method;
+#
+}
+
+override method @uint32AttributeSet enclose !@bool isWithin ?let @attributeRange value {
+  isWithin = true
+  cast value
+  case == @uint32AttributeSet set :
+    for () new_ in  [set valueList] do
+      @bool ok = false
+      for () prev_ in  valueList do
+        if (new_value == prev_value) then
+          ok = true
+        end
+      end
+      isWithin = isWithin & ok
+    end
+  else
+    error [value location]: "Incompatible set. Should be a UINT32 set"
+    error location: "Previous set was declared here"
+    isWithin = false
+  end
+}
+
+class @uint64AttributeSet : @attributeRange {
+  @uint64List valueList
+#  override method check ??@object_t value:
+#    cast value:
+#    when == @uint64_class number do
+#      @bool numberOk := false;
+#      foreach valueList do
+#        if value == [number value] then
+#          numberOk := true;
+#        end if;
+#      end foreach;
+#      if not numberOk then
+#        error [number location]: "Attribute should be one element of the set";
+#        error [number location]: stringWithUInt64List[!valueList];
+#      end if;
+#    else
+#      error [value location]: "Attribute type should be UINT64";
+#    end cast;
+#  end method;
+#
+}
+
+override method @uint64AttributeSet enclose !@bool isWithin ?let @attributeRange value {
+  isWithin = true
+  cast value
+  case == @uint64AttributeSet set :
+    for () new_ in  [set valueList] do
+      @bool ok = false
+      for () prev_ in  valueList do
+        if (new_value == prev_value) then
+          ok = true
+        end
+      end
+      isWithin = isWithin & ok
+    end
+  else
+    error [value location]: "Incompatible set. Should be a UINT64 set"
+    error location: "Previous set was declared here"
+    isWithin = false
+  end
+}
+
+class @sint32AttributeSet : @attributeRange {
+  @sint32List valueList
+#  override method check ??@object_t value:
+#    cast value:
+#    when == @sint32_class number do
+#      @bool numberOk := false;
+#      foreach valueList do
+#        if value == [number value] then
+#          numberOk := true;
+#        end if;
+#      end foreach;
+#      if not numberOk then
+#        error [number location]: "Attribute should be one element of the set";
+#        error [number location]: stringWithSInt32List[!valueList];
+#      end if;
+#    else
+#      error [value location]: "Attribute type should be INT32";
+#    end cast;
+#  end method;
+#
+}
+
+override method @sint32AttributeSet enclose !@bool isWithin ?let @attributeRange value {
+  isWithin = true
+  cast value
+  case == @sint32AttributeSet set :
+    for () new_ in  [set valueList] do
+      @bool ok = false
+      for () prev_ in  valueList do
+        if (new_value == prev_value) then
+          ok = true
+        end
+      end
+      isWithin = isWithin & ok
+    end
+  else
+    error [value location]: "Incompatible set. Should be a INT32 set"
+    error location: "Previous set was declared here"
+    isWithin = false
+  end
+}
+
+class @sint64AttributeSet : @attributeRange {
+  @sint64List valueList
+#  override method check ??@object_t value:
+#    cast value:
+#    when == @sint64_class number do
+#      @bool numberOk := false;
+#      foreach valueList do
+#        if value == [number value] then
+#          numberOk := true;
+#        end if;
+#      end foreach;
+#      if not numberOk then
+#        error [number location]: "Attribute should be one element of the set";
+#        error [number location]: stringWithSInt64List[!valueList];
+#      end if;
+#    else
+#      error [value location]: "Attribute type should be INT64";
+#    end cast;
+#  end method;
+#
+}
+
+override method @sint64AttributeSet enclose !@bool isWithin ?let @attributeRange value {
+  isWithin = true
+  cast value
+  case == @sint64AttributeSet set :
+    for () new_ in  [set valueList] do
+      @bool ok = false
+      for () prev_ in  valueList do
+        if (new_value == prev_value) then
+          ok = true
+        end
+      end
+      isWithin = isWithin & ok
+    end
+  else
+    error [value location]: "Incompatible set. Should be a INT64 set"
+    error location: "Previous set was declared here"
+    isWithin = false
+  end
+}
+
+class @floatAttributeSet  : @attributeRange {
+  @floatList  valueList
+#  override method check ??@object_t value:
+#    cast value:
+#    when == @float_class number do
+#      @bool numberOk := false;
+#      foreach valueList do
+#        if value == [number value] then
+#          numberOk := true;
+#        end if;
+#      end foreach;
+#      if not numberOk then
+#        error [number location]: "Attribute should be one element of the set";
+#        error [number location]: stringWithFloatList[!valueList];        
+#      end if;
+#    else
+#      error [value location]: "Attribute type should be FLOAT";
+#    end cast;
+#  end method;
+#
+}
+
+override method @floatAttributeSet enclose !@bool isWithin ?let @attributeRange value {
+  isWithin = true
+  cast value
+  case == @floatAttributeSet set :
+    for () new_ in  [set valueList] do
+      @bool ok = false
+      for () prev_ in  valueList do
+        if (new_value == prev_value) then
+          ok = true
+        end
+      end
+      isWithin = isWithin & ok
+    end
+  else
+    error [value location]: "Incompatible set. Should be a FLOAT set"
+    error location: "Previous set was declared here"
+    isWithin = false
+  end
+}
+
+class @uint32AttributeMinMax : @attributeRange {
+  @uint min
+  @uint max
+#  override method check ??@object_t value:
+#    cast value:
+#    when == @uint32_class number do
+#      if [number value] < min | [number value] > max then
+#        error [number location]: "Attribute should be within ".[min string]." and ".[max string];
+#      end if;
+#    else
+#      error [value location]: "Attribute type should be UINT32";
+#    end cast;
+#  end method;
+#
+}
+
+override method @uint32AttributeMinMax enclose !@bool isWithin ?let @attributeRange value {
+  isWithin = false
+  cast value
+  case == @uint32AttributeMinMax minmax :
+    if [minmax min] >= min & [minmax max] <= max then
+      isWithin = true
+    end
+  case == @uint32AttributeSet set :
+    isWithin = true
+    for () in  [set valueList] do
+      if value < min | value > max then
+        isWithin = false
+      end
+    end
+  else
+    error [value location]: "Incompatible set. Should be a UINT32 range or UINT32 set"
+    error location: "Previous set was declared here"
+  end
+}
+
+class @uint64AttributeMinMax : @attributeRange {
+  @uint64 min
+  @uint64 max
+#  override method check ??@object_t value:
+#    cast value:
+#    when == @uint64_class number do
+#      if [number value] < min | [number value] > max then
+#        error [number location]: "Attribute should be within ".[min string]." and ".[max string];
+#      end if;
+#    else
+#      error [value location]: "Attribute type should be UINT64";
+#    end cast;
+#  end method;
+#
+}
+
+override method @uint64AttributeMinMax enclose !@bool isWithin ?let @attributeRange value {
+  isWithin = false
+  cast value
+  case == @uint64AttributeMinMax minmax :
+    if [minmax min] >= min & [minmax max] <= max then
+      isWithin = true
+    end
+  case == @uint64AttributeSet set :
+    isWithin = true
+    for () in  [set valueList] do
+      if value < min | value > max then
+        isWithin = false
+      end
+    end
+  else
+    error [value location]: "Incompatible set. Should be a UINT64 range or UINT64 set"
+    error location: "Previous set was declared here"
+  end
+}
+
+class @sint32AttributeMinMax : @attributeRange {
+  @sint min
+  @sint max
+#  override method check ??@object_t value:
+#    cast value:
+#    when == @sint32_class number do
+#      if [number value] < min | [number value] > max then
+#        error [number location]: "Attribute should be within ".[min string]." and ".[max string];
+#      end if;
+#    else
+#      error [value location]: "Attribute type should be INT32";
+#    end cast;
+#  end method;
+#
+}
+
+override method @sint32AttributeMinMax enclose !@bool isWithin ?let @attributeRange value {
+  isWithin = false
+  cast value
+  case == @sint32AttributeMinMax minmax :
+    if [minmax min] >= min & [minmax max] <= max then
+      isWithin = true
+    end
+  case == @sint32AttributeSet set :
+    isWithin = true
+    for () in  [set valueList] do
+      if value < min | value > max then
+        isWithin = false
+      end
+    end
+  else
+    error [value location]: "Incompatible set. Should be a INT32 range or INT32 set"
+    error location: "Previous set was declared here"
+  end
+}
+
+class @sint64AttributeMinMax : @attributeRange {
+  @sint64 min
+  @sint64 max
+#  override method check ??@object_t value:
+#    cast value:
+#    when == @sint64_class number do
+#      if [number value] < min | [number value] > max then
+#        error [number location]: "Attribute should be within ".[min string]." and ".[max string];
+#      end if;
+#    else
+#      error [value location]: "Attribute type should be INT64";
+#    end cast;
+#  end method;
+#
+}
+
+override method @sint64AttributeMinMax enclose !@bool isWithin ?let @attributeRange value {
+  isWithin = false
+  cast value
+  case == @sint64AttributeMinMax minmax :
+    if [minmax min] >= min & [minmax max] <= max then
+      isWithin = true
+    end
+  case == @sint64AttributeSet set :
+    isWithin = true
+    for () in  [set valueList] do
+      if value < min | value > max then
+        isWithin = false
+      end
+    end
+  else
+    error [value location]: "Incompatible set. Should be a INT64 range or INT64 set"
+    error location: "Previous set was declared here"
+  end
+}
+
+class @floatAttributeMinMax  : @attributeRange {
+  @double min
+  @double max
+#  override method check ??@object_t value:
+#    cast value:
+#    when == @float_class number do
+#      if [number value] < min | [number value] > max then
+#        error [number location]: "Attribute should be within ".[min string]." and ".[max string];
+#      end if;
+#    else
+#      error [value location]: "Attribute type should be FLOAT";
+#    end cast;
+#  end method;
+#
+}
+
+override method @floatAttributeMinMax enclose !@bool isWithin ?let @attributeRange value {
+  isWithin = false
+  cast value
+  case == @floatAttributeMinMax minmax :
+    if [minmax min] >= min & [minmax max] <= max then
+      isWithin = true
+    end
+  case == @floatAttributeSet set :
+    isWithin = true
+    for () in  [set valueList] do
+      if value < min | value > max then
+        isWithin = false
+      end
+    end
+  else
+    error [value location]: "Incompatible set. Should be a FLOAT range or FLOAT set"
+    error location: "Previous set was declared here"
+  end
+}
+
+
+func attributeRangeWithNumberList
+  ?let @numberList numbers
+  ?let @dataType type
+  ->@attributeRange range {
+  if    type == @dataType. uint32Number then
+    range = @uint32AttributeSet. new { !@location.here !uint32ListWithNumberList(!numbers)}
+  elsif type == @dataType. sint32Number then
+    range = @sint32AttributeSet. new { !@location.here !sint32ListWithNumberList(!numbers)}
+  elsif type == @dataType. uint64Number then
+    range = @uint64AttributeSet. new { !@location.here !uint64ListWithNumberList(!numbers)}
+  elsif type == @dataType. sint64Number then
+    range = @sint64AttributeSet. new { !@location.here !sint64ListWithNumberList(!numbers)}
+  elsif type == @dataType. floatNumber then
+    range = @floatAttributeSet. new { !@location.here !floatListWithNumberList(!numbers)}
+  else
+    error @location.here: "internal. Unknown number type": range
+  end 
+}
+
+class @impType {
+  @location   location # location of the declaration
+  @dataType   type     # type of the attribute
+  @lstring    name     # name of the attribute
+  @bool       multiple # true if multiple values are possible
+  @lstring    desc     # description of the attribute
+#  method checkAndSet ?!@object_t unused value:
+#  end method;
+#  method setDefault ?!@objectAttributes unused attributes:
+#  end method;
+}
+
+class @impStructType : @impType {
+  @implementationObjectMap structAttributes # struct attributes
+}
+
+getter @impType autoAllowed -> @bool result {
+  result = false
+}
+
+class @impVoid : @impType {
+#  override method checkAndSet ?!@object_t unused value:
+#  end method;
+}
+
+class @impAutoDefaultType : @impType {
+  @bool     withAuto    # true if AUTO allowed
+  @object_t defaultValue
+#  override method checkAndSet ?!@object_t value:
+#    cast value:
+#    when == @void do
+#      value := defaultValue;
+#    else end cast;  
+#  end method;
+#
+}
+
+override getter @impAutoDefaultType autoAllowed -> @bool result {
+  result = withAuto
+}
+
+method @impAutoDefaultType setDefault ?!@objectAttributes attributes {
+  if not [[attributes objectParams] hasKey ![name string]] then
+    cast defaultValue
+    case == @void :
+    case == @auto :
+      @identifierMap attr = [attributes objectParams]
+      [!?attr put !name !defaultValue]
+      [!?attributes setObjectParams !attr]
+    else
+#      message "******* setObjectParams ******\n";
+      @identifierMap attr = [attributes objectParams]
+      [!?attr put !name !defaultValue]
+      [!?attributes setObjectParams !attr]
+    end
+  end
+}
+
+
+class @refType : @impType {
+  @lstring    ref     # name of the type
+}
+
+map @implementationObjectMap {
+  @impType type
+  insert put error message "%K is duplicated in %L"
+  search get error message "%K does not exists"
+  remove del error message "%K does not exists"
+}
+
+class @implementationObject {
+  @lbool multiple %setter
+  @implementationObjectMap attributes %setter
+}
+
+map @enumValues { # a map of enumeration values
+  @implementationObjectMap subAttributes # sub attributes if any
+  insert put error message "%K is duplicated in %L"
+  search get error message "%K does not exists"
+  remove del error message "%K does not exists"
+}
+
+func valueList
+  ?let @enumValues values
+  ->@string result {
+  result = ""
+  for () in  values do
+    result += [lkey string]
+  between
+    result += ", "
+  end
+}
+
+class @impRangedType : @impAutoDefaultType {
+  @attributeRange setOrRange
+#  override method checkAndSet ?!@object_t value:
+#    cast value:
+#    when == @void do
+#      value := defaultValue;
+#    else
+#      [setOrRange check !value];
+#    end cast;  
+#  end method;
+}
+
+#routine setDefaultsForType
+#  ??@implementationObject impObject
+#  ?!@identifierMap objectParams
+#;
+
+class @impBoolType : @impAutoDefaultType {
+  @implementationObjectMap trueSubAttributes
+  @implementationObjectMap falseSubAttributes
+}
+
+override method @impBoolType setDefault ?!@objectAttributes attributes {
+#  if not [[attributes objectParams] hasKey ![name string]] then
+    cast defaultValue
+    case == @void :
+    case == @auto :
+    case == @boolAttribute b :
+#      message "*** ".name." : ".[[b value] cString]."\n";
+      if [[attributes objectParams] hasKey ![name string]] then
+        # the value has been set by the user, get the default subvalues
+        # corresponding to the value set
+        @identifierMap userAttributes = [attributes objectParams]
+        @object_t value
+        [userAttributes get !name ?value]
+        cast value
+        case == @boolAttribute boolValue :
+          @implementationObjectMap subImpAttributes
+          if [boolValue value] then
+            subImpAttributes = trueSubAttributes
+          else
+            subImpAttributes = falseSubAttributes
+          end
+          @objectAttributes subAttributes = [boolValue subAttributes]
+          setDefaultsForType ( !subImpAttributes !?subAttributes)
+          # update the attribute
+          @boolAttribute bv = boolValue
+          [!?bv setSubAttributes !subAttributes]
+          [!?userAttributes setValueForKey !bv ![name string]]
+          [!?attributes setObjectParams !userAttributes]
+        else end
+      else
+        @implementationObjectMap subImpAttributes
+        if [b value] then
+          subImpAttributes = trueSubAttributes
+        else
+          subImpAttributes = falseSubAttributes
+        end
+        @objectAttributes subAttributes = emptyObject()
+        setDefaultsForType ( !subImpAttributes !?subAttributes)
+        @boolAttribute defaults = @boolAttribute. new { ![b oil_desc] ![b location] ![b value] !subAttributes}
+        @identifierMap attr = [attributes objectParams]
+        [!?attr put !name !defaults]
+        [!?attributes setObjectParams !attr]
+      end
+    else end
+#  end if;
+}
+
+
+class @impEnumType : @impAutoDefaultType {
+  @enumValues valuesMap
+}
+
+
+
+#
+# verifyEnum verifies an enum has a default value equal
+# to one of the defined values
+#
+proc verifyEnum ?let @impType anEnum {
+  cast anEnum
+  case == @impEnumType realEnum :
+    cast [realEnum defaultValue]
+    case == @string_class defaultValue :
+      if not [[realEnum valuesMap] hasKey ![defaultValue value]] then
+        error [defaultValue location]: "Default enum value does not match any enum value"
+      end
+    else end
+  else
+    error [anEnum location]: "Internal, not an @impEnumType"
+  end
+}
+
+
+map @implementationMap {
+  @implementationObject obj
+  insert put error message "%K is duplicated in %L"
+  search get error message "%K does not exists"
+  remove del error message "%K does not exists"
+}
+
+class @implementation {
+  @implementationMap imp %setter
+}
+
+getter @implementation hasKey
+  ?let @string key
+  ->@bool result {
+  result = [imp hasKey !key]
+}
+
+getter @implementation hasLKey
+  ?let @lstring key
+  ->@bool result {
+  result = [imp hasKey ![key string]]
+}
+
+getter @implementation impObject
+  ?let @string objKind
+  ->@implementationObject obj {
+  obj = @implementationObject. new { !@lbool. new { !false !@location.here} !@implementationObjectMap. emptyMap}
+  if [imp hasKey !objKind] then
+    [imp get !lstringWith(!objKind) ?obj]
+  end
+}
+
+method @implementation checkTypeForKind
+  ?let @string objKind
+  ?let @string attributeName
+  ?let @dataType expectedType {
+  @implementationObject obj = [self impObject !objKind]
+  checkTypeForAttribute ( ![obj attributes] !attributeName !expectedType)
+}
+
+method @implementation checkObjectReferences {
+  for () in  imp do
+    for () in  [obj attributes] do
+      [type checkAttributeReferences !self]
+    end
+  end
+}
+
+#method @implementation delete
+#  ??@lstring name
+#  !@implementationObject result
+#:
+#  @implementationMap newImp := imp;
+#  [!?newImp del !name ?result];
+#  imp := newImp;
+#end method;
+
+func checkAndGetIntegerNumber
+  ?let @lstring oil_desc
+  ?let @dataType type
+  ?let @luint64 number
+  ?let @bool signed
+  ->@object_t value {
+  if signed then
+    if type == @dataType. sint32Number then
+      value = @sint32_class. new { !oil_desc ![number location] ![[number uint64] sint] * -1S}
+    elsif type == @dataType. sint64Number then
+      value = @sint64_class. new { !oil_desc ![number location] ![[number uint64] sint64] * -1LS}
+    else
+      value = @void. new { !oil_desc ![number location]}
+      error number: [type oilType]+" expected, got a SINT"
+    end
+  else
+    if type == @dataType. sint32Number then
+      value = @sint32_class. new { !oil_desc ![number location] ![[number uint64] sint]}
+    elsif type == @dataType. sint64Number then
+      value = @sint64_class. new { !oil_desc ![number location] ![[number uint64] sint64]}
+    elsif type == @dataType. uint32Number then
+      value = @uint32_class. new { !oil_desc ![number location] ![[number uint64] uint]}
+    elsif type == @dataType. uint64Number then
+      value = @uint64_class. new { !oil_desc ![number location] ![number uint64]}
+    else
+      value = @void. new { !oil_desc ![number location]}
+      error number: [type oilType]+" expected, got a UINT"
+    end
+  end
+}
+
+func checkAndGetFloatNumber
+  ?let @lstring oil_desc
+  ?let @dataType type
+  ?let @ldouble number
+  ?let @bool signed
+  ->@object_t value {
+  if signed then
+    if type == @dataType. floatNumber then
+      value = @float_class. new { !oil_desc ![number location] ![number double] * -1.0}
+    else
+      value = @void. new { !oil_desc ![number location]}
+      error number: [type oilType]+" expected, got a FLOAT"
+    end
+  else
+    if type == @dataType. floatNumber then
+      value = @float_class. new { !oil_desc ![number location] ![number double]}
+    else
+      value = @void. new { !oil_desc ![number location]}
+      error number: [type oilType]+" expected, got a FLOAT"
+    end
+  end
+}
+ 
+proc checkTypeForAttribute
+  ?let @implementationObjectMap obj
+  ?let @string attributeName
+  ?let @dataType expectedType {
+  if [obj hasKey !attributeName] then
+    @impType type
+    [obj get !lstringWith(!attributeName) ?type]
+    if [type type] != expectedType then
+      error [type location]: attributeName+" is a "+[[type type] oilType]
+      error [type location]: attributeName+" should be a "+[expectedType oilType]
+    end
+  end
+}
+
+func boolSubAttributes
+  ?let @implementationObject obj
+  ?let @string attributeName
+  ?let @bool boolValue
+  ->@implementationObjectMap subImplementation {
+  subImplementation = @implementationObjectMap. emptyMap
+  if [[obj attributes] hasKey !attributeName] then
+    @impType type
+    [[obj attributes] get !lstringWith(!attributeName) ?type]
+    cast type
+    case == @impBoolType boolType :
+      if boolValue then
+        subImplementation = [boolType trueSubAttributes]
+      else
+        subImplementation = [boolType falseSubAttributes]
+      end
+    else end
+  end
+}
+
+func enumSubAttributes
+  ?let @implementationObject obj
+  ?let @string attributeName
+  ?let @string enumValue
+  ->@implementationObjectMap subImplementation {
+  subImplementation = @implementationObjectMap. emptyMap
+  if [[obj attributes] hasKey !attributeName] then
+    @impType type
+    [[obj attributes] get !lstringWith(!attributeName) ?type]
+    cast type
+    case == @impEnumType enumType :
+      if [[enumType valuesMap] hasKey !enumValue] then
+        [[enumType valuesMap] get !lstringWith(!enumValue) ?subImplementation]
+      end
+    else end
+  end
+}
+
+#
+# checkFilters
+#
+proc checkFilters
+  ?let @implementationObject messageProperty {
+  @implementationObjectMap filter = enumSubAttributes(!messageProperty !"FILTER" !"MASKEDNEWEQUALSX")
+  checkTypeForAttribute ( !filter !"MASK" !@dataType. uint64Number)
+  checkTypeForAttribute ( !filter !"X" !@dataType. uint64Number)
+  filter = enumSubAttributes(!messageProperty !"FILTER" !"MASKEDNEWDIFFERSX")
+  checkTypeForAttribute ( !filter !"MASK" !@dataType. uint64Number)
+  checkTypeForAttribute ( !filter !"X" !@dataType. uint64Number)
+  filter = enumSubAttributes(!messageProperty !"FILTER" !"MASKEDNEWEQUALSMASKEDOLD")
+  checkTypeForAttribute ( !filter !"MASK" !@dataType. uint64Number)
+  filter = enumSubAttributes(!messageProperty !"FILTER" !"NEWISWITHIN")
+  checkTypeForAttribute ( !filter !"MIN" !@dataType. uint64Number)
+  checkTypeForAttribute ( !filter !"MAX" !@dataType. uint64Number)
+  filter = enumSubAttributes(!messageProperty !"FILTER" !"NEWISOUTSIDE")
+  checkTypeForAttribute ( !filter !"MIN" !@dataType. uint64Number)
+  checkTypeForAttribute ( !filter !"MAX" !@dataType. uint64Number)
+  filter = enumSubAttributes(!messageProperty !"FILTER" !"ONEEVERYN")
+  checkTypeForAttribute ( !filter !"PERIOD" !@dataType. uint32Number)
+  checkTypeForAttribute ( !filter !"OFFSET" !@dataType. uint32Number)
+}
+
+
+
+#=============================================================================
+# checkObjectReferences crosses check the implementation to verify each
+# objectType is in the implementation
+#=============================================================================
+# Categories to check the object reference is ok
+method @impType checkAttributeReferences ?let @implementation unused imp { }
+
+override method @refType checkAttributeReferences
+  ?let @implementation imp {
+  if not [imp hasKey ![ref string]] then
+    error ref: [ref string]+" object kind does not exist"
+  end 
+}
+
+override method @impBoolType checkAttributeReferences
+  ?let @implementation imp {
+  for () in  trueSubAttributes do
+    [type checkAttributeReferences !imp]
+  end 
+  for () in  falseSubAttributes do
+    [type checkAttributeReferences !imp]
+  end 
+}
+
+override method @impEnumType checkAttributeReferences
+  ?let @implementation imp {
+  for () in  valuesMap do
+    for () in  subAttributes do
+      [type checkAttributeReferences !imp]
+    end 
+  end 
+}
+
+#
+# checkLinks
+#
+#routine checkLinks
+#  ??@implementationObject messageProperty
+#:
+#  @implementationObject link := boolSubAttributes[!messageProperty !"LINK" !true];
+#  checkTypeForAttribute !link !"RECEIVEMESSAGE" ![@dataType messageType];
+#  link := boolSubAttributes[!messageProperty !"LINK" !false];
+#  checkTypeForAttribute !link !"NETWORKMESSAGE" ![@dataType networkmessageType];
+#  checkTypeForAttribute !link !"NETWORKORDERCALLOUT" ![@dataType string];
+#  checkTypeForAttribute !link !"CPUORDERCALLOUT" ![@dataType string];
+#end routine;
+
+#
+# checkNotifications
+#
+#routine checkNotifications
+#  ??@implementationObject messageProperty
+#  ??@string notificationKind
+#:
+#  @implementationObject act := enumSubAttributes[!messageProperty !notificationKind !"ACTIVATETASK"];
+#  checkTypeForAttribute !act !"TASK" ![@dataType taskType];
+#  act := enumSubAttributes[!messageProperty !notificationKind !"SETEVENT"];
+#  checkTypeForAttribute !act !"TASK" ![@dataType taskType];
+#  checkTypeForAttribute !act !"EVENT" ![@dataType eventType];
+#  act := enumSubAttributes[!messageProperty !notificationKind !"COMCALLBACK"];
+#  checkTypeForAttribute !act !"CALLBACKROUTINENAME" ![@dataType string];
+#  checkTypeForAttribute !act !"MESSAGE" ![@dataType messageType];
+#  act := enumSubAttributes[!messageProperty !notificationKind !"FLAG"];
+#  checkTypeForAttribute !act !"FLAGNAME" ![@dataType string];
+#  act := enumSubAttributes[!messageProperty !notificationKind !"INMCALLBACK"];
+#  checkTypeForAttribute !act !"CALLBACKROUTINENAME" ![@dataType string];
+#  checkTypeForAttribute !act !"MONITOREDIPDU" ![@dataType uint32Number];
+#end routine;
+
+#
+# checkImplementation checks attributes declared in the IMPLEMENTATION
+# have conform datatype, default value and sub-enumeration
+#
+#routine checkImplementation
+#  ??@implementation implementation
+#:
+#  # Implementtation for TASKs
+##  log implementation;
+#  checkTypeForKind !implementation !"TASK" !"PRIORITY" ![@dataType uint32Number];
+#  checkTypeForKind !implementation !"TASK" !"SCHEDULE" ![@dataType enumeration];
+#  checkTypeForKind !implementation !"TASK" !"ACTIVATION" ![@dataType uint32Number];
+#  checkTypeForKind !implementation !"TASK" !"AUTOSTART" ![@dataType boolean];
+#  checkTypeForAttribute !boolSubAttributes[!impObject[!implementation !"TASK"] !"AUTOSTART" !true] !"APPMODE" ![@dataType appmodeType];
+#  checkTypeForKind !implementation !"TASK" !"RESOURCE" ![@dataType resourceType];
+#  checkTypeForKind !implementation !"TASK" !"EVENT" ![@dataType eventType];
+#  checkTypeForKind !implementation !"TASK" !"MESSAGE" ![@dataType messageType];
+#  
+#  # Implementation for COUNTERs
+#  checkTypeForKind !implementation !"COUNTER" !"MAXALLOWEDVALUE" ![@dataType uint32Number];
+#  checkTypeForKind !implementation !"COUNTER" !"TICKSPERBASE" ![@dataType uint32Number];
+#  checkTypeForKind !implementation !"COUNTER" !"MINCYCLE" ![@dataType uint32Number];
+#  
+#  # Implementation for ALARMs
+#  checkTypeForKind !implementation !"ALARM" !"COUNTER" ![@dataType counterType];
+#  checkTypeForKind !implementation !"ALARM" !"ACTION" ![@dataType enumeration];
+#  checkTypeForAttribute !enumSubAttributes[!impObject[!implementation !"ALARM"] !"ACTION" !"ACTIVATETASK"] !"TASK" ![@dataType taskType];
+#  checkTypeForAttribute !enumSubAttributes[!impObject[!implementation !"ALARM"] !"ACTION" !"SETEVENT"] !"TASK" ![@dataType taskType];
+#  checkTypeForAttribute !enumSubAttributes[!impObject[!implementation !"ALARM"] !"ACTION" !"SETEVENT"] !"EVENT" ![@dataType eventType];
+#  checkTypeForAttribute !enumSubAttributes[!impObject[!implementation !"ALARM"] !"ACTION" !"ALARMCALLBACK"] !"ALARMCALLBACKNAME" ![@dataType string];
+#  checkTypeForKind !implementation !"ALARM" !"AUTOSTART" ![@dataType boolean];
+#  @implementationObject autostart := boolSubAttributes[!impObject[!implementation !"ALARM"] !"AUTOSTART" !true];
+#  checkTypeForAttribute !autostart !"APPMODE" ![@dataType appmodeType];
+#  checkTypeForAttribute !autostart !"ALARMTIME" ![@dataType uint32Number];
+#  checkTypeForAttribute !autostart !"CYCLETIME" ![@dataType uint32Number];
+#  
+#  # Implementation of RESOURCES
+#  checkTypeForKind !implementation !"RESOURCE" !"RESOURCEPROPERTY" ![@dataType enumeration];
+#  checkTypeForAttribute !enumSubAttributes[!impObject[!implementation !"RESOURCE"] !"RESOURCEPROPERTY" !"LINKED"] !"LINKEDRESOURCE" ![@dataType resourceType];
+#
+#  # Implementation of EVENT
+#  checkTypeForKind !implementation !"EVENT" !"MASK" ![@dataType uint64Number];
+#  
+#  # Implementation of ISR
+#  checkTypeForKind !implementation !"ISR" !"CATEGORY" ![@dataType uint32Number];
+#  checkTypeForKind !implementation !"ISR" !"RESOURCE" ![@dataType resourceType];
+#  checkTypeForKind !implementation !"ISR" !"MESSAGE" ![@dataType messageType];
+#  checkTypeForKind !implementation !"ISR" !"PRIORITY" ![@dataType uint32Number];
+#  
+#  # Implementation of MESSAGE
+#  checkTypeForKind !implementation !"MESSAGE" !"MESSAGEPROPERTY" ![@dataType enumeration];
+#  @implementationObject messageProperty := enumSubAttributes[!impObject[!implementation !"MESSAGE"] !"MESSAGEPROPERTY" !"SEND_STATIC_INTERNAL"];
+#  checkTypeForAttribute !messageProperty !"CDATATYPE" ![@dataType string];
+#  messageProperty := enumSubAttributes[!impObject[!implementation !"MESSAGE"] !"MESSAGEPROPERTY" !"SEND_STATIC_EXTERNAL"];
+#  checkTypeForAttribute !messageProperty !"CDATATYPE" ![@dataType string];
+#  checkTypeForAttribute !messageProperty !"TRANSFERPROPERTY" ![@dataType enumeration];
+#  checkTypeForAttribute !messageProperty !"FILTER" ![@dataType enumeration];
+#  checkFilters !messageProperty;
+#  checkTypeForAttribute !messageProperty !"NETWORKORDERCALLOUT" ![@dataType string];
+#  checkTypeForAttribute !messageProperty !"CPUORDERCALLOUT" ![@dataType string];
+#  checkTypeForAttribute !messageProperty !"INITIALVALUE" ![@dataType uint64Number];
+#  checkTypeForAttribute !messageProperty !"NETWORKMESSAGE" ![@dataType networkmessageType];
+#  messageProperty := enumSubAttributes[!impObject[!implementation !"MESSAGE"] !"MESSAGEPROPERTY" !"SEND_DYNAMIC_EXTERNAL"];
+#  checkTypeForAttribute !messageProperty !"TRANSFERPROPERTY" ![@dataType enumeration];
+#  checkTypeForAttribute !messageProperty !"FILTER" ![@dataType enumeration];
+#  checkFilters !messageProperty;
+#  checkTypeForAttribute !messageProperty !"NETWORKORDERCALLOUT" ![@dataType string];
+#  checkTypeForAttribute !messageProperty !"CPUORDERCALLOUT" ![@dataType string];
+#  checkTypeForAttribute !messageProperty !"INITIALVALUE" ![@dataType uint64Number];
+#  checkTypeForAttribute !messageProperty !"NETWORKMESSAGE" ![@dataType networkmessageType];
+#  messageProperty := enumSubAttributes[!impObject[!implementation !"MESSAGE"] !"MESSAGEPROPERTY" !"SEND_ZERO_EXTERNAL"];
+#  checkTypeForAttribute !messageProperty !"NETWORKORDERCALLOUT" ![@dataType string];
+#  checkTypeForAttribute !messageProperty !"CPUORDERCALLOUT" ![@dataType string];
+#  checkTypeForAttribute !messageProperty !"NETWORKMESSAGE" ![@dataType networkmessageType];
+#  messageProperty := enumSubAttributes[!impObject[!implementation !"MESSAGE"] !"MESSAGEPROPERTY" !"RECEIVE_ZERO_INTERNAL"];
+#  checkTypeForAttribute !messageProperty !"SENDINGMESSAGE" ![@dataType messageType];
+#  messageProperty := enumSubAttributes[!impObject[!implementation !"MESSAGE"] !"MESSAGEPROPERTY" !"RECEIVE_ZERO_EXTERNAL"];
+#  checkTypeForAttribute !messageProperty !"NETWORKORDERCALLOUT" ![@dataType string];
+#  checkTypeForAttribute !messageProperty !"CPUORDERCALLOUT" ![@dataType string];
+#  checkTypeForAttribute !messageProperty !"NETWORKMESSAGE" ![@dataType networkmessageType];
+#  messageProperty := enumSubAttributes[!impObject[!implementation !"MESSAGE"] !"MESSAGEPROPERTY" !"RECEIVE_UNQUEUED_INTERNAL"];
+#  checkTypeForAttribute !messageProperty !"SENDINGMESSAGE" ![@dataType messageType];
+#  checkTypeForAttribute !messageProperty !"FILTER" ![@dataType enumeration];
+#  checkFilters !messageProperty;
+#  checkTypeForAttribute !messageProperty !"INITIALVALUE" ![@dataType uint64Number];
+#  messageProperty := enumSubAttributes[!impObject[!implementation !"MESSAGE"] !"MESSAGEPROPERTY" !"RECEIVE_QUEUED_INTERNAL"];
+#  checkTypeForAttribute !messageProperty !"SENDINGMESSAGE" ![@dataType messageType];
+#  checkTypeForAttribute !messageProperty !"FILTER" ![@dataType enumeration];
+#  checkFilters !messageProperty;
+#  checkTypeForAttribute !messageProperty !"INITIALVALUE" ![@dataType uint64Number];
+#  checkTypeForAttribute !messageProperty !"QUEUESIZE" ![@dataType uint32Number];
+#  messageProperty := enumSubAttributes[!impObject[!implementation !"MESSAGE"] !"MESSAGEPROPERTY" !"RECEIVE_UNQUEUED_EXTERNAL"];
+#  checkTypeForAttribute !messageProperty !"CDATATYPE" ![@dataType string];
+#  checkTypeForAttribute !messageProperty !"FILTER" ![@dataType enumeration];
+#  checkFilters !messageProperty;
+#  checkTypeForAttribute !messageProperty !"LINK" ![@dataType boolean];
+#  checkLinks !messageProperty;
+#  checkTypeForAttribute !messageProperty !"INITIALVALUE" ![@dataType uint64Number];
+#  messageProperty := enumSubAttributes[!impObject[!implementation !"MESSAGE"] !"MESSAGEPROPERTY" !"RECEIVE_QUEUED_EXTERNAL"];
+#  checkTypeForAttribute !messageProperty !"CDATATYPE" ![@dataType string];
+#  checkTypeForAttribute !messageProperty !"QUEUESIZE" ![@dataType uint32Number];
+#  checkTypeForAttribute !messageProperty !"FILTER" ![@dataType enumeration];
+#  checkFilters !messageProperty;
+#  checkTypeForAttribute !messageProperty !"LINK" ![@dataType boolean];
+#  checkLinks !messageProperty;
+#  checkTypeForAttribute !messageProperty !"INITIALVALUE" ![@dataType uint64Number];
+#  messageProperty := enumSubAttributes[!impObject[!implementation !"MESSAGE"] !"MESSAGEPROPERTY" !"RECEIVE_DYNAMIC_EXTERNAL"];
+#  checkTypeForAttribute !messageProperty !"LINK" ![@dataType boolean];
+#  checkLinks !messageProperty;
+#  checkTypeForAttribute !messageProperty !"INITIALVALUE" ![@dataType uint64Number];
+#  messageProperty := enumSubAttributes[!impObject[!implementation !"MESSAGE"] !"MESSAGEPROPERTY" !"RECEIVE_ZERO_SENDERS"];
+#  checkTypeForAttribute !messageProperty !"CDATATYPE" ![@dataType string];
+#  checkTypeForAttribute !messageProperty !"INITIALVALUE" ![@dataType uint64Number];
+#  checkTypeForKind !implementation !"MESSAGE" !"NOTIFICATION" ![@dataType enumeration];
+#  checkNotifications !impObject[!implementation !"MESSAGE"] !"NOTIFICATION";
+#  checkTypeForKind !implementation !"MESSAGE" !"NOTIFICATIONERROR" ![@dataType enumeration];
+#  checkNotifications !impObject[!implementation !"MESSAGE"] !"NOTIFICATIONERROR";
+#  
+#  # Implementation of NETWORKMESSAGE
+#end routine;
+
+proc setDefaultsForType
+  ?let @implementationObjectMap impObject
+  ?!@objectAttributes objectParams {
+  for () in  impObject do
+    cast type
+    case >= @impAutoDefaultType defaultType :
+      [defaultType setDefault !?objectParams]
+    else end 
+  end
+}
+
+

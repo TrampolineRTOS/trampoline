@@ -1,0 +1,156 @@
+
+
+method @object_t set ?let @lstring name ?!@TfieldMap unused result {
+  error @location.here: "Attribute: "+name+", Internal error"
+}
+
+# build a template struct
+override method @structAttribute set ?let @lstring name ?!@TfieldMap result {
+  @TfieldMap subAttrs = [subAttributes fieldMap]
+  addLStringValue ( !?subAttrs !"NAME" !structName !oil_desc)
+  addStructValue ( !?result !name !subAttrs !oil_desc)
+#  if [subAttrs count] > 0 then
+#    foreach subAttrs do
+#      [!?result insertKey !lkey !mType !mValue];
+#    end foreach;
+#  end if;
+}
+
+# build a template boolean
+# the name of the attribute in the system configuration is the same
+# the content of the attribute (if it exists) is a struct with the same
+# name suffixed by _S
+override method @boolAttribute set ?let @lstring name ?!@TfieldMap result {
+  addBoolValue ( !?result !name !value !oil_desc)
+  @TfieldMap subAttrs = [subAttributes fieldMap]
+  if [subAttrs count] > 0 then
+    @lstring structName = @lstring. new { ![name string]+"_S" ![name location]}
+    addStructValue ( !?result !structName !subAttrs !oil_desc)
+  end
+}
+
+# build a template enum
+# the name of the attribute in the system configuration is the same
+# the content of the attribute (if it exists) is a struct with the same
+# name suffixed by _S
+override method @enumAttribute set ?let @lstring name ?!@TfieldMap result {
+  addStringValue ( !?result !name !value !oil_desc)
+  @TfieldMap subAttrs = [subAttributes fieldMap]
+  if [subAttrs count] > 0 then
+    @lstring structName = @lstring. new { ![name string]+"_S" ![name location]}
+    addStructValue ( !?result !structName !subAttrs !oil_desc)
+  end
+}
+
+override method @stringAttribute set ?let @lstring name ?!@TfieldMap result {
+  addStringValue ( !?result !name !value !oil_desc)
+}
+
+override method @string_class set ?let @lstring name ?!@TfieldMap result {
+  addStringValue ( !?result !name !value !oil_desc)
+}
+
+override method @multipleAttribute set ?let @lstring name ?!@TfieldMap result {
+  var multiple =@TfieldMapList.emptyList{}
+  for () in  items do
+    var multipleItem =@TfieldMap.emptyMap{}
+    cast item
+    case == @structAttribute aStruct :
+      addLStringValue ( !?multipleItem !"NAME" ![aStruct structName] ![aStruct oil_desc]);
+      @TfieldMap subAttrs = [[aStruct subAttributes] fieldMap]
+      if [subAttrs count] > 0 then
+        for () in  subAttrs do
+          [!?multipleItem insertKey !lkey !mType !mValue]
+        end
+      end
+    else
+      [item set !@lstring. new { !"VALUE" ![item location]} !?multipleItem]
+    end
+    multiple += !multipleItem
+  end
+  addListValue ( !?result !name !multiple !oil_desc)
+}
+
+override method @uint32_class set ?let @lstring name ?!@TfieldMap result {
+  addUnsignedValue ( !?result !name ![value uint64] !oil_desc)
+}
+
+override method @sint32_class set ?let @lstring name ?!@TfieldMap result {
+  addSignedValue ( !?result !name ![value sint64] !oil_desc)
+}
+
+override method @uint64_class set ?let @lstring name ?!@TfieldMap result {
+  addUnsignedValue ( !?result !name !value !oil_desc)
+}
+
+override method @sint64_class set ?let @lstring name ?!@TfieldMap result {
+  addSignedValue ( !?result !name !value !oil_desc)
+}
+
+override method @float_class set ?let @lstring name ?!@TfieldMap result {
+  addFloatValue ( !?result !name !value !oil_desc)
+}
+
+override method @auto set ?let @lstring name ?!@TfieldMap result {
+  addEnumValue ( !?result !name !"auto" !oil_desc)
+}
+
+getter @objectAttributes fieldMap
+  ->@TfieldMap result {
+  result = @TfieldMap. emptyMap
+  for () in  objectParams do
+    [value set !lkey !?result]
+  end
+}
+
+getter @applicationDefinition templateData
+  ?let @implementation imp
+  ->@TfieldMap cfg {
+  cfg = @TfieldMap. emptyMap
+
+#  log objects;
+  #
+  # First setup the general configuration data
+  #
+  addStringValue ( !?cfg !lstringWith(!"OILFILENAME") ![@string. stringWithSourceFilePath lastPathComponent] !lstringWith(!@string. stringWithSourceFilePath))
+  addLStringValue ( !?cfg !"CPUNAME" !name !lstringWith(!"name of the CPU object"))
+  addLStringValue ( !?cfg !"CPUDESCRIPTION" !cpuDescription !lstringWith(!"description of the CPU object"))
+  addLStringValue ( !?cfg !"OILVERSION" !version !lstringWith(!"OIL version"))
+  addLStringValue ( !?cfg !"OILDESCRIPTION" !versionDescription !lstringWith(!"OIL version description"))
+  addStringValue ( !?cfg !lstringWith(!"TIMESTAMP") !@string. stringWithCurrentDateTime !lstringWith(!"timestamp of OIL compiling"))
+  addStringValue ( !?cfg !lstringWith(!"PROJECT") ![projectName() lastPathComponent] !lstringWith(!"project name"))
+  addStringValue ( !?cfg !lstringWith(!"TARGET") ![option goil_options.target_platform value] !lstringWith(!"target architecture/chip/board"))
+  addStringValue ( !?cfg !lstringWith(!"TEMPLATEPATH") ![option goil_options.template_dir value] !lstringWith(!"path of the templates used"))
+  addStringValue ( !?cfg !lstringWith(!"ARCH") !arch() !lstringWith(!"target architecture"))
+  addStringValue ( !?cfg !lstringWith(!"CHIP") !chip() !lstringWith(!"target chip"))
+  addStringValue ( !?cfg !lstringWith(!"BOARD") !board() !lstringWith(!"target board"))
+  # Other options of goil
+  addBoolValue ( !?cfg !lstringWith(!"LOGFILE") ![option goil_options.generate_log value] !lstringWith(!"Generated a logfile"))
+
+  for () in  objects do
+#    message [lkey string]."\n";
+    # Check if the object is multiple or not. If not, attributes
+    # are stored in a struct otherwise instances are stored in a map.
+    @implementationObject implementationObject
+    [[imp imp] get !lkey ?implementationObject]
+    if [[implementationObject multiple] bool] then
+      var objs =@TfieldMapList.emptyList{}
+      for () in  [objectsOfKind objects] do
+        @TfieldMap attrs = [attributes fieldMap]
+        objs += !attrs
+      end
+      addListValue ( !?cfg !lkey !objs !emptyLString())
+    else
+#      message "*** single\n";
+      if [[objectsOfKind objects] count] == 1 then
+        var attrs =@TfieldMap.emptyMap{}
+        for () in  [objectsOfKind objects] do
+          attrs = [attributes fieldMap]
+        end
+        addStructValue ( !?cfg !lkey !attrs !emptyLString())
+      end
+    end
+  end
+#  log cfg;
+}
+

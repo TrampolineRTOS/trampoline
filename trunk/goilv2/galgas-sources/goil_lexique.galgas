@@ -1,0 +1,219 @@
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline est protege par la loi sur la propriete intellectuelle
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# GOIL lexer
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+lexique goil_lexique {
+
+#
+# Styles for Galgas GOIL
+#
+
+style keywordsStyle -> "Keywords:"
+style identifierStyle -> "Identifiers:"
+style delimitersStyle -> "Delimiters:"
+style stringStyle -> "String literals:"
+style pathStyle -> "Path String:"
+style integerStyle -> "Integer Literals:"
+style floatStyle -> "Floating Point Literals:"
+style commandStyle -> "Commands:"
+style commentStyle -> "Comments:"
+
+#
+# OIL_VERSION keyword
+#
+list oilVersion style keywordsStyle error message "OIL version"{
+  "OIL_VERSION"}
+#
+# List of OIL definitions
+#
+list oilDefinitions style keywordsStyle error message "OIL implementation definition"{
+  "IMPLEMENTATION", "CPU"}
+
+#
+# List of datatypes
+#
+list dataTypes style keywordsStyle error message "type '%K'"{
+  "UINT32", "INT32", "UINT64", "INT64", "FLOAT", "ENUM", "STRING", "BOOLEAN", "IDENTIFIER", "STRUCT"}
+
+#
+# Miscellaneous specifiers
+#
+list miscSpecifiers style keywordsStyle error message "specifier '%K'"{
+  "WITH_AUTO", "NO_DEFAULT", "AUTO"}
+
+#
+# Booleans
+#
+list boolean style keywordsStyle error message "boolean '%K'"{
+  "FALSE", "TRUE"}
+
+#----------------------- comments -------------------------------
+# They must be defined before delimitors!! 
+# '/' is a delimitor.
+$comment$  style commentStyle error message "a comment"
+rule "//" {
+  repeat #accept all except 0xA (LF) and 0xD (CR)
+  while '\u0001'->'\u0009' | '\u000B'| '\u000C'| '\u000E' -> '\uFFFD' : 
+  end
+  drop $comment$
+}
+
+message unterminated_comment_error : "unterminated comment"
+
+rule "/*" {
+  repeat
+  while ~ "*/" error unterminated_comment_error :
+  end
+  drop $comment$
+}
+
+@string att_token
+
+#--------------------- Identifiers --------------------------
+$idf$ !att_token  style identifierStyle error message "identifier"
+
+rule 'a'->'z' | 'A'->'Z' {
+  repeat
+    enterCharacterIntoString ( !?att_token !*)
+  while 'a'->'z' | 'A'->'Z' | '_' | '0'->'9' :
+  end
+  send search att_token in oilVersion
+    default search att_token in oilDefinitions
+    default search att_token in dataTypes
+    default search att_token in miscSpecifiers
+#    default search att_token in objectRefType
+    default search att_token in boolean
+    default $idf$
+}
+
+#
+# List of delimiters in OIL
+#
+list OILDelimiters style delimitersStyle error message "'%K' delimiter"{
+  ";", ":", "=", "{", "}", "..", "[", "]", ",", ".", "+", "-"}
+
+rule list OILDelimiters
+
+#
+# Eat whitespaces
+#
+rule '\u0001'->' '{
+}
+
+#
+# As usual the literals
+#
+message internalError : "internal error"
+message decimalNumberTooLarge : "decimal number too large"
+message unterminatedLitteralString : "Unterminated literal string" 
+message unableToConvertToDouble : "Unable to convert the string to double"
+
+@string a_string
+
+$string$ !a_string  style stringStyle error message "literal string"
+
+rule '"' {
+  repeat
+  while '\u0020'->'\u0021' | '\u0023' -> '\uFFFD' :
+    enterCharacterIntoString ( !?a_string !* )
+  end
+  select
+    case '"' :
+      send $string$
+    default
+      error unterminatedLitteralString
+  end
+}
+
+$g_string$ !a_string  style pathStyle error message "in search path"
+
+rule '<' {
+  repeat
+  while '\u0020'->'\u003D' | '\u003F' -> '\uFFFD' :
+    enterCharacterIntoString ( !?a_string !* )
+  end
+  select
+    case '>' :
+      send $g_string$
+    default
+      error unterminatedLitteralString
+  end
+}
+
+@uint64 integerNumber
+@double floatNumber
+@string number
+
+$uint_number$ !integerNumber  style integerStyle error message "literal unsigned 64 bits integer"
+$float_number$ !floatNumber  style floatStyle error message "literal float" 
+$set_start_uint_number$ !integerNumber  style integerStyle error message "literal unsigned 64 bits integer"
+
+
+#
+# Unsigned literal number. This rule scans hexadecimal integers
+# 
+rule "0x" | "0X" {
+  repeat
+  while '0'->'9' | 'a'->'f' | 'A'->'F':
+    enterHexDigitIntoUInt64 ( !* !?integerNumber error decimalNumberTooLarge, internalError)
+  end
+  send $uint_number$
+}
+
+#
+# Unsigned literal number. This rule scans decimal integers
+# 
+rule '0'->'9'{
+  repeat
+    enterCharacterIntoString ( !?number !* )
+    enterDigitIntoUInt64 ( !* !?integerNumber error decimalNumberTooLarge, internalError)
+  while '0'->'9' :
+  end
+  select
+    case '.' :
+      select
+        case '.' :
+          send $set_start_uint_number$
+        default
+          repeat
+            enterCharacterIntoString ( !?number !* )
+          while '0'->'9' :
+          end
+          convertStringToDouble ( !number !?floatNumber error unableToConvertToDouble)
+          send $float_number$
+      end
+      default
+        send $uint_number$
+  end
+}
+
+#
+# Include mechanism
+#
+list commands style keywordsStyle error message "command '%K'"{
+    "include"}
+
+$command$ !att_token style commandStyle error message "command"
+
+rule '#'{
+  repeat
+  while 'a'->'z' | 'A'->'Z' :
+    enterCharacterIntoString ( !?att_token !* )
+  end
+  send search att_token in commands default $command$
+}
+
+}
+# vim:ft=ggs:ts=4:sw=4

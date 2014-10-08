@@ -1,0 +1,329 @@
+#---------------------------------------------------------------------------*
+#                                                                           *
+#  GOIL template invocation                                                 *
+#                                                                           *
+#  Copyright (C) 2009, ..., 2009 Pierre Molinaro.                           *
+#                                                                           *
+#  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
+#                                                                           *
+#  This program is free software; you can redistribute it and/or modify it  *
+#  under the terms of the GNU General Public License as published by the    *
+#  Free Software Foundation.                                                *
+#                                                                           *
+#  This program is distributed in the hope it will be useful, but WITHOUT   *
+#  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
+#  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
+#   more details.                                                           *
+#                                                                           *
+#---------------------------------------------------------------------------*
+
+
+
+#------------------------------------------------------------------------------*
+
+func %once allowedFunctions -> @stringset outAllowedFunctionSet {
+  outAllowedFunctionSet = @stringset. emptySet
+  outAllowedFunctionSet += !"testFunction"
+  outAllowedFunctionSet += !"tasks"
+  outAllowedFunctionSet += !"trueFalse"
+  outAllowedFunctionSet += !"yesNo"
+}
+
+
+func fullPrefix
+  ?let @TfieldMap vars
+  ?let @lstring prefix
+  ->@string full {
+  @string stringPrefix = [prefix string]
+  if stringPrefix == "compiler" then
+    @Ttype type
+    @Tvalue value
+    [vars searchKey !lstringWith(!"COMPILER") ?type ?value]
+    stringPrefix += "/" + [value mStringValue]
+  elsif stringPrefix == "linker" then
+    @Ttype type
+    @Tvalue value
+    [vars searchKey !lstringWith(!"LINKER") ?type ?value]
+    stringPrefix += "/" + [value mStringValue]
+  elsif stringPrefix == "assembler" then
+    @Ttype type
+    @Tvalue value
+    [vars searchKey !lstringWith(!"ASSEMBLER") ?type ?value]
+    stringPrefix += "/" + [value mStringValue]
+  elsif stringPrefix == "ROOT" then
+    stringPrefix = ""
+  end
+  full = stringPrefix
+}
+
+
+#------------------------------------------------------------------------------*
+#                                                                              *
+#  D I S P L A Y    T Y P E    A N D    V A L U E                              *
+#                                                                              *
+#------------------------------------------------------------------------------*
+
+func displayTypeAndValue
+  ?let @Ttype inType
+  ?let @Tvalue inValue
+  -> @string outResult {
+  switch inType
+  case boolType :
+    outResult = "bool: " + if [inValue mInt64Value] == 1LS then "yes" else "no" end
+  case intType :
+    outResult = "unsigned: " + [[inValue mInt64Value] string]
+  case floatType :
+    outResult = "float: " + [[inValue mFloatValue] string]
+  case stringType :
+    outResult = "string: '" + [inValue mStringValue] + "'"
+  case listType :
+    outResult = "list, " + [[[inValue mMapListValue] length] string] + " element" + if [[inValue mMapListValue] length] > 1 then "s" else "" end + ":"
+    for () in  [inValue mMapListValue] do(idx)
+      outResult += "\n  #" + [idx string] + ":"
+      for () in  mMap do
+        outResult += "'" + lkey + "' "
+        switch mType
+        case boolType :
+          outResult += "bool: " + if [mValue mInt64Value] == 1LS then "yes" else "no" end
+        case intType :
+          outResult += "unsigned: " + [[mValue mInt64Value] string]
+        case floatType :
+          outResult += "float: " + [[mValue mFloatValue] string]
+        case stringType :
+          outResult += "string: '" + [mValue mStringValue] + "'"
+        case listType, structType, mapType :
+        case enumType :
+        case unconstructedType, functionType:
+          error @location.here: "internal error, unconstructed type found"
+        end
+      between outResult += ", "
+      end
+    end
+  case structType, mapType:
+    outResult = ""
+  case enumType:
+    outResult = ""
+  case unconstructedType, functionType:
+    error @location.here: "internal error, unconstructed type found" : outResult
+  end
+}
+
+#------------------------------------------------------------------------------*
+
+proc displayTemplateVariableMap
+  ?let @TfieldMap inTemplateVariableMap {
+  for () in  inTemplateVariableMap do
+    message "'" + lkey + "' " + displayTypeAndValue (!mType !mValue) + "\n"
+  end
+}
+
+proc displayPathList
+  ?let @stringlist pathList {
+  message " -----------------------------------------\n"
+  for () in  pathList do
+    message " - '" + mValue + "'\n"
+  end
+  message " -----------------------------------------\n"
+}
+
+#------------------------------------------------------------------------------*
+
+proc findFileInHierarchy
+  ?let @string file
+  ?let @string rootPath
+  ?let @string searchPath
+  ?!@stringlist searchedPathList
+  ?!@bool found
+  ?!@string fullPath {
+  @string partialPath = searchPath
+  loop( [searchPath length])
+  while ([partialPath length] > 0) & not found do
+    let @string fullFilePath = rootPath + "/" + partialPath + "/" + file
+    searchedPathList += !fullFilePath
+    found = [fullFilePath fileExists]
+    if found then
+      fullPath = fullFilePath
+    else
+      partialPath = [partialPath stringByDeletingLastPathComponent]
+    end
+  end
+  if not found then
+    let @string fullFilePath = rootPath + "/" + file
+    searchedPathList += !fullFilePath
+    found = [fullFilePath fileExists]
+    if found then
+      fullPath = fullFilePath
+    end
+  end
+}
+
+#------------------------------------------------------------------------------*
+
+proc findAllFilesInHierarchy
+  ?let @string file
+  ?let @string rootPath
+  ?let @string searchPath
+  ?!@stringlist searchedPathList
+  ?!@stringlist fullPaths {
+  @string partialPath = searchPath
+  loop( [searchPath length])
+  while ([partialPath length] > 0) do
+    let @string fullFilePath = rootPath + "/" + partialPath + "/" + file
+    searchedPathList += !fullFilePath
+    if [fullFilePath fileExists] then
+      fullPaths += !fullFilePath
+    end
+    @string newPartialPath = [partialPath stringByDeletingLastPathComponent]
+    if newPartialPath == partialPath then
+      partialPath = ""
+    else
+      partialPath = newPartialPath
+    end
+  end 
+  let @string fullFilePath = rootPath + "/" + file
+  searchedPathList += !fullFilePath
+  if [fullFilePath fileExists] then
+    fullPaths += !fullFilePath
+  end
+}
+
+#------------------------------------------------------------------------------*
+
+proc findFileInPathList
+  ?let @string file
+  ?let @stringlist rootPathList
+  ?let @string searchPath
+  !@stringlist searchedPathList
+  !@bool found
+  !@string fullPath {
+  searchedPathList = @stringlist. emptyList
+  found = false
+  fullPath = ""
+  
+  for (@string rootPath) in  rootPathList do
+    findFileInHierarchy (
+      !file
+      !rootPath
+      !searchPath
+      !?searchedPathList
+      !?found
+      !?fullPath
+    )
+  end  
+}
+
+#------------------------------------------------------------------------------*
+
+proc findAllFilesInPathList
+  ?let @string file
+  ?let @stringlist rootPathList
+  ?let @string searchPath
+  !@stringlist searchedPathList
+  !@stringlist fullPaths {
+  searchedPathList = @stringlist. emptyList
+  fullPaths = @stringlist. emptyList
+  
+  for (@string rootPath) in  rootPathList do
+    findAllFilesInHierarchy (
+      !file
+      !rootPath
+      !searchPath
+      !?searchedPathList
+      !?fullPaths
+    )
+  end  
+}
+
+#------------------------------------------------------------------------------*
+
+proc templateInvocation
+  ?let @lstring   inTemplateName
+  ?let @string    inPrefix
+  ?let @string    inPath
+  ?let @string    inTemplateDirectory
+  ?let @bool      inErrorIfNotFound
+  ?let @TfieldMap inTemplateVariableMap
+  ?!@string    ioResultingString
+  !@bool       outNoErrorOccured {
+  outNoErrorOccured = true
+  if @uint. errorCount == 0 then
+    let @string templateDir = inTemplateDirectory
+    if [templateDir length] == 0 then
+      error inTemplateName:"the '--goil-templates' option or the environment variable GOIL_TEMPLATES is required for generating code"
+    elsif not [templateDir directoryExists] then
+      error inTemplateName:"the template path '" + templateDir + "' exists but is not a valid directory path"
+    else
+      let @string targetDir = [option goil_options.target_platform value]
+      @string fullTemplateDir
+      if inPrefix == "" then
+        fullTemplateDir = templateDir
+      else
+        fullTemplateDir = templateDir + "/" + inPrefix
+      end
+      if [targetDir length] == 0 then
+        error inTemplateName:"the '--target' (or '-t') option is required for generating code"
+      elsif not [fullTemplateDir directoryExists] then
+        error inTemplateName: "internal. no '"+ fullTemplateDir + "' template found"
+#      elsif not [templateDir . "/" . targetDir directoryExists] then
+#        error inTemplateName:"the '--target' (or '-t') option value is '" . templateDir
+#        . "', so the path formed with '--goil-templates' option is '"
+#        . templateDir . "/" . targetDir
+#        . "', but it is not a valid directory path";
+      else
+        var pathList =@stringlist.emptyList{}
+        @bool found = false
+        if inPath != "" then
+          @string userTemplateDir
+          if inPrefix == "" then
+            userTemplateDir = inPath
+          else
+            userTemplateDir = inPath + "/" + inPrefix
+          end
+          let @string fullTemplatePath = userTemplateDir + "/" + inTemplateName + ".goilTemplate"
+          pathList += !fullTemplatePath
+          found = [fullTemplatePath fileExists]
+          if found then
+            #displayPathList !pathList;
+            grammar template_grammar in @lstring. new { !fullTemplatePath !@location.here} !inPrefix !inPath !inTemplateDirectory !inTemplateVariableMap !?ioResultingString ?* ?*
+          end
+        end
+        @string targetTemplatePartialPath = targetDir
+        loop( [targetDir length])
+        while ([targetTemplatePartialPath length] > 0) & not found
+        do
+          let @string fullTemplatePath = fullTemplateDir + "/" + targetTemplatePartialPath + "/" + inTemplateName + ".goilTemplate"
+          pathList += !fullTemplatePath
+          found = [fullTemplatePath fileExists]
+          if found then
+            #displayPathList !pathList;
+            grammar template_grammar in @lstring. new { !fullTemplatePath !@location.here} !inPrefix !inPath !inTemplateDirectory !inTemplateVariableMap !?ioResultingString ?* ?*
+          else
+            targetTemplatePartialPath = [targetTemplatePartialPath stringByDeletingLastPathComponent]
+          end
+        end
+        if not found then
+          let @string fullTemplatePath = fullTemplateDir + "/" + inTemplateName + ".goilTemplate"
+          pathList += !fullTemplatePath
+          found = [fullTemplatePath fileExists]
+          if found then
+            #displayPathList !pathList;
+            grammar template_grammar in @lstring. new { !fullTemplatePath !@location.here} !inPrefix !inPath !inTemplateDirectory !inTemplateVariableMap !?ioResultingString ?* ?*
+          end
+        end
+        if not found then
+          outNoErrorOccured = false
+          if inErrorIfNotFound then
+            @string m = "cannot find a valid path for the '" + inTemplateName + "' template; I have tried:"
+            for () in  pathList do
+              m += "\n  - '" + mValue + "';"
+            end
+            error inTemplateName :m
+          end
+        end
+      end
+    end
+  end
+}
+
+#------------------------------------------------------------------------------*
+
