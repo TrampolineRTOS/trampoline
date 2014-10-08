@@ -220,3 +220,4 @@ FUNC(void, OS_CODE) tpl_shutdown_os_service(
 #include "tpl_memmap.h"
 
 /* End of file tpl_os_os_kernel.c */
+

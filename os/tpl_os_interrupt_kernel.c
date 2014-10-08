@@ -35,7 +35,7 @@
 #include <assert.h>
 #endif
 
-#if WITH_AUTOSAR_STACK_MONITORING == YES
+#if WITH_STACK_MONITORING == YES
 #include "tpl_as_stack_monitor.h"
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
 
@@ -315,7 +315,7 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(
 {
   P2CONST(tpl_isr_static, AUTOMATIC, OS_APPL_DATA) isr;
 
-#if WITH_AUTOSAR_STACK_MONITORING == YES
+#if WITH_STACK_MONITORING == YES
     tpl_check_stack((tpl_proc_id)tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
 
@@ -360,7 +360,6 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(
     if (tpl_it_nesting == 0)
     {
       tpl_schedule_from_running();
-      
       LOCAL_SWITCH_CONTEXT(a_core_id)
     }
 #if WITH_OS_EXTENDED == YES

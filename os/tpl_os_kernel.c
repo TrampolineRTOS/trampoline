@@ -40,7 +40,7 @@
 #include "tpl_os_resource_kernel.h"
 #include "tpl_os_task.h"
 
-#if WITH_AUTOSAR_STACK_MONITORING == YES
+#if WITH_STACK_MONITORING == YES
 #include "tpl_as_stack_monitor.h"
 #endif
 #if WITH_AUTOSAR == YES
@@ -757,9 +757,9 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(CORE_ID_OR_VOID(core_id))
   DOW_DO(print_kern("before tpl_schedule_from_running"));
   DOW_ASSERT((uint32)READY_LIST(read_list)[1].key > 0)
   
-#if WITH_AUTOSAR_STACK_MONITORING == YES
+#if WITH_STACK_MONITORING == YES
   tpl_check_stack((tpl_proc_id)TPL_KERN_REF(kern).elected_id);
-#endif /* WITH_AUTOSAR_STACK_MONITORING */
+#endif /* WITH_STACK_MONITORING */
 
   if ((READY_LIST(ready_list)[1].key) >
       (tpl_dyn_proc_table[TPL_KERN_REF(kern).elected_id]->priority))
@@ -789,9 +789,9 @@ FUNC(void, OS_CODE) tpl_terminate(void)
   GET_CURRENT_CORE_ID(core_id)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
-#if WITH_AUTOSAR_STACK_MONITORING == YES
+#if WITH_STACK_MONITORING == YES
   tpl_check_stack((tpl_proc_id)TPL_KERN_REF(kern).running_id);
-#endif /* WITH_AUTOSAR_STACK_MONITORING */
+#endif /* WITH_STACK_MONITORING */
   
   DOW_DO(printf("tpl_terminate %s[%ld]\n",
     proc_name_table[TPL_KERN_REF(kern).running_id],
@@ -883,9 +883,9 @@ FUNC(void, OS_CODE) tpl_block(void)
   {
     /* No event is set, the task blocks */
 
-#if WITH_AUTOSAR_STACK_MONITORING == YES
+#if WITH_STACK_MONITORING == YES
     tpl_check_stack((tpl_proc_id)TPL_KERN_REF(kern).running_id);
-#endif /* WITH_AUTOSAR_STACK_MONITORING == YES */
+#endif /* WITH_STACK_MONITORING == YES */
     
     /*
      * a task switch will occur. It is time to call the
