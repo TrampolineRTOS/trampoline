@@ -28,8 +28,8 @@
 
 #if WITH_SYSTEM_CALL == NO
 
-#include "tpl_os_it.h"
-#include "tpl_os_it_kernel.h"
+#include "tpl_os_interrupt.h"
+#include "tpl_os_interrupt_kernel.h"
 
 #if WITH_AUTOSAR == YES
 #include "tpl_as_isr.h"

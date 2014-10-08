@@ -298,11 +298,12 @@ FUNC(StatusType, OS_CODE) tpl_get_task_id_service(
   /* check state is in an authorized memory region */
   CHECK_DATA_LOCATION(task_id, result);
   
-  /*  get the task id from the task descriptor. If the id is not
-      within 0 and TASK_COUNT-1, INVALID_TASK is returned         */
+  /*  get the task id from the task descriptor. If the id is less
+   *  than TASK_COUNT-1.
+   *  tpl_kern.running_id is uint32 (tpl_os_kernel.h) (always >= 0)
+   *  INVALID_TASK is returned         */
   IF_NO_EXTENDED_ERROR(result)
-	if (TPL_KERN(core_id).running_id >= 0 &&
-	    TPL_KERN(core_id).running_id < TASK_COUNT)
+	if (TPL_KERN(core_id).running_id < TASK_COUNT)
 	{
 		*task_id = (tpl_proc_id)TPL_KERN(core_id).running_id;
 	}

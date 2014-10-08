@@ -131,7 +131,7 @@ FUNC(tpl_status, OS_CODE) tpl_schedule_service(void);
  * see paragraph 13.2.3.5 page 53 of OSEK/VDX 2.2.3 spec
  */
 FUNC(tpl_status, OS_CODE) tpl_get_task_id_service(
-  P2VAR(tpl_task_id, AUTOMATIC, OS_APPL_DATA)   task_id);
+  CONSTP2VAR(tpl_task_id, AUTOMATIC, OS_APPL_DATA)   task_id);
 
 
 /**

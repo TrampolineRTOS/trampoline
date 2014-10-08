@@ -192,7 +192,7 @@ extern FUNC(void, OS_CODE) tpl_cancel_watchdog(void);
 extern FUNC(tpl_time, OS_CODE) tpl_get_local_current_date(void);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 
-#if WITH_AUTOSAR_STACK_MONITORING == YES
+#if WITH_STACK_MONITORING == YES
 /**
  * @internal
  *

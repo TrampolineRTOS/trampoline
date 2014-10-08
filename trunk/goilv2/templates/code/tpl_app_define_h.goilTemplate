@@ -28,6 +28,9 @@
 #ifndef TPL_APP_DEFINE_H
 #define TPL_APP_DEFINE_H
 
+%template if exists tpl_app_define_custom
+%
+
 #include "tpl_config_def.h"
 
 /*=============================================================================
@@ -56,7 +59,7 @@ end if%
 #define WITH_AUTOSAR                     % !yesNo(AUTOSAR) %
 #define WITH_PROTECTION_HOOK             % !yesNo(exists OS::PROTECTIONHOOK default(false)) %
 #define WITH_STACK_MONITORING            % !yesNo(exists OS::STACKMONITORING default(false)) %
-/* #define WITH_AUTOSAR_TIMING_PROTECTION % !yesNo(exists OS::STACKMONITORING default(false)) % */
+#define WITH_AUTOSAR_TIMING_PROTECTION   % !yesNo(exists OS::STACKMONITORING default(false)) %
 #define AUTOSAR_SC                       % !OS::SCALABILITYCLASS %
 #define WITH_OSAPPLICATION               % !yesNo(OS::SCALABILITYCLASS > 2)%
 #define WITH_OSAPPLICATION_STARTUP_HOOK  % !yesNo(OS::APPLICATIONSTARTUPHOOK > 0) %
@@ -95,6 +98,8 @@ else
 #define WITH_IOC                         NO%
 end if
 %
+#define WITH_MODULES_INIT                NO
+
 
 /*=============================================================================
  * Defines related to the key part of a ready list entry.
@@ -170,17 +175,15 @@ end if
  */
 #define RECEIVE_MESSAGE_COUNT  % ![RECEIVEMESSAGES length] %
 
-%
-if AUTOSAR then
-%/*-----------------------------------------------------------------------------
- * Number of schedule tables
- */
-#define SCHEDTABLE_COUNT       % ![SCHEDULETABLES length] %
-
 /*-----------------------------------------------------------------------------
  * Number of counters
  */
 #define COUNTER_COUNT          % ![COUNTERS length] %
+
+/*-----------------------------------------------------------------------------
+ * Number of schedule tables
+ */
+#define SCHEDTABLE_COUNT       % ![SCHEDULETABLES length] %
 
 /*-----------------------------------------------------------------------------
  * Number of OS Applications
@@ -207,7 +210,6 @@ if [ioc_reordered length] > 0 then
 #define IOC_UNQUEUED_COUNT 0
 %end if
 
-end if 
 %
 /*-----------------------------------------------------------------------------
  * Priority of RES_SCHEDULER

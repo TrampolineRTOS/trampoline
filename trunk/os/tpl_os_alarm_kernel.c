@@ -74,7 +74,7 @@ FUNC(void, OS_CODE) tpl_raise_alarm(
   P2VAR(tpl_alarm_static, AUTOMATIC, OS_APPL_DATA) stat_alarm =
     (tpl_alarm_static *)time_obj->stat_part;
   /*  Get the action to perform from the alarm descriptor */
-  P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action_desc =
+  CONSTP2VAR(tpl_action, AUTOMATIC, OS_APPL_CONST) action_desc =
     stat_alarm->action;
   
   TRACE_ALARM_EXPIRE(time_obj)

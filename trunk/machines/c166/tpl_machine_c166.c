@@ -17,19 +17,17 @@
 #include "tpl_os_internal_types.h"
 #include "tpl_machine.h"
 #include "tpl_os_application_def.h"   /* NO_ALARM */
-#include "tpl_os_generated_configuration.h"	   /* TASK_COUNT and ISR_COUNT*/
+#include "tpl_app_config.h"	   /* TASK_COUNT and ISR_COUNT*/
 #include "tpl_os_definitions.h" /* IS_ROUTINE  */
+#include "tpl_os_kernel.h" /*tpl_stat_proc_table and tpl_proc_static*/
 #include <C167CS.H>	/*TODO: update with a more generic standard include file.*/
 
-
+#include "tpl_os.h" //TerminateTask() and CallTerminateISR2()
 
 #pragma warning disable = 47 /* disables the "unreferenced parameter" warning */
 							 /* used for the tpl_switch_context function      */
 
-
-c166_context idle_task_context;
-
-_STATIC_ VAR(u16, OS_VAR) Os_CptTaskLock;
+uint16 Os_CptTaskLock;
 
 
 #define SMALL_MEMORY_MODEL
@@ -40,9 +38,9 @@ unsigned int idata registers_it[16];
 unsigned int idata registers_c166[TASK_COUNT+ISR_COUNT+1][16];
 
 /*
- * tpl_sleep is used by the idle task
+ * idle_function is used the idle task
  */
-void tpl_sleep(void)
+void idle_function(void)
 {
 	while(1);
 /*	__asm {
@@ -55,8 +53,11 @@ void tpl_shutdown(void)
 {
 	/* remove ITs */
 	IEN = 0;
-	/* TODO: update to set idle mode.*/
-	while (1); 
+	//enter idle mode.
+	__asm {
+		IDLE
+	}
+	
 }
 
 void tpl_switch_context(tpl_context *old_context, tpl_context *new_context)
@@ -81,7 +82,7 @@ void tpl_switch_context(tpl_context *old_context, tpl_context *new_context)
 	MOVW R1, DPP3
 	MOVW DPP3, #3
 	NOP
-	MOVW R0, [R3] //R0 in user stack.
+	MOVW R0, [R3] //get old user stack in R0
 	MOVW R8, [R3+#16]
 	MOVW R9, [R3+#18]
 	#ifdef LARGE_POINTER 
@@ -204,7 +205,7 @@ void tpl_switch_context_from_it(tpl_context * old_context, tpl_context * new_con
 
 			MOVW [R5], MDC	/* store mdc  */
 			
-			MOVW R2, [R1+#14]
+			MOVW R2, [R1+#2]
 			ADD R5,#2
 			MOVW [R5],R2		/* store dpp0 */
 			
@@ -213,7 +214,7 @@ void tpl_switch_context_from_it(tpl_context * old_context, tpl_context * new_con
 			ADD R5,#2
 			MOVW [R5],DPP2	/* store dpp2 */
 
-			MOVW R2, [R1+#18]
+			MOVW R2, [R1+#6]
 			ADD R5,#2
 			MOVW [R5],R2		/* store dpp3 */
 			
@@ -224,7 +225,7 @@ void tpl_switch_context_from_it(tpl_context * old_context, tpl_context * new_con
 			MOVW [R5],MDL		/* store mdl */
 			
 			MOVW R2, R1 		 
-			ADD R2, #26
+			ADD R2, #14
 			ADD R5,#2
 			MOVW [R5],R2		 /* store sp */
 			
@@ -233,19 +234,19 @@ void tpl_switch_context_from_it(tpl_context * old_context, tpl_context * new_con
 			ADD R5,#2
 			MOVW [R5],STKUN	/* store stkun */
 
-			MOVW R2, [R1+#24]
+			MOVW R2, [R1+#12]
 			ADD R5,#2
 			MOVW [R5],R2		/* store psw */
 
-			MOVW R2, [R1+#22]
+			MOVW R2, [R1+#10]
 			ADD R5,#2
 			MOVW [R5],R2		/* store csp */
 
-			MOVW R2, [R1+#20]
+			MOVW R2, [R1+#8]
 			ADD R5,#2
 			MOVW [R5],R2		/* store ip */
 
-			MOVW R2, [R1+#16]
+			MOVW R2, [R1+#4]
 			ADD R5,#2
 			MOVW [R5],R2	/* store cp */
 		
@@ -314,33 +315,35 @@ NO_OLD_CONTEXT_TO_SAVE_IT:
  * WARNING: This function MUST NOT modify GPRs!!! (the task in parameter
  * can be the running one!!!)
  */
-void tpl_init_context(tpl_task *task)
+FUNC(void, OS_CODE) tpl_init_context(
+    CONST(tpl_proc_id, OS_APPL_DATA) proc_id)
 {
 	int i;
 	int objId;
+	unsigned int stack;
 
 	/* Gets a pointer to the static descriptor of the task whose context is going to be initialized */
-	tpl_exec_static * static_desc = task->exec_desc.static_desc;
+	const tpl_proc_static * static_desc = tpl_stat_proc_table[proc_id];
 
 	/* Gets a pointer to the context going to be initialized */
 	c166_context *ic = static_desc->context.ic;
 
-	/* find id of the tpl_exec_obj  */
-	objId = static_desc->id;
-    if (static_desc->type & IS_ROUTINE) objId += TASK_COUNT;
-
 	/* CP init */
-	ic->cp = (unsigned int)&(registers_c166[objId + 1][0]);
+	ic->cp = (unsigned int)&(registers_c166[proc_id][0]);
 
 	/* Init of the system stack and storage of the task's entry point address on system stack */
-	ic->stkun = ((unsigned int)(static_desc->stack.sys_stack_zone)) + 
+	stack = ((unsigned int)(static_desc->stack.sys_stack_zone)) + 
 				static_desc->stack.sys_stack_size;
+	ic->stkun = stack;
 	ic->stkov = (unsigned int)(static_desc->stack.sys_stack_zone);
-	/* 6 bytes reserved to push the init value of IP/CSP/PSW on the stack 
-	 * the context switch uses the RETI instruction to switch to the task function.
-	 */
-	ic->sp = 	ic->stkun - 3*sizeof(unsigned int);
-	/* pushes entry point on stack */
+	/* push the address of TerminateTask() system call on top of stack */
+	stack -= sizeof(unsigned int);
+	*((unsigned int *)stack) = (static_desc->type == IS_ROUTINE) ?
+														 (unsigned int)(CallTerminateISR2) :
+														 (unsigned int)(TerminateTask);
+//	FUNC(StatusType, OS_CODE) TerminateTask(void)
+	ic->sp = 	stack;
+	/* push entry: will be pushed on the stack by the context swich. */
 	ic->psw = 0x0800;
 	ic->csp = (unsigned int)(((unsigned long)(static_desc->entry)) >> 16); 
 	ic->ip = (unsigned int)(static_desc->entry); 
@@ -380,109 +383,51 @@ void tpl_init_tick_timer();
 void tpl_init_benchmark_timer();
 void tpl_init_machine(void)
 {
-	#ifndef NO_ALARM
+	#if ALARM_COUNT > 0
 		tpl_init_tick_timer();
 	#endif
-	
 }
 
-/*******************************************************************************
-** Function name: EnableAllInterrupts(void)
-** Description: enable interrupts
-** Parameter : None
-** Return value: None
-** Remarks:
-*******************************************************************************/
+FUNC(void, OS_CODE) tpl_disable_interrupts(void)
+{
+  IEN = 0;/* dis-allows interrupts */
+}
 
-FUNC(void, OS_CODE) EnableAllInterrupts(void)
+FUNC(void, OS_CODE) tpl_enable_interrupts(void)
 {
   IEN = 1;/* re-allows interrupts */
 }
 
-
-/*******************************************************************************
-** Function name: DisableAllInterrupts(void)
-** Description: disable interrupts
-** Parameter : None
-** Return value: None
-** Remarks:
-*******************************************************************************/
-
-FUNC(void, OS_CODE) DisableAllInterrupts(void)
+void tpl_init_tick_timer()
 {
-  IEN = 0;/* inhibits interrupts */
+	/* use interrupt mode: 
+	 * T6IE:1 Interrupt enable
+	 * ilvl:13 Interrupt Level
+	 * glvl:1 Group Level
+	*/
+	T6IC = 0x61;
+	/* at 40 MHz, resolution max is 100ns.
+	 * To get 1ms, we need 10 000 ticks.
+	 * 65536 - 10000 = 55536
+	*/
+	#ifdef F40MHZ
+		#message "Attention : frequence CPU = 40 MHz"
+		CAPREL = 55536;
+	#elif defined F20MHZ
+		#message "Attention : frequence CPU = 20 MHz"	 
+		CAPREL = 60536;  // config pour 20 MHZ et 1 ms
+	#else
+		#error "No CPU Frequency defined: should use F20MHZ or F40MHZ"
+	#endif
 
-}
-
-
-/*******************************************************************************
-** Function name: ResumeAllInterrupts(void)
-** Description:
-** Parameter : None
-** Return value: None
-** Remarks:
-*******************************************************************************/
-
-FUNC(void, OS_CODE) ResumeAllInterrupts(void)
-{
-  if( Os_CptTaskLock > 0)
-  {
-    Os_CptTaskLock--;
-  }
-  if( Os_CptTaskLock == 0)
-  {
-    IEN = 1;/* re-allows interrupts */
-  }
-}
-
-
-/*******************************************************************************
-** Function name: SuspendAllInterrupts(void)
-** Description:
-** Parameter : None
-** Return value: None
-** Remarks:
-*******************************************************************************/
-
-FUNC(void, OS_CODE) SuspendAllInterrupts(void)
-{
-  IEN = 0;  /* inhibits interrupts */
-  Os_CptTaskLock++;
-
-}
-
-
-/*******************************************************************************
-** Function name: ResumeOSInterrupts(void)
-** Description:
-** Parameter : None
-** Return value: None
-** Remarks:
-*******************************************************************************/
-
-FUNC(void, OS_CODE) ResumeOSInterrupts(void)
-{
-  if( Os_CptTaskLock > 0)
-  {
-    Os_CptTaskLock--;
-  }
-  if( Os_CptTaskLock == 0)
-  {
-    IEN = 1;/* re-allows interrupts */
-  }
-}
-
-
-/*******************************************************************************
-** Function name: SuspendOSInterrupts(void)
-** Description:
-** Parameter : None
-** Return value: None
-** Remarks:
-*******************************************************************************/
-
-FUNC(void, OS_CODE) SuspendOSInterrupts(void)
-{
-  IEN = 0;  /* inhibits interrupts */
-  Os_CptTaskLock++;
+	/* T6SR :1 reload with CAPREL
+	 * T6OTL:0 No toggle latch.
+	 * T6OE :0 Output Function disabled
+	 * T6UDE:0 No external Up/Down
+	 * T6UD :0 Count Up
+	 * T6R  :1 Run
+	 * T6M  :0 Timer mode
+	 * T6I  :0 100ns resolution
+	 */
+	T6CON = 0x8040;
 }
