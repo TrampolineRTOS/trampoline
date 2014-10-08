@@ -1,41 +1,41 @@
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//  AC_GALGAS_root : root type for all GALGAS types (on debug mode only)       *
-//                                                                             *
-//  This file is part of libpm library                                         *
-//                                                                             *
-//  Copyright (C) 2010, ..., 2011 Pierre Molinaro.                             *
-//                                                                             *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
-//                                                                             *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
-//  ECN, École Centrale de Nantes (France)                                     *
-//                                                                             *
-//  This library is free software; you can redistribute it and/or modify it    *
-//  under the terms of the GNU Lesser General Public License as published      *
-//  by the Free Software Foundation; either version 2 of the License, or       *
-//  (at your option) any later version.                                        *
-//                                                                             *
-//  This program is distributed in the hope it will be useful, but WITHOUT     *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
-//  more details.                                                              *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//  AC_GALGAS_root : root type for all GALGAS types (on debug mode only)                                               *
+//                                                                                                                     *
+//  This file is part of libpm library                                                                                 *
+//                                                                                                                     *
+//  Copyright (C) 2010, ..., 2011 Pierre Molinaro.                                                                     *
+//                                                                                                                     *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//                                                                                                                     *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes                                          *
+//  ECN, École Centrale de Nantes (France)                                                                             *
+//                                                                                                                     *
+//  This library is free software; you can redistribute it and/or modify it                                            *
+//  under the terms of the GNU Lesser General Public License as published                                              *
+//  by the Free Software Foundation; either version 2 of the License, or                                               *
+//  (at your option) any later version.                                                                                *
+//                                                                                                                     *
+//  This program is distributed in the hope it will be useful, but WITHOUT                                             *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or                                              *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for                                           *
+//  more details.                                                                                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef GALGAS_ROOT_CLASS_DEFINED
 #define GALGAS_ROOT_CLASS_DEFINED
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include "utilities/M_SourceLocation.h"
 #include "utilities/M_Threads.h"
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 macroDeclareExternMutex (gInsulationMutex) ;
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_object ;
 class GALGAS_type ;
@@ -43,9 +43,21 @@ class GALGAS_string ;
 class C_String ;
 class C_galgas_type_descriptor ;
 
-//-----------------------------------------------------------------------------*
-//   VIRTUAL_IN_DEBUG                                                          *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//   SOURCE FILE                                                                                                       *
+//---------------------------------------------------------------------------------------------------------------------*
+
+#ifndef DO_NOT_GENERATE_CHECKINGS
+  #define SOURCE_FILE(file,line) file, line
+  #define COMMA_SOURCE_FILE(file,line) , SOURCE_FILE(file,line)
+#else
+  #define SOURCE_FILE(file,line)
+  #define COMMA_SOURCE_FILE(file,line)
+#endif
+
+//---------------------------------------------------------------------------------------------------------------------*
+//   VIRTUAL_IN_DEBUG                                                                                                  *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #define VIRTUAL_IN_DEBUG virtual
@@ -53,9 +65,9 @@ class C_galgas_type_descriptor ;
   #define VIRTUAL_IN_DEBUG
 #endif
 
-//-----------------------------------------------------------------------------*
-//   AC_GALGAS_root                                                            *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//   AC_GALGAS_root                                                                                                    *
+//---------------------------------------------------------------------------------------------------------------------*
 
 class AC_GALGAS_root {
 //--- Default constructor
@@ -95,6 +107,6 @@ class AC_GALGAS_root {
   #endif
 } ;
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #endif

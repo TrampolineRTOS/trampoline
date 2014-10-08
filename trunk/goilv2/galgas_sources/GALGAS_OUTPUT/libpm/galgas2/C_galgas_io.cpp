@@ -1,27 +1,27 @@
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//  'C_galgas_io'                                                              *
-//                                                                             *
-//  This file is part of libpm library                                         *
-//                                                                             *
-//  Copyright (C) 1996, ..., 2014 Pierre Molinaro.                             *
-//                                                                             *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
-//                                                                             *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
-//  ECN, École Centrale de Nantes (France)                                     *
-//                                                                             *
-//  This library is free software; you can redistribute it and/or modify it    *
-//  under the terms of the GNU Lesser General Public License as published      *
-//  by the Free Software Foundation; either version 2 of the License, or       *
-//  (at your option) any later version.                                        *
-//                                                                             *
-//  This program is distributed in the hope it will be useful, but WITHOUT     *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
-//  more details.                                                              *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//  'C_galgas_io'                                                                                                      *
+//                                                                                                                     *
+//  This file is part of libpm library                                                                                 *
+//                                                                                                                     *
+//  Copyright (C) 1996, ..., 2014 Pierre Molinaro.                                                                     *
+//                                                                                                                     *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//                                                                                                                     *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes                                          *
+//  ECN, École Centrale de Nantes (France)                                                                             *
+//                                                                                                                     *
+//  This library is free software; you can redistribute it and/or modify it                                            *
+//  under the terms of the GNU Lesser General Public License as published                                              *
+//  by the Free Software Foundation; either version 2 of the License, or                                               *
+//  (at your option) any later version.                                                                                *
+//                                                                                                                     *
+//  This program is distributed in the hope it will be useful, but WITHOUT                                             *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or                                              *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for                                           *
+//  more details.                                                                                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include "galgas2/C_galgas_io.h"
 #include "streams/C_ConsoleOut.h"
@@ -31,7 +31,7 @@
 #include "galgas2/C_galgas_CLI_Options.h"
 #include "galgas2/C_galgas_class_inspector.h"
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include <string.h>
 #include <limits.h>
@@ -39,7 +39,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_unicode_lexique_table_entry::
 C_unicode_lexique_table_entry (const utf32 * inEntryString,
@@ -50,7 +50,7 @@ mEntryStringLength (inEntryStringLength),
 mTokenCode (inTokenCode) {
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_unicode_lexique_table_entry::
 C_unicode_lexique_table_entry (const C_unicode_lexique_table_entry & inOperand) :
@@ -59,46 +59,50 @@ mEntryStringLength (inOperand.mEntryStringLength),
 mTokenCode (inOperand.mTokenCode) {
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_UserCancelException:: C_UserCancelException (void) {
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Exceptions
 #endif
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//  Exception raised when maximum error count is reached                       *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//  Exception raised when maximum error count is reached                                                               *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 const char * max_error_count_reached_exception::what (void) const throw () {
   return "The maximum error count is reached" ;
 } ;
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//  Exception raised when maximum warning count is reached                     *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//  Exception raised when maximum warning count is reached                                                             *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+static const char * kMaxWarning = "The maximum warning count is reached" ;
+
+//---------------------------------------------------------------------------------------------------------------------*
 
 const char * max_warning_count_reached_exception::what (void) const throw () {
-  return "The maximum warning count is reached" ;
+  return kMaxWarning ;
 } ;
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Class C_galgas_io
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
-static uint32_t mCheckedLines ;
+/*static uint32_t mCheckedLines ;
 
 uint32_t checkedLineCount (void) { return mCheckedLines ; } ;
 
@@ -106,7 +110,7 @@ void incrementCheckedFileCount (const uint32_t inIncrement) {
   mCheckedLines += inIncrement ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 static uint32_t mGeneratedLines ;
 
@@ -116,7 +120,7 @@ void incrementGeneratedLileCount (const uint32_t inIncrement) {
   mGeneratedLines += inIncrement ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 static uint32_t mPreservedLines ;
 
@@ -126,7 +130,7 @@ void incrementPreservedLileCount (const uint32_t inIncrement) {
   mPreservedLines += inIncrement ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 static uint32_t mGeneratedFileCount ;
 
@@ -135,15 +139,15 @@ uint32_t generatedFileCount (void) { return mGeneratedFileCount ; } ;
 void incrementGeneratedFileCount (void) {
   mGeneratedFileCount ++ ;
 }
-
-//-----------------------------------------------------------------------------*
+*/
+//---------------------------------------------------------------------------------------------------------------------*
 
 int32_t maxErrorCount (void) {
   int32_t result = (int32_t) gOption_galgas_5F_builtin_5F_options_max_5F_errors.mValue ;
-  return (result == 0) ? 100 : result ;
+  return (result == 0) ? INT32_MAX : result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 static int32_t mErrorTotalCount ;
 
@@ -151,14 +155,14 @@ int32_t totalErrorCount (void) {
   return mErrorTotalCount ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 int32_t maxWarningCount (void) {
   int32_t result = (int32_t) gOption_galgas_5F_builtin_5F_options_max_5F_warnings.mValue ;
-  return (result == 0) ? 100 : result ;
+  return (result == 0) ? INT32_MAX : result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 static int32_t mTotalWarningCount ;
 
@@ -166,11 +170,11 @@ int32_t totalWarningCount (void) {
   return mTotalWarningCount ;
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//    Construct error or warning location message                              *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//    Construct error or warning location message                                                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String errorOrWarningLocationString (const C_LocationInSource & inErrorLocation,
                                        const C_SourceTextInString * inSourceTextPtr) {
@@ -185,7 +189,7 @@ C_String errorOrWarningLocationString (const C_LocationInSource & inErrorLocatio
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void constructErrorOrWarningLocationMessage (C_String & ioMessage, 
                                              const C_LocationInSource & inErrorLocation,
@@ -206,11 +210,11 @@ void constructErrorOrWarningLocationMessage (C_String & ioMessage,
   }
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//    This method is called by lexique for signaling lexical warning           *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//    This method is called by lexique for signaling lexical warning                                                   *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 void signalLexicalWarning (const C_SourceTextInString * inSourceTextPtr,
                            const C_LocationInSource & inWarningLocation,
@@ -222,7 +226,7 @@ void signalLexicalWarning (const C_SourceTextInString * inSourceTextPtr,
   C_String warningMessage ;
 //--- Add warning
   warningMessage << (gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ? "lexical " : "")
-                 << "warning: " << inLexicalWarningMessage << "\n" ;
+                 << "warning #" << cStringWithSigned (mTotalWarningCount) << ": " << inLexicalWarningMessage << "\n" ;
 //--- Print
   ggs_printWarning (inSourceTextPtr, inWarningLocation, warningMessage COMMA_THERE) ;
 //--- Warning max count reached ?
@@ -231,11 +235,11 @@ void signalLexicalWarning (const C_SourceTextInString * inSourceTextPtr,
   }
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//    This method is called by lexique for signaling lexical error             *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//    This method is called by lexique for signaling lexical error                                                     *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 void signalLexicalError (const C_SourceTextInString * inSourceTextPtr,
                          const C_LocationInSource & inErrorLocation,
@@ -246,7 +250,7 @@ void signalLexicalError (const C_SourceTextInString * inSourceTextPtr,
 //--- Construct parsing error message
   C_String errorMessage ;
   errorMessage << (gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ? "lexical " : "")
-               << "error: " << inLexicalErrorMessage << "\n" ;
+               << "error #" << cStringWithSigned (mErrorTotalCount) << ": " << inLexicalErrorMessage << "\n" ;
 //--- Print
   ggs_printError (inSourceTextPtr, inErrorLocation, errorMessage COMMA_THERE) ;
 //--- Error max count reached ?
@@ -255,11 +259,11 @@ void signalLexicalError (const C_SourceTextInString * inSourceTextPtr,
   }
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//    This method is called by lexique for signaling parsing error             *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//    This method is called by lexique for signaling parsing error                                                     *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 void signalParsingError (const C_SourceTextInString * inSourceTextPtr,
                          const C_LocationInSource & inErrorLocation,
@@ -272,7 +276,7 @@ void signalParsingError (const C_SourceTextInString * inSourceTextPtr,
   C_String errorMessage ;
 //--- Construct parsing error message
   errorMessage << (gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ? "syntax " : "")
-               << "error: found " << inFoundTokenMessage <<", accepted:\n" ;  
+               << "error #" << cStringWithSigned (mErrorTotalCount) << ": found " << inFoundTokenMessage <<", accepted:\n" ;
   for (int32_t i=0 ; i<inAcceptedTokenNames.count () ; i++) {
     errorMessage << "-  " << inAcceptedTokenNames (i COMMA_HERE) << "\n" ;  
   }
@@ -284,11 +288,11 @@ void signalParsingError (const C_SourceTextInString * inSourceTextPtr,
   }
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//            Method called for signaling an extract error                     *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//            Method called for signaling an extract error                                                             *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 void signalExtractError (const C_SourceTextInString * inSourceTextPtr,
                          const C_LocationInSource & inErrorLocation,
@@ -334,11 +338,11 @@ void signalExtractError (const C_SourceTextInString * inSourceTextPtr,
   }
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//            Method called for signaling a cast error                         *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//            Method called for signaling a cast error                                                                 *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 void signalCastError (const C_SourceTextInString * inSourceTextPtr,
                       const C_LocationInSource & inErrorLocation,
@@ -416,7 +420,7 @@ void signalCastError (const C_SourceTextInString * inSourceTextPtr,
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void signalSemanticWarning (const C_SourceTextInString * inSourceTextPtr,
                             const C_LocationInSource & inWarningLocation,
@@ -428,7 +432,7 @@ void signalSemanticWarning (const C_SourceTextInString * inSourceTextPtr,
   C_String warningMessage ;
 //--- Add warning
   warningMessage << (gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ? "semantic " : "")
-                 << "warning: " << inWarningMessage << "\n" ;
+                 << "warning #" << cStringWithSigned (mTotalWarningCount) << ": " << inWarningMessage << "\n" ;
 //--- Print
   ggs_printWarning (inSourceTextPtr, inWarningLocation, warningMessage COMMA_THERE) ;
 //--- Warning max count reached ?
@@ -437,7 +441,7 @@ void signalSemanticWarning (const C_SourceTextInString * inSourceTextPtr,
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void fatalError (const C_String & inErrorMessage,
                  const char * inSourceFile,
@@ -451,7 +455,7 @@ void fatalError (const C_String & inErrorMessage,
   throw max_error_count_reached_exception () ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void signalSemanticError (const C_SourceTextInString * inSourceTextPtr,
                           const C_LocationInSource & inErrorLocation,
@@ -462,7 +466,7 @@ void signalSemanticError (const C_SourceTextInString * inSourceTextPtr,
 //--- Construct location error message
   C_String errorMessage ;
 //--- Print error
-  errorMessage << "semantic error: " << inErrorMessage << "\n" ;
+  errorMessage << "semantic error #" << cStringWithSigned (mErrorTotalCount) << ": " << inErrorMessage << "\n" ;
 //--- Print
   ggs_printError (inSourceTextPtr, inErrorLocation, errorMessage COMMA_THERE) ;
 //--- Error max count reached ?
@@ -471,7 +475,7 @@ void signalSemanticError (const C_SourceTextInString * inSourceTextPtr,
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void signalRunTimeError (const C_String & inRunTimeErrorMessage
                          COMMA_LOCATION_ARGS) {
@@ -479,7 +483,7 @@ void signalRunTimeError (const C_String & inRunTimeErrorMessage
   mErrorTotalCount ++ ;
 //--- Construct location error message
   C_String errorMessage ;
-  errorMessage << "Run Time Error: " << inRunTimeErrorMessage << "\n" ;
+  errorMessage << "Run Time Error #" << cStringWithSigned (mErrorTotalCount) << ": " << inRunTimeErrorMessage << "\n" ;
 //--- Print
   ggs_printError (NULL, C_LocationInSource (), errorMessage COMMA_THERE) ;
 //--- Error max count reached ?
@@ -488,7 +492,7 @@ void signalRunTimeError (const C_String & inRunTimeErrorMessage
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void signalRunTimeWarning (const C_String & inWarningMessage
                            COMMA_LOCATION_ARGS) {
@@ -496,7 +500,7 @@ void signalRunTimeWarning (const C_String & inWarningMessage
   mTotalWarningCount ++ ;
 //--- Construct location error message
   C_String warningMessage ;
-  warningMessage << "Run Time Warning: " << inWarningMessage << "\n" ;
+  warningMessage << "Run Time Warning #" << cStringWithSigned (mTotalWarningCount) << ": " << inWarningMessage << "\n" ;
 //--- Print
   ggs_printWarning (NULL, C_LocationInSource (), warningMessage COMMA_THERE) ;
 //--- Warning max count reached ?
@@ -505,23 +509,23 @@ void signalRunTimeWarning (const C_String & inWarningMessage
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========= Actual Message Print
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
-static const utf32 COCOA_MESSAGE_ID = TO_UNICODE (1) ;
-static const utf32 COCOA_WARNING_ID = TO_UNICODE (3) ;
-static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
+static const utf32 COCOA_MESSAGE_ID  = TO_UNICODE (1) ;
+static const utf32 COCOA_WARNING_ID  = TO_UNICODE (3) ;
+static const utf32 COCOA_ERROR_ID    = TO_UNICODE (4) ;
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//    Method called for printing an error                                      *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//    Method called for printing an error                                                                              *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 void ggs_printError (const C_SourceTextInString * inSourceTextPtr,
                      const C_LocationInSource & inErrorLocation,
@@ -561,11 +565,11 @@ void ggs_printError (const C_SourceTextInString * inSourceTextPtr,
   }
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//    Method called for printing a warning                                     *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//    Method called for printing a warning                                                                             *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 void ggs_printWarning (const C_SourceTextInString * inSourceTextPtr,
                        const C_LocationInSource & inWarningLocation,
@@ -606,14 +610,42 @@ void ggs_printWarning (const C_SourceTextInString * inSourceTextPtr,
   }
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//    Method called for printing a success message                             *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//    Method called for printing a success message                                                                     *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 void ggs_printFileOperationSuccess (const C_String & inMessage
                                     COMMA_UNUSED_LOCATION_ARGS) {
+//---
+  if (! executionModeIsIndexing ()) {
+    if (cocoaOutput ()) {
+      co.setForeColor (kGreenForeColor) ;
+      co.setTextAttribute (kBoldTextAttribute) ;
+      co << inMessage;
+      co.setTextAttribute (kAllAttributesOff) ;
+      co.appendUnicodeCharacter (COCOA_MESSAGE_ID COMMA_HERE) ;
+      co.appendUnicodeCharacter (COCOA_MESSAGE_ID COMMA_HERE) ;
+      co.flush () ;
+    }else{
+      co.setForeColor (kGreenForeColor) ;
+      co.setTextAttribute (kBoldTextAttribute) ;
+      co << inMessage ;
+      co.setTextAttribute (kAllAttributesOff) ;
+      co.flush () ;
+    }
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//    Method called for printing a file creation success                                                               *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+void ggs_printFileCreationSuccess (const C_String & inMessage
+                                   COMMA_UNUSED_LOCATION_ARGS) {
 //---
   if (! executionModeIsIndexing ()) {
     if (cocoaOutput ()) {
@@ -634,11 +666,11 @@ void ggs_printFileOperationSuccess (const C_String & inMessage
   }
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//    Methods called for printing a message                                    *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//    Methods called for printing a message                                                                            *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 void ggs_printMessage (const C_String & inMessage
                        COMMA_LOCATION_ARGS) {
@@ -659,34 +691,35 @@ void ggs_printMessage (const C_String & inMessage
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========= cToken
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 cToken::cToken (void) :
 mNextToken (NULL),
 mStartLocation (),
 mEndLocation (),
 mTemplateStringBeforeToken (),
+mSeparatorStringBeforeToken (),
 mTokenCode (0) {
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 cToken::~cToken (void) {
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========= C_parsingContext
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_parsingContext::C_parsingContext (void) :
 mParsingArrayIndex (0),
@@ -697,7 +730,7 @@ mPreviousChar (TO_UNICODE ('\0')),
 mTemplateString () {
 } 
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_parsingContext::C_parsingContext (const C_parsingContext & inSource) :
 mParsingArrayIndex (inSource.mParsingArrayIndex),
@@ -708,7 +741,7 @@ mPreviousChar (inSource.mPreviousChar),
 mTemplateString (inSource.mTemplateString) {
 } 
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_parsingContext & C_parsingContext::operator = (const C_parsingContext & inSource) {
   mParsingArrayIndex = inSource.mParsingArrayIndex ;
@@ -720,4 +753,4 @@ C_parsingContext & C_parsingContext::operator = (const C_parsingContext & inSour
   return * this ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*

@@ -1,72 +1,72 @@
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //  Class for date handling.                                                   *
-//                                                                             *
+//                                                                                                                     *
 //  This file is part of libpm library                                         *
-//                                                                             *
+//                                                                                                                     *
 //  Copyright (C) 1999, ..., 2009 Pierre Molinaro.                             *
-//                                                                             *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
-//                                                                             *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
-//  ECN, École Centrale de Nantes (France)                                     *
-//                                                                             *
-//  This library is free software; you can redistribute it and/or modify it    *
-//  under the terms of the GNU Lesser General Public License as published      *
-//  by the Free Software Foundation; either version 2 of the License, or       *
-//  (at your option) any later version.                                        *
-//                                                                             *
-//  This program is distributed in the hope it will be useful, but WITHOUT     *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
-//  more details.                                                              *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//                                                                                                                     *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes                                          *
+//  ECN, École Centrale de Nantes (France)                                                                             *
+//                                                                                                                     *
+//  This library is free software; you can redistribute it and/or modify it                                            *
+//  under the terms of the GNU Lesser General Public License as published                                              *
+//  by the Free Software Foundation; either version 2 of the License, or                                               *
+//  (at your option) any later version.                                                                                *
+//                                                                                                                     *
+//  This program is distributed in the hope it will be useful, but WITHOUT                                             *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or                                              *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for                                           *
+//  more details.                                                                                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include "time/C_DateTime.h"
 #include "strings/C_String.h"
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include <sys/stat.h>
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 static struct tm gDate ;
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
-static struct tm now (void) {
+static struct tm currentDate (void) {
   const time_t currentTime = ::time (NULL) ;
   gDate = * ::localtime (& currentTime) ;
   return gDate ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 static struct tm initWithSeconds (const time_t inTimeInSeconds) {
   gDate = * ::localtime (& inTimeInSeconds) ;
   return gDate ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_DateTime::C_DateTime (void) :
-mDate (now ()) {
+mDate (currentDate ()) {
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_DateTime::C_DateTime (const time_t inTimeInSeconds) :
 mDate (initWithSeconds (inTimeInSeconds)) {
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_DateTime::~C_DateTime (void) {
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 const char * C_DateTime::getMonthName (void) const {
   switch (mDate.tm_mon) {
@@ -86,7 +86,7 @@ const char * C_DateTime::getMonthName (void) const {
   return (const char *) NULL ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 const char * C_DateTime::getDayName (void) const {
   switch (mDate.tm_wday) {
@@ -101,11 +101,11 @@ const char * C_DateTime::getDayName (void) const {
   return (const char *) NULL ;
 }
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //    Date comparisons                                                         *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 int32_t C_DateTime::compare (const C_DateTime & inDate) const {
   int32_t result = getYearCount () - inDate.getYearCount () ;
@@ -127,43 +127,43 @@ int32_t C_DateTime::compare (const C_DateTime & inDate) const {
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 bool C_DateTime::operator == (const C_DateTime & inDate) const {
   return compare (inDate) == 0 ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 bool C_DateTime::operator != (const C_DateTime & inDate) const {
   return compare (inDate) != 0 ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 bool C_DateTime::operator > (const C_DateTime & inDate) const {
   return compare (inDate) > 0 ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 bool C_DateTime::operator < (const C_DateTime & inDate) const {
   return compare (inDate) < 0 ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 bool C_DateTime::operator >= (const C_DateTime & inDate) const {
   return compare (inDate) >= 0 ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 bool C_DateTime::operator <= (const C_DateTime & inDate) const {
   return compare (inDate) <= 0 ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 AC_OutputStream & operator << (AC_OutputStream & inStream,
                                 const C_DateTime & inDate) {
@@ -194,11 +194,11 @@ AC_OutputStream & operator << (AC_OutputStream & inStream,
   return inStream ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 static time_t gCurrentToolModificationTime ;
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_DateTime::enterCurrentToolModificationTime (const char * inMainRoutineFirstArgument) {
   struct stat fileProperties ;
@@ -208,10 +208,10 @@ void C_DateTime::enterCurrentToolModificationTime (const char * inMainRoutineFir
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_DateTime C_DateTime::currentToolModificationTime (void) {
   return C_DateTime (gCurrentToolModificationTime) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*

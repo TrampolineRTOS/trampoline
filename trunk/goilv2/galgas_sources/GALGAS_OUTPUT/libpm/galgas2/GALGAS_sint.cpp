@@ -1,45 +1,45 @@
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //  'GALGAS_sint' : galgas sint32                                              *
-//                                                                             *
+//                                                                                                                     *
 //  This file is part of libpm library                                         *
-//                                                                             *
+//                                                                                                                     *
 //  Copyright (C) 2004, ..., 2010 Pierre Molinaro.                             *
-//                                                                             *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
-//                                                                             *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
-//  ECN, École Centrale de Nantes (France)                                     *
-//                                                                             *
-//  This library is free software; you can redistribute it and/or modify it    *
-//  under the terms of the GNU Lesser General Public License as published      *
-//  by the Free Software Foundation; either version 2 of the License, or       *
-//  (at your option) any later version.                                        *
-//                                                                             *
-//  This program is distributed in the hope it will be useful, but WITHOUT     *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
-//  more details.                                                              *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//                                                                                                                     *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes                                          *
+//  ECN, École Centrale de Nantes (France)                                                                             *
+//                                                                                                                     *
+//  This library is free software; you can redistribute it and/or modify it                                            *
+//  under the terms of the GNU Lesser General Public License as published                                              *
+//  by the Free Software Foundation; either version 2 of the License, or                                               *
+//  (at your option) any later version.                                                                                *
+//                                                                                                                     *
+//  This program is distributed in the hope it will be useful, but WITHOUT                                             *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or                                              *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for                                           *
+//  more details.                                                                                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include "galgas2/predefined-types.h"
 #include "galgas2/C_Compiler.h"
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_sint::GALGAS_sint (void) :
 mIsValid (false),
 mSIntValue (0) {
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_sint GALGAS_sint::constructor_default (UNUSED_LOCATION_ARGS) {
   return GALGAS_sint (0) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_sint::GALGAS_sint (const int32_t inValue) :
 mIsValid (true),
@@ -49,7 +49,7 @@ mSIntValue (inValue) {
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult GALGAS_sint::objectCompare (const GALGAS_sint & inOperand) const {
   typeComparisonResult result = kOperandNotValid ;
@@ -65,19 +65,19 @@ typeComparisonResult GALGAS_sint::objectCompare (const GALGAS_sint & inOperand) 
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_sint GALGAS_sint::constructor_max (UNUSED_LOCATION_ARGS) {
   return GALGAS_sint (INT32_MAX) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_sint GALGAS_sint::constructor_min (UNUSED_LOCATION_ARGS) {
   return GALGAS_sint (INT32_MIN) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_uint GALGAS_sint::reader_uint (C_Compiler * inCompiler
                                       COMMA_LOCATION_ARGS) const {
@@ -90,7 +90,7 @@ GALGAS_uint GALGAS_sint::reader_uint (C_Compiler * inCompiler
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_uint_36__34_ GALGAS_sint::reader_uint_36__34_ (C_Compiler * inCompiler
                                                   COMMA_LOCATION_ARGS) const {
@@ -103,26 +103,26 @@ GALGAS_uint_36__34_ GALGAS_sint::reader_uint_36__34_ (C_Compiler * inCompiler
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_sint_36__34_ GALGAS_sint::reader_sint_36__34_ (UNUSED_LOCATION_ARGS) const {
   return GALGAS_sint_36__34_ (mSIntValue) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_double GALGAS_sint::reader_double (UNUSED_LOCATION_ARGS) const {
   return GALGAS_double (mSIntValue) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_string GALGAS_sint::reader_string (UNUSED_LOCATION_ARGS) const {
   C_String s ; s.appendSigned (mSIntValue) ;
   return GALGAS_string (s) ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_sint::description (C_String & ioString,
                                const int32_t /* inIndentation */) const {
@@ -135,7 +135,7 @@ void GALGAS_sint::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_sint::increment_operation (C_Compiler * inCompiler
                                          COMMA_LOCATION_ARGS) {
@@ -149,7 +149,7 @@ void GALGAS_sint::increment_operation (C_Compiler * inCompiler
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_sint::decrement_operation (C_Compiler * inCompiler
                                          COMMA_LOCATION_ARGS) {
@@ -163,7 +163,7 @@ void GALGAS_sint::decrement_operation (C_Compiler * inCompiler
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_sint GALGAS_sint::add_operation (const GALGAS_sint & inOperand2,
                                         C_Compiler * inCompiler
@@ -182,7 +182,7 @@ GALGAS_sint GALGAS_sint::add_operation (const GALGAS_sint & inOperand2,
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_sint GALGAS_sint::substract_operation (const GALGAS_sint & inOperand2,
                                               C_Compiler * inCompiler
@@ -201,7 +201,7 @@ GALGAS_sint GALGAS_sint::substract_operation (const GALGAS_sint & inOperand2,
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_sint GALGAS_sint::multiply_operation (const GALGAS_sint & inOperand2,
                                                  C_Compiler * inCompiler
@@ -220,7 +220,7 @@ GALGAS_sint GALGAS_sint::multiply_operation (const GALGAS_sint & inOperand2,
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_sint GALGAS_sint::divide_operation (const GALGAS_sint & inOperand2,
                                                C_Compiler * inCompiler
@@ -238,7 +238,7 @@ GALGAS_sint GALGAS_sint::divide_operation (const GALGAS_sint & inOperand2,
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_sint GALGAS_sint::modulo_operation (const GALGAS_sint & inOperand2,
                                                C_Compiler * inCompiler
@@ -254,7 +254,7 @@ GALGAS_sint GALGAS_sint::modulo_operation (const GALGAS_sint & inOperand2,
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_sint GALGAS_sint::operator_unary_minus (C_Compiler * inCompiler
                                                    COMMA_LOCATION_ARGS) const {
@@ -270,7 +270,7 @@ GALGAS_sint GALGAS_sint::operator_unary_minus (C_Compiler * inCompiler
 }
 
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_sint GALGAS_sint::left_shift_operation (const GALGAS_uint inShiftOperand
                                                    COMMA_UNUSED_LOCATION_ARGS) const {
@@ -281,7 +281,7 @@ GALGAS_sint GALGAS_sint::left_shift_operation (const GALGAS_uint inShiftOperand
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_sint GALGAS_sint::right_shift_operation (const GALGAS_uint inShiftOperand
                                                     COMMA_UNUSED_LOCATION_ARGS) const {
@@ -292,7 +292,7 @@ GALGAS_sint GALGAS_sint::right_shift_operation (const GALGAS_uint inShiftOperand
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_sint GALGAS_sint::operator_and (const GALGAS_sint & inOperand2
                                            COMMA_UNUSED_LOCATION_ARGS) const {
@@ -303,7 +303,7 @@ GALGAS_sint GALGAS_sint::operator_and (const GALGAS_sint & inOperand2
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_sint GALGAS_sint::operator_or (const GALGAS_sint & inOperand2
                                           COMMA_UNUSED_LOCATION_ARGS) const {
@@ -314,7 +314,7 @@ GALGAS_sint GALGAS_sint::operator_or (const GALGAS_sint & inOperand2
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_sint GALGAS_sint::operator_xor (const GALGAS_sint & inOperand2
                                            COMMA_UNUSED_LOCATION_ARGS) const {
@@ -325,7 +325,7 @@ GALGAS_sint GALGAS_sint::operator_xor (const GALGAS_sint & inOperand2
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_sint GALGAS_sint::operator_tilde (UNUSED_LOCATION_ARGS) const {
   GALGAS_sint result ;
@@ -335,4 +335,4 @@ GALGAS_sint GALGAS_sint::operator_tilde (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*

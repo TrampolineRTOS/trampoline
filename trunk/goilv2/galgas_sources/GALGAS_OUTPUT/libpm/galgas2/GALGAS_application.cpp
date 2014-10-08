@@ -1,26 +1,26 @@
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                                                                                                     *
 //  This file is part of libpm library                                         *
-//                                                                             *
+//                                                                                                                     *
 //  Copyright (C) 2010, ..., 2012 Pierre Molinaro.                             *
-//                                                                             *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
-//                                                                             *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
-//  ECN, École Centrale de Nantes (France)                                     *
-//                                                                             *
-//  This library is free software; you can redistribute it and/or modify it    *
-//  under the terms of the GNU Lesser General Public License as published      *
-//  by the Free Software Foundation; either version 2 of the License, or       *
-//  (at your option) any later version.                                        *
-//                                                                             *
-//  This program is distributed in the hope it will be useful, but WITHOUT     *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
-//  more details.                                                              *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//                                                                                                                     *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes                                          *
+//  ECN, École Centrale de Nantes (France)                                                                             *
+//                                                                                                                     *
+//  This library is free software; you can redistribute it and/or modify it                                            *
+//  under the terms of the GNU Lesser General Public License as published                                              *
+//  by the Free Software Foundation; either version 2 of the License, or                                               *
+//  (at your option) any later version.                                                                                *
+//                                                                                                                     *
+//  This program is distributed in the hope it will be useful, but WITHOUT                                             *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or                                              *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for                                           *
+//  more details.                                                                                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include "galgas2/predefined-types.h"
 #include "galgas2/C_Compiler.h"
@@ -28,47 +28,47 @@
 #include "command_line_interface/C_UIntCommandLineOption.h"
 #include "command_line_interface/C_StringCommandLineOption.h"
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //                     'GALGAS_application' class                              *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_application::GALGAS_application (void) :
 AC_GALGAS_root () {
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_application::GALGAS_application (const GALGAS_application & inSource) :
 AC_GALGAS_root (inSource) {
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_application::~GALGAS_application (void) {
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_application & GALGAS_application::operator = (const GALGAS_application & /* inSource */) {
   return *this ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult GALGAS_application::objectCompare (const GALGAS_application & /* inOperand */) const {
   return kOperandNotValid ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_application::description (C_String & ioString,
                                       const int32_t /* inIndentation */) const {
   ioString << "<@application:not built>" ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS__32_stringlist GALGAS_application::constructor_boolOptionNameList (LOCATION_ARGS) {
   GALGAS__32_stringlist result = GALGAS__32_stringlist::constructor_emptyList (THERE) ;
@@ -80,7 +80,7 @@ GALGAS__32_stringlist GALGAS_application::constructor_boolOptionNameList (LOCATI
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_char GALGAS_application::constructor_boolOptionInvocationLetter (const GALGAS_string & inDomainName,
                                                                         const GALGAS_string & inIdentifier
@@ -93,7 +93,7 @@ GALGAS_char GALGAS_application::constructor_boolOptionInvocationLetter (const GA
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_string GALGAS_application::constructor_boolOptionInvocationString (const GALGAS_string & inDomainName,
                                                                           const GALGAS_string & inIdentifier
@@ -106,7 +106,7 @@ GALGAS_string GALGAS_application::constructor_boolOptionInvocationString (const 
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_string GALGAS_application::constructor_boolOptionCommentString (const GALGAS_string & inDomainName,
                                                                        const GALGAS_string & inIdentifier
@@ -119,7 +119,7 @@ GALGAS_string GALGAS_application::constructor_boolOptionCommentString (const GAL
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS__32_stringlist GALGAS_application::constructor_uintOptionNameList (LOCATION_ARGS) {
   GALGAS__32_stringlist result = GALGAS__32_stringlist::constructor_emptyList (THERE) ;
@@ -131,7 +131,7 @@ GALGAS__32_stringlist GALGAS_application::constructor_uintOptionNameList (LOCATI
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_char GALGAS_application::constructor_uintOptionInvocationLetter (const GALGAS_string & inDomainName,
                                                                         const GALGAS_string & inIdentifier
@@ -144,7 +144,7 @@ GALGAS_char GALGAS_application::constructor_uintOptionInvocationLetter (const GA
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_string GALGAS_application::constructor_uintOptionInvocationString (const GALGAS_string & inDomainName,
                                                                           const GALGAS_string & inIdentifier
@@ -157,7 +157,7 @@ GALGAS_string GALGAS_application::constructor_uintOptionInvocationString (const 
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_string GALGAS_application::constructor_uintOptionCommentString (const GALGAS_string & inDomainName,
                                                                        const GALGAS_string & inIdentifier
@@ -170,7 +170,7 @@ GALGAS_string GALGAS_application::constructor_uintOptionCommentString (const GAL
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS__32_stringlist GALGAS_application::constructor_stringOptionNameList (LOCATION_ARGS) {
   GALGAS__32_stringlist result = GALGAS__32_stringlist::constructor_emptyList (THERE) ;
@@ -182,7 +182,7 @@ GALGAS__32_stringlist GALGAS_application::constructor_stringOptionNameList (LOCA
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_char GALGAS_application::constructor_stringOptionInvocationLetter (const GALGAS_string & inDomainName,
                                                                           const GALGAS_string & inIdentifier
@@ -195,7 +195,7 @@ GALGAS_char GALGAS_application::constructor_stringOptionInvocationLetter (const 
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_string GALGAS_application::constructor_stringOptionInvocationString (const GALGAS_string & inDomainName,
                                                                             const GALGAS_string & inIdentifier
@@ -208,7 +208,7 @@ GALGAS_string GALGAS_application::constructor_stringOptionInvocationString (cons
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_string GALGAS_application::constructor_stringOptionCommentString (const GALGAS_string & inDomainName,
                                                                          const GALGAS_string & inIdentifier
@@ -221,4 +221,4 @@ GALGAS_string GALGAS_application::constructor_stringOptionCommentString (const G
   return result ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*

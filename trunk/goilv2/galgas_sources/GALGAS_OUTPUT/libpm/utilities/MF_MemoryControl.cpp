@@ -1,46 +1,46 @@
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //  Implementation of routines for handling dynamic allocation checking.       *
-//                                                                             *
+//                                                                                                                     *
 //  This file is part of libpm library                                         *
-//                                                                             *
+//                                                                                                                     *
 //  Copyright (C) 1994, ..., 2010 Pierre Molinaro.                             *
-//                                                                             *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
-//                                                                             *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
-//  ECN, École Centrale de Nantes (France)                                     *
-//                                                                             *
-//  This library is free software; you can redistribute it and/or modify it    *
-//  under the terms of the GNU Lesser General Public License as published      *
-//  by the Free Software Foundation; either version 2 of the License, or       *
-//  (at your option) any later version.                                        *
-//                                                                             *
-//  This program is distributed in the hope it will be useful, but WITHOUT     *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
-//  more details.                                                              *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//                                                                                                                     *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes                                          *
+//  ECN, École Centrale de Nantes (France)                                                                             *
+//                                                                                                                     *
+//  This library is free software; you can redistribute it and/or modify it                                            *
+//  under the terms of the GNU Lesser General Public License as published                                              *
+//  by the Free Software Foundation; either version 2 of the License, or                                               *
+//  (at your option) any later version.                                                                                *
+//                                                                                                                     *
+//  This program is distributed in the hope it will be useful, but WITHOUT                                             *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or                                              *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for                                           *
+//  more details.                                                                                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include "utilities/M_machine.h"
 #include "utilities/MF_MemoryControl.h"
 #include "utilities/basic-allocation.h"
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include <stdlib.h>
 #include <stdio.h>
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 macroDeclareMutex (gAllocationMutex)
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //         Enum for describing a pointer                                       *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   typedef enum {
@@ -51,7 +51,7 @@ macroDeclareMutex (gAllocationMutex)
   } enumAllocation ;
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static uint32_t gAllocatedPODArrayCount = 0 ;
@@ -60,7 +60,7 @@ macroDeclareMutex (gAllocationMutex)
   static int32_t gExistingPODArrayCount = 0 ;
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static void
@@ -78,13 +78,13 @@ macroDeclareMutex (gAllocationMutex)
                    const char * inSourceFileName) ;
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark -
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void * allocAndRegisterPODArray (const size_t inSize COMMA_LOCATION_ARGS) {
@@ -97,7 +97,7 @@ macroDeclareMutex (gAllocationMutex)
 #endif
 
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void * reallocAndRegisterPODArray (void * inPointer,
@@ -122,7 +122,7 @@ macroDeclareMutex (gAllocationMutex)
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void routineFreePODArrayPointer (void * inPointer COMMA_LOCATION_ARGS) {
@@ -143,17 +143,17 @@ macroDeclareMutex (gAllocationMutex)
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark -
 #endif
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //          Localisation de l'appel du deallocateur 'delete'                 *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void routineFreePointer (const void * inPointer COMMA_LOCATION_ARGS) {
@@ -172,7 +172,7 @@ macroDeclareMutex (gAllocationMutex)
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void routineFreeArrayPointer (const void * inPointer COMMA_LOCATION_ARGS) {
@@ -191,7 +191,7 @@ macroDeclareMutex (gAllocationMutex)
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark -
@@ -545,7 +545,7 @@ macroDeclareMutex (gAllocationMutex)
   } //fin executerInsertionRecursiveDansArbreEquilibre 
 #endif
  
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static uint32_t HashCode (const void * Ptr) {
@@ -554,7 +554,7 @@ macroDeclareMutex (gAllocationMutex)
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static void registerPointerDescriptor (const void * inPointer,
@@ -587,7 +587,7 @@ macroDeclareMutex (gAllocationMutex)
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void registerPointer (const void * p COMMA_LOCATION_ARGS) {
@@ -595,7 +595,7 @@ macroDeclareMutex (gAllocationMutex)
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void registerArray (const void * p COMMA_LOCATION_ARGS) {
@@ -603,7 +603,7 @@ macroDeclareMutex (gAllocationMutex)
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static cPointerDescriptor * searchPointerDescriptor (const void * inPointer) {
@@ -629,7 +629,7 @@ macroDeclareMutex (gAllocationMutex)
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void unregisterPointer (const void * inPointer,
@@ -673,11 +673,11 @@ macroDeclareMutex (gAllocationMutex)
   }
 #endif
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //             Routine garantissant la nullite d'un pointeur                 *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void routineVoidPointer (const void * inPointer COMMA_LOCATION_ARGS) {
@@ -687,11 +687,11 @@ macroDeclareMutex (gAllocationMutex)
   }
 #endif
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //            Routine garantissant la validite d'un pointeur                 *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void routineValidPointer (const void * inPointer COMMA_LOCATION_ARGS) {
@@ -705,7 +705,7 @@ macroDeclareMutex (gAllocationMutex)
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void cPointerDescriptor::affichageRecursif (void) const {
@@ -723,7 +723,7 @@ macroDeclareMutex (gAllocationMutex)
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void cPointerDescriptor::
@@ -742,7 +742,7 @@ macroDeclareMutex (gAllocationMutex)
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
  
 #ifndef DO_NOT_GENERATE_CHECKINGS 
   static void
@@ -769,7 +769,7 @@ macroDeclareMutex (gAllocationMutex)
   }
 #endif
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 void displayAllocatedBlocksInfo (void) {
   #ifndef DO_NOT_GENERATE_CHECKINGS
@@ -790,6 +790,6 @@ void displayAllocatedBlocksInfo (void) {
   #endif
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 

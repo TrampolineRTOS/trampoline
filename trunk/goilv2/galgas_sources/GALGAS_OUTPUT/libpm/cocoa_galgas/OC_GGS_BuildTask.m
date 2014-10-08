@@ -5,7 +5,7 @@
 //  Created by Pierre Molinaro on 30/11/11.
 //  Copyright (c) 2011 IRCCyN. All rights reserved.
 //
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #import "OC_GGS_BuildTask.h"
 #import "PMIssueDescriptor.h"
@@ -13,20 +13,20 @@
 #import "OC_GGS_ApplicationDelegate.h"
 #import "PMDebug.h"
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include <netdb.h>
 #include <netinet/in.h>
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 //#define DEBUG_MESSAGES
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 @implementation OC_GGS_BuildTask 
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (OC_GGS_BuildTask *) initWithDocument: (OC_GGS_Document *) inDocument
                        filePath: (NSString *) inFilePath {
@@ -61,9 +61,15 @@
       [arguments addObject:@"--cocoa"] ;
    //--- Create task
       mTask = [NSTask new] ;
-      [mTask setLaunchPath:[commandLineArray objectAtIndex:0]] ;
-      [mTask setArguments:arguments] ;
-      // NSLog (@"'%@' %@", [mTask launchPath], arguments) ;
+      if ([gCocoaApplicationDelegate prefixByToolUtility]) {
+        [mTask setLaunchPath:[gCocoaApplicationDelegate toolUtilityPrefix]] ;
+        NSArray * allArguments = [NSArray arrayWithObject:[commandLineArray objectAtIndex:0]] ;
+        allArguments = [allArguments arrayByAddingObjectsFromArray:arguments] ;
+        [mTask setArguments:allArguments] ;
+      }else{
+        [mTask setLaunchPath:[commandLineArray objectAtIndex:0]] ;
+        [mTask setArguments:arguments] ;
+      }
     //--- Set standard output notification
       mPipe = [NSPipe pipe] ;
       [mTask setStandardOutput:mPipe] ;
@@ -90,14 +96,14 @@
   return self ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) FINALIZE_OR_DEALLOC {
   noteObjectDeallocation (self) ;
   macroSuperFinalize ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) getDataFromTaskOutput: (NSNotification *) inNotification {
   #ifdef DEBUG_MESSAGES
@@ -123,28 +129,27 @@
     mTask = nil ;
     mPipe = nil ;
     [mDocument buildCompleted] ;
-//    mDocument = nil ;
   }
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) taskDidTerminate: (NSNotification *) inNotification {
   mTaskCompleted = YES ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) terminate {
   [mTask terminate] ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (BOOL) isCompleted {
   return mTaskCompleted && mOutputBufferedDataHasBeenTransmitted ;
 }
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 @end

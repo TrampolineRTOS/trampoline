@@ -1,36 +1,36 @@
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//  'C_galgas_io'                                                              *
-//                                                                             *
-//  This file is part of libpm library                                         *
-//                                                                             *
-//  Copyright (C) 1996, ..., 2011 Pierre Molinaro.                             *
-//                                                                             *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
-//                                                                             *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
-//  ECN, École Centrale de Nantes (France)                                     *
-//                                                                             *
-//  This library is free software; you can redistribute it and/or modify it    *
-//  under the terms of the GNU Lesser General Public License as published      *
-//  by the Free Software Foundation; either version 2 of the License, or       *
-//  (at your option) any later version.                                        *
-//                                                                             *
-//  This program is distributed in the hope it will be useful, but WITHOUT     *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
-//  more details.                                                              *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//  'C_galgas_io'                                                                                                      *
+//                                                                                                                     *
+//  This file is part of libpm library                                                                                 *
+//                                                                                                                     *
+//  Copyright (C) 1996, ..., 2014 Pierre Molinaro.                                                                     *
+//                                                                                                                     *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//                                                                                                                     *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes                                          *
+//  ECN, École Centrale de Nantes (France)                                                                             *
+//                                                                                                                     *
+//  This library is free software; you can redistribute it and/or modify it                                            *
+//  under the terms of the GNU Lesser General Public License as published                                              *
+//  by the Free Software Foundation; either version 2 of the License, or                                               *
+//  (at your option) any later version.                                                                                *
+//                                                                                                                     *
+//  This program is distributed in the hope it will be useful, but WITHOUT                                             *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or                                              *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for                                           *
+//  more details.                                                                                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef GALGAS_IO_CLASS_DEFINED
 #define GALGAS_IO_CLASS_DEFINED
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include <typeinfo>
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include "strings/C_String.h"
 #include "collections/TC_UniqueArray.h"
@@ -38,46 +38,46 @@
 #include "galgas2/C_SourceTextInString.h"
 #include "utilities/C_SharedObject.h"
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//  Exception raised when maximum error count is reached                       *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//  Exception raised when maximum error count is reached                                                               *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 class max_error_count_reached_exception : public ::std:: exception {
   public : virtual const char * what (void) const throw () ;
 } ;
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//  Exception raised when maximum warning count is reached                     *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//  Exception raised when maximum warning count is reached                                                             *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 class max_warning_count_reached_exception : public ::std:: exception {
   public : virtual const char * what (void) const throw () ;
 } ;
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//     Internal exception thrown when a lexical error has been detected        *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//     Internal exception thrown when a lexical error has been detected                                                *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 class C_lexicalErrorException {
 } ;
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
-class C_UserCancelException : public ::std:: exception {
+class C_UserCancelException : public ::std::exception {
   public : C_UserCancelException (void) ;
 } ;
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//   Class used for defining a reserved words table entry                      *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   Class used for defining a reserved words table entry                                                              *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 class C_unicode_lexique_table_entry {
   public : const utf32 * mEntryString ;
@@ -93,17 +93,18 @@ class C_unicode_lexique_table_entry {
   private : C_unicode_lexique_table_entry & operator = (const C_unicode_lexique_table_entry &) ;
 } ;
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//                 Token class                                                 *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                 Token class                                                                                         *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 class cToken {
   public : cToken * mNextToken ;
   public : C_LocationInSource mStartLocation ;
   public : C_LocationInSource mEndLocation ;
   public : C_String mTemplateStringBeforeToken ; // Template string before the token
+  public : C_String mSeparatorStringBeforeToken ;
   public : int16_t mTokenCode ;
 
   public : cToken (void) ;
@@ -114,12 +115,12 @@ class cToken {
   private : cToken & operator = (const cToken &) ;
 } ;
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//                 Class for handling parsing context                          *
-//          (used by parse ... rewind ... end parse ; instruction)             *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                 Class for handling parsing context                                                                  *
+//          (used by parse ... rewind ... end parse ; instruction)                                                     *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 class C_parsingContext {
   private : int32_t mParsingArrayIndex ;
@@ -138,11 +139,11 @@ class C_parsingContext {
   public : C_parsingContext & operator = (const C_parsingContext & inSource) ;
 } ;
 
-//-----------------------------------------------------------------------------*
-//                                                                             *
-//         Abstract class for GALGAS input/output                              *
-//                                                                             *
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//         Abstract class for GALGAS input/output                                                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String errorOrWarningLocationString (const C_LocationInSource & inErrorLocation,
                                        const C_SourceTextInString * inSourceTextPtr) ;
@@ -172,6 +173,7 @@ void signalExtractError (const C_SourceTextInString * inSourceTextPtr,
                          const TC_UniqueArray <C_String> & inExpectedClassesErrorStringsArray,
                          const C_String & inActualFoundClassErrorString
                          COMMA_LOCATION_ARGS) ;
+
 void signalCastError (const C_SourceTextInString * inSourceTextPtr,
                       const C_LocationInSource & inErrorLocation,
                       const std::type_info * inBaseClass,
@@ -210,46 +212,45 @@ void fatalError (const C_String & inErrorMessage,
                  const char * inSourceFile,
                  const int inSourceLine) ;
 
-//--- Method called for printing an error
 void ggs_printError (const C_SourceTextInString * inSourceTextPtr,
                      const C_LocationInSource & inErrorLocation,
                      const C_String & inMessage
                      COMMA_LOCATION_ARGS) ;
 
-//--- Method called for printing a warning
 void ggs_printWarning (const C_SourceTextInString * inSourceTextPtr,
                        const C_LocationInSource & inWarningLocation,
                        const C_String & inMessage
                        COMMA_LOCATION_ARGS) ;
 
-//--- Method called for printing a file success message
 void ggs_printFileOperationSuccess (const C_String & inMessage
                                     COMMA_LOCATION_ARGS) ;
 
-//--- Method called for printing a message
+void ggs_printFileCreationSuccess (const C_String & inMessage
+                                   COMMA_UNUSED_LOCATION_ARGS) ;
+
 void ggs_printMessage (const C_String & inMessage
                        COMMA_LOCATION_ARGS) ;
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
-uint32_t checkedLineCount (void) ;
+/*uint32_t checkedLineCount (void) ;
 void incrementCheckedFileCount (const uint32_t inIncrement) ;
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 uint32_t generatedLineCount (void) ;
 void incrementGeneratedLileCount (const uint32_t inIncrement) ;
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 uint32_t preservedLineCount (void) ;
 void incrementPreservedLileCount (const uint32_t inIncrement) ;
 
-//-----------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 
 uint32_t generatedFileCount (void) ;
 void incrementGeneratedFileCount (void) ;
-
-//-----------------------------------------------------------------------------*
+*/
+//---------------------------------------------------------------------------------------------------------------------*
 
 #endif

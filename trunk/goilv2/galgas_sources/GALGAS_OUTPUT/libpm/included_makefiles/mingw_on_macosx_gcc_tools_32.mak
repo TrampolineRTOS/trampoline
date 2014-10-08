@@ -4,8 +4,9 @@
 #                                                               *
 #---------------------------------------------------------------*
 
-TOOL_CHAIN_ARCHIVE := gcc-4.8.0-qt-4.8.4-for-mingw32
-TOOL_CHAIN_URL := http://crossgcc.rts-software.org/download/gcc-4.8.0-qt-4.8.4-win32/$(TOOL_CHAIN_ARCHIVE).tar.bz2
+GCC_VERSION := 4.9.1
+TOOL_CHAIN_ARCHIVE := gcc-$(GCC_VERSION)-qt-4.8.4-for-mingw32
+TOOL_CHAIN_URL := http://crossgcc.rts-software.org/download/gcc-$(GCC_VERSION)-qt-4.8.4-win32/$(TOOL_CHAIN_ARCHIVE).tar.bz2
 TOOL_CHAIN_INSTALL_PATH := /usr/local/$(TOOL_CHAIN_ARCHIVE)
 
 #---------------------------------------------------------------*
