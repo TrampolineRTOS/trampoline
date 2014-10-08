@@ -1,0 +1,53 @@
+##
+# @file defaults.ggs
+#
+# @section File description
+#
+# routines defined in defaults semantics component
+# set the default value of objects according to the
+# implementation of the OIL file.
+#
+# @section Copyright
+#
+# Goil OIL compiler - Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline is protected by the french intellectual property law.
+#
+# This software is distributed under the GNU Public Licence V2
+#
+# @section File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+
+
+proc setDefaults
+  ?let @implementation imp
+  ?!@applicationDefinition application {
+  @objectsMap objects = [application objects]
+  
+#  addSystemCounter
+#      !?objects;
+
+# set defaults for objects
+  for (@lstring objectKind) in  [objects keyList] do
+    with objectKind in !?objects error message get  do
+      @objectKindMap objOfKind = [objectsOfKind objects]
+      for (@lstring objectName) in  [objOfKind keyList] do
+        with objectName in !?objOfKind error message get  do
+          @implementationObject impObject = [imp impObject ![objectKind string]]
+          setDefaultsForType ( ![impObject attributes] !?attributes)
+        end
+      end
+      [!?objectsOfKind setObjects !objOfKind]
+    end
+  end
+
+  [!?application setObjects !objects]
+}
+  
