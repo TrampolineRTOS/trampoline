@@ -101,7 +101,7 @@ FUNC(void, OS_CODE) tpl_init_context(
 	}
 	
 	/* save the stack pointer */
-	pointer = (u8*)(&(static_desc->context.ic->sp));
+	pointer = (u8*)(&(static_desc->context.sp));
 	*pointer = (u8)((u16)sp & 0xFF);
 	pointer++;
 	*pointer = (u8)((u16)sp >> 8);
