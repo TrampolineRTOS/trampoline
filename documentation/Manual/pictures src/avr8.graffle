@@ -1945,7 +1945,7 @@ CallTerminateISR2}</string>
 		<key>SidebarWidth</key>
 		<integer>120</integer>
 		<key>VisibleRegion</key>
-		<string>{{226, 416}, {332, 339}}</string>
+		<string>{{226, 167.75}, {332, 339}}</string>
 		<key>Zoom</key>
 		<real>2</real>
 		<key>ZoomValues</key>

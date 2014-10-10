@@ -44,14 +44,6 @@ void tpl_shutdown(void)
 
 #define AVR_PUSH(val) {*sp=(u8)(val); sp--;}
 
-/*
- * tpl_init_context initialize a context to prepare a task to run.
- * WARNING: This function MUST NOT modify GPRs!!! (the task in parameter
- * can be the running one!!!)
- */
-FUNC(void, OS_CODE) tpl_init_context(
-    CONST(tpl_proc_id, OS_APPL_DATA) proc_id)
-{
 	//check PC size (not the same for each AVR :-/)
 #if defined (__AVR_ATmega2560__)
 	#define __PC_USE_24_BITS__
@@ -63,6 +55,15 @@ FUNC(void, OS_CODE) tpl_init_context(
 	#warning "The AVR CPU is not known -> Trampoline may crash if the Program Counter size is not OK. Assuming a program counter of 16 bits.".
 	#define __PC_USE_16_BITS__
 #endif
+
+/*
+ * tpl_init_context initialize a context to prepare a task to run.
+ * WARNING: This function MUST NOT modify GPRs!!! (the task in parameter
+ * can be the running one!!!)
+ */
+FUNC(void, OS_CODE) tpl_init_context(
+    CONST(tpl_proc_id, OS_APPL_DATA) proc_id)
+{
 	u16 tmp;
     int a=0; /*internal variable, used to put the register R00 to R31 on the tabular*/
 	u8 *pointer;
