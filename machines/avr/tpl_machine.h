@@ -15,17 +15,13 @@
 
 #include "tpl_os_custom_types.h"
 
+typedef struct AVR_CONTEXT avr_context;
+
 struct AVR_CONTEXT {
 	u8 *sp;
 };
 
-typedef struct AVR_CONTEXT avr_context;
-
-struct TPL_CONTEXT {
-	avr_context * ic;
-};
-
-typedef struct TPL_CONTEXT tpl_context;
+typedef struct AVR_CONTEXT tpl_context;
 
 
 /**
