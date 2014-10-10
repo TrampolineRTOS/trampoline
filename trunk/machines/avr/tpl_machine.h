@@ -8,10 +8,6 @@
  *
  * Trampoline avr specifics
  *
- * $Date$
- * $Rev$
- * $Author$
- * $URL$
  */
 
 #ifndef __TPL_MACHINE_AVR_H__
@@ -21,8 +17,7 @@
 
 struct AVR_CONTEXT {
 	u8 *sp;
-	u8 regist[33];  //registers: R0-R15,R17-R31,SREG,R16
-} ;
+};
 
 typedef struct AVR_CONTEXT avr_context;
 

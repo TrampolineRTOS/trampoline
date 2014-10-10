@@ -8,10 +8,6 @@
  *
  * Trampoline avr specifics
  *
- * $Date:$
- * $Rev$
- * $Author$
- * $URL$
  */
 
 #include <avr/io.h>
@@ -46,6 +42,7 @@ void tpl_shutdown(void)
 	while (1); 
 }
 
+#define AVR_PUSH(val) {*sp=(u8)(val); sp--;}
 
 /*
  * tpl_init_context initialize a context to prepare a task to run.
@@ -66,9 +63,7 @@ FUNC(void, OS_CODE) tpl_init_context(
 	#warning "The AVR CPU is not known -> Trampoline may crash if the Program Counter size is not OK. Assuming a program counter of 16 bits.".
 	#define __PC_USE_16_BITS__
 #endif
-
-
-
+	u16 tmp;
     int a=0; /*internal variable, used to put the register R00 to R31 on the tabular*/
 	u8 *pointer;
   	/* Gets a pointer to the static descriptor of the task whose context is going to be initialized */
@@ -79,51 +74,37 @@ FUNC(void, OS_CODE) tpl_init_context(
 	//save the last return func call: TerminateTask() or TerminateISR2()
 	if(static_desc->type == IS_ROUTINE) //ISR2. push CallTerminateISR2();
 	{
-		*sp=(u16)CallTerminateISR2;
-		sp--;
-		*sp=((u16)CallTerminateISR2>>8);
-		sp--;
+		AVR_PUSH((u16)(CallTerminateISR2) & 0xFF)
+		AVR_PUSH((u16)(CallTerminateISR2) >> 8)
 	} else {  //normal task. push TerminateTask();
-		*sp=(u16)TerminateTask;
-		sp--;
-		*sp=((u16)TerminateTask>>8);
-		sp--;
+		AVR_PUSH((u16)(TerminateTask) & 0xFF)
+		AVR_PUSH((u16)(TerminateTask) >> 8)
 	}
 #ifdef __PC_USE_24_BITS__
-	*sp=0;
-	sp--;
+	AVR_PUSH(0)
 #endif
 	
-	/* put the Program Counter on the stack */
-    
-    *sp=(u16)static_desc->entry;
-	sp--;
-	*sp=((u16)static_desc->entry>>8);
-	sp--;
+	/* put the Task entry point on the stack */
+	tmp = (u16)static_desc->entry;
+	AVR_PUSH((tmp) & 0xFF)
+	AVR_PUSH((tmp) >> 8)
 #ifdef __PC_USE_24_BITS__
-	*sp=0;
-	sp--;
+	AVR_PUSH(0)
 #endif
-	/* save the stack pointer */ 
+
+	AVR_PUSH(0) //push GPR r16
+	AVR_PUSH(0x80) //push SREG (enable interrupts)
+	/* put GPR on the stack. r0 to r15 and r17 to r31 => 31 regs */
+    for (a=0;a<31;a++) 
+	{
+		AVR_PUSH(0);
+	}
+	
+	/* save the stack pointer */
 	pointer = (u8*)(&(static_desc->context.ic->sp));
 	*pointer = (u8)((u16)sp & 0xFF);
 	pointer++;
 	*pointer = (u8)((u16)sp >> 8);
-
-  /* initializes system register the chart (system register at startup time) */
-    for (a=0;a<31;a++)
-    {
-        pointer++;
-        *pointer=0x00;
-    }
-
-    /* put the register SREG on the chart */
-    pointer++;
-    *pointer=0x80; /* the system register with interrupt activated */
-
-	/* put register 16 on the chart */
-	pointer++;
-	*pointer=0x00;
 }
 
 void tpl_get_task_lock(void)
@@ -142,8 +123,8 @@ void tpl_release_task_lock(void)
 //void tpl_init_tick_timer();
 void tpl_init_machine(void)
 {
-	tpl_init_context(IDLE_TASK_ID);
-	sei();
+	//tpl_init_context(IDLE_TASK_ID);
+	//sei();
 }
 
 void tpl_enable_interrupts(void)
