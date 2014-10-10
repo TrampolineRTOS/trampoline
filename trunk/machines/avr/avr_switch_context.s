@@ -70,16 +70,9 @@ save_context :
 
 	/* save the old stack pointer */
 	/* R24 is a pointer on the old context. */
-	movw r28,r24 // mov R24 to Y.
-//	ldd  r30,Y+0 // dereference to access the first field
-//	ldd  r31,Y+1
-	in   r26, _SFR_IO_ADDR(SPL) //get the actual SP into X
+	movw r28,r24 // mov R24 to Y (r29:r28)
+	in   r26, _SFR_IO_ADDR(SPL) //get the actual SP into X (r27:r26)
 	in   r27, _SFR_IO_ADDR(SPH)
-
-//	adiw r26,0x21 // we add 21 to the old stack pointer because we have done 0x21 pushs 
-
-//	std  Z+0, r26 //save SP into the first field of the old context.
-//	std  Z+1, r27
 	std  Y+0, r26 //save SP into the first field of the old context.
 	std  Y+1, r27
 
@@ -92,11 +85,10 @@ unsave_context : // we have pushed 2 registers on the stack, we have to pop them
 	pop r16
 
 	/* Get the new stack pointer */
-//    movw r28,r22 // the adress of the new stack pointer is in r22,r23
+    // the adress of the new stack pointer is in r22,r23
+	// mov it to Z (r31:r30)
     movw r30,r22 // the adress of the new stack pointer is in r22,r23
 	// we have to dereference it
-//	ldd  r30,Y+0
-//	ldd  r31,Y+1
     ldd  r28,Z+0
 	ldd  r29,Z+1
 
