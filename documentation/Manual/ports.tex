@@ -714,6 +714,118 @@ BIOS> go 0xA0000000
 
 \subsection{Exceptions handling}
 
-
 \subsection{Kernel sleep service}
 
+\section{AVR8}
+\label{sec:ppcport}
+
+The AVR port does not use the system call version of trampoline, as this micro-controller does not have any MMU. System calls are just standard function calls.
+
+\subsection{Context}
+The context of the AVR is composed of:
+\begin{itemize}
+\item the stack pointer \texttt{SP}
+\item the program counter \texttt{PC}
+\item the status register \texttt{SREG} and 
+\item 32 GPRs \texttt{r0} to \texttt{r31}. This includes the 3 16-bits indirect registers \texttt{X}, \texttt{Y} and \texttt{Z} which are mapped on these GPRs.
+\end{itemize}
+
+However, the context switch uses the stack to save all theses registers (except \texttt{SP} obviously) and the context structure is quite simple:
+\begin{lstlisting}[language=C]
+struct AVR_CONTEXT {
+	u8 *sp;
+};
+
+typedef struct AVR_CONTEXT tpl_context;
+\end{lstlisting}
+
+\subsection{Context switch}
+The context switch implementation uses intensively the stack. The two functions for context switches point to the same code:
+
+\begin{lstlisting}[language=C]
+void tpl_switch_context(tpl_context *old, tpl_context *new);
+void tpl_switch_context_from_it(tpl_context *old, tpl_context *new);
+\end{lstlisting}
+
+\begin{itemize}
+\item save the current context (if \texttt{old} is not \texttt{NULL});
+\item restore the context from \texttt{new}
+\end{itemize}
+
+registers are pushed on the stack like in figure \ref{fig:avr8-stackSave}. The \texttt{GPR} \texttt{r16} is used during the context switch and is the first on the stack. Then, the status register is saved, and all the remaining registers starting from \texttt{r0}.
+
+\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
+\begin{minipage}{0.4\textwidth}
+    \centering
+  \includegraphics[scale=.6]{pictures/avr8-stackSave.pdf} 
+\end{minipage}
+\begin{minipage}{0.6\textwidth}
+  \caption{Stack of the old_context at the end of context switch}\label{fig:avr8-stackSave}
+\end{minipage}
+\end{figure}
+
+The restauration of the new contexte just get the new stack pointer from the argument \texttt{tpl_context} and pop all these registers.
+
+\subsection{Context init}
+The initialization of the context init (\cfunction{tpl_init_context})the stack according to be compliant with the context switch. 
+
+\warning{All the AVR8 do not have the same size of the program counter!! Most of them use a 16-bit program counter, while a few ATMega use a 24-bit program counter!! (if there is more than 64ko of program flash). 
+}
+
+So, the AVR kind should be defined:
+\begin{lstlisting}[language=C]
+#if defined (__AVR_ATmega2560__)
+	#define __PC_USE_24_BITS__
+#elif defined(__AVR_AT90CAN128__) || \
+      defined(__AVR_ATmega328__)  || \
+      defined(__AVR_ATmega328P__)
+	#define __PC_USE_16_BITS__
+#else
+	#warning "The AVR CPU is not known -> Trampoline may crash \
+if the Program Counter size is not OK. \
+Assuming a program counter of 16 bits.".
+	#define __PC_USE_16_BITS__
+#endif
+\end{lstlisting}
+
+The stack at the end of context init should be like in figure \ref{fig:avr8-stackInit}:
+\begin{itemize}
+\item The \cfunction{TerminateTask} or \cfunction{CallTerminateISR2} is pushed, depending on the type of the process (task or ISR2)
+\item the PC of the entry point of the process is pushed
+\item the rest of the context is pushed. All GPRs are init to \texttt{0x0}, and the status register \texttt{SREG} to \texttt{0x80} to enable interrupts.
+\end{itemize}
+\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
+\begin{minipage}{0.4\textwidth}
+    \centering
+  \includegraphics[scale=.6]{pictures/avr8-stackInit.pdf} 
+\end{minipage}
+\begin{minipage}{0.6\textwidth}
+  \caption{Stack at the end of contact init}\label{fig:avr8-stackInit}
+\end{minipage}
+\end{figure}
+
+\subsection{Interrupts}
+Interrupts are handled directly using the standard way by the compiler \texttt{GCC}. \texttt{GCC} save all the required registers, which are restored at the end of the interrupt.
+
+It should be noted that \texttt{GCC} uses the \texttt{ISR} macro to define an interrupt handler, which is in conflict with the \texttt{ISR} macro defined in Trampoline.
+
+\begin{lstlisting}[language=C]
+//gcc uses ISR as a keyword to define an interrupt handler.
+//Osek uses ISR to define an ISR2 :-/
+#ifdef ISR
+ #undef ISR
+#endif
+#include <avr/interrupt.h>
+
+ISR(TIMER2_OVF_vect)
+{
+
+  tpl_counter_tick(&SystemCounter_counter_desc);
+
+  if (tpl_kern.need_schedule)
+  {
+    tpl_schedule_from_running();
+    LOCAL_SWITCH_CONTEXT()
+  }
+}	
+\end{lstlisting}

@@ -15,8 +15,6 @@
 
 #include "tpl_os_custom_types.h"
 
-typedef struct AVR_CONTEXT avr_context;
-
 struct AVR_CONTEXT {
 	u8 *sp;
 };
