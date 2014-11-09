@@ -15,12 +15,8 @@
 
 #include "tpl_os_custom_types.h"
 
-struct AVR_CONTEXT {
-	u8 *sp;
-};
-
-typedef struct AVR_CONTEXT tpl_context;
-
+typedef u8 avr_context; //The context... is only Stack Pointer (SP)
+typedef avr_context *tpl_context;
 
 /**
  * tpl_stack_word is the basic element of a stack in order to have a proper

@@ -68,7 +68,7 @@ FUNC(void, OS_CODE) tpl_init_context(
     int a=0; /*internal variable, used to put the register R00 to R31 on the tabular*/
 	u8 *pointer;
   	/* Gets a pointer to the static descriptor of the task whose context is going to be initialized */
-	const tpl_proc_static *static_desc = tpl_stat_proc_table[proc_id];
+	tpl_proc_static *static_desc = tpl_stat_proc_table[proc_id];
 	/* Init stack pointer */
 	u8 *sp=(void *)((u16)(static_desc->stack.stack_zone) + static_desc->stack.stack_size - 1);
 
@@ -102,10 +102,7 @@ FUNC(void, OS_CODE) tpl_init_context(
 	}
 	
 	/* save the stack pointer */
-	pointer = (u8*)(&(static_desc->context.sp));
-	*pointer = (u8)((u16)sp & 0xFF);
-	pointer++;
-	*pointer = (u8)((u16)sp >> 8);
+	static_desc->context = (u16)(sp);
 }
 
 void tpl_get_task_lock(void)

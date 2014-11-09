@@ -730,13 +730,10 @@ The context of the AVR is composed of:
 \item 32 GPRs \texttt{r0} to \texttt{r31}. This includes the 3 16-bits indirect registers \texttt{X}, \texttt{Y} and \texttt{Z} which are mapped on these GPRs.
 \end{itemize}
 
-However, the context switch uses the stack to save all theses registers (except \texttt{SP} obviously) and the context structure is quite simple:
+However, the context switch uses the stack to save all theses registers (except \texttt{SP} obviously) and the context does not use any structure to save only one variable:
 \begin{lstlisting}[language=C]
-struct AVR_CONTEXT {
-	u8 *sp;
-};
-
-typedef struct AVR_CONTEXT tpl_context;
+typedef u8 avr_context;
+typedef avr_context *tpl_context;
 \end{lstlisting}
 
 \subsection{Context switch}

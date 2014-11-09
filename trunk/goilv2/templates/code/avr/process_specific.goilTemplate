@@ -22,8 +22,7 @@ tpl_stack_word % !proc::NAME %_stack_zone[% !proc::STACKSIZE %/sizeof(tpl_stack_
  * % !proc::KIND % % !proc::NAME % context
  */
 avr_context % !proc::NAME %_int_context;
-
-#define % !proc::NAME %_CONTEXT { &% !proc::NAME %_int_context }
+#define % !proc::NAME %_CONTEXT &% !proc::NAME %_int_context
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
