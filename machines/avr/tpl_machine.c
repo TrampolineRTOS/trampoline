@@ -44,18 +44,6 @@ void tpl_shutdown(void)
 
 #define AVR_PUSH(val) {*sp=(u8)(val); sp--;}
 
-	//check PC size (not the same for each AVR :-/)
-#if defined (__AVR_ATmega2560__)
-	#define __PC_USE_24_BITS__
-#elif defined(__AVR_AT90CAN128__) || \
-	  defined(__AVR_ATmega328__)  || \
-	  defined(__AVR_ATmega328P__)
-	#define __PC_USE_16_BITS__
-#else
-	#warning "The AVR CPU is not known -> Trampoline may crash if the Program Counter size is not OK. Assuming a program counter of 16 bits.".
-	#define __PC_USE_16_BITS__
-#endif
-
 /*
  * tpl_init_context initialize a context to prepare a task to run.
  */
@@ -78,15 +66,17 @@ FUNC(void, OS_CODE) tpl_init_context(
 		AVR_PUSH((u16)(TerminateTask) & 0xFF)
 		AVR_PUSH((u16)(TerminateTask) >> 8)
 	}
-#ifdef __PC_USE_24_BITS__
+#ifdef __AVR_3_BYTE_PC__
 	AVR_PUSH(0)
+#elif !defined(__AVR_2_BYTE_PC__)
+	#warning "The AVR CPU is not known -> Trampoline may crash if the Program Counter size is not OK. Assuming a program counter of 16 bits.".
 #endif
 	
 	/* put the Task entry point on the stack */
 	tmp = (u16)static_desc->entry;
 	AVR_PUSH((tmp) & 0xFF)
 	AVR_PUSH((tmp) >> 8)
-#ifdef __PC_USE_24_BITS__
+#ifdef __AVR_3_BYTE_PC__
 	AVR_PUSH(0)
 #endif
 
