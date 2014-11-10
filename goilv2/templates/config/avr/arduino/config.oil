@@ -1,0 +1,49 @@
+/*
+ * This configuration file adds a SOURCE attribute to ISR and COUNTER
+ * It also define a new object type: INTERRUPT
+ */
+IMPLEMENTATION avr_interrupt {
+  TASK [] {
+    UINT32 STACKSIZE = 128;
+  };
+  ISR [] {
+    UINT32 STACKSIZE = 128;
+    STRING SOURCE;
+  };
+  COUNTER [] {
+    STRING SOURCE;
+  };
+};
+
+//specific to arduino.
+IMPLEMENTATION Trampoline {
+  OS {
+//    BOOLEAN [
+//      TRUE { //inside BUILD ENUM
+        BOOLEAN [
+          TRUE {
+            ENUM [UNO, MEGA] BOARD; //card variant.
+            //path to libc (required for <avr/io.h>)
+            STRING AVR_LIBC = "/usr/lib/avr/include";
+            //port to flash Arduino
+            STRING PORT = "/dev/ttyUSB0";
+            
+            BOOLEAN SPI = FALSE;
+            BOOLEAN I2C = FALSE;
+            BOOLEAN SERVO = FALSE;
+            BOOLEAN SERIAL = FALSE;
+            BOOLEAN NRF24 = FALSE;
+            BOOLEAN TINYRTC = FALSE;
+            BOOLEAN TIME = FALSE;
+            BOOLEAN STANDARDWIRING = FALSE;
+            BOOLEAN EVOLVEARDUINO = FALSE;
+            BOOLEAN LCDCRYSTAL = FALSE;
+            BOOLEAN STEPPER = FALSE;
+          },
+          FALSE
+        ] ARDUINO = TRUE;
+//      },
+//      FALSE
+//    ] BUILD = FALSE;
+  };
+};

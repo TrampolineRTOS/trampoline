@@ -137,7 +137,7 @@ endif
 # generate compilation and dependancy rules for these
 # paths, by including recursively the compiler_rules
 # makefile.
-TEMP_SOURCE_DIRS += $(OS_PATH) $(COM_PATH) $(IOC_PATH) $(AUTOSAR_PATH) 
+TEMP_SOURCE_DIRS += $(OS_PATH) $(COM_PATH) $(IOC_PATH) $(AUTOSAR_PATH) $(EXTRA_PATH)
 TEMP_SOURCE_DIRS += $(DEBUG_PATH) $(OIL_OUTPUT_PATH)
 TEMP_SOURCE_DIRS += $(dir $(SOURCES))
 include $(OS_MAKE_PATH)/compiler_rules.mk
@@ -153,7 +153,7 @@ $(EXEC): $(OBJ)
 	$(LD) -o $(EXEC) $(OBJ) $(LDFLAGS) 
 
 #clean
-.PHONY: clean 
+#.PHONY: clean 
 clean:
 	@rm -rf $(OBJ) *~  $(EXTRA_FILES_CLEAN)
 	@rm -rf $(EXEC) $(DEPFILES) $(BUILD_DIR) $(OIL_OUTPUT_PATH)

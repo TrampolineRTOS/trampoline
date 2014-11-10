@@ -8,14 +8,17 @@ Windows -> Winavr (integrated in Atmel Studio, or http://winavr.sourceforge.net)
 
 [first run]
 Build oil related generated .c and .h files and the Makefile:
-$goil --target=avr --templates=../../../goilv2/templates/ firstAVR.oil
+$goil --target=avr/arduino --templates=../../../goilv2/templates/ firstAVR.oil
 (The generated file .aps is an AVR Studio project for Windows users).
 
 [Build]
-$make
+$make -s
 Both a .elf and a .hex files are generated. goil will now be called directly from the Makefile if the .oil file is updated.
 
 [flash]
+$make -s flash
+
+or using avrdude directly:
 $avrdude -c arduino -p m328p -P /dev/tty.usbmodem1421 -U flash:w:AVRTrampolineBin.hex
 In this example:
   * -p m328p is for the ATMega328p

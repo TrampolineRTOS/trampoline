@@ -1,0 +1,168 @@
+
+%if OS::BUILD_S::COMPILER == "gcc" then
+%# changes default compiler
+CC = avr-gcc
+%
+end if
+
+if OS::BUILD_S::LINKER == "ld" then
+%# changes default linker
+LD = avr-gcc
+%
+end if
+
+if OS::BUILD_S::ASSEMBLER == "gcc" then
+%# changes default assembler
+AS = avr-gcc
+%
+end if
+%
+#add the 'hex' rule for avr
+HEX=$(EXEC).hex
+$(HEX): $(EXEC)
+	@echo generate hex file $@
+	avr-objcopy -j .text -j .data -O ihex $(EXEC) $(HEX)
+
+EXTRA_FILES_CLEAN += $(EXEC).hex
+%
+if OS::ARDUINO then
+let ARDUINO := OS::ARDUINO_S
+#Arduino path
+%
+INCLUDE_PATH := -I%!ARDUINO::AVR_LIBC%
+ARDUINO_PATH := %!OS::BUILD_S::TRAMPOLINE_BASE_PATH%/machines/avr/arduino/
+AVRDUDE_PORT := %!ARDUINO::PORT%
+%
+#mcu -> frequency, chip model and dedicated pins_arduino.h file.
+if ARDUINO::BOARD == "UNO" then
+  %MCU_FLAGS := -DF_CPU=16000000 -mmcu=atmega328p\n%
+  %INCLUDE_PATH += -I$(ARDUINO_PATH)/hardware/variants/standard\n%
+  %AVRDUDE_CHIP := m328p\n%
+elsif ARDUINO::BOARD == "MEGA" then
+  %MCU_FLAGS := -DF_CPU=16000000 -mmcu=atmega2560\n%
+  %INCLUDE_PATH += -I$(ARDUINO_PATH)/hardware/variants/standard\n%
+else
+  error ARDUINO : "The BOARD attribute is not defined properly (UNO/MEGA)."
+end if
+#compilation flags
+#Use EXTRA_PATH flag, because Makefile has to search for .cpp/.c files here.
+%EXTRA_PATH += $(ARDUINO_PATH)/hardware/cores/arduino
+EXTRA_PATH += $(ARDUINO_PATH)/hardware/libraries/EEPROM
+EXTRA_PATH += $(ARDUINO_PATH)/hardware/libraries/SoftwareSerial
+EXTRA_PATH += $(ARDUINO_PATH)/hardware/libraries/SPI
+EXTRA_PATH += $(ARDUINO_PATH)/hardware/libraries/Wire
+INCLUDE_PATH += $(addprefix -I,$(EXTRA_PATH))
+
+OPTIM_FLAGS = -Wall -Os -g
+
+CFLAGS   += $(OPTIM_FLAGS) $(MCU_FLAGS) $(INCLUDE_PATH)
+CPPFLAGS += $(OPTIM_FLAGS) $(MCU_FLAGS) $(INCLUDE_PATH)
+#Arduino requires to add the math lib (-lm)
+LDFLAGS  += -lm $(OPTIM_FLAGS) $(MCU_FLAGS) $(INCLUDE_PATH)
+#required to compile assembler in trampoline.
+ASFLAGS += -c -x assembler-with-cpp $(OPTIM_FLAGS) $(MCU_FLAGS) $(INCLUDE_PATH)
+#use of macro in os files leads to set unused variables. Remove the warning.
+CFLAGS  += -Wno-unused-but-set-variable
+%
+#libraries...
+if ARDUINO::SERIAL then
+%SOURCES += HardwareSerial0.cpp
+SOURCES += HardwareSerial.cpp
+SOURCES += HID.cpp
+SOURCES += IPAddress.cpp
+SOURCES += new.cpp
+SOURCES += Print.cpp
+SOURCES += Stream.cpp
+SOURCES += Tone.cpp
+SOURCES += USBCore.cpp
+SOURCES += WMath.cpp
+SOURCES += WString.cpp
+SOURCES += wiring_digital.c
+SOURCES += wiring.c
+SOURCES += abi.cpp
+SOURCES += hooks.c
+%end if
+if ARDUINO::SERVO then
+%SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/Servo/Servo.cpp
+SOURCES += WMath.cpp
+%end if
+if ARDUINO::SPI then
+%
+SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/SPI/SPI.cpp
+%
+end if
+if ARDUINO::I2C then
+%
+SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/Wire/Wire.cpp  
+SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/Wire/utility/twi.c
+%
+end if
+if ARDUINO::NRF24 then
+%
+SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/RadioHead/RH_NRF24.cpp    ";
+SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/RadioHead/RHNRFSPIDriver.cpp    ";
+SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/RadioHead/RHGenericDriver.cpp    ";
+SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/RadioHead/RHHardwareSPI.cpp    ";
+SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/RadioHead/RHGenericSPI.cpp    ";
+%end if
+if ARDUINO::TINYRTC then
+%
+SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/DS1307RTC/DS1307RTC.cpp
+%
+end if
+if ARDUINO::TIME then
+%
+SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/Time/Time.cpp    
+SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/Time/DateStrings.cpp    
+%
+end if
+
+if ARDUINO::STANDARDWIRING then
+%
+SOURCES += wiring.c     
+SOURCES += wiring_analog.c  
+SOURCES += wiring_digital.c 
+SOURCES += wiring_pulse.c   
+SOURCES += wiring_shift.c   
+SOURCES += WInterrupts.c    
+%
+end if
+
+if ARDUINO::EVOLVEARDUINO then
+%
+SOURCES += CDC.cpp    
+SOURCES += HardwareSerial.cpp    
+SOURCES += HID.cpp    
+SOURCES += IPAddress.cpp    
+SOURCES += new.cpp    
+SOURCES += Print.cpp  
+SOURCES += Stream.cpp    
+SOURCES += Tone.cpp    
+SOURCES += USBCore.cpp    
+SOURCES += WMath.cpp    
+SOURCES += WString.cpp     
+%
+end if
+
+if ARDUINO::LCDCRYSTAL then
+%
+SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/LiquidCrystal/LiquidCrystal.cpp    
+SOURCES += new.cpp    
+SOURCES += Print.cpp     
+SOURCES += WString.cpp 
+SOURCES += WMath.cpp 
+%
+end if
+
+if ARDUINO::STEPPER then
+%
+SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/Stepper/Stepper.cpp 
+%end if
+%#add the 'hex' rule for avr
+flash: $(HEX)
+	@echo upload file $@ to Arduino.
+	avrdude -c arduino -p $(AVRDUDE_CHIP) -P $(AVRDUDE_PORT) -U flash:w:$(HEX)
+%else #OS::BUILD_S::ARDUINO
+  error OS::ARDUINO : "Arduino is set to FALSE, but the target is arduino."
+end if #OS::BUILD_S::ARDUINO
+%
