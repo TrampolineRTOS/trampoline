@@ -58,17 +58,14 @@ void tpl_shutdown(void)
 
 /*
  * tpl_init_context initialize a context to prepare a task to run.
- * WARNING: This function MUST NOT modify GPRs!!! (the task in parameter
- * can be the running one!!!)
  */
 FUNC(void, OS_CODE) tpl_init_context(
     CONST(tpl_proc_id, OS_APPL_DATA) proc_id)
 {
 	u16 tmp;
     int a=0; /*internal variable, used to put the register R00 to R31 on the tabular*/
-	u8 *pointer;
   	/* Gets a pointer to the static descriptor of the task whose context is going to be initialized */
-	tpl_proc_static *static_desc = tpl_stat_proc_table[proc_id];
+	const tpl_proc_static *static_desc = tpl_stat_proc_table[proc_id];
 	/* Init stack pointer */
 	u8 *sp=(void *)((u16)(static_desc->stack.stack_zone) + static_desc->stack.stack_size - 1);
 
@@ -102,7 +99,7 @@ FUNC(void, OS_CODE) tpl_init_context(
 	}
 	
 	/* save the stack pointer */
-	static_desc->context = (u16)(sp);
+	*(static_desc->context) = (u16)(sp);
 }
 
 void tpl_get_task_lock(void)
