@@ -732,7 +732,7 @@ The context of the AVR is composed of:
 
 However, the context switch uses the stack to save all theses registers (except \texttt{SP} obviously) and the context does not use any structure to save only one variable:
 \begin{lstlisting}[language=C]
-typedef u8 avr_context;
+typedef u16 avr_context;
 typedef avr_context *tpl_context;
 \end{lstlisting}
 

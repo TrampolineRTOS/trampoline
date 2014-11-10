@@ -8,8 +8,8 @@
  * major update M. Briday - 10/2014
  */
 
- /*  first argument is a pointer to the old context -> R25:R24
-  * second argument is a pointer to the new context -> R22:R23
+ /*  first argument is a pointer to the old context (i.e. a pointer to tpl_context) -> R25:R24
+  * second argument is a pointer to the new context (i.e. a pointer to tpl_context) -> R22:R23
   * no output
   */
 .global tpl_switch_context
@@ -69,12 +69,14 @@ save_context :
 	push r31
 
 	/* save the old stack pointer */
-	/* R24 is a pointer on the old context. */
+	/* R24 is a pointer on the old context (tpl_context *) */
 	movw r28,r24 // mov R24 to Y (r29:r28)
+	ldd  r30,Y+0 // dereference to Z (got tpl_context, which is a avr_context *) 
+	ldd  r31,Y+1
 	in   r26, _SFR_IO_ADDR(SPL) //get the actual SP into X (r27:r26)
 	in   r27, _SFR_IO_ADDR(SPH)
-	std  Y+0, r26 //save SP into the first field of the old context.
-	std  Y+1, r27
+	std  Z+0, r26 //save SP into the first field of the old context.
+	std  Z+1, r27
 
 	//push 2 dummy regs, because r0 and sreg have been pushed in all cases
 	push r16
@@ -85,16 +87,18 @@ unsave_context : // we have pushed 2 registers on the stack, we have to pop them
 	pop r16
 
 	/* Get the new stack pointer */
-    // the adress of the new stack pointer is in r22,r23
+    // the adress of the new tpl_context is in r22,r23
 	// mov it to Z (r31:r30)
     movw r30,r22 // the adress of the new stack pointer is in r22,r23
-	// we have to dereference it
+	// we have to dereference it => got a avr_context*
     ldd  r28,Z+0
 	ldd  r29,Z+1
+    ldd  r30,Y+0
+	ldd  r31,Y+1
 
 	/* put the new stack pointer */
-	out _SFR_IO_ADDR(SPL), r28
-	out _SFR_IO_ADDR(SPH), r29 
+	out _SFR_IO_ADDR(SPL), r30
+	out _SFR_IO_ADDR(SPH), r31 
 
 	/* Get all register from the stack */
 	pop r31

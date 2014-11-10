@@ -15,7 +15,7 @@
 
 #include "tpl_os_custom_types.h"
 
-typedef u8 avr_context; //The context... is only Stack Pointer (SP)
+typedef u16 avr_context; //The context... is only Stack Pointer (SP)
 typedef avr_context *tpl_context;
 
 /**
