@@ -1,0 +1,3 @@
+Standard Arduino libraries - http://arduino.cc/
+Extracted from version 1.5.8 -> https://github.com/arduino/Arduino/tree/1.5.8
+

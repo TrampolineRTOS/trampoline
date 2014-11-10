@@ -2,7 +2,7 @@
  * This configuration file adds a SOURCE attribute to ISR and COUNTER
  * It also define a new object type: INTERRUPT
  */
-IMPLEMENTATION arm_interrupt {
+IMPLEMENTATION avr_interrupt {
   TASK [] {
     UINT32 STACKSIZE = 128;
   };
