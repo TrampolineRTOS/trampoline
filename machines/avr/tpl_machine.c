@@ -92,8 +92,8 @@ FUNC(void, OS_CODE) tpl_init_context(
 
 	AVR_PUSH(0) //push GPR r16
 	AVR_PUSH(0x80) //push SREG (enable interrupts)
-	/* put GPR on the stack. r0 to r15 and r17 to r31 => 31 regs */
-    for (a=0;a<31;a++) 
+	/* put GPR on the stack. r2 to r17 (except r16), r28,r29 => 17 regs*/
+    for (a=0;a<17;a++) 
 	{
 		AVR_PUSH(0);
 	}
