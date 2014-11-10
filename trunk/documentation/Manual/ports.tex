@@ -730,11 +730,13 @@ The context of the AVR is composed of:
 \item 32 GPRs \texttt{r0} to \texttt{r31}. This includes the 3 16-bits indirect registers \texttt{X}, \texttt{Y} and \texttt{Z} which are mapped on these GPRs.
 \end{itemize}
 
-However, the context switch uses the stack to save all theses registers (except \texttt{SP} obviously) and the context does not use any structure to save only one variable:
+However, the context switch uses the stack to save all theses registers (except \texttt{SP} obviously) and the context does not use any structure to save only one variable (SP):
 \begin{lstlisting}[language=C]
 typedef u16 avr_context;
 typedef avr_context *tpl_context;
 \end{lstlisting}
+
+Moreover, it is not necessary to save all registers. The ABI impose only to save \texttt{call-Saved Registers}\footnote{see more information on the AVR ABI at \url{https://gcc.gnu.org/wiki/avr-gcc\#Register\_Layout}}. Only \texttt{R2-R17}, \texttt{R28} and \texttt{R29} should be preserved. We also store the status register \texttt{SREG} to allow interrupts at the beginning of tasks (the \texttt{I} flag of \texttt{SREG} is set in \texttt{tpl_init_context}).
 
 \subsection{Context switch}
 The context switch implementation uses intensively the stack. The two functions for context switches point to the same code:
@@ -749,7 +751,7 @@ void tpl_switch_context_from_it(tpl_context *old, tpl_context *new);
 \item restore the context from \texttt{new}
 \end{itemize}
 
-registers are pushed on the stack like in figure \ref{fig:avr8-stackSave}. The \texttt{GPR} \texttt{r16} is used during the context switch and is the first on the stack. Then, the status register is saved, and all the remaining registers starting from \texttt{r0}.
+registers are pushed on the stack like in figure \ref{fig:avr8-stackSave}. The \texttt{GPR} \texttt{r16} is used during the context switch and is the first on the stack. Then, the status register is saved, and all the remaining registers that should be preserved in the ABI. Note that we use the standard \texttt{gcc} frame in interrupts; this frame store all the remaining registers.
 
 \begin{figure}[htbp] %  figure placement: here, top, bottom, or page
 \begin{minipage}{0.4\textwidth}
@@ -789,7 +791,7 @@ The stack at the end of context init should be like in figure \ref{fig:avr8-stac
 \begin{itemize}
 \item The \cfunction{TerminateTask} or \cfunction{CallTerminateISR2} is pushed, depending on the type of the process (task or ISR2)
 \item the PC of the entry point of the process is pushed
-\item the rest of the context is pushed. All GPRs are init to \texttt{0x0}, and the status register \texttt{SREG} to \texttt{0x80} to enable interrupts.
+\item the rest of the context is pushed. All required GPRs are init to \texttt{0x0}, and the status register \texttt{SREG} to \texttt{0x80} to enable interrupts (\texttt{I} bit).
 \end{itemize}
 \begin{figure}[htbp] %  figure placement: here, top, bottom, or page
 \begin{minipage}{0.4\textwidth}
