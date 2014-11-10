@@ -1,5 +1,7 @@
 #required to compile assembler in trampoline.
 ASFLAGS += -x assembler-with-cpp
+#use of macro in os files leads to set unused variables. Remove the warning.
+CFLAGS  += -Wno-unused-but-set-variable
 
 %if OS::BUILD_S::COMPILER == "gcc" then
 %# changes default compiler
@@ -23,7 +25,8 @@ end if
 HEX=$(EXEC).hex
 
 $(HEX): $(EXEC)
-	avr-objcopy -j .text -j .data -O ihex $(EXEC) $(EXEC).hex
+	@echo generate hex file $@
+	avr-objcopy -j .text -j .data -O ihex $(EXEC) $(HEX)
 
 EXTRA_FILES_CLEAN += $(EXEC).hex
 %
