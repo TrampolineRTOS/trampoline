@@ -76,7 +76,7 @@ override method @impStructType verifyType
 override method @refType verifyType
   ?let @object_t attr {
   cast attr
-  case == @string_class :
+  case == @objectRefAttribute :
   else 
     error [attr location] : "object reference expected"
   end
@@ -547,6 +547,103 @@ proc verifyAllAttributes
 #end routine;
 
 ##
+# verifyCrossReferences verifies each object referenced by another object exists
+#
+method @objectsMap verifyCrossReferences
+  ?let @implementation imp
+{
+  for () in self do
+    [[imp imp] get !lkey ?@implementationObject obj];
+    [objectsOfKind verifyCrossReferences !self !obj]
+  end
+}
+
+method @objectKind verifyCrossReferences
+  ?let @objectsMap     allObjects
+  ?let @implementationObject obj
+{
+  for () in objects do
+   [attributes verifyCrossReferences !allObjects ![obj attributes]]
+  end
+}
+
+method @objectAttributes verifyCrossReferences
+  ?let @objectsMap allObjects
+  ?let @implementationObjectMap attributes
+{
+  for () in objectParams do
+    if [attributes hasKey ![lkey string]] then
+      [attributes get !lkey ?@impType type];
+      [value verifyCrossReferences !allObjects !type]
+    end
+  end
+}
+
+method @object_t verifyCrossReferences
+  ?let @objectsMap unused allObjects
+  ?let @impType unused type
+{
+}
+
+override method @multipleAttribute verifyCrossReferences
+  ?let @objectsMap  allObjects
+  ?let @impType  type
+{
+  for () in items do
+    [item verifyCrossReferences !allObjects !type]
+  end
+}
+
+override method @boolAttribute verifyCrossReferences
+  ?let @objectsMap  allObjects
+  ?let @impType  type
+{
+  @impBoolType boolType = type as @impBoolType
+  if value then
+    [subAttributes verifyCrossReferences !allObjects ![boolType trueSubAttributes]]
+  else
+    [subAttributes verifyCrossReferences !allObjects ![boolType falseSubAttributes]]
+  end
+}
+
+override method @enumAttribute verifyCrossReferences
+  ?let @objectsMap  allObjects
+  ?let @impType  type
+{
+  @impEnumType enumType = type as @impEnumType
+  let @lstring key = @lstring.new {!value !.here}
+  [[enumType valuesMap] get !key ?@implementationObjectMap expectedAttributes]
+  [subAttributes verifyCrossReferences !allObjects !expectedAttributes]
+}
+
+override method @structAttribute verifyCrossReferences
+  ?let @objectsMap  allObjects
+  ?let @impType  type
+{
+  @impStructType structType = type as @impStructType
+  [subAttributes verifyCrossReferences !allObjects ![structType structAttributes]]
+}
+
+override method @objectRefAttribute verifyCrossReferences
+  ?let @objectsMap  allObjects
+  ?let @impType  type
+{
+  let @refType refType = type as @refType
+  # look for the object map of kind [refType ref]
+  [allObjects get ![refType ref] ?@objectKind kindMap]
+  if not [[kindMap objects] hasKey ![value string]] then
+    error value: "Referenced "+[refType ref]+": "+value+" does not exist"
+  end
+}
+
+
+method @applicationDefinition verifyCrossReferences
+  ?let @implementation imp
+{
+  [objects verifyCrossReferences !imp]
+}
+
+##
 # @fn verify_all
 #
 # routine verify_all does the verification of all the system.
@@ -555,41 +652,12 @@ proc verifyAllAttributes
 # 
 proc verifyAll
   ?let @implementation imp
-  ?let @applicationDefinition application {
+  ?let @applicationDefinition application
+{
   verifyAllAttributes ( !imp ![application objects])
   [imp verifyApplication !application]
-#  tasks_well_formed !objectsForKind[!objects !"TASK"];
-#  counters_well_formed ![cpu counters];
-#  alarms_well_formed ![cpu alarms];
-#  resources_well_formed ![cpu resources];
-#  isrs_well_formed ![cpu isrs];
-#  events_well_formed ![cpu events];
-#  networkmessages_well_formed ![cpu net_messages];
 
-  # Autosar checking
-
- # if [option goil_options.autosar_on value] then
- #   schedule_tables_well_formed ![cpu scheduletables];
- # end if;
-
-  # cross-objects static verification
-#  @resource_map resources:= [cpu resources];
-#  resolve_linked_resources !?resources;
-#  [!?cpu setResources !resources];
-#
-#  all_events_and_resources_and_messages_defined_and_used !cpu;
-#  #  all_event_masks_different !events;
-#  all_alarm_actions_correct ![cpu alarms] ![cpu tasks] ![cpu counters];
-#  counters_of_alarms_defined ![cpu alarms] ![cpu counters];
-#  networkmessages_exist_and_ok ![cpu messages] ![cpu net_messages];
-#
-#  # cross-objects Autosar checking
-#  if [option goil_options.autosar_on value] then
-#    schedule_tables_well_formed ![cpu scheduletables] !cpu;
-#    schedule_tables_counters_exist_and_compatible ![cpu scheduletables] ![cpu counters];
-#    schedule_tables_tasks_and_events_exist !cpu ![cpu tasks];
-#    apps_well_formed !cpu;
-#  end if;
-
+  # Verify objects references from an object exist
+  [application verifyCrossReferences !imp];
 }
 

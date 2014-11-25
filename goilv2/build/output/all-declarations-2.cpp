@@ -5517,6 +5517,179 @@ GALGAS_multipleAttribute GALGAS_multipleAttribute::extractObject (const GALGAS_o
 //   Object comparison                                                         *
 //---------------------------------------------------------------------------------------------------------------------*
 
+typeComparisonResult cPtr_objectRefAttribute::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
+  typeComparisonResult result = kOperandEqual ;
+  const cPtr_objectRefAttribute * p = (const cPtr_objectRefAttribute *) inOperandPtr ;
+  macroValidSharedObject (p, cPtr_objectRefAttribute) ;
+  if (kOperandEqual == result) {
+    result = mAttribute_oil_5F_desc.objectCompare (p->mAttribute_oil_5F_desc) ;
+  }
+  if (kOperandEqual == result) {
+    result = mAttribute_location.objectCompare (p->mAttribute_location) ;
+  }
+  if (kOperandEqual == result) {
+    result = mAttribute_value.objectCompare (p->mAttribute_value) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+
+typeComparisonResult GALGAS_objectRefAttribute::objectCompare (const GALGAS_objectRefAttribute & inOperand) const {
+  typeComparisonResult result = kOperandNotValid ;
+  if (isValid () && inOperand.isValid ()) {
+    const int32_t mySlot = mObjectPtr->classDescriptor ()->mSlotID ;
+    const int32_t operandSlot = inOperand.mObjectPtr->classDescriptor ()->mSlotID ;
+    if (mySlot < operandSlot) {
+      result = kFirstOperandLowerThanSecond ;
+    }else if (mySlot > operandSlot) {
+      result = kFirstOperandGreaterThanSecond ;
+    }else{
+      result = mObjectPtr->dynamicObjectCompare (inOperand.mObjectPtr) ;
+    }
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_objectRefAttribute::GALGAS_objectRefAttribute (void) :
+GALGAS_object_5F_t () {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_objectRefAttribute GALGAS_objectRefAttribute::constructor_default (LOCATION_ARGS) {
+  return GALGAS_objectRefAttribute::constructor_new (GALGAS_lstring::constructor_default (HERE),
+                                                     GALGAS_location::constructor_nowhere (HERE),
+                                                     GALGAS_lstring::constructor_default (HERE)
+                                                     COMMA_THERE) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_objectRefAttribute::GALGAS_objectRefAttribute (const cPtr_objectRefAttribute * inSourcePtr) :
+GALGAS_object_5F_t (inSourcePtr) {
+  macroNullOrValidSharedObject (inSourcePtr, cPtr_objectRefAttribute) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_objectRefAttribute GALGAS_objectRefAttribute::constructor_new (const GALGAS_lstring & inAttribute_oil_5F_desc,
+                                                                      const GALGAS_location & inAttribute_location,
+                                                                      const GALGAS_lstring & inAttribute_value
+                                                                      COMMA_LOCATION_ARGS) {
+  GALGAS_objectRefAttribute result ;
+  if (inAttribute_oil_5F_desc.isValid () && inAttribute_location.isValid () && inAttribute_value.isValid ()) {
+    macroMyNew (result.mObjectPtr, cPtr_objectRefAttribute (inAttribute_oil_5F_desc, inAttribute_location, inAttribute_value COMMA_THERE)) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_lstring GALGAS_objectRefAttribute::reader_value (UNUSED_LOCATION_ARGS) const {
+  GALGAS_lstring result ;
+  if (NULL != mObjectPtr) {
+    const cPtr_objectRefAttribute * p = (const cPtr_objectRefAttribute *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_objectRefAttribute) ;
+    result = p->mAttribute_value ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_lstring cPtr_objectRefAttribute::reader_value (UNUSED_LOCATION_ARGS) const {
+  return mAttribute_value ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                     Pointer class for @objectRefAttribute class                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+cPtr_objectRefAttribute::cPtr_objectRefAttribute (const GALGAS_lstring & in_oil_5F_desc,
+                                                  const GALGAS_location & in_location,
+                                                  const GALGAS_lstring & in_value
+                                                  COMMA_LOCATION_ARGS) :
+cPtr_object_5F_t (in_oil_5F_desc, in_location COMMA_THERE),
+mAttribute_value (in_value) {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor * cPtr_objectRefAttribute::classDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_objectRefAttribute ;
+}
+
+void cPtr_objectRefAttribute::description (C_String & ioString,
+                                           const int32_t inIndentation) const {
+  ioString << "[@objectRefAttribute:" ;
+  mAttribute_oil_5F_desc.description (ioString, inIndentation+1) ;
+  ioString << ", " ;
+  mAttribute_location.description (ioString, inIndentation+1) ;
+  ioString << ", " ;
+  mAttribute_value.description (ioString, inIndentation+1) ;
+  ioString << "]" ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+acPtr_class * cPtr_objectRefAttribute::duplicate (LOCATION_ARGS) const {
+  acPtr_class * ptr = NULL ;
+  macroMyNew (ptr, cPtr_objectRefAttribute (mAttribute_oil_5F_desc, mAttribute_location, mAttribute_value COMMA_THERE)) ;
+  return ptr ;
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                              @objectRefAttribute type                                               *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor
+kTypeDescriptor_GALGAS_objectRefAttribute ("objectRefAttribute",
+                                           & kTypeDescriptor_GALGAS_object_5F_t) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor * GALGAS_objectRefAttribute::staticTypeDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_objectRefAttribute ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+AC_GALGAS_root * GALGAS_objectRefAttribute::clonedObject (void) const {
+  AC_GALGAS_root * result = NULL ;
+  if (isValid ()) {
+    macroMyNew (result, GALGAS_objectRefAttribute (*this)) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_objectRefAttribute GALGAS_objectRefAttribute::extractObject (const GALGAS_object & inObject,
+                                                                    C_Compiler * inCompiler
+                                                                    COMMA_LOCATION_ARGS) {
+  GALGAS_objectRefAttribute result ;
+  const GALGAS_objectRefAttribute * p = (const GALGAS_objectRefAttribute *) inObject.embeddedObject () ;
+  if (NULL != p) {
+    if (NULL != dynamic_cast <const GALGAS_objectRefAttribute *> (p)) {
+      result = *p ;
+    }else{
+      inCompiler->castError ("objectRefAttribute", p->dynamicTypeDescriptor () COMMA_THERE) ;
+    }  
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//   Object comparison                                                         *
+//---------------------------------------------------------------------------------------------------------------------*
+
 typeComparisonResult cPtr_sint_33__32__5F_class::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
   typeComparisonResult result = kOperandEqual ;
   const cPtr_sint_33__32__5F_class * p = (const cPtr_sint_33__32__5F_class *) inOperandPtr ;
@@ -8217,7 +8390,7 @@ static GALGAS_bool categoryReader_implementation_hasKey (const cPtr_implementati
   GALGAS_bool result_result ; // Returned variable
   const cPtr_implementation * object = inObject ;
   macroValidSharedObject (object, cPtr_implementation) ;
-  result_result = object->mAttribute_imp.reader_hasKey (constinArgument_key COMMA_SOURCE_FILE ("implementation_types.galgas", 761)) ;
+  result_result = object->mAttribute_imp.reader_hasKey (constinArgument_key COMMA_SOURCE_FILE ("implementation_types.galgas", 589)) ;
 //---
   return result_result ;
 }
@@ -8300,7 +8473,7 @@ static GALGAS_bool categoryReader_implementation_hasLKey (const cPtr_implementat
   GALGAS_bool result_result ; // Returned variable
   const cPtr_implementation * object = inObject ;
   macroValidSharedObject (object, cPtr_implementation) ;
-  result_result = object->mAttribute_imp.reader_hasKey (constinArgument_key.reader_string (SOURCE_FILE ("implementation_types.galgas", 767)) COMMA_SOURCE_FILE ("implementation_types.galgas", 767)) ;
+  result_result = object->mAttribute_imp.reader_hasKey (constinArgument_key.reader_string (SOURCE_FILE ("implementation_types.galgas", 595)) COMMA_SOURCE_FILE ("implementation_types.galgas", 595)) ;
 //---
   return result_result ;
 }
@@ -8383,10 +8556,10 @@ static GALGAS_implementationObject categoryReader_implementation_impObject (cons
   GALGAS_implementationObject result_obj ; // Returned variable
   const cPtr_implementation * object = inObject ;
   macroValidSharedObject (object, cPtr_implementation) ;
-  result_obj = GALGAS_implementationObject::constructor_new (GALGAS_lbool::constructor_new (GALGAS_bool (false), GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 773))  COMMA_SOURCE_FILE ("implementation_types.galgas", 773)), GALGAS_implementationObjectMap::constructor_emptyMap (SOURCE_FILE ("implementation_types.galgas", 773))  COMMA_SOURCE_FILE ("implementation_types.galgas", 773)) ;
-  const enumGalgasBool test_0 = object->mAttribute_imp.reader_hasKey (constinArgument_objKind COMMA_SOURCE_FILE ("implementation_types.galgas", 774)).boolEnum () ;
+  result_obj = GALGAS_implementationObject::constructor_new (GALGAS_lbool::constructor_new (GALGAS_bool (false), GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 601))  COMMA_SOURCE_FILE ("implementation_types.galgas", 601)), GALGAS_implementationObjectMap::constructor_emptyMap (SOURCE_FILE ("implementation_types.galgas", 601))  COMMA_SOURCE_FILE ("implementation_types.galgas", 601)) ;
+  const enumGalgasBool test_0 = object->mAttribute_imp.reader_hasKey (constinArgument_objKind COMMA_SOURCE_FILE ("implementation_types.galgas", 602)).boolEnum () ;
   if (kBoolTrue == test_0) {
-    object->mAttribute_imp.method_get (function_lstringWith (constinArgument_objKind, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 775)), result_obj, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 775)) ;
+    object->mAttribute_imp.method_get (function_lstringWith (constinArgument_objKind, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 603)), result_obj, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 603)) ;
   }
 //---
   return result_obj ;
@@ -8471,9 +8644,9 @@ static void categoryMethod_implementation_checkTypeForKind (const cPtr_implement
   const cPtr_implementation * object = inObject ;
   macroValidSharedObject (object, cPtr_implementation) ;
   const GALGAS_implementation temp_0 = object ;
-  GALGAS_implementationObject var_obj = callCategoryReader_impObject ((const cPtr_implementation *) temp_0.ptr (), constinArgument_objKind, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 783)) ;
+  GALGAS_implementationObject var_obj = callCategoryReader_impObject ((const cPtr_implementation *) temp_0.ptr (), constinArgument_objKind, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 611)) ;
   {
-  routine_checkTypeForAttribute (var_obj.reader_attributes (SOURCE_FILE ("implementation_types.galgas", 784)), constinArgument_attributeName, constinArgument_expectedType, inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 784)) ;
+  routine_checkTypeForAttribute (var_obj.reader_attributes (SOURCE_FILE ("implementation_types.galgas", 612)), constinArgument_attributeName, constinArgument_expectedType, inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 612)) ;
   }
 }
 //---------------------------------------------------------------------------------------------------------------------*
@@ -8547,15 +8720,15 @@ static void categoryMethod_implementation_checkObjectReferences (const cPtr_impl
                                                                  COMMA_UNUSED_LOCATION_ARGS) {
   const cPtr_implementation * object = inObject ;
   macroValidSharedObject (object, cPtr_implementation) ;
-  cEnumerator_implementationMap enumerator_22260 (object->mAttribute_imp, kEnumeration_up) ;
-  while (enumerator_22260.hasCurrentObject ()) {
-    cEnumerator_implementationObjectMap enumerator_22295 (enumerator_22260.current_obj (HERE).reader_attributes (SOURCE_FILE ("implementation_types.galgas", 789)), kEnumeration_up) ;
-    while (enumerator_22295.hasCurrentObject ()) {
+  cEnumerator_implementationMap enumerator_16880 (object->mAttribute_imp, kEnumeration_up) ;
+  while (enumerator_16880.hasCurrentObject ()) {
+    cEnumerator_implementationObjectMap enumerator_16915 (enumerator_16880.current_obj (HERE).reader_attributes (SOURCE_FILE ("implementation_types.galgas", 617)), kEnumeration_up) ;
+    while (enumerator_16915.hasCurrentObject ()) {
       const GALGAS_implementation temp_0 = object ;
-      callCategoryMethod_checkAttributeReferences ((const cPtr_impType *) enumerator_22295.current_type (HERE).ptr (), temp_0, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 790)) ;
-      enumerator_22295.gotoNextObject () ;
+      callCategoryMethod_checkAttributeReferences ((const cPtr_impType *) enumerator_16915.current_type (HERE).ptr (), temp_0, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 618)) ;
+      enumerator_16915.gotoNextObject () ;
     }
-    enumerator_22260.gotoNextObject () ;
+    enumerator_16880.gotoNextObject () ;
   }
 }
 //---------------------------------------------------------------------------------------------------------------------*
@@ -8633,11 +8806,11 @@ static GALGAS_TfieldMap categoryReader_objectAttributes_fieldMap (const cPtr_obj
   GALGAS_TfieldMap result_result ; // Returned variable
   const cPtr_objectAttributes * object = inObject ;
   macroValidSharedObject (object, cPtr_objectAttributes) ;
-  result_result = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("systemConfig.galgas", 100)) ;
-  cEnumerator_identifierMap enumerator_3533 (object->mAttribute_objectParams, kEnumeration_up) ;
-  while (enumerator_3533.hasCurrentObject ()) {
-    callCategoryMethod_set ((const cPtr_object_5F_t *) enumerator_3533.current_value (HERE).ptr (), enumerator_3533.current_lkey (HERE), result_result, inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 102)) ;
-    enumerator_3533.gotoNextObject () ;
+  result_result = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("systemConfig.galgas", 104)) ;
+  cEnumerator_identifierMap enumerator_3678 (object->mAttribute_objectParams, kEnumeration_up) ;
+  while (enumerator_3678.hasCurrentObject ()) {
+    callCategoryMethod_set ((const cPtr_object_5F_t *) enumerator_3678.current_value (HERE).ptr (), enumerator_3678.current_lkey (HERE), result_result, inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 106)) ;
+    enumerator_3678.gotoNextObject () ;
   }
 //---
   return result_result ;
@@ -8745,6 +8918,92 @@ static void freeCategoryMethod_implementation_verifyApplication (void) {
 
 C_PrologueEpilogue gMethod_implementation_verifyApplication (defineCategoryMethod_implementation_verifyApplication,
                                                              freeCategoryMethod_implementation_verifyApplication) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                              Category method '@objectAttributes verifyCrossReferences'                              *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+static TC_UniqueArray <categoryMethodSignature_objectAttributes_verifyCrossReferences> gCategoryMethodTable_objectAttributes_verifyCrossReferences ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterCategoryMethod_verifyCrossReferences (const int32_t inClassIndex,
+                                                categoryMethodSignature_objectAttributes_verifyCrossReferences inMethod) {
+  gCategoryMethodTable_objectAttributes_verifyCrossReferences.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void callCategoryMethod_verifyCrossReferences (const cPtr_objectAttributes * inObject,
+                                               const GALGAS_objectsMap constin_allObjects,
+                                               const GALGAS_implementationObjectMap constin_attributes,
+                                               C_Compiler * inCompiler
+                                               COMMA_LOCATION_ARGS) {
+  if (NULL != inObject) {
+    macroValidSharedObject (inObject, cPtr_objectAttributes) ;
+    const C_galgas_type_descriptor * info = inObject->classDescriptor () ;
+    const int32_t classIndex = info->mSlotID ;
+    categoryMethodSignature_objectAttributes_verifyCrossReferences f = NULL ;
+    if (classIndex < gCategoryMethodTable_objectAttributes_verifyCrossReferences.count ()) {
+      f = gCategoryMethodTable_objectAttributes_verifyCrossReferences (classIndex COMMA_HERE) ;
+    }
+    if (NULL == f) {
+       const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
+       while ((NULL == f) && (NULL != p)) {
+         if (p->mSlotID < gCategoryMethodTable_objectAttributes_verifyCrossReferences.count ()) {
+           f = gCategoryMethodTable_objectAttributes_verifyCrossReferences (p->mSlotID COMMA_HERE) ;
+         }
+         p = p->mSuperclassDescriptor ;
+       }
+       gCategoryMethodTable_objectAttributes_verifyCrossReferences.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
+    }
+    if (NULL == f) {
+      fatalError ("FATAL CATEGORY METHOD CALL ERROR", __FILE__, __LINE__) ;
+    }else{
+      f (inObject, constin_allObjects, constin_attributes, inCompiler COMMA_THERE) ;
+    }
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void categoryMethod_objectAttributes_verifyCrossReferences (const cPtr_objectAttributes * inObject,
+                                                                   const GALGAS_objectsMap constinArgument_allObjects,
+                                                                   const GALGAS_implementationObjectMap constinArgument_attributes,
+                                                                   C_Compiler * inCompiler
+                                                                   COMMA_UNUSED_LOCATION_ARGS) {
+  const cPtr_objectAttributes * object = inObject ;
+  macroValidSharedObject (object, cPtr_objectAttributes) ;
+  cEnumerator_identifierMap enumerator_18059 (object->mAttribute_objectParams, kEnumeration_up) ;
+  while (enumerator_18059.hasCurrentObject ()) {
+    const enumGalgasBool test_0 = constinArgument_attributes.reader_hasKey (enumerator_18059.current_lkey (HERE).reader_string (SOURCE_FILE ("semantic_verification.galgas", 575)) COMMA_SOURCE_FILE ("semantic_verification.galgas", 575)).boolEnum () ;
+    if (kBoolTrue == test_0) {
+      GALGAS_impType var_type ;
+      constinArgument_attributes.method_get (enumerator_18059.current_lkey (HERE), var_type, inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 576)) ;
+      callCategoryMethod_verifyCrossReferences ((const cPtr_object_5F_t *) enumerator_18059.current_value (HERE).ptr (), constinArgument_allObjects, var_type, inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 577)) ;
+    }
+    enumerator_18059.gotoNextObject () ;
+  }
+}
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void defineCategoryMethod_objectAttributes_verifyCrossReferences (void) {
+  enterCategoryMethod_verifyCrossReferences (kTypeDescriptor_GALGAS_objectAttributes.mSlotID,
+                                             categoryMethod_objectAttributes_verifyCrossReferences) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void freeCategoryMethod_objectAttributes_verifyCrossReferences (void) {
+  gCategoryMethodTable_objectAttributes_verifyCrossReferences.free () ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_PrologueEpilogue gMethod_objectAttributes_verifyCrossReferences (defineCategoryMethod_objectAttributes_verifyCrossReferences,
+                                                                   freeCategoryMethod_objectAttributes_verifyCrossReferences) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -9799,25 +10058,25 @@ static void categoryMethod_impAutoDefaultType_setDefault (const cPtr_impAutoDefa
                                                           COMMA_UNUSED_LOCATION_ARGS) {
   const cPtr_impAutoDefaultType * object = inObject ;
   macroValidSharedObject (object, cPtr_impAutoDefaultType) ;
-  const enumGalgasBool test_0 = ioArgument_attributes.reader_objectParams (SOURCE_FILE ("implementation_types.galgas", 601)).reader_hasKey (object->mAttribute_name.reader_string (SOURCE_FILE ("implementation_types.galgas", 601)) COMMA_SOURCE_FILE ("implementation_types.galgas", 601)).operator_not (SOURCE_FILE ("implementation_types.galgas", 601)).boolEnum () ;
+  const enumGalgasBool test_0 = ioArgument_attributes.reader_objectParams (SOURCE_FILE ("implementation_types.galgas", 442)).reader_hasKey (object->mAttribute_name.reader_string (SOURCE_FILE ("implementation_types.galgas", 442)) COMMA_SOURCE_FILE ("implementation_types.galgas", 442)).operator_not (SOURCE_FILE ("implementation_types.galgas", 442)).boolEnum () ;
   if (kBoolTrue == test_0) {
     if (object->mAttribute_defaultValue.isValid ()) {
       if (object->mAttribute_defaultValue.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_void) {
       }else if (object->mAttribute_defaultValue.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_auto) {
-        GALGAS_identifierMap var_attr = ioArgument_attributes.reader_objectParams (SOURCE_FILE ("implementation_types.galgas", 605)) ;
+        GALGAS_identifierMap var_attr = ioArgument_attributes.reader_objectParams (SOURCE_FILE ("implementation_types.galgas", 446)) ;
         {
-        var_attr.modifier_put (object->mAttribute_name, object->mAttribute_defaultValue, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 606)) ;
+        var_attr.modifier_put (object->mAttribute_name, object->mAttribute_defaultValue, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 447)) ;
         }
         {
-        ioArgument_attributes.modifier_setObjectParams (var_attr COMMA_SOURCE_FILE ("implementation_types.galgas", 607)) ;
+        ioArgument_attributes.modifier_setObjectParams (var_attr COMMA_SOURCE_FILE ("implementation_types.galgas", 448)) ;
         }
       }else{
-        GALGAS_identifierMap var_attr = ioArgument_attributes.reader_objectParams (SOURCE_FILE ("implementation_types.galgas", 610)) ;
+        GALGAS_identifierMap var_attr = ioArgument_attributes.reader_objectParams (SOURCE_FILE ("implementation_types.galgas", 451)) ;
         {
-        var_attr.modifier_put (object->mAttribute_name, object->mAttribute_defaultValue, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 611)) ;
+        var_attr.modifier_put (object->mAttribute_name, object->mAttribute_defaultValue, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 452)) ;
         }
         {
-        ioArgument_attributes.modifier_setObjectParams (var_attr COMMA_SOURCE_FILE ("implementation_types.galgas", 612)) ;
+        ioArgument_attributes.modifier_setObjectParams (var_attr COMMA_SOURCE_FILE ("implementation_types.galgas", 453)) ;
         }
       }
     }
@@ -10314,6 +10573,177 @@ static void freeCategoryMethod_impType_verifyMultipleType (void) {
 
 C_PrologueEpilogue gMethod_impType_verifyMultipleType (defineCategoryMethod_impType_verifyMultipleType,
                                                        freeCategoryMethod_impType_verifyMultipleType) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                 Category method '@objectsMap verifyCrossReferences'                                 *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+void categoryMethod_verifyCrossReferences (const GALGAS_objectsMap inObject,
+                                           const GALGAS_implementation constinArgument_imp,
+                                           C_Compiler * inCompiler
+                                           COMMA_UNUSED_LOCATION_ARGS) {
+  const GALGAS_objectsMap temp_0 = inObject ;
+  cEnumerator_objectsMap enumerator_17583 (temp_0, kEnumeration_up) ;
+  while (enumerator_17583.hasCurrentObject ()) {
+    GALGAS_implementationObject var_obj ;
+    constinArgument_imp.reader_imp (SOURCE_FILE ("semantic_verification.galgas", 556)).method_get (enumerator_17583.current_lkey (HERE), var_obj, inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 556)) ;
+    const GALGAS_objectsMap temp_1 = inObject ;
+    callCategoryMethod_verifyCrossReferences ((const cPtr_objectKind *) enumerator_17583.current_objectsOfKind (HERE).ptr (), temp_1, var_obj, inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 557)) ;
+    enumerator_17583.gotoNextObject () ;
+  }
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                  Category method '@object_t verifyCrossReferences'                                  *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+static TC_UniqueArray <categoryMethodSignature_object_5F_t_verifyCrossReferences> gCategoryMethodTable_object_5F_t_verifyCrossReferences ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterCategoryMethod_verifyCrossReferences (const int32_t inClassIndex,
+                                                categoryMethodSignature_object_5F_t_verifyCrossReferences inMethod) {
+  gCategoryMethodTable_object_5F_t_verifyCrossReferences.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void callCategoryMethod_verifyCrossReferences (const cPtr_object_5F_t * inObject,
+                                               const GALGAS_objectsMap constin_allObjects,
+                                               const GALGAS_impType constin_type,
+                                               C_Compiler * inCompiler
+                                               COMMA_LOCATION_ARGS) {
+  if (NULL != inObject) {
+    macroValidSharedObject (inObject, cPtr_object_5F_t) ;
+    const C_galgas_type_descriptor * info = inObject->classDescriptor () ;
+    const int32_t classIndex = info->mSlotID ;
+    categoryMethodSignature_object_5F_t_verifyCrossReferences f = NULL ;
+    if (classIndex < gCategoryMethodTable_object_5F_t_verifyCrossReferences.count ()) {
+      f = gCategoryMethodTable_object_5F_t_verifyCrossReferences (classIndex COMMA_HERE) ;
+    }
+    if (NULL == f) {
+       const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
+       while ((NULL == f) && (NULL != p)) {
+         if (p->mSlotID < gCategoryMethodTable_object_5F_t_verifyCrossReferences.count ()) {
+           f = gCategoryMethodTable_object_5F_t_verifyCrossReferences (p->mSlotID COMMA_HERE) ;
+         }
+         p = p->mSuperclassDescriptor ;
+       }
+       gCategoryMethodTable_object_5F_t_verifyCrossReferences.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
+    }
+    if (NULL == f) {
+      fatalError ("FATAL CATEGORY METHOD CALL ERROR", __FILE__, __LINE__) ;
+    }else{
+      f (inObject, constin_allObjects, constin_type, inCompiler COMMA_THERE) ;
+    }
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void categoryMethod_object_5F_t_verifyCrossReferences (const cPtr_object_5F_t * /* inObject */,
+                                                              const GALGAS_objectsMap /* constinArgument_allObjects */,
+                                                              const GALGAS_impType /* constinArgument_type */,
+                                                              C_Compiler * /* inCompiler */
+                                                              COMMA_UNUSED_LOCATION_ARGS) {
+}
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void defineCategoryMethod_object_5F_t_verifyCrossReferences (void) {
+  enterCategoryMethod_verifyCrossReferences (kTypeDescriptor_GALGAS_object_5F_t.mSlotID,
+                                             categoryMethod_object_5F_t_verifyCrossReferences) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void freeCategoryMethod_object_5F_t_verifyCrossReferences (void) {
+  gCategoryMethodTable_object_5F_t_verifyCrossReferences.free () ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_PrologueEpilogue gMethod_object_5F_t_verifyCrossReferences (defineCategoryMethod_object_5F_t_verifyCrossReferences,
+                                                              freeCategoryMethod_object_5F_t_verifyCrossReferences) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                           Category method '@applicationDefinition verifyCrossReferences'                            *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+static TC_UniqueArray <categoryMethodSignature_applicationDefinition_verifyCrossReferences> gCategoryMethodTable_applicationDefinition_verifyCrossReferences ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterCategoryMethod_verifyCrossReferences (const int32_t inClassIndex,
+                                                categoryMethodSignature_applicationDefinition_verifyCrossReferences inMethod) {
+  gCategoryMethodTable_applicationDefinition_verifyCrossReferences.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void callCategoryMethod_verifyCrossReferences (const cPtr_applicationDefinition * inObject,
+                                               const GALGAS_implementation constin_imp,
+                                               C_Compiler * inCompiler
+                                               COMMA_LOCATION_ARGS) {
+  if (NULL != inObject) {
+    macroValidSharedObject (inObject, cPtr_applicationDefinition) ;
+    const C_galgas_type_descriptor * info = inObject->classDescriptor () ;
+    const int32_t classIndex = info->mSlotID ;
+    categoryMethodSignature_applicationDefinition_verifyCrossReferences f = NULL ;
+    if (classIndex < gCategoryMethodTable_applicationDefinition_verifyCrossReferences.count ()) {
+      f = gCategoryMethodTable_applicationDefinition_verifyCrossReferences (classIndex COMMA_HERE) ;
+    }
+    if (NULL == f) {
+       const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
+       while ((NULL == f) && (NULL != p)) {
+         if (p->mSlotID < gCategoryMethodTable_applicationDefinition_verifyCrossReferences.count ()) {
+           f = gCategoryMethodTable_applicationDefinition_verifyCrossReferences (p->mSlotID COMMA_HERE) ;
+         }
+         p = p->mSuperclassDescriptor ;
+       }
+       gCategoryMethodTable_applicationDefinition_verifyCrossReferences.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
+    }
+    if (NULL == f) {
+      fatalError ("FATAL CATEGORY METHOD CALL ERROR", __FILE__, __LINE__) ;
+    }else{
+      f (inObject, constin_imp, inCompiler COMMA_THERE) ;
+    }
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void categoryMethod_applicationDefinition_verifyCrossReferences (const cPtr_applicationDefinition * inObject,
+                                                                        const GALGAS_implementation constinArgument_imp,
+                                                                        C_Compiler * inCompiler
+                                                                        COMMA_UNUSED_LOCATION_ARGS) {
+  const cPtr_applicationDefinition * object = inObject ;
+  macroValidSharedObject (object, cPtr_applicationDefinition) ;
+  categoryMethod_verifyCrossReferences (object->mAttribute_objects, constinArgument_imp, inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 643)) ;
+}
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void defineCategoryMethod_applicationDefinition_verifyCrossReferences (void) {
+  enterCategoryMethod_verifyCrossReferences (kTypeDescriptor_GALGAS_applicationDefinition.mSlotID,
+                                             categoryMethod_applicationDefinition_verifyCrossReferences) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void freeCategoryMethod_applicationDefinition_verifyCrossReferences (void) {
+  gCategoryMethodTable_applicationDefinition_verifyCrossReferences.free () ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_PrologueEpilogue gMethod_applicationDefinition_verifyCrossReferences (defineCategoryMethod_applicationDefinition_verifyCrossReferences,
+                                                                        freeCategoryMethod_applicationDefinition_verifyCrossReferences) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -12693,77 +13123,77 @@ static GALGAS_TfieldMap categoryReader_applicationDefinition_templateData (const
   GALGAS_TfieldMap result_cfg ; // Returned variable
   const cPtr_applicationDefinition * object = inObject ;
   macroValidSharedObject (object, cPtr_applicationDefinition) ;
-  result_cfg = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("systemConfig.galgas", 109)) ;
+  result_cfg = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("systemConfig.galgas", 113)) ;
   {
-  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("OILFILENAME"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 115)), GALGAS_string::constructor_stringWithSourceFilePath (inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 115)).reader_lastPathComponent (SOURCE_FILE ("systemConfig.galgas", 115)), function_lstringWith (GALGAS_string::constructor_stringWithSourceFilePath (inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 115)), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 115)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 115)) ;
+  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("OILFILENAME"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 119)), GALGAS_string::constructor_stringWithSourceFilePath (inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 119)).reader_lastPathComponent (SOURCE_FILE ("systemConfig.galgas", 119)), function_lstringWith (GALGAS_string::constructor_stringWithSourceFilePath (inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 119)), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 119)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 119)) ;
   }
   {
-  routine_addLStringValue (result_cfg, GALGAS_string ("CPUNAME"), object->mAttribute_name, function_lstringWith (GALGAS_string ("name of the CPU object"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 116)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 116)) ;
+  routine_addLStringValue (result_cfg, GALGAS_string ("CPUNAME"), object->mAttribute_name, function_lstringWith (GALGAS_string ("name of the CPU object"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 120)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 120)) ;
   }
   {
-  routine_addLStringValue (result_cfg, GALGAS_string ("CPUDESCRIPTION"), object->mAttribute_cpuDescription, function_lstringWith (GALGAS_string ("description of the CPU object"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 117)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 117)) ;
+  routine_addLStringValue (result_cfg, GALGAS_string ("CPUDESCRIPTION"), object->mAttribute_cpuDescription, function_lstringWith (GALGAS_string ("description of the CPU object"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 121)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 121)) ;
   }
   {
-  routine_addLStringValue (result_cfg, GALGAS_string ("OILVERSION"), object->mAttribute_version, function_lstringWith (GALGAS_string ("OIL version"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 118)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 118)) ;
+  routine_addLStringValue (result_cfg, GALGAS_string ("OILVERSION"), object->mAttribute_version, function_lstringWith (GALGAS_string ("OIL version"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 122)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 122)) ;
   }
   {
-  routine_addLStringValue (result_cfg, GALGAS_string ("OILDESCRIPTION"), object->mAttribute_versionDescription, function_lstringWith (GALGAS_string ("OIL version description"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 119)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 119)) ;
+  routine_addLStringValue (result_cfg, GALGAS_string ("OILDESCRIPTION"), object->mAttribute_versionDescription, function_lstringWith (GALGAS_string ("OIL version description"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 123)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 123)) ;
   }
   {
-  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("TIMESTAMP"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 120)), GALGAS_string::constructor_stringWithCurrentDateTime (SOURCE_FILE ("systemConfig.galgas", 120)), function_lstringWith (GALGAS_string ("timestamp of OIL compiling"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 120)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 120)) ;
+  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("TIMESTAMP"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 124)), GALGAS_string::constructor_stringWithCurrentDateTime (SOURCE_FILE ("systemConfig.galgas", 124)), function_lstringWith (GALGAS_string ("timestamp of OIL compiling"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 124)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 124)) ;
   }
   {
-  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("PROJECT"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 121)), function_projectName (inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 121)).reader_lastPathComponent (SOURCE_FILE ("systemConfig.galgas", 121)), function_lstringWith (GALGAS_string ("project name"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 121)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 121)) ;
+  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("PROJECT"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 125)), function_projectName (inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 125)).reader_lastPathComponent (SOURCE_FILE ("systemConfig.galgas", 125)), function_lstringWith (GALGAS_string ("project name"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 125)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 125)) ;
   }
   {
-  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("TARGET"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 122)), GALGAS_string (gOption_goil_5F_options_target_5F_platform.reader_value ()), function_lstringWith (GALGAS_string ("target architecture/chip/board"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 122)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 122)) ;
+  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("TARGET"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 126)), GALGAS_string (gOption_goil_5F_options_target_5F_platform.reader_value ()), function_lstringWith (GALGAS_string ("target architecture/chip/board"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 126)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 126)) ;
   }
   {
-  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("TEMPLATEPATH"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 123)), GALGAS_string (gOption_goil_5F_options_template_5F_dir.reader_value ()), function_lstringWith (GALGAS_string ("path of the templates used"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 123)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 123)) ;
+  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("TEMPLATEPATH"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 127)), GALGAS_string (gOption_goil_5F_options_template_5F_dir.reader_value ()), function_lstringWith (GALGAS_string ("path of the templates used"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 127)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 127)) ;
   }
   {
-  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("ARCH"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 124)), function_arch (inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 124)), function_lstringWith (GALGAS_string ("target architecture"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 124)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 124)) ;
+  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("ARCH"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 128)), function_arch (inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 128)), function_lstringWith (GALGAS_string ("target architecture"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 128)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 128)) ;
   }
   {
-  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("CHIP"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 125)), function_chip (inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 125)), function_lstringWith (GALGAS_string ("target chip"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 125)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 125)) ;
+  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("CHIP"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 129)), function_chip (inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 129)), function_lstringWith (GALGAS_string ("target chip"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 129)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 129)) ;
   }
   {
-  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("BOARD"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 126)), function_board (inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 126)), function_lstringWith (GALGAS_string ("target board"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 126)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 126)) ;
+  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("BOARD"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 130)), function_board (inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 130)), function_lstringWith (GALGAS_string ("target board"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 130)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 130)) ;
   }
   {
-  routine_addBoolValue (result_cfg, function_lstringWith (GALGAS_string ("LOGFILE"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 128)), GALGAS_bool (gOption_goil_5F_options_generate_5F_log.reader_value ()), function_lstringWith (GALGAS_string ("Generated a logfile"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 128)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 128)) ;
+  routine_addBoolValue (result_cfg, function_lstringWith (GALGAS_string ("LOGFILE"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 132)), GALGAS_bool (gOption_goil_5F_options_generate_5F_log.reader_value ()), function_lstringWith (GALGAS_string ("Generated a logfile"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 132)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 132)) ;
   }
-  cEnumerator_objectsMap enumerator_5280 (object->mAttribute_objects, kEnumeration_up) ;
-  while (enumerator_5280.hasCurrentObject ()) {
+  cEnumerator_objectsMap enumerator_5425 (object->mAttribute_objects, kEnumeration_up) ;
+  while (enumerator_5425.hasCurrentObject ()) {
     GALGAS_implementationObject var_implementationObject ;
-    constinArgument_imp.reader_imp (SOURCE_FILE ("systemConfig.galgas", 135)).method_get (enumerator_5280.current_lkey (HERE), var_implementationObject, inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 135)) ;
-    const enumGalgasBool test_0 = var_implementationObject.reader_multiple (SOURCE_FILE ("systemConfig.galgas", 136)).reader_bool (SOURCE_FILE ("systemConfig.galgas", 136)).boolEnum () ;
+    constinArgument_imp.reader_imp (SOURCE_FILE ("systemConfig.galgas", 139)).method_get (enumerator_5425.current_lkey (HERE), var_implementationObject, inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 139)) ;
+    const enumGalgasBool test_0 = var_implementationObject.reader_multiple (SOURCE_FILE ("systemConfig.galgas", 140)).reader_bool (SOURCE_FILE ("systemConfig.galgas", 140)).boolEnum () ;
     if (kBoolTrue == test_0) {
-      GALGAS_TfieldMapList var_objs = GALGAS_TfieldMapList::constructor_emptyList (SOURCE_FILE ("systemConfig.galgas", 137)) ;
-      cEnumerator_objectKindMap enumerator_5681 (enumerator_5280.current_objectsOfKind (HERE).reader_objects (SOURCE_FILE ("systemConfig.galgas", 138)), kEnumeration_up) ;
-      while (enumerator_5681.hasCurrentObject ()) {
-        GALGAS_TfieldMap var_attrs = callCategoryReader_fieldMap ((const cPtr_objectAttributes *) enumerator_5681.current_attributes (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 139)) ;
-        var_objs.addAssign_operation (var_attrs  COMMA_SOURCE_FILE ("systemConfig.galgas", 140)) ;
-        enumerator_5681.gotoNextObject () ;
+      GALGAS_TfieldMapList var_objs = GALGAS_TfieldMapList::constructor_emptyList (SOURCE_FILE ("systemConfig.galgas", 141)) ;
+      cEnumerator_objectKindMap enumerator_5826 (enumerator_5425.current_objectsOfKind (HERE).reader_objects (SOURCE_FILE ("systemConfig.galgas", 142)), kEnumeration_up) ;
+      while (enumerator_5826.hasCurrentObject ()) {
+        GALGAS_TfieldMap var_attrs = callCategoryReader_fieldMap ((const cPtr_objectAttributes *) enumerator_5826.current_attributes (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 143)) ;
+        var_objs.addAssign_operation (var_attrs  COMMA_SOURCE_FILE ("systemConfig.galgas", 144)) ;
+        enumerator_5826.gotoNextObject () ;
       }
       {
-      routine_addListValue (result_cfg, enumerator_5280.current_lkey (HERE), var_objs, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 142)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 142)) ;
+      routine_addListValue (result_cfg, enumerator_5425.current_lkey (HERE), var_objs, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 146)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 146)) ;
       }
     }else if (kBoolFalse == test_0) {
-      const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, enumerator_5280.current_objectsOfKind (HERE).reader_objects (SOURCE_FILE ("systemConfig.galgas", 145)).reader_count (SOURCE_FILE ("systemConfig.galgas", 145)).objectCompare (GALGAS_uint ((uint32_t) 1U))).boolEnum () ;
+      const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, enumerator_5425.current_objectsOfKind (HERE).reader_objects (SOURCE_FILE ("systemConfig.galgas", 149)).reader_count (SOURCE_FILE ("systemConfig.galgas", 149)).objectCompare (GALGAS_uint ((uint32_t) 1U))).boolEnum () ;
       if (kBoolTrue == test_1) {
-        GALGAS_TfieldMap var_attrs = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("systemConfig.galgas", 146)) ;
-        cEnumerator_objectKindMap enumerator_5997 (enumerator_5280.current_objectsOfKind (HERE).reader_objects (SOURCE_FILE ("systemConfig.galgas", 147)), kEnumeration_up) ;
-        while (enumerator_5997.hasCurrentObject ()) {
-          var_attrs = callCategoryReader_fieldMap ((const cPtr_objectAttributes *) enumerator_5997.current_attributes (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 148)) ;
-          enumerator_5997.gotoNextObject () ;
+        GALGAS_TfieldMap var_attrs = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("systemConfig.galgas", 150)) ;
+        cEnumerator_objectKindMap enumerator_6142 (enumerator_5425.current_objectsOfKind (HERE).reader_objects (SOURCE_FILE ("systemConfig.galgas", 151)), kEnumeration_up) ;
+        while (enumerator_6142.hasCurrentObject ()) {
+          var_attrs = callCategoryReader_fieldMap ((const cPtr_objectAttributes *) enumerator_6142.current_attributes (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 152)) ;
+          enumerator_6142.gotoNextObject () ;
         }
         {
-        routine_addStructValue (result_cfg, enumerator_5280.current_lkey (HERE), var_attrs, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 150)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 150)) ;
+        routine_addStructValue (result_cfg, enumerator_5425.current_lkey (HERE), var_attrs, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 154)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 154)) ;
         }
       }
     }
-    enumerator_5280.gotoNextObject () ;
+    enumerator_5425.gotoNextObject () ;
   }
 //---
   return result_cfg ;
@@ -12787,6 +13217,87 @@ static void freeCategoryReader_applicationDefinition_templateData (void) {
 
 C_PrologueEpilogue gReader_applicationDefinition_templateData (defineCategoryReader_applicationDefinition_templateData,
                                                                freeCategoryReader_applicationDefinition_templateData) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                 Category method '@objectKind verifyCrossReferences'                                 *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+static TC_UniqueArray <categoryMethodSignature_objectKind_verifyCrossReferences> gCategoryMethodTable_objectKind_verifyCrossReferences ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterCategoryMethod_verifyCrossReferences (const int32_t inClassIndex,
+                                                categoryMethodSignature_objectKind_verifyCrossReferences inMethod) {
+  gCategoryMethodTable_objectKind_verifyCrossReferences.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void callCategoryMethod_verifyCrossReferences (const cPtr_objectKind * inObject,
+                                               const GALGAS_objectsMap constin_allObjects,
+                                               const GALGAS_implementationObject constin_obj,
+                                               C_Compiler * inCompiler
+                                               COMMA_LOCATION_ARGS) {
+  if (NULL != inObject) {
+    macroValidSharedObject (inObject, cPtr_objectKind) ;
+    const C_galgas_type_descriptor * info = inObject->classDescriptor () ;
+    const int32_t classIndex = info->mSlotID ;
+    categoryMethodSignature_objectKind_verifyCrossReferences f = NULL ;
+    if (classIndex < gCategoryMethodTable_objectKind_verifyCrossReferences.count ()) {
+      f = gCategoryMethodTable_objectKind_verifyCrossReferences (classIndex COMMA_HERE) ;
+    }
+    if (NULL == f) {
+       const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
+       while ((NULL == f) && (NULL != p)) {
+         if (p->mSlotID < gCategoryMethodTable_objectKind_verifyCrossReferences.count ()) {
+           f = gCategoryMethodTable_objectKind_verifyCrossReferences (p->mSlotID COMMA_HERE) ;
+         }
+         p = p->mSuperclassDescriptor ;
+       }
+       gCategoryMethodTable_objectKind_verifyCrossReferences.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
+    }
+    if (NULL == f) {
+      fatalError ("FATAL CATEGORY METHOD CALL ERROR", __FILE__, __LINE__) ;
+    }else{
+      f (inObject, constin_allObjects, constin_obj, inCompiler COMMA_THERE) ;
+    }
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void categoryMethod_objectKind_verifyCrossReferences (const cPtr_objectKind * inObject,
+                                                             const GALGAS_objectsMap constinArgument_allObjects,
+                                                             const GALGAS_implementationObject constinArgument_obj,
+                                                             C_Compiler * inCompiler
+                                                             COMMA_UNUSED_LOCATION_ARGS) {
+  const cPtr_objectKind * object = inObject ;
+  macroValidSharedObject (object, cPtr_objectKind) ;
+  cEnumerator_objectKindMap enumerator_17832 (object->mAttribute_objects, kEnumeration_up) ;
+  while (enumerator_17832.hasCurrentObject ()) {
+    callCategoryMethod_verifyCrossReferences ((const cPtr_objectAttributes *) enumerator_17832.current_attributes (HERE).ptr (), constinArgument_allObjects, constinArgument_obj.reader_attributes (SOURCE_FILE ("semantic_verification.galgas", 566)), inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 566)) ;
+    enumerator_17832.gotoNextObject () ;
+  }
+}
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void defineCategoryMethod_objectKind_verifyCrossReferences (void) {
+  enterCategoryMethod_verifyCrossReferences (kTypeDescriptor_GALGAS_objectKind.mSlotID,
+                                             categoryMethod_objectKind_verifyCrossReferences) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void freeCategoryMethod_objectKind_verifyCrossReferences (void) {
+  gCategoryMethodTable_objectKind_verifyCrossReferences.free () ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_PrologueEpilogue gMethod_objectKind_verifyCrossReferences (defineCategoryMethod_objectKind_verifyCrossReferences,
+                                                             freeCategoryMethod_objectKind_verifyCrossReferences) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -13463,24 +13974,24 @@ static void categoryMethod_uint_33__32_AttributeSet_enclose (const cPtr_attribut
   outArgument_isWithin = GALGAS_bool (true) ;
   if (constinArgument_value.isValid ()) {
     if (constinArgument_value.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_uint_33__32_AttributeSet) {
-      GALGAS_uint_33__32_AttributeSet cast_4668_set ((cPtr_uint_33__32_AttributeSet *) constinArgument_value.ptr ()) ;
-      cEnumerator_uint_33__32_List enumerator_4706 (cast_4668_set.reader_valueList (SOURCE_FILE ("implementation_types.galgas", 175)), kEnumeration_up) ;
-      while (enumerator_4706.hasCurrentObject ()) {
+      GALGAS_uint_33__32_AttributeSet cast_4103_set ((cPtr_uint_33__32_AttributeSet *) constinArgument_value.ptr ()) ;
+      cEnumerator_uint_33__32_List enumerator_4141 (cast_4103_set.reader_valueList (SOURCE_FILE ("implementation_types.galgas", 156)), kEnumeration_up) ;
+      while (enumerator_4141.hasCurrentObject ()) {
         GALGAS_bool var_ok = GALGAS_bool (false) ;
-        cEnumerator_uint_33__32_List enumerator_4765 (object->mAttribute_valueList, kEnumeration_up) ;
-        while (enumerator_4765.hasCurrentObject ()) {
-          const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, enumerator_4706.current_value (HERE).objectCompare (enumerator_4765.current_value (HERE))).boolEnum () ;
+        cEnumerator_uint_33__32_List enumerator_4200 (object->mAttribute_valueList, kEnumeration_up) ;
+        while (enumerator_4200.hasCurrentObject ()) {
+          const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, enumerator_4141.current_value (HERE).objectCompare (enumerator_4200.current_value (HERE))).boolEnum () ;
           if (kBoolTrue == test_0) {
             var_ok = GALGAS_bool (true) ;
           }
-          enumerator_4765.gotoNextObject () ;
+          enumerator_4200.gotoNextObject () ;
         }
-        outArgument_isWithin = outArgument_isWithin.operator_and (var_ok COMMA_SOURCE_FILE ("implementation_types.galgas", 182)) ;
-        enumerator_4706.gotoNextObject () ;
+        outArgument_isWithin = outArgument_isWithin.operator_and (var_ok COMMA_SOURCE_FILE ("implementation_types.galgas", 163)) ;
+        enumerator_4141.gotoNextObject () ;
       }
     }else{
-      inCompiler->emitSemanticError (constinArgument_value.reader_location (SOURCE_FILE ("implementation_types.galgas", 185)), GALGAS_string ("Incompatible set. Should be a UINT32 set")  COMMA_SOURCE_FILE ("implementation_types.galgas", 185)) ;
-      inCompiler->emitSemanticError (object->mAttribute_location, GALGAS_string ("Previous set was declared here")  COMMA_SOURCE_FILE ("implementation_types.galgas", 186)) ;
+      inCompiler->emitSemanticError (constinArgument_value.reader_location (SOURCE_FILE ("implementation_types.galgas", 166)), GALGAS_string ("Incompatible set. Should be a UINT32 set")  COMMA_SOURCE_FILE ("implementation_types.galgas", 166)) ;
+      inCompiler->emitSemanticError (object->mAttribute_location, GALGAS_string ("Previous set was declared here")  COMMA_SOURCE_FILE ("implementation_types.galgas", 167)) ;
       outArgument_isWithin = GALGAS_bool (false) ;
     }
   }
@@ -13512,24 +14023,24 @@ static void categoryMethod_uint_36__34_AttributeSet_enclose (const cPtr_attribut
   outArgument_isWithin = GALGAS_bool (true) ;
   if (constinArgument_value.isValid ()) {
     if (constinArgument_value.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_uint_36__34_AttributeSet) {
-      GALGAS_uint_36__34_AttributeSet cast_5843_set ((cPtr_uint_36__34_AttributeSet *) constinArgument_value.ptr ()) ;
-      cEnumerator_uint_36__34_List enumerator_5881 (cast_5843_set.reader_valueList (SOURCE_FILE ("implementation_types.galgas", 217)), kEnumeration_up) ;
-      while (enumerator_5881.hasCurrentObject ()) {
+      GALGAS_uint_36__34_AttributeSet cast_4714_set ((cPtr_uint_36__34_AttributeSet *) constinArgument_value.ptr ()) ;
+      cEnumerator_uint_36__34_List enumerator_4752 (cast_4714_set.reader_valueList (SOURCE_FILE ("implementation_types.galgas", 180)), kEnumeration_up) ;
+      while (enumerator_4752.hasCurrentObject ()) {
         GALGAS_bool var_ok = GALGAS_bool (false) ;
-        cEnumerator_uint_36__34_List enumerator_5940 (object->mAttribute_valueList, kEnumeration_up) ;
-        while (enumerator_5940.hasCurrentObject ()) {
-          const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, enumerator_5881.current_value (HERE).objectCompare (enumerator_5940.current_value (HERE))).boolEnum () ;
+        cEnumerator_uint_36__34_List enumerator_4811 (object->mAttribute_valueList, kEnumeration_up) ;
+        while (enumerator_4811.hasCurrentObject ()) {
+          const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, enumerator_4752.current_value (HERE).objectCompare (enumerator_4811.current_value (HERE))).boolEnum () ;
           if (kBoolTrue == test_0) {
             var_ok = GALGAS_bool (true) ;
           }
-          enumerator_5940.gotoNextObject () ;
+          enumerator_4811.gotoNextObject () ;
         }
-        outArgument_isWithin = outArgument_isWithin.operator_and (var_ok COMMA_SOURCE_FILE ("implementation_types.galgas", 224)) ;
-        enumerator_5881.gotoNextObject () ;
+        outArgument_isWithin = outArgument_isWithin.operator_and (var_ok COMMA_SOURCE_FILE ("implementation_types.galgas", 187)) ;
+        enumerator_4752.gotoNextObject () ;
       }
     }else{
-      inCompiler->emitSemanticError (constinArgument_value.reader_location (SOURCE_FILE ("implementation_types.galgas", 227)), GALGAS_string ("Incompatible set. Should be a UINT64 set")  COMMA_SOURCE_FILE ("implementation_types.galgas", 227)) ;
-      inCompiler->emitSemanticError (object->mAttribute_location, GALGAS_string ("Previous set was declared here")  COMMA_SOURCE_FILE ("implementation_types.galgas", 228)) ;
+      inCompiler->emitSemanticError (constinArgument_value.reader_location (SOURCE_FILE ("implementation_types.galgas", 190)), GALGAS_string ("Incompatible set. Should be a UINT64 set")  COMMA_SOURCE_FILE ("implementation_types.galgas", 190)) ;
+      inCompiler->emitSemanticError (object->mAttribute_location, GALGAS_string ("Previous set was declared here")  COMMA_SOURCE_FILE ("implementation_types.galgas", 191)) ;
       outArgument_isWithin = GALGAS_bool (false) ;
     }
   }
@@ -13561,24 +14072,24 @@ static void categoryMethod_sint_33__32_AttributeSet_enclose (const cPtr_attribut
   outArgument_isWithin = GALGAS_bool (true) ;
   if (constinArgument_value.isValid ()) {
     if (constinArgument_value.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_sint_33__32_AttributeSet) {
-      GALGAS_sint_33__32_AttributeSet cast_7017_set ((cPtr_sint_33__32_AttributeSet *) constinArgument_value.ptr ()) ;
-      cEnumerator_sint_33__32_List enumerator_7055 (cast_7017_set.reader_valueList (SOURCE_FILE ("implementation_types.galgas", 259)), kEnumeration_up) ;
-      while (enumerator_7055.hasCurrentObject ()) {
+      GALGAS_sint_33__32_AttributeSet cast_5325_set ((cPtr_sint_33__32_AttributeSet *) constinArgument_value.ptr ()) ;
+      cEnumerator_sint_33__32_List enumerator_5363 (cast_5325_set.reader_valueList (SOURCE_FILE ("implementation_types.galgas", 204)), kEnumeration_up) ;
+      while (enumerator_5363.hasCurrentObject ()) {
         GALGAS_bool var_ok = GALGAS_bool (false) ;
-        cEnumerator_sint_33__32_List enumerator_7114 (object->mAttribute_valueList, kEnumeration_up) ;
-        while (enumerator_7114.hasCurrentObject ()) {
-          const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, enumerator_7055.current_value (HERE).objectCompare (enumerator_7114.current_value (HERE))).boolEnum () ;
+        cEnumerator_sint_33__32_List enumerator_5422 (object->mAttribute_valueList, kEnumeration_up) ;
+        while (enumerator_5422.hasCurrentObject ()) {
+          const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, enumerator_5363.current_value (HERE).objectCompare (enumerator_5422.current_value (HERE))).boolEnum () ;
           if (kBoolTrue == test_0) {
             var_ok = GALGAS_bool (true) ;
           }
-          enumerator_7114.gotoNextObject () ;
+          enumerator_5422.gotoNextObject () ;
         }
-        outArgument_isWithin = outArgument_isWithin.operator_and (var_ok COMMA_SOURCE_FILE ("implementation_types.galgas", 266)) ;
-        enumerator_7055.gotoNextObject () ;
+        outArgument_isWithin = outArgument_isWithin.operator_and (var_ok COMMA_SOURCE_FILE ("implementation_types.galgas", 211)) ;
+        enumerator_5363.gotoNextObject () ;
       }
     }else{
-      inCompiler->emitSemanticError (constinArgument_value.reader_location (SOURCE_FILE ("implementation_types.galgas", 269)), GALGAS_string ("Incompatible set. Should be a INT32 set")  COMMA_SOURCE_FILE ("implementation_types.galgas", 269)) ;
-      inCompiler->emitSemanticError (object->mAttribute_location, GALGAS_string ("Previous set was declared here")  COMMA_SOURCE_FILE ("implementation_types.galgas", 270)) ;
+      inCompiler->emitSemanticError (constinArgument_value.reader_location (SOURCE_FILE ("implementation_types.galgas", 214)), GALGAS_string ("Incompatible set. Should be a INT32 set")  COMMA_SOURCE_FILE ("implementation_types.galgas", 214)) ;
+      inCompiler->emitSemanticError (object->mAttribute_location, GALGAS_string ("Previous set was declared here")  COMMA_SOURCE_FILE ("implementation_types.galgas", 215)) ;
       outArgument_isWithin = GALGAS_bool (false) ;
     }
   }
@@ -13610,24 +14121,24 @@ static void categoryMethod_sint_36__34_AttributeSet_enclose (const cPtr_attribut
   outArgument_isWithin = GALGAS_bool (true) ;
   if (constinArgument_value.isValid ()) {
     if (constinArgument_value.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_sint_36__34_AttributeSet) {
-      GALGAS_sint_36__34_AttributeSet cast_8190_set ((cPtr_sint_36__34_AttributeSet *) constinArgument_value.ptr ()) ;
-      cEnumerator_sint_36__34_List enumerator_8228 (cast_8190_set.reader_valueList (SOURCE_FILE ("implementation_types.galgas", 301)), kEnumeration_up) ;
-      while (enumerator_8228.hasCurrentObject ()) {
+      GALGAS_sint_36__34_AttributeSet cast_5935_set ((cPtr_sint_36__34_AttributeSet *) constinArgument_value.ptr ()) ;
+      cEnumerator_sint_36__34_List enumerator_5973 (cast_5935_set.reader_valueList (SOURCE_FILE ("implementation_types.galgas", 228)), kEnumeration_up) ;
+      while (enumerator_5973.hasCurrentObject ()) {
         GALGAS_bool var_ok = GALGAS_bool (false) ;
-        cEnumerator_sint_36__34_List enumerator_8287 (object->mAttribute_valueList, kEnumeration_up) ;
-        while (enumerator_8287.hasCurrentObject ()) {
-          const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, enumerator_8228.current_value (HERE).objectCompare (enumerator_8287.current_value (HERE))).boolEnum () ;
+        cEnumerator_sint_36__34_List enumerator_6032 (object->mAttribute_valueList, kEnumeration_up) ;
+        while (enumerator_6032.hasCurrentObject ()) {
+          const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, enumerator_5973.current_value (HERE).objectCompare (enumerator_6032.current_value (HERE))).boolEnum () ;
           if (kBoolTrue == test_0) {
             var_ok = GALGAS_bool (true) ;
           }
-          enumerator_8287.gotoNextObject () ;
+          enumerator_6032.gotoNextObject () ;
         }
-        outArgument_isWithin = outArgument_isWithin.operator_and (var_ok COMMA_SOURCE_FILE ("implementation_types.galgas", 308)) ;
-        enumerator_8228.gotoNextObject () ;
+        outArgument_isWithin = outArgument_isWithin.operator_and (var_ok COMMA_SOURCE_FILE ("implementation_types.galgas", 235)) ;
+        enumerator_5973.gotoNextObject () ;
       }
     }else{
-      inCompiler->emitSemanticError (constinArgument_value.reader_location (SOURCE_FILE ("implementation_types.galgas", 311)), GALGAS_string ("Incompatible set. Should be a INT64 set")  COMMA_SOURCE_FILE ("implementation_types.galgas", 311)) ;
-      inCompiler->emitSemanticError (object->mAttribute_location, GALGAS_string ("Previous set was declared here")  COMMA_SOURCE_FILE ("implementation_types.galgas", 312)) ;
+      inCompiler->emitSemanticError (constinArgument_value.reader_location (SOURCE_FILE ("implementation_types.galgas", 238)), GALGAS_string ("Incompatible set. Should be a INT64 set")  COMMA_SOURCE_FILE ("implementation_types.galgas", 238)) ;
+      inCompiler->emitSemanticError (object->mAttribute_location, GALGAS_string ("Previous set was declared here")  COMMA_SOURCE_FILE ("implementation_types.galgas", 239)) ;
       outArgument_isWithin = GALGAS_bool (false) ;
     }
   }
@@ -13659,24 +14170,24 @@ static void categoryMethod_floatAttributeSet_enclose (const cPtr_attributeRange 
   outArgument_isWithin = GALGAS_bool (true) ;
   if (constinArgument_value.isValid ()) {
     if (constinArgument_value.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_floatAttributeSet) {
-      GALGAS_floatAttributeSet cast_9367_set ((cPtr_floatAttributeSet *) constinArgument_value.ptr ()) ;
-      cEnumerator_floatList enumerator_9405 (cast_9367_set.reader_valueList (SOURCE_FILE ("implementation_types.galgas", 343)), kEnumeration_up) ;
-      while (enumerator_9405.hasCurrentObject ()) {
+      GALGAS_floatAttributeSet cast_6543_set ((cPtr_floatAttributeSet *) constinArgument_value.ptr ()) ;
+      cEnumerator_floatList enumerator_6581 (cast_6543_set.reader_valueList (SOURCE_FILE ("implementation_types.galgas", 252)), kEnumeration_up) ;
+      while (enumerator_6581.hasCurrentObject ()) {
         GALGAS_bool var_ok = GALGAS_bool (false) ;
-        cEnumerator_floatList enumerator_9464 (object->mAttribute_valueList, kEnumeration_up) ;
-        while (enumerator_9464.hasCurrentObject ()) {
-          const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, enumerator_9405.current_value (HERE).objectCompare (enumerator_9464.current_value (HERE))).boolEnum () ;
+        cEnumerator_floatList enumerator_6640 (object->mAttribute_valueList, kEnumeration_up) ;
+        while (enumerator_6640.hasCurrentObject ()) {
+          const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, enumerator_6581.current_value (HERE).objectCompare (enumerator_6640.current_value (HERE))).boolEnum () ;
           if (kBoolTrue == test_0) {
             var_ok = GALGAS_bool (true) ;
           }
-          enumerator_9464.gotoNextObject () ;
+          enumerator_6640.gotoNextObject () ;
         }
-        outArgument_isWithin = outArgument_isWithin.operator_and (var_ok COMMA_SOURCE_FILE ("implementation_types.galgas", 350)) ;
-        enumerator_9405.gotoNextObject () ;
+        outArgument_isWithin = outArgument_isWithin.operator_and (var_ok COMMA_SOURCE_FILE ("implementation_types.galgas", 259)) ;
+        enumerator_6581.gotoNextObject () ;
       }
     }else{
-      inCompiler->emitSemanticError (constinArgument_value.reader_location (SOURCE_FILE ("implementation_types.galgas", 353)), GALGAS_string ("Incompatible set. Should be a FLOAT set")  COMMA_SOURCE_FILE ("implementation_types.galgas", 353)) ;
-      inCompiler->emitSemanticError (object->mAttribute_location, GALGAS_string ("Previous set was declared here")  COMMA_SOURCE_FILE ("implementation_types.galgas", 354)) ;
+      inCompiler->emitSemanticError (constinArgument_value.reader_location (SOURCE_FILE ("implementation_types.galgas", 262)), GALGAS_string ("Incompatible set. Should be a FLOAT set")  COMMA_SOURCE_FILE ("implementation_types.galgas", 262)) ;
+      inCompiler->emitSemanticError (object->mAttribute_location, GALGAS_string ("Previous set was declared here")  COMMA_SOURCE_FILE ("implementation_types.galgas", 263)) ;
       outArgument_isWithin = GALGAS_bool (false) ;
     }
   }
@@ -13708,25 +14219,25 @@ static void categoryMethod_uint_33__32_AttributeMinMax_enclose (const cPtr_attri
   outArgument_isWithin = GALGAS_bool (false) ;
   if (constinArgument_value.isValid ()) {
     if (constinArgument_value.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_uint_33__32_AttributeMinMax) {
-      GALGAS_uint_33__32_AttributeMinMax cast_10369_minmax ((cPtr_uint_33__32_AttributeMinMax *) constinArgument_value.ptr ()) ;
-      const enumGalgasBool test_0 = GALGAS_bool (kIsSupOrEqual, cast_10369_minmax.reader_min (SOURCE_FILE ("implementation_types.galgas", 379)).objectCompare (object->mAttribute_min)).operator_and (GALGAS_bool (kIsInfOrEqual, cast_10369_minmax.reader_max (SOURCE_FILE ("implementation_types.galgas", 379)).objectCompare (object->mAttribute_max)) COMMA_SOURCE_FILE ("implementation_types.galgas", 379)).boolEnum () ;
+      GALGAS_uint_33__32_AttributeMinMax cast_7166_minmax ((cPtr_uint_33__32_AttributeMinMax *) constinArgument_value.ptr ()) ;
+      const enumGalgasBool test_0 = GALGAS_bool (kIsSupOrEqual, cast_7166_minmax.reader_min (SOURCE_FILE ("implementation_types.galgas", 277)).objectCompare (object->mAttribute_min)).operator_and (GALGAS_bool (kIsInfOrEqual, cast_7166_minmax.reader_max (SOURCE_FILE ("implementation_types.galgas", 277)).objectCompare (object->mAttribute_max)) COMMA_SOURCE_FILE ("implementation_types.galgas", 277)).boolEnum () ;
       if (kBoolTrue == test_0) {
         outArgument_isWithin = GALGAS_bool (true) ;
       }
     }else if (constinArgument_value.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_uint_33__32_AttributeSet) {
-      GALGAS_uint_33__32_AttributeSet cast_10489_set ((cPtr_uint_33__32_AttributeSet *) constinArgument_value.ptr ()) ;
+      GALGAS_uint_33__32_AttributeSet cast_7286_set ((cPtr_uint_33__32_AttributeSet *) constinArgument_value.ptr ()) ;
       outArgument_isWithin = GALGAS_bool (true) ;
-      cEnumerator_uint_33__32_List enumerator_10542 (cast_10489_set.reader_valueList (SOURCE_FILE ("implementation_types.galgas", 384)), kEnumeration_up) ;
-      while (enumerator_10542.hasCurrentObject ()) {
-        const enumGalgasBool test_1 = GALGAS_bool (kIsStrictInf, enumerator_10542.current_value (HERE).objectCompare (object->mAttribute_min)).operator_or (GALGAS_bool (kIsStrictSup, enumerator_10542.current_value (HERE).objectCompare (object->mAttribute_max)) COMMA_SOURCE_FILE ("implementation_types.galgas", 385)).boolEnum () ;
+      cEnumerator_uint_33__32_List enumerator_7339 (cast_7286_set.reader_valueList (SOURCE_FILE ("implementation_types.galgas", 282)), kEnumeration_up) ;
+      while (enumerator_7339.hasCurrentObject ()) {
+        const enumGalgasBool test_1 = GALGAS_bool (kIsStrictInf, enumerator_7339.current_value (HERE).objectCompare (object->mAttribute_min)).operator_or (GALGAS_bool (kIsStrictSup, enumerator_7339.current_value (HERE).objectCompare (object->mAttribute_max)) COMMA_SOURCE_FILE ("implementation_types.galgas", 283)).boolEnum () ;
         if (kBoolTrue == test_1) {
           outArgument_isWithin = GALGAS_bool (false) ;
         }
-        enumerator_10542.gotoNextObject () ;
+        enumerator_7339.gotoNextObject () ;
       }
     }else{
-      inCompiler->emitSemanticError (constinArgument_value.reader_location (SOURCE_FILE ("implementation_types.galgas", 390)), GALGAS_string ("Incompatible set. Should be a UINT32 range or UINT32 set")  COMMA_SOURCE_FILE ("implementation_types.galgas", 390)) ;
-      inCompiler->emitSemanticError (object->mAttribute_location, GALGAS_string ("Previous set was declared here")  COMMA_SOURCE_FILE ("implementation_types.galgas", 391)) ;
+      inCompiler->emitSemanticError (constinArgument_value.reader_location (SOURCE_FILE ("implementation_types.galgas", 288)), GALGAS_string ("Incompatible set. Should be a UINT32 range or UINT32 set")  COMMA_SOURCE_FILE ("implementation_types.galgas", 288)) ;
+      inCompiler->emitSemanticError (object->mAttribute_location, GALGAS_string ("Previous set was declared here")  COMMA_SOURCE_FILE ("implementation_types.galgas", 289)) ;
     }
   }
 }
@@ -13757,25 +14268,25 @@ static void categoryMethod_uint_36__34_AttributeMinMax_enclose (const cPtr_attri
   outArgument_isWithin = GALGAS_bool (false) ;
   if (constinArgument_value.isValid ()) {
     if (constinArgument_value.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_uint_36__34_AttributeMinMax) {
-      GALGAS_uint_36__34_AttributeMinMax cast_11407_minmax ((cPtr_uint_36__34_AttributeMinMax *) constinArgument_value.ptr ()) ;
-      const enumGalgasBool test_0 = GALGAS_bool (kIsSupOrEqual, cast_11407_minmax.reader_min (SOURCE_FILE ("implementation_types.galgas", 415)).objectCompare (object->mAttribute_min)).operator_and (GALGAS_bool (kIsInfOrEqual, cast_11407_minmax.reader_max (SOURCE_FILE ("implementation_types.galgas", 415)).objectCompare (object->mAttribute_max)) COMMA_SOURCE_FILE ("implementation_types.galgas", 415)).boolEnum () ;
+      GALGAS_uint_36__34_AttributeMinMax cast_7825_minmax ((cPtr_uint_36__34_AttributeMinMax *) constinArgument_value.ptr ()) ;
+      const enumGalgasBool test_0 = GALGAS_bool (kIsSupOrEqual, cast_7825_minmax.reader_min (SOURCE_FILE ("implementation_types.galgas", 302)).objectCompare (object->mAttribute_min)).operator_and (GALGAS_bool (kIsInfOrEqual, cast_7825_minmax.reader_max (SOURCE_FILE ("implementation_types.galgas", 302)).objectCompare (object->mAttribute_max)) COMMA_SOURCE_FILE ("implementation_types.galgas", 302)).boolEnum () ;
       if (kBoolTrue == test_0) {
         outArgument_isWithin = GALGAS_bool (true) ;
       }
     }else if (constinArgument_value.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_uint_36__34_AttributeSet) {
-      GALGAS_uint_36__34_AttributeSet cast_11527_set ((cPtr_uint_36__34_AttributeSet *) constinArgument_value.ptr ()) ;
+      GALGAS_uint_36__34_AttributeSet cast_7945_set ((cPtr_uint_36__34_AttributeSet *) constinArgument_value.ptr ()) ;
       outArgument_isWithin = GALGAS_bool (true) ;
-      cEnumerator_uint_36__34_List enumerator_11580 (cast_11527_set.reader_valueList (SOURCE_FILE ("implementation_types.galgas", 420)), kEnumeration_up) ;
-      while (enumerator_11580.hasCurrentObject ()) {
-        const enumGalgasBool test_1 = GALGAS_bool (kIsStrictInf, enumerator_11580.current_value (HERE).objectCompare (object->mAttribute_min)).operator_or (GALGAS_bool (kIsStrictSup, enumerator_11580.current_value (HERE).objectCompare (object->mAttribute_max)) COMMA_SOURCE_FILE ("implementation_types.galgas", 421)).boolEnum () ;
+      cEnumerator_uint_36__34_List enumerator_7998 (cast_7945_set.reader_valueList (SOURCE_FILE ("implementation_types.galgas", 307)), kEnumeration_up) ;
+      while (enumerator_7998.hasCurrentObject ()) {
+        const enumGalgasBool test_1 = GALGAS_bool (kIsStrictInf, enumerator_7998.current_value (HERE).objectCompare (object->mAttribute_min)).operator_or (GALGAS_bool (kIsStrictSup, enumerator_7998.current_value (HERE).objectCompare (object->mAttribute_max)) COMMA_SOURCE_FILE ("implementation_types.galgas", 308)).boolEnum () ;
         if (kBoolTrue == test_1) {
           outArgument_isWithin = GALGAS_bool (false) ;
         }
-        enumerator_11580.gotoNextObject () ;
+        enumerator_7998.gotoNextObject () ;
       }
     }else{
-      inCompiler->emitSemanticError (constinArgument_value.reader_location (SOURCE_FILE ("implementation_types.galgas", 426)), GALGAS_string ("Incompatible set. Should be a UINT64 range or UINT64 set")  COMMA_SOURCE_FILE ("implementation_types.galgas", 426)) ;
-      inCompiler->emitSemanticError (object->mAttribute_location, GALGAS_string ("Previous set was declared here")  COMMA_SOURCE_FILE ("implementation_types.galgas", 427)) ;
+      inCompiler->emitSemanticError (constinArgument_value.reader_location (SOURCE_FILE ("implementation_types.galgas", 313)), GALGAS_string ("Incompatible set. Should be a UINT64 range or UINT64 set")  COMMA_SOURCE_FILE ("implementation_types.galgas", 313)) ;
+      inCompiler->emitSemanticError (object->mAttribute_location, GALGAS_string ("Previous set was declared here")  COMMA_SOURCE_FILE ("implementation_types.galgas", 314)) ;
     }
   }
 }
@@ -13806,25 +14317,25 @@ static void categoryMethod_sint_33__32_AttributeMinMax_enclose (const cPtr_attri
   outArgument_isWithin = GALGAS_bool (false) ;
   if (constinArgument_value.isValid ()) {
     if (constinArgument_value.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_sint_33__32_AttributeMinMax) {
-      GALGAS_sint_33__32_AttributeMinMax cast_12440_minmax ((cPtr_sint_33__32_AttributeMinMax *) constinArgument_value.ptr ()) ;
-      const enumGalgasBool test_0 = GALGAS_bool (kIsSupOrEqual, cast_12440_minmax.reader_min (SOURCE_FILE ("implementation_types.galgas", 451)).objectCompare (object->mAttribute_min)).operator_and (GALGAS_bool (kIsInfOrEqual, cast_12440_minmax.reader_max (SOURCE_FILE ("implementation_types.galgas", 451)).objectCompare (object->mAttribute_max)) COMMA_SOURCE_FILE ("implementation_types.galgas", 451)).boolEnum () ;
+      GALGAS_sint_33__32_AttributeMinMax cast_8480_minmax ((cPtr_sint_33__32_AttributeMinMax *) constinArgument_value.ptr ()) ;
+      const enumGalgasBool test_0 = GALGAS_bool (kIsSupOrEqual, cast_8480_minmax.reader_min (SOURCE_FILE ("implementation_types.galgas", 327)).objectCompare (object->mAttribute_min)).operator_and (GALGAS_bool (kIsInfOrEqual, cast_8480_minmax.reader_max (SOURCE_FILE ("implementation_types.galgas", 327)).objectCompare (object->mAttribute_max)) COMMA_SOURCE_FILE ("implementation_types.galgas", 327)).boolEnum () ;
       if (kBoolTrue == test_0) {
         outArgument_isWithin = GALGAS_bool (true) ;
       }
     }else if (constinArgument_value.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_sint_33__32_AttributeSet) {
-      GALGAS_sint_33__32_AttributeSet cast_12560_set ((cPtr_sint_33__32_AttributeSet *) constinArgument_value.ptr ()) ;
+      GALGAS_sint_33__32_AttributeSet cast_8600_set ((cPtr_sint_33__32_AttributeSet *) constinArgument_value.ptr ()) ;
       outArgument_isWithin = GALGAS_bool (true) ;
-      cEnumerator_sint_33__32_List enumerator_12613 (cast_12560_set.reader_valueList (SOURCE_FILE ("implementation_types.galgas", 456)), kEnumeration_up) ;
-      while (enumerator_12613.hasCurrentObject ()) {
-        const enumGalgasBool test_1 = GALGAS_bool (kIsStrictInf, enumerator_12613.current_value (HERE).objectCompare (object->mAttribute_min)).operator_or (GALGAS_bool (kIsStrictSup, enumerator_12613.current_value (HERE).objectCompare (object->mAttribute_max)) COMMA_SOURCE_FILE ("implementation_types.galgas", 457)).boolEnum () ;
+      cEnumerator_sint_33__32_List enumerator_8653 (cast_8600_set.reader_valueList (SOURCE_FILE ("implementation_types.galgas", 332)), kEnumeration_up) ;
+      while (enumerator_8653.hasCurrentObject ()) {
+        const enumGalgasBool test_1 = GALGAS_bool (kIsStrictInf, enumerator_8653.current_value (HERE).objectCompare (object->mAttribute_min)).operator_or (GALGAS_bool (kIsStrictSup, enumerator_8653.current_value (HERE).objectCompare (object->mAttribute_max)) COMMA_SOURCE_FILE ("implementation_types.galgas", 333)).boolEnum () ;
         if (kBoolTrue == test_1) {
           outArgument_isWithin = GALGAS_bool (false) ;
         }
-        enumerator_12613.gotoNextObject () ;
+        enumerator_8653.gotoNextObject () ;
       }
     }else{
-      inCompiler->emitSemanticError (constinArgument_value.reader_location (SOURCE_FILE ("implementation_types.galgas", 462)), GALGAS_string ("Incompatible set. Should be a INT32 range or INT32 set")  COMMA_SOURCE_FILE ("implementation_types.galgas", 462)) ;
-      inCompiler->emitSemanticError (object->mAttribute_location, GALGAS_string ("Previous set was declared here")  COMMA_SOURCE_FILE ("implementation_types.galgas", 463)) ;
+      inCompiler->emitSemanticError (constinArgument_value.reader_location (SOURCE_FILE ("implementation_types.galgas", 338)), GALGAS_string ("Incompatible set. Should be a INT32 range or INT32 set")  COMMA_SOURCE_FILE ("implementation_types.galgas", 338)) ;
+      inCompiler->emitSemanticError (object->mAttribute_location, GALGAS_string ("Previous set was declared here")  COMMA_SOURCE_FILE ("implementation_types.galgas", 339)) ;
     }
   }
 }
@@ -13855,25 +14366,25 @@ static void categoryMethod_sint_36__34_AttributeMinMax_enclose (const cPtr_attri
   outArgument_isWithin = GALGAS_bool (false) ;
   if (constinArgument_value.isValid ()) {
     if (constinArgument_value.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_sint_36__34_AttributeMinMax) {
-      GALGAS_sint_36__34_AttributeMinMax cast_13475_minmax ((cPtr_sint_36__34_AttributeMinMax *) constinArgument_value.ptr ()) ;
-      const enumGalgasBool test_0 = GALGAS_bool (kIsSupOrEqual, cast_13475_minmax.reader_min (SOURCE_FILE ("implementation_types.galgas", 487)).objectCompare (object->mAttribute_min)).operator_and (GALGAS_bool (kIsInfOrEqual, cast_13475_minmax.reader_max (SOURCE_FILE ("implementation_types.galgas", 487)).objectCompare (object->mAttribute_max)) COMMA_SOURCE_FILE ("implementation_types.galgas", 487)).boolEnum () ;
+      GALGAS_sint_36__34_AttributeMinMax cast_9137_minmax ((cPtr_sint_36__34_AttributeMinMax *) constinArgument_value.ptr ()) ;
+      const enumGalgasBool test_0 = GALGAS_bool (kIsSupOrEqual, cast_9137_minmax.reader_min (SOURCE_FILE ("implementation_types.galgas", 352)).objectCompare (object->mAttribute_min)).operator_and (GALGAS_bool (kIsInfOrEqual, cast_9137_minmax.reader_max (SOURCE_FILE ("implementation_types.galgas", 352)).objectCompare (object->mAttribute_max)) COMMA_SOURCE_FILE ("implementation_types.galgas", 352)).boolEnum () ;
       if (kBoolTrue == test_0) {
         outArgument_isWithin = GALGAS_bool (true) ;
       }
     }else if (constinArgument_value.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_sint_36__34_AttributeSet) {
-      GALGAS_sint_36__34_AttributeSet cast_13595_set ((cPtr_sint_36__34_AttributeSet *) constinArgument_value.ptr ()) ;
+      GALGAS_sint_36__34_AttributeSet cast_9257_set ((cPtr_sint_36__34_AttributeSet *) constinArgument_value.ptr ()) ;
       outArgument_isWithin = GALGAS_bool (true) ;
-      cEnumerator_sint_36__34_List enumerator_13648 (cast_13595_set.reader_valueList (SOURCE_FILE ("implementation_types.galgas", 492)), kEnumeration_up) ;
-      while (enumerator_13648.hasCurrentObject ()) {
-        const enumGalgasBool test_1 = GALGAS_bool (kIsStrictInf, enumerator_13648.current_value (HERE).objectCompare (object->mAttribute_min)).operator_or (GALGAS_bool (kIsStrictSup, enumerator_13648.current_value (HERE).objectCompare (object->mAttribute_max)) COMMA_SOURCE_FILE ("implementation_types.galgas", 493)).boolEnum () ;
+      cEnumerator_sint_36__34_List enumerator_9310 (cast_9257_set.reader_valueList (SOURCE_FILE ("implementation_types.galgas", 357)), kEnumeration_up) ;
+      while (enumerator_9310.hasCurrentObject ()) {
+        const enumGalgasBool test_1 = GALGAS_bool (kIsStrictInf, enumerator_9310.current_value (HERE).objectCompare (object->mAttribute_min)).operator_or (GALGAS_bool (kIsStrictSup, enumerator_9310.current_value (HERE).objectCompare (object->mAttribute_max)) COMMA_SOURCE_FILE ("implementation_types.galgas", 358)).boolEnum () ;
         if (kBoolTrue == test_1) {
           outArgument_isWithin = GALGAS_bool (false) ;
         }
-        enumerator_13648.gotoNextObject () ;
+        enumerator_9310.gotoNextObject () ;
       }
     }else{
-      inCompiler->emitSemanticError (constinArgument_value.reader_location (SOURCE_FILE ("implementation_types.galgas", 498)), GALGAS_string ("Incompatible set. Should be a INT64 range or INT64 set")  COMMA_SOURCE_FILE ("implementation_types.galgas", 498)) ;
-      inCompiler->emitSemanticError (object->mAttribute_location, GALGAS_string ("Previous set was declared here")  COMMA_SOURCE_FILE ("implementation_types.galgas", 499)) ;
+      inCompiler->emitSemanticError (constinArgument_value.reader_location (SOURCE_FILE ("implementation_types.galgas", 363)), GALGAS_string ("Incompatible set. Should be a INT64 range or INT64 set")  COMMA_SOURCE_FILE ("implementation_types.galgas", 363)) ;
+      inCompiler->emitSemanticError (object->mAttribute_location, GALGAS_string ("Previous set was declared here")  COMMA_SOURCE_FILE ("implementation_types.galgas", 364)) ;
     }
   }
 }
@@ -13904,25 +14415,25 @@ static void categoryMethod_floatAttributeMinMax_enclose (const cPtr_attributeRan
   outArgument_isWithin = GALGAS_bool (false) ;
   if (constinArgument_value.isValid ()) {
     if (constinArgument_value.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_floatAttributeMinMax) {
-      GALGAS_floatAttributeMinMax cast_14507_minmax ((cPtr_floatAttributeMinMax *) constinArgument_value.ptr ()) ;
-      const enumGalgasBool test_0 = GALGAS_bool (kIsSupOrEqual, cast_14507_minmax.reader_min (SOURCE_FILE ("implementation_types.galgas", 523)).objectCompare (object->mAttribute_min)).operator_and (GALGAS_bool (kIsInfOrEqual, cast_14507_minmax.reader_max (SOURCE_FILE ("implementation_types.galgas", 523)).objectCompare (object->mAttribute_max)) COMMA_SOURCE_FILE ("implementation_types.galgas", 523)).boolEnum () ;
+      GALGAS_floatAttributeMinMax cast_9792_minmax ((cPtr_floatAttributeMinMax *) constinArgument_value.ptr ()) ;
+      const enumGalgasBool test_0 = GALGAS_bool (kIsSupOrEqual, cast_9792_minmax.reader_min (SOURCE_FILE ("implementation_types.galgas", 377)).objectCompare (object->mAttribute_min)).operator_and (GALGAS_bool (kIsInfOrEqual, cast_9792_minmax.reader_max (SOURCE_FILE ("implementation_types.galgas", 377)).objectCompare (object->mAttribute_max)) COMMA_SOURCE_FILE ("implementation_types.galgas", 377)).boolEnum () ;
       if (kBoolTrue == test_0) {
         outArgument_isWithin = GALGAS_bool (true) ;
       }
     }else if (constinArgument_value.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_floatAttributeSet) {
-      GALGAS_floatAttributeSet cast_14626_set ((cPtr_floatAttributeSet *) constinArgument_value.ptr ()) ;
+      GALGAS_floatAttributeSet cast_9911_set ((cPtr_floatAttributeSet *) constinArgument_value.ptr ()) ;
       outArgument_isWithin = GALGAS_bool (true) ;
-      cEnumerator_floatList enumerator_14679 (cast_14626_set.reader_valueList (SOURCE_FILE ("implementation_types.galgas", 528)), kEnumeration_up) ;
-      while (enumerator_14679.hasCurrentObject ()) {
-        const enumGalgasBool test_1 = GALGAS_bool (kIsStrictInf, enumerator_14679.current_value (HERE).objectCompare (object->mAttribute_min)).operator_or (GALGAS_bool (kIsStrictSup, enumerator_14679.current_value (HERE).objectCompare (object->mAttribute_max)) COMMA_SOURCE_FILE ("implementation_types.galgas", 529)).boolEnum () ;
+      cEnumerator_floatList enumerator_9964 (cast_9911_set.reader_valueList (SOURCE_FILE ("implementation_types.galgas", 382)), kEnumeration_up) ;
+      while (enumerator_9964.hasCurrentObject ()) {
+        const enumGalgasBool test_1 = GALGAS_bool (kIsStrictInf, enumerator_9964.current_value (HERE).objectCompare (object->mAttribute_min)).operator_or (GALGAS_bool (kIsStrictSup, enumerator_9964.current_value (HERE).objectCompare (object->mAttribute_max)) COMMA_SOURCE_FILE ("implementation_types.galgas", 383)).boolEnum () ;
         if (kBoolTrue == test_1) {
           outArgument_isWithin = GALGAS_bool (false) ;
         }
-        enumerator_14679.gotoNextObject () ;
+        enumerator_9964.gotoNextObject () ;
       }
     }else{
-      inCompiler->emitSemanticError (constinArgument_value.reader_location (SOURCE_FILE ("implementation_types.galgas", 534)), GALGAS_string ("Incompatible set. Should be a FLOAT range or FLOAT set")  COMMA_SOURCE_FILE ("implementation_types.galgas", 534)) ;
-      inCompiler->emitSemanticError (object->mAttribute_location, GALGAS_string ("Previous set was declared here")  COMMA_SOURCE_FILE ("implementation_types.galgas", 535)) ;
+      inCompiler->emitSemanticError (constinArgument_value.reader_location (SOURCE_FILE ("implementation_types.galgas", 388)), GALGAS_string ("Incompatible set. Should be a FLOAT range or FLOAT set")  COMMA_SOURCE_FILE ("implementation_types.galgas", 388)) ;
+      inCompiler->emitSemanticError (object->mAttribute_location, GALGAS_string ("Previous set was declared here")  COMMA_SOURCE_FILE ("implementation_types.galgas", 389)) ;
     }
   }
 }
@@ -13982,57 +14493,57 @@ static void categoryMethod_impBoolType_setDefault (const cPtr_impAutoDefaultType
     if (object->mAttribute_defaultValue.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_void) {
     }else if (object->mAttribute_defaultValue.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_auto) {
     }else if (object->mAttribute_defaultValue.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_boolAttribute) {
-      GALGAS_boolAttribute cast_18938_b ((cPtr_boolAttribute *) object->mAttribute_defaultValue.ptr ()) ;
-      const enumGalgasBool test_0 = ioArgument_attributes.reader_objectParams (SOURCE_FILE ("implementation_types.galgas", 681)).reader_hasKey (object->mAttribute_name.reader_string (SOURCE_FILE ("implementation_types.galgas", 681)) COMMA_SOURCE_FILE ("implementation_types.galgas", 681)).boolEnum () ;
+      GALGAS_boolAttribute cast_13558_b ((cPtr_boolAttribute *) object->mAttribute_defaultValue.ptr ()) ;
+      const enumGalgasBool test_0 = ioArgument_attributes.reader_objectParams (SOURCE_FILE ("implementation_types.galgas", 509)).reader_hasKey (object->mAttribute_name.reader_string (SOURCE_FILE ("implementation_types.galgas", 509)) COMMA_SOURCE_FILE ("implementation_types.galgas", 509)).boolEnum () ;
       if (kBoolTrue == test_0) {
-        GALGAS_identifierMap var_userAttributes = ioArgument_attributes.reader_objectParams (SOURCE_FILE ("implementation_types.galgas", 684)) ;
+        GALGAS_identifierMap var_userAttributes = ioArgument_attributes.reader_objectParams (SOURCE_FILE ("implementation_types.galgas", 512)) ;
         GALGAS_object_5F_t var_value ;
-        var_userAttributes.method_get (object->mAttribute_name, var_value, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 686)) ;
+        var_userAttributes.method_get (object->mAttribute_name, var_value, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 514)) ;
         if (var_value.isValid ()) {
           if (var_value.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_boolAttribute) {
-            GALGAS_boolAttribute cast_19368_boolValue ((cPtr_boolAttribute *) var_value.ptr ()) ;
+            GALGAS_boolAttribute cast_13988_boolValue ((cPtr_boolAttribute *) var_value.ptr ()) ;
             GALGAS_implementationObjectMap var_subImpAttributes ;
-            const enumGalgasBool test_1 = cast_19368_boolValue.reader_value (SOURCE_FILE ("implementation_types.galgas", 690)).boolEnum () ;
+            const enumGalgasBool test_1 = cast_13988_boolValue.reader_value (SOURCE_FILE ("implementation_types.galgas", 518)).boolEnum () ;
             if (kBoolTrue == test_1) {
               var_subImpAttributes = object->mAttribute_trueSubAttributes ;
             }else if (kBoolFalse == test_1) {
               var_subImpAttributes = object->mAttribute_falseSubAttributes ;
             }
-            GALGAS_objectAttributes var_subAttributes = cast_19368_boolValue.reader_subAttributes (SOURCE_FILE ("implementation_types.galgas", 695)) ;
+            GALGAS_objectAttributes var_subAttributes = cast_13988_boolValue.reader_subAttributes (SOURCE_FILE ("implementation_types.galgas", 523)) ;
             {
-            routine_setDefaultsForType (var_subImpAttributes, var_subAttributes, inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 696)) ;
+            routine_setDefaultsForType (var_subImpAttributes, var_subAttributes, inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 524)) ;
             }
-            GALGAS_boolAttribute var_bv = cast_19368_boolValue ;
+            GALGAS_boolAttribute var_bv = cast_13988_boolValue ;
             {
-            var_bv.modifier_setSubAttributes (var_subAttributes COMMA_SOURCE_FILE ("implementation_types.galgas", 699)) ;
-            }
-            {
-            var_userAttributes.modifier_setValueForKey (var_bv, object->mAttribute_name.reader_string (SOURCE_FILE ("implementation_types.galgas", 700)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 700)) ;
+            var_bv.modifier_setSubAttributes (var_subAttributes COMMA_SOURCE_FILE ("implementation_types.galgas", 527)) ;
             }
             {
-            ioArgument_attributes.modifier_setObjectParams (var_userAttributes COMMA_SOURCE_FILE ("implementation_types.galgas", 701)) ;
+            var_userAttributes.modifier_setValueForKey (var_bv, object->mAttribute_name.reader_string (SOURCE_FILE ("implementation_types.galgas", 528)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 528)) ;
+            }
+            {
+            ioArgument_attributes.modifier_setObjectParams (var_userAttributes COMMA_SOURCE_FILE ("implementation_types.galgas", 529)) ;
             }
           }
         }
       }else if (kBoolFalse == test_0) {
         GALGAS_implementationObjectMap var_subImpAttributes ;
-        const enumGalgasBool test_2 = cast_18938_b.reader_value (SOURCE_FILE ("implementation_types.galgas", 705)).boolEnum () ;
+        const enumGalgasBool test_2 = cast_13558_b.reader_value (SOURCE_FILE ("implementation_types.galgas", 533)).boolEnum () ;
         if (kBoolTrue == test_2) {
           var_subImpAttributes = object->mAttribute_trueSubAttributes ;
         }else if (kBoolFalse == test_2) {
           var_subImpAttributes = object->mAttribute_falseSubAttributes ;
         }
-        GALGAS_objectAttributes var_subAttributes = function_emptyObject (inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 710)) ;
+        GALGAS_objectAttributes var_subAttributes = function_emptyObject (inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 538)) ;
         {
-        routine_setDefaultsForType (var_subImpAttributes, var_subAttributes, inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 711)) ;
+        routine_setDefaultsForType (var_subImpAttributes, var_subAttributes, inCompiler  COMMA_SOURCE_FILE ("implementation_types.galgas", 539)) ;
         }
-        GALGAS_boolAttribute var_defaults = GALGAS_boolAttribute::constructor_new (cast_18938_b.reader_oil_5F_desc (SOURCE_FILE ("implementation_types.galgas", 712)), cast_18938_b.reader_location (SOURCE_FILE ("implementation_types.galgas", 712)), cast_18938_b.reader_value (SOURCE_FILE ("implementation_types.galgas", 712)), var_subAttributes  COMMA_SOURCE_FILE ("implementation_types.galgas", 712)) ;
-        GALGAS_identifierMap var_attr = ioArgument_attributes.reader_objectParams (SOURCE_FILE ("implementation_types.galgas", 713)) ;
+        GALGAS_boolAttribute var_defaults = GALGAS_boolAttribute::constructor_new (cast_13558_b.reader_oil_5F_desc (SOURCE_FILE ("implementation_types.galgas", 540)), cast_13558_b.reader_location (SOURCE_FILE ("implementation_types.galgas", 540)), cast_13558_b.reader_value (SOURCE_FILE ("implementation_types.galgas", 540)), var_subAttributes  COMMA_SOURCE_FILE ("implementation_types.galgas", 540)) ;
+        GALGAS_identifierMap var_attr = ioArgument_attributes.reader_objectParams (SOURCE_FILE ("implementation_types.galgas", 541)) ;
         {
-        var_attr.modifier_put (object->mAttribute_name, var_defaults, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 714)) ;
+        var_attr.modifier_put (object->mAttribute_name, var_defaults, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 542)) ;
         }
         {
-        ioArgument_attributes.modifier_setObjectParams (var_attr COMMA_SOURCE_FILE ("implementation_types.galgas", 715)) ;
+        ioArgument_attributes.modifier_setObjectParams (var_attr COMMA_SOURCE_FILE ("implementation_types.galgas", 543)) ;
         }
       }
     }
@@ -14061,10 +14572,10 @@ static void categoryMethod_refType_checkAttributeReferences (const cPtr_impType 
                                                              COMMA_UNUSED_LOCATION_ARGS) {
   const cPtr_refType * object = (const cPtr_refType *) inObject ;
   macroValidSharedObject (object, cPtr_refType) ;
-  const enumGalgasBool test_0 = callCategoryReader_hasKey ((const cPtr_implementation *) constinArgument_imp.ptr (), object->mAttribute_ref.reader_string (SOURCE_FILE ("implementation_types.galgas", 945)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 945)).operator_not (SOURCE_FILE ("implementation_types.galgas", 945)).boolEnum () ;
+  const enumGalgasBool test_0 = callCategoryReader_hasKey ((const cPtr_implementation *) constinArgument_imp.ptr (), object->mAttribute_ref.reader_string (SOURCE_FILE ("implementation_types.galgas", 765)), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 765)).operator_not (SOURCE_FILE ("implementation_types.galgas", 765)).boolEnum () ;
   if (kBoolTrue == test_0) {
     GALGAS_location location_1 (object->mAttribute_ref.reader_location (HERE)) ; // Implicit use of 'location' reader
-    inCompiler->emitSemanticError (location_1, object->mAttribute_ref.reader_string (SOURCE_FILE ("implementation_types.galgas", 946)).add_operation (GALGAS_string (" object kind does not exist"), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 946))  COMMA_SOURCE_FILE ("implementation_types.galgas", 946)) ;
+    inCompiler->emitSemanticError (location_1, object->mAttribute_ref.reader_string (SOURCE_FILE ("implementation_types.galgas", 766)).add_operation (GALGAS_string (" object kind does not exist"), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 766))  COMMA_SOURCE_FILE ("implementation_types.galgas", 766)) ;
   }
 }
 //---------------------------------------------------------------------------------------------------------------------*
@@ -14090,15 +14601,15 @@ static void categoryMethod_impBoolType_checkAttributeReferences (const cPtr_impT
                                                                  COMMA_UNUSED_LOCATION_ARGS) {
   const cPtr_impBoolType * object = (const cPtr_impBoolType *) inObject ;
   macroValidSharedObject (object, cPtr_impBoolType) ;
-  cEnumerator_implementationObjectMap enumerator_28095 (object->mAttribute_trueSubAttributes, kEnumeration_up) ;
-  while (enumerator_28095.hasCurrentObject ()) {
-    callCategoryMethod_checkAttributeReferences ((const cPtr_impType *) enumerator_28095.current_type (HERE).ptr (), constinArgument_imp, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 953)) ;
-    enumerator_28095.gotoNextObject () ;
+  cEnumerator_implementationObjectMap enumerator_22528 (object->mAttribute_trueSubAttributes, kEnumeration_up) ;
+  while (enumerator_22528.hasCurrentObject ()) {
+    callCategoryMethod_checkAttributeReferences ((const cPtr_impType *) enumerator_22528.current_type (HERE).ptr (), constinArgument_imp, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 774)) ;
+    enumerator_22528.gotoNextObject () ;
   }
-  cEnumerator_implementationObjectMap enumerator_28178 (object->mAttribute_falseSubAttributes, kEnumeration_up) ;
-  while (enumerator_28178.hasCurrentObject ()) {
-    callCategoryMethod_checkAttributeReferences ((const cPtr_impType *) enumerator_28178.current_type (HERE).ptr (), constinArgument_imp, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 956)) ;
-    enumerator_28178.gotoNextObject () ;
+  cEnumerator_implementationObjectMap enumerator_22611 (object->mAttribute_falseSubAttributes, kEnumeration_up) ;
+  while (enumerator_22611.hasCurrentObject ()) {
+    callCategoryMethod_checkAttributeReferences ((const cPtr_impType *) enumerator_22611.current_type (HERE).ptr (), constinArgument_imp, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 777)) ;
+    enumerator_22611.gotoNextObject () ;
   }
 }
 //---------------------------------------------------------------------------------------------------------------------*
@@ -14124,14 +14635,14 @@ static void categoryMethod_impEnumType_checkAttributeReferences (const cPtr_impT
                                                                  COMMA_UNUSED_LOCATION_ARGS) {
   const cPtr_impEnumType * object = (const cPtr_impEnumType *) inObject ;
   macroValidSharedObject (object, cPtr_impEnumType) ;
-  cEnumerator_enumValues enumerator_28338 (object->mAttribute_valuesMap, kEnumeration_up) ;
-  while (enumerator_28338.hasCurrentObject ()) {
-    cEnumerator_implementationObjectMap enumerator_28370 (enumerator_28338.current_subAttributes (HERE), kEnumeration_up) ;
-    while (enumerator_28370.hasCurrentObject ()) {
-      callCategoryMethod_checkAttributeReferences ((const cPtr_impType *) enumerator_28370.current_type (HERE).ptr (), constinArgument_imp, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 964)) ;
-      enumerator_28370.gotoNextObject () ;
+  cEnumerator_enumValues enumerator_22771 (object->mAttribute_valuesMap, kEnumeration_up) ;
+  while (enumerator_22771.hasCurrentObject ()) {
+    cEnumerator_implementationObjectMap enumerator_22803 (enumerator_22771.current_subAttributes (HERE), kEnumeration_up) ;
+    while (enumerator_22803.hasCurrentObject ()) {
+      callCategoryMethod_checkAttributeReferences ((const cPtr_impType *) enumerator_22803.current_type (HERE).ptr (), constinArgument_imp, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 786)) ;
+      enumerator_22803.gotoNextObject () ;
     }
-    enumerator_28338.gotoNextObject () ;
+    enumerator_22771.gotoNextObject () ;
   }
 }
 //---------------------------------------------------------------------------------------------------------------------*
@@ -14307,6 +14818,34 @@ C_PrologueEpilogue gMethod_string_5F_class_set (defineCategoryMethod_string_5F_c
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
+//                                Overriding category method '@objectRefAttribute set'                                 *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void categoryMethod_objectRefAttribute_set (const cPtr_object_5F_t * inObject,
+                                                   const GALGAS_lstring constinArgument_name,
+                                                   GALGAS_TfieldMap & ioArgument_result,
+                                                   C_Compiler * inCompiler
+                                                   COMMA_UNUSED_LOCATION_ARGS) {
+  const cPtr_objectRefAttribute * object = (const cPtr_objectRefAttribute *) inObject ;
+  macroValidSharedObject (object, cPtr_objectRefAttribute) ;
+  {
+  routine_addStringValue (ioArgument_result, constinArgument_name, object->mAttribute_value.reader_string (SOURCE_FILE ("systemConfig.galgas", 54)), object->mAttribute_oil_5F_desc, inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 54)) ;
+  }
+}
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void defineCategoryMethod_objectRefAttribute_set (void) {
+  enterCategoryMethod_set (kTypeDescriptor_GALGAS_objectRefAttribute.mSlotID,
+                           categoryMethod_objectRefAttribute_set) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_PrologueEpilogue gMethod_objectRefAttribute_set (defineCategoryMethod_objectRefAttribute_set, NULL) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //                                 Overriding category method '@multipleAttribute set'                                 *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -14318,36 +14857,36 @@ static void categoryMethod_multipleAttribute_set (const cPtr_object_5F_t * inObj
                                                   COMMA_UNUSED_LOCATION_ARGS) {
   const cPtr_multipleAttribute * object = (const cPtr_multipleAttribute *) inObject ;
   macroValidSharedObject (object, cPtr_multipleAttribute) ;
-  GALGAS_TfieldMapList var_multiple = GALGAS_TfieldMapList::constructor_emptyList (SOURCE_FILE ("systemConfig.galgas", 54)) ;
-  cEnumerator_identifierList enumerator_2041 (object->mAttribute_items, kEnumeration_up) ;
-  while (enumerator_2041.hasCurrentObject ()) {
-    GALGAS_TfieldMap var_multipleItem = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("systemConfig.galgas", 56)) ;
-    if (enumerator_2041.current_item (HERE).isValid ()) {
-      if (enumerator_2041.current_item (HERE).dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_structAttribute) {
-        GALGAS_structAttribute cast_2139_aStruct ((cPtr_structAttribute *) enumerator_2041.current_item (HERE).ptr ()) ;
+  GALGAS_TfieldMapList var_multiple = GALGAS_TfieldMapList::constructor_emptyList (SOURCE_FILE ("systemConfig.galgas", 58)) ;
+  cEnumerator_identifierList enumerator_2186 (object->mAttribute_items, kEnumeration_up) ;
+  while (enumerator_2186.hasCurrentObject ()) {
+    GALGAS_TfieldMap var_multipleItem = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("systemConfig.galgas", 60)) ;
+    if (enumerator_2186.current_item (HERE).isValid ()) {
+      if (enumerator_2186.current_item (HERE).dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_structAttribute) {
+        GALGAS_structAttribute cast_2284_aStruct ((cPtr_structAttribute *) enumerator_2186.current_item (HERE).ptr ()) ;
         {
-        routine_addLStringValue (var_multipleItem, GALGAS_string ("NAME"), cast_2139_aStruct.reader_structName (SOURCE_FILE ("systemConfig.galgas", 59)), cast_2139_aStruct.reader_oil_5F_desc (SOURCE_FILE ("systemConfig.galgas", 59)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 59)) ;
+        routine_addLStringValue (var_multipleItem, GALGAS_string ("NAME"), cast_2284_aStruct.reader_structName (SOURCE_FILE ("systemConfig.galgas", 63)), cast_2284_aStruct.reader_oil_5F_desc (SOURCE_FILE ("systemConfig.galgas", 63)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 63)) ;
         }
-        GALGAS_TfieldMap var_subAttrs = callCategoryReader_fieldMap ((const cPtr_objectAttributes *) cast_2139_aStruct.reader_subAttributes (SOURCE_FILE ("systemConfig.galgas", 60)).ptr (), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 60)) ;
-        const enumGalgasBool test_0 = GALGAS_bool (kIsStrictSup, var_subAttrs.reader_count (SOURCE_FILE ("systemConfig.galgas", 61)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+        GALGAS_TfieldMap var_subAttrs = callCategoryReader_fieldMap ((const cPtr_objectAttributes *) cast_2284_aStruct.reader_subAttributes (SOURCE_FILE ("systemConfig.galgas", 64)).ptr (), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 64)) ;
+        const enumGalgasBool test_0 = GALGAS_bool (kIsStrictSup, var_subAttrs.reader_count (SOURCE_FILE ("systemConfig.galgas", 65)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
         if (kBoolTrue == test_0) {
-          cEnumerator_TfieldMap enumerator_2358 (var_subAttrs, kEnumeration_up) ;
-          while (enumerator_2358.hasCurrentObject ()) {
+          cEnumerator_TfieldMap enumerator_2503 (var_subAttrs, kEnumeration_up) ;
+          while (enumerator_2503.hasCurrentObject ()) {
             {
-            var_multipleItem.modifier_insertKey (enumerator_2358.current_lkey (HERE), enumerator_2358.current_mType (HERE), enumerator_2358.current_mValue (HERE), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 63)) ;
+            var_multipleItem.modifier_insertKey (enumerator_2503.current_lkey (HERE), enumerator_2503.current_mType (HERE), enumerator_2503.current_mValue (HERE), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 67)) ;
             }
-            enumerator_2358.gotoNextObject () ;
+            enumerator_2503.gotoNextObject () ;
           }
         }
       }else{
-        callCategoryMethod_set ((const cPtr_object_5F_t *) enumerator_2041.current_item (HERE).ptr (), GALGAS_lstring::constructor_new (GALGAS_string ("VALUE"), enumerator_2041.current_item (HERE).reader_location (SOURCE_FILE ("systemConfig.galgas", 67))  COMMA_SOURCE_FILE ("systemConfig.galgas", 67)), var_multipleItem, inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 67)) ;
+        callCategoryMethod_set ((const cPtr_object_5F_t *) enumerator_2186.current_item (HERE).ptr (), GALGAS_lstring::constructor_new (GALGAS_string ("VALUE"), enumerator_2186.current_item (HERE).reader_location (SOURCE_FILE ("systemConfig.galgas", 71))  COMMA_SOURCE_FILE ("systemConfig.galgas", 71)), var_multipleItem, inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 71)) ;
       }
     }
-    var_multiple.addAssign_operation (var_multipleItem  COMMA_SOURCE_FILE ("systemConfig.galgas", 69)) ;
-    enumerator_2041.gotoNextObject () ;
+    var_multiple.addAssign_operation (var_multipleItem  COMMA_SOURCE_FILE ("systemConfig.galgas", 73)) ;
+    enumerator_2186.gotoNextObject () ;
   }
   {
-  routine_addListValue (ioArgument_result, constinArgument_name, var_multiple, object->mAttribute_oil_5F_desc, inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 71)) ;
+  routine_addListValue (ioArgument_result, constinArgument_name, var_multiple, object->mAttribute_oil_5F_desc, inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 75)) ;
   }
 }
 //---------------------------------------------------------------------------------------------------------------------*
@@ -14375,7 +14914,7 @@ static void categoryMethod_uint_33__32__5F_class_set (const cPtr_object_5F_t * i
   const cPtr_uint_33__32__5F_class * object = (const cPtr_uint_33__32__5F_class *) inObject ;
   macroValidSharedObject (object, cPtr_uint_33__32__5F_class) ;
   {
-  routine_addUnsignedValue (ioArgument_result, constinArgument_name, object->mAttribute_value.reader_uint_36__34_ (SOURCE_FILE ("systemConfig.galgas", 75)), object->mAttribute_oil_5F_desc, inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 75)) ;
+  routine_addUnsignedValue (ioArgument_result, constinArgument_name, object->mAttribute_value.reader_uint_36__34_ (SOURCE_FILE ("systemConfig.galgas", 79)), object->mAttribute_oil_5F_desc, inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 79)) ;
   }
 }
 //---------------------------------------------------------------------------------------------------------------------*
@@ -14403,7 +14942,7 @@ static void categoryMethod_sint_33__32__5F_class_set (const cPtr_object_5F_t * i
   const cPtr_sint_33__32__5F_class * object = (const cPtr_sint_33__32__5F_class *) inObject ;
   macroValidSharedObject (object, cPtr_sint_33__32__5F_class) ;
   {
-  routine_addSignedValue (ioArgument_result, constinArgument_name, object->mAttribute_value.reader_sint_36__34_ (SOURCE_FILE ("systemConfig.galgas", 79)), object->mAttribute_oil_5F_desc, inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 79)) ;
+  routine_addSignedValue (ioArgument_result, constinArgument_name, object->mAttribute_value.reader_sint_36__34_ (SOURCE_FILE ("systemConfig.galgas", 83)), object->mAttribute_oil_5F_desc, inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 83)) ;
   }
 }
 //---------------------------------------------------------------------------------------------------------------------*
@@ -14431,7 +14970,7 @@ static void categoryMethod_uint_36__34__5F_class_set (const cPtr_object_5F_t * i
   const cPtr_uint_36__34__5F_class * object = (const cPtr_uint_36__34__5F_class *) inObject ;
   macroValidSharedObject (object, cPtr_uint_36__34__5F_class) ;
   {
-  routine_addUnsignedValue (ioArgument_result, constinArgument_name, object->mAttribute_value, object->mAttribute_oil_5F_desc, inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 83)) ;
+  routine_addUnsignedValue (ioArgument_result, constinArgument_name, object->mAttribute_value, object->mAttribute_oil_5F_desc, inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 87)) ;
   }
 }
 //---------------------------------------------------------------------------------------------------------------------*
@@ -14459,7 +14998,7 @@ static void categoryMethod_sint_36__34__5F_class_set (const cPtr_object_5F_t * i
   const cPtr_sint_36__34__5F_class * object = (const cPtr_sint_36__34__5F_class *) inObject ;
   macroValidSharedObject (object, cPtr_sint_36__34__5F_class) ;
   {
-  routine_addSignedValue (ioArgument_result, constinArgument_name, object->mAttribute_value, object->mAttribute_oil_5F_desc, inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 87)) ;
+  routine_addSignedValue (ioArgument_result, constinArgument_name, object->mAttribute_value, object->mAttribute_oil_5F_desc, inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 91)) ;
   }
 }
 //---------------------------------------------------------------------------------------------------------------------*
@@ -14487,7 +15026,7 @@ static void categoryMethod_float_5F_class_set (const cPtr_object_5F_t * inObject
   const cPtr_float_5F_class * object = (const cPtr_float_5F_class *) inObject ;
   macroValidSharedObject (object, cPtr_float_5F_class) ;
   {
-  routine_addFloatValue (ioArgument_result, constinArgument_name, object->mAttribute_value, object->mAttribute_oil_5F_desc, inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 91)) ;
+  routine_addFloatValue (ioArgument_result, constinArgument_name, object->mAttribute_value, object->mAttribute_oil_5F_desc, inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 95)) ;
   }
 }
 //---------------------------------------------------------------------------------------------------------------------*
@@ -14515,7 +15054,7 @@ static void categoryMethod_auto_set (const cPtr_object_5F_t * inObject,
   const cPtr_auto * object = (const cPtr_auto *) inObject ;
   macroValidSharedObject (object, cPtr_auto) ;
   {
-  routine_addEnumValue (ioArgument_result, constinArgument_name, GALGAS_string ("auto"), object->mAttribute_oil_5F_desc, inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 95)) ;
+  routine_addEnumValue (ioArgument_result, constinArgument_name, GALGAS_string ("auto"), object->mAttribute_oil_5F_desc, inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 99)) ;
   }
 }
 //---------------------------------------------------------------------------------------------------------------------*
@@ -14581,7 +15120,7 @@ static void categoryMethod_refType_verifyType (const cPtr_impType * /* inObject 
                                                C_Compiler * inCompiler
                                                COMMA_UNUSED_LOCATION_ARGS) {
   if (constinArgument_attr.isValid ()) {
-    if (constinArgument_attr.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_string_5F_class) {
+    if (constinArgument_attr.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_objectRefAttribute) {
     }else{
       inCompiler->emitSemanticError (constinArgument_attr.reader_location (SOURCE_FILE ("semantic_verification.galgas", 81)), GALGAS_string ("object reference expected")  COMMA_SOURCE_FILE ("semantic_verification.galgas", 81)) ;
     }
@@ -14612,29 +15151,29 @@ static void categoryMethod_impBoolType_verifyType (const cPtr_impType * inObject
   macroValidSharedObject (object, cPtr_impBoolType) ;
   if (constinArgument_attr.isValid ()) {
     if (constinArgument_attr.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_boolAttribute) {
-      GALGAS_boolAttribute cast_2567_b ((cPtr_boolAttribute *) constinArgument_attr.ptr ()) ;
-      const enumGalgasBool test_0 = cast_2567_b.reader_value (SOURCE_FILE ("semantic_verification.galgas", 90)).boolEnum () ;
+      GALGAS_boolAttribute cast_2573_b ((cPtr_boolAttribute *) constinArgument_attr.ptr ()) ;
+      const enumGalgasBool test_0 = cast_2573_b.reader_value (SOURCE_FILE ("semantic_verification.galgas", 90)).boolEnum () ;
       if (kBoolTrue == test_0) {
-        cEnumerator_implementationObjectMap enumerator_2626 (object->mAttribute_trueSubAttributes, kEnumeration_up) ;
-        while (enumerator_2626.hasCurrentObject ()) {
-          const enumGalgasBool test_1 = cast_2567_b.reader_subAttributes (SOURCE_FILE ("semantic_verification.galgas", 92)).reader_objectParams (SOURCE_FILE ("semantic_verification.galgas", 92)).reader_hasKey (enumerator_2626.current_lkey (HERE).reader_string (SOURCE_FILE ("semantic_verification.galgas", 92)) COMMA_SOURCE_FILE ("semantic_verification.galgas", 92)).boolEnum () ;
+        cEnumerator_implementationObjectMap enumerator_2632 (object->mAttribute_trueSubAttributes, kEnumeration_up) ;
+        while (enumerator_2632.hasCurrentObject ()) {
+          const enumGalgasBool test_1 = cast_2573_b.reader_subAttributes (SOURCE_FILE ("semantic_verification.galgas", 92)).reader_objectParams (SOURCE_FILE ("semantic_verification.galgas", 92)).reader_hasKey (enumerator_2632.current_lkey (HERE).reader_string (SOURCE_FILE ("semantic_verification.galgas", 92)) COMMA_SOURCE_FILE ("semantic_verification.galgas", 92)).boolEnum () ;
           if (kBoolTrue == test_1) {
             GALGAS_object_5F_t var_subAttrs ;
-            cast_2567_b.reader_subAttributes (SOURCE_FILE ("semantic_verification.galgas", 94)).reader_objectParams (SOURCE_FILE ("semantic_verification.galgas", 94)).method_get (enumerator_2626.current_lkey (HERE), var_subAttrs, inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 94)) ;
-            callCategoryMethod_verifyMultipleType ((const cPtr_impType *) enumerator_2626.current_type (HERE).ptr (), var_subAttrs, inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 95)) ;
+            cast_2573_b.reader_subAttributes (SOURCE_FILE ("semantic_verification.galgas", 94)).reader_objectParams (SOURCE_FILE ("semantic_verification.galgas", 94)).method_get (enumerator_2632.current_lkey (HERE), var_subAttrs, inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 94)) ;
+            callCategoryMethod_verifyMultipleType ((const cPtr_impType *) enumerator_2632.current_type (HERE).ptr (), var_subAttrs, inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 95)) ;
           }
-          enumerator_2626.gotoNextObject () ;
+          enumerator_2632.gotoNextObject () ;
         }
       }else if (kBoolFalse == test_0) {
-        cEnumerator_implementationObjectMap enumerator_2909 (object->mAttribute_falseSubAttributes, kEnumeration_up) ;
-        while (enumerator_2909.hasCurrentObject ()) {
-          const enumGalgasBool test_2 = cast_2567_b.reader_subAttributes (SOURCE_FILE ("semantic_verification.galgas", 100)).reader_objectParams (SOURCE_FILE ("semantic_verification.galgas", 100)).reader_hasKey (enumerator_2909.current_lkey (HERE).reader_string (SOURCE_FILE ("semantic_verification.galgas", 100)) COMMA_SOURCE_FILE ("semantic_verification.galgas", 100)).boolEnum () ;
+        cEnumerator_implementationObjectMap enumerator_2915 (object->mAttribute_falseSubAttributes, kEnumeration_up) ;
+        while (enumerator_2915.hasCurrentObject ()) {
+          const enumGalgasBool test_2 = cast_2573_b.reader_subAttributes (SOURCE_FILE ("semantic_verification.galgas", 100)).reader_objectParams (SOURCE_FILE ("semantic_verification.galgas", 100)).reader_hasKey (enumerator_2915.current_lkey (HERE).reader_string (SOURCE_FILE ("semantic_verification.galgas", 100)) COMMA_SOURCE_FILE ("semantic_verification.galgas", 100)).boolEnum () ;
           if (kBoolTrue == test_2) {
             GALGAS_object_5F_t var_subAttrs ;
-            cast_2567_b.reader_subAttributes (SOURCE_FILE ("semantic_verification.galgas", 102)).reader_objectParams (SOURCE_FILE ("semantic_verification.galgas", 102)).method_get (enumerator_2909.current_lkey (HERE), var_subAttrs, inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 102)) ;
-            callCategoryMethod_verifyMultipleType ((const cPtr_impType *) enumerator_2909.current_type (HERE).ptr (), var_subAttrs, inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 103)) ;
+            cast_2573_b.reader_subAttributes (SOURCE_FILE ("semantic_verification.galgas", 102)).reader_objectParams (SOURCE_FILE ("semantic_verification.galgas", 102)).method_get (enumerator_2915.current_lkey (HERE), var_subAttrs, inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 102)) ;
+            callCategoryMethod_verifyMultipleType ((const cPtr_impType *) enumerator_2915.current_type (HERE).ptr (), var_subAttrs, inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 103)) ;
           }
-          enumerator_2909.gotoNextObject () ;
+          enumerator_2915.gotoNextObject () ;
         }
       }
     }else{
@@ -14667,23 +15206,23 @@ static void categoryMethod_impEnumType_verifyType (const cPtr_impType * inObject
   macroValidSharedObject (object, cPtr_impEnumType) ;
   if (constinArgument_attr.isValid ()) {
     if (constinArgument_attr.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_enumAttribute) {
-      GALGAS_enumAttribute cast_3400_e ((cPtr_enumAttribute *) constinArgument_attr.ptr ()) ;
-      const enumGalgasBool test_0 = object->mAttribute_valuesMap.reader_hasKey (cast_3400_e.reader_value (SOURCE_FILE ("semantic_verification.galgas", 117)) COMMA_SOURCE_FILE ("semantic_verification.galgas", 117)).boolEnum () ;
+      GALGAS_enumAttribute cast_3406_e ((cPtr_enumAttribute *) constinArgument_attr.ptr ()) ;
+      const enumGalgasBool test_0 = object->mAttribute_valuesMap.reader_hasKey (cast_3406_e.reader_value (SOURCE_FILE ("semantic_verification.galgas", 117)) COMMA_SOURCE_FILE ("semantic_verification.galgas", 117)).boolEnum () ;
       if (kBoolTrue == test_0) {
         GALGAS_implementationObjectMap var_validVal ;
-        object->mAttribute_valuesMap.method_get (function_lstringWith (cast_3400_e.reader_value (SOURCE_FILE ("semantic_verification.galgas", 119)), inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 119)), var_validVal, inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 119)) ;
-        cEnumerator_implementationObjectMap enumerator_3567 (var_validVal, kEnumeration_up) ;
-        while (enumerator_3567.hasCurrentObject ()) {
-          const enumGalgasBool test_1 = cast_3400_e.reader_subAttributes (SOURCE_FILE ("semantic_verification.galgas", 121)).reader_objectParams (SOURCE_FILE ("semantic_verification.galgas", 121)).reader_hasKey (enumerator_3567.current_lkey (HERE).reader_string (SOURCE_FILE ("semantic_verification.galgas", 121)) COMMA_SOURCE_FILE ("semantic_verification.galgas", 121)).boolEnum () ;
+        object->mAttribute_valuesMap.method_get (function_lstringWith (cast_3406_e.reader_value (SOURCE_FILE ("semantic_verification.galgas", 119)), inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 119)), var_validVal, inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 119)) ;
+        cEnumerator_implementationObjectMap enumerator_3573 (var_validVal, kEnumeration_up) ;
+        while (enumerator_3573.hasCurrentObject ()) {
+          const enumGalgasBool test_1 = cast_3406_e.reader_subAttributes (SOURCE_FILE ("semantic_verification.galgas", 121)).reader_objectParams (SOURCE_FILE ("semantic_verification.galgas", 121)).reader_hasKey (enumerator_3573.current_lkey (HERE).reader_string (SOURCE_FILE ("semantic_verification.galgas", 121)) COMMA_SOURCE_FILE ("semantic_verification.galgas", 121)).boolEnum () ;
           if (kBoolTrue == test_1) {
             GALGAS_object_5F_t var_subAttrs ;
-            cast_3400_e.reader_subAttributes (SOURCE_FILE ("semantic_verification.galgas", 123)).reader_objectParams (SOURCE_FILE ("semantic_verification.galgas", 123)).method_get (enumerator_3567.current_lkey (HERE), var_subAttrs, inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 123)) ;
-            callCategoryMethod_verifyMultipleType ((const cPtr_impType *) enumerator_3567.current_type (HERE).ptr (), var_subAttrs, inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 124)) ;
+            cast_3406_e.reader_subAttributes (SOURCE_FILE ("semantic_verification.galgas", 123)).reader_objectParams (SOURCE_FILE ("semantic_verification.galgas", 123)).method_get (enumerator_3573.current_lkey (HERE), var_subAttrs, inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 123)) ;
+            callCategoryMethod_verifyMultipleType ((const cPtr_impType *) enumerator_3573.current_type (HERE).ptr (), var_subAttrs, inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 124)) ;
           }
-          enumerator_3567.gotoNextObject () ;
+          enumerator_3573.gotoNextObject () ;
         }
       }else if (kBoolFalse == test_0) {
-        inCompiler->emitSemanticError (cast_3400_e.reader_location (SOURCE_FILE ("semantic_verification.galgas", 128)), cast_3400_e.reader_value (SOURCE_FILE ("semantic_verification.galgas", 128)).add_operation (GALGAS_string (" is not a valid enum value"), inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 128))  COMMA_SOURCE_FILE ("semantic_verification.galgas", 128)) ;
+        inCompiler->emitSemanticError (cast_3406_e.reader_location (SOURCE_FILE ("semantic_verification.galgas", 128)), cast_3406_e.reader_value (SOURCE_FILE ("semantic_verification.galgas", 128)).add_operation (GALGAS_string (" is not a valid enum value"), inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 128))  COMMA_SOURCE_FILE ("semantic_verification.galgas", 128)) ;
       }
     }else if (constinArgument_attr.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_auto) {
     }else{
@@ -14803,4 +15342,188 @@ static void defineCategoryMethod_impRangedType_verifyType (void) {
 //---------------------------------------------------------------------------------------------------------------------*
 
 C_PrologueEpilogue gMethod_impRangedType_verifyType (defineCategoryMethod_impRangedType_verifyType, NULL) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                        Overriding category method '@multipleAttribute verifyCrossReferences'                        *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void categoryMethod_multipleAttribute_verifyCrossReferences (const cPtr_object_5F_t * inObject,
+                                                                    const GALGAS_objectsMap constinArgument_allObjects,
+                                                                    const GALGAS_impType constinArgument_type,
+                                                                    C_Compiler * inCompiler
+                                                                    COMMA_UNUSED_LOCATION_ARGS) {
+  const cPtr_multipleAttribute * object = (const cPtr_multipleAttribute *) inObject ;
+  macroValidSharedObject (object, cPtr_multipleAttribute) ;
+  cEnumerator_identifierList enumerator_18464 (object->mAttribute_items, kEnumeration_up) ;
+  while (enumerator_18464.hasCurrentObject ()) {
+    callCategoryMethod_verifyCrossReferences ((const cPtr_object_5F_t *) enumerator_18464.current_item (HERE).ptr (), constinArgument_allObjects, constinArgument_type, inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 593)) ;
+    enumerator_18464.gotoNextObject () ;
+  }
+}
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void defineCategoryMethod_multipleAttribute_verifyCrossReferences (void) {
+  enterCategoryMethod_verifyCrossReferences (kTypeDescriptor_GALGAS_multipleAttribute.mSlotID,
+                                             categoryMethod_multipleAttribute_verifyCrossReferences) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_PrologueEpilogue gMethod_multipleAttribute_verifyCrossReferences (defineCategoryMethod_multipleAttribute_verifyCrossReferences, NULL) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                          Overriding category method '@boolAttribute verifyCrossReferences'                          *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void categoryMethod_boolAttribute_verifyCrossReferences (const cPtr_object_5F_t * inObject,
+                                                                const GALGAS_objectsMap constinArgument_allObjects,
+                                                                const GALGAS_impType constinArgument_type,
+                                                                C_Compiler * inCompiler
+                                                                COMMA_UNUSED_LOCATION_ARGS) {
+  const cPtr_boolAttribute * object = (const cPtr_boolAttribute *) inObject ;
+  macroValidSharedObject (object, cPtr_boolAttribute) ;
+  GALGAS_impBoolType temp_0 ;
+  if (constinArgument_type.isValid ()) {
+    if (NULL != dynamic_cast <const cPtr_impBoolType *> (constinArgument_type.ptr ())) {
+      temp_0 = (cPtr_impBoolType *) constinArgument_type.ptr () ;
+    }else{
+      inCompiler->castError ("impBoolType", constinArgument_type.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("semantic_verification.galgas", 601)) ;
+    }
+  }
+  GALGAS_impBoolType var_boolType = temp_0 ;
+  const enumGalgasBool test_1 = object->mAttribute_value.boolEnum () ;
+  if (kBoolTrue == test_1) {
+    callCategoryMethod_verifyCrossReferences ((const cPtr_objectAttributes *) object->mAttribute_subAttributes.ptr (), constinArgument_allObjects, var_boolType.reader_trueSubAttributes (SOURCE_FILE ("semantic_verification.galgas", 603)), inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 603)) ;
+  }else if (kBoolFalse == test_1) {
+    callCategoryMethod_verifyCrossReferences ((const cPtr_objectAttributes *) object->mAttribute_subAttributes.ptr (), constinArgument_allObjects, var_boolType.reader_falseSubAttributes (SOURCE_FILE ("semantic_verification.galgas", 605)), inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 605)) ;
+  }
+}
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void defineCategoryMethod_boolAttribute_verifyCrossReferences (void) {
+  enterCategoryMethod_verifyCrossReferences (kTypeDescriptor_GALGAS_boolAttribute.mSlotID,
+                                             categoryMethod_boolAttribute_verifyCrossReferences) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_PrologueEpilogue gMethod_boolAttribute_verifyCrossReferences (defineCategoryMethod_boolAttribute_verifyCrossReferences, NULL) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                          Overriding category method '@enumAttribute verifyCrossReferences'                          *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void categoryMethod_enumAttribute_verifyCrossReferences (const cPtr_object_5F_t * inObject,
+                                                                const GALGAS_objectsMap constinArgument_allObjects,
+                                                                const GALGAS_impType constinArgument_type,
+                                                                C_Compiler * inCompiler
+                                                                COMMA_UNUSED_LOCATION_ARGS) {
+  const cPtr_enumAttribute * object = (const cPtr_enumAttribute *) inObject ;
+  macroValidSharedObject (object, cPtr_enumAttribute) ;
+  GALGAS_impEnumType temp_0 ;
+  if (constinArgument_type.isValid ()) {
+    if (NULL != dynamic_cast <const cPtr_impEnumType *> (constinArgument_type.ptr ())) {
+      temp_0 = (cPtr_impEnumType *) constinArgument_type.ptr () ;
+    }else{
+      inCompiler->castError ("impEnumType", constinArgument_type.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("semantic_verification.galgas", 613)) ;
+    }
+  }
+  GALGAS_impEnumType var_enumType = temp_0 ;
+  GALGAS_lstring var_key = GALGAS_lstring::constructor_new (object->mAttribute_value, GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("semantic_verification.galgas", 614))  COMMA_SOURCE_FILE ("semantic_verification.galgas", 614)) ;
+  GALGAS_implementationObjectMap var_expectedAttributes ;
+  var_enumType.reader_valuesMap (SOURCE_FILE ("semantic_verification.galgas", 615)).method_get (var_key, var_expectedAttributes, inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 615)) ;
+  callCategoryMethod_verifyCrossReferences ((const cPtr_objectAttributes *) object->mAttribute_subAttributes.ptr (), constinArgument_allObjects, var_expectedAttributes, inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 616)) ;
+}
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void defineCategoryMethod_enumAttribute_verifyCrossReferences (void) {
+  enterCategoryMethod_verifyCrossReferences (kTypeDescriptor_GALGAS_enumAttribute.mSlotID,
+                                             categoryMethod_enumAttribute_verifyCrossReferences) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_PrologueEpilogue gMethod_enumAttribute_verifyCrossReferences (defineCategoryMethod_enumAttribute_verifyCrossReferences, NULL) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                         Overriding category method '@structAttribute verifyCrossReferences'                         *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void categoryMethod_structAttribute_verifyCrossReferences (const cPtr_object_5F_t * inObject,
+                                                                  const GALGAS_objectsMap constinArgument_allObjects,
+                                                                  const GALGAS_impType constinArgument_type,
+                                                                  C_Compiler * inCompiler
+                                                                  COMMA_UNUSED_LOCATION_ARGS) {
+  const cPtr_structAttribute * object = (const cPtr_structAttribute *) inObject ;
+  macroValidSharedObject (object, cPtr_structAttribute) ;
+  GALGAS_impStructType temp_0 ;
+  if (constinArgument_type.isValid ()) {
+    if (NULL != dynamic_cast <const cPtr_impStructType *> (constinArgument_type.ptr ())) {
+      temp_0 = (cPtr_impStructType *) constinArgument_type.ptr () ;
+    }else{
+      inCompiler->castError ("impStructType", constinArgument_type.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("semantic_verification.galgas", 623)) ;
+    }
+  }
+  GALGAS_impStructType var_structType = temp_0 ;
+  callCategoryMethod_verifyCrossReferences ((const cPtr_objectAttributes *) object->mAttribute_subAttributes.ptr (), constinArgument_allObjects, var_structType.reader_structAttributes (SOURCE_FILE ("semantic_verification.galgas", 624)), inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 624)) ;
+}
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void defineCategoryMethod_structAttribute_verifyCrossReferences (void) {
+  enterCategoryMethod_verifyCrossReferences (kTypeDescriptor_GALGAS_structAttribute.mSlotID,
+                                             categoryMethod_structAttribute_verifyCrossReferences) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_PrologueEpilogue gMethod_structAttribute_verifyCrossReferences (defineCategoryMethod_structAttribute_verifyCrossReferences, NULL) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                       Overriding category method '@objectRefAttribute verifyCrossReferences'                        *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void categoryMethod_objectRefAttribute_verifyCrossReferences (const cPtr_object_5F_t * inObject,
+                                                                     const GALGAS_objectsMap constinArgument_allObjects,
+                                                                     const GALGAS_impType constinArgument_type,
+                                                                     C_Compiler * inCompiler
+                                                                     COMMA_UNUSED_LOCATION_ARGS) {
+  const cPtr_objectRefAttribute * object = (const cPtr_objectRefAttribute *) inObject ;
+  macroValidSharedObject (object, cPtr_objectRefAttribute) ;
+  GALGAS_refType temp_0 ;
+  if (constinArgument_type.isValid ()) {
+    if (NULL != dynamic_cast <const cPtr_refType *> (constinArgument_type.ptr ())) {
+      temp_0 = (cPtr_refType *) constinArgument_type.ptr () ;
+    }else{
+      inCompiler->castError ("refType", constinArgument_type.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("semantic_verification.galgas", 631)) ;
+    }
+  }
+  GALGAS_refType var_refType = temp_0 ;
+  GALGAS_objectKind var_kindMap ;
+  constinArgument_allObjects.method_get (var_refType.reader_ref (SOURCE_FILE ("semantic_verification.galgas", 633)), var_kindMap, inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 633)) ;
+  const enumGalgasBool test_1 = var_kindMap.reader_objects (SOURCE_FILE ("semantic_verification.galgas", 634)).reader_hasKey (object->mAttribute_value.reader_string (SOURCE_FILE ("semantic_verification.galgas", 634)) COMMA_SOURCE_FILE ("semantic_verification.galgas", 634)).operator_not (SOURCE_FILE ("semantic_verification.galgas", 634)).boolEnum () ;
+  if (kBoolTrue == test_1) {
+    GALGAS_location location_2 (object->mAttribute_value.reader_location (HERE)) ; // Implicit use of 'location' reader
+    inCompiler->emitSemanticError (location_2, GALGAS_string ("Referenced ").add_operation (var_refType.reader_ref (SOURCE_FILE ("semantic_verification.galgas", 635)).reader_string (SOURCE_FILE ("semantic_verification.galgas", 635)), inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 635)).add_operation (GALGAS_string (": "), inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 635)).add_operation (object->mAttribute_value.reader_string (SOURCE_FILE ("semantic_verification.galgas", 635)), inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 635)).add_operation (GALGAS_string (" does not exist"), inCompiler COMMA_SOURCE_FILE ("semantic_verification.galgas", 635))  COMMA_SOURCE_FILE ("semantic_verification.galgas", 635)) ;
+  }
+}
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void defineCategoryMethod_objectRefAttribute_verifyCrossReferences (void) {
+  enterCategoryMethod_verifyCrossReferences (kTypeDescriptor_GALGAS_objectRefAttribute.mSlotID,
+                                             categoryMethod_objectRefAttribute_verifyCrossReferences) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_PrologueEpilogue gMethod_objectRefAttribute_verifyCrossReferences (defineCategoryMethod_objectRefAttribute_verifyCrossReferences, NULL) ;
 

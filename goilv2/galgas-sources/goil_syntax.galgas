@@ -78,6 +78,8 @@ rule <start> {
     setDefaults ( !imp !?application)
   end
 
+#  log application
+  
 #  log imp;
 #  log application;
   if @uint. errorCount == 0 then
@@ -237,7 +239,7 @@ rule <oil_declaration>
       # Type is identifier, enum, struct or object reference
       @lstring value
       $idf$ ?value
-      var subTypes =@implementationObjectMap.emptyMap{}
+      var subTypes = @implementationObjectMap.emptyMap {}
       @objectAttributes subAttributes = emptyObject()    
       switch [type type]
       case enumeration:
@@ -260,10 +262,12 @@ rule <oil_declaration>
         $}$
       or end
       <description> ?var @lstring oil_desc
-      if [type type] == @dataType. enumeration then
-        val = @enumAttribute. new { !oil_desc ![value location] ![value string] !subAttributes}
+      if [type type] == @dataType.enumeration then
+        val = @enumAttribute.new { !oil_desc ![value location] ![value string] !subAttributes}
+      elsif [type type] == @dataType.objectType then
+        val = @objectRefAttribute.new {!oil_desc ![value location] !value}
       else
-        val = @string_class. new {  !oil_desc ![value location] ![value string]}
+        val = @string_class.new {  !oil_desc ![value location] ![value string]}
       end
     or
       # Type is int of float

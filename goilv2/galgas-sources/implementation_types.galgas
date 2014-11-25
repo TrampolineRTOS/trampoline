@@ -147,25 +147,6 @@ override method @noRange enclose !@bool isWithin ?let @attributeRange unused val
 
 class @uint32AttributeSet : @attributeRange {
   @uint32List valueList
-
-#  override method check ??@object_t value:
-#    cast value:
-#    when == @uint32_class number do
-#      @bool numberOk := false;
-#      foreach valueList do
-#        if value == [number value] then
-#          numberOk := true;
-#        end if;
-#      end foreach;
-#      if not numberOk then
-#        error [number location]: "Attribute should be one element of the set";
-#        error [number location]: stringWithUInt32List[!valueList];
-#      end if;
-#    else
-#      error [value location]: "Attribute type should be UINT32";
-#    end cast;
-#  end method;
-#
 }
 
 override method @uint32AttributeSet enclose !@bool isWithin ?let @attributeRange value {
@@ -190,24 +171,6 @@ override method @uint32AttributeSet enclose !@bool isWithin ?let @attributeRange
 
 class @uint64AttributeSet : @attributeRange {
   @uint64List valueList
-#  override method check ??@object_t value:
-#    cast value:
-#    when == @uint64_class number do
-#      @bool numberOk := false;
-#      foreach valueList do
-#        if value == [number value] then
-#          numberOk := true;
-#        end if;
-#      end foreach;
-#      if not numberOk then
-#        error [number location]: "Attribute should be one element of the set";
-#        error [number location]: stringWithUInt64List[!valueList];
-#      end if;
-#    else
-#      error [value location]: "Attribute type should be UINT64";
-#    end cast;
-#  end method;
-#
 }
 
 override method @uint64AttributeSet enclose !@bool isWithin ?let @attributeRange value {
@@ -232,24 +195,6 @@ override method @uint64AttributeSet enclose !@bool isWithin ?let @attributeRange
 
 class @sint32AttributeSet : @attributeRange {
   @sint32List valueList
-#  override method check ??@object_t value:
-#    cast value:
-#    when == @sint32_class number do
-#      @bool numberOk := false;
-#      foreach valueList do
-#        if value == [number value] then
-#          numberOk := true;
-#        end if;
-#      end foreach;
-#      if not numberOk then
-#        error [number location]: "Attribute should be one element of the set";
-#        error [number location]: stringWithSInt32List[!valueList];
-#      end if;
-#    else
-#      error [value location]: "Attribute type should be INT32";
-#    end cast;
-#  end method;
-#
 }
 
 override method @sint32AttributeSet enclose !@bool isWithin ?let @attributeRange value {
@@ -274,24 +219,6 @@ override method @sint32AttributeSet enclose !@bool isWithin ?let @attributeRange
 
 class @sint64AttributeSet : @attributeRange {
   @sint64List valueList
-#  override method check ??@object_t value:
-#    cast value:
-#    when == @sint64_class number do
-#      @bool numberOk := false;
-#      foreach valueList do
-#        if value == [number value] then
-#          numberOk := true;
-#        end if;
-#      end foreach;
-#      if not numberOk then
-#        error [number location]: "Attribute should be one element of the set";
-#        error [number location]: stringWithSInt64List[!valueList];
-#      end if;
-#    else
-#      error [value location]: "Attribute type should be INT64";
-#    end cast;
-#  end method;
-#
 }
 
 override method @sint64AttributeSet enclose !@bool isWithin ?let @attributeRange value {
@@ -316,24 +243,6 @@ override method @sint64AttributeSet enclose !@bool isWithin ?let @attributeRange
 
 class @floatAttributeSet  : @attributeRange {
   @floatList  valueList
-#  override method check ??@object_t value:
-#    cast value:
-#    when == @float_class number do
-#      @bool numberOk := false;
-#      foreach valueList do
-#        if value == [number value] then
-#          numberOk := true;
-#        end if;
-#      end foreach;
-#      if not numberOk then
-#        error [number location]: "Attribute should be one element of the set";
-#        error [number location]: stringWithFloatList[!valueList];        
-#      end if;
-#    else
-#      error [value location]: "Attribute type should be FLOAT";
-#    end cast;
-#  end method;
-#
 }
 
 override method @floatAttributeSet enclose !@bool isWithin ?let @attributeRange value {
@@ -359,17 +268,6 @@ override method @floatAttributeSet enclose !@bool isWithin ?let @attributeRange 
 class @uint32AttributeMinMax : @attributeRange {
   @uint min
   @uint max
-#  override method check ??@object_t value:
-#    cast value:
-#    when == @uint32_class number do
-#      if [number value] < min | [number value] > max then
-#        error [number location]: "Attribute should be within ".[min string]." and ".[max string];
-#      end if;
-#    else
-#      error [value location]: "Attribute type should be UINT32";
-#    end cast;
-#  end method;
-#
 }
 
 override method @uint32AttributeMinMax enclose !@bool isWithin ?let @attributeRange value {
@@ -395,17 +293,6 @@ override method @uint32AttributeMinMax enclose !@bool isWithin ?let @attributeRa
 class @uint64AttributeMinMax : @attributeRange {
   @uint64 min
   @uint64 max
-#  override method check ??@object_t value:
-#    cast value:
-#    when == @uint64_class number do
-#      if [number value] < min | [number value] > max then
-#        error [number location]: "Attribute should be within ".[min string]." and ".[max string];
-#      end if;
-#    else
-#      error [value location]: "Attribute type should be UINT64";
-#    end cast;
-#  end method;
-#
 }
 
 override method @uint64AttributeMinMax enclose !@bool isWithin ?let @attributeRange value {
@@ -431,17 +318,6 @@ override method @uint64AttributeMinMax enclose !@bool isWithin ?let @attributeRa
 class @sint32AttributeMinMax : @attributeRange {
   @sint min
   @sint max
-#  override method check ??@object_t value:
-#    cast value:
-#    when == @sint32_class number do
-#      if [number value] < min | [number value] > max then
-#        error [number location]: "Attribute should be within ".[min string]." and ".[max string];
-#      end if;
-#    else
-#      error [value location]: "Attribute type should be INT32";
-#    end cast;
-#  end method;
-#
 }
 
 override method @sint32AttributeMinMax enclose !@bool isWithin ?let @attributeRange value {
@@ -467,17 +343,6 @@ override method @sint32AttributeMinMax enclose !@bool isWithin ?let @attributeRa
 class @sint64AttributeMinMax : @attributeRange {
   @sint64 min
   @sint64 max
-#  override method check ??@object_t value:
-#    cast value:
-#    when == @sint64_class number do
-#      if [number value] < min | [number value] > max then
-#        error [number location]: "Attribute should be within ".[min string]." and ".[max string];
-#      end if;
-#    else
-#      error [value location]: "Attribute type should be INT64";
-#    end cast;
-#  end method;
-#
 }
 
 override method @sint64AttributeMinMax enclose !@bool isWithin ?let @attributeRange value {
@@ -503,17 +368,6 @@ override method @sint64AttributeMinMax enclose !@bool isWithin ?let @attributeRa
 class @floatAttributeMinMax  : @attributeRange {
   @double min
   @double max
-#  override method check ??@object_t value:
-#    cast value:
-#    when == @float_class number do
-#      if [number value] < min | [number value] > max then
-#        error [number location]: "Attribute should be within ".[min string]." and ".[max string];
-#      end if;
-#    else
-#      error [value location]: "Attribute type should be FLOAT";
-#    end cast;
-#  end method;
-#
 }
 
 override method @floatAttributeMinMax enclose !@bool isWithin ?let @attributeRange value {
@@ -562,10 +416,6 @@ class @impType {
   @lstring    name     # name of the attribute
   @bool       multiple # true if multiple values are possible
   @lstring    desc     # description of the attribute
-#  method checkAndSet ?!@object_t unused value:
-#  end method;
-#  method setDefault ?!@objectAttributes unused attributes:
-#  end method;
 }
 
 class @impStructType : @impType {
@@ -577,20 +427,11 @@ getter @impType autoAllowed -> @bool result {
 }
 
 class @impVoid : @impType {
-#  override method checkAndSet ?!@object_t unused value:
-#  end method;
 }
 
 class @impAutoDefaultType : @impType {
   @bool     withAuto    # true if AUTO allowed
   @object_t defaultValue
-#  override method checkAndSet ?!@object_t value:
-#    cast value:
-#    when == @void do
-#      value := defaultValue;
-#    else end cast;  
-#  end method;
-#
 }
 
 override getter @impAutoDefaultType autoAllowed -> @bool result {
@@ -651,20 +492,7 @@ func valueList
 
 class @impRangedType : @impAutoDefaultType {
   @attributeRange setOrRange
-#  override method checkAndSet ?!@object_t value:
-#    cast value:
-#    when == @void do
-#      value := defaultValue;
-#    else
-#      [setOrRange check !value];
-#    end cast;  
-#  end method;
 }
-
-#routine setDefaultsForType
-#  ??@implementationObject impObject
-#  ?!@identifierMap objectParams
-#;
 
 class @impBoolType : @impAutoDefaultType {
   @implementationObjectMap trueSubAttributes
@@ -792,15 +620,6 @@ method @implementation checkObjectReferences {
   end
 }
 
-#method @implementation delete
-#  ??@lstring name
-#  !@implementationObject result
-#:
-#  @implementationMap newImp := imp;
-#  [!?newImp del !name ?result];
-#  imp := newImp;
-#end method;
-
 func checkAndGetIntegerNumber
   ?let @lstring oil_desc
   ?let @dataType type
@@ -813,7 +632,7 @@ func checkAndGetIntegerNumber
     elsif type == @dataType. sint64Number then
       value = @sint64_class. new { !oil_desc ![number location] ![[number uint64] sint64] * -1LS}
     else
-      value = @void. new { !oil_desc ![number location]}
+      value = @void. new { !oil_desc ![number location]} 
       error number: [type oilType]+" expected, got a SINT"
     end
   else
@@ -941,14 +760,16 @@ proc checkFilters
 method @impType checkAttributeReferences ?let @implementation unused imp { }
 
 override method @refType checkAttributeReferences
-  ?let @implementation imp {
+  ?let @implementation imp
+{
   if not [imp hasKey ![ref string]] then
     error ref: [ref string]+" object kind does not exist"
   end 
 }
 
 override method @impBoolType checkAttributeReferences
-  ?let @implementation imp {
+  ?let @implementation imp
+{
   for () in  trueSubAttributes do
     [type checkAttributeReferences !imp]
   end 
@@ -958,7 +779,8 @@ override method @impBoolType checkAttributeReferences
 }
 
 override method @impEnumType checkAttributeReferences
-  ?let @implementation imp {
+  ?let @implementation imp
+{
   for () in  valuesMap do
     for () in  subAttributes do
       [type checkAttributeReferences !imp]
