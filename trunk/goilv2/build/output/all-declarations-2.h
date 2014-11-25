@@ -1137,6 +1137,56 @@ void callCategoryMethod_verifyApplication (const class cPtr_implementationObject
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
+//                              Category method '@objectAttributes verifyCrossReferences'                              *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typedef void (*categoryMethodSignature_objectAttributes_verifyCrossReferences) (const class cPtr_objectAttributes * inObject,
+                                                                                const class GALGAS_objectsMap constinArgument0,
+                                                                                const class GALGAS_implementationObjectMap constinArgument1,
+                                                                                class C_Compiler * inCompiler
+                                                                                COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterCategoryMethod_verifyCrossReferences (const int32_t inClassIndex,
+                                                categoryMethodSignature_objectAttributes_verifyCrossReferences inMethod) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void callCategoryMethod_verifyCrossReferences (const class cPtr_objectAttributes * inObject,
+                                               const GALGAS_objectsMap constin_allObjects,
+                                               const GALGAS_implementationObjectMap constin_attributes,
+                                               C_Compiler * inCompiler
+                                               COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                  Category method '@object_t verifyCrossReferences'                                  *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typedef void (*categoryMethodSignature_object_5F_t_verifyCrossReferences) (const class cPtr_object_5F_t * inObject,
+                                                                           const class GALGAS_objectsMap constinArgument0,
+                                                                           const class GALGAS_impType constinArgument1,
+                                                                           class C_Compiler * inCompiler
+                                                                           COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterCategoryMethod_verifyCrossReferences (const int32_t inClassIndex,
+                                                categoryMethodSignature_object_5F_t_verifyCrossReferences inMethod) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void callCategoryMethod_verifyCrossReferences (const class cPtr_object_5F_t * inObject,
+                                               const GALGAS_objectsMap constin_allObjects,
+                                               const GALGAS_impType constin_type,
+                                               C_Compiler * inCompiler
+                                               COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //                                    Category method '@impType verifyApplication'                                     *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -1203,5 +1253,41 @@ void callCategoryMethod_verifyType (const class cPtr_impType * inObject,
                                     const GALGAS_object_5F_t constin_attr,
                                     C_Compiler * inCompiler
                                     COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                 Category method '@objectsMap verifyCrossReferences'                                 *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+void categoryMethod_verifyCrossReferences (const class GALGAS_objectsMap inObject,
+                                           const class GALGAS_implementation constin_imp,
+                                           class C_Compiler * inCompiler
+                                           COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                 Category method '@objectKind verifyCrossReferences'                                 *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typedef void (*categoryMethodSignature_objectKind_verifyCrossReferences) (const class cPtr_objectKind * inObject,
+                                                                          const class GALGAS_objectsMap constinArgument0,
+                                                                          const class GALGAS_implementationObject constinArgument1,
+                                                                          class C_Compiler * inCompiler
+                                                                          COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterCategoryMethod_verifyCrossReferences (const int32_t inClassIndex,
+                                                categoryMethodSignature_objectKind_verifyCrossReferences inMethod) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void callCategoryMethod_verifyCrossReferences (const class cPtr_objectKind * inObject,
+                                               const GALGAS_objectsMap constin_allObjects,
+                                               const GALGAS_implementationObject constin_obj,
+                                               C_Compiler * inCompiler
+                                               COMMA_LOCATION_ARGS) ;
 
 #endif

@@ -100,6 +100,10 @@ class @enumAttribute : @object_t {
   @objectAttributes subAttributes
 }
 
+class @objectRefAttribute : @object_t {
+  @lstring value
+}
+
 
 
 class @uint32_class    : @object_t {

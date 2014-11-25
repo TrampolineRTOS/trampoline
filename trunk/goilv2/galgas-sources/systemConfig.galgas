@@ -50,6 +50,10 @@ override method @string_class set ?let @lstring name ?!@TfieldMap result {
   addStringValue ( !?result !name !value !oil_desc)
 }
 
+override method @objectRefAttribute set ?let @lstring name ?!@TfieldMap result {
+  addStringValue ( !?result !name ![value string] !oil_desc)
+}
+
 override method @multipleAttribute set ?let @lstring name ?!@TfieldMap result {
   var multiple =@TfieldMapList.emptyList{}
   for () in  items do

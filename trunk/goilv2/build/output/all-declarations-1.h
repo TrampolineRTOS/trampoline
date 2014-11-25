@@ -3270,6 +3270,29 @@ void routine_verifyAllAttributes (const class GALGAS_implementation constinArgum
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
+//                           Category method '@applicationDefinition verifyCrossReferences'                            *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typedef void (*categoryMethodSignature_applicationDefinition_verifyCrossReferences) (const class cPtr_applicationDefinition * inObject,
+                                                                                     const class GALGAS_implementation constinArgument0,
+                                                                                     class C_Compiler * inCompiler
+                                                                                     COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterCategoryMethod_verifyCrossReferences (const int32_t inClassIndex,
+                                                categoryMethodSignature_applicationDefinition_verifyCrossReferences inMethod) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void callCategoryMethod_verifyCrossReferences (const class cPtr_applicationDefinition * inObject,
+                                               const GALGAS_implementation constin_imp,
+                                               C_Compiler * inCompiler
+                                               COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //                                 Category method '@implementation verifyApplication'                                 *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
