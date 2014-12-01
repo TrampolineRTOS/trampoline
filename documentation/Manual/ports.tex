@@ -717,7 +717,7 @@ BIOS> go 0xA0000000
 \subsection{Kernel sleep service}
 
 \section{AVR8}
-\label{sec:ppcport}
+\label{sec:avr8port}
 
 The AVR port does not use the system call version of trampoline, as this micro-controller does not have any MMU. System calls are just standard function calls.
 
@@ -768,24 +768,11 @@ The restauration of the new contexte just get the new stack pointer from the arg
 \subsection{Context init}
 The initialization of the context init (\cfunction{tpl_init_context})the stack according to be compliant with the context switch. 
 
-\warning{All the AVR8 do not have the same size of the program counter!! Most of them use a 16-bit program counter, while a few ATMega use a 24-bit program counter!! (if there is more than 64ko of program flash). 
+\warning{All the AVR8 do not have the same size of the program counter!! Most of them use a 16-bit program counter, while a few ATMega use a 24-bit program counter!! (if there is more than 64ko of program flash).
 }
 
+The gcc compiler defines either the symbol \texttt{\_\_AVR\_3\_BYTE\_PC\_\_} or \texttt{\_\_AVR\_2\_BYTE\_PC\_\_}, which is used in the \texttt{tpl\_machine.c} file.
 So, the AVR kind should be defined:
-\begin{lstlisting}[language=C]
-#if defined (__AVR_ATmega2560__)
-	#define __PC_USE_24_BITS__
-#elif defined(__AVR_AT90CAN128__) || \
-      defined(__AVR_ATmega328__)  || \
-      defined(__AVR_ATmega328P__)
-	#define __PC_USE_16_BITS__
-#else
-	#warning "The AVR CPU is not known -> Trampoline may crash \
-if the Program Counter size is not OK. \
-Assuming a program counter of 16 bits.".
-	#define __PC_USE_16_BITS__
-#endif
-\end{lstlisting}
 
 The stack at the end of context init should be like in figure \ref{fig:avr8-stackInit}:
 \begin{itemize}
@@ -828,3 +815,75 @@ ISR(TIMER2_OVF_vect)
   }
 }	
 \end{lstlisting}
+
+\section{Arduino Port}
+The Arduino port aims to use the Arduino libraries with trampoline on Arduino\footnote{\url{http://www.arduino.cc/}} AVR cards (first targets are Arduino Uno and Arduino Mega).
+
+Arduino libraries have been set in the directory \texttt{machines/avr/arduino} and adapted to Trampoline. They are extracted from the GitHub version (see file machines/avr/arduino/version.txt). Current version is \texttt{1.5.8}.
+
+Some adaptations on libraries should be done, and are explained in the next sections. For an easiest merge with next Arduino libraries, the code modification are well identified with comments:
+
+\begin{lstlisting}[language=C]
+// START TRAMPOLINE SECTION 
+	void trampolineSystemCounter();
+// STOP TRAMPOLINE SECTION 
+\end{lstlisting}
+
+Code parts that are removed are also documented:
+\begin{lstlisting}[language=C]
+// START REMOVE TRAMPOLINE SECTION
+	void trampolineSystemCounter();
+// STOP REMOVE TRAMPOLINE SECTION
+\end{lstlisting}
+
+
+\subsection{Goil adaptation}
+A dedicated section for Arduino is provided in  \texttt{CPU.OS}:
+\begin{lstlisting}[language=OIL]
+CPU test {    
+  OS config {
+    ARDUINO = TRUE {
+      BOARD = UNO;
+      PORT = "/dev/tty.usbmodem1411";
+      AVR_LIBC = "/usr/local/CrossPack-AVR/avr/include/";
+      SERIAL = TRUE;
+    };
+    //...
+  }
+}
+\end{lstlisting}
+
+Parameters are:
+\begin{description}
+\item[\texttt{BOARD}] The Arduino specific board. It should be only \texttt{UNO} or \texttt{MEGA} at this date;
+\item[\texttt{PORT}] This is the device associated to the board to flash the AVR, like in the Arduino IDE. On Linux systems it should something like \texttt{/dev/ttyUSB0}.
+\item[\texttt{AVR\_LIBC}] This is the place where is the \texttt{libc} for \texttt{avr-gcc}. This is required to get the \texttt{avr/io.h} include file. On Debian/Ubuntu, it should be located in \texttt{"/usr/lib/avr/include"}
+\item[\textit{feature}] Add the required files in the project. Current features\footnote{See up-to-date features in Goil specific templates in \texttt{<goilTemplatesDir>/config/avr/arduino/config.oil}} are:
+\begin{itemize}
+%\item \texttt{SPI}
+%\item \texttt{I2C}
+%\item \texttt{SERVO}
+\item \texttt{SERIAL}
+%\item \texttt{NRF24}
+%\item \texttt{TINYRTC}
+%\item \texttt{TIME}
+%\item \texttt{STANDARDWIRING}
+%\item \texttt{EVOLVEARDUINO}
+%\item \texttt{LCDCRYSTAL}
+%\item \texttt{STEPPER}
+\end{itemize}
+\end{description}
+
+\subsection{System Counter}
+The Arduino libraries comes with a SysTick associated to \texttt{TIMER0} interrupt. \texttt{Timer0} has a prescaler factor of 64, and the sysTick period is \textbf{$1024\mu s$} on a 16MHz chip.
+
+The \texttt{SystemCounter} counter is automatically defined\footnote{see file \texttt{<goilTemplatesDir>/config/avr/arduino/config.oil}} and connected to that Arduino \texttt{SysTick}, with:
+\begin{itemize}
+\item \texttt{TICKSPERBASE = 1}
+\item \texttt{MAXALLOWEDVALUE = 65535}
+\item \texttt{MINCYCLE = 1}
+\end{itemize}
+
+\textbf{This means that the System Counter is hardwired to a 1024 $\mu s$ period}.
+
+The period of this timer cannot be changed has it is used for both Arduino SysTick, and PWM. If you need another resolution, the best way is to use another timer associated to another OSEK counter.

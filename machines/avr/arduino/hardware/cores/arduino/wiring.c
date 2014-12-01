@@ -41,6 +41,10 @@ volatile unsigned long timer0_overflow_count = 0;
 volatile unsigned long timer0_millis = 0;
 static unsigned char timer0_fract = 0;
 
+// START TRAMPOLINE SECTION 
+extern void trampolineSystemCounter();
+// STOP TRAMPOLINE SECTION 
+
 #if defined(__AVR_ATtiny24__) || defined(__AVR_ATtiny44__) || defined(__AVR_ATtiny84__)
 ISR(TIM0_OVF_vect)
 #else
@@ -62,6 +66,9 @@ ISR(TIMER0_OVF_vect)
 	timer0_fract = f;
 	timer0_millis = m;
 	timer0_overflow_count++;
+// START TRAMPOLINE SECTION 
+	trampolineSystemCounter();
+// STOP TRAMPOLINE SECTION 
 }
 
 unsigned long millis()
@@ -191,7 +198,9 @@ void init()
 {
 	// this needs to be called before setup() or some functions won't
 	// work there
-	sei();
+// START REMOVE TRAMPOLINE SECTION 
+//	sei();
+// STOP REMOVE TRAMPOLINE SECTION
 	
 	// on the ATmega168, timer 0 is also used for fast hardware pwm
 	// (using phase-correct PWM would mean that timer 0 overflowed half as often
