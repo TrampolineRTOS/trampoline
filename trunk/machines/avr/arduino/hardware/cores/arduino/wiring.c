@@ -43,6 +43,10 @@ static unsigned char timer0_fract = 0;
 
 // START TRAMPOLINE SECTION 
 extern void trampolineSystemCounter();
+void tpl_init_board()
+{
+	init();
+}
 // STOP TRAMPOLINE SECTION 
 
 #if defined(__AVR_ATtiny24__) || defined(__AVR_ATtiny44__) || defined(__AVR_ATtiny84__)
@@ -196,11 +200,11 @@ void delayMicroseconds(unsigned int us)
 
 void init()
 {
-	// this needs to be called before setup() or some functions won't
-	// work there
 // START REMOVE TRAMPOLINE SECTION 
 //	sei();
 // STOP REMOVE TRAMPOLINE SECTION
+	// this needs to be called before setup() or some functions won't
+	// work there
 	
 	// on the ATmega168, timer 0 is also used for fast hardware pwm
 	// (using phase-correct PWM would mean that timer 0 overflowed half as often

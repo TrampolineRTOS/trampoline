@@ -18,6 +18,7 @@ IMPLEMENTATION avr_interrupt {
 //specific to arduino.
 IMPLEMENTATION Trampoline {
   OS {
+      BOOLEAN INITBOARD = TRUE;
 //    BOOLEAN [
 //      TRUE { //inside BUILD ENUM
         BOOLEAN [

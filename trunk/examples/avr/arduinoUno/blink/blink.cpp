@@ -8,8 +8,6 @@
 
 int main(void)
 {
-	init(); //init of Arduino -> should be called direclty in next versions.
-
 	// initialize digital pin 13 as an output.
 	pinMode(13, OUTPUT);
     StartOS(OSDEFAULTAPPMODE);

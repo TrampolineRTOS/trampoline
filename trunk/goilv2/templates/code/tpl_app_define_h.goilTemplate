@@ -99,6 +99,7 @@ else
 end if
 %
 #define WITH_MODULES_INIT                NO
+#define WITH_INIT_BOARD                  % !yesNo(exists OS::INITBOARD default (false)) %
 
 
 /*=============================================================================

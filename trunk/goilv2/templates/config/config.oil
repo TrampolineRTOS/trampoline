@@ -84,6 +84,8 @@ IMPLEMENTATION trampoline_common {
       },
       FALSE
     ] TRACE = FALSE;
+    /* used to add additional init code for a board. */
+    BOOLEAN INITBOARD = FALSE;
   };
   
   APPMODE [] {

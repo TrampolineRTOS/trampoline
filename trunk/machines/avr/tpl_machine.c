@@ -105,6 +105,7 @@ void tpl_release_task_lock(void)
 /*
  * tpl_init_machine 
  */
+extern void tpl_init_board();
 void tpl_init_machine(void)
 {
 	#if WITH_INIT_BOARD == YES
