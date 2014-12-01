@@ -8,10 +8,18 @@
 
 int main(void)
 {
-	// initialize digital pin 13 as an output.
-	pinMode(13, OUTPUT);
+	/** No init code should be done here 
+	 *  use the setup() function
+	 *  Trampoline will init the system and call setup()
+	 **/
     StartOS(OSDEFAULTAPPMODE);
 	return 0;
+}
+
+void setup()
+{
+	// initialize digital pin 13 as an output.
+	pinMode(13, OUTPUT);
 }
 
 //The TASK is activated by the alarm "periodicAl":

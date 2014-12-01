@@ -8,13 +8,19 @@
 
 int main(void)
 {
-	init(); //init of Arduino -> should be called direclty in next versions.
-
-	// initialize digital pin 13 as an output.
-	pinMode(13, OUTPUT);
-	Serial.begin(115200);
+	/** No init code should be done here 
+	 *  use the setup() function
+	 *  Trampoline will init the system and call setup()
+	 **/
     StartOS(OSDEFAULTAPPMODE);
 	return 0;
+}
+
+void setup()
+{
+	Serial.begin(115200);
+	// initialize digital pin 13 as an output.
+	pinMode(13, OUTPUT);
 }
 
 //The TASK is activated by the alarm "periodicAl":
@@ -30,5 +36,5 @@ TASK(periodicTask)
 	else digitalWrite(13, LOW);        //even
 
 	Serial.print(nb);
-	Serial.print(" done\n");
+	Serial.println(" done");
 }
