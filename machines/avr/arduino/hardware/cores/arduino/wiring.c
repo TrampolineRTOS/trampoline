@@ -43,9 +43,11 @@ static unsigned char timer0_fract = 0;
 
 // START TRAMPOLINE SECTION 
 extern void trampolineSystemCounter();
+extern void setup();
 void tpl_init_board()
 {
 	init();
+	setup();
 }
 // STOP TRAMPOLINE SECTION 
 
