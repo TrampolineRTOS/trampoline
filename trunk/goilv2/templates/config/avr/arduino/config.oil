@@ -28,17 +28,17 @@ IMPLEMENTATION Trampoline {
             //port to flash Arduino
             STRING PORT = "/dev/ttyUSB0";
             
-            BOOLEAN SPI = FALSE;
-            BOOLEAN I2C = FALSE;
-            BOOLEAN SERVO = FALSE;
+            //BOOLEAN SPI = FALSE;
+            //BOOLEAN I2C = FALSE;
+            //BOOLEAN SERVO = FALSE;
             BOOLEAN SERIAL = FALSE;
-            BOOLEAN NRF24 = FALSE;
-            BOOLEAN TINYRTC = FALSE;
-            BOOLEAN TIME = FALSE;
-            BOOLEAN STANDARDWIRING = FALSE;
-            BOOLEAN EVOLVEARDUINO = FALSE;
-            BOOLEAN LCDCRYSTAL = FALSE;
-            BOOLEAN STEPPER = FALSE;
+            //BOOLEAN NRF24 = FALSE;
+            //BOOLEAN TINYRTC = FALSE;
+            //BOOLEAN TIME = FALSE;
+            //BOOLEAN STANDARDWIRING = FALSE;
+            //BOOLEAN EVOLVEARDUINO = FALSE;
+            //BOOLEAN LCDCRYSTAL = FALSE;
+            //BOOLEAN STEPPER = FALSE;
           },
           FALSE
         ] ARDUINO = TRUE;
@@ -47,3 +47,12 @@ IMPLEMENTATION Trampoline {
 //    ] BUILD = FALSE;
   };
 };
+
+CPU arduino {
+  COUNTER SystemCounter {
+    TICKSPERBASE = 1;
+    MAXALLOWEDVALUE = 65535;
+    MINCYCLE = 1;
+    SOURCE = "TIMER0_OVF_vect";
+  };
+}; 

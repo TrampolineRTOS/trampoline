@@ -105,11 +105,11 @@ void tpl_release_task_lock(void)
 /*
  * tpl_init_machine 
  */
-//void tpl_init_tick_timer();
 void tpl_init_machine(void)
 {
-	//tpl_init_context(IDLE_TASK_ID);
-	//sei();
+	#if WITH_INIT_BOARD == YES
+		tpl_init_board();
+	#endif
 }
 
 void tpl_enable_interrupts(void)

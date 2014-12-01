@@ -1,6 +1,6 @@
 /* Running the following example:
  * just call goil a first time using the command line:
- * goil --target=avr/arduino --templates=../../../goilv2/templates/ firstAVR.oil
+ * goil --target=avr/arduino --templates=../../../../goilv2/templates/ serial.oil
  * you may have to update ARDUINO fields for your configuration.
  *
  * Then a Makefile is generated. Just type:
@@ -24,29 +24,22 @@ CPU test {
       AVR_LIBC = "/usr/local/CrossPack-AVR/avr/include/";
     };
     BUILD = TRUE {
-      TRAMPOLINE_BASE_PATH = "../../..";
-      APP_NAME = "baseTrampoline";
-      APP_SRC = "base.cpp";
+      TRAMPOLINE_BASE_PATH = "../../../..";
+      APP_NAME = "trampuinoSerial";
+      APP_SRC = "serial.cpp";
     };
   };
 
   APPMODE std {};
   
-  COUNTER SystemCounter {
-    TICKSPERBASE = 100;
-    MAXALLOWEDVALUE = 1000;
-    MINCYCLE = 1;
-    SOURCE = "TIMER2_OVF_vect";
-  };
-
   ALARM periodicAl {
     COUNTER= SystemCounter;
     ACTION = ACTIVATETASK {
       TASK = periodicTask;
     };
     AUTOSTART = TRUE {
-      ALARMTIME = 1;
-      CYCLETIME = 1;
+      ALARMTIME = 1000; //activated each 1024 ms
+      CYCLETIME = 1000; //activated each 1024 ms
       APPMODE = std;
     };
   };
@@ -58,11 +51,4 @@ CPU test {
     SCHEDULE = FULL;
     STACKSIZE = 256;
   };
-
- //   ISR ISRButton {
- //       CATEGORY = 2;
- //       PRIORITY = 20;
- //       STACKSIZE = 256;
- //       SOURCE = "INT0_vect"; //PIN 2 on Arduino Mega (PORTD.2)
- //   };
 };

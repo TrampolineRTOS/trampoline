@@ -82,82 +82,82 @@ SOURCES += wiring.c
 SOURCES += abi.cpp
 SOURCES += hooks.c
 %end if
-if ARDUINO::SERVO then
-%SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/Servo/Servo.cpp
-SOURCES += WMath.cpp
-%end if
-if ARDUINO::SPI then
-%
-SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/SPI/SPI.cpp
-%
-end if
-if ARDUINO::I2C then
-%
-SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/Wire/Wire.cpp  
-SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/Wire/utility/twi.c
-%
-end if
-if ARDUINO::NRF24 then
-%
-SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/RadioHead/RH_NRF24.cpp    ";
-SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/RadioHead/RHNRFSPIDriver.cpp    ";
-SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/RadioHead/RHGenericDriver.cpp    ";
-SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/RadioHead/RHHardwareSPI.cpp    ";
-SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/RadioHead/RHGenericSPI.cpp    ";
-%end if
-if ARDUINO::TINYRTC then
-%
-SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/DS1307RTC/DS1307RTC.cpp
-%
-end if
-if ARDUINO::TIME then
-%
-SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/Time/Time.cpp    
-SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/Time/DateStrings.cpp    
-%
-end if
+#if ARDUINO::SERVO then
+#%SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/Servo/Servo.cpp
+#SOURCES += WMath.cpp
+#%end if
+#if ARDUINO::SPI then
+#%
+#SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/SPI/SPI.cpp
+#%
+#end if
+#if ARDUINO::I2C then
+#%
+#SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/Wire/Wire.cpp  
+#SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/Wire/utility/#twi.c
+#%
+#end if
+#if ARDUINO::NRF24 then
+#%
+#SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/RadioHead/RH_NRF24.cpp    ";
+#SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/RadioHead/RHNRFSPIDriver.cpp    ";
+#SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/RadioHead/RHGenericDriver.cpp    ";
+#SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/RadioHead/RHHardwareSPI.cpp    ";
+#SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/RadioHead/RHGenericSPI.cpp    ";
+#%end if
+#if ARDUINO::TINYRTC then
+#%
+#SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/DS1307RTC/DS1307RTC.cpp
+#%
+#end if
+#if ARDUINO::TIME then
+#%
+#SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/Time/Time.cpp    
+#SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/Time/DateStrings.cpp    
+#%
+#end if
+#
+#if ARDUINO::STANDARDWIRING then
+#%
+#SOURCES += wiring.c     
+#SOURCES += wiring_analog.c  
+#SOURCES += wiring_digital.c 
+#SOURCES += wiring_pulse.c   
+#SOURCES += wiring_shift.c   
+#SOURCES += WInterrupts.c    
+#%
+#end if
 
-if ARDUINO::STANDARDWIRING then
-%
-SOURCES += wiring.c     
-SOURCES += wiring_analog.c  
-SOURCES += wiring_digital.c 
-SOURCES += wiring_pulse.c   
-SOURCES += wiring_shift.c   
-SOURCES += WInterrupts.c    
-%
-end if
-
-if ARDUINO::EVOLVEARDUINO then
-%
-SOURCES += CDC.cpp    
-SOURCES += HardwareSerial.cpp    
-SOURCES += HID.cpp    
-SOURCES += IPAddress.cpp    
-SOURCES += new.cpp    
-SOURCES += Print.cpp  
-SOURCES += Stream.cpp    
-SOURCES += Tone.cpp    
-SOURCES += USBCore.cpp    
-SOURCES += WMath.cpp    
-SOURCES += WString.cpp     
-%
-end if
-
-if ARDUINO::LCDCRYSTAL then
-%
-SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/LiquidCrystal/LiquidCrystal.cpp    
-SOURCES += new.cpp    
-SOURCES += Print.cpp     
-SOURCES += WString.cpp 
-SOURCES += WMath.cpp 
-%
-end if
-
-if ARDUINO::STEPPER then
-%
-SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/Stepper/Stepper.cpp 
-%end if
+#if ARDUINO::EVOLVEARDUINO then
+#%
+#SOURCES += CDC.cpp    
+#SOURCES += HardwareSerial.cpp    
+#SOURCES += HID.cpp    
+#SOURCES += IPAddress.cpp    
+#SOURCES += new.cpp    
+#SOURCES += Print.cpp  
+#SOURCES += Stream.cpp    
+#SOURCES += Tone.cpp    
+#SOURCES += USBCore.cpp    
+#SOURCES += WMath.cpp    
+#SOURCES += WString.cpp     
+#%
+#end if
+#
+#if ARDUINO::LCDCRYSTAL then
+#%
+#SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/LiquidCrystal/LiquidCrystal.cpp    
+#SOURCES += new.cpp    
+#SOURCES += Print.cpp     
+#SOURCES += WString.cpp 
+#SOURCES += WMath.cpp 
+#%
+#end if
+#
+#if ARDUINO::STEPPER then
+#%
+#SOURCES += /Applications/Arduino.app/Contents/Resources/Java/libraries/Stepper/Stepper.cpp 
+#%end if
 %#add the 'hex' rule for avr
 flash: $(HEX)
 	@echo upload file $@ to Arduino.

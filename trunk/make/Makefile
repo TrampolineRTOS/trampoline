@@ -161,6 +161,7 @@ clean:
 # generate C file from OIL file, using goil.
 $(OTHER_OIL_OUTPUTS): $(FIRST_OIL_OUTPUT) 
 $(FIRST_OIL_OUTPUT): $(OIL_FILE)
+	@echo compiling goil file $(OIL_FILE)
 	$(GOIL_COMPILER) --target=$(TARGET) $(GOIL_TEMPLATE_STR) $(GENITVEC) $(OIL_FILE)
 
 #documentation

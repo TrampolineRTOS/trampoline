@@ -4,7 +4,7 @@
 
 #include "Arduino.h"
 
-DeclareAlarm(periodicAl);
+//DeclareAlarm(periodicAl);
 //ISR2 associated to an external interrupt source (Int5 on portE.5)
 //Note: The 'ISR' keyword is ALSO used by gcc to set interrupt handlers.
 //      Be careful to use either:
@@ -27,39 +27,44 @@ DeclareAlarm(periodicAl);
 //}
 
 //remove trampoline definition of ISR..
-#undef ISR
+//#undef ISR
 //and add GCC def of ISR :-/
-#include <avr/interrupt.h> //sei,cli
+//#include <avr/interrupt.h> //sei,cli
 
 int main(void)
 {
-	//portB.5 => pin 13 on Arduino Uno
-	DDRB  |= (1<<5);
+	// initialize digital pin 13 as an output.
+	init();
+	pinMode(13, OUTPUT);
+	digitalWrite(13, LOW);
+	Serial.begin(115200);
+	Serial.print("Ceci est un test.\n");
 
 	//timer2 => base for SystemCounter.
-	TCCR2B = 7; //start timer, prescaler 1024
-	TIMSK2 = 1; //interrupt on timer2 overflow
+	//TCCR2B = 7; //start timer, prescaler 1024
+	//TIMSK2 = 1; //interrupt on timer2 overflow
+	////init(); //init of Arduino -> should be called direclty in next versions.
 
-	//init button for ISR
-	DDRD  &= ~(1<<2);	// bit 2 (port D)  is an input
-	PORTD |= (1<<2);	// pullup port D.2
-	EICRA |=  0x03;     // rising edge detection on D.2 (INT0)
-	EIMSK |= (1<<0);    // config interrupt port D.2 => INT0
+	////init button for ISR
+	//DDRD  &= ~(1<<2);	// bit 2 (port D)  is an input
+	//PORTD |= (1<<2);	// pullup port D.2
+	//EICRA |=  0x03;     // rising edge detection on D.2 (INT0)
+	//EIMSK |= (1<<0);    // config interrupt port D.2 => INT0
 
-	Serial.begin(115200);
+	//Serial.begin(115200);
 
     StartOS(OSDEFAULTAPPMODE);
-    return 0;
+    //return 0;
 }
-
-DeclareTask(second);
-DeclareTask(third);
 
 TASK(periodicTask)
 {
 	static unsigned int nb = 0;
+	nb++;
+	if(nb & 1) digitalWrite(13, HIGH); //impair
+	else digitalWrite(13, LOW);        //pair
+
 	Serial.print("*****\n\n");
-	PORTB ^= (1<<5); //blink Led 13.
-	Serial.print(nb++);
+	Serial.print(nb);
 	Serial.print(" done\n");
 }
