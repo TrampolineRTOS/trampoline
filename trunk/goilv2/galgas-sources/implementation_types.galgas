@@ -410,28 +410,76 @@ func attributeRangeWithNumberList
   end 
 }
 
-class @impType {
-  @location   location # location of the declaration
-  @dataType   type     # type of the attribute
-  @lstring    name     # name of the attribute
-  @bool       multiple # true if multiple values are possible
-  @lstring    desc     # description of the attribute
+list @locationList { @location location }
+
+abstract class @impType {
+  @locationList   locations # locations of the declarations
+  @dataType       type      # type of the attribute
+  @lstring        name      # name of the attribute
+  @bool           multiple  # true if multiple values are possible
+  @lstringlist    descs     # description of the attribute
+}
+
+abstract getter @impType mergeWithType
+  ?@impType unused typeToMerge
+  ->@impType mergedType
+#{
+#  mergedType = self
+#}
+
+getter @impType autoAllowed -> @bool result {
+  result = false
 }
 
 class @impStructType : @impType {
   @implementationObjectMap structAttributes # struct attributes
 }
 
-getter @impType autoAllowed -> @bool result {
-  result = false
+override getter @impStructType mergeWithType
+  ?@impType typeToMerge
+  ->@impType mergedType
+{
+  @impStructType castTypeToMerge = typeToMerge as @impStructType
+  @implementationObjectMap mergedAttributes = .emptyMap
+  for () in structAttributes do
+    @impType mergedAttr = type
+    if [[castTypeToMerge structAttributes] hasKey ![lkey string]] then
+      [[castTypeToMerge structAttributes] get !lkey ?@impType subTypeToMerge]
+      mergedAttr = [type mergeWithType !subTypeToMerge]
+    end
+    [!?mergedAttributes put !lkey !mergedAttr]
+  end
+  mergedType = @impStructType.new {
+    !locations + [typeToMerge locations]
+    !type
+    !name
+    !multiple
+    !descs + [typeToMerge descs]
+    !mergedAttributes
+  }
 }
 
 class @impVoid : @impType {
 }
 
+override getter @impVoid mergeWithType
+  ?@impType unused typeToMerge
+  ->@impType mergedType
+{
+  mergedType = self
+}
+
+
 class @impAutoDefaultType : @impType {
   @bool     withAuto    # true if AUTO allowed
   @object_t defaultValue
+}
+
+override getter @impAutoDefaultType mergeWithType
+  ?@impType unused typeToMerge
+  ->@impType mergedType
+{
+  mergedType = self
 }
 
 override getter @impAutoDefaultType autoAllowed -> @bool result {
@@ -455,9 +503,37 @@ method @impAutoDefaultType setDefault ?!@objectAttributes attributes {
   end
 }
 
+proc multiError ?@locationList locations ?@string errorMessage
+{
+  for () in locations do
+    error location: errorMessage
+  end
+}
 
 class @refType : @impType {
   @lstring    ref     # name of the type
+}
+
+override getter @refType mergeWithType
+  ?@impType typeToMerge
+  ->@impType mergedType
+{
+  @refType castTypeToMerge = typeToMerge as @refType
+  if [ref string] != [[castTypeToMerge ref] string] then
+    log ref
+    @lstring csatRef = [castTypeToMerge ref]
+    log csatRef
+    multiError(![typeToMerge locations] !"Redefinition of "+name)
+    multiError(!locations !"Was defined here")
+  end
+  mergedType = @refType.new {
+    !locations + [typeToMerge locations]
+    !type
+    !name
+    !multiple
+    !descs + [typeToMerge descs]
+    !ref
+  }
 }
 
 map @implementationObjectMap {
@@ -494,10 +570,73 @@ class @impRangedType : @impAutoDefaultType {
   @attributeRange setOrRange
 }
 
+override getter @impRangedType mergeWithType
+  ?@impType typeToMerge
+  ->@impType mergedType
+{
+  @impRangedType castTypeToMerge = typeToMerge as @impRangedType
+  if checkRanged(!self !castTypeToMerge) then
+    mergedType = typeToMerge
+  else
+    mergedType = self
+  end
+}
+
 class @impBoolType : @impAutoDefaultType {
   @implementationObjectMap trueSubAttributes
   @implementationObjectMap falseSubAttributes
 }
+
+override getter @impBoolType mergeWithType
+  ?@impType typeToMerge
+  ->@impType mergedType
+{
+  @impBoolType castTypeToMerge = typeToMerge as @impBoolType
+  @implementationObjectMap mergedTrueAttributes = .emptyMap
+  @implementationObjectMap mergedFalseAttributes = .emptyMap
+  for () in trueSubAttributes do
+    @impType mergedAttr = type
+    if [[castTypeToMerge trueSubAttributes] hasKey ![lkey string]] then
+      [[castTypeToMerge trueSubAttributes] get !lkey ?@impType subTypeToMerge]
+      mergedAttr = [type mergeWithType !subTypeToMerge]
+    end
+    [!?mergedTrueAttributes put !lkey !mergedAttr]
+  end
+  # add new attributes from mergedType
+  for () in [castTypeToMerge trueSubAttributes] do
+    if not [trueSubAttributes hasKey ![lkey string]] then
+      [!?mergedTrueAttributes put !lkey !type]
+    end
+  end
+  
+  for () in falseSubAttributes do
+    @impType mergedAttr = type
+    if [[castTypeToMerge falseSubAttributes] hasKey ![lkey string]] then
+      [[castTypeToMerge falseSubAttributes] get !lkey ?@impType subTypeToMerge]
+      mergedAttr = [type mergeWithType !subTypeToMerge]
+    end
+    [!?mergedFalseAttributes put !lkey !mergedAttr]
+  end
+  # add new attributes from mergedType
+  for () in [castTypeToMerge falseSubAttributes] do
+    if not [falseSubAttributes hasKey ![lkey string]] then
+      [!?mergedTrueAttributes put !lkey !type]
+    end
+  end
+  
+  mergedType = @impBoolType.new {
+    !locations + [typeToMerge locations]
+    !type
+    !name
+    !multiple
+    !descs + [typeToMerge descs]
+    !withAuto
+    !defaultValue
+    !mergedTrueAttributes
+    !mergedFalseAttributes
+  }
+}
+
 
 override method @impBoolType setDefault ?!@objectAttributes attributes {
 #  if not [[attributes objectParams] hasKey ![name string]] then
@@ -551,6 +690,42 @@ class @impEnumType : @impAutoDefaultType {
   @enumValues valuesMap
 }
 
+getter @enumValues mergeWithEnum
+  ?let @enumValues enumToMerge
+  ->@enumValues mergedEnum
+{
+  mergedEnum = .emptyMap
+  for () in self do
+    @implementationObjectMap attributes = subAttributes
+    if [enumToMerge hasKey ![lkey string]] then
+      [enumToMerge get !lkey ?@implementationObjectMap attributesToMerge]
+      attributes = [subAttributes mergeImplementationObjectAttributesWith !attributesToMerge]
+    end
+    [!?mergedEnum put !lkey !attributes]
+  end
+  for () in enumToMerge do
+    if not [self hasKey ![lkey string]] then
+      [!?mergedEnum put !lkey !subAttributes]
+    end
+  end
+}
+
+override getter @impEnumType mergeWithType
+  ?@impType typeToMerge
+  ->@impType mergedType
+{
+  @impEnumType castTypeToMerge = typeToMerge as @impEnumType
+  mergedType = @impEnumType.new {
+    !locations + [typeToMerge locations]
+    !type
+    !name
+    !multiple
+    !descs + [typeToMerge descs]
+    !withAuto
+    !defaultValue
+    ![valuesMap mergeWithEnum ![castTypeToMerge valuesMap]]
+  }
+}
 
 
 #
@@ -567,7 +742,9 @@ proc verifyEnum ?let @impType anEnum {
       end
     else end
   else
-    error [anEnum location]: "Internal, not an @impEnumType"
+    for () in [anEnum locations] do
+      error location: "Internal, not an @impEnumType"
+    end
   end
 }
 
@@ -682,8 +859,10 @@ proc checkTypeForAttribute
     @impType type
     [obj get !lstringWith(!attributeName) ?type]
     if [type type] != expectedType then
-      error [type location]: attributeName+" is a "+[[type type] oilType]
-      error [type location]: attributeName+" should be a "+[expectedType oilType]
+      for () in [type locations] do
+        error location: attributeName+" is a "+[[type type] oilType]
+        error location: attributeName+" should be a "+[expectedType oilType]
+      end
     end
   end
 }
@@ -788,162 +967,6 @@ override method @impEnumType checkAttributeReferences
   end 
 }
 
-#
-# checkLinks
-#
-#routine checkLinks
-#  ??@implementationObject messageProperty
-#:
-#  @implementationObject link := boolSubAttributes[!messageProperty !"LINK" !true];
-#  checkTypeForAttribute !link !"RECEIVEMESSAGE" ![@dataType messageType];
-#  link := boolSubAttributes[!messageProperty !"LINK" !false];
-#  checkTypeForAttribute !link !"NETWORKMESSAGE" ![@dataType networkmessageType];
-#  checkTypeForAttribute !link !"NETWORKORDERCALLOUT" ![@dataType string];
-#  checkTypeForAttribute !link !"CPUORDERCALLOUT" ![@dataType string];
-#end routine;
-
-#
-# checkNotifications
-#
-#routine checkNotifications
-#  ??@implementationObject messageProperty
-#  ??@string notificationKind
-#:
-#  @implementationObject act := enumSubAttributes[!messageProperty !notificationKind !"ACTIVATETASK"];
-#  checkTypeForAttribute !act !"TASK" ![@dataType taskType];
-#  act := enumSubAttributes[!messageProperty !notificationKind !"SETEVENT"];
-#  checkTypeForAttribute !act !"TASK" ![@dataType taskType];
-#  checkTypeForAttribute !act !"EVENT" ![@dataType eventType];
-#  act := enumSubAttributes[!messageProperty !notificationKind !"COMCALLBACK"];
-#  checkTypeForAttribute !act !"CALLBACKROUTINENAME" ![@dataType string];
-#  checkTypeForAttribute !act !"MESSAGE" ![@dataType messageType];
-#  act := enumSubAttributes[!messageProperty !notificationKind !"FLAG"];
-#  checkTypeForAttribute !act !"FLAGNAME" ![@dataType string];
-#  act := enumSubAttributes[!messageProperty !notificationKind !"INMCALLBACK"];
-#  checkTypeForAttribute !act !"CALLBACKROUTINENAME" ![@dataType string];
-#  checkTypeForAttribute !act !"MONITOREDIPDU" ![@dataType uint32Number];
-#end routine;
-
-#
-# checkImplementation checks attributes declared in the IMPLEMENTATION
-# have conform datatype, default value and sub-enumeration
-#
-#routine checkImplementation
-#  ??@implementation implementation
-#:
-#  # Implementtation for TASKs
-##  log implementation;
-#  checkTypeForKind !implementation !"TASK" !"PRIORITY" ![@dataType uint32Number];
-#  checkTypeForKind !implementation !"TASK" !"SCHEDULE" ![@dataType enumeration];
-#  checkTypeForKind !implementation !"TASK" !"ACTIVATION" ![@dataType uint32Number];
-#  checkTypeForKind !implementation !"TASK" !"AUTOSTART" ![@dataType boolean];
-#  checkTypeForAttribute !boolSubAttributes[!impObject[!implementation !"TASK"] !"AUTOSTART" !true] !"APPMODE" ![@dataType appmodeType];
-#  checkTypeForKind !implementation !"TASK" !"RESOURCE" ![@dataType resourceType];
-#  checkTypeForKind !implementation !"TASK" !"EVENT" ![@dataType eventType];
-#  checkTypeForKind !implementation !"TASK" !"MESSAGE" ![@dataType messageType];
-#  
-#  # Implementation for COUNTERs
-#  checkTypeForKind !implementation !"COUNTER" !"MAXALLOWEDVALUE" ![@dataType uint32Number];
-#  checkTypeForKind !implementation !"COUNTER" !"TICKSPERBASE" ![@dataType uint32Number];
-#  checkTypeForKind !implementation !"COUNTER" !"MINCYCLE" ![@dataType uint32Number];
-#  
-#  # Implementation for ALARMs
-#  checkTypeForKind !implementation !"ALARM" !"COUNTER" ![@dataType counterType];
-#  checkTypeForKind !implementation !"ALARM" !"ACTION" ![@dataType enumeration];
-#  checkTypeForAttribute !enumSubAttributes[!impObject[!implementation !"ALARM"] !"ACTION" !"ACTIVATETASK"] !"TASK" ![@dataType taskType];
-#  checkTypeForAttribute !enumSubAttributes[!impObject[!implementation !"ALARM"] !"ACTION" !"SETEVENT"] !"TASK" ![@dataType taskType];
-#  checkTypeForAttribute !enumSubAttributes[!impObject[!implementation !"ALARM"] !"ACTION" !"SETEVENT"] !"EVENT" ![@dataType eventType];
-#  checkTypeForAttribute !enumSubAttributes[!impObject[!implementation !"ALARM"] !"ACTION" !"ALARMCALLBACK"] !"ALARMCALLBACKNAME" ![@dataType string];
-#  checkTypeForKind !implementation !"ALARM" !"AUTOSTART" ![@dataType boolean];
-#  @implementationObject autostart := boolSubAttributes[!impObject[!implementation !"ALARM"] !"AUTOSTART" !true];
-#  checkTypeForAttribute !autostart !"APPMODE" ![@dataType appmodeType];
-#  checkTypeForAttribute !autostart !"ALARMTIME" ![@dataType uint32Number];
-#  checkTypeForAttribute !autostart !"CYCLETIME" ![@dataType uint32Number];
-#  
-#  # Implementation of RESOURCES
-#  checkTypeForKind !implementation !"RESOURCE" !"RESOURCEPROPERTY" ![@dataType enumeration];
-#  checkTypeForAttribute !enumSubAttributes[!impObject[!implementation !"RESOURCE"] !"RESOURCEPROPERTY" !"LINKED"] !"LINKEDRESOURCE" ![@dataType resourceType];
-#
-#  # Implementation of EVENT
-#  checkTypeForKind !implementation !"EVENT" !"MASK" ![@dataType uint64Number];
-#  
-#  # Implementation of ISR
-#  checkTypeForKind !implementation !"ISR" !"CATEGORY" ![@dataType uint32Number];
-#  checkTypeForKind !implementation !"ISR" !"RESOURCE" ![@dataType resourceType];
-#  checkTypeForKind !implementation !"ISR" !"MESSAGE" ![@dataType messageType];
-#  checkTypeForKind !implementation !"ISR" !"PRIORITY" ![@dataType uint32Number];
-#  
-#  # Implementation of MESSAGE
-#  checkTypeForKind !implementation !"MESSAGE" !"MESSAGEPROPERTY" ![@dataType enumeration];
-#  @implementationObject messageProperty := enumSubAttributes[!impObject[!implementation !"MESSAGE"] !"MESSAGEPROPERTY" !"SEND_STATIC_INTERNAL"];
-#  checkTypeForAttribute !messageProperty !"CDATATYPE" ![@dataType string];
-#  messageProperty := enumSubAttributes[!impObject[!implementation !"MESSAGE"] !"MESSAGEPROPERTY" !"SEND_STATIC_EXTERNAL"];
-#  checkTypeForAttribute !messageProperty !"CDATATYPE" ![@dataType string];
-#  checkTypeForAttribute !messageProperty !"TRANSFERPROPERTY" ![@dataType enumeration];
-#  checkTypeForAttribute !messageProperty !"FILTER" ![@dataType enumeration];
-#  checkFilters !messageProperty;
-#  checkTypeForAttribute !messageProperty !"NETWORKORDERCALLOUT" ![@dataType string];
-#  checkTypeForAttribute !messageProperty !"CPUORDERCALLOUT" ![@dataType string];
-#  checkTypeForAttribute !messageProperty !"INITIALVALUE" ![@dataType uint64Number];
-#  checkTypeForAttribute !messageProperty !"NETWORKMESSAGE" ![@dataType networkmessageType];
-#  messageProperty := enumSubAttributes[!impObject[!implementation !"MESSAGE"] !"MESSAGEPROPERTY" !"SEND_DYNAMIC_EXTERNAL"];
-#  checkTypeForAttribute !messageProperty !"TRANSFERPROPERTY" ![@dataType enumeration];
-#  checkTypeForAttribute !messageProperty !"FILTER" ![@dataType enumeration];
-#  checkFilters !messageProperty;
-#  checkTypeForAttribute !messageProperty !"NETWORKORDERCALLOUT" ![@dataType string];
-#  checkTypeForAttribute !messageProperty !"CPUORDERCALLOUT" ![@dataType string];
-#  checkTypeForAttribute !messageProperty !"INITIALVALUE" ![@dataType uint64Number];
-#  checkTypeForAttribute !messageProperty !"NETWORKMESSAGE" ![@dataType networkmessageType];
-#  messageProperty := enumSubAttributes[!impObject[!implementation !"MESSAGE"] !"MESSAGEPROPERTY" !"SEND_ZERO_EXTERNAL"];
-#  checkTypeForAttribute !messageProperty !"NETWORKORDERCALLOUT" ![@dataType string];
-#  checkTypeForAttribute !messageProperty !"CPUORDERCALLOUT" ![@dataType string];
-#  checkTypeForAttribute !messageProperty !"NETWORKMESSAGE" ![@dataType networkmessageType];
-#  messageProperty := enumSubAttributes[!impObject[!implementation !"MESSAGE"] !"MESSAGEPROPERTY" !"RECEIVE_ZERO_INTERNAL"];
-#  checkTypeForAttribute !messageProperty !"SENDINGMESSAGE" ![@dataType messageType];
-#  messageProperty := enumSubAttributes[!impObject[!implementation !"MESSAGE"] !"MESSAGEPROPERTY" !"RECEIVE_ZERO_EXTERNAL"];
-#  checkTypeForAttribute !messageProperty !"NETWORKORDERCALLOUT" ![@dataType string];
-#  checkTypeForAttribute !messageProperty !"CPUORDERCALLOUT" ![@dataType string];
-#  checkTypeForAttribute !messageProperty !"NETWORKMESSAGE" ![@dataType networkmessageType];
-#  messageProperty := enumSubAttributes[!impObject[!implementation !"MESSAGE"] !"MESSAGEPROPERTY" !"RECEIVE_UNQUEUED_INTERNAL"];
-#  checkTypeForAttribute !messageProperty !"SENDINGMESSAGE" ![@dataType messageType];
-#  checkTypeForAttribute !messageProperty !"FILTER" ![@dataType enumeration];
-#  checkFilters !messageProperty;
-#  checkTypeForAttribute !messageProperty !"INITIALVALUE" ![@dataType uint64Number];
-#  messageProperty := enumSubAttributes[!impObject[!implementation !"MESSAGE"] !"MESSAGEPROPERTY" !"RECEIVE_QUEUED_INTERNAL"];
-#  checkTypeForAttribute !messageProperty !"SENDINGMESSAGE" ![@dataType messageType];
-#  checkTypeForAttribute !messageProperty !"FILTER" ![@dataType enumeration];
-#  checkFilters !messageProperty;
-#  checkTypeForAttribute !messageProperty !"INITIALVALUE" ![@dataType uint64Number];
-#  checkTypeForAttribute !messageProperty !"QUEUESIZE" ![@dataType uint32Number];
-#  messageProperty := enumSubAttributes[!impObject[!implementation !"MESSAGE"] !"MESSAGEPROPERTY" !"RECEIVE_UNQUEUED_EXTERNAL"];
-#  checkTypeForAttribute !messageProperty !"CDATATYPE" ![@dataType string];
-#  checkTypeForAttribute !messageProperty !"FILTER" ![@dataType enumeration];
-#  checkFilters !messageProperty;
-#  checkTypeForAttribute !messageProperty !"LINK" ![@dataType boolean];
-#  checkLinks !messageProperty;
-#  checkTypeForAttribute !messageProperty !"INITIALVALUE" ![@dataType uint64Number];
-#  messageProperty := enumSubAttributes[!impObject[!implementation !"MESSAGE"] !"MESSAGEPROPERTY" !"RECEIVE_QUEUED_EXTERNAL"];
-#  checkTypeForAttribute !messageProperty !"CDATATYPE" ![@dataType string];
-#  checkTypeForAttribute !messageProperty !"QUEUESIZE" ![@dataType uint32Number];
-#  checkTypeForAttribute !messageProperty !"FILTER" ![@dataType enumeration];
-#  checkFilters !messageProperty;
-#  checkTypeForAttribute !messageProperty !"LINK" ![@dataType boolean];
-#  checkLinks !messageProperty;
-#  checkTypeForAttribute !messageProperty !"INITIALVALUE" ![@dataType uint64Number];
-#  messageProperty := enumSubAttributes[!impObject[!implementation !"MESSAGE"] !"MESSAGEPROPERTY" !"RECEIVE_DYNAMIC_EXTERNAL"];
-#  checkTypeForAttribute !messageProperty !"LINK" ![@dataType boolean];
-#  checkLinks !messageProperty;
-#  checkTypeForAttribute !messageProperty !"INITIALVALUE" ![@dataType uint64Number];
-#  messageProperty := enumSubAttributes[!impObject[!implementation !"MESSAGE"] !"MESSAGEPROPERTY" !"RECEIVE_ZERO_SENDERS"];
-#  checkTypeForAttribute !messageProperty !"CDATATYPE" ![@dataType string];
-#  checkTypeForAttribute !messageProperty !"INITIALVALUE" ![@dataType uint64Number];
-#  checkTypeForKind !implementation !"MESSAGE" !"NOTIFICATION" ![@dataType enumeration];
-#  checkNotifications !impObject[!implementation !"MESSAGE"] !"NOTIFICATION";
-#  checkTypeForKind !implementation !"MESSAGE" !"NOTIFICATIONERROR" ![@dataType enumeration];
-#  checkNotifications !impObject[!implementation !"MESSAGE"] !"NOTIFICATIONERROR";
-#  
-#  # Implementation of NETWORKMESSAGE
-#end routine;
 
 proc setDefaultsForType
   ?let @implementationObjectMap impObject
@@ -956,4 +979,57 @@ proc setDefaultsForType
   end
 }
 
+# Merge two implementation objects
+getter @implementationObject mergeImplementationObjectWith
+  ?let @implementationObject objToMerge
+  ->@implementationObject mergedObj
+{
+  if multiple != [objToMerge multiple] then
+    if [option goil_options.warnMultiple value] then
+      warning [objToMerge multiple]:"multiple redefinition"
+      warning multiple:"was defined here"
+    end
+  end
+#  message "##################################################################################\n"
+#  message "***************\n"
+#  message "*** merging ***\n"
+#  message "***************\n"
+#  @implementationObject selfcopy = self
+#  log selfcopy
+#  message "***************\n"
+#  message "***** with ****\n"
+#  message "***************\n"
+#  log objToMerge
+  mergedObj = .new { !multiple ![attributes mergeImplementationObjectAttributesWith ![objToMerge attributes]] }
+#  message "***************\n"
+#  message "**** result ***\n"
+#  message "***************\n"
+#  log mergedObj
+#  message "##################################################################################\n"
+}
 
+# Merge two implementation attribute map
+getter @implementationObjectMap mergeImplementationObjectAttributesWith
+  ?let @implementationObjectMap attributesToMerge
+  ->@implementationObjectMap mergedAttributes
+{
+  mergedAttributes = .emptyMap
+  for () in self do
+    @impType merged = type
+    if [attributesToMerge hasKey ![lkey string]] then
+      [attributesToMerge get !lkey ?@impType typeToMerge]
+      if [type dynamicType] == [typeToMerge dynamicType] then
+        merged = [type mergeWithType !typeToMerge]
+      else
+        # conflicting types
+        error lkey : "Redefined type";
+      end
+    end
+    [!?mergedAttributes put !lkey !merged]
+  end
+  for () in attributesToMerge do
+    if not [self hasKey ![lkey string]] then
+      [!?mergedAttributes put !lkey !type]
+    end
+  end
+}

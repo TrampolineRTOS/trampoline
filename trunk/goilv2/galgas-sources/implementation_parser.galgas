@@ -25,24 +25,24 @@
 
 syntax implementation_parser(goil_lexique){
 
-rule <implementation_definition> ?!@implementation implementation
-rule <implementation_objects> ?!@implementation implementation
-rule <implementation_type> !@lstring attributeName !@impType type
+#rule <implementation_definition> ?!@implementation implementation
+#rule <implementation_objects> ?!@implementation implementation
+#rule <implementation_type> !@lstring attributeName !@impType type
 
-rule <with_auto> !@bool withAuto
-rule <int_or_float> !@object_t num ?let @dataType type
-rule <set_followup> ?!@numberList numbers ?let @dataType type
-rule <range> !@attributeRange range ?let @dataType rangeType
-rule <range_content> !@attributeRange range ?let @dataType rangeType
-rule <number_options> !@lstring name !@impType options ?let @dataType type
-rule <type_options> !@lstring name !@impType options ?let @dataType type
-rule <boolean_options> !@lstring name !@impType options
-rule <string_options> !@lstring name !@impType options
-rule <enum_item> ?!@enumValues items
-rule <enum_options> !@lstring name !@impType options
-rule <multiple> !@bool multiple
-rule <identifier_or_attribute> !@lstring name
-rule <identifier_or_enum_value> !@lstring name
+#rule <with_auto> !@bool withAuto
+#rule <int_or_float> !@object_t num ?let @dataType type
+#rule <set_followup> ?!@numberList numbers ?let @dataType type
+#rule <range> !@attributeRange range ?let @dataType rangeType
+#rule <range_content> !@attributeRange range ?let @dataType rangeType
+#rule <number_options> !@lstring name !@impType options ?let @dataType type
+#rule <type_options> !@lstring name !@impType options ?let @dataType type
+#rule <boolean_options> !@lstring name !@impType options
+#rule <string_options> !@lstring name !@impType options
+#rule <enum_item> ?!@enumValues items
+#rule <enum_options> !@lstring name !@impType options
+#rule <multiple> !@bool multiple
+#rule <identifier_or_attribute> !@lstring name
+#rule <identifier_or_enum_value> !@lstring name
 
 #
 # External rules
@@ -83,49 +83,45 @@ rule <implementation_definition>
 #end routine;
 
 rule <implementation_objects>
-  ?!@implementation implementation {
-  @implementationObject object 
-  @implementationObjectMap objectAttributes
-  @lstring objectName
-  @lbool multiple
-  @lbool oldMultiple
-  @bool objectKnown = false
+  ?!@implementation implementation
+{
   @implementationMap imp = [implementation imp]
   
-  $idf$ ?objectName
-  
-  if [implementation hasKey ![objectName string]] then
-    objectKnown = true
-    [!?imp del !objectName ?object]
-    oldMultiple = [object multiple]
-    objectAttributes = [object attributes]
-  else
-    object = @implementationObject. new { !@lbool. new { !false !@location.here} !@implementationObjectMap. emptyMap}
-    oldMultiple = @lbool. new { !false !@location.here}
-    objectAttributes = @implementationObjectMap. emptyMap
-  end
-  
+  $idf$ ?let @lstring objectName # get the object name
+  @lbool multiple
   select
    # object may have multiple instances
-    $[$ $]$ multiple = @lbool. new { !true !@location.here} 
+    $[$ $]$ multiple = @lbool.new { !true !@location.here} 
   or
-    multiple = @lbool. new { !false !@location.here}
+    multiple = @lbool.new { !false !@location.here}
   end
-  
-  if objectKnown then
-    if [multiple bool] != [oldMultiple bool] then
-      if [option goil_options.warnMultiple value] then
-        warning multiple:"Object multiple redefinition"
-        warning oldMultiple:"was defined here"
-      end
-      multiple = oldMultiple
-    end
-  end
-  
+
+  @implementationObjectMap objectAttributes = .emptyMap
   <implementation_list> !?objectAttributes
   
-  [!?object setMultiple !multiple]
-  [!?object setAttributes !objectAttributes]
+  @implementationObject newObject = .new { !multiple !objectAttributes }
+  
+  # Check if this object already exists
+  # If yes, the new declaration is merged with the old one
+  @implementationObject object
+  if [implementation hasKey ![objectName string]] then
+    [!?imp del !objectName ?object]
+    object = [object mergeImplementationObjectWith !newObject]
+#    message "Redefinition de "+objectName+"\n"
+  else
+    object = newObject
+  end
+  
+#  if objectKnown then
+#    if [multiple bool] != [oldMultiple bool] then
+#      if [option goil_options.warnMultiple value] then
+#        warning multiple:"Object multiple redefinition"
+#        warning oldMultiple:"was defined here"
+#      end
+#      multiple = oldMultiple
+#    end
+#  end
+  
   
   [!?imp put !objectName !object]
   [!?implementation setImp !imp]
@@ -143,11 +139,11 @@ rule <implementation_list>
       @impType previousType
       [objectAttributes get !attributeName ?previousType]
       
-      #message "*** New definition ".[attributeName string]."\n";
+#      message "*** New definition "+[attributeName string]+"\n";
       
       if checkNewTypeWithinPreviousType(!attributeName !previousType !type) then
-        #message "*** OK ".[attributeName string]."\n";
-        #log type;
+#        message "*** OK "+[attributeName string]+"\n";
+#        log type;
         [!?objectAttributes del !attributeName ?*]
         [!?objectAttributes put !attributeName !type]
       end
@@ -199,7 +195,7 @@ rule <struct_options>
   <multiple> ?multiple
   @lstring description
   <description> ?description
-  options = @impStructType. new { !@location.here !@dataType. structType !name !multiple !description !structAttributes}
+  options = @impStructType.new { !{!@location.here} !@dataType. structType !name !multiple !{!description} !structAttributes}
 }
 
 rule <objref_option>
@@ -216,7 +212,7 @@ rule <objref_option>
   <multiple> ?multiple
   @lstring description
   <description> ?description
-  options = @refType. new { !@location.here !@dataType. objectType !name !multiple !description !ref}
+  options = @refType. new { !{!@location.here} !@dataType. objectType !name !multiple !{!description} !ref}
 }
   
 
@@ -249,7 +245,7 @@ rule <string_options>
     <description> ?oil_desc
     defaultValue= @void. new { !oil_desc !@location.here}
   end
-  options = @impAutoDefaultType. new { !@location.here !@dataType. string !name !multiple !oil_desc !withAuto !defaultValue}
+  options = @impAutoDefaultType. new { !{!@location.here} !@dataType.string !name !multiple !{!oil_desc} !withAuto !defaultValue}
 }
 
 rule <boolean_options>
@@ -290,7 +286,7 @@ rule <boolean_options>
     <description> ?oil_desc
     defaultValue= @void. new { !oil_desc !@location.here}
   end
-  options = @impBoolType. new { !@location.here !@dataType. boolean !name !multiple !oil_desc !withAuto !defaultValue !trueSubAttributes !falseSubAttributes}
+  options = @impBoolType. new { !{!@location.here} !@dataType. boolean !name !multiple !{!oil_desc} !withAuto !defaultValue !trueSubAttributes !falseSubAttributes}
 }
 
 rule <enum_item>
@@ -342,7 +338,7 @@ rule <enum_options>
     <description> ?oil_desc
     defaultValue = @void. new { !oil_desc !@location.here}
   end
-  options = @impEnumType. new { !@location.here !@dataType. enumeration !name !multiple !oil_desc !withAuto !defaultValue !items}
+  options = @impEnumType. new { !{!@location.here} !@dataType. enumeration !name !multiple !{!oil_desc} !withAuto !defaultValue !items}
   verifyEnum ( !options)
 }
 
@@ -377,7 +373,7 @@ rule <number_options>
     <description> ?oil_desc
     defaultValue = @void. new { !oil_desc !@location.here}
   end
-  options = @impRangedType. new { !@location.here !type !name !multiple !oil_desc !withAuto !defaultValue !range}
+  options = @impRangedType. new { !{!@location.here} !type !name !multiple !{!oil_desc} !withAuto !defaultValue !range}
 }
 
 rule <type_options>
@@ -411,7 +407,7 @@ rule <type_options>
     <description> ?oil_desc
     defaultValue = @void. new { !oil_desc !@location.here}
   end
-  options = @impAutoDefaultType. new { !@location.here !type !name !multiple !oil_desc !withAuto !defaultValue}
+  options = @impAutoDefaultType. new { !{!@location.here} !type !name !multiple !{!oil_desc} !withAuto !defaultValue}
 }
 
 rule <with_auto>
@@ -539,8 +535,12 @@ func checkEnums
   @stringset previousValues = [[previousEnum valuesMap] keySet]
   inside = (newValues & previousValues) == newValues
   if not inside then
-    error [newEnum location]: "ENUM is not within previous enum declaration"
-    error [previousEnum location]: "previous ENUM declaration was here"
+    for () in [newEnum locations] do
+      error location: "ENUM is not within previous enum declaration"
+    end
+    for () in [previousEnum locations] do
+      error location: "previous ENUM declaration was here"
+    end
   end
 }
 
@@ -550,11 +550,16 @@ func checkEnums
 func checkRanged
   ?let @impRangedType previousRanged
   ?let @impRangedType newRanged
-  ->@bool inside {
+  ->@bool inside
+{
   [[previousRanged setOrRange] enclose ?inside ![newRanged setOrRange]]
   if not inside then
-    error [newRanged location]: "new range or set is not within previous range or set declaration"
-    error [previousRanged location]: "previous range or set declaration was here"
+    for () in [newRanged locations] do
+      error location: "new range or set is not within previous range or set declaration"
+    end
+    for () in [previousRanged locations] do
+      error location: "previous range or set declaration was here"
+    end
   end
 }
 
@@ -565,8 +570,12 @@ func checkNewTypeWithinPreviousType
   ->@bool result {
   result = false
   if [newType type] != [previousType type] then
-    error [newType location]: [name string]+" should be a "+[[previousType type] oilType]
-    error [previousType location]: [name string]+" was previouly defined here"
+    for () in [newType locations] do
+      error location: [name string]+" should be a "+[[previousType type] oilType]
+    end
+    for () in [previousType locations] do
+      error location: [name string]+" was previouly defined here"
+    end
     result = false
   else
     cast previousType

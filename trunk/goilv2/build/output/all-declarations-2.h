@@ -11,6 +11,377 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
+//                                             Function 'template_string'                                              *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_string function_template_5F_string (class GALGAS_string inArgument0,
+                                                 class GALGAS_string inArgument1,
+                                                 class C_Compiler * inCompiler
+                                                 COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                             Function 'templateFilePath'                                             *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_string function_templateFilePath (const class GALGAS_string & constinArgument0,
+                                               const class GALGAS_string & constinArgument1,
+                                               class C_Compiler * inCompiler
+                                               COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                               Function 'config_file'                                                *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_lstring function_config_5F_file (class C_Compiler * inCompiler
+                                              COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                            Function 'extra_config_file'                                             *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_lstring function_extra_5F_config_5F_file (class C_Compiler * inCompiler
+                                                       COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                                  Routine 'prefix'                                                   *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+void routine_prefix (class GALGAS_prefix_5F_map inArgument0,
+                     class GALGAS_string inArgument1,
+                     class GALGAS_string & outArgument2,
+                     class C_Compiler * inCompiler
+                     COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                              Routine 'performReplace'                                               *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+void routine_performReplace (class GALGAS_prefix_5F_map inArgument0,
+                             class GALGAS_string inArgument1,
+                             class GALGAS_string inArgument2,
+                             class GALGAS_string & ioArgument3,
+                             class C_Compiler * inCompiler
+                             COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                                 Routine 'doReplace'                                                 *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+void routine_doReplace (class GALGAS_string & ioArgument0,
+                        class GALGAS_string inArgument1,
+                        class GALGAS_string inArgument2,
+                        class C_Compiler * inCompiler
+                        COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                            Routine 'do_replace_default'                                             *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+void routine_do_5F_replace_5F_default (class GALGAS_string & ioArgument0,
+                                       class GALGAS_string inArgument1,
+                                       class GALGAS_string inArgument2,
+                                       class GALGAS_string inArgument3,
+                                       class C_Compiler * inCompiler
+                                       COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                             Routine 'replace_no_prefix'                                             *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+void routine_replace_5F_no_5F_prefix (class GALGAS_prefix_5F_map inArgument0,
+                                      class GALGAS_string inArgument1,
+                                      class GALGAS_string inArgument2,
+                                      class GALGAS_string & ioArgument3,
+                                      class C_Compiler * inCompiler
+                                      COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                                Routine 'table_core'                                                 *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+void routine_table_5F_core (class GALGAS_string inArgument0,
+                            class GALGAS_string inArgument1,
+                            class GALGAS_string inArgument2,
+                            class GALGAS_stringset inArgument3,
+                            class GALGAS_string & ioArgument4,
+                            class GALGAS_string & ioArgument5,
+                            class C_Compiler * inCompiler
+                            COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                             Routine 'add_to_stringset'                                              *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+void routine_add_5F_to_5F_stringset (class GALGAS_stringset & ioArgument0,
+                                     class GALGAS_string inArgument1,
+                                     class C_Compiler * inCompiler
+                                     COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                             Routine 'is_in_lstringlist'                                             *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+void routine_is_5F_in_5F_lstringlist (class GALGAS_lstringlist inArgument0,
+                                      class GALGAS_lstring inArgument1,
+                                      class GALGAS_lstring & outArgument2,
+                                      class GALGAS_bool & outArgument3,
+                                      class C_Compiler * inCompiler
+                                      COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                             Function 'isInLstringlist'                                              *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_bool function_isInLstringlist (class GALGAS_lstringlist inArgument0,
+                                            class GALGAS_lstring inArgument1,
+                                            class C_Compiler * inCompiler
+                                            COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                            Routine 'add_lstring_unique'                                             *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+void routine_add_5F_lstring_5F_unique (class GALGAS_lstringlist & ioArgument0,
+                                       class GALGAS_lstring inArgument1,
+                                       class GALGAS_string inArgument2,
+                                       class C_Compiler * inCompiler
+                                       COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                           Routine 'set_lstring_if_empty'                                            *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+void routine_set_5F_lstring_5F_if_5F_empty (class GALGAS_lstring & ioArgument0,
+                                            class GALGAS_lstring inArgument1,
+                                            class GALGAS_string inArgument2,
+                                            class C_Compiler * inCompiler
+                                            COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                      Routine 'add_makefile_flag_if_not_empty'                                       *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+void routine_add_5F_makefile_5F_flag_5F_if_5F_not_5F_empty (class GALGAS_string & ioArgument0,
+                                                            class GALGAS_string inArgument1,
+                                                            class GALGAS_string inArgument2,
+                                                            class C_Compiler * inCompiler
+                                                            COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                               Function 'stripString'                                                *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_string function_stripString (class GALGAS_string inArgument0,
+                                          class C_Compiler * inCompiler
+                                          COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                             Routine 'errorNoFileFound'                                              *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+void routine_errorNoFileFound (const class GALGAS_stringlist constinArgument0,
+                               const class GALGAS_string constinArgument1,
+                               const class GALGAS_lstring constinArgument2,
+                               class C_Compiler * inCompiler
+                               COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                           Function 'attributeAllowsAuto'                                            *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_bool function_attributeAllowsAuto (const class GALGAS_impType & constinArgument0,
+                                                class C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                            Routine 'verifyAllAttributes'                                            *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+void routine_verifyAllAttributes (const class GALGAS_implementation constinArgument0,
+                                  const class GALGAS_objectsMap constinArgument1,
+                                  class C_Compiler * inCompiler
+                                  COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                           Category method '@applicationDefinition verifyCrossReferences'                            *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typedef void (*categoryMethodSignature_applicationDefinition_verifyCrossReferences) (const class cPtr_applicationDefinition * inObject,
+                                                                                     const class GALGAS_implementation constinArgument0,
+                                                                                     class C_Compiler * inCompiler
+                                                                                     COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterCategoryMethod_verifyCrossReferences (const int32_t inClassIndex,
+                                                categoryMethodSignature_applicationDefinition_verifyCrossReferences inMethod) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void callCategoryMethod_verifyCrossReferences (const class cPtr_applicationDefinition * inObject,
+                                               const GALGAS_implementation constin_imp,
+                                               C_Compiler * inCompiler
+                                               COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                 Category method '@implementation verifyApplication'                                 *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typedef void (*categoryMethodSignature_implementation_verifyApplication) (const class cPtr_implementation * inObject,
+                                                                          const class GALGAS_applicationDefinition constinArgument0,
+                                                                          class C_Compiler * inCompiler
+                                                                          COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterCategoryMethod_verifyApplication (const int32_t inClassIndex,
+                                            categoryMethodSignature_implementation_verifyApplication inMethod) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void callCategoryMethod_verifyApplication (const class cPtr_implementation * inObject,
+                                           const GALGAS_applicationDefinition constin_appDef,
+                                           C_Compiler * inCompiler
+                                           COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                                 Function 'osObject'                                                 *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_objectAttributes function_osObject (const class GALGAS_objectsMap & constinArgument0,
+                                                 class C_Compiler * inCompiler
+                                                 COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                           Function 'objectForKindAndName'                                           *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_objectAttributes function_objectForKindAndName (const class GALGAS_objectsMap & constinArgument0,
+                                                             const class GALGAS_string & constinArgument1,
+                                                             const class GALGAS_string & constinArgument2,
+                                                             class C_Compiler * inCompiler
+                                                             COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                          Routine 'setObjectForKindAndName'                                          *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+void routine_setObjectForKindAndName (class GALGAS_objectsMap & ioArgument0,
+                                      const class GALGAS_string constinArgument1,
+                                      const class GALGAS_string constinArgument2,
+                                      const class GALGAS_objectAttributes constinArgument3,
+                                      class C_Compiler * inCompiler
+                                      COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                              Function 'objectsForKind'                                              *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_objectKind function_objectsForKind (const class GALGAS_objectsMap & constinArgument0,
+                                                 const class GALGAS_string & constinArgument1,
+                                                 class C_Compiler * inCompiler
+                                                 COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                                 Function 'listInOS'                                                 *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_identifierList function_listInOS (const class GALGAS_objectsMap & constinArgument0,
+                                               const class GALGAS_string & constinArgument1,
+                                               class C_Compiler * inCompiler
+                                               COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                           Routine 'generate_signed_type'                                            *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+void routine_generate_5F_signed_5F_type (class GALGAS_uint_36__34_ inArgument0,
+                                         class GALGAS_string inArgument1,
+                                         class GALGAS_string & outArgument2,
+                                         class C_Compiler * inCompiler
+                                         COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                          Routine 'generate_unsigned_type'                                           *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+void routine_generate_5F_unsigned_5F_type (class GALGAS_uint_36__34_ inArgument0,
+                                           class GALGAS_string inArgument1,
+                                           class GALGAS_string & outArgument2,
+                                           class C_Compiler * inCompiler
+                                           COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                            Routine 'generate_mask_type'                                             *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+void routine_generate_5F_mask_5F_type (class GALGAS_uint_36__34_ inArgument0,
+                                       class GALGAS_string inArgument1,
+                                       class GALGAS_string & outArgument2,
+                                       class C_Compiler * inCompiler
+                                       COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //                                               @autostart_5F_obj class                                               *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -995,6 +1366,28 @@ class cPtr_oil_5F_obj : public acPtr_class {
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
+//                                     Category Reader '@enumValues mergeWithEnum'                                     *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_enumValues categoryReader_mergeWithEnum (const class GALGAS_enumValues & inObject,
+                                                      const class GALGAS_enumValues & constinArgument0,
+                                                      class C_Compiler * inCompiler
+                                                      COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                 Category Reader '@implementationObjectMap mergeImplementationObjectAttributesWith'                  *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_implementationObjectMap categoryReader_mergeImplementationObjectAttributesWith (const class GALGAS_implementationObjectMap & inObject,
+                                                                                             const class GALGAS_implementationObjectMap & constinArgument0,
+                                                                                             class C_Compiler * inCompiler
+                                                                                             COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //                                      Category reader '@implementation hasLKey'                                      *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -1065,6 +1458,29 @@ void callCategoryMethod_checkAttributeReferences (const class cPtr_impType * inO
                                                   const GALGAS_implementation constin_imp,
                                                   C_Compiler * inCompiler
                                                   COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                  Abstract category reader '@impType mergeWithType'                                  *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typedef class GALGAS_impType (*categoryReaderSignature_impType_mergeWithType) (const class cPtr_impType * inObject,
+                                                                               class GALGAS_impType inArgument0,
+                                                                               class C_Compiler * inCompiler
+                                                                               COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterCategoryReader_mergeWithType (const int32_t inClassIndex,
+                                        categoryReaderSignature_impType_mergeWithType inMethod) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_impType callCategoryReader_mergeWithType (const class cPtr_impType * inObject,
+                                                       GALGAS_impType in_typeToMerge,
+                                                       C_Compiler * inCompiler
+                                                       COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
@@ -1184,6 +1600,29 @@ void callCategoryMethod_verifyCrossReferences (const class cPtr_object_5F_t * in
                                                const GALGAS_impType constin_type,
                                                C_Compiler * inCompiler
                                                COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                          Category reader '@applicationDefinition applicationWithDefaults'                           *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typedef class GALGAS_applicationDefinition (*categoryReaderSignature_applicationDefinition_applicationWithDefaults) (const class cPtr_applicationDefinition * inObject,
+                                                                                                                     const class GALGAS_implementation & constinArgument0,
+                                                                                                                     C_Compiler * inCompiler
+                                                                                                                     COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterCategoryReader_applicationWithDefaults (const int32_t inClassIndex,
+                                                  categoryReaderSignature_applicationDefinition_applicationWithDefaults inReader) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_applicationDefinition callCategoryReader_applicationWithDefaults (const cPtr_applicationDefinition * inObject,
+                                                                               const GALGAS_implementation & constin_imp,
+                                                                               class C_Compiler * inCompiler
+                                                                               COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *

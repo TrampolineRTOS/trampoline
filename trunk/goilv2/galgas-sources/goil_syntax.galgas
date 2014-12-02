@@ -225,7 +225,7 @@ rule <oil_declaration>
   #
   # Get the type if the identifier
   #
-  @impType type = @impVoid. new { !@location.here !@dataType. void !emptyLString() !false !emptyLString()}
+  @impType type = @impVoid. new { !{!@location.here } !@dataType. void !emptyLString() !false !{} }
   @bool typeOk = false
   if [types hasKey ![idf string]] then
     [types get !idf ?type]
