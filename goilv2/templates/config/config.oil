@@ -67,7 +67,7 @@ IMPLEMENTATION trampoline_common {
         STRING TRAMPOLINE_BASE_PATH = "..";
         STRING COMPILER = "gcc";
         STRING ASSEMBLER = "gcc";
-        STRING LINKER = "ld";
+        STRING LINKER = "gcc";
       },
       FALSE
     ] BUILD = FALSE;

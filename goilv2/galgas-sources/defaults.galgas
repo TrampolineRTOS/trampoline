@@ -50,4 +50,12 @@ proc setDefaults
 
   [!?application setObjects !objects]
 }
-  
+
+getter @applicationDefinition applicationWithDefaults
+  ?let @implementation unused imp
+  -> @applicationDefinition result
+{
+  result = self
+}
+# Build an applicationDefinition by setting default value of not defined attributes
+
