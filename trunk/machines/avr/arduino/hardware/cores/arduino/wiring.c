@@ -44,11 +44,6 @@ static unsigned char timer0_fract = 0;
 // START TRAMPOLINE SECTION 
 extern void trampolineSystemCounter();
 extern void setup();
-void tpl_init_board()
-{
-	init();
-	setup();
-}
 // STOP TRAMPOLINE SECTION 
 
 #if defined(__AVR_ATtiny24__) || defined(__AVR_ATtiny44__) || defined(__AVR_ATtiny84__)
