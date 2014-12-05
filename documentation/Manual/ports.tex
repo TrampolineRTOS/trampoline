@@ -836,6 +836,22 @@ Code parts that are removed are also documented:
 // STOP REMOVE TRAMPOLINE SECTION
 \end{lstlisting}
 
+\subsection{Main adaptation}
+In the Arduino approach, the \texttt{main.cpp} file is hidden, and 2 functions should be user defined:
+\begin{itemize}
+\item \texttt{setup()} initialize the system;
+\item \texttt{loop()} is repeated indefinitely;
+\end{itemize}
+
+With Trampoline, the \texttt{loop()} function disappears and the \texttt{StartOS()} service should be called at the end of the setup().
+
+To be compliant with the Arduino approach, the \texttt{main.cpp} is hidden in user projects (but is present in \texttt{machines/avr/arduino/main.cpp}. It initializes timers, call the \texttt{setup()} user init function and start the OS with \texttt{StartOS()}. 
+
+Another service is provided to support different application modes\footnote{By default, the application mode \texttt{OSDEFAULTAPPMODE} is used}. The application mode should be defined \emph{during the \texttt{setup()} function}:
+\begin{lstlisting}[language=C]
+void SetAppMode(AppModeType appMode);
+\end{lstlisting}
+
 
 \subsection{Goil adaptation}
 A dedicated section for Arduino is provided in  \texttt{CPU.OS}:

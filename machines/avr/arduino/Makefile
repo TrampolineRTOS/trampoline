@@ -15,6 +15,7 @@
 #          It is automatically called from the Makefile
 #
 # Trampoline OS
-#
-SOURCES += tpl_machine.c avr_switch_context.s 
+
+
+SOURCES += main.cpp
 

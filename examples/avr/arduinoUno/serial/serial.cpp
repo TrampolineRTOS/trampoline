@@ -6,16 +6,6 @@
 
 #include "Arduino.h"
 
-int main(void)
-{
-	/** No init code should be done here 
-	 *  use the setup() function
-	 *  Trampoline will init the system and call setup()
-	 **/
-    StartOS(OSDEFAULTAPPMODE);
-	return 0;
-}
-
 void setup()
 {
 	Serial.begin(115200);
