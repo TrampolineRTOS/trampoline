@@ -37,9 +37,7 @@ rule <start> {
   [!?application setVersionDescription !desc] 
 
   @string config_file_name = [option goil_options.config value]
-  if config_file_name == "" then
-    config_file_name = "config"
-  end
+
   # includes the config files
   @stringlist configFiles = allTemplateFilePaths(!"config" !config_file_name+".oil")
 #  log configFiles;

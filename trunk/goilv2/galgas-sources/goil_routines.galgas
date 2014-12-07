@@ -64,7 +64,12 @@ func rootTemplatesDirectory
   if [option goil_options.template_dir value] != "" then
     templateDirectory = [option goil_options.template_dir value]
   else
-    templateDirectory = @string. stringWithEnvironmentVariableOrEmpty { !"GOIL_TEMPLATES"}
+    @string env = @string.stringWithEnvironmentVariableOrEmpty { !"GOIL_TEMPLATES"}
+    if env != "" then
+      templateDirectory = env
+    else
+      error @location.here : "The templates path is not set. Use --templates option or set the GOIL_TEMPLATES environment variable" : templateDirectory
+    end
   end
   templateDirectory = [templateDirectory unixPathWithNativePath]
   templateDirectory = [templateDirectory stringByStandardizingPath]
