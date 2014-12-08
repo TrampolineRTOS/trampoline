@@ -1,0 +1,84 @@
+#---------------------------------------------------------------------------*
+#                                                                           *
+#  GOIL Template parser                                                     *
+#                                                                           *
+#  Copyright (C) 2014+ IRCCyN.                                              *
+#                                                                           *
+#  This program is free software; you can redistribute it and/or modify it  *
+#  under the terms of the GNU General Public License as published by the    *
+#  Free Software Foundation.                                                *
+#                                                                           *
+#  This program is distributed in the hope it will be useful, but WITHOUT   *
+#  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
+#  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
+#   more details.                                                           *
+#                                                                           *
+#---------------------------------------------------------------------------*
+
+abstract class @gtlData {}
+class @gtlInt    : @gtlData { @sint64  value }
+class @gtlFloat  : @gtlData { @double  value }
+class @gtlString : @gtlData { @string  value }
+
+map @map {
+  @gtlData field
+  insert set error message "member %K already exists in %L"
+  search get error message "member %K does not exists in %%"
+  remove del error message "member %K does not exists in %%"
+}
+
+list @list { @map value }
+
+class @gtlStruct : @gtlData { @map  value }
+class @gtlList   : @gtlData { @list value }
+class @gtlMap    : @gtlData { @map  value }
+
+#---------------------------------------------------------------------------*
+# abstract classes for an expression
+#---------------------------------------------------------------------------*
+abstract class @gtlExpression {}
+abstract class @gtlUnaryExpression { @gtlExpression son }
+abstract class @gtlBinaryExpression {
+  @gtlExpression lSon
+  @gtlExpression rSon
+}
+
+abstract getter @gtlExpression eval -> @gtlData result
+
+#---------------------------------------------------------------------------*
+# classe for a literal terminal
+#---------------------------------------------------------------------------*
+class @gtlTerminal    : @gtlExpression { @gtlData value }
+
+override getter @gtlTerminal eval -> @gtlData result { result = value }
+
+
+#---------------------------------------------------------------------------*
+# abstract class for a template instruction
+#---------------------------------------------------------------------------*
+abstract class @gtlInstruction {}
+
+abstract method @gtlInstruction execute
+  ?!@TfieldMap gtlVariableMap
+
+#---------------------------------------------------------------------------*
+# let instructions
+#---------------------------------------------------------------------------*
+abstract class @gtlAssign : @gtlInstruction {
+  @TvarPath    LValue
+  @gtlExpression RValue
+}
+class @gtlLet           : @gtlAssign {}
+class @gtlLetAdd        : @gtlAssign {}
+class @gtlLetSubstract  : @gtlAssign {}
+class @gtlLetMultiply   : @gtlAssign {}
+class @gtlLetDivide     : @gtlAssign {}
+class @gtlLetModulo     : @gtlAssign {}
+class @gtlLetShiftLeft  : @gtlAssign {}
+class @gtlLetShiftRight : @gtlAssign {}
+class @gtlLetAnd        : @gtlAssign {}
+class @gtlLetOr         : @gtlAssign {}
+class @gtlLetXor        : @gtlAssign {}
+
+override method @gtlLet execute ?!@TfieldMap gtlVariableMap {}
+  
