@@ -974,7 +974,8 @@ rule <template_instruction>
   ?!@TfieldMap ioTemplateVariableMap
   ?!@string unused ioResultingString
   !@Tvalue returnedValue
-  !@Ttype returnedType {
+  !@Ttype returnedType
+{
   @TvarPath path
   $let$ <variable> !inPrefix !inPath !inTemplateDirectory !ioTemplateVariableMap ?path
   @Tvalue enumeratedValue

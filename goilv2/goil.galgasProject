@@ -32,9 +32,11 @@ project (2:1:8) -> "goil" {
   %makefile-x86linux64-on-macosx
   %makefile-win32-on-macosx
   %makefile-msys32-on-windows
+  
   #specific for Mac Cocoa Version:
   %LatestMacOS
   %applicationBundleBase : "fr.irccyn.str"
+  
   #
   # New templates (added by PM)
   #
@@ -46,6 +48,7 @@ project (2:1:8) -> "goil" {
   "galgas-sources/template_invocation.galgas"
   "galgas-sources/template_routines.galgas"
   "galgas-sources/template_functions.galgas"
+#  "galgas-sources/template_instructions.galgas"
 
   "galgas-sources/goil_lexique.galgas"
   "galgas-sources/goil_options.galgas"
