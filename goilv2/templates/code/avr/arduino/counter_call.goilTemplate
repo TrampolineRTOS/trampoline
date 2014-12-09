@@ -1,0 +1,47 @@
+#include "tpl_os_kernel.h"          /* tpl_schedule */
+#include "tpl_os_timeobj_kernel.h"  /* tpl_counter_tick */
+#include "tpl_machine_interface.h"  /* tpl_switch_context_from_it */
+
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+
+//gcc uses ISR as a keyword to define an interrupt handler.
+//Osek uses ISR to define an ISR2 :-/
+#ifdef ISR
+ #undef ISR
+#endif
+#include <avr/interrupt.h>
+
+%foreach counter in HARDWARECOUNTERS do
+  # special case for SystemCounter, as it is connected
+  # to Arduino SysTick (TIMER0_OVF_vect) in 
+  # (arduinoLib)/hardware/cores/arduino/wiring.c
+  if counter::NAME == "SystemCounter" then
+  %
+void trampolineSystemCounter()
+{
+  tpl_counter_tick(&% !counter::NAME %_counter_desc);
+  if (tpl_kern.need_schedule)
+  {
+    tpl_schedule_from_running();
+    LOCAL_SWITCH_CONTEXT()
+  }
+}
+  %
+  elsif counter::SOURCE != "" then
+%
+ISR(%!counter::SOURCE%)
+{
+  tpl_counter_tick(&% !counter::NAME %_counter_desc);
+  if (tpl_kern.need_schedule)
+  {
+    tpl_schedule_from_running();
+    LOCAL_SWITCH_CONTEXT()
+  }
+}
+
+%  end if
+end foreach
+%
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
