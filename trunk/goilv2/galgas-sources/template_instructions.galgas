@@ -15,11 +15,429 @@
 #                                                                           *
 #---------------------------------------------------------------------------*
 
-abstract class @gtlData {}
-class @gtlInt    : @gtlData { @sint64  value }
-class @gtlFloat  : @gtlData { @double  value }
-class @gtlString : @gtlData { @string  value }
+abstract class @gtlData { @location where %setter }
+abstract getter @gtlData plusOp  -> @gtlData result
+abstract getter @gtlData minusOp -> @gtlData result
+abstract getter @gtlData notOp   -> @gtlData result
+abstract getter @gtlData addOp ?let @gtlData right -> @gtlData result
+abstract getter @gtlData subOp ?let @gtlData right -> @gtlData result
+abstract getter @gtlData mulOp ?let @gtlData right -> @gtlData result
+abstract getter @gtlData divOp ?let @gtlData right -> @gtlData result
+abstract getter @gtlData andOp ?let @gtlData right -> @gtlData result
+abstract getter @gtlData orOp  ?let @gtlData right -> @gtlData result
+abstract getter @gtlData xorOp ?let @gtlData right -> @gtlData result
+abstract getter @gtlData slOp  ?let @gtlData right -> @gtlData result
+abstract getter @gtlData srOp  ?let @gtlData right -> @gtlData result
+abstract getter @gtlData neqOp ?let @gtlData right -> @gtlData result
+abstract getter @gtlData eqOp  ?let @gtlData right -> @gtlData result
+abstract getter @gtlData ltOp  ?let @gtlData right -> @gtlData result
+abstract getter @gtlData leOp  ?let @gtlData right -> @gtlData result
+abstract getter @gtlData gtOp  ?let @gtlData right -> @gtlData result
+abstract getter @gtlData geOp  ?let @gtlData right -> @gtlData result
 
+#---------------------------------------------------------------------------*
+# Int type and operations on int
+#---------------------------------------------------------------------------*
+class @gtlInt    : @gtlData { @sint64  value }
+override getter @gtlInt plusOp  -> @gtlData result { result = self }
+override getter @gtlInt minusOp -> @gtlData result { result = @gtlInt.new { !where !-value } }
+override getter @gtlInt notOp   -> @gtlData result { result = @gtlInt.new { !where !~value } }
+override getter @gtlInt addOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlInt then
+    result = @gtlInt.new { !where !value + [right as @gtlInt value] }
+  else
+    error [right where] : "int expected" : result
+  end
+}
+override getter @gtlInt subOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlInt then
+    result = @gtlInt.new { !where !value - [right as @gtlInt value] }
+  else
+    error [right where] : "int expected" : result
+  end
+}
+override getter @gtlInt mulOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlInt then
+    result = @gtlInt.new { !where !value * [right as @gtlInt value] }
+  else
+    error [right where] : "int expected" : result
+  end
+}
+override getter @gtlInt divOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlInt then
+    result = @gtlInt.new { !where !value / [right as @gtlInt value] }
+  else
+    error [right where] : "int expected" : result
+  end
+}
+override getter @gtlInt andOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlInt then
+    result = @gtlInt.new { !where !value & [right as @gtlInt value] }
+  else
+    error [right where] : "int expected" : result
+  end
+}
+override getter @gtlInt orOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlInt then
+    result = @gtlInt.new { !where !value | [right as @gtlInt value] }
+  else
+    error [right where] : "int expected" : result
+  end
+}
+override getter @gtlInt xorOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlInt then
+    result = @gtlInt.new { !where !value ^ [right as @gtlInt value] }
+  else
+    error [right where] : "int expected" : result
+  end
+}
+override getter @gtlInt slOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlInt then
+    @sint64 r = [right as @gtlInt value];
+    if r >= 0LS then 
+      result = @gtlInt.new { !where !value << [[right as @gtlInt value] uint] }
+    else
+      error [right where] : "positive int expected" : result
+    end
+  else
+    error [right where] : "int expected" : result
+  end
+}
+override getter @gtlInt srOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlInt then
+    @sint64 r = [right as @gtlInt value];
+    if r >= 0LS then 
+      result = @gtlInt.new { !where !value >> [r uint] }
+    else
+      error [right where] : "positive int expected" : result
+    end
+  else
+    error [right where] : "int expected" : result
+  end
+}
+override getter @gtlInt neqOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlInt then
+    result = @gtlBool.new { !where !value != [right as @gtlInt value] }
+  else
+    error [right where] : "int expected" : result
+  end
+}
+override getter @gtlInt eqOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlInt then
+    result = @gtlBool.new { !where !value == [right as @gtlInt value] }
+  else
+    error [right where] : "int expected" : result
+  end
+}
+override getter @gtlInt gtOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlInt then
+    result = @gtlBool.new { !where !value > [right as @gtlInt value] }
+  else
+    error [right where] : "int expected" : result
+  end
+}
+override getter @gtlInt geOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlInt then
+    result = @gtlBool.new { !where !value >= [right as @gtlInt value] }
+  else
+    error [right where] : "int expected" : result
+  end
+}
+override getter @gtlInt ltOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlInt then
+    result = @gtlBool.new { !where !value < [right as @gtlInt value] }
+  else
+    error [right where] : "int expected" : result
+  end
+}
+override getter @gtlInt leOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlInt then
+    result = @gtlBool.new { !where !value <= [right as @gtlInt value] }
+  else
+    error [right where] : "int expected" : result
+  end
+}
+
+#---------------------------------------------------------------------------*
+# Float type and operations on float
+#---------------------------------------------------------------------------*
+class @gtlFloat  : @gtlData { @double  value }
+override getter @gtlFloat plusOp  -> @gtlData result { result = self }
+override getter @gtlFloat minusOp -> @gtlData result { result = @gtlFloat.new { !where !-value } }
+override getter @gtlFloat notOp   -> @gtlData result {
+  error where : "float forbidden" : result
+}
+override getter @gtlFloat addOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlFloat then
+    result = @gtlFloat.new { !where !value + [right as @gtlFloat value] }
+  else
+    error [right where] : "float expected" : result
+  end
+}
+override getter @gtlFloat subOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlFloat then
+    result = @gtlFloat.new { !where !value - [right as @gtlFloat value] }
+  else
+    error [right where] : "float expected" : result
+  end
+}
+override getter @gtlFloat mulOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlFloat then
+    result = @gtlFloat.new { !where !value * [right as @gtlFloat value] }
+  else
+    error [right where] : "float expected" : result
+  end
+}
+override getter @gtlFloat divOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlFloat then
+    result = @gtlFloat.new { !where !value / [right as @gtlFloat value] }
+  else
+    error [right where] : "float expected" : result
+  end
+}
+override getter @gtlFloat andOp ?let @gtlData unused right -> @gtlData result {
+  error where : "float forbidden" : result
+}
+override getter @gtlFloat orOp ?let @gtlData unused right -> @gtlData result {
+  error where : "float forbidden" : result
+}
+override getter @gtlFloat xorOp ?let @gtlData unused right -> @gtlData result {
+  error where : "float forbidden" : result
+}
+override getter @gtlFloat slOp ?let @gtlData unused right -> @gtlData result {
+  error where : "float forbidden" : result
+}
+override getter @gtlFloat srOp ?let @gtlData unused right -> @gtlData result {
+  error where : "float forbidden" : result
+}
+override getter @gtlFloat neqOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlFloat then
+    result = @gtlBool.new { !where !value != [right as @gtlFloat value] }
+  else
+    error [right where] : "float expected" : result
+  end
+}
+override getter @gtlFloat eqOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlFloat then
+    result = @gtlBool.new { !where !value == [right as @gtlFloat value] }
+  else
+    error [right where] : "float expected" : result
+  end
+}
+override getter @gtlFloat gtOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlFloat then
+    result = @gtlBool.new { !where !value > [right as @gtlFloat value] }
+  else
+    error [right where] : "float expected" : result
+  end
+}
+override getter @gtlFloat geOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlFloat then
+    result = @gtlBool.new { !where !value >= [right as @gtlFloat value] }
+  else
+    error [right where] : "float expected" : result
+  end
+}
+override getter @gtlFloat ltOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlFloat then
+    result = @gtlBool.new { !where !value < [right as @gtlFloat value] }
+  else
+    error [right where] : "float expected" : result
+  end
+}
+override getter @gtlFloat leOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlFloat then
+    result = @gtlBool.new { !where !value <= [right as @gtlFloat value] }
+  else
+    error [right where] : "float expected" : result
+  end
+}
+
+#---------------------------------------------------------------------------*
+# String type and operations on string
+#---------------------------------------------------------------------------*
+class @gtlString : @gtlData { @string  value }
+override getter @gtlString plusOp  -> @gtlData result {
+  error where : "string forbidden" : result
+}
+override getter @gtlString minusOp -> @gtlData result {
+  error where : "string forbidden" : result
+}
+override getter @gtlString notOp   -> @gtlData result {
+  error where : "string forbidden" : result
+}
+override getter @gtlString addOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlString then
+    result = @gtlString.new { !where !value + [right as @gtlString value] }
+  else
+    error [right where] : "string expected" : result
+  end
+}
+override getter @gtlString subOp ?let @gtlData unused right -> @gtlData result {
+  error where : "string forbidden" : result
+}
+override getter @gtlString mulOp ?let @gtlData unused right -> @gtlData result {
+  error where : "string forbidden" : result
+}
+override getter @gtlString divOp ?let @gtlData unused right -> @gtlData result {
+  error where : "string forbidden" : result
+}
+override getter @gtlString andOp ?let @gtlData unused right -> @gtlData result {
+  error where : "string forbidden" : result
+}
+override getter @gtlString orOp ?let @gtlData unused right -> @gtlData result {
+  error where : "string forbidden" : result
+}
+override getter @gtlString xorOp ?let @gtlData unused right -> @gtlData result {
+  error where : "string forbidden" : result
+}
+override getter @gtlString slOp ?let @gtlData unused right -> @gtlData result {
+  error where : "string forbidden" : result
+}
+override getter @gtlString srOp ?let @gtlData unused right -> @gtlData result {
+  error where : "string forbidden" : result
+}
+override getter @gtlString neqOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlString then
+    result = @gtlBool.new { !where !value != [right as @gtlString value] }
+  else
+    error [right where] : "string expected" : result
+  end
+}
+override getter @gtlString eqOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlString then
+    result = @gtlBool.new { !where !value == [right as @gtlString value] }
+  else
+    error [right where] : "string expected" : result
+  end
+}
+override getter @gtlString gtOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlString then
+    result = @gtlBool.new { !where !value > [right as @gtlString value] }
+  else
+    error [right where] : "string expected" : result
+  end
+}
+override getter @gtlString geOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlString then
+    result = @gtlBool.new { !where !value >= [right as @gtlString value] }
+  else
+    error [right where] : "string expected" : result
+  end
+}
+override getter @gtlString ltOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlString then
+    result = @gtlBool.new { !where !value < [right as @gtlString value] }
+  else
+    error [right where] : "string expected" : result
+  end
+}
+override getter @gtlString leOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlString then
+    result = @gtlBool.new { !where !value <= [right as @gtlString value] }
+  else
+    error [right where] : "string expected" : result
+  end
+}
+
+#---------------------------------------------------------------------------*
+# Bool type and operations on bool
+#---------------------------------------------------------------------------*
+class @gtlBool   : @gtlData { @bool    value }
+override getter @gtlBool plusOp  -> @gtlData result {
+  error where : "bool forbidden" : result
+}
+override getter @gtlBool minusOp -> @gtlData result {
+  error where : "bool forbidden" : result
+}
+override getter @gtlBool notOp   -> @gtlData result {
+  error where : "bool forbidden" : result
+}
+override getter @gtlBool addOp ?let @gtlData unused right -> @gtlData result {
+  error where : "bool forbidden" : result
+}
+override getter @gtlBool subOp ?let @gtlData unused right -> @gtlData result {
+  error where : "bool forbidden" : result
+}
+override getter @gtlBool mulOp ?let @gtlData unused right -> @gtlData result {
+  error where : "bool forbidden" : result
+}
+override getter @gtlBool divOp ?let @gtlData unused right -> @gtlData result {
+  error where : "bool forbidden" : result
+}
+override getter @gtlBool andOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlBool then
+    result = @gtlBool.new { !where !value & [right as @gtlBool value] }
+  else
+    error [right where] : "bool expected" : result
+  end
+}
+override getter @gtlBool orOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlBool then
+    result = @gtlBool.new { !where !value | [right as @gtlBool value] }
+  else
+    error [right where] : "bool expected" : result
+  end
+}
+override getter @gtlBool xorOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlBool then
+    result = @gtlBool.new { !where !value ^ [right as @gtlBool value] }
+  else
+    error [right where] : "bool expected" : result
+  end
+}
+override getter @gtlBool slOp ?let @gtlData unused right -> @gtlData result {
+  error where : "bool forbidden" : result
+}
+override getter @gtlBool srOp ?let @gtlData unused right -> @gtlData result {
+  error where : "bool forbidden" : result
+}
+override getter @gtlBool neqOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlBool then
+    result = @gtlBool.new { !where !value != [right as @gtlBool value] }
+  else
+    error [right where] : "string expected" : result
+  end
+}
+override getter @gtlBool eqOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlBool then
+    result = @gtlBool.new { !where !value == [right as @gtlBool value] }
+  else
+    error [right where] : "string expected" : result
+  end
+}
+override getter @gtlBool gtOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlBool then
+    result = @gtlBool.new { !where !value > [right as @gtlBool value] }
+  else
+    error [right where] : "string expected" : result
+  end
+}
+override getter @gtlBool geOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlBool then
+    result = @gtlBool.new { !where !value >= [right as @gtlBool value] }
+  else
+    error [right where] : "string expected" : result
+  end
+}
+override getter @gtlBool ltOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlBool then
+    result = @gtlBool.new { !where !value < [right as @gtlBool value] }
+  else
+    error [right where] : "string expected" : result
+  end
+}
+override getter @gtlBool leOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlBool then
+    result = @gtlBool.new { !where !value <= [right as @gtlBool value] }
+  else
+    error [right where] : "string expected" : result
+  end
+}
+
+#---------------------------------------------------------------------------*
+# foundation types for collections
+#---------------------------------------------------------------------------*
 map @map {
   @gtlData field
   insert set error message "member %K already exists in %L"
@@ -29,31 +447,393 @@ map @map {
 
 list @list { @map value }
 
+#---------------------------------------------------------------------------*
+# Struct type and operations on struct
+#---------------------------------------------------------------------------*
 class @gtlStruct : @gtlData { @map  value }
+override getter @gtlStruct plusOp  -> @gtlData result {
+  error where : "struct forbidden" : result
+}
+override getter @gtlStruct minusOp -> @gtlData result {
+  error where : "struct forbidden" : result
+}
+override getter @gtlStruct notOp   -> @gtlData result {
+  error where : "struct forbidden" : result
+}
+override getter @gtlStruct addOp ?let @gtlData unused right -> @gtlData result {
+  error where : "struct forbidden" : result
+}
+override getter @gtlStruct subOp ?let @gtlData unused right -> @gtlData result {
+  error where : "struct forbidden" : result
+}
+override getter @gtlStruct mulOp ?let @gtlData unused right -> @gtlData result {
+  error where : "struct forbidden" : result
+}
+override getter @gtlStruct divOp ?let @gtlData unused right -> @gtlData result {
+  error where : "struct forbidden" : result
+}
+override getter @gtlStruct andOp ?let @gtlData unused right -> @gtlData result {
+  error where : "struct forbidden" : result
+}
+override getter @gtlStruct orOp ?let @gtlData unused right -> @gtlData result {
+  error where : "struct forbidden" : result
+}
+override getter @gtlStruct xorOp ?let @gtlData unused right -> @gtlData result {
+  error where : "struct forbidden" : result
+}
+override getter @gtlStruct slOp ?let @gtlData unused right -> @gtlData result {
+  error where : "struct forbidden" : result
+}
+override getter @gtlStruct srOp ?let @gtlData unused right -> @gtlData result {
+  error where : "struct forbidden" : result
+}
+override getter @gtlStruct neqOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlStruct then
+    result = @gtlBool.new { !where !(value != [right as @gtlStruct value]) }
+  else
+    error [right where] : "struct expected" : result
+  end
+}
+override getter @gtlStruct eqOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlStruct then
+    result = @gtlBool.new { !where !(value == [right as @gtlStruct value]) }
+  else
+    error [right where] : "struct expected" : result
+  end
+}
+override getter @gtlStruct gtOp ?let @gtlData unused right -> @gtlData result {
+  error where : "struct forbidden" : result
+}
+override getter @gtlStruct geOp ?let @gtlData unused right -> @gtlData result {
+  error where : "struct forbidden" : result
+}
+override getter @gtlStruct ltOp ?let @gtlData unused right -> @gtlData result {
+  error where : "struct forbidden" : result
+}
+override getter @gtlStruct leOp ?let @gtlData unused right -> @gtlData result {
+  error where : "struct forbidden" : result
+}
+
+#---------------------------------------------------------------------------*
+# List type and operations on lists
+#---------------------------------------------------------------------------*
 class @gtlList   : @gtlData { @list value }
+override getter @gtlList plusOp  -> @gtlData result {
+  error where : "list forbidden" : result
+}
+override getter @gtlList minusOp -> @gtlData result {
+  error where : "list forbidden" : result
+}
+override getter @gtlList notOp   -> @gtlData result {
+  error where : "list forbidden" : result
+}
+override getter @gtlList addOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlList then
+    result = @gtlList.new { !where !value + [right as @gtlList value] }
+  elsif right is == @gtlStruct then
+    @list res = value;
+    res += ![right as @gtlStruct value]
+    result = @gtlList.new { !where !res  }
+  else
+    error [right where] : "list or struct expected" : result
+  end
+}
+override getter @gtlList subOp ?let @gtlData unused right -> @gtlData result {
+  error where : "list forbidden" : result
+}
+override getter @gtlList mulOp ?let @gtlData unused right -> @gtlData result {
+  error where : "list forbidden" : result
+}
+override getter @gtlList divOp ?let @gtlData unused right -> @gtlData result {
+  error where : "list forbidden" : result
+}
+override getter @gtlList andOp ?let @gtlData unused right -> @gtlData result {
+  error where : "list forbidden" : result
+}
+override getter @gtlList orOp ?let @gtlData unused right -> @gtlData result {
+  error where : "list forbidden" : result
+}
+override getter @gtlList xorOp ?let @gtlData unused right -> @gtlData result {
+  error where : "list forbidden" : result
+}
+override getter @gtlList slOp ?let @gtlData unused right -> @gtlData result {
+  error where : "list forbidden" : result
+}
+override getter @gtlList srOp ?let @gtlData unused right -> @gtlData result {
+  error where : "list forbidden" : result
+}
+override getter @gtlList neqOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlList then
+    result = @gtlBool.new { !where !(value != [right as @gtlList value]) }
+  else
+    error [right where] : "list expected" : result
+  end
+}
+override getter @gtlList eqOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlList then
+    result = @gtlBool.new { !where !(value == [right as @gtlList value]) }
+  else
+    error [right where] : "list expected" : result
+  end
+}
+override getter @gtlList gtOp ?let @gtlData unused right -> @gtlData result {
+  error where : "a list does not support the > operator" : result
+}
+override getter @gtlList geOp ?let @gtlData unused right -> @gtlData result {
+  error where : "a list does not support the >= operator" : result
+}
+override getter @gtlList ltOp ?let @gtlData unused right -> @gtlData result {
+  error where : "a list does not support the < operator" : result
+}
+override getter @gtlList leOp ?let @gtlData unused right -> @gtlData result {
+  error where : "a list does not support the <= operator" : result
+}
+
+#---------------------------------------------------------------------------*
+# Map type and operations on maps
+#---------------------------------------------------------------------------*
 class @gtlMap    : @gtlData { @map  value }
+override getter @gtlMap plusOp  -> @gtlData result {
+  error where : "map forbidden" : result
+}
+override getter @gtlMap minusOp -> @gtlData result {
+  error where : "map forbidden" : result
+}
+override getter @gtlMap notOp   -> @gtlData result {
+  error where : "map forbidden" : result
+}
+override getter @gtlMap addOp ?let @gtlData unused right -> @gtlData result {
+  error where : "map forbidden" : result
+}
+override getter @gtlMap subOp ?let @gtlData unused right -> @gtlData result {
+  error where : "map forbidden" : result
+}
+override getter @gtlMap mulOp ?let @gtlData unused right -> @gtlData result {
+  error where : "map forbidden" : result
+}
+override getter @gtlMap divOp ?let @gtlData unused right -> @gtlData result {
+  error where : "map forbidden" : result
+}
+override getter @gtlMap andOp ?let @gtlData unused right -> @gtlData result {
+  error where : "map forbidden" : result
+}
+override getter @gtlMap orOp ?let @gtlData unused right -> @gtlData result {
+  error where : "map forbidden" : result
+}
+override getter @gtlMap xorOp ?let @gtlData unused right -> @gtlData result {
+  error where : "map forbidden" : result
+}
+override getter @gtlMap slOp ?let @gtlData unused right -> @gtlData result {
+  error where : "map forbidden" : result
+}
+override getter @gtlMap srOp ?let @gtlData unused right -> @gtlData result {
+  error where : "map forbidden" : result
+}
+override getter @gtlMap neqOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlMap then
+    result = @gtlBool.new { !where !(value != [right as @gtlMap value]) }
+  else
+    error [right where] : "map expected" : result
+  end
+}
+override getter @gtlMap eqOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlMap then
+    result = @gtlBool.new { !where !(value == [right as @gtlMap value]) }
+  else
+    error [right where] : "map expected" : result
+  end
+}
+override getter @gtlMap gtOp ?let @gtlData unused right -> @gtlData result {
+  error where : "a map does not support the > operator" : result
+}
+override getter @gtlMap geOp ?let @gtlData unused right -> @gtlData result {
+  error where : "a map does not support the >= operator" : result
+}
+override getter @gtlMap ltOp ?let @gtlData unused right -> @gtlData result {
+  error where : "a map does not support the < operator" : result
+}
+override getter @gtlMap leOp ?let @gtlData unused right -> @gtlData result {
+  error where : "a map does not support the <= operator" : result
+}
 
 #---------------------------------------------------------------------------*
 # abstract classes for an expression
 #---------------------------------------------------------------------------*
-abstract class @gtlExpression {}
-abstract class @gtlUnaryExpression { @gtlExpression son }
-abstract class @gtlBinaryExpression {
+abstract class @gtlExpression { @location where }
+abstract class @gtlUnaryExpression : @gtlExpression {
+  @gtlExpression son
+}
+abstract class @gtlBinaryExpression : @gtlExpression {
   @gtlExpression lSon
   @gtlExpression rSon
 }
 
 abstract getter @gtlExpression eval -> @gtlData result
 
+#===========================================================================*
+# class for a literal terminal
 #---------------------------------------------------------------------------*
-# classe for a literal terminal
-#---------------------------------------------------------------------------*
-class @gtlTerminal    : @gtlExpression { @gtlData value }
-
+class @gtlTerminal : @gtlExpression { @gtlData value }
 override getter @gtlTerminal eval -> @gtlData result { result = value }
 
+#===========================================================================*
+# classes for unary expressions
+#---------------------------------------------------------------------------*
+# @gtlParenthesizedExpression : ( son )
+#---------------------------------------------------------------------------*
+class @gtlParenthesizedExpression : @gtlUnaryExpression {}
+override getter @gtlParenthesizedExpression eval -> @gtlData result {
+  result = [son eval]
+  [!?result setWhere !where]
+}
 
 #---------------------------------------------------------------------------*
+# @gtlMinusExpression : unary -. Does a - son
+#---------------------------------------------------------------------------*
+class @gtlMinusExpression : @gtlUnaryExpression {}
+override getter @gtlMinusExpression eval -> @gtlData result {
+  result = [[son eval] minusOp]
+}
+
+#---------------------------------------------------------------------------*
+# @gtlPlusExpression : unary +. Does a + son 
+#---------------------------------------------------------------------------*
+class @gtlPlusExpression : @gtlUnaryExpression {}
+override getter @gtlPlusExpression eval -> @gtlData result {
+  result = [[son eval] plusOp]
+}
+
+#---------------------------------------------------------------------------*
+# @gtlTildeExpression : unary bitwise not or boolean not. Does a ~ son 
+#---------------------------------------------------------------------------*
+class @gtlNotExpression : @gtlUnaryExpression {}
+override getter @gtlNotExpression eval -> @gtlData result {
+  result = [[son eval] notOp]
+}
+
+#===========================================================================*
+# classes for binary expressions
+#---------------------------------------------------------------------------*
+# @gtlAddExpression : binary add. Does a lSon + rSon
+#---------------------------------------------------------------------------*
+class @gtlAddExpression : @gtlBinaryExpression {}
+override getter @gtlAddExpression eval -> @gtlData result {
+  result = [[lSon eval] addOp ![rSon eval]]
+}
+
+#---------------------------------------------------------------------------*
+# @gtlSubstractExpression : binary substract. Does a lSon - rSon
+#---------------------------------------------------------------------------*
+class @gtlSubstractExpression : @gtlBinaryExpression {}
+override getter @gtlSubstractExpression eval -> @gtlData result {
+  result = [[lSon eval] subOp ![rSon eval]]
+}
+
+#---------------------------------------------------------------------------*
+# @gtlMultiplyExpression : binary multiply. Does a lSon * rSon
+#---------------------------------------------------------------------------*
+class @gtlMultiplyExpression : @gtlBinaryExpression {}
+override getter @gtlMultiplyExpression eval -> @gtlData result {
+  result = [[lSon eval] mulOp ![rSon eval]]
+}
+
+#---------------------------------------------------------------------------*
+# @gtlDivideExpression : binary divide. Does a lSon / rSon
+#---------------------------------------------------------------------------*
+class @gtlDivideExpression : @gtlBinaryExpression {}
+override getter @gtlDivideExpression eval -> @gtlData result {
+  result = [[lSon eval] divOp ![rSon eval]]
+}
+
+#---------------------------------------------------------------------------*
+# @gtlAndExpression : binary and. Does a lSon & rSon
+#---------------------------------------------------------------------------*
+class @gtlAndExpression : @gtlBinaryExpression {}
+override getter @gtlAndExpression eval -> @gtlData result {
+  result = [[lSon eval] andOp ![rSon eval]]
+}
+
+#---------------------------------------------------------------------------*
+# @gtlOrExpression : binary or. Does a lSon | rSon
+#---------------------------------------------------------------------------*
+class @gtlOrExpression : @gtlBinaryExpression {}
+override getter @gtlOrExpression eval -> @gtlData result {
+  result = [[lSon eval] orOp ![rSon eval]]
+}
+
+#---------------------------------------------------------------------------*
+# @gtlXorExpression : binary or. Does a lSon ^ rSon
+#---------------------------------------------------------------------------*
+class @gtlXorExpression : @gtlBinaryExpression {}
+override getter @gtlXorExpression eval -> @gtlData result {
+  result = [[lSon eval] xorOp ![rSon eval]]
+}
+
+#---------------------------------------------------------------------------*
+# @gtlShiftLeftExpression : Does a lSon << rSon
+#---------------------------------------------------------------------------*
+class @gtlShiftLeftExpression : @gtlBinaryExpression {}
+override getter @gtlShiftLeftExpression eval -> @gtlData result {
+  result = [[lSon eval] slOp ![rSon eval]]
+}
+
+#---------------------------------------------------------------------------*
+# @gtlShiftRightExpression : Does a lSon >> rSon
+#---------------------------------------------------------------------------*
+class @gtlShiftRightExpression : @gtlBinaryExpression {}
+override getter @gtlShiftRightExpression eval -> @gtlData result {
+  result = [[lSon eval] srOp ![rSon eval]]
+}
+
+#---------------------------------------------------------------------------*
+# @gtlNotEqualExpression : Does a lSon != rSon
+#---------------------------------------------------------------------------*
+class @gtlNotEqualExpression : @gtlBinaryExpression {}
+override getter @gtlNotEqualExpression eval -> @gtlData result {
+  result = [[lSon eval] neqOp ![rSon eval]]
+}
+
+#---------------------------------------------------------------------------*
+# @gtlEqualExpression : Does a lSon == rSon
+#---------------------------------------------------------------------------*
+class @gtlEqualExpression : @gtlBinaryExpression {}
+override getter @gtlEqualExpression eval -> @gtlData result {
+  result = [[lSon eval] eqOp ![rSon eval]]
+}
+
+#---------------------------------------------------------------------------*
+# @gtlLowerThanExpression : Does a lSon < rSon
+#---------------------------------------------------------------------------*
+class @gtlLowerThanExpression : @gtlBinaryExpression {}
+override getter @gtlLowerThanExpression eval -> @gtlData result {
+  result = [[lSon eval] ltOp ![rSon eval]]
+}
+
+#---------------------------------------------------------------------------*
+# @gtlLowerOrEqualExpression : Does a lSon < rSon
+#---------------------------------------------------------------------------*
+class @gtlLowerOrEqualExpression : @gtlBinaryExpression {}
+override getter @gtlLowerOrEqualExpression eval -> @gtlData result {
+  result = [[lSon eval] leOp ![rSon eval]]
+}
+
+#---------------------------------------------------------------------------*
+# @gtlGreaterThanExpression : Does a lSon < rSon
+#---------------------------------------------------------------------------*
+class @gtlGreaterThanExpression : @gtlBinaryExpression {}
+override getter @gtlGreaterThanExpression eval -> @gtlData result {
+  result = [[lSon eval] gtOp ![rSon eval]]
+}
+
+#---------------------------------------------------------------------------*
+# @gtlGreaterOrEqualExpression : Does a lSon < rSon
+#---------------------------------------------------------------------------*
+class @gtlGreaterOrEqualExpression : @gtlBinaryExpression {}
+override getter @gtlGreaterOrEqualExpression eval -> @gtlData result {
+  result = [[lSon eval] geOp ![rSon eval]]
+}
+
+#===========================================================================*
 # abstract class for a template instruction
 #---------------------------------------------------------------------------*
 abstract class @gtlInstruction {}
@@ -64,21 +844,21 @@ abstract method @gtlInstruction execute
 #---------------------------------------------------------------------------*
 # let instructions
 #---------------------------------------------------------------------------*
-abstract class @gtlAssign : @gtlInstruction {
-  @TvarPath    LValue
-  @gtlExpression RValue
-}
-class @gtlLet           : @gtlAssign {}
-class @gtlLetAdd        : @gtlAssign {}
-class @gtlLetSubstract  : @gtlAssign {}
-class @gtlLetMultiply   : @gtlAssign {}
-class @gtlLetDivide     : @gtlAssign {}
-class @gtlLetModulo     : @gtlAssign {}
-class @gtlLetShiftLeft  : @gtlAssign {}
-class @gtlLetShiftRight : @gtlAssign {}
-class @gtlLetAnd        : @gtlAssign {}
-class @gtlLetOr         : @gtlAssign {}
-class @gtlLetXor        : @gtlAssign {}
-
-override method @gtlLet execute ?!@TfieldMap gtlVariableMap {}
+#abstract class @gtlAssign : @gtlInstruction {
+#  @TvarPath    LValue
+#  @gtlExpression RValue
+#}
+#class @gtlLet           : @gtlAssign {}
+#class @gtlLetAdd        : @gtlAssign {}
+#class @gtlLetSubstract  : @gtlAssign {}
+#class @gtlLetMultiply   : @gtlAssign {}
+#class @gtlLetDivide     : @gtlAssign {}
+#class @gtlLetModulo     : @gtlAssign {}
+#class @gtlLetShiftLeft  : @gtlAssign {}
+#class @gtlLetShiftRight : @gtlAssign {}
+#class @gtlLetAnd        : @gtlAssign {}
+#class @gtlLetOr         : @gtlAssign {}
+#class @gtlLetXor        : @gtlAssign {}
+#
+#override method @gtlLet execute ?!@TfieldMap gtlVariableMap {}
   

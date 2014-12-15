@@ -646,6 +646,60 @@ rule <factor>
 
 #------------------------------------------------------------------------------*
 #                                                                              *
+#   F A C T O R    :    - FACTOR                                               *
+#                                                                              *
+#------------------------------------------------------------------------------*
+
+rule <factor>
+  ?let @string inPrefix
+  ?let @string inPath
+  ?let @string inTemplateDirectory
+  ?let @TfieldMap inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType {
+  $-$
+  @Tvalue value
+  @Ttype operandType
+  <factor>
+    !inPrefix
+    !inPath
+    !inTemplateDirectory
+    !inVariableMap
+    ?value
+    ?operandType
+  outValue = valueWithSigned(!- [value mInt64Value] !emptyLString())
+  checkBitComplementOperatorForTemplate ( !operandType ?outResultType)
+}
+
+#------------------------------------------------------------------------------*
+#                                                                              *
+#   F A C T O R    :    + FACTOR                                               *
+#                                                                              *
+#------------------------------------------------------------------------------*
+
+rule <factor>
+  ?let @string inPrefix
+  ?let @string inPath
+  ?let @string inTemplateDirectory
+  ?let @TfieldMap inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType {
+  $+$
+  @Tvalue value
+  @Ttype operandType
+  <factor>
+    !inPrefix
+    !inPath
+    !inTemplateDirectory
+    !inVariableMap
+    ?value
+    ?operandType
+  outValue = valueWithSigned(![value mInt64Value] !emptyLString())
+  checkBitComplementOperatorForTemplate ( !operandType ?outResultType)
+}
+
+#------------------------------------------------------------------------------*
+#                                                                              *
 #   F A C T O R    :    true                                                   *
 #                                                                              *
 #------------------------------------------------------------------------------*
