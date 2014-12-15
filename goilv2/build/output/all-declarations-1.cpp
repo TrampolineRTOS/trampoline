@@ -203,386 +203,394 @@ static const int16_t gProductions_template_grammar [] = {
 , NONTERMINAL (12) // <factor>
 , END_PRODUCTION
 // At index 143 : <factor>, in file 'template_expression_parser.ggs', line 653
+, TERMINAL (C_Lexique_template_5F_scanner::kToken__2D_) // $-$
+, NONTERMINAL (12) // <factor>
+, END_PRODUCTION
+// At index 146 : <factor>, in file 'template_expression_parser.ggs', line 680
+, TERMINAL (C_Lexique_template_5F_scanner::kToken__2B_) // $+$
+, NONTERMINAL (12) // <factor>
+, END_PRODUCTION
+// At index 149 : <factor>, in file 'template_expression_parser.ggs', line 707
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_yes) // $yes$
 , END_PRODUCTION
-// At index 145 : <factor>, in file 'template_expression_parser.ggs', line 671
+// At index 151 : <factor>, in file 'template_expression_parser.ggs', line 725
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_no) // $no$
 , END_PRODUCTION
-// At index 147 : <factor>, in file 'template_expression_parser.ggs', line 689
+// At index 153 : <factor>, in file 'template_expression_parser.ggs', line 743
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_signed_5F_literal_5F_integer_36__34_) // $signed_literal_integer64$
 , END_PRODUCTION
-// At index 149 : <factor>, in file 'template_expression_parser.ggs', line 708
+// At index 155 : <factor>, in file 'template_expression_parser.ggs', line 762
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_string) // $string$
 , END_PRODUCTION
-// At index 151 : <factor>, in file 'template_expression_parser.ggs', line 727
+// At index 157 : <factor>, in file 'template_expression_parser.ggs', line 781
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__5B_) // $[$
 , NONTERMINAL (5) // <expression>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
 , NONTERMINAL (46) // <select_template_5F_expression_5F_parser_5>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__5D_) // $]$
 , END_PRODUCTION
-// At index 157 : <factor>, in file 'template_expression_parser.ggs', line 782
+// At index 163 : <factor>, in file 'template_expression_parser.ggs', line 836
 , NONTERMINAL (3) // <variable>
 , NONTERMINAL (48) // <select_template_5F_expression_5F_parser_7>
 , END_PRODUCTION
-// At index 160 : <factor>, in file 'template_expression_parser.ggs', line 915
+// At index 166 : <factor>, in file 'template_expression_parser.ggs', line 969
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_exists) // $exists$
 , NONTERMINAL (3) // <variable>
 , NONTERMINAL (50) // <select_template_5F_expression_5F_parser_9>
 , END_PRODUCTION
-// At index 164 : <factor>, in file 'template_expression_parser.ggs', line 963
+// At index 170 : <factor>, in file 'template_expression_parser.ggs', line 1017
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_typeof) // $typeof$
 , NONTERMINAL (3) // <variable>
 , END_PRODUCTION
-// At index 167 : <factor>, in file 'template_expression_parser.ggs', line 981
+// At index 173 : <factor>, in file 'template_expression_parser.ggs', line 1035
 , NONTERMINAL (51) // <select_template_5F_expression_5F_parser_10>
 , END_PRODUCTION
-// At index 169 : <factor>, in file 'template_expression_parser.ggs', line 1000
+// At index 175 : <factor>, in file 'template_expression_parser.ggs', line 1054
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__40_) // $@$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
 , END_PRODUCTION
-// At index 172 : <factor>, in file 'template_expression_parser.ggs', line 1014
+// At index 178 : <factor>, in file 'template_expression_parser.ggs', line 1068
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_emptylist) // $emptylist$
 , END_PRODUCTION
-// At index 174 : <factor>, in file 'template_expression_parser.ggs', line 1028
+// At index 180 : <factor>, in file 'template_expression_parser.ggs', line 1082
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_emptymap) // $emptymap$
 , END_PRODUCTION
-// At index 176 : <factor>, in file 'template_expression_parser.ggs', line 1042
+// At index 182 : <factor>, in file 'template_expression_parser.ggs', line 1096
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_mapof) // $mapof$
 , NONTERMINAL (5) // <expression>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_by) // $by$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
 , END_PRODUCTION
-// At index 181 : <factor>, in file 'template_expression_parser.ggs', line 1086
+// At index 187 : <factor>, in file 'template_expression_parser.ggs', line 1140
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_listof) // $listof$
 , NONTERMINAL (3) // <variable>
 , END_PRODUCTION
 //---- Added productions from 'select' and 'repeat' instructions
-// At index 184 : <select_template_5F_parser_0>, in file 'template_parser.ggs', line 187
+// At index 190 : <select_template_5F_parser_0>, in file 'template_parser.ggs', line 187
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
 , END_PRODUCTION
-// At index 186 : <select_template_5F_parser_0>, in file 'template_parser.ggs', line 187
+// At index 192 : <select_template_5F_parser_0>, in file 'template_parser.ggs', line 187
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_from) // $from$
 , NONTERMINAL (5) // <expression>
 , END_PRODUCTION
-// At index 189 : <select_template_5F_parser_1>, in file 'template_parser.ggs', line 213
+// At index 195 : <select_template_5F_parser_1>, in file 'template_parser.ggs', line 213
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_if) // $if$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_exists) // $exists$
 , NONTERMINAL (7) // <template_file_name>
 , NONTERMINAL (15) // <select_template_5F_parser_2>
 , NONTERMINAL (16) // <select_template_5F_parser_3>
 , END_PRODUCTION
-// At index 195 : <select_template_5F_parser_1>, in file 'template_parser.ggs', line 213
+// At index 201 : <select_template_5F_parser_1>, in file 'template_parser.ggs', line 213
 , NONTERMINAL (7) // <template_file_name>
 , NONTERMINAL (17) // <select_template_5F_parser_4>
 , END_PRODUCTION
-// At index 198 : <select_template_5F_parser_2>, in file 'template_parser.ggs', line 218
+// At index 204 : <select_template_5F_parser_2>, in file 'template_parser.ggs', line 218
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_in) // $in$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
 , END_PRODUCTION
-// At index 201 : <select_template_5F_parser_2>, in file 'template_parser.ggs', line 218
+// At index 207 : <select_template_5F_parser_2>, in file 'template_parser.ggs', line 218
 , END_PRODUCTION
-// At index 202 : <select_template_5F_parser_3>, in file 'template_parser.ggs', line 233
+// At index 208 : <select_template_5F_parser_3>, in file 'template_parser.ggs', line 233
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_or) // $or$
 , NONTERMINAL (6) // <template_instruction_list>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_end) // $end$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_template) // $template$
 , END_PRODUCTION
-// At index 207 : <select_template_5F_parser_3>, in file 'template_parser.ggs', line 233
+// At index 213 : <select_template_5F_parser_3>, in file 'template_parser.ggs', line 233
 , END_PRODUCTION
-// At index 208 : <select_template_5F_parser_4>, in file 'template_parser.ggs', line 256
+// At index 214 : <select_template_5F_parser_4>, in file 'template_parser.ggs', line 256
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_in) // $in$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
 , END_PRODUCTION
-// At index 211 : <select_template_5F_parser_4>, in file 'template_parser.ggs', line 256
+// At index 217 : <select_template_5F_parser_4>, in file 'template_parser.ggs', line 256
 , END_PRODUCTION
-// At index 212 : <select_template_5F_parser_5>, in file 'template_parser.ggs', line 323
+// At index 218 : <select_template_5F_parser_5>, in file 'template_parser.ggs', line 323
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
 , NONTERMINAL (19) // <select_template_5F_parser_6>
 , END_PRODUCTION
-// At index 215 : <select_template_5F_parser_5>, in file 'template_parser.ggs', line 323
+// At index 221 : <select_template_5F_parser_5>, in file 'template_parser.ggs', line 323
 , END_PRODUCTION
-// At index 216 : <select_template_5F_parser_6>, in file 'template_parser.ggs', line 327
+// At index 222 : <select_template_5F_parser_6>, in file 'template_parser.ggs', line 327
 , END_PRODUCTION
-// At index 217 : <select_template_5F_parser_6>, in file 'template_parser.ggs', line 327
+// At index 223 : <select_template_5F_parser_6>, in file 'template_parser.ggs', line 327
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__2C_) // $,$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
 , NONTERMINAL (19) // <select_template_5F_parser_6>
 , END_PRODUCTION
-// At index 221 : <select_template_5F_parser_7>, in file 'template_parser.ggs', line 356
+// At index 227 : <select_template_5F_parser_7>, in file 'template_parser.ggs', line 356
 , NONTERMINAL (5) // <expression>
 , NONTERMINAL (21) // <select_template_5F_parser_8>
 , END_PRODUCTION
-// At index 224 : <select_template_5F_parser_7>, in file 'template_parser.ggs', line 356
+// At index 230 : <select_template_5F_parser_7>, in file 'template_parser.ggs', line 356
 , END_PRODUCTION
-// At index 225 : <select_template_5F_parser_8>, in file 'template_parser.ggs', line 367
+// At index 231 : <select_template_5F_parser_8>, in file 'template_parser.ggs', line 367
 , END_PRODUCTION
-// At index 226 : <select_template_5F_parser_8>, in file 'template_parser.ggs', line 367
+// At index 232 : <select_template_5F_parser_8>, in file 'template_parser.ggs', line 367
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__2C_) // $,$
 , NONTERMINAL (5) // <expression>
 , NONTERMINAL (21) // <select_template_5F_parser_8>
 , END_PRODUCTION
-// At index 230 : <select_template_5F_parser_9>, in file 'template_parser.ggs', line 486
+// At index 236 : <select_template_5F_parser_9>, in file 'template_parser.ggs', line 486
 , END_PRODUCTION
-// At index 231 : <select_template_5F_parser_9>, in file 'template_parser.ggs', line 486
+// At index 237 : <select_template_5F_parser_9>, in file 'template_parser.ggs', line 486
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_elsif) // $elsif$
 , NONTERMINAL (5) // <expression>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_then) // $then$
 , NONTERMINAL (6) // <template_instruction_list>
 , NONTERMINAL (22) // <select_template_5F_parser_9>
 , END_PRODUCTION
-// At index 237 : <select_template_5F_parser_10>, in file 'template_parser.ggs', line 527
+// At index 243 : <select_template_5F_parser_10>, in file 'template_parser.ggs', line 527
 , END_PRODUCTION
-// At index 238 : <select_template_5F_parser_10>, in file 'template_parser.ggs', line 527
+// At index 244 : <select_template_5F_parser_10>, in file 'template_parser.ggs', line 527
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_else) // $else$
 , NONTERMINAL (6) // <template_instruction_list>
 , END_PRODUCTION
-// At index 241 : <select_template_5F_parser_11>, in file 'template_parser.ggs', line 566
+// At index 247 : <select_template_5F_parser_11>, in file 'template_parser.ggs', line 566
 , END_PRODUCTION
-// At index 242 : <select_template_5F_parser_11>, in file 'template_parser.ggs', line 566
+// At index 248 : <select_template_5F_parser_11>, in file 'template_parser.ggs', line 566
 , NONTERMINAL (1) // <template_instruction>
 , NONTERMINAL (24) // <select_template_5F_parser_11>
 , END_PRODUCTION
-// At index 245 : <select_template_5F_parser_12>, in file 'template_parser.ggs', line 637
+// At index 251 : <select_template_5F_parser_12>, in file 'template_parser.ggs', line 637
 , END_PRODUCTION
-// At index 246 : <select_template_5F_parser_12>, in file 'template_parser.ggs', line 637
+// At index 252 : <select_template_5F_parser_12>, in file 'template_parser.ggs', line 637
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_prefixedby) // $prefixedby$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
 , END_PRODUCTION
-// At index 249 : <select_template_5F_parser_13>, in file 'template_parser.ggs', line 646
+// At index 255 : <select_template_5F_parser_13>, in file 'template_parser.ggs', line 646
 , END_PRODUCTION
-// At index 250 : <select_template_5F_parser_13>, in file 'template_parser.ggs', line 646
+// At index 256 : <select_template_5F_parser_13>, in file 'template_parser.ggs', line 646
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_before) // $before$
 , NONTERMINAL (6) // <template_instruction_list>
 , END_PRODUCTION
-// At index 253 : <select_template_5F_parser_14>, in file 'template_parser.ggs', line 694
+// At index 259 : <select_template_5F_parser_14>, in file 'template_parser.ggs', line 694
 , END_PRODUCTION
-// At index 254 : <select_template_5F_parser_14>, in file 'template_parser.ggs', line 694
+// At index 260 : <select_template_5F_parser_14>, in file 'template_parser.ggs', line 694
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_between) // $between$
 , NONTERMINAL (6) // <template_instruction_list>
 , END_PRODUCTION
-// At index 257 : <select_template_5F_parser_15>, in file 'template_parser.ggs', line 715
+// At index 263 : <select_template_5F_parser_15>, in file 'template_parser.ggs', line 715
 , END_PRODUCTION
-// At index 258 : <select_template_5F_parser_15>, in file 'template_parser.ggs', line 715
+// At index 264 : <select_template_5F_parser_15>, in file 'template_parser.ggs', line 715
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_after) // $after$
 , NONTERMINAL (6) // <template_instruction_list>
 , END_PRODUCTION
-// At index 261 : <select_template_5F_parser_16>, in file 'template_parser.ggs', line 755
+// At index 267 : <select_template_5F_parser_16>, in file 'template_parser.ggs', line 755
 , END_PRODUCTION
-// At index 262 : <select_template_5F_parser_16>, in file 'template_parser.ggs', line 755
+// At index 268 : <select_template_5F_parser_16>, in file 'template_parser.ggs', line 755
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__2C_) // $,$
 , NONTERMINAL (5) // <expression>
 , NONTERMINAL (29) // <select_template_5F_parser_16>
 , END_PRODUCTION
-// At index 266 : <select_template_5F_parser_17>, in file 'template_parser.ggs', line 802
+// At index 272 : <select_template_5F_parser_17>, in file 'template_parser.ggs', line 802
 , END_PRODUCTION
-// At index 267 : <select_template_5F_parser_17>, in file 'template_parser.ggs', line 802
+// At index 273 : <select_template_5F_parser_17>, in file 'template_parser.ggs', line 802
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_between) // $between$
 , NONTERMINAL (6) // <template_instruction_list>
 , END_PRODUCTION
-// At index 270 : <select_template_5F_parser_18>, in file 'template_parser.ggs', line 867
+// At index 276 : <select_template_5F_parser_18>, in file 'template_parser.ggs', line 867
 , END_PRODUCTION
-// At index 271 : <select_template_5F_parser_18>, in file 'template_parser.ggs', line 867
+// At index 277 : <select_template_5F_parser_18>, in file 'template_parser.ggs', line 867
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_before) // $before$
 , NONTERMINAL (6) // <template_instruction_list>
 , END_PRODUCTION
-// At index 274 : <select_template_5F_parser_19>, in file 'template_parser.ggs', line 915
+// At index 280 : <select_template_5F_parser_19>, in file 'template_parser.ggs', line 915
 , END_PRODUCTION
-// At index 275 : <select_template_5F_parser_19>, in file 'template_parser.ggs', line 915
+// At index 281 : <select_template_5F_parser_19>, in file 'template_parser.ggs', line 915
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_between) // $between$
 , NONTERMINAL (6) // <template_instruction_list>
 , END_PRODUCTION
-// At index 278 : <select_template_5F_parser_20>, in file 'template_parser.ggs', line 936
+// At index 284 : <select_template_5F_parser_20>, in file 'template_parser.ggs', line 936
 , END_PRODUCTION
-// At index 279 : <select_template_5F_parser_20>, in file 'template_parser.ggs', line 936
+// At index 285 : <select_template_5F_parser_20>, in file 'template_parser.ggs', line 936
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_after) // $after$
 , NONTERMINAL (6) // <template_instruction_list>
 , END_PRODUCTION
-// At index 282 : <select_template_5F_parser_21>, in file 'template_parser.ggs', line 983
+// At index 288 : <select_template_5F_parser_21>, in file 'template_parser.ggs', line 983
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__3A__3D_) // $:=$
 , NONTERMINAL (5) // <expression>
 , END_PRODUCTION
-// At index 285 : <select_template_5F_parser_21>, in file 'template_parser.ggs', line 983
+// At index 291 : <select_template_5F_parser_21>, in file 'template_parser.ggs', line 983
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__2B__3D_) // $+=$
 , NONTERMINAL (5) // <expression>
 , END_PRODUCTION
-// At index 288 : <select_template_5F_parser_21>, in file 'template_parser.ggs', line 983
+// At index 294 : <select_template_5F_parser_21>, in file 'template_parser.ggs', line 983
 , END_PRODUCTION
-// At index 289 : <select_template_5F_parser_22>, in file 'template_parser.ggs', line 1054
+// At index 295 : <select_template_5F_parser_22>, in file 'template_parser.ggs', line 1054
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_here) // $here$
 , END_PRODUCTION
-// At index 291 : <select_template_5F_parser_22>, in file 'template_parser.ggs', line 1054
+// At index 297 : <select_template_5F_parser_22>, in file 'template_parser.ggs', line 1054
 , NONTERMINAL (3) // <variable>
 , END_PRODUCTION
-// At index 293 : <select_template_5F_parser_23>, in file 'template_parser.ggs', line 1153
+// At index 299 : <select_template_5F_parser_23>, in file 'template_parser.ggs', line 1153
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__3E_) // $>$
 , END_PRODUCTION
-// At index 295 : <select_template_5F_parser_23>, in file 'template_parser.ggs', line 1153
+// At index 301 : <select_template_5F_parser_23>, in file 'template_parser.ggs', line 1153
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__3C_) // $<$
 , END_PRODUCTION
-// At index 297 : <select_template_5F_parser_24>, in file 'template_parser.ggs', line 1179
+// At index 303 : <select_template_5F_parser_24>, in file 'template_parser.ggs', line 1179
 , END_PRODUCTION
-// At index 298 : <select_template_5F_parser_24>, in file 'template_parser.ggs', line 1179
+// At index 304 : <select_template_5F_parser_24>, in file 'template_parser.ggs', line 1179
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__2C_) // $,$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
 , NONTERMINAL (2) // <sorting_order>
 , NONTERMINAL (37) // <select_template_5F_parser_24>
 , END_PRODUCTION
-// At index 303 : <select_template_5F_parser_25>, in file 'template_parser.ggs', line 1214
+// At index 309 : <select_template_5F_parser_25>, in file 'template_parser.ggs', line 1214
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__5B_) // $[$
 , NONTERMINAL (5) // <expression>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__5D_) // $]$
 , END_PRODUCTION
-// At index 307 : <select_template_5F_parser_25>, in file 'template_parser.ggs', line 1214
+// At index 313 : <select_template_5F_parser_25>, in file 'template_parser.ggs', line 1214
 , END_PRODUCTION
-// At index 308 : <select_template_5F_parser_26>, in file 'template_parser.ggs', line 1230
+// At index 314 : <select_template_5F_parser_26>, in file 'template_parser.ggs', line 1230
 , END_PRODUCTION
-// At index 309 : <select_template_5F_parser_26>, in file 'template_parser.ggs', line 1230
+// At index 315 : <select_template_5F_parser_26>, in file 'template_parser.ggs', line 1230
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__3A__3A_) // $::$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
 , NONTERMINAL (40) // <select_template_5F_parser_27>
 , NONTERMINAL (39) // <select_template_5F_parser_26>
 , END_PRODUCTION
-// At index 314 : <select_template_5F_parser_27>, in file 'template_parser.ggs', line 1235
+// At index 320 : <select_template_5F_parser_27>, in file 'template_parser.ggs', line 1235
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__5B_) // $[$
 , NONTERMINAL (5) // <expression>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__5D_) // $]$
 , END_PRODUCTION
-// At index 318 : <select_template_5F_parser_27>, in file 'template_parser.ggs', line 1235
+// At index 324 : <select_template_5F_parser_27>, in file 'template_parser.ggs', line 1235
 , END_PRODUCTION
-// At index 319 : <select_template_5F_expression_5F_parser_0>, in file 'template_expression_parser.ggs', line 103
+// At index 325 : <select_template_5F_expression_5F_parser_0>, in file 'template_expression_parser.ggs', line 103
 , END_PRODUCTION
-// At index 320 : <select_template_5F_expression_5F_parser_0>, in file 'template_expression_parser.ggs', line 103
+// At index 326 : <select_template_5F_expression_5F_parser_0>, in file 'template_expression_parser.ggs', line 103
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__7C_) // $|$
 , NONTERMINAL (8) // <relation_term>
 , NONTERMINAL (41) // <select_template_5F_expression_5F_parser_0>
 , END_PRODUCTION
-// At index 324 : <select_template_5F_expression_5F_parser_0>, in file 'template_expression_parser.ggs', line 103
+// At index 330 : <select_template_5F_expression_5F_parser_0>, in file 'template_expression_parser.ggs', line 103
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__5E_) // $^$
 , NONTERMINAL (8) // <relation_term>
 , NONTERMINAL (41) // <select_template_5F_expression_5F_parser_0>
 , END_PRODUCTION
-// At index 328 : <select_template_5F_expression_5F_parser_1>, in file 'template_expression_parser.ggs', line 165
+// At index 334 : <select_template_5F_expression_5F_parser_1>, in file 'template_expression_parser.ggs', line 165
 , END_PRODUCTION
-// At index 329 : <select_template_5F_expression_5F_parser_1>, in file 'template_expression_parser.ggs', line 165
+// At index 335 : <select_template_5F_expression_5F_parser_1>, in file 'template_expression_parser.ggs', line 165
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__26_) // $&$
 , NONTERMINAL (9) // <relation_factor>
 , NONTERMINAL (42) // <select_template_5F_expression_5F_parser_1>
 , END_PRODUCTION
-// At index 333 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 208
+// At index 339 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 208
 , END_PRODUCTION
-// At index 334 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 208
+// At index 340 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 208
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__3D__3D_) // $==$
 , NONTERMINAL (10) // <simple_expression>
 , END_PRODUCTION
-// At index 337 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 208
+// At index 343 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 208
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__21__3D_) // $!=$
 , NONTERMINAL (10) // <simple_expression>
 , END_PRODUCTION
-// At index 340 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 208
+// At index 346 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 208
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__3C__3D_) // $<=$
 , NONTERMINAL (10) // <simple_expression>
 , END_PRODUCTION
-// At index 343 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 208
+// At index 349 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 208
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__3E__3D_) // $>=$
 , NONTERMINAL (10) // <simple_expression>
 , END_PRODUCTION
-// At index 346 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 208
+// At index 352 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 208
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__3E_) // $>$
 , NONTERMINAL (10) // <simple_expression>
 , END_PRODUCTION
-// At index 349 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 208
+// At index 355 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 208
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__3C_) // $<$
 , NONTERMINAL (10) // <simple_expression>
 , END_PRODUCTION
-// At index 352 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 414
+// At index 358 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 414
 , END_PRODUCTION
-// At index 353 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 414
+// At index 359 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 414
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__3C__3C_) // $<<$
 , NONTERMINAL (11) // <term>
 , NONTERMINAL (44) // <select_template_5F_expression_5F_parser_3>
 , END_PRODUCTION
-// At index 357 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 414
+// At index 363 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 414
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__3E__3E_) // $>>$
 , NONTERMINAL (11) // <term>
 , NONTERMINAL (44) // <select_template_5F_expression_5F_parser_3>
 , END_PRODUCTION
-// At index 361 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 414
+// At index 367 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 414
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__2B_) // $+$
 , NONTERMINAL (11) // <term>
 , NONTERMINAL (44) // <select_template_5F_expression_5F_parser_3>
 , END_PRODUCTION
-// At index 365 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 414
+// At index 371 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 414
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__2E_) // $.$
 , NONTERMINAL (11) // <term>
 , NONTERMINAL (44) // <select_template_5F_expression_5F_parser_3>
 , END_PRODUCTION
-// At index 369 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 414
+// At index 375 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 414
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__2D_) // $-$
 , NONTERMINAL (11) // <term>
 , NONTERMINAL (44) // <select_template_5F_expression_5F_parser_3>
 , END_PRODUCTION
-// At index 373 : <select_template_5F_expression_5F_parser_4>, in file 'template_expression_parser.ggs', line 517
+// At index 379 : <select_template_5F_expression_5F_parser_4>, in file 'template_expression_parser.ggs', line 517
 , END_PRODUCTION
-// At index 374 : <select_template_5F_expression_5F_parser_4>, in file 'template_expression_parser.ggs', line 517
+// At index 380 : <select_template_5F_expression_5F_parser_4>, in file 'template_expression_parser.ggs', line 517
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__2A_) // $*$
 , NONTERMINAL (12) // <factor>
 , NONTERMINAL (45) // <select_template_5F_expression_5F_parser_4>
 , END_PRODUCTION
-// At index 378 : <select_template_5F_expression_5F_parser_4>, in file 'template_expression_parser.ggs', line 517
+// At index 384 : <select_template_5F_expression_5F_parser_4>, in file 'template_expression_parser.ggs', line 517
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__2F_) // $/$
 , NONTERMINAL (12) // <factor>
 , NONTERMINAL (45) // <select_template_5F_expression_5F_parser_4>
 , END_PRODUCTION
-// At index 382 : <select_template_5F_expression_5F_parser_4>, in file 'template_expression_parser.ggs', line 517
+// At index 388 : <select_template_5F_expression_5F_parser_4>, in file 'template_expression_parser.ggs', line 517
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_mod) // $mod$
 , NONTERMINAL (12) // <factor>
 , NONTERMINAL (45) // <select_template_5F_expression_5F_parser_4>
 , END_PRODUCTION
-// At index 386 : <select_template_5F_expression_5F_parser_5>, in file 'template_expression_parser.ggs', line 749
+// At index 392 : <select_template_5F_expression_5F_parser_5>, in file 'template_expression_parser.ggs', line 803
 , END_PRODUCTION
-// At index 387 : <select_template_5F_expression_5F_parser_5>, in file 'template_expression_parser.ggs', line 749
+// At index 393 : <select_template_5F_expression_5F_parser_5>, in file 'template_expression_parser.ggs', line 803
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__3A_) // $:$
 , NONTERMINAL (5) // <expression>
 , NONTERMINAL (47) // <select_template_5F_expression_5F_parser_6>
 , END_PRODUCTION
-// At index 391 : <select_template_5F_expression_5F_parser_6>, in file 'template_expression_parser.ggs', line 752
+// At index 397 : <select_template_5F_expression_5F_parser_6>, in file 'template_expression_parser.ggs', line 806
 , END_PRODUCTION
-// At index 392 : <select_template_5F_expression_5F_parser_6>, in file 'template_expression_parser.ggs', line 752
+// At index 398 : <select_template_5F_expression_5F_parser_6>, in file 'template_expression_parser.ggs', line 806
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__2C_) // $,$
 , NONTERMINAL (5) // <expression>
 , NONTERMINAL (47) // <select_template_5F_expression_5F_parser_6>
 , END_PRODUCTION
-// At index 396 : <select_template_5F_expression_5F_parser_7>, in file 'template_expression_parser.ggs', line 791
+// At index 402 : <select_template_5F_expression_5F_parser_7>, in file 'template_expression_parser.ggs', line 845
 , END_PRODUCTION
-// At index 397 : <select_template_5F_expression_5F_parser_7>, in file 'template_expression_parser.ggs', line 791
+// At index 403 : <select_template_5F_expression_5F_parser_7>, in file 'template_expression_parser.ggs', line 845
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__28_) // $($
 , NONTERMINAL (5) // <expression>
 , NONTERMINAL (49) // <select_template_5F_expression_5F_parser_8>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__29_) // $)$
 , END_PRODUCTION
-// At index 402 : <select_template_5F_expression_5F_parser_8>, in file 'template_expression_parser.ggs', line 800
+// At index 408 : <select_template_5F_expression_5F_parser_8>, in file 'template_expression_parser.ggs', line 854
 , END_PRODUCTION
-// At index 403 : <select_template_5F_expression_5F_parser_8>, in file 'template_expression_parser.ggs', line 800
+// At index 409 : <select_template_5F_expression_5F_parser_8>, in file 'template_expression_parser.ggs', line 854
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__2C_) // $,$
 , NONTERMINAL (5) // <expression>
 , NONTERMINAL (49) // <select_template_5F_expression_5F_parser_8>
 , END_PRODUCTION
-// At index 407 : <select_template_5F_expression_5F_parser_9>, in file 'template_expression_parser.ggs', line 931
+// At index 413 : <select_template_5F_expression_5F_parser_9>, in file 'template_expression_parser.ggs', line 985
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_default) // $default$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__28_) // $($
 , NONTERMINAL (5) // <expression>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__29_) // $)$
 , END_PRODUCTION
-// At index 412 : <select_template_5F_expression_5F_parser_9>, in file 'template_expression_parser.ggs', line 931
+// At index 418 : <select_template_5F_expression_5F_parser_9>, in file 'template_expression_parser.ggs', line 985
 , END_PRODUCTION
-// At index 413 : <select_template_5F_expression_5F_parser_10>, in file 'template_expression_parser.ggs', line 988
+// At index 419 : <select_template_5F_expression_5F_parser_10>, in file 'template_expression_parser.ggs', line 1042
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_true) // $true$
 , END_PRODUCTION
-// At index 415 : <select_template_5F_expression_5F_parser_10>, in file 'template_expression_parser.ggs', line 988
+// At index 421 : <select_template_5F_expression_5F_parser_10>, in file 'template_expression_parser.ggs', line 1042
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_false) // $false$
 , END_PRODUCTION
-// At index 417 : <>, in file '.ggs', line 0
+// At index 423 : <>, in file '.ggs', line 0
 , NONTERMINAL (0) // <goil_template_start_symbol>
 , END_PRODUCTION
 } ;
@@ -593,7 +601,7 @@ static const int16_t gProductions_template_grammar [] = {
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const cProductionNameDescriptor gProductionNames_template_grammar [136] = {
+static const cProductionNameDescriptor gProductionNames_template_grammar [138] = {
  {"<goil_template_start_symbol>", "template_parser", 0}, // at index 0
  {"<template_instruction>", "template_parser", 2}, // at index 1
  {"<template_instruction>", "template_parser", 5}, // at index 2
@@ -625,111 +633,113 @@ static const cProductionNameDescriptor gProductionNames_template_grammar [136] =
  {"<factor>", "template_expression_parser", 137}, // at index 28
  {"<factor>", "template_expression_parser", 140}, // at index 29
  {"<factor>", "template_expression_parser", 143}, // at index 30
- {"<factor>", "template_expression_parser", 145}, // at index 31
- {"<factor>", "template_expression_parser", 147}, // at index 32
- {"<factor>", "template_expression_parser", 149}, // at index 33
- {"<factor>", "template_expression_parser", 151}, // at index 34
- {"<factor>", "template_expression_parser", 157}, // at index 35
- {"<factor>", "template_expression_parser", 160}, // at index 36
- {"<factor>", "template_expression_parser", 164}, // at index 37
- {"<factor>", "template_expression_parser", 167}, // at index 38
- {"<factor>", "template_expression_parser", 169}, // at index 39
- {"<factor>", "template_expression_parser", 172}, // at index 40
- {"<factor>", "template_expression_parser", 174}, // at index 41
- {"<factor>", "template_expression_parser", 176}, // at index 42
- {"<factor>", "template_expression_parser", 181}, // at index 43
- {"<select_template_5F_parser_0>", "template_parser", 184}, // at index 44
- {"<select_template_5F_parser_0>", "template_parser", 186}, // at index 45
- {"<select_template_5F_parser_1>", "template_parser", 189}, // at index 46
- {"<select_template_5F_parser_1>", "template_parser", 195}, // at index 47
- {"<select_template_5F_parser_2>", "template_parser", 198}, // at index 48
- {"<select_template_5F_parser_2>", "template_parser", 201}, // at index 49
- {"<select_template_5F_parser_3>", "template_parser", 202}, // at index 50
- {"<select_template_5F_parser_3>", "template_parser", 207}, // at index 51
- {"<select_template_5F_parser_4>", "template_parser", 208}, // at index 52
- {"<select_template_5F_parser_4>", "template_parser", 211}, // at index 53
- {"<select_template_5F_parser_5>", "template_parser", 212}, // at index 54
- {"<select_template_5F_parser_5>", "template_parser", 215}, // at index 55
- {"<select_template_5F_parser_6>", "template_parser", 216}, // at index 56
- {"<select_template_5F_parser_6>", "template_parser", 217}, // at index 57
- {"<select_template_5F_parser_7>", "template_parser", 221}, // at index 58
- {"<select_template_5F_parser_7>", "template_parser", 224}, // at index 59
- {"<select_template_5F_parser_8>", "template_parser", 225}, // at index 60
- {"<select_template_5F_parser_8>", "template_parser", 226}, // at index 61
- {"<select_template_5F_parser_9>", "template_parser", 230}, // at index 62
- {"<select_template_5F_parser_9>", "template_parser", 231}, // at index 63
- {"<select_template_5F_parser_10>", "template_parser", 237}, // at index 64
- {"<select_template_5F_parser_10>", "template_parser", 238}, // at index 65
- {"<select_template_5F_parser_11>", "template_parser", 241}, // at index 66
- {"<select_template_5F_parser_11>", "template_parser", 242}, // at index 67
- {"<select_template_5F_parser_12>", "template_parser", 245}, // at index 68
- {"<select_template_5F_parser_12>", "template_parser", 246}, // at index 69
- {"<select_template_5F_parser_13>", "template_parser", 249}, // at index 70
- {"<select_template_5F_parser_13>", "template_parser", 250}, // at index 71
- {"<select_template_5F_parser_14>", "template_parser", 253}, // at index 72
- {"<select_template_5F_parser_14>", "template_parser", 254}, // at index 73
- {"<select_template_5F_parser_15>", "template_parser", 257}, // at index 74
- {"<select_template_5F_parser_15>", "template_parser", 258}, // at index 75
- {"<select_template_5F_parser_16>", "template_parser", 261}, // at index 76
- {"<select_template_5F_parser_16>", "template_parser", 262}, // at index 77
- {"<select_template_5F_parser_17>", "template_parser", 266}, // at index 78
- {"<select_template_5F_parser_17>", "template_parser", 267}, // at index 79
- {"<select_template_5F_parser_18>", "template_parser", 270}, // at index 80
- {"<select_template_5F_parser_18>", "template_parser", 271}, // at index 81
- {"<select_template_5F_parser_19>", "template_parser", 274}, // at index 82
- {"<select_template_5F_parser_19>", "template_parser", 275}, // at index 83
- {"<select_template_5F_parser_20>", "template_parser", 278}, // at index 84
- {"<select_template_5F_parser_20>", "template_parser", 279}, // at index 85
- {"<select_template_5F_parser_21>", "template_parser", 282}, // at index 86
- {"<select_template_5F_parser_21>", "template_parser", 285}, // at index 87
+ {"<factor>", "template_expression_parser", 146}, // at index 31
+ {"<factor>", "template_expression_parser", 149}, // at index 32
+ {"<factor>", "template_expression_parser", 151}, // at index 33
+ {"<factor>", "template_expression_parser", 153}, // at index 34
+ {"<factor>", "template_expression_parser", 155}, // at index 35
+ {"<factor>", "template_expression_parser", 157}, // at index 36
+ {"<factor>", "template_expression_parser", 163}, // at index 37
+ {"<factor>", "template_expression_parser", 166}, // at index 38
+ {"<factor>", "template_expression_parser", 170}, // at index 39
+ {"<factor>", "template_expression_parser", 173}, // at index 40
+ {"<factor>", "template_expression_parser", 175}, // at index 41
+ {"<factor>", "template_expression_parser", 178}, // at index 42
+ {"<factor>", "template_expression_parser", 180}, // at index 43
+ {"<factor>", "template_expression_parser", 182}, // at index 44
+ {"<factor>", "template_expression_parser", 187}, // at index 45
+ {"<select_template_5F_parser_0>", "template_parser", 190}, // at index 46
+ {"<select_template_5F_parser_0>", "template_parser", 192}, // at index 47
+ {"<select_template_5F_parser_1>", "template_parser", 195}, // at index 48
+ {"<select_template_5F_parser_1>", "template_parser", 201}, // at index 49
+ {"<select_template_5F_parser_2>", "template_parser", 204}, // at index 50
+ {"<select_template_5F_parser_2>", "template_parser", 207}, // at index 51
+ {"<select_template_5F_parser_3>", "template_parser", 208}, // at index 52
+ {"<select_template_5F_parser_3>", "template_parser", 213}, // at index 53
+ {"<select_template_5F_parser_4>", "template_parser", 214}, // at index 54
+ {"<select_template_5F_parser_4>", "template_parser", 217}, // at index 55
+ {"<select_template_5F_parser_5>", "template_parser", 218}, // at index 56
+ {"<select_template_5F_parser_5>", "template_parser", 221}, // at index 57
+ {"<select_template_5F_parser_6>", "template_parser", 222}, // at index 58
+ {"<select_template_5F_parser_6>", "template_parser", 223}, // at index 59
+ {"<select_template_5F_parser_7>", "template_parser", 227}, // at index 60
+ {"<select_template_5F_parser_7>", "template_parser", 230}, // at index 61
+ {"<select_template_5F_parser_8>", "template_parser", 231}, // at index 62
+ {"<select_template_5F_parser_8>", "template_parser", 232}, // at index 63
+ {"<select_template_5F_parser_9>", "template_parser", 236}, // at index 64
+ {"<select_template_5F_parser_9>", "template_parser", 237}, // at index 65
+ {"<select_template_5F_parser_10>", "template_parser", 243}, // at index 66
+ {"<select_template_5F_parser_10>", "template_parser", 244}, // at index 67
+ {"<select_template_5F_parser_11>", "template_parser", 247}, // at index 68
+ {"<select_template_5F_parser_11>", "template_parser", 248}, // at index 69
+ {"<select_template_5F_parser_12>", "template_parser", 251}, // at index 70
+ {"<select_template_5F_parser_12>", "template_parser", 252}, // at index 71
+ {"<select_template_5F_parser_13>", "template_parser", 255}, // at index 72
+ {"<select_template_5F_parser_13>", "template_parser", 256}, // at index 73
+ {"<select_template_5F_parser_14>", "template_parser", 259}, // at index 74
+ {"<select_template_5F_parser_14>", "template_parser", 260}, // at index 75
+ {"<select_template_5F_parser_15>", "template_parser", 263}, // at index 76
+ {"<select_template_5F_parser_15>", "template_parser", 264}, // at index 77
+ {"<select_template_5F_parser_16>", "template_parser", 267}, // at index 78
+ {"<select_template_5F_parser_16>", "template_parser", 268}, // at index 79
+ {"<select_template_5F_parser_17>", "template_parser", 272}, // at index 80
+ {"<select_template_5F_parser_17>", "template_parser", 273}, // at index 81
+ {"<select_template_5F_parser_18>", "template_parser", 276}, // at index 82
+ {"<select_template_5F_parser_18>", "template_parser", 277}, // at index 83
+ {"<select_template_5F_parser_19>", "template_parser", 280}, // at index 84
+ {"<select_template_5F_parser_19>", "template_parser", 281}, // at index 85
+ {"<select_template_5F_parser_20>", "template_parser", 284}, // at index 86
+ {"<select_template_5F_parser_20>", "template_parser", 285}, // at index 87
  {"<select_template_5F_parser_21>", "template_parser", 288}, // at index 88
- {"<select_template_5F_parser_22>", "template_parser", 289}, // at index 89
- {"<select_template_5F_parser_22>", "template_parser", 291}, // at index 90
- {"<select_template_5F_parser_23>", "template_parser", 293}, // at index 91
- {"<select_template_5F_parser_23>", "template_parser", 295}, // at index 92
- {"<select_template_5F_parser_24>", "template_parser", 297}, // at index 93
- {"<select_template_5F_parser_24>", "template_parser", 298}, // at index 94
- {"<select_template_5F_parser_25>", "template_parser", 303}, // at index 95
- {"<select_template_5F_parser_25>", "template_parser", 307}, // at index 96
- {"<select_template_5F_parser_26>", "template_parser", 308}, // at index 97
- {"<select_template_5F_parser_26>", "template_parser", 309}, // at index 98
- {"<select_template_5F_parser_27>", "template_parser", 314}, // at index 99
- {"<select_template_5F_parser_27>", "template_parser", 318}, // at index 100
- {"<select_template_5F_expression_5F_parser_0>", "template_expression_parser", 319}, // at index 101
- {"<select_template_5F_expression_5F_parser_0>", "template_expression_parser", 320}, // at index 102
- {"<select_template_5F_expression_5F_parser_0>", "template_expression_parser", 324}, // at index 103
- {"<select_template_5F_expression_5F_parser_1>", "template_expression_parser", 328}, // at index 104
- {"<select_template_5F_expression_5F_parser_1>", "template_expression_parser", 329}, // at index 105
- {"<select_template_5F_expression_5F_parser_2>", "template_expression_parser", 333}, // at index 106
- {"<select_template_5F_expression_5F_parser_2>", "template_expression_parser", 334}, // at index 107
- {"<select_template_5F_expression_5F_parser_2>", "template_expression_parser", 337}, // at index 108
+ {"<select_template_5F_parser_21>", "template_parser", 291}, // at index 89
+ {"<select_template_5F_parser_21>", "template_parser", 294}, // at index 90
+ {"<select_template_5F_parser_22>", "template_parser", 295}, // at index 91
+ {"<select_template_5F_parser_22>", "template_parser", 297}, // at index 92
+ {"<select_template_5F_parser_23>", "template_parser", 299}, // at index 93
+ {"<select_template_5F_parser_23>", "template_parser", 301}, // at index 94
+ {"<select_template_5F_parser_24>", "template_parser", 303}, // at index 95
+ {"<select_template_5F_parser_24>", "template_parser", 304}, // at index 96
+ {"<select_template_5F_parser_25>", "template_parser", 309}, // at index 97
+ {"<select_template_5F_parser_25>", "template_parser", 313}, // at index 98
+ {"<select_template_5F_parser_26>", "template_parser", 314}, // at index 99
+ {"<select_template_5F_parser_26>", "template_parser", 315}, // at index 100
+ {"<select_template_5F_parser_27>", "template_parser", 320}, // at index 101
+ {"<select_template_5F_parser_27>", "template_parser", 324}, // at index 102
+ {"<select_template_5F_expression_5F_parser_0>", "template_expression_parser", 325}, // at index 103
+ {"<select_template_5F_expression_5F_parser_0>", "template_expression_parser", 326}, // at index 104
+ {"<select_template_5F_expression_5F_parser_0>", "template_expression_parser", 330}, // at index 105
+ {"<select_template_5F_expression_5F_parser_1>", "template_expression_parser", 334}, // at index 106
+ {"<select_template_5F_expression_5F_parser_1>", "template_expression_parser", 335}, // at index 107
+ {"<select_template_5F_expression_5F_parser_2>", "template_expression_parser", 339}, // at index 108
  {"<select_template_5F_expression_5F_parser_2>", "template_expression_parser", 340}, // at index 109
  {"<select_template_5F_expression_5F_parser_2>", "template_expression_parser", 343}, // at index 110
  {"<select_template_5F_expression_5F_parser_2>", "template_expression_parser", 346}, // at index 111
  {"<select_template_5F_expression_5F_parser_2>", "template_expression_parser", 349}, // at index 112
- {"<select_template_5F_expression_5F_parser_3>", "template_expression_parser", 352}, // at index 113
- {"<select_template_5F_expression_5F_parser_3>", "template_expression_parser", 353}, // at index 114
- {"<select_template_5F_expression_5F_parser_3>", "template_expression_parser", 357}, // at index 115
- {"<select_template_5F_expression_5F_parser_3>", "template_expression_parser", 361}, // at index 116
- {"<select_template_5F_expression_5F_parser_3>", "template_expression_parser", 365}, // at index 117
- {"<select_template_5F_expression_5F_parser_3>", "template_expression_parser", 369}, // at index 118
- {"<select_template_5F_expression_5F_parser_4>", "template_expression_parser", 373}, // at index 119
- {"<select_template_5F_expression_5F_parser_4>", "template_expression_parser", 374}, // at index 120
- {"<select_template_5F_expression_5F_parser_4>", "template_expression_parser", 378}, // at index 121
- {"<select_template_5F_expression_5F_parser_4>", "template_expression_parser", 382}, // at index 122
- {"<select_template_5F_expression_5F_parser_5>", "template_expression_parser", 386}, // at index 123
- {"<select_template_5F_expression_5F_parser_5>", "template_expression_parser", 387}, // at index 124
- {"<select_template_5F_expression_5F_parser_6>", "template_expression_parser", 391}, // at index 125
- {"<select_template_5F_expression_5F_parser_6>", "template_expression_parser", 392}, // at index 126
- {"<select_template_5F_expression_5F_parser_7>", "template_expression_parser", 396}, // at index 127
- {"<select_template_5F_expression_5F_parser_7>", "template_expression_parser", 397}, // at index 128
- {"<select_template_5F_expression_5F_parser_8>", "template_expression_parser", 402}, // at index 129
- {"<select_template_5F_expression_5F_parser_8>", "template_expression_parser", 403}, // at index 130
- {"<select_template_5F_expression_5F_parser_9>", "template_expression_parser", 407}, // at index 131
- {"<select_template_5F_expression_5F_parser_9>", "template_expression_parser", 412}, // at index 132
- {"<select_template_5F_expression_5F_parser_10>", "template_expression_parser", 413}, // at index 133
- {"<select_template_5F_expression_5F_parser_10>", "template_expression_parser", 415}, // at index 134
- {"<>", "", 417} // at index 135
+ {"<select_template_5F_expression_5F_parser_2>", "template_expression_parser", 352}, // at index 113
+ {"<select_template_5F_expression_5F_parser_2>", "template_expression_parser", 355}, // at index 114
+ {"<select_template_5F_expression_5F_parser_3>", "template_expression_parser", 358}, // at index 115
+ {"<select_template_5F_expression_5F_parser_3>", "template_expression_parser", 359}, // at index 116
+ {"<select_template_5F_expression_5F_parser_3>", "template_expression_parser", 363}, // at index 117
+ {"<select_template_5F_expression_5F_parser_3>", "template_expression_parser", 367}, // at index 118
+ {"<select_template_5F_expression_5F_parser_3>", "template_expression_parser", 371}, // at index 119
+ {"<select_template_5F_expression_5F_parser_3>", "template_expression_parser", 375}, // at index 120
+ {"<select_template_5F_expression_5F_parser_4>", "template_expression_parser", 379}, // at index 121
+ {"<select_template_5F_expression_5F_parser_4>", "template_expression_parser", 380}, // at index 122
+ {"<select_template_5F_expression_5F_parser_4>", "template_expression_parser", 384}, // at index 123
+ {"<select_template_5F_expression_5F_parser_4>", "template_expression_parser", 388}, // at index 124
+ {"<select_template_5F_expression_5F_parser_5>", "template_expression_parser", 392}, // at index 125
+ {"<select_template_5F_expression_5F_parser_5>", "template_expression_parser", 393}, // at index 126
+ {"<select_template_5F_expression_5F_parser_6>", "template_expression_parser", 397}, // at index 127
+ {"<select_template_5F_expression_5F_parser_6>", "template_expression_parser", 398}, // at index 128
+ {"<select_template_5F_expression_5F_parser_7>", "template_expression_parser", 402}, // at index 129
+ {"<select_template_5F_expression_5F_parser_7>", "template_expression_parser", 403}, // at index 130
+ {"<select_template_5F_expression_5F_parser_8>", "template_expression_parser", 408}, // at index 131
+ {"<select_template_5F_expression_5F_parser_8>", "template_expression_parser", 409}, // at index 132
+ {"<select_template_5F_expression_5F_parser_9>", "template_expression_parser", 413}, // at index 133
+ {"<select_template_5F_expression_5F_parser_9>", "template_expression_parser", 418}, // at index 134
+ {"<select_template_5F_expression_5F_parser_10>", "template_expression_parser", 419}, // at index 135
+ {"<select_template_5F_expression_5F_parser_10>", "template_expression_parser", 421}, // at index 136
+ {"<>", "", 423} // at index 137
 } ;
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -738,7 +748,7 @@ static const cProductionNameDescriptor gProductionNames_template_grammar [136] =
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const int16_t gProductionIndexes_template_grammar [136] = {
+static const int16_t gProductionIndexes_template_grammar [138] = {
 0, // index 0 : <goil_template_start_symbol>, in file 'template_parser.ggs', line 584
 2, // index 1 : <template_instruction>, in file 'template_parser.ggs', line 80
 5, // index 2 : <template_instruction>, in file 'template_parser.ggs', line 127
@@ -770,111 +780,113 @@ static const int16_t gProductionIndexes_template_grammar [136] = {
 137, // index 28 : <factor>, in file 'template_expression_parser.ggs', line 599
 140, // index 29 : <factor>, in file 'template_expression_parser.ggs', line 626
 143, // index 30 : <factor>, in file 'template_expression_parser.ggs', line 653
-145, // index 31 : <factor>, in file 'template_expression_parser.ggs', line 671
-147, // index 32 : <factor>, in file 'template_expression_parser.ggs', line 689
-149, // index 33 : <factor>, in file 'template_expression_parser.ggs', line 708
-151, // index 34 : <factor>, in file 'template_expression_parser.ggs', line 727
-157, // index 35 : <factor>, in file 'template_expression_parser.ggs', line 782
-160, // index 36 : <factor>, in file 'template_expression_parser.ggs', line 915
-164, // index 37 : <factor>, in file 'template_expression_parser.ggs', line 963
-167, // index 38 : <factor>, in file 'template_expression_parser.ggs', line 981
-169, // index 39 : <factor>, in file 'template_expression_parser.ggs', line 1000
-172, // index 40 : <factor>, in file 'template_expression_parser.ggs', line 1014
-174, // index 41 : <factor>, in file 'template_expression_parser.ggs', line 1028
-176, // index 42 : <factor>, in file 'template_expression_parser.ggs', line 1042
-181, // index 43 : <factor>, in file 'template_expression_parser.ggs', line 1086
-184, // index 44 : <select_template_5F_parser_0>, in file 'template_parser.ggs', line 187
-186, // index 45 : <select_template_5F_parser_0>, in file 'template_parser.ggs', line 187
-189, // index 46 : <select_template_5F_parser_1>, in file 'template_parser.ggs', line 213
-195, // index 47 : <select_template_5F_parser_1>, in file 'template_parser.ggs', line 213
-198, // index 48 : <select_template_5F_parser_2>, in file 'template_parser.ggs', line 218
-201, // index 49 : <select_template_5F_parser_2>, in file 'template_parser.ggs', line 218
-202, // index 50 : <select_template_5F_parser_3>, in file 'template_parser.ggs', line 233
-207, // index 51 : <select_template_5F_parser_3>, in file 'template_parser.ggs', line 233
-208, // index 52 : <select_template_5F_parser_4>, in file 'template_parser.ggs', line 256
-211, // index 53 : <select_template_5F_parser_4>, in file 'template_parser.ggs', line 256
-212, // index 54 : <select_template_5F_parser_5>, in file 'template_parser.ggs', line 323
-215, // index 55 : <select_template_5F_parser_5>, in file 'template_parser.ggs', line 323
-216, // index 56 : <select_template_5F_parser_6>, in file 'template_parser.ggs', line 327
-217, // index 57 : <select_template_5F_parser_6>, in file 'template_parser.ggs', line 327
-221, // index 58 : <select_template_5F_parser_7>, in file 'template_parser.ggs', line 356
-224, // index 59 : <select_template_5F_parser_7>, in file 'template_parser.ggs', line 356
-225, // index 60 : <select_template_5F_parser_8>, in file 'template_parser.ggs', line 367
-226, // index 61 : <select_template_5F_parser_8>, in file 'template_parser.ggs', line 367
-230, // index 62 : <select_template_5F_parser_9>, in file 'template_parser.ggs', line 486
-231, // index 63 : <select_template_5F_parser_9>, in file 'template_parser.ggs', line 486
-237, // index 64 : <select_template_5F_parser_10>, in file 'template_parser.ggs', line 527
-238, // index 65 : <select_template_5F_parser_10>, in file 'template_parser.ggs', line 527
-241, // index 66 : <select_template_5F_parser_11>, in file 'template_parser.ggs', line 566
-242, // index 67 : <select_template_5F_parser_11>, in file 'template_parser.ggs', line 566
-245, // index 68 : <select_template_5F_parser_12>, in file 'template_parser.ggs', line 637
-246, // index 69 : <select_template_5F_parser_12>, in file 'template_parser.ggs', line 637
-249, // index 70 : <select_template_5F_parser_13>, in file 'template_parser.ggs', line 646
-250, // index 71 : <select_template_5F_parser_13>, in file 'template_parser.ggs', line 646
-253, // index 72 : <select_template_5F_parser_14>, in file 'template_parser.ggs', line 694
-254, // index 73 : <select_template_5F_parser_14>, in file 'template_parser.ggs', line 694
-257, // index 74 : <select_template_5F_parser_15>, in file 'template_parser.ggs', line 715
-258, // index 75 : <select_template_5F_parser_15>, in file 'template_parser.ggs', line 715
-261, // index 76 : <select_template_5F_parser_16>, in file 'template_parser.ggs', line 755
-262, // index 77 : <select_template_5F_parser_16>, in file 'template_parser.ggs', line 755
-266, // index 78 : <select_template_5F_parser_17>, in file 'template_parser.ggs', line 802
-267, // index 79 : <select_template_5F_parser_17>, in file 'template_parser.ggs', line 802
-270, // index 80 : <select_template_5F_parser_18>, in file 'template_parser.ggs', line 867
-271, // index 81 : <select_template_5F_parser_18>, in file 'template_parser.ggs', line 867
-274, // index 82 : <select_template_5F_parser_19>, in file 'template_parser.ggs', line 915
-275, // index 83 : <select_template_5F_parser_19>, in file 'template_parser.ggs', line 915
-278, // index 84 : <select_template_5F_parser_20>, in file 'template_parser.ggs', line 936
-279, // index 85 : <select_template_5F_parser_20>, in file 'template_parser.ggs', line 936
-282, // index 86 : <select_template_5F_parser_21>, in file 'template_parser.ggs', line 983
-285, // index 87 : <select_template_5F_parser_21>, in file 'template_parser.ggs', line 983
+146, // index 31 : <factor>, in file 'template_expression_parser.ggs', line 680
+149, // index 32 : <factor>, in file 'template_expression_parser.ggs', line 707
+151, // index 33 : <factor>, in file 'template_expression_parser.ggs', line 725
+153, // index 34 : <factor>, in file 'template_expression_parser.ggs', line 743
+155, // index 35 : <factor>, in file 'template_expression_parser.ggs', line 762
+157, // index 36 : <factor>, in file 'template_expression_parser.ggs', line 781
+163, // index 37 : <factor>, in file 'template_expression_parser.ggs', line 836
+166, // index 38 : <factor>, in file 'template_expression_parser.ggs', line 969
+170, // index 39 : <factor>, in file 'template_expression_parser.ggs', line 1017
+173, // index 40 : <factor>, in file 'template_expression_parser.ggs', line 1035
+175, // index 41 : <factor>, in file 'template_expression_parser.ggs', line 1054
+178, // index 42 : <factor>, in file 'template_expression_parser.ggs', line 1068
+180, // index 43 : <factor>, in file 'template_expression_parser.ggs', line 1082
+182, // index 44 : <factor>, in file 'template_expression_parser.ggs', line 1096
+187, // index 45 : <factor>, in file 'template_expression_parser.ggs', line 1140
+190, // index 46 : <select_template_5F_parser_0>, in file 'template_parser.ggs', line 187
+192, // index 47 : <select_template_5F_parser_0>, in file 'template_parser.ggs', line 187
+195, // index 48 : <select_template_5F_parser_1>, in file 'template_parser.ggs', line 213
+201, // index 49 : <select_template_5F_parser_1>, in file 'template_parser.ggs', line 213
+204, // index 50 : <select_template_5F_parser_2>, in file 'template_parser.ggs', line 218
+207, // index 51 : <select_template_5F_parser_2>, in file 'template_parser.ggs', line 218
+208, // index 52 : <select_template_5F_parser_3>, in file 'template_parser.ggs', line 233
+213, // index 53 : <select_template_5F_parser_3>, in file 'template_parser.ggs', line 233
+214, // index 54 : <select_template_5F_parser_4>, in file 'template_parser.ggs', line 256
+217, // index 55 : <select_template_5F_parser_4>, in file 'template_parser.ggs', line 256
+218, // index 56 : <select_template_5F_parser_5>, in file 'template_parser.ggs', line 323
+221, // index 57 : <select_template_5F_parser_5>, in file 'template_parser.ggs', line 323
+222, // index 58 : <select_template_5F_parser_6>, in file 'template_parser.ggs', line 327
+223, // index 59 : <select_template_5F_parser_6>, in file 'template_parser.ggs', line 327
+227, // index 60 : <select_template_5F_parser_7>, in file 'template_parser.ggs', line 356
+230, // index 61 : <select_template_5F_parser_7>, in file 'template_parser.ggs', line 356
+231, // index 62 : <select_template_5F_parser_8>, in file 'template_parser.ggs', line 367
+232, // index 63 : <select_template_5F_parser_8>, in file 'template_parser.ggs', line 367
+236, // index 64 : <select_template_5F_parser_9>, in file 'template_parser.ggs', line 486
+237, // index 65 : <select_template_5F_parser_9>, in file 'template_parser.ggs', line 486
+243, // index 66 : <select_template_5F_parser_10>, in file 'template_parser.ggs', line 527
+244, // index 67 : <select_template_5F_parser_10>, in file 'template_parser.ggs', line 527
+247, // index 68 : <select_template_5F_parser_11>, in file 'template_parser.ggs', line 566
+248, // index 69 : <select_template_5F_parser_11>, in file 'template_parser.ggs', line 566
+251, // index 70 : <select_template_5F_parser_12>, in file 'template_parser.ggs', line 637
+252, // index 71 : <select_template_5F_parser_12>, in file 'template_parser.ggs', line 637
+255, // index 72 : <select_template_5F_parser_13>, in file 'template_parser.ggs', line 646
+256, // index 73 : <select_template_5F_parser_13>, in file 'template_parser.ggs', line 646
+259, // index 74 : <select_template_5F_parser_14>, in file 'template_parser.ggs', line 694
+260, // index 75 : <select_template_5F_parser_14>, in file 'template_parser.ggs', line 694
+263, // index 76 : <select_template_5F_parser_15>, in file 'template_parser.ggs', line 715
+264, // index 77 : <select_template_5F_parser_15>, in file 'template_parser.ggs', line 715
+267, // index 78 : <select_template_5F_parser_16>, in file 'template_parser.ggs', line 755
+268, // index 79 : <select_template_5F_parser_16>, in file 'template_parser.ggs', line 755
+272, // index 80 : <select_template_5F_parser_17>, in file 'template_parser.ggs', line 802
+273, // index 81 : <select_template_5F_parser_17>, in file 'template_parser.ggs', line 802
+276, // index 82 : <select_template_5F_parser_18>, in file 'template_parser.ggs', line 867
+277, // index 83 : <select_template_5F_parser_18>, in file 'template_parser.ggs', line 867
+280, // index 84 : <select_template_5F_parser_19>, in file 'template_parser.ggs', line 915
+281, // index 85 : <select_template_5F_parser_19>, in file 'template_parser.ggs', line 915
+284, // index 86 : <select_template_5F_parser_20>, in file 'template_parser.ggs', line 936
+285, // index 87 : <select_template_5F_parser_20>, in file 'template_parser.ggs', line 936
 288, // index 88 : <select_template_5F_parser_21>, in file 'template_parser.ggs', line 983
-289, // index 89 : <select_template_5F_parser_22>, in file 'template_parser.ggs', line 1054
-291, // index 90 : <select_template_5F_parser_22>, in file 'template_parser.ggs', line 1054
-293, // index 91 : <select_template_5F_parser_23>, in file 'template_parser.ggs', line 1153
-295, // index 92 : <select_template_5F_parser_23>, in file 'template_parser.ggs', line 1153
-297, // index 93 : <select_template_5F_parser_24>, in file 'template_parser.ggs', line 1179
-298, // index 94 : <select_template_5F_parser_24>, in file 'template_parser.ggs', line 1179
-303, // index 95 : <select_template_5F_parser_25>, in file 'template_parser.ggs', line 1214
-307, // index 96 : <select_template_5F_parser_25>, in file 'template_parser.ggs', line 1214
-308, // index 97 : <select_template_5F_parser_26>, in file 'template_parser.ggs', line 1230
-309, // index 98 : <select_template_5F_parser_26>, in file 'template_parser.ggs', line 1230
-314, // index 99 : <select_template_5F_parser_27>, in file 'template_parser.ggs', line 1235
-318, // index 100 : <select_template_5F_parser_27>, in file 'template_parser.ggs', line 1235
-319, // index 101 : <select_template_5F_expression_5F_parser_0>, in file 'template_expression_parser.ggs', line 103
-320, // index 102 : <select_template_5F_expression_5F_parser_0>, in file 'template_expression_parser.ggs', line 103
-324, // index 103 : <select_template_5F_expression_5F_parser_0>, in file 'template_expression_parser.ggs', line 103
-328, // index 104 : <select_template_5F_expression_5F_parser_1>, in file 'template_expression_parser.ggs', line 165
-329, // index 105 : <select_template_5F_expression_5F_parser_1>, in file 'template_expression_parser.ggs', line 165
-333, // index 106 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 208
-334, // index 107 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 208
-337, // index 108 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 208
+291, // index 89 : <select_template_5F_parser_21>, in file 'template_parser.ggs', line 983
+294, // index 90 : <select_template_5F_parser_21>, in file 'template_parser.ggs', line 983
+295, // index 91 : <select_template_5F_parser_22>, in file 'template_parser.ggs', line 1054
+297, // index 92 : <select_template_5F_parser_22>, in file 'template_parser.ggs', line 1054
+299, // index 93 : <select_template_5F_parser_23>, in file 'template_parser.ggs', line 1153
+301, // index 94 : <select_template_5F_parser_23>, in file 'template_parser.ggs', line 1153
+303, // index 95 : <select_template_5F_parser_24>, in file 'template_parser.ggs', line 1179
+304, // index 96 : <select_template_5F_parser_24>, in file 'template_parser.ggs', line 1179
+309, // index 97 : <select_template_5F_parser_25>, in file 'template_parser.ggs', line 1214
+313, // index 98 : <select_template_5F_parser_25>, in file 'template_parser.ggs', line 1214
+314, // index 99 : <select_template_5F_parser_26>, in file 'template_parser.ggs', line 1230
+315, // index 100 : <select_template_5F_parser_26>, in file 'template_parser.ggs', line 1230
+320, // index 101 : <select_template_5F_parser_27>, in file 'template_parser.ggs', line 1235
+324, // index 102 : <select_template_5F_parser_27>, in file 'template_parser.ggs', line 1235
+325, // index 103 : <select_template_5F_expression_5F_parser_0>, in file 'template_expression_parser.ggs', line 103
+326, // index 104 : <select_template_5F_expression_5F_parser_0>, in file 'template_expression_parser.ggs', line 103
+330, // index 105 : <select_template_5F_expression_5F_parser_0>, in file 'template_expression_parser.ggs', line 103
+334, // index 106 : <select_template_5F_expression_5F_parser_1>, in file 'template_expression_parser.ggs', line 165
+335, // index 107 : <select_template_5F_expression_5F_parser_1>, in file 'template_expression_parser.ggs', line 165
+339, // index 108 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 208
 340, // index 109 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 208
 343, // index 110 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 208
 346, // index 111 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 208
 349, // index 112 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 208
-352, // index 113 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 414
-353, // index 114 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 414
-357, // index 115 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 414
-361, // index 116 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 414
-365, // index 117 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 414
-369, // index 118 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 414
-373, // index 119 : <select_template_5F_expression_5F_parser_4>, in file 'template_expression_parser.ggs', line 517
-374, // index 120 : <select_template_5F_expression_5F_parser_4>, in file 'template_expression_parser.ggs', line 517
-378, // index 121 : <select_template_5F_expression_5F_parser_4>, in file 'template_expression_parser.ggs', line 517
-382, // index 122 : <select_template_5F_expression_5F_parser_4>, in file 'template_expression_parser.ggs', line 517
-386, // index 123 : <select_template_5F_expression_5F_parser_5>, in file 'template_expression_parser.ggs', line 749
-387, // index 124 : <select_template_5F_expression_5F_parser_5>, in file 'template_expression_parser.ggs', line 749
-391, // index 125 : <select_template_5F_expression_5F_parser_6>, in file 'template_expression_parser.ggs', line 752
-392, // index 126 : <select_template_5F_expression_5F_parser_6>, in file 'template_expression_parser.ggs', line 752
-396, // index 127 : <select_template_5F_expression_5F_parser_7>, in file 'template_expression_parser.ggs', line 791
-397, // index 128 : <select_template_5F_expression_5F_parser_7>, in file 'template_expression_parser.ggs', line 791
-402, // index 129 : <select_template_5F_expression_5F_parser_8>, in file 'template_expression_parser.ggs', line 800
-403, // index 130 : <select_template_5F_expression_5F_parser_8>, in file 'template_expression_parser.ggs', line 800
-407, // index 131 : <select_template_5F_expression_5F_parser_9>, in file 'template_expression_parser.ggs', line 931
-412, // index 132 : <select_template_5F_expression_5F_parser_9>, in file 'template_expression_parser.ggs', line 931
-413, // index 133 : <select_template_5F_expression_5F_parser_10>, in file 'template_expression_parser.ggs', line 988
-415, // index 134 : <select_template_5F_expression_5F_parser_10>, in file 'template_expression_parser.ggs', line 988
-417 // index 135 : <>, in file '.ggs', line 0
+352, // index 113 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 208
+355, // index 114 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 208
+358, // index 115 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 414
+359, // index 116 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 414
+363, // index 117 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 414
+367, // index 118 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 414
+371, // index 119 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 414
+375, // index 120 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 414
+379, // index 121 : <select_template_5F_expression_5F_parser_4>, in file 'template_expression_parser.ggs', line 517
+380, // index 122 : <select_template_5F_expression_5F_parser_4>, in file 'template_expression_parser.ggs', line 517
+384, // index 123 : <select_template_5F_expression_5F_parser_4>, in file 'template_expression_parser.ggs', line 517
+388, // index 124 : <select_template_5F_expression_5F_parser_4>, in file 'template_expression_parser.ggs', line 517
+392, // index 125 : <select_template_5F_expression_5F_parser_5>, in file 'template_expression_parser.ggs', line 803
+393, // index 126 : <select_template_5F_expression_5F_parser_5>, in file 'template_expression_parser.ggs', line 803
+397, // index 127 : <select_template_5F_expression_5F_parser_6>, in file 'template_expression_parser.ggs', line 806
+398, // index 128 : <select_template_5F_expression_5F_parser_6>, in file 'template_expression_parser.ggs', line 806
+402, // index 129 : <select_template_5F_expression_5F_parser_7>, in file 'template_expression_parser.ggs', line 845
+403, // index 130 : <select_template_5F_expression_5F_parser_7>, in file 'template_expression_parser.ggs', line 845
+408, // index 131 : <select_template_5F_expression_5F_parser_8>, in file 'template_expression_parser.ggs', line 854
+409, // index 132 : <select_template_5F_expression_5F_parser_8>, in file 'template_expression_parser.ggs', line 854
+413, // index 133 : <select_template_5F_expression_5F_parser_9>, in file 'template_expression_parser.ggs', line 985
+418, // index 134 : <select_template_5F_expression_5F_parser_9>, in file 'template_expression_parser.ggs', line 985
+419, // index 135 : <select_template_5F_expression_5F_parser_10>, in file 'template_expression_parser.ggs', line 1042
+421, // index 136 : <select_template_5F_expression_5F_parser_10>, in file 'template_expression_parser.ggs', line 1042
+423 // index 137 : <>, in file '.ggs', line 0
 } ;
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -897,46 +909,46 @@ static const int16_t gFirstProductionIndexes_template_grammar [54] = {
 25, // at 10 : <simple_expression>
 26, // at 11 : <term>
 27, // at 12 : <factor>
-44, // at 13 : <select_template_5F_parser_0>
-46, // at 14 : <select_template_5F_parser_1>
-48, // at 15 : <select_template_5F_parser_2>
-50, // at 16 : <select_template_5F_parser_3>
-52, // at 17 : <select_template_5F_parser_4>
-54, // at 18 : <select_template_5F_parser_5>
-56, // at 19 : <select_template_5F_parser_6>
-58, // at 20 : <select_template_5F_parser_7>
-60, // at 21 : <select_template_5F_parser_8>
-62, // at 22 : <select_template_5F_parser_9>
-64, // at 23 : <select_template_5F_parser_10>
-66, // at 24 : <select_template_5F_parser_11>
-68, // at 25 : <select_template_5F_parser_12>
-70, // at 26 : <select_template_5F_parser_13>
-72, // at 27 : <select_template_5F_parser_14>
-74, // at 28 : <select_template_5F_parser_15>
-76, // at 29 : <select_template_5F_parser_16>
-78, // at 30 : <select_template_5F_parser_17>
-80, // at 31 : <select_template_5F_parser_18>
-82, // at 32 : <select_template_5F_parser_19>
-84, // at 33 : <select_template_5F_parser_20>
-86, // at 34 : <select_template_5F_parser_21>
-89, // at 35 : <select_template_5F_parser_22>
-91, // at 36 : <select_template_5F_parser_23>
-93, // at 37 : <select_template_5F_parser_24>
-95, // at 38 : <select_template_5F_parser_25>
-97, // at 39 : <select_template_5F_parser_26>
-99, // at 40 : <select_template_5F_parser_27>
-101, // at 41 : <select_template_5F_expression_5F_parser_0>
-104, // at 42 : <select_template_5F_expression_5F_parser_1>
-106, // at 43 : <select_template_5F_expression_5F_parser_2>
-113, // at 44 : <select_template_5F_expression_5F_parser_3>
-119, // at 45 : <select_template_5F_expression_5F_parser_4>
-123, // at 46 : <select_template_5F_expression_5F_parser_5>
-125, // at 47 : <select_template_5F_expression_5F_parser_6>
-127, // at 48 : <select_template_5F_expression_5F_parser_7>
-129, // at 49 : <select_template_5F_expression_5F_parser_8>
-131, // at 50 : <select_template_5F_expression_5F_parser_9>
-133, // at 51 : <select_template_5F_expression_5F_parser_10>
-135, // at 52 : <>
+46, // at 13 : <select_template_5F_parser_0>
+48, // at 14 : <select_template_5F_parser_1>
+50, // at 15 : <select_template_5F_parser_2>
+52, // at 16 : <select_template_5F_parser_3>
+54, // at 17 : <select_template_5F_parser_4>
+56, // at 18 : <select_template_5F_parser_5>
+58, // at 19 : <select_template_5F_parser_6>
+60, // at 20 : <select_template_5F_parser_7>
+62, // at 21 : <select_template_5F_parser_8>
+64, // at 22 : <select_template_5F_parser_9>
+66, // at 23 : <select_template_5F_parser_10>
+68, // at 24 : <select_template_5F_parser_11>
+70, // at 25 : <select_template_5F_parser_12>
+72, // at 26 : <select_template_5F_parser_13>
+74, // at 27 : <select_template_5F_parser_14>
+76, // at 28 : <select_template_5F_parser_15>
+78, // at 29 : <select_template_5F_parser_16>
+80, // at 30 : <select_template_5F_parser_17>
+82, // at 31 : <select_template_5F_parser_18>
+84, // at 32 : <select_template_5F_parser_19>
+86, // at 33 : <select_template_5F_parser_20>
+88, // at 34 : <select_template_5F_parser_21>
+91, // at 35 : <select_template_5F_parser_22>
+93, // at 36 : <select_template_5F_parser_23>
+95, // at 37 : <select_template_5F_parser_24>
+97, // at 38 : <select_template_5F_parser_25>
+99, // at 39 : <select_template_5F_parser_26>
+101, // at 40 : <select_template_5F_parser_27>
+103, // at 41 : <select_template_5F_expression_5F_parser_0>
+106, // at 42 : <select_template_5F_expression_5F_parser_1>
+108, // at 43 : <select_template_5F_expression_5F_parser_2>
+115, // at 44 : <select_template_5F_expression_5F_parser_3>
+121, // at 45 : <select_template_5F_expression_5F_parser_4>
+125, // at 46 : <select_template_5F_expression_5F_parser_5>
+127, // at 47 : <select_template_5F_expression_5F_parser_6>
+129, // at 48 : <select_template_5F_expression_5F_parser_7>
+131, // at 49 : <select_template_5F_expression_5F_parser_8>
+133, // at 50 : <select_template_5F_expression_5F_parser_9>
+135, // at 51 : <select_template_5F_expression_5F_parser_10>
+137, // at 52 : <>
 0} ;
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -990,145 +1002,147 @@ C_Lexique_template_5F_scanner::kToken_sort, -1, // Choice 16
 C_Lexique_template_5F_scanner::kToken__28_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken_not, -1, // Choice 2
 C_Lexique_template_5F_scanner::kToken__7E_, -1, // Choice 3
-C_Lexique_template_5F_scanner::kToken_yes, -1, // Choice 4
-C_Lexique_template_5F_scanner::kToken_no, -1, // Choice 5
-C_Lexique_template_5F_scanner::kToken_signed_5F_literal_5F_integer_36__34_, -1, // Choice 6
-C_Lexique_template_5F_scanner::kToken_string, -1, // Choice 7
-C_Lexique_template_5F_scanner::kToken__5B_, -1, // Choice 8
-C_Lexique_template_5F_scanner::kToken_identifier, -1, // Choice 9
-C_Lexique_template_5F_scanner::kToken_exists, -1, // Choice 10
-C_Lexique_template_5F_scanner::kToken_typeof, -1, // Choice 11
-C_Lexique_template_5F_scanner::kToken_true, C_Lexique_template_5F_scanner::kToken_false, -1, // Choice 12
-C_Lexique_template_5F_scanner::kToken__40_, -1, // Choice 13
-C_Lexique_template_5F_scanner::kToken_emptylist, -1, // Choice 14
-C_Lexique_template_5F_scanner::kToken_emptymap, -1, // Choice 15
-C_Lexique_template_5F_scanner::kToken_mapof, -1, // Choice 16
-C_Lexique_template_5F_scanner::kToken_listof, -1, // Choice 17
+C_Lexique_template_5F_scanner::kToken__2D_, -1, // Choice 4
+C_Lexique_template_5F_scanner::kToken__2B_, -1, // Choice 5
+C_Lexique_template_5F_scanner::kToken_yes, -1, // Choice 6
+C_Lexique_template_5F_scanner::kToken_no, -1, // Choice 7
+C_Lexique_template_5F_scanner::kToken_signed_5F_literal_5F_integer_36__34_, -1, // Choice 8
+C_Lexique_template_5F_scanner::kToken_string, -1, // Choice 9
+C_Lexique_template_5F_scanner::kToken__5B_, -1, // Choice 10
+C_Lexique_template_5F_scanner::kToken_identifier, -1, // Choice 11
+C_Lexique_template_5F_scanner::kToken_exists, -1, // Choice 12
+C_Lexique_template_5F_scanner::kToken_typeof, -1, // Choice 13
+C_Lexique_template_5F_scanner::kToken_true, C_Lexique_template_5F_scanner::kToken_false, -1, // Choice 14
+C_Lexique_template_5F_scanner::kToken__40_, -1, // Choice 15
+C_Lexique_template_5F_scanner::kToken_emptylist, -1, // Choice 16
+C_Lexique_template_5F_scanner::kToken_emptymap, -1, // Choice 17
+C_Lexique_template_5F_scanner::kToken_mapof, -1, // Choice 18
+C_Lexique_template_5F_scanner::kToken_listof, -1, // Choice 19
   -1,
 //---- Added non terminal symbols from 'select' and 'repeat' instructions
-// At index 80 : <select_template_5F_parser_0>
+// At index 84 : <select_template_5F_parser_0>
 C_Lexique_template_5F_scanner::kToken_identifier, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken_from, -1, // Choice 2
   -1,
-// At index 85 : <select_template_5F_parser_1>
+// At index 89 : <select_template_5F_parser_1>
 C_Lexique_template_5F_scanner::kToken_if, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken_identifier, C_Lexique_template_5F_scanner::kToken_from, -1, // Choice 2
   -1,
-// At index 91 : <select_template_5F_parser_2>
+// At index 95 : <select_template_5F_parser_2>
 C_Lexique_template_5F_scanner::kToken_in, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken_or, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken_sort, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 2
   -1,
-// At index 119 : <select_template_5F_parser_3>
+// At index 123 : <select_template_5F_parser_3>
 C_Lexique_template_5F_scanner::kToken_or, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken_sort, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 2
   -1,
-// At index 146 : <select_template_5F_parser_4>
+// At index 150 : <select_template_5F_parser_4>
 C_Lexique_template_5F_scanner::kToken_in, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken_sort, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 2
   -1,
-// At index 173 : <select_template_5F_parser_5>
+// At index 177 : <select_template_5F_parser_5>
 C_Lexique_template_5F_scanner::kToken_identifier, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__29_, -1, // Choice 2
   -1,
-// At index 178 : <select_template_5F_parser_6>
+// At index 182 : <select_template_5F_parser_6>
 C_Lexique_template_5F_scanner::kToken__29_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__2C_, -1, // Choice 2
   -1,
-// At index 183 : <select_template_5F_parser_7>
-C_Lexique_template_5F_scanner::kToken_identifier, C_Lexique_template_5F_scanner::kToken_exists, C_Lexique_template_5F_scanner::kToken__28_, C_Lexique_template_5F_scanner::kToken__5B_, C_Lexique_template_5F_scanner::kToken_not, C_Lexique_template_5F_scanner::kToken__7E_, C_Lexique_template_5F_scanner::kToken_yes, C_Lexique_template_5F_scanner::kToken_no, C_Lexique_template_5F_scanner::kToken_signed_5F_literal_5F_integer_36__34_, C_Lexique_template_5F_scanner::kToken_string, C_Lexique_template_5F_scanner::kToken_typeof, C_Lexique_template_5F_scanner::kToken_true, C_Lexique_template_5F_scanner::kToken_false, C_Lexique_template_5F_scanner::kToken__40_, C_Lexique_template_5F_scanner::kToken_emptylist, C_Lexique_template_5F_scanner::kToken_emptymap, C_Lexique_template_5F_scanner::kToken_mapof, C_Lexique_template_5F_scanner::kToken_listof, -1, // Choice 1
+// At index 187 : <select_template_5F_parser_7>
+C_Lexique_template_5F_scanner::kToken_identifier, C_Lexique_template_5F_scanner::kToken_exists, C_Lexique_template_5F_scanner::kToken__28_, C_Lexique_template_5F_scanner::kToken__5B_, C_Lexique_template_5F_scanner::kToken__2B_, C_Lexique_template_5F_scanner::kToken__2D_, C_Lexique_template_5F_scanner::kToken_not, C_Lexique_template_5F_scanner::kToken__7E_, C_Lexique_template_5F_scanner::kToken_yes, C_Lexique_template_5F_scanner::kToken_no, C_Lexique_template_5F_scanner::kToken_signed_5F_literal_5F_integer_36__34_, C_Lexique_template_5F_scanner::kToken_string, C_Lexique_template_5F_scanner::kToken_typeof, C_Lexique_template_5F_scanner::kToken_true, C_Lexique_template_5F_scanner::kToken_false, C_Lexique_template_5F_scanner::kToken__40_, C_Lexique_template_5F_scanner::kToken_emptylist, C_Lexique_template_5F_scanner::kToken_emptymap, C_Lexique_template_5F_scanner::kToken_mapof, C_Lexique_template_5F_scanner::kToken_listof, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__29_, -1, // Choice 2
   -1,
-// At index 205 : <select_template_5F_parser_8>
+// At index 211 : <select_template_5F_parser_8>
 C_Lexique_template_5F_scanner::kToken__29_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__2C_, -1, // Choice 2
   -1,
-// At index 210 : <select_template_5F_parser_9>
+// At index 216 : <select_template_5F_parser_9>
 C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_else, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken_elsif, -1, // Choice 2
   -1,
-// At index 216 : <select_template_5F_parser_10>
+// At index 222 : <select_template_5F_parser_10>
 C_Lexique_template_5F_scanner::kToken_end, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken_else, -1, // Choice 2
   -1,
-// At index 221 : <select_template_5F_parser_11>
+// At index 227 : <select_template_5F_parser_11>
 C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken_sort, -1, // Choice 2
   -1,
-// At index 247 : <select_template_5F_parser_12>
+// At index 253 : <select_template_5F_parser_12>
 C_Lexique_template_5F_scanner::kToken_before, C_Lexique_template_5F_scanner::kToken_do, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken_prefixedby, -1, // Choice 2
   -1,
-// At index 253 : <select_template_5F_parser_13>
+// At index 259 : <select_template_5F_parser_13>
 C_Lexique_template_5F_scanner::kToken_do, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken_before, -1, // Choice 2
   -1,
-// At index 258 : <select_template_5F_parser_14>
+// At index 264 : <select_template_5F_parser_14>
 C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_after, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken_between, -1, // Choice 2
   -1,
-// At index 264 : <select_template_5F_parser_15>
+// At index 270 : <select_template_5F_parser_15>
 C_Lexique_template_5F_scanner::kToken_end, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken_after, -1, // Choice 2
   -1,
-// At index 269 : <select_template_5F_parser_16>
+// At index 275 : <select_template_5F_parser_16>
 C_Lexique_template_5F_scanner::kToken_do, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__2C_, -1, // Choice 2
   -1,
-// At index 274 : <select_template_5F_parser_17>
+// At index 280 : <select_template_5F_parser_17>
 C_Lexique_template_5F_scanner::kToken_end, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken_between, -1, // Choice 2
   -1,
-// At index 279 : <select_template_5F_parser_18>
+// At index 285 : <select_template_5F_parser_18>
 C_Lexique_template_5F_scanner::kToken_do, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken_before, -1, // Choice 2
   -1,
-// At index 284 : <select_template_5F_parser_19>
+// At index 290 : <select_template_5F_parser_19>
 C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_after, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken_between, -1, // Choice 2
   -1,
-// At index 290 : <select_template_5F_parser_20>
+// At index 296 : <select_template_5F_parser_20>
 C_Lexique_template_5F_scanner::kToken_end, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken_after, -1, // Choice 2
   -1,
-// At index 295 : <select_template_5F_parser_21>
+// At index 301 : <select_template_5F_parser_21>
 C_Lexique_template_5F_scanner::kToken__3A__3D_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__2B__3D_, -1, // Choice 2
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken_sort, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 3
   -1,
-// At index 324 : <select_template_5F_parser_22>
+// At index 330 : <select_template_5F_parser_22>
 C_Lexique_template_5F_scanner::kToken_here, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken_identifier, -1, // Choice 2
   -1,
-// At index 329 : <select_template_5F_parser_23>
+// At index 335 : <select_template_5F_parser_23>
 C_Lexique_template_5F_scanner::kToken__3E_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__3C_, -1, // Choice 2
   -1,
-// At index 334 : <select_template_5F_parser_24>
+// At index 340 : <select_template_5F_parser_24>
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken_sort, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__2C_, -1, // Choice 2
   -1,
-// At index 361 : <select_template_5F_parser_25>
+// At index 367 : <select_template_5F_parser_25>
 C_Lexique_template_5F_scanner::kToken__5B_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_to, C_Lexique_template_5F_scanner::kToken__3A_, C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_identifier, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken_in, C_Lexique_template_5F_scanner::kToken_or, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken__28_, C_Lexique_template_5F_scanner::kToken__2C_, C_Lexique_template_5F_scanner::kToken__29_, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_then, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_prefixedby, C_Lexique_template_5F_scanner::kToken_before, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken__3A__3D_, C_Lexique_template_5F_scanner::kToken__2B__3D_, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken__3E_, C_Lexique_template_5F_scanner::kToken__3C_, C_Lexique_template_5F_scanner::kToken_sort, C_Lexique_template_5F_scanner::kToken_by, C_Lexique_template_5F_scanner::kToken__5D_, C_Lexique_template_5F_scanner::kToken__3A__3A_, C_Lexique_template_5F_scanner::kToken__7C_, C_Lexique_template_5F_scanner::kToken__5E_, C_Lexique_template_5F_scanner::kToken__26_, C_Lexique_template_5F_scanner::kToken__3D__3D_, C_Lexique_template_5F_scanner::kToken__21__3D_, C_Lexique_template_5F_scanner::kToken__3C__3D_, C_Lexique_template_5F_scanner::kToken__3E__3D_, C_Lexique_template_5F_scanner::kToken__3C__3C_, C_Lexique_template_5F_scanner::kToken__3E__3E_, C_Lexique_template_5F_scanner::kToken__2B_, C_Lexique_template_5F_scanner::kToken__2E_, C_Lexique_template_5F_scanner::kToken__2D_, C_Lexique_template_5F_scanner::kToken__2A_, C_Lexique_template_5F_scanner::kToken__2F_, C_Lexique_template_5F_scanner::kToken_mod, C_Lexique_template_5F_scanner::kToken_default, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 2
   -1,
-// At index 422 : <select_template_5F_parser_26>
+// At index 428 : <select_template_5F_parser_26>
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_to, C_Lexique_template_5F_scanner::kToken__3A_, C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_identifier, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken_in, C_Lexique_template_5F_scanner::kToken_or, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken__28_, C_Lexique_template_5F_scanner::kToken__2C_, C_Lexique_template_5F_scanner::kToken__29_, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_then, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_prefixedby, C_Lexique_template_5F_scanner::kToken_before, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken__3A__3D_, C_Lexique_template_5F_scanner::kToken__2B__3D_, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken__3E_, C_Lexique_template_5F_scanner::kToken__3C_, C_Lexique_template_5F_scanner::kToken_sort, C_Lexique_template_5F_scanner::kToken_by, C_Lexique_template_5F_scanner::kToken__5D_, C_Lexique_template_5F_scanner::kToken__7C_, C_Lexique_template_5F_scanner::kToken__5E_, C_Lexique_template_5F_scanner::kToken__26_, C_Lexique_template_5F_scanner::kToken__3D__3D_, C_Lexique_template_5F_scanner::kToken__21__3D_, C_Lexique_template_5F_scanner::kToken__3C__3D_, C_Lexique_template_5F_scanner::kToken__3E__3D_, C_Lexique_template_5F_scanner::kToken__3C__3C_, C_Lexique_template_5F_scanner::kToken__3E__3E_, C_Lexique_template_5F_scanner::kToken__2B_, C_Lexique_template_5F_scanner::kToken__2E_, C_Lexique_template_5F_scanner::kToken__2D_, C_Lexique_template_5F_scanner::kToken__2A_, C_Lexique_template_5F_scanner::kToken__2F_, C_Lexique_template_5F_scanner::kToken_mod, C_Lexique_template_5F_scanner::kToken_default, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__3A__3A_, -1, // Choice 2
   -1,
-// At index 482 : <select_template_5F_parser_27>
+// At index 488 : <select_template_5F_parser_27>
 C_Lexique_template_5F_scanner::kToken__5B_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_to, C_Lexique_template_5F_scanner::kToken__3A_, C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_identifier, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken_in, C_Lexique_template_5F_scanner::kToken_or, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken__28_, C_Lexique_template_5F_scanner::kToken__2C_, C_Lexique_template_5F_scanner::kToken__29_, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_then, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_prefixedby, C_Lexique_template_5F_scanner::kToken_before, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken__3A__3D_, C_Lexique_template_5F_scanner::kToken__2B__3D_, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken__3E_, C_Lexique_template_5F_scanner::kToken__3C_, C_Lexique_template_5F_scanner::kToken_sort, C_Lexique_template_5F_scanner::kToken_by, C_Lexique_template_5F_scanner::kToken__5D_, C_Lexique_template_5F_scanner::kToken__3A__3A_, C_Lexique_template_5F_scanner::kToken__7C_, C_Lexique_template_5F_scanner::kToken__5E_, C_Lexique_template_5F_scanner::kToken__26_, C_Lexique_template_5F_scanner::kToken__3D__3D_, C_Lexique_template_5F_scanner::kToken__21__3D_, C_Lexique_template_5F_scanner::kToken__3C__3D_, C_Lexique_template_5F_scanner::kToken__3E__3D_, C_Lexique_template_5F_scanner::kToken__3C__3C_, C_Lexique_template_5F_scanner::kToken__3E__3E_, C_Lexique_template_5F_scanner::kToken__2B_, C_Lexique_template_5F_scanner::kToken__2E_, C_Lexique_template_5F_scanner::kToken__2D_, C_Lexique_template_5F_scanner::kToken__2A_, C_Lexique_template_5F_scanner::kToken__2F_, C_Lexique_template_5F_scanner::kToken_mod, C_Lexique_template_5F_scanner::kToken_default, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 2
   -1,
-// At index 543 : <select_template_5F_expression_5F_parser_0>
+// At index 549 : <select_template_5F_expression_5F_parser_0>
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_to, C_Lexique_template_5F_scanner::kToken__3A_, C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_identifier, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken_in, C_Lexique_template_5F_scanner::kToken_or, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken__2C_, C_Lexique_template_5F_scanner::kToken__29_, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_then, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_prefixedby, C_Lexique_template_5F_scanner::kToken_before, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken_sort, C_Lexique_template_5F_scanner::kToken_by, C_Lexique_template_5F_scanner::kToken__5D_, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__7C_, -1, // Choice 2
 C_Lexique_template_5F_scanner::kToken__5E_, -1, // Choice 3
   -1,
-// At index 584 : <select_template_5F_expression_5F_parser_1>
+// At index 590 : <select_template_5F_expression_5F_parser_1>
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_to, C_Lexique_template_5F_scanner::kToken__3A_, C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_identifier, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken_in, C_Lexique_template_5F_scanner::kToken_or, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken__2C_, C_Lexique_template_5F_scanner::kToken__29_, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_then, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_prefixedby, C_Lexique_template_5F_scanner::kToken_before, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken_sort, C_Lexique_template_5F_scanner::kToken_by, C_Lexique_template_5F_scanner::kToken__5D_, C_Lexique_template_5F_scanner::kToken__7C_, C_Lexique_template_5F_scanner::kToken__5E_, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__26_, -1, // Choice 2
   -1,
-// At index 625 : <select_template_5F_expression_5F_parser_2>
+// At index 631 : <select_template_5F_expression_5F_parser_2>
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_to, C_Lexique_template_5F_scanner::kToken__3A_, C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_identifier, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken_in, C_Lexique_template_5F_scanner::kToken_or, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken__2C_, C_Lexique_template_5F_scanner::kToken__29_, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_then, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_prefixedby, C_Lexique_template_5F_scanner::kToken_before, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken_sort, C_Lexique_template_5F_scanner::kToken_by, C_Lexique_template_5F_scanner::kToken__5D_, C_Lexique_template_5F_scanner::kToken__7C_, C_Lexique_template_5F_scanner::kToken__5E_, C_Lexique_template_5F_scanner::kToken__26_, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__3D__3D_, -1, // Choice 2
 C_Lexique_template_5F_scanner::kToken__21__3D_, -1, // Choice 3
@@ -1137,7 +1151,7 @@ C_Lexique_template_5F_scanner::kToken__3E__3D_, -1, // Choice 5
 C_Lexique_template_5F_scanner::kToken__3E_, -1, // Choice 6
 C_Lexique_template_5F_scanner::kToken__3C_, -1, // Choice 7
   -1,
-// At index 677 : <select_template_5F_expression_5F_parser_3>
+// At index 683 : <select_template_5F_expression_5F_parser_3>
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_to, C_Lexique_template_5F_scanner::kToken__3A_, C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_identifier, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken_in, C_Lexique_template_5F_scanner::kToken_or, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken__2C_, C_Lexique_template_5F_scanner::kToken__29_, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_then, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_prefixedby, C_Lexique_template_5F_scanner::kToken_before, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken__3E_, C_Lexique_template_5F_scanner::kToken__3C_, C_Lexique_template_5F_scanner::kToken_sort, C_Lexique_template_5F_scanner::kToken_by, C_Lexique_template_5F_scanner::kToken__5D_, C_Lexique_template_5F_scanner::kToken__7C_, C_Lexique_template_5F_scanner::kToken__5E_, C_Lexique_template_5F_scanner::kToken__26_, C_Lexique_template_5F_scanner::kToken__3D__3D_, C_Lexique_template_5F_scanner::kToken__21__3D_, C_Lexique_template_5F_scanner::kToken__3C__3D_, C_Lexique_template_5F_scanner::kToken__3E__3D_, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__3C__3C_, -1, // Choice 2
 C_Lexique_template_5F_scanner::kToken__3E__3E_, -1, // Choice 3
@@ -1145,37 +1159,37 @@ C_Lexique_template_5F_scanner::kToken__2B_, -1, // Choice 4
 C_Lexique_template_5F_scanner::kToken__2E_, -1, // Choice 5
 C_Lexique_template_5F_scanner::kToken__2D_, -1, // Choice 6
   -1,
-// At index 733 : <select_template_5F_expression_5F_parser_4>
+// At index 739 : <select_template_5F_expression_5F_parser_4>
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_to, C_Lexique_template_5F_scanner::kToken__3A_, C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_identifier, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken_in, C_Lexique_template_5F_scanner::kToken_or, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken__2C_, C_Lexique_template_5F_scanner::kToken__29_, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_then, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_prefixedby, C_Lexique_template_5F_scanner::kToken_before, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken__3E_, C_Lexique_template_5F_scanner::kToken__3C_, C_Lexique_template_5F_scanner::kToken_sort, C_Lexique_template_5F_scanner::kToken_by, C_Lexique_template_5F_scanner::kToken__5D_, C_Lexique_template_5F_scanner::kToken__7C_, C_Lexique_template_5F_scanner::kToken__5E_, C_Lexique_template_5F_scanner::kToken__26_, C_Lexique_template_5F_scanner::kToken__3D__3D_, C_Lexique_template_5F_scanner::kToken__21__3D_, C_Lexique_template_5F_scanner::kToken__3C__3D_, C_Lexique_template_5F_scanner::kToken__3E__3D_, C_Lexique_template_5F_scanner::kToken__3C__3C_, C_Lexique_template_5F_scanner::kToken__3E__3E_, C_Lexique_template_5F_scanner::kToken__2B_, C_Lexique_template_5F_scanner::kToken__2E_, C_Lexique_template_5F_scanner::kToken__2D_, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__2A_, -1, // Choice 2
 C_Lexique_template_5F_scanner::kToken__2F_, -1, // Choice 3
 C_Lexique_template_5F_scanner::kToken_mod, -1, // Choice 4
   -1,
-// At index 790 : <select_template_5F_expression_5F_parser_5>
+// At index 796 : <select_template_5F_expression_5F_parser_5>
 C_Lexique_template_5F_scanner::kToken__5D_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__3A_, -1, // Choice 2
   -1,
-// At index 795 : <select_template_5F_expression_5F_parser_6>
+// At index 801 : <select_template_5F_expression_5F_parser_6>
 C_Lexique_template_5F_scanner::kToken__5D_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__2C_, -1, // Choice 2
   -1,
-// At index 800 : <select_template_5F_expression_5F_parser_7>
+// At index 806 : <select_template_5F_expression_5F_parser_7>
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_to, C_Lexique_template_5F_scanner::kToken__3A_, C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_identifier, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken_in, C_Lexique_template_5F_scanner::kToken_or, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken__2C_, C_Lexique_template_5F_scanner::kToken__29_, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_then, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_prefixedby, C_Lexique_template_5F_scanner::kToken_before, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken__3E_, C_Lexique_template_5F_scanner::kToken__3C_, C_Lexique_template_5F_scanner::kToken_sort, C_Lexique_template_5F_scanner::kToken_by, C_Lexique_template_5F_scanner::kToken__5D_, C_Lexique_template_5F_scanner::kToken__7C_, C_Lexique_template_5F_scanner::kToken__5E_, C_Lexique_template_5F_scanner::kToken__26_, C_Lexique_template_5F_scanner::kToken__3D__3D_, C_Lexique_template_5F_scanner::kToken__21__3D_, C_Lexique_template_5F_scanner::kToken__3C__3D_, C_Lexique_template_5F_scanner::kToken__3E__3D_, C_Lexique_template_5F_scanner::kToken__3C__3C_, C_Lexique_template_5F_scanner::kToken__3E__3E_, C_Lexique_template_5F_scanner::kToken__2B_, C_Lexique_template_5F_scanner::kToken__2E_, C_Lexique_template_5F_scanner::kToken__2D_, C_Lexique_template_5F_scanner::kToken__2A_, C_Lexique_template_5F_scanner::kToken__2F_, C_Lexique_template_5F_scanner::kToken_mod, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__28_, -1, // Choice 2
   -1,
-// At index 856 : <select_template_5F_expression_5F_parser_8>
+// At index 862 : <select_template_5F_expression_5F_parser_8>
 C_Lexique_template_5F_scanner::kToken__29_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__2C_, -1, // Choice 2
   -1,
-// At index 861 : <select_template_5F_expression_5F_parser_9>
+// At index 867 : <select_template_5F_expression_5F_parser_9>
 C_Lexique_template_5F_scanner::kToken_default, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_to, C_Lexique_template_5F_scanner::kToken__3A_, C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_identifier, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken_in, C_Lexique_template_5F_scanner::kToken_or, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken__2C_, C_Lexique_template_5F_scanner::kToken__29_, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_then, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_prefixedby, C_Lexique_template_5F_scanner::kToken_before, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken__3E_, C_Lexique_template_5F_scanner::kToken__3C_, C_Lexique_template_5F_scanner::kToken_sort, C_Lexique_template_5F_scanner::kToken_by, C_Lexique_template_5F_scanner::kToken__5D_, C_Lexique_template_5F_scanner::kToken__7C_, C_Lexique_template_5F_scanner::kToken__5E_, C_Lexique_template_5F_scanner::kToken__26_, C_Lexique_template_5F_scanner::kToken__3D__3D_, C_Lexique_template_5F_scanner::kToken__21__3D_, C_Lexique_template_5F_scanner::kToken__3C__3D_, C_Lexique_template_5F_scanner::kToken__3E__3D_, C_Lexique_template_5F_scanner::kToken__3C__3C_, C_Lexique_template_5F_scanner::kToken__3E__3E_, C_Lexique_template_5F_scanner::kToken__2B_, C_Lexique_template_5F_scanner::kToken__2E_, C_Lexique_template_5F_scanner::kToken__2D_, C_Lexique_template_5F_scanner::kToken__2A_, C_Lexique_template_5F_scanner::kToken__2F_, C_Lexique_template_5F_scanner::kToken_mod, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 2
   -1,
-// At index 917 : <select_template_5F_expression_5F_parser_10>
+// At index 923 : <select_template_5F_expression_5F_parser_10>
 C_Lexique_template_5F_scanner::kToken_true, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken_false, -1, // Choice 2
   -1,
-// At index 922 : <> only one production, no choice
+// At index 928 : <> only one production, no choice
   -1,
 0} ;
 
@@ -1199,46 +1213,46 @@ static const int16_t gDecisionIndexes_template_grammar [54] = {
 42, // at 10 : <simple_expression>
 43, // at 11 : <term>
 44, // at 12 : <factor>
-80, // at 13 : <select_template_5F_parser_0>
-85, // at 14 : <select_template_5F_parser_1>
-91, // at 15 : <select_template_5F_parser_2>
-119, // at 16 : <select_template_5F_parser_3>
-146, // at 17 : <select_template_5F_parser_4>
-173, // at 18 : <select_template_5F_parser_5>
-178, // at 19 : <select_template_5F_parser_6>
-183, // at 20 : <select_template_5F_parser_7>
-205, // at 21 : <select_template_5F_parser_8>
-210, // at 22 : <select_template_5F_parser_9>
-216, // at 23 : <select_template_5F_parser_10>
-221, // at 24 : <select_template_5F_parser_11>
-247, // at 25 : <select_template_5F_parser_12>
-253, // at 26 : <select_template_5F_parser_13>
-258, // at 27 : <select_template_5F_parser_14>
-264, // at 28 : <select_template_5F_parser_15>
-269, // at 29 : <select_template_5F_parser_16>
-274, // at 30 : <select_template_5F_parser_17>
-279, // at 31 : <select_template_5F_parser_18>
-284, // at 32 : <select_template_5F_parser_19>
-290, // at 33 : <select_template_5F_parser_20>
-295, // at 34 : <select_template_5F_parser_21>
-324, // at 35 : <select_template_5F_parser_22>
-329, // at 36 : <select_template_5F_parser_23>
-334, // at 37 : <select_template_5F_parser_24>
-361, // at 38 : <select_template_5F_parser_25>
-422, // at 39 : <select_template_5F_parser_26>
-482, // at 40 : <select_template_5F_parser_27>
-543, // at 41 : <select_template_5F_expression_5F_parser_0>
-584, // at 42 : <select_template_5F_expression_5F_parser_1>
-625, // at 43 : <select_template_5F_expression_5F_parser_2>
-677, // at 44 : <select_template_5F_expression_5F_parser_3>
-733, // at 45 : <select_template_5F_expression_5F_parser_4>
-790, // at 46 : <select_template_5F_expression_5F_parser_5>
-795, // at 47 : <select_template_5F_expression_5F_parser_6>
-800, // at 48 : <select_template_5F_expression_5F_parser_7>
-856, // at 49 : <select_template_5F_expression_5F_parser_8>
-861, // at 50 : <select_template_5F_expression_5F_parser_9>
-917, // at 51 : <select_template_5F_expression_5F_parser_10>
-922, // at 52 : <>
+84, // at 13 : <select_template_5F_parser_0>
+89, // at 14 : <select_template_5F_parser_1>
+95, // at 15 : <select_template_5F_parser_2>
+123, // at 16 : <select_template_5F_parser_3>
+150, // at 17 : <select_template_5F_parser_4>
+177, // at 18 : <select_template_5F_parser_5>
+182, // at 19 : <select_template_5F_parser_6>
+187, // at 20 : <select_template_5F_parser_7>
+211, // at 21 : <select_template_5F_parser_8>
+216, // at 22 : <select_template_5F_parser_9>
+222, // at 23 : <select_template_5F_parser_10>
+227, // at 24 : <select_template_5F_parser_11>
+253, // at 25 : <select_template_5F_parser_12>
+259, // at 26 : <select_template_5F_parser_13>
+264, // at 27 : <select_template_5F_parser_14>
+270, // at 28 : <select_template_5F_parser_15>
+275, // at 29 : <select_template_5F_parser_16>
+280, // at 30 : <select_template_5F_parser_17>
+285, // at 31 : <select_template_5F_parser_18>
+290, // at 32 : <select_template_5F_parser_19>
+296, // at 33 : <select_template_5F_parser_20>
+301, // at 34 : <select_template_5F_parser_21>
+330, // at 35 : <select_template_5F_parser_22>
+335, // at 36 : <select_template_5F_parser_23>
+340, // at 37 : <select_template_5F_parser_24>
+367, // at 38 : <select_template_5F_parser_25>
+428, // at 39 : <select_template_5F_parser_26>
+488, // at 40 : <select_template_5F_parser_27>
+549, // at 41 : <select_template_5F_expression_5F_parser_0>
+590, // at 42 : <select_template_5F_expression_5F_parser_1>
+631, // at 43 : <select_template_5F_expression_5F_parser_2>
+683, // at 44 : <select_template_5F_expression_5F_parser_3>
+739, // at 45 : <select_template_5F_expression_5F_parser_4>
+796, // at 46 : <select_template_5F_expression_5F_parser_5>
+801, // at 47 : <select_template_5F_expression_5F_parser_6>
+806, // at 48 : <select_template_5F_expression_5F_parser_7>
+862, // at 49 : <select_template_5F_expression_5F_parser_8>
+867, // at 50 : <select_template_5F_expression_5F_parser_9>
+923, // at 51 : <select_template_5F_expression_5F_parser_10>
+928, // at 52 : <>
 0} ;
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -1289,7 +1303,7 @@ void cGrammar_template_5F_grammar::_performSourceFileParsing_ (C_Compiler * inCo
     macroMyNew (scanner, C_Lexique_template_5F_scanner (inCompiler, "", "", filePath COMMA_HERE)) ;
     if (scanner->sourceText () != NULL) {
       const bool ok = scanner->performTopDownParsing (gProductions_template_grammar, gProductionNames_template_grammar, gProductionIndexes_template_grammar,
-                                                      gFirstProductionIndexes_template_grammar, gDecision_template_grammar, gDecisionIndexes_template_grammar, 417) ;
+                                                      gFirstProductionIndexes_template_grammar, gDecision_template_grammar, gDecisionIndexes_template_grammar, 423) ;
       if (ok && ! executionModeIsSyntaxAnalysisOnly ()) {
         cGrammar_template_5F_grammar grammar ;
         grammar.nt_goil_5F_template_5F_start_5F_symbol_ (parameter_1, parameter_2, parameter_3, parameter_4, parameter_5, parameter_6, parameter_7, scanner) ;
@@ -1327,7 +1341,7 @@ void cGrammar_template_5F_grammar::_performSourceStringParsing_ (C_Compiler * in
     C_Lexique_template_5F_scanner * scanner = NULL ;
     macroMyNew (scanner, C_Lexique_template_5F_scanner (inCompiler, sourceString, "" COMMA_HERE)) ;
     const bool ok = scanner->performTopDownParsing (gProductions_template_grammar, gProductionNames_template_grammar, gProductionIndexes_template_grammar,
-                                                    gFirstProductionIndexes_template_grammar, gDecision_template_grammar, gDecisionIndexes_template_grammar, 417) ;
+                                                    gFirstProductionIndexes_template_grammar, gDecision_template_grammar, gDecisionIndexes_template_grammar, 423) ;
     if (ok && ! executionModeIsSyntaxAnalysisOnly ()) {
       cGrammar_template_5F_grammar grammar ;
       grammar.nt_goil_5F_template_5F_start_5F_symbol_ (parameter_1, parameter_2, parameter_3, parameter_4, parameter_5, parameter_6, parameter_7, scanner) ;
@@ -1711,6 +1725,12 @@ void cGrammar_template_5F_grammar::nt_factor_parse (C_Lexique_template_5F_scanne
   case 17 :
     rule_template_5F_expression_5F_parser_factor_i21_parse(inLexique) ;
     break ;
+  case 18 :
+    rule_template_5F_expression_5F_parser_factor_i22_parse(inLexique) ;
+    break ;
+  case 19 :
+    rule_template_5F_expression_5F_parser_factor_i23_parse(inLexique) ;
+    break ;
   default :
     break ;
   }
@@ -1774,6 +1794,12 @@ void cGrammar_template_5F_grammar::nt_factor_ (const GALGAS_string parameter_1,
     break ;
   case 17 :
     rule_template_5F_expression_5F_parser_factor_i21_(parameter_1, parameter_2, parameter_3, parameter_4, parameter_5, parameter_6, inLexique) ;
+    break ;
+  case 18 :
+    rule_template_5F_expression_5F_parser_factor_i22_(parameter_1, parameter_2, parameter_3, parameter_4, parameter_5, parameter_6, inLexique) ;
+    break ;
+  case 19 :
+    rule_template_5F_expression_5F_parser_factor_i23_(parameter_1, parameter_2, parameter_3, parameter_4, parameter_5, parameter_6, inLexique) ;
     break ;
   default :
     break ;
@@ -8780,7 +8806,7 @@ void routine_matchAndOperatorForTemplate (const GALGAS_Ttype constinArgument_inL
     }else if ((constinArgument_inLeftExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType) && (constinArgument_inRightExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType)) {
       outArgument_outResultType = constinArgument_inLeftExpressionType ;
     }else{
-      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1177)), GALGAS_string ("operand type error : (").add_operation (categoryReader_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1177)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1177)).add_operation (GALGAS_string (" & "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1177)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1178)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1178)).add_operation (GALGAS_string (") is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1178))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1177)) ;
+      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1231)), GALGAS_string ("operand type error : (").add_operation (categoryReader_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1231)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1231)).add_operation (GALGAS_string (" & "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1231)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1232)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1232)).add_operation (GALGAS_string (") is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1232))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1231)) ;
       outArgument_outResultType.drop () ; // Release error dropped variable
     }
   }
@@ -8805,7 +8831,7 @@ void routine_matchOrOperatorForTemplate (const GALGAS_Ttype constinArgument_inLe
     }else if ((constinArgument_inLeftExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType) && (constinArgument_inRightExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType)) {
       outArgument_outResultType = constinArgument_inLeftExpressionType ;
     }else{
-      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1199)), GALGAS_string ("operand type error : (").add_operation (categoryReader_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1199)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1199)).add_operation (GALGAS_string (" | "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1199)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1200)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1200)).add_operation (GALGAS_string (") is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1200))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1199)) ;
+      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1253)), GALGAS_string ("operand type error : (").add_operation (categoryReader_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1253)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1253)).add_operation (GALGAS_string (" | "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1253)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1254)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1254)).add_operation (GALGAS_string (") is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1254))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1253)) ;
       outArgument_outResultType.drop () ; // Release error dropped variable
     }
   }
@@ -8830,7 +8856,7 @@ void routine_matchXorOperatorForTemplate (const GALGAS_Ttype constinArgument_inL
     }else if ((constinArgument_inLeftExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType) && (constinArgument_inRightExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType)) {
       outArgument_outResultType = constinArgument_inLeftExpressionType ;
     }else{
-      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1221)), GALGAS_string ("operand type error : (").add_operation (categoryReader_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1221)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1221)).add_operation (GALGAS_string (" | "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1221)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1222)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1222)).add_operation (GALGAS_string (") is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1222))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1221)) ;
+      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1275)), GALGAS_string ("operand type error : (").add_operation (categoryReader_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1275)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1275)).add_operation (GALGAS_string (" | "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1275)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1276)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1276)).add_operation (GALGAS_string (") is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1276))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1275)) ;
       outArgument_outResultType.drop () ; // Release error dropped variable
     }
   }
@@ -8848,9 +8874,9 @@ void routine_checkNotOperatorForTemplate (const GALGAS_Ttype constinArgument_inO
                                           C_Compiler * inCompiler
                                           COMMA_UNUSED_LOCATION_ARGS) {
   outArgument_outResultType.drop () ; // Release 'out' argument
-  const enumGalgasBool test_0 = GALGAS_bool (kIsNotEqual, constinArgument_inOperandType.objectCompare (GALGAS_Ttype::constructor_boolType (SOURCE_FILE ("template_expression_parser.galgas", 1236)))).boolEnum () ;
+  const enumGalgasBool test_0 = GALGAS_bool (kIsNotEqual, constinArgument_inOperandType.objectCompare (GALGAS_Ttype::constructor_boolType (SOURCE_FILE ("template_expression_parser.galgas", 1290)))).boolEnum () ;
   if (kBoolTrue == test_0) {
-    inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1237)), GALGAS_string ("the 'not' operator is not defined for an ").add_operation (categoryReader_messageGoilTemplateType (constinArgument_inOperandType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1238)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1237)).add_operation (GALGAS_string (" type"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1238))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1237)) ;
+    inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1291)), GALGAS_string ("the 'not' operator is not defined for an ").add_operation (categoryReader_messageGoilTemplateType (constinArgument_inOperandType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1292)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1291)).add_operation (GALGAS_string (" type"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1292))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1291)) ;
   }
   outArgument_outResultType = constinArgument_inOperandType ;
 }
@@ -8868,9 +8894,9 @@ void routine_checkBitComplementOperatorForTemplate (const GALGAS_Ttype constinAr
                                                     COMMA_UNUSED_LOCATION_ARGS) {
   outArgument_outResultType.drop () ; // Release 'out' argument
   outArgument_outResultType = constinArgument_inOperandType ;
-  const enumGalgasBool test_0 = GALGAS_bool (kIsNotEqual, constinArgument_inOperandType.objectCompare (GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1253)))).boolEnum () ;
+  const enumGalgasBool test_0 = GALGAS_bool (kIsNotEqual, constinArgument_inOperandType.objectCompare (GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1307)))).boolEnum () ;
   if (kBoolTrue == test_0) {
-    inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1254)), GALGAS_string ("the ~ operator is not defined for an ").add_operation (categoryReader_messageGoilTemplateType (constinArgument_inOperandType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1255)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1254)).add_operation (GALGAS_string (" type"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1255))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1254)) ;
+    inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1308)), GALGAS_string ("the ~ operator is not defined for an ").add_operation (categoryReader_messageGoilTemplateType (constinArgument_inOperandType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1309)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1308)).add_operation (GALGAS_string (" type"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1309))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1308)) ;
   }
 }
 
@@ -8891,7 +8917,7 @@ void routine_comparison_5F_types_5F_checkForTemplate (const GALGAS_Ttype constin
     }else if ((constinArgument_inLeftExpressionType.enumValue () == GALGAS_Ttype::kEnum_stringType) && (constinArgument_inRightExpressionType.enumValue () == GALGAS_Ttype::kEnum_stringType)) {
     }else if ((constinArgument_inLeftExpressionType.enumValue () == GALGAS_Ttype::kEnum_enumType) && (constinArgument_inRightExpressionType.enumValue () == GALGAS_Ttype::kEnum_enumType)) {
     }else{
-      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1274)), GALGAS_string ("comparison between ").add_operation (categoryReader_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1274)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1274)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1274)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1275)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1275)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1275))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1274)) ;
+      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1328)), GALGAS_string ("comparison between ").add_operation (categoryReader_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1328)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1328)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1328)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1329)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1329)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1329))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1328)) ;
     }
   }
 }
@@ -8912,7 +8938,7 @@ void routine_magnitude_5F_comparison_5F_types_5F_checkForTemplate (const GALGAS_
     }else if ((constinArgument_inLeftExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType) && (constinArgument_inRightExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType)) {
     }else if ((constinArgument_inLeftExpressionType.enumValue () == GALGAS_Ttype::kEnum_stringType) && (constinArgument_inRightExpressionType.enumValue () == GALGAS_Ttype::kEnum_stringType)) {
     }else{
-      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1293)), GALGAS_string ("comparison between ").add_operation (categoryReader_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1293)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1293)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1293)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1294)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1294)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1294))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1293)) ;
+      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1347)), GALGAS_string ("comparison between ").add_operation (categoryReader_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1347)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1347)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1347)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1348)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1348)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1348))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1347)) ;
     }
   }
 }
@@ -8934,7 +8960,7 @@ void routine_left_5F_shift_5F_types_5F_checkForTemplate (const GALGAS_Ttype cons
     if ((constinArgument_inLeftExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType) && (constinArgument_inRightExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType)) {
       outArgument_outResultType = constinArgument_inLeftExpressionType ;
     }else{
-      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1312)), GALGAS_string ("shift between ").add_operation (categoryReader_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1312)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1312)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1312)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1313)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1313)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1313))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1312)) ;
+      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1366)), GALGAS_string ("shift between ").add_operation (categoryReader_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1366)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1366)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1366)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1367)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1367)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1367))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1366)) ;
       outArgument_outResultType.drop () ; // Release error dropped variable
     }
   }
@@ -8957,7 +8983,7 @@ void routine_right_5F_shift_5F_types_5F_checkForTemplate (const GALGAS_Ttype con
     if ((constinArgument_inLeftExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType) && (constinArgument_inRightExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType)) {
       outArgument_outResultType = constinArgument_inLeftExpressionType ;
     }else{
-      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1328)), GALGAS_string ("shift between ").add_operation (categoryReader_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1328)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1328)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1328)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1329)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1329)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1329))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1328)) ;
+      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1382)), GALGAS_string ("shift between ").add_operation (categoryReader_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1382)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1382)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1382)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1383)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1383)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1383))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1382)) ;
       outArgument_outResultType.drop () ; // Release error dropped variable
     }
   }
@@ -8980,7 +9006,7 @@ void routine_addition_5F_types_5F_checkForTemplate (const GALGAS_Ttype constinAr
     if ((constinArgument_inLeftExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType) && (constinArgument_inRightExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType)) {
       outArgument_outResultType = constinArgument_inLeftExpressionType ;
     }else{
-      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1348)), GALGAS_string ("addition between ").add_operation (categoryReader_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1348)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1348)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1348)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1349)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1349)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1349))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1348)) ;
+      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1402)), GALGAS_string ("addition between ").add_operation (categoryReader_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1402)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1402)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1402)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1403)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1403)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1403))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1402)) ;
       outArgument_outResultType.drop () ; // Release error dropped variable
     }
   }
@@ -9005,7 +9031,7 @@ void routine_concatenation_5F_types_5F_checkForTemplate (const GALGAS_Ttype cons
     }else if ((constinArgument_inLeftExpressionType.enumValue () == GALGAS_Ttype::kEnum_listType) && (constinArgument_inRightExpressionType.enumValue () == GALGAS_Ttype::kEnum_listType)) {
       outArgument_outResultType = constinArgument_inLeftExpressionType ;
     }else{
-      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1370)), GALGAS_string ("addition between ").add_operation (categoryReader_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1370)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1370)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1370)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1371)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1371)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1371))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1370)) ;
+      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1424)), GALGAS_string ("addition between ").add_operation (categoryReader_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1424)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1424)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1424)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1425)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1425)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1425))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1424)) ;
       outArgument_outResultType.drop () ; // Release error dropped variable
     }
   }
@@ -9028,7 +9054,7 @@ void routine_substraction_5F_types_5F_checkForTemplate (const GALGAS_Ttype const
     if ((constinArgument_inLeftExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType) && (constinArgument_inRightExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType)) {
       outArgument_outResultType = constinArgument_inLeftExpressionType ;
     }else{
-      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1390)), GALGAS_string ("substraction between ").add_operation (categoryReader_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1390)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1390)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1390)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1391)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1391)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1391))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1390)) ;
+      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1444)), GALGAS_string ("substraction between ").add_operation (categoryReader_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1444)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1444)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1444)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1445)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1445)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1445))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1444)) ;
       outArgument_outResultType.drop () ; // Release error dropped variable
     }
   }
@@ -9051,7 +9077,7 @@ void routine_multiply_5F_types_5F_checkForTemplate (const GALGAS_Ttype constinAr
     if ((constinArgument_inLeftExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType) && (constinArgument_inRightExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType)) {
       outArgument_outResultType = constinArgument_inLeftExpressionType ;
     }else{
-      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1410)), GALGAS_string ("multiplication between ").add_operation (categoryReader_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1410)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1410)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1410)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1411)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1411)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1411))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1410)) ;
+      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1464)), GALGAS_string ("multiplication between ").add_operation (categoryReader_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1464)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1464)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1464)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1465)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1465)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1465))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1464)) ;
       outArgument_outResultType.drop () ; // Release error dropped variable
     }
   }
@@ -9074,7 +9100,7 @@ void routine_divide_5F_types_5F_checkForTemplate (const GALGAS_Ttype constinArgu
     if ((constinArgument_inLeftExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType) && (constinArgument_inRightExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType)) {
       outArgument_outResultType = constinArgument_inLeftExpressionType ;
     }else{
-      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1430)), GALGAS_string ("division between ").add_operation (categoryReader_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1430)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1430)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1430)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1431)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1431)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1431))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1430)) ;
+      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1484)), GALGAS_string ("division between ").add_operation (categoryReader_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1484)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1484)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1484)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1485)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1485)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1485))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1484)) ;
       outArgument_outResultType.drop () ; // Release error dropped variable
     }
   }
@@ -9097,7 +9123,7 @@ void routine_modulo_5F_types_5F_checkForTemplate (const GALGAS_Ttype constinArgu
     if ((constinArgument_inLeftExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType) && (constinArgument_inRightExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType)) {
       outArgument_outResultType = constinArgument_inLeftExpressionType ;
     }else{
-      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1450)), GALGAS_string ("modulo between ").add_operation (categoryReader_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1450)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1450)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1450)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1451)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1451)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1451))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1450)) ;
+      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1504)), GALGAS_string ("modulo between ").add_operation (categoryReader_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1504)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1504)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1504)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1505)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1505)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1505))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1504)) ;
       outArgument_outResultType.drop () ; // Release error dropped variable
     }
   }
@@ -9115,24 +9141,24 @@ GALGAS_string function_argumentListSignature (const GALGAS_TexpressionList & con
                                               COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_string result_outResult ; // Returned variable
   result_outResult = GALGAS_string (" this method call has ") ;
-  result_outResult.dotAssign_operation (constinArgument_inParameterTypeList.reader_length (SOURCE_FILE ("template_expression_parser.galgas", 1466)).reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1466)).add_operation (GALGAS_string (" argument"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1466))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1466)) ;
+  result_outResult.dotAssign_operation (constinArgument_inParameterTypeList.reader_length (SOURCE_FILE ("template_expression_parser.galgas", 1520)).reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1520)).add_operation (GALGAS_string (" argument"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1520))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1520)) ;
   GALGAS_string temp_0 ;
-  const enumGalgasBool test_1 = GALGAS_bool (kIsStrictSup, constinArgument_inParameterTypeList.reader_length (SOURCE_FILE ("template_expression_parser.galgas", 1467)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+  const enumGalgasBool test_1 = GALGAS_bool (kIsStrictSup, constinArgument_inParameterTypeList.reader_length (SOURCE_FILE ("template_expression_parser.galgas", 1521)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
   if (kBoolTrue == test_1) {
     temp_0 = GALGAS_string ("s") ;
   }else if (kBoolFalse == test_1) {
     temp_0 = GALGAS_string::makeEmptyString () ;
   }
-  result_outResult.dotAssign_operation (temp_0  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1467)) ;
-  cEnumerator_TexpressionList enumerator_51312 (constinArgument_inParameterTypeList, kEnumeration_up) ;
+  result_outResult.dotAssign_operation (temp_0  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1521)) ;
+  cEnumerator_TexpressionList enumerator_53058 (constinArgument_inParameterTypeList, kEnumeration_up) ;
   const bool bool_2 = true ;
-  if (enumerator_51312.hasCurrentObject () && bool_2) {
-    result_outResult.dotAssign_operation (GALGAS_string (": ")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1469)) ;
-    while (enumerator_51312.hasCurrentObject () && bool_2) {
-      result_outResult.dotAssign_operation (categoryReader_messageGoilTemplateType (enumerator_51312.current_mType (HERE), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1470))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1470)) ;
-      enumerator_51312.gotoNextObject () ;
-      if (enumerator_51312.hasCurrentObject () && bool_2) {
-        result_outResult.dotAssign_operation (GALGAS_string (", ")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1471)) ;
+  if (enumerator_53058.hasCurrentObject () && bool_2) {
+    result_outResult.dotAssign_operation (GALGAS_string (": ")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1523)) ;
+    while (enumerator_53058.hasCurrentObject () && bool_2) {
+      result_outResult.dotAssign_operation (categoryReader_messageGoilTemplateType (enumerator_53058.current_mType (HERE), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1524))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1524)) ;
+      enumerator_53058.gotoNextObject () ;
+      if (enumerator_53058.hasCurrentObject () && bool_2) {
+        result_outResult.dotAssign_operation (GALGAS_string (", ")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1525)) ;
       }
     }
   }
@@ -9183,10 +9209,10 @@ void routine_checkInvocationHasNoArgument (const GALGAS_Ttype constinArgument_in
                                            const GALGAS_TexpressionList constinArgument_inParameterTypeList,
                                            C_Compiler * inCompiler
                                            COMMA_UNUSED_LOCATION_ARGS) {
-  const enumGalgasBool test_0 = GALGAS_bool (kIsStrictSup, constinArgument_inParameterTypeList.reader_length (SOURCE_FILE ("template_expression_parser.galgas", 1485)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+  const enumGalgasBool test_0 = GALGAS_bool (kIsStrictSup, constinArgument_inParameterTypeList.reader_length (SOURCE_FILE ("template_expression_parser.galgas", 1539)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
   if (kBoolTrue == test_0) {
     GALGAS_location location_1 (constinArgument_inMethodName.reader_location (HERE)) ; // Implicit use of 'location' reader
-    inCompiler->emitSemanticError (location_1, GALGAS_string ("calling '").add_operation (constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1486)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1486)).add_operation (GALGAS_string ("' on a "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1486)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1487)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1486)).add_operation (GALGAS_string (" type requires no argument; "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1487)).add_operation (function_argumentListSignature (constinArgument_inParameterTypeList, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1488)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1487))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1486)) ;
+    inCompiler->emitSemanticError (location_1, GALGAS_string ("calling '").add_operation (constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1540)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1540)).add_operation (GALGAS_string ("' on a "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1540)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1541)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1540)).add_operation (GALGAS_string (" type requires no argument; "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1541)).add_operation (function_argumentListSignature (constinArgument_inParameterTypeList, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1542)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1541))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1540)) ;
   }
 }
 
@@ -9205,12 +9231,12 @@ void routine_checkInvocationHasArguments (const GALGAS_Ttype constinArgument_inT
                                           C_Compiler * inCompiler
                                           COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_Ttype var_parameterType ;
-  GALGAS_Tvalue joker_52435_0 ; // Joker input parameter
-  constinArgument_inParameterTypeList.method_first (joker_52435_0, var_parameterType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1499)) ;
-  const enumGalgasBool test_0 = GALGAS_bool (kIsNotEqual, constinArgument_inParameterTypeList.reader_length (SOURCE_FILE ("template_expression_parser.galgas", 1500)).objectCompare (constinArgument_argsNumber)).operator_or (GALGAS_bool (kIsNotEqual, var_parameterType.objectCompare (constinArgument_inExpectedType)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1500)).boolEnum () ;
+  GALGAS_Tvalue joker_54181_0 ; // Joker input parameter
+  constinArgument_inParameterTypeList.method_first (joker_54181_0, var_parameterType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1553)) ;
+  const enumGalgasBool test_0 = GALGAS_bool (kIsNotEqual, constinArgument_inParameterTypeList.reader_length (SOURCE_FILE ("template_expression_parser.galgas", 1554)).objectCompare (constinArgument_argsNumber)).operator_or (GALGAS_bool (kIsNotEqual, var_parameterType.objectCompare (constinArgument_inExpectedType)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1554)).boolEnum () ;
   if (kBoolTrue == test_0) {
     GALGAS_location location_1 (constinArgument_inMethodName.reader_location (HERE)) ; // Implicit use of 'location' reader
-    inCompiler->emitSemanticError (location_1, GALGAS_string ("calling '").add_operation (constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1501)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1501)).add_operation (GALGAS_string ("' on a "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1501)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1502)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1501)).add_operation (GALGAS_string (" type requires "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1502)).add_operation (constinArgument_argsNumber.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1502)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1502)).add_operation (GALGAS_string (" unsigned argument(s); "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1502)).add_operation (function_argumentListSignature (constinArgument_inParameterTypeList, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1503)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1502))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1501)) ;
+    inCompiler->emitSemanticError (location_1, GALGAS_string ("calling '").add_operation (constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1555)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1555)).add_operation (GALGAS_string ("' on a "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1555)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1556)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1555)).add_operation (GALGAS_string (" type requires "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1556)).add_operation (constinArgument_argsNumber.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1556)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1556)).add_operation (GALGAS_string (" unsigned argument(s); "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1556)).add_operation (function_argumentListSignature (constinArgument_inParameterTypeList, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1557)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1556))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1555)) ;
   }
 }
 
@@ -9231,59 +9257,59 @@ void routine_templateMethodInvocation (const GALGAS_Ttype constinArgument_inType
                                        COMMA_UNUSED_LOCATION_ARGS) {
   outArgument_outResultType.drop () ; // Release 'out' argument
   outArgument_outResultValue.drop () ; // Release 'out' argument
-  const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1520)).objectCompare (GALGAS_string ("description"))).boolEnum () ;
+  const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1574)).objectCompare (GALGAS_string ("description"))).boolEnum () ;
   if (kBoolTrue == test_0) {
     {
-    routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1521)) ;
+    routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1575)) ;
     }
-    outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1522)) ;
-    outArgument_outResultValue = function_valueWithString (constinArgument_inValue.reader_mDescription (SOURCE_FILE ("template_expression_parser.galgas", 1523)).reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1523)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1523)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1523)) ;
+    outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1576)) ;
+    outArgument_outResultValue = function_valueWithString (constinArgument_inValue.reader_mDescription (SOURCE_FILE ("template_expression_parser.galgas", 1577)).reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1577)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1577)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1577)) ;
   }else if (kBoolFalse == test_0) {
     if (constinArgument_inType.isValid ()) {
       switch (constinArgument_inType.enumValue ()) {
       case GALGAS_Ttype::kNotBuilt:
         break ;
       case GALGAS_Ttype::kEnum_boolType: {
-        const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1527)).objectCompare (GALGAS_string ("trueOrFalse"))).boolEnum () ;
+        const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1581)).objectCompare (GALGAS_string ("trueOrFalse"))).boolEnum () ;
         if (kBoolTrue == test_1) {
           {
-          routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1528)) ;
+          routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1582)) ;
           }
-          outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1529)) ;
+          outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1583)) ;
           GALGAS_string temp_2 ;
-          const enumGalgasBool test_3 = GALGAS_bool (kIsStrictSup, constinArgument_inValue.reader_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1531)).objectCompare (GALGAS_sint_36__34_ ((int64_t) 0LL))).boolEnum () ;
+          const enumGalgasBool test_3 = GALGAS_bool (kIsStrictSup, constinArgument_inValue.reader_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1585)).objectCompare (GALGAS_sint_36__34_ ((int64_t) 0LL))).boolEnum () ;
           if (kBoolTrue == test_3) {
             temp_2 = GALGAS_string ("true") ;
           }else if (kBoolFalse == test_3) {
             temp_2 = GALGAS_string ("false") ;
           }
-          outArgument_outResultValue = function_valueWithString (temp_2, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1532)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1530)) ;
+          outArgument_outResultValue = function_valueWithString (temp_2, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1586)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1584)) ;
         }else if (kBoolFalse == test_1) {
-          const enumGalgasBool test_4 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1534)).objectCompare (GALGAS_string ("yesOrNo"))).boolEnum () ;
+          const enumGalgasBool test_4 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1588)).objectCompare (GALGAS_string ("yesOrNo"))).boolEnum () ;
           if (kBoolTrue == test_4) {
             {
-            routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1535)) ;
+            routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1589)) ;
             }
-            outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1536)) ;
+            outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1590)) ;
             GALGAS_string temp_5 ;
-            const enumGalgasBool test_6 = GALGAS_bool (kIsStrictSup, constinArgument_inValue.reader_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1538)).objectCompare (GALGAS_sint_36__34_ ((int64_t) 0LL))).boolEnum () ;
+            const enumGalgasBool test_6 = GALGAS_bool (kIsStrictSup, constinArgument_inValue.reader_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1592)).objectCompare (GALGAS_sint_36__34_ ((int64_t) 0LL))).boolEnum () ;
             if (kBoolTrue == test_6) {
               temp_5 = GALGAS_string ("yes") ;
             }else if (kBoolFalse == test_6) {
               temp_5 = GALGAS_string ("no") ;
             }
-            outArgument_outResultValue = function_valueWithString (temp_5, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1539)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1537)) ;
+            outArgument_outResultValue = function_valueWithString (temp_5, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1593)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1591)) ;
           }else if (kBoolFalse == test_4) {
-            const enumGalgasBool test_7 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1541)).objectCompare (GALGAS_string ("unsigned"))).boolEnum () ;
+            const enumGalgasBool test_7 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1595)).objectCompare (GALGAS_string ("unsigned"))).boolEnum () ;
             if (kBoolTrue == test_7) {
               {
-              routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1542)) ;
+              routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1596)) ;
               }
-              outArgument_outResultType = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1543)) ;
+              outArgument_outResultType = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1597)) ;
               outArgument_outResultValue = constinArgument_inValue ;
             }else if (kBoolFalse == test_7) {
               GALGAS_location location_8 (constinArgument_inMethodName.reader_location (HERE)) ; // Implicit use of 'location' reader
-              inCompiler->emitSemanticError (location_8, GALGAS_string ("the ").add_operation (constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1546)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1546)).add_operation (GALGAS_string (" template method is not defined"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1546))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1546)) ;
+              inCompiler->emitSemanticError (location_8, GALGAS_string ("the ").add_operation (constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1600)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1600)).add_operation (GALGAS_string (" template method is not defined"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1600))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1600)) ;
               outArgument_outResultValue.drop () ; // Release error dropped variable
               outArgument_outResultType.drop () ; // Release error dropped variable
             }
@@ -9291,95 +9317,95 @@ void routine_templateMethodInvocation (const GALGAS_Ttype constinArgument_inType
         }
         } break ;
       case GALGAS_Ttype::kEnum_intType: {
-        const enumGalgasBool test_9 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1549)).objectCompare (GALGAS_string ("string"))).boolEnum () ;
+        const enumGalgasBool test_9 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1603)).objectCompare (GALGAS_string ("string"))).boolEnum () ;
         if (kBoolTrue == test_9) {
           {
-          routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1550)) ;
+          routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1604)) ;
           }
-          outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1551)) ;
-          outArgument_outResultValue = function_valueWithString (constinArgument_inValue.reader_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1552)).reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1552)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1552)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1552)) ;
+          outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1605)) ;
+          outArgument_outResultValue = function_valueWithString (constinArgument_inValue.reader_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1606)).reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1606)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1606)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1606)) ;
         }else if (kBoolFalse == test_9) {
-          const enumGalgasBool test_10 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1553)).objectCompare (GALGAS_string ("hexString"))).boolEnum () ;
+          const enumGalgasBool test_10 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1607)).objectCompare (GALGAS_string ("hexString"))).boolEnum () ;
           if (kBoolTrue == test_10) {
             {
-            routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1554)) ;
+            routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1608)) ;
             }
-            outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1555)) ;
-            outArgument_outResultValue = function_valueWithString (constinArgument_inValue.reader_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1556)).reader_uint_36__34_ (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1556)).reader_hexString (SOURCE_FILE ("template_expression_parser.galgas", 1556)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1556)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1556)) ;
+            outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1609)) ;
+            outArgument_outResultValue = function_valueWithString (constinArgument_inValue.reader_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1610)).reader_uint_36__34_ (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1610)).reader_hexString (SOURCE_FILE ("template_expression_parser.galgas", 1610)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1610)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1610)) ;
           }else if (kBoolFalse == test_10) {
-            const enumGalgasBool test_11 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1557)).objectCompare (GALGAS_string ("numberOfBytes"))).operator_or (GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1557)).objectCompare (GALGAS_string ("signedNumberOfBytes"))) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1557)).boolEnum () ;
+            const enumGalgasBool test_11 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1611)).objectCompare (GALGAS_string ("numberOfBytes"))).operator_or (GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1611)).objectCompare (GALGAS_string ("signedNumberOfBytes"))) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1611)).boolEnum () ;
             if (kBoolTrue == test_11) {
               {
-              routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1558)) ;
+              routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1612)) ;
               }
-              outArgument_outResultType = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1559)) ;
-              GALGAS_sint_36__34_ var_value = constinArgument_inValue.reader_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1560)) ;
+              outArgument_outResultType = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1613)) ;
+              GALGAS_sint_36__34_ var_value = constinArgument_inValue.reader_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1614)) ;
               GALGAS_uint var_numberOfBytes = GALGAS_uint ((uint32_t) 1U) ;
-              const enumGalgasBool test_12 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1563)).objectCompare (GALGAS_string ("signedNumberOfBytes"))).boolEnum () ;
+              const enumGalgasBool test_12 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1617)).objectCompare (GALGAS_string ("signedNumberOfBytes"))).boolEnum () ;
               if (kBoolTrue == test_12) {
-                var_value = var_value.multiply_operation (GALGAS_uint ((uint32_t) 2U).reader_sint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1564)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1564)) ;
+                var_value = var_value.multiply_operation (GALGAS_uint ((uint32_t) 2U).reader_sint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1618)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1618)) ;
               }
               GALGAS_uint var_count = GALGAS_uint ((uint32_t) 0U) ;
               if (GALGAS_uint ((uint32_t) 4U).isValid ()) {
-                uint32_t variant_55718 = GALGAS_uint ((uint32_t) 4U).uintValue () ;
-                bool loop_55718 = true ;
-                while (loop_55718) {
-                  loop_55718 = GALGAS_bool (kIsStrictInf, var_count.objectCompare (GALGAS_uint ((uint32_t) 4U))).isValid () ;
-                  if (loop_55718) {
-                    loop_55718 = GALGAS_bool (kIsStrictInf, var_count.objectCompare (GALGAS_uint ((uint32_t) 4U))).boolValue () ;
+                uint32_t variant_57464 = GALGAS_uint ((uint32_t) 4U).uintValue () ;
+                bool loop_57464 = true ;
+                while (loop_57464) {
+                  loop_57464 = GALGAS_bool (kIsStrictInf, var_count.objectCompare (GALGAS_uint ((uint32_t) 4U))).isValid () ;
+                  if (loop_57464) {
+                    loop_57464 = GALGAS_bool (kIsStrictInf, var_count.objectCompare (GALGAS_uint ((uint32_t) 4U))).boolValue () ;
                   }
-                  if (loop_55718 && (0 == variant_55718)) {
-                    loop_55718 = false ;
-                    inCompiler->loopRunTimeVariantError (SOURCE_FILE ("template_expression_parser.galgas", 1567)) ;
+                  if (loop_57464 && (0 == variant_57464)) {
+                    loop_57464 = false ;
+                    inCompiler->loopRunTimeVariantError (SOURCE_FILE ("template_expression_parser.galgas", 1621)) ;
                   }
-                  if (loop_55718) {
-                    variant_55718 -- ;
-                    GALGAS_sint_36__34_ var_maxValue = GALGAS_sint_36__34_ ((int64_t) 1LL).left_shift_operation (var_numberOfBytes.multiply_operation (GALGAS_uint ((uint32_t) 8U), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1569)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1569)).substract_operation (GALGAS_sint_36__34_ ((int64_t) 1LL), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1569)) ;
+                  if (loop_57464) {
+                    variant_57464 -- ;
+                    GALGAS_sint_36__34_ var_maxValue = GALGAS_sint_36__34_ ((int64_t) 1LL).left_shift_operation (var_numberOfBytes.multiply_operation (GALGAS_uint ((uint32_t) 8U), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1623)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1623)).substract_operation (GALGAS_sint_36__34_ ((int64_t) 1LL), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1623)) ;
                     const enumGalgasBool test_13 = GALGAS_bool (kIsStrictInf, var_maxValue.objectCompare (var_value)).boolEnum () ;
                     if (kBoolTrue == test_13) {
-                      var_numberOfBytes = var_numberOfBytes.multiply_operation (GALGAS_uint ((uint32_t) 2U), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1571)) ;
+                      var_numberOfBytes = var_numberOfBytes.multiply_operation (GALGAS_uint ((uint32_t) 2U), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1625)) ;
                     }
-                    var_count.increment_operation (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1573)) ;
+                    var_count.increment_operation (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1627)) ;
                   }
                 }
               }
-              outArgument_outResultValue = function_valueWithUnsigned (var_numberOfBytes.reader_uint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1575)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1575)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1575)) ;
+              outArgument_outResultValue = function_valueWithUnsigned (var_numberOfBytes.reader_uint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1629)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1629)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1629)) ;
             }else if (kBoolFalse == test_11) {
-              const enumGalgasBool test_14 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1576)).objectCompare (GALGAS_string ("numberOfBits"))).operator_or (GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1576)).objectCompare (GALGAS_string ("signedNumberOfBits"))) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1576)).boolEnum () ;
+              const enumGalgasBool test_14 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1630)).objectCompare (GALGAS_string ("numberOfBits"))).operator_or (GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1630)).objectCompare (GALGAS_string ("signedNumberOfBits"))) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1630)).boolEnum () ;
               if (kBoolTrue == test_14) {
                 {
-                routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1577)) ;
+                routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1631)) ;
                 }
-                outArgument_outResultType = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1578)) ;
-                GALGAS_sint_36__34_ var_value = constinArgument_inValue.reader_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1579)) ;
-                const enumGalgasBool test_15 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1580)).objectCompare (GALGAS_string ("signedNumberOfBits"))).boolEnum () ;
+                outArgument_outResultType = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1632)) ;
+                GALGAS_sint_36__34_ var_value = constinArgument_inValue.reader_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1633)) ;
+                const enumGalgasBool test_15 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1634)).objectCompare (GALGAS_string ("signedNumberOfBits"))).boolEnum () ;
                 if (kBoolTrue == test_15) {
-                  var_value = var_value.multiply_operation (GALGAS_uint ((uint32_t) 2U).reader_sint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1581)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1581)) ;
+                  var_value = var_value.multiply_operation (GALGAS_uint ((uint32_t) 2U).reader_sint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1635)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1635)) ;
                 }
                 GALGAS_sint_36__34_ var_numberOfBits = GALGAS_sint_36__34_ ((int64_t) 0LL) ;
                 if (GALGAS_uint ((uint32_t) 64U).isValid ()) {
-                  uint32_t variant_56491 = GALGAS_uint ((uint32_t) 64U).uintValue () ;
-                  bool loop_56491 = true ;
-                  while (loop_56491) {
-                    loop_56491 = GALGAS_bool (kIsNotEqual, var_value.objectCompare (GALGAS_sint_36__34_ ((int64_t) 0LL))).isValid () ;
-                    if (loop_56491) {
-                      loop_56491 = GALGAS_bool (kIsNotEqual, var_value.objectCompare (GALGAS_sint_36__34_ ((int64_t) 0LL))).boolValue () ;
+                  uint32_t variant_58237 = GALGAS_uint ((uint32_t) 64U).uintValue () ;
+                  bool loop_58237 = true ;
+                  while (loop_58237) {
+                    loop_58237 = GALGAS_bool (kIsNotEqual, var_value.objectCompare (GALGAS_sint_36__34_ ((int64_t) 0LL))).isValid () ;
+                    if (loop_58237) {
+                      loop_58237 = GALGAS_bool (kIsNotEqual, var_value.objectCompare (GALGAS_sint_36__34_ ((int64_t) 0LL))).boolValue () ;
                     }
-                    if (loop_56491 && (0 == variant_56491)) {
-                      loop_56491 = false ;
-                      inCompiler->loopRunTimeVariantError (SOURCE_FILE ("template_expression_parser.galgas", 1585)) ;
+                    if (loop_58237 && (0 == variant_58237)) {
+                      loop_58237 = false ;
+                      inCompiler->loopRunTimeVariantError (SOURCE_FILE ("template_expression_parser.galgas", 1639)) ;
                     }
-                    if (loop_56491) {
-                      variant_56491 -- ;
-                      var_numberOfBits.increment_operation (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1587)) ;
-                      var_value = var_value.right_shift_operation (GALGAS_uint ((uint32_t) 1U) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1588)) ;
+                    if (loop_58237) {
+                      variant_58237 -- ;
+                      var_numberOfBits.increment_operation (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1641)) ;
+                      var_value = var_value.right_shift_operation (GALGAS_uint ((uint32_t) 1U) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1642)) ;
                     }
                   }
                 }
-                outArgument_outResultValue = function_valueWithSigned (var_numberOfBits, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1590)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1590)) ;
+                outArgument_outResultValue = function_valueWithSigned (var_numberOfBits, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1644)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1644)) ;
               }else if (kBoolFalse == test_14) {
                 GALGAS_location location_16 (constinArgument_inMethodName.reader_location (HERE)) ; // Implicit use of 'location' reader
-                inCompiler->emitSemanticError (location_16, GALGAS_string ("the ").add_operation (constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1592)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1592)).add_operation (GALGAS_string (" template method is not defined for "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1592)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1592)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1592))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1592)) ;
+                inCompiler->emitSemanticError (location_16, GALGAS_string ("the ").add_operation (constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1646)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1646)).add_operation (GALGAS_string (" template method is not defined for "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1646)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1646)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1646))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1646)) ;
                 outArgument_outResultValue.drop () ; // Release error dropped variable
                 outArgument_outResultType.drop () ; // Release error dropped variable
               }
@@ -9388,240 +9414,240 @@ void routine_templateMethodInvocation (const GALGAS_Ttype constinArgument_inType
         }
         } break ;
       case GALGAS_Ttype::kEnum_stringType: {
-        const enumGalgasBool test_17 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1595)).objectCompare (GALGAS_string ("HTMLRepresentation"))).boolEnum () ;
+        const enumGalgasBool test_17 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1649)).objectCompare (GALGAS_string ("HTMLRepresentation"))).boolEnum () ;
         if (kBoolTrue == test_17) {
           {
-          routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1596)) ;
+          routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1650)) ;
           }
-          outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1597)) ;
-          outArgument_outResultValue = function_valueWithString (constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1598)).reader_HTMLRepresentation (SOURCE_FILE ("template_expression_parser.galgas", 1598)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1598)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1598)) ;
+          outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1651)) ;
+          outArgument_outResultValue = function_valueWithString (constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1652)).reader_HTMLRepresentation (SOURCE_FILE ("template_expression_parser.galgas", 1652)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1652)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1652)) ;
         }else if (kBoolFalse == test_17) {
-          const enumGalgasBool test_18 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1599)).objectCompare (GALGAS_string ("identifierRepresentation"))).boolEnum () ;
+          const enumGalgasBool test_18 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1653)).objectCompare (GALGAS_string ("identifierRepresentation"))).boolEnum () ;
           if (kBoolTrue == test_18) {
             {
-            routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1600)) ;
+            routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1654)) ;
             }
-            outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1601)) ;
-            outArgument_outResultValue = function_valueWithString (constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1602)).reader_identifierRepresentation (SOURCE_FILE ("template_expression_parser.galgas", 1602)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1602)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1602)) ;
+            outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1655)) ;
+            outArgument_outResultValue = function_valueWithString (constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1656)).reader_identifierRepresentation (SOURCE_FILE ("template_expression_parser.galgas", 1656)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1656)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1656)) ;
           }else if (kBoolFalse == test_18) {
-            const enumGalgasBool test_19 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1603)).objectCompare (GALGAS_string ("fileExists"))).boolEnum () ;
+            const enumGalgasBool test_19 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1657)).objectCompare (GALGAS_string ("fileExists"))).boolEnum () ;
             if (kBoolTrue == test_19) {
               {
-              routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1604)) ;
+              routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1658)) ;
               }
-              outArgument_outResultType = GALGAS_Ttype::constructor_boolType (SOURCE_FILE ("template_expression_parser.galgas", 1605)) ;
-              outArgument_outResultValue = function_valueWithBool (constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1606)).reader_fileExists (SOURCE_FILE ("template_expression_parser.galgas", 1606)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1606)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1606)) ;
+              outArgument_outResultType = GALGAS_Ttype::constructor_boolType (SOURCE_FILE ("template_expression_parser.galgas", 1659)) ;
+              outArgument_outResultValue = function_valueWithBool (constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1660)).reader_fileExists (SOURCE_FILE ("template_expression_parser.galgas", 1660)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1660)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1660)) ;
             }else if (kBoolFalse == test_19) {
-              const enumGalgasBool test_20 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1607)).objectCompare (GALGAS_string ("lowercaseString"))).boolEnum () ;
+              const enumGalgasBool test_20 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1661)).objectCompare (GALGAS_string ("lowercaseString"))).boolEnum () ;
               if (kBoolTrue == test_20) {
                 {
-                routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1608)) ;
+                routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1662)) ;
                 }
-                outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1609)) ;
-                outArgument_outResultValue = function_valueWithString (constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1610)).reader_lowercaseString (SOURCE_FILE ("template_expression_parser.galgas", 1610)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1610)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1610)) ;
+                outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1663)) ;
+                outArgument_outResultValue = function_valueWithString (constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1664)).reader_lowercaseString (SOURCE_FILE ("template_expression_parser.galgas", 1664)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1664)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1664)) ;
               }else if (kBoolFalse == test_20) {
-                const enumGalgasBool test_21 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1611)).objectCompare (GALGAS_string ("length"))).boolEnum () ;
+                const enumGalgasBool test_21 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1665)).objectCompare (GALGAS_string ("length"))).boolEnum () ;
                 if (kBoolTrue == test_21) {
                   {
-                  routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1612)) ;
+                  routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1666)) ;
                   }
-                  outArgument_outResultType = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1613)) ;
-                  outArgument_outResultValue = function_valueWithUnsigned (constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1614)).reader_length (SOURCE_FILE ("template_expression_parser.galgas", 1614)).reader_uint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1614)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1614)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1614)) ;
+                  outArgument_outResultType = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1667)) ;
+                  outArgument_outResultValue = function_valueWithUnsigned (constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1668)).reader_length (SOURCE_FILE ("template_expression_parser.galgas", 1668)).reader_uint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1668)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1668)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1668)) ;
                 }else if (kBoolFalse == test_21) {
-                  const enumGalgasBool test_22 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1615)).objectCompare (GALGAS_string ("stringByCapitalizingFirstCharacter"))).boolEnum () ;
+                  const enumGalgasBool test_22 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1669)).objectCompare (GALGAS_string ("stringByCapitalizingFirstCharacter"))).boolEnum () ;
                   if (kBoolTrue == test_22) {
                     {
-                    routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1616)) ;
+                    routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1670)) ;
                     }
-                    outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1617)) ;
-                    outArgument_outResultValue = function_valueWithString (constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1618)).reader_stringByCapitalizingFirstCharacter (SOURCE_FILE ("template_expression_parser.galgas", 1618)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1618)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1618)) ;
+                    outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1671)) ;
+                    outArgument_outResultValue = function_valueWithString (constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1672)).reader_stringByCapitalizingFirstCharacter (SOURCE_FILE ("template_expression_parser.galgas", 1672)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1672)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1672)) ;
                   }else if (kBoolFalse == test_22) {
-                    const enumGalgasBool test_23 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1619)).objectCompare (GALGAS_string ("uppercaseString"))).boolEnum () ;
+                    const enumGalgasBool test_23 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1673)).objectCompare (GALGAS_string ("uppercaseString"))).boolEnum () ;
                     if (kBoolTrue == test_23) {
                       {
-                      routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1620)) ;
+                      routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1674)) ;
                       }
-                      outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1621)) ;
-                      outArgument_outResultValue = function_valueWithString (constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1622)).reader_uppercaseString (SOURCE_FILE ("template_expression_parser.galgas", 1622)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1622)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1622)) ;
+                      outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1675)) ;
+                      outArgument_outResultValue = function_valueWithString (constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1676)).reader_uppercaseString (SOURCE_FILE ("template_expression_parser.galgas", 1676)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1676)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1676)) ;
                     }else if (kBoolFalse == test_23) {
-                      const enumGalgasBool test_24 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1623)).objectCompare (GALGAS_string ("unsigned"))).boolEnum () ;
+                      const enumGalgasBool test_24 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1677)).objectCompare (GALGAS_string ("unsigned"))).boolEnum () ;
                       if (kBoolTrue == test_24) {
                         {
-                        routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1624)) ;
+                        routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1678)) ;
                         }
-                        outArgument_outResultType = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1625)) ;
-                        outArgument_outResultValue = function_valueWithUnsigned (constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1626)).reader_decimalUnsignedNumber (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1626)).reader_uint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1626)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1626)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1626)) ;
+                        outArgument_outResultType = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1679)) ;
+                        outArgument_outResultValue = function_valueWithUnsigned (constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1680)).reader_decimalUnsignedNumber (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1680)).reader_uint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1680)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1680)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1680)) ;
                       }else if (kBoolFalse == test_24) {
-                        const enumGalgasBool test_25 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1627)).objectCompare (GALGAS_string ("leftSubString"))).boolEnum () ;
+                        const enumGalgasBool test_25 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1681)).objectCompare (GALGAS_string ("leftSubString"))).boolEnum () ;
                         if (kBoolTrue == test_25) {
                           {
-                          routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1628)), GALGAS_uint ((uint32_t) 1U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1628)) ;
+                          routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1682)), GALGAS_uint ((uint32_t) 1U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1682)) ;
                           }
                           GALGAS_Tvalue var_parameter ;
-                          GALGAS_Ttype joker_59431_0 ; // Joker input parameter
-                          inArgument_inParameterTypeList.method_first (var_parameter, joker_59431_0, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1630)) ;
-                          outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1631)) ;
-                          outArgument_outResultValue = function_valueWithString (constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1632)).reader_leftSubString (var_parameter.reader_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1632)).reader_uint (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1632)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1632)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1632)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1632)) ;
+                          GALGAS_Ttype joker_61177_0 ; // Joker input parameter
+                          inArgument_inParameterTypeList.method_first (var_parameter, joker_61177_0, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1684)) ;
+                          outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1685)) ;
+                          outArgument_outResultValue = function_valueWithString (constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1686)).reader_leftSubString (var_parameter.reader_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1686)).reader_uint (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1686)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1686)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1686)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1686)) ;
                         }else if (kBoolFalse == test_25) {
-                          const enumGalgasBool test_26 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1633)).objectCompare (GALGAS_string ("rightSubString"))).boolEnum () ;
+                          const enumGalgasBool test_26 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1687)).objectCompare (GALGAS_string ("rightSubString"))).boolEnum () ;
                           if (kBoolTrue == test_26) {
                             {
-                            routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1634)), GALGAS_uint ((uint32_t) 1U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1634)) ;
+                            routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1688)), GALGAS_uint ((uint32_t) 1U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1688)) ;
                             }
                             GALGAS_Tvalue var_parameter ;
-                            GALGAS_Ttype joker_59842_0 ; // Joker input parameter
-                            inArgument_inParameterTypeList.method_first (var_parameter, joker_59842_0, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1636)) ;
-                            outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1637)) ;
-                            outArgument_outResultValue = function_valueWithString (constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1638)).reader_rightSubString (var_parameter.reader_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1638)).reader_uint (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1638)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1638)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1638)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1638)) ;
+                            GALGAS_Ttype joker_61588_0 ; // Joker input parameter
+                            inArgument_inParameterTypeList.method_first (var_parameter, joker_61588_0, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1690)) ;
+                            outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1691)) ;
+                            outArgument_outResultValue = function_valueWithString (constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1692)).reader_rightSubString (var_parameter.reader_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1692)).reader_uint (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1692)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1692)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1692)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1692)) ;
                           }else if (kBoolFalse == test_26) {
-                            const enumGalgasBool test_27 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1639)).objectCompare (GALGAS_string ("subString"))).boolEnum () ;
+                            const enumGalgasBool test_27 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1693)).objectCompare (GALGAS_string ("subString"))).boolEnum () ;
                             if (kBoolTrue == test_27) {
                               {
-                              routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1640)), GALGAS_uint ((uint32_t) 2U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1640)) ;
+                              routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1694)), GALGAS_uint ((uint32_t) 2U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1694)) ;
                               }
-                              GALGAS_Tvalue var_start = inArgument_inParameterTypeList.reader_mValueAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1641)) ;
-                              GALGAS_Tvalue var_length = inArgument_inParameterTypeList.reader_mValueAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1642)) ;
-                              outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1645)) ;
-                              outArgument_outResultValue = function_valueWithString (constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1646)).reader_subString (var_start.reader_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1646)).reader_uint (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1646)), var_length.reader_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1646)).reader_uint (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1646)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1646)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1646)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1646)) ;
+                              GALGAS_Tvalue var_start = inArgument_inParameterTypeList.reader_mValueAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1695)) ;
+                              GALGAS_Tvalue var_length = inArgument_inParameterTypeList.reader_mValueAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1696)) ;
+                              outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1699)) ;
+                              outArgument_outResultValue = function_valueWithString (constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1700)).reader_subString (var_start.reader_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1700)).reader_uint (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1700)), var_length.reader_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1700)).reader_uint (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1700)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1700)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1700)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1700)) ;
                             }else if (kBoolFalse == test_27) {
-                              const enumGalgasBool test_28 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1647)).objectCompare (GALGAS_string ("reversedString"))).boolEnum () ;
+                              const enumGalgasBool test_28 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1701)).objectCompare (GALGAS_string ("reversedString"))).boolEnum () ;
                               if (kBoolTrue == test_28) {
                                 {
-                                routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1648)) ;
+                                routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1702)) ;
                                 }
-                                outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1649)) ;
-                                outArgument_outResultValue = function_valueWithString (constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1650)).reader_reversedString (SOURCE_FILE ("template_expression_parser.galgas", 1650)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1650)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1650)) ;
+                                outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1703)) ;
+                                outArgument_outResultValue = function_valueWithString (constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1704)).reader_reversedString (SOURCE_FILE ("template_expression_parser.galgas", 1704)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1704)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1704)) ;
                               }else if (kBoolFalse == test_28) {
-                                const enumGalgasBool test_29 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1651)).objectCompare (GALGAS_string ("componentsSeparatedByString"))).boolEnum () ;
+                                const enumGalgasBool test_29 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1705)).objectCompare (GALGAS_string ("componentsSeparatedByString"))).boolEnum () ;
                                 if (kBoolTrue == test_29) {
                                   {
-                                  routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1652)), GALGAS_uint ((uint32_t) 1U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1652)) ;
+                                  routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1706)), GALGAS_uint ((uint32_t) 1U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1706)) ;
                                   }
                                   GALGAS_Tvalue var_separator ;
-                                  GALGAS_Ttype joker_61074_0 ; // Joker input parameter
-                                  inArgument_inParameterTypeList.method_first (var_separator, joker_61074_0, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1654)) ;
-                                  GALGAS_stringlist var_stringlist = constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1655)).reader_componentsSeparatedByString (var_separator.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1655)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1655)) ;
-                                  GALGAS_TfieldMapList var_result = GALGAS_TfieldMapList::constructor_emptyList (SOURCE_FILE ("template_expression_parser.galgas", 1656)) ;
-                                  cEnumerator_stringlist enumerator_61265 (var_stringlist, kEnumeration_up) ;
-                                  while (enumerator_61265.hasCurrentObject ()) {
-                                    GALGAS_TfieldMap var_item = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_expression_parser.galgas", 1658)) ;
+                                  GALGAS_Ttype joker_62820_0 ; // Joker input parameter
+                                  inArgument_inParameterTypeList.method_first (var_separator, joker_62820_0, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1708)) ;
+                                  GALGAS_stringlist var_stringlist = constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1709)).reader_componentsSeparatedByString (var_separator.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1709)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1709)) ;
+                                  GALGAS_TfieldMapList var_result = GALGAS_TfieldMapList::constructor_emptyList (SOURCE_FILE ("template_expression_parser.galgas", 1710)) ;
+                                  cEnumerator_stringlist enumerator_63011 (var_stringlist, kEnumeration_up) ;
+                                  while (enumerator_63011.hasCurrentObject ()) {
+                                    GALGAS_TfieldMap var_item = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_expression_parser.galgas", 1712)) ;
                                     {
-                                    routine_addStringValue (var_item, function_lstringWith (GALGAS_string ("VALUE"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1659)), enumerator_61265.current_mValue (HERE), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1659)), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1659)) ;
+                                    routine_addStringValue (var_item, function_lstringWith (GALGAS_string ("VALUE"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1713)), enumerator_63011.current_mValue (HERE), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1713)), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1713)) ;
                                     }
-                                    var_result.addAssign_operation (var_item  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1660)) ;
-                                    enumerator_61265.gotoNextObject () ;
+                                    var_result.addAssign_operation (var_item  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1714)) ;
+                                    enumerator_63011.gotoNextObject () ;
                                   }
-                                  outArgument_outResultType = GALGAS_Ttype::constructor_listType (SOURCE_FILE ("template_expression_parser.galgas", 1662)) ;
-                                  outArgument_outResultValue = function_valueWithList (var_result, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1663)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1663)) ;
+                                  outArgument_outResultType = GALGAS_Ttype::constructor_listType (SOURCE_FILE ("template_expression_parser.galgas", 1716)) ;
+                                  outArgument_outResultValue = function_valueWithList (var_result, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1717)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1717)) ;
                                 }else if (kBoolFalse == test_29) {
-                                  const enumGalgasBool test_30 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1664)).objectCompare (GALGAS_string ("interpretEscape"))).boolEnum () ;
+                                  const enumGalgasBool test_30 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1718)).objectCompare (GALGAS_string ("interpretEscape"))).boolEnum () ;
                                   if (kBoolTrue == test_30) {
                                     {
-                                    routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1665)) ;
+                                    routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1719)) ;
                                     }
-                                    outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1666)) ;
-                                    outArgument_outResultValue = function_valueWithString (constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1667)).reader_stringByReplacingStringByString (GALGAS_string ("\\n"), GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1667)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1667)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1667)) ;
+                                    outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1720)) ;
+                                    outArgument_outResultValue = function_valueWithString (constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1721)).reader_stringByReplacingStringByString (GALGAS_string ("\\n"), GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1721)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1721)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1721)) ;
                                   }else if (kBoolFalse == test_30) {
-                                    const enumGalgasBool test_31 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1668)).objectCompare (GALGAS_string ("columnPrefixedBy"))).boolEnum () ;
+                                    const enumGalgasBool test_31 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1722)).objectCompare (GALGAS_string ("columnPrefixedBy"))).boolEnum () ;
                                     if (kBoolTrue == test_31) {
                                       {
-                                      routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1669)), GALGAS_uint ((uint32_t) 1U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1669)) ;
+                                      routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1723)), GALGAS_uint ((uint32_t) 1U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1723)) ;
                                       }
                                       GALGAS_Tvalue var_separator ;
-                                      GALGAS_Ttype joker_62091_0 ; // Joker input parameter
-                                      inArgument_inParameterTypeList.method_first (var_separator, joker_62091_0, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1671)) ;
-                                      outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1672)) ;
-                                      outArgument_outResultValue = function_valueWithString (var_separator.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1673)).add_operation (constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1673)).reader_stringByReplacingStringByString (GALGAS_string ("\n"), GALGAS_string ("\n").add_operation (var_separator.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1673)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1673)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1673)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1673)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1673)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1673)) ;
+                                      GALGAS_Ttype joker_63837_0 ; // Joker input parameter
+                                      inArgument_inParameterTypeList.method_first (var_separator, joker_63837_0, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1725)) ;
+                                      outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1726)) ;
+                                      outArgument_outResultValue = function_valueWithString (var_separator.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1727)).add_operation (constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1727)).reader_stringByReplacingStringByString (GALGAS_string ("\n"), GALGAS_string ("\n").add_operation (var_separator.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1727)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1727)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1727)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1727)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1727)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1727)) ;
                                     }else if (kBoolFalse == test_31) {
-                                      const enumGalgasBool test_32 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1674)).objectCompare (GALGAS_string ("wrap"))).boolEnum () ;
+                                      const enumGalgasBool test_32 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1728)).objectCompare (GALGAS_string ("wrap"))).boolEnum () ;
                                       if (kBoolTrue == test_32) {
                                         {
-                                        routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1675)), GALGAS_uint ((uint32_t) 2U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1675)) ;
+                                        routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1729)), GALGAS_uint ((uint32_t) 2U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1729)) ;
                                         }
                                         GALGAS_Tvalue var_width ;
                                         {
-                                        GALGAS_Ttype joker_62642_0 ; // Joker input parameter
-                                        inArgument_inParameterTypeList.modifier_popFirst (var_width, joker_62642_0, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1678)) ;
+                                        GALGAS_Ttype joker_64388_0 ; // Joker input parameter
+                                        inArgument_inParameterTypeList.modifier_popFirst (var_width, joker_64388_0, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1732)) ;
                                         }
                                         GALGAS_Tvalue var_shift ;
                                         {
-                                        GALGAS_Ttype joker_62715_0 ; // Joker input parameter
-                                        inArgument_inParameterTypeList.modifier_popFirst (var_shift, joker_62715_0, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1680)) ;
+                                        GALGAS_Ttype joker_64461_0 ; // Joker input parameter
+                                        inArgument_inParameterTypeList.modifier_popFirst (var_shift, joker_64461_0, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1734)) ;
                                         }
-                                        GALGAS_string var_stringshift = GALGAS_string::constructor_stringWithSequenceOfCharacters (GALGAS_char (TO_UNICODE (32)), var_shift.reader_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1681)).reader_uint (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1681))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1681)) ;
-                                        GALGAS_string var_result = constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1682)) ;
-                                        GALGAS_stringlist var_paragraph = var_result.reader_componentsSeparatedByString (GALGAS_string ("\n") COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1691)) ;
-                                        GALGAS_stringlist var_resultParagraph = GALGAS_stringlist::constructor_emptyList (SOURCE_FILE ("template_expression_parser.galgas", 1692)) ;
-                                        cEnumerator_stringlist enumerator_63380 (var_paragraph, kEnumeration_up) ;
-                                        while (enumerator_63380.hasCurrentObject ()) {
-                                          GALGAS_stringlist var_parts = enumerator_63380.current_mValue (HERE).reader_componentsSeparatedByString (GALGAS_string (" ") COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1694)) ;
+                                        GALGAS_string var_stringshift = GALGAS_string::constructor_stringWithSequenceOfCharacters (GALGAS_char (TO_UNICODE (32)), var_shift.reader_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1735)).reader_uint (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1735))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1735)) ;
+                                        GALGAS_string var_result = constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1736)) ;
+                                        GALGAS_stringlist var_paragraph = var_result.reader_componentsSeparatedByString (GALGAS_string ("\n") COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1745)) ;
+                                        GALGAS_stringlist var_resultParagraph = GALGAS_stringlist::constructor_emptyList (SOURCE_FILE ("template_expression_parser.galgas", 1746)) ;
+                                        cEnumerator_stringlist enumerator_65126 (var_paragraph, kEnumeration_up) ;
+                                        while (enumerator_65126.hasCurrentObject ()) {
+                                          GALGAS_stringlist var_parts = enumerator_65126.current_mValue (HERE).reader_componentsSeparatedByString (GALGAS_string (" ") COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1748)) ;
                                           GALGAS_sint_36__34_ var_linewidth = GALGAS_sint_36__34_ ((int64_t) 0LL) ;
                                           GALGAS_bool var_newline = GALGAS_bool (true) ;
                                           var_result = GALGAS_string::makeEmptyString () ;
-                                          cEnumerator_stringlist enumerator_63580 (var_parts, kEnumeration_up) ;
-                                          while (enumerator_63580.hasCurrentObject ()) {
-                                            const enumGalgasBool test_33 = GALGAS_bool (kIsStrictSup, var_linewidth.add_operation (enumerator_63580.current_mValue (HERE).reader_length (SOURCE_FILE ("template_expression_parser.galgas", 1699)).reader_sint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1699)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1699)).objectCompare (var_width.reader_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1699)))).boolEnum () ;
+                                          cEnumerator_stringlist enumerator_65326 (var_parts, kEnumeration_up) ;
+                                          while (enumerator_65326.hasCurrentObject ()) {
+                                            const enumGalgasBool test_33 = GALGAS_bool (kIsStrictSup, var_linewidth.add_operation (enumerator_65326.current_mValue (HERE).reader_length (SOURCE_FILE ("template_expression_parser.galgas", 1753)).reader_sint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1753)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1753)).objectCompare (var_width.reader_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1753)))).boolEnum () ;
                                             if (kBoolTrue == test_33) {
-                                              var_result.dotAssign_operation (GALGAS_string ("\n").add_operation (var_stringshift, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1700))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1700)) ;
-                                              var_linewidth = var_shift.reader_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1701)) ;
+                                              var_result.dotAssign_operation (GALGAS_string ("\n").add_operation (var_stringshift, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1754))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1754)) ;
+                                              var_linewidth = var_shift.reader_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1755)) ;
                                               var_newline = GALGAS_bool (true) ;
                                             }
                                             const enumGalgasBool test_34 = GALGAS_bool (kIsEqual, var_newline.objectCompare (GALGAS_bool (false))).boolEnum () ;
                                             if (kBoolTrue == test_34) {
-                                              var_linewidth = var_linewidth.add_operation (GALGAS_sint_36__34_ ((int64_t) 1LL), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1705)) ;
-                                              var_result.dotAssign_operation (GALGAS_string (" ")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1706)) ;
+                                              var_linewidth = var_linewidth.add_operation (GALGAS_sint_36__34_ ((int64_t) 1LL), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1759)) ;
+                                              var_result.dotAssign_operation (GALGAS_string (" ")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1760)) ;
                                             }
-                                            var_linewidth = var_linewidth.add_operation (enumerator_63580.current_mValue (HERE).reader_length (SOURCE_FILE ("template_expression_parser.galgas", 1708)).reader_sint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1708)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1708)) ;
-                                            var_result.dotAssign_operation (enumerator_63580.current_mValue (HERE)  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1709)) ;
+                                            var_linewidth = var_linewidth.add_operation (enumerator_65326.current_mValue (HERE).reader_length (SOURCE_FILE ("template_expression_parser.galgas", 1762)).reader_sint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1762)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1762)) ;
+                                            var_result.dotAssign_operation (enumerator_65326.current_mValue (HERE)  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1763)) ;
                                             var_newline = GALGAS_bool (false) ;
-                                            enumerator_63580.gotoNextObject () ;
+                                            enumerator_65326.gotoNextObject () ;
                                           }
-                                          var_resultParagraph.addAssign_operation (var_result  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1712)) ;
-                                          enumerator_63380.gotoNextObject () ;
+                                          var_resultParagraph.addAssign_operation (var_result  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1766)) ;
+                                          enumerator_65126.gotoNextObject () ;
                                         }
-                                        outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1714)) ;
-                                        outArgument_outResultValue = function_valueWithString (GALGAS_string::constructor_componentsJoinedByString (var_resultParagraph, GALGAS_string ("\n")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1715)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1715)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1715)) ;
+                                        outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1768)) ;
+                                        outArgument_outResultValue = function_valueWithString (GALGAS_string::constructor_componentsJoinedByString (var_resultParagraph, GALGAS_string ("\n")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1769)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1769)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1769)) ;
                                       }else if (kBoolFalse == test_32) {
-                                        const enumGalgasBool test_35 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1716)).objectCompare (GALGAS_string ("substringExists"))).boolEnum () ;
+                                        const enumGalgasBool test_35 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1770)).objectCompare (GALGAS_string ("substringExists"))).boolEnum () ;
                                         if (kBoolTrue == test_35) {
                                           {
-                                          routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1717)), GALGAS_uint ((uint32_t) 1U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1717)) ;
+                                          routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1771)), GALGAS_uint ((uint32_t) 1U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1771)) ;
                                           }
                                           GALGAS_Tvalue var_subString ;
                                           {
-                                          GALGAS_Ttype joker_64489_0 ; // Joker input parameter
-                                          inArgument_inParameterTypeList.modifier_popFirst (var_subString, joker_64489_0, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1718)) ;
+                                          GALGAS_Ttype joker_66235_0 ; // Joker input parameter
+                                          inArgument_inParameterTypeList.modifier_popFirst (var_subString, joker_66235_0, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1772)) ;
                                           }
                                           GALGAS_uint var_start = GALGAS_uint ((uint32_t) 0U) ;
-                                          GALGAS_uint var_stop = constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1720)).reader_length (SOURCE_FILE ("template_expression_parser.galgas", 1720)).substract_operation (var_subString.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1720)).reader_length (SOURCE_FILE ("template_expression_parser.galgas", 1720)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1720)) ;
+                                          GALGAS_uint var_stop = constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1774)).reader_length (SOURCE_FILE ("template_expression_parser.galgas", 1774)).substract_operation (var_subString.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1774)).reader_length (SOURCE_FILE ("template_expression_parser.galgas", 1774)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1774)) ;
                                           GALGAS_bool var_exists = GALGAS_bool (false) ;
-                                          if (constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1722)).reader_length (SOURCE_FILE ("template_expression_parser.galgas", 1722)).isValid ()) {
-                                            uint32_t variant_64647 = constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1722)).reader_length (SOURCE_FILE ("template_expression_parser.galgas", 1722)).uintValue () ;
-                                            bool loop_64647 = true ;
-                                            while (loop_64647) {
-                                              loop_64647 = GALGAS_bool (kIsInfOrEqual, var_start.objectCompare (var_stop)).isValid () ;
-                                              if (loop_64647) {
-                                                loop_64647 = GALGAS_bool (kIsInfOrEqual, var_start.objectCompare (var_stop)).boolValue () ;
+                                          if (constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1776)).reader_length (SOURCE_FILE ("template_expression_parser.galgas", 1776)).isValid ()) {
+                                            uint32_t variant_66393 = constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1776)).reader_length (SOURCE_FILE ("template_expression_parser.galgas", 1776)).uintValue () ;
+                                            bool loop_66393 = true ;
+                                            while (loop_66393) {
+                                              loop_66393 = GALGAS_bool (kIsInfOrEqual, var_start.objectCompare (var_stop)).isValid () ;
+                                              if (loop_66393) {
+                                                loop_66393 = GALGAS_bool (kIsInfOrEqual, var_start.objectCompare (var_stop)).boolValue () ;
                                               }
-                                              if (loop_64647 && (0 == variant_64647)) {
-                                                loop_64647 = false ;
-                                                inCompiler->loopRunTimeVariantError (SOURCE_FILE ("template_expression_parser.galgas", 1722)) ;
+                                              if (loop_66393 && (0 == variant_66393)) {
+                                                loop_66393 = false ;
+                                                inCompiler->loopRunTimeVariantError (SOURCE_FILE ("template_expression_parser.galgas", 1776)) ;
                                               }
-                                              if (loop_64647) {
-                                                variant_64647 -- ;
-                                                const enumGalgasBool test_36 = GALGAS_bool (kIsEqual, constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1724)).reader_subString (var_start, var_subString.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1724)).reader_length (SOURCE_FILE ("template_expression_parser.galgas", 1724)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1724)).objectCompare (var_subString.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1724)))).boolEnum () ;
+                                              if (loop_66393) {
+                                                variant_66393 -- ;
+                                                const enumGalgasBool test_36 = GALGAS_bool (kIsEqual, constinArgument_inValue.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1778)).reader_subString (var_start, var_subString.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1778)).reader_length (SOURCE_FILE ("template_expression_parser.galgas", 1778)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1778)).objectCompare (var_subString.reader_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1778)))).boolEnum () ;
                                                 if (kBoolTrue == test_36) {
                                                   var_exists = GALGAS_bool (true) ;
                                                 }
-                                                var_start.increment_operation (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1727)) ;
+                                                var_start.increment_operation (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1781)) ;
                                               }
                                             }
                                           }
-                                          outArgument_outResultType = GALGAS_Ttype::constructor_boolType (SOURCE_FILE ("template_expression_parser.galgas", 1729)) ;
-                                          outArgument_outResultValue = function_valueWithBool (var_exists, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1730)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1730)) ;
+                                          outArgument_outResultType = GALGAS_Ttype::constructor_boolType (SOURCE_FILE ("template_expression_parser.galgas", 1783)) ;
+                                          outArgument_outResultValue = function_valueWithBool (var_exists, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1784)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1784)) ;
                                         }else if (kBoolFalse == test_35) {
                                           GALGAS_location location_37 (constinArgument_inMethodName.reader_location (HERE)) ; // Implicit use of 'location' reader
-                                          inCompiler->emitSemanticError (location_37, GALGAS_string ("the ").add_operation (constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1732)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1732)).add_operation (GALGAS_string (" template method is not defined for "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1732)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1732)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1732))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1732)) ;
+                                          inCompiler->emitSemanticError (location_37, GALGAS_string ("the ").add_operation (constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1786)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1786)).add_operation (GALGAS_string (" template method is not defined for "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1786)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1786)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1786))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1786)) ;
                                           outArgument_outResultValue.drop () ; // Release error dropped variable
                                           outArgument_outResultType.drop () ; // Release error dropped variable
                                         }
@@ -9644,41 +9670,41 @@ void routine_templateMethodInvocation (const GALGAS_Ttype constinArgument_inType
         } break ;
       case GALGAS_Ttype::kEnum_floatType: {
         GALGAS_location location_38 (constinArgument_inMethodName.reader_location (HERE)) ; // Implicit use of 'location' reader
-        inCompiler->emitSemanticError (location_38, GALGAS_string ("the ").add_operation (constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1735)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1735)).add_operation (GALGAS_string (" template method is not defined for "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1735)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1735)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1735))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1735)) ;
+        inCompiler->emitSemanticError (location_38, GALGAS_string ("the ").add_operation (constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1789)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1789)).add_operation (GALGAS_string (" template method is not defined for "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1789)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1789)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1789))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1789)) ;
         outArgument_outResultValue.drop () ; // Release error dropped variable
         outArgument_outResultType.drop () ; // Release error dropped variable
         } break ;
       case GALGAS_Ttype::kEnum_listType: {
-        const enumGalgasBool test_39 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1737)).objectCompare (GALGAS_string ("length"))).boolEnum () ;
+        const enumGalgasBool test_39 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1791)).objectCompare (GALGAS_string ("length"))).boolEnum () ;
         if (kBoolTrue == test_39) {
           {
-          routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1738)) ;
+          routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1792)) ;
           }
-          outArgument_outResultType = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1739)) ;
-          outArgument_outResultValue = function_valueWithUnsigned (constinArgument_inValue.reader_mMapListValue (SOURCE_FILE ("template_expression_parser.galgas", 1740)).reader_length (SOURCE_FILE ("template_expression_parser.galgas", 1740)).reader_uint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1740)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1740)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1740)) ;
+          outArgument_outResultType = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1793)) ;
+          outArgument_outResultValue = function_valueWithUnsigned (constinArgument_inValue.reader_mMapListValue (SOURCE_FILE ("template_expression_parser.galgas", 1794)).reader_length (SOURCE_FILE ("template_expression_parser.galgas", 1794)).reader_uint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1794)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1794)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1794)) ;
         }else if (kBoolFalse == test_39) {
-          const enumGalgasBool test_40 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1741)).objectCompare (GALGAS_string ("first"))).boolEnum () ;
+          const enumGalgasBool test_40 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1795)).objectCompare (GALGAS_string ("first"))).boolEnum () ;
           if (kBoolTrue == test_40) {
             {
-            routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1742)) ;
+            routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1796)) ;
             }
-            outArgument_outResultType = GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_expression_parser.galgas", 1743)) ;
+            outArgument_outResultType = GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_expression_parser.galgas", 1797)) ;
             GALGAS_TfieldMap var_firstElement ;
-            constinArgument_inValue.reader_mMapListValue (SOURCE_FILE ("template_expression_parser.galgas", 1745)).method_first (var_firstElement, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1745)) ;
-            outArgument_outResultValue = function_valueWithStruct (var_firstElement, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1746)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1746)) ;
+            constinArgument_inValue.reader_mMapListValue (SOURCE_FILE ("template_expression_parser.galgas", 1799)).method_first (var_firstElement, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1799)) ;
+            outArgument_outResultValue = function_valueWithStruct (var_firstElement, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1800)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1800)) ;
           }else if (kBoolFalse == test_40) {
-            const enumGalgasBool test_41 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1747)).objectCompare (GALGAS_string ("last"))).boolEnum () ;
+            const enumGalgasBool test_41 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1801)).objectCompare (GALGAS_string ("last"))).boolEnum () ;
             if (kBoolTrue == test_41) {
               {
-              routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1748)) ;
+              routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1802)) ;
               }
-              outArgument_outResultType = GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_expression_parser.galgas", 1749)) ;
+              outArgument_outResultType = GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_expression_parser.galgas", 1803)) ;
               GALGAS_TfieldMap var_lastElement ;
-              constinArgument_inValue.reader_mMapListValue (SOURCE_FILE ("template_expression_parser.galgas", 1751)).method_last (var_lastElement, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1751)) ;
-              outArgument_outResultValue = function_valueWithStruct (var_lastElement, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1752)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1752)) ;
+              constinArgument_inValue.reader_mMapListValue (SOURCE_FILE ("template_expression_parser.galgas", 1805)).method_last (var_lastElement, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1805)) ;
+              outArgument_outResultValue = function_valueWithStruct (var_lastElement, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1806)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1806)) ;
             }else if (kBoolFalse == test_41) {
               GALGAS_location location_42 (constinArgument_inMethodName.reader_location (HERE)) ; // Implicit use of 'location' reader
-              inCompiler->emitSemanticError (location_42, GALGAS_string ("the ").add_operation (constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1754)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1754)).add_operation (GALGAS_string (" template method is not defined for "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1754)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1754)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1754))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1754)) ;
+              inCompiler->emitSemanticError (location_42, GALGAS_string ("the ").add_operation (constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1808)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1808)).add_operation (GALGAS_string (" template method is not defined for "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1808)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1808)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1808))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1808)) ;
               outArgument_outResultValue.drop () ; // Release error dropped variable
               outArgument_outResultType.drop () ; // Release error dropped variable
             }
@@ -9686,28 +9712,28 @@ void routine_templateMethodInvocation (const GALGAS_Ttype constinArgument_inType
         }
         } break ;
       case GALGAS_Ttype::kEnum_mapType: {
-        const enumGalgasBool test_43 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1757)).objectCompare (GALGAS_string ("length"))).boolEnum () ;
+        const enumGalgasBool test_43 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1811)).objectCompare (GALGAS_string ("length"))).boolEnum () ;
         if (kBoolTrue == test_43) {
           {
-          routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1758)) ;
+          routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1812)) ;
           }
-          outArgument_outResultType = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1759)) ;
-          outArgument_outResultValue = function_valueWithUnsigned (constinArgument_inValue.reader_mStructValue (SOURCE_FILE ("template_expression_parser.galgas", 1760)).reader_count (SOURCE_FILE ("template_expression_parser.galgas", 1760)).reader_uint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1760)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1760)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1760)) ;
+          outArgument_outResultType = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1813)) ;
+          outArgument_outResultValue = function_valueWithUnsigned (constinArgument_inValue.reader_mStructValue (SOURCE_FILE ("template_expression_parser.galgas", 1814)).reader_count (SOURCE_FILE ("template_expression_parser.galgas", 1814)).reader_uint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1814)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1814)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1814)) ;
         }else if (kBoolFalse == test_43) {
           GALGAS_location location_44 (constinArgument_inMethodName.reader_location (HERE)) ; // Implicit use of 'location' reader
-          inCompiler->emitSemanticError (location_44, GALGAS_string ("the ").add_operation (constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1762)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1762)).add_operation (GALGAS_string (" template method is not defined for "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1762)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1762)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1762))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1762)) ;
+          inCompiler->emitSemanticError (location_44, GALGAS_string ("the ").add_operation (constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1816)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1816)).add_operation (GALGAS_string (" template method is not defined for "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1816)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1816)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1816))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1816)) ;
           outArgument_outResultValue.drop () ; // Release error dropped variable
           outArgument_outResultType.drop () ; // Release error dropped variable
         }
         } break ;
       case GALGAS_Ttype::kEnum_enumType: case GALGAS_Ttype::kEnum_structType: {
         GALGAS_location location_45 (constinArgument_inMethodName.reader_location (HERE)) ; // Implicit use of 'location' reader
-        inCompiler->emitSemanticError (location_45, GALGAS_string ("the ").add_operation (constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1765)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1765)).add_operation (GALGAS_string (" template method is not defined for "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1765)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1765)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1765))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1765)) ;
+        inCompiler->emitSemanticError (location_45, GALGAS_string ("the ").add_operation (constinArgument_inMethodName.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1819)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1819)).add_operation (GALGAS_string (" template method is not defined for "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1819)).add_operation (categoryReader_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1819)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1819))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1819)) ;
         outArgument_outResultValue.drop () ; // Release error dropped variable
         outArgument_outResultType.drop () ; // Release error dropped variable
         } break ;
       case GALGAS_Ttype::kEnum_unconstructedType: case GALGAS_Ttype::kEnum_functionType: {
-        inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1767)), GALGAS_string ("internal error, unconstructed type found")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1767)) ;
+        inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1821)), GALGAS_string ("internal error, unconstructed type found")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1821)) ;
         outArgument_outResultValue.drop () ; // Release error dropped variable
         outArgument_outResultType.drop () ; // Release error dropped variable
         } break ;
@@ -9729,25 +9755,25 @@ void routine_typeError (const GALGAS_lstring constinArgument_inFunctionName,
                         const GALGAS_uint constinArgument_inParameterIndex,
                         C_Compiler * inCompiler
                         COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_string var_m = GALGAS_string ("the function requires the parameter ").add_operation (constinArgument_inParameterIndex.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1785)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1785)).add_operation (GALGAS_string (" to be "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1785)).add_operation (constinArgument_inExpectedTypeName, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1786)).add_operation (GALGAS_string ("; its type is "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1786)) ;
+  GALGAS_string var_m = GALGAS_string ("the function requires the parameter ").add_operation (constinArgument_inParameterIndex.reader_string (SOURCE_FILE ("template_expression_parser.galgas", 1839)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1839)).add_operation (GALGAS_string (" to be "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1839)).add_operation (constinArgument_inExpectedTypeName, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1840)).add_operation (GALGAS_string ("; its type is "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1840)) ;
   const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, constinArgument_inActualType.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_bool))).boolEnum () ;
   if (kBoolTrue == test_0) {
-    var_m.dotAssign_operation (GALGAS_string ("boolean")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1788)) ;
+    var_m.dotAssign_operation (GALGAS_string ("boolean")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1842)) ;
   }else if (kBoolFalse == test_0) {
     const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, constinArgument_inActualType.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_uint_36__34_))).boolEnum () ;
     if (kBoolTrue == test_1) {
-      var_m.dotAssign_operation (GALGAS_string ("unsigned")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1790)) ;
+      var_m.dotAssign_operation (GALGAS_string ("unsigned")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1844)) ;
     }else if (kBoolFalse == test_1) {
       const enumGalgasBool test_2 = GALGAS_bool (kIsEqual, constinArgument_inActualType.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_string))).boolEnum () ;
       if (kBoolTrue == test_2) {
-        var_m.dotAssign_operation (GALGAS_string ("string")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1792)) ;
+        var_m.dotAssign_operation (GALGAS_string ("string")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1846)) ;
       }else if (kBoolFalse == test_2) {
-        var_m.dotAssign_operation (GALGAS_string ("a not allowed type")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1794)) ;
+        var_m.dotAssign_operation (GALGAS_string ("a not allowed type")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1848)) ;
       }
     }
   }
   GALGAS_location location_3 (constinArgument_inFunctionName.reader_location (HERE)) ; // Implicit use of 'location' reader
-  inCompiler->emitSemanticError (location_3, var_m  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1796)) ;
+  inCompiler->emitSemanticError (location_3, var_m  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1850)) ;
 }
 
 
