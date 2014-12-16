@@ -20,10 +20,3 @@ VAR(arm_core_context, OS_VAR) % !proc::NAME %_int_context;
 
 #define OS_STOP_SEC_VAR_NOINIT_32BIT
 #include "tpl_memmap.h"
-%if proc::KIND == "ISR" then 
-    if not exists SOURCE then
-       error proc::NAME : "SOURCE attribute not defined for ".proc::KIND." ".proc::NAME
-    end if
-    ! CAPCOMFLAG
-  end if
-%
