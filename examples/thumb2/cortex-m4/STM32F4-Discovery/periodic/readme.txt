@@ -1,7 +1,13 @@
+0) What is needed
+libusb (with homebrew) : http://brew.sh
+stlink : https://github.com/texane/stlink
+gcc : arm-none-eabi-gcc (GNU Tools for ARM Embedded Processors) 4.8.4 20140526 (release) [ARM/embedded-4_8-branch revision 211358]
+
 1) Generates the files with :
 > goil --target=thumb2/cortex-m4/STM32F4-Discovery -v --templates=../../../../../goilv2/templates/ periodic.oil
 
 2) Compile and link with
+> make clean
 > make
 
 3) Builds different binary formats with
