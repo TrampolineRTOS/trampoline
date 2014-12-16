@@ -57,6 +57,8 @@ typedef struct ARM_CORE_CONTEXT *tpl_context;
 
 extern struct ARM_CORE_CONTEXT idle_task_context;
 
+extern unsigned int _estack;
+
 #endif /* TPL_MACHINE_H */
 
 /* End of file tpl_machine.h */
