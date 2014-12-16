@@ -25,26 +25,81 @@
 
 #include "tpl_os.h"
 #include "tpl_os_interrupt_kernel.h"
+#include "stm32f4xx.h"
+#include "stm32f4_discovery.h"
+#include "tpl_compiler.h"
 
-extern CONST(tpl_it_vector_entry, OS_CONST) tpl_it_vector[82];
+extern void tpl_primary_syscall_handler(void);
 
-void tpl_arm_subarch_irq_handler ()
+/******************************************************************************
+ * Exception handlers.
+ ******************************************************************************/
+FUNC(void, OS_CODE)NMI_Handler(void)
 {
-  VAR(uint32, AUTOMATIC) isr_id_dec;
-  VAR(tpl_it_handler, AUTOMATIC) isr_vector;
-  
-  /* get interrupt id */
-//  isr_id_dec = NVIC_GetPendingIRQ();
-  /* <! ATTENTION
-   * Attribution du vecteur 15 temporairement; on ne sert que l'it SysTick
-   */
-  isr_id_dec = (uint32)15;
-  /* !> */
+  while (1)
+    {
+    }
+}
 
-  /* clear interrupt */
-  /* Automatically done when the interrupt is serviced */
+FUNC(void, OS_CODE)HardFault_Handler(void)
+{
+  while (1)
+    {
+    }
+}
 
-  /* launch interrupt fonction (ISR2, timer...) */
-  isr_vector = tpl_it_vector[isr_id_dec].func;
-  isr_vector(tpl_it_vector[isr_id_dec].args);
+FUNC(void, OS_CODE)MemManage_Handler(void)
+{
+  while (1)
+    {
+    }
+}
+
+FUNC(void, OS_CODE)BusFault_Handler(void)
+{
+  while (1)
+    {
+    }
+}
+
+FUNC(void, OS_CODE)UsageFault_Handler(void)
+{
+  while (1)
+    {
+    }
+}
+
+FUNC(void, OS_CODE)SVCall_Handler(void)
+{
+  tpl_primary_syscall_handler();
+}
+
+FUNC(void, OS_CODE)DebugMonitor_Handler(void)
+{
+  while (1)
+    {
+    }
+}
+
+FUNC(void, OS_CODE)PendSV_Handler(void)
+{
+  while (1)
+    {
+    }
+}
+
+/******************************************************************************
+ * IRQ acknowledge functions.
+ ******************************************************************************/
+void SysTick_ClearFlag(void)
+{
+}
+
+void EXTI0_IRQ_ClearFlag(void)
+{
+  while (EXTI_GetITStatus(USER_BUTTON_EXTI_LINE) != RESET) {
+    /* Clear the USER Button EXTI line pending bit */
+    EXTI_ClearFlag(USER_BUTTON_EXTI_LINE);
+    EXTI_ClearITPendingBit(USER_BUTTON_EXTI_LINE);
+  }
 }

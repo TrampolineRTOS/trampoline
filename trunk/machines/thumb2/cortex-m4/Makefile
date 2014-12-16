@@ -32,7 +32,6 @@ SOURCES += startup_cm.c \
 startup_stm32f4xx.c \
 system_stm32f4xx.c \
 cm4_irq.c \
-vectors_stm32f4xx.c \
 cm4_tpl_stubs.c \
 
 ##########

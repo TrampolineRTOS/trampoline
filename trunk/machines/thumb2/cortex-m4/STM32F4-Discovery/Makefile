@@ -28,8 +28,12 @@
 #
 #kernel OS architecture dependant files
 
+SOURCES += stm32f4_discovery.c
 SOURCES += stm32f4xx_gpio.c
 SOURCES += stm32f4xx_rcc.c
+SOURCES += stm32f4xx_exti.c
+SOURCES += stm32f4xx_syscfg.c
+SOURCES += misc.c
 
 CFLAGS += -I$(BOARD_PATH)/StdPeriph_Driver/include
 
