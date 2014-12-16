@@ -1358,3 +1358,5 @@ if OS::TRACE then
 end if
 
 template if exists custom_files in config
+
+template if exists custom_code in code
