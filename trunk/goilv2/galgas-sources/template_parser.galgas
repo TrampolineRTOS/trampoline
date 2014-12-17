@@ -1314,7 +1314,8 @@ proc setVariableInPath
   ?@TvarPath path
   ?!@TfieldMap ioFieldMap
   ?let @Ttype expressionType
-  ?let @Tvalue enumeratedValue {
+  ?let @Tvalue enumeratedValue
+{
   # get the name and the key of the variable
   @lstring varName
   @lstring key
