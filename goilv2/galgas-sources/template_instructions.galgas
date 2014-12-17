@@ -15,7 +15,195 @@
 #                                                                           *
 #---------------------------------------------------------------------------*
 
+abstract class @gtlVarItem { @lstring itemName }
+class @gtlVarItemField : @gtlVarItem { @lstring field }
+class @gtlVarItemKey :   @gtlVarItem { @lstring key   }
+class @gtlVarItemIdx :   @gtlVarItem { @lsint   idx   }
+
+list @gtlVarPath {
+  @gtlVarItem item
+}
+
+map @gtlVarMap {
+  @gtlData mValue 
+  insert put error message "a variable or field named '%K' is already declared in %L"
+  search get error message "there is no variable or field named '%K'"
+  remove del error message "there is no variable or field named '%K' to delete"
+}
+
+proc setVarInPath 
+  ?@gtlVarPath path
+  ?!@gtlVarMap fieldMap
+  ?let @gtlData data
+{
+  # get the first item of the variable path
+  [!?path popFirst ?@gtlVarItem item]
+  @lstring varName = [item itemName]
+  if [fieldMap hasKey ![varName string]] then
+    [fieldMap get !varName ?@gtlData fieldValue]
+    if fieldValue is == @gtlMap then
+      # then referenced field is a map
+      if item is == @gtlVarItemKey then
+        # a key has been defined for the map,
+        @gtlVarMap items = [fieldValue as @gtlMap value]
+        if [items hasKey ![[item as @gtlVarItemKey key] string]] then
+          if [path length] == 0 then
+            [!?items setMValueForKey !data ![[item as @gtlVarItemKey key] string]]
+          else
+            @Ttype itemType
+            @Tvalue itemValue
+            [items searchKey !key ?itemType ?itemValue]
+            @TfieldMap nextFieldMap = [itemValue mStructValue]
+            setVariableInPath ( !path !?nextFieldMap !expressionType !enumeratedValue)
+            itemValue.mStructValue = nextFieldMap
+            itemType = @Ttype. structType
+            [!?items setMTypeForKey !itemType ![key string]]
+            [!?items setMValueForKey !itemValue ![key string]]
+          end
+        else
+          if [path length] == 0 then
+            [!?items insertKey !key !expressionType !enumeratedValue]
+          else
+            var nextFieldMap =@TfieldMap.emptyMap{}
+            setVariableInPath ( !path !?nextFieldMap !expressionType !enumeratedValue)
+            [!?items insertKey !key !@Ttype. structType !valueWithStruct(!nextFieldMap !emptyLString())]
+          end
+        end
+        fieldValue.mStructValue = items
+        [!?ioFieldMap setMTypeForKey !fieldType ![varName string]]
+        [!?ioFieldMap setMValueForKey !fieldValue ![varName string]]
+      else # no key has been defined, the type is changed to
+        if [path length] == 0 then
+          # the actual type
+          [!?ioFieldMap setMTypeForKey !expressionType ![varName string]]
+          [!?ioFieldMap setMValueForKey !enumeratedValue ![varName string]]
+        else
+          # a struct type
+          var nextFieldMap =@TfieldMap.emptyMap{}
+          setVariableInPath ( !path !?nextFieldMap !expressionType !enumeratedValue)
+          [!?ioFieldMap setMTypeForKey !@Ttype. structType ![varName string]]
+          [!?ioFieldMap setMValueForKey !valueWithStruct(!nextFieldMap !emptyLString()) ![varName string]]
+        end
+      end
+    elsif fieldType == @Ttype. listType then
+      # then referenced field is a list
+      if [idx sint] != -1s then
+        if [path length] == 0 then
+          if expressionType == @Ttype. structType then
+            # ok, trying to put a struct in a list item
+            @TfieldMapList theList = [fieldValue mMapListValue]
+            [!?theList setMMapAtIndex ![enumeratedValue mStructValue] ![idx uint]]
+            fieldValue.mMapListValue = theList
+          else
+            # it is an error to put something else than a struct in a list item
+            error varName: "struct expression expected"
+          end
+        else
+          # an item of the list is referenced, get it
+          @TfieldMapList theList = [fieldValue mMapListValue]
+          @TfieldMap nextFieldMap = [theList mMapAtIndex ![idx uint]]
+          setVariableInPath ( !path !?nextFieldMap !expressionType !enumeratedValue)
+          [!?theList setMMapAtIndex !nextFieldMap ![idx uint]]
+          fieldValue.mMapListValue = theList
+        end
+        [!?ioFieldMap setMTypeForKey !fieldType ![varName string]]
+        [!?ioFieldMap setMValueForKey !fieldValue ![varName string]]
+      else
+        # this is the whole list
+        if [path length] == 0 then
+          # the actual type
+          [!?ioFieldMap setMTypeForKey !expressionType ![varName string]]
+          [!?ioFieldMap setMValueForKey !enumeratedValue ![varName string]]
+        else
+          # a struct type
+          var nextFieldMap =@TfieldMap.emptyMap{}
+          setVariableInPath ( !path !?nextFieldMap !expressionType !enumeratedValue)
+          [!?ioFieldMap setMTypeForKey !@Ttype. structType ![varName string]]
+          [!?ioFieldMap setMValueForKey !valueWithStruct(!nextFieldMap !emptyLString()) ![varName string]]
+        end
+      end
+    elsif fieldType == @Ttype. structType then
+      if [path length] == 0 then
+        # the type is changed to the actual type
+        [!?ioFieldMap setMTypeForKey !expressionType ![varName string]]
+        [!?ioFieldMap setMValueForKey !enumeratedValue ![varName string]]
+      else
+        # the existing struct is got
+        @TfieldMap nextFieldMap = [fieldValue mStructValue]
+        setVariableInPath ( !path !?nextFieldMap !expressionType !enumeratedValue)
+        # and updated
+        fieldValue.mStructValue = nextFieldMap
+        [!?ioFieldMap setMValueForKey !fieldValue ![varName string]]
+      end
+    else
+      if [key string] == "" then
+        if [idx sint] == -1s then
+          if [path length] == 0 then
+            # the type is changed to the actual type
+            [!?ioFieldMap setMTypeForKey !expressionType ![varName string]]
+            [!?ioFieldMap setMValueForKey !enumeratedValue ![varName string]]
+          else
+            var nextFieldMap =@TfieldMap.emptyMap{}
+            setVariableInPath ( !path !?nextFieldMap !expressionType !enumeratedValue)
+            [!?ioFieldMap setMTypeForKey !@Ttype. structType ![varName string]]
+            [!?ioFieldMap setMValueForKey !valueWithStruct(!nextFieldMap !emptyLString()) ![varName string]]
+          end
+        else
+          # it is an error to set an item of a list it the list does not exist
+          error varName: "A list must exist before setting one of its item"
+        end
+      else
+        # create a map
+        var newMap =@TfieldMap.emptyMap{}
+        if [path length] == 0 then
+          [!?newMap insertKey !key !expressionType !enumeratedValue]
+        else
+          var nextFieldMap =@TfieldMap.emptyMap{}
+          setVariableInPath ( !path !?nextFieldMap !expressionType !enumeratedValue)
+          [!?newMap insertKey !key !@Ttype. structType !valueWithStruct(!nextFieldMap !emptyLString())]
+        end
+        [!?ioFieldMap setMTypeForKey !@Ttype. mapType ![varName string]]
+        [!?ioFieldMap setMValueForKey !valueWithMap(!newMap !emptyLString()) ![varName string]]
+      end
+    end
+  else
+    # The variable does not exist
+    if [path length] == 0 then
+      if [key string] == "" then
+        if [idx sint] == -1s then
+          [!?ioFieldMap insertKey !varName !expressionType !enumeratedValue]
+        else
+          # it is an error to set an item of a list it the list does not exist
+          error varName: "A list must exist before setting one of its item"
+        end
+      else
+        var newMap =@TfieldMap.emptyMap{}
+        [!?newMap insertKey !key !expressionType !enumeratedValue]
+        [!?ioFieldMap insertKey !varName !@Ttype. mapType !valueWithMap(!newMap !emptyLString())]
+      end
+    else
+      if [key string] == "" then
+        if [idx sint] == -1s then
+          var nextFieldMap =@TfieldMap.emptyMap{}
+          setVariableInPath ( !path !?nextFieldMap !expressionType !enumeratedValue)
+          [!?ioFieldMap insertKey !varName !@Ttype. structType !valueWithStruct(!nextFieldMap !emptyLString())]
+        else
+          # it is an error to set an item of a list it the list does not exist
+          error varName: "A list must exist before setting one of its item"
+        end
+      else
+        var newMap =@TfieldMap.emptyMap{}
+        var nextFieldMap =@TfieldMap.emptyMap{}
+        setVariableInPath ( !path !?nextFieldMap !expressionType !enumeratedValue)
+        [!?newMap insertKey !key !@Ttype. structType !valueWithStruct(!nextFieldMap !emptyLString())]
+        [!?ioFieldMap insertKey !varName !@Ttype. mapType !valueWithMap(!newMap !emptyLString())]
+      end
+    end
+  end
+}
+
 abstract class @gtlData { @location where %setter }
+
 abstract getter @gtlData plusOp  -> @gtlData result
 abstract getter @gtlData minusOp -> @gtlData result
 abstract getter @gtlData notOp   -> @gtlData result
@@ -43,53 +231,32 @@ override getter @gtlInt plusOp  -> @gtlData result { result = self }
 override getter @gtlInt minusOp -> @gtlData result { result = @gtlInt.new { !where !-value } }
 override getter @gtlInt notOp   -> @gtlData result { result = @gtlInt.new { !where !~value } }
 override getter @gtlInt addOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlInt then
-    result = @gtlInt.new { !where !value + [right as @gtlInt value] }
-  else
+  result = @gtlInt.new { !where !value + [right as @gtlInt value] }
     error [right where] : "int expected" : result
-  end
 }
 override getter @gtlInt subOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlInt then
-    result = @gtlInt.new { !where !value - [right as @gtlInt value] }
-  else
+  result = @gtlInt.new { !where !value - [right as @gtlInt value] }
     error [right where] : "int expected" : result
-  end
 }
 override getter @gtlInt mulOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlInt then
-    result = @gtlInt.new { !where !value * [right as @gtlInt value] }
-  else
+  result = @gtlInt.new { !where !value * [right as @gtlInt value] }
     error [right where] : "int expected" : result
-  end
 }
 override getter @gtlInt divOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlInt then
-    result = @gtlInt.new { !where !value / [right as @gtlInt value] }
-  else
+  result = @gtlInt.new { !where !value / [right as @gtlInt value] }
     error [right where] : "int expected" : result
-  end
 }
 override getter @gtlInt andOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlInt then
-    result = @gtlInt.new { !where !value & [right as @gtlInt value] }
-  else
+  result = @gtlInt.new { !where !value & [right as @gtlInt value] }
     error [right where] : "int expected" : result
-  end
 }
 override getter @gtlInt orOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlInt then
-    result = @gtlInt.new { !where !value | [right as @gtlInt value] }
-  else
+  result = @gtlInt.new { !where !value | [right as @gtlInt value] }
     error [right where] : "int expected" : result
-  end
 }
 override getter @gtlInt xorOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlInt then
-    result = @gtlInt.new { !where !value ^ [right as @gtlInt value] }
-  else
+  result = @gtlInt.new { !where !value ^ [right as @gtlInt value] }
     error [right where] : "int expected" : result
-  end
 }
 override getter @gtlInt slOp ?let @gtlData right -> @gtlData result {
   if right is == @gtlInt then
@@ -116,46 +283,28 @@ override getter @gtlInt srOp ?let @gtlData right -> @gtlData result {
   end
 }
 override getter @gtlInt neqOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlInt then
-    result = @gtlBool.new { !where !value != [right as @gtlInt value] }
-  else
+  result = @gtlBool.new { !where !value != [right as @gtlInt value] }
     error [right where] : "int expected" : result
-  end
 }
 override getter @gtlInt eqOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlInt then
-    result = @gtlBool.new { !where !value == [right as @gtlInt value] }
-  else
+  result = @gtlBool.new { !where !value == [right as @gtlInt value] }
     error [right where] : "int expected" : result
-  end
 }
 override getter @gtlInt gtOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlInt then
-    result = @gtlBool.new { !where !value > [right as @gtlInt value] }
-  else
+  result = @gtlBool.new { !where !value > [right as @gtlInt value] }
     error [right where] : "int expected" : result
-  end
 }
 override getter @gtlInt geOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlInt then
-    result = @gtlBool.new { !where !value >= [right as @gtlInt value] }
-  else
+  result = @gtlBool.new { !where !value >= [right as @gtlInt value] }
     error [right where] : "int expected" : result
-  end
 }
 override getter @gtlInt ltOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlInt then
-    result = @gtlBool.new { !where !value < [right as @gtlInt value] }
-  else
+  result = @gtlBool.new { !where !value < [right as @gtlInt value] }
     error [right where] : "int expected" : result
-  end
 }
 override getter @gtlInt leOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlInt then
-    result = @gtlBool.new { !where !value <= [right as @gtlInt value] }
-  else
+  result = @gtlBool.new { !where !value <= [right as @gtlInt value] }
     error [right where] : "int expected" : result
-  end
 }
 
 #---------------------------------------------------------------------------*
@@ -168,32 +317,20 @@ override getter @gtlFloat notOp   -> @gtlData result {
   error where : "float forbidden" : result
 }
 override getter @gtlFloat addOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlFloat then
-    result = @gtlFloat.new { !where !value + [right as @gtlFloat value] }
-  else
+  result = @gtlFloat.new { !where !value + [right as @gtlFloat value] }
     error [right where] : "float expected" : result
-  end
 }
 override getter @gtlFloat subOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlFloat then
-    result = @gtlFloat.new { !where !value - [right as @gtlFloat value] }
-  else
+  result = @gtlFloat.new { !where !value - [right as @gtlFloat value] }
     error [right where] : "float expected" : result
-  end
 }
 override getter @gtlFloat mulOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlFloat then
-    result = @gtlFloat.new { !where !value * [right as @gtlFloat value] }
-  else
+  result = @gtlFloat.new { !where !value * [right as @gtlFloat value] }
     error [right where] : "float expected" : result
-  end
 }
 override getter @gtlFloat divOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlFloat then
-    result = @gtlFloat.new { !where !value / [right as @gtlFloat value] }
-  else
+  result = @gtlFloat.new { !where !value / [right as @gtlFloat value] }
     error [right where] : "float expected" : result
-  end
 }
 override getter @gtlFloat andOp ?let @gtlData unused right -> @gtlData result {
   error where : "float forbidden" : result
@@ -211,46 +348,28 @@ override getter @gtlFloat srOp ?let @gtlData unused right -> @gtlData result {
   error where : "float forbidden" : result
 }
 override getter @gtlFloat neqOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlFloat then
-    result = @gtlBool.new { !where !value != [right as @gtlFloat value] }
-  else
+  result = @gtlBool.new { !where !value != [right as @gtlFloat value] }
     error [right where] : "float expected" : result
-  end
 }
 override getter @gtlFloat eqOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlFloat then
-    result = @gtlBool.new { !where !value == [right as @gtlFloat value] }
-  else
+  result = @gtlBool.new { !where !value == [right as @gtlFloat value] }
     error [right where] : "float expected" : result
-  end
 }
 override getter @gtlFloat gtOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlFloat then
-    result = @gtlBool.new { !where !value > [right as @gtlFloat value] }
-  else
+  result = @gtlBool.new { !where !value > [right as @gtlFloat value] }
     error [right where] : "float expected" : result
-  end
 }
 override getter @gtlFloat geOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlFloat then
-    result = @gtlBool.new { !where !value >= [right as @gtlFloat value] }
-  else
+  result = @gtlBool.new { !where !value >= [right as @gtlFloat value] }
     error [right where] : "float expected" : result
-  end
 }
 override getter @gtlFloat ltOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlFloat then
-    result = @gtlBool.new { !where !value < [right as @gtlFloat value] }
-  else
+  result = @gtlBool.new { !where !value < [right as @gtlFloat value] }
     error [right where] : "float expected" : result
-  end
 }
 override getter @gtlFloat leOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlFloat then
-    result = @gtlBool.new { !where !value <= [right as @gtlFloat value] }
-  else
+  result = @gtlBool.new { !where !value <= [right as @gtlFloat value] }
     error [right where] : "float expected" : result
-  end
 }
 
 #---------------------------------------------------------------------------*
@@ -267,11 +386,8 @@ override getter @gtlString notOp   -> @gtlData result {
   error where : "string forbidden" : result
 }
 override getter @gtlString addOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlString then
-    result = @gtlString.new { !where !value + [right as @gtlString value] }
-  else
+  result = @gtlString.new { !where !value + [right as @gtlString value] }
     error [right where] : "string expected" : result
-  end
 }
 override getter @gtlString subOp ?let @gtlData unused right -> @gtlData result {
   error where : "string forbidden" : result
@@ -298,46 +414,28 @@ override getter @gtlString srOp ?let @gtlData unused right -> @gtlData result {
   error where : "string forbidden" : result
 }
 override getter @gtlString neqOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlString then
-    result = @gtlBool.new { !where !value != [right as @gtlString value] }
-  else
+  result = @gtlBool.new { !where !value != [right as @gtlString value] }
     error [right where] : "string expected" : result
-  end
 }
 override getter @gtlString eqOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlString then
-    result = @gtlBool.new { !where !value == [right as @gtlString value] }
-  else
+  result = @gtlBool.new { !where !value == [right as @gtlString value] }
     error [right where] : "string expected" : result
-  end
 }
 override getter @gtlString gtOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlString then
-    result = @gtlBool.new { !where !value > [right as @gtlString value] }
-  else
+  result = @gtlBool.new { !where !value > [right as @gtlString value] }
     error [right where] : "string expected" : result
-  end
 }
 override getter @gtlString geOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlString then
-    result = @gtlBool.new { !where !value >= [right as @gtlString value] }
-  else
+  result = @gtlBool.new { !where !value >= [right as @gtlString value] }
     error [right where] : "string expected" : result
-  end
 }
 override getter @gtlString ltOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlString then
-    result = @gtlBool.new { !where !value < [right as @gtlString value] }
-  else
+  result = @gtlBool.new { !where !value < [right as @gtlString value] }
     error [right where] : "string expected" : result
-  end
 }
 override getter @gtlString leOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlString then
-    result = @gtlBool.new { !where !value <= [right as @gtlString value] }
-  else
+  result = @gtlBool.new { !where !value <= [right as @gtlString value] }
     error [right where] : "string expected" : result
-  end
 }
 
 #---------------------------------------------------------------------------*
@@ -366,25 +464,16 @@ override getter @gtlBool divOp ?let @gtlData unused right -> @gtlData result {
   error where : "bool forbidden" : result
 }
 override getter @gtlBool andOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlBool then
-    result = @gtlBool.new { !where !value & [right as @gtlBool value] }
-  else
+  result = @gtlBool.new { !where !value & [right as @gtlBool value] }
     error [right where] : "bool expected" : result
-  end
 }
 override getter @gtlBool orOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlBool then
-    result = @gtlBool.new { !where !value | [right as @gtlBool value] }
-  else
+  result = @gtlBool.new { !where !value | [right as @gtlBool value] }
     error [right where] : "bool expected" : result
-  end
 }
 override getter @gtlBool xorOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlBool then
-    result = @gtlBool.new { !where !value ^ [right as @gtlBool value] }
-  else
+  result = @gtlBool.new { !where !value ^ [right as @gtlBool value] }
     error [right where] : "bool expected" : result
-  end
 }
 override getter @gtlBool slOp ?let @gtlData unused right -> @gtlData result {
   error where : "bool forbidden" : result
@@ -393,64 +482,39 @@ override getter @gtlBool srOp ?let @gtlData unused right -> @gtlData result {
   error where : "bool forbidden" : result
 }
 override getter @gtlBool neqOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlBool then
-    result = @gtlBool.new { !where !value != [right as @gtlBool value] }
-  else
+  result = @gtlBool.new { !where !value != [right as @gtlBool value] }
     error [right where] : "string expected" : result
-  end
 }
 override getter @gtlBool eqOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlBool then
-    result = @gtlBool.new { !where !value == [right as @gtlBool value] }
-  else
+  result = @gtlBool.new { !where !value == [right as @gtlBool value] }
     error [right where] : "string expected" : result
-  end
 }
 override getter @gtlBool gtOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlBool then
-    result = @gtlBool.new { !where !value > [right as @gtlBool value] }
-  else
+  result = @gtlBool.new { !where !value > [right as @gtlBool value] }
     error [right where] : "string expected" : result
-  end
 }
 override getter @gtlBool geOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlBool then
-    result = @gtlBool.new { !where !value >= [right as @gtlBool value] }
-  else
+  result = @gtlBool.new { !where !value >= [right as @gtlBool value] }
     error [right where] : "string expected" : result
-  end
 }
 override getter @gtlBool ltOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlBool then
-    result = @gtlBool.new { !where !value < [right as @gtlBool value] }
-  else
+  result = @gtlBool.new { !where !value < [right as @gtlBool value] }
     error [right where] : "string expected" : result
-  end
 }
 override getter @gtlBool leOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlBool then
-    result = @gtlBool.new { !where !value <= [right as @gtlBool value] }
-  else
+  result = @gtlBool.new { !where !value <= [right as @gtlBool value] }
     error [right where] : "string expected" : result
-  end
 }
 
 #---------------------------------------------------------------------------*
 # foundation types for collections
 #---------------------------------------------------------------------------*
-map @map {
-  @gtlData field
-  insert set error message "member %K already exists in %L"
-  search get error message "member %K does not exists in %%"
-  remove del error message "member %K does not exists in %%"
-}
-
-list @list { @map value }
+list @list { @gtlVarMap value }
 
 #---------------------------------------------------------------------------*
 # Struct type and operations on struct
 #---------------------------------------------------------------------------*
-class @gtlStruct : @gtlData { @map  value }
+class @gtlStruct : @gtlData { @gtlVarMap  value }
 override getter @gtlStruct plusOp  -> @gtlData result {
   error where : "struct forbidden" : result
 }
@@ -488,18 +552,12 @@ override getter @gtlStruct srOp ?let @gtlData unused right -> @gtlData result {
   error where : "struct forbidden" : result
 }
 override getter @gtlStruct neqOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlStruct then
-    result = @gtlBool.new { !where !(value != [right as @gtlStruct value]) }
-  else
+  result = @gtlBool.new { !where !(value != [right as @gtlStruct value]) }
     error [right where] : "struct expected" : result
-  end
 }
 override getter @gtlStruct eqOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlStruct then
-    result = @gtlBool.new { !where !(value == [right as @gtlStruct value]) }
-  else
+  result = @gtlBool.new { !where !(value == [right as @gtlStruct value]) }
     error [right where] : "struct expected" : result
-  end
 }
 override getter @gtlStruct gtOp ?let @gtlData unused right -> @gtlData result {
   error where : "struct forbidden" : result
@@ -563,18 +621,12 @@ override getter @gtlList srOp ?let @gtlData unused right -> @gtlData result {
   error where : "list forbidden" : result
 }
 override getter @gtlList neqOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlList then
-    result = @gtlBool.new { !where !(value != [right as @gtlList value]) }
-  else
+  result = @gtlBool.new { !where !(value != [right as @gtlList value]) }
     error [right where] : "list expected" : result
-  end
 }
 override getter @gtlList eqOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlList then
-    result = @gtlBool.new { !where !(value == [right as @gtlList value]) }
-  else
+  result = @gtlBool.new { !where !(value == [right as @gtlList value]) }
     error [right where] : "list expected" : result
-  end
 }
 override getter @gtlList gtOp ?let @gtlData unused right -> @gtlData result {
   error where : "a list does not support the > operator" : result
@@ -592,7 +644,7 @@ override getter @gtlList leOp ?let @gtlData unused right -> @gtlData result {
 #---------------------------------------------------------------------------*
 # Map type and operations on maps
 #---------------------------------------------------------------------------*
-class @gtlMap    : @gtlData { @map  value }
+class @gtlMap    : @gtlData { @gtlVarMap  value }
 override getter @gtlMap plusOp  -> @gtlData result {
   error where : "map forbidden" : result
 }
@@ -630,18 +682,12 @@ override getter @gtlMap srOp ?let @gtlData unused right -> @gtlData result {
   error where : "map forbidden" : result
 }
 override getter @gtlMap neqOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlMap then
-    result = @gtlBool.new { !where !(value != [right as @gtlMap value]) }
-  else
+  result = @gtlBool.new { !where !(value != [right as @gtlMap value]) }
     error [right where] : "map expected" : result
-  end
 }
 override getter @gtlMap eqOp ?let @gtlData right -> @gtlData result {
-  if right is == @gtlMap then
-    result = @gtlBool.new { !where !(value == [right as @gtlMap value]) }
-  else
+  result = @gtlBool.new { !where !(value == [right as @gtlMap value]) }
     error [right where] : "map expected" : result
-  end
 }
 override getter @gtlMap gtOp ?let @gtlData unused right -> @gtlData result {
   error where : "a map does not support the > operator" : result
@@ -838,17 +884,17 @@ override getter @gtlGreaterOrEqualExpression eval -> @gtlData result {
 #---------------------------------------------------------------------------*
 abstract class @gtlInstruction {}
 
-abstract method @gtlInstruction execute
-  ?!@TfieldMap gtlVariableMap
+abstract method @gtlInstruction execute ?!@gtlVarMap gtlVariableMap
 
 #---------------------------------------------------------------------------*
 # let instructions
 #---------------------------------------------------------------------------*
-#abstract class @gtlAssign : @gtlInstruction {
-#  @TvarPath    LValue
-#  @gtlExpression RValue
-#}
-#class @gtlLet           : @gtlAssign {}
+abstract class @gtlAssign : @gtlInstruction {
+  @gtlVarPath    lValue
+  @gtlExpression rValue
+}
+
+class @gtlLet           : @gtlAssign {}
 #class @gtlLetAdd        : @gtlAssign {}
 #class @gtlLetSubstract  : @gtlAssign {}
 #class @gtlLetMultiply   : @gtlAssign {}
@@ -859,6 +905,8 @@ abstract method @gtlInstruction execute
 #class @gtlLetAnd        : @gtlAssign {}
 #class @gtlLetOr         : @gtlAssign {}
 #class @gtlLetXor        : @gtlAssign {}
-#
-#override method @gtlLet execute ?!@TfieldMap gtlVariableMap {}
+
+override method @gtlLet execute ?!@gtlVarMap gtlVariableMap {
+#  [!?gtlVariableMap setVar !lValue ![rValue eval]]
+}
   
