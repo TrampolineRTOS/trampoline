@@ -47,16 +47,15 @@ proc setVarInPath
         # a key has been defined for the map,
         @gtlVarMap items = [fieldValue as @gtlMap value]
         if [items hasKey ![[item as @gtlVarItemKey key] string]] then
+          @lstring key = [item as @gtlVarItemKey key]
           if [path length] == 0 then
-            [!?items setMValueForKey !data ![[item as @gtlVarItemKey key] string]]
+            [!?items setMValueForKey !data ![key string]]
           else
-            @Ttype itemType
-            @Tvalue itemValue
-            [items searchKey !key ?itemType ?itemValue]
-            @TfieldMap nextFieldMap = [itemValue mStructValue]
-            setVariableInPath ( !path !?nextFieldMap !expressionType !enumeratedValue)
-            itemValue.mStructValue = nextFieldMap
-            itemType = @Ttype. structType
+            [items get !key ?@gtlData keyedItem]
+            @gtlMap keyedMapItem = keyedItem as @gtlMap
+            @gtlVarMap nextFieldMap = [keyedMapItem value]
+            setVarInPath(!path !?nextFieldMap !data)
+            [!?keyedMapItem setValue !nextFieldMap]
             [!?items setMTypeForKey !itemType ![key string]]
             [!?items setMValueForKey !itemValue ![key string]]
           end
@@ -644,7 +643,7 @@ override getter @gtlList leOp ?let @gtlData unused right -> @gtlData result {
 #---------------------------------------------------------------------------*
 # Map type and operations on maps
 #---------------------------------------------------------------------------*
-class @gtlMap    : @gtlData { @gtlVarMap  value }
+class @gtlMap    : @gtlData { @gtlVarMap  value %setter }
 override getter @gtlMap plusOp  -> @gtlData result {
   error where : "map forbidden" : result
 }
