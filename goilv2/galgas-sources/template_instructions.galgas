@@ -45,9 +45,9 @@ proc setVarInPath
       # then referenced field is a map
       if item is == @gtlVarItemKey then
         # a key has been defined for the map,
+        @lstring key = [item as @gtlVarItemKey key]
         @gtlVarMap items = [fieldValue as @gtlMap value]
-        if [items hasKey ![[item as @gtlVarItemKey key] string]] then
-          @lstring key = [item as @gtlVarItemKey key]
+        if [items hasKey ![key string]] then
           if [path length] == 0 then
             [!?items setMValueForKey !data ![key string]]
           else
@@ -56,18 +56,19 @@ proc setVarInPath
             @gtlVarMap nextFieldMap = [keyedMapItem value]
             setVarInPath(!path !?nextFieldMap !data)
             [!?keyedMapItem setValue !nextFieldMap]
-            [!?items setMTypeForKey !itemType ![key string]]
-            [!?items setMValueForKey !itemValue ![key string]]
+            [!?items setMValueForKey !keyedMapItem ![key string]]
           end
         else
           if [path length] == 0 then
-            [!?items insertKey !key !expressionType !enumeratedValue]
+            [!?items put !key !data]
           else
-            var nextFieldMap =@TfieldMap.emptyMap{}
-            setVariableInPath ( !path !?nextFieldMap !expressionType !enumeratedValue)
-            [!?items insertKey !key !@Ttype. structType !valueWithStruct(!nextFieldMap !emptyLString())]
+            var nextFieldMap = @gtlVarMap.emptyMap{}
+            setVarInPath(!path !?nextFieldMap !data)
+            [!?items put !key !@gtlMap.new{![[item itemName] location] !nextFieldMap}]
           end
         end
+        [!?fieldValue as @gtlMap setValue !items]
+        [!?fieldMap setValueForKey !fieldValue ![varName string]]
         fieldValue.mStructValue = items
         [!?ioFieldMap setMTypeForKey !fieldType ![varName string]]
         [!?ioFieldMap setMValueForKey !fieldValue ![varName string]]
