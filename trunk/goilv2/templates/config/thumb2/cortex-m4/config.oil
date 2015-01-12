@@ -20,7 +20,7 @@ CPU stm32f407_discovery {
     INTERRUPT Reserved2              { VECT = 8; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
     INTERRUPT Reserved3              { VECT = 9; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
     INTERRUPT Reserved4              { VECT = 10; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
-    INTERRUPT SVCall                 { VECT = 11; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "SVCall_Handler"; }; };
+    INTERRUPT SVCall                 { VECT = 11; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "tpl_primary_syscall_handler"; }; };
     INTERRUPT DebugMonitor           { VECT = 12; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "DebugMonitor_Handler"; }; };
     INTERRUPT Reserved5              { VECT = 13; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
     INTERRUPT PendSV                 { VECT = 14; VECTOR_TYPE = HANDLER { NAME =  "PendSV_Handler"; }; };
