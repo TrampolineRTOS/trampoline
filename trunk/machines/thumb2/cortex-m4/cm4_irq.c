@@ -69,10 +69,10 @@ FUNC(void, OS_CODE)UsageFault_Handler(void)
     }
 }
 
-FUNC(void, OS_CODE)SVCall_Handler(void)
-{
-  tpl_primary_syscall_handler();
-}
+//FUNC(void, OS_CODE)SVCall_Handler(void)
+//{
+//  tpl_primary_syscall_handler();
+//}
 
 FUNC(void, OS_CODE)DebugMonitor_Handler(void)
 {

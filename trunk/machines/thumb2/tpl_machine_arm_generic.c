@@ -114,27 +114,15 @@ void tpl_disable_interrupts(void)
 FUNC(void, OS_CODE) tpl_init_context(
     CONST(tpl_proc_id, OS_APPL_DATA) proc_id)
 {
-	VAR(int, AUTOMATIC) i;
-//	CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA) the_proc = tpl_stat_proc_table[proc_id];
-//	P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA) l_tpl_core_context = the_proc->context;
-//	P2VAR(tpl_stack_word, AUTOMATIC, OS_APPL_DATA) stack = the_proc->stack.stack_zone;
-
-//  VAR(int, AUTOMATIC) i;
+  VAR(int, AUTOMATIC) i;
   const tpl_proc_static *the_proc;
-  //CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA) *the_proc;
   struct ARM_CORE_CONTEXT *l_tpl_context;
-//  struct TPL_CONTEXT *l_tpl_context;
-  
-  //P2VAR(TPL_CONTEXT, AUTOMATIC, OS_APPL_DATA) l_tpl_context;
   P2VAR(tpl_stack_word, AUTOMATIC, OS_APPL_DATA) stack;
 
   /* initialize shortcuts */
   the_proc = tpl_stat_proc_table[proc_id];
   l_tpl_context = the_proc->context;
   stack = the_proc->stack.stack_zone;
-  /* ptr#tpl_stack_word = ptr#tpl_proc_static->tpl_stack.ptr#tpl_stack_word
-   * ptr#tpl_stack_word = ptr#tpl_stack_word
-   */
 
   /*
    * Initialize context
@@ -152,13 +140,16 @@ FUNC(void, OS_CODE) tpl_init_context(
    *  */
   l_tpl_context->sp = ((uint32)the_proc->stack.stack_zone) + ((uint32)the_proc->stack.stack_size) - ARM_CORE_EXCEPTION_FRAME_SIZE;
 
+  /* Initialize stack footprint */
+  for (i = (the_proc->stack.stack_size - ARM_CORE_EXCEPTION_FRAME_SIZE) >> 2; i > 0; i-- )
+  {
+    *stack++ = OS_STACK_PATTERN;
+  };
   /* Build the process stack context in the following order :
    * psr, pc, lr, r12, r3, r2, r1, r0
    * Starts at the top of the stack
    */
-  stack += (the_proc->stack.stack_size - ARM_CORE_EXCEPTION_FRAME_SIZE) >> 2;
-  /* push EXC_RETURN value on top of stack */
-//  *stack++ = (uint32)ARM_INITIAL_EXC_RETURN;
+  //  stack += (the_proc->stack.stack_size - ARM_CORE_EXCEPTION_FRAME_SIZE) >> 2;
   /* r0 */
   *stack++ = (uint32)0;
   /* r1 */
@@ -180,24 +171,22 @@ FUNC(void, OS_CODE) tpl_init_context(
   /* pc */
   *stack++ = (uint32)(the_proc->entry);
   /* xpsr */
-  *stack = 0x01000000;
+  *stack++ = 0x01000000;
 
   /* task runs at a defined processor mode */
   //core_context->sp = USER_TASKS_ARM_MODE; /* macro defined into subarch part */
 
-  /* TODO: initialize stack footprint */
 #if WITH_AUTOSAR_STACK_MONITORING == YES
-  (*(uint8 *)(the_proc->stack.stack_zone)) = OS_STACK_PATTERN;
+    (*(uint8 *)(the_proc->stack.stack_zone)) = OS_STACK_PATTERN;
 #endif
 }
 
-FUNC(uint8, OS_CODE) tpl_check_stack_footprint (
-    CONST(tpl_proc_id, OS_APPL_DATA) proc_id)
+FUNC(uint8, OS_CODE) tpl_check_stack_footprint(CONST(tpl_proc_id, OS_APPL_DATA) proc_id)
 {
-	uint8 tmp;
-	/*to do*/
-	tmp=0;
-	return tmp;
+  uint8 tmp;
+  /*to do*/
+  tmp=0;
+  return tmp;
 }
 
 /*

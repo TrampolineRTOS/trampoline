@@ -182,7 +182,7 @@ tpl_primary_syscall_handler:
 	ldr r2, [r1, #TPL_KERN_OFFSET_S_ELECTED]
 	ldr r2, [r2]
 	mrs r1, psp                  /* Get current process stack pointer value */
-	stmia r1, {r4-r11}           /* Save r4-r11 into context bloc reg */
+	stmia r2, {r4-r11}           /* Save r4-r11 into context bloc reg */
 	str r1, [r2, #32]            /* Save psp into context bloc sp */
 	
 	/*********************************
@@ -246,6 +246,12 @@ save_context_swi:
 skip_save_context_swi:
 	/* Context is not saved, so the value of r3 will be 0 */
 	mov r3, #0
+	/* get back volatile registers
+	* get the context block address */
+	ldr r1, =tpl_kern
+	ldr r2, [r1, #TPL_KERN_OFFSET_S_ELECTED]
+	ldr r2, [r2]
+	ldmia r2, {r4-r11}           /* Load r4-r11 from context bloc reg */
  
 	/*
 	* LOADS NEW CONTEXT
