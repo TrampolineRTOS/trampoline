@@ -94,28 +94,11 @@ TASK(stop)
 
 FUNC(void, OS_APPL_CODE) isr_button1_function(void)
 {
-  //  NVIC_ClearPendingIRQ(USER_BUTTON_EXTI_LINE);
-  while (EXTI_GetITStatus(USER_BUTTON_EXTI_LINE) != RESET) {
-    /* Clear the USER Button EXTI line pending bit */
-    EXTI_ClearFlag(USER_BUTTON_EXTI_LINE);
-    EXTI_ClearITPendingBit(USER_BUTTON_EXTI_LINE);
-  }
-  //  ENABLE_IRQ();
-
   STM_EVAL_LEDToggle(LED3);
 
   /* If button1 is an ISR2 then call CallTerminateISR2 at the end of the handler */
-  //CallTerminateISR2();
+  CallTerminateISR2();
   /* otherwise do nothing more, just ends the handler */
-}
-
-FUNC(void, OS_APPL_CODE) clearIT_22(void)
-{
-  while (EXTI_GetITStatus(USER_BUTTON_EXTI_LINE) != RESET) {
-    /* Clear the USER Button EXTI line pending bit */
-    EXTI_ClearFlag(USER_BUTTON_EXTI_LINE);
-    EXTI_ClearITPendingBit(USER_BUTTON_EXTI_LINE);
-  }
 }
 
 void assert_failed(uint8_t* file, uint32_t line)
