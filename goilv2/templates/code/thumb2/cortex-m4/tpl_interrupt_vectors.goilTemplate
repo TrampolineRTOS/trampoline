@@ -50,6 +50,13 @@ loop ENTRY from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
               let entryFound := true
             end if
           end foreach
+          foreach isr in ISRS1 do
+            if isr::SOURCE == interrupt::NAME & not entryFound & interrupt::VECTOR_TYPE == "HANDLER" & interrupt::VECTOR_TYPE_S::NAME != "NONE" then
+%extern FUNC(void, OS_CODE) % !isr::NAME %_function();
+%
+              let entryFound := true
+            end if
+          end foreach
         end if
       end if
     end foreach
@@ -109,7 +116,7 @@ __attribute__ ((section(".isr_vector"))) CONST(tpl_it_handler, AUTOMATIC) tpl_it
         if not entryFound then
           foreach isr in ISRS1 do
             if isr::SOURCE == interrupt::NAME & not entryFound & interrupt::VECTOR_TYPE == "HANDLER" & interrupt::VECTOR_TYPE_S::NAME != "NONE" then
-%  %!interrupt::NAME %_Handler()%
+%  (tpl_it_handler)% !isr::NAME %_function%
               let entryFound := true
             end if
           end foreach
