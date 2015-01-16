@@ -101,11 +101,8 @@ TASK(stop)
 
 ISR(isr_button1)
 {
-  STM_EVAL_LEDToggle(LED3);
-
-  ActivateTask(phare_ouest);
-
-  CallTerminateISR2();
+	EXTI0_IRQ_ClearFlag();
+	STM_EVAL_LEDToggle(LED3);
 }
 
 void assert_failed(uint8_t* file, uint32_t line)

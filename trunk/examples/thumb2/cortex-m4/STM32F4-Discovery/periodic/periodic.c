@@ -92,7 +92,7 @@ TASK(stop)
   TerminateTask();
 }
 
-FUNC(void, OS_APPL_CODE) isr_button1_function(void)
+ISR(isr_button1)
 {
   STM_EVAL_LEDToggle(LED3);
 
