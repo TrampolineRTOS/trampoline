@@ -1,0 +1,17 @@
+CPU api {
+  /* 
+   * STM-HRT Protocol
+   */
+  APICONFIG stm {
+    ID_PREFIX = OS;
+    FILE = "tpl_os_stm_kernel";
+    HEADER = "tpl_os_stm";
+    SYSCALL ScreenDisplay {
+      KERNEL = tpl_screen_display_service;
+      RETURN_TYPE = StatusType
+        : "E_OK:    No error (Standard & Extended)\n";
+      ARGUMENT msg { KIND = P2CONST; TYPE = char ; }
+        : "Message to display" ;
+    } : "Displays on screen the message given as an argument";
+   };
+};
