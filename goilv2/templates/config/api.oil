@@ -1,3 +1,5 @@
+#include "api_STM.oil"
+
 CPU api {
   /* 
    * OSEK Alarms
@@ -640,3 +642,5 @@ CPU api {
     } : "GetCoreStatus allows to get the status of a processing core.";
   };
 };
+
+

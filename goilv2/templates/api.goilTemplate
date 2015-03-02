@@ -8,6 +8,8 @@ let APIUSED := emptylist
 let APIUSED += APIMAP["os"]
 let APIUSED += APIMAP["interrupt"]
 
+let APIUSED += APIMAP["stm"]
+
 #
 # Check and generate system calls
 #
