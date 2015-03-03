@@ -1,0 +1,17 @@
+#include "config4.0.oil"
+
+IMPLEMENTATION stm {
+
+  OBJECT [] {
+    UINT32 DATA_ID;
+    STRING DATA_TYPE;
+  };
+
+  TRANSACTION [] {
+    UINT32 CORE_ID;
+    OBJECT_TYPE READ_SET [];
+    OBJECT_TYPE WRITE_SET [];
+  };
+
+};
+ 

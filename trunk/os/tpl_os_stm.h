@@ -29,15 +29,3 @@
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-/**
- * @internal
- *
- * Displays on screen the message given as an argument
- *
- * @param   msg     message to display
- *
- * @retval  E_OK        no error
- *
- */
-FUNC(StatusType, OS_CODE) tpl_screen_display_service(
-  P2CONST(char, AUTOMATIC, OS_VAR) msg);
