@@ -40,4 +40,5 @@
  *
  */
 FUNC(StatusType, OS_CODE) tpl_screen_display_service(
-  P2CONST(char, AUTOMATIC, OS_VAR) msg);
+  P2CONST(char, AUTOMATIC, OS_APPL_DATA) msg);
+

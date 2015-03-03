@@ -1,4 +1,4 @@
-OIL_VERSION = "2.5";
+OIL_VERSION = "5.0";
 
 IMPLEMENTATION trampoline {
 
@@ -49,4 +49,28 @@ CPU only_one_periodic_task {
     ACTIVATION = 1;
     SCHEDULE = FULL;
   };
+
+  OBJECT my_object1 {
+    DATA_ID=1;
+    DATA_TYPE = "int";
+  };
+
+  OBJECT my_object2 {
+    DATA_ID=2;
+    DATA_TYPE = "int";
+  };
+
+  TRANSACTION my_transaction1 {
+    CORE_ID = 0;
+    READ_SET = my_object1;
+    READ_SET = my_object2;
+  };
+
+    TRANSACTION my_transaction2 {
+    CORE_ID = 1;
+    WRITE_SET = my_object1;
+    WRITE_SET = my_object2;
+  };
+
+
 };
