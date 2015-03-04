@@ -8,11 +8,12 @@ let APIUSED := emptylist
 let APIUSED += APIMAP["os"]
 let APIUSED += APIMAP["interrupt"]
 
-let APIUSED += APIMAP["stm"]
-
 #
 # Check and generate system calls
 #
+if [TRANSACTION length] > 0 then
+let APIUSED += APIMAP["stm"]
+end if
 if [TASKS length] > 0 then
   let APIUSED += APIMAP["task"]
 end if

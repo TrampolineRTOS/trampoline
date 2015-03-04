@@ -13,17 +13,19 @@ IMPLEMENTATION trampoline {
 CPU test {
 
     OS config {
-				MEMMAP = FALSE;
+        MEMMAP = FALSE;
         SYSTEM_CALL = TRUE;
         STATUS = EXTENDED;
-        APP_SRC = "app1_noisr_nomm_nomp.c";
-				APP_SRC = "driver/uart.c";
-				APP_SRC = "driver/generic.c";
-        TRAMPOLINE_BASE_PATH = "../../..";
-        CFLAGS  = "-g -O0";
-        CFLAGS  = "-Wall -pedantic -Wformat -std=c99 -I driver/";
-        ASFLAGS = "-g";
-        LDFLAGS = "-g";
+        BUILD = TRUE {
+            APP_SRC = "app1_noisr_nomm_nomp.c";
+            APP_SRC = "driver/uart.c";
+            APP_SRC = "driver/generic.c";
+            TRAMPOLINE_BASE_PATH = "../../..";
+            CFLAGS  = "-g -O0";
+            CFLAGS  = "-Wall -pedantic -Wformat -std=c99 -I driver/";
+            ASFLAGS = "-g";
+            LDFLAGS = "-g";
+        };
     } ;
 
   
@@ -60,16 +62,4 @@ CPU test {
         ACTIVATION = 1;
         SCHEDULE = FULL;
     };
-/*
-    ISR it1 {
-        SOURCE = TIMER1;
-        PRIORITY = 50;
-        CATEGORY = 2;
-    };
-
-    ISR it2 {
-        SOURCE = SOFTWARE_IRQ;
-        PRIORITY = 51;
-        CATEGORY = 2;
-    };*/
 } ;
