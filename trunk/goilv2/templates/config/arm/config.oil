@@ -3,14 +3,14 @@
  * It also define a new object type: INTERRUPT
  */
 IMPLEMENTATION arm_interrupt {
+  INTERRUPT [] { 
+    UINT32 ID;
+  };
   ISR [] {
     INTERRUPT_TYPE SOURCE;
   };
   COUNTER [] {
     INTERRUPT_TYPE SOURCE;
-  };
-  INTERRUPT [] { 
-    UINT32 ID;
   };
   INTERRUPT_COUNT {
     UINT32 IT_TABLE_SIZE;

@@ -64,6 +64,7 @@ let MESSAGE := exists MESSAGE default (emptylist)
 let APPLICATION := exists APPLICATION default (emptylist)
 let SCHEDULETABLE := exists SCHEDULETABLE default (emptylist)
 let IOC := exists IOC default (emptylist)
+let TRANSACTION := exists TRANSACTION default (emptylist)
 
 let ioc_queued_list := emptylist
 let ioc_unqueued_list := emptylist
