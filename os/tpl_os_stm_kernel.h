@@ -197,7 +197,7 @@ FUNC(StatusType, OS_CODE) tpl_screen_display_service(
   P2CONST(char, AUTOMATIC, OS_APPL_DATA) msg);
 
 /*
- * STMBeginReadTx
+ * tpl_stm_begin_read_tx_service
  *
  * Initializes a read-set transaction on the core given as an argument
  *
@@ -214,7 +214,7 @@ FUNC(StatusType, OS_CODE) tpl_stm_begin_read_tx_service(
   P2CONST(uint32, AUTOMATIC, OS_APPL_DATA) coreId);
 
 /*
- * STMBeginWriteTx
+ * tpl_stm_begin_write_tx_service
  *
  * Initializes a write-set transaction on the core given as an argument
  *
@@ -231,7 +231,7 @@ FUNC(StatusType, OS_CODE) tpl_stm_begin_write_tx_service(
   P2CONST(uint32, AUTOMATIC, OS_APPL_DATA) coreId);
 
 /*
- * STMEndReadTx
+ * tpl_stm_end_read_tx_service
  *
  * Ends a read-set transaction 
  *
@@ -245,7 +245,7 @@ FUNC(StatusType, OS_CODE) tpl_stm_end_read_tx_service(
   P2VAR(uint32, AUTOMATIC, OS_APPL_DATA) tx);
 
 /*
- * STMEndWriteTx
+ * tpl_stm_end_write_tx_service
  *
  * Ends a write-set transaction
  *
@@ -259,7 +259,7 @@ FUNC(StatusType, OS_CODE) tpl_stm_end_write_tx_service(
   P2VAR(uint32, AUTOMATIC, OS_APPL_DATA) tx);
 
 /*
- * STMOpenReadObject
+ * tpl_stm_open_read_object_service
  *
  * A read-set transaction opens for reading a given object on a given core
  *
@@ -279,7 +279,7 @@ FUNC(StatusType, OS_CODE) tpl_stm_open_read_object_service(
   P2CONST(uint32, AUTOMATIC, OS_APPL_DATA) dataId);
 
 /*
- * STMOpenWriteObject
+ * tpl_stm_open_write_object_service
  *
  * A write-set transaction opens for writing a given object on a given
  * core
@@ -300,7 +300,7 @@ FUNC(StatusType, OS_CODE) tpl_stm_open_write_object_service(
   P2CONST(uint32, AUTOMATIC, OS_APPL_DATA) dataId);
 
 /*
- * STMCommitReadTx
+ * tpl_stm_commit_read_tx_service
  *
  * A read-set transaction tries to commit on a given core
  *
@@ -317,7 +317,7 @@ FUNC(StatusType, OS_CODE) tpl_stm_commit_read_tx_service(
   P2CONST(uint32, AUTOMATIC, OS_APPL_DATA) instance);
 
 /*
- * STMCommitWriteTx
+ * tpl_stm_commit_write_tx_service
  *
  * A write-set transaction tries to commit on a given core
  *
