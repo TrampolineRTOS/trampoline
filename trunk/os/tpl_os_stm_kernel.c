@@ -74,6 +74,8 @@ FUNC(StatusType, OS_CODE) tpl_screen_display_service(
  *
  * Initializes a read-set transaction on the core given as an argument
  *
+ * tx:  Transaction descriptor
+ *
  * coreId:  Core on which the read-set transaction begins
  *
  * Return value:
@@ -81,26 +83,16 @@ FUNC(StatusType, OS_CODE) tpl_screen_display_service(
  * 
  */
 FUNC(StatusType, OS_CODE) tpl_stm_begin_read_tx_service(
-  P2CONST(int, AUTOMATIC, OS_APPL_DATA) coreId)
-{
-  VAR(StatusType, AUTOMATIC) result = E_OK;
-	
-  LOCK_KERNEL()
-	
-  /* Treatment   */
-  
-  PROCESS_ERROR(result)
-  
-  UNLOCK_KERNEL()
-  
-  return result;
-}
-
+  P2VAR(uint32, AUTOMATIC, OS_APPL_DATA) tx,
+  P2CONST(uint32, AUTOMATIC, OS_APPL_DATA) coreId){
+};
 
 /*
  * STMBeginWriteTx
  *
  * Initializes a write-set transaction on the core given as an argument
+ *
+ * tx:  Transaction descriptor
  *
  * coreId:  Core on which the write-set transaction begins
  *
@@ -109,79 +101,46 @@ FUNC(StatusType, OS_CODE) tpl_stm_begin_read_tx_service(
  * 
  */
 FUNC(StatusType, OS_CODE) tpl_stm_begin_write_tx_service(
-  P2CONST(int, AUTOMATIC, OS_APPL_DATA) coreId)
-{
-  VAR(StatusType, AUTOMATIC) result = E_OK;
-	
-  LOCK_KERNEL()
-	
-  /* Treatment   */
-  
-  PROCESS_ERROR(result)
-  
-  UNLOCK_KERNEL()
-  
-  return result;
-}
+  P2VAR(uint32, AUTOMATIC, OS_APPL_DATA) tx,
+  P2CONST(uint32, AUTOMATIC, OS_APPL_DATA) coreId){
+};
 
 /*
  * STMEndReadTx
  *
- * Ends a read-set transaction on the core given as an argument
+ * Ends a read-set transaction 
  *
- * coreId:  Core on which the read-set transaction ends
+ * tx:  Transaction descriptor
  *
  * Return value:
  * E_OK:    No error (Standard & Extended)
  * 
  */
 FUNC(StatusType, OS_CODE) tpl_stm_end_read_tx_service(
-  P2CONST(int, AUTOMATIC, OS_APPL_DATA) coreId)
-{
-  VAR(StatusType, AUTOMATIC) result = E_OK;
-	
-  LOCK_KERNEL()
-	
-  /* Treatment   */
-  
-  PROCESS_ERROR(result)
-  
-  UNLOCK_KERNEL()
-  
-  return result;
-}
+  P2VAR(uint32, AUTOMATIC, OS_APPL_DATA) tx){
+};
 
 /*
  * STMEndWriteTx
  *
- * Ends a write-set transaction on the core given as an argument
+ * Ends a write-set transaction
  *
- * coreId:  Core on which the write-set transaction ends
+ * tx:  Transaction descriptor
  *
  * Return value:
  * E_OK:    No error (Standard & Extended)
  * 
  */
 FUNC(StatusType, OS_CODE) tpl_stm_end_write_tx_service(
-  P2CONST(int, AUTOMATIC, OS_APPL_DATA) coreId)
-{
-  VAR(StatusType, AUTOMATIC) result = E_OK;
-	
-  LOCK_KERNEL()
-	
-  /* Treatment   */
-  
-  PROCESS_ERROR(result)
-  
-  UNLOCK_KERNEL()
-  
-  return result;
-}
+  P2VAR(uint32, AUTOMATIC, OS_APPL_DATA) tx){
+};
 
 /*
  * STMOpenReadObject
  *
  * A read-set transaction opens for reading a given object on a given core
+ *
+ * tx:  Transaction descriptor
  *
  * coreId:  Core on which the read-set transaction opens the object
  *
@@ -192,27 +151,18 @@ FUNC(StatusType, OS_CODE) tpl_stm_end_write_tx_service(
  * 
  */
 FUNC(StatusType, OS_CODE) tpl_stm_open_read_object_service(
-  P2CONST(int, AUTOMATIC, OS_APPL_DATA) coreId,
-  P2CONST(int, AUTOMATIC, OS_APPL_DATA) dataId)
-{
-  VAR(StatusType, AUTOMATIC) result = E_OK;
-	
-  LOCK_KERNEL()
-	
-  /* Treatment   */
-  
-  PROCESS_ERROR(result)
-  
-  UNLOCK_KERNEL()
-  
-  return result;
-}
+  P2VAR(uint32, AUTOMATIC, OS_APPL_DATA) tx,
+  P2VAR(uint32, AUTOMATIC, OS_APPL_DATA) coreId,
+  P2CONST(uint32, AUTOMATIC, OS_APPL_DATA) dataId){
+};
 
 /*
  * STMOpenWriteObject
  *
  * A write-set transaction opens for writing a given object on a given
  * core
+ *
+ * tx:  Transaction descriptor
  *
  * coreId:  Core on which the write-set transaction opens the object
  *
@@ -223,28 +173,17 @@ FUNC(StatusType, OS_CODE) tpl_stm_open_read_object_service(
  * 
  */
 FUNC(StatusType, OS_CODE) tpl_stm_open_write_object_service(
-  P2CONST(int, AUTOMATIC, OS_APPL_DATA) coreId,
-  P2CONST(int, AUTOMATIC, OS_APPL_DATA) dataId)
-{
-  VAR(StatusType, AUTOMATIC) result = E_OK;
-	
-  LOCK_KERNEL()
-	
-  /* Treatment   */
-  
-  PROCESS_ERROR(result)
-  
-  UNLOCK_KERNEL()
-  
-  return result;
-}
+  P2VAR(uint32, AUTOMATIC, OS_APPL_DATA) tx,
+  P2CONST(uint32, AUTOMATIC, OS_APPL_DATA) coreId,
+  P2CONST(uint32, AUTOMATIC, OS_APPL_DATA) dataId){
+};
 
 /*
  * STMCommitReadTx
  *
  * A read-set transaction tries to commit on a given core
  *
- * coreId:  Core on which the read-set transaction tries to commit
+ * tx:  Transaction descriptor
  *
  * instance:  Transaction instance number
  *
@@ -253,52 +192,23 @@ FUNC(StatusType, OS_CODE) tpl_stm_open_write_object_service(
  * 
  */
 FUNC(StatusType, OS_CODE) tpl_stm_commit_read_tx_service(
-  P2CONST(int, AUTOMATIC, OS_APPL_DATA) coreId,
-  P2CONST(int, AUTOMATIC, OS_APPL_DATA) instance)
-{
-  VAR(StatusType, AUTOMATIC) result = E_OK;
-	
-  LOCK_KERNEL()
-	
-  /* Treatment   */
-  
-  PROCESS_ERROR(result)
-  
-  UNLOCK_KERNEL()
-  
-  return result;
-}
+  P2CONST(uint32, AUTOMATIC, OS_APPL_DATA) tx,
+  P2CONST(uint32, AUTOMATIC, OS_APPL_DATA) instance){
+};
 
 /*
  * STMCommitWriteTx
  *
  * A write-set transaction tries to commit on a given core
  *
- * coreId:  Core on which the write-set transaction tries to commit
- *
- * instance:  Transaction instance number
+ * tx:  Transaction descriptor
  *
  * Return value:
  * E_OK:    No error (Standard & Extended)
  * 
  */
 FUNC(StatusType, OS_CODE) tpl_stm_commit_write_tx_service(
-  P2CONST(int, AUTOMATIC, OS_APPL_DATA) coreId,
-  P2CONST(int, AUTOMATIC, OS_APPL_DATA) instance)
-{
-  VAR(StatusType, AUTOMATIC) result = E_OK;
-	
-  LOCK_KERNEL()
-	
-  /* Treatment   */
-  
-  PROCESS_ERROR(result)
-  
-  UNLOCK_KERNEL()
-  
-  return result;
-}
-
-
+  P2CONST(uint32, AUTOMATIC, OS_APPL_DATA) tx){
+};
 
 
