@@ -252,5 +252,10 @@ end if
 
 #endif
 
+/*-----------------------------------------------------------------------------
+ * Configuration STM Flags
+ */
+#define NUMBER_OF_OBJECTS                % !exists OS::NUMBER_OF_OBJECTS default (1)%
+
 /* End of file TPL_APP_DEFINE_H */
 

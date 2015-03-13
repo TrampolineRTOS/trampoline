@@ -30,11 +30,6 @@
 #include "tpl_memmap.h"
 
 
-/*-----------------------------------------------------------------------------
- * Number of objects in the system
- */
-#define NUMBER_OF_OBJECTS         0
-
 /**
  * @typedef tpl_stm_core_id
  *
@@ -158,12 +153,12 @@ struct {
     status;  		/**<  Status of the transaction
 								 	*/
 
-  //VAR(tpl_stm_object, OS_APPL_DATA)
-   // read_set[NUMBER_OF_OBJECTS];          /**<  Set of objects accessed 
-     //                          	in read-only mode                     	*/
-  //VAR(tpl_stm_object, OS_APPL_DATA)
-   // write_set[NUMBER_OF_OBJECTS];          /**<  Set of objects accessed
-         //                       in write mode                          	*/
+  P2VAR(tpl_stm_object, AUTOMATIC, OS_APPL_DATA)
+    read_set[NUMBER_OF_OBJECTS];          /**<  Set of objects accessed 
+                               	in read-only mode                     	*/
+  P2VAR(tpl_stm_object, AUTOMATIC, OS_APPL_DATA)
+    write_set[NUMBER_OF_OBJECTS];          /**<  Set of objects accessed
+                                in write mode                          	*/
   VAR(tpl_stm_concurrency_vector, TYPEDEF)
     access_vector; 	/**<  Access vector of the transaction
 								 	*/
@@ -179,9 +174,9 @@ struct {
 typedef struct TPL_STM_TX_DESCRIPTOR tpl_stm_tx_descriptor;
 
 
-//VAR(tpl_stm_tx_descriptor, OS_APPL_DATA) trans_table[NUMBER_OF_CORES];
-//VAR(tpl_stm_object, OS_APPL_DATA) object_table[NUMBER_OF_OBJECTS];
-//VAR(tpl_stm_tx_descriptor, OS_APPL_DATA) writer_table[NUMBER_OF_OBJECTS];
+P2VAR(tpl_stm_tx_descriptor, AUTOMATIC, OS_APPL_DATA) trans_table[NUMBER_OF_CORES];
+P2VAR(tpl_stm_object, AUTOMATIC, OS_APPL_DATA) object_table[NUMBER_OF_OBJECTS];
+P2VAR(tpl_stm_tx_descriptor, AUTOMATIC, OS_APPL_DATA) writer_table[NUMBER_OF_OBJECTS];
 
 /**
  * @internal
