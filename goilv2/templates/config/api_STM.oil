@@ -19,47 +19,31 @@ CPU api {
       KERNEL = tpl_stm_begin_read_tx_service;
       RETURN_TYPE = StatusType
         : "E_OK:    No error (Standard & Extended)\n";
-      ARGUMENT tx { KIND = P2VAR; TYPE = uint32 ; }
-        : "Transaction descriptor" ;
-      ARGUMENT coreId { KIND = P2CONST; TYPE = uint32 ; }
-        : "Core on which the read-set transaction begins" ;
-    } : "Initializes a read-set transaction on the core given as an argument";
+     } : "Initializes a read-set transaction";
 
     SYSCALL STMBeginWriteTx {
       KERNEL = tpl_stm_begin_write_tx_service;
       RETURN_TYPE = StatusType
         : "E_OK:    No error (Standard & Extended)\n";
-      ARGUMENT tx { KIND = P2VAR; TYPE = uint32 ; }
-        : "Transaction descriptor" ;
-      ARGUMENT coreId { KIND = P2CONST; TYPE = uint32 ; }
-        : "Core on which the write-set transaction begins" ;
-    } : "Initializes a write-set transaction on the core given as an argument";
+    } : "Initializes a write-set transaction";
 
     SYSCALL STMEndReadTx {
       KERNEL = tpl_stm_end_read_tx_service;
       RETURN_TYPE = StatusType
         : "E_OK:    No error (Standard & Extended)\n";
-      ARGUMENT tx { KIND = P2VAR; TYPE = uint32 ; }
-        : "Transaction descriptor" ;
     } : "Ends a read-set transaction ";
 
     SYSCALL STMEndWriteTx {
       KERNEL = tpl_stm_end_write_tx_service;
       RETURN_TYPE = StatusType
         : "E_OK:    No error (Standard & Extended)\n";
-      ARGUMENT tx { KIND = P2VAR; TYPE = uint32 ; }
-        : "Transaction descriptor" ;
     } : "Ends a write-set transaction";
 
     SYSCALL STMOpenReadObject {
       KERNEL = tpl_stm_open_read_object_service;
       RETURN_TYPE = StatusType
         : "E_OK:    No error (Standard & Extended)\n";
-      ARGUMENT tx { KIND = P2VAR; TYPE = uint32 ; }
-        : "Transaction descriptor" ;
-      ARGUMENT coreId { KIND = P2VAR; TYPE = uint32 ; }
-        : "Core on which the read-set transaction opens the object" ;
-      ARGUMENT dataId { KIND = P2CONST; TYPE = uint32 ; }
+       ARGUMENT dataId { KIND = P2VAR; TYPE = uint32 ; }
         : "Data identifier" ;
     } : "A read-set transaction opens for reading a given object on a given core";
 
@@ -67,11 +51,7 @@ CPU api {
       KERNEL = tpl_stm_open_write_object_service;
       RETURN_TYPE = StatusType
         : "E_OK:    No error (Standard & Extended)\n";
-      ARGUMENT tx { KIND = P2VAR; TYPE = uint32 ; }
-        : "Transaction descriptor" ;
-      ARGUMENT coreId { KIND = P2CONST; TYPE = uint32 ; }
-        : "Core on which the write-set transaction opens the object" ;
-      ARGUMENT dataId { KIND = P2CONST; TYPE = uint32 ; }
+      ARGUMENT dataId { KIND = P2VAR; TYPE = uint32 ; }
         : "Data identifier" ;
     } : "A write-set transaction opens for writing a given object on a given core";
 
@@ -79,18 +59,12 @@ CPU api {
       KERNEL = tpl_stm_commit_read_tx_service;
       RETURN_TYPE = StatusType
         : "E_OK:    No error (Standard & Extended)\n";
-      ARGUMENT tx { KIND = P2CONST; TYPE = uint32 ; }
-        : "Transaction descriptor" ;
-      ARGUMENT instance { KIND = P2CONST; TYPE = uint32 ; }
-        : "Transaction instance number" ;
     } : "A read-set transaction tries to commit on a given core";
 
     SYSCALL STMCommitWriteTx {
       KERNEL = tpl_stm_commit_write_tx_service;
       RETURN_TYPE = StatusType
         : "E_OK:    No error (Standard & Extended)\n";
-      ARGUMENT tx { KIND = P2CONST; TYPE = uint32 ; }
-        : "Transaction descriptor" ;
     } : "A write-set transaction tries to commit on a given core";
 
    };
