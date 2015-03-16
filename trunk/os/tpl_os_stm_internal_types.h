@@ -92,7 +92,7 @@ typedef uint32 tpl_stm_access_vector;
  *
  * This is the internal object structure.
  */
-struct {
+struct TPL_STM_OBJECT {
   CONST(tpl_stm_data_id, TYPEDEF)
     dataId;     	/**<  Data id
                                 		                       	*/
@@ -105,7 +105,7 @@ struct {
   VAR(tpl_stm_concurrency_vector, TYPEDEF)
     concurrency_vector; /**<  Concurrency vector of the object
 								 	*/
-} TPL_STM_OBJECT;
+};
 
 /**
  * @typedef tpl_stm_object
@@ -122,7 +122,7 @@ typedef struct TPL_STM_OBJECT tpl_stm_object;
  *
  * This is is the internal transaction descriptor structure.
  */
-struct {
+struct TPL_STM_TX_DESCRIPTOR {
   CONST(tpl_stm_core_id, TYPEDEF)
     transaction_id;    	/**<  Core id to which the transaction belongs
                                 		                       	*/
@@ -138,7 +138,7 @@ struct {
   VAR(tpl_stm_concurrency_vector, TYPEDEF)
     access_vector; 	/**<  Access vector of the transaction
 								 	*/
-} TPL_STM_TX_DESCRIPTOR;
+};
 
 /**
  * @typedef tpl_stm_tx_descriptor
