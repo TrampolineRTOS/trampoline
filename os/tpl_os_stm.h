@@ -29,3 +29,13 @@
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
+#include "tpl_os_stm_internal_types.h"
+
+/**
+ * @typedef TransactionType
+ *
+ * identifies a transaction
+ *
+ */
+typedef tpl_stm_tx_id TransactionType;
+

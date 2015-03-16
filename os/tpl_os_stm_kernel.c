@@ -45,7 +45,7 @@
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-#include "tpl_os_stm.h"
+#include "tpl_os_stm_kernel.h"
 
 /*
  * tpl_screen_display_service.
@@ -72,19 +72,39 @@ FUNC(StatusType, OS_CODE) tpl_screen_display_service(
 /*
  * tpl_stm_begin_read_tx_service
  *
- * Initializes a read-set transaction on the core given as an argument
- *
- * tx:  Transaction descriptor
- *
- * coreId:  Core on which the read-set transaction begins
+ * Initializes a read-set transaction
  *
  * Return value:
  * E_OK:    No error (Standard & Extended)
  * 
  */
-FUNC(StatusType, OS_CODE) tpl_stm_begin_read_tx_service(
-  P2VAR(uint32, AUTOMATIC, OS_APPL_DATA) tx,
-  P2CONST(uint32, AUTOMATIC, OS_APPL_DATA) coreId){
+FUNC(StatusType, OS_CODE) tpl_stm_begin_read_tx_service()
+{
+ VAR(StatusType, AUTOMATIC) result = E_OK;
+
+#if NUMBER_OF_CORES > 1	
+ GET_CURRENT_CORE_ID(core_id)
+
+ LOCK_KERNEL()
+
+ trans_table[core_id].status=0;
+ trans_table[core_id].read_set=NULL;
+ trans_table[core_id].write_set=NULL;
+ trans_table[core_id].access_vector=0;
+
+ UNLOCK_KERNEL()
+#else
+ LOCK_KERNEL()
+
+ trans_table[0].status=0;
+ trans_table[0].read_set=NULL;
+ trans_table[0].write_set=NULL;
+ trans_table[0].access_vector=0;
+
+ UNLOCK_KERNEL()
+#endif
+  
+ return result;
 };
 
 /*
