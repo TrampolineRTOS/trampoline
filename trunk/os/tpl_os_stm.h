@@ -23,19 +23,12 @@
  * $URL: http://trampoline.rts-software.org/svn/trunk/os/tpl_os_stm.h $
  */
 
-#include "tpl_os_types.h"
+/*#include "tpl_os_types.h"
 #include "tpl_os_task_kernel.h"
 
 #define OS_START_SEC_CODE
-#include "tpl_memmap.h"
+#include "tpl_memmap.h"*/
 
 #include "tpl_os_stm_internal_types.h"
 
-/**
- * @typedef TransactionType
- *
- * identifies a transaction
- *
- */
-typedef tpl_stm_tx_id TransactionType;
 

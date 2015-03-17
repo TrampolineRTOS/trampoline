@@ -24,10 +24,8 @@
  */
 
 #include "tpl_os_definitions.h"
-#include "tpl_os_error.h"
-#include "tpl_os_errorhook.h"
+/*#include "tpl_os_errorhook.h"
 #include "tpl_os_kernel.h"
-#include "tpl_os_task_kernel.h"
 #include "tpl_machine_interface.h"
 #include "tpl_trace.h"
 
@@ -38,12 +36,9 @@
 
 #if WITH_MEMORY_PROTECTION == YES
 #include "tpl_os_mem_prot.h"
-#endif
-
-#include "tpl_os_event_kernel.h"
-
-#define OS_START_SEC_CODE
-#include "tpl_memmap.h"
+#endif*/
+/*
+#include "tpl_os_event_kernel.h"*/
 
 #include "tpl_os_stm_kernel.h"
 
@@ -88,8 +83,6 @@ FUNC(StatusType, OS_CODE) tpl_stm_begin_read_tx_service()
  LOCK_KERNEL()
 
  trans_table[core_id].status=0;
- trans_table[core_id].read_set=NULL;
- trans_table[core_id].write_set=NULL;
  trans_table[core_id].access_vector=0;
 
  UNLOCK_KERNEL()
@@ -97,8 +90,6 @@ FUNC(StatusType, OS_CODE) tpl_stm_begin_read_tx_service()
  LOCK_KERNEL()
 
  trans_table[0].status=0;
- trans_table[0].read_set=NULL;
- trans_table[0].write_set=NULL;
  trans_table[0].access_vector=0;
 
  UNLOCK_KERNEL()
@@ -120,9 +111,7 @@ FUNC(StatusType, OS_CODE) tpl_stm_begin_read_tx_service()
  * E_OK:    No error (Standard & Extended)
  * 
  */
-FUNC(StatusType, OS_CODE) tpl_stm_begin_write_tx_service(
-  P2VAR(uint32, AUTOMATIC, OS_APPL_DATA) tx,
-  P2CONST(uint32, AUTOMATIC, OS_APPL_DATA) coreId){
+FUNC(StatusType, OS_CODE) tpl_stm_begin_write_tx_service(){
 };
 
 /*
@@ -136,8 +125,7 @@ FUNC(StatusType, OS_CODE) tpl_stm_begin_write_tx_service(
  * E_OK:    No error (Standard & Extended)
  * 
  */
-FUNC(StatusType, OS_CODE) tpl_stm_end_read_tx_service(
-  P2VAR(uint32, AUTOMATIC, OS_APPL_DATA) tx){
+FUNC(StatusType, OS_CODE) tpl_stm_end_read_tx_service(){
 };
 
 /*
@@ -151,8 +139,7 @@ FUNC(StatusType, OS_CODE) tpl_stm_end_read_tx_service(
  * E_OK:    No error (Standard & Extended)
  * 
  */
-FUNC(StatusType, OS_CODE) tpl_stm_end_write_tx_service(
-  P2VAR(uint32, AUTOMATIC, OS_APPL_DATA) tx){
+FUNC(StatusType, OS_CODE) tpl_stm_end_write_tx_service(){
 };
 
 /*
@@ -170,10 +157,7 @@ FUNC(StatusType, OS_CODE) tpl_stm_end_write_tx_service(
  * E_OK:    No error (Standard & Extended)
  * 
  */
-FUNC(StatusType, OS_CODE) tpl_stm_open_read_object_service(
-  P2VAR(uint32, AUTOMATIC, OS_APPL_DATA) tx,
-  P2VAR(uint32, AUTOMATIC, OS_APPL_DATA) coreId,
-  P2CONST(uint32, AUTOMATIC, OS_APPL_DATA) dataId){
+FUNC(StatusType, OS_CODE) tpl_stm_open_read_object_service(P2VAR(void, AUTOMATIC, OS_APPL_DATA) data){
 };
 
 /*
@@ -192,10 +176,7 @@ FUNC(StatusType, OS_CODE) tpl_stm_open_read_object_service(
  * E_OK:    No error (Standard & Extended)
  * 
  */
-FUNC(StatusType, OS_CODE) tpl_stm_open_write_object_service(
-  P2VAR(uint32, AUTOMATIC, OS_APPL_DATA) tx,
-  P2CONST(uint32, AUTOMATIC, OS_APPL_DATA) coreId,
-  P2CONST(uint32, AUTOMATIC, OS_APPL_DATA) dataId){
+FUNC(StatusType, OS_CODE) tpl_stm_open_write_object_service(P2VAR(void, AUTOMATIC, OS_APPL_DATA) data){
 };
 
 /*
@@ -211,9 +192,7 @@ FUNC(StatusType, OS_CODE) tpl_stm_open_write_object_service(
  * E_OK:    No error (Standard & Extended)
  * 
  */
-FUNC(StatusType, OS_CODE) tpl_stm_commit_read_tx_service(
-  P2CONST(uint32, AUTOMATIC, OS_APPL_DATA) tx,
-  P2CONST(uint32, AUTOMATIC, OS_APPL_DATA) instance){
+FUNC(StatusType, OS_CODE) tpl_stm_commit_read_tx_service(){
 };
 
 /*
@@ -227,7 +206,6 @@ FUNC(StatusType, OS_CODE) tpl_stm_commit_read_tx_service(
  * E_OK:    No error (Standard & Extended)
  * 
  */
-FUNC(StatusType, OS_CODE) tpl_stm_commit_write_tx_service(
-  P2CONST(uint32, AUTOMATIC, OS_APPL_DATA) tx){
+FUNC(StatusType, OS_CODE) tpl_stm_commit_write_tx_service(){
 };
 
