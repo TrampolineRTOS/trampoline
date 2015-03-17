@@ -43,7 +43,7 @@ CPU api {
       KERNEL = tpl_stm_open_read_object_service;
       RETURN_TYPE = StatusType
         : "E_OK:    No error (Standard & Extended)\n";
-       ARGUMENT dataId { KIND = P2VAR; TYPE = uint32 ; }
+       ARGUMENT dataId { KIND = P2VAR; TYPE = void ; }
         : "Data identifier" ;
     } : "A read-set transaction opens for reading a given object on a given core";
 
@@ -51,7 +51,7 @@ CPU api {
       KERNEL = tpl_stm_open_write_object_service;
       RETURN_TYPE = StatusType
         : "E_OK:    No error (Standard & Extended)\n";
-      ARGUMENT dataId { KIND = P2VAR; TYPE = uint32 ; }
+      ARGUMENT dataId { KIND = P2VAR; TYPE = void ; }
         : "Data identifier" ;
     } : "A write-set transaction opens for writing a given object on a given core";
 

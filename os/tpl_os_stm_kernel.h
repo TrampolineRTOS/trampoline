@@ -22,13 +22,8 @@
  * $Author: audrey $
  * $URL: http://trampoline.rts-software.org/svn/trunk/os/tpl_os_stm.h $
  */
-#include "tpl_compiler.h"
-#include "tpl_os_types.h"
-#include "tpl_os_task_kernel.h"
+//#include "tpl_compiler.h"
 #include "tpl_os_error.h" // pour core_id
-
-#define OS_START_SEC_CODE
-#include "tpl_memmap.h"
 
 #include "tpl_os_stm.h"
 
@@ -36,7 +31,7 @@
  * Array of all transaction descriptors
  *
   */
-CONST(tpl_stm_tx_descriptor, OS_APPL_DATA) trans_table[NUMBER_OF_CORES];
+VAR(tpl_stm_tx_descriptor, OS_APPL_DATA) trans_table[NUMBER_OF_CORES];
 
 /**
  * Array of all STM-HRT objects
@@ -87,9 +82,7 @@ FUNC(StatusType, OS_CODE) tpl_stm_begin_read_tx_service();
  * E_OK:    No error (Standard & Extended)
  * 
  */
-FUNC(StatusType, OS_CODE) tpl_stm_begin_write_tx_service(
-  P2VAR(tpl_stm_tx_id, AUTOMATIC, OS_APPL_DATA) tx,
-  P2CONST(uint32, AUTOMATIC, OS_APPL_DATA) coreId);
+FUNC(StatusType, OS_CODE) tpl_stm_begin_write_tx_service();
 
 /*
  * tpl_stm_end_read_tx_service
@@ -102,8 +95,7 @@ FUNC(StatusType, OS_CODE) tpl_stm_begin_write_tx_service(
  * E_OK:    No error (Standard & Extended)
  * 
  */
-FUNC(StatusType, OS_CODE) tpl_stm_end_read_tx_service(
-  P2VAR(tpl_stm_tx_id, AUTOMATIC, OS_APPL_DATA) tx);
+FUNC(StatusType, OS_CODE) tpl_stm_end_read_tx_service();
 
 /*
  * tpl_stm_end_write_tx_service
@@ -116,8 +108,7 @@ FUNC(StatusType, OS_CODE) tpl_stm_end_read_tx_service(
  * E_OK:    No error (Standard & Extended)
  * 
  */
-FUNC(StatusType, OS_CODE) tpl_stm_end_write_tx_service(
-  P2VAR(tpl_stm_tx_id, AUTOMATIC, OS_APPL_DATA) tx);
+FUNC(StatusType, OS_CODE) tpl_stm_end_write_tx_service();
 
 /*
  * tpl_stm_open_read_object_service
@@ -134,10 +125,7 @@ FUNC(StatusType, OS_CODE) tpl_stm_end_write_tx_service(
  * E_OK:    No error (Standard & Extended)
  * 
  */
-FUNC(StatusType, OS_CODE) tpl_stm_open_read_object_service(
-  P2VAR(tpl_stm_tx_id, AUTOMATIC, OS_APPL_DATA) tx,
-  P2VAR(uint32, AUTOMATIC, OS_APPL_DATA) coreId,
-  P2CONST(uint32, AUTOMATIC, OS_APPL_DATA) dataId);
+FUNC(StatusType, OS_CODE) tpl_stm_open_read_object_service(P2VAR(void, AUTOMATIC, OS_APPL_DATA) data);
 
 /*
  * tpl_stm_open_write_object_service
@@ -155,10 +143,7 @@ FUNC(StatusType, OS_CODE) tpl_stm_open_read_object_service(
  * E_OK:    No error (Standard & Extended)
  * 
  */
-FUNC(StatusType, OS_CODE) tpl_stm_open_write_object_service(
-  P2VAR(tpl_stm_tx_id, AUTOMATIC, OS_APPL_DATA) tx,
-  P2CONST(uint32, AUTOMATIC, OS_APPL_DATA) coreId,
-  P2CONST(uint32, AUTOMATIC, OS_APPL_DATA) dataId);
+FUNC(StatusType, OS_CODE) tpl_stm_open_write_object_service(P2VAR(void, AUTOMATIC, OS_APPL_DATA) data);
 
 /*
  * tpl_stm_commit_read_tx_service
@@ -173,9 +158,7 @@ FUNC(StatusType, OS_CODE) tpl_stm_open_write_object_service(
  * E_OK:    No error (Standard & Extended)
  * 
  */
-FUNC(StatusType, OS_CODE) tpl_stm_commit_read_tx_service(
-  P2CONST(tpl_stm_tx_id, AUTOMATIC, OS_APPL_DATA) tx,
-  P2CONST(uint32, AUTOMATIC, OS_APPL_DATA) instance);
+FUNC(StatusType, OS_CODE) tpl_stm_commit_read_tx_service();
 
 /*
  * tpl_stm_commit_write_tx_service
@@ -188,7 +171,6 @@ FUNC(StatusType, OS_CODE) tpl_stm_commit_read_tx_service(
  * E_OK:    No error (Standard & Extended)
  * 
  */
-FUNC(StatusType, OS_CODE) tpl_stm_commit_write_tx_service(
-  P2CONST(tpl_stm_tx_id, AUTOMATIC, OS_APPL_DATA) tx);
+FUNC(StatusType, OS_CODE) tpl_stm_commit_write_tx_service();
 
 
