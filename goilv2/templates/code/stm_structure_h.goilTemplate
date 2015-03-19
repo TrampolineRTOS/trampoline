@@ -1,0 +1,16 @@
+%
+foreach tx in TRANSACTION
+  before %
+CONSTP2VAR(tpl_stm_tx_descriptor, AUTOMATIC, OS_APPL_DATA)
+trans_table[NUMBER_OF_OBJECTS] = {
+%
+  do   
+	  !tx::CORE_ID
+  between %,
+%
+  after
+%
+};
+%
+end foreach
+%
