@@ -22,6 +22,13 @@ typedef tpl_stm_core_id tpl_stm_tx_id;
 typedef uint32 tpl_stm_data_id;
 
 /**
+ * @typedef tpl_stm_data
+ *
+ * Object data
+ */
+typedef void* tpl_stm_data;
+
+/**
  * @typedef tpl_stm_current_pos
  *
  * Current position of concurrent data in copy_table
@@ -34,6 +41,13 @@ typedef int tpl_stm_current_pos;
  * Object concurrency vector
  */
 typedef uint32 tpl_stm_concurrency_vector;
+
+/**
+ * @typedef tpl_stm_access_vector
+ *
+ * Transaction access vector
+ */
+typedef uint32 tpl_stm_access_vector;
 
 /**
  * @typedef tpl_stm_status
@@ -99,7 +113,7 @@ struct TPL_STM_OBJECT {
   VAR(tpl_stm_current_pos, TYPEDEF)
     current_pos;  	/**<  Current position of the concurrent data
 								 	*/
-  CONST(tpl_stm_data_id, OS_APPL_DATA) 
+  VAR(tpl_stm_data, OS_APPL_DATA) 
     tpl_stm_copy_table[NUMBER_OF_CORES+2];  /**<  Table gathering the  
                       copies of the concurrent data                  	*/
   VAR(tpl_stm_concurrency_vector, TYPEDEF)
@@ -129,13 +143,13 @@ struct TPL_STM_TX_DESCRIPTOR {
   VAR(tpl_stm_status, TYPEDEF)
     status;  		/**<  Status of the transaction
 								 	*/
-  CONST(tpl_stm_object, OS_APPL_DATA)
+  VAR(tpl_stm_object, OS_APPL_DATA)
     read_set[NUMBER_OF_OBJECTS];          /**<  Set of objects accessed 
                                	in read-only mode                     	*/
-  CONST(tpl_stm_object, OS_APPL_DATA)
+  VAR(tpl_stm_object, OS_APPL_DATA)
     write_set[NUMBER_OF_OBJECTS];          /**<  Set of objects accessed
                                 in write mode                          	*/
-  VAR(tpl_stm_concurrency_vector, TYPEDEF)
+  VAR(tpl_stm_access_vector, TYPEDEF)
     access_vector; 	/**<  Access vector of the transaction
 								 	*/
 };

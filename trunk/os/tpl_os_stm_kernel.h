@@ -26,6 +26,7 @@
 #include "tpl_os_error.h" // pour core_id
 
 #include "tpl_os_stm.h"
+#include "tpl_os_stm_internal_types.h"
 
 /**
  * Array of all transaction descriptors
@@ -37,13 +38,13 @@ VAR(tpl_stm_tx_descriptor, OS_APPL_DATA) trans_table[NUMBER_OF_CORES];
  * Array of all STM-HRT objects
  *
   */
-CONST(tpl_stm_object, OS_APPL_DATA) object_table[NUMBER_OF_OBJECTS];
+VAR(tpl_stm_object, OS_APPL_DATA) object_table[NUMBER_OF_OBJECTS];
 
 /**
  * Array of all transaction descriptors of writers
  *
   */
-CONST(tpl_stm_tx_descriptor, OS_APPL_DATA) writer_table[NUMBER_OF_OBJECTS];
+VAR(tpl_stm_tx_descriptor, OS_APPL_DATA) writer_table[NUMBER_OF_OBJECTS];
 
 /**
  * @internal
