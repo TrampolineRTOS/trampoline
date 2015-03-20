@@ -143,10 +143,10 @@ struct TPL_STM_TX_DESCRIPTOR {
   VAR(tpl_stm_status, TYPEDEF)
     status;  		/**<  Status of the transaction
 								 	*/
-  VAR(tpl_stm_object, OS_APPL_DATA)
+  P2VAR(tpl_stm_object, OS_APPL_DATA)
     read_set[NUMBER_OF_OBJECTS];          /**<  Set of objects accessed 
                                	in read-only mode                     	*/
-  VAR(tpl_stm_object, OS_APPL_DATA)
+  P2VAR(tpl_stm_object, OS_APPL_DATA)
     write_set[NUMBER_OF_OBJECTS];          /**<  Set of objects accessed
                                 in write mode                          	*/
   VAR(tpl_stm_access_vector, TYPEDEF)
