@@ -42,6 +42,8 @@
 
 #include "tpl_os_stm_kernel.h"
 
+#include <stdio.h>
+
 /*
  * tpl_screen_display_service.
  */
@@ -82,15 +84,13 @@ FUNC(StatusType, OS_CODE) tpl_stm_begin_read_tx_service()
 
  LOCK_KERNEL()
 
- trans_table[core_id].status=0;
- trans_table[core_id].access_vector=0;
-
+ // a compléter
+ 
  UNLOCK_KERNEL()
 #else
  LOCK_KERNEL()
 
- trans_table[0].status=0;
- trans_table[0].access_vector=0;
+ // a compléter
 
  UNLOCK_KERNEL()
 #endif
