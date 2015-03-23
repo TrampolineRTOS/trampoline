@@ -3,7 +3,6 @@
 IMPLEMENTATION stm {
 
   OBJECT [] {
-    UINT32 DATA_ID;
     STRING DATA_TYPE;
   };
 
