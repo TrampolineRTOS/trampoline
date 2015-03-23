@@ -107,13 +107,15 @@ typedef uint32 tpl_stm_access_vector;
  * This is the internal object structure.
  */
 struct TPL_STM_OBJECT {
+  P2CONST(char, AUTOMATIC, OS_VAR) name;	/**< Object name
+									*/
   CONST(tpl_stm_data_id, TYPEDEF)
-    dataId;     	/**<  Data id
+    object_id;     	/**<  Object id
                                 		                       	*/
   VAR(tpl_stm_current_pos, TYPEDEF)
     current_pos;  	/**<  Current position of the concurrent data
 								 	*/
-  VAR(tpl_stm_data, OS_APPL_DATA) 
+  P2VAR(tpl_stm_data, AUTOMATIC, OS_APPL_DATA) 
     tpl_stm_copy_table[NUMBER_OF_CORES+2];  /**<  Table gathering the  
                       copies of the concurrent data                  	*/
   VAR(tpl_stm_concurrency_vector, TYPEDEF)
@@ -137,16 +139,18 @@ typedef struct TPL_STM_OBJECT tpl_stm_object;
  * This is is the internal transaction descriptor structure.
  */
 struct TPL_STM_TX_DESCRIPTOR {
+  P2CONST(char, AUTOMATIC, OS_VAR) name;	/**< Transaction name
+									*/
   CONST(tpl_stm_core_id, TYPEDEF)
-    transaction_id;    	/**<  Core id to which the transaction belongs
+    core_id;    	/**<  Core id to which the transaction belongs
                                 		                       	*/
   VAR(tpl_stm_status, TYPEDEF)
     status;  		/**<  Status of the transaction
 								 	*/
-  P2VAR(tpl_stm_object, OS_APPL_DATA)
+  P2VAR(tpl_stm_object, AUTOMATIC, OS_APPL_DATA)
     read_set[NUMBER_OF_OBJECTS];          /**<  Set of objects accessed 
                                	in read-only mode                     	*/
-  P2VAR(tpl_stm_object, OS_APPL_DATA)
+  P2VAR(tpl_stm_object, AUTOMATIC, OS_APPL_DATA)
     write_set[NUMBER_OF_OBJECTS];          /**<  Set of objects accessed
                                 in write mode                          	*/
   VAR(tpl_stm_access_vector, TYPEDEF)

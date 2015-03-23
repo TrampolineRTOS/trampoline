@@ -255,7 +255,8 @@ end if
 /*-----------------------------------------------------------------------------
  * Configuration STM Flags
  */
-#define NUMBER_OF_OBJECTS                % !exists OS::NUMBER_OF_OBJECTS default (1)%
+#define NUMBER_OF_OBJECTS                 % ![OBJECT length] %
+#define NUMBER_OF_TRANSACTIONS            % ![TRANSACTION length] %
 
 /* End of file TPL_APP_DEFINE_H */
 

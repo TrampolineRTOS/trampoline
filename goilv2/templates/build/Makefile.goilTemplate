@@ -69,6 +69,11 @@ else
 OIL_GENERATED_FILES += tpl_os.c
 %
 end if
+if [TRANSACTION length] > 0 then
+%
+OIL_GENERATED_FILES += stm_structure.c
+%
+end if
 if [IOC length] > 0 then
 %
 OIL_GENERATED_FILES += tpl_ioc_api_config.c
