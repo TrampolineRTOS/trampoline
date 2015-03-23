@@ -4,29 +4,24 @@ foreach obj in OBJECT
 VAR(tpl_stm_object, AUTOMATIC, OS_APPL_DATA)
 object_table[NUMBER_OF_OBJECTS] = {
 %
-  do   % {
-    % !obj::DATA_ID %, /* data_id   		*/
-    0, /* current_pos   	*/
+  do   % {%
+    % "%!obj::NAME%",   		/* object name 		*/
     %
+    !INDEX%, 	  			/* object id 		*/
+    0, 		  		/* current_pos   	*/%
     loop core from 1 to OS::NUMBER_OF_CORES
 	before % 
-    { %
-    	do % NULL % 
-    	between %,
-    %
-    	after %
-    NULL, NULL}, /* copy_table */
-    %
+    {%
+    	do %NULL, % 
+       	after % NULL, NULL}, 	/* copy_table 		*/%
     end loop
     %
-    0  /* concurrency_vector 	*/
+    0  				/* concurrency_vector 	*/
  }
 %
   between % ,
 %
-  after
-%
-};
+  after %};
 %
 end foreach
 %
@@ -36,48 +31,49 @@ foreach tx in TRANSACTION
 VAR(tpl_stm_tx_descriptor, AUTOMATIC, OS_APPL_DATA)
 trans_table[NUMBER_OF_CORES] = {
 %
-  do	% {   
-    % !tx::CORE_ID %, /* transaction_id */
-    0, /* status */
-    /* read_set */
+  do	% {%   
+    % "%!tx::NAME%",   	/* transaction name 	*/
+    % !tx::CORE_ID %, 				/* core id 		*/
+    0, 				/* status 		*/%
+    % 
+    {%
+    	if exists tx::READ_SET then 
+ 		foreach o in tx::READ_SET 
+		do
+		    foreach obj in OBJECT  
+			do
+				if o::VALUE == obj::NAME then 
+					%&object_table[% !INDEX %]%
+				end if 
+		     end foreach 
+		between %, %
+ 		end foreach 
+	  else %NULL%
+	  end if 
+     %}, 	/* read_set 	*/%
+  
+    % 
+    {%
+    	  if exists tx::WRITE_SET then 
+ 		foreach o in tx::WRITE_SET 
+		do
+		    foreach obj in OBJECT  
+			do
+				if o::VALUE == obj::NAME then 
+					%&object_table[% !INDEX %]%
+				end if 
+		     end foreach 
+		between %, %
+ 		end foreach 
+	  else %NULL%
+	  end if 
+    %}, 	/* write_set 	*/ 
     %
-    foreach tx in TRANSACTION
-	before % 
-    { %
-    	do %  /* à compléter par &object_table[?] ici !   */
-	%	
-        between %,
-    %
-    	after %
-    }
-    %
-    end foreach
-%
-    {} /* write_set */
-    0 /* access_vector */
+    %0 				/* access_vector 	*/
  }
 %
   between % ,
 %
-  after
-%
-};
+  after%};
 %
 end foreach
-
- if exists tx::READSET then 
- foreach o in tx::READSET 
-		do 
-		foreach obj in OBJECTS  
-			do 
-			if o::DATA_ID == obj::DATA_ID then 
-				%object_table[!obj::INDEX], %				
-			end if 
-		
-		end foreach 
-		
-          end foreach 
-	   
-end if 
-
-

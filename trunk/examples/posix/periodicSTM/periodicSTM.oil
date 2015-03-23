@@ -51,12 +51,10 @@ CPU only_one_periodic_task {
   };
 
   OBJECT my_object1 {
-    DATA_ID=1;
     DATA_TYPE = "int";
   };
 
   OBJECT my_object2 {
-    DATA_ID=2;
     DATA_TYPE = "int";
   };
 
@@ -69,7 +67,6 @@ CPU only_one_periodic_task {
     TRANSACTION my_transaction2 {
     CORE_ID = 1;
     WRITE_SET = my_object1;
-    WRITE_SET = my_object2;
   };
 
 
