@@ -27,56 +27,110 @@ end foreach
 %
 %
 
-if OS::NUMBER_OF_CORES > 1	then #multicore
-%
-	VAR(tpl_stm_tx_descriptor, OS_APPL_DATA) trans_table[NUMBER_OF_CORES] = {%
-foreach tx in TRANSACTION 
-before %{
-%
-  do
-  if tx::CORE_ID == INDEX then 
-    !tx::CORE_ID %, 				/* core id 		*/
+if OS::NUMBER_OF_CORES == 1	then #multicore
+% 
+VAR(tpl_stm_tx_descriptor, OS_APPL_DATA) trans_table[NUMBER_OF_CORES] = {
+% 
+foreach txe in TRANSACTION 
+do 
+  if INDEX==0 then
+  %
+  { %
+     !txe::CORE_ID%, 				/* core id 		*/
     0, 				/* status 		*/%
     % 
     {%
+   end if
+
+     let read_set_empty := 1
+     let EE_INDEX:=INDEX
+
+     foreach tx in TRANSACTION do
+	let E_INDEX:=INDEX
     	if exists tx::READ_SET then 
+		let read_set_empty := 0
  		foreach o in tx::READ_SET 
 		do
-		    foreach obj in OBJECT  
-			do
-				if o::VALUE == obj::NAME then 
-					%&object_table[% !INDEX %]%
-				end if 
-		     end foreach 
+			let egalite_objet := 0
+			foreach t in TRANSACTION do
+			   let I_INDEX:=INDEX
+			    if I_INDEX > E_INDEX & tx::NAME != t::NAME & tx::CORE_ID == t::CORE_ID then
+				% egalité coeur %
+			        if exists t::READ_SET then  
+			    		foreach ot in t::READ_SET 
+			    		do
+						if I_INDEX < E_INDEX & tx::NAME != t::NAME & o::VALUE == ot::VALUE & tx::CORE_ID == t::CORE_ID then
+							let egalite_objet := 1
+						end if
+			    		end foreach
+			   	end if
+ 			    end if
+			end foreach	
+		    	if egalite_objet == 0 then
+			foreach obj in OBJECT  
+				do				
+			        	if o::VALUE == obj::NAME then 
+						%&object_table[% !INDEX %]%
+					end if 
+		     		end foreach 
+		        end if
 		between %, %
  		end foreach 
-	  else %NULL%
-	  end if 
-     %}, 	/* read_set 	*/%
-  
+	end if 
+    after
+	if read_set_empty==1 then
+	%NULL%
+	end if
+    %}, 	/* read_set 	*/%
+    end foreach
     % 
     {%
-    	  if exists tx::WRITE_SET then 
+     let write_set_empty := 1
+     foreach tx in TRANSACTION do
+	let E_INDEX:=INDEX
+    	if exists tx::WRITE_SET then 
+		let write_set_empty := 0
  		foreach o in tx::WRITE_SET 
 		do
-		    foreach obj in OBJECT  
-			do
-				if o::VALUE == obj::NAME then 
-					%&object_table[% !INDEX %]%
-				end if 
-		     end foreach 
+			let egalite_objet := 0
+			foreach t in TRANSACTION do
+			   let I_INDEX:=INDEX
+			   if exists t::WRITE_SET then  
+			    foreach ot in t::WRITE_SET 
+			    do
+				if I_INDEX < E_INDEX & tx::NAME != t::NAME & o::VALUE == ot::VALUE then
+					let egalite_objet := 1
+				end if
+			    end foreach
+			   end if
+			end foreach	
+		    	if egalite_objet == 0 then
+			foreach obj in OBJECT  
+				do				
+			        	if o::VALUE == obj::NAME then 
+						%&object_table[% !INDEX %]%
+					end if 
+		     		end foreach 
+		        end if
 		between %, %
  		end foreach 
-	  else %NULL%
-	  end if 
-    %}, 	/* write_set 	*/ 
-    %
-    %0 				/* access_vector 	*/
- }%
-  end if
-end foreach
-%};%
-
+	 end if 
+    after
+	if write_set_empty==1 then
+	%NULL%
+	end if
+    %}, 	/* write_set 	*/%
+    end foreach    % 
+    0 				/* access_vector 	*/%
+between %
+  }
+  ,%
+after %
+  }
+};
+%
+end foreach 
+    
 else #NUMBER_OF_CORES=1
 % 
 VAR(tpl_stm_tx_descriptor, OS_APPL_DATA) trans_table[NUMBER_OF_CORES] = {
