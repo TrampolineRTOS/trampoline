@@ -53,7 +53,7 @@ VAR(tpl_stm_tx_descriptor, OS_APPL_DATA) trans_table[NUMBER_OF_CORES] = {
 		!tx::CORE_ID%, 				/* core id 		*/
 		0, 				/* status 		*/%
 		% 
-		{%
+		.read_set = {%
 	         let read_set_empty := 1
 	         if exists tx::READ_SET then 
 			let read_set_empty := 0
@@ -106,7 +106,7 @@ VAR(tpl_stm_tx_descriptor, OS_APPL_DATA) trans_table[NUMBER_OF_CORES] = {
 		end if
 	 	%}, 	/* read_set 	*/%    		
     		% 
-		{%
+		.write_set = {%
 	         let write_set_empty := 1
 	         if exists tx::WRITE_SET then 
 			let write_set_empty := 0
@@ -170,10 +170,11 @@ VAR(tpl_stm_tx_descriptor, OS_APPL_DATA) trans_table[NUMBER_OF_CORES] = {
 else #monoprocessor
 % 
 VAR(tpl_stm_tx_descriptor, OS_APPL_DATA) trans_table[NUMBER_OF_CORES] = {
-    0, 				/* core id 		*/
-    0, 				/* status 		*/%
-    % 
-    {%
+    {
+    	0, 				/* core id 		*/
+    	0, 				/* status 		*/%
+    	% 
+    	.read_set = {%
      let read_set_empty := 1
      # parcours de toutes les transactions
      foreach tx in TRANSACTION do
@@ -212,10 +213,10 @@ VAR(tpl_stm_tx_descriptor, OS_APPL_DATA) trans_table[NUMBER_OF_CORES] = {
 	if read_set_empty==1 then
 	%NULL%
 	end if
-    %}, 	/* read_set 	*/%
+    	%}, 	/* read_set 	*/%
     end foreach
     % 
-    {%
+    	.write_set = {%
      let write_set_empty := 1
      foreach tx in TRANSACTION do
 	let E_INDEX:=INDEX
@@ -253,9 +254,10 @@ VAR(tpl_stm_tx_descriptor, OS_APPL_DATA) trans_table[NUMBER_OF_CORES] = {
 	if write_set_empty==1 then
 	%NULL%
 	end if
-    %}, 	/* write_set 	*/%
+    	%}, 	/* write_set 	*/%
     end foreach    % 
-    0 				/* access_vector 	*/
+    	0 				/* access_vector 	*/
+    }
 };
 %
 end if
