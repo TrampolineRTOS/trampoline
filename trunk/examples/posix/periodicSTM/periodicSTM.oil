@@ -71,12 +71,15 @@ CPU only_one_periodic_task {
     TRANSACTION my_transaction2 {
     CORE_ID = 1;
     WRITE_SET = my_object1;
+    WRITE_SET = my_object2;
+    
+
   };
 
     TRANSACTION my_transaction3 {
     CORE_ID = 0;
     READ_SET = my_object2;
-    READ_SET = my_object3;
+    WRITE_SET = my_object3;
   };
 
 
