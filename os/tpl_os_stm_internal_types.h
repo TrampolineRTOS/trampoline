@@ -139,8 +139,6 @@ typedef struct TPL_STM_OBJECT tpl_stm_object;
  * This is is the internal transaction descriptor structure.
  */
 struct TPL_STM_TX_DESCRIPTOR {
-  P2CONST(char, AUTOMATIC, OS_VAR) name;	/**< Transaction name
-									*/
   CONST(tpl_stm_core_id, TYPEDEF)
     core_id;    	/**<  Core id to which the transaction belongs
                                 		                       	*/

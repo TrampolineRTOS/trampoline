@@ -29,7 +29,7 @@
 #include "tpl_os_stm_internal_types.h"
 
 /**
- * Array of all transaction descriptors
+ * Array of all transaction descriptors (one per core)
  *
   */
 extern VAR(tpl_stm_tx_descriptor, OS_APPL_DATA) trans_table[NUMBER_OF_CORES];

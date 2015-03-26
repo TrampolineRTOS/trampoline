@@ -15,8 +15,8 @@ TASK(my_periodic_task)
     
   occurence++;
   printf("Activation #%d\n",occurence);
-  tpl_screen_display_service("Coucou !");
-  tpl_stm_begin_read_tx_service();
+  ScreenDisplay("Coucou !");
+  STMBeginReadTx();
     
   TerminateTask();
 }
