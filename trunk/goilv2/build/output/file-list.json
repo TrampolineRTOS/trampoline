@@ -1,0 +1,14 @@
+{
+  "LIBPM_DIRECTORY_PATH" : "../build/libpm",
+  "SOURCES_DIR" : ["../build/output", "../build/user-headers", "../build/libpm"],
+  "SOURCES" : [
+    "all-galgas.cpp",
+    "all-libpm.cpp",
+    "all-declarations-2.cpp",
+    "all-declarations-1.cpp",
+    "all-declarations-0.cpp"
+  ],
+  "USER_LINK_OPTIONS" : [
+  ]
+}
+
