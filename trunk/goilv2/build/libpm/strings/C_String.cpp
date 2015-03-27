@@ -8,17 +8,14 @@
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes                                          *
-//  ECN, École Centrale de Nantes (France)                                                                             *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
 //                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it                                            *
-//  under the terms of the GNU Lesser General Public License as published                                              *
-//  by the Free Software Foundation; either version 2 of the License, or                                               *
-//  (at your option) any later version.                                                                                *
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
+//  any later version.                                                                                                 *
 //                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT                                             *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or                                              *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for                                           *
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -70,7 +67,7 @@ static const utf32 kEmptyUTF32String [1] = {TO_UNICODE (0)} ;
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cEmbeddedString : public C_SharedObject {
-  public : int32_t mRegisteringEnableCount ; // > 0 : registering, <= à: no registering (initial : 1)
+  public : int32_t mRegisteringEnableCount ; // > 0 : registering, <= 0: no registering (initial : 1)
   public : uint32_t mCapacity ; // Maximun allowed length of the following C string
   public : uint32_t mLength ; // Current length of the following C string
   public : char * mEncodedCString ;
@@ -303,7 +300,7 @@ uint32_t C_String::hash (void) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//   G E T    M E T H O D S                                                    *
+//   G E T    M E T H O D S                                                                                            *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -330,7 +327,7 @@ utf32 C_String::readCharOrNul (const int32_t inIndex COMMA_LOCATION_ARGS) const 
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//   lastCharacter                                                             *
+//   lastCharacter                                                                                                     *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -350,6 +347,26 @@ bool C_String::containsCharacter (const utf32 inCharacter) const {
   if (NULL != mEmbeddedString) {
     for (uint32_t i=0 ; (i<mEmbeddedString->mLength) && ! found ; i++) {
       found = UNICODE_VALUE (mEmbeddedString->mString [i]) == UNICODE_VALUE (inCharacter) ;
+    }
+  }
+  return found ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+bool C_String::containsCharacterInRange (const utf32 inFirstCharacter,
+                                         const utf32 inLastCharacter) const {
+  #ifndef DO_NOT_GENERATE_CHECKINGS
+    checkString (HERE) ;
+  #endif
+  bool found = false ;
+  if (NULL != mEmbeddedString) {
+    for (uint32_t i=0 ; (i<mEmbeddedString->mLength) && ! found ; i++) {
+      found =
+        (UNICODE_VALUE (mEmbeddedString->mString [i]) >= UNICODE_VALUE (inFirstCharacter))
+      &&
+        (UNICODE_VALUE (mEmbeddedString->mString [i]) <= UNICODE_VALUE (inLastCharacter))
+      ;
     }
   }
   return found ;
@@ -1128,8 +1145,7 @@ stringWithRepeatedCharacter (const utf32 inRepeatedCharacter,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-C_String C_String::
-identifierRepresentation (void) const {
+C_String C_String::identifierRepresentation (void) const {
   C_String s ;
   const int32_t receiver_length = length () ;
   s.setCapacity ((uint32_t) receiver_length) ;
@@ -1137,6 +1153,26 @@ identifierRepresentation (void) const {
   for (int32_t i=0 ; i<receiver_length ; i++) {
     const utf32 c = ptr [i] ;
     if (isalpha ((int) UNICODE_VALUE (c))) {
+      s.appendUnicodeCharacter (c COMMA_HERE) ;
+    }else{
+      s.appendUnicodeCharacter (TO_UNICODE ('_') COMMA_HERE) ;
+      s.appendUnsignedHex (UNICODE_VALUE (c)) ;
+      s.appendUnicodeCharacter (TO_UNICODE ('_') COMMA_HERE) ;
+    }
+  }
+  return s ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_String C_String::nameRepresentation (void) const {
+  C_String s ;
+  const int32_t receiver_length = length () ;
+  s.setCapacity ((uint32_t) receiver_length) ;
+  const utf32 * ptr = utf32String (HERE) ;
+  for (int32_t i=0 ; i<receiver_length ; i++) {
+    const utf32 c = ptr [i] ;
+    if (isalnum ((int) UNICODE_VALUE (c))) {
       s.appendUnicodeCharacter (c COMMA_HERE) ;
     }else{
       s.appendUnicodeCharacter (TO_UNICODE ('_') COMMA_HERE) ;

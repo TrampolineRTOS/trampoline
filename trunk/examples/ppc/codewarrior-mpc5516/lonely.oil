@@ -45,6 +45,7 @@ CPU test {
  
   ALARM rungogo {
     AUTOSTART = TRUE {
+      APPMODE = std;
       ALARMTIME = 1;
       CYCLETIME = 1;
     };

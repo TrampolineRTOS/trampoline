@@ -6,17 +6,14 @@
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes                                          *
-//  ECN, École Centrale de Nantes (France)                                                                             *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
 //                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it                                            *
-//  under the terms of the GNU Lesser General Public License as published                                              *
-//  by the Free Software Foundation; either version 2 of the License, or                                               *
-//  (at your option) any later version.                                                                                *
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
+//  any later version.                                                                                                 *
 //                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT                                             *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or                                              *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for                                           *
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -39,7 +36,7 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-//#define DEBUG_MESSAGES
+// #define DEBUG_MESSAGES
 
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -62,8 +59,8 @@
       NSLog (@"%s", __PRETTY_FUNCTION__) ;
     #endif
     noteObjectAllocation (self) ;
-    mSourceDisplayArrayController = [NSArrayController new] ;
-    mDisplayDescriptorArray = [NSMutableArray new] ;
+    mSourceDisplayArrayControllerHigh = [NSArrayController new] ;
+    mDisplayDescriptorArrayHigh = [NSMutableArray new] ;
     self.undoManager = nil ;
     self.hasUndoManager = NO ;
   //---
@@ -187,52 +184,52 @@
     options:nil
   ] ;
 //---
-  [mSourceDisplayArrayController
+  [mSourceDisplayArrayControllerHigh
     bind:@"contentArray"
     toObject:self
-    withKeyPath:@"mDisplayDescriptorArray"
+    withKeyPath:@"mDisplayDescriptorArrayHigh"
     options:nil
   ] ;
 //---
-  [mSourceDisplayArrayController
+  [mSourceDisplayArrayControllerHigh
     addObserver:self 
     forKeyPath:@"selection.textSelectionStart"
     options:0
     context:NULL
   ] ;
-//--- 
+//---
   [mSourceFilePathControl
     bind:@"value"
-    toObject:mSourceDisplayArrayController
+    toObject:mSourceDisplayArrayControllerHigh
     withKeyPath:@"selection.sourceURL.path"
     options:nil    
   ] ;
 //---
-  [[mDisplayDescriptorTableView tableColumnWithIdentifier:@"source"]
+  [[mDisplayDescriptorTableViewHigh tableColumnWithIdentifier:@"source"]
     bind:@"value"
-    toObject:mSourceDisplayArrayController
+    toObject:mSourceDisplayArrayControllerHigh
     withKeyPath:@"arrangedObjects.title"
     options:nil    
   ] ;
-//--- 
-  [[mDisplayDescriptorTableView tableColumnWithIdentifier:@"source"]
+//---
+  [[mDisplayDescriptorTableViewHigh tableColumnWithIdentifier:@"source"]
     bind:@"fontBold"
-    toObject:mSourceDisplayArrayController
+    toObject:mSourceDisplayArrayControllerHigh
     withKeyPath:@"arrangedObjects.isDirty"
     options:nil    
   ] ;
-//--- 
-  [[mDisplayDescriptorTableView tableColumnWithIdentifier:@"remove"]
+//---
+  [[mDisplayDescriptorTableViewHigh tableColumnWithIdentifier:@"remove"]
     bind:@"value"
-    toObject:mSourceDisplayArrayController
+    toObject:mSourceDisplayArrayControllerHigh
     withKeyPath:@"arrangedObjects.imageForClosingInUserInterface"
     options:nil    
   ] ;
 //---
-  mDisplayDescriptorTableView.target = self ;
-  mDisplayDescriptorTableView.action = @selector (clickOnSourceTableView:) ;
-  [mDisplayDescriptorTableView setDataSource:self] ;
-  [mDisplayDescriptorTableView
+  mDisplayDescriptorTableViewHigh.target = self ;
+  mDisplayDescriptorTableViewHigh.action = @selector (clickOnSourceTableViewHigh:) ;
+  [mDisplayDescriptorTableViewHigh setDataSource:self] ;
+  [mDisplayDescriptorTableViewHigh
     registerForDraggedTypes:[NSArray arrayWithObjects:
       (NSString*)kUTTypeFileURL,
       nil
@@ -274,12 +271,12 @@
 //---
   [mOutputScrollView setVerticalScroller:[OC_GGS_Scroller new]] ;
 //------------------------------------------------------------------- Get selected tab
-  NSString * openedFilePath = self.fileURL.path ;
-  key = [NSString stringWithFormat:@"SELECTED-TAB:%@", openedFilePath] ;
+//  NSString * openedFilePath = self.fileURL.path ;
+  key = [NSString stringWithFormat:@"SELECTED-TAB:%@", mBaseFilePreferenceKey] ;
   const NSUInteger selectedTab = (NSUInteger) [[NSUserDefaults standardUserDefaults] integerForKey:key] ;
 //  NSLog (@"READ selectedTab %lu", selectedTab) ;
 //------------------------------------------------------------------- Install selected tab observer
-  [mSourceDisplayArrayController
+  [mSourceDisplayArrayControllerHigh
     addObserver:self 
     forKeyPath:@"selectionIndex"
     options:0
@@ -288,8 +285,8 @@
 //------------------------------------------------------------------ Display the document contents
   OC_GGS_TextDisplayDescriptor * textDisplayDescriptor = [mDocumentData newSourceDisplayDescriptorForDocument:self] ;
   if (nil != textDisplayDescriptor) {
-    [mSourceDisplayArrayController addObject:textDisplayDescriptor] ;
-    [mSourceDisplayArrayController setSelectedObjects:[NSArray arrayWithObject:textDisplayDescriptor]] ;
+    [mSourceDisplayArrayControllerHigh addObject:textDisplayDescriptor] ;
+    [mSourceDisplayArrayControllerHigh setSelectedObjects:[NSArray arrayWithObject:textDisplayDescriptor]] ;
   //---
     mRulerViewForBuildOutput = [[OC_GGS_RulerViewForBuildOutput alloc] initWithDocument:self] ;
     [mOutputScrollView setVerticalRulerView:mRulerViewForBuildOutput] ;
@@ -299,14 +296,14 @@
   }
 //------------------------------------------------------------------ Open tabs
 //--- Open tabs
-  key = [NSString stringWithFormat:@"CONFIG:%@", openedFilePath] ;
+  key = [NSString stringWithFormat:@"CONFIG:%@", mBaseFilePreferenceKey] ;
   NSArray * tabFiles = [[[NSUserDefaults standardUserDefaults] objectForKey:key] copy] ;
   for (NSString * fileAbsolutePath in tabFiles) {
     [self appendTabForFile:fileAbsolutePath] ;
   }
 //--- Select tab
-  NSArray * sourceDisplayArray = mSourceDisplayArrayController.arrangedObjects ;
-  mSourceDisplayArrayController.selectionIndex = (selectedTab < sourceDisplayArray.count) ? selectedTab : 0 ;
+  NSArray * sourceDisplayArray = mSourceDisplayArrayControllerHigh.arrangedObjects ;
+  mSourceDisplayArrayControllerHigh.selectionIndex = (selectedTab < sourceDisplayArray.count) ? selectedTab : 0 ;
   // NSLog (@"DONE") ;
 //---
   [mCaseSensitiveSearchCheckbox
@@ -424,7 +421,7 @@
 //---
   [OC_GGS_DocumentData saveAllDocuments] ;
 //---
-  NSArray * sourceDisplayArray = mSourceDisplayArrayController.arrangedObjects ;
+  NSArray * sourceDisplayArray = mSourceDisplayArrayControllerHigh.arrangedObjects ;
   for (OC_GGS_TextDisplayDescriptor * tdd in sourceDisplayArray) {
     [tdd detachTextDisplayDescriptor] ;
   }
@@ -442,15 +439,15 @@
     unbind:@"value"
   ] ;
 //---
-  [mSourceDisplayArrayController
+  [mSourceDisplayArrayControllerHigh
     unbind:@"contentArray"
   ] ;
-  [mSourceDisplayArrayController
+  [mSourceDisplayArrayControllerHigh
     removeObserver:self 
     forKeyPath:@"selectionIndex"
   ] ;
 //---
-  [mSourceDisplayArrayController
+  [mSourceDisplayArrayControllerHigh
     removeObserver:self 
     forKeyPath:@"selection.textSelectionStart"
   ] ;
@@ -468,13 +465,13 @@
     unbind:@"hidden"
   ] ;
 //---
-  [[mDisplayDescriptorTableView tableColumnWithIdentifier:@"source"]
+  [[mDisplayDescriptorTableViewHigh tableColumnWithIdentifier:@"source"]
     unbind:@"value"
   ] ;
-  [[mDisplayDescriptorTableView tableColumnWithIdentifier:@"source"]
+  [[mDisplayDescriptorTableViewHigh tableColumnWithIdentifier:@"source"]
     unbind:@"fontBold"
   ] ;
-  [[mDisplayDescriptorTableView tableColumnWithIdentifier:@"remove"]
+  [[mDisplayDescriptorTableViewHigh tableColumnWithIdentifier:@"remove"]
     unbind:@"value"
   ] ;
 //---
@@ -518,8 +515,8 @@
     forKeyPath:[NSString stringWithFormat:@"searchMatrixFor:%@", mBaseFilePreferenceKey]
   ] ;
 //---
-  mSourceDisplayArrayController = nil ;
-  mDisplayDescriptorArray = nil ;
+  mSourceDisplayArrayControllerHigh = nil ;
+  mDisplayDescriptorArrayHigh = nil ;
 //---
   [mRemoveExcludedDirectoryButton unbind:@"enabled"] ;
   [[mExcludedDirectoryTableView tableColumnWithIdentifier:@"path"] unbind:@"value"] ;
@@ -537,27 +534,12 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-/*- (IBAction) duplicateSelectedSourceViewAction: (id) inSender {
-  #ifdef DEBUG_MESSAGES
-    NSLog (@"%s", __PRETTY_FUNCTION__) ;
-  #endif
-  OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayController.selectedObjects objectAtIndex:0] ;
-  OC_GGS_TextDisplayDescriptor * textDisplayDescriptor = [[OC_GGS_TextDisplayDescriptor alloc]
-    initWithDocumentData:selectedObject.documentData
-    displayDocument:self
-  ] ;
-  [mSourceDisplayArrayController addObject:textDisplayDescriptor] ;
-  [mSourceDisplayArrayController setSelectedObjects:[NSArray arrayWithObject:textDisplayDescriptor]] ;
-}*/
-
-//---------------------------------------------------------------------------------------------------------------------*
-
 - (void) registerConfigurationInPreferences {
   NSMutableArray * configurationArray = [NSMutableArray new] ;
-  for (OC_GGS_TextDisplayDescriptor * source in mSourceDisplayArrayController.arrangedObjects) {
+  for (OC_GGS_TextDisplayDescriptor * source in mSourceDisplayArrayControllerHigh.arrangedObjects) {
     [configurationArray addObject:source.sourceURL.path] ;
   }
-  NSString * key = [NSString stringWithFormat:@"CONFIG:%@", [configurationArray objectAtIndex:0]] ;
+  NSString * key = [NSString stringWithFormat:@"CONFIG:%@", mBaseFilePreferenceKey] ;
   [configurationArray removeObjectAtIndex:0] ;
   [[NSUserDefaults standardUserDefaults]
     setObject:configurationArray
@@ -572,7 +554,7 @@
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
-  [mSourceDisplayArrayController setSelectionIndex:(NSUInteger) inSender.tag] ;
+  [mSourceDisplayArrayControllerHigh setSelectionIndex:(NSUInteger) inSender.tag] ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -615,7 +597,7 @@
   //--- Get selected line
     const NSUInteger selectedLine = (NSUInteger) [mGotoLineTextField integerValue] ;
   //--- Goto selected line
-    OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayController.selectedObjects objectAtIndex:0] ;
+    OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayControllerHigh.selectedObjects objectAtIndex:0] ;
     [selectedObject gotoLine:selectedLine] ;
   }
 }
@@ -626,7 +608,7 @@
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
-  OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayController.selectedObjects objectAtIndex:0] ;
+  OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayControllerHigh.selectedObjects objectAtIndex:0] ;
   [selectedObject commentSelection] ;
 }
 
@@ -636,7 +618,7 @@
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
-  OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayController.selectedObjects objectAtIndex:0] ;
+  OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayControllerHigh.selectedObjects objectAtIndex:0] ;
   [selectedObject uncommentSelection] ;
 }
 
@@ -646,7 +628,7 @@
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
-  OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayController.selectedObjects objectAtIndex:0] ;
+  OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayControllerHigh.selectedObjects objectAtIndex:0] ;
   [selectedObject shiftLeftAction] ;
 }
 
@@ -656,7 +638,7 @@
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
-  OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayController.selectedObjects objectAtIndex:0] ;
+  OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayControllerHigh.selectedObjects objectAtIndex:0] ;
   [selectedObject shiftRightAction] ;
 }
 
@@ -665,7 +647,7 @@
 - (BOOL) validateMenuItem:(NSMenuItem *) item {
   BOOL result = YES ;
   if ((item.action == @selector (actionComment:)) || (item.action == @selector (actionUncomment:))) {
-    OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayController.selectedObjects objectAtIndex:0] ;
+    OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayControllerHigh.selectedObjects objectAtIndex:0] ;
     result = selectedObject.documentData.textSyntaxColoring.tokenizer.blockComment.length > 0 ;
   }
   return result ;
@@ -714,7 +696,7 @@
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (IBAction) copyFilePath: (id) inSender {
-  OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayController.selectedObjects objectAtIndex:0] ;
+  OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayControllerHigh.selectedObjects objectAtIndex:0] ;
   NSString * filePath = selectedObject.sourceURL.path ;
   NSPasteboard * pasteboard = [NSPasteboard generalPasteboard] ;
   [pasteboard clearContents] ;
@@ -724,7 +706,7 @@
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (IBAction) copyFileName: (id) inSender {
-  OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayController.selectedObjects objectAtIndex:0] ;
+  OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayControllerHigh.selectedObjects objectAtIndex:0] ;
   NSString * fileName = selectedObject.sourceURL.path.lastPathComponent ;
   NSPasteboard * pasteboard = [NSPasteboard generalPasteboard] ;
   [pasteboard clearContents] ;
@@ -734,7 +716,7 @@
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (IBAction) copyFileDirectory: (id) inSender {
-  OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayController.selectedObjects objectAtIndex:0] ;
+  OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayControllerHigh.selectedObjects objectAtIndex:0] ;
   NSString * fileDirectory = selectedObject.sourceURL.path.stringByDeletingLastPathComponent ;
   NSPasteboard * pasteboard = [NSPasteboard generalPasteboard] ;
   [pasteboard clearContents] ;
@@ -744,7 +726,7 @@
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (void) actionInsertTextMacro: (NSMenuItem *) inSender {
-  OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayController.selectedObjects objectAtIndex:0] ;
+  OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayControllerHigh.selectedObjects objectAtIndex:0] ;
   [selectedObject actionInsertTextMacro:inSender] ;
 }
 
@@ -762,7 +744,7 @@
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
-  OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayController.selectedObjects objectAtIndex:0] ;
+  OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayControllerHigh.selectedObjects objectAtIndex:0] ;
   [selectedObject.textView print:sender] ;
 }
 
@@ -1059,7 +1041,7 @@
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
   if (nil == mBuildTask) {
-    OC_GGS_TextDisplayDescriptor * tdd = [mSourceDisplayArrayController.selectedObjects objectAtIndex:0] ;
+    OC_GGS_TextDisplayDescriptor * tdd = [mSourceDisplayArrayControllerHigh.selectedObjects objectAtIndex:0] ;
     [self compileFileAtPath:tdd.sourceURL.path] ;
   }
 }
@@ -1071,7 +1053,7 @@
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
   if (nil == mBuildTask) {
-    OC_GGS_TextDisplayDescriptor * tdd = [mDisplayDescriptorArray objectAtIndex:0] ;
+    OC_GGS_TextDisplayDescriptor * tdd = [mDisplayDescriptorArrayHigh objectAtIndex:0] ;
     [self compileFileAtPath:tdd.sourceURL.path] ;
   }
 }
@@ -1290,16 +1272,17 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (void) pmReleaseBuildTask {
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
+  #endif
   mBuildTask = nil ;
-//---
   [NSApp requestUserAttention:NSInformationalRequest] ;
-//---
-/*  if ((! mHasSpoken) && (mErrorCount > 40)) {
+  if ((! mHasSpoken) && (mErrorCount >= 40)) {
     mHasSpoken = YES ;
-    NSString * thePhrase = [NSString stringWithFormat:@"\"Oh! %@ made %lu errors\"", NSFullUserName (), mErrorCount] ;
+    NSString * thePhrase = [NSString stringWithFormat:@"Oh! %@ made %lu errors", NSFullUserName (), mErrorCount] ;
     NSSpeechSynthesizer * speech = [[NSSpeechSynthesizer alloc] initWithVoice:nil] ;
     [speech startSpeakingString:thePhrase] ;
-  }*/
+  }
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -1342,7 +1325,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
   BOOL isEdited = NO ;
-  NSArray * sourceDisplayArray = mSourceDisplayArrayController.arrangedObjects ;
+  NSArray * sourceDisplayArray = mSourceDisplayArrayControllerHigh.arrangedObjects ;
   for (NSUInteger i=0 ; (i<sourceDisplayArray.count) && ! isEdited ; i++) {
     OC_GGS_TextDisplayDescriptor * textDisplay = [sourceDisplayArray objectAtIndex:i] ;
     OC_GGS_TextSyntaxColoring * textSyntaxColoring = textDisplay.documentData.textSyntaxColoring ;
@@ -1357,11 +1340,11 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-- (void) clickOnSourceTableView: (id) inSender {
-  if (mDisplayDescriptorTableView.clickedColumn == 1) {
-    const NSInteger row = mDisplayDescriptorTableView.clickedRow ;
+- (void) clickOnSourceTableViewHigh: (id) inSender {
+  if (mDisplayDescriptorTableViewHigh.clickedColumn == 1) {
+    const NSInteger row = mDisplayDescriptorTableViewHigh.clickedRow ;
     if (row >= 0) {
-      OC_GGS_TextDisplayDescriptor * desc = [mSourceDisplayArrayController.arrangedObjects objectAtIndex: (NSUInteger) row] ;
+      OC_GGS_TextDisplayDescriptor * desc = [mSourceDisplayArrayControllerHigh.arrangedObjects objectAtIndex: (NSUInteger) row] ;
       [self removeSelectedTabAction:desc] ;
     }
   }
@@ -1376,7 +1359,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
     error:& error
   ] ;
   if (nil == error) {
-    OC_GGS_TextDisplayDescriptor * d = [mSourceDisplayArrayController.selectedObjects objectAtIndex:0] ;
+    OC_GGS_TextDisplayDescriptor * d = [mSourceDisplayArrayControllerHigh.selectedObjects objectAtIndex:0] ;
     [newDocument findOrAddNewTabForFile:d.sourceURL.path] ;
   }else{
     [self.windowForSheet presentError:error] ;
@@ -1392,7 +1375,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
     error:& error
   ] ;
   if (nil == error) {
-    OC_GGS_TextDisplayDescriptor * d = [mSourceDisplayArrayController.selectedObjects objectAtIndex:0] ;
+    OC_GGS_TextDisplayDescriptor * d = [mSourceDisplayArrayControllerHigh.selectedObjects objectAtIndex:0] ;
     [newDocument findOrAddNewTabForFile:d.sourceURL.path] ;
     [self removeSelectedTabAction:d] ;
   }else{
@@ -1403,19 +1386,19 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (IBAction) duplicateSourceAction: (id) inSender {
-  OC_GGS_TextDisplayDescriptor * d = [mSourceDisplayArrayController.selectedObjects objectAtIndex:0] ;
+  OC_GGS_TextDisplayDescriptor * d = [mSourceDisplayArrayControllerHigh.selectedObjects objectAtIndex:0] ;
   OC_GGS_TextDisplayDescriptor * tdd = [[OC_GGS_TextDisplayDescriptor alloc]
     initWithDocumentData:d.documentData
     displayDocument:self
   ] ;
-  [mSourceDisplayArrayController addObject:tdd] ;
+  [mSourceDisplayArrayControllerHigh addObject:tdd] ;
   [self registerConfigurationInPreferences] ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (IBAction) revealInFinderAction: (id) inSender {
-  OC_GGS_TextDisplayDescriptor * d = [mSourceDisplayArrayController.selectedObjects objectAtIndex:0] ;
+  OC_GGS_TextDisplayDescriptor * d = [mSourceDisplayArrayControllerHigh.selectedObjects objectAtIndex:0] ;
   NSWorkspace * ws = [NSWorkspace sharedWorkspace] ;
   const BOOL ok = [ws selectFile:d.sourceURL.path inFileViewerRootedAtPath:@""] ;
   if (! ok) {
@@ -1426,15 +1409,15 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (IBAction) closeAction: (id) inSender {
-  OC_GGS_TextDisplayDescriptor * d = [mSourceDisplayArrayController.selectedObjects objectAtIndex:0] ;
+  OC_GGS_TextDisplayDescriptor * d = [mSourceDisplayArrayControllerHigh.selectedObjects objectAtIndex:0] ;
   [self removeSelectedTabAction:d] ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (IBAction) closeOthersAction: (id) inSender {
-  OC_GGS_TextDisplayDescriptor * tdd = [mSourceDisplayArrayController.selectedObjects objectAtIndex:0] ;
-  for (OC_GGS_TextDisplayDescriptor * d in [mSourceDisplayArrayController.arrangedObjects copy]) {
+  OC_GGS_TextDisplayDescriptor * tdd = [mSourceDisplayArrayControllerHigh.selectedObjects objectAtIndex:0] ;
+  for (OC_GGS_TextDisplayDescriptor * d in [mSourceDisplayArrayControllerHigh.arrangedObjects copy]) {
     if (tdd != d) {
       [self removeSelectedTabAction:d] ;
     }
@@ -1467,7 +1450,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   OC_GGS_DocumentData * documentData = [self findOrAddDocumentWithPath:inDocumentPath] ;
   OC_GGS_TextDisplayDescriptor * foundSourceText = nil ;
   if (nil != documentData) { // Find a text display descriptor
-    NSArray * sourceDisplayDescriptorArray = mSourceDisplayArrayController.arrangedObjects ;
+    NSArray * sourceDisplayDescriptorArray = mSourceDisplayArrayControllerHigh.arrangedObjects ;
     for (NSUInteger i=0 ; (i<sourceDisplayDescriptorArray.count) && (nil == foundSourceText) ; i++) {
       OC_GGS_TextDisplayDescriptor * std = [sourceDisplayDescriptorArray objectAtIndex:i] ;
       if (std.documentData == documentData) {
@@ -1479,11 +1462,11 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
         initWithDocumentData:documentData
         displayDocument:self
       ] ;
-      [mSourceDisplayArrayController addObject:foundSourceText] ;
+      [mSourceDisplayArrayControllerHigh addObject:foundSourceText] ;
     //--- Update users preferences
       [self registerConfigurationInPreferences] ;
     }
-    [mSourceDisplayArrayController setSelectedObjects:[NSArray arrayWithObject:foundSourceText]] ;
+    [mSourceDisplayArrayControllerHigh setSelectedObjects:[NSArray arrayWithObject:foundSourceText]] ;
   }
   return foundSourceText ;
 }
@@ -1500,9 +1483,9 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
       initWithDocumentData:documentData
       displayDocument:self
     ] ;
-    [mSourceDisplayArrayController addObject:tdd] ;
+    [mSourceDisplayArrayControllerHigh addObject:tdd] ;
     [self registerConfigurationInPreferences] ;
-    [mSourceDisplayArrayController setSelectedObjects:[NSArray arrayWithObject:tdd]] ;
+    [mSourceDisplayArrayControllerHigh setSelectedObjects:[NSArray arrayWithObject:tdd]] ;
   }
 }
 
@@ -1513,8 +1496,8 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
 //---
-  const BOOL lastSourceWillBeRemoved = [mSourceDisplayArrayController.arrangedObjects count] == 1 ;
-  [mSourceDisplayArrayController removeObject:inTextDisplayDescriptor] ;
+  const BOOL lastSourceWillBeRemoved = [mSourceDisplayArrayControllerHigh.arrangedObjects count] == 1 ;
+  [mSourceDisplayArrayControllerHigh removeObject:inTextDisplayDescriptor] ;
   [inTextDisplayDescriptor detachTextDisplayDescriptor] ;
   [OC_GGS_DocumentData cocoaDocumentWillClose:nil] ;
   if (lastSourceWillBeRemoved) {
@@ -1551,15 +1534,16 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
     [mOutputTextView setFont:mBuildTextFont] ;
   }else if ((inObject == mFoundEntryTreeController) && [inKeyPath isEqualToString:@"selectionIndexPath"]) {
     [self changeSelectionInSearchResultView] ;
-  }else if ((inObject == mSourceDisplayArrayController) && [inKeyPath isEqualToString:@"selectionIndex"]) {
+  }else if ((inObject == mSourceDisplayArrayControllerHigh) && [inKeyPath isEqualToString:@"selectionIndex"]) {
     for (NSView * subview in mSourceHostView.subviews.copy) {
       [subview removeFromSuperview] ;
     }
-    NSArray * arrangedObjects = mSourceDisplayArrayController.arrangedObjects ;
-    const NSUInteger selectedTab = mSourceDisplayArrayController.selectionIndex ;
+    NSArray * arrangedObjects = mSourceDisplayArrayControllerHigh.arrangedObjects ;
+    const NSUInteger selectedTab = mSourceDisplayArrayControllerHigh.selectionIndex ;
     // NSLog (@"WRITE selectedTab %lu", selectedTab) ;
     if (selectedTab != NSNotFound) {
-      NSString * key = [NSString stringWithFormat:@"SELECTED-TAB:%@", [[arrangedObjects objectAtIndex:0] sourceURL].path] ;
+  //    NSString * key = [NSString stringWithFormat:@"SELECTED-TAB:%@", [[arrangedObjects objectAtIndex:0] sourceURL].path] ;
+      NSString * key = [NSString stringWithFormat:@"SELECTED-TAB:%@", mBaseFilePreferenceKey] ;
       [ud setInteger:(NSInteger) selectedTab forKey:key] ;
       OC_GGS_TextDisplayDescriptor * object = [arrangedObjects objectAtIndex:selectedTab] ;
       [self setFileURL:object.sourceURL] ;
@@ -1568,9 +1552,9 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
       [mSourceHostView.window makeFirstResponder:object.textView] ;
     }
   }else if ([inKeyPath isEqualToString:@"selection.textSelectionStart"]) {
-    const NSUInteger sel = mSourceDisplayArrayController.selectionIndex ;
+    const NSUInteger sel = mSourceDisplayArrayControllerHigh.selectionIndex ;
     if (sel != NSNotFound) {
-      NSArray * arrangedObjects = mSourceDisplayArrayController.arrangedObjects ;
+      NSArray * arrangedObjects = mSourceDisplayArrayControllerHigh.arrangedObjects ;
       OC_GGS_TextDisplayDescriptor * object = [arrangedObjects objectAtIndex:sel] ;
       [object selectEntryPopUp] ;
     }
@@ -1587,8 +1571,8 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
-  NSArray * sourceDisplayDescriptorArray = mSourceDisplayArrayController.arrangedObjects ;
-  const NSUInteger sel = mSourceDisplayArrayController.selectionIndex ;
+  NSArray * sourceDisplayDescriptorArray = mSourceDisplayArrayControllerHigh.arrangedObjects ;
+  const NSUInteger sel = mSourceDisplayArrayControllerHigh.selectionIndex ;
   OC_GGS_TextDisplayDescriptor * currentSourceText = [sourceDisplayDescriptorArray objectAtIndex:sel] ;
   OC_GGS_TextSyntaxColoring * textSyntaxColoring = currentSourceText.documentData.textSyntaxColoring ;
 //--- Get source string
@@ -1902,7 +1886,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   NSSet * directoryToExcludeSet = [NSSet setWithArray:mExcludedDirectoryArrayController.content] ;
   // NSLog (@"directoryToExcludeSet %@", directoryToExcludeSet) ;
   NSMutableSet * directoryPathSet = [NSMutableSet new] ;
-  for (OC_GGS_TextDisplayDescriptor * d in mSourceDisplayArrayController.arrangedObjects) {
+  for (OC_GGS_TextDisplayDescriptor * d in mSourceDisplayArrayControllerHigh.arrangedObjects) {
     NSString * dir = d.sourceURL.path.stringByDeletingLastPathComponent ;
     // NSLog (@"dir %@", dir) ;
     if (![directoryToExcludeSet containsObject:dir]) {
@@ -2032,7 +2016,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
   NSMutableSet * visitedFilePathes = [NSMutableSet new] ;
-  for (OC_GGS_TextDisplayDescriptor * d in mSourceDisplayArrayController.arrangedObjects) {
+  for (OC_GGS_TextDisplayDescriptor * d in mSourceDisplayArrayControllerHigh.arrangedObjects) {
     NSString * filePath = d.sourceURL.path ;
     if (! [visitedFilePathes containsObject:filePath]) {
       [visitedFilePathes addObject:filePath] ;
@@ -2243,22 +2227,30 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
+//   DRAG AND DROP                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 #pragma mark Drag and Drop in source table View
 
 // http://stackoverflow.com/questions/10308008/nstableview-and-drag-and-drop-from-finder
 
+//#define DEBUG_MESSAGES
+
 //---------------------------------------------------------------------------------------------------------------------*
 
-- (BOOL) tableView: (NSTableView *)tv
+- (BOOL) tableView: (NSTableView *) inTableView
          writeRowsWithIndexes: (NSIndexSet *) inRowIndexes
          toPasteboard: (NSPasteboard*) inPasteboard {
   #ifdef DEBUG_MESSAGES
-    NSLog (@"%s", __PRETTY_FUNCTION__) ;
+    NSLog (@"%s, inRowIndexes %@", __PRETTY_FUNCTION__, inRowIndexes) ;
   #endif
-  OC_GGS_TextDisplayDescriptor * tdd = [mSourceDisplayArrayController.selectedObjects objectAtIndex:0] ;
-  [inPasteboard declareTypes:[NSArray arrayWithObject:(NSString *)kPasteboardTypeFileURLPromise] owner:self] ;
+  [inPasteboard declareTypes:[NSArray arrayWithObject:(NSString *) kPasteboardTypeFileURLPromise] owner:self] ;
+  OC_GGS_TextDisplayDescriptor * tdd = [mSourceDisplayArrayControllerHigh.selectedObjects objectAtIndex:0] ;
+  [inPasteboard clearContents] ; // clear pasteboard to take ownership
   [inPasteboard writeObjects:[NSArray arrayWithObject:tdd.sourceURL]] ;
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"tdd.sourceURL %@", tdd.sourceURL) ;
+  #endif
   return YES;
 }
 
@@ -2276,24 +2268,27 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-- (BOOL) tableView: (NSTableView *)aTableView
-         acceptDrop: (id <NSDraggingInfo>)info
+- (BOOL) tableView: (NSTableView *) inTableView
+         acceptDrop: (id <NSDraggingInfo>) inDraggingInfo
          row: (NSInteger) inRow
          dropOperation:(NSTableViewDropOperation)operation {
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
-  NSURL * fileURL = [NSURL URLFromPasteboard:info.draggingPasteboard] ;
+  NSArray * classArray = [NSArray arrayWithObject:[NSURL class]]; // types of objects you are looking for
+  NSArray * arrayOfURLs = [inDraggingInfo.draggingPasteboard readObjectsForClasses:classArray options:nil]; // read objects of those classes
 //---
-  OC_GGS_DocumentData * documentData = [self findOrAddDocumentWithPath:fileURL.path] ;
-  if (nil != documentData) { // Find a text display descriptor
-    OC_GGS_TextDisplayDescriptor * tdd = [[OC_GGS_TextDisplayDescriptor alloc]
-      initWithDocumentData:documentData
-      displayDocument:self
-    ] ;
-    [mSourceDisplayArrayController insertObject:tdd atArrangedObjectIndex:(NSUInteger) inRow] ;
-    [mSourceDisplayArrayController setSelectedObjects:[NSArray arrayWithObject:tdd]] ;
-    [self registerConfigurationInPreferences] ;
+  for (NSURL * url in arrayOfURLs) {
+    OC_GGS_DocumentData * documentData = [self findOrAddDocumentWithPath:url.path] ;
+    if (nil != documentData) { // Find a text display descriptor
+      OC_GGS_TextDisplayDescriptor * tdd = [[OC_GGS_TextDisplayDescriptor alloc]
+        initWithDocumentData:documentData
+        displayDocument:self
+      ] ;
+      [mSourceDisplayArrayControllerHigh insertObject:tdd atArrangedObjectIndex:(NSUInteger) inRow] ;
+      [mSourceDisplayArrayControllerHigh setSelectedObjects:[NSArray arrayWithObject:tdd]] ;
+      [self registerConfigurationInPreferences] ;
+    }
   }
   return YES ;
 }

@@ -1,29 +1,25 @@
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//            Declaration and implementation of the template class             *
-//                     'TC_UniqueSparseArray'                                  *
+//  Declaration and implementation of the template class 'TC_UniqueSparseArray'                                        *
 //                                                                                                                     *
-//  COPY OF ITS INSTANCES IS FORBIDDEN BY REDEFINITION OF COPY CONSTRUCTOR     *
-//  AND ASSIGNMENT OPERATOR.                                                   *
+//  COPY OF ITS INSTANCES IS FORBIDDEN BY REDEFINITION OF COPY CONSTRUCTOR AND ASSIGNMENT OPERATOR.                    *
 //                                                                                                                     *
-//  This file is part of libpm library                                         *
+//  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2008, ..., 2008 Pierre Molinaro.                             *
+//  Copyright (C) 2008, ..., 2008 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
-//  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes  *
-//  ECN, Ecole Centrale de Nantes (France)                                     *
+//  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes                                          *
+//  ECN, Ecole Centrale de Nantes (France)                                                                             *
 //                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it    *
-//  under the terms of the GNU Lesser General Public License as published      *
-//  by the Free Software Foundation; either version 2 of the License, or       *
-//  (at your option) any later version.                                        *
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
+//  any later version.                                                                                                 *
 //                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT     *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
-//  more details.                                                              *
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
+//  more details.                                                                                                      *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -38,7 +34,7 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//   Template class predeclaration                                           *
+//   Template class predeclaration                                                                                     *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -46,7 +42,7 @@ template <typename TYPE> class TC_UniqueSparseArray ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//   swap function for TC_UniqueSparseArray <TYPE> classes                   *
+//   swap function for TC_UniqueSparseArray <TYPE> classes                                                             *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -56,7 +52,7 @@ void swap (TC_UniqueSparseArray <TYPE> & ioOperand1,
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//   Template class declaration                                              *
+//   Template class declaration                                                                                        *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -113,7 +109,7 @@ template <typename TYPE> class TC_UniqueSparseArray {
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//   Default Constructor                                                     *
+//   Default Constructor                                                                                               *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -127,7 +123,7 @@ mDefaultValue (inDefaultValue) {
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//   Destructor                                                              *
+//   Destructor                                                                                                        *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -138,7 +134,7 @@ TC_UniqueSparseArray <TYPE>::~TC_UniqueSparseArray (void) {
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//   Remove all objects and deallocate                                       *
+//   Remove all objects and deallocate                                                                                 *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -175,7 +171,7 @@ void TC_UniqueSparseArray <TYPE>::free (void) {
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//   Set entry                                                               *
+//   Set entry                                                                                                         *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -221,7 +217,7 @@ setObjectAtIndex (const TYPE & inValue,
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//   Object at index                                                         *
+//   Object at index                                                                                                   *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -249,7 +245,7 @@ objectAtIndex (const uint32_t inIndex) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//   Default object at index                                                 *
+//   Default object at index                                                                                           *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -358,7 +354,7 @@ findFirstEntryWithIndexAfterNotFound (uint32_t & ioIndex) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//   Default object at index                                                 *
+//   Default object at index                                                                                           *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -386,7 +382,7 @@ isDefaultObjectAtIndex (const uint32_t inIndex) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//   swap function for TC_UniqueSparseArray <TYPE> classes                   *
+//   swap function for TC_UniqueSparseArray <TYPE> classes                                                             *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 

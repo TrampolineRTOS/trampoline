@@ -1,40 +1,32 @@
 #! /usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-#------------------------------------------------------------------------------*
-# https://docs.python.org/2/library/subprocess.html#module-subprocess
+#----------------------------------------------------------------------------------------------------------------------*
 
-import subprocess
-import sys
-import os
-import atexit
-if sys.version_info >= (2, 6) :
-  import multiprocessing
+import sys, os, json
 
-#------------------------------------------------------------------------------*
+#----------------------------------------------------------------------------------------------------------------------*
 
-def cleanup():
-  if childProcess.poll () == None :
-    childProcess.kill ()
-
-#------------------------------------------------------------------------------*
-
-#--- Register a function for killing subprocess
-atexit.register (cleanup)
-#--- Get script absolute path
+#----------------------------------------------------------------- Get script absolute path
 scriptDir = os.path.dirname (os.path.abspath (sys.argv [0]))
-#--- Getting core count
-if sys.version_info >= (2, 6) :
-  coreCount = multiprocessing.cpu_count ()
-else:
-  coreCount = 1
-#print coreCount
-#---
-childProcess = subprocess.Popen (["make", "all", "-j" + str (coreCount), "--warn-undefined-variables"], cwd=scriptDir)
-#--- Wait for subprocess termination
-if childProcess.poll () == None :
-  childProcess.wait ()
-if childProcess.returncode != 0 :
-  sys.exit (childProcess.returncode)
+os.chdir (scriptDir)
+#----------------------------------------------------------------- Get goal as first argument
+goal = "all" # Default goal
+if len (sys.argv) > 1 :
+  goal = sys.argv [1]
+#----------------------------------------------------------------- Get max parallel jobs as second argument
+maxParallelJobs = 0 # 0 means use host processor count
+if len (sys.argv) > 2 :
+  maxParallelJobs = int (sys.argv [2])
+#----------------------------------------------------------------- Get json description dictionary
+jsonFilePath = os.path.normpath (scriptDir + "/../build/output/file-list.json")
+with open (jsonFilePath) as f:
+  dictionary = json.loads (f.read ())
+LIBPM_DIRECTORY_PATH = dictionary ["LIBPM_DIRECTORY_PATH"]
+#----------------------------------------------------------------- Import builder
+sys.path.append (os.path.abspath (LIBPM_DIRECTORY_PATH + "/python-makefiles"))
+from mingw32_on_macosx_gcc_tools import buildForWin32OnMacOSX
+#----------------------------------------------------------------- Build
+buildForWin32OnMacOSX (dictionary, "goil", goal, maxParallelJobs, maxParallelJobs == 1)
 
-#------------------------------------------------------------------------------*
+#----------------------------------------------------------------------------------------------------------------------*

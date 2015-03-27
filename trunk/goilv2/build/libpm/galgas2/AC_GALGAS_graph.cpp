@@ -8,17 +8,14 @@
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes                                          *
-//  ECN, École Centrale de Nantes (France)                                                                             *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
 //                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it                                            *
-//  under the terms of the GNU Lesser General Public License as published                                              *
-//  by the Free Software Foundation; either version 2 of the License, or                                               *
-//  (at your option) any later version.                                                                                *
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
+//  any later version.                                                                                                 *
 //                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT                                             *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or                                              *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for                                           *
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -135,6 +132,8 @@ class cSharedGraph : public C_SharedObject {
                           COMMA_LOCATION_ARGS) const ;
 
   public : GALGAS_stringlist keyList (void) const ;
+
+  public : GALGAS_lstringlist lkeyList (void) const ;
 
   public : C_String reader_graphviz (void) const ;
 
@@ -322,7 +321,6 @@ void AC_GALGAS_graph::drop (void) {
 //---------------------------------------------------------------------------------------------------------------------*
 
 void AC_GALGAS_graph::insulateGraph (LOCATION_ARGS) {
-  macroMutexLock (gInsulationMutex) ;
   if ((mSharedGraph != NULL) && (mSharedGraph->retainCount () > 1)) {
     cSharedGraph * p = NULL ;
     macroMyNew (p, cSharedGraph (THERE)) ;
@@ -333,7 +331,6 @@ void AC_GALGAS_graph::insulateGraph (LOCATION_ARGS) {
       mSharedGraph->checkGraph (HERE) ;
     #endif
   }
-  macroMutexUnlock (gInsulationMutex) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -358,6 +355,37 @@ GALGAS_stringlist AC_GALGAS_graph::reader_keyList (UNUSED_LOCATION_ARGS) const {
   GALGAS_stringlist result ;
   if (isValid ()) {
     result = mSharedGraph->keyList () ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark reader_lkeyList
+#endif
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_lstringlist cSharedGraph::lkeyList (void) const {
+  GALGAS_lstringlist result = GALGAS_lstringlist::constructor_emptyList (HERE) ;
+  for (int32_t i=0 ; i<mNodeArray.count () ; i++) {
+    const cGraphNode * p = mNodeArray (i COMMA_HERE) ;
+    GALGAS_location loc = p->mDefinitionLocation ;
+    if (! loc.isValid ()) {
+      loc = GALGAS_location::constructor_nowhere (HERE) ;
+    }
+    result.addAssign_operation (GALGAS_lstring (p->mKey, loc) COMMA_HERE) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_lstringlist AC_GALGAS_graph::reader_lkeyList (UNUSED_LOCATION_ARGS) const {
+  GALGAS_lstringlist result ;
+  if (isValid ()) {
+    result = mSharedGraph->lkeyList () ;
   }
   return result ;
 }

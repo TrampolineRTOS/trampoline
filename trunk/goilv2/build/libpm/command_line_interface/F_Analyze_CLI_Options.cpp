@@ -1,25 +1,21 @@
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//  Routine 'F_Analyze_CLI_Options' : a way for automatic command              *
-//  line options analysis for MacOS, Win32 and Unix.                           *
+//  Routine 'F_Analyze_CLI_Options' : a way for automatic command line options analysis for MacOS, Win32 and Unix.                                                                   *
 //                                                                                                                     *
-//  This file is part of libpm library                                         *
+//  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2001, ..., 2012 Pierre Molinaro.                             *
+//  Copyright (C) 2001, ..., 2014 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes                                          *
-//  ECN, École Centrale de Nantes (France)                                                                             *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
 //                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it                                            *
-//  under the terms of the GNU Lesser General Public License as published                                              *
-//  by the Free Software Foundation; either version 2 of the License, or                                               *
-//  (at your option) any later version.                                                                                *
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
+//  any later version.                                                                                                 *
 //                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT                                             *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or                                              *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for                                           *
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -28,6 +24,7 @@
 #include "command_line_interface/C_BoolCommandLineOption.h"
 #include "command_line_interface/C_UIntCommandLineOption.h"
 #include "command_line_interface/C_StringCommandLineOption.h"
+#include "command_line_interface/C_StringListCommandLineOption.h"
 #include "command_line_interface/C_builtin_CLI_Options.h"
 #include "streams/C_ConsoleOut.h"
 #include "files/C_FileManager.h"
@@ -53,7 +50,7 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                        C O C O A   O U T P U T                            *
+//                        C O C O A   O U T P U T                                                                      *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -67,7 +64,7 @@ bool cocoaOutput (void) {
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                       V E R S I O N    S T R I N G                        *
+//                       V E R S I O N    S T R I N G                                                                  *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -85,7 +82,7 @@ static const uint32_t kDisplayLength = 20 ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//     print_usage                                                           *
+//     print_usage                                                                                                     *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -101,12 +98,13 @@ static void print_usage (int argv,
   C_BoolCommandLineOption::printUsageOfBoolOptions () ;
   C_UIntCommandLineOption::printUsageOfUIntOptions () ;
   C_StringCommandLineOption::printUsageOfStringOptions () ;
+  C_StringListCommandLineOption::printUsageOfStringOptions () ;
   co << " file...\n" ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//     print_options                                                         *
+//     print_options                                                                                                   *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -115,11 +113,12 @@ static void print_option_list (void) {
   C_BoolCommandLineOption::printBoolOptions (kDisplayLength) ;
   C_UIntCommandLineOption::printUIntOptions (kDisplayLength) ;
   C_StringCommandLineOption::printStringOptions (kDisplayLength) ;
+  C_StringListCommandLineOption::printStringOptions (kDisplayLength) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//     print_help                                                            *
+//     print_help                                                                                                      *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -155,6 +154,7 @@ static void print_help (int argv,
   C_BoolCommandLineOption::printBoolOptions (kDisplayLength) ;
   C_UIntCommandLineOption::printUIntOptions (kDisplayLength) ;
   C_StringCommandLineOption::printStringOptions (kDisplayLength) ;
+  C_StringListCommandLineOption::printStringOptions (kDisplayLength) ;
 
   int32_t extensionIndex = 0 ;
   while (inExtensions [extensionIndex] != NULL) {
@@ -186,7 +186,7 @@ static void print_help (int argv,
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//     Command line option beginning with a single '-'                       *
+//     Command line option beginning with a single '-'                                                                 *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -209,6 +209,9 @@ static void option_beginning_with_single_minus_sign (const char * inCommand,
       C_StringCommandLineOption::setStringOptionForCommandChar (& inCommand [1], outOk, correctFormat) ;
     }
     if (! outOk) {
+      C_StringListCommandLineOption::setStringListOptionForCommandChar (& inCommand [1], outOk, correctFormat) ;
+    }
+    if (! outOk) {
       co << "Error : unknown '" << inCommand << "' command line option.\n" ;
     }else if (! correctFormat) {
       outOk = false ;
@@ -225,7 +228,7 @@ static void option_beginning_with_single_minus_sign (const char * inCommand,
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//     Command line option beginning with '--'                               *
+//     Command line option beginning with '--'                                                                         *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -244,6 +247,9 @@ static void option_beginning_with_double_minus_sign (const char * inCommand,
     C_StringCommandLineOption::setStringOptionForCommandString (& inCommand [2], outFound, correctFormat) ;
   }
   if (! outFound) {
+    C_StringListCommandLineOption::setStringListOptionForCommandString (& inCommand [2], outFound, correctFormat) ;
+  }
+  if (! outFound) {
     co << "Error : unknown '" << inCommand << "' command line option.\n" ;
   }else if (! correctFormat) {
     outFound = false ;
@@ -253,7 +259,7 @@ static void option_beginning_with_double_minus_sign (const char * inCommand,
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//     analyze_one_option                                                    *
+//     analyze_one_option                                                                                              *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -368,7 +374,7 @@ static void analyze_one_option (const char * inCommand,
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//     F_Analyze_CLI_Options                                                 *
+//     F_Analyze_CLI_Options                                                                                           *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 

@@ -1741,6 +1741,10 @@ class C_Lexique_template_5F_scanner : public C_Lexique {
 
 //--- Enter Token
   protected : void enterToken (const cTokenFor_template_5F_scanner & inToken) ;
+
+//--- Style name for Latex
+  protected : virtual C_String styleNameForIndex (const uint32_t inStyleIndex) const ;
+  protected : virtual uint32_t styleIndexForTerminal (const int32_t inTerminalIndex) const ;
 } ;
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -2753,11 +2757,7 @@ class cParser_template_5F_expression_5F_parser {
 } ;
 
 //---------------------------------------------------------------------------------------------------------------------*
-
-//class C_Compiler ;
-//class GALGAS_lstring ;
-//class GALGAS_string ;
-
+//  GRAMMAR template_grammar
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cGrammar_template_5F_grammar : public cParser_template_5F_parser,
@@ -2824,6 +2824,18 @@ class cGrammar_template_5F_grammar : public cParser_template_5F_parser,
                                                      GALGAS_Tvalue & outArgument5,
                                                      GALGAS_Ttype & outArgument6
                                                      COMMA_LOCATION_ARGS) ;
+
+//--- Indexing
+  public : static void performIndexing (C_Compiler * inCompiler,
+                                        const C_String & inSourceFilePath) ;
+
+//--- Only lexical analysis
+  public : static void performOnlyLexicalAnalysis (C_Compiler * inCompiler,
+                                                   const C_String & inSourceFilePath) ;
+
+//--- Only syntax analysis
+  public : static void performOnlySyntaxAnalysis (C_Compiler * inCompiler,
+                                                  const C_String & inSourceFilePath) ;
 
 //------------------------------------- 'relation_factor' non terminal
 //--- 'parse' label
@@ -3551,6 +3563,10 @@ class C_Lexique_goil_5F_lexique : public C_Lexique {
 
 //--- Enter Token
   protected : void enterToken (const cTokenFor_goil_5F_lexique & inToken) ;
+
+//--- Style name for Latex
+  protected : virtual C_String styleNameForIndex (const uint32_t inStyleIndex) const ;
+  protected : virtual uint32_t styleIndexForTerminal (const int32_t inTerminalIndex) const ;
 } ;
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -9957,11 +9973,7 @@ class GALGAS_implementationObject callCategoryReader_impObject (const cPtr_imple
                                                                 COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
-
-//class C_Compiler ;
-//class GALGAS_lstring ;
-//class GALGAS_string ;
-
+//  GRAMMAR goil_cpu_level_include
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cGrammar_goil_5F_cpu_5F_level_5F_include : public cParser_goil_5F_syntax {
@@ -10055,6 +10067,18 @@ class cGrammar_goil_5F_cpu_5F_level_5F_include : public cParser_goil_5F_syntax {
                                                      const GALGAS_implementation inArgument0,
                                                      GALGAS_objectsMap & ioArgument1
                                                      COMMA_LOCATION_ARGS) ;
+
+//--- Indexing
+  public : static void performIndexing (C_Compiler * inCompiler,
+                                        const C_String & inSourceFilePath) ;
+
+//--- Only lexical analysis
+  public : static void performOnlyLexicalAnalysis (C_Compiler * inCompiler,
+                                                   const C_String & inSourceFilePath) ;
+
+//--- Only syntax analysis
+  public : static void performOnlySyntaxAnalysis (C_Compiler * inCompiler,
+                                                  const C_String & inSourceFilePath) ;
 
 //------------------------------------- 'oil_declaration' non terminal
 //--- 'parse' label
@@ -10438,11 +10462,7 @@ class cParser_implementation_5F_parser {
 } ;
 
 //---------------------------------------------------------------------------------------------------------------------*
-
-//class C_Compiler ;
-//class GALGAS_lstring ;
-//class GALGAS_string ;
-
+//  GRAMMAR goil_file_level_include
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
@@ -10528,6 +10548,18 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
                                                      GALGAS_implementation & ioArgument0,
                                                      GALGAS_applicationDefinition & ioArgument1
                                                      COMMA_LOCATION_ARGS) ;
+
+//--- Indexing
+  public : static void performIndexing (C_Compiler * inCompiler,
+                                        const C_String & inSourceFilePath) ;
+
+//--- Only lexical analysis
+  public : static void performOnlyLexicalAnalysis (C_Compiler * inCompiler,
+                                                   const C_String & inSourceFilePath) ;
+
+//--- Only syntax analysis
+  public : static void performOnlySyntaxAnalysis (C_Compiler * inCompiler,
+                                                  const C_String & inSourceFilePath) ;
 
 //------------------------------------- 'identifier_or_attribute' non terminal
 //--- 'parse' label
@@ -10873,6 +10905,12 @@ extern C_StringCommandLineOption gOption_goil_5F_options_project_5F_dir ;
 extern C_StringCommandLineOption gOption_goil_5F_options_target_5F_platform ;
 
 extern C_StringCommandLineOption gOption_goil_5F_options_template_5F_dir ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                              String List options                                                                    *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
 
 //---------------------------------------------------------------------------------------------------------------------*
 

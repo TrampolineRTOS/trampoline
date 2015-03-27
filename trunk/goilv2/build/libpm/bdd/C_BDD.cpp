@@ -1,24 +1,21 @@
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//     BDD package (implementation of ROBDD)                                   *
+//     BDD package (implementation of ROBDD)                                                                           *
 //                                                                                                                     *
-//  This file is part of libpm library                                         *
+//  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 1999, ..., 2014 Pierre Molinaro.                             *
+//  Copyright (C) 1999, ..., 2014 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
-//  ECN, École Centrale de Nantes (France)                                     *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
 //                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it    *
-//  under the terms of the GNU Lesser General Public License as published      *
-//  by the Free Software Foundation; either version 2 of the License, or       *
-//  (at your option) any later version.                                        *
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
+//  any later version.                                                                                                 *
 //                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT     *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
-//  more details.                                                              *
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
+//  more details.                                                                                                      *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -1689,171 +1686,6 @@ swap201 (const uint32_t inBitSize1,
   #pragma mark Print BDD
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
-/*
-static void printBDDline (AC_OutputStream & outputStream,
-                          const TC_UniqueArray <char> & inDisplayString,
-                          const TC_UniqueArray <int32_t> & inNameLengthArray,
-                          const int32_t inLeadingSpacesCount) {
-  for (int32_t i=0 ; i<inLeadingSpacesCount ; i++) {
-    outputStream << " " ;
-  }
-  for (int32_t i=0 ; i<inDisplayString.count () ; i++) {
-    for (int32_t c=0 ; c<inNameLengthArray (i COMMA_HERE) ; c++) {
-      outputStream << " " ;
-    }
-    outputStream << cStringWithCharacter (inDisplayString (i COMMA_HERE)) ;
-  }
-  outputStream << "\n" ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void
-internalPrintBDD (AC_OutputStream & outputStream,
-                  const uint32_t inValue,
-                  TC_UniqueArray <char> & inDisplayString,
-                  const TC_UniqueArray <int32_t> & inNameLengthArray,
-                  uint32_t inVariableIndex,
-                  const int32_t inLeadingSpacesCount) {
-  const uint32_t nodeIndex = nodeIndexForRoot (inValue COMMA_HERE) ;
-  const uint32_t complement = inValue & 1 ;
-  if (bothBranches (gNodeArray [nodeIndex]) == 0) {
-    if (complement == 1) {
-      printBDDline (outputStream, inDisplayString, inNameLengthArray, inLeadingSpacesCount) ;
-    }
-  }else{
-    const uint32_t var = gNodeArray [nodeIndex].mVariableIndex ;
-    while (inVariableIndex > var) {
-      inDisplayString.setObjectAtIndex ('X', (int32_t) inVariableIndex COMMA_HERE) ;
-      inVariableIndex -- ;
-    }
-  //--- Branche Zero
-    const uint32_t branche0 = gNodeArray [nodeIndex].mELSE ^ complement ;
-    if (branche0 != 0) {
-      inDisplayString.setObjectAtIndex ('0', (int32_t) var COMMA_HERE) ;
-      if (branche0 == 1) {
-        for (uint32_t i=0 ; i<var ; i++) {
-          inDisplayString.setObjectAtIndex ('X', (int32_t) i COMMA_HERE) ;
-        }
-        printBDDline (outputStream, inDisplayString, inNameLengthArray, inLeadingSpacesCount) ;
-      }else{
-        internalPrintBDD (outputStream, branche0, inDisplayString, inNameLengthArray, (uint32_t) (inVariableIndex - 1), inLeadingSpacesCount) ;
-      }
-    }
-  //--- Branche 1
-    const uint32_t branche1 = gNodeArray [nodeIndex].mTHEN ^ complement ;
-    if (branche1 != 0) {
-      inDisplayString.setObjectAtIndex ('1', (int32_t) var COMMA_HERE) ;
-      if (branche1 == 1) {
-        for (uint32_t i=0 ; i<var ; i++) {
-          inDisplayString.setObjectAtIndex ('X', (int32_t) i COMMA_HERE) ;
-        }
-        printBDDline (outputStream, inDisplayString, inNameLengthArray, inLeadingSpacesCount) ;
-      }else{
-        internalPrintBDD (outputStream, branche1, inDisplayString, inNameLengthArray, (uint32_t) (inVariableIndex - 1), inLeadingSpacesCount) ;
-      }
-    }
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void C_BDD::print (AC_OutputStream & outputStream,
-                   const TC_UniqueArray <C_String> & inVariablesNames,
-                   const int32_t inLeadingSpacesCount) const {
-  print (outputStream, inVariablesNames, inVariablesNames.count (), inLeadingSpacesCount) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void C_BDD::printHeader (AC_OutputStream & outputStream,
-                         const TC_UniqueArray <C_String> & inVariablesNames,
-                         const int32_t inVariableCount,
-                         const int32_t inLeadingSpacesCount) const {
-//--- Imprimer les variables
-  for (int32_t i=0 ; i<inLeadingSpacesCount ; i++) {
-    outputStream << " " ;
-  }
-  for (int32_t i=0 ; i<inVariableCount ; i++) {
-    outputStream << " " << inVariablesNames (i COMMA_HERE) ;
-  }
-  outputStream << "\n" ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void C_BDD::print (AC_OutputStream & outputStream,
-                   const TC_UniqueArray <C_String> & inVariablesNames,
-                   const int32_t inVariableCount,
-                   const int32_t inLeadingSpacesCount) const {
-//--- Print header
-  printHeader (outputStream, inVariablesNames, inVariableCount, inLeadingSpacesCount) ;
-//--- Print without header
-  printWithoutHeader (outputStream, inVariablesNames, inVariableCount, inLeadingSpacesCount) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void C_BDD::printWithoutHeader (AC_OutputStream & outputStream,
-                                const TC_UniqueArray <C_String> & inVariablesNames,
-                                const int32_t inVariableCount,
-                                const int32_t inLeadingSpacesCount) const {
-//--- Compute header size
-  TC_UniqueArray <int32_t> nameLengthArray (inVariableCount COMMA_HERE) ;
-  for (int32_t i=0 ; i<inVariableCount ; i++) {
-    nameLengthArray.addObject (inVariablesNames (i COMMA_HERE).length ()) ;
-  }
-//--- Print BDD
-  if (mBDDvalue == 0) {
-    for (int32_t i=0 ; i<inLeadingSpacesCount ; i++) {
-      outputStream << " " ;
-    }
-    outputStream << " (false)\n" ;
-  }else if (mBDDvalue == 1) {
-    TC_UniqueArray <char> displayString (inVariableCount, 'X' COMMA_HERE) ;
-    printBDDline (outputStream, displayString, nameLengthArray, inLeadingSpacesCount) ;
-  }else{
-    const uint32_t nodeIndex = nodeIndexForRoot (mBDDvalue COMMA_HERE) ;
-    const int32_t var = (int32_t) gNodeArray [nodeIndex].mVariableIndex ;
-    if (var >= inVariableCount) {
-      outputStream << "** ERROR in "
-         << __FILE__
-         << " at line %"
-         << cStringWithSigned (__LINE__)
-         << ": BDD variable ("
-         << cStringWithSigned (var)
-         << ") is greater than variable count ("
-         << cStringWithSigned (inVariableCount)
-         << ") **\n" ;
-    }else{
-      TC_UniqueArray <char> displayString (inVariableCount, 'X' COMMA_HERE) ;
-      internalPrintBDD (outputStream, mBDDvalue, displayString, nameLengthArray, (uint32_t) (inVariableCount - 1), inLeadingSpacesCount) ;
-    }
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void C_BDD::printWithSeparator (AC_OutputStream & outputStream,
-                                   const TC_UniqueArray <C_String> & inSeparatorArray) const {
-  const uint32_t variablesCount = (uint32_t) inSeparatorArray.count () ;
-//--- Print BDD
-  if (mBDDvalue == 1) {
-    TC_UniqueArray <char> displayString ((int32_t) variablesCount, 'X' COMMA_HERE) ;
-    printLineWithSeparator (outputStream, inSeparatorArray, displayString) ;
-  }else if (mBDDvalue != 0) {
-    const uint32_t nodeIndex = nodeIndexForRoot (mBDDvalue COMMA_HERE) ;
-    const uint32_t var = gNodeArray [nodeIndex].mVariableIndex ;
-    TC_UniqueArray <char> displayString ((int32_t) var + 1, 'X' COMMA_HERE) ;
-    internalPrintWithSeparator (outputStream,
-                                mBDDvalue,
-                                displayString,
-                                inSeparatorArray,
-                                (uint32_t) (variablesCount - 1)) ;
-  }
-}
-*/
 //---------------------------------------------------------------------------------------------------------------------*
 
 static void printLineWithSeparator (AC_OutputStream & outputStream,

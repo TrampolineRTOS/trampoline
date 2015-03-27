@@ -1,31 +1,27 @@
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//     BDD package (implementation of ROBDD)                                   *
+//     BDD package (implementation of ROBDD)                                                                           *
 //                                                                                                                     *
-//  This file is part of libpm library                                         *
+//  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 1999, ..., 2013 Pierre Molinaro.                             *
+//  Copyright (C) 1999, ..., 2013 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
-//  ECN, École Centrale de Nantes (France)                                     *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
 //                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it    *
-//  under the terms of the GNU Lesser General Public License as published      *
-//  by the Free Software Foundation; either version 2 of the License, or       *
-//  (at your option) any later version.                                        *
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
+//  any later version.                                                                                                 *
 //                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT     *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
-//  more details.                                                              *
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
+//  more details.                                                                                                      *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
 #include "bdd/C_BDD.h"
 #include "utilities/F_GetPrime.h"
 #include "utilities/C_PrologueEpilogue.h"
-#include "utilities/M_Threads.h"
 #include "strings/C_String.h"
 #include "bdd/C_BDD-node.h"
 #include "time/C_Timer.h"
@@ -44,7 +40,7 @@ uint32_t C_BDD::getBDDnodeSize (void) {
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//  BDD objects unique table                                                   *
+//  BDD objects unique table                                                                                           *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -241,7 +237,7 @@ uint32_t C_BDD::getMarkedNodesCount (void) {
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//  BDD objects hash map                                                       *
+//  BDD objects hash map                                                                                               *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -249,12 +245,8 @@ static const int32_t kInitialCollisionMapPowerOfTwoSize = 20 ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//       BDD unique table implementation                                       *
+//       BDD unique table implementation                                                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-macroDeclareStaticMutex (semaphore)
-
 //---------------------------------------------------------------------------------------------------------------------*
 
 uint32_t find_or_add (const uint32_t inBoolVar,
@@ -263,27 +255,25 @@ uint32_t find_or_add (const uint32_t inBoolVar,
                       COMMA_UNUSED_LOCATION_ARGS) {
   uint32_t result = inELSEbranch ;
   if (inELSEbranch != inTHENbranch) {
-    macroMutexLock (semaphore) ;
-      if (0 == gCollisionMapSize) {
-        reallocHashMap (getPrimeGreaterThan (1U << kInitialCollisionMapPowerOfTwoSize)) ;
-      }
-      const uint32_t complement = inELSEbranch & 1 ;
-      const uint32_t c1 = inTHENbranch ^ complement ;
-      const uint32_t c0 = inELSEbranch ^ complement ;
- //     const cBDDnode candidateNode = cBDDnode (c1, c0, inBoolVar) ;
-      const cBDDnode candidateNode = {c1, c0, inBoolVar, 0} ;
-      // printf ("candidateNode %llu gCollisionMapSize %u\n", candidateNode, gCollisionMapSize) ;
-      const uint64_t hashCode = nodeHashCode (candidateNode) ;
-      uint32_t nodeIndex = gCollisionMap [hashCode] ;
-      while ((0 != nodeIndex)
-         && ((bothBranches (gNodeArray [nodeIndex]) != bothBranches (candidateNode))
-          || (gNodeArray [nodeIndex].mVariableIndex != candidateNode.mVariableIndex))) {
-        nodeIndex = gNodeArray [nodeIndex].mAuxiliary ;
-      }
-      if (0 == nodeIndex) {
-        nodeIndex = addNewNode (candidateNode) ;
-      }
-    macroMutexUnlock (semaphore) ;
+    if (0 == gCollisionMapSize) {
+      reallocHashMap (getPrimeGreaterThan (1U << kInitialCollisionMapPowerOfTwoSize)) ;
+    }
+    const uint32_t complement = inELSEbranch & 1 ;
+    const uint32_t c1 = inTHENbranch ^ complement ;
+    const uint32_t c0 = inELSEbranch ^ complement ;
+//     const cBDDnode candidateNode = cBDDnode (c1, c0, inBoolVar) ;
+    const cBDDnode candidateNode = {c1, c0, inBoolVar, 0} ;
+    // printf ("candidateNode %llu gCollisionMapSize %u\n", candidateNode, gCollisionMapSize) ;
+    const uint64_t hashCode = nodeHashCode (candidateNode) ;
+    uint32_t nodeIndex = gCollisionMap [hashCode] ;
+    while ((0 != nodeIndex)
+       && ((bothBranches (gNodeArray [nodeIndex]) != bothBranches (candidateNode))
+        || (gNodeArray [nodeIndex].mVariableIndex != candidateNode.mVariableIndex))) {
+      nodeIndex = gNodeArray [nodeIndex].mAuxiliary ;
+    }
+    if (0 == nodeIndex) {
+      nodeIndex = addNewNode (candidateNode) ;
+    }
     result = (nodeIndex << 1) | complement ;
   }
   return result ;
@@ -476,32 +466,24 @@ mPtrToNextBDD (NULL) {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-macroDeclareStaticMutex (semaphoreLink)
-
-//---------------------------------------------------------------------------------------------------------------------*
-
 void C_BDD::initLinks (void) {
   mPtrToPreviousBDD = this ;
   mPtrToNextBDD = this ;
-  macroMutexLock (semaphoreLink) ;
-    C_BDD * suivantRacine = gBDDinstancesListRoot.mPtrToNextBDD ;
-    mPtrToPreviousBDD = & gBDDinstancesListRoot ;
-    suivantRacine->mPtrToPreviousBDD = this ;
-    mPtrToNextBDD = suivantRacine ;
-    gBDDinstancesListRoot.mPtrToNextBDD = this ;
-  macroMutexUnlock (semaphoreLink) ;
+  C_BDD * suivantRacine = gBDDinstancesListRoot.mPtrToNextBDD ;
+  mPtrToPreviousBDD = & gBDDinstancesListRoot ;
+  suivantRacine->mPtrToPreviousBDD = this ;
+  mPtrToNextBDD = suivantRacine ;
+  gBDDinstancesListRoot.mPtrToNextBDD = this ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 C_BDD::~C_BDD (void) {
   mBDDvalue = 0 ;
-  macroMutexLock (semaphoreLink) ;
-    C_BDD * suivant = mPtrToNextBDD ;
-    C_BDD * precedent = mPtrToPreviousBDD ;
-    precedent->mPtrToNextBDD = suivant ;
-    suivant->mPtrToPreviousBDD = precedent ;
-  macroMutexUnlock (semaphoreLink) ;
+  C_BDD * suivant = mPtrToNextBDD ;
+  C_BDD * precedent = mPtrToPreviousBDD ;
+  precedent->mPtrToNextBDD = suivant ;
+  suivant->mPtrToPreviousBDD = precedent ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*

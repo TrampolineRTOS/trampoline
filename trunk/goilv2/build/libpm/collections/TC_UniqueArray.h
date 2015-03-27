@@ -10,17 +10,14 @@
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes                                          *
-//  ECN, École Centrale de Nantes (France)                                                                             *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
 //                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it                                            *
-//  under the terms of the GNU Lesser General Public License as published                                              *
-//  by the Free Software Foundation; either version 2 of the License, or                                               *
-//  (at your option) any later version.                                                                                *
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
+//  any later version.                                                                                                 *
 //                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT                                             *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or                                              *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for                                           *
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -104,7 +101,7 @@ template <typename TYPE> class TC_UniqueArray {
                                        const int32_t inDataLength) ;
   
 //--- Get buffer pointer
-  public : const TYPE * bufferPointer (void) const { return mArray ; }
+  public : const TYPE * unsecureBufferPointer (void) const { return mArray ; }
 
 //--- Comparisons (based on == operator on objects)
   public : bool operator == (const TC_UniqueArray <TYPE> & inOperand) const ;
@@ -986,7 +983,7 @@ subArrayUsingFunction (bool (* inFunction) (const TYPE & inObject),
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//   Sort array with >= and <= operators                                                                               *
+//   Sort array using >= and <= operators                                                                              *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -1024,7 +1021,7 @@ void TC_UniqueArray<TYPE>::sortArrayUsingComparisonOperators (void) {
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//   Reverse sort array with >= and <= operators                                                                       *
+//   Reverse sort array using >= and <= operators                                                                      *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -1062,7 +1059,7 @@ void TC_UniqueArray<TYPE>::reverseSortArrayUsingComparisonOperators (void) {
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//   Sort array with >= and <= operators                                                                               *
+//   Sort array using comare method                                                                                    *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -1100,7 +1097,7 @@ void TC_UniqueArray<TYPE>::sortArrayUsingCompareMethod (void) {
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//   Reverse sort array with >= and <= operators                                                                       *
+//   Reverse sort array using compare method                                                                           *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -1138,7 +1135,7 @@ void TC_UniqueArray<TYPE>::reverseSortArrayUsingCompareMethod (void) {
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//   Sort array with comparison function                                                                               *
+//   Sort array using comparison function                                                                              *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -1146,19 +1143,16 @@ template <typename TYPE>
 void TC_UniqueArray<TYPE>::
 internalSortArrayUsingFunction (const int32_t inFirst,
                                 const int32_t inLast,
-                                int32_t (* inSortFunction) (const TYPE & inOperand1,
-                                                           const TYPE & inOperand2)) {
+                                int32_t (* inSortFunction) (const TYPE & inOperand1, const TYPE & inOperand2)) {
 //--- Sort using 'quick sort' algorithm
   if (inFirst < inLast) {
     int32_t i = inFirst ;
     int32_t j = inLast ;
     while (i < j) {
-      while ((i < inLast) &&
-             (inSortFunction (mArray [i], mArray [inFirst]) <= 0)) {
+      while ((i < inLast) && (inSortFunction (mArray [i], mArray [inFirst]) <= 0)) {
         i ++ ;
       }
-      while ((j > inFirst) &&
-             (inSortFunction (mArray [j], mArray [inFirst]) >= 0)) {
+      while ((j > inFirst) && (inSortFunction (mArray [j], mArray [inFirst]) >= 0)) {
         j -- ;
       }
       if (i < j) {
@@ -1175,8 +1169,7 @@ internalSortArrayUsingFunction (const int32_t inFirst,
 
 template <typename TYPE>
 void TC_UniqueArray<TYPE>::
-sortArrayUsingFunction (int32_t (* inSortFunction) (const TYPE & inOperand1,
-                                                const TYPE & inOperand2)) {
+sortArrayUsingFunction (int32_t (* inSortFunction) (const TYPE & inOperand1, const TYPE & inOperand2)) {
   if (inSortFunction != NULL) {
     internalSortArrayUsingFunction (0, mCount - 1, inSortFunction) ;
   }
@@ -1184,7 +1177,7 @@ sortArrayUsingFunction (int32_t (* inSortFunction) (const TYPE & inOperand1,
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//   Reverse sort array with comparison function                                                                       *
+//   Reverse sort array using comparison function                                                                      *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -1192,19 +1185,16 @@ template <typename TYPE>
 void TC_UniqueArray<TYPE>::
 internalReverseSortArrayUsingFunction (const int32_t inFirst,
                                        const int32_t inLast,
-                                       int32_t (* inSortFunction) (const TYPE & inOperand1,
-                                                                  const TYPE & inOperand2)) {
+                                       int32_t (* inSortFunction) (const TYPE & inOperand1, const TYPE & inOperand2)) {
 //--- Reverse sort using 'quick sort' algorithm
   if (inFirst < inLast) {
     int32_t i = inFirst ;
     int32_t j = inLast ;
     while (i < j) {
-      while ((i < inLast) &&
-             (inSortFunction (mArray [i], mArray [inFirst]) >= 0)) {
+      while ((i < inLast) && (inSortFunction (mArray [i], mArray [inFirst]) >= 0)) {
         i ++ ;
       }
-      while ((j > inFirst) &&
-             (inSortFunction (mArray [j], mArray [inFirst]) <= 0)) {
+      while ((j > inFirst) && (inSortFunction (mArray [j], mArray [inFirst]) <= 0)) {
         j -- ;
       }
       if (i < j) {
@@ -1221,8 +1211,7 @@ internalReverseSortArrayUsingFunction (const int32_t inFirst,
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::
-reverseSortArrayUsingFunction (int32_t (* inSortFunction) (const TYPE & inOperand1,
-                                                          const TYPE & inOperand2)) {
+reverseSortArrayUsingFunction (int32_t (* inSortFunction) (const TYPE & inOperand1, const TYPE & inOperand2)) {
   if (inSortFunction != NULL) {
     internalReverseSortArrayUsingFunction (0, mCount - 1, inSortFunction) ;
   }

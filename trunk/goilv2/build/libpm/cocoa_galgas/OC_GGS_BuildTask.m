@@ -1,10 +1,21 @@
-//
-//  OC_GGS_BuildTask.m
-//  galgas-developer
-//
-//  Created by Pierre Molinaro on 30/11/11.
-//  Copyright (c) 2011 IRCCyN. All rights reserved.
-//
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//  This file is part of libpm library                                                                                 *
+//                                                                                                                     *
+//  Copyright (C) 2011, ..., 2014 Pierre Molinaro.                                                                     *
+//                                                                                                                     *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//                                                                                                                     *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
+//                                                                                                                     *
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
+//  any later version.                                                                                                 *
+//                                                                                                                     *
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
+//  more details.                                                                                                      *
+//                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
 #import "OC_GGS_BuildTask.h"
@@ -71,17 +82,17 @@
         [mTask setArguments:arguments] ;
       }
     //--- Set standard output notification
-      mPipe = [NSPipe pipe] ;
-      [mTask setStandardOutput:mPipe] ;
-      [mTask setStandardError:mPipe] ;
+      mTaskOutputPipe = [NSPipe pipe] ;
+      [mTask setStandardOutput:mTaskOutputPipe] ;
+      [mTask setStandardError:mTaskOutputPipe] ;
     //---
       [[NSNotificationCenter defaultCenter]
         addObserver:self
         selector:@selector (getDataFromTaskOutput:)
         name:NSFileHandleReadCompletionNotification
-        object:[mPipe fileHandleForReading]
+        object:mTaskOutputPipe.fileHandleForReading
       ] ;
-      [mPipe.fileHandleForReading readInBackgroundAndNotify] ;
+      [mTaskOutputPipe.fileHandleForReading readInBackgroundAndNotify] ;
     //---
       [[NSNotificationCenter defaultCenter]
         addObserver:self
@@ -109,7 +120,7 @@
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
-  NSData * data = [[inNotification userInfo] objectForKey:NSFileHandleNotificationDataItem];
+  NSData * data = [inNotification.userInfo objectForKey:NSFileHandleNotificationDataItem];
   if (data.length > 0) {
     [mDocument appendBuildOutputData:data] ;
     [inNotification.object readInBackgroundAndNotify] ;
@@ -117,17 +128,17 @@
     [[NSNotificationCenter defaultCenter]
       removeObserver:self
       name:NSFileHandleReadCompletionNotification
-      object:[mPipe fileHandleForReading]
+      object:mTaskOutputPipe.fileHandleForReading
     ] ;
     [[NSNotificationCenter defaultCenter]
       removeObserver:self
       name:NSTaskDidTerminateNotification
       object:mTask
     ] ;
-    [[mPipe fileHandleForReading] closeFile] ;
+    [mTaskOutputPipe.fileHandleForReading closeFile] ;
     mOutputBufferedDataHasBeenTransmitted = YES ;
     mTask = nil ;
-    mPipe = nil ;
+    mTaskOutputPipe = nil ;
     [mDocument buildCompleted] ;
   }
 }

@@ -523,11 +523,7 @@ void routine_verifyEnum (const class GALGAS_impType constinArgument0,
                          COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
-
-//class C_Compiler ;
-//class GALGAS_lstring ;
-//class GALGAS_string ;
-
+//  GRAMMAR goil_grammar
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cGrammar_goil_5F_grammar : public cParser_goil_5F_syntax,
@@ -782,6 +778,18 @@ class cGrammar_goil_5F_grammar : public cParser_goil_5F_syntax,
   public : static void _performSourceStringParsing_ (C_Compiler * inCompiler,
                                                      GALGAS_string inSourceString
                                                      COMMA_LOCATION_ARGS) ;
+
+//--- Indexing
+  public : static void performIndexing (C_Compiler * inCompiler,
+                                        const C_String & inSourceFilePath) ;
+
+//--- Only lexical analysis
+  public : static void performOnlyLexicalAnalysis (C_Compiler * inCompiler,
+                                                   const C_String & inSourceFilePath) ;
+
+//--- Only syntax analysis
+  public : static void performOnlySyntaxAnalysis (C_Compiler * inCompiler,
+                                                  const C_String & inSourceFilePath) ;
 
 //------------------------------------- 'string_options' non terminal
 //--- 'parse' label
@@ -3058,16 +3066,5 @@ class GALGAS_string function_add_5F_path_5F_component (class GALGAS_string inArg
 class GALGAS_string function_templates_5F_directory (class GALGAS_string inArgument0,
                                                      class C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                         Function 'template_string_if_exist'                                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_string function_template_5F_string_5F_if_5F_exist (class GALGAS_string inArgument0,
-                                                                class GALGAS_string inArgument1,
-                                                                class C_Compiler * inCompiler
-                                                                COMMA_LOCATION_ARGS) ;
 
 #endif
