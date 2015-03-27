@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+ <FileVersion major="1" minor="6" />
+ <Project>
+  <Option title="goil" />
+  <Option pch_mode="0" />
+  <Option compiler="gcc" />
+  <Build>
+   <Target title="Release">
+    <Option output="goil.exe" prefix_auto="0" extension_auto="0" />
+    <Option object_output="objects" />
+    <Option type="1" />
+    <Option compiler="gcc" />
+    <Option projectResourceIncludeDirsRelation="1" />
+    <Compiler>
+     <Add option="-fomit-frame-pointer" />
+     <Add option="-fexpensive-optimizations" />
+     <Add option="-O2" />
+     <Add option="-Wnon-virtual-dtor" />
+     <Add option="-Winit-self" />
+     <Add option="-Wredundant-decls" />
+     <Add option="-Wundef" />
+     <Add option="-Wfloat-equal" />
+     <Add option="-Winline" />
+     <Add option="-Wunreachable-code" />
+     <Add option="-Wmissing-declarations" />
+     <Add option="-Wmissing-include-dirs" />
+     <Add option="-Wswitch-default" />
+     <Add option="-Weffc++" />
+     <Add option="-Wmain" />
+     <Add option="-std=c++98" />
+     <Add option="-Wall" />
+     <Add option="-W" />
+     <Add option="-DDO_NOT_GENERATE_CHECKINGS" />
+    </Compiler>
+   </Target>
+   <Target title="Debug">
+    <Option output="goil-debug.exe" prefix_auto="0" extension_auto="0" />
+    <Option object_output="objects_debug" />
+    <Option deps_output=".deps_debug" />
+    <Option type="1" />
+    <Option compiler="gcc" />
+    <Option projectResourceIncludeDirsRelation="1" />
+    <Compiler>
+     <Add option="-g" />
+     <Add option="-Wnon-virtual-dtor" />
+     <Add option="-Winit-self" />
+     <Add option="-Wredundant-decls" />
+     <Add option="-Wundef" />
+     <Add option="-Wfloat-equal" />
+     <Add option="-Winline" />
+     <Add option="-Wunreachable-code" />
+     <Add option="-Wmissing-declarations" />
+     <Add option="-Wmissing-include-dirs" />
+     <Add option="-Wswitch-default" />
+     <Add option="-Weffc++" />
+     <Add option="-Wmain" />
+     <Add option="-std=c++98" />
+     <Add option="-Wall" />
+     <Add option="-W" />
+    </Compiler>
+   </Target>
+  </Build>
+  <VirtualTargets>
+   <Add alias="All" targets="Release;Debug;" />
+  </VirtualTargets>
+  <Compiler>
+   <Add directory="../build/libpm" />
+   <Add directory="../build/user-headers" />
+   <Add directory="../build/output" />
+  </Compiler>
+  <Linker>
+   <Add library="comdlg32" />
+  </Linker>
+  <Unit filename="../build/libpm/all-libpm.cpp" />
+  <Unit filename="../build/libpm/galgas2/all-galgas.cpp" />
+  <Unit filename="../build/output/all-declarations-2.cpp" />
+  <Unit filename="../build/output/all-declarations-1.cpp" />
+  <Unit filename="../build/output/all-declarations-0.cpp" />
+  <Extensions>
+   <code_completion />
+   <envvars />
+   <debugger />
+   <lib_finder disable_auto="1" />
+  </Extensions>
+ </Project>
+</CodeBlocks_project_file>
