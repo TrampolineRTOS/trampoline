@@ -11,7 +11,7 @@
 #include "utilities/C_SharedObject.h"
 
 //---------------------------------------------------------------------------------------------------------------------*
-//  cVariablesInRelationConfiguration                                          *
+//  cVariablesInRelationConfiguration                                                                                  *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cVariablesInRelationConfiguration : public C_SharedObject {

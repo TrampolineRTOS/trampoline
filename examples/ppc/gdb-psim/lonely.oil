@@ -29,9 +29,9 @@ CPU test {
           CFLAGS  = "-Wmissing-field-initializers"; 
           ASFLAGS = "-g";
           LDFLAGS = "-g";
-          COMPILER = "powerpc-elf-gcc";
-          ASSEMBLER = "powerpc-elf-as";
-          LINKER = "powerpc-elf-ld";
+          COMPILER = "powerpc-eabi-gcc";
+          ASSEMBLER = "powerpc-eabi-as";
+          LINKER = "powerpc-eabi-ld";
         };
         SYSTEM_CALL = TRUE;
         MEMMAP = TRUE {

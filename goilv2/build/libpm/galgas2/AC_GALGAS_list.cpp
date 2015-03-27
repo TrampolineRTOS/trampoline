@@ -1,31 +1,27 @@
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//  AC_GALGAS_list : Base class for GALGAS list                                *
+//  AC_GALGAS_list : Base class for GALGAS list                                                                        *
 //                                                                                                                     *
-//  This file is part of libpm library                                         *
+//  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2008, ..., 2013 Pierre Molinaro.                             *
+//  Copyright (C) 2008, ..., 2013 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes                                          *
-//  ECN, École Centrale de Nantes (France)                                                                             *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
 //                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it                                            *
-//  under the terms of the GNU Lesser General Public License as published                                              *
-//  by the Free Software Foundation; either version 2 of the License, or                                               *
-//  (at your option) any later version.                                                                                *
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
+//  any later version.                                                                                                 *
 //                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT                                             *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or                                              *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for                                           *
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
 #include "galgas2/predefined-types.h"
 #include "utilities/MF_MemoryControl.h"
-#include "utilities/M_Threads.h"
 #include "galgas2/C_Compiler.h"
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -450,7 +446,7 @@ void AC_GALGAS_list::detachSharedList (cSharedList * & ioSharedList) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//    AC_GALGAS_list                                                           *
+//    AC_GALGAS_list                                                                                                   *
 //---------------------------------------------------------------------------------------------------------------------*
 
 AC_GALGAS_list::AC_GALGAS_list (void) :
@@ -571,7 +567,6 @@ void AC_GALGAS_list::drop (void) {
 //---------------------------------------------------------------------------------------------------------------------*
 
 void AC_GALGAS_list::insulateList (LOCATION_ARGS) {
-  macroMutexLock (gInsulationMutex) ;
   if ((mSharedList != NULL) && (mSharedList->retainCount () > 1)) {
     cSharedList * p = NULL ;
     macroMyNew (p, cSharedList (THERE)) ;
@@ -579,7 +574,6 @@ void AC_GALGAS_list::insulateList (LOCATION_ARGS) {
     macroAssignSharedObject (mSharedList, p) ;
     macroDetachSharedObject (p) ;
   }
-  macroMutexLock (gInsulationMutex) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -723,7 +717,7 @@ typeComparisonResult AC_GALGAS_list::objectCompare (const AC_GALGAS_list & inOpe
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//  c L i s t M a p N o d e                                                    *
+//  c L i s t M a p N o d e                                                                                            *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -767,7 +761,7 @@ cListMapNode::~ cListMapNode (void) {
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//  c L i s t M a p N o d e                                                    *
+//  c L i s t M a p N o d e                                                                                            *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -1307,7 +1301,7 @@ void cListMapElement::description (C_String & /* ioString */,
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                 'GALGAS_stringset::cEnumerator' class                     *
+//                 'GALGAS_stringset::cEnumerator' class                                                               *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 

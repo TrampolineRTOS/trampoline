@@ -215,14 +215,14 @@
 /**
  * @def E_OS_MISSINGEND
  *
- * Tasks terminates without a TerminateTask() or ChainTask() call 
+ * Tasks terminates without a TerminateTask() or ChainTask() call
  */
 #define E_OS_MISSINGEND           18
 
 /**
  * @def E_OS_DISABLEDINT
  *
- * A service of the OS is called inside an interrupt disable/enable pair 
+ * A service of the OS is called inside an interrupt disable/enable pair
  */
 #define E_OS_DISABLEDINT          19
 
@@ -251,7 +251,7 @@
 /**
  * @def E_OS_PROTECTION_ARRIVAL
  *
- * A Task/Category 2 arrives before its timeframe has expired 
+ * A Task/Category 2 arrives before its timeframe has expired
  */
 #define E_OS_PROTECTION_ARRIVAL   23
 
@@ -268,75 +268,6 @@
  * A trap occurred
  */
 #define E_OS_PROTECTION_EXCEPTION 25
-
-/**************************************
- * Special result code for Trampoline *
- * as long as associated masks        *
- **************************************/
-
-/**
- * @def NO_SPECIAL_CODE
- *
- * Nothing particular to Trampoline in this code.
- *
- * @note This is a Trampoline result code, not an OSEK one.
- *
- * @see #tpl_status
- */
-/*
-#define NO_SPECIAL_CODE         0
-*/
-
-/**
- * @def NEED_RESCHEDULING
- *
- * Scheduler have to be called, probably because the ready list
- * has changed.
- *
- * @note This is a Trampoline result code, not an OSEK one.
- *
- * @see #tpl_status
- */
-/*
-#define NEED_RESCHEDULING       32
-*/
-
-/**
- * @def E_OK_AND_SCHEDULE
- *
- * Combines OSEK-E_OK and Trampoline-NEED_RESCHEDULING result codes
- *
- * @see #tpl_status
- */
-/*
-#define E_OK_AND_SCHEDULE   ((tpl_status)E_OK | (tpl_status)NEED_RESCHEDULING)
-*/
-
-/**
- * @def OSEK_STATUS_MASK
- *
- * This AND mask can be used to keep only result code
- * specific to OSEK in a tpl_status (StatusType)
- * result code.
- *
- * @see #tpl_status
- */
-/*
-#define OSEK_STATUS_MASK        0x1F
-*/
-
-/**
- * @def TRAMPOLINE_STATUS_MASK
- *
- * This AND mask can be used to keep only result code
- * specific to Trampoline in a tpl_status (StatusType)
- * result code.
- *
- * @see #tpl_status
- */
-/*
-#define TRAMPOLINE_STATUS_MASK  0xE0
-*/
 
 /************************************
  * Public states of a task or ISR2  *

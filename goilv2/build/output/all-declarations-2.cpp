@@ -10,6 +10,93 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
+//                                         Function 'template_string_if_exist'                                         *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_string function_template_5F_string_5F_if_5F_exist (GALGAS_string inArgument_prefix,
+                                                          GALGAS_string inArgument_obj,
+                                                          C_Compiler * inCompiler
+                                                          COMMA_UNUSED_LOCATION_ARGS) {
+  GALGAS_string result_tpl ; // Returned variable
+  GALGAS_string var_targ_5F_tpl = GALGAS_string::makeEmptyString () ;
+  GALGAS_string var_temp_5F_dir ;
+  var_temp_5F_dir = function_templates_5F_directory (inArgument_prefix, inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 113)) ;
+  GALGAS_string var_temp_5F_name = inArgument_obj.add_operation (GALGAS_string (".tpl"), inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 116)) ;
+  var_targ_5F_tpl = var_temp_5F_dir.add_operation (function_arch (inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 118)), inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 118)).add_operation (GALGAS_string ("/"), inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 118)).add_operation (function_chip (inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 118)), inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 118)).add_operation (GALGAS_string ("/"), inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 118)).add_operation (function_board (inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 118)), inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 118)).add_operation (GALGAS_string ("/"), inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 118)).add_operation (var_temp_5F_name, inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 118)) ;
+  const enumGalgasBool test_0 = var_targ_5F_tpl.reader_fileExists (SOURCE_FILE ("goil_routines.galgas", 119)).boolEnum () ;
+  if (kBoolTrue == test_0) {
+    result_tpl = GALGAS_string::constructor_stringWithContentsOfFile (var_targ_5F_tpl, inCompiler  COMMA_SOURCE_FILE ("goil_routines.galgas", 120)) ;
+  }else if (kBoolFalse == test_0) {
+    var_targ_5F_tpl = var_temp_5F_dir.add_operation (function_arch (inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 122)), inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 122)).add_operation (GALGAS_string ("/"), inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 122)).add_operation (function_chip (inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 122)), inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 122)).add_operation (GALGAS_string ("/"), inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 122)).add_operation (var_temp_5F_name, inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 122)) ;
+    const enumGalgasBool test_1 = var_targ_5F_tpl.reader_fileExists (SOURCE_FILE ("goil_routines.galgas", 123)).boolEnum () ;
+    if (kBoolTrue == test_1) {
+      result_tpl = GALGAS_string::constructor_stringWithContentsOfFile (var_targ_5F_tpl, inCompiler  COMMA_SOURCE_FILE ("goil_routines.galgas", 124)) ;
+    }else if (kBoolFalse == test_1) {
+      var_targ_5F_tpl = var_temp_5F_dir.add_operation (function_arch (inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 126)), inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 126)).add_operation (GALGAS_string ("/"), inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 126)).add_operation (var_temp_5F_name, inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 126)) ;
+      const enumGalgasBool test_2 = var_targ_5F_tpl.reader_fileExists (SOURCE_FILE ("goil_routines.galgas", 127)).boolEnum () ;
+      if (kBoolTrue == test_2) {
+        result_tpl = GALGAS_string::constructor_stringWithContentsOfFile (var_targ_5F_tpl, inCompiler  COMMA_SOURCE_FILE ("goil_routines.galgas", 128)) ;
+      }else if (kBoolFalse == test_2) {
+        var_targ_5F_tpl = var_temp_5F_dir.add_operation (GALGAS_string ("all_targets/"), inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 131)).add_operation (var_temp_5F_name, inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 131)) ;
+        const enumGalgasBool test_3 = var_targ_5F_tpl.reader_fileExists (SOURCE_FILE ("goil_routines.galgas", 132)).boolEnum () ;
+        if (kBoolTrue == test_3) {
+          result_tpl = GALGAS_string::constructor_stringWithContentsOfFile (var_targ_5F_tpl, inCompiler  COMMA_SOURCE_FILE ("goil_routines.galgas", 133)) ;
+        }else if (kBoolFalse == test_3) {
+          var_targ_5F_tpl = var_temp_5F_dir.add_operation (var_temp_5F_name, inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 135)) ;
+          const enumGalgasBool test_4 = var_targ_5F_tpl.reader_fileExists (SOURCE_FILE ("goil_routines.galgas", 136)).boolEnum () ;
+          if (kBoolTrue == test_4) {
+            result_tpl = GALGAS_string::constructor_stringWithContentsOfFile (var_targ_5F_tpl, inCompiler  COMMA_SOURCE_FILE ("goil_routines.galgas", 137)) ;
+          }else if (kBoolFalse == test_4) {
+            result_tpl = GALGAS_string::makeEmptyString () ;
+          }
+        }
+      }
+    }
+  }
+//---
+  return result_tpl ;
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+//  Function introspection                                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+
+static const C_galgas_type_descriptor * functionArgs_template_5F_string_5F_if_5F_exist [3] = {
+  & kTypeDescriptor_GALGAS_string,
+  & kTypeDescriptor_GALGAS_string,
+  NULL
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+static GALGAS_object functionWithGenericHeader_template_5F_string_5F_if_5F_exist (C_Compiler * inCompiler,
+                                                                                  const cObjectArray & inEffectiveParameterArray,
+                                                                                  const GALGAS_location & /* §§ inErrorLocation */
+                                                                                  COMMA_LOCATION_ARGS) {
+  const GALGAS_string operand0 = GALGAS_string::extractObject (inEffectiveParameterArray.objectAtIndex (0 COMMA_HERE),
+                                                               inCompiler
+                                                               COMMA_THERE) ;
+  const GALGAS_string operand1 = GALGAS_string::extractObject (inEffectiveParameterArray.objectAtIndex (1 COMMA_HERE),
+                                                               inCompiler
+                                                               COMMA_THERE) ;
+  return function_template_5F_string_5F_if_5F_exist (operand0,
+                                                     operand1,
+                                                     inCompiler
+                                                     COMMA_THERE).reader_object (THERE) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_galgas_function_descriptor functionDescriptor_template_5F_string_5F_if_5F_exist ("template_string_if_exist",
+                                                                                   functionWithGenericHeader_template_5F_string_5F_if_5F_exist,
+                                                                                   & kTypeDescriptor_GALGAS_string,
+                                                                                   2,
+                                                                                   functionArgs_template_5F_string_5F_if_5F_exist) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //                                             Function 'template_string'                                              *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -107,8 +194,8 @@ GALGAS_string function_templateFilePath (const GALGAS_string & constinArgument_p
         const enumGalgasBool test_1 = GALGAS_bool (kIsStrictSup, var_components.reader_length (SOURCE_FILE ("goil_routines.galgas", 178)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
         if (kBoolTrue == test_1) {
           {
-          GALGAS_string joker_5760_0 ; // Joker input parameter
-          var_components.modifier_popLast (joker_5760_0, inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 179)) ;
+          GALGAS_string joker_5760 ; // Joker input parameter
+          var_components.modifier_popLast (joker_5760, inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 179)) ;
           }
         }else if (kBoolFalse == test_1) {
           var_notOver = GALGAS_bool (false) ;
@@ -199,8 +286,8 @@ GALGAS_stringlist function_allTemplateFilePaths (const GALGAS_string & constinAr
         const enumGalgasBool test_2 = GALGAS_bool (kIsStrictSup, var_components.reader_length (SOURCE_FILE ("goil_routines.galgas", 204)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
         if (kBoolTrue == test_2) {
           {
-          GALGAS_string joker_6556_0 ; // Joker input parameter
-          var_components.modifier_popLast (joker_6556_0, inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 205)) ;
+          GALGAS_string joker_6556 ; // Joker input parameter
+          var_components.modifier_popLast (joker_6556, inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 205)) ;
           }
         }else if (kBoolFalse == test_2) {
           var_notOver = GALGAS_bool (false) ;
@@ -348,8 +435,8 @@ void routine_prefix (GALGAS_prefix_5F_map inArgument_p,
                      COMMA_UNUSED_LOCATION_ARGS) {
   outArgument_val.drop () ; // Release 'out' argument
   GALGAS_lstring var_lkey = GALGAS_lstring::constructor_new (inArgument_key, GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("goil_routines.galgas", 227))  COMMA_SOURCE_FILE ("goil_routines.galgas", 227)) ;
-  GALGAS_string joker_7120_0 ; // Joker input parameter
-  inArgument_p.method_prefix (var_lkey, outArgument_val, joker_7120_0, inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 228)) ;
+  GALGAS_string joker_7120 ; // Joker input parameter
+  inArgument_p.method_prefix (var_lkey, outArgument_val, joker_7120, inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 228)) ;
 }
 
 
@@ -423,8 +510,8 @@ void routine_replace_5F_no_5F_prefix (GALGAS_prefix_5F_map inArgument_p,
                                       COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_lstring var_lkey = GALGAS_lstring::constructor_new (inArgument_key, GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("goil_routines.galgas", 252))  COMMA_SOURCE_FILE ("goil_routines.galgas", 252)) ;
   GALGAS_string var_tag_5F_to_5F_rep ;
-  GALGAS_string joker_7933_0 ; // Joker input parameter
-  inArgument_p.method_prefix (var_lkey, joker_7933_0, var_tag_5F_to_5F_rep, inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 255)) ;
+  GALGAS_string joker_7933 ; // Joker input parameter
+  inArgument_p.method_prefix (var_lkey, joker_7933, var_tag_5F_to_5F_rep, inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 255)) ;
   ioArgument_res = ioArgument_res.reader_stringByReplacingStringByString (var_tag_5F_to_5F_rep, inArgument_name, inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 256)) ;
 }
 
@@ -1262,8 +1349,8 @@ void routine_setObjectForKindAndName (GALGAS_objectsMap & ioArgument_objects,
   const enumGalgasBool test_1 = var_kindMap.reader_hasKey (constinArgument_name COMMA_SOURCE_FILE ("goil_types_root.galgas", 81)).boolEnum () ;
   if (kBoolTrue == test_1) {
     {
-    GALGAS_objectAttributes joker_2173_0 ; // Joker input parameter
-    var_kindMap.modifier_del (var_lname, joker_2173_0, inCompiler COMMA_SOURCE_FILE ("goil_types_root.galgas", 82)) ;
+    GALGAS_objectAttributes joker_2173 ; // Joker input parameter
+    var_kindMap.modifier_del (var_lname, joker_2173, inCompiler COMMA_SOURCE_FILE ("goil_types_root.galgas", 82)) ;
     }
   }
   {
@@ -1527,7 +1614,7 @@ void routine_generate_5F_all (const GALGAS_TfieldMap constinArgument_cfg,
 
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_applicationDefinition::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -1887,7 +1974,7 @@ GALGAS_applicationDefinition GALGAS_applicationDefinition::extractObject (const 
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 
@@ -1994,7 +2081,7 @@ GALGAS_attributeRange GALGAS_attributeRange::extractObject (const GALGAS_object 
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_floatAttributeMinMax::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -2186,7 +2273,7 @@ GALGAS_floatAttributeMinMax GALGAS_floatAttributeMinMax::extractObject (const GA
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_floatAttributeSet::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -2351,7 +2438,7 @@ GALGAS_floatAttributeSet GALGAS_floatAttributeSet::extractObject (const GALGAS_o
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_noRange::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -2489,7 +2576,7 @@ GALGAS_noRange GALGAS_noRange::extractObject (const GALGAS_object & inObject,
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_sint_33__32_AttributeMinMax::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -2681,7 +2768,7 @@ GALGAS_sint_33__32_AttributeMinMax GALGAS_sint_33__32_AttributeMinMax::extractOb
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_sint_33__32_AttributeSet::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -2846,7 +2933,7 @@ GALGAS_sint_33__32_AttributeSet GALGAS_sint_33__32_AttributeSet::extractObject (
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_sint_36__34_AttributeMinMax::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -3038,7 +3125,7 @@ GALGAS_sint_36__34_AttributeMinMax GALGAS_sint_36__34_AttributeMinMax::extractOb
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_sint_36__34_AttributeSet::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -3203,7 +3290,7 @@ GALGAS_sint_36__34_AttributeSet GALGAS_sint_36__34_AttributeSet::extractObject (
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_uint_33__32_AttributeMinMax::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -3395,7 +3482,7 @@ GALGAS_uint_33__32_AttributeMinMax GALGAS_uint_33__32_AttributeMinMax::extractOb
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_uint_33__32_AttributeSet::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -3560,7 +3647,7 @@ GALGAS_uint_33__32_AttributeSet GALGAS_uint_33__32_AttributeSet::extractObject (
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_uint_36__34_AttributeMinMax::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -3752,7 +3839,7 @@ GALGAS_uint_36__34_AttributeMinMax GALGAS_uint_36__34_AttributeMinMax::extractOb
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_uint_36__34_AttributeSet::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -3917,7 +4004,7 @@ GALGAS_uint_36__34_AttributeSet GALGAS_uint_36__34_AttributeSet::extractObject (
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 
@@ -4024,7 +4111,7 @@ GALGAS_autostart_5F_obj GALGAS_autostart_5F_obj::extractObject (const GALGAS_obj
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_autostart_5F_false::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -4162,7 +4249,7 @@ GALGAS_autostart_5F_false GALGAS_autostart_5F_false::extractObject (const GALGAS
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_autostart_5F_void::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -4300,7 +4387,7 @@ GALGAS_autostart_5F_void GALGAS_autostart_5F_void::extractObject (const GALGAS_o
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 
@@ -4487,7 +4574,7 @@ GALGAS_impType GALGAS_impType::extractObject (const GALGAS_object & inObject,
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_impAutoDefaultType::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -4698,7 +4785,7 @@ GALGAS_impAutoDefaultType GALGAS_impAutoDefaultType::extractObject (const GALGAS
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_impBoolType::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -4923,7 +5010,7 @@ GALGAS_impBoolType GALGAS_impBoolType::extractObject (const GALGAS_object & inOb
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_impEnumType::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -5122,7 +5209,7 @@ GALGAS_impEnumType GALGAS_impEnumType::extractObject (const GALGAS_object & inOb
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_impRangedType::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -5321,7 +5408,7 @@ GALGAS_impRangedType GALGAS_impRangedType::extractObject (const GALGAS_object & 
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_impStructType::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -5506,7 +5593,7 @@ GALGAS_impStructType GALGAS_impStructType::extractObject (const GALGAS_object & 
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_impVoid::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -5665,7 +5752,7 @@ GALGAS_impVoid GALGAS_impVoid::extractObject (const GALGAS_object & inObject,
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_refType::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -5850,7 +5937,7 @@ GALGAS_refType GALGAS_refType::extractObject (const GALGAS_object & inObject,
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_implementation::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -6026,7 +6113,7 @@ GALGAS_implementation GALGAS_implementation::extractObject (const GALGAS_object 
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_implementationObject::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -6248,7 +6335,7 @@ GALGAS_implementationObject GALGAS_implementationObject::extractObject (const GA
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_objectAttributes::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -6424,7 +6511,7 @@ GALGAS_objectAttributes GALGAS_objectAttributes::extractObject (const GALGAS_obj
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_objectKind::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -6600,7 +6687,7 @@ GALGAS_objectKind GALGAS_objectKind::extractObject (const GALGAS_object & inObje
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 
@@ -6727,7 +6814,7 @@ GALGAS_object_5F_t GALGAS_object_5F_t::extractObject (const GALGAS_object & inOb
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_auto::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -6873,7 +6960,7 @@ GALGAS_auto GALGAS_auto::extractObject (const GALGAS_object & inObject,
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_boolAttribute::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -7092,7 +7179,7 @@ GALGAS_boolAttribute GALGAS_boolAttribute::extractObject (const GALGAS_object & 
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_bool_5F_t::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -7265,7 +7352,7 @@ GALGAS_bool_5F_t GALGAS_bool_5F_t::extractObject (const GALGAS_object & inObject
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_void_5F_bool_5F_t::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -7419,7 +7506,7 @@ GALGAS_void_5F_bool_5F_t GALGAS_void_5F_bool_5F_t::extractObject (const GALGAS_o
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_enumAttribute::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -7619,7 +7706,7 @@ GALGAS_enumAttribute GALGAS_enumAttribute::extractObject (const GALGAS_object & 
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_float_5F_class::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -7792,7 +7879,7 @@ GALGAS_float_5F_class GALGAS_float_5F_class::extractObject (const GALGAS_object 
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_void_5F_float_5F_class::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -7946,7 +8033,7 @@ GALGAS_void_5F_float_5F_class GALGAS_void_5F_float_5F_class::extractObject (cons
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_multipleAttribute::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -8119,7 +8206,7 @@ GALGAS_multipleAttribute GALGAS_multipleAttribute::extractObject (const GALGAS_o
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_objectRefAttribute::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -8292,7 +8379,7 @@ GALGAS_objectRefAttribute GALGAS_objectRefAttribute::extractObject (const GALGAS
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_sint_33__32__5F_class::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -8465,7 +8552,7 @@ GALGAS_sint_33__32__5F_class GALGAS_sint_33__32__5F_class::extractObject (const 
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_void_5F_sint_33__32__5F_class::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -8619,7 +8706,7 @@ GALGAS_void_5F_sint_33__32__5F_class GALGAS_void_5F_sint_33__32__5F_class::extra
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_sint_36__34__5F_class::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -8792,7 +8879,7 @@ GALGAS_sint_36__34__5F_class GALGAS_sint_36__34__5F_class::extractObject (const 
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_void_5F_sint_36__34__5F_class::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -8946,7 +9033,7 @@ GALGAS_void_5F_sint_36__34__5F_class GALGAS_void_5F_sint_36__34__5F_class::extra
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_stringAttribute::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -9119,7 +9206,7 @@ GALGAS_stringAttribute GALGAS_stringAttribute::extractObject (const GALGAS_objec
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_string_5F_class::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -9292,7 +9379,7 @@ GALGAS_string_5F_class GALGAS_string_5F_class::extractObject (const GALGAS_objec
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_void_5F_string_5F_class::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -9446,7 +9533,7 @@ GALGAS_void_5F_string_5F_class GALGAS_void_5F_string_5F_class::extractObject (co
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_structAttribute::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -9646,7 +9733,7 @@ GALGAS_structAttribute GALGAS_structAttribute::extractObject (const GALGAS_objec
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_uint_33__32__5F_class::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -9819,7 +9906,7 @@ GALGAS_uint_33__32__5F_class GALGAS_uint_33__32__5F_class::extractObject (const 
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_void_5F_uint_33__32__5F_class::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -9973,7 +10060,7 @@ GALGAS_void_5F_uint_33__32__5F_class GALGAS_void_5F_uint_33__32__5F_class::extra
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_uint_36__34__5F_class::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -10146,7 +10233,7 @@ GALGAS_uint_36__34__5F_class GALGAS_uint_36__34__5F_class::extractObject (const 
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_void_5F_uint_36__34__5F_class::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -10300,7 +10387,7 @@ GALGAS_void_5F_uint_36__34__5F_class GALGAS_void_5F_uint_36__34__5F_class::extra
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cPtr_void::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
@@ -10446,7 +10533,7 @@ GALGAS_void GALGAS_void::extractObject (const GALGAS_object & inObject,
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                         *
+//   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 
@@ -10690,7 +10777,6 @@ int mainForLIBPM (int inArgc, const char * inArgv []) {
       routine_before (commonLexique COMMA_HERE) ;
       verboseOptionOn = gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ;
       for (int32_t i=0 ; i<sourceFilesArray.count () ; i++) {
-        setCurrentCompiledFilePath (sourceFilesArray (i COMMA_HERE)) ;
         if (gOption_galgas_5F_builtin_5F_options_trace.mValue) {
           enableTraceWithPath (sourceFilesArray (i COMMA_HERE)) ;
         }
@@ -10700,11 +10786,68 @@ int mainForLIBPM (int inArgc, const char * inArgv []) {
         const GALGAS_lstring sourceFilePath (sfp, location) ;
         int16_t r = 0 ;
         if (fileExtension == "oil") {
-          routine_programRule_5F__30_ (sourceFilePath, commonLexique COMMA_HERE) ;
+          if (! executionModeIsIndexing ()) {
+            routine_programRule_5F__30_ (sourceFilePath, commonLexique COMMA_HERE) ;
+          }
+          switch (executionMode ()) {
+          case kExecutionModeNormal :
+            routine_programRule_5F__30_ (sourceFilePath, commonLexique COMMA_HERE) ;
+            break ;
+          case kExecutionModeLexicalAnalysisOnly :
+            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=lexical-only\" option: no grammar in program RULE" COMMA_HERE) ;
+            break ;
+          case kExecutionModeSyntaxAnalysisOnly :
+            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=syntax-only\" option: no grammar in program RULE" COMMA_HERE) ;
+            break ;
+          case kExecutionModeIndexing :
+            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=indexing\" option: no grammar in program RULE" COMMA_HERE) ;
+            break ;
+          case kExecutionModeLatex :
+            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=latex\" option: no grammar in program RULE" COMMA_HERE) ;
+            break ;
+          }
         }else if (fileExtension == "OIL") {
-          routine_programRule_5F__31_ (sourceFilePath, commonLexique COMMA_HERE) ;
+          if (! executionModeIsIndexing ()) {
+            routine_programRule_5F__31_ (sourceFilePath, commonLexique COMMA_HERE) ;
+          }
+          switch (executionMode ()) {
+          case kExecutionModeNormal :
+            routine_programRule_5F__31_ (sourceFilePath, commonLexique COMMA_HERE) ;
+            break ;
+          case kExecutionModeLexicalAnalysisOnly :
+            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=lexical-only\" option: no grammar in program RULE" COMMA_HERE) ;
+            break ;
+          case kExecutionModeSyntaxAnalysisOnly :
+            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=syntax-only\" option: no grammar in program RULE" COMMA_HERE) ;
+            break ;
+          case kExecutionModeIndexing :
+            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=indexing\" option: no grammar in program RULE" COMMA_HERE) ;
+            break ;
+          case kExecutionModeLatex :
+            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=latex\" option: no grammar in program RULE" COMMA_HERE) ;
+            break ;
+          }
         }else if (fileExtension == "goilTemplate") {
-          routine_programRule_5F__32_ (sourceFilePath, commonLexique COMMA_HERE) ;
+          if (! executionModeIsIndexing ()) {
+            routine_programRule_5F__32_ (sourceFilePath, commonLexique COMMA_HERE) ;
+          }
+          switch (executionMode ()) {
+          case kExecutionModeNormal :
+            routine_programRule_5F__32_ (sourceFilePath, commonLexique COMMA_HERE) ;
+            break ;
+          case kExecutionModeLexicalAnalysisOnly :
+            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=lexical-only\" option: no grammar in program RULE" COMMA_HERE) ;
+            break ;
+          case kExecutionModeSyntaxAnalysisOnly :
+            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=syntax-only\" option: no grammar in program RULE" COMMA_HERE) ;
+            break ;
+          case kExecutionModeIndexing :
+            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=indexing\" option: no grammar in program RULE" COMMA_HERE) ;
+            break ;
+          case kExecutionModeLatex :
+            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=latex\" option: no grammar in program RULE" COMMA_HERE) ;
+            break ;
+          }
         }else{
           printf ("*** Error: unhandled extension for file '%s' ***\n", sourceFilesArray (i COMMA_HERE).cString (HERE)) ;
           r = 1 ;
@@ -10771,41 +10914,59 @@ GALGAS_string categoryReader_messageGoilTemplateType (const GALGAS_Ttype & inObj
                                                       COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_string result_result ; // Returned variable
   const GALGAS_Ttype temp_0 = inObject ;
-  if (temp_0.isValid ()) {
-    switch (temp_0.enumValue ()) {
-    case GALGAS_Ttype::kNotBuilt:
-      break ;
-    case GALGAS_Ttype::kEnum_boolType: {
+  switch (temp_0.enumValue ()) {
+  case GALGAS_Ttype::kNotBuilt:
+    break ;
+  case GALGAS_Ttype::kEnum_boolType:
+    {
       result_result = GALGAS_string ("bool") ;
-      } break ;
-    case GALGAS_Ttype::kEnum_intType: {
-      result_result = GALGAS_string ("int") ;
-      } break ;
-    case GALGAS_Ttype::kEnum_floatType: {
-      result_result = GALGAS_string ("float") ;
-      } break ;
-    case GALGAS_Ttype::kEnum_stringType: {
-      result_result = GALGAS_string ("string") ;
-      } break ;
-    case GALGAS_Ttype::kEnum_listType: {
-      result_result = GALGAS_string ("list") ;
-      } break ;
-    case GALGAS_Ttype::kEnum_mapType: {
-      result_result = GALGAS_string ("map") ;
-      } break ;
-    case GALGAS_Ttype::kEnum_structType: {
-      result_result = GALGAS_string ("struct") ;
-      } break ;
-    case GALGAS_Ttype::kEnum_enumType: {
-      result_result = GALGAS_string ("enum") ;
-      } break ;
-    case GALGAS_Ttype::kEnum_functionType: {
-      result_result = GALGAS_string ("function") ;
-      } break ;
-    case GALGAS_Ttype::kEnum_unconstructedType: {
-      result_result = GALGAS_string ("unconstructed") ;
-      } break ;
     }
+    break ;
+  case GALGAS_Ttype::kEnum_intType:
+    {
+      result_result = GALGAS_string ("int") ;
+    }
+    break ;
+  case GALGAS_Ttype::kEnum_floatType:
+    {
+      result_result = GALGAS_string ("float") ;
+    }
+    break ;
+  case GALGAS_Ttype::kEnum_stringType:
+    {
+      result_result = GALGAS_string ("string") ;
+    }
+    break ;
+  case GALGAS_Ttype::kEnum_listType:
+    {
+      result_result = GALGAS_string ("list") ;
+    }
+    break ;
+  case GALGAS_Ttype::kEnum_mapType:
+    {
+      result_result = GALGAS_string ("map") ;
+    }
+    break ;
+  case GALGAS_Ttype::kEnum_structType:
+    {
+      result_result = GALGAS_string ("struct") ;
+    }
+    break ;
+  case GALGAS_Ttype::kEnum_enumType:
+    {
+      result_result = GALGAS_string ("enum") ;
+    }
+    break ;
+  case GALGAS_Ttype::kEnum_functionType:
+    {
+      result_result = GALGAS_string ("function") ;
+    }
+    break ;
+  case GALGAS_Ttype::kEnum_unconstructedType:
+    {
+      result_result = GALGAS_string ("unconstructed") ;
+    }
+    break ;
   }
 //---
   return result_result ;
@@ -10825,47 +10986,69 @@ GALGAS_string categoryReader_oilType (const GALGAS_dataType & inObject,
                                       COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_string result_result ; // Returned variable
   const GALGAS_dataType temp_0 = inObject ;
-  if (temp_0.isValid ()) {
-    switch (temp_0.enumValue ()) {
-    case GALGAS_dataType::kNotBuilt:
-      break ;
-    case GALGAS_dataType::kEnum_void: {
+  switch (temp_0.enumValue ()) {
+  case GALGAS_dataType::kNotBuilt:
+    break ;
+  case GALGAS_dataType::kEnum_void:
+    {
       result_result = GALGAS_string ("VOID") ;
-      } break ;
-    case GALGAS_dataType::kEnum_uint_33__32_Number: {
-      result_result = GALGAS_string ("UINT32") ;
-      } break ;
-    case GALGAS_dataType::kEnum_sint_33__32_Number: {
-      result_result = GALGAS_string ("INT32") ;
-      } break ;
-    case GALGAS_dataType::kEnum_uint_36__34_Number: {
-      result_result = GALGAS_string ("UINT64") ;
-      } break ;
-    case GALGAS_dataType::kEnum_sint_36__34_Number: {
-      result_result = GALGAS_string ("INT64") ;
-      } break ;
-    case GALGAS_dataType::kEnum_floatNumber: {
-      result_result = GALGAS_string ("FLOAT") ;
-      } break ;
-    case GALGAS_dataType::kEnum_string: {
-      result_result = GALGAS_string ("STRING") ;
-      } break ;
-    case GALGAS_dataType::kEnum_enumeration: {
-      result_result = GALGAS_string ("ENUM") ;
-      } break ;
-    case GALGAS_dataType::kEnum_boolean: {
-      result_result = GALGAS_string ("BOOLEAN") ;
-      } break ;
-    case GALGAS_dataType::kEnum_identifier: {
-      result_result = GALGAS_string ("IDENTIFIER") ;
-      } break ;
-    case GALGAS_dataType::kEnum_objectType: {
-      result_result = GALGAS_string ("OBJECT_TYPE") ;
-      } break ;
-    case GALGAS_dataType::kEnum_structType: {
-      result_result = GALGAS_string ("STRUCT") ;
-      } break ;
     }
+    break ;
+  case GALGAS_dataType::kEnum_uint_33__32_Number:
+    {
+      result_result = GALGAS_string ("UINT32") ;
+    }
+    break ;
+  case GALGAS_dataType::kEnum_sint_33__32_Number:
+    {
+      result_result = GALGAS_string ("INT32") ;
+    }
+    break ;
+  case GALGAS_dataType::kEnum_uint_36__34_Number:
+    {
+      result_result = GALGAS_string ("UINT64") ;
+    }
+    break ;
+  case GALGAS_dataType::kEnum_sint_36__34_Number:
+    {
+      result_result = GALGAS_string ("INT64") ;
+    }
+    break ;
+  case GALGAS_dataType::kEnum_floatNumber:
+    {
+      result_result = GALGAS_string ("FLOAT") ;
+    }
+    break ;
+  case GALGAS_dataType::kEnum_string:
+    {
+      result_result = GALGAS_string ("STRING") ;
+    }
+    break ;
+  case GALGAS_dataType::kEnum_enumeration:
+    {
+      result_result = GALGAS_string ("ENUM") ;
+    }
+    break ;
+  case GALGAS_dataType::kEnum_boolean:
+    {
+      result_result = GALGAS_string ("BOOLEAN") ;
+    }
+    break ;
+  case GALGAS_dataType::kEnum_identifier:
+    {
+      result_result = GALGAS_string ("IDENTIFIER") ;
+    }
+    break ;
+  case GALGAS_dataType::kEnum_objectType:
+    {
+      result_result = GALGAS_string ("OBJECT_TYPE") ;
+    }
+    break ;
+  case GALGAS_dataType::kEnum_structType:
+    {
+      result_result = GALGAS_string ("STRUCT") ;
+    }
+    break ;
   }
 //---
   return result_result ;

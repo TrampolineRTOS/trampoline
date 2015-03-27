@@ -1,10 +1,21 @@
-//
-//  OC_GGS_TextView.m
-//  galgas-developer
-//
-//  Created by Pierre Molinaro on 27/11/11.
-//  Copyright (c) 2011 IRCCyN. All rights reserved.
-//
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//  This file is part of libpm library                                                                                 *
+//                                                                                                                     *
+//  Copyright (C) 2011, ..., 2014 Pierre Molinaro.                                                                     *
+//                                                                                                                     *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//                                                                                                                     *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
+//                                                                                                                     *
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
+//  any later version.                                                                                                 *
+//                                                                                                                     *
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
+//  more details.                                                                                                      *
+//                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
 #import "OC_GGS_TextView.h"
@@ -29,7 +40,7 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//       I N I T                                                               *
+//       I N I T                                                                                                       *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -44,6 +55,25 @@
     noteObjectAllocation (self) ;
     mDocumentUsedForDisplaying = inDocumentUsedForDisplaying ;
     mDisplayDescriptor = inDisplayDescriptor ;
+    NSUserDefaults * df = [NSUserDefaults standardUserDefaults] ;
+    [df
+      addObserver:self
+      forKeyPath:GGS_uses_page_guide
+      options:0
+      context:NULL
+    ] ;
+    [df
+      addObserver:self
+      forKeyPath:GGS_page_guide_column
+      options:0
+      context:NULL
+    ] ;
+    [df
+      addObserver:self
+      forKeyPath:GGS_editor_background_color
+      options:0
+      context:NULL
+    ] ;
   }
   return self;
 }
@@ -51,6 +81,19 @@
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (void) FINALIZE_OR_DEALLOC {
+  NSUserDefaults * df = [NSUserDefaults standardUserDefaults] ;
+  [df
+    removeObserver:self
+    forKeyPath:GGS_uses_page_guide
+  ] ;
+  [df
+    removeObserver:self
+    forKeyPath:GGS_page_guide_column
+  ] ;
+  [df
+    removeObserver:self
+    forKeyPath:GGS_editor_background_color
+  ] ;
   noteObjectDeallocation (self) ;
   macroSuperFinalize ;
 }
@@ -60,6 +103,29 @@
 - (void) detachTextView {
   mDocumentUsedForDisplaying = nil ;
   mDisplayDescriptor = nil ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+- (void) observeValueForKeyPath:(NSString *) inKeyPath
+         ofObject:(id) inObject
+         change:(NSDictionary *) inChange
+         context:(void *) inContext {
+  NSUserDefaults * df = [NSUserDefaults standardUserDefaults] ;
+  if ((inObject == df) && [inKeyPath isEqualToString:GGS_uses_page_guide]) {
+    [self setNeedsDisplay:YES] ;
+  }else if ((inObject == df) && [inKeyPath isEqualToString:GGS_page_guide_column]) {
+    [self setNeedsDisplay:YES] ;
+  }else if ((inObject == df) && [inKeyPath isEqualToString:GGS_editor_background_color]) {
+    [self setNeedsDisplay:YES] ;
+  }else{
+    [super
+      observeValueForKeyPath:inKeyPath
+      ofObject:inObject
+      change:inChange
+      context:inContext
+    ] ;
+  }
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -96,6 +162,42 @@
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (void) drawRect: (NSRect) inRect {
+//--- Draw page guide
+  NSUserDefaults * ud = [NSUserDefaults standardUserDefaults] ;
+  if ([ud boolForKey:GGS_uses_page_guide] && (self.string.length > 0)) {
+    NSDictionary * attributes = [self.textStorage fontAttributesInRange:NSMakeRange(0, 0)] ;
+    const NSInteger pageGuideColumn = [ud integerForKey:GGS_page_guide_column] ;
+    NSMutableString * str = [NSMutableString new] ;
+    for (NSInteger i=0 ; i<=pageGuideColumn ; i++) {
+      [str appendString:@"0"] ;
+    }
+    const NSSize s = [str sizeWithAttributes:attributes] ;
+    const double column = rint (s.width) + 0.5 ;
+  //--- Page rect
+    const NSRect pageRect = {{0.0, 0.0}, {column, NSMaxY (self.frame)}} ;
+    const NSRect pageRectToDraw = NSIntersectionRect (inRect, pageRect) ;
+    if (! NSIsEmptyRect (pageRectToDraw)) {
+      NSData * data = [[NSUserDefaults standardUserDefaults] valueForKey:GGS_editor_background_color] ;
+      // NSLog (@"DATA %@", data) ;
+      NSColor * color = [NSUnarchiver unarchiveObjectWithData:data] ;
+      // NSLog (@"color %@", color) ;
+      [color setFill] ;
+      NSRectFill (pageRectToDraw) ;
+    }
+    const NSRect outsidePageRect = {{column, 0.0}, {NSMaxX (self.frame) - column, NSMaxY (self.frame)}} ;
+    const NSRect outsidePageRectToDraw = NSIntersectionRect (inRect, outsidePageRect) ;
+    if (! NSIsEmptyRect (outsidePageRectToDraw)) {
+      [[NSColor windowBackgroundColor] setFill] ;
+      NSRectFill (outsidePageRectToDraw) ;
+    }
+    NSBezierPath * bp = [NSBezierPath bezierPath] ;
+    [bp moveToPoint:NSMakePoint (column, NSMinY (inRect))] ;
+    [bp lineToPoint:NSMakePoint (column, NSMaxY (inRect))] ;
+    [bp setLineWidth:0.0] ;
+    [[NSColor windowFrameColor] setStroke] ;
+    [bp stroke] ;
+  }
+//--- Draw text
   [super drawRect:inRect] ;
 //--- Draw issues
   NSBezierPath * errorHiliteBezierPath = [NSBezierPath bezierPath] ;

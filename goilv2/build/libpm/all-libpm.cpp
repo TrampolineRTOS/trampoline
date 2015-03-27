@@ -7,6 +7,7 @@
 #include "command_line_interface/C_BoolCommandLineOption.cpp"
 #include "command_line_interface/C_UIntCommandLineOption.cpp"
 #include "command_line_interface/C_StringCommandLineOption.cpp"
+#include "command_line_interface/C_StringListCommandLineOption.cpp"
 #include "command_line_interface/C_builtin_CLI_Options.cpp"
 #include "command_line_interface/F_Analyze_CLI_Options.cpp"
 #include "command_line_interface/F_mainForLIBPM.cpp"

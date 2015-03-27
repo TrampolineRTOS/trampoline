@@ -8,17 +8,14 @@
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes                                          *
-//  ECN, École Centrale de Nantes (France)                                                                             *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
 //                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it                                            *
-//  under the terms of the GNU Lesser General Public License as published                                              *
-//  by the Free Software Foundation; either version 2 of the License, or                                               *
-//  (at your option) any later version.                                                                                *
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
+//  any later version.                                                                                                 *
 //                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT                                             *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or                                              *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for                                           *
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -228,6 +225,16 @@ GALGAS_string GALGAS_string::reader_identifierRepresentation (UNUSED_LOCATION_AR
 
 //---------------------------------------------------------------------------------------------------------------------*
 
+GALGAS_string GALGAS_string::reader_nameRepresentation (UNUSED_LOCATION_ARGS) const {
+  GALGAS_string result ;
+  if (isValid ()) {
+    result = GALGAS_string (mString.nameRepresentation ()) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
 GALGAS_string GALGAS_string::reader_subStringFromIndex (const GALGAS_uint & inStartIndex
                                                         COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
@@ -297,10 +304,28 @@ GALGAS_string GALGAS_string::reader_absolutePathFromPath (const GALGAS_string & 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_string GALGAS_string::reader_relativePathFromPath (const GALGAS_string & inReferencePath
-                                                            COMMA_UNUSED_LOCATION_ARGS) const {
+                                                          COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
   if (isValid () && inReferencePath.isValid ()) {
     result = GALGAS_string (C_FileManager::relativePathFromPath (mString, inReferencePath.mString)) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_char GALGAS_string::reader_lastCharacter (C_Compiler * inCompiler
+                                                 COMMA_LOCATION_ARGS) const {
+  GALGAS_char result ;
+  if (isValid ()) {
+    if (mString.length () == 0) {
+      inCompiler->onTheFlyRunTimeError (
+        "@string lastCharacter getter called on empty string"
+        COMMA_THERE
+      ) ;
+    }else{
+      result = GALGAS_char (mString.lastCharacter (THERE)) ;
+    }
   }
   return result ;
 }
@@ -464,7 +489,7 @@ GALGAS_string GALGAS_string::reader_stringByReplacingStringByString (const GALGA
   if ((inSearchedString.isValid ()) && (inReplacementString.isValid ())) {
     if (inSearchedString.mString.length () == 0) {
       inCompiler->onTheFlyRunTimeError (
-        "@string stringByReplacingStringByString reader called with empty searched string"
+        "@string stringByReplacingStringByString getter called with empty searched string"
         COMMA_THERE
       ) ;
     }else{
@@ -490,7 +515,7 @@ GALGAS_string GALGAS_string::reader_stringByRemovingCharacterAtIndex (const GALG
       result = GALGAS_string (s) ;
     }else{
       inCompiler->onTheFlyRunTimeError (
-        "@string stringByRemovingCharacterAtIndex reader called with index greater or equal to length"
+        "@string stringByRemovingCharacterAtIndex getter called with index greater or equal to length"
         COMMA_THERE
       ) ;
     }
@@ -525,6 +550,18 @@ GALGAS_bool GALGAS_string::reader_containsCharacter (const GALGAS_char & inChara
   GALGAS_bool result ;
   if (isValid () && inCharacter.isValid ()) {
     result = GALGAS_bool (mString.containsCharacter (inCharacter.charValue ())) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_bool GALGAS_string::reader_containsCharacterInRange (const GALGAS_char & inFirstCharacter,
+                                                            const GALGAS_char & inLastCharacter
+                                                            COMMA_UNUSED_LOCATION_ARGS) const {
+  GALGAS_bool result ;
+  if (isValid () && inFirstCharacter.isValid () && inLastCharacter.isValid ()) {
+    result = GALGAS_bool (mString.containsCharacterInRange (inFirstCharacter.charValue (), inLastCharacter.charValue ())) ;
   }
   return result ;
 }

@@ -1,24 +1,21 @@
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//  AC_GALGAS_uniqueMap : Base class for GALGAS map                            *
+//  AC_GALGAS_uniqueMap : Base class for GALGAS map                                                                    *
 //                                                                                                                     *
-//  This file is part of libpm library                                         *
+//  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2008, ..., 2013 Pierre Molinaro.                             *
+//  Copyright (C) 2008, ..., 2013 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes                                          *
-//  ECN, École Centrale de Nantes (France)                                                                             *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
 //                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it                                            *
-//  under the terms of the GNU Lesser General Public License as published                                              *
-//  by the Free Software Foundation; either version 2 of the License, or                                               *
-//  (at your option) any later version.                                                                                *
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
+//  any later version.                                                                                                 *
 //                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT                                             *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or                                              *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for                                           *
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -56,7 +53,7 @@ static bool operator == (const structDependanceEdge & inOperand1,
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//  c S h a r e d M a p R o o t                                                *
+//  c S h a r e d M a p R o o t                                                                                        *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -216,7 +213,7 @@ class cSharedUniqueMapRoot : public C_SharedObject {
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//     c S h a r e d P r o x y                                                 *
+//     c S h a r e d P r o x y                                                                                         *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -240,7 +237,7 @@ class cSharedProxy : public C_SharedObject {
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//  c M a p N o d e                                                            *
+//  c M a p N o d e                                                                                                    *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 

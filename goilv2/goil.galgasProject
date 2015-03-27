@@ -31,7 +31,7 @@ project (2:1:8) -> "goil" {
   %makefile-x86linux32-on-macosx
   %makefile-x86linux64-on-macosx
   %makefile-win32-on-macosx
-  %makefile-msys32-on-windows
+  %codeblocks-windows
   
   #specific for Mac Cocoa Version:
   %LatestMacOS

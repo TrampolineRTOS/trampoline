@@ -1,24 +1,21 @@
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//  GALGAS_stringset                                                           *
+//  GALGAS_stringset                                                                                                   *
 //                                                                                                                     *
-//  This file is part of libpm library                                         *
+//  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2005, ..., 2014 Pierre Molinaro.                             *
+//  Copyright (C) 2005, ..., 2014 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes                                          *
-//  ECN, École Centrale de Nantes (France)                                                                             *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
 //                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it                                            *
-//  under the terms of the GNU Lesser General Public License as published                                              *
-//  by the Free Software Foundation; either version 2 of the License, or                                               *
-//  (at your option) any later version.                                                                                *
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
+//  any later version.                                                                                                 *
 //                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT                                             *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or                                              *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for                                           *
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -29,7 +26,7 @@
 #include "galgas2/C_Compiler.h"
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   cCollectionElement_stringset                                              *
+//   cCollectionElement_stringset                                                                                      *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cCollectionElement_stringset : public cCollectionElement {
@@ -386,7 +383,7 @@ static void internalRemoveRecursively (cStringsetNode * & ioRoot,
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//  cSharedStringsetRoot                                                       *
+//  cSharedStringsetRoot                                                                                               *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -774,7 +771,7 @@ GALGAS_stringset GALGAS_stringset::operator_and (const GALGAS_stringset & inOper
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//    U N I O N                                                                *
+//    U N I O N                                                                                                        *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -827,7 +824,7 @@ void GALGAS_stringset::dotAssign_operation (const GALGAS_stringset inOperand2
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//    D I F F E R E N C E                                                      *
+//    D I F F E R E N C E                                                                                              *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -922,7 +919,7 @@ GALGAS_string GALGAS_stringset::reader_anyString (C_Compiler * inCompiler
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                 'GALGAS_stringset::cEnumerator' class                       *
+//                 'GALGAS_stringset::cEnumerator' class                                                               *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -1005,7 +1002,7 @@ GALGAS_string cEnumerator_stringset::current (LOCATION_ARGS) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//    C O M P A R I S O N                                                      *
+//    C O M P A R I S O N                                                                                              *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 

@@ -1,25 +1,22 @@
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//  'C_Lexique' : an abstract lexique class ;                                  *
-//  Galgas generated scanner classes inherit from this class.                  *
+//  'C_Lexique' : an abstract lexique class ;                                                                          *
+//  Galgas generated scanner classes inherit from this class.                                                          *
 //                                                                                                                     *
-//  This file is part of libpm library                                         *
+//  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 1996, ..., 2014 Pierre Molinaro.                             *
+//  Copyright (C) 1996, ..., 2014 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
-//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
-//  ECN, École Centrale de Nantes (France)                                     *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
 //                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it    *
-//  under the terms of the GNU Lesser General Public License as published      *
-//  by the Free Software Foundation; either version 2 of the License, or       *
-//  (at your option) any later version.                                        *
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
+//  any later version.                                                                                                 *
 //                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT     *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
-//  more details.                                                              *
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
+//  more details.                                                                                                      *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -39,7 +36,7 @@ class cIndexingDictionary ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                 Lexique class                                               *
+//                 Lexique class                                                                                       *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -63,7 +60,8 @@ class C_Lexique : public C_Compiler {
   private : C_Lexique & operator = (const C_Lexique &) ;
 
 //--- Indexing
-  public : void enterIndexing (const uint32_t inIndexingKind) ;
+  public : void enterIndexing (const uint32_t inIndexingKind,
+                               const char * inIndexedKeyPosfix) ;
   public : void enableIndexing (void) ;
   public : void generateIndexFile (void) ;
   protected : cIndexingDictionary * mIndexingDictionary ;
@@ -163,7 +161,7 @@ class C_Lexique : public C_Compiler {
   public : virtual C_String getCurrentTokenString (const cToken * inTokenPtr) const = 0 ;
 
 //--- Lexical analysis methods
-  protected : void performLexicalAnalysis (void) ;
+  public : void performLexicalAnalysis (void) ;
 
   protected : bool testForCharWithFunction (bool (*inFunction) (const utf32 inUnicodeCharacter)) ;
 
@@ -230,6 +228,17 @@ class C_Lexique : public C_Compiler {
 //--- Execution array built during first pass, and used by second pass parsing
   private : TC_UniqueArray <int16_t> mArrayForSecondPassParsing ;
   private : int32_t mIndexForSecondPassParsing ;
+
+//--- Latex string (for --mode=latex command line option)
+  private : C_String mLatexOutputString ;
+  private : int32_t mLatexNextCharacterToEnterIndex ;
+  private : void generateLatexFile (void) ;
+  private : void appendCharacterToLatexFile (const utf32 inUnicodeCharacter) ;
+  protected : void enterDroppedTerminal (const int32_t inTerminalIndex) ;
+  protected : void signalLexicalErrorInLatexOutput (void) ;
+//--- Style name 
+  protected : virtual uint32_t styleIndexForTerminal (const int32_t inTerminalIndex) const = 0 ;
+  protected : virtual C_String styleNameForIndex (const uint32_t inStyleIndex) const = 0 ;
 } ;
 
 //---------------------------------------------------------------------------------------------------------------------*

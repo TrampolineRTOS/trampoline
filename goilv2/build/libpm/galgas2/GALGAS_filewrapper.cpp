@@ -1,26 +1,23 @@
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//  GALGAS_filewrapper : class for GALGAS file wrappers                        *
+//  GALGAS_filewrapper : class for GALGAS file wrappers                                                                *
 //                                                                                                                     *
-//  Started february 23th, 2008.                                               *
+//  Started february 23th, 2008.                                                                                       *
 //                                                                                                                     *
-//  This file is part of libpm library                                         *
+//  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2008, ..., 2011 Pierre Molinaro.                             *
+//  Copyright (C) 2008, ..., 2015 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
-//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes                                          *
-//  ECN, École Centrale de Nantes (France)                                                                             *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
 //                                                                                                                     *
-//  This library is free software; you can redistribute it and/or modify it                                            *
-//  under the terms of the GNU Lesser General Public License as published                                              *
-//  by the Free Software Foundation; either version 2 of the License, or                                               *
-//  (at your option) any later version.                                                                                *
+//  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General  *
+//  Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option)  *
+//  any later version.                                                                                                 *
 //                                                                                                                     *
-//  This program is distributed in the hope it will be useful, but WITHOUT                                             *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or                                              *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for                                           *
+//  This program is distributed in the hope it will be useful, but WITHOUT ANY WARRANTY; without even the implied      *
+//  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -322,8 +319,8 @@ static const cRegularFileWrapper * findFileInDirectory (const cDirectoryWrapper 
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const cDirectoryWrapper *  getDirectory (const C_String & inDirectory,
-                                                const cDirectoryWrapper * inRootDirectoryPtr) {
+static const cDirectoryWrapper * getDirectory (const C_String & inDirectory,
+                                               const cDirectoryWrapper * inRootDirectoryPtr) {
   TC_UniqueArray <C_String> componentArray ;
   inDirectory.componentsSeparatedByString ("/", componentArray) ;
   const cDirectoryWrapper * dir = inRootDirectoryPtr ;
@@ -497,6 +494,79 @@ GALGAS_string GALGAS_filewrapper::reader_absolutePathForPath (const GALGAS_strin
       inCompiler->onTheFlyRunTimeError (errorMessage COMMA_THERE) ;
     }else{ //--- Recompose path
       result = GALGAS_string (C_String::componentsJoinedByString (componentArray, "/")) ;
+    }
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_stringlist GALGAS_filewrapper::reader_directoriesAtPath (const GALGAS_string & inPath,
+                                                                C_Compiler * inCompiler
+                                                                COMMA_LOCATION_ARGS) const {
+  GALGAS_stringlist result ;
+  if ((mRootDirectoryPtr != NULL) && inPath.isValid ()) {
+    const GALGAS_string path = reader_absolutePathForPath (inPath, inCompiler COMMA_THERE) ;
+    if (path.isValid ()) {
+      const cDirectoryWrapper * dir = getDirectory (path.stringValue (), mRootDirectoryPtr) ;
+      if (NULL != dir) {
+        result = GALGAS_stringlist::constructor_emptyList (THERE) ;
+        const cDirectoryWrapper * * dirs = dir->mDirectories ;
+        while ((*dirs) != NULL) {
+          result.addAssign_operation (GALGAS_string ((*dirs)->mDirectoryName) COMMA_HERE) ;
+          dirs ++ ;
+        }
+      }
+    }
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_stringlist GALGAS_filewrapper::reader_textFilesAtPath (const GALGAS_string & inPath,
+                                                              C_Compiler * inCompiler
+                                                              COMMA_LOCATION_ARGS) const {
+  GALGAS_stringlist result ;
+  if ((mRootDirectoryPtr != NULL) && inPath.isValid ()) {
+    const GALGAS_string path = reader_absolutePathForPath (inPath, inCompiler COMMA_THERE) ;
+    if (path.isValid ()) {
+      const cDirectoryWrapper * dir = getDirectory (path.stringValue (), mRootDirectoryPtr) ;
+      if (NULL != dir) {
+        result = GALGAS_stringlist::constructor_emptyList (THERE) ;
+        const cRegularFileWrapper * * files = dir->mFiles ;
+        while ((*files) != NULL) {
+          if ((*files)->mIsTextFile) {
+            result.addAssign_operation (GALGAS_string ((*files)->mName) COMMA_HERE) ;
+          }
+          files ++ ;
+        }
+      }
+    }
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_stringlist GALGAS_filewrapper::reader_binaryFilesAtPath (const GALGAS_string & inPath,
+                                                                C_Compiler * inCompiler
+                                                                COMMA_LOCATION_ARGS) const {
+  GALGAS_stringlist result ;
+  if ((mRootDirectoryPtr != NULL) && inPath.isValid ()) {
+    const GALGAS_string path = reader_absolutePathForPath (inPath, inCompiler COMMA_THERE) ;
+    if (path.isValid ()) {
+      const cDirectoryWrapper * dir = getDirectory (path.stringValue (), mRootDirectoryPtr) ;
+      if (NULL != dir) {
+        result = GALGAS_stringlist::constructor_emptyList (THERE) ;
+        const cRegularFileWrapper * * files = dir->mFiles ;
+        while ((*files) != NULL) {
+          if (! (*files)->mIsTextFile) {
+            result.addAssign_operation (GALGAS_string ((*files)->mName) COMMA_HERE) ;
+          }
+          files ++ ;
+        }
+      }
     }
   }
   return result ;
