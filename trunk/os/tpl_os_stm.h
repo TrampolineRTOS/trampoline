@@ -29,6 +29,5 @@
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"*/
 
-//#include "tpl_os_stm_internal_types.h"
-
+#include "tpl_os_stm_types.h"
 

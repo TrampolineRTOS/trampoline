@@ -145,19 +145,21 @@ FUNC(StatusType, OS_CODE) tpl_stm_end_write_tx_service(){
 /*
  * tpl_stm_open_read_object_service
  *
- * A read-set transaction opens for reading a given object on a given core
+ * A read-set transaction opens for reading a given object
  *
- * tx:  Transaction descriptor
+ * object_id:  Object identifier
  *
- * coreId:  Core on which the read-set transaction opens the object
- *
- * dataId:  Data identifier
+ * data_type:  Data type
  *
  * Return value:
  * E_OK:    No error (Standard & Extended)
  * 
  */
-FUNC(StatusType, OS_CODE) tpl_stm_open_read_object_service(P2VAR(void, AUTOMATIC, OS_APPL_DATA) data){
+FUNC(StatusType, OS_CODE) tpl_stm_open_read_object_service(CONST(ObjectType, AUTOMATIC) object_id, P2VAR(void, AUTOMATIC, OS_APPL_DATA) data){
+
+printf("\n---------------------\nVoici l'object ID : %d qui pointe sur la donnée %d\n---------------------\n", object_id, data);
+printf("\n---------------------\nVoici l'object ID : %d qui pointe sur la donnée de type %s\n---------------------\n", object_table[object_id].object_id, object_table[object_id].type);
+
 };
 
 /*

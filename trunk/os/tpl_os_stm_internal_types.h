@@ -1,4 +1,5 @@
 #include "tpl_os_internal_types.h" //pour tpl_core_id
+#include "tpl_os_stm_types.h"
 
 /**
  * @typedef tpl_stm_core_id
@@ -13,13 +14,6 @@ typedef uint32 tpl_stm_core_id;
  * Transaction id
  */
 typedef tpl_stm_core_id tpl_stm_tx_id;
-
-/**
- * @typedef tpl_stm_data_id
- *
- * Object data id
- */
-typedef uint32 tpl_stm_data_id;
 
 /**
  * @typedef tpl_stm_data
@@ -109,9 +103,11 @@ typedef uint32 tpl_stm_access_vector;
 struct TPL_STM_OBJECT {
   P2CONST(char, AUTOMATIC, OS_VAR) name;	/**< Object name
 									*/
-  CONST(tpl_stm_data_id, TYPEDEF)
+  CONST(tpl_stm_object_id, TYPEDEF)
     object_id;     	/**<  Object id
                                 		                       	*/
+  P2CONST(char, AUTOMATIC, OS_VAR) type;	/**< Data type
+									*/
   VAR(tpl_stm_current_pos, TYPEDEF)
     current_pos;  	/**<  Current position of the concurrent data
 								 	*/
