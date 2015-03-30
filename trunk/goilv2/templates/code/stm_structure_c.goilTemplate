@@ -17,6 +17,9 @@ end foreach
 
 foreach obj in OBJECT
   before %
+/*
+ * Object table (indexed by object IDs)
+ */
 VAR(tpl_stm_object, OS_APPL_DATA) object_table[NUMBER_OF_OBJECTS] = {
 %
   do   % {%
@@ -40,9 +43,11 @@ VAR(tpl_stm_object, OS_APPL_DATA) object_table[NUMBER_OF_OBJECTS] = {
   after %};
 %
 end foreach
-%
-%
 
+%
+/*
+ * Transaction descriptors' table (indexed by core IDs)
+ */%
 if OS::NUMBER_OF_CORES > 1	then # multicore : un descripteur de transaction par coeur donc fusion des READ_SET et WRITE_SET des transactions de même coeur
 % 
 VAR(tpl_stm_tx_descriptor, OS_APPL_DATA) trans_table[NUMBER_OF_CORES] = {
@@ -277,5 +282,40 @@ VAR(tpl_stm_tx_descriptor, OS_APPL_DATA) trans_table[NUMBER_OF_CORES] = {
 };
 %
 end if
+
+
+
+%
+/*
+ * Writers' table (indexed by object IDs)
+ */
+P2VAR(tpl_stm_tx_descriptor, AUTOMATIC, OS_APPL_DATA) writer_table[NUMBER_OF_OBJECTS] = {
+	%
+    foreach obj in OBJECT do
+	let no_writer := 1
+	foreach tx in TRANSACTION do
+		let E_INDEX := INDEX
+		if exists tx::WRITE_SET then  
+			foreach o in tx::WRITE_SET 
+			do
+				if obj::NAME == o::VALUE then
+					let no_writer := 0
+						%&trans_table[% !E_INDEX%]%
+				end if
+			end foreach
+		end if
+	end foreach
+	if no_writer==1 then
+	%NULL%
+	end if
+    between %, %
+    after %
+};%
+    end foreach
+
+
+
+
+
 
 

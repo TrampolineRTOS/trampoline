@@ -71,9 +71,6 @@ CPU only_one_periodic_task {
     TRANSACTION my_transaction2 {
     CORE_ID = 1;
     WRITE_SET = my_object1;
-    WRITE_SET = my_object2;
-    
-
   };
 
     TRANSACTION my_transaction3 {
