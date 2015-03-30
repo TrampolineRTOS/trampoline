@@ -1,5 +1,20 @@
 #include "tpl_os_stm_internal_types.h"
+
 %
+foreach obj in OBJECT
+  before %
+/*
+ * Declaration of Object IDs
+ */
+%
+  do
+%
+/* Object % !obj::NAME % identifier */
+#define % !obj::NAME %_id % !INDEX %
+CONST(ObjectType, AUTOMATIC) % !obj::NAME % = % !obj::NAME %_id;
+%
+end foreach
+
 foreach obj in OBJECT
   before %
 VAR(tpl_stm_object, OS_APPL_DATA) object_table[NUMBER_OF_OBJECTS] = {
@@ -7,7 +22,8 @@ VAR(tpl_stm_object, OS_APPL_DATA) object_table[NUMBER_OF_OBJECTS] = {
   do   % {%
     % "%!obj::NAME%",   		/* object name 		*/
     %
-    !INDEX%, 	  			/* object id 		*/
+    !obj::NAME %_id, 	  	/* object id 		*/
+    "%!obj::DATA_TYPE%",			/* data type		*/
     0, 		  		/* current_pos   	*/%
     loop core from 1 to OS::NUMBER_OF_CORES
 	before % 

@@ -25,7 +25,7 @@
 //#include "tpl_compiler.h"
 #include "tpl_os_error.h" // pour core_id
 
-#include "tpl_os_stm.h"
+//#include "tpl_os_stm.h"
 #include "tpl_os_stm_internal_types.h"
 
 /**
@@ -114,19 +114,17 @@ FUNC(StatusType, OS_CODE) tpl_stm_end_write_tx_service();
 /*
  * tpl_stm_open_read_object_service
  *
- * A read-set transaction opens for reading a given object on a given core
+ * A read-set transaction opens for reading a given object
  *
- * tx:  Transaction descriptor
+ * object_id:  Object identifier
  *
- * coreId:  Core on which the read-set transaction opens the object
- *
- * dataId:  Data identifier
+ * data_type:  Data type
  *
  * Return value:
  * E_OK:    No error (Standard & Extended)
  * 
  */
-FUNC(StatusType, OS_CODE) tpl_stm_open_read_object_service(P2VAR(void, AUTOMATIC, OS_APPL_DATA) data);
+FUNC(StatusType, OS_CODE) tpl_stm_open_read_object_service(CONST(ObjectType, AUTOMATIC) object_id, P2VAR(void, AUTOMATIC, OS_APPL_DATA) data_type);
 
 /*
  * tpl_stm_open_write_object_service
