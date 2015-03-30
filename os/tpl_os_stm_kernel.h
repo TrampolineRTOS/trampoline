@@ -44,8 +44,34 @@ extern VAR(tpl_stm_object, OS_APPL_DATA) object_table[NUMBER_OF_OBJECTS];
  * Array of all transaction descriptors of writers
  *
   */
-extern VAR(tpl_stm_tx_descriptor, OS_APPL_DATA) writer_table[NUMBER_OF_OBJECTS];
+extern P2VAR(tpl_stm_tx_descriptor, AUTOMATIC, OS_APPL_DATA) writer_table[NUMBER_OF_OBJECTS];
 
+
+/********************************************************************************
+*				Macros						*
+*										*
+********************************************************************************/						
+#define INSTANCE(status)			(status >> 2) & 0xFFFFFFFF
+#define STATUS(status)				(status & 3)
+
+#define CURRENT_OBJECT_POS(concurrency_vector)	((concurrency_vector >> 30) & 1)
+#define READ_VECTOR(concurrency_vector)		((concurrency_vector & NUMBER_OF_CORES))
+
+#define POW2_NUMBER_OF_CORES (1 << 8)
+#define FAIL_VECTOR(concurrency_vector)		((concurrency_vector >> 8) & (POW2_NUMBER_OF_CORES-1))
+
+#define SET_UPDATE_FLAG(concurrency_vector)	(concurrency_vector |  (1 << 31)) 
+#define UPDATE_FLAG(concurrency_vector)	((concurrency_vector >> 31) & 1)
+
+#define SET_ACCESS_VECTOR(access_vector, object_id) 	(access_vector | (1 << object_id))
+
+
+
+
+/********************************************************************************
+*				Functions					*
+*										*
+********************************************************************************/
 /**
  * @internal
  *

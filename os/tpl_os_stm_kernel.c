@@ -142,6 +142,42 @@ FUNC(StatusType, OS_CODE) tpl_stm_end_read_tx_service(){
 FUNC(StatusType, OS_CODE) tpl_stm_end_write_tx_service(){
 };
 
+
+/*
+ * update
+ *
+ * A write-set transaction is ready to update an object
+ *
+ * tx:  Transaction descriptor
+ *
+ * object_id:  Object identifier
+ *
+ * Return value:
+ * E_OK:    No error (Standard & Extended)
+ * 
+ */
+FUNC(StatusType, OS_CODE) update(P2VAR(tpl_stm_tx_descriptor, AUTOMATIC, OS_APPL_DATA) tx, CONST(ObjectType, AUTOMATIC) object_id){
+ // a compléter
+};
+
+/*
+ * read_obj
+ *
+ * A write-set transaction is ready to update an object
+ *
+ * tx:  Transaction descriptor
+ *
+ * object_id:  Object identifier
+ *
+ * Return value:
+ * E_OK:    No error (Standard & Extended)
+ * 
+ */
+FUNC(StatusType, OS_CODE) read_obj(P2VAR(tpl_stm_tx_descriptor, AUTOMATIC, OS_APPL_DATA) tx1, P2VAR(tpl_stm_tx_descriptor, AUTOMATIC, OS_APPL_DATA) tx2, CONST(ObjectType, AUTOMATIC) object_id, CONST(uint32, AUTOMATIC) instance){
+ // a compléter
+};
+
+
 /*
  * tpl_stm_open_read_object_service
  *
@@ -156,9 +192,48 @@ FUNC(StatusType, OS_CODE) tpl_stm_end_write_tx_service(){
  * 
  */
 FUNC(StatusType, OS_CODE) tpl_stm_open_read_object_service(CONST(ObjectType, AUTOMATIC) object_id, P2VAR(void, AUTOMATIC, OS_APPL_DATA) data){
+uint32 s=0x4FFFA5F2;
 
-printf("\n---------------------\nVoici l'object ID : %d qui pointe sur la donnée %d\n---------------------\n", object_id, data);
-printf("\n---------------------\nVoici l'object ID : %d qui pointe sur la donnée de type %s\n---------------------\n", object_table[object_id].object_id, object_table[object_id].type);
+//printf("\n---------------------\nVoici l'object ID : %d qui pointe sur la donnée %d\n---------------------\n", object_id, data);
+//printf("\n---------------------\nVoici l'object ID : %d qui pointe sur la donnée de type %s\n---------------------\n", object_table[object_id].object_id, object_table[object_id].type);
+
+//printf("\n---------------------s=%04X\n", s);
+//printf("---------------------status=%hu\n", STATUS(s));
+//printf("---------------------instance=%04X\n", INSTANCE_S(s));
+
+uint32 instance;
+VAR(ObjectType, AUTOMATIC) loc_object_id;
+
+
+#if NUMBER_OF_CORES > 1	
+ GET_CURRENT_CORE_ID(core_id)
+
+ LOCK_KERNEL()
+
+ // a compléter
+ 
+  UNLOCK_KERNEL()
+#else
+  LOCK_KERNEL()
+ 
+  //printf("-----------s=%04X\n", s);
+  //printf("-----------POW2_NUMBER_OF_CORES=%u\n", POW2_NUMBER_OF_CORES);
+  //printf("-----------FAIL_VECTOR(s)=%04X\n", FAIL_VECTOR(s));
+
+  if ((STATUS(trans_table[0].status) != TXS_IN_RETRY) && (UPDATE_FLAG(object_table[object_id].concurrency_vector)==1))
+  {
+	printf("Statut de la transaction différent de TXS_RETRY et update flag de l'objet à 1...\n");
+	update(writer_table[object_id], object_id);
+  }
+  loc_object_id = object_id;
+  //ATOMIC(&trans_table[0].read_set[loc_object_id], NULL, object_table[object_id]);
+  instance = INSTANCE(trans_table[0].status);
+  read_obj(&trans_table[0], &trans_table[0], loc_object_id, instance);
+  SET_ACCESS_VECTOR(trans_table[0].access_vector, loc_object_id);
+  data=&trans_table[0].read_set[loc_object_id];
+
+  UNLOCK_KERNEL()
+#endif
 
 };
 
