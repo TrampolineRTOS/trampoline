@@ -150,7 +150,7 @@ FUNC(StatusType, OS_CODE) tpl_stm_end_write_tx_service();
  * E_OK:    No error (Standard & Extended)
  * 
  */
-FUNC(StatusType, OS_CODE) tpl_stm_open_read_object_service(CONST(ObjectType, AUTOMATIC) object_id, P2VAR(void, AUTOMATIC, OS_APPL_DATA) data_type);
+FUNC(StatusType, OS_CODE) tpl_stm_open_read_object_service(CONST(ObjectType, AUTOMATIC) object_id, P2VAR(tpl_stm_data, AUTOMATIC, OS_APPL_DATA) data_type);
 
 /*
  * tpl_stm_open_write_object_service
