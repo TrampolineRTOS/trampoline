@@ -15,6 +15,7 @@ CONST(ObjectType, AUTOMATIC) % !obj::NAME % = % !obj::NAME %_id;
 %
 end foreach
 
+
 foreach obj in OBJECT
   before %
 /*
