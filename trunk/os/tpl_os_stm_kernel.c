@@ -192,10 +192,11 @@ FUNC(StatusType, OS_CODE) read_obj(P2VAR(tpl_stm_tx_descriptor, AUTOMATIC, OS_AP
  * 
  */
 FUNC(StatusType, OS_CODE) tpl_stm_open_read_object_service(CONST(ObjectType, AUTOMATIC) object_id, P2VAR(void, AUTOMATIC, OS_APPL_DATA) data){
-uint32 s=0x4FFFA5F2;
+uint32 s=0x4FFFA5F4;
+//int *datadisplayed= (int*)(intptr_t)(data);
 
-//printf("\n---------------------\nVoici l'object ID : %d qui pointe sur la donnée %d\n---------------------\n", object_id, data);
-//printf("\n---------------------\nVoici l'object ID : %d qui pointe sur la donnée de type %s\n---------------------\n", object_table[object_id].object_id, object_table[object_id].type);
+//printf("\n---------------------\nVoici l'object ID : %d qui pointe sur la donnée %d\n---------------------\n", (int)object_id, *datadisplayed);
+//printf("\n---------------------\nVoici l'object ID : %d qui pointe sur la donnée de type %s\n---------------------\n", (int)object_table[object_id].object_id, object_table[object_id].type);
 
 //printf("\n---------------------s=%04X\n", s);
 //printf("---------------------status=%hu\n", STATUS(s));

@@ -20,7 +20,7 @@ TASK(my_periodic_task)
   printf("Activation #%d\n",occurence);
   ScreenDisplay("Coucou !");
   STMBeginReadTx();
-	STMOpenReadObject(my_object1, a);
+	STMOpenReadObject(my_object1, &a);
     
   TerminateTask();
 }

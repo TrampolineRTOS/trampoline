@@ -57,8 +57,8 @@ extern P2VAR(tpl_stm_tx_descriptor, AUTOMATIC, OS_APPL_DATA) writer_table[NUMBER
 #define CURRENT_OBJECT_POS(concurrency_vector)	((concurrency_vector >> 30) & 1)
 #define READ_VECTOR(concurrency_vector)		((concurrency_vector & NUMBER_OF_CORES))
 
-#define POW2_NUMBER_OF_CORES (1 << 8)
-#define FAIL_VECTOR(concurrency_vector)		((concurrency_vector >> 8) & (POW2_NUMBER_OF_CORES-1))
+#define POW2_NUMBER_OF_CORES (1 << NUMBER_OF_CORES)
+#define FAIL_VECTOR(concurrency_vector)		((concurrency_vector >> NUMBER_OF_CORES) & (POW2_NUMBER_OF_CORES-1))
 
 #define SET_UPDATE_FLAG(concurrency_vector)	(concurrency_vector |  (1 << 31)) 
 #define UPDATE_FLAG(concurrency_vector)	((concurrency_vector >> 31) & 1)
