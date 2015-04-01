@@ -20,7 +20,7 @@ typedef tpl_stm_core_id tpl_stm_tx_id;
  *
  * Object data
  */
-typedef void* tpl_stm_data;
+typedef void tpl_stm_data;
 
 /**
  * @typedef tpl_stm_current_pos
@@ -112,7 +112,7 @@ struct TPL_STM_OBJECT {
     current_pos;  	/**<  Current position of the concurrent data
 								 	*/
   P2VAR(tpl_stm_data, AUTOMATIC, OS_APPL_DATA) 
-    tpl_stm_copy_table[NUMBER_OF_CORES+2];  /**<  Table gathering the  
+    copy_table[NUMBER_OF_CORES+2];  /**<  Table gathering the  
                       copies of the concurrent data                  	*/
   VAR(tpl_stm_concurrency_vector, TYPEDEF)
     concurrency_vector; /**<  Concurrency vector of the object
@@ -141,10 +141,10 @@ struct TPL_STM_TX_DESCRIPTOR {
   VAR(tpl_stm_status, TYPEDEF)
     status;  		/**<  Status of the transaction
 								 	*/
-  P2VAR(tpl_stm_object, AUTOMATIC, OS_APPL_DATA)
+  P2VAR(tpl_stm_data, AUTOMATIC, OS_APPL_DATA)
     read_set[NUMBER_OF_OBJECTS];          /**<  Set of objects accessed 
                                	in read-only mode                     	*/
-  P2VAR(tpl_stm_object, AUTOMATIC, OS_APPL_DATA)
+  P2VAR(tpl_stm_data, AUTOMATIC, OS_APPL_DATA)
     write_set[NUMBER_OF_OBJECTS];          /**<  Set of objects accessed
                                 in write mode                          	*/
   VAR(tpl_stm_access_vector, TYPEDEF)
@@ -160,3 +160,4 @@ struct TPL_STM_TX_DESCRIPTOR {
  * @see #TPL_STM_TX_DESCRIPTOR
  */
 typedef struct TPL_STM_TX_DESCRIPTOR tpl_stm_tx_descriptor;
+

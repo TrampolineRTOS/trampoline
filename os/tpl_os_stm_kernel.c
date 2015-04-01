@@ -43,6 +43,7 @@
 #include "tpl_os_stm_kernel.h"
 
 #include <stdio.h>
+#include <string.h>
 
 /*
  * tpl_screen_display_service.
@@ -191,11 +192,11 @@ FUNC(StatusType, OS_CODE) read_obj(P2VAR(tpl_stm_tx_descriptor, AUTOMATIC, OS_AP
  * E_OK:    No error (Standard & Extended)
  * 
  */
-FUNC(StatusType, OS_CODE) tpl_stm_open_read_object_service(CONST(ObjectType, AUTOMATIC) object_id, P2VAR(void, AUTOMATIC, OS_APPL_DATA) data){
-uint32 s=0x4FFFA5F4;
-//int *datadisplayed= (int*)(intptr_t)(data);
+FUNC(StatusType, OS_CODE) tpl_stm_open_read_object_service(CONST(ObjectType, AUTOMATIC) object_id, P2VAR(tpl_stm_data, AUTOMATIC, OS_APPL_DATA) data){
+//uint32 s=0x4FFFA5F4;
+//int *pdata= (int *)(intptr_t)(data);
 
-//printf("\n---------------------\nVoici l'object ID : %d qui pointe sur la donnée %d\n---------------------\n", (int)object_id, *datadisplayed);
+//printf("\n---------------------\nVoici l'object ID : %d qui pointe sur la donnée %d\n---------------------\n", (int)object_id, *pdata);
 //printf("\n---------------------\nVoici l'object ID : %d qui pointe sur la donnée de type %s\n---------------------\n", (int)object_table[object_id].object_id, object_table[object_id].type);
 
 //printf("\n---------------------s=%04X\n", s);
@@ -217,6 +218,7 @@ VAR(ObjectType, AUTOMATIC) loc_object_id;
 #else
   LOCK_KERNEL()
  
+printf("DEBUT : data pointée = %d, adresse pointée par data=%p\n", *(int*)data, data);
   //printf("-----------s=%04X\n", s);
   //printf("-----------POW2_NUMBER_OF_CORES=%u\n", POW2_NUMBER_OF_CORES);
   //printf("-----------FAIL_VECTOR(s)=%04X\n", FAIL_VECTOR(s));
@@ -227,11 +229,19 @@ VAR(ObjectType, AUTOMATIC) loc_object_id;
 	update(writer_table[object_id], object_id);
   }
   loc_object_id = object_id;
-  //ATOMIC(&trans_table[0].read_set[loc_object_id], NULL, object_table[object_id]);
+  //ATOMIC(&trans_table[0].read_set[loc_object_id], NULL, &object_table[object_id]);  /*inutile car déjà initialisé ainsi dans le template STM-HRT*/
+  //	if (trans_table[0].read_set[loc_object_id] == NULL)
+  //		trans_table[0].read_set[loc_object_id]==&object_table[object_id];
   instance = INSTANCE(trans_table[0].status);
   read_obj(&trans_table[0], &trans_table[0], loc_object_id, instance);
   SET_ACCESS_VECTOR(trans_table[0].access_vector, loc_object_id);
-  data=&trans_table[0].read_set[loc_object_id];
+
+  memcpy(data, trans_table[0].read_set[loc_object_id], sizeof(tpl_stm_data*));
+
+  if (data ==NULL)
+	printf("FIN : pointeur sur data NULL !\n");
+  else
+	printf("FIN : data pointée = %d, adresse pointée par data=%p\n", *(int*)data, data);
 
   UNLOCK_KERNEL()
 #endif
