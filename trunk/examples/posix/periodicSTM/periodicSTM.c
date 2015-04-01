@@ -9,20 +9,20 @@ int main(void)
 
 DeclareAlarm(one_second);
 
+int a=2; 
 DeclareObject(my_object1);
 
 TASK(my_periodic_task)
 {
   static int occurence = 0;
-  int a=2; 
-  DeclareObject(my_object1);
-    
+  int b;
   occurence++;
   printf("Activation #%d\n",occurence);
   ScreenDisplay("Coucou !");
   STMBeginReadTx();
 	STMOpenReadObject(my_object1, &a);
-    	printf("Après STMOpenReadObject, a vaut %d; adresse de a=%p\n", a, &a);
+    	printf("Après STMOpenReadObject, a vaut %d; adresse de a=%p\n\n", a, &a);
+	a++;
   TerminateTask();
 }
 
