@@ -54,16 +54,19 @@ extern P2VAR(tpl_stm_tx_descriptor, AUTOMATIC, OS_APPL_DATA) writer_table[NUMBER
 #define INSTANCE(status)			(status >> 2) & 0xFFFFFFFF
 #define STATUS(status)				(status & 3)
 
-#define CURRENT_OBJECT_POS(concurrency_vector)	((concurrency_vector >> 30) & 1)
+#define CURRENT_OBJECT_POS(concurrency_vector)	((concurrency_vector >> 30) & 1u )
 #define READ_VECTOR(concurrency_vector)		((concurrency_vector & NUMBER_OF_CORES))
+
+#define SET_FAIL_VECTOR(concurrency_vector, core_id) 	(concurrency_vector | (1u << (NUMBER_OF_CORES + core_id)))
+#define SET_READ_VECTOR(concurrency_vector, core_id) 	(concurrency_vector | (1u << (core_id)))
 
 #define POW2_NUMBER_OF_CORES (1 << NUMBER_OF_CORES)
 #define FAIL_VECTOR(concurrency_vector)		((concurrency_vector >> NUMBER_OF_CORES) & (POW2_NUMBER_OF_CORES-1))
 
-#define SET_UPDATE_FLAG(concurrency_vector)	(concurrency_vector |  (1 << 31)) 
-#define UPDATE_FLAG(concurrency_vector)	((concurrency_vector >> 31) & 1)
+#define SET_UPDATE_FLAG(concurrency_vector)	(concurrency_vector |  (1u << 31)) 
+#define UPDATE_FLAG(concurrency_vector)	((concurrency_vector >> 31) & 1u )
 
-#define SET_ACCESS_VECTOR(access_vector, object_id) 	(access_vector | (1 << object_id))
+#define SET_ACCESS_VECTOR(access_vector, object_id) 	(access_vector | (1u  << object_id))
 
 
 
@@ -84,6 +87,23 @@ extern P2VAR(tpl_stm_tx_descriptor, AUTOMATIC, OS_APPL_DATA) writer_table[NUMBER
  */
 FUNC(StatusType, OS_CODE) tpl_screen_display_service(
   P2CONST(char, AUTOMATIC, OS_APPL_DATA) msg);
+
+/*
+ * tpl_stm_object_linked_data_service
+ *
+ * Links an object to a data
+ *
+ * object_id:  Object identifier
+ *
+ * data:  Shared data
+ *
+ * Return value:
+ * E_OK:    No error (Standard & Extended)
+ * 
+ */
+FUNC(StatusType, OS_CODE) tpl_stm_object_linked_data_service(
+  CONST(ObjectType, AUTOMATIC) object_id,
+  P2VAR(tpl_stm_data, AUTOMATIC, OS_APPL_DATA) data);
 
 /*
  * tpl_stm_begin_read_tx_service
@@ -138,6 +158,23 @@ FUNC(StatusType, OS_CODE) tpl_stm_end_read_tx_service();
 FUNC(StatusType, OS_CODE) tpl_stm_end_write_tx_service();
 
 /*
+ * @internal
+ *
+ * read_obj
+ *
+ * A write-set transaction is ready to update an object
+ *
+ * tx:  Transaction descriptor
+ *
+ * object_id:  Object identifier
+ *
+ * Return value:
+ * E_OK:    No error (Standard & Extended)
+ * 
+ */
+FUNC(StatusType, OS_CODE) read_obj(CONST(tpl_stm_core_id, OS_APPL_DATA) coreid_tx1, CONST(tpl_stm_core_id, OS_APPL_DATA) coreid_tx2, CONST(ObjectType, AUTOMATIC) object_id, CONST(uint32, AUTOMATIC) instance);
+
+/*
  * tpl_stm_open_read_object_service
  *
  * A read-set transaction opens for reading a given object
@@ -150,7 +187,7 @@ FUNC(StatusType, OS_CODE) tpl_stm_end_write_tx_service();
  * E_OK:    No error (Standard & Extended)
  * 
  */
-FUNC(StatusType, OS_CODE) tpl_stm_open_read_object_service(CONST(ObjectType, AUTOMATIC) object_id, P2VAR(tpl_stm_data, AUTOMATIC, OS_APPL_DATA) data_type);
+FUNC(StatusType, OS_CODE) tpl_stm_open_read_object_service(CONST(ObjectType, AUTOMATIC) object_id, P2VAR(tpl_stm_data, AUTOMATIC, OS_APPL_DATA) data);
 
 /*
  * tpl_stm_open_write_object_service

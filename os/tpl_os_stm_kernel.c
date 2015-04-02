@@ -67,6 +67,32 @@ FUNC(StatusType, OS_CODE) tpl_screen_display_service(
   return result;
 }
 
+
+/*
+ * tpl_stm_object_linked_data_service
+ *
+ * Links an object to a data
+ *
+ * object_id:  Object identifier
+ *
+ * data:  Shared data
+ *
+ * Return value:
+ * E_OK:    No error (Standard & Extended)
+ * 
+ */
+FUNC(StatusType, OS_CODE) tpl_stm_object_linked_data_service(
+  CONST(ObjectType, AUTOMATIC) object_id,
+  P2VAR(tpl_stm_data, AUTOMATIC, OS_APPL_DATA) data){
+
+if (object_table[object_id].copy_table[object_table[object_id].current_pos]==NULL){
+	printf("Passage init copy_table...\n");
+	object_table[object_id].copy_table[object_table[object_id].current_pos]=data;
+  }
+
+}
+
+
 /*
  * tpl_stm_begin_read_tx_service
  *
@@ -174,8 +200,25 @@ FUNC(StatusType, OS_CODE) update(P2VAR(tpl_stm_tx_descriptor, AUTOMATIC, OS_APPL
  * E_OK:    No error (Standard & Extended)
  * 
  */
-FUNC(StatusType, OS_CODE) read_obj(P2VAR(tpl_stm_tx_descriptor, AUTOMATIC, OS_APPL_DATA) tx1, P2VAR(tpl_stm_tx_descriptor, AUTOMATIC, OS_APPL_DATA) tx2, CONST(ObjectType, AUTOMATIC) object_id, CONST(uint32, AUTOMATIC) instance){
- // a compléter
+FUNC(StatusType, OS_CODE) read_obj(CONST(tpl_stm_core_id, OS_APPL_DATA) coreid_tx1, CONST(tpl_stm_core_id, OS_APPL_DATA) coreid_tx2, CONST(ObjectType, AUTOMATIC) object_id, CONST(uint32, AUTOMATIC) instance){
+
+  char loc_current_pos;
+  char read_copy_index;
+
+  if ((STATUS(trans_table[coreid_tx2].status) == TXS_IN_RETRY) && (INSTANCE(trans_table[coreid_tx2].status) == instance))
+ 	SET_FAIL_VECTOR(object_table[object_id].concurrency_vector, coreid_tx2);
+
+  do 
+  {
+	SET_READ_VECTOR(object_table[object_id].concurrency_vector, coreid_tx2);
+	loc_current_pos = CURRENT_OBJECT_POS(object_table[object_id].concurrency_vector);
+	read_copy_index = 2 + coreid_tx2;
+	object_table[object_id].copy_table[read_copy_index] = object_table[object_id].copy_table[loc_current_pos];
+	//TO BE CONTINUED
+	break;
+  }
+  while(1);
+
 };
 
 
@@ -201,8 +244,6 @@ FUNC(StatusType, OS_CODE) tpl_stm_open_read_object_service(CONST(ObjectType, AUT
 //printf("---------------------instance=%04X\n", INSTANCE_S(s));
 
 uint32 instance;
-VAR(ObjectType, AUTOMATIC) loc_object_id;
-
 
 #if NUMBER_OF_CORES > 1	
  GET_CURRENT_CORE_ID(core_id)
@@ -217,22 +258,17 @@ VAR(ObjectType, AUTOMATIC) loc_object_id;
  
   printf("DEBUT : data pointée = %d, adresse pointée par data=%p\n", *(int*)data, data);
 
-  if (object_table[object_id].copy_table[object_table[object_id].current_pos]==NULL){
-	printf("Passage init copy_table...\n");
-	object_table[object_id].copy_table[object_table[object_id].current_pos]=data;
-  }
-
   if ((STATUS(trans_table[0].status) != TXS_IN_RETRY) && (UPDATE_FLAG(object_table[object_id].concurrency_vector)==1))
   {
 	printf("Statut de la transaction différent de TXS_RETRY et update flag de l'objet à 1...\n");
 	update(writer_table[object_id], object_id);
   }
-  loc_object_id = object_id;
-  //ATOMIC(&trans_table[0].read_set[loc_object_id], NULL, &object_table[object_id]);  /*inutile car déjà initialisé ainsi dans le template STM-HRT*/
+
+  //ATOMIC(&trans_table[0].read_set[object_id], NULL, &object_table[object_id]);  /*inutile car déjà initialisé ainsi dans le template STM-HRT*/
   instance = INSTANCE(trans_table[0].status);
-  read_obj(&trans_table[0], &trans_table[0], loc_object_id, instance); // TO DO
-  SET_ACCESS_VECTOR(trans_table[0].access_vector, loc_object_id);
-  memcpy(data, trans_table[0].read_set[loc_object_id], sizeof(tpl_stm_data*));
+  read_obj(trans_table[0].core_id, trans_table[0].core_id, object_id, instance); // TO DO
+  SET_ACCESS_VECTOR(trans_table[0].access_vector, object_id);
+  memcpy(data, trans_table[0].read_set[object_id], sizeof(tpl_stm_data*));
   
   printf("FIN : data pointée = %d, adresse pointée par data=%p\n", *(int*)data, data);
 
