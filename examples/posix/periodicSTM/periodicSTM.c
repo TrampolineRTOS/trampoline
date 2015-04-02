@@ -1,20 +1,15 @@
 #include <stdio.h>
 #include "tpl_os.h"
 
-int g_a=2; 
-
-DeclareObject(my_object1);
-
 int main(void)
 {
-    STMObjectLinkedData(my_object1, &g_a);
     StartOS(OSDEFAULTAPPMODE);
     return 0;
 }
 
 DeclareAlarm(one_second);
 
-
+DeclareObject(my_object1);
 
 
 TASK(my_periodic_task)
@@ -24,6 +19,7 @@ TASK(my_periodic_task)
   occurence++;
   printf("Activation #%d\n",occurence);
   ScreenDisplay("Coucou !");
+  printf("g_a=%d\n", g_a);
   STMBeginReadTx();
 	STMOpenReadObject(my_object1, &b);
     	printf("Après STMOpenReadObject, b vaut %d\n\n", b);

@@ -67,32 +67,6 @@ FUNC(StatusType, OS_CODE) tpl_screen_display_service(
   return result;
 }
 
-
-/*
- * tpl_stm_object_linked_data_service
- *
- * Links an object to a data
- *
- * object_id:  Object identifier
- *
- * data:  Shared data
- *
- * Return value:
- * E_OK:    No error (Standard & Extended)
- * 
- */
-FUNC(StatusType, OS_CODE) tpl_stm_object_linked_data_service(
-  CONST(ObjectType, AUTOMATIC) object_id,
-  P2VAR(tpl_stm_data, AUTOMATIC, OS_APPL_DATA) data){
-
-if (object_table[object_id].copy_table[object_table[object_id].current_pos]==NULL){
-	printf("Passage init copy_table...\n");
-	object_table[object_id].copy_table[object_table[object_id].current_pos]=data;
-  }
-
-}
-
-
 /*
  * tpl_stm_begin_read_tx_service
  *
@@ -206,19 +180,27 @@ FUNC(StatusType, OS_CODE) read_obj(CONST(tpl_stm_core_id, OS_APPL_DATA) coreid_t
   char read_copy_index;
 
   if ((STATUS(trans_table[coreid_tx2].status) == TXS_IN_RETRY) && (INSTANCE(trans_table[coreid_tx2].status) == instance))
- 	SET_FAIL_VECTOR(object_table[object_id].concurrency_vector, coreid_tx2);
-
+ 	object_table[object_id].concurrency_vector = SET_FAIL_VECTOR(object_table[object_id].concurrency_vector, coreid_tx2);
+  
   do 
   {
 	SET_READ_VECTOR(object_table[object_id].concurrency_vector, coreid_tx2);
 	loc_current_pos = CURRENT_OBJECT_POS(object_table[object_id].concurrency_vector);
 	read_copy_index = 2 + coreid_tx2;
+	printf("data dans la structure object_table à current_pos = %d\n", object_table[object_id].copy_table[object_table[object_id].current_pos]);
 	object_table[object_id].copy_table[read_copy_index] = object_table[object_id].copy_table[loc_current_pos];
-	//TO BE CONTINUED
-	break;
+	printf("data dans la structure object_table à read_copy_index = %d\n", object_table[object_id].copy_table[read_copy_index]);
+	if (READ_VECTOR_BIT(object_table[object_id].concurrency_vector, coreid_tx2))
+		break;
+	
   }
   while(1);
-
+  if ((INSTANCE(trans_table[coreid_tx2].status) == instance) && (STATUS(trans_table[coreid_tx2].status) == TXS_INACTIVE))
+  {	//ATOMIC
+	if (trans_table[coreid_tx1].read_set[object_id] == &object_table[object_id])
+		trans_table[coreid_tx1].read_set[object_id] = &object_table[object_id].copy_table[read_copy_index];
+  }
+  printf("data dans la structure trans_table = %d\n", *(int*)trans_table[coreid_tx1].read_set[object_id]);
 };
 
 
@@ -266,7 +248,7 @@ uint32 instance;
 
   //ATOMIC(&trans_table[0].read_set[object_id], NULL, &object_table[object_id]);  /*inutile car déjà initialisé ainsi dans le template STM-HRT*/
   instance = INSTANCE(trans_table[0].status);
-  read_obj(trans_table[0].core_id, trans_table[0].core_id, object_id, instance); // TO DO
+  read_obj(trans_table[0].core_id, trans_table[0].core_id, object_id, instance);
   SET_ACCESS_VECTOR(trans_table[0].access_vector, object_id);
   memcpy(data, trans_table[0].read_set[object_id], sizeof(tpl_stm_data*));
   

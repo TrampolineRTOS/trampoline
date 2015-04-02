@@ -15,16 +15,6 @@ CPU api {
         : "Message to display" ;
     } : "Displays on screen the message given as an argument";
 
-    SYSCALL STMObjectLinkedData {
-      KERNEL = tpl_stm_object_linked_data_service;
-      RETURN_TYPE = StatusType
-        : "E_OK:    No error (Standard & Extended)\n";
-      ARGUMENT object_id { KIND = CONST; TYPE = ObjectType;}
-	: "Object identifier" ;
-       ARGUMENT data { KIND = P2VAR; TYPE = tpl_stm_data ;}
-        : "Shared data" ;
-     } : "Links an object to a data";
-
     SYSCALL STMBeginReadTx {
       KERNEL = tpl_stm_begin_read_tx_service;
       RETURN_TYPE = StatusType
