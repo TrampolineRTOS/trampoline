@@ -1,6 +1,18 @@
 #include "tpl_os_internal_types.h" //pour tpl_core_id
 #include "tpl_os_stm_types.h"
 
+
+/**
+ * @def OBJECT
+ *
+ * Macro used to define (declare) an object
+ *
+ * @param name the name (C identifier) of the IRS
+ */
+#define OBJECT(name)                               \
+FUNC(void, OS_APPL_CODE) name##_function(void)
+
+
 /**
  * @typedef tpl_stm_core_id
  *
@@ -16,18 +28,11 @@ typedef uint32 tpl_stm_core_id;
 typedef tpl_stm_core_id tpl_stm_tx_id;
 
 /**
- * @typedef tpl_stm_data
- *
- * Object data
- */
-typedef void tpl_stm_data;
-
-/**
  * @typedef tpl_stm_current_pos
  *
  * Current position of concurrent data in copy_table
  */
-typedef int tpl_stm_current_pos;
+typedef char tpl_stm_current_pos;
 
 /**
  * @typedef tpl_stm_concurrency_vector

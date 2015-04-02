@@ -15,5 +15,12 @@ typedef uint32 tpl_stm_object_id;
  */
 typedef tpl_stm_object_id  ObjectType;
 
+/**
+ * @typedef tpl_stm_data
+ *
+ * Object data
+ */
+typedef void tpl_stm_data;
+
 #define DeclareObject(object_id) extern CONST(ObjectType, AUTOMATIC) object_id
 	
