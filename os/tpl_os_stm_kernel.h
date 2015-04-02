@@ -51,7 +51,7 @@ extern P2VAR(tpl_stm_tx_descriptor, AUTOMATIC, OS_APPL_DATA) writer_table[NUMBER
 *				Macros						*
 *										*
 ********************************************************************************/						
-#define INSTANCE(status)			(status >> 2) & 0xFFFFFFFF
+#define INSTANCE(status)			((status >> 2) & 0xFFFFFFFF)
 #define STATUS(status)				(status & 3)
 
 #define CURRENT_OBJECT_POS(concurrency_vector)	((concurrency_vector >> 30) & 1u )
@@ -159,6 +159,7 @@ FUNC(StatusType, OS_CODE) tpl_stm_end_write_tx_service();
  */
 FUNC(StatusType, OS_CODE) read_obj(CONST(tpl_stm_core_id, OS_APPL_DATA) coreid_tx1, CONST(tpl_stm_core_id, OS_APPL_DATA) coreid_tx2, CONST(ObjectType, AUTOMATIC) object_id, CONST(uint32, AUTOMATIC) instance);
 
+
 /*
  * tpl_stm_open_read_object_service
  *
@@ -166,13 +167,18 @@ FUNC(StatusType, OS_CODE) read_obj(CONST(tpl_stm_core_id, OS_APPL_DATA) coreid_t
  *
  * object_id:  Object identifier
  *
- * data_type:  Data type
+ * data:  Data
+ *
+ * data_size:  Data size
  *
  * Return value:
  * E_OK:    No error (Standard & Extended)
  * 
  */
-FUNC(StatusType, OS_CODE) tpl_stm_open_read_object_service(CONST(ObjectType, AUTOMATIC) object_id, P2VAR(tpl_stm_data, AUTOMATIC, OS_APPL_DATA) data);
+FUNC(StatusType, OS_CODE) tpl_stm_open_read_object_service(
+  CONST(ObjectType, AUTOMATIC) object_id,
+  P2VAR(tpl_stm_data, AUTOMATIC, OS_APPL_DATA) data,
+  CONST(size_t, AUTOMATIC) data_size);
 
 /*
  * tpl_stm_open_write_object_service
