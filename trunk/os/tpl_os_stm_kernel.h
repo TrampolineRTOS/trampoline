@@ -55,18 +55,20 @@ extern P2VAR(tpl_stm_tx_descriptor, AUTOMATIC, OS_APPL_DATA) writer_table[NUMBER
 #define STATUS(status)				(status & 3)
 
 #define CURRENT_OBJECT_POS(concurrency_vector)	((concurrency_vector >> 30) & 1u )
+#define UPDATE_FLAG(concurrency_vector)		((concurrency_vector >> 31) & 1u )
 #define READ_VECTOR(concurrency_vector)		((concurrency_vector & NUMBER_OF_CORES))
-
-#define SET_FAIL_VECTOR(concurrency_vector, core_id) 	(concurrency_vector | (1u << (NUMBER_OF_CORES + core_id)))
-#define SET_READ_VECTOR(concurrency_vector, core_id) 	(concurrency_vector | (1u << (core_id)))
-
-#define POW2_NUMBER_OF_CORES (1 << NUMBER_OF_CORES)
 #define FAIL_VECTOR(concurrency_vector)		((concurrency_vector >> NUMBER_OF_CORES) & (POW2_NUMBER_OF_CORES-1))
 
-#define SET_UPDATE_FLAG(concurrency_vector)	(concurrency_vector |  (1u << 31)) 
-#define UPDATE_FLAG(concurrency_vector)	((concurrency_vector >> 31) & 1u )
+#define SET_READ_VECTOR(concurrency_vector, core_id) 	concurrency_vector = (concurrency_vector | (1u << (core_id)))
+#define READ_VECTOR_BIT(concurrency_vector, core_id) 	((concurrency_vector >> core_id) & 1u )
 
-#define SET_ACCESS_VECTOR(access_vector, object_id) 	(access_vector | (1u  << object_id))
+#define SET_FAIL_VECTOR(concurrency_vector, core_id) 	concurrency_vector = (concurrency_vector | (1u << (NUMBER_OF_CORES + core_id)))
+
+#define POW2_NUMBER_OF_CORES (1 << NUMBER_OF_CORES)
+
+#define SET_UPDATE_FLAG(concurrency_vector)	concurrency_vector = (concurrency_vector |  (1u << 31)) 
+
+#define SET_ACCESS_VECTOR(access_vector, object_id) 	access_vector = (access_vector | (1u  << object_id))
 
 
 
@@ -87,23 +89,6 @@ extern P2VAR(tpl_stm_tx_descriptor, AUTOMATIC, OS_APPL_DATA) writer_table[NUMBER
  */
 FUNC(StatusType, OS_CODE) tpl_screen_display_service(
   P2CONST(char, AUTOMATIC, OS_APPL_DATA) msg);
-
-/*
- * tpl_stm_object_linked_data_service
- *
- * Links an object to a data
- *
- * object_id:  Object identifier
- *
- * data:  Shared data
- *
- * Return value:
- * E_OK:    No error (Standard & Extended)
- * 
- */
-FUNC(StatusType, OS_CODE) tpl_stm_object_linked_data_service(
-  CONST(ObjectType, AUTOMATIC) object_id,
-  P2VAR(tpl_stm_data, AUTOMATIC, OS_APPL_DATA) data);
 
 /*
  * tpl_stm_begin_read_tx_service

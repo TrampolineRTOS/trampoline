@@ -51,15 +51,20 @@ CPU only_one_periodic_task {
   };
 
   OBJECT my_object1 {
+    DATA_NAME = "g_a";
     DATA_TYPE = "int";
+    DATA_VALUE_INIT = "6";
   };
 
   OBJECT my_object2 {
+    DATA_NAME = "g_b";
     DATA_TYPE = "int";
+    DATA_VALUE_INIT = "10";
   };
 
   OBJECT my_object3 {
-    DATA_TYPE = "char";
+   DATA_NAME = "g_c";
+   DATA_TYPE = "char";
   };
 
   TRANSACTION my_transaction1 {
