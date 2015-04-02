@@ -45,8 +45,10 @@ CPU api {
         : "E_OK:    No error (Standard & Extended)\n";
        ARGUMENT object_id { KIND = CONST; TYPE = ObjectType;}
 	: "Object identifier" ;
-       ARGUMENT data_type { KIND = P2VAR; TYPE = tpl_stm_data ;}
-        : "Data type" ;
+       ARGUMENT data { KIND = P2VAR; TYPE = tpl_stm_data ;}
+        : "Data" ;
+       ARGUMENT data_size { KIND = CONST; TYPE = size_t ;}
+	: "Data size" ;
     } : "A read-set transaction opens for reading a given object";
 
     SYSCALL STMOpenWriteObject {

@@ -187,18 +187,21 @@ FUNC(StatusType, OS_CODE) read_obj(CONST(tpl_stm_core_id, OS_APPL_DATA) coreid_t
 	SET_READ_VECTOR(object_table[object_id].concurrency_vector, coreid_tx2);
 	loc_current_pos = CURRENT_OBJECT_POS(object_table[object_id].concurrency_vector);
 	read_copy_index = 2 + coreid_tx2;
-	printf("data dans la structure object_table à current_pos = %d\n", object_table[object_id].copy_table[object_table[object_id].current_pos]);
+	printf("data dans la structure object_table à current_pos = %d\n", *(int*)object_table[object_id].copy_table[object_table[object_id].current_pos]);
 	object_table[object_id].copy_table[read_copy_index] = object_table[object_id].copy_table[loc_current_pos];
-	printf("data dans la structure object_table à read_copy_index = %d\n", object_table[object_id].copy_table[read_copy_index]);
+	printf("data dans la structure object_table à read_copy_index = %d\n",  *(int*)object_table[object_id].copy_table[read_copy_index]);
 	if (READ_VECTOR_BIT(object_table[object_id].concurrency_vector, coreid_tx2))
 		break;
 	
   }
   while(1);
-  if ((INSTANCE(trans_table[coreid_tx2].status) == instance) && (STATUS(trans_table[coreid_tx2].status) == TXS_INACTIVE))
-  {	//ATOMIC
+
+
+  if ((INSTANCE(trans_table[coreid_tx2].status) == instance) && (STATUS(trans_table[coreid_tx2].status) < TXS_INACTIVE))
+  {	
+	//ATOMIC
 	if (trans_table[coreid_tx1].read_set[object_id] == &object_table[object_id])
-		trans_table[coreid_tx1].read_set[object_id] = &object_table[object_id].copy_table[read_copy_index];
+		trans_table[coreid_tx1].read_set[object_id] = object_table[object_id].copy_table[read_copy_index];
   }
   printf("data dans la structure trans_table = %d\n", *(int*)trans_table[coreid_tx1].read_set[object_id]);
 };
@@ -211,51 +214,44 @@ FUNC(StatusType, OS_CODE) read_obj(CONST(tpl_stm_core_id, OS_APPL_DATA) coreid_t
  *
  * object_id:  Object identifier
  *
- * data_type:  Data type
+ * data:  Data
+ *
+ * data_size:  Data size
  *
  * Return value:
  * E_OK:    No error (Standard & Extended)
  * 
  */
-FUNC(StatusType, OS_CODE) tpl_stm_open_read_object_service(CONST(ObjectType, AUTOMATIC) object_id, P2VAR(tpl_stm_data, AUTOMATIC, OS_APPL_DATA) data){
-//uint32 s=0x4FFFA5F4;
-//int *pdata= (int *)(intptr_t)(data);
-
-//printf("\n---------------------s=%04X\n", s);
-//printf("---------------------status=%hu\n", STATUS(s));
-//printf("---------------------instance=%04X\n", INSTANCE_S(s));
+FUNC(StatusType, OS_CODE) tpl_stm_open_read_object_service(CONST(ObjectType, AUTOMATIC) object_id, P2VAR(tpl_stm_data, AUTOMATIC, OS_APPL_DATA) data,
+  CONST(size_t, AUTOMATIC) data_size){
 
 uint32 instance;
 
 #if NUMBER_OF_CORES > 1	
  GET_CURRENT_CORE_ID(core_id)
-
- LOCK_KERNEL()
-
- // a compléter
- 
-  UNLOCK_KERNEL()
 #else
+ uint32 core_id = 0;
+#endif
+
   LOCK_KERNEL()
  
   printf("DEBUT : data pointée = %d, adresse pointée par data=%p\n", *(int*)data, data);
 
-  if ((STATUS(trans_table[0].status) != TXS_IN_RETRY) && (UPDATE_FLAG(object_table[object_id].concurrency_vector)==1))
+  if ((STATUS(trans_table[core_id].status) != TXS_IN_RETRY) && (UPDATE_FLAG(object_table[object_id].concurrency_vector)==1))
   {
 	printf("Statut de la transaction différent de TXS_RETRY et update flag de l'objet à 1...\n");
 	update(writer_table[object_id], object_id);
   }
 
-  //ATOMIC(&trans_table[0].read_set[object_id], NULL, &object_table[object_id]);  /*inutile car déjà initialisé ainsi dans le template STM-HRT*/
-  instance = INSTANCE(trans_table[0].status);
-  read_obj(trans_table[0].core_id, trans_table[0].core_id, object_id, instance);
-  SET_ACCESS_VECTOR(trans_table[0].access_vector, object_id);
-  memcpy(data, trans_table[0].read_set[object_id], sizeof(tpl_stm_data*));
+  //ATOMIC(&trans_table[core_id].read_set[object_id], NULL, &object_table[object_id]);  /*inutile car déjà initialisé ainsi dans le template STM-HRT*/
+  instance = INSTANCE(trans_table[core_id].status);
+  read_obj(core_id, core_id, object_id, instance);
+  SET_ACCESS_VECTOR(trans_table[core_id].access_vector, object_id);
+  memcpy(data, trans_table[core_id].read_set[object_id], data_size);
   
   printf("FIN : data pointée = %d, adresse pointée par data=%p\n", *(int*)data, data);
 
   UNLOCK_KERNEL()
-#endif
 
 };
 

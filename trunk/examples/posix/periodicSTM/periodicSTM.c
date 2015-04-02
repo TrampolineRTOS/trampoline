@@ -11,7 +11,6 @@ DeclareAlarm(one_second);
 
 DeclareObject(my_object1);
 
-
 TASK(my_periodic_task)
 {
   static int occurence = 0;
@@ -21,7 +20,7 @@ TASK(my_periodic_task)
   ScreenDisplay("Coucou !");
   printf("g_a=%d\n", g_a);
   STMBeginReadTx();
-	STMOpenReadObject(my_object1, &b);
+	STMOpenReadObject(my_object1, &b, sizeof(b));
     	printf("Après STMOpenReadObject, b vaut %d\n\n", b);
   g_a++;
   TerminateTask();
