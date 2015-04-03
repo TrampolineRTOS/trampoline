@@ -53,9 +53,11 @@ CPU api {
       KERNEL = tpl_stm_open_write_object_service;
       RETURN_TYPE = StatusType
         : "E_OK:    No error (Standard & Extended)\n";
-      ARGUMENT dataId { KIND = P2VAR; TYPE = tpl_stm_data ; }
-        : "Data identifier" ;
-    } : "A write-set transaction opens for writing a given object on a given core";
+       ARGUMENT object_id { KIND = CONST; TYPE = ObjectType;}
+	: "Object identifier" ;
+       ARGUMENT data { KIND = P2VAR; TYPE = tpl_stm_data ;}
+        : "Data" ;
+    } : "A write-set transaction opens for writing a given object";
 
     SYSCALL STMCommitReadTx {
       KERNEL = tpl_stm_commit_read_tx_service;
