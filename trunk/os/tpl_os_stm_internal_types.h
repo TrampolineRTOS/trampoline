@@ -113,6 +113,8 @@ struct TPL_STM_OBJECT {
                                 		                       	*/
   P2CONST(char, AUTOMATIC, OS_VAR) type;	/**< Data type
 									*/
+  CONST(size_t, OS_VAR) size;			/**< Data size
+									*/
   VAR(tpl_stm_current_pos, TYPEDEF)
     current_pos;  	/**<  Current position of the concurrent data
 								 	*/

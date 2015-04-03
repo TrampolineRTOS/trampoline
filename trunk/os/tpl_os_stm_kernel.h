@@ -177,8 +177,7 @@ FUNC(StatusType, OS_CODE) read_obj(CONST(tpl_stm_core_id, OS_APPL_DATA) coreid_t
  */
 FUNC(StatusType, OS_CODE) tpl_stm_open_read_object_service(
   CONST(ObjectType, AUTOMATIC) object_id,
-  P2VAR(tpl_stm_data, AUTOMATIC, OS_APPL_DATA) data,
-  CONST(size_t, AUTOMATIC) data_size);
+  P2VAR(tpl_stm_data, AUTOMATIC, OS_APPL_DATA) data);
 
 /*
  * tpl_stm_open_write_object_service
