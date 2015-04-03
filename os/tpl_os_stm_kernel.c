@@ -222,8 +222,7 @@ FUNC(StatusType, OS_CODE) read_obj(CONST(tpl_stm_core_id, OS_APPL_DATA) coreid_t
  * E_OK:    No error (Standard & Extended)
  * 
  */
-FUNC(StatusType, OS_CODE) tpl_stm_open_read_object_service(CONST(ObjectType, AUTOMATIC) object_id, P2VAR(tpl_stm_data, AUTOMATIC, OS_APPL_DATA) data,
-  CONST(size_t, AUTOMATIC) data_size){
+FUNC(StatusType, OS_CODE) tpl_stm_open_read_object_service(CONST(ObjectType, AUTOMATIC) object_id, P2VAR(tpl_stm_data, AUTOMATIC, OS_APPL_DATA) data){
 
 uint32 instance;
 
@@ -247,7 +246,8 @@ uint32 instance;
   instance = INSTANCE(trans_table[core_id].status);
   read_obj(core_id, core_id, object_id, instance);
   SET_ACCESS_VECTOR(trans_table[core_id].access_vector, object_id);
-  memcpy(data, trans_table[core_id].read_set[object_id], data_size);
+  printf("Data size = %zd\n", object_table[object_id].size);
+  memcpy(data, trans_table[core_id].read_set[object_id], object_table[object_id].size);
   
   printf("FIN : data pointée = %d, adresse pointée par data=%p\n", *(int*)data, data);
 
