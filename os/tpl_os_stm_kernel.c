@@ -258,20 +258,34 @@ uint32 instance;
 /*
  * tpl_stm_open_write_object_service
  *
- * A write-set transaction opens for writing a given object on a given
- * core
+ * A write-set transaction opens for writing a given object
  *
- * tx:  Transaction descriptor
+ * object_id:  Object identifier
  *
- * coreId:  Core on which the write-set transaction opens the object
- *
- * dataId:  Data identifier
+ * data:  Data
  *
  * Return value:
  * E_OK:    No error (Standard & Extended)
  * 
  */
-FUNC(StatusType, OS_CODE) tpl_stm_open_write_object_service(P2VAR(void, AUTOMATIC, OS_APPL_DATA) data){
+FUNC(StatusType, OS_CODE) tpl_stm_open_write_object_service(CONST(ObjectType, AUTOMATIC) object_id, P2VAR(tpl_stm_data, AUTOMATIC, OS_APPL_DATA) data){
+
+#if NUMBER_OF_CORES > 1	
+ GET_CURRENT_CORE_ID(core_id)
+#else
+ uint32 core_id = 0;
+#endif
+
+  LOCK_KERNEL()
+ 
+  memcpy(trans_table[core_id].write_set[object_id], data, object_table[object_id].size);  
+  SET_UPDATE_FLAG(object_table[object_id].concurrency_vector);
+  SET_ACCESS_VECTOR(trans_table[core_id].access_vector, object_id);
+
+  printf("Valeur data dans copy_table = %d\n", *(int*)trans_table[core_id].write_set[object_id]);
+  
+  UNLOCK_KERNEL()
+
 };
 
 /*

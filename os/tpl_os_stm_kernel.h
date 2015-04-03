@@ -179,23 +179,20 @@ FUNC(StatusType, OS_CODE) tpl_stm_open_read_object_service(
   CONST(ObjectType, AUTOMATIC) object_id,
   P2VAR(tpl_stm_data, AUTOMATIC, OS_APPL_DATA) data);
 
-/*
+ /*
  * tpl_stm_open_write_object_service
  *
- * A write-set transaction opens for writing a given object on a given
- * core
+ * A write-set transaction opens for writing a given object
  *
- * tx:  Transaction descriptor
+ * object_id:  Object identifier
  *
- * coreId:  Core on which the write-set transaction opens the object
- *
- * dataId:  Data identifier
+ * data:  Data
  *
  * Return value:
  * E_OK:    No error (Standard & Extended)
  * 
  */
-FUNC(StatusType, OS_CODE) tpl_stm_open_write_object_service(P2VAR(void, AUTOMATIC, OS_APPL_DATA) data);
+FUNC(StatusType, OS_CODE) tpl_stm_open_write_object_service(CONST(ObjectType, AUTOMATIC) object_id, P2VAR(tpl_stm_data, AUTOMATIC, OS_APPL_DATA) data);
 
 /*
  * tpl_stm_commit_read_tx_service

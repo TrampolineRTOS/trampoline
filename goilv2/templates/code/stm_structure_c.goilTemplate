@@ -106,7 +106,8 @@ VAR(tpl_stm_tx_descriptor, OS_APPL_DATA) trans_table[NUMBER_OF_CORES] = {
 				foreach obj in OBJECT  
 				do				
 					if o::VALUE == obj::NAME then 
-						% &object_table[% !INDEX %]%
+						let index_read := 2+tx::CORE_ID
+						% &object_table[% !INDEX %].copy_table[%!index_read%]%
 					end if 
 				end foreach 
 			between %, %
@@ -136,7 +137,8 @@ VAR(tpl_stm_tx_descriptor, OS_APPL_DATA) trans_table[NUMBER_OF_CORES] = {
 								do				
 					        			if ot::VALUE == obj::NAME then 
 										let read_set_empty := 0
-										% &object_table[% !INDEX %]%
+										let index_read := 2+tx::CORE_ID
+										% &object_table[% !INDEX %].copy_table[%!index_read%]%
 									end if 
 				     				end foreach 
 					        	end if 
@@ -159,7 +161,7 @@ VAR(tpl_stm_tx_descriptor, OS_APPL_DATA) trans_table[NUMBER_OF_CORES] = {
 				foreach obj in OBJECT  
 				do				
 					if o::VALUE == obj::NAME then 
-						% &object_table[% !INDEX %]%
+						% &object_table[% !INDEX %].copy_table[1]%
 					end if 
 				end foreach 
 			between %, %
@@ -189,7 +191,7 @@ VAR(tpl_stm_tx_descriptor, OS_APPL_DATA) trans_table[NUMBER_OF_CORES] = {
 								do				
 					        			if ot::VALUE == obj::NAME then 
 										let write_set_empty := 0
-										% &object_table[% !INDEX %]%
+										% &object_table[% !INDEX %].copy_table[1]%
 									end if 
 				     				end foreach 
 					        	end if 
@@ -245,7 +247,7 @@ VAR(tpl_stm_tx_descriptor, OS_APPL_DATA) trans_table[NUMBER_OF_CORES] = {
 						if read_set_empty == 0 then 
 							%,%
 						end if	
-						% &object_table[% !INDEX %]%
+						% &object_table[% !INDEX %].copy_table[2]%
 						let read_set_empty := 0
 					end if 
 		     		end foreach 
@@ -287,7 +289,7 @@ VAR(tpl_stm_tx_descriptor, OS_APPL_DATA) trans_table[NUMBER_OF_CORES] = {
 							%,%
 						end if
 						let write_set_empty := 0
-						% &object_table[% !INDEX %]%
+						% &object_table[% !INDEX %].copy_table[1]%
 					end if 
 		     		end foreach 
 		        end if
