@@ -26,6 +26,7 @@
 #define TPL_MACHINE_H
 
 #include "../tpl_machine_arm_generic.h"
+#include "stm32f4xx.h"
 
 /**
  * Gives the ARM processor mode the normal user tasks

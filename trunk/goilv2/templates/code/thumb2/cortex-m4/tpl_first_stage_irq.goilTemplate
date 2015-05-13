@@ -66,14 +66,14 @@ loop ENTRY from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
 	.global tpl_primary_irq_handler_% !interrupt::NAME %
 	.type tpl_primary_irq_handler_% !interrupt::NAME %, \%function
 tpl_primary_irq_handler_% !interrupt::NAME %:%
-          if interrupt::ACK then
+            if interrupt::ACK then
 %
 	push {lr}
 	mov r0,#% !interrupt::VECT %
 	bl % !interrupt::NAME %_ClearFlag
 	pop {lr}
 %
-          end if
+            end if
 %
 	mov r0,#% !interrupt::VECT %
 	b tpl_primary_irq_handler_% !interrupt::VECT %
@@ -81,6 +81,8 @@ tpl_primary_irq_handler_% !interrupt::VECTOR_TYPE_S::NAME %_exit:
 	bx lr%
             let entryFound := true
           end if
+          between %
+%
         end foreach
         if not entryFound then
           foreach isr in ISRS2 do
@@ -90,14 +92,14 @@ tpl_primary_irq_handler_% !interrupt::VECTOR_TYPE_S::NAME %_exit:
 	.global tpl_primary_irq_handler_% !interrupt::NAME %
 	.type tpl_primary_irq_handler_% !interrupt::NAME %, \%function
 tpl_primary_irq_handler_% !interrupt::NAME %:%
-          if interrupt::ACK then
+              if interrupt::ACK then
 %
 	push {lr}
 	mov r0,#% !interrupt::VECT %
 	bl % !interrupt::NAME %_ClearFlag
 	pop {lr}
 %
-          end if
+              end if
 %
 	mov r0,#% !interrupt::VECT %
 	b tpl_primary_irq_handler_% !interrupt::VECT %
@@ -105,6 +107,8 @@ tpl_primary_irq_handler_% !interrupt::VECTOR_TYPE_S::NAME %_exit:
 	bx lr%
               let entryFound := true
             end if
+            between %
+%
           end foreach
         end if
       end if

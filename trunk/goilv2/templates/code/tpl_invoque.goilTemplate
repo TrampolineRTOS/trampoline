@@ -48,6 +48,9 @@ template if exists std_as_code_dir
 #include "tpl_as_memmap.h"
 
 %
+template if exists instruction_specific
+template if exists invoque_specific
+
 foreach api_sec in APIUSED do
   foreach api_func in api_sec::SYSCALL do
     template service_call
