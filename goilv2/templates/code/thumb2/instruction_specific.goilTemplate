@@ -1,1 +1,2 @@
- .thumb
+	.syntax unified
+	.thumb
