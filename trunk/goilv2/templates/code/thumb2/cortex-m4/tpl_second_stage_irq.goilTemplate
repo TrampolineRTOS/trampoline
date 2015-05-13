@@ -47,7 +47,50 @@
 /*
  * Second stage category 2 interrupt handler (which means only IRQ on
  * this architecture, FIQ are category 1 interrupts)
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ * We take care to not alter callee saved registers
+ * which are all except r0-r3 (EABI convention).
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ * We do not use r3 because it is used to give the service number
+ * in a system call. After dispatching, r3 can be altered.
+ *
+ * This exception to EABI conventions is specific to system call
+ * mechanism.
  */
+
+/*******************************************************************************
+ *
+ *******************************************************************************/
+tpl_enter_kernel:
+	#if WITH_MEMORY_PROTECTION == YES
+	/*
+	* Switch to kernel memory protection scheme
+	*/
+	push {lr}
+	bl tpl_kernel_mp
+	pop {lr}
+	#endif
+	/* 
+	* Switch to the kernel stack
+	* Automatic (configuration) for the Cortex-M4
+	*/	
+tpl_enter_kernel_exit:	
+	bx lr
+
+/*******************************************************************************
+ *
+ *******************************************************************************/
+tpl_leave_kernel:
+	#if WITH_MEMORY_PROTECTION == YES
+	/*
+	* Switch to user memory protection scheme
+	*/
+	push {lr}
+	bl tpl_user_mp
+	pop {lr}
+	#endif
+tpl_leave_kernel_exit:
+	bx lr
 
 %
 let IT_SOURCES := mapof INTERRUPT by NAME
@@ -81,20 +124,19 @@ loop ENTRY from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
 	.global tpl_primary_irq_handler_% !interrupt::VECT %
 	.type   tpl_primary_irq_handler_% !interrupt::VECT %, \%function
 tpl_primary_irq_handler_% !interrupt::VECT %:
-	/* Save EXC_RETURN value */
-	push {lr}
-
-	/* manage reentrance of kernel */
-	ldr r1, =nested_kernel_entrance_counter
-	ldr r2, [r1]
-	add r2, r2, #1
-	str r2, [r1]
-
-#if WITH_MEMORY_PROTECTION == YES
-	bl tpl_mp_kernel_enter
-#endif /* WITH_MEMORY_PROTECTION == YES */
-
-	/* reset tpl_kern variables */ /* <! DGAR POURQUOI ? !> */
+	/* __X__
+	* Save registers [r0], [r1], [r2], [lr] on top of stack.
+	* [lr] register holds EXC_RETURN value, giving information about the caller context
+	* We save [lr], then [r2], then [r1], then [r0].
+	*/
+	stmdb sp!, {r0-r2,lr}
+	
+	/* __3__
+	* Enter into kernel
+	*/
+	bl tpl_enter_kernel
+	
+	/* reset tpl_kern variables */
 	ldr r1, =tpl_kern
 	mov r2, #NO_NEED_SWITCH_NOR_SCHEDULE
 	strb r2, [r1, #TPL_KERN_OFFSET_NEED_SWITCH]
@@ -109,6 +151,10 @@ tpl_primary_irq_handler_% !interrupt::VECT %:
 	stmia r2, {r4-r11}           /* Save r4-r11 into context bloc reg */
 	str r1, [r2, #32]            /* Save psp into context bloc sp */
 
+	/* pop registers values from the stack
+	 * The sp is altered */
+	ldmia sp!, {r0-r2}
+
 	/************************
 	* IRQ processing stage *
 	************************/
@@ -116,10 +162,6 @@ tpl_primary_irq_handler_% !interrupt::VECT %:
 	push {lr}
 	bl tpl_interrupt_source_% !interrupt::VECT %
 	pop {lr}
-
-#if WITH_MEMORY_PROTECTION == YES
-    bl tpl_mp_kernel_exit
-#endif
 
 	/***************************************************
 	* on the way to exit IRQ routine (with or without *
@@ -149,16 +191,24 @@ context_switch_irq_% !interrupt::VECT %:
 	* SAVES OLD CONTEXT
 	*/
 save_context_irq_% !interrupt::VECT %:
-	/* Context is saved, so the value of r3 will be 1 */
+	/* Context is saved, so the value of r3 will be 1
+	 * [r3] is used for the future call of tpl_run_elected */
 	mov r3, #1
 	/* already done at the beginning of the subroutine */
 
 	b load_context_irq_% !interrupt::VECT %
 
 	/* only executed if context saving step has not been done */
-skip_save_context_irq_% !interrupt::VECT %: /* <! DGAR POURQUOI > */
-	/* Context is not saved, so the value of r3 will be 0 */
+skip_save_context_irq_% !interrupt::VECT %:
+	/* Context is not saved, so the value of r3 will be 0
+	 * [r3] is used for the future call of tpl_run_elected */
     mov r3, #0
+	/* get back volatile registers
+	 * get the context block address */
+	ldr r1, =tpl_kern
+	ldr r2, [r1, #TPL_KERN_OFFSET_S_ELECTED]
+	ldr r2, [r2]
+	ldmia r2, {r4-r11} /* Load r4-r11 from context bloc reg */
 
 	/*
 	* LOADS NEW CONTEXT
@@ -174,15 +224,6 @@ load_context_irq_% !interrupt::VECT %:
 	pop {lr}
 	mov r3, r0 	/* Keep the returned value into r3 */
 
-	/* We update kernel reentrance counter while registers are freely
-	* usable and as we know we won't enter in kernel again (IRQ locked and
-	* no SWI can occur)
-	*/
-	ldr r3, =nested_kernel_entrance_counter
-	ldr r2, [r3]
-	sub r2, r2, #1
-	str r2, [r3]
-
 	/* Get the context block address */
 	ldr r0, =tpl_kern
 	ldr lr, [r0, #TPL_KERN_OFFSET_S_RUNNING] /* get the address of the context bloc */
@@ -192,17 +233,14 @@ load_context_irq_% !interrupt::VECT %:
 	ldr r0, [lr, #32]
 	msr psp, r0
 
-	b tpl_primary_irq_handler_% !interrupt::VECT %_exit
-
 	/********************************************
 	* KERNEL EXIT WITHOUT CONTEXT SWITCH STAGE *
 	********************************************/
 irq_no_context_switch_% !interrupt::VECT %:
-	/* manage reentrance of kernel */
-	ldr r3, =nested_kernel_entrance_counter
-	ldr r2, [r3]
-	sub r2, r2, #1
-	str r2, [r3]
+	/* __X__
+ 	* Leave kernel
+ 	*/
+	bl tpl_leave_kernel
 
 	/* return to interrupted task */
 tpl_primary_irq_handler_% !interrupt::VECT %_exit:
@@ -222,20 +260,19 @@ tpl_primary_irq_handler_% !interrupt::VECT %_exit:
 	.global tpl_primary_irq_handler_% !interrupt::VECT %
 	.type   tpl_primary_irq_handler_% !interrupt::VECT %, \%function
 tpl_primary_irq_handler_% !interrupt::VECT %:
-	/* Save EXC_RETURN value */
-	push {lr}
-
-	/* manage reentrance of kernel */
-	ldr r1, =nested_kernel_entrance_counter
-	ldr r2, [r1]
-	add r2, r2, #1
-	str r2, [r1]
-
-#if WITH_MEMORY_PROTECTION == YES
-	bl tpl_mp_kernel_enter
-#endif /* WITH_MEMORY_PROTECTION == YES */
-
-	/* reset tpl_kern variables */ /* <! DGAR POURQUOI ? !> */
+	/* __X__
+	* Save registers [r0], [r1], [r2], [lr] on top of stack.
+	* [lr] register holds EXC_RETURN value, giving information about the caller context
+	* We save [lr], then [r2], then [r1], then [r0].
+	*/
+	stmdb sp!, {r0-r2,lr}
+	
+	/* __3__
+	* Enter into kernel
+	*/
+	bl tpl_enter_kernel
+	
+	/* reset tpl_kern variables */
 	ldr r1, =tpl_kern
 	mov r2, #NO_NEED_SWITCH_NOR_SCHEDULE
 	strb r2, [r1, #TPL_KERN_OFFSET_NEED_SWITCH]
@@ -250,6 +287,10 @@ tpl_primary_irq_handler_% !interrupt::VECT %:
 	stmia r2, {r4-r11}           /* Save r4-r11 into context bloc reg */
 	str r1, [r2, #32]            /* Save psp into context bloc sp */
 
+	/* pop registers values from the stack
+	 * The sp is altered */
+	ldmia sp!, {r0-r2}
+
 	/************************
 	* IRQ processing stage *
 	************************/
@@ -257,10 +298,6 @@ tpl_primary_irq_handler_% !interrupt::VECT %:
 	push {lr}
 	bl tpl_interrupt_source_% !interrupt::VECT %
 	pop {lr}
-
-#if WITH_MEMORY_PROTECTION == YES
-    bl tpl_mp_kernel_exit
-#endif
 
 	/***************************************************
 	* on the way to exit IRQ routine (with or without *
@@ -290,16 +327,24 @@ context_switch_irq_% !interrupt::VECT %:
 	* SAVES OLD CONTEXT
 	*/
 save_context_irq_% !interrupt::VECT %:
-	/* Context is saved, so the value of r3 will be 1 */
+	/* Context is saved, so the value of r3 will be 1
+	 * [r3] is used for the future call of tpl_run_elected */
 	mov r3, #1
 	/* already done at the beginning of the subroutine */
 
 	b load_context_irq_% !interrupt::VECT %
 
 	/* only executed if context saving step has not been done */
-skip_save_context_irq_% !interrupt::VECT %: /* <! DGAR POURQUOI > */
-	/* Context is not saved, so the value of r3 will be 0 */
+skip_save_context_irq_% !interrupt::VECT %:
+	/* Context is not saved, so the value of r3 will be 0
+	 * [r3] is used for the future call of tpl_run_elected */
     mov r3, #0
+	/* get back volatile registers
+	 * get the context block address */
+	ldr r1, =tpl_kern
+	ldr r2, [r1, #TPL_KERN_OFFSET_S_ELECTED]
+	ldr r2, [r2]
+	ldmia r2, {r4-r11} /* Load r4-r11 from context bloc reg */
 
 	/*
 	* LOADS NEW CONTEXT
@@ -315,15 +360,6 @@ load_context_irq_% !interrupt::VECT %:
 	pop {lr}
 	mov r3, r0 	/* Keep the returned value into r3 */
 
-	/* We update kernel reentrance counter while registers are freely
-	* usable and as we know we won't enter in kernel again (IRQ locked and
-	* no SWI can occur)
-	*/
-	ldr r3, =nested_kernel_entrance_counter
-	ldr r2, [r3]
-	sub r2, r2, #1
-	str r2, [r3]
-
 	/* Get the context block address */
 	ldr r0, =tpl_kern
 	ldr lr, [r0, #TPL_KERN_OFFSET_S_RUNNING] /* get the address of the context bloc */
@@ -333,17 +369,14 @@ load_context_irq_% !interrupt::VECT %:
 	ldr r0, [lr, #32]
 	msr psp, r0
 
-	b tpl_primary_irq_handler_% !interrupt::VECT %_exit
-
 	/********************************************
 	* KERNEL EXIT WITHOUT CONTEXT SWITCH STAGE *
 	********************************************/
 irq_no_context_switch_% !interrupt::VECT %:
-	/* manage reentrance of kernel */
-	ldr r3, =nested_kernel_entrance_counter
-	ldr r2, [r3]
-	sub r2, r2, #1
-	str r2, [r3]
+	/* __X__
+ 	* Leave kernel
+ 	*/
+	bl tpl_leave_kernel
 
 	/* return to interrupted task */
 tpl_primary_irq_handler_% !interrupt::VECT %_exit:

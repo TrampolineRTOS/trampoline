@@ -71,8 +71,8 @@ end loop
 loop ENTRY from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
   before
 %
-#define OS_START_SEC_CONST_UNSPECIFIED
-#include "tpl_memmap.h"
+//#define OS_START_SEC_CONST_UNSPECIFIED
+//#include "tpl_memmap.h"
 __attribute__ ((section(".isr_vector"))) CONST(tpl_it_handler, AUTOMATIC) tpl_it_vectors[% !INTERRUPT_COUNT::IT_TABLE_SIZE %] =
 {
   /* Core Level - CM4 */
@@ -131,8 +131,8 @@ __attribute__ ((section(".isr_vector"))) CONST(tpl_it_handler, AUTOMATIC) tpl_it
     after
 %
 };
-#define OS_STOP_SEC_CONST_UNSPECIFIED
-#include "tpl_memmap.h"
+//#define OS_STOP_SEC_CONST_UNSPECIFIED
+//#include "tpl_memmap.h"
 %
   end loop
 %

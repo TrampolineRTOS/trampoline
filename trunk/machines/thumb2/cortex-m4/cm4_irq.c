@@ -36,35 +36,71 @@ extern void tpl_primary_syscall_handler(void);
  ******************************************************************************/
 FUNC(void, OS_CODE)NMI_Handler(void)
 {
-  while (1)
+	__ASM volatile("BKPT #01");
+	while (1)
     {
     }
 }
 
 FUNC(void, OS_CODE)HardFault_Handler(void)
 {
-  while (1)
+	uint32 lregSCB_HFSR;
+	uint32 lregSCB_CFSR;
+	uint32 lregSCB_BFAR;
+	uint32 lregSCB_DFSR;
+	uint32 lregSCB_AFSR;
+	uint32 lregSCB_MMFR;
+	
+	lregSCB_HFSR = (uint32)0;
+	lregSCB_CFSR = (uint32)0;
+	lregSCB_BFAR = (uint32)0;
+	lregSCB_DFSR = (uint32)0;
+	lregSCB_AFSR = (uint32)0;
+	lregSCB_MMFR = (uint32)0;
+	
+	lregSCB_HFSR = (uint32)(SCB->HFSR);
+	if ((SCB->HFSR & (1 << 30)) != 0)
+	{
+		//printErrorMsg("Forced Hard Fault\n");
+		//sprintf(msg, "SCB->CFSR = 0x%08x\n", SCB->CFSR );
+		//printErrorMsg(msg);
+		if((SCB->CFSR & 0xFFFF0000) != 0)
+		{
+			lregSCB_CFSR = (uint32)SCB->CFSR;
+			//printUsageErrorMsg(SCB->CFSR);
+		}
+		lregSCB_BFAR = (uint32)SCB->BFAR;
+		lregSCB_DFSR = (uint32)SCB->DFSR;
+		lregSCB_AFSR = (uint32)SCB->AFSR;
+		lregSCB_MMFR = (uint32)SCB->MMFR;
+	}
+	
+	__ASM volatile("BKPT #02");
+  	while (1)
     {
     }
 }
 
 FUNC(void, OS_CODE)MemManage_Handler(void)
 {
-  while (1)
+	__ASM volatile("BKPT #03");
+	while (1)
     {
     }
 }
 
 FUNC(void, OS_CODE)BusFault_Handler(void)
 {
-  while (1)
+	__ASM volatile("BKPT #04");
+	while (1)
     {
     }
 }
 
 FUNC(void, OS_CODE)UsageFault_Handler(void)
 {
-  while (1)
+	__ASM volatile("BKPT #05");
+	while (1)
     {
     }
 }
@@ -97,9 +133,9 @@ void SysTick_ClearFlag(void)
 
 void EXTI0_IRQ_ClearFlag(void)
 {
-  while (EXTI_GetITStatus(USER_BUTTON_EXTI_LINE) != RESET) {
+//  while (EXTI_GetITStatus(USER_BUTTON_EXTI_LINE) != RESET) { NOT SAFE IN EMBEDDED APPLICATION
     /* Clear the USER Button EXTI line pending bit */
     EXTI_ClearFlag(USER_BUTTON_EXTI_LINE);
     EXTI_ClearITPendingBit(USER_BUTTON_EXTI_LINE);
-  }
+//  }
 }
