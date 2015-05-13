@@ -2,6 +2,11 @@
 #include "stm32f4_discovery.h"
 #include "tpl_os.h"
 
+DeclareAlarm(one_second);
+DeclareTask(stop);
+DeclareTask(my_periodic_task);
+DeclareTask(phare_ouest);
+
 uint32_t tabMainStack[100];
 uint32_t ptrMainStack;
 
@@ -13,64 +18,77 @@ void setTimer()
     }
 }
 
+#define APP_Task_periodic_START_SEC_CODE
+#include "tpl_memmap.h"
 FUNC(int, OS_APPL_CODE) main(void)
 {
-  GPIO_InitTypeDef  GPIO_InitStructure;
+	GPIO_InitTypeDef  GPIO_InitStructure;
 
-  ptrMainStack = (uint32_t)&tabMainStack[99];
+	ptrMainStack = (uint32_t)&tabMainStack[99];
 
-  __set_PSP(__get_MSP());
-  __set_CONTROL(0x2); // Switch to use Process Stack, privileged state
-  __ISB(); // Execute ISB after changing CONTROL (architectural recommendation)
-  __set_MSP(ptrMainStack);
+ 	__set_PSP(__get_MSP());
+ 	__set_CONTROL(0x2); // Switch to use Process Stack, privileged state
+ 	__ISB(); // Execute ISB after changing CONTROL (architectural recommendation)
+ 	__set_MSP(ptrMainStack);
 
-  /* GPIOD Periph clock enable */
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
+/* Set SVCall priority to 2 */
+	NVIC_SetPriority(SVCall_IRQn, 2);
 
-  /* Configure PD9, PD12, PD13, PD14 and PD15 in output pushpull mode */
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_12 | GPIO_Pin_13| GPIO_Pin_14| GPIO_Pin_15;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-  GPIO_Init(GPIOD, &GPIO_InitStructure);
+/* GPIOD Periph clock enable */
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
 
-  /* Re initialise GPIO_InitStructure */
-  GPIO_InitStructure.GPIO_Pin = 0;
-  GPIO_InitStructure.GPIO_Mode = 0;
-  GPIO_InitStructure.GPIO_OType = 0;
-  GPIO_InitStructure.GPIO_Speed = 0;
-  GPIO_InitStructure.GPIO_PuPd = 0;
+/* Configure PD9, PD12, PD13, PD14 and PD15 in output pushpull mode */
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_12 | GPIO_Pin_13| GPIO_Pin_14| GPIO_Pin_15;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+	GPIO_Init(GPIOD, &GPIO_InitStructure);
 
-  /* Initialise button */
-  STM_EVAL_PBInit(BUTTON_USER, BUTTON_MODE_EXTI);
-  EXTI_ClearITPendingBit(USER_BUTTON_EXTI_LINE);
+/* Re initialise GPIO_InitStructure */
+	GPIO_InitStructure.GPIO_Pin = 0;
+	GPIO_InitStructure.GPIO_Mode = 0;
+	GPIO_InitStructure.GPIO_OType = 0;
+	GPIO_InitStructure.GPIO_Speed = 0;
+	GPIO_InitStructure.GPIO_PuPd = 0;
 
-  /* Initialise output ports */
-  GPIO_ResetBits(GPIOD, GPIO_Pin_9);
-  GPIO_ResetBits(GPIOD, GPIO_Pin_12);
-  GPIO_ResetBits(GPIOD, GPIO_Pin_13);
-  GPIO_ResetBits(GPIOD, GPIO_Pin_14);
-  GPIO_ResetBits(GPIOD, GPIO_Pin_15);
+/* Initialise button */
+	STM_EVAL_PBInit(BUTTON_USER, BUTTON_MODE_EXTI);
+	EXTI_ClearITPendingBit(USER_BUTTON_EXTI_LINE);
 
-  /* Initialise LEDs */
-  STM_EVAL_LEDInit(LED3);
-  STM_EVAL_LEDInit(LED4);
-  STM_EVAL_LEDInit(LED5);
-  STM_EVAL_LEDInit(LED6);
+/* Initialise output ports */
+	GPIO_ResetBits(GPIOD, GPIO_Pin_9);
+	GPIO_ResetBits(GPIOD, GPIO_Pin_12);
+	GPIO_ResetBits(GPIOD, GPIO_Pin_13);
+	GPIO_ResetBits(GPIOD, GPIO_Pin_14);
+	GPIO_ResetBits(GPIOD, GPIO_Pin_15);
 
-  tpl_init_machine_specific();
-  setTimer();
+/* Initialise LEDs */
+	STM_EVAL_LEDInit(LED3);
+	STM_EVAL_LEDInit(LED4);
+	STM_EVAL_LEDInit(LED5);
+	STM_EVAL_LEDInit(LED6);
 
-  StartOS(OSDEFAULTAPPMODE);
+	tpl_init_machine_specific();
+	setTimer();
 
-  return 0;
+	StartOS(OSDEFAULTAPPMODE);
+
+	return 0;
 }
+#define APP_Task_periodic_STOP_SEC_CODE
+#include "tpl_memmap.h"
 
-DeclareAlarm(one_second);
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+FUNC(void, OS_CODE) ErrorHook(VAR(StatusType, AUTOMATIC) error)
+{
+	ActivateTask(stop);
+}
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
 
-DeclareTask(stop);
-
+#define APP_Task_periodic_START_SEC_CODE
 TASK(my_periodic_task)
 {
   static int occurence = 0;
@@ -85,19 +103,24 @@ TASK(my_periodic_task)
 
   TerminateTask();
 }
+#define APP_Task_periodic_STOP_SEC_CODE
 
+#define APP_Task_periodic_START_SEC_CODE
 TASK(phare_ouest)
 {
   STM_EVAL_LEDToggle(LED5);
 
   TerminateTask();
 }
+#define APP_Task_periodic_STOP_SEC_CODE
 
+#define APP_Task_periodic_START_SEC_CODE
 TASK(stop)
 {
-//  CancelAlarm(one_second);
+  CancelAlarm(one_second);
   TerminateTask();
 }
+#define APP_Task_periodic_STOP_SEC_CODE
 
 ISR(isr_button1)
 {
@@ -105,6 +128,8 @@ ISR(isr_button1)
 	STM_EVAL_LEDToggle(LED3);
 }
 
+#define APP_Task_periodic_START_SEC_CODE
 void assert_failed(uint8_t* file, uint32_t line)
 {
 }
+#define APP_Task_periodic_STOP_SEC_CODE

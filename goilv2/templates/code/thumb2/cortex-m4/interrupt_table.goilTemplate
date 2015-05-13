@@ -115,8 +115,6 @@ FUNC(void, OS_CODE) tpl_interrupt_source_% !interrupt::VECT %()
   loop ENTRY from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
     before
 %
-#define OS_START_SEC_CONST_UNSPECIFIED
-#include "tpl_memmap.h"
 CONST(tpl_it_vector_entry, OS_CONST) tpl_it_vector[% !INTERRUPT_COUNT::IT_TABLE_SIZE %] = {
 %
     do
@@ -150,8 +148,6 @@ CONST(tpl_it_vector_entry, OS_CONST) tpl_it_vector[% !INTERRUPT_COUNT::IT_TABLE_
     after
 %
 };
-#define OS_STOP_SEC_CONST_UNSPECIFIED
-#include "tpl_memmap.h"
 %
   end loop
 %

@@ -174,6 +174,8 @@ typedef struct TPL_STACK tpl_stack;
 
 #define ENABLE_IRQ()  __asm__ __volatile__ ("cpsie i;")
 
+FUNC (void, OS_CODE) tpl_init_machine_specific (void);
+											
 #endif /* TPL_MACHINE_ARM_GENERIC_H */
 
 /* End of file tpl_machine_arm_generic.h */

@@ -1,0 +1,2 @@
+	.extern nested_kernel_entrance_counter
+

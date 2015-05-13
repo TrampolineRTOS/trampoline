@@ -27,6 +27,9 @@
 #include "tpl_os_application_def.h"
 #include "tpl_os_definitions.h"
 #include "tpl_os.h"
+#if WITH_MEMORY_PROTECTION == YES
+#include "tpl_memory_protection.h"
+#endif
 #if WITH_AUTOSAR == YES
 #include "tpl_as_definitions.h"
 #endif
@@ -37,7 +40,7 @@
 
 extern void decPeriode(void);
 extern void test_toggle(void);
-extern FUNC(void, OS_CODE) CallTerminateTask(CONST(AppModeType, AUTOMATIC) mode);
+extern FUNC(void, OS_CODE) CallTerminateTask(void);
 
 /**
  * Kernel entry counter
@@ -51,12 +54,16 @@ volatile VAR (uint32, OS_VAR) nested_kernel_entrance_counter;
 
 FUNC (void, OS_CODE) tpl_init_machine_generic (void)
 {
-
+#if WITH_MEMORY_PROTECTION == YES
+  tpl_init_mp();
+#endif
 }
 
 FUNC (void, OS_CODE) tpl_init_machine_specific (void)
 {
-         nested_kernel_entrance_counter = 0;
+	nested_kernel_entrance_counter = 0;
+	__set_CONTROL(0x3); // Switch to use Process Stack, privileged state
+	__ISB(); // Execute ISB after changing CONTROL (architectural recommendation)
 }
 
 /*
