@@ -8,7 +8,7 @@ LIBRARY_PATH = $(BOARD_PATH)/StdPeriph_Driver/src
 TEMP_SOURCE_DIRS += $(LIBRARY_PATH)
 
 # File format transformation
-OBJCOPY = arm-none-eabi-objcopy
+OBJCOPY = % ! OS::BUILD_S::COPIER%
 DOWNLOAD = st-flash
 
 # Build binary files
