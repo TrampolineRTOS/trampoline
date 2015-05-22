@@ -62,7 +62,7 @@
 \newcommand{\LEDred}{\textcolor{red}{LED5}}
 \newcommand{\LEDblue}{\textcolor{blue}{LED6}}
 
-\title{Trampoline Training\\$\star$\\~\\\includegraphics[width=1.8in]{trampoline.png}}
+\title{Trampoline Training\\$\star$\\\href{https://creativecommons.org/licenses/by-sa/3.0/fr/}{\small CC BY-SA 3.0}\\\vspace{5mm}\includegraphics[width=1.8in]{Trampoline_Beaver_by_FancyFerret.jpg}}
 \author{}
 %\date{}                                           % Activate to display a given date or no date
 
@@ -74,9 +74,9 @@
 
 \section{Goal}
 
-The goal of this lab is to become familiar with OSEK/VDX applications development process and with Trampoline and to understand how fixed priority scheduling works. We will see some Hook Routines too and Events. Trampoline is a Free Software implementation of the OSEK/VDX specification. Trampoline includes an OIL compiler which allows, starting from an OIL description, to generate OS level data structures of the application. In addition to the OIL description, the developer must provide the C sources of tasks and ISRs of the application. Trampoline runs onmany  hardware platforms and we will use it on the Cortex-M4 STM32F4 Discovery board. If you have not installed Trampoline yet, get the Trampoline Package and read the install document.
+The goal of this training is to become familiar with OSEK/VDX applications development process and with Trampoline. Trampoline is a Free Software implementation of the OSEK/VDX specification. Trampoline includes an OIL compiler which allows, starting from an OIL description, to generate OS level data structures of the application. In addition to the OIL description, the developer must provide the C sources of tasks and ISRs of the application. Trampoline runs on many  hardware platforms and we will use it on the Cortex-M4 STM32F4 Discovery board. If you have not installed Trampoline yet, get the Trampoline Package and read the install document.
 
-The lab1, is located in the \unixcl{trampoline/labs/labs_stm32F4_discovery/lab1} directory.
+The source code is located in the \unixcl{labs/labs_stm32F4_discovery} directory.
 
 \section{The board}
 
@@ -88,7 +88,7 @@ We are going to use a demo board made by ST, the STM32F4 Discovery, with a Corte
 
 There are 4 LEDs located below the micro-controller. \LEDorange\ is the \textcolor{orange}{orange} one,  \LEDgreen\  is the \textcolor{LimeGreen}{green} one, \LEDred\ is the \textcolor{red}{red} one and \LEDblue\ is the \textcolor{blue}{blue} one. 
 
-On the left, there is a \fcolorbox{blue}{LightSkyBlue}{blue button} labelled \texttt{User} that can be used for user interaction.
+On the left, there is a \fcolorbox{blue}{LightSkyBlue}{blue button} labelled \texttt{User} that can be used for user interaction. On the right, there is a \fcolorbox{black}{black!20}{black button} which is the reset button.
 
 The LEDs and the blue button are connected to the GPIO of the micro-controller. The GPIO is initialized with the LEDs as output and the button as input. The input corresponding to the button may be configured as an external interrupt line. The initialization is done by calling the \lstinline{initBoard} function. The argument of this function may be \lstinline{BUTTON_NOIT} to configure the corresponding GPIO input as a normal input or  \lstinline{BUTTON_IT} to configure the input as an external interrupt line. In summary \lstinline{initBoard(BUTTON_NOIT);} or \lstinline{initBoard(BUTTON_IT);} should be put in the \lstinline{main} function before starting Trampoline as shown below:
 
@@ -117,6 +117,35 @@ At last a function called \lstinline{delay} waits for an amount of time expresse
 
 Will will use this function to slow down the application.
 
+\subsection{A word about memory sections}
+
+AUTOSAR defines a way to put objects: constants, variables and functions in memory sections in a portable way\footnote{memory section declaration is not part of the C standard}. For that, a set of macro are used along with a generated file : MemMap.h. Functions should be declared with the \lstinline{FUNC} macro, variables with the \lstinline{VAR} macro, constants with the \lstinline{CONST} macro and pointers to variables, pointers to constant, constant pointers to variable and constant pointers to constant with \lstinline{P2VAR}, \lstinline{P2CONST}, \lstinline{CONSTP2VAR} and \lstinline{CONSTP2CONST} respectively. Sections are opened and close with a macro definition and the inclusion of the \lstinline{tpl_memmap.h} file. For instance:
+
+\begin{lstlisting}
+#define APP_Task_my_periodic_task_START_SEC_VAR_32BIT
+#include "tpl_memmap.h"
+VAR(int, AUTOMATIC) period;
+VAR(int, AUTOMATIC) occurence;
+#define APP_Task_my_periodic_task_STOP_SEC_VAR_32BIT
+#include "tpl_memmap.h"
+\end{lstlisting}
+
+defines variables \lstinline{period} and \lstinline{occurence} in the variables section of task \lstinline{my_periodic_task}.
+
+\begin{lstlisting}
+#define APP_Task_my_periodic_task_START_SEC_CODE
+#include "tpl_memmap.h"
+TASK(my_periodic_task)
+{
+  ...
+  TerminateTask();
+}
+#define APP_Task_my_periodic_task_STOP_SEC_CODE
+#include "tpl_memmap.h"
+\end{lstlisting}
+
+defines the task \lstinline{my_periodic_task} in the code section of task \lstinline{my_periodic_task}.
+
 \section{Basic tasks}
 
 Go into the lab1 directory. There are 2 files:
@@ -128,7 +157,7 @@ Go into the lab1 directory. There are 2 files:
 
 Edit the lab1.oil and look at the \texttt{TRAMPOLINE_BASE_PATH} attribute (in OS $>$ BUILD attribute).  \texttt{TRAMPOLINE_BASE_PATH} is set to \texttt{"../../.."}. If you move around the lab1 directory you will have to update this attribute.
 
-lab1 is a very simple application with only 1 task called a_task. a_task starts automatically (\texttt{AUTOSTART = TRUE} in the OIL file). Look at the OIL file and the C source file.
+lab1 is a very simple application with only 1 task called \lstinline{a_task}. \lstinline{a_task} starts automatically (\texttt{AUTOSTART = TRUE} in the OIL file). Look at the OIL file and the C source file.
 
 To compile this application, go into the lab1 directory and type:\\
 \unixcl{goil -t=thumb2/cortex-m4/STM32F4-Discovery lab1.oil}
@@ -189,7 +218,7 @@ handle the error. \texttt{ChainTask} may return the following codes:
 
 \subsection{Pre-task and Post-task hooks}
 
-Hook routines are used to insert application functions inside the kernel. Hook routines are called by the kernel when a particular event happens. The Pre-task hook is called when a task goes into the running state. The Post-task hook is called when a task leaves the running state.
+Hook routines are used to insert application functions inside the kernel. Hook routines are called by the kernel when a particular event happens. The Pre-task hook is called when a task goes into the running state. The Post-task hook is called when a task leaves the running state. Hooks are useful for debugging purpose.
 
 There are two boolean attributes in the OS object of the OIL to use Pre-task and Post-task hooks:
 
@@ -202,9 +231,30 @@ There are two boolean attributes in the OS object of the OIL to use Pre-task and
   ...
 \end{lstlisting}
 
-Go into the \texttt{lab3} directory. 
+When these hooks are used, the user have to write a hook functions:
 
-\section{Extended tasks and synchronization using events}
+\begin{lstlisting}
+FUNC(void, OS_CODE) PreTaskHook()
+{
+  ...
+}
+\end{lstlisting}
+
+for the pre-task hook and
+
+\begin{lstlisting}
+FUNC(void, OS_CODE) PostTaskHook()
+{
+  ...
+}
+\end{lstlisting}
+
+
+Go into the \texttt{lab3} directory and play with the application which is in it. It is the same application as in \lstinline{lab2} with the use of \lstinline{delay} instead of busy-wait for the blue button. Pre and post task hooks are used to switch a led corresponding to the running task on.
+
+\subsection{Extended tasks and synchronization using events}
+
+Go into the \lstinline{lab4} directory.
 
 Unlike a basic task, an extended task may wait for an event. In the OIL file, set the priority of \texttt{task_0} to 8 and add 2 events \texttt{evt_0} and \texttt{evt_1}. \texttt{evt_0} is used by \texttt{task_0} and \texttt{evt_1} is used by \texttt{task_1}. \texttt{a_task} activates \texttt{task_0} and \texttt{task_1} then sets \texttt{evt_0} and \texttt{evt_1} and terminates. \texttt{task_0} and \texttt{task_1} wait for their event, clear it and terminate.
 
