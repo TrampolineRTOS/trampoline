@@ -15,15 +15,12 @@ DeclareTask(task_1);
 
 TASK(a_task)
 {
-  while (readButton() != BUTTON_PRESSED);
-	ledOn(LED3);
-  while (readButton() != BUTTON_PRESSED);
+  ledOn(LED6);
   ActivateTask(task_0);
-  while (readButton() != BUTTON_PRESSED);
   ActivateTask(task_1);
-  while (readButton() != BUTTON_PRESSED);
-	ledOn(LED6);
-  while (readButton() != BUTTON_PRESSED);
+  delay(1000);
+  ledOff(LED6);
+  delay(1000);
 	TerminateTask();
 }
 #define APP_Task_a_task_STOP_SEC_CODE
@@ -33,7 +30,7 @@ TASK(a_task)
 #include "tpl_memmap.h"
 TASK(task_0)
 {
-  ledToggle(LED4);
+  delay(1000);
   TerminateTask();
 }
 #define APP_Task_task_0_STOP_SEC_CODE
@@ -43,7 +40,7 @@ TASK(task_0)
 #include "tpl_memmap.h"
 TASK(task_1)
 {
-  ledToggle(LED5);
+  delay(1000);
   TerminateTask();
 }
 #define APP_Task_task_1_STOP_SEC_CODE
@@ -56,6 +53,36 @@ TASK(task_1)
 #include "tpl_memmap.h"
 FUNC(void, OS_CODE) assert_failed(uint8_t* file, uint32_t line)
 {
+}
+
+FUNC(void, OS_CODE) PreTaskHook()
+{
+  TaskType task_id = 0;
+  GetTaskID(&task_id);
+  if (task_id == a_task) {
+    ledOn(LED3);
+  }
+  else if (task_id == task_0) {
+    ledOn(LED4);
+  }
+  else if (task_id == task_1) {
+    ledOn(LED5);
+  }
+}
+
+FUNC(void, OS_CODE) PostTaskHook()
+{
+  TaskType task_id = 0;
+  GetTaskID(&task_id);
+  if (task_id == a_task) {
+    ledOff(LED3);
+  }
+  else if (task_id == task_0) {
+    ledOff(LED4);
+  }
+  else if (task_id == task_1) {
+    ledOff(LED5);
+  }
 }
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
