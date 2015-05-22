@@ -34,6 +34,7 @@ SOURCES += stm32f4xx_rcc.c
 SOURCES += stm32f4xx_exti.c
 SOURCES += stm32f4xx_syscfg.c
 SOURCES += misc.c
+SOURCES += tp.c
 
 CFLAGS += -I$(BOARD_PATH)/StdPeriph_Driver/include
 
