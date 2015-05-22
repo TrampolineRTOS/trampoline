@@ -23,7 +23,7 @@ TASK(a_task)
  */
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
-void assert_failed(uint8_t* file, uint32_t line)
+FUNC(void, OS_CODE) assert_failed(uint8_t* file, uint32_t line)
 {
 }
 #define OS_STOP_SEC_CODE
