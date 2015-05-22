@@ -51,6 +51,13 @@ volatile VAR (uint32, OS_VAR) nested_kernel_entrance_counter;
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
+FUNC(void, OS_CODE) setTimer()
+{
+	if (SysTick_Config(SystemCoreClock / 1000))
+	{
+		while(1);
+	}
+}
 
 FUNC (void, OS_CODE) tpl_init_machine_generic (void)
 {
@@ -62,8 +69,11 @@ FUNC (void, OS_CODE) tpl_init_machine_generic (void)
 FUNC (void, OS_CODE) tpl_init_machine_specific (void)
 {
 	nested_kernel_entrance_counter = 0;
+  setTimer();
 	__set_CONTROL(0x3); // Switch to use Process Stack, privileged state
 	__ISB(); // Execute ISB after changing CONTROL (architectural recommendation)
+  /* Set SVCall priority to 2 */
+//	NVIC_SetPriority(SVCall_IRQn, 2);
 }
 
 /*
@@ -85,7 +95,7 @@ void tpl_enable_interrupts(void)
   /* unlock is scheduled to next switch back to task */
   __asm__
   (
-  //TODO find in stack frame xpsr to disable interrupts 
+  //TODO find in stack frame xpsr to disable interrupts
   //"mrs r0, xpsr ;"
   "bic r0, r0, #0b11000000 ;"
   //"msr spsr, r0 ;"
@@ -111,7 +121,7 @@ void tpl_disable_interrupts(void)
   //"msr spsr, r0"
   : : : "r0" // clobbered register
   );
-     
+
 }
 
 /*
