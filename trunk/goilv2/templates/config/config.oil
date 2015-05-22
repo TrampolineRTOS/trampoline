@@ -68,6 +68,7 @@ IMPLEMENTATION trampoline_common {
         STRING COMPILER = "gcc";
         STRING ASSEMBLER = "gcc";
         STRING LINKER = "gcc";
+        STRING COPIER = "objcopy";
       },
       FALSE
     ] BUILD = FALSE;
