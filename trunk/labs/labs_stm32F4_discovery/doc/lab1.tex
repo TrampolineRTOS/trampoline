@@ -62,7 +62,7 @@
 \newcommand{\LEDred}{\textcolor{red}{LED5}}
 \newcommand{\LEDblue}{\textcolor{blue}{LED6}}
 
-\title{Trampoline Training\\$\star$\\\href{https://creativecommons.org/licenses/by-sa/3.0/fr/}{\small CC BY-SA 3.0}\\\vspace{5mm}\includegraphics[width=1.8in]{Trampoline_Beaver_by_FancyFerret.jpg}}
+\title{Trampoline Training\\$\star$\\\href{https://creativecommons.org/licenses/by-sa/3.0/fr/}{\small CC BY-SA 3.0}\\\vspace{5mm}\includegraphics[width=2in]{Trampoline_Beaver_by_FancyFerret.jpg}\footnote{test}}
 \author{}
 %\date{}                                           % Activate to display a given date or no date
 
@@ -144,7 +144,7 @@ TASK(my_periodic_task)
 #include "tpl_memmap.h"
 \end{lstlisting}
 
-defines the task \lstinline{my_periodic_task} in the code section of task \lstinline{my_periodic_task}.
+defines the task \lstinline{my_periodic_task} in the code section of task \lstinline{my_periodic_task}. \lstinline{goil} generates the sections for tasks according to the description.
 
 \section{Basic tasks}
 
@@ -256,7 +256,15 @@ Go into the \texttt{lab3} directory and play with the application which is in it
 
 Go into the \lstinline{lab4} directory.
 
+This application has 2 tasks : \lstinline{a_task} which is an extended task and \lstinline{task_0} which is a basic task. En extended task has at least one event declared in the OIL file.
+
+Look at the OIL file and at the C file. The application does not work as expected. What is happening ? Correct the OIL file to have a proper behavior.
+
+
 Unlike a basic task, an extended task may wait for an event. In the OIL file, set the priority of \texttt{task_0} to 8 and add 2 events \texttt{evt_0} and \texttt{evt_1}. \texttt{evt_0} is used by \texttt{task_0} and \texttt{evt_1} is used by \texttt{task_1}. \texttt{a_task} activates \texttt{task_0} and \texttt{task_1} then sets \texttt{evt_0} and \texttt{evt_1} and terminates. \texttt{task_0} and \texttt{task_1} wait for their event, clear it and terminate.
+
+
+
 
 \begin{ex}
 Write the corresponding application. Compile and execute the application. What is happening?
