@@ -22,6 +22,11 @@ typedef enum {
   BUTTON_NOIT
 } ButtonMode;
 
+#define ORANGE LED3
+#define GREEN  LED4
+#define RED    LED5
+#define BLUE   LED6
+
 /*
  * Initialise la carte avec les ports d'E/S configurer pour allumer les LED
  * et lire le poussoir
