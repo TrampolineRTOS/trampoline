@@ -257,10 +257,6 @@ tpl_primary_syscall_handler:
 	mrs r1, psp                  /* Get current process stack pointer (psp) value */
 	str r1, [r2, #32]            /* and save it into context bloc sp */
 
-	/* pop registers values from the stack
-	 * The sp is altered */
-	ldmia sp!, {r0-r2}
-
 	/*********************************
 	* SYSTEM CALL DISPATCHING STAGE *
 	*********************************/
@@ -273,6 +269,10 @@ tpl_primary_syscall_handler:
 	/* get the appropriate system call address into R3 */
 	ldr r1, =tpl_dispatch_table
 	ldr r3, [r1, r3, LSL #2]
+
+	/* pop registers values from the stack
+	 * The sp is altered */
+	ldmia sp!, {r0-r2}
 
 	/* call the service
 	 * r0-r3 shall be altered by callee.
