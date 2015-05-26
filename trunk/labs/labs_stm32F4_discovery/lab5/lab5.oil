@@ -16,8 +16,8 @@ IMPLEMENTATION trampoline {
 CPU lab1 {
   OS config {
     STATUS = EXTENDED;
-//    PRETASKHOOK = TRUE;
-//    POSTTASKHOOK = TRUE;
+    PRETASKHOOK = TRUE;
+    POSTTASKHOOK = TRUE;
     
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../..";

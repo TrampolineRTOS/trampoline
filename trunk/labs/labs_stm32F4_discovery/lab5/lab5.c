@@ -18,11 +18,11 @@ TASK(blink)
 #define APP_Task_blink_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
 /*
  * This is necessary for ST libraries
  */
-#define OS_START_SEC_CODE
-#include "tpl_memmap.h"
 FUNC(void, OS_CODE) assert_failed(uint8_t* file, uint32_t line)
 {
 }
