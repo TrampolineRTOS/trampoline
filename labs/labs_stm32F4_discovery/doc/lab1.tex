@@ -61,6 +61,7 @@
 \newcommand{\LEDgreen}{\textcolor{LimeGreen}{LED4}}
 \newcommand{\LEDred}{\textcolor{red}{LED5}}
 \newcommand{\LEDblue}{\textcolor{blue}{LED6}}
+\newcommand{\BB}{\fcolorbox{blue}{LightSkyBlue}{blue button}}
 
 \title{Trampoline Training\\$\star$\\\href{https://creativecommons.org/licenses/by-nc/3.0/fr/}{\small CC BY-NC 3.0}\\\vspace{5mm}\includegraphics[width=2in]{Trampoline_Beaver_by_FancyFerret.jpg}\hspace{2mm}\footnote{\url{http://fancyferret.deviantart.com/art/Trampoline-Beaver-166211545}, CC BY-NC 3.0 license, Josef Ek.}}
 \author{Jean-Luc B\'echennec, IRCCyN}
@@ -275,6 +276,34 @@ Extend the previous application by adding 1 task: \texttt{task_1} (priority 1) a
 
 \section{Alarms and periodic tasks}
 
-Alarms are periodic activities. They are 
+\subsection{First application, basic use of alarms}
+
+Go into the lab5 directory.
+
+Alarms are periodic activities. They are used to build periodic tasks. Alarms may activate a task or set an event. The application in the lab5 directory is a simple one that blinks the \LEDblue\ with a 500ms period. The \lstinline{SysTick} is every 1ms. So the period of the alarm is 250ms. Examine the \lstinline{lab5.oil} file and the \lstinline{lab5.c} file. The underlying counter \lstinline{SystemCounter} have a \lstinline{TICKSPERBASE} attribute. This attribute is the number of \lstinline{SysTick} needed to increment the counter by one. By default it is set to 1. Pre and Post tasks hooks are used. Add a \lstinline{delay(50);} juste after \lstinline{ledToggle(BLUE);} in order to see the execution of the task.
+
+\begin{ex}
+Increase the \lstinline{TICKSPERBASE} to 25 and change the \lstinline{ALARMTIME} and \lstinline{CYCLETIME} of the alarm \lstinline{blink_blink} to keep the same period.
+\end{ex}
+
+\begin{ex}
+Program an application using 2 periodic tasks, \lstinline{t1} and \lstinline{t2}. \lstinline{t1} switches \LEDblue\ on and \lstinline{t2} switches  \LEDblue\ off. Both tasks have the same period (1s) but have an offset so that  \LEDblue\ is on during 150ms.
+\end{ex}
+
+\subsection{Second application, starting and stopping alarms}
+
+Go into the lab6 directory.
+
+This application reads the \BB\ using a periodic task that is activated every 50ms. If the button is pressed, the \LEDblue\ is toggled.
+
+Using services \lstinline{GetAlarm}, \lstinline{SetRelAlarm} and \lstinline{CancelAlarm}, build an application with the following requirements:
+\begin{itemize}
+\item Alarm \lstinline{blink_blink} activates task \lstinline{blink}. This alarm is not an \lstinline{AUTOSTART} one.
+\item Task \lstinline{blink} toggles \LEDgreen.
+\item If the button is pressed and alarm \lstinline{blink_blink} is not yet started, start the alarm with a period of 100ms.
+\item If the button is pressed and alarm \lstinline{blink_blink} is started, cancel the alarm.
+\end{itemize}
+
+
 
 \end{document}  
