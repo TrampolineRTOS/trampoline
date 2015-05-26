@@ -71,6 +71,14 @@ tpl_enter_kernel:
 	pop {lr}
 	#endif
 	/* 
+	* Manage reentrance of kernel
+	* Increment nested_kernel_entrance_counter
+	*/
+	ldr r1, =nested_kernel_entrance_counter
+	ldr r2, [r1]
+	add r2, r2, #1
+	str r2, [r1]
+	/* 
 	* Switch to the kernel stack
 	* Automatic (configuration) for the Cortex-M4
 	*/	
@@ -81,6 +89,18 @@ tpl_enter_kernel_exit:
  *
  *******************************************************************************/
 tpl_leave_kernel:
+	/* 
+	* Manage reentrance of kernel
+	* Decrement nested_kernel_entrance_counter
+	*
+	* We update kernel reentrance counter while registers are freely
+	* usable and as we know we won't enter in kernel again (IRQ locked and
+	* no SWI can occur)
+	*/
+	ldr r1, =nested_kernel_entrance_counter
+	ldr r2, [r1]
+	sub r2, r2, #1
+	str r2, [r1]
 	#if WITH_MEMORY_PROTECTION == YES
 	/*
 	* Switch to user memory protection scheme
