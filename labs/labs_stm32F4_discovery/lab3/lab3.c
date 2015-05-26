@@ -15,11 +15,11 @@ DeclareTask(task_1);
 
 TASK(a_task)
 {
-  ledOn(LED6);
+  ledOn(BLUE);
   ActivateTask(task_0);
   ActivateTask(task_1);
   delay(1000);
-  ledOff(LED6);
+  ledOff(BLUE);
   delay(1000);
 	TerminateTask();
 }
@@ -60,13 +60,13 @@ FUNC(void, OS_CODE) PreTaskHook()
   TaskType task_id = 0;
   GetTaskID(&task_id);
   if (task_id == a_task) {
-    ledOn(LED3);
+    ledOn(ORANGE);
   }
   else if (task_id == task_0) {
-    ledOn(LED4);
+    ledOn(GREEN);
   }
   else if (task_id == task_1) {
-    ledOn(LED5);
+    ledOn(RED);
   }
 }
 
@@ -75,13 +75,13 @@ FUNC(void, OS_CODE) PostTaskHook()
   TaskType task_id = 0;
   GetTaskID(&task_id);
   if (task_id == a_task) {
-    ledOff(LED3);
+    ledOff(ORANGE);
   }
   else if (task_id == task_0) {
-    ledOff(LED4);
+    ledOff(GREEN);
   }
   else if (task_id == task_1) {
-    ledOff(LED5);
+    ledOff(RED);
   }
 }
 #define OS_STOP_SEC_CODE

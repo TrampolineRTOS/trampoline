@@ -62,8 +62,8 @@
 \newcommand{\LEDred}{\textcolor{red}{LED5}}
 \newcommand{\LEDblue}{\textcolor{blue}{LED6}}
 
-\title{Trampoline Training\\$\star$\\\href{https://creativecommons.org/licenses/by-sa/3.0/fr/}{\small CC BY-SA 3.0}\\\vspace{5mm}\includegraphics[width=2in]{Trampoline_Beaver_by_FancyFerret.jpg}\footnote{test}}
-\author{}
+\title{Trampoline Training\\$\star$\\\href{https://creativecommons.org/licenses/by-nc/3.0/fr/}{\small CC BY-NC 3.0}\\\vspace{5mm}\includegraphics[width=2in]{Trampoline_Beaver_by_FancyFerret.jpg}\hspace{2mm}\footnote{\url{http://fancyferret.deviantart.com/art/Trampoline-Beaver-166211545}, CC BY-NC 3.0 license, Josef Ek.}}
+\author{Jean-Luc B\'echennec, IRCCyN}
 %\date{}                                           % Activate to display a given date or no date
 
 \begin{document}
@@ -101,7 +101,7 @@ FUNC(int, OS_APPL_CODE) main(void)
 }
 \end{lstlisting}
 
-For the labs, functions are provided to switch on, switch off and toggle the LEDs. The unique argument is the LED identifier and should be \LEDorange, \LEDgreen, \LEDred\ or \LEDblue:
+For the labs, functions are provided to switch on, switch off and toggle the LEDs. The unique argument is the LED identifier and should be \LEDorange, \LEDgreen, \LEDred\, \LEDblue\ or \textcolor{orange}{ORANGE},  \textcolor{LimeGreen}{GREEN}, \textcolor{red}{RED}, \textcolor{blue}{BLUE}:
 
 \unixcl{void ledOn(<led>)} turns on LED \lstinline{<led>}.\\
 \unixcl{void ledOff(<led>)} turns off LED \lstinline{<led>}.\\
@@ -256,32 +256,25 @@ Go into the \texttt{lab3} directory and play with the application which is in it
 
 Go into the \lstinline{lab4} directory.
 
-This application has 2 tasks : \lstinline{a_task} which is an extended task and \lstinline{task_0} which is a basic task. En extended task has at least one event declared in the OIL file.
+This application has 2 tasks : \lstinline{a_task} which is an extended task and \lstinline{task_0} which is a basic task. Unlike a basic task, an extended task may wait for an event. A task is extended because it has at least one event declared in the OIL file.
 
-Look at the OIL file and at the C file. The application does not work as expected. What is happening ? Correct the OIL file to have a proper behavior.
-
-
-Unlike a basic task, an extended task may wait for an event. In the OIL file, set the priority of \texttt{task_0} to 8 and add 2 events \texttt{evt_0} and \texttt{evt_1}. \texttt{evt_0} is used by \texttt{task_0} and \texttt{evt_1} is used by \texttt{task_1}. \texttt{a_task} activates \texttt{task_0} and \texttt{task_1} then sets \texttt{evt_0} and \texttt{evt_1} and terminates. \texttt{task_0} and \texttt{task_1} wait for their event, clear it and terminate.
-
-
-
+Look at the OIL file and at the C file. Task \lstinline{a_task} activates task \lstinline{task_0} then goes into an infinite loop where it waits for event \lstinline{ev_0} and activate task \lstinline{task_0} again. When \lstinline{a_task} runs, \LEDorange\ is switched on. When \lstinline{task_0} runs, \LEDgreen\ is switched on. The application should run infinitely. 
 
 \begin{ex}
-Write the corresponding application. Compile and execute the application. What is happening?
+Draw the Gantt diagram of the execution.
 \end{ex}
 
 \begin{ex}
-Program an application conforming to the following requirements: The application has 2 tasks:
-\texttt{server} priority 2, \texttt{t1} priority 1.
-
-server is an infinite loop that activates \texttt{t1} and waits for event \texttt{evt_1}. \texttt{t1} prints ``I am t1'' and sets \texttt{evt_1} of \texttt{server}. Explain how it works.
+However The application stops. What is happening ? Correct the OIL file to have a proper behavior.
 \end{ex}
 
+For the following application, we will use \lstinline{WaitEvent}, \lstinline{GetEvent} and \lstinline{ClearEvent}.
 \begin{ex}
-Extend the previous application by adding 2 tasks: \texttt{t2} and \texttt{t3} (priority 1 for both) and 2 events \texttt{evt_2} and \texttt{evt_3}. \texttt{server} activates \texttt{t1}, \texttt{t2} and \texttt{t3} and waits for one of the events. When one of the events is set, \texttt{server} activates the corresponding task again.
+Extend the previous application by adding 1 task: \texttt{task_1} (priority 1) and 1 event \texttt{ev_1}. \texttt{a_task} activates \texttt{task_0} and \texttt{task_1} and waits for one of the events. When one of the events is set, \texttt{a_task} activates the corresponding task again.
 \end{ex}
 
-\begin{ex}
-Try many priority combinations for the tasks. Explain the behavior.
-\end{ex}
+\section{Alarms and periodic tasks}
+
+Alarms are periodic activities. They are 
+
 \end{document}  

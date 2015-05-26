@@ -19,13 +19,20 @@ TASK(a_task)
 
   while(1)
   {
-    delay(1000);
-    ledOn(LED5);
+    delay(500);
+
+    ledOn(RED);
+
     WaitEvent(ev_0);
-    ledOff(LED5);
-    delay(1000);
+    ClearEvent(ev_0);
+
+    ledOff(RED);
+
+    delay(500);
+
     ActivateTask(task_0);
-    delay(1000);
+
+    delay(500);
   }
 
 	TerminateTask();
@@ -37,9 +44,9 @@ TASK(a_task)
 #include "tpl_memmap.h"
 TASK(task_0)
 {
-  delay(1000);
+  delay(500);
   SetEvent(a_task, ev_0);
-  delay(1000);
+  delay(500);
   TerminateTask();
 }
 #define APP_Task_task_0_STOP_SEC_CODE
@@ -59,10 +66,10 @@ FUNC(void, OS_CODE) PreTaskHook()
   TaskType task_id = 0;
   GetTaskID(&task_id);
   if (task_id == a_task) {
-    ledOn(LED3);
+    ledOn(ORANGE);
   }
   else if (task_id == task_0) {
-    ledOn(LED4);
+    ledOn(GREEN);
   }
 }
 
@@ -71,10 +78,10 @@ FUNC(void, OS_CODE) PostTaskHook()
   TaskType task_id = 0;
   GetTaskID(&task_id);
   if (task_id == a_task) {
-    ledOff(LED3);
+    ledOff(ORANGE);
   }
   else if (task_id == task_0) {
-    ledOff(LED4);
+    ledOff(GREEN);
   }
 }
 #define OS_STOP_SEC_CODE
