@@ -6,14 +6,14 @@
 FUNC(int, OS_APPL_CODE) main(void)
 {
   initBoard(BUTTON_NOIT);
-	StartOS(OSDEFAULTAPPMODE);
-	return 0;
+  StartOS(OSDEFAULTAPPMODE);
+  return 0;
 }
 
 TASK(blink)
 {
   ledToggle(BLUE);
-	TerminateTask();
+  TerminateTask();
 }
 #define APP_Task_blink_STOP_SEC_CODE
 #include "tpl_memmap.h"
