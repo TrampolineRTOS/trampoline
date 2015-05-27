@@ -56,18 +56,18 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
   GET_PROC_CORE_ID(task_id, proc_core_id)
 
   VAR(tpl_status, AUTOMATIC) result = E_OK;
-	
+
   LOCK_KERNEL()
-	
+
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
-	
+
   STORE_SERVICE(OSServiceId_SetEvent)
   STORE_TASK_ID(task_id)
   STORE_EVENT_MASK(event)
-  
+
   CHECK_TASK_ID_ERROR(task_id,result)
-	
+
   /* check access right */
   CHECK_ACCESS_RIGHTS_TASK_ID(core_id, task_id,result)
 
@@ -75,7 +75,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
   CHECK_NOT_EXTENDED_TASK_ERROR(task_id,result)
   /*  checks the task is not in the SUSPENDED state   */
   CHECK_SUSPENDED_TASK_ERROR(task_id,result)
-  
+
 #if EXTENDED_TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
   result = tpl_set_event(task_id, event);
@@ -86,11 +86,11 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
   }
   IF_NO_EXTENDED_ERROR_END()
 #endif
-  
+
   PROCESS_ERROR(result)
-  
+
   UNLOCK_KERNEL()
-  
+
   return result;
 }
 
@@ -102,14 +102,14 @@ FUNC(tpl_status, OS_CODE) tpl_clear_event_service(
   CONST(tpl_event_mask, AUTOMATIC) event)
 {
   GET_CURRENT_CORE_ID(core_id)
-	
+
   VAR(tpl_status, AUTOMATIC) result = E_OK;
-  
+
   LOCK_KERNEL()
 
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
-  
+
   STORE_SERVICE(OSServiceId_ClearEvent)
   STORE_EVENT_MASK(event)
 
@@ -117,7 +117,7 @@ FUNC(tpl_status, OS_CODE) tpl_clear_event_service(
   CHECK_TASK_CALL_LEVEL_ERROR(core_id,result)
   /*  checks the calling task is an extended one  */
   CHECK_NOT_EXTENDED_RUNNING_ERROR(result)
-  
+
 #if EXTENDED_TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
     tpl_task_events_table[(tpl_proc_id)TPL_KERN(core_id).running_id]->evt_set &=
@@ -126,9 +126,9 @@ FUNC(tpl_status, OS_CODE) tpl_clear_event_service(
 #endif
 
   PROCESS_ERROR(result)
-  
+
   UNLOCK_KERNEL()
-  
+
   return result;
 }
 
@@ -142,7 +142,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_event_service(
   GET_CURRENT_CORE_ID(core_id)
 
   VAR(tpl_status, AUTOMATIC) result = E_OK;
-  
+
   LOCK_KERNEL()
 
   /* check interrupts are not disabled by user    */
@@ -151,30 +151,30 @@ FUNC(tpl_status, OS_CODE) tpl_get_event_service(
   STORE_SERVICE(OSServiceId_GetEvent)
   STORE_TASK_ID(task_id)
   STORE_EVENT_MASK_REF(event)
-  
+
   CHECK_TASK_ID_ERROR(task_id,result)
-  	
+
   /* check access right */
   CHECK_ACCESS_RIGHTS_TASK_ID(core_id, task_id, result)
-	
+
   /*  checks the task is an extended one  */
   CHECK_NOT_EXTENDED_TASK_ERROR(task_id,result)
   /*  checks the task is not in the SUSPENDED state   */
   CHECK_SUSPENDED_TASK_ERROR(task_id,result)
-  
+
   /* check event is in an authorized memory region */
   CHECK_DATA_LOCATION(event, result);
-  
+
 #if EXTENDED_TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
   *event = tpl_task_events_table[task_id]->evt_set;
   IF_NO_EXTENDED_ERROR_END()
 #endif
-  
+
   PROCESS_ERROR(result)
-  
+
   UNLOCK_KERNEL()
-  
+
   return result;
 }
 
@@ -185,8 +185,13 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
   CONST(tpl_event_mask, AUTOMATIC) event)
 {
   GET_CURRENT_CORE_ID(core_id)
+  GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
   VAR(tpl_status, AUTOMATIC) result = E_OK;
+
+  /* event mask of the caller */
+  CONSTP2VAR(tpl_task_events, AUTOMATIC, OS_VAR) task_events =
+    tpl_task_events_table[TPL_KERN_REF(kern).running_id];
 
   LOCK_KERNEL()
 
@@ -195,29 +200,52 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
 
   STORE_SERVICE(OSServiceId_WaitEvent)
   STORE_EVENT_MASK(event)
-  
+
   /*  WaitEvent cannot be called from ISR level  */
   CHECK_TASK_CALL_LEVEL_ERROR(core_id,result)
   /*  checks the calling task is an extended one  */
   CHECK_NOT_EXTENDED_RUNNING_ERROR(result)
   /*  checks the task does not occupied resource(s)   */
   CHECK_RUNNING_OWNS_REZ_ERROR(core_id, result)
-  
+
 #if EXTENDED_TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-  
+
   /* all the evt_wait is overidden. */
-  tpl_task_events_table[TPL_KERN(core_id).running_id]->evt_wait = event;
-  /* block the task if needed */
-  tpl_block();
+  task_events->evt_wait = event;
+
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
+  /* reset the execution budget */
+  tpl_tp_on_terminate_or_wait(TPL_KERN_REF(kern).running_id);
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION  == YES */
+
+  /* check one of the event to wait is not already set */
+  if ((task_events->evt_set & task_events->evt_wait) == 0)
+  {
+    /* No event is set, the task blocks */
+    tpl_block();
+  }
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
+  else
+  {
+    if (FALSE == tpl_tp_on_activate_or_release(TPL_KERN_REF(kern).running_id))
+    {
+      tpl_call_protection_hook(E_OS_PROTECTION_ARRIVAL);
+    }
+    else
+    {
+      tpl_tp_on_start(TPL_KERN_REF(kern).running_id);
+    }
+  }
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION == YES */
 
   IF_NO_EXTENDED_ERROR_END()
 #endif
 
   PROCESS_ERROR(result)
-  
+
   UNLOCK_KERNEL()
-  
+
   return result;
 }
 

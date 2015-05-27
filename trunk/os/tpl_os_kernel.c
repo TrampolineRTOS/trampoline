@@ -177,7 +177,7 @@ FUNC(void, OS_CODE) printrl(P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg)
            tpl_ready_list[i].key);
   }
   printf("\n");
-#endif  
+#endif
 }
 
 FUNC(void, OS_CODE) print_kern(P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg)
@@ -208,12 +208,12 @@ FUNC(void, OS_CODE) print_kern(P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg)
  *
  * The head of the queue contains the highest priority job and so the running
  * job.
- * 
+ *
  * RANK_MASK is used to get the part of the key used to store the rank of
  * a job
- * PRIORITY_MASK is used to get the part of the key used to store 
+ * PRIORITY_MASK is used to get the part of the key used to store
  * the priority of a job
- * PRIORITY_SHIFT is used to shift the part of the key used to store 
+ * PRIORITY_SHIFT is used to shift the part of the key used to store
  * the priority of a job
  */
 FUNC(int, OS_CODE) tpl_compare_entries(
@@ -225,18 +225,18 @@ FUNC(int, OS_CODE) tpl_compare_entries(
   VAR(uint32, AUTOMATIC) second_key = second_entry->key & (PRIORITY_MASK | RANK_MASK);
   VAR(uint32, AUTOMATIC) first_tmp ;
   VAR(uint32, AUTOMATIC) second_tmp ;
-  
-  first_tmp = ((first_key & RANK_MASK) - 
+
+  first_tmp = ((first_key & RANK_MASK) -
     TAIL_FOR_PRIO(tail_for_prio)[first_key >> PRIORITY_SHIFT]);
   first_tmp = first_tmp & RANK_MASK;
   first_key = (first_key & PRIORITY_MASK);
   first_key = first_key | first_tmp;
-   
-  second_tmp = ((second_key & RANK_MASK) - 
+
+  second_tmp = ((second_key & RANK_MASK) -
     TAIL_FOR_PRIO(tail_for_prio)[second_key >> PRIORITY_SHIFT]);
   second_tmp = second_tmp & RANK_MASK;
   second_key = (second_key & PRIORITY_MASK);
-  second_key = second_key | second_tmp;  
+  second_key = second_key | second_tmp;
 
   return (first_key < second_key);
 }
@@ -270,7 +270,7 @@ FUNC(void, OS_CODE) tpl_bubble_up(
     heap[father] = tmp;
     index = father;
     father >>= 1;
-  }  
+  }
 }
 
 /*
@@ -289,9 +289,9 @@ FUNC(void, OS_CODE) tpl_bubble_down(
 {
   CONST(uint32, AUTOMATIC) size = heap[0].key;
   VAR(uint32, AUTOMATIC) child;
-  
+
   while ((child = index << 1) <= size) /* child = left */
-  { 
+  {
     CONST(uint32, AUTOMATIC) right = child + 1;
     if ((right <= size) &&
       tpl_compare_entries(heap + child,
@@ -334,7 +334,7 @@ FUNC(void, OS_CODE) tpl_put_new_proc(
   GET_PROC_CORE_ID(proc_id, core_id)
   GET_CORE_READY_LIST(core_id, ready_list)
   GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
-  
+
   VAR(uint32, AUTOMATIC) index = (uint32)(++(READY_LIST(ready_list)[0].key));
 
   VAR(tpl_priority, AUTOMATIC) dyn_prio;
@@ -350,13 +350,13 @@ FUNC(void, OS_CODE) tpl_put_new_proc(
 
   READY_LIST(ready_list)[index].key = dyn_prio;
   READY_LIST(ready_list)[index].id = proc_id;
-  
+
   tpl_bubble_up(
     READY_LIST(ready_list),
-    index 
+    index
     TAIL_FOR_PRIO_ARG(tail_for_prio)
   );
-  
+
   DOW_DO(printrl("put_new_proc");)
 }
 
@@ -374,8 +374,8 @@ FUNC(void, OS_CODE) tpl_put_preempted_proc(
   GET_PROC_CORE_ID(proc_id, core_id)
   GET_CORE_READY_LIST(core_id, ready_list)
   GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
-  
-    
+
+
   VAR(uint32, AUTOMATIC) index = (uint32)(++(READY_LIST(ready_list)[0].key));
 
   CONST(tpl_priority, AUTOMATIC) dyn_prio =
@@ -387,20 +387,20 @@ FUNC(void, OS_CODE) tpl_put_preempted_proc(
    */
   READY_LIST(ready_list)[index].key = dyn_prio;
   READY_LIST(ready_list)[index].id = proc_id;
-  
+
   tpl_bubble_up(
     READY_LIST(ready_list),
     index
     TAIL_FOR_PRIO_ARG(tail_for_prio)
   );
-  
+
   DOW_DO(printrl("put_preempted_proc"));
 }
 
 /**
  * @internal
  *
- */ 
+ */
 
 /**
  * @internal
@@ -432,17 +432,17 @@ FUNC(tpl_heap_entry, OS_CODE) tpl_remove_front_proc(CORE_ID_OR_VOID(core_id))
    */
   CONST(uint32, AUTOMATIC) size = READY_LIST(ready_list)[0].key--;
   VAR(uint32, AUTOMATIC) index = 1;
-  
+
   /*
    * Get the proc_id of the front proc
    */
   VAR(tpl_heap_entry, AUTOMATIC) proc = READY_LIST(ready_list)[1];
-  
+
   /*
    * Put the last element in front
    */
   READY_LIST(ready_list)[index] = READY_LIST(ready_list)[size];
-  
+
   /*
    * bubble down to the right place
    */
@@ -451,7 +451,7 @@ FUNC(tpl_heap_entry, OS_CODE) tpl_remove_front_proc(CORE_ID_OR_VOID(core_id))
     index
     TAIL_FOR_PRIO_ARG(tail_for_prio)
   );
-  
+
   return proc;
 }
 
@@ -472,7 +472,7 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
 
   VAR(uint32, AUTOMATIC) index;
   VAR(uint32, AUTOMATIC) size = (uint32)READY_LIST(ready_list)[0].key;
-  
+
   DOW_DO(printf("\n**** remove proc %d ****\n",proc_id);)
   DOW_DO(printrl("tpl_remove_proc - before");)
 
@@ -508,7 +508,7 @@ FUNC(tpl_os_state, OS_CODE) tpl_current_os_state(
   CORE_ID_OR_VOID(core_id))
 {
   VAR(tpl_os_state, OS_APPL_DATA) state = OS_UNKNOWN;
-  
+
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
   if (TPL_KERN_REF(kern).running_id == INVALID_PROC_ID) {
@@ -598,7 +598,7 @@ FUNC(void, OS_CODE) tpl_preempt(CORE_ID_OR_VOID(core_id))
 
     /* The current elected task becomes READY */
     TPL_KERN_REF(kern).elected->state = (tpl_proc_state)READY;
-  
+
     /* And put in the ready list */
     tpl_put_preempted_proc((tpl_proc_id)TPL_KERN_REF(kern).elected_id);
   }
@@ -606,7 +606,7 @@ FUNC(void, OS_CODE) tpl_preempt(CORE_ID_OR_VOID(core_id))
 
 /**
  * @internal
- * 
+ *
  * The elected task becomes the running task, the running proc is preempted
  *
  * @return  the pointer to the context of the task
@@ -617,12 +617,12 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
 {
   GET_CURRENT_CORE_ID(core_id)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
-  
+
   CONSTP2CONST(tpl_context, AUTOMATIC, OS_CONST) old_context =
     save ? &(TPL_KERN_REF(kern).s_running->context) : NULL;
-  
+
   DOW_DO(print_kern("before tpl_run_elected"));
-  
+
   if ((save) && (TPL_KERN_REF(kern).running->state != WAITING))
   {
     /*
@@ -630,18 +630,18 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
      * PostTaskHook while the soon descheduled task is running
      */
     CALL_POST_TASK_HOOK()
-  
+
     TRACE_ISR_PREEMPT((tpl_proc_id)TPL_KERN_REF(kern).running_id)
     TRACE_TASK_PREEMPT((tpl_proc_id)TPL_KERN_REF(kern).running_id)
-  
+
     DOW_DO(printf(
       "tpl_run_elected preempt %s\n",
       proc_name_table[TPL_KERN_REF(kern).running_id])
     );
-  
+
     /* The current running task becomes READY */
     TPL_KERN_REF(kern).running->state = (tpl_proc_state)READY;
-  
+
     /* And put in the ready list */
     tpl_put_preempted_proc((tpl_proc_id)TPL_KERN_REF(kern).running_id);
 
@@ -661,23 +661,23 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
     TPL_KERN_REF(kern).running->priority)
   );
   DOW_DO(printrl("tpl_run_elected - after"));
-  
+
   /* the elected task become RUNNING */
   TRACE_TASK_EXECUTE((tpl_proc_id)TPL_KERN_REF(kern).running_id)
   TRACE_ISR_RUN((tpl_proc_id)TPL_KERN_REF(kern).running_id)
   TPL_KERN_REF(kern).running->state = RUNNING;
-  
+
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
   /*  start the budget watchdog  */
   tpl_tp_on_start(TPL_KERN_REF(kern).running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-  
+
   /*
    * If an internal resource is assigned to the task
    * and it is not already taken by it, take it
    */
   tpl_get_internal_resource((tpl_proc_id)TPL_KERN_REF(kern).running_id);
-  
+
   /*
    * A new task has been started. It is time to call
    * PreTaskHook since the rescheduled task is running
@@ -685,7 +685,7 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
   CALL_PRE_TASK_HOOK()
 
   DOW_DO(print_kern("after tpl_run_elected"));
-  
+
   return old_context;
 }
 
@@ -700,7 +700,7 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
 
   CONST(tpl_heap_entry, AUTOMATIC) proc =
     tpl_remove_front_proc(CORE_ID_OR_NOTHING(core_id));
-    
+
 #if NUMBER_OF_CORES > 1
   /*
    * In multicore, start may be called more than one time.
@@ -711,7 +711,7 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
    */
   if (TPL_KERN_REF(kern).running_id != TPL_KERN_REF(kern).elected_id)
   {
-    tpl_put_preempted_proc((tpl_proc_id)TPL_KERN_REF(kern).elected_id);  
+    tpl_put_preempted_proc((tpl_proc_id)TPL_KERN_REF(kern).elected_id);
   }
 #endif
 
@@ -719,7 +719,7 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
 
   TPL_KERN_REF(kern).elected_id = (uint32)proc.id;
   TPL_KERN_REF(kern).elected = tpl_dyn_proc_table[proc.id];
-  TPL_KERN_REF(kern).s_elected = tpl_stat_proc_table[proc.id];  
+  TPL_KERN_REF(kern).s_elected = tpl_stat_proc_table[proc.id];
 
   if (TPL_KERN_REF(kern).elected->state == READY_AND_NEW)
   {
@@ -751,12 +751,12 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(CORE_ID_OR_VOID(core_id))
 {
   GET_CORE_READY_LIST(core_id, ready_list)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
-  
+
   VAR(uint8, AUTOMATIC) need_switch = NO_NEED_SWITCH;
 
   DOW_DO(print_kern("before tpl_schedule_from_running"));
   DOW_ASSERT((uint32)READY_LIST(read_list)[1].key > 0)
-  
+
 #if WITH_STACK_MONITORING == YES
   tpl_check_stack((tpl_proc_id)TPL_KERN_REF(kern).elected_id);
 #endif /* WITH_STACK_MONITORING */
@@ -792,7 +792,7 @@ FUNC(void, OS_CODE) tpl_terminate(void)
 #if WITH_STACK_MONITORING == YES
   tpl_check_stack((tpl_proc_id)TPL_KERN_REF(kern).running_id);
 #endif /* WITH_STACK_MONITORING */
-  
+
   DOW_DO(printf("tpl_terminate %s[%ld]\n",
     proc_name_table[TPL_KERN_REF(kern).running_id],
     TPL_KERN_REF(kern).running_id));
@@ -802,13 +802,13 @@ FUNC(void, OS_CODE) tpl_terminate(void)
    * PostTaskHook while the soon descheduled task is RUNNING
    */
   CALL_POST_TASK_HOOK()
-  
+
   /*
    * the task loses the CPU because it has been put in the WAITING or
    * in the DYING state, its internal resource is released.
    */
   tpl_release_internal_resource((tpl_proc_id)TPL_KERN_REF(kern).running_id);
-  
+
   /* and checked to compute its state. */
   if (TPL_KERN_REF(kern).running->activate_count > 0)
   {
@@ -819,7 +819,7 @@ FUNC(void, OS_CODE) tpl_terminate(void)
      * be initialized.
      */
     TPL_KERN_REF(kern).running->state = READY_AND_NEW;
-    
+
 #if EXTENDED_TASK_COUNT > 0
     /*  if the object is an extended task, init the events          */
     if (TPL_KERN_REF(kern).running_id < EXTENDED_TASK_COUNT)
@@ -829,7 +829,7 @@ FUNC(void, OS_CODE) tpl_terminate(void)
       events->evt_set = events->evt_wait = 0;
     }
 #endif
-    
+
   }
   else
   {
@@ -839,13 +839,13 @@ FUNC(void, OS_CODE) tpl_terminate(void)
      */
     TPL_KERN_REF(kern).running->state = SUSPENDED;
   }
-  
+
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
-  /* notify the timing protection service */ 
+  /* notify the timing protection service */
   tpl_tp_on_terminate_or_wait(TPL_KERN_REF(kern).running_id);
   tpl_tp_reset_watchdogs(TPL_KERN_REF(kern).running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-  
+
   /* copy it in old slot of tpl_kern */
 /*  TPL_KERN_REF(kern).old = TPL_KERN_REF(kern).running;
   TPL_KERN_REF(kern).s_old = TPL_KERN_REF(kern).s_running;*/
@@ -865,64 +865,32 @@ FUNC(void, OS_CODE) tpl_block(void)
   GET_CURRENT_CORE_ID(core_id)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
-  /* event mask of the caller */
-  P2VAR(tpl_task_events, AUTOMATIC, OS_VAR) task_events =
-    tpl_task_events_table[TPL_KERN_REF(kern).running_id];  
-  
   DOW_DO(printf("tpl_block %s[%ld]\n",
     proc_name_table[TPL_KERN_REF(kern).running_id],
     TPL_KERN_REF(kern).running_id));
 
-#if WITH_AUTOSAR_TIMING_PROTECTION == YES
-  /* reset the execution budget */
-  tpl_tp_on_terminate_or_wait(TPL_KERN_REF(kern).running_id);
-#endif /* WITH_AUTOSAR_TIMING_PROTECTION  == YES */
-  
-  /* check one of the event to wait is not already set */
-  if ((task_events->evt_set & task_events->evt_wait) == 0)
-  {
-    /* No event is set, the task blocks */
-
 #if WITH_STACK_MONITORING == YES
-    tpl_check_stack((tpl_proc_id)TPL_KERN_REF(kern).running_id);
+  tpl_check_stack((tpl_proc_id)TPL_KERN_REF(kern).running_id);
 #endif /* WITH_STACK_MONITORING == YES */
-    
-    /*
-     * a task switch will occur. It is time to call the
-     * PostTaskHook while the soon descheduled task is RUNNING
-     */
-    CALL_POST_TASK_HOOK()
-    
-    /* the task goes in the WAITING state */
-    TRACE_TASK_WAIT((tpl_proc_id)TPL_KERN_REF(kern).running_id)
-    TPL_KERN_REF(kern).running->state = WAITING;
-    
-    /* The internal resource is released. */
-    tpl_release_internal_resource((tpl_proc_id)TPL_KERN_REF(kern).running_id);
-    
-    /* copy it in old slot of tpl_kern */
-/*    TPL_KERN_REF(kern).old = TPL_KERN_REF(kern).running;
-    TPL_KERN_REF(kern).s_old = TPL_KERN_REF(kern).s_running; */
-    
-    /* Start the highest priority task */
-    tpl_start(CORE_ID_OR_NOTHING(core_id));
-    /* Task switching should occur */
-    TPL_KERN_REF(kern).need_switch = NEED_SWITCH | NEED_SAVE;
-    LOCAL_SWITCH_CONTEXT(core_id)
-  }
-#if WITH_AUTOSAR_TIMING_PROTECTION == YES
-  else
-  {
-    if (FALSE == tpl_tp_on_activate_or_release(TPL_KERN_REF(kern).running_id))
-    {
-      tpl_call_protection_hook(E_OS_PROTECTION_ARRIVAL);
-    }
-    else
-    {
-      tpl_tp_on_start(TPL_KERN_REF(kern).running_id);
-    }    
-  }
-#endif /* WITH_AUTOSAR_TIMING_PROTECTION == YES */
+
+  /*
+   * a task switch will occur. It is time to call the
+   * PostTaskHook while the soon descheduled task is RUNNING
+   */
+  CALL_POST_TASK_HOOK()
+
+  /* the task goes in the WAITING state */
+  TRACE_TASK_WAIT((tpl_proc_id)TPL_KERN_REF(kern).running_id)
+  TPL_KERN_REF(kern).running->state = WAITING;
+
+  /* The internal resource is released. */
+  tpl_release_internal_resource((tpl_proc_id)TPL_KERN_REF(kern).running_id);
+
+  /* Start the highest priority task */
+  tpl_start(CORE_ID_OR_NOTHING(core_id));
+  /* Task switching should occur */
+  TPL_KERN_REF(kern).need_switch = NEED_SWITCH | NEED_SAVE;
+  LOCAL_SWITCH_CONTEXT(core_id)
 }
 #endif
 
@@ -997,7 +965,7 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
         TPL_KERN(core_id).need_schedule = TRUE;
         /* TODO:        result = (tpl_status)E_OK_AND_SCHEDULE; */
       }
-      
+
       result = E_OK;
 
       /*  put it in the list                                            */
@@ -1010,11 +978,11 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
     }
     else /* timing protection forbids the activation of the instance   */
     {
-      /*  OS466: If an attempt is made to activate a task before the 
-       end of an OsTaskTimeFrame then the Operating System module 
-       shall not perform the activation AND 
+      /*  OS466: If an attempt is made to activate a task before the
+       end of an OsTaskTimeFrame then the Operating System module
+       shall not perform the activation AND
        shall call the ProtectionHook() with E_OS_PROTECTION_ARRIVAL. */
-      
+
       result = (tpl_status)E_OS_PROTECTION_ARRIVAL;
       tpl_call_protection_hook(E_OS_PROTECTION_ARRIVAL);
     }
@@ -1077,7 +1045,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_event(
         }
         else /* timing protection forbids the activation of the instance   */
         {
-          /* OS467: If an attempt is made to release a task before the 
+          /* OS467: If an attempt is made to release a task before the
            end of an OsTaskTimeFrame then the Operating System module
            shall not perform the release AND
            shall call the ProtectionHook() with E_OS_PROTECTION_ARRIVAL. */
@@ -1146,7 +1114,7 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
 #else
   result = tpl_activate_task(IDLE_TASK_0_ID + tpl_get_core_id());
 #endif
-  
+
 #if TASK_COUNT > 0
   /*  Look for autostart tasks    */
   for (i = 0; i < TASK_COUNT; i++)
@@ -1212,19 +1180,19 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
 
 
 FUNC(void, OS_CODE) tpl_call_terminate_task_service(void)
-{  
+{
   GET_CURRENT_CORE_ID(core_id)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
   /* lock the kernel */
   LOCK_KERNEL()
 
-  if (FALSE != tpl_get_interrupt_lock_status())  
-  {                                           
+  if (FALSE != tpl_get_interrupt_lock_status())
+  {
     /* enable interrupts :*/
     tpl_reset_interrupt_lock_status();
     /*
-     * tpl_enable_interrupts(); now ?? or wait until TerminateISR 
+     * tpl_enable_interrupts(); now ?? or wait until TerminateISR
      * reschedule and interrupts enabled returning previous API
      * service call OR by signal_handler.
      */
@@ -1233,16 +1201,16 @@ FUNC(void, OS_CODE) tpl_call_terminate_task_service(void)
   if ((TPL_KERN_REF(kern).running->resources) != NULL){
       tpl_release_all_resources((tpl_proc_id)TPL_KERN_REF(kern).running_id);
   }
-  
-  /* error hook */		
+
+  /* error hook */
   PROCESS_ERROR(E_OS_MISSINGEND);
-  
+
   /* unlock the kernel */
   UNLOCK_KERNEL()
-  
+
   /* terminate the task : */
   tpl_terminate_task_service();
-  
+
 }
 
 FUNC(void, OS_CODE) tpl_call_terminate_isr2_service(void)
@@ -1252,12 +1220,12 @@ FUNC(void, OS_CODE) tpl_call_terminate_isr2_service(void)
 
   /*  init the error to no error  */
   VAR(StatusType, AUTOMATIC) result = E_OK;
-  
+
   /*  lock the task structures    */
   LOCK_KERNEL()
-  
+
   /* enable interrupts if disabled */
-  if (FALSE != tpl_get_interrupt_lock_status() )  
+  if (FALSE != tpl_get_interrupt_lock_status() )
   {
     tpl_reset_interrupt_lock_status();
     /*
@@ -1272,14 +1240,14 @@ FUNC(void, OS_CODE) tpl_call_terminate_isr2_service(void)
     tpl_release_all_resources((tpl_proc_id)TPL_KERN_REF(kern).running_id);
     result = E_OS_RESOURCE;
   }
-  
+
   PROCESS_ERROR(result);  /* store terminateISR service id before hook ?*/
 
   tpl_terminate_isr2_service();
-  
+
   /*  unlock the task structures  */
   UNLOCK_KERNEL()
-  
+
 }
 
 #if NUMBER_OF_CORES > 1
@@ -1301,7 +1269,7 @@ FUNC(void, OS_CODE)tpl_multi_schedule(void)
     }
   }
 }
- 
+
 /**
  * tpl_dispatch_context_switch
  *

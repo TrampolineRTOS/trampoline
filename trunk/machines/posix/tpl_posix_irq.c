@@ -4,7 +4,7 @@
  *
  * @section descr File description
  *
- * Trampoline machine dependant functions implementation 
+ * Trampoline machine dependant functions implementation
  * for IRQ handling on posix platform
  *
  * @section copyright Copyright
@@ -30,13 +30,15 @@
 #include <stdlib.h>
 
 #include "tpl_app_config.h"
+#include "tpl_os_interrupt_kernel.h"
+#include "tpl_machine_posix.h"
 
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
 #include "tpl_as_timing_protec.h"
 #endif
 
 /*
- * Table to store the signals used to emulate 
+ * Table to store the signals used to emulate
  * IRQs.
  */
 #if ISR_COUNT > 0
@@ -58,7 +60,7 @@ extern char tpl_cpt_os_task_lock;
  */
 sigset_t signal_set;
 
-/** 
+/**
  * Calls tpl_counter_tick() for each counter declared in the application.
  * tpl_call_counter_tick() implementation is an output of the system generator.
  */
@@ -103,7 +105,7 @@ void tpl_signal_handler(int sig)
     tpl_cpt_os_task_lock++;
 
 #if ((WITH_AUTOSAR == YES) && (SCHEDTABLE_COUNT > 0)) || (ALARM_COUNT > 0)
-    if (signal_for_counters == sig) 
+    if (signal_for_counters == sig)
     {
         tpl_call_counter_tick();
     }
@@ -125,7 +127,7 @@ void tpl_signal_handler(int sig)
             while( (id < ISR_COUNT) && !found)
             {
                 id++;
-                if(id < ISR_COUNT) 
+                if(id < ISR_COUNT)
                 {
                     found  = (sig == signal_for_isr_id[id]);
                 }
@@ -134,7 +136,7 @@ void tpl_signal_handler(int sig)
             if(found)
             {
                 tpl_central_interrupt_handler(id + TASK_COUNT);
-            } 
+            }
             else
             {
                 /* Unknown interrupt request ! */

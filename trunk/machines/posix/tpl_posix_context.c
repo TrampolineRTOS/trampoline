@@ -4,7 +4,7 @@
  *
  * @section descr File description
  *
- * Implementation of internal function of Trampoline posix platform 
+ * Implementation of internal function of Trampoline posix platform
  * for task context creation
  *
  * @section copyright Copyright
@@ -33,6 +33,7 @@
 #include "tpl_os_definitions.h"
 #include "tpl_os_kernel.h"
 #include "tpl_os_types.h"
+#include "tpl_machine_posix.h"
 
 /**
  * global variables used to store the "old" context
@@ -59,7 +60,7 @@ FUNC(void, OS_CODE) tpl_create_context_boot(void)
     context_owner_proc_id = new_proc_id;
 
     /* 12 & 13 : context is ready, jump back to the tpl_create_context */
-    if( 0 == _setjmp(tpl_stat_proc_table[context_owner_proc_id]->context->initial) ) 
+    if( 0 == _setjmp(tpl_stat_proc_table[context_owner_proc_id]->context->initial) )
     {
         _longjmp(tpl_stat_proc_table[IDLE_TASK_ID]->context->current, 1);
     }
@@ -77,15 +78,15 @@ FUNC(void, OS_CODE) tpl_create_context_boot(void)
 FUNC(void, OS_CODE) tpl_create_context_trampoline(int sigid)
 {
     /* 5 : new context created. We go back to tpl_init_context */
-    if( 0==_setjmp(tpl_stat_proc_table[new_proc_id]->context->initial) ) 
+    if( 0==_setjmp(tpl_stat_proc_table[new_proc_id]->context->initial) )
     {
         handler_has_been_triggered = TRUE;
         return;
     }
 
-    /* 
+    /*
      * 9 : we are back after a jump, but no more in signal handling mode
-     * We are ready to boot the new context with a clean stack 
+     * We are ready to boot the new context with a clean stack
      */
     tpl_create_context_boot();
     return;
@@ -106,7 +107,7 @@ FUNC(void, OS_CODE) tpl_create_context(
     /* 1 : save the current mask, and mask our worker signal : SIGUSR1 */
     sigemptyset(&new_mask);
     sigaddset(&new_mask, SIGUSR1);
-    sigprocmask(SIG_BLOCK, &new_mask, &old_mask); 
+    sigprocmask(SIG_BLOCK, &new_mask, &old_mask);
 
     /*
      * 2 : install the new action for our worker signal.
@@ -128,14 +129,14 @@ FUNC(void, OS_CODE) tpl_create_context(
 
     /* 4-a : store data for new context in globals */
     new_proc_id = proc_id;
-    saved_mask = old_mask; 
+    saved_mask = old_mask;
     handler_has_been_triggered = FALSE;
     /* 4-b : send the worker signal */
     kill(getpid(), SIGUSR1);
     /* 4-c : prepare to unblock the worker signal */
     sigfillset(&new_mask);
     sigdelset(&new_mask, SIGUSR1);
-    /* 
+    /*
      * 4-d : unblock the worker signal and wait for it.
      * Once it is arrived, the previous mask is restored.
      */
@@ -149,7 +150,7 @@ FUNC(void, OS_CODE) tpl_create_context(
     sigaltstack(NULL, &new_stack);
     new_stack.ss_flags = SS_DISABLE;
     sigaltstack(&new_stack, NULL);
-    if( ! (old_stack.ss_flags & SS_DISABLE) ) 
+    if( ! (old_stack.ss_flags & SS_DISABLE) )
         sigaltstack(&old_stack, NULL);
     sigaction(SIGUSR1, &old_action, NULL);
     sigprocmask(SIG_SETMASK, &old_mask, NULL);
@@ -161,8 +162,8 @@ FUNC(void, OS_CODE) tpl_create_context(
     if ( 0 == _setjmp(tpl_stat_proc_table[IDLE_TASK_ID]->context->current) )
         _longjmp(tpl_stat_proc_table[new_proc_id]->context->initial,1);
 
-    /* 
-     * 14 : we go back to the caller 
+    /*
+     * 14 : we go back to the caller
      */
     return;
 }
