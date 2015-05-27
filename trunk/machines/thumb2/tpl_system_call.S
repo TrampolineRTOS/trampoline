@@ -23,6 +23,8 @@
  * $URL$
  */
 
+#include "tpl_asm_definitions.h"
+
 	.syntax unified
 	.thumb
 
@@ -33,8 +35,6 @@
 
 /*.include "syscallcount.inc"*/
 	.equ SYSCALL_COUNT , 28
-
-#include "tpl_asm_definitions.h"
 
 #define OS_START_SEC_CODE
 #include "tpl_as_memmap.h"
@@ -229,7 +229,7 @@ tpl_primary_syscall_handler:
 	*/
 	cmp r3, #SYSCALL_COUNT       /* Shall use [r12] */
 	bhs invalid_service_id
-	
+
 	/* __2__
 	* Save registers [r0], [r1], [r2], [lr] on top of stack.
 	* [lr] register holds EXC_RETURN value, giving information about the caller context
@@ -247,15 +247,6 @@ tpl_primary_syscall_handler:
 	mov r2, #NO_NEED_SWITCH_NOR_SCHEDULE
 	strb r2, [r1, #TPL_KERN_OFFSET_NEED_SWITCH]
 	strb r2, [r1, #TPL_KERN_OFFSET_NEED_SCHEDULE]
-
-	/* save volatile registers
-	 * get the context block address
-	 * r1 is already the address of tpl_kern */
-	ldr r2, [r1, #TPL_KERN_OFFSET_S_ELECTED]
-	ldr r2, [r2]
-	stmia r2, {r4-r11}           /* Save r4-r11 into context bloc reg */
-	mrs r1, psp                  /* Get current process stack pointer (psp) value */
-	str r1, [r2, #32]            /* and save it into context bloc sp */
 
 	/*********************************
 	* SYSTEM CALL DISPATCHING STAGE *
@@ -282,6 +273,11 @@ tpl_primary_syscall_handler:
 	push {lr}
 	blx r3
 	pop {lr}
+	/* The return value is in r0
+	*  Save r0 into process user stack.frame, offset KS_RETURN_CODE
+	*/
+	mrs r1, psp                  /* Get current process stack pointer (psp) value */
+	str r0, [r1]
 	
 	/* Do we need to switch context ?
 	 * (requested by system service)
@@ -302,10 +298,9 @@ tpl_primary_syscall_handler:
 	***************************/
 context_switch_swi:
 	/* load the tpl_kern base address */
-	ldr r0, =tpl_kern
-
+	ldr r2, =tpl_kern
 	/* do we need to save the context ? if not, jump to load */
-	ldrb r2, [r0, #TPL_KERN_OFFSET_NEED_SWITCH]
+	ldrb r2, [r2, #TPL_KERN_OFFSET_NEED_SWITCH]
 	tst r2, #NEED_SAVE
 	beq skip_save_context_swi
 
@@ -313,6 +308,12 @@ context_switch_swi:
 	 * SAVES OLD CONTEXT
 	 */
 save_context_swi:
+	ldr r2, =tpl_kern
+	ldr r2, [r2, #TPL_KERN_OFFSET_S_RUNNING]
+	ldr r2, [r2]
+	stmia r2, {r4-r11}           /* Save r4-r11 into context bloc reg */
+	str r1, [r2, #32]            /* r1 holds psp value. Save r1 into context bloc sp */
+
 	/* Context is saved, so the value of r3 will be 1
 	 * [r3] is used for the future call of tpl_run_elected
 	 */
@@ -326,12 +327,6 @@ skip_save_context_swi:
 	 * [r3] is used for the future call of tpl_run_elected
 	 */
 	mov r3, #0
-	/* get back volatile registers
-	 * get the context block address */
-	ldr r1, =tpl_kern
-	ldr r2, [r1, #TPL_KERN_OFFSET_S_ELECTED]
-	ldr r2, [r2]
-	ldmia r2, {r4-r11} /* Load r4-r11 from context bloc reg */
  
 	/*
 	 * LOADS NEW CONTEXT
@@ -353,8 +348,8 @@ load_context_swi:
 	ldr lr, [lr]                             /* jump to context bloc (from static descriptor) */
 
 	ldmia lr, {r4-r11}      /* loads from lr base register into r4 to r11 */
-	ldr r0, [lr, #32]
-	msr psp, r0
+	ldr r1, [lr, #32]
+	msr psp, r1
 
     /********************************************
      * KERNEL EXIT WITHOUT CONTEXT SWITCH STAGE *
@@ -370,7 +365,7 @@ tpl_primary_syscall_handler_exit:
 	/* Moves back EXC_RETURN into lr.
 	 * lr was pushed on stack with statement << stmdb sp!, {r0-r2,lr} >> at beginning of handler call.
 	 */
-	pop {lr}
+	pop {lr}	
 	cpsie i
 
 	bx lr
