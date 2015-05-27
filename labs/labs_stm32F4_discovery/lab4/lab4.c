@@ -6,8 +6,8 @@
 FUNC(int, OS_APPL_CODE) main(void)
 {
   initBoard(BUTTON_NOIT);
-	StartOS(OSDEFAULTAPPMODE);
-	return 0;
+  StartOS(OSDEFAULTAPPMODE);
+  return 0;
 }
 
 DeclareTask(task_0);
@@ -35,7 +35,7 @@ TASK(a_task)
     delay(500);
   }
 
-	TerminateTask();
+  TerminateTask();
 }
 #define APP_Task_a_task_STOP_SEC_CODE
 #include "tpl_memmap.h"
