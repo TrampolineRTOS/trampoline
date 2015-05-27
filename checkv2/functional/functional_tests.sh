@@ -87,7 +87,7 @@ else
 			#if goil succeed (Makefile has been created) -> do make and execute file
 			if `test -f Makefile`
 			then
-				make -s
+				make CFLAGS+="-Wno-unused-but-set-variable" -s
 				./${i}_exe >> ../functional_results.log
 			fi
 			

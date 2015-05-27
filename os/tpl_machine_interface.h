@@ -164,11 +164,11 @@ extern FUNC(void, OS_CODE) tpl_reset_interrupt_lock_status(void);
  * @param delay time (in tpl_time unit) since now the expire function will be
  * called (cannot be zero)
  *
- * @see #tpl_cancel_watchdog
- * @see #tpl_get_local_current_date
+ * @see #tpl_cancel_tpwatchdog
+ * @see #tpl_get_tptimer
  */
-extern FUNC(void, OS_CODE) tpl_set_watchdog(
-    VAR(tpl_time, AUTOMATIC) delay
+extern FUNC(void, OS_CODE) tpl_set_tpwatchdog(
+    CONST(tpl_time, AUTOMATIC) delay
 );
 
 /**
@@ -177,9 +177,9 @@ extern FUNC(void, OS_CODE) tpl_set_watchdog(
  * Cancels the watchdog before its expiration. This has no effet if the
  * watchdog has not been started before.
  *
- * @see #tpl_set_watchdog
+ * @see #tpl_set_tpwatchdog
  */
-extern FUNC(void, OS_CODE) tpl_cancel_watchdog(void);
+extern FUNC(void, OS_CODE) tpl_cancel_tpwatchdog(void);
 
 /**
  * @internal
@@ -189,7 +189,7 @@ extern FUNC(void, OS_CODE) tpl_cancel_watchdog(void);
  *
  * @return the current date when called
  */
-extern FUNC(tpl_time, OS_CODE) tpl_get_local_current_date(void);
+extern FUNC(tpl_time, OS_CODE) tpl_get_tptimer(void);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 
 #if WITH_STACK_MONITORING == YES

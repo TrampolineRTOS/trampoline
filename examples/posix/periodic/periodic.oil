@@ -43,6 +43,7 @@ CPU only_one_periodic_task {
     ACTIVATION = 1;
     SCHEDULE = FULL;
   };
+
   TASK stop {
     PRIORITY = 2;
     AUTOSTART = FALSE;

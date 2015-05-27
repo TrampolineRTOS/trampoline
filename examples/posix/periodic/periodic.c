@@ -22,5 +22,6 @@ TASK(my_periodic_task)
 TASK(stop)
 {
   CancelAlarm(one_second);
+  printf("Terminaison\n");
   TerminateTask();
 }
