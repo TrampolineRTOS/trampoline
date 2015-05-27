@@ -58,39 +58,39 @@ endif
 
 ifdef ARCH_PATH
 -include $(ARCH_PATH)/Makefile
-CFLAGS += -I$(ARCH_PATH)
-CPPFLAGS += -I$(ARCH_PATH)
+override CFLAGS += -I$(ARCH_PATH)
+override CPPFLAGS += -I$(ARCH_PATH)
 TEMP_SOURCE_DIRS += $(ARCH_PATH)
 endif
 
 ifdef CHIP_PATH
 -include $(CHIP_PATH)/Makefile
-CFLAGS += -I$(CHIP_PATH)
-CPPFLAGS += -I$(CHIP_PATH)
+override CFLAGS += -I$(CHIP_PATH)
+override CPPFLAGS += -I$(CHIP_PATH)
 TEMP_SOURCE_DIRS += $(CHIP_PATH)
 endif
 
 ifdef BOARD_PATH
 -include $(BOARD_PATH)/Makefile
-CFLAGS += -I$(BOARD_PATH)
-CPPFLAGS += -I$(BOARD_PATH)
+override CFLAGS += -I$(BOARD_PATH)
+override CPPFLAGS += -I$(BOARD_PATH)
 TEMP_SOURCE_DIRS += $(BOARD_PATH)
 endif
 
 
 
 #add trampoline paths in the include path. 
-CPPFLAGS += -I$(OIL_OUTPUT_PATH) 
-CPPFLAGS += -I$(OS_PATH) -I$(COM_PATH) -I$(IOC_PATH) -I$(DEBUG_PATH)
-CFLAGS += -I$(OIL_OUTPUT_PATH)
-CFLAGS += -I$(OS_PATH) -I$(COM_PATH) -I$(IOC_PATH) -I$(DEBUG_PATH)
+override CPPFLAGS += -I$(OIL_OUTPUT_PATH) 
+override CPPFLAGS += -I$(OS_PATH) -I$(COM_PATH) -I$(IOC_PATH) -I$(DEBUG_PATH)
+override CFLAGS += -I$(OIL_OUTPUT_PATH)
+override CFLAGS += -I$(OS_PATH) -I$(COM_PATH) -I$(IOC_PATH) -I$(DEBUG_PATH)
 #############################################################################
 # Autosar specific Configuration
 #############################################################################
 ifeq ($(strip $(AUTOSAR)),true)
   AUTOSAR_DEP = AUTOSAR
-  CFLAGS += -I$(AUTOSAR_PATH)
-  CPPFLAGS += -I$(AUTOSAR_PATH)
+  override CFLAGS += -I$(AUTOSAR_PATH)
+  override CPPFLAGS += -I$(AUTOSAR_PATH)
   AUTOSAR_MAKE_FLAG = AUTOSAR=true
 else
   AUTOSAR_DEP =

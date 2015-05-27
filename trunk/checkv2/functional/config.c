@@ -32,6 +32,8 @@
  * $URL$
  */
 
+#define _POSIX_SOURCE
+
 #include "tpl_app_define.h"
 
 #if WITH_AUTOSAR == YES
@@ -47,6 +49,7 @@
 #include "embUnit.h"
 #include "config.h"
 
+#include <sys/types.h>
 #include <signal.h>
 #include <unistd.h>
 #include <assert.h>

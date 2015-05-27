@@ -15,4 +15,4 @@ ifeq "${COMPILER_EXE}" "gcc"
     endif
 endif
 
-CFLAGS += -I$(TPL_BASE_PATH)/viper
+override CFLAGS += -I$(TPL_BASE_PATH)/viper

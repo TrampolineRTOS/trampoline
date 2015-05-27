@@ -25,6 +25,8 @@
  * $URL$
  */
 
+#define _XOPEN_SOURCE 501
+#include <setjmp.h>
 #include <signal.h>
 #include <stdlib.h>
 #include <string.h>
@@ -50,9 +52,9 @@ FUNC(void, OS_CODE) tpl_create_context_boot(void)
     tpl_proc_id context_owner_proc_id;
 
     /*
-     * 10 : restore the mask modified by _longjmp so that
+     * 10 : restore the mask modified by longjmp so that
      * all tasks are executed with the same mask
-     * Commented out since _longjmp/_setjmp replace longjmp/setjmp
+     * Commented out since longjmp/setjmp replace longjmp/setjmp
      */
     sigprocmask(SIG_SETMASK, &saved_mask, NULL);
 
@@ -60,9 +62,9 @@ FUNC(void, OS_CODE) tpl_create_context_boot(void)
     context_owner_proc_id = new_proc_id;
 
     /* 12 & 13 : context is ready, jump back to the tpl_create_context */
-    if( 0 == _setjmp(tpl_stat_proc_table[context_owner_proc_id]->context->initial) )
+    if( 0 == setjmp(tpl_stat_proc_table[context_owner_proc_id]->context->initial) )
     {
-        _longjmp(tpl_stat_proc_table[IDLE_TASK_ID]->context->current, 1);
+        longjmp(tpl_stat_proc_table[IDLE_TASK_ID]->context->current, 1);
     }
 
     /* We are back for the first dispatch. Let's go */
@@ -78,7 +80,7 @@ FUNC(void, OS_CODE) tpl_create_context_boot(void)
 FUNC(void, OS_CODE) tpl_create_context_trampoline(int sigid)
 {
     /* 5 : new context created. We go back to tpl_init_context */
-    if( 0==_setjmp(tpl_stat_proc_table[new_proc_id]->context->initial) )
+    if( 0==setjmp(tpl_stat_proc_table[new_proc_id]->context->initial) )
     {
         handler_has_been_triggered = TRUE;
         return;
@@ -159,8 +161,8 @@ FUNC(void, OS_CODE) tpl_create_context(
      * 7 & 8 : we jump back to the created context.
      * This time, we are no more in signal handling mode
      */
-    if ( 0 == _setjmp(tpl_stat_proc_table[IDLE_TASK_ID]->context->current) )
-        _longjmp(tpl_stat_proc_table[new_proc_id]->context->initial,1);
+    if ( 0 == setjmp(tpl_stat_proc_table[IDLE_TASK_ID]->context->current) )
+        longjmp(tpl_stat_proc_table[new_proc_id]->context->initial,1);
 
     /*
      * 14 : we go back to the caller
