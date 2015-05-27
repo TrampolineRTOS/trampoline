@@ -41,6 +41,8 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
+#include "tpl_machine_posix.h"
+
 extern volatile int tpl_locking_depth;
 extern char tpl_user_task_lock;
 extern char tpl_cpt_os_task_lock;
@@ -60,7 +62,7 @@ extern void viper_kill(void);
  */
 void idle_function(void)
 {
-    while(1) pause(); 
+    while(1) pause();
 }
 
 void tpl_shutdown(void)
@@ -74,7 +76,7 @@ void tpl_shutdown(void)
 volatile int x = 0;
 int cnt = 0;
 /*
- * tpl_get_task_lock is used to lock a critical section 
+ * tpl_get_task_lock is used to lock a critical section
  * around the task management in the os.
  */
 void tpl_get_task_lock(void)
@@ -117,7 +119,7 @@ void tpl_release_task_lock(void)
     {
         _longjmp((*new_context)->current, 1);
     }
-    else if ( 0 == _setjmp((*old_context)->current) ) 
+    else if ( 0 == _setjmp((*old_context)->current) )
     {
         _longjmp((*new_context)->current, 1);
     }
@@ -134,7 +136,7 @@ void tpl_release_task_lock(void)
     {
         _longjmp((*new_context)->current, 1);
     }
-    else if ( 0 == _setjmp((*old_context)->current) ) 
+    else if ( 0 == _setjmp((*old_context)->current) )
     {
         _longjmp((*new_context)->current, 1);
     }
@@ -182,7 +184,7 @@ void tpl_osek_func_stub( tpl_proc_id task_id )
 
 void quit(int n)
 {
-    ShutdownOS(E_OK);  
+    ShutdownOS(E_OK);
 }
 
 /*
@@ -194,8 +196,8 @@ void tpl_init_machine(void)
     tpl_proc_id proc_id;
 
     /* create the context of each tpl_proc */
-    for(    proc_id = 0; 
-            proc_id < TASK_COUNT+ISR_COUNT+1; 
+    for(    proc_id = 0;
+            proc_id < TASK_COUNT+ISR_COUNT+1;
             proc_id++)
     {
         tpl_create_context(proc_id);
