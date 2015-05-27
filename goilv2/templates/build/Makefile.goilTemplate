@@ -103,7 +103,7 @@ if exists OS::BUILD_S::CFLAGS then
 # CFLAGS: flags used for the C compilation process
 # it should be declared as CFLAGS in the OS section of the .oil file
 # (many times allowed).
-CFLAGS = %
+override CFLAGS += %
     do !flag::VALUE
     between % %
     after %
@@ -118,7 +118,7 @@ if exists OS::BUILD_S::CPPFLAGS then
 # CPPFLAGS: flags used for the C++ compilation process
 # it should be declared as CPPFLAGS in the OS section of the .oil file
 # (many times allowed).
-CPPFLAGS = %
+override CPPFLAGS += %
     do !flag::VALUE
     between % %
     after %
