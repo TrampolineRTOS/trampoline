@@ -174,7 +174,7 @@ FUNC(tpl_bool, OS_CODE) tpl_tp_on_terminate_or_wait(
         /* If the watchdog is active, cancel it */ 
         if(tp->watchdogs[EXECUTIONBUDGET].is_active == TRUE)
         {
-            tpl_cancel_watchdog();
+            tpl_cancel_tpwatchdog();
         }
         /* and we reset the EXECUTIONBUDGET watchdog data for the next instance */
         tp->watchdogs[EXECUTIONBUDGET].remaining = s_proc->executionbudget;        
@@ -196,7 +196,7 @@ FUNC(tpl_bool, OS_CODE) tpl_tp_on_start(
 
     if(tp != NULL)
     {
-        now = tpl_get_local_current_date();
+        now = tpl_get_tpltimer();
    /* printf("TPL_TP : %s(proc %u @ %u)\n", __FUNCTION__, proc_id,  (unsigned int)now); */
 
         /* 
@@ -219,7 +219,7 @@ FUNC(tpl_bool, OS_CODE) tpl_tp_on_start(
     /* printf("TPL_TP : %s(proc %u @ %u): set expiry point @%d (watchid : %u, remaining : %d)\n", __FUNCTION__, proc_id,  (unsigned int)now, now + tp->watchdogs[min_id].remaining, min_id, tp->watchdogs[min_id].remaining); */
         tpl_tp_set_watchdog_id(min_id);
 
-        tpl_set_watchdog(now + tp->watchdogs[min_id].remaining);
+        tpl_set_tpwatchdog(now + tp->watchdogs[min_id].remaining);
     }
     return TRUE;
 }
@@ -234,13 +234,13 @@ FUNC(tpl_bool, OS_CODE) tpl_tp_on_preempt(
     CONSTP2VAR(tpl_timing_protection, AUTOMATIC, OS_APPL_DATA)  
         tp = tpl_stat_proc_table[proc_id]->timing_protection;
     VAR(unsigned int, AUTOMATIC) c;
-    /* printf("TPL_TP : %s(proc %u @ %u)\n", __FUNCTION__, proc_id, (unsigned int)tpl_get_local_current_date()); */
+    /* printf("TPL_TP : %s(proc %u @ %u)\n", __FUNCTION__, proc_id, (unsigned int)tpl_get_tptimer()); */
     if(tp != NULL)
     {
         now = tpl_get_local_current_date();
 
         /* First, we cancel the expiry point */
-        tpl_cancel_watchdog();
+        tpl_cancel_tpwatchdog();
 
         /* Then we update the remaining budgets of active watchdogs */
         for(c = 0; c < NB_WATCHDOGS_PER_PROC; c++)
