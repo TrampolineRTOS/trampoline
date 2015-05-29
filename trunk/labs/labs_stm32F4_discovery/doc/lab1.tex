@@ -15,6 +15,13 @@
 \usepackage{parskip}
 \usepackage[nosolutionfiles]{answers}
 \usepackage{listings}
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata,shapes,snakes,patterns,decorations}
+\usetikzlibrary{shapes.geometric,shapes.misc}
+\usetikzlibrary{shadows}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usepackage{adjustbox}
 
 \newcommand{\normaltilde}{{\raise.17ex\hbox{$\scriptstyle\mathtt{\sim}$}}}
 \newcommand{\unixcl}[1]{\texttt{\fcolorbox{black}{gray!20}{#1}}}
@@ -304,6 +311,218 @@ Using services \lstinline{GetAlarm}, \lstinline{SetRelAlarm} and \lstinline{Canc
 \item If the button is pressed and alarm \lstinline{blink_blink} is started, cancel the alarm.
 \end{itemize}
 
+\subsection{Third application}
 
+Requirements change. Now blinking needs an Init code
+(runs once when the alarm is started) and a Final code (runs once when the alarm is stopped).
+This corresponds to the following diagram:
+
+\begin{center}
+\begin{adjustbox}{width=14cm,keepaspectratio}
+\begin{tikzpicture}
+\draw[step=.5cm,gray!20,very thin] (-0.5, -0.5) grid (16.5,1.5);
+\draw [->] (-0.5,0) -- (16,0);
+\draw (0,0) rectangle (1.2,1);
+\node at (0.6,0.5) {Init};
+\draw (1.2,0) rectangle (2.7,1);
+\node at (1.95,0.5) {Blink};
+\draw (4,0) rectangle (5.5,1);
+\node at (4.75,0.5) {Blink};
+\draw (8,0) rectangle (9.5,1);
+\node at (8.75,0.5) {Blink};
+\foreach \x in {0, 4}
+  \draw [xshift=\x cm,thick,<->] (0,-0.5) -- (4,-0.5); 
+\draw [xshift=8 cm,thick,<-(] (0,-0.5) -- (3,-0.5); 
+\draw [xshift=11cm] (0,0) rectangle (1.2,1);
+\node [xshift=11cm] at (0.6,0.5) {Final};
+\node [rectangle callout, fill=green!50, callout absolute pointer={(0,1)}] at (-1,2) {Start request};
+\node [rectangle callout, fill=red!50, callout absolute pointer={(11,1)}] at (12,2) {Stop request};
+\end{tikzpicture}
+\end{adjustbox}
+\end{center}
+
+
+\begin{ex}
+Modify the application to take the new requirements into account. Use 3 basic tasks. Init and Final blink their own LED once (use delay to see the execution).
+\end{ex}
+
+\begin{ex}
+Same question but with only one extended task.
+\end{ex}
+
+\subsection{Chase}
+
+Program a chase\footnote{chenillard in French} with a 0.5s period. To do it, use 4 periodic tasks. Each periodic task manages a LED. The chase effect is done by using alarms with a time shift between them.
+
+When the \BB\ is pressed, the chase direction changes.
+
+\section{Shared object access protection}
+
+\subsection{Goal}
+
+To show resources usage, we will use a bad program that allows to corrupt a shared global variable which is not protected against concurrent writes. We will see different ways to prevent this wrong behavior by using resources (standard and internal) or other solutions (preemption and priority).
+
+\subsection{Application requirements}
+
+The application has 3 tasks and 2 \textbf{volatile} global variables: \texttt{val} and \texttt{activationCount} as shown in figure \ref{fig:appdiag}:
+
+\def\alarm#1#2{
+  \node[alarm](#1) [#2] {};
+  \coordinate (a) at ($(#1.north)$);
+  \coordinate (b) at ($(#1.north east)$);
+  \coordinate (c) at ($(#1.north west)$);
+  \coordinate (d) at ($(#1)$);
+  \draw[thick] ($(a)+(-0.1,0)$) rectangle ($(a)+(0.1,0.1)$);
+  \draw[rotate=-45,thick] ($(b)+(-0.05,0)$) rectangle ($(b)+(0.05,0.1)$);
+  \draw[rotate=45,thick] ($(c)+(-0.05,0)$) rectangle ($(c)+(0.05,0.1)$);
+  \draw ($(d)+(0.3,0)$) -- (d) -- ($(d)+(0,0.3)$);
+  \node [font=\scriptsize,below=0.5mm of #1] {{\em Alarm}}
+}
+
+\def\sharedvar#1#2#3{
+  \node (#1) [#2] {#1};
+  \coordinate (a) at ($(#1.north #3) + (0,0.2)$);
+  \coordinate (b) at ($(#1.south #3) + (0,-0.2)$);
+  \draw[ultra thick] (a) -- (b);
+  \draw ($(a)+(-0.1,0)$) -- ($(a)+(0.1,0)$); 
+  \draw ($(b)+(-0.1,0)$) -- ($(b)+(0.1,0)$) 
+}
+
+\def\varrect#1{
+  \draw ($(#1.south west)$) rectangle ($(#1.north east)$)
+}
+
+\begin{figure}[htb] %  figure placement: here, top, bottom, or page
+   \centering
+   \begin{tikzpicture}[
+   task/.style={draw,very thick,fill=white,drop shadow={opacity=0.25},text width=2.5cm, text centered, minimum height=1.5cm},
+   alarm/.style={draw,thick,circle,fill=white,drop shadow={opacity=0.25},text width=.5cm}
+   ]
+   \node[task](periodicTask) at (0,0) {periodicTask};
+   \node[task](bgTask) [above=of periodicTask] {bgTask};
+   \node[task](displayTask) [above=of bgTask] {displayTask};
+   \alarm{activateDisplay}{left=20mm of displayTask};
+   \alarm{activatePeriodic}{left=20mm of periodicTask};
+   \sharedvar{val}{left=of bgTask}{east};
+   \sharedvar{activationCount}{right=of periodicTask}{west};
+   \sharedvar{LED4}{right=of displayTask}{west};
+   \sharedvar{LED5}{above right=of displayTask}{west};
+   \varrect{LED4};
+   \varrect{LED5};
+   \draw [thick,<->] (val.east) -- (bgTask.west);
+   \draw [thick,->] (val.north east) -- ++(5mm,0) |- ($(displayTask.south west) + (0,2mm)$);
+   \draw [thick,<->] (val.south east) -- ++(5mm,0) |- ($(periodicTask.north west) + (0,-2mm)$);
+
+   \draw [thick,->] (activateDisplay.east) -- ++(5mm,0) -- ++(0,1.5mm) -- ++(3mm,-3mm) -- ++ (0mm,1.5mm) -- (displayTask);
+   \node at ($(activateDisplay.east) + (6.5mm,-3mm)$) {1s};
+   \node[font=\scriptsize] at ($(activateDisplay.east) + (9mm,3mm)$) {{\em ActivateTask}};
+   \draw [thick,->] (activatePeriodic.east) -- ++(5mm,0) -- ++(0,1.5mm) -- ++(3mm,-3mm) -- ++ (0mm,1.5mm) -- (periodicTask);
+   \node at ($(activatePeriodic.east) + (6.5mm,-3mm)$) {100ms};
+   \node[font=\scriptsize] at ($(activatePeriodic.east) + (9mm,3mm)$) {{\em ActivateTask}};
+   \draw [thick,<->] (activationCount.west) -- (periodicTask);
+   \draw [thick,->] (activationCount.north west) -- ++(-5mm,0) |- ($(displayTask.south east) + (0,2mm)$);
+   \draw [thick,->] (displayTask) -- (LED4);
+   \draw [thick,->] (displayTask.north) |- (LED5);
+   \end{tikzpicture} 
+   \caption{Application diagram}
+   \label{fig:appdiag}
+\end{figure}
+
+\begin{itemize}
+\item a background task called \texttt{bgTask}, active at start (\texttt{AUTOSTART = TRUE}) and that never ends. In an infinite loop this task increments then decrements the global variable \texttt{val}. This task has a priority equal to 1.
+
+\item a periodic task called \texttt{periodicTask}, priority 10, that runs every 100ms. This periodic task increments the global variable \texttt{activationCount} which is initialized to 0 at start. Then if \texttt{activationCount} is odd, \texttt{val} is incremented, otherwise it is decremented.
+
+\item a periodic task \texttt{displayTask}, priority 20, that runs every second. If \texttt{val} is inside interval $[-1;2]$, \LEDgreen\ is switched on and \LEDred\ is switched off. Otherwise, \LEDred\ is switched on and \LEDgreen\ is switched off.
+\end{itemize}
+
+Describe the application in OIL and program it in C.
+
+\begin{ex}
+Does the behavior correspond to what you expect ? Why ?
+\end{ex}
+
+\subsection{Global variable protection}
+
+\begin{ex}
+Update the OIL file and the C program to protect the access to the global variable \texttt{val}. Use a resource to do it.
+\end{ex}
+
+The resource priority is automatically computed by goil according to the priorities of the tasks which use it.
+
+\begin{ex}
+What priority will be given to the resource ?
+\end{ex}
+
+The OIL compiler (goil) generates many files in the directory bearing the same name
+as the oil file (less the .oil suffix). Among them 3 are interesting:
+\begin{itemize}
+\item \texttt{tpl_app_define.h}
+\item \texttt{tpl_app_config.h}
+\item \texttt{tpl_app_config.c}
+\end{itemize}
+
+The file \texttt{tpl_app_config.c} contains the tasks' descriptors as long as all other data structures. These structures are commented.
+
+\begin{ex}
+For each task, find the priority computed by goil and the identifier. Is is the same as defined in the OIL file? if not is it a problem?
+\end{ex}
+
+\begin{ex}
+What is the priority of the resource? Is it compliant with the PCP rule?
+\end{ex}
+
+\subsection{Protection with an internal resource}
+
+An internal resource is automatically taken when the task gets the CPU. Replace the standard resource by an internal resource in the OIL file. Remove the \texttt{GetResource} and \texttt{ReleaseResource} in the C file.
+
+\begin{ex}
+What happens ? Why ?
+\end{ex}
+
+Modify the task \texttt{bgTask}: instead of infinite loop, use a \texttt{ChainTask} to the \texttt{bgTask} (ie: the task chains to itself).
+
+\begin{ex}
+What happens ? Explain.
+\end{ex}
+
+\section{Adding a service into Trampoline}
+
+In this part we are going to see how to add semaphore services into Trampoline. We want to services : \lstinline{SemWait} to lock a semaphore and \lstinline{SemPost} to unlock a semaphore.
+
+\subsection{Adding a semaphore object}
+
+Let's start with the data. 
+
+\paragraph{The first thing} to do is to provide an object type for semaphores in C. We need a \lstinline{struct} with four members. \lstinline{token} is the current number of token available. \lstinline{size} is the number of tasks waiting in \lstinline{waiting_tasks}. \lstinline{index} is write index in \lstinline{waiting_tasks}. \lstinline{waiting_tasks} is a ring buffer to store the tasks waiting for the semaphore.
+
+\begin{lstlisting}
+typedef struct {
+  uint32      token;
+  uint32      size;
+  unit32      index;
+  tpl_task_id waiting_tasks[TASK_COUNT];
+} tpl_semaphore;
+\end{lstlisting}
+
+\lstinline{TASK_COUNT} is computed by goil and is equal to the number of tasks in the application. 
+
+\paragraph{The second thing} is to provide an object type for semaphores in the OIL description. This is done in the \lstinline{IMPLEMENTATION} part of the OIL description. Normally the OIL standard does not allow to create new object types. This has been relaxed in goil.
+
+\begin{lstlisting}
+SEMAPHORE [] {
+  UINT32 TOKEN;
+};
+\end{lstlisting}
+
+The declare a new object type : \lstinline{SEMAPHORE} with an \lstinline{UINT32} attribute, \lstinline{TOKEN}. The \lstinline{[]} means multiple instances of semaphore can be used.
+Now, semaphores can be declared in the OIL file:
+
+\begin{lstlisting}
+SEMAPHORE sem1 { TOKEN = 3; };
+SEMAPHORE sem2 { TOKEN = 1; };
+\end{lstlisting}
+
+\paragraph{The third thing} to do is to write a template that will output a C file with a \lstinline{tpl_semaphore} instance for each \lstinline{SEMAPHORE} object in the OIL file. 
 
 \end{document}  
