@@ -14,14 +14,17 @@ DeclareAlarm(blink_blink);
 
 TASK(read_button)
 {
+  static int a = 0;
   if (readButton() == BUTTON_PRESSED) {
     TickType remainingTicks;
     ledToggle(BLUE);
-    if (GetAlarm(blink_blink, &remainingTicks) == E_OS_NOFUNC) {
+    if (a == 0) {
       SetRelAlarm(blink_blink, 100, 100);
+      a = 1;
     }
     else {
       CancelAlarm(blink_blink);
+      a = 0;
     }
   }
 	TerminateTask();

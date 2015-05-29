@@ -30,6 +30,12 @@ if [MESSAGES length] > 0 then
   let APIUSED += APIMAP["message"]
 end if
 
+if exists SEMAPHORE then
+  if [SEMAPHORE length] > 0 then
+    let APIUSED += APIMAP["semaphore"]
+  end if
+end if
+
 # AUTOSAR
 if OS::SCALABILITYCLASS > 0 then
   let APIUSED += APIMAP["counter"]

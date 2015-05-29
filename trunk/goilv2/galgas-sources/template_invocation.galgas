@@ -279,11 +279,10 @@ proc templateInvocation
           else
             userTemplateDir = inPath + "/" + inPrefix
           end
-          let @string fullTemplatePath = userTemplateDir + "/" + inTemplateName + ".goilTemplate"
+          let @string fullTemplatePath = @string.stringWithCurrentDirectory + "/" + userTemplateDir + "/" + inTemplateName + ".goilTemplate"
           pathList += !fullTemplatePath
           found = [fullTemplatePath fileExists]
           if found then
-            #displayPathList !pathList;
             grammar template_grammar in @lstring. new { !fullTemplatePath !@location.here} !inPrefix !inPath !inTemplateDirectory !inTemplateVariableMap !?ioResultingString ?* ?*
           end
         end

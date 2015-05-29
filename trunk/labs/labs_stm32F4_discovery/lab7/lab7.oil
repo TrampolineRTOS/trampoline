@@ -5,27 +5,46 @@ IMPLEMENTATION trampoline {
     /* This fix the default STACKSIZE of tasks */
     TASK {
         UINT32 STACKSIZE = 300 ;
-    } ;
+    };
 
     /* This fix the default STACKSIZE of ISRs */
     ISR {
         UINT32 STACKSIZE = 200 ;
-    } ;
+    };
+    
+    SEMAPHORE [] {
+      UINT32 TOKEN;
+    };
+
 };
 
 CPU lab1 {
+  /*
+   * API des semaphores
+   */
+  APICONFIG semaphore {
+    ID_PREFIX = OS;
+    FILE = "tpl_os_semaphore_kernel";
+    HEADER = "tpl_os_semaphore";
+    SYSCALL SemWait {
+      KERNEL = tpl_sem_wait_service;
+      RETURN_TYPE = StatusType
+        : "E_OK:    No error (Standard & Extended)\n"
+          "E_OS_ACCESS: The calling task has a max activation greater than one";
+      ARGUMENT sem_id { KIND = CONST; TYPE = SemType; }
+        : "The id of the semaphore to get.";
+    } : "Wait for semaphore res_id.";
+  };
+
   OS config {
     STATUS = EXTENDED;
-    PRETASKHOOK = TRUE;
-    POSTTASKHOOK = TRUE;
-    
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../..";
-      APP_SRC = "lab4.c";
-      APP_NAME = "lab4_exe";
+      APP_SRC = "lab7.c";
+      APP_NAME = "lab7_exe";
       CFLAGS  = "-g -O0 -Wall -Wno-unused-but-set-variable -Wformat -std=c99 -mcpu=cortex-m4 -Wmissing-field-initializers -mthumb -mfloat-abi=soft -mfpu=fpv4-sp-d16 -nostartfiles"; 
       ASFLAGS = "-g -Wall -mcpu=cortex-m4 -mthumb --fatal-warnings -mfloat-abi=soft -mfpu=fpv4-sp-d16";
-      LDFLAGS = "--fatal-warnings --warn-common --no-undefined -L/usr/local/dev-arm/i386-Darwin-arm-gcc-4.9.2/arm-eabi/lib/thumb -lc -L/usr/local/dev-arm/i386-Darwin-arm-gcc-4.9.2/lib/gcc/arm-eabi/4.9.2 -lgcc -Map=lab4.map";
+      LDFLAGS = "--fatal-warnings --warn-common --no-undefined -L/usr/local/dev-arm/i386-Darwin-arm-gcc-4.9.2/arm-eabi/lib/thumb -lc -L/usr/local/dev-arm/i386-Darwin-arm-gcc-4.9.2/lib/gcc/arm-eabi/4.9.2 -lgcc -Map=lab7.map";
       COMPILER = "arm-eabi-gcc";
       ASSEMBLER = "arm-eabi-as";
       LINKER = "arm-eabi-ld";
@@ -42,24 +61,20 @@ CPU lab1 {
   
   APPMODE std {};
   
-  EVENT ev_0 {
-    MASK = AUTO;
-  };
-  
   TASK a_task {
-    PRIORITY = 8;
+    PRIORITY = 1;
     AUTOSTART = TRUE {
       APPMODE = std;
     };
     ACTIVATION = 1;
     SCHEDULE = FULL;
-    EVENT = ev_0;
   };
   
-  TASK task_0 {
-    PRIORITY = 1;
-    AUTOSTART = FALSE;
-    ACTIVATION = 2;
-    SCHEDULE = FULL;
+  SEMAPHORE sem1 {
+    TOKEN = 3;
+  };
+
+  SEMAPHORE sem2 {
+    TOKEN = 1;
   };
 };

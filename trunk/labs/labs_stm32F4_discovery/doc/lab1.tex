@@ -523,6 +523,18 @@ SEMAPHORE sem1 { TOKEN = 3; };
 SEMAPHORE sem2 { TOKEN = 1; };
 \end{lstlisting}
 
-\paragraph{The third thing} to do is to write a template that will output a C file with a \lstinline{tpl_semaphore} instance for each \lstinline{SEMAPHORE} object in the OIL file. 
+\paragraph{The third thing} is to write a template that will C source code with a \lstinline{tpl_semaphore} instance for each \lstinline{SEMAPHORE} object in the OIL file. To do that, we have to provide a template directory hierarchy as in \lstinline{goilv2/templates}. This hierarchy is put in the directory where the application source files are. Since we generate code, the hierarchy is \lstinline{goilv2/code}. Our code  will be embedded in the \lstinline{tpl_app_config.c} and \lstinline{tpl_app_define.h}. The templates are \lstinline{custom_app_config.goilTemplate} and \lstinline{custom_app_define.goilTemplate} respectively.
+
+In the first one we have to:
+\begin{enumerate}
+\item generate semaphore object identifiers. A semaphore object identifier has the \lstinline{SemType} type;
+\item generate semaphore objects. A semaphore object has the \lstinline{tpl_semaphore} type;
+\item generate a semaphore table indexed by semaphore object identifiers. Each element of this table is a pointer to the corresponding semaphore object.
+\end{enumerate}
+
+\subsection{Semaphore services}
+
+Semaphore services 
+
 
 \end{document}  

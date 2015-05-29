@@ -962,6 +962,8 @@ end foreach
 %
   end if
 
+template if exists custom_app_config_c
+
 template heap_readylist
 
 template tpl_kern
