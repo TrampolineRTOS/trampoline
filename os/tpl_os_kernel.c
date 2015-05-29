@@ -851,7 +851,6 @@ FUNC(void, OS_CODE) tpl_terminate(void)
   TPL_KERN_REF(kern).s_old = TPL_KERN_REF(kern).s_running;*/
 }
 
-#if EXTENDED_TASK_COUNT > 0
 /**
  * @internal
  *
@@ -892,7 +891,6 @@ FUNC(void, OS_CODE) tpl_block(void)
   TPL_KERN_REF(kern).need_switch = NEED_SWITCH | NEED_SAVE;
   LOCAL_SWITCH_CONTEXT(core_id)
 }
-#endif
 
 /**
  * @internal
@@ -991,12 +989,34 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
   return result;
 }
 
+
+/**
+ * @internal
+ *
+ * This function releases a task which is in the WAITING state
+ * The task become READY and is put in the ready list.
+ * This function is used by tpl_set_event
+ *
+ * @param task_id           id of the task
+ */
+FUNC(void, OS_CODE) tpl_release(CONST(tpl_task_id, AUTOMATIC) task_id)
+{
+  GET_PROC_CORE_ID(task_id, core_id)
+  CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) task = tpl_dyn_proc_table[task_id];
+  /*  set the state to READY  */
+  task->state = (tpl_proc_state)READY;
+  /*  put the task in the READY list          */
+  tpl_put_new_proc(task_id);
+  /*  notify a scheduling needs to be done    */
+  TPL_KERN(core_id).need_schedule = TRUE;
+}
+
 /**
  * @internal
  *
  * This function is used by SetEvent and by tpl_raise_alarm
  *
- * @param task              Pointer to the task descriptor
+ * @param task_id           id of the task
  * @param incoming_event    Event mask
  */
 FUNC(tpl_status, OS_CODE) tpl_set_event(
@@ -1031,16 +1051,8 @@ FUNC(tpl_status, OS_CODE) tpl_set_event(
         if (tpl_tp_on_activate_or_release(task_id) == TRUE)
         {
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-          GET_PROC_CORE_ID(task_id, core_id)
-          /*  set the state to READY  */
-          task->state = (tpl_proc_state)READY;
-          /*  put the task in the READY list          */
           TRACE_TASK_RELEASED(task_id,incoming_event)
-          tpl_put_new_proc(task_id);
-
-          /*  notify a scheduling needs to be done    */
-          TPL_KERN(core_id).need_schedule = TRUE;
-/* TODO:           result = (tpl_status)E_OK_AND_SCHEDULE; */
+          tpl_release(task_id);
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
         }
         else /* timing protection forbids the activation of the instance   */
