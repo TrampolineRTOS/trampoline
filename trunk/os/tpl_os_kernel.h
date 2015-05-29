@@ -48,7 +48,7 @@
 /**
  * @typedef tpl_os_state
  *
- * States of Trampoline : 
+ * States of Trampoline :
  * - #OS_INIT means initialization
  * - #OS_TASK means running a task
  * - #OS_IDLE means no task running and the OS has nothing else to do
@@ -192,7 +192,7 @@ struct TPL_PROC_STATIC {
   CONST(tpl_proc_type, TYPEDEF)
     type;               /**<  type of the task/isr                           */
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
-  CONST(tpl_time, TYPEDEF) 
+  CONST(tpl_time, TYPEDEF)
     executionbudget ;   /**<  execution budget                               */
   CONST(tpl_time, TYPEDEF)
     timeframe ;         /**<  length of the time frame                       */
@@ -245,7 +245,7 @@ typedef struct TPL_PROC tpl_proc;
 /**
  * @typedef tpl_kern_state
  */
-typedef struct 
+typedef struct
 {
   P2CONST(tpl_proc_static, TYPEDEF, OS_CONST) s_running;
   P2CONST(tpl_proc_static, TYPEDEF, OS_CONST) s_elected;
@@ -254,7 +254,7 @@ typedef struct
   VAR(uint32, TYPEDEF)                        running_id;
   VAR(uint32, TYPEDEF)                        elected_id;
 
-/** 
+/**
  * 2 bits are used in this field.
  * bit 0 indicates a context switch is needed after calling a service,
  * bit 1 indicated the context of the processus that loses the cpu
@@ -276,7 +276,7 @@ typedef struct
 #endif /* WITH_MEMORY_PROTECTION */
 /*  VAR(tpl_priority, TYPEDEF)                  running_priority; */
 } tpl_kern_state;
- 
+
 /**
  * @typedef tpl_heap_entry
  *
@@ -301,7 +301,7 @@ extern CONSTP2VAR(tpl_kern_state, OS_CONST, OS_VAR) tpl_kern[];
 /**
  * Currently running executable object id. This "executable object" can be
  * a task or an interrupt service routine
- * 
+ *
  * It has been changed to an int to ease its usage in asssembly language
  */
 /* extern VAR(int, OS_VAR) tpl_running_id; */
@@ -332,7 +332,7 @@ extern VAR(tpl_internal_resource, OS_VAR) INTERNAL_RES_SCHEDULER;
 
 /**
  * @internal
- * 
+ *
  * In monocore and multicore and function base context switch,
  * does the rescheduling and the context switch if needed
  * In multicore does the intercore interrupt if needed
@@ -347,7 +347,7 @@ extern VAR(tpl_internal_resource, OS_VAR) INTERNAL_RES_SCHEDULER;
       &(TPL_KERN(a_core_id).s_elected->context)                 \
     );                                                          \
   }
-  
+
 #define LOCAL_SWITCH_CONTEXT_NOSAVE(a_core_id)             \
   if (TPL_KERN(a_core_id).need_switch != NO_NEED_SWITCH)   \
   {                                                        \
@@ -387,7 +387,7 @@ extern VAR(tpl_internal_resource, OS_VAR) INTERNAL_RES_SCHEDULER;
   else {                                  \
     REMOTE_SWITCH_CONTEXT(a_core_id);     \
   }
-  
+
 #define SWITCH_CONTEXT_NOSAVE(a_core_id)  \
   if (a_core_id == tpl_get_core_id()) {   \
     LOCAL_SWITCH_CONTEXT(a_core_id)       \
@@ -395,7 +395,7 @@ extern VAR(tpl_internal_resource, OS_VAR) INTERNAL_RES_SCHEDULER;
   else {                                  \
     REMOTE_SWITCH_CONTEXT(a_core_id);     \
   }
-  
+
 #else
 /* WITH_SYSTEM_CALL == YES */
 
@@ -408,7 +408,7 @@ extern VAR(tpl_internal_resource, OS_VAR) INTERNAL_RES_SCHEDULER;
     tpl_send_intercore_it(a_core_id);             \
   }
 
-#endif 
+#endif
 
 #endif
 
@@ -455,7 +455,7 @@ extern VAR(tpl_heap_entry, OS_VAR) tpl_ready_list[];
  * In monocore implementation, tpl_tail_for_prio is a variable that stores
  * the last rank used to store a proc.
  *
- * In multicore implementation, tpl_tail_for_prio is an array of such 
+ * In multicore implementation, tpl_tail_for_prio is an array of such
  * a variable.
  */
 #if NUMBER_OF_CORES > 1
@@ -465,7 +465,7 @@ extern VAR(tpl_heap_entry, OS_VAR) tpl_ready_list[];
 
 extern CONSTP2VAR(tpl_rank_count, OS_CONST, OS_VAR)
   tpl_tail_for_prio[NUMBER_OF_CORES];
-  
+
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
@@ -492,10 +492,10 @@ extern VAR(tpl_rank_count, OS_VAR) tpl_tail_for_prio[];
  */
 extern CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)
   tpl_stat_proc_table[TASK_COUNT+ISR_COUNT+1];
-            
+
 extern CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)
   tpl_dyn_proc_table[TASK_COUNT+ISR_COUNT+1];
-            
+
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
@@ -520,7 +520,7 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id));
 
 /**
  * @internal
- * 
+ *
  * The elected task becomes the running task
  *
  * @return  the pointer to the static descriptor of the task
@@ -536,6 +536,14 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
  *
  */
 FUNC(void, OS_CODE) tpl_block(void);
+
+/**
+ * @internal
+ *
+ * Release a task from the waiting state
+ *
+ */
+FUNC(void, OS_CODE) tpl_release(CONST(tpl_task_id, AUTOMATIC) task_id);
 
 /**
  * @internal
@@ -572,7 +580,7 @@ FUNC(void, OS_CODE) tpl_release_internal_resource(
 /**
  * If a task is ended without calling TerminateTask() :
  * enable interrupts if needed ; release resources if used ;
- * call ErrorHook if enabled by the user ; call 
+ * call ErrorHook if enabled by the user ; call
  * tpl_terminate_task_service()
  */
 FUNC(void, OS_CODE) tpl_call_terminate_task_service(void);
@@ -620,7 +628,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_event(
 #if NUMBER_OF_CORES > 1
 /**
  * @internal
- * 
+ *
  * tpl_multi_schedule does multiple rescheduling when many tasks could
  * have been activated on several cores (messages, alarms, schedule tables)
  */
@@ -628,7 +636,7 @@ FUNC(void, OS_CODE)tpl_multi_schedule(void);
 
 /**
  * @internal
- * 
+ *
  * tpl_dispatch_context_switch notify multiple context switch to other cores
  * It happens when many tasks could have been activated on several cores
  * (messages, alarms, schedule tables)
