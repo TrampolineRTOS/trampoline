@@ -258,5 +258,8 @@ end if
 #define NUMBER_OF_OBJECTS                 % ![OBJECT length] %
 #define NUMBER_OF_TRANSACTIONS            % ![TRANSACTION length] %
 
+%
+template if exists custom_app_define_h
+%
 /* End of file TPL_APP_DEFINE_H */
 
