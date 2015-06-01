@@ -18,7 +18,7 @@ IMPLEMENTATION trampoline {
 
 };
 
-CPU lab7 {
+CPU lab8 {
   /*
    * API des semaphores
    */
@@ -47,11 +47,11 @@ CPU lab7 {
     STATUS = EXTENDED;
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../..";
-      APP_SRC = "lab7.c";
-      APP_NAME = "lab7_exe";
+      APP_SRC = "lab8.c";
+      APP_NAME = "lab8_exe";
       CFLAGS  = "-g -O0 -Wall -Wno-unused-but-set-variable -Wformat -std=c99 -mcpu=cortex-m4 -Wmissing-field-initializers -mthumb -mfloat-abi=soft -mfpu=fpv4-sp-d16 -nostartfiles"; 
       ASFLAGS = "-g -Wall -mcpu=cortex-m4 -mthumb --fatal-warnings -mfloat-abi=soft -mfpu=fpv4-sp-d16";
-      LDFLAGS = "--fatal-warnings --warn-common --no-undefined -L/usr/local/dev-arm/i386-Darwin-arm-gcc-4.9.2/arm-eabi/lib/thumb -lc -L/usr/local/dev-arm/i386-Darwin-arm-gcc-4.9.2/lib/gcc/arm-eabi/4.9.2 -lgcc -Map=lab7.map";
+      LDFLAGS = "--fatal-warnings --warn-common --no-undefined -L/usr/local/dev-arm/i386-Darwin-arm-gcc-4.9.2/arm-eabi/lib/thumb -lc -L/usr/local/dev-arm/i386-Darwin-arm-gcc-4.9.2/lib/gcc/arm-eabi/4.9.2 -lgcc -Map=lab8.map";
       COMPILER = "arm-eabi-gcc";
       ASSEMBLER = "arm-eabi-as";
       LINKER = "arm-eabi-ld";
