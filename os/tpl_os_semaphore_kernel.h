@@ -14,5 +14,6 @@ typedef struct {
 extern CONSTP2VAR(tpl_semaphore, AUTOMATIC, OS_APPL_DATA) tpl_sem_table[SEMAPHORE_COUNT];
 
 FUNC(tpl_status, OS_CODE) tpl_sem_wait_service(CONST(SemType, AUTOMATIC) sem_id);
+FUNC(tpl_status, OS_CODE) tpl_sem_post_service(CONST(SemType, AUTOMATIC) sem_id);
 
 #endif
