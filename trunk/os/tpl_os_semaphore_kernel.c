@@ -2,6 +2,7 @@
 #include "tpl_os_kernel.h"
 #include "tpl_os_definitions.h"
 #include "tpl_os_error.h"
+#include "tpl_machine_interface.h"
 
 FUNC(void, OS_CODE) tpl_sem_enqueue(
   P2VAR(tpl_semaphore, AUTOMATIC, OS_APPL_DATA) sem,
@@ -44,6 +45,7 @@ FUNC(void, OS_CODE) tpl_sem_print(CONST(SemType, AUTOMATIC) sem_id)
   VAR(uint32, AUTOMATIC) index = sem->index - sem->size;
   VAR(uint32, AUTOMATIC) count = sem->size;
 
+  printf("(%lu)", sem->token);
   if (sem->index < sem->size)
   {
     index += TASK_COUNT;
@@ -102,3 +104,37 @@ FUNC(tpl_status, OS_CODE) tpl_sem_wait_service(CONST(SemType, AUTOMATIC) sem_id)
 
   return result;
 }
+
+FUNC(tpl_status, OS_CODE) tpl_sem_post_service(CONST(SemType, AUTOMATIC) sem_id)
+{
+  GET_CURRENT_CORE_ID(core_id)
+  GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
+  VAR(tpl_status, AUTOMATIC) result = E_OK;
+  VAR(tpl_task_id, AUTOMATIC) task_id;
+  CONSTP2VAR(tpl_semaphore, AUTOMATIC, OS_CONST) sem = tpl_sem_table[sem_id];
+
+  LOCK_KERNEL()
+
+  if (sem->size > 0)
+  {
+    task_id = tpl_sem_dequeue(sem);
+    /* release the task */
+    tpl_release(task_id);
+    if (TPL_KERN_REF(kern).need_schedule)
+    {
+      tpl_schedule_from_running(CORE_ID_OR_NOTHING(core_id));
+      SWITCH_CONTEXT(CORE_ID_OR_NOTHING(core_id))
+    }
+  }
+  else
+  {
+    sem->token++;
+  }
+
+  UNLOCK_KERNEL()
+
+  return E_OK;
+}
+
+
+
