@@ -72,7 +72,7 @@
 
 \title{Trampoline Training\\$\star$\\\href{https://creativecommons.org/licenses/by-nc/3.0/fr/}{\small CC BY-NC 3.0}\\\vspace{5mm}\includegraphics[width=2in]{Trampoline_Beaver_by_FancyFerret.jpg}\hspace{2mm}\footnote{\url{http://fancyferret.deviantart.com/art/Trampoline-Beaver-166211545}, CC BY-NC 3.0 license, Josef Ek.}}
 \author{Jean-Luc B\'echennec, IRCCyN}
-%\date{}                                           % Activate to display a given date or no date
+\date{June 4 \& 5, 2015}                                           % Activate to display a given date or no date
 
 \begin{document}
 
@@ -281,7 +281,7 @@ For the following application, we will use \lstinline{WaitEvent}, \lstinline{Get
 Extend the previous application by adding 1 task: \texttt{task_1} (priority 1) and 1 event \texttt{ev_1}. \texttt{a_task} activates \texttt{task_0} and \texttt{task_1} and waits for one of the events. When one of the events is set, \texttt{a_task} activates the corresponding task again.
 \end{ex}
 
-\section{Alarms and periodic tasks}
+\section{Alarms, periodic tasks and ISR2}
 
 \subsection{First application, basic use of alarms}
 
@@ -355,6 +355,10 @@ Same question but with only one extended task.
 Program a chase\footnote{chenillard in French} with a 0.5s period. To do it, use 4 periodic tasks. Each periodic task manages a LED. The chase effect is done by using alarms with a time shift between them.
 
 When the \BB\ is pressed, the chase direction changes.
+
+\subsection{Using an ISR2}
+
+Instead of polling the \BB\, we are going to use and interrupt to trigger an ISR2. 
 
 \section{Shared object access protection}
 
@@ -488,7 +492,14 @@ What happens ? Explain.
 
 \section{Adding a service into Trampoline}
 
-In this part we are going to see how to add semaphore services into Trampoline. We want to services : \lstinline{SemWait} to lock a semaphore and \lstinline{SemPost} to unlock a semaphore.
+In this part we are going to see how to add semaphore services into Trampoline. We want two services : \lstinline{SemWait} to lock a semaphore and \lstinline{SemPost} to unlock a semaphore.
+
+\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
+   \centering
+   \includegraphics[width=3in]{SemaphoreSEM.pdf} 
+   \caption{example caption}
+   \label{fig:example}
+\end{figure}
 
 \subsection{Adding a semaphore object}
 
@@ -523,7 +534,11 @@ SEMAPHORE sem1 { TOKEN = 3; };
 SEMAPHORE sem2 { TOKEN = 1; };
 \end{lstlisting}
 
-\paragraph{The third thing} is to write a template that will C source code with a \lstinline{tpl_semaphore} instance for each \lstinline{SEMAPHORE} object in the OIL file. To do that, we have to provide a template directory hierarchy as in \lstinline{goilv2/templates}. This hierarchy is put in the directory where the application source files are. Since we generate code, the hierarchy is \lstinline{goilv2/code}. Our code  will be embedded in the \lstinline{tpl_app_config.c} and \lstinline{tpl_app_define.h}. The templates are \lstinline{custom_app_config.goilTemplate} and \lstinline{custom_app_define.goilTemplate} respectively.
+\paragraph{The third thing} is to write a template that will generate C source code with a \lstinline{tpl_semaphore} instance for each \lstinline{SEMAPHORE} object in the OIL file. To do that, we have to provide a template directory hierarchy as in \lstinline{goilv2/templates}. This hierarchy is put in the directory where the application source files are.
+
+Since we generate code, the hierarchy is \lstinline{goilv2/code}. Our code  will be embedded in the \lstinline{tpl_app_config.c} and \lstinline{tpl_app_define.h}.
+
+The templates are \lstinline{custom_app_config.goilTemplate} and \lstinline{custom_app_define.goilTemplate} respectively.
 
 In the first one we have to:
 \begin{enumerate}
@@ -534,7 +549,41 @@ In the first one we have to:
 
 \subsection{Semaphore services}
 
-Services are described in configuration OIL files. To add a service, we must provide a description of the service. This is done as follow :
+Services are described in configuration OIL files. To add a service, we must provide a description of the service. This can be done in the OIL file of the application as follow :
 
+\begin{lstlisting}
+APICONFIG semaphore {
+  ID_PREFIX = OS;
+  FILE = "tpl_os_semaphore_kernel";
+  HEADER = "tpl_os_semaphore";
+  SYSCALL SemWait {
+    KERNEL = tpl_sem_wait_service;
+    RETURN_TYPE = StatusType;
+    ARGUMENT sem_id { KIND = CONST; TYPE = SemType; };
+  };
+  SYSCALL SemPost {
+    KERNEL = tpl_sem_post_service;
+    RETURN_TYPE = StatusType;
+    ARGUMENT sem_id { KIND = CONST; TYPE = SemType; };
+  };
+};
+\end{lstlisting}
+
+\lstinline{APICONFIG} is the root object to define a set of services related to a new object. Here we define an \lstinline{APICONFIG} for semaphores. goil generates identifiers for services. Identifiers are prefixed by a section name. For instance, operating system services are prefixed by OS and communication services are prefixed by COM. Here we choose to use the OS prefix: \lstinline{ID_PREFIX = OS;}
+
+The \lstinline{FILE} attribute allows to list the files where the C kernel function are defined. As many files as needed may be listed. The \lstinline{HEADER} attribute allows to list the files where the datatypes and constants are declared. As many files as needed may be listed. 
+
+The \lstinline{SYSCALL} attribute is used to define a service. The name, here \lstinline{SemWait} and \lstinline{SemPost}, is the service name as seen by the application. \lstinline{KERNEL} is the corresponding kernel function. \lstinline{RETURN_TYPE} is the type of variable returned by the service and \lstinline{ARGUMENT} is the name, type and kind of argument. As many arguments as needed may be listed (almost).
+
+The corresponding C source code must be provided in files \lstinline{tpl_os_semaphore_kernel.h}, \lstinline{tpl_os_semaphore_kernel.c} and \lstinline{tpl_os_semaphore.h}.
+
+At last, the template \lstinline{api.goilTemplate} is modified to add the following template code:
+\begin{lstlisting}
+if exists SEMAPHORE then
+  if [SEMAPHORE length] > 0 then
+    let APIUSED += APIMAP["semaphore"]
+  end if
+end if
+\end{lstlisting}
 
 \end{document}  

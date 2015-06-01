@@ -18,7 +18,7 @@ IMPLEMENTATION trampoline {
 
 };
 
-CPU lab1 {
+CPU lab7 {
   /*
    * API des semaphores
    */
@@ -33,7 +33,14 @@ CPU lab1 {
           "E_OS_ACCESS: The calling task has a max activation greater than one";
       ARGUMENT sem_id { KIND = CONST; TYPE = SemType; }
         : "The id of the semaphore to get.";
-    } : "Wait for semaphore res_id.";
+    } : "Wait for semaphore sem_id.";
+    SYSCALL SemPost {
+      KERNEL = tpl_sem_post_service;
+      RETURN_TYPE = StatusType
+        : "E_OK:    No error (Standard & Extended)\n";
+      ARGUMENT sem_id { KIND = CONST; TYPE = SemType; }
+        : "The id of the semaphore to release.";
+    };
   };
 
   OS config {
