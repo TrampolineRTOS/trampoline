@@ -1109,9 +1109,11 @@ FUNC(void, OS_CODE) tpl_init_proc(
  */
 FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
 {
+#if TASK_COUNT > 0 || ALARM_COUNT > 0 || SCHEDTABLE_COUNT > 0
   VAR(uint16, AUTOMATIC) i;
-  VAR(tpl_status, AUTOMATIC) result = E_OK;
   CONST(tpl_appmode_mask, AUTOMATIC) app_mode_mask = 1 << app_mode;
+#endif
+  VAR(tpl_status, AUTOMATIC) result = E_OK;
 #if ALARM_COUNT > 0
   P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) auto_time_obj;
 #endif

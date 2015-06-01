@@ -358,7 +358,7 @@ When the \BB\ is pressed, the chase direction changes.
 
 \subsection{Using an ISR2}
 
-Instead of polling the \BB\, we are going to use and interrupt to trigger an ISR2. 
+Instead of polling the \BB\, we are going to use and interrupt to trigger an ISR2. Go into the lab7 directory. Use the application as a starting point to replace button polling by ISR2 in the chase application.
 
 \section{Shared object access protection}
 
@@ -497,7 +497,7 @@ In this part we are going to see how to add semaphore services into Trampoline. 
 \begin{figure}[htbp] %  figure placement: here, top, bottom, or page
    \centering
    \includegraphics[width=3in]{SemaphoreSEM.pdf} 
-   \caption{example caption}
+   \caption{A semaphore object}
    \label{fig:example}
 \end{figure}
 
@@ -526,7 +526,7 @@ SEMAPHORE [] {
 };
 \end{lstlisting}
 
-The declare a new object type : \lstinline{SEMAPHORE} with an \lstinline{UINT32} attribute, \lstinline{TOKEN}. The \lstinline{[]} means multiple instances of semaphore can be used.
+This declares a new object type : \lstinline{SEMAPHORE} with an \lstinline{UINT32} attribute, \lstinline{TOKEN}. The \lstinline{[]} means multiple instances of semaphore can be used.
 Now, semaphores can be declared in the OIL file:
 
 \begin{lstlisting}

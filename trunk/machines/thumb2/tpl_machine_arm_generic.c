@@ -40,7 +40,10 @@
 
 extern void decPeriode(void);
 extern void test_toggle(void);
+
+#if TASK_COUNT > 0
 extern FUNC(void, OS_CODE) CallTerminateTask(void);
+#endif
 
 /**
  * Kernel entry counter
@@ -184,7 +187,32 @@ FUNC(void, OS_CODE) tpl_init_context(
    * in a 32bits variable, but as the Os is dependant on the target,
    * the behaviour is controled
    */
+#if TASK_COUNT > 0
+#if   ISR_COUNT > 0
+  /*
+   * at least a task and at least an ISR2 exist. So we have to deal with
+   * what to put in the return function
+   */
   *stack++ = (IS_ROUTINE == the_proc->type) ? (uint32)(CallTerminateISR2) : (uint32)(CallTerminateTask);
+#else
+  /*
+   * At least a task but no ISR2. The return function is CallTerminateTask
+   */
+  *stack++ = (uint32)(CallTerminateTask);
+#endif
+#else
+#if   ISR_COUNT > 0
+  /*
+   * No task but at least an ISR2 exists. The return function is CallTerminateISR2
+   */
+  *stack++ = (uint32)(CallTerminateISR2);
+#else
+  /*
+   * Never go there
+   */
+  *stack++ = NULL;
+#endif
+#endif
   /* pc */
   *stack++ = (uint32)(the_proc->entry);
   /* xpsr */
