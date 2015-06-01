@@ -1190,7 +1190,7 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
 #endif
 }
 
-
+#if TASK_COUNT > 0
 FUNC(void, OS_CODE) tpl_call_terminate_task_service(void)
 {
   GET_CURRENT_CORE_ID(core_id)
@@ -1224,6 +1224,7 @@ FUNC(void, OS_CODE) tpl_call_terminate_task_service(void)
   tpl_terminate_task_service();
 
 }
+#endif
 
 FUNC(void, OS_CODE) tpl_call_terminate_isr2_service(void)
 {

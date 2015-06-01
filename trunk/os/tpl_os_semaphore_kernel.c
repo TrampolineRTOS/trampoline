@@ -36,7 +36,7 @@ FUNC(tpl_task_id, OS_CODE) tpl_sem_dequeue(
   return task_id;
 }
 
-//#if WITH_DOW == YES
+#if WITH_DOW == YES
 #include <stdio.h>
 #include "tpl_app_config.h"
 FUNC(void, OS_CODE) tpl_sem_print(CONST(SemType, AUTOMATIC) sem_id)
@@ -68,20 +68,21 @@ FUNC(void, OS_CODE) tpl_sem_print(CONST(SemType, AUTOMATIC) sem_id)
   }
   printf("\n");
 }
-//#endif
+#endif
 
 FUNC(tpl_status, OS_CODE) tpl_sem_wait_service(CONST(SemType, AUTOMATIC) sem_id)
 {
   GET_CURRENT_CORE_ID(core_id)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
   VAR(tpl_status, AUTOMATIC) result = E_OK;
-  CONST(tpl_task_id, AUTOMATIC) task_id = TPL_KERN_REF(kern).running_id;
-  CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)  s_task =
-    tpl_stat_proc_table[task_id];
+  VAR(tpl_task_id, AUTOMATIC) task_id;
+  P2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)  s_task;
   CONSTP2VAR(tpl_semaphore, AUTOMATIC, OS_CONST) sem = tpl_sem_table[sem_id];
 
   LOCK_KERNEL()
 
+  task_id = TPL_KERN_REF(kern).running_id;
+  s_task = tpl_stat_proc_table[task_id];
   if (s_task->max_activate_count == 1)
   {
     if (sem->token == 0)
@@ -109,7 +110,6 @@ FUNC(tpl_status, OS_CODE) tpl_sem_post_service(CONST(SemType, AUTOMATIC) sem_id)
 {
   GET_CURRENT_CORE_ID(core_id)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
-  VAR(tpl_status, AUTOMATIC) result = E_OK;
   VAR(tpl_task_id, AUTOMATIC) task_id;
   CONSTP2VAR(tpl_semaphore, AUTOMATIC, OS_CONST) sem = tpl_sem_table[sem_id];
 
