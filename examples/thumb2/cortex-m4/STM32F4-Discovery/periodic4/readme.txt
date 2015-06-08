@@ -19,8 +19,8 @@ gcc : arm-none-eabi-gcc (GNU Tools for ARM Embedded Processors) 4.8.4 20140526 (
 > make burn
 
 6) Debug 
-6.1) Launch st-link
-In a terminal launch the server st-link
+6.1) Launch st-util
+In a terminal launch the server st-util
 6.2) Launch gdb
 In another terminal launch gdb with
 > arm-none-eabi-gdb periodic4_exe
