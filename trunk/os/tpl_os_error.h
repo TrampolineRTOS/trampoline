@@ -7,13 +7,13 @@
  *
  * @section copyright Copyright
  *
- * Trampoline OS
+ * Trampoline RTOS
  *
- * Trampoline is copyright (c) IRCCyN 2005+
- * Copyright ESEO for function and data structures documentation
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
  * Trampoline is protected by the French intellectual property law.
  *
- * This software is distributed under the Lesser GNU Public Licence
+ * This software is distributed under the GNU Public Licence V2.
+ * Check the LICENSE file in the root directory of Trampoline
  *
  * @section infos File informations
  *
@@ -57,7 +57,7 @@ extern FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void);
 extern FUNC(void, OS_CODE) tpl_call_error_hook(CONST(tpl_status, AUTOMATIC) error);
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
-	
+
 /**
  * @union ID_PARAM_BLOCK
  *
@@ -88,7 +88,7 @@ union ID_PARAM_BLOCK {
                                                #GetAlarmBase
                                            */
   VAR(tpl_application_mode, TYPEDEF) mode; /**< used by StartOS */
-  
+
 #if WITH_AUTOSAR == YES
   VAR(tpl_schedtable_id, TYPEDEF) schedtable_id; /**< @todo document this */
   VAR(tpl_counter_id, TYPEDEF) counter_id; /**< @todo document this */
@@ -121,7 +121,7 @@ union PARAM_PARAM_BLOCK {
                                                       */
   VAR(tpl_tick, TYPEDEF) tick;  /**< used by #SetRelAlarm, #SetAbsAlarm */
   P2VAR(tpl_tick, AUTOMATIC, TYPEDEF) tick_ref; /**< used by #GetAlarm */
-  P2VAR(tpl_alarm_base, AUTOMATIC, TYPEDEF) alarm_base_ref; /**< used by 
+  P2VAR(tpl_alarm_base, AUTOMATIC, TYPEDEF) alarm_base_ref; /**< used by
                                                                  #GetAlarmBase
                                                              */
   VAR(tpl_event_mask, TYPEDEF) mask; /**< used by #SetEvent,
@@ -1571,9 +1571,9 @@ tpl_service.parameters.id.ioc_id = (iocid);
  * the task identifier in parameter
  *
  * This macro is a little different than the service call CheckObjectAccess.
- * (bit_shift+1) because the first bit (bit_shift) is set if the object	
+ * (bit_shift+1) because the first bit (bit_shift) is set if the object
  * belongs to the OS application and we want to know if the actual
- * task has access right to the application, which is indicates by 
+ * task has access right to the application, which is indicates by
  * the second bit (bit_shift+1).
  *
  * @param obj_id #ObjectID to check
@@ -1590,7 +1590,7 @@ tpl_service.parameters.id.ioc_id = (iocid);
   if (result == (tpl_status)E_OK)                              \
   {                                                            \
     result = E_OS_ACCESS;                                      \
-  }																			
+  }
 #else
 # define CHECK_ACCESS_RIGHTS_TASK_ID(a_core_id, obj_id,result) \
 	if (result == (tpl_status)E_OK)                              \
@@ -1605,7 +1605,7 @@ tpl_service.parameters.id.ioc_id = (iocid);
     {                                                                   \
       result = E_OS_ACCESS;                                             \
     }                                                                   \
-  }																			
+  }
 #endif
 
 /**
@@ -1615,9 +1615,9 @@ tpl_service.parameters.id.ioc_id = (iocid);
  * the alarm identifier in parameter
  *
  * This macro is a little different than the service call CheckObjectAccess.
- * (bit_shift+1) because the first bit (bit_shift) is set if th object	
+ * (bit_shift+1) because the first bit (bit_shift) is set if th object
  * belongs to the OS application and we want to know if the actual
- * task has access right to the application, which is indicates by 
+ * task has access right to the application, which is indicates by
  * the second bit (bit_shift+1).
  *
  * @param obj_id #ObjectID to check
@@ -1634,7 +1634,7 @@ tpl_service.parameters.id.ioc_id = (iocid);
   if (result == (tpl_status)E_OK)                     \
   {                                                   \
     result = E_OS_ACCESS;                             \
-  }																			
+  }
 #else
 # define CHECK_ACCESS_RIGHTS_ALARM_ID(obj_id,result)        \
 	if (result == (tpl_status)E_OK)                           \
@@ -1649,7 +1649,7 @@ tpl_service.parameters.id.ioc_id = (iocid);
 		{                                                                         \
 			result = E_OS_ACCESS;                                                   \
 		}                                                                         \
-	}																			
+	}
 #endif
 
 /**
@@ -1659,9 +1659,9 @@ tpl_service.parameters.id.ioc_id = (iocid);
  * the resource identifier in parameter
  *
  * This macro is a little different than the service call CheckObjectAccess.
- * (bit_shift+1) because the first bit (bit_shift) is set if th object	
+ * (bit_shift+1) because the first bit (bit_shift) is set if th object
  * belongs to the OS application and we want to know if the actual
- * task has access right to the application, which is indicates by 
+ * task has access right to the application, which is indicates by
  * the second bit (bit_shift+1).
  *
  * @param obj_id #ObjectID to check
@@ -1678,7 +1678,7 @@ tpl_service.parameters.id.ioc_id = (iocid);
   if (result == (tpl_status)E_OK)                       \
   {                                                     \
     result = E_OS_ACCESS;                               \
-  }																			
+  }
 #else
 # define CHECK_ACCESS_RIGHTS_RESOURCE_ID(a_core_id, obj_id,result)      \
   if (result == (tpl_status)E_OK)                                       \
@@ -1694,7 +1694,7 @@ tpl_service.parameters.id.ioc_id = (iocid);
 		{                                                                       \
 			result = E_OS_ACCESS;                                                 \
 		}                                                                       \
-	}																			
+	}
 #endif
 
 /**
@@ -1704,9 +1704,9 @@ tpl_service.parameters.id.ioc_id = (iocid);
  * the counter identifier in parameter
  *
  * This macro is a little different than the service call CheckObjectAccess.
- * (bit_shift+1) because the first bit (bit_shift) is set if th object	
+ * (bit_shift+1) because the first bit (bit_shift) is set if th object
  * belongs to the OS application and we want to know if the actual
- * task has access right to the application, which is indicates by 
+ * task has access right to the application, which is indicates by
  * the second bit (bit_shift+1).
  *
  * @param obj_id #ObjectID to check
@@ -1723,7 +1723,7 @@ tpl_service.parameters.id.ioc_id = (iocid);
   if( result == (tpl_status)E_OK )                                  \
   {                                                                 \
     result = E_OS_ACCESS;                                           \
-  }																			
+  }
 #else
 # define CHECK_ACCESS_RIGHTS_COUNTER_ID(a_core_id, obj_id, result)  \
 	if( result == (tpl_status)E_OK )                                  \
@@ -1738,7 +1738,7 @@ tpl_service.parameters.id.ioc_id = (iocid);
 		{                                                                      \
 			result = E_OS_ACCESS;                                                \
 		}                                                                         \
-	}																			
+	}
 #endif
 
 /**
@@ -1748,9 +1748,9 @@ tpl_service.parameters.id.ioc_id = (iocid);
  * the schedule table identifier in parameter
  *
  * This macro is a little different than the service call CheckObjectAccess.
- * (bit_shift+1) because the first bit (bit_shift) is set if th object	
+ * (bit_shift+1) because the first bit (bit_shift) is set if th object
  * belongs to the OS application and we want to know if the actual
- * task has access right to the application, which is indicates by 
+ * task has access right to the application, which is indicates by
  * the second bit (bit_shift+1).
  *
  * @param obj_id #ObjectID to check
@@ -1767,7 +1767,7 @@ tpl_service.parameters.id.ioc_id = (iocid);
   if(result == (tpl_status)E_OK)                              \
   {                                                           \
     result = E_OS_ACCESS;                                     \
-  }																			
+  }
 #else
 # define CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(obj_id,result)  \
   if( result == (tpl_status)E_OK )                            \
@@ -1782,7 +1782,7 @@ tpl_service.parameters.id.ioc_id = (iocid);
     {                                                                   \
       result = E_OS_ACCESS;                                             \
     }                                                                   \
-  }																			
+  }
 #endif
 
 
@@ -1800,7 +1800,7 @@ tpl_service.parameters.id.ioc_id = (iocid);
   (((void *)(loc_ptr) < mem_region.start) || ((void *)((loc_ptr) + (1)) > mem_region.end))
 /**
  * @def CHECK_DATA_LOCATION
- * 
+ *
  * This macro checks a data pointer passed to a service is within
  * the allowed data range (ie within the stack of the process or
  * within the private data of the process or within the shared data

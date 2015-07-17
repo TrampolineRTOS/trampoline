@@ -7,14 +7,13 @@
  *
  * @section copyright Copyright
  *
- * Trampoline OS
+ * Trampoline RTOS
  *
- * Trampoline is copyright (c) IRCCyN 2005-2013
- * Part of Autosar extension is copyright (c) IRCCyN and ESEO 2007
- * Trampoline and its Autosar extension are protected by the
- * French intellectual property law.
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
+ * Trampoline is protected by the French intellectual property law.
  *
- * This software is distributed under the Lesser GNU Public Licence
+ * This software is distributed under the GNU Public Licence V2.
+ * Check the LICENSE file in the root directory of Trampoline
  *
  * @section infos File informations
  *
@@ -38,10 +37,10 @@ VAR(uint16, OS_VAR)
 
 VAR(uint16, OS_VAR)
   tpl_number_of_non_autosar_activated_cores = 0;
-  
+
 VAR(uint16, OS_VAR) tpl_start_count_0 = 1;
 VAR(uint16, OS_VAR) tpl_start_count_1 = 1;
-  
+
 #define OS_STOP_SEC_VAR_16BITS
 #include "tpl_memmap.h"
 
@@ -71,11 +70,11 @@ FUNC(void, OS_CODE) tpl_sync_barrier(
   CONSTP2VAR(tpl_lock, AUTOMATIC, OS_VAR) lock)
 {
   VAR(uint16, AUTOMATIC) count;
-  
+
   tpl_get_lock(lock);
   count = --*enter_count;
   tpl_release_lock(lock);
-  
+
   while (count > 0)
   {
     tpl_get_lock(lock);
@@ -116,22 +115,22 @@ FUNC(void, OS_CODE) tpl_start_core_service(
   CONSTP2VAR(StatusType, AUTOMATIC, OS_APPL_DATA) status)
 {
   VAR(StatusType, AUTOMATIC) result = E_OK;
-  
+
   /* lock the kernel */
   LOCK_KERNEL()
-  
+
   /* store information for error hook routine */
   STORE_SERVICE(OSServiceId_StartCore)
   STORE_CORE_ID(core_id)
 
   /* Check errors */
   CHECK_CORE_ID_ERROR(core_id, result)
-  
+
   /* BEGIN_START_CORE_CRITICAL_SECTION() */
-  
+
   CHECK_START_CORE_ERROR(core_id, result)
   CHECK_OS_NOT_STARTED(tpl_get_core_id(), result)
-  
+
   IF_NO_EXTENDED_ERROR(result)
     tpl_core_status[core_id] = STARTED_CORE_AUTOSAR;
     tpl_number_of_activated_cores++;
@@ -143,10 +142,10 @@ FUNC(void, OS_CODE) tpl_start_core_service(
   /* END_START_CORE_CRITICAL_SECTION() */
 
   PROCESS_ERROR(result)
-	
+
   /*  unlock the kernel  */
   UNLOCK_KERNEL()
-	
+
   *status = result;
 }
 
@@ -167,10 +166,10 @@ FUNC(void, OS_CODE) tpl_start_non_autosar_core_service(
   CONSTP2VAR(StatusType, AUTOMATIC, OS_APPL_DATA) status)
 {
   VAR(StatusType, AUTOMATIC) result = E_OK;
-  
+
   /* lock the kernel */
   LOCK_KERNEL()
-  
+
   /* store information for error hook routine */
   STORE_SERVICE(OSServiceId_StartNonAutosarCore)
   STORE_CORE_ID(core_id)
@@ -178,7 +177,7 @@ FUNC(void, OS_CODE) tpl_start_non_autosar_core_service(
   /* Check errors */
   CHECK_CORE_ID_ERROR(core_id, result)
   CHECK_START_CORE_ERROR(core_id, result)
-  
+
   IF_NO_EXTENDED_ERROR(result)
     tpl_core_status[tpl_get_core_id()] = STARTED_CORE_NON_AUTOSAR;
     tpl_number_of_non_autosar_activated_cores++;
@@ -186,10 +185,10 @@ FUNC(void, OS_CODE) tpl_start_non_autosar_core_service(
   IF_NO_EXTENDED_ERROR_END()
 
   PROCESS_ERROR(result)
-	
+
   /*  unlock the kernel  */
   UNLOCK_KERNEL()
-	
+
   *status = result;
 }
 
@@ -206,7 +205,7 @@ FUNC(void, OS_CODE) tpl_shutdown_all_cores_service(
 {
   /* TODO */
 }
-  
+
 /**
  * tpl_get_number_of_activated_cores_service returns the number
  * of activated cores.
@@ -218,12 +217,12 @@ FUNC(uint32, OS_CODE) tpl_get_number_of_activated_cores_service(void)
   VAR(uint32, AUTOMATIC) number;
   /* lock the kernel */
   LOCK_KERNEL()
-  
+
   number = tpl_number_of_activated_cores;
-  
+
   /*  unlock the kernel  */
   UNLOCK_KERNEL()
-  
+
   return number;
 }
 
@@ -242,26 +241,26 @@ FUNC(StatusType, OS_CODE) tpl_get_core_status_service(
   CONSTP2VAR(CoreStatusType, AUTOMATIC, OS_APPL_DATA) status)
 {
   VAR(StatusType, AUTOMATIC) result = E_OK;
-  
+
   /* lock the kernel */
   LOCK_KERNEL()
-  
+
   /* store information for error hook routine */
   STORE_SERVICE(OSServiceId_GetCoreStatus)
   STORE_CORE_ID(core_id)
 
   /* Check errors */
   CHECK_CORE_ID_ERROR(core_id, result)
-  
+
   IF_NO_EXTENDED_ERROR(result)
     *status = tpl_core_status[core_id];
   IF_NO_EXTENDED_ERROR_END()
 
   PROCESS_ERROR(result)
-	
+
   /*  unlock the kernel  */
   UNLOCK_KERNEL()
-	
+
   return result;
 }
 

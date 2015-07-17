@@ -7,13 +7,13 @@
  *
  * @section copyright Copyright
  *
- * Trampoline OS
+ * Trampoline RTOS
  *
- * Trampoline is copyright (c) IRCCyN 2005-2007
- * Copyright ESEO for function and data structures documentation
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
  * Trampoline is protected by the French intellectual property law.
  *
- * This software is distributed under the Lesser GNU Public Licence
+ * This software is distributed under the GNU Public Licence V2.
+ * Check the LICENSE file in the root directory of Trampoline
  *
  * @section infos File informations
  *
@@ -107,13 +107,13 @@
  * tpl_compare_entries function.
  */
 #define TAIL_FOR_PRIO_ARG_DECL(a_tail_for_prio) \
-  , CONSTP2CONST(tpl_rank_count, AUTOMATIC, OS_VAR) a_tail_for_prio  
+  , CONSTP2CONST(tpl_rank_count, AUTOMATIC, OS_VAR) a_tail_for_prio
 /*
  * TAIL_FOR_PRIO_ARG is in multicore the corresponding additional argument
  * passed to the tpl_compare_entries function.
  */
 #define TAIL_FOR_PRIO_ARG(a_tail_for_prio) \
-  , a_tail_for_prio  
+  , a_tail_for_prio
 
 #else
 /*
@@ -145,7 +145,7 @@
  */
 #define TPL_KERN(a_core_id) \
   tpl_kern
-  
+
 #define READY_LIST(a_ready_list) tpl_ready_list
 #define TAIL_FOR_PRIO(a_tail_for_prio)  tpl_tail_for_prio
 #define TAIL_FOR_PRIO_ARG_DECL(a_tail_for_prio)

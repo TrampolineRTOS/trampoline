@@ -8,12 +8,13 @@
  *
  * @section copyright Copyright
  *
- * Trampoline OS
+ * Trampoline RTOS
  *
- * Trampoline is copyright (c) IRCCyN 2005-2007
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
  * Trampoline is protected by the French intellectual property law.
  *
- * This software is distributed under the Lesser GNU Public Licence
+ * This software is distributed under the GNU Public Licence V2.
+ * Check the LICENSE file in the root directory of Trampoline
  *
  * @section infos File informations
  *
@@ -61,20 +62,20 @@ FUNC(void, OS_CODE) tpl_action_activate_task(
    * first member of tpl_task_activation_action is a tpl_action
    * This cast behaves correctly.
    */
-	
+
   /*  init the error to no error  */
   VAR(StatusType, AUTOMATIC) result_action = E_OK;
 
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_ActivateTask)
   STORE_TASK_ID(((P2CONST(tpl_task_activation_action, AUTOMATIC, OS_APPL_CONST))action)->task_id)
-	
+
   /* call alarm action and save return value to launch error hook if alarm action goes wrong */
   result_action = tpl_activate_task(
     ((P2CONST(tpl_task_activation_action,
       AUTOMATIC,
       OS_APPL_CONST))action)->task_id);
-	
+
   PROCESS_ERROR(result_action)
 }
 
@@ -95,7 +96,7 @@ FUNC(void, OS_CODE) tpl_action_setevent(
 
   /*  init the error to no error  */
   VAR(StatusType, AUTOMATIC) result_action = E_OK;
-	
+
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_SetEvent)
   STORE_TASK_ID(((P2CONST(tpl_setevent_action, AUTOMATIC, OS_APPL_CONST))action)->task_id)
@@ -105,8 +106,8 @@ FUNC(void, OS_CODE) tpl_action_setevent(
       ((P2CONST(tpl_setevent_action, AUTOMATIC, OS_APPL_CONST))action)->task_id,
       ((P2CONST(tpl_setevent_action, AUTOMATIC, OS_APPL_CONST))action)->mask
   );
-	
-  PROCESS_ERROR(result_action);	
+
+  PROCESS_ERROR(result_action);
 }
 
 #endif

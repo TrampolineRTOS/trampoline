@@ -7,14 +7,13 @@
  *
  * @section copyright Copyright
  *
- * Trampoline OS
+ * Trampoline RTOS
  *
- * Trampoline is copyright (c) IRCCyN 2005-2007
- * Autosar extension is copyright (c) IRCCyN and ESEO 2007
- * Trampoline and its Autosar extension are protected by the
- * French intellectual property law.
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
+ * Trampoline is protected by the French intellectual property law.
  *
- * This software is distributed under the Lesser GNU Public Licence
+ * This software is distributed under the GNU Public Licence V2.
+ * Check the LICENSE file in the root directory of Trampoline
  *
  * @section infos File informations
  *
@@ -77,26 +76,26 @@ FUNC(tpl_application_mode, OS_CODE) tpl_get_active_application_mode_service(
 {
   VAR(tpl_application_mode, AUTOMATIC) app_mode;
   VAR(tpl_status, AUTOMATIC) result = E_OK;
-	
+
   /*  lock the kernel    */
   LOCK_KERNEL()
-	
+
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
-	
+
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_GetActiveApplicationMode)
-	
+
 #if NUMBER_OF_CORES > 1
   app_mode = application_mode[tpl_get_core_id()];
 #else
   app_mode = application_mode;
 #endif
-	
+
   PROCESS_ERROR(result)
-	
+
   UNLOCK_KERNEL()
-	
+
   return app_mode;
 }
 
@@ -115,15 +114,15 @@ FUNC(void, OS_CODE) tpl_start_os_service(
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_StartOS)
   STORE_MODE(mode);
-	
+
   CHECK_OS_NOT_STARTED(core_id, result)
-	
+
   IF_NO_EXTENDED_ERROR(result)
   /* { */
-  
+
 #if NUMBER_OF_CORES > 1
   /*
-   * Sync barrier at start of tpl_start_os_service. 
+   * Sync barrier at start of tpl_start_os_service.
    */
   tpl_sync_barrier(&tpl_start_count_0, &tpl_startos_sync_lock);
 
@@ -135,7 +134,7 @@ FUNC(void, OS_CODE) tpl_start_os_service(
   TRACE_TPL_INIT()
 
   tpl_init_os(mode);
-  
+
   tpl_enable_counters();
 
   /*
@@ -143,7 +142,7 @@ FUNC(void, OS_CODE) tpl_start_os_service(
    * after the os is initialized and before the scheduler is running
    */
   CALL_STARTUP_HOOK()
-  
+
   /*
    * Call the OS Application startup hooks if needed
    */
@@ -151,22 +150,22 @@ FUNC(void, OS_CODE) tpl_start_os_service(
 
 #if NUMBER_OF_CORES > 1
   /*
-   * Sync barrier just before starting the scheduling. 
+   * Sync barrier just before starting the scheduling.
    */
   tpl_sync_barrier(&tpl_start_count_1, &tpl_startos_sync_lock);
 #endif
 
-  /* 
+  /*
    * Call tpl_start_scheduling to elect the highest priority task
    * if such a task exists.
    */
   tpl_start_scheduling(CORE_ID_OR_NOTHING(core_id));
-  
+
   SWITCH_CONTEXT_NOSAVE(core_id)
 
   /* } */
   IF_NO_EXTENDED_ERROR_END()
-	
+
   PROCESS_ERROR(result)
 
   /*  unlock the kernel  */
@@ -180,7 +179,7 @@ FUNC(void, OS_CODE) tpl_shutdown_os_service(
 
   /*  lock the kernel    */
   LOCK_KERNEL()
-  
+
   /*
    * Requirement OS054, page 65 of AUTOSAR_SWS_OS.pdf document
    *
@@ -192,7 +191,7 @@ FUNC(void, OS_CODE) tpl_shutdown_os_service(
   if (TPL_KERN(core_id).running->trusted_counter > 0)
   {
 #endif
-	
+
   /*  store information for error hook routine */
   STORE_SERVICE(OSServiceId_ShutdownOS)
 
@@ -200,7 +199,7 @@ FUNC(void, OS_CODE) tpl_shutdown_os_service(
    * Call the OS Application shutdown hooks if needed
    */
   CALL_OSAPPLICATION_SHUTDOWN_HOOKS()
-  
+
   CALL_SHUTDOWN_HOOK(error)
 
   TRACE_TPL_TERMINATE()
@@ -211,7 +210,7 @@ FUNC(void, OS_CODE) tpl_shutdown_os_service(
 #if WITH_OSAPPLICATION == YES
   }
 #endif
-            
+
   /*  unlock the kernel */
   UNLOCK_KERNEL()
 }

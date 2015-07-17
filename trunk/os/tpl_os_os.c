@@ -7,13 +7,13 @@
  *
  * @section copyright Copyright
  *
- * Trampoline OS
+ * Trampoline RTOS
  *
- * Trampoline is copyright (c) IRCCyN 2005+
- * Copyright ESEO for function and data structures documentation
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
  * Trampoline is protected by the French intellectual property law.
  *
- * This software is distributed under the Lesser GNU Public Licence
+ * This software is distributed under the GNU Public Licence V2.
+ * Check the LICENSE file in the root directory of Trampoline
  *
  * @section infos File informations
  *
@@ -43,7 +43,7 @@ FUNC(void, OS_CODE) StartOS(
   CONST(AppModeType, AUTOMATIC) mode)
 {
   GET_CURRENT_CORE_ID(core_id)
-  
+
   if (tpl_current_os_state(CORE_ID_OR_NOTHING(core_id)) == OS_INIT)
   {
 #if NUMBER_OF_CORES > 1

@@ -7,13 +7,13 @@
  *
  * @section copyright Copyright
  *
- * Trampoline OS
+ * Trampoline RTOS
  *
- * Trampoline is copyright (c) IRCCyN 2005-2007
- * Copyright ESEO for function and data structures documentation
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
  * Trampoline is protected by the French intellectual property law.
  *
- * This software is distributed under the Lesser GNU Public Licence
+ * This software is distributed under the GNU Public Licence V2.
+ * Check the LICENSE file in the root directory of Trampoline
  *
  * @section infos File informations
  *
@@ -53,17 +53,17 @@ FUNC(StatusType, OS_CODE) tpl_screen_display_service(
   P2CONST(char, AUTOMATIC, OS_VAR) msg)
 {
   VAR(StatusType, AUTOMATIC) result = E_OK;
-	
+
   LOCK_KERNEL()
-	
+
   /* Display the message    */
-  
+
   printf("\n---------------------\nVoici le message : %s\n---------------------\n", msg);
 
   PROCESS_ERROR(result)
-  
+
   UNLOCK_KERNEL()
-  
+
   return result;
 }
 
@@ -74,19 +74,19 @@ FUNC(StatusType, OS_CODE) tpl_screen_display_service(
  *
  * Return value:
  * E_OK:    No error (Standard & Extended)
- * 
+ *
  */
 FUNC(StatusType, OS_CODE) tpl_stm_begin_read_tx_service()
 {
  VAR(StatusType, AUTOMATIC) result = E_OK;
 
-#if NUMBER_OF_CORES > 1	
+#if NUMBER_OF_CORES > 1
  GET_CURRENT_CORE_ID(core_id)
 
  LOCK_KERNEL()
 
  // a compléter
- 
+
  UNLOCK_KERNEL()
 #else
  LOCK_KERNEL()
@@ -95,7 +95,7 @@ FUNC(StatusType, OS_CODE) tpl_stm_begin_read_tx_service()
 
  UNLOCK_KERNEL()
 #endif
-  
+
  return result;
 };
 
@@ -110,7 +110,7 @@ FUNC(StatusType, OS_CODE) tpl_stm_begin_read_tx_service()
  *
  * Return value:
  * E_OK:    No error (Standard & Extended)
- * 
+ *
  */
 FUNC(StatusType, OS_CODE) tpl_stm_begin_write_tx_service(){
 };
@@ -118,13 +118,13 @@ FUNC(StatusType, OS_CODE) tpl_stm_begin_write_tx_service(){
 /*
  * tpl_stm_end_read_tx_service
  *
- * Ends a read-set transaction 
+ * Ends a read-set transaction
  *
  * tx:  Transaction descriptor
  *
  * Return value:
  * E_OK:    No error (Standard & Extended)
- * 
+ *
  */
 FUNC(StatusType, OS_CODE) tpl_stm_end_read_tx_service(){
 };
@@ -138,7 +138,7 @@ FUNC(StatusType, OS_CODE) tpl_stm_end_read_tx_service(){
  *
  * Return value:
  * E_OK:    No error (Standard & Extended)
- * 
+ *
  */
 FUNC(StatusType, OS_CODE) tpl_stm_end_write_tx_service(){
 };
@@ -155,7 +155,7 @@ FUNC(StatusType, OS_CODE) tpl_stm_end_write_tx_service(){
  *
  * Return value:
  * E_OK:    No error (Standard & Extended)
- * 
+ *
  */
 FUNC(StatusType, OS_CODE) update(P2VAR(tpl_stm_tx_descriptor, AUTOMATIC, OS_APPL_DATA) tx, CONST(ObjectType, AUTOMATIC) object_id){
  // a compléter
@@ -172,7 +172,7 @@ FUNC(StatusType, OS_CODE) update(P2VAR(tpl_stm_tx_descriptor, AUTOMATIC, OS_APPL
  *
  * Return value:
  * E_OK:    No error (Standard & Extended)
- * 
+ *
  */
 FUNC(StatusType, OS_CODE) read_obj(CONST(tpl_stm_core_id, OS_APPL_DATA) coreid_tx1, CONST(tpl_stm_core_id, OS_APPL_DATA) coreid_tx2, CONST(ObjectType, AUTOMATIC) object_id, CONST(uint32, AUTOMATIC) instance){
 
@@ -181,8 +181,8 @@ FUNC(StatusType, OS_CODE) read_obj(CONST(tpl_stm_core_id, OS_APPL_DATA) coreid_t
 
   if ((STATUS(trans_table[coreid_tx2].status) == TXS_IN_RETRY) && (INSTANCE(trans_table[coreid_tx2].status) == instance))
  	object_table[object_id].concurrency_vector = SET_FAIL_VECTOR(object_table[object_id].concurrency_vector, coreid_tx2);
-  
-  do 
+
+  do
   {
 	SET_READ_VECTOR(object_table[object_id].concurrency_vector, coreid_tx2);
 	loc_current_pos = CURRENT_OBJECT_POS(object_table[object_id].concurrency_vector);
@@ -192,13 +192,13 @@ FUNC(StatusType, OS_CODE) read_obj(CONST(tpl_stm_core_id, OS_APPL_DATA) coreid_t
 	printf("data dans la structure object_table à read_copy_index = %d\n",  *(int*)object_table[object_id].copy_table[read_copy_index]);
 	if (READ_VECTOR_BIT(object_table[object_id].concurrency_vector, coreid_tx2))
 		break;
-	
+
   }
   while(1);
 
 
   if ((INSTANCE(trans_table[coreid_tx2].status) == instance) && (STATUS(trans_table[coreid_tx2].status) < TXS_INACTIVE))
-  {	
+  {
 	//ATOMIC
 	if (trans_table[coreid_tx1].read_set[object_id] == &object_table[object_id])
 		trans_table[coreid_tx1].read_set[object_id] = object_table[object_id].copy_table[read_copy_index];
@@ -220,20 +220,20 @@ FUNC(StatusType, OS_CODE) read_obj(CONST(tpl_stm_core_id, OS_APPL_DATA) coreid_t
  *
  * Return value:
  * E_OK:    No error (Standard & Extended)
- * 
+ *
  */
 FUNC(StatusType, OS_CODE) tpl_stm_open_read_object_service(CONST(ObjectType, AUTOMATIC) object_id, P2VAR(tpl_stm_data, AUTOMATIC, OS_APPL_DATA) data){
 
 uint32 instance;
 
-#if NUMBER_OF_CORES > 1	
+#if NUMBER_OF_CORES > 1
  GET_CURRENT_CORE_ID(core_id)
 #else
  uint32 core_id = 0;
 #endif
 
   LOCK_KERNEL()
- 
+
   printf("DEBUT : data pointée = %d, adresse pointée par data=%p\n", *(int*)data, data);
 
   if ((STATUS(trans_table[core_id].status) != TXS_IN_RETRY) && (UPDATE_FLAG(object_table[object_id].concurrency_vector)==1))
@@ -248,7 +248,7 @@ uint32 instance;
   SET_ACCESS_VECTOR(trans_table[core_id].access_vector, object_id);
   printf("Data size = %zd\n", object_table[object_id].size);
   memcpy(data, trans_table[core_id].read_set[object_id], object_table[object_id].size);
-  
+
   printf("FIN : data pointée = %d, adresse pointée par data=%p\n", *(int*)data, data);
 
   UNLOCK_KERNEL()
@@ -266,24 +266,24 @@ uint32 instance;
  *
  * Return value:
  * E_OK:    No error (Standard & Extended)
- * 
+ *
  */
 FUNC(StatusType, OS_CODE) tpl_stm_open_write_object_service(CONST(ObjectType, AUTOMATIC) object_id, P2VAR(tpl_stm_data, AUTOMATIC, OS_APPL_DATA) data){
 
-#if NUMBER_OF_CORES > 1	
+#if NUMBER_OF_CORES > 1
  GET_CURRENT_CORE_ID(core_id)
 #else
  uint32 core_id = 0;
 #endif
 
   LOCK_KERNEL()
- 
-  memcpy(trans_table[core_id].write_set[object_id], data, object_table[object_id].size);  
+
+  memcpy(trans_table[core_id].write_set[object_id], data, object_table[object_id].size);
   SET_UPDATE_FLAG(object_table[object_id].concurrency_vector);
   SET_ACCESS_VECTOR(trans_table[core_id].access_vector, object_id);
 
   printf("Valeur data dans copy_table = %d\n", *(int*)trans_table[core_id].write_set[object_id]);
-  
+
   UNLOCK_KERNEL()
 
 };
@@ -299,7 +299,7 @@ FUNC(StatusType, OS_CODE) tpl_stm_open_write_object_service(CONST(ObjectType, AU
  *
  * Return value:
  * E_OK:    No error (Standard & Extended)
- * 
+ *
  */
 FUNC(StatusType, OS_CODE) tpl_stm_commit_read_tx_service(){
 };
@@ -313,7 +313,7 @@ FUNC(StatusType, OS_CODE) tpl_stm_commit_read_tx_service(){
  *
  * Return value:
  * E_OK:    No error (Standard & Extended)
- * 
+ *
  */
 FUNC(StatusType, OS_CODE) tpl_stm_commit_write_tx_service(){
 };

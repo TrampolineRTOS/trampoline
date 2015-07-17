@@ -7,12 +7,13 @@
  *
  * @section copyright Copyright
  *
- * Trampoline OS
+ * Trampoline RTOS
  *
- * Trampoline is copyright (c) IRCCyN 2005-2007
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
  * Trampoline is protected by the French intellectual property law.
  *
- * This software is distributed under the Lesser GNU Public Licence
+ * This software is distributed under the GNU Public Licence V2.
+ * Check the LICENSE file in the root directory of Trampoline
  *
  * @section infos File informations
  *
@@ -127,7 +128,7 @@ typedef struct TPL_TIME_OBJ tpl_time_obj;
 struct TPL_COUNTER {
   CONST(tpl_tick, TYPEDEF)
     ticks_per_base;     /**< number of ticks until the  counter increments    */
-  CONST(tpl_tick, TYPEDEF) 
+  CONST(tpl_tick, TYPEDEF)
     max_allowed_value;  /**< maximum allowed value for a counter              */
   CONST(tpl_tick, TYPEDEF)
     min_cycle;          /**< number of ticks until the counter increments     */

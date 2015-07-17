@@ -7,13 +7,13 @@
  *
  * @section copyright Copyright
  *
- * Trampoline OS
+ * Trampoline RTOS
  *
- * Trampoline is copyright (c) IRCCyN 2005+
- * Copyright ESEO for function and data structures documentation
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
  * Trampoline is protected by the French intellectual property law.
  *
- * This software is distributed under the Lesser GNU Public Licence
+ * This software is distributed under the GNU Public Licence V2.
+ * Check the LICENSE file in the root directory of Trampoline
  *
  * @section infos File informations
  *
@@ -73,7 +73,7 @@ STATIC VAR(sint32, OS_VAR) tpl_it_nesting =  0;
 FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void)
 {
     VAR(tpl_bool, AUTOMATIC) result;
-	
+
     if ((TRUE == tpl_user_task_lock) ||
         (tpl_cpt_user_task_lock_OS > 0) ||
         (tpl_cpt_user_task_lock_All > 0))
@@ -84,17 +84,17 @@ FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void)
     {
         result = FALSE;
     }
-	
+
     return result;
 }
 
 FUNC(void, OS_CODE) tpl_reset_interrupt_lock_status(void)
 {
 	tpl_user_task_lock = FALSE;
-	
+
 	tpl_cpt_user_task_lock_All = 0;
 	tpl_cpt_user_task_lock_OS = 0;
-	
+
 	tpl_locking_depth = tpl_cpt_os_task_lock;
 }
 
@@ -104,7 +104,7 @@ FUNC(void, OS_CODE) tpl_reset_interrupt_lock_status(void)
 FUNC(void, OS_CODE) tpl_suspend_all_interrupts_service(void)
 {
   tpl_disable_interrupts();
-  
+
   tpl_locking_depth++;
 
   tpl_cpt_user_task_lock_All++;
@@ -119,19 +119,19 @@ FUNC(void, OS_CODE) tpl_resume_all_interrupts_service(void)
   #if defined(__unix__) || defined(__APPLE__)
 	assert( tpl_locking_depth >= 0 );
   #endif
-    
+
 	if( tpl_cpt_user_task_lock_All != 0 )
 	{
 		tpl_locking_depth--;
-	
+
 		tpl_cpt_user_task_lock_All--;
-	
+
 		if( tpl_locking_depth == 0)
 		{
 			tpl_enable_interrupts();
 		}
 	}
-  
+
 }
 
 /**
@@ -167,7 +167,7 @@ FUNC(void, OS_CODE) tpl_enable_all_interrupts_service(void)
 FUNC(void, OS_CODE) tpl_suspend_os_interrupts_service(void)
 {
   tpl_disable_interrupts();
-  
+
   tpl_locking_depth++;
 
   tpl_cpt_user_task_lock_OS++;
@@ -182,13 +182,13 @@ FUNC(void, OS_CODE) tpl_resume_os_interrupts_service(void)
   #if defined(__unix__) || defined(__APPLE__)
 	assert(tpl_locking_depth >= 0);
   #endif
-    
+
 	if (tpl_cpt_user_task_lock_OS != 0)
-	{	
+	{
 		tpl_locking_depth--;
-	
+
 		tpl_cpt_user_task_lock_OS--;
-	
+
 		if (0 == tpl_locking_depth)
 		{
 			tpl_enable_interrupts();
@@ -205,37 +205,37 @@ FUNC(void, OS_CODE) tpl_resume_os_interrupts_service(void)
 FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void)
 {
   GET_CURRENT_CORE_ID(core_id)
-  
+
   /* init the error to no error */
   VAR(tpl_status, AUTOMATIC) result = E_OK;
-  
+
   CHECK_INTERRUPT_LOCK(result)
-  
+
   /* check we are at the ISR2 level */
   CHECK_ISR2_CALL_LEVEL_ERROR(result)
   /* check the ISR2 does not own a resource */
   CHECK_RUNNING_OWNS_REZ_ERROR(core_id, result)
-  
+
 #if ISR_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-  
+
   /* the activate count is decreased */
   TPL_KERN(core_id).running->activate_count--;
-    
+
   /* terminate the running ISR */
   tpl_terminate();
   /* start the highest priority process */
   tpl_start();
   /* process switching should occur */
   TPL_KERN(core_id).need_switch = NEED_SWITCH;
-  
+
   LOCAL_SWITCH_CONTEXT_NOSAVE(a_core_id)
-	
+
   IF_NO_EXTENDED_ERROR_END()
 #endif
-   
+
   PROCESS_ERROR(result)
-    
+
   return result;
 }
 
@@ -272,7 +272,7 @@ STATIC FUNC(void, OS_CODE) tpl_activate_isr(
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
     /* a new instance is about to be activated: we need the agreement
        of the timing protection mechanism                                */
-    if (TRUE == tpl_tp_on_activate_or_release(isr_id)) 
+    if (TRUE == tpl_tp_on_activate_or_release(isr_id))
     {
 #endif
       if (isr->activate_count == 0)
@@ -293,9 +293,9 @@ STATIC FUNC(void, OS_CODE) tpl_activate_isr(
     }
     else /* timing protection forbids the activation of the instance   */
     {
-      /*  OS466: If an attempt is made to activate a task before the 
-          end of an OsTaskTimeFrame then the Operating System module 
-          shall not perform the activation AND 
+      /*  OS466: If an attempt is made to activate a task before the
+          end of an OsTaskTimeFrame then the Operating System module
+          shall not perform the activation AND
           shall call the ProtectionHook() with E_OS_PROTECTION_ARRIVAL. */
       tpl_call_protection_hook(E_OS_PROTECTION_ARRIVAL);
     }
@@ -329,9 +329,9 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(
   {
 #endif
     tpl_it_nesting++;
-    
+
     isr = tpl_isr_stat_table[isr_id - TASK_COUNT];
-    
+
     if (isr != NULL)
     {
       if ((isr->next) == NULL)
@@ -348,15 +348,15 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(
           {
             /* activate the handler */
             tpl_activate_isr(isr->isr_id);
-			
+
           }
           isr = isr->next;
         }
       }
     }
-    
+
     tpl_it_nesting--;
-    
+
     if (tpl_it_nesting == 0)
     {
       tpl_schedule_from_running();

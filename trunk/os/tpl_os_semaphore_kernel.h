@@ -1,3 +1,28 @@
+/**
+ * @file tpl_os_semaphore.h
+ *
+ * @section desc File description
+ *
+ * Trampoline semaphore header
+ *
+ * @section copyright Copyright
+ *
+ * Trampoline RTOS
+ *
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
+ * Trampoline is protected by the French intellectual property law.
+ *
+ * This software is distributed under the GNU Public Licence V2.
+ * Check the LICENSE file in the root directory of Trampoline
+ *
+ * @section infos File informations
+ *
+ * $Date:$
+ * $Rev:$
+ * $Author:$
+ * $URL:$
+ */
+
 #ifndef TPL_OS_SEMAPHORE_KERNEL_H
 #define TPL_OS_SEMAPHORE_KERNEL_H
 
