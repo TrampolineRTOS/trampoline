@@ -35,9 +35,6 @@ typedef VAR(tpl_schedtable_id, AUTOMATIC)  ScheduleTableType;
 typedef VAR(tpl_time_obj_state, AUTOMATIC) ScheduleTableStatusType;
 typedef P2VAR(tpl_time_obj_state, AUTOMATIC, OS_APPL_DATA) ScheduleTableStatusRefType;
 
-#define OS_START_SEC_CODE
-#include "tpl_memmap.h"
-
 /**
  * @def DeclareScheduleTable
  *
@@ -48,8 +45,5 @@ typedef P2VAR(tpl_time_obj_state, AUTOMATIC, OS_APPL_DATA) ScheduleTableStatusRe
  */
 #define DeclareScheduleTable(scheduletable_id)				\
 		extern CONST(ScheduleTableType, AUTOMATIC) scheduletable_id
-
-#define OS_STOP_SEC_CODE
-#include "tpl_memmap.h"
 
 #endif /*  TPL_AS_SCHEDTABLE_H */
