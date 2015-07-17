@@ -8,8 +8,10 @@ IMPLEMENTATION trampoline {
 
 CPU test {      
     OS config {
+      BUILD = TRUE {
         CFLAGS  = "-Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
+      };
     } ;
 };
 
