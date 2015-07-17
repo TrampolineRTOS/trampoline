@@ -170,7 +170,7 @@ tpl_enter_kernel:
 	bl tpl_kernel_mp
 	pop {lr}
 	#endif
-	/* 
+	/*
 	* Manage reentrance of kernel
 	* Increment nested_kernel_entrance_counter
 	*/
@@ -178,23 +178,23 @@ tpl_enter_kernel:
 	ldr r2, [r1]
 	add r2, r2, #1
 	str r2, [r1]
-	/* 
+	/*
 	* Switch to the kernel stack
 	* Automatic (configuration) for the Cortex-M4
-	*/	
-tpl_enter_kernel_exit:	
+	*/
+tpl_enter_kernel_exit:
 	bx lr
 
 /*******************************************************************************
  *
  *******************************************************************************/
 tpl_leave_kernel:
-	/* 
+	/*
 	* Manage reentrance of kernel
 	* Decrement nested_kernel_entrance_counter
 	*
 	* We update kernel reentrance counter while registers are freely
-	* usable and as we know we won't enter in kernel again (IRQ locked and
+	* usable and as we know we won t enter in kernel again (IRQ locked and
 	* no SWI can occur)
 	*/
 	ldr r1, =nested_kernel_entrance_counter
@@ -236,12 +236,12 @@ tpl_primary_syscall_handler:
 	* We save [lr], then [r2], then [r1], then [r0].
 	*/
 	stmdb sp!, {r0-r2,lr}
-	
+
 	/* __X__
 	* Enter into kernel
 	*/
 	bl tpl_enter_kernel
-	
+
 	/* reset tpl_kern variables */
 	ldr r1, =tpl_kern
 	mov r2, #NO_NEED_SWITCH_NOR_SCHEDULE
@@ -278,7 +278,7 @@ tpl_primary_syscall_handler:
 	*/
 	mrs r1, psp                  /* Get current process stack pointer (psp) value */
 	str r0, [r1]
-	
+
 	/* Do we need to switch context ?
 	 * (requested by system service)
 	 */
@@ -286,7 +286,7 @@ tpl_primary_syscall_handler:
 	ldrb r2, [r2, #TPL_KERN_OFFSET_NEED_SWITCH]
 	cmp r2, #NO_NEED_SWITCH
 	beq swi_no_context_switch_exit
-	
+
 	/* do not switch context if nested kernel entrance */
 	ldr r2, =nested_kernel_entrance_counter
 	ldr r2, [r2]
@@ -327,7 +327,7 @@ skip_save_context_swi:
 	 * [r3] is used for the future call of tpl_run_elected
 	 */
 	mov r3, #0
- 
+
 	/*
 	 * LOADS NEW CONTEXT
 	 */
@@ -341,7 +341,7 @@ load_context_swi:
 	bl tpl_run_elected
 	pop {lr}
 	mov r3, r0 	/* Keep the returned value into r3 */
-	
+
 	/* Get the context block address */
 	ldr r0, =tpl_kern
 	ldr lr, [r0, #TPL_KERN_OFFSET_S_RUNNING] /* get the address of the context bloc */
@@ -360,12 +360,12 @@ swi_no_context_switch_exit:
  	* Leave kernel
  	*/
 	bl tpl_leave_kernel
-	
+
 tpl_primary_syscall_handler_exit:
 	/* Moves back EXC_RETURN into lr.
 	 * lr was pushed on stack with statement << stmdb sp!, {r0-r2,lr} >> at beginning of handler call.
 	 */
-	pop {lr}	
+	pop {lr}
 	cpsie i
 
 	bx lr
