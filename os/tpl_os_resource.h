@@ -76,51 +76,6 @@ extern CONST(ResourceType, OS_CONST) RES_SCHEDULER;
 #define DeclareResource(resource_id)  \
   extern CONST(ResourceType, AUTOMATIC) resource_id
 
-
-#define API_START_SEC_CODE
-#include "tpl_memmap.h"
-
-/*
- * System services
- * see paragraph 13.4.3,
- * pages 58+ of OSEK/VDX 2.2.2 spec
- */
-
-/**
- * Get the resource
- *
- * @param ResID identifier of the resource
- *
- * @retval E_OK no error
- * @retval E_OS_ID ResID is invalid
- *
- * see paragraph 13.4.3.1 page 58 of OSEK/VDX 2.2.2 spec
- */
-FUNC(StatusType, OS_CODE) GetResource(
-    CONST(ResourceType, AUTOMATIC) res_id);
-
-
-/**
- * Releases the resource
- *
- * @param ResID identifier of the resource
- *
- * @retval  E_OK no error
- * @retval  (extended error only) E_OS_ID ResID is invalid
- * @retval  (extended error only) E_OS_NOFUNC the resource is not occupied or
- *          another resource shall be released before
- * @retval  (extended error only) E_OS_ACCESS the resource has a lower ceiling
- *          priority than the static priority of the caller
- *
- * see paragraph 13.4.3.2 page 59 of OSEK/VDX 2.2.2 spec
- */
-FUNC(StatusType, OS_CODE) ReleaseResource(
-    CONST(ResourceType, AUTOMATIC) res_id);
-
-
-#define API_STOP_SEC_CODE
-#include "tpl_memmap.h"
-
 #endif /* TPL_OS_REZ_H */
 
 /* End of file tpl_os_rez.h */
