@@ -7,12 +7,13 @@
  *
  * @section copyright Copyright
  *
- * Trampoline OS
+ * Trampoline RTOS
  *
- * Trampoline is copyright (c) IRCCyN 2005-2007
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
  * Trampoline is protected by the French intellectual property law.
  *
- * This software is distributed under the Lesser GNU Public Licence
+ * This software is distributed under the GNU Public Licence V2.
+ * Check the LICENSE file in the root directory of Trampoline
  *
  * @section infos File informations
  *
@@ -95,7 +96,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_base_service(
 
 /**
  * @internal
- * 
+ *
  * Get relative ticks count before alarm exprires
  *
  * @param alarm_id identifier of the alarm
@@ -112,7 +113,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
 
 /**
  * @internal
- * 
+ *
  * Changes the alarm trigger relative to the current counter
  *
  * @param alarm_id identifier of the alarm
@@ -133,7 +134,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
 
 /**
  * @internal
- * 
+ *
  * Changes the alarm trigger relative to the current counter
  *
  * @param alarm_id identifier of the alarm

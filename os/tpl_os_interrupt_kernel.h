@@ -7,13 +7,13 @@
  *
  * @section copyright Copyright
  *
- * Trampoline OS
+ * Trampoline RTOS
  *
- * Trampoline is copyright (c) IRCCyN 2005+
- * Copyright ESEO for function and data structures documentation
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
  * Trampoline is protected by the French intellectual property law.
  *
- * This software is distributed under the Lesser GNU Public Licence
+ * This software is distributed under the GNU Public Licence V2.
+ * Check the LICENSE file in the root directory of Trampoline
  *
  * @section infos File informations
  *
@@ -47,11 +47,11 @@ typedef P2FUNC(void, OS_APPL_CODE, tpl_it_handler)(P2CONST(void, OS_APPL_DATA, A
  * Entry of the tpl interrupt vector
  */
 struct TPL_IT_VECTOR_ENTRY {
-  CONST(tpl_it_handler, AUTOMATIC) func;      /**< pointer to the request 
-                                                    handling function for 
-                                                    this interrupt 
+  CONST(tpl_it_handler, AUTOMATIC) func;      /**< pointer to the request
+                                                    handling function for
+                                                    this interrupt
                                                 */
-  P2VAR(void, OS_APPL_DATA, AUTOMATIC) args;  /**< pointer to the 
+  P2VAR(void, OS_APPL_DATA, AUTOMATIC) args;  /**< pointer to the
                                                   arguments the function
                                                 */
 };

@@ -7,14 +7,13 @@
  *
  * @section copyright Copyright
  *
- * Trampoline OS
+ * Trampoline RTOS
  *
- * Trampoline is copyright (c) IRCCyN 2005-2013
- * Part of Autosar extension is copyright (c) IRCCyN and ESEO 2007
- * Trampoline and its Autosar extension are protected by the
- * French intellectual property law.
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
+ * Trampoline is protected by the French intellectual property law.
  *
- * This software is distributed under the Lesser GNU Public Licence
+ * This software is distributed under the GNU Public Licence V2.
+ * Check the LICENSE file in the root directory of Trampoline
  *
  * @section infos File informations
  *
@@ -24,7 +23,7 @@
  * $URL$
  *
  */
- 
+
 #ifndef TPL_OS_MULTICORE_H
 #define TPL_OS_MULTICORE_H
 
@@ -65,7 +64,7 @@ typedef uint8 CoreStatusType;
  */
 #define STARTED_CORE_NON_AUTOSAR  2
 
-#endif 
+#endif
 /* TPL_OS_MULTICORE_H */
 
 /* end of file tpl_os_multicore.h */

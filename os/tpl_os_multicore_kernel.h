@@ -7,14 +7,13 @@
  *
  * @section copyright Copyright
  *
- * Trampoline OS
+ * Trampoline RTOS
  *
- * Trampoline is copyright (c) IRCCyN 2005-2013
- * Part of Autosar extension is copyright (c) IRCCyN and ESEO 2007
- * Trampoline and its Autosar extension are protected by the
- * French intellectual property law.
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
+ * Trampoline is protected by the French intellectual property law.
  *
- * This software is distributed under the Lesser GNU Public Licence
+ * This software is distributed under the GNU Public Licence V2.
+ * Check the LICENSE file in the root directory of Trampoline
  *
  * @section infos File informations
  *
@@ -57,7 +56,7 @@ extern VAR(uint16, OS_APPL_DATA) tpl_start_count_1;
  */
 extern VAR(uint16, OS_APPL_DATA) tpl_number_of_activated_cores;
 
-  
+
 #define OS_STOP_SEC_VAR_16BITS
 #include "tpl_memmap.h"
 
@@ -119,7 +118,7 @@ FUNC(void, OS_CODE) tpl_start_non_autosar_core_service(
  */
 FUNC(void, OS_CODE) tpl_shutdown_all_cores_service(
   CONST(StatusType, AUTOMATIC) error);
-  
+
 /**
  * tpl_get_number_of_activated_cores_service returns the number
  * of activated cores.

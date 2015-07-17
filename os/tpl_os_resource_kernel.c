@@ -8,12 +8,13 @@
  *
  * @section copyright Copyright
  *
- * Trampoline OS
+ * Trampoline RTOS
  *
- * Trampoline is copyright (c) IRCCyN 2005+
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
  * Trampoline is protected by the French intellectual property law.
  *
- * This software is distributed under the Lesser GNU Public Licence
+ * This software is distributed under the GNU Public Licence V2.
+ * Check the LICENSE file in the root directory of Trampoline
  *
  * @section infos File informations
  *
@@ -84,7 +85,7 @@ VAR(tpl_resource, OS_VAR) res_sched_rez_desc = {
   INVALID_PROC_ID,          /*  owner                                       */
 #if WITH_OSAPPLICATION == YES
   INVALID_OSAPPLICATION_ID, /*  OS Application id                           */
-#endif    
+#endif
   NULL                      /*  next_res                                    */
 };
 
@@ -111,18 +112,18 @@ FUNC(void, OS_CODE) tpl_release_all_resources(
 #if WITH_TRACE == YES
   VAR(tpl_resource_id, AUTOMATIC) res_id;
 #endif /* WITH_TRACE */
-	
+
   if (res != NULL)
   {
     tpl_dyn_proc_table[proc_id]->resources = NULL;
-    
+
     do
     {
       CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) next_res =
       res->next_res;
       res->owner = INVALID_TASK;
       res->next_res = NULL;
-		
+
 	  /* find the id of the resource for the trace */
 #if WITH_TRACE == YES
 	  res_id = 0;
@@ -131,7 +132,7 @@ FUNC(void, OS_CODE) tpl_release_all_resources(
 	  }
 	  TRACE_RES_RELEASED(res_id)
 #endif /* WITH_TRACE */
-		
+
 	  res = next_res;
     } while (res != NULL);
   }
@@ -156,7 +157,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
 #if RESOURCE_COUNT > 0
   P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
 #endif
-  
+
   LOCK_KERNEL()
 
   /* check interrupts are not disabled by user    */
@@ -164,12 +165,12 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
 
   STORE_SERVICE(OSServiceId_GetResource)
   STORE_RESOURCE_ID(res_id)
-  
+
   CHECK_RESOURCE_ID_ERROR(res_id, result)
-	
+
   /* check access right */
   CHECK_ACCESS_RIGHTS_RESOURCE_ID(core_id, res_id, result)
-  
+
   IF_NO_EXTENDED_ERROR(result)
 #if RESOURCE_COUNT > 0
   res = tpl_resource_table[res_id];
@@ -182,7 +183,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
       or the resource is already owned by another task
       By using PCP, this situation should no occur.         */
   CHECK_RESOURCE_PRIO_ERROR_ON_GET(core_id, res, result)
-  
+
   IF_NO_EXTENDED_ERROR(result)
     /*  set the owner of the resource to the calling task     */
     res->owner = (tpl_proc_id)TPL_KERN_REF(kern).running_id;
@@ -192,12 +193,12 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
     res->next_res = TPL_KERN_REF(kern).running->resources;
     TPL_KERN_REF(kern).running->resources = res;
     /*  save the current priority of the task in the resource */
-    res->owner_prev_priority = TPL_KERN_REF(kern).running->priority;  
+    res->owner_prev_priority = TPL_KERN_REF(kern).running->priority;
 
    DOW_DO(printf("*** GetResource: task %s stores priority %d\n",
                  proc_name_table[TPL_KERN_REF(kern).running_id],
                  TPL_KERN_REF(kern).running->priority));
-    
+
     if (ACTUAL_PRIO(TPL_KERN_REF(kern).running->priority) <
         res->ceiling_priority)
     {
@@ -214,13 +215,13 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
 /*    tpl_start_resource_monitor((tpl_proc_id)tpl_kern.running_id, res_id); */
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   IF_NO_EXTENDED_ERROR_END()
-  
+
   IF_NO_EXTENDED_ERROR_END()
-  
+
   PROCESS_ERROR(result)
-  
+
   UNLOCK_KERNEL()
-  
+
   return result;
 }
 
@@ -249,22 +250,22 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
   STORE_RESOURCE_ID(res_id)
 
   CHECK_RESOURCE_ID_ERROR(res_id, result)
-	
+
   /* check access right */
   CHECK_ACCESS_RIGHTS_RESOURCE_ID(core_id, res_id, result)
-	
+
   IF_NO_EXTENDED_ERROR(result)
   #if RESOURCE_COUNT > 0
     res = tpl_resource_table[res_id];
   #else
     res = NULL; /* error */
   #endif
-  
-	
+
+
   /* Return an error if the task that attempt to release
 	   the resource has a higher priority than the resource    */
   CHECK_RESOURCE_PRIO_ERROR_ON_RELEASE(core_id, res,result)
-	
+
   /* the spec requires resources to be released in
      the reverse order of the getting. if the resource
      is not owned or not release in the good order.
@@ -275,13 +276,13 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
   CHECK_RESOURCE_ORDER_ON_RELEASE(core_id, res, result)
 
   IF_NO_EXTENDED_ERROR(result)
-    /*  get the saved priority  */      
+    /*  get the saved priority  */
     TPL_KERN(core_id).running->priority = res->owner_prev_priority;
-      
+
     DOW_DO(printf("*** ReleaseResource:task %s takes back priority %d\n",
            proc_name_table[TPL_KERN(core_id).running_id],
            TPL_KERN(core_id).running->priority));
-      
+
       TRACE_TASK_CHANGE_PRIORITY((tpl_proc_id)TPL_KERN(core_id).running_id)
       TRACE_ISR_CHANGE_PRIORITY((tpl_proc_id)TPL_KERN(core_id).running_id)
       /*  remove the resource from the resource list  */

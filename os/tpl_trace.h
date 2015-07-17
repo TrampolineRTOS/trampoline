@@ -1,4 +1,4 @@
- 
+
 /**
 * @file tpl_os_task_kernel.h
 *
@@ -6,15 +6,16 @@
 *
 * Functions for trace production
 *
-* @section copyright Copyright
-*
-* Trampoline OS
-*
-* Trampoline is copyright (c) IRCCyN 2005-2007
-* Trampoline is protected by the French intellectual property law.
-*
-* This software is distributed under the Lesser GNU Public Licence
-*
+ * @section copyright Copyright
+ *
+ * Trampoline RTOS
+ *
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
+ * Trampoline is protected by the French intellectual property law.
+ *
+ * This software is distributed under the GNU Public Licence V2.
+ * Check the LICENSE file in the root directory of Trampoline
+ *
 * @section infos File informations
 *
 * $Date: 2009-04-24 10:10:29 +0000 (ven. 24 avril 2009) $
@@ -80,18 +81,18 @@
 #		define TRACE_TASK_EXECUTE(new_executed_task_id) \
 		tpl_trace_task_execute(new_executed_task_id);
 
-/** 
+/**
 * @def TRACE_TASK_PREEMPT
 */
 #		define TRACE_TASK_PREEMPT(preempted_task_id)\
 		tpl_trace_task_preempt(preempted_task_id);
-	
+
 /**
 * @def TRACE_TASK_TERMINATE
 */
 #		define TRACE_TASK_TERMINATE(dying_task_id)\
 		tpl_trace_task_terminate(dying_task_id);
-	
+
 /**
 * @def TRACE_TASK_ACTIVATE
 */
@@ -323,7 +324,7 @@ FUNC(void, OS_CODE) tpl_trace_task_terminate(
 
 FUNC(void, OS_CODE) tpl_trace_task_activate(
   CONST(TaskType, AUTOMATIC) task_id);
-  
+
 /**
 * trace the switch to wait state of a task
 *
@@ -382,7 +383,7 @@ FUNC(void, OS_CODE) tpl_trace_res_released(
 
 FUNC(void, OS_CODE) tpl_trace_isr_run(
   CONST(tpl_isr_id, AUTOMATIC) running_isr_id);
-  
+
 /**
 * trace the preemption of an ISR
 *
@@ -404,7 +405,7 @@ FUNC(void, OS_CODE) tpl_trace_isr_terminate(
 /**
 * trace the activation of an ISR
 *
-* @param isr_id		identifier of the activated ISR  
+* @param isr_id		identifier of the activated ISR
 */
 
 FUNC(void, OS_CODE) tpl_trace_isr_activate(

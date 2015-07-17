@@ -8,12 +8,13 @@
  *
  * @section copyright Copyright
  *
- * Trampoline OS
+ * Trampoline RTOS
  *
- * Trampoline is copyright (c) IRCCyN 2005-2007
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
  * Trampoline is protected by the French intellectual property law.
  *
- * This software is distributed under the Lesser GNU Public Licence
+ * This software is distributed under the GNU Public Licence V2.
+ * Check the LICENSE file in the root directory of Trampoline
  *
  * @section infos File informations
  *
@@ -180,7 +181,7 @@ FUNC(void, OS_CODE) tpl_remove_time_obj(
 /*
  * tpl_remove_timeobj_set removes a consecutive set of time object with
  * the same date starting with the next_to of the counter given as parameter.
- * Added:jlb:2008-09-25. 
+ * Added:jlb:2008-09-25.
  */
 STATIC FUNC(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA), OS_CODE) tpl_remove_timeobj_set(
     P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter)
@@ -198,10 +199,10 @@ STATIC FUNC(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA), OS_CODE) tpl_remove_ti
 
     /*  look for the last time object with the same date as the first one   */
     do
-    {	
+    {
 #if WITH_AUTOSAR == YES
 			/* if BOOSTRAP, let this object in the queue setting it as the previous object
-			 to first_to */	
+			 to first_to */
 			if ((t_obj->state & SCHEDULETABLE_BOOTSTRAP) == SCHEDULETABLE_BOOTSTRAP)
 			{
 				if (t_obj == counter->next_to)
@@ -213,7 +214,7 @@ STATIC FUNC(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA), OS_CODE) tpl_remove_ti
 					t_obj->state = t_obj->state & ~SCHEDULETABLE_BOOTSTRAP;
 				}
 				else
-				{ 
+				{
 					/* if next object is null, it's impossible to store next_to->prev_to, so*/
 					if (t_obj->next_to != NULL)
 					{
@@ -260,7 +261,7 @@ STATIC FUNC(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA), OS_CODE) tpl_remove_ti
     {
       counter->first_to = af_to;
     }
-		
+
 		/* if object == TRUE, return counter->next_to (by saving it first)
 		   else, return NULL
 		 */
@@ -269,9 +270,9 @@ STATIC FUNC(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA), OS_CODE) tpl_remove_ti
 		{
 			real_next_to = counter->next_to;
 		}
-		
+
 		/*  update the next_to of the counter           */
-		if (af_to != NULL) 
+		if (af_to != NULL)
 		{
 			counter->next_to = af_to;
 		}
@@ -282,7 +283,7 @@ STATIC FUNC(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA), OS_CODE) tpl_remove_ti
 		/*  update the end of the chain of object(s)    */
     last_to->next_to = NULL;
   }
-	
+
 	return real_next_to;
 }
 
@@ -297,7 +298,7 @@ STATIC FUNC(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA), OS_CODE) tpl_remove_ti
  *
  * Update: 2006-12-10: Does not perform the rescheduling.
  *  tpl_schedule must be called explicitly
- * Bug fix:jlb:2008-09-25 
+ * Bug fix:jlb:2008-09-25
  *  When 2 alarms or more were scheduled at the same date and their cycle
  *  was also the same, tpl_counter_tick went into an infinite loop because
  *  alarms were put back in the queue at the same date modulo the
@@ -340,13 +341,13 @@ FUNC(void, OS_CODE) tpl_counter_tick(
       }
       counter->current_date = date;
       counter->current_tick = 0;
-      
+
       TRACE_COUNTER(counter)
-      
+
       /*  check if the counter has reached the
        next alarm activation date                  */
       t_obj = counter->next_to;
-      
+
       if ((t_obj != NULL) && (t_obj->date == date))
       {
         /*  the date of the counter has reached
@@ -355,9 +356,9 @@ FUNC(void, OS_CODE) tpl_counter_tick(
          from the list. (if object from schedule
          table has been BOOTSTRAP, don't process
          the expiry point(s))								*/
-        
+
         real_next_to_temp = tpl_remove_timeobj_set(counter);
-        
+
         if( real_next_to_temp != NULL)
         {
           /* save the "real one" next_to (in case of a schedule table,
@@ -366,16 +367,16 @@ FUNC(void, OS_CODE) tpl_counter_tick(
            time object BOOSTRAP is inserted in the list because of its
            cycle (after launching actions below). */
           t_obj = real_next_to_temp;
-          
+
           /*launch time objects' actions*/
           do
-          { 
+          {
             /*  get the next one                        */
             tpl_time_obj *next_to = t_obj->next_to;
             expire = t_obj->stat_part->expire;
             expire(t_obj);
             /*  rearm the alarm if needed               */
-            
+
             if (t_obj->cycle != 0)
             {
               /*  if the cycle is not 0, the new date
@@ -386,8 +387,8 @@ FUNC(void, OS_CODE) tpl_counter_tick(
               {
                 new_date -= (counter->max_allowed_value + 1);
               }
-              t_obj->date = new_date;  
-              
+              t_obj->date = new_date;
+
               /*  and the alarm is put back in the alarm
                queue of the counter it belongs to    */
               tpl_insert_time_obj(t_obj);

@@ -1,3 +1,28 @@
+/**
+ * @file tpl_as_memmap.h
+ *
+ * @section desc File description
+ *
+ * Trampoline internal types for STM-HRT
+ *
+ * @section copyright Copyright
+ *
+ * Trampoline RTOS
+ *
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
+ * Trampoline is protected by the French intellectual property law.
+ *
+ * This software is distributed under the GNU Public Licence V2.
+ * Check the LICENSE file in the root directory of Trampoline
+ *
+ * @section infos File informations
+ *
+ * $Date:$
+ * $Rev:$
+ * $Author:$
+ * $URL:$
+ */
+
 #include "tpl_os_internal_types.h" //pour tpl_core_id
 #include "tpl_os_stm_types.h"
 
@@ -51,7 +76,7 @@ typedef uint32 tpl_stm_access_vector;
 /**
  * @typedef tpl_stm_status
  *
- * Transaction status : 
+ * Transaction status :
  * - #TXS_IN_PROGRESS means the transaction is active
  * - #TXS_IN_RETRY means the transaction is in retry
  * - #TXS_FAILED means the transaction has failed
@@ -118,8 +143,8 @@ struct TPL_STM_OBJECT {
   VAR(tpl_stm_current_pos, TYPEDEF)
     current_pos;  	/**<  Current position of the concurrent data
 								 	*/
-  P2VAR(tpl_stm_data, AUTOMATIC, OS_APPL_DATA) 
-    copy_table[NUMBER_OF_CORES+2];  /**<  Table gathering the  
+  P2VAR(tpl_stm_data, AUTOMATIC, OS_APPL_DATA)
+    copy_table[NUMBER_OF_CORES+2];  /**<  Table gathering the
                       copies of the concurrent data                  	*/
   VAR(tpl_stm_concurrency_vector, TYPEDEF)
     concurrency_vector; /**<  Concurrency vector of the object
@@ -149,7 +174,7 @@ struct TPL_STM_TX_DESCRIPTOR {
     status;  		/**<  Status of the transaction
 								 	*/
   P2VAR(tpl_stm_data, AUTOMATIC, OS_APPL_DATA)
-    read_set[NUMBER_OF_OBJECTS];          /**<  Set of objects accessed 
+    read_set[NUMBER_OF_OBJECTS];          /**<  Set of objects accessed
                                	in read-only mode                     	*/
   P2VAR(tpl_stm_data, AUTOMATIC, OS_APPL_DATA)
     write_set[NUMBER_OF_OBJECTS];          /**<  Set of objects accessed

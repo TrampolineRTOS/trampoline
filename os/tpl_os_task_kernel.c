@@ -7,15 +7,13 @@
  *
  * @section copyright Copyright
  *
- * Trampoline OS
+ * Trampoline RTOS
  *
- * Trampoline is copyright (c) IRCCyN 2005+
- * Copyright ESEO for function and data structures documentation
- * Copyright IRISA - JF Deverge for libpcl port
- * Copyright AYRTON TECHNOLOGY for hcs12 port
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
  * Trampoline is protected by the French intellectual property law.
  *
- * This software is distributed under the Lesser GNU Public Licence
+ * This software is distributed under the GNU Public Licence V2.
+ * Check the LICENSE file in the root directory of Trampoline
  *
  * @section infos File informations
  *
@@ -55,11 +53,11 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
   CONST(tpl_task_id, AUTOMATIC) task_id)
 {
   GET_CURRENT_CORE_ID(core_id)
-  GET_PROC_CORE_ID(task_id, proc_core_id)  
-  
+  GET_PROC_CORE_ID(task_id, proc_core_id)
+
   /*  init the error to no error  */
   VAR(StatusType, AUTOMATIC) result = E_OK;
-	
+
   /*  lock the kernel    */
   LOCK_KERNEL()
 
@@ -75,7 +73,7 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
 
   /* check access right */
   CHECK_ACCESS_RIGHTS_TASK_ID(core_id, task_id, result)
-	
+
 #if TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
 
@@ -92,10 +90,10 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
 #endif
 
   PROCESS_ERROR(result)
-	
+
   /*  unlock the kernel  */
   UNLOCK_KERNEL()
-	
+
   return result;
 }
 
@@ -103,7 +101,7 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
 FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
 {
   GET_CURRENT_CORE_ID(core_id)
-  
+
   /* init the error to no error */
   VAR(StatusType, AUTOMATIC) result = E_OK;
 
@@ -130,7 +128,7 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
     /* task switching should occur */
 
     TPL_KERN(core_id).need_switch = NEED_SWITCH;
-    
+
     SWITCH_CONTEXT_NOSAVE(CORE_ID_OR_NOTHING(core_id))
 
   IF_NO_EXTENDED_ERROR_END()
@@ -168,7 +166,7 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
   CHECK_TASK_ID_ERROR(task_id,result)
   /*  Check no resource is held by the terminating task   */
   CHECK_RUNNING_OWNS_REZ_ERROR(core_id, result)
-	
+
   /* check access right */
   CHECK_ACCESS_RIGHTS_TASK_ID(core_id, task_id, result)
 
@@ -178,17 +176,17 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
     TPL_KERN(core_id).running->activate_count--;
 
     DOW_DO(printf("*S* ChainTask\n"));
-    
+
     /* activate the chained task */
     result = tpl_activate_task(task_id);
 
     if (result == E_OK)
     {
-      /* 
+      /*
        * This first part deals with the case of an activated task
        * on a remote core
        */
-      
+
       /* get the core id of the newly activated task */
       GET_PROC_CORE_ID(task_id, activated_task_core_id)
 #if NUMBER_OF_CORES > 1
@@ -197,12 +195,12 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
         REMOTE_SWITCH_CONTEXT(activated_task_core_id);
       }
 #endif
-      
-      /* 
+
+      /*
        * This second part deals with the local rescheduling due to
        * the termination of the task
        */
-       
+
       /* terminate the running task */
       tpl_terminate();
       /* start the highest priority task */
@@ -252,7 +250,7 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
 
 #if TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-  
+
     DOW_DO(printf("*S* Schedule\n"));
     /*  release the internal resource   */
     tpl_release_internal_resource((tpl_proc_id)TPL_KERN(core_id).running_id);
@@ -285,7 +283,7 @@ FUNC(StatusType, OS_CODE) tpl_get_task_id_service(
   GET_CURRENT_CORE_ID(core_id)
 
   VAR(StatusType, AUTOMATIC) result = E_OK;
-	
+
   LOCK_KERNEL()
 
   /* check interrupts are not disabled by user    */
@@ -294,10 +292,10 @@ FUNC(StatusType, OS_CODE) tpl_get_task_id_service(
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_GetTaskID)
   STORE_TASK_ID_REF(task_id)
-  
+
   /* check state is in an authorized memory region */
   CHECK_DATA_LOCATION(task_id, result);
-  
+
   /*  get the task id from the task descriptor. If the id is less
    *  than TASK_COUNT-1.
    *  tpl_kern.running_id is uint32 (tpl_os_kernel.h) (always >= 0)
@@ -312,9 +310,9 @@ FUNC(StatusType, OS_CODE) tpl_get_task_id_service(
 		*task_id = INVALID_TASK;
 	}
   IF_NO_EXTENDED_ERROR_END()
-	
+
   PROCESS_ERROR(result)
-	
+
   UNLOCK_KERNEL()
 
   return result;

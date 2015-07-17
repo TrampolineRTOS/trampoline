@@ -7,12 +7,13 @@
  *
  * @section copyright Copyright
  *
- * Trampoline OS
+ * Trampoline RTOS
  *
- * Trampoline is copyright (c) IRCCyN 2005-2007
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
  * Trampoline is protected by the French intellectual property law.
  *
- * This software is distributed under the Lesser GNU Public Licence
+ * This software is distributed under the GNU Public Licence V2.
+ * Check the LICENSE file in the root directory of Trampoline
  *
  * @section infos File informations
  *
@@ -76,7 +77,7 @@ FUNC(void, OS_CODE) tpl_raise_alarm(
   /*  Get the action to perform from the alarm descriptor */
   CONSTP2VAR(tpl_action, AUTOMATIC, OS_APPL_CONST) action_desc =
     stat_alarm->action;
-  
+
   TRACE_ALARM_EXPIRE(time_obj)
   /*  Call the action                                     */
   (action_desc->action)(action_desc) ;
@@ -103,13 +104,13 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_base_service(
   STORE_ALARM_BASE_REF(info)
 
   CHECK_ALARM_ID_ERROR(alarm_id, result)
-	
+
 	/* check access right */
 	CHECK_ACCESS_RIGHTS_ALARM_ID(alarm_id, result)
-  
+
   /* check info is in an authorized memory region */
   CHECK_DATA_LOCATION(info, result);
-	
+
 #if ALARM_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
   alarm = tpl_alarm_table[alarm_id];
@@ -147,10 +148,10 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
   STORE_TICK_REF_1(tick)
 
   CHECK_ALARM_ID_ERROR(alarm_id,result)
-	
+
   /* check access right */
   CHECK_ACCESS_RIGHTS_ALARM_ID(alarm_id,result)
-	
+
   /* check tick is in an authorized memory region */
   CHECK_DATA_LOCATION(tick, result);
 
@@ -208,10 +209,10 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
   STORE_TICK_2(cycle)
 
   CHECK_ALARM_ID_ERROR(alarm_id,result)
-	
+
 	/* check access right */
   CHECK_ACCESS_RIGHTS_ALARM_ID(alarm_id,result)
-	
+
   CHECK_ALARM_INCREMENT_ERROR(alarm_id,increment,result)
   CHECK_ALARM_MIN_CYCLE_ERROR(alarm_id,cycle,result)
 
@@ -276,10 +277,10 @@ FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
   STORE_TICK_2(cycle)
 
   CHECK_ALARM_ID_ERROR(alarm_id,result)
-	
+
 	/* check access right */
   CHECK_ACCESS_RIGHTS_ALARM_ID(alarm_id,result)
-	
+
   CHECK_ALARM_INCREMENT_ERROR(alarm_id,start,result)
   CHECK_ALARM_MIN_CYCLE_ERROR(alarm_id,cycle,result)
 
@@ -334,7 +335,7 @@ FUNC(tpl_status, OS_CODE) tpl_cancel_alarm_service(
   STORE_ALARM_ID(alarm_id)
 
   CHECK_ALARM_ID_ERROR(alarm_id,result)
-	
+
 	/* check access right */
 	CHECK_ACCESS_RIGHTS_ALARM_ID(alarm_id,result)
 
@@ -356,7 +357,7 @@ FUNC(tpl_status, OS_CODE) tpl_cancel_alarm_service(
 #endif
 
   PROCESS_ERROR(result)
-  
+
   UNLOCK_KERNEL()
 
   return result;
