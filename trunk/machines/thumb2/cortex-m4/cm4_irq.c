@@ -75,7 +75,6 @@ FUNC(void, OS_CODE)HardFault_Handler(void)
 		lregSCB_MMFR = (uint32)SCB->MMFR;
 	}
 	
-	__ASM volatile("BKPT #02");
   	while (1)
     {
     }

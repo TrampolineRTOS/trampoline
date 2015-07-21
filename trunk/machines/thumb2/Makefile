@@ -6,4 +6,5 @@ TEMP_SOURCE_DIRS += $(MACHINE_PATH)/..
 
 SOURCES += tpl_machine_arm_generic.c \
 tpl_system_call.S \
+tpl_ctx_switch.S \
 tpl_memory_protection.c \

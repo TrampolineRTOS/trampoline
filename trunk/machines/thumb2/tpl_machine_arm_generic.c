@@ -45,7 +45,14 @@ extern void test_toggle(void);
 extern FUNC(void, OS_CODE) CallTerminateTask(void);
 #endif
 
-/**
+/*
+ * The kernel stack. When a system call is done, the sc handler switches
+ * to the kernel stack.
+ */
+VAR (uint32, OS_VAR) tpl_kernel_stack[KERNEL_STACK_SIZE];
+VAR (uint32, OS_VAR) tpl_kernel_stack_top;
+
+/*
  * Kernel entry counter
  */
 volatile VAR (uint32, OS_VAR) nested_kernel_entrance_counter;
@@ -71,7 +78,9 @@ FUNC (void, OS_CODE) tpl_init_machine_generic (void)
 
 FUNC (void, OS_CODE) tpl_init_machine_specific (void)
 {
+	tpl_kernel_stack_top = (uint32)&tpl_kernel_stack[KERNEL_STACK_SIZE - 1];
 	nested_kernel_entrance_counter = 0;
+	__set_MSP(tpl_kernel_stack_top);
   setTimer();
 	__set_CONTROL(0x3); // Switch to use Process Stack, privileged state
 	__ISB(); // Execute ISB after changing CONTROL (architectural recommendation)
@@ -149,7 +158,7 @@ FUNC(void, OS_CODE) tpl_init_context(
    */
 
   /* Set GPRs to 0 */
-  for (i = 0; i < 8; i++ )
+  for (i = 0; i < 16; i++ )
   {
 	  l_tpl_context->gpr[i] = 0;
   }
@@ -158,7 +167,7 @@ FUNC(void, OS_CODE) tpl_init_context(
    * ARM_CORE_EXCEPTION_FRAME_SIZE is the frame pushed by the core at each exception.
    * This frame consists in pushing xpsr, pc, lr, r12, r3, r2, r1, r0
    *  */
-  l_tpl_context->sp = ((uint32)the_proc->stack.stack_zone) + ((uint32)the_proc->stack.stack_size) - ARM_CORE_EXCEPTION_FRAME_SIZE;
+  l_tpl_context->stackPointer = ((uint32)the_proc->stack.stack_zone) + ((uint32)the_proc->stack.stack_size) - ARM_CORE_EXCEPTION_FRAME_SIZE;
 
   /* Initialize stack footprint */
   for (i = (the_proc->stack.stack_size - ARM_CORE_EXCEPTION_FRAME_SIZE) >> 2; i > 0; i-- )

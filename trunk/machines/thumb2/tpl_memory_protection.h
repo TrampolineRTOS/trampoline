@@ -99,6 +99,9 @@ extern FUNC(void, OS_CODE) tpl_kernel_mp (void);
  */
 extern FUNC(void, OS_CODE) tpl_user_mp (void);
 
+/**
+ * Set the memory protection for a process
+ */
 extern FUNC(void, OS_CODE) tpl_set_process_mp (tpl_task_id this_process);
 
 

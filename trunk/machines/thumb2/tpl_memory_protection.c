@@ -130,21 +130,27 @@ static FUNC(void, OS_CODE) tpl_setup_self_mp (tpl_task_id this_process)
 
 FUNC(void, OS_CODE) tpl_init_mp()
 {
-	tpl_task_id i;
+	tpl_task_id currentTaskID;
 
 	/* Enable memory management */
 #if WITH_MEMORY_PROTECTION == YES
 //	SCB->SHCSR |= SCB_SHCSR_MEMFAULTENA_Msk;
 #endif
-	
-//	tpl_setup_common_mp();
-	
-//  MMU_init ();
 
-  for (i = 0 ; i < (TASK_COUNT + ISR_COUNT + 1) ; i++)
+	MPU->RNR = 0;
+	MPU->RBAR = 0x08000000;
+	MPU->RASR = (MPU_DEFS_RASR_SIZE_1MB | MPU_DEFS_NORMAL_MEMORY_WT | MPU_DEFS_RASE_AP_FULL_ACCESS | MPU_RASR_ENABLE_Msk);
+	
+	for (currentTaskID = 0 ; currentTaskID < (TASK_COUNT + ISR_COUNT + 1) ; currentTaskID++)
+	{
+		if (tpl_mp_table[currentTaskID] != NULL) /* idle task does not have any descriptor */
+		{
+	
+		}
+		else
   {
-//    tpl_setup_common_mp (i);
-//    tpl_setup_self_mp (i);
+			
+		}
   }
 
   /* we points on a valid memory protection configuration, as
@@ -188,6 +194,9 @@ FUNC(void, OS_CODE) tpl_user_mp (void)
 //  }
 }
 
+/**
+ * Set the memory protection for a process
+ */
 FUNC(void, OS_CODE) tpl_set_process_mp (tpl_task_id this_process)
 {
 	
