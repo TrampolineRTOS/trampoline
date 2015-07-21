@@ -1,29 +1,30 @@
+#---------------------------------------------------------------------------*
 #
-# @file all_goil.ggs
+#  @file goil.galgasProject
 #
-# @section File description
+#  @section desc File description
 #
-# This file compile all the galgas sources of Goil.
+#  Project file for goil.
 #
-# @section Copyright
+#  @section copyright Copyright
 #
-# Goil OIL compiler for Trampoline
+#  Goil OIL compiler, part of Trampoline RTOS
 #
-# Goil is copyright (c) IRCCyN 2005+
-# Goil is protected by the french law of intellectual property
+#  Trampoline is copyright (c) CNRS, University of Nantes,
+#  Ecole Centrale de Nantes
+#  Trampoline is protected by the French intellectual property law.
 #
-# This software is distributed under the GNU Public Licence V2
+#  This software is distributed under the GNU Public Licence V2.
+#  Check the LICENSE file in the root directory of Trampoline
 #
-# @section File informations
+#  $Date$
+#  $Rev$
+#  $Author$
+#  $URL$
 #
-# $Date$
-# $Rev$
-# $Author$
-# $URL$
-#
+#---------------------------------------------------------------------------*
 
-
-project (2:1:8) -> "goil" {
+project (2:1:9) -> "goil" {
 
 #  feature libpmAtPath : "../galgas_sources/GALGAS_OUTPUT/libpm" ;
   %makefile-macosx
@@ -55,7 +56,6 @@ project (2:1:8) -> "goil" {
   "galgas-sources/goil_syntax.galgas"
   "galgas-sources/implementation_parser.galgas"
   "galgas-sources/implementation_types.galgas"
-  "galgas-sources/goil_semantics.galgas"
   "galgas-sources/goil_basic_types.galgas"
   "galgas-sources/goil_routines.galgas"
   "galgas-sources/systemConfig.galgas"

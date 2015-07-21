@@ -1,39 +1,28 @@
+#---------------------------------------------------------------------------*
 #
-# @file template_functions.ggs
+#  @file template_functions.galgas
 #
-# @section File description
+#  @section desc File description
 #
-# functions available in the templates
+#  Built in functions available in the templates
 #
-# @section Copyright
+#  @section copyright Copyright
 #
-# Trampoline OS
+#  Goil OIL compiler, part of Trampoline RTOS
 #
-# Trampoline is copyright (c) IRCCyN 2005+
-# Trampoline is protected by the french intellectual property law.
+#  Trampoline is copyright (c) CNRS, University of Nantes,
+#  Ecole Centrale de Nantes
+#  Trampoline is protected by the French intellectual property law.
 #
-# goil is distributed under the GNU Public Licence V2
+#  This software is distributed under the GNU Public Licence V2.
+#  Check the LICENSE file in the root directory of Trampoline
 #
-# This program is free software; you can redistribute it and/or modify it
-# under the terms of the GNU General Public License as published by the
-# Free Software Foundation.
+#  $Date$
+#  $Rev$
+#  $Author$
+#  $URL$
 #
-# This program is distributed in the hope it will be useful, but WITHOUT
-# ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or
-# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
-# more details.
-#
-# @section File informations
-#
-# $Date$
-# $Rev$
-# $Author$
-# $URL$
-#
-
-
-
-#import "systemConfig.gSemantics";
+#---------------------------------------------------------------------------*
 
 func trueFalse ?let @bool inBool ->@string result {
   if inBool then

@@ -32,7 +32,7 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//   C O N S T R U C T O R S                                                   *
+//   C O N S T R U C T O R S                                                                                           *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -75,7 +75,7 @@ void C_HTMLString::writeEndCode (void) {
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//   A S S I G N M E N T    O P E R A T O R S                                  *
+//   A S S I G N M E N T    O P E R A T O R S                                                                          *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -91,8 +91,8 @@ void C_HTMLString::outputRawData (const char * in_Cstring) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//                  Write a character string into the file                     *
-//  Performs HTML character translation (i.e. '<' --> '&lt;', ...)             *
+//                  Write a character string into the file                                                             *
+//  Performs HTML character translation (i.e. '<' --> '&lt;', ...)                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
 void C_HTMLString::performActualCharArrayOutput (const char * inCharArray,
@@ -140,7 +140,7 @@ void C_HTMLString::performActualUnicodeArrayOutput (const utf32 * inCharArray,
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//                 Comments as a table                                         *
+//                 Comments as a table                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
 void C_HTMLString::appendCppTitleComment (const C_String & inCommentString,

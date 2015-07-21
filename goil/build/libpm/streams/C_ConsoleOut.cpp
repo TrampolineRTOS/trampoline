@@ -53,14 +53,6 @@ void C_ConsoleOut::performActualCharArrayOutput (const char * inCharArray,
   if (inArrayCount > 0) {
     printf ("%.*s", (int) inArrayCount, inCharArray) ;
   }
-  /* for (int32_t i=0 ; i<inArrayCount ; i++) {
-    if ((inCharArray [i] & 0x80) == 0) {
-      printf ("%c", inCharArray [i]) ;
-    }else{
-      printf ("[%02hX]", inCharArray [i]) ;
-    }
-  }
-   */
 }
 
 //---------------------------------------------------------------------------------------------------------------------*

@@ -53,16 +53,6 @@ class GALGAS_lstring ;
 class C_galgas_type_descriptor ;
 
 //---------------------------------------------------------------------------------------------------------------------*
-
-//#define USE_THREADS
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-#ifdef USE_THREADS
-  #include <thread>
-#endif
-
-//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //                 Compiler class                                                                                      *
 //                                                                                                                     *
@@ -75,11 +65,6 @@ class C_Compiler : public C_SharedObject {
                        const C_String & inDependencyFilePath
                        COMMA_LOCATION_ARGS) ;
   public : virtual ~ C_Compiler (void) ;
-
-  #ifdef USE_THREADS
-    private : std::mutex mSemaphore ;
-    private : std::thread * mThread ;
-  #endif
 
 //--- No copy
   private : C_Compiler (const C_Compiler &) ;
@@ -211,35 +196,23 @@ class C_Compiler : public C_SharedObject {
   public : void generateFile (const C_String & inLineCommentPrefix,
                               const TC_UniqueArray <C_String> & inDirectoriesToExclude,
                               const C_String & inFileName,
+                              const C_String & inHeader,
                               const C_String & inDefaultUserZone1,
                               const C_String & inGeneratedZone2,
                               const C_String & inDefaultUserZone2,
-                              const C_String & inGeneratedZone3) ;
-
-  public : void generateFileInGALGAS_OUTPUT (const C_String & inLineCommentPrefix,
-                                             const C_String & inFileName,
-                                             const C_String & inDefaultUserZone1,
-                                             const C_String & inGeneratedZone2,
-                                             const C_String & inDefaultUserZone2,
-                                             const C_String & inGeneratedZone3) ;
+                              const C_String & inGeneratedZone3,
+                              const bool inMakeExecutable) ;
 
   public : void generateFileWithPatternFromPathes (const C_String & inStartPath,
                                                    const TC_UniqueArray <C_String> & inDirectoriesToExclude,
                                                    const C_String & inLineCommentPrefix,
                                                    const C_String & inFileName,
+                                                   const C_String & inHeader,
                                                    const C_String & inDefaultUserZone1,
                                                    const C_String & inGeneratedZone2,
                                                    const C_String & inDefaultUserZone2,
-                                                   const C_String & inGeneratedZone3) ;
-
-  public : void actualGenerateFileWithPatternFromPathes (const C_String & inStartPath,
-                                                         const TC_UniqueArray <C_String> & inDirectoriesToExclude,
-                                                         const C_String & inLineCommentPrefix,
-                                                         const C_String & inFileName,
-                                                         const C_String & inDefaultUserZone1,
-                                                         const C_String & inGeneratedZone2,
-                                                         const C_String & inDefaultUserZone2,
-                                                         const C_String & inGeneratedZone3) ;
+                                                   const C_String & inGeneratedZone3,
+                                                   const bool inMakeExecutable) ;
 
   public : void generateFileFromPathes (const C_String & inStartPath,
                                         const TC_UniqueArray <C_String> & inDirectoriesToExclude,

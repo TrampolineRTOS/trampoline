@@ -1,30 +1,28 @@
+#---------------------------------------------------------------------------*
 #
-# @file goil_code_generation.ggs
+#  @file goil_code_generation.galgas
 #
-# @section File description
+#  @section desc File description
 #
-# This file wraps user application configuration header.
-# This wrapped file is typically
-# generated from an OIL source.
+#  Code generation functions
 #
-# @section Copyright
+#  @section copyright Copyright
 #
-# Trampoline OS
+#  Goil OIL compiler, part of Trampoline RTOS
 #
-# Trampoline is copyright (c) IRCCyN 2005+
-# Trampoline is protected by the french intellectual property law.
+#  Trampoline is copyright (c) CNRS, University of Nantes,
+#  Ecole Centrale de Nantes
+#  Trampoline is protected by the French intellectual property law.
 #
-# This software is distributed under the GNU Public Licence V2
+#  This software is distributed under the GNU Public Licence V2.
+#  Check the LICENSE file in the root directory of Trampoline
 #
-# @section File informations
+#  $Date$
+#  $Rev$
+#  $Author$
+#  $URL$
 #
-# $Date$
-# $Rev$
-# $Author$
-# $URL$
-#
-
-
+#---------------------------------------------------------------------------*
 
 #--------------------------------------------------------------------
 # Custom type generation

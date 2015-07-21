@@ -14,18 +14,15 @@
     <Option projectResourceIncludeDirsRelation="1" />
     <Compiler>
      <Add option="-fomit-frame-pointer" />
-     <Add option="-fexpensive-optimizations" />
      <Add option="-O2" />
      <Add option="-Wnon-virtual-dtor" />
      <Add option="-Winit-self" />
      <Add option="-Wredundant-decls" />
      <Add option="-Wundef" />
      <Add option="-Wfloat-equal" />
-     <Add option="-Winline" />
      <Add option="-Wunreachable-code" />
      <Add option="-Wmissing-declarations" />
      <Add option="-Wmissing-include-dirs" />
-     <Add option="-Wswitch-default" />
      <Add option="-Weffc++" />
      <Add option="-Wmain" />
      <Add option="-std=c++98" />

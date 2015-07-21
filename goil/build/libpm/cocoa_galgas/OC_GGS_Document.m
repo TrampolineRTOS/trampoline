@@ -76,7 +76,7 @@
     [ud
       addObserver:self
       forKeyPath:GGS_build_text_font
-      options:0
+      options:NSKeyValueObservingOptionNew
       context:NULL
     ] ;
    }
@@ -156,7 +156,7 @@
   [mFoundEntryTreeController
     addObserver:self 
     forKeyPath:@"selectionIndexPath"
-    options:0
+    options:NSKeyValueObservingOptionNew
     context:NULL
   ] ;
   [[mResultOutlineView tableColumnWithIdentifier:@"count"]
@@ -194,7 +194,7 @@
   [mSourceDisplayArrayControllerHigh
     addObserver:self 
     forKeyPath:@"selection.textSelectionStart"
-    options:0
+    options:NSKeyValueObservingOptionNew
     context:NULL
   ] ;
 //---
@@ -279,7 +279,7 @@
   [mSourceDisplayArrayControllerHigh
     addObserver:self 
     forKeyPath:@"selectionIndex"
-    options:0
+    options:NSKeyValueObservingOptionNew
     context:NULL
   ] ;
 //------------------------------------------------------------------ Display the document contents
@@ -327,7 +327,7 @@
   [[NSUserDefaults standardUserDefaults]
     addObserver:self
     forKeyPath:[NSString stringWithFormat:@"searchMatrixFor:%@", mBaseFilePreferenceKey]
-    options:0
+    options:NSKeyValueObservingOptionNew
     context:NULL
   ] ;
   [self updateDirectoryListVisibility] ;
@@ -1279,7 +1279,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   [NSApp requestUserAttention:NSInformationalRequest] ;
   if ((! mHasSpoken) && (mErrorCount >= 40)) {
     mHasSpoken = YES ;
-    NSString * thePhrase = [NSString stringWithFormat:@"Oh! %@ made %lu errors", NSFullUserName (), mErrorCount] ;
+    NSString * thePhrase = [NSString stringWithFormat:@"OOOOOOOh! %@ a fait %lu erreurs", NSFullUserName (), mErrorCount] ;
     NSSpeechSynthesizer * speech = [[NSSpeechSynthesizer alloc] initWithVoice:nil] ;
     [speech startSpeakingString:thePhrase] ;
   }
