@@ -30,6 +30,7 @@
 #include "tpl_os_internal_types.h"
 #include "tpl_os_custom_types.h"
 #include "tpl_machine.h"
+#include "tpl_os_kernel_stack.h"
 
 /**
  * ARM internal registers symbolic names
@@ -101,10 +102,12 @@ typedef enum
 #define ARM_INITIAL_EXC_RETURN ((uint32)0xFFFFFFF9)
 
 struct ARM_CORE_CONTEXT {
-	/* General Purpose Register r4-r11 */
-	uint32 gpr[8];
+	/* General Purpose Register r0-r15 
+	 * We use r0, r4-r11
+	 */
+	uint32 gpr[16];
 	/* Stack Pointer - r13 */
-	uint32 sp;
+	uint32 stackPointer;
 };
 
 /**
