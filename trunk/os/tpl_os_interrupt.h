@@ -29,9 +29,6 @@
 #include "tpl_os_types.h"
 #include "tpl_compiler.h"
 
-#define API_START_SEC_CODE
-#include "tpl_memmap.h"
-
 /*
  * Interrupt handling
  * see paragraph 13.3,
