@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2008, ..., 2009 Pierre Molinaro.                                                                     *
+//  Copyright (C) 2008, ..., 2015 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -35,39 +35,6 @@
 typedef UInt32 utf32 ;
 #define UNICODE_VALUE(n) (n)
 #define TO_UNICODE(v) (v)
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-/*typedef UInt8  uint8_t  ;
-typedef UInt16 uint16_t ;
-typedef UInt32 uint32_t ;
-typedef SInt32 int32_t ;
-typedef UInt64 uint64_t ;
-typedef SInt64 int64_t ;
-*/
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-// D E F I N E    M I N    A N D    M A X     F O R    I N T    T Y P E S      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-//--- Signed integer max
-// #define PMSINT8_MAX       0x7F
-// #define PMSINT16_MAX      0x7FFF
-// #define INT32_MAX      0x7FFFFFFFL
-// #define INT64_MAX      0x7FFFFFFFFFFFFFFFLL
-
-//--- Signed integer min
-//#define PMSINT8_MIN       (~PMSINT8_MAX)
-// #define PMSINT16_MIN      (~PMSINT16_MAX)
-// #define INT32_MIN      (~INT32_MAX)
-// #define INT64_MIN      (~INT64_MAX)
-
-//--- Unsigned integer max
-// #define UINT8_MAX       0xFFU
-// #define UINT16_MAX      0xFFFFU
-// #define UINT32_MAX      0xFFFFFFFFUL
-// #define UINT64_MAX      0xFFFFFFFFFFFFFFFFULL    
 
 //---------------------------------------------------------------------------------------------------------------------*
 

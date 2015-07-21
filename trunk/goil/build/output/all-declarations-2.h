@@ -1377,7 +1377,7 @@ class cPtr_oil_5F_obj : public acPtr_class {
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                                     Category Reader '@enumValues mergeWithEnum'                                     *
+//                              Category Getter '@enumValues mergeWithEnum' (as function)                              *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -1388,7 +1388,7 @@ class GALGAS_enumValues categoryReader_mergeWithEnum (const class GALGAS_enumVal
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                 Category Reader '@implementationObjectMap mergeImplementationObjectAttributesWith'                  *
+//          Category Getter '@implementationObjectMap mergeImplementationObjectAttributesWith' (as function)           *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 

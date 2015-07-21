@@ -1,10 +1,10 @@
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//  Class for date handling.                                                   *
+//  Class for date handling.                                                                                           *
 //                                                                                                                     *
-//  This file is part of libpm library                                         *
+//  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 1999, ..., 2009 Pierre Molinaro.                             *
+//  Copyright (C) 1999, ..., 2009 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -100,7 +100,7 @@ const char * C_DateTime::getDayName (void) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//    Date comparisons                                                         *
+//    Date comparisons                                                                                                 *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 

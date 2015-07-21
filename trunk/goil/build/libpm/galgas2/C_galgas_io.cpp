@@ -538,10 +538,10 @@ void ggs_printError (const C_SourceTextInString * inSourceTextPtr,
   #endif
   errorMessage << inMessage ;
 //--- Append source string
-  if (inSourceTextPtr != NULL) {
-    macroValidSharedObject (inSourceTextPtr, C_SourceTextInString) ;
-    inSourceTextPtr->appendSourceContents (errorMessage) ;
-  }
+//  if (inSourceTextPtr != NULL) {
+//    macroValidSharedObject (inSourceTextPtr, C_SourceTextInString) ;
+//    inSourceTextPtr->appendSourceContents (errorMessage) ;
+//  }
   if (! executionModeIsIndexing ()) {
     if (cocoaOutput ()) {
       co.setForeColor (kRedForeColor) ;

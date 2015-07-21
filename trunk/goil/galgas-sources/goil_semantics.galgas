@@ -1,9 +1,0 @@
-
-#import semantics goil_types_os in "goil_types_os.ggs" ;
-#import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
-#import semantics defaults in "defaults.ggs" ;
-#import semantics goil_semantic_verification in "goil_semantic_verification.ggs" ;
-#import semantics goil_code_generation in "goil_code_generation.ggs" ;
-#import semantics goil_env_verification in "goil_env_verification.ggs" ;
-
-

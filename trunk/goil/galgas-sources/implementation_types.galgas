@@ -1,29 +1,28 @@
+#---------------------------------------------------------------------------*
 #
-# @file implementation_types.ggs
+#  @file implementation_types.galgas
 #
-# @section descr File description
+#  @section desc File description
 #
-# types for implementation definition.
+#  Types for implementation definition.
 #
-# @section copyright Copyright
+#  @section copyright Copyright
 #
-# Goil OIL compiler. Part of the Trampoline Project
+#  Goil OIL compiler, part of Trampoline RTOS
 #
-# Trampoline is copyright (c) IRCCyN 2005+
-# Copyright ESEO for function and data structures documentation
-# Trampoline is protected by the French intellectual property law.
+#  Trampoline is copyright (c) CNRS, University of Nantes,
+#  Ecole Centrale de Nantes
+#  Trampoline is protected by the French intellectual property law.
 #
-# Goil is distributed under the GNU Public Licence v2
+#  This software is distributed under the GNU Public Licence V2.
+#  Check the LICENSE file in the root directory of Trampoline
 #
-# @section infos File informations
+#  $Date$
+#  $Rev$
+#  $Author$
+#  $URL$
 #
-# $Date$
-# $Rev$
-# $Author$
-# $URL$
-#/
-
-
+#---------------------------------------------------------------------------*
 
 enum @dataType {
   case void 

@@ -1,3 +1,29 @@
+#---------------------------------------------------------------------------*
+#
+#  @file goil_file_level_include.galgas
+#
+#  @section desc File description
+#
+#  Grammar of includes at file level.
+#
+#  @section copyright Copyright
+#
+#  Goil OIL compiler, part of Trampoline RTOS
+#
+#  Trampoline is copyright (c) CNRS, University of Nantes,
+#  Ecole Centrale de Nantes
+#  Trampoline is protected by the French intellectual property law.
+#
+#  This software is distributed under the GNU Public Licence V2.
+#  Check the LICENSE file in the root directory of Trampoline
+#
+#  $Date$
+#  $Rev$
+#  $Author$
+#  $URL$
+#
+#---------------------------------------------------------------------------*
+
 grammar goil_file_level_include "LL1" {
 #--- References to syntax components used when source file extension is .gGrammar
 #    Theses constructs are silently parsed when source file extension is .ggs
