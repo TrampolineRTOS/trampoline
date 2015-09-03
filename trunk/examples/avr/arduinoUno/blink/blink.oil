@@ -28,6 +28,7 @@ CPU test {
       APP_NAME = "trampuinoBlink";
       APP_SRC = "blink.cpp";
     };
+	SYSTEM_CALL = TRUE;
   };
 
   APPMODE std {};

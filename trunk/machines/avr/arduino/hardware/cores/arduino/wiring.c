@@ -71,13 +71,7 @@ ISR(TIMER0_OVF_vect)
 	timer0_millis = m;
 	timer0_overflow_count++;
 // START TRAMPOLINE SECTION 
-  //tpl_reentrancy_counter++;
-  //if(tpl_reentrancy_counter==1) tpl_switch_to_kernel_stack();
-  ////using kernel stack.
   trampolineSystemCounter();
-  ////get back to user stack
-  //tpl_reentrancy_counter--;
-  //if(tpl_reentrancy_counter == 0) tpl_switch_to_user_stack();
 // STOP TRAMPOLINE SECTION 
 }
 
