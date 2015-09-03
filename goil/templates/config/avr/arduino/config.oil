@@ -45,6 +45,7 @@ IMPLEMENTATION Trampoline {
 //      },
 //      FALSE
 //    ] BUILD = FALSE;
+      BOOLEAN SYSTEM_CALL = TRUE;
   };
 };
 
