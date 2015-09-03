@@ -1,0 +1,8 @@
+
+//avr specific part.
+#include <avr/io.h>
+#include <avr/interrupt.h>
+extern uint8_t tpl_reentrancy_counter;
+extern void tpl_switch_to_kernel_stack();
+extern void tpl_switch_to_user_stack();
+//end of avr specific part

@@ -1,0 +1,13 @@
+% 
+
+let api_func::FUNC_NAME := exists api_func::ACTUAL default ( api_func::NAME )
+%
+  .global % !api_func::FUNC_NAME %
+% !api_func::FUNC_NAME %:
+  ldi r30,% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME%  /* load the service id in r30 */
+  call tpl_sc_handler
+  ret
+  
+  .type % !api_func::FUNC_NAME %,@function
+//  .size % !api_func::FUNC_NAME %,$-% !api_func::FUNC_NAME %
+
