@@ -1,3 +1,6 @@
+
+OIL_GENERATED_FILES += tpl_invoque_isr.S
+
 #required to compile assembler in trampoline.
 ASFLAGS += -x assembler-with-cpp
 #use of macro in os files leads to set unused variables. Remove the warning.

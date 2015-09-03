@@ -12,6 +12,10 @@
 #endif
 #include <avr/interrupt.h>
 
+//function defined in avr assembly files.
+FUNC(void, OS_CODE) tpl_avr_counter_tick(
+    P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter);
+
 %foreach counter in HARDWARECOUNTERS do
   # special case for SystemCounter, as it is connected
   # to Arduino SysTick (TIMER0_OVF_vect) in 
@@ -20,26 +24,15 @@
   %
 void trampolineSystemCounter()
 {
-  tpl_counter_tick(&% !counter::NAME %_counter_desc);
-  if (tpl_kern.need_schedule)
-  {
-    tpl_schedule_from_running();
-    LOCAL_SWITCH_CONTEXT()
-  }
+  tpl_avr_counter_tick(&%!counter::NAME%_counter_desc);
 }
   %
   elsif counter::SOURCE != "" then
 %
 ISR(%!counter::SOURCE%)
 {
-  tpl_counter_tick(&% !counter::NAME %_counter_desc);
-  if (tpl_kern.need_schedule)
-  {
-    tpl_schedule_from_running();
-    LOCAL_SWITCH_CONTEXT()
-  }
+  tpl_avr_counter_tick(&% !counter::NAME %_counter_desc);
 }
-
 %  end if
 end foreach
 %

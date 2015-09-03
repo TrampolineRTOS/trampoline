@@ -80,13 +80,21 @@ FUNC(void, OS_CODE) tpl_init_context(
 	AVR_PUSH(0)
 #endif
 
-	AVR_PUSH(0) //push GPR r16
+	//old version
+//	AVR_PUSH(0) //push GPR r16
+//	AVR_PUSH(0x80) //push SREG (enable interrupts)
+//	/* put GPR on the stack. r2 to r17 (except r16), r28,r29 => 17 regs*/
+//    for (a=0;a<17;a++) 
+//	{
+//		AVR_PUSH(0);
+//	}
+	//new version
+	//push r2 to r7 (6 regs)
+	for (a=0;a<6;a++) AVR_PUSH(0);
 	AVR_PUSH(0x80) //push SREG (enable interrupts)
-	/* put GPR on the stack. r2 to r17 (except r16), r28,r29 => 17 regs*/
-    for (a=0;a<17;a++) 
-	{
-		AVR_PUSH(0);
-	}
+	//push r28/29, r8 to 17 (12 regs)
+	for (a=0;a<12;a++) AVR_PUSH(0);
+
 	
 	/* save the stack pointer */
 	*(static_desc->context) = (u16)(sp);

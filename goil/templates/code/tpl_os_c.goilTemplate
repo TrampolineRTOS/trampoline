@@ -27,6 +27,7 @@ foreach api in APIUSED do
   end foreach
 end foreach%
 %
+template if exists tpl_os_specific_part
 
 foreach api in APIUSED do
   foreach cst in exists api::CONST default (emptylist) do%
@@ -63,30 +64,8 @@ CONST(% !cst::TYPE %, % !cst::STORAGE %) % !cst::NAME % = % !cst::VALUE %;%
 %       ![[[sc::RETURN_TYPE description] wrap :70,4] columnPrefixedBy: " * "]
       end if%
  */
-FUNC(% !exists sc::RETURN_TYPE default("void") %, % !api::ID_PREFIX %_CODE) % !exists sc::ACTUAL default(sc::NAME) %(%
-    if exists sc::ARGUMENT then
-      foreach arg in sc::ARGUMENT do
-         !arg::KIND %(% !arg::TYPE %, AUTOMATIC%
-          if [arg::KIND substringExists: "P2"] then
-            %, OS_APPL_DATA%
-          end if
-        %) % !arg::NAME 
-      between %,%
-      end foreach %)%
-    else %void)%
-    end if %
-{
-  %   if exists sc::RETURN_TYPE then
-      %return %
-    end if
-    !sc::KERNEL %(%
-    foreach arg in exists sc::ARGUMENT default (emptylist) do
-      !arg::NAME
-    between %, %
-    end foreach
-    %);
-}
-%  end foreach
+%  template tpl_os_call_service
+  end foreach
 end foreach
 %
 
