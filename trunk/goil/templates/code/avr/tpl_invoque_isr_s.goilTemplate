@@ -1,0 +1,51 @@
+%foreach isr in ISRS2
+before
+%
+//We have to save registers that are not saved by a function call, i.e.
+//R18–R27, R30, R31, R0, R1
+
+.equ  TPL_ISR2_HANDLER, 0x40
+#include <avr/io.h>\n
+%
+do
+let isr_id := INDEX + [TASKS length]
+%
+.equ % !isr::NAME %_id, %!isr_id%
+//ISR2 %!isr::NAME% Handler
+.global %!isr::SOURCE%
+%!isr::SOURCE%:
+    push r0
+    push r1
+    push r18
+    push r19
+    push r20
+    push r21
+    push r22
+    push r23
+    push r24
+    push r25
+    push r26
+    push r27
+    push r30
+    push r31
+    ldi r24, % !isr::NAME %_id
+    ldi r25, 0
+    ldi r30,TPL_ISR2_HANDLER
+    call tpl_sc_handler
+    pop r31
+    pop r30
+    pop r27
+    pop r26
+    pop r25
+    pop r24
+    pop r23
+    pop r22
+    pop r21
+    pop r20
+    pop r19
+    pop r18
+    pop r1
+    pop r0
+    reti
+%
+end foreach
