@@ -15,14 +15,7 @@ IMPLEMENTATION avr_interrupt {
   };
 
   OS {
-//    BOOLEAN USEGETSERVICEID = TRUE;
-//    BOOLEAN USECUSTOMOSCALL = TRUE;
       BOOLEAN SYSTEM_CALL = TRUE;
   };
 };
 
-//CPU cpu {
-//  OS os {
-//    SYSTEM_CALL = TRUE;
-//  };
-//};
