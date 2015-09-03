@@ -44,6 +44,9 @@ static unsigned char timer0_fract = 0;
 // START TRAMPOLINE SECTION 
 extern void trampolineSystemCounter();
 extern void setup();
+extern uint8_t tpl_reentrancy_counter;
+extern void tpl_switch_to_kernel_stack();
+extern void tpl_switch_to_user_stack();
 // STOP TRAMPOLINE SECTION 
 
 #if defined(__AVR_ATtiny24__) || defined(__AVR_ATtiny44__) || defined(__AVR_ATtiny84__)
@@ -68,7 +71,13 @@ ISR(TIMER0_OVF_vect)
 	timer0_millis = m;
 	timer0_overflow_count++;
 // START TRAMPOLINE SECTION 
-	trampolineSystemCounter();
+  //tpl_reentrancy_counter++;
+  //if(tpl_reentrancy_counter==1) tpl_switch_to_kernel_stack();
+  ////using kernel stack.
+  trampolineSystemCounter();
+  ////get back to user stack
+  //tpl_reentrancy_counter--;
+  //if(tpl_reentrancy_counter == 0) tpl_switch_to_user_stack();
 // STOP TRAMPOLINE SECTION 
 }
 

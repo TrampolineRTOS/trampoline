@@ -7,8 +7,8 @@ MacOSX  -> AVR CrossPack (http://www.obdev.at/products/crosspack/download.html)
 Windows -> Winavr (integrated in Atmel Studio, or http://winavr.sourceforge.net)
 
 [first run]
-Build oil related generated .c and .h files and the Makefile:
-$goil --target=avr/arduino --templates=../../../goilv2/templates/ firstAVR.oil
+Build oil related generated .c and .h files and the Makefile. If file.oil is the main oil file, and TRAMPOLINE_ROOT is the path to the root of trampoline.
+$goil --target=avr/arduino --templates=$TRAMPOLINE_ROOT/goilv2/templates/ file.oil
 (The generated file .aps is an AVR Studio project for Windows users).
 
 [Build]
@@ -16,6 +16,8 @@ $make -s
 Both a .elf and a .hex files are generated. goil will now be called directly from the Makefile if the .oil file is updated.
 
 [flash]
+The serial device name should be defined in the oil file (CPU -> OS -> ARDUINO section). For example:
+      PORT = "/dev/tty.usbmodem1411";
 $make -s flash
 
 or using avrdude directly:

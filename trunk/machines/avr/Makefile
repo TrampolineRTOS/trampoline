@@ -16,5 +16,5 @@
 #
 # Trampoline OS
 #
-SOURCES += tpl_machine.c avr_switch_context.s 
+SOURCES += tpl_machine.c avr_switch_context.s tpl_dispatch.S
 

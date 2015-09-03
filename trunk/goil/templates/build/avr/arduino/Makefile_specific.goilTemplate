@@ -1,3 +1,4 @@
+OIL_GENERATED_FILES += tpl_invoque_isr.S
 
 %if OS::BUILD_S::COMPILER == "gcc" then
 %# changes default compiler
@@ -5,7 +6,7 @@ CC = avr-gcc
 %
 end if
 
-if OS::BUILD_S::LINKER == "ld" then
+if OS::BUILD_S::LINKER == "gcc" then
 %# changes default linker
 LD = avr-gcc
 %
