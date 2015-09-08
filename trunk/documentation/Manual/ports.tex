@@ -501,8 +501,7 @@ Bus master 4 is a special case. The 2 bits have the following meaning:
 
 \rowcolors{1}{white}{light-gray}
 \begin{longtable}[c]{l|p{5.15in}}
-{\bf Bit}&{\bf Meaning}\\
-\hline
+{\bf Bit}&{\bf Meaning} \\ \hline
 \dreg{M4RE} & If set to 1, bus master 4 may {\bf read} memory in the region. If 0, no read is allowed\\
 \dreg{M4WE} & If set to 1, bus master 4 may {\bf write} memory in the region. If 0, no write is allowed\
 \end{longtable}
@@ -724,6 +723,516 @@ BIOS> go 0xA0000000
 
 \subsection{Kernel sleep service}
 
+
+\section{ARM - Cortex}
+
+\subsection{Overview}
+
+\subsubsection{The processor}
+
+The processor has two modes of execution depending on the kind of execution.
+The processor modes are:
+\begin{penum}
+\item Thread mode: Used to execute application software.
+The processor enters Thread mode when it comes out of reset.
+The CONTROL register controls whether software execution is privileged or unprivileged, see CONTROL register on page 24.
+\item Handler mode: Used to handle exceptions.
+The processor returns to Thread mode when it has finished exception processing.
+Software execution is always privileged.
+\end{penum}
+
+The privilege levels for software execution are:
+\begin{penum}
+\item Unprivileged: Unprivileged software executes at the unprivileged level and:
+	\begin{penum}
+	\item Has limited access to the MSR and MRS instructions, and cannot use the CPS instruction
+	\item Cannot access the system timer, NVIC, or system control block
+	\item Might have restricted access to memory or peripherals
+	\item Must use the SVC instruction to make a supervisor call to transfer control to privileged software
+	\end{penum}
+\item Privileged: Privileged software executes at the privileged level and can use all the instructions and has access to all resources.
+Can write to the CONTROL (nPRIV : bit 0) register to change the privilege level for software execution.
+\end{penum}
+
+Core processor registers are depicted in figure \ref{fig:CM4core}.
+
+\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
+\begin{minipage}{0.5\textwidth}
+    \centering
+  \includegraphics[scale=.6]{pictures/CM4core} 
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+   \caption{Processor core registers}\label{fig:CM4core}
+\end{minipage}
+\end{figure}
+
+The Program Status Register (PSR) combines:
+\begin{penum}
+\item Application Program Status Register (APSR)
+\item Interrupt Program Status Register (IPSR)
+\item Execution Program Status Register (EPSR)
+\end{penum}
+
+These registers are mutually exclusive bitfields in the 32-bit PSR.
+
+\subsubsection{The stack}
+The processor uses a full descending stack. This means the stack pointer indicates the last stacked item on the stack memory. When the processor pushes a new item onto the stack, it decrements the stack pointer and then writes the item to the new memory location. The processor implements two stacks, the main stack and the process stack, with independent copies of the stack pointer.
+In Thread mode, the \reg{CONTROL} register controls whether the processor uses the main stack or the process stack. In Handler mode, the processor always uses the main stack.
+The options for processor operations are:
+
+\begin{longtable}[c]{llllp{3cm}}
+\toprule
+{\bf Processor mode} & {\bf Used to execute} & {\bf Privilege level for execution} & {\bf Stack used} \\
+\midrule
+Thread & Applications & Privileged or unprivileged & Main stack or Process stack \\
+Handler & Exception handlers & Always privileged & Main stack \\
+\bottomrule
+\end{longtable}
+
+The port of Trampoline will use the two stacks and unprivileged level for software execution. This configuration is made in the function \cfunction{tpl_init_machine_generic} of file \file{tpl_machine_arm_generic.c}:
+
+\begin{lstlisting}[language=C]
+FUNC (void, OS_CODE) tpl_init_machine_specific (void)
+{
+  tpl_kernel_stack_top = (uint32)&tpl_kernel_stack[KERNEL_STACK_SIZE - 1];
+  nested_kernel_entrance_counter = 0;
+  __set_MSP(tpl_kernel_stack_top); 
+  setTimer();
+  __set_CONTROL(0x3); /* Switch to use Process Stack, privileged state */
+  __ISB(); /* Execute ISB after changing CONTROL register */
+}
+\end{lstlisting}
+
+On reset the processor starts in Thread mode and uses the Main stack (\reg{MSP}) for both Handler and Thread modes.
+We set the Process stack to the current Main stack address and switch to use Process stack for Thread mode.
+We then set the Main stack to a dedicated area pointed to by ptrMainStack.
+
+\subsubsection{The memory}
+
+The processor has a fixed memory map that provides up to 4 GB of addressable memory.
+
+\subsubsection{The exceptions}
+
+The Cortex-M4 processor supports interrupts and system exceptions. The processor and the Nested Vectored Interrupt Controller (NVIC) prioritize and handle all exceptions. The processor uses handler mode to handle all exceptions except for reset.
+The NVIC registers control interrupt handling and includes the following features:
+\begin{penum}
+\item 82 maskable interrupt channels for STM32F407xx (not including the 16 interrupt lines of CortexTM-M4 with FPU)
+\item 16 programmable priority levels (4 bits of interrupt priority are used)
+All interrupts including the core exceptions are managed by the NVIC
+\end{penum}
+
+\begin{longtable}[c]{llllp{5cm}}
+\toprule
+{\bf Exception number} & {\bf Priority} & {\bf Type} & {\bf Priority} \\
+\midrule
+1 & & Reset & -3 the highest \\
+\hline
+2 & -14 & NMI & -2 \\
+\hline
+3 & -13 & Hard fault & -1 \\
+\hline
+4 & -12 & Memory management fault & Configurable \\
+\hline
+5 & -11 & Bus fault & Configurable \\
+\hline
+6 & -10 & Usage fault & Configurable \\
+\hline
+7-10 & & & \\
+\hline
+11 & -5 & SVCall & Configurable \\
+\hline
+12-13 & & & \\
+\hline
+14 & -2 & PendSV & Configurable \\
+\hline
+15 & -1 & SysTick & Configurable \\
+\hline
+16-above & 0 and above & Interrupt (IRQ) & Configurable \\
+\bottomrule
+\end{longtable}
+
+When an exception arises the processor saves a context state onto a stack pointed to by \reg{sp} (either \reg{MSP} or \reg{PSP} depending on the mode of the processor at the time of the exception) and jumps to the Supervisor Call handler. The context state supports the \textit{ARM Architecture Procedure Calling Standard} (AAPCS).
+When pushing context to the stack, the hardware saves eight 32-bit words, comprising xPSR, ReturnAddress, LR (R14), R12, R3, R2, R1, and R0. This behaviour is depicted figure \ref{fig:CM4StackExceptionEntry}.
+
+\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
+\begin{minipage}{0.5\textwidth}
+    \centering
+  \includegraphics[scale=.6]{pictures/CM4StackExceptionEntry} 
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+   \caption{Stacking frame upon exception rising}\label{fig:CM4StackExceptionEntry}
+\end{minipage}
+\end{figure}
+
+\subsection{System services} \label{sec:systemservices}
+
+The Cortex-M4 port uses the \asfct{svc} (Supervisor Call) exception call to call system services \cite{}.
+
+The id of the system service to call is given in the \reg{r0} register and \reg{r0} save and restore are added around.
+A system service may be directly called (without using the Supervisor Call) in case of nested calls. This is due to the architecture of the Cortex-m4. Other microcontrolers (e.g. Power PC) have features that enable nested system calls.
+
+For instance, the following listing gives the \api{ActivateTask} service code. These functions are generated from templates by goil (see \ref{sec:generatedfiles}) and are part of the {\em invoque} layer (see \ref{sec:invoque}):
+
+\begin{lstlisting}[language=C]
+	/* 
+	 * Service ActivateTask
+	 */
+	.global ActivateTask
+	.type   ActivateTask, %function
+ActivateTask:
+	/* manage reentrance of kernel */
+	ldr r1, =nested_kernel_entrance_counter
+	ldr r2, [r1]
+	/* If nested_kernel_entrance_counter is greater or equal than 1 */
+	cmp r2,#1
+	/* then we are in Handler mode and we must call the service with a 
+	 * direct call to the function */
+	beq ActivateTask_direct_call
+	/* Exception call to the service : use SVC exception */
+ActivateTask_exception_call:
+	mov r3,#OSServiceId_ActivateTask
+	svc #OSServiceId_ActivateTask
+	b ActivateTask_exit_call
+	/* Procedural call to the service */
+ActivateTask_direct_call:
+	/* get the appropriate system call address into R3 */
+	ldr r1, =tpl_dispatch_table
+	mov r3, #OSServiceId_ActivateTask
+	ldr r3, [r1, r3, LSL #2]
+	push {lr}
+	/* call the service  */
+	blx r3
+	pop {lr}
+	/* Function call */
+ActivateTask_exit_call:
+	bx lr
+\end{lstlisting}
+
+The \textit{ARM Architecture Procedure Calling Standard} (AAPCS) defines the following behaviour for subroutine call:
+\begin{longtable}[c]{l l l p{5cm}}
+\toprule
+{\bf Register} & {\bf Synonym} & {\bf Special} & {\bf Role in the procedure call standard} \\
+\midrule
+r15 & & PC & -3 The Program Counter \\
+\hline
+r14 & & LR & The Link Register \\
+\hline
+r13 & & SP & The Stack Pointer \\
+\hline
+r12 & & IP & The Intra-Procedure-call Scratch-register \\
+\hline
+r11 & v8 & & Variable-register 8 \\
+\hline
+r10 & v7 & & Variable-register 7 \\
+\hline
+r9 & & v6, SB, TR & Platform register. The meaning of this register is defined by the platform standard. \\
+\hline
+r8 & v5 & SVCall & Variable-register 5 \\
+\hline
+r7 & v4 & & Variable-register 4 \\
+\hline
+r6 & v3 & PendSV & Variable-register 3 \\
+\hline
+r5 & v2 & SysTick & Variable-register 2 \\
+\hline
+r4 & v1 & & Variable-register 1 \\
+\hline
+r3 & a4 & & Argument / Scratch-register 4 \\
+\hline
+r2 & a3 & & Argument / Scratch-register 3 \\
+\hline
+r1 & a2 & & Argument / Scratch-register 2 \\
+\hline
+r0 & a1 & & Argument / Scratch-register 1 \\
+\bottomrule
+\end{longtable}
+
+Where the role of registers are:
+\begin{penum}
+\item \textbf{Scratch-register}, \textbf{Temporary-register} : A register used to hold an intermediate value during a calculation (usually, such values are not named in the program source and have a limited lifetime).
+\item \textbf{Variable-register}, \textbf{V-register} : A register used to hold the value of a variable, usually one local to a routine, and often named in the source code.
+\end{penum}
+
+\subsection{Dispatching the service call}
+
+Raising the \asfct{svc} exception makes the processor change the stack pointer from the Process Stack Pointer to the Main Stack Pointer and then save a set of registers on top of this Main Stack.
+The kernel stack is the Main Stack and the process stack is the Process Stack.
+
+The Cortex-M4 locates the Supervisor Call handler in the exception handler 11. 
+but, depending on the CPU kind, it may be located elsewhere. Since the available memory for the interrupt or exception handler may vary, a jump is made to the \cfunction{tpl_primary_syscall_handler}.%:
+
+\cfunction{tpl_primary_syscall_handler} performs the following tasks:
+\begin{penum}
+\item Prepare the environment
+\item Saves additional registers to be able to work
+\item Disables memory protection
+\item Switches to kernel stack if needed
+\item Calls the service
+\item Performs a context switch if needed and programs the MPU.
+\item Switches back to the process stack if needed
+\item Enable memory protection
+\item Restore registers
+\item Get back to the process
+\end{penum}
+
+\note{Currently the Cortex-M4 port does not support tasks that use floating point registers}
+
+\subsubsection{Preparing the environment}
+
+When the Supervisor Call begins execution, the kernel stack has the mapping depicted in figure \ref{fig:CM4StackAfterInvoque}.
+
+\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
+\begin{minipage}{0.5\textwidth}
+    \centering
+  \includegraphics[scale=.6]{pictures/CM4StackAfterInvoque} 
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+   \caption{Process stack mapping at the beginning of the Supervisor Call handler. The grayed zone represents an unknown content depending on from where the service was called.}\label{fig:CM4StackAfterInvoque}
+\end{minipage}
+\end{figure}
+
+We will need space on top of current stack (Main stack or Kernel stack) \reg{MSP} in order to save working registers.
+Some registers could be found in the frame saved by the processor, but we kept a common scheme for handling exception calls.
+
+\subsubsection{Saving additional registers}
+
+We save following values and registers on top of kernel stack :
+\begin{itemize}
+\item The value of caller \reg{sp} : 
+\item Register \reg{lr} : This register is modified when calling subroutines. We save it to properly restore the caller process stack.
+\item Return code, the return code of service : The return code of the service is stored into \reg{R0} register when returning from service. We save it into kernel stack as soon as the return of the service so that we can transmit it to the caller of service.
+\item A pointer to \var{tpl_kern}
+\item \reg{r4} : Working register
+\item \reg{r5} : Working register
+\end{itemize}
+
+
+Additional values saving is done by the following code at start of the \cfunction{tpl_sc_handler} and the mapping of the kernel stack is depicted at figure \ref{fig:CM4KernelStackSaveDone}:
+
+\begin{lstlisting}[language=C]
+  sub sp, sp, #KS_FOOTPRINT /* Make space on top of kernel stack. */
+  mrs r12, psp /* Copy process stack pointer psp into r12 */
+  str r12, [sp, #KS_PROCESS_SP] /* and save it into kernel stack. */
+  str r4, [sp, #KS_R4]	 /* Save working register r4 on process stack. */
+  str r5, [sp, #KS_R5] /* Save working register r5 on process stack. */
+  ldr r12, =tpl_kern
+  str r12, [sp, #KS_KERN_PTR] /* Store tpl_kern into kernel stack. */
+  str lr, [sp, #KS_LR] /* Store lr register into kernel stack. */
+\end{lstlisting}
+
+\subsubsection{Disabling memory protection}
+
+This part of the dispatch layer is done in the \cfunction{tpl_enter_kernel} function and is assembled only if \cmacro{WITH_MEMORY_PROTECTION} is set to \YES. After pushing the \reg{lr} on the kernel stack, the \cfunction{tpl_kernel_mp} function is called and does the actual job. At last \reg{lr} is popped from the kernel stack.
+
+\begin{lstlisting}[language=C]
+#if WITH_MEMORY_PROTECTION == YES
+  /*
+   * Switch to kernel memory protection scheme
+   */
+  push {lr}
+  bl tpl_kernel_mp
+  pop {lr}
+#endif
+\end{lstlisting}
+
+\subsubsection{Switching to the kernel stack}
+
+The Cortex-m4 is configured to use two stacks and the Main Stack is the kernel stack.
+
+The kernel stack may be already used because a call to a \cfunction{PreTaskHook} or a \cfunction{PostTaskHook} is done on the kernel stack and such a hook may call a service. So the dispatch layer must be reentrant. The number of reentrant calls is counted by the \var{tpl_reentrancy_counter}. For a reentrant call, the same frame is build over the current one.
+
+\begin{lstlisting}[language=C]
+  /* 
+   * Manage reentrance of kernel
+   * Increment nested_kernel_entrance_counter
+  */
+  ldr r12, =nested_kernel_entrance_counter
+  ldr r4, [r12]
+  add r4, r4, #1
+  str r4, [r12]
+\end{lstlisting}
+
+\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
+\begin{minipage}{0.5\textwidth}
+    \centering
+  \includegraphics[scale=.6]{pictures/CM4KernelStackSaveDone} 
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+   \caption{Kernel stack mapping after saving additional registers.}\label{fig:CM4KernelStackSaveDone}
+\end{minipage}
+\end{figure}
+
+\subsubsection{Calling the service}
+
+Since the registers used to pass parameters to a function, that is \reg{r3} to \reg{r10} as documented in \cite{PCSAA}, have not been changed until now, calling the function that implements the service respects the register usage conventions.
+
+The first thing to do is to get the function pointer corresponding to the service id. The service id is in \reg{r0} as explained in \ref{sec:systemservices} and is used as an index to the \var{tpl_dispatch_table}.
+
+\begin{lstlisting}[language=C]
+  /*
+   * Get the appropriate system call address into R3
+   */
+  ldr r12, =tpl_dispatch_table
+  ldr r3, [r12, r3, LSL #2]
+\end{lstlisting}
+
+The second thing to do is to reset the \var{need_switch} flag that triggers a context switch. This flag (a byte) is located in the \var{tpl_kern} kernel struct. This is done as follow:
+
+\begin{lstlisting}[language=C]
+  /*
+   * Reset tpl_kern variables
+   */
+  ldr r12, [r5, #KS_KERN_PTR] /* load the tpl_kern base address from kernel stack */
+  mov r4, #NO_NEED_SWITCH_NOR_SCHEDULE
+  strb r4, [r12, #TPL_KERN_OFFSET_NEED_SWITCH]
+  strb r4, [r12, #TPL_KERN_OFFSET_NEED_SCHEDULE]
+\end{lstlisting}
+
+At last, the service is called:
+
+\begin{lstlisting}[language=C]
+  blx r3
+\end{lstlisting}
+
+And we then immediately save the return value of the service call into the kernel stack:
+\begin{lstlisting}[language=C]
+  str r0, [r5, #KS_RETURN_CODE]
+\end{lstlisting}
+
+\subsubsection{Context switch}
+
+The \var{need_switch} flag that as been possibly modified by the service is now checked to do a context switch if needed.
+
+\begin{lstlisting}[language=C]
+  ldr r12, [r5, #KS_KERN_PTR] /* load the tpl_kern base address */
+  ldrb r12, [r12, #TPL_KERN_OFFSET_NEED_SWITCH]
+  cmp r12, #NO_NEED_SWITCH
+  beq no_context_switch
+\end{lstlisting}
+
+A context switch is performed in 3 steps:
+\begin{itemize}
+\item Save the context of the task that looses the cpu.
+\item Load the configuration of memory protection for the process that gets the cpu.
+\item Load the context of the process that get the cpu.
+\end{itemize}
+
+\paragraph{Save the context of the task th	at looses the cpu}
+
+The first one is the context save of the process that loses the CPU. This step is optional because if the service was a \api{TerminateTask} or a \api{ChainTask}, the context needs not to be saved. This information is in the \var{need_switch} flag. \var{s_old}, the address of the context saving area, is in another member of \var{tpl_kern}. 
+
+\begin{lstlisting}[language=C]
+  ldr r12, [r5, #KS_KERN_PTR] /* load the tpl_kern base address */
+  ldr r12, [r12, #TPL_KERN_OFFSET_S_RUNNING]
+  push {lr}
+  bl tpl_save_context
+  pop {lr}
+\end{lstlisting}
+
+\paragraph{Load the configuration of memory protection for the process that gets the cpu}
+
+TODO
+(
+The second step consists in loading the configuration of memory protection for the process that get the CPU by calling the \cfunction{tpl_set_process_mp} function. This function expects the id of the process in \reg{r3}. Again this id is located in member \var{proc_id} of \var{tpl_kern}. This is done only if \cmacro{WITH_MEMORY_PROTECTION} is \YES. 
+
+\begin{lstlisting}[language=C]
+#if WITH_MEMORY_PROTECTION == YES
+  lwz   r3,16(r11) /* get the id of the process which get the cpu  */
+  bl    tpl_set_process_mp     /* set the memory protection scheme */
+#endif
+\end{lstlisting}
+)
+
+\paragraph{Load the context of the process that get the cpu}
+
+The third step calls the function \cfunction{tpl_run_elected}. This function chooses the process that will get the cpu and write this information into the field \var{tpl_kern.s_running}.
+
+Then we load the context of the process that got the CPU. The address of \var{tpl_kern} is loaded into \reg{r12} because it has been destroyed in \cfunction{tpl_set_process_mp}, \var{s_running}, the address of the context saving area of the current process is loaded into \reg{r12} and \cfunction{tpl_load_context} is called.
+
+\begin{lstlisting}[language=C]
+  ldr r12, [r5, #KS_KERN_PTR]	/* load the tpl_kern base address */
+  ldr r12, [r12, #TPL_KERN_OFFSET_S_RUNNING] /* get the address of the context bloc */
+  push {lr}
+  bl tpl_load_context
+  pop {lr}
+\end{lstlisting}
+
+\subsubsection{Switching back to the process stack}
+
+This is not useful for the Cortex-m4.
+
+\subsubsection{Leaving the kernel}
+
+Now we leave the kernel by calling the subroutine \cfunction{tpl_leave_kernel}
+\begin{lstlisting}[language=C]
+  push {lr}
+  bl tpl_leave_kernel
+  pop {lr}
+\end{lstlisting}
+
+In this routine the reentrancy counter is decremented by 1.
+
+\subsubsection{Enabling memory protection}
+
+Then, if memory protection is used, the user scheme is reenabled. The actual works depends on the kind of MPU and is done in \cfunction{tpl_user_mp}.
+
+\begin{lstlisting}[language=C]
+#if WITH_MEMORY_PROTECTION == YES
+  /*
+  * Switch to user memory protection scheme
+  */
+  push {lr}
+  bl tpl_user_mp
+  pop {lr}
+#endif
+\end{lstlisting}
+
+\subsubsection{Restoring registers}
+
+Registers saved at stage 1 on the kernel stack are restored and the stack is freed.
+
+\begin{lstlisting}[language=C]
+  ldr r4, [sp, #KS_R4]
+  ldr r5, [sp, #KS_R5]
+  ldr lr, [sp, #KS_LR]
+
+  ldr r12, [sp, #KS_PROCESS_SP]
+  msr psp, r12
+  add sp, sp, #KS_FOOTPRINT	
+\end{lstlisting}
+
+\subsubsection{Getting back to the process}
+
+At last, the dispatch layer is exited using a \asfct{bx}.
+
+\begin{lstlisting}[language=C]
+tpl_sc_handler_exit:
+  bx lr
+\end{lstlisting}
+
+=====================================================================
+
+\subsection{Interrupt handler}
+
+\subsection{The CallTrustedFunction service}
+\subsection{The ExitTrustedFunction service}
+\subsection{Execution of the OS Applications startup and shutdown hooks}
+\subsection{Memory protection}
+
+The base address of a region must be aligned to an integer multiple value of the region size.
+For example, if the region size is 4KB (0x1000), the starting address must be $N x 0x1000$ where N is an integer.
+
+Private Peripheral Bus (PPB) address ranges (including System Control Space, SCS) and the vector table don't need a memory region.
+Accesses to PPB (including MPU, NVIC, SysTick, ITM) are always allowed in privileged state, and vector fetches are always permitted by the MPU.
+
+We need to define a handler for HardFault and MemManage (Memory Management) fault. The handler for HardFault is mandatory but not for MemManage unless we configure the bit MEMFAULTENA into register SCB->SHCSR.
+We chose to use MemManage fault.
+
+\subsection{Monocore}
+
+\subsection{Multicore}
+
+
 \section{AVR8}
 \label{sec:avr8port}
 
@@ -732,13 +1241,13 @@ The AVR port does not use the system call version of trampoline, as this micro-c
 \subsection{Context}
 The context of the AVR is composed of:
 \begin{itemize}
-\item the stack pointer \texttt{SP}
+\item the stack pointer \texttt{sp}
 \item the program counter \texttt{PC}
 \item the status register \texttt{SREG} and 
 \item 32 GPRs \texttt{r0} to \texttt{r31}. This includes the 3 16-bits indirect registers \texttt{X}, \texttt{Y} and \texttt{Z} which are mapped on these GPRs.
 \end{itemize}
 
-However, the context switch uses the stack to save all theses registers (except \texttt{SP} obviously) and the context does not use any structure to save only one variable (SP):
+However, the context switch uses the stack to save all theses registers (except \texttt{sp} obviously) and the context does not use any structure to save only one variable (SP):
 \begin{lstlisting}[language=C]
 typedef u16 avr_context;
 typedef avr_context *tpl_context;
