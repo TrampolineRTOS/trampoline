@@ -8,8 +8,8 @@ Windows -> Winavr (integrated in Atmel Studio, or http://winavr.sourceforge.net)
 
 [first run]
 Build oil related generated .c and .h files and the Makefile. If file.oil is the main oil file, and TRAMPOLINE_ROOT is the path to the root of trampoline.
-$goil --target=avr/arduino --templates=$TRAMPOLINE_ROOT/goilv2/templates/ file.oil
-(The generated file .aps is an AVR Studio project for Windows users).
+$goil --target=avr/arduino --templates=$TRAMPOLINE_ROOT/goil/templates/ file.oil
+(The generated file .aps is an AVR Studio 4 project for Windows users).
 
 [Build]
 $make -s
@@ -27,3 +27,12 @@ In this example:
   * -c avrispmkII is the (ISP programmer on the Arduino Mega) on the USB interface. 
     Type 'avrdude -c toto' to get the full programer list
   * -P the device name used in the Arduino User Interface.
+
+[using Atmel Studio]
+In order to use an Atmel Studio project (allow to use debugger (breakpoints...) in the IDE), you should:
+* create a new C++ project (ATMega328P device)
+* add all the files compiled using the 'make' command line
+* update project properties (projet-> toolchain->C compiler -> directories) with the directories defined in the compilation rules of the 'make' command line (directories starting with -I...)
+* copy and paste these directories in 'C++ compiler-> directories' and 'assembler/General'
+* add the symbols used in the 'make' command line (starting with -D...) in the 'symbols' part (without the -D)
+* That's all!

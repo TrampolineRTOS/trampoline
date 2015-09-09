@@ -1,7 +1,7 @@
 /* Running the following example:
  * just call goil a first time using the command line:
- * goil --target=avr/arduino --templates=../../../../goilv2/templates/ blink.oil
- * you may have to update ARDUINO fields for your configuration.
+ * goil --target=avr/arduino --templates=../../../../goil/templates/ blink.oil
+ * you may have to update ARDUINO section (l.20) for your configuration.
  *
  * Then a Makefile is generated. Just type:
  * make -s
@@ -39,8 +39,8 @@ CPU test {
       TASK = periodicTask;
     };
     AUTOSTART = TRUE {
-      ALARMTIME = 2000; //activated each 1024 ms
-      CYCLETIME = 2000; //activated each 1024 ms
+      ALARMTIME = 1000; //activated each 1024 ms
+      CYCLETIME = 1000; //activated each 1024 ms
       APPMODE = std;
     };
   };
@@ -53,19 +53,5 @@ CPU test {
     SCHEDULE = FULL;
     STACKSIZE = 256;
   };
-
-  ISR ISRButton {
-    CATEGORY = 2;
-    PRIORITY = 20;
-    STACKSIZE = 256;
-    SOURCE = "INT0_vect"; //PIN 2 on Arduino Uno (PORTD.2)
- };
- 
-   ISR ISRButton2 {
-    CATEGORY = 2;
-    PRIORITY = 20;
-    STACKSIZE = 256;
-    SOURCE = "INT1_vect"; //PIN 3 on Arduino Uno (PORTD.2)
- };
 
 };
