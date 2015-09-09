@@ -1,7 +1,7 @@
 /* Running the following example:
  * just call goil a first time using the command line:
- * goil --target=avr/arduino --templates=../../../goilv2/templates/ firstAVR.oil
- * you may have to update ARDUINO fields for your configuration.
+ * goil --target=avr/arduino --templates=../../../../goil/templates/ extInterrupt.oil
+ * you may have to update ARDUINO section (l.20) for your configuration.
  *
  * Then a Makefile is generated. Just type:
  * make -s
@@ -24,10 +24,11 @@ CPU test {
       AVR_LIBC = "/usr/local/CrossPack-AVR/avr/include/";
     };
     BUILD = TRUE {
-      TRAMPOLINE_BASE_PATH = "../../..";
-      APP_NAME = "baseTrampoline";
-      APP_SRC = "base.cpp";
+      TRAMPOLINE_BASE_PATH = "../../../..";
+      APP_NAME = "trampuinoIT";
+      APP_SRC = "extInterrupt.cpp";
     };
+	SYSTEM_CALL = TRUE;
   };
 
   APPMODE std {};
@@ -53,10 +54,17 @@ CPU test {
   };
 
 
- //   ISR ISRButton {
- //       CATEGORY = 2;
- //       PRIORITY = 20;
- //       STACKSIZE = 256;
- //       SOURCE = "INT0_vect"; //PIN 2 on Arduino Mega (PORTD.2)
- //   };
+  ISR ISRButtonSlow {
+      CATEGORY = 2;
+      PRIORITY = 20;
+      STACKSIZE = 256;
+      SOURCE = "INT0_vect"; //PIN 2 on Arduino Uno (PORTD.2)
+  };
+
+  ISR ISRButtonFast {
+      CATEGORY = 2;
+      PRIORITY = 20;
+      STACKSIZE = 256;
+      SOURCE = "INT1_vect"; //PIN 3 on Arduino Uno (PORTD.3)
+  };
 };

@@ -1,7 +1,7 @@
 /* Running the following example:
  * just call goil a first time using the command line:
- * goil --target=avr/arduino --templates=../../../../goilv2/templates/ serial.oil
- * you may have to update ARDUINO fields for your configuration.
+ * goil --target=avr/arduino --templates=../../../../goil/templates/ serial.oil
+ * you may have to update ARDUINO section (l.20) for your configuration.
  *
  * Then a Makefile is generated. Just type:
  * make -s
@@ -28,6 +28,7 @@ CPU test {
       APP_NAME = "trampuinoSerial";
       APP_SRC = "serial.cpp";
     };
+	SYSTEM_CALL = TRUE;
   };
 
   APPMODE std {};
