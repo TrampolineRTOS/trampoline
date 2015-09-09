@@ -1,5 +1,6 @@
 #include <avr/io.h> //SP
 #include "tpl_asm_definitions.h"
+#include "tpl_app_define.h" //ISR_COUNT
 
 #define KERNEL_STACK_SIZE 100
 
@@ -192,6 +193,7 @@ tpl_enter_kernel_end:
 			call tpl_schedule_from_running
 		rjmp tpl_end_call
 no_tpl_counter_tick:          // *** not counter call part (may be isr2 or service call).
+#if ISR_COUNT != 0
 		mov r30,r7  ;get back the service id.
 		andi r30, TPL_ISR2_HANDLER
 		breq tpl_service_call_part
@@ -199,6 +201,7 @@ tpl_isr2_part:                // *** isr2 part
 		call tpl_central_interrupt_handler
 		rjmp tpl_end_call
 tpl_service_call_part:        // *** service call part
+#endif //ISR_COUNT
 		mov r30,r7 ;get back the service id.
 		//check syscall count:
 		cpi r30,SYSCALL_COUNT
