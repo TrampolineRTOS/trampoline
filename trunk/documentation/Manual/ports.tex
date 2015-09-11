@@ -1236,7 +1236,93 @@ We chose to use MemManage fault.
 \section{AVR8}
 \label{sec:avr8port}
 
-The AVR port does not use the system call version of trampoline, as this micro-controller does not have any MMU. System calls are just standard function calls.
+\subsection{System services} \label{sec:avr8portSystemService}
+
+The AVR architecture does not support the system call instructions, because there is no supervisor mode. However, the port works as if there were system calls. This allows to switch to a system stack at the beginning of a service call and preserve stack usage of user tasks. 
+
+Service calls are generated in the \cfunction{tpl\_invoque.S} file. As other port with system calls, the service id in stored in a table. The \cfunction{tpl_sc\_handler} is called like a function. This call does not respect the ABI in order to preserve registers used for parameters for the internal service code. For instance, the following listing gives the \api{ActivateTask} service code. These functions are generated from templates by \texttt{goil} (see \ref{sec:generatedfiles}) and are part of the {\em invoque} layer (see \ref{sec:invoque}):
+
+\begin{lstlisting}[language=C]
+  .global ActivateTask
+ActivateTask:
+  ldi r30,OSServiceId_ActivateTask  /* load the service id in r30 */
+  call tpl_sc_handler
+  ret
+\end{lstlisting}
+
+%When the \texttt{tpl_sc_handler} function begins execution, the process stack has the mapping depicted in figure \ref{fig:avr8StartTplScHandler}.
+%
+%\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
+%\begin{minipage}{0.5\textwidth}
+%    \centering
+%  \includegraphics[scale=.6]{pictures/avr8-StackAfterSC.pdf} 
+%\end{minipage}
+%\begin{minipage}{0.5\textwidth}
+%   \caption{Process stack mapping at the beginning of the \texttt{tpl_sc_handler} function. The grayed zone represents an unknown content depending on from where the service was called.}\label{fig:avr8StartTplScHandler}
+%\end{minipage}
+%\end{figure}
+
+\subsection{Dispatching the service call}
+
+\cfunction{tpl_sc_handler} performs the following tasks:
+\begin{penum}
+\item save working registers
+\item switch to kernel stack if needed
+\item calls the service / counter call / ISR
+\item performs a context switch if needed
+\item switches back to the process stack if needed
+\item restore working registers and get back to the process
+\end{penum}
+
+\subsubsection{Save working registers}
+Some working registers are saved on the user stack. TODO: use volatile registers…
+
+\subsubsection{Switching to the kernel stack}
+The first objective of the \cfunction{tpl_sc_handler} is to switch to a kernel stack. However the kernel stack could used already because a call to a \cfunction{PreTaskHook} or a \cfunction{PostTaskHook} is done on the kernel stack and such a hook may call a service. So the dispatch layer is reentrant. The number of reentrant calls is counted by the \var{tpl_reentrancy_counter}.For a reentrant call, the same frame is build over the current one. The switch to the kernel stack is done as follow:
+
+\begin{lstlisting}[language=C]
+	//tpl_reentrancy_counter++
+	lds r30,tpl_reentrancy_counter //load
+	subi r30, 0xFF //r30 <- R30-(-1)
+	sts tpl_reentrancy_counter,r30 //store
+	//tpl_reentrancy_counter == 1?
+	cpi r30,0x01 // compare with immediat
+	brne tpl_enter_kernel_end //branch if not equal
+	//yes => tpl_switch_to_kernel_stack
+	call tpl_switch_to_kernel_stack ;use r2-r6,r30-r31
+\end{lstlisting}
+
+When the \cfunction{tpl_switch_to_kernel_stack} returns, SP points to the kernel stack and the stack is empty (figure \ref{fig:avr8kernStackInit}
+\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
+\begin{minipage}{0.5\textwidth}
+    \centering
+  \includegraphics[scale=.6]{pictures/avr8-kernStackInit.pdf} 
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+   \caption{Kernel stack just after the \cfunction{tpl_switch_to_kernel_stack} function. The grayed zone represents stack bottom.}
+   \label{fig:avr8kernStackInit}
+\end{minipage}
+\end{figure}
+
+
+
+Ce qui est fait:
+Remanier le fichier tpl_os.c pour:
+* le couper en 2 dans les templates
+* faire la partie en C directement. Mettre la partie commune de changement de pile directement dans
+machine/avr.
+
+il faut rajouter en début de fichier tpl_os.c
+\begin{lstlisting}[language=C]
+#include <avr/io.h>
+#include <avr/interrupt.h>
+extern uint8_t tpl_reentrancy_counter;
+extern void tpl_switch_to_kernel_stack();
+extern void tpl_switch_to_user_stack();
+\end{lstlisting}
+
+
+
 
 \subsection{Context}
 The context of the AVR is composed of:
@@ -1280,7 +1366,7 @@ registers are pushed on the stack like in figure \ref{fig:avr8-stackSave}. The \
 \end{minipage}
 \end{figure}
 
-The restauration of the new contexte just get the new stack pointer from the argument \texttt{tpl_context} and pop all these registers.
+The restoration of the new context just gets the new stack pointer from the argument \texttt{tpl_context} and pops all these registers.
 
 \subsection{Context init}
 The initialization of the context init (\cfunction{tpl_init_context})the stack according to be compliant with the context switch. 
@@ -1308,7 +1394,7 @@ The stack at the end of context init should be like in figure \ref{fig:avr8-stac
 \end{figure}
 
 \subsection{Interrupts}
-Interrupts are handled directly using the standard way by the compiler \texttt{GCC}. \texttt{GCC} save all the required registers, which are restored at the end of the interrupt.
+Interrupts are handled directly using the standard way by the compiler \texttt{GCC}. \texttt{GCC} saves all the required registers, which are restored at the end of the interrupt.
 
 It should be noted that \texttt{GCC} uses the \texttt{ISR} macro to define an interrupt handler, which is in conflict with the \texttt{ISR} macro defined in Trampoline.
 
