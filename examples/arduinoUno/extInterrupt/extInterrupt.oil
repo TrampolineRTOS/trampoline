@@ -1,0 +1,70 @@
+/* Running the following example:
+ * just call goil a first time using the command line:
+ * goil --target=avr/arduino --templates=../../../../goil/templates/ extInterrupt.oil
+ * you may have to update ARDUINO section (l.20) for your configuration.
+ *
+ * Then a Makefile is generated. Just type:
+ * make -s
+ * To clean the project, call:
+ * make clean
+ * It will remove all generated files, except the Makefile.
+ * to flash to the Arduino:
+ * make -s flash
+ * It will use the PORT defined in the ARDUINO part.
+ */
+OIL_VERSION = "2.5" : "test" ;
+
+CPU test {    
+  OS config {
+    STATUS = STANDARD;
+    ARDUINO = TRUE {
+      BOARD = UNO;
+      SERIAL = TRUE;
+      PORT = "/dev/tty.usbmodem1411";
+      AVR_LIBC = "/usr/local/CrossPack-AVR/avr/include/";
+    };
+    BUILD = TRUE {
+      TRAMPOLINE_BASE_PATH = "../../../..";
+      APP_NAME = "trampuinoIT";
+      APP_SRC = "extInterrupt.cpp";
+    };
+	SYSTEM_CALL = TRUE;
+  };
+
+  APPMODE std {};
+  
+  ALARM periodicAl {
+    COUNTER= SystemCounter;
+    ACTION = ACTIVATETASK {
+      TASK = periodicTask;
+    };
+    AUTOSTART = TRUE {
+      ALARMTIME = 1000;
+      CYCLETIME = 1000;
+      APPMODE = std;
+    };
+  };
+
+  TASK periodicTask {
+    PRIORITY = 10;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    STACKSIZE = 256;
+  };
+
+
+  ISR ISRButtonSlow {
+      CATEGORY = 2;
+      PRIORITY = 20;
+      STACKSIZE = 256;
+      SOURCE = "INT0_vect"; //PIN 2 on Arduino Uno (PORTD.2)
+  };
+
+  ISR ISRButtonFast {
+      CATEGORY = 2;
+      PRIORITY = 20;
+      STACKSIZE = 256;
+      SOURCE = "INT1_vect"; //PIN 3 on Arduino Uno (PORTD.3)
+  };
+};
