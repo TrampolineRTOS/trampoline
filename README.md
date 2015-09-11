@@ -7,7 +7,7 @@ Its API is aligned with OSEK/VDX OS and AUTOSAR OS 4.1 standards.
 
 * thumb2: ARM Cortex-M (and others) instruction set
 * ppc: PowerPC 32bits instruction set
-* posix: Posix operating system virtual platform
+* posix: virtual platform for POSIX systems (tested on Linux and OS X)
 * avr: AVR 8 bits microcontrollers
 * ARM (currently not working, updated soon): ARM 32 bits instruction set
 
