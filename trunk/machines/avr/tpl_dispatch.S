@@ -58,9 +58,6 @@ tpl_switch_to_kernel_stack:
 	out _SFR_IO_ADDR(SPL), r30
 	out _SFR_IO_ADDR(SPH), r31
 	/********** current stack is now kernel stack **********/
-	//save the user sp in r28/r29
-	//push r5
-	//push r6
 	//push the return address
 #ifdef __AVR_3_BYTE_PC__
 	push r4
