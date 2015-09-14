@@ -1,0 +1,34 @@
+%!tikz editor 1.0
+\documentclass{article}
+\usepackage{tikz}
+\usepackage[graphics, active, tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+
+%!tikz preamble begin
+\usetikzlibrary{arrows,positioning,automata,shadows,shapes,snakes,patterns,decorations}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+
+%!tikz preamble end
+
+
+\begin{document}
+%!tikz source begin
+\begin{tikzpicture}[
+state/.style={draw, circle, fill=white,drop shadow={opacity=0.25},font=\sffamily\scriptsize, text width=1.6cm, text centered, minimum height=1.2cm},
+transched/.style={dashed,->,bend right,thick,font=\sffamily,text centered},
+tranapp/.style={solid,->,bend right,thick,font=\sffamily,text centered},
+]
+\node[state] (suspended) at (0,3.2) {SUSPENDED};
+\node[state] (ready) at (-2,0) {READY};
+\node[state] (running) at (2,0) {RUNNING};
+
+\draw (suspended) edge [tranapp] node [left] {activate} (ready) ;
+\draw (ready) edge [transched] node [below] {start} (running) ;
+\draw (running) edge [transched] node [above] {preempt} (ready) ;
+\draw (running) edge [tranapp] node [right] {terminate} (suspended) ;
+
+\end{tikzpicture}
+%!tikz source end
+
+\end{document}
