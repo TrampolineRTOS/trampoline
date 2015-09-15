@@ -1,20 +1,20 @@
-|=-----=[ Bunch of running examples for Cortex-M4 ]=-----=|
+# Bunch of running examples for Cortex-M4
 
 This directory provides a set of examples ready for use on a 
 stm32f4-discovery board from ST-microelectronics.
 
 The stm32f4-discovery board is equiped with a st-link/v2 embedded debug tool interface.
 
-|--[ 1 ]---[ Prerequisite ]
+## Prerequisite
 
-|----[ 1.1 ]---[ Compile ]
+### Compile
 
 You need a compiler for your plateform.
 Trampoline has been previously compiled with industrial compilers and GNU GCC.
 The examples have all been compiled with :
 gcc version 4.8.4 20140526 (release) [ARM/embedded-4_8-branch revision 211358] (GNU Tools for ARM Embedded Processors)
 
-|----[ 1.2 ]---[ Program and debug ]
+### Program and debug
  
 You need [ stlink ] tool to program and debug with the st-link/v2 embedded debug tool interface.
 
@@ -32,7 +32,7 @@ http://brew.sh
 
 We will use st-util hereafter.
 
-|--[ 2 ]---[ How to run an example ]
+## How to run an example
 
 We present hereafter the successive steps to follow to get the first example [ blink ] run.
 
@@ -60,7 +60,7 @@ We present hereafter the successive steps to follow to get the first example [ b
 
 6 - You should see the BLUE led blink 
 
-|--[ 3 ]---[ How to debug an example ]
+## How to debug an example
 
 You should have a terminal opened [ 0 ].
 
@@ -72,7 +72,7 @@ You should have a terminal opened [ 0 ].
     > source init.gdb
 You are now ready to debug blink_exe
 
-|--[ 3 ]---[ Tips ]
+## Tips
 
 We have not fully integrated the complete development cycle in makefiles so I advise you to clean your working directory 
 if you have modified any template file ( i.e. a file ending with ".goilTemplate".
@@ -83,13 +83,13 @@ to ensure that all source file a well re-generated.
 
 This shall be corrected in a further version
 
-|--[ 4 ]---[ The examples ]
+## The examples
 
-|--[ 4.1 ]---[ blink ]
+### blink
 
 This example just toggles a led.
 
-|--[ 4.2 ]---[ readbutton ]
+### readbutton
 
 This example presents two tasks and two alarms that interact.
 It uses polling for reading push button states.
