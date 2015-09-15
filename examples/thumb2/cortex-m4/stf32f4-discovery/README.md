@@ -83,4 +83,14 @@ to ensure that all source file a well re-generated.
 
 This shall be corrected in a further version
 
+|--[ 4 ]---[ The examples ]
+
+|--[ 4.1 ]---[ blink ]
+
+This example just toggles a led.
+
+|--[ 4.2 ]---[ readbutton ]
+
+This example presents two tasks and two alarms that interact.
+It uses polling for reading push button states.
 
