@@ -13,4 +13,9 @@ Its API is aligned with OSEK/VDX OS and AUTOSAR OS 4.1 standards.
 
 And we welcome external contributors to extend this list.
 
-We will soon add examples and information on how to use Trampoline.
+Some examples have been added :
+
+* thumb2: 1 example
+* avr: 3 examples
+
+More examples are coming.
