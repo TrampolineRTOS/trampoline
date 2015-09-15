@@ -15,9 +15,10 @@ And we welcome external contributors to extend this list.
 
 Some examples have been added :
 
-* thumb2: 2 examples
+* thumb2: 3 examples
   * blink
   * readbutton
+  * readbutton_isr
 * avr: 3 examples
   * blink
   * extInterrupt
