@@ -16,11 +16,11 @@ And we welcome external contributors to extend this list.
 Some examples have been added :
 
 * thumb2: 2 examples
-*   - blink
-*   - readbutton
+* -- blink
+* -- readbutton
 * avr: 3 examples
-*   - blink
-*   - extInterrupt
-*   - serial
+* -- blink
+* -- extInterrupt
+* -- serial
 
 More examples are coming.
