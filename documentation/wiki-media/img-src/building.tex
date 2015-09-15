@@ -1,0 +1,61 @@
+%!tikz editor 1.0
+\documentclass{article}
+\usepackage{tikz}
+\usepackage[graphics, active, tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+
+%!tikz preamble begin
+\usetikzlibrary{arrows,positioning,automata,shadows,shapes,snakes,patterns,decorations}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+
+%!tikz preamble end
+
+
+\begin{document}
+%!tikz source begin
+\begin{tikzpicture}[
+manager/.style={draw,fill=white,drop shadow={opacity=0.25},font=\sffamily\scriptsize, text width=1.6cm, text centered, minimum height=1.2cm},
+exe/.style={draw, very thick,fill=white,drop shadow={opacity=0.25},font=\sffamily\scriptsize, text width=1.4cm, text centered, minimum height=1.2cm},
+src/.style={draw,tape,fill=white,drop shadow={opacity=0.25},font=\sffamily\scriptsize, text width=1.2cm, text centered, minimum height=1.2cm, tape bend top=out and in, tape bend bottom=out and in},
+srclarge/.style={draw,tape,fill=white,drop shadow={opacity=0.25},font=\sffamily\scriptsize, text width=2.3cm, text centered, minimum height=1.2cm, tape bend top=out and in, tape bend bottom=out and in}
+]
+%\draw[fill=gray!30,drop shadow] (0,0) rectangle (10.2,4);
+%\node[,color=red!50,font=\tiny] at (1,1.15) {OS generation process};
+%\node[,color=red!50,font=\tiny] at (1,0.85) {Application generation process};
+%\node[src] (sdmlsrc)          at (1,4)  {SDML Description};
+%\node[manager] (sdmlcompiler) at (4,4)  {SDML Compiler};
+\node[src] (oskernel)         at (7,2)  {Kernel C source code};
+\node[srclarge] (osinfra)     at (10,2) {OS infrastructure\\Assembly and C sources};
+\node[src,text width=2.2cm] (template)	at (4,2)  {Configuration Templates};
+\node[src,,text width=2.2cm,fill=yellow!30] (oil)		at (1,0)  {OIL description of the application};
+\node[src,,text width=2.2cm,fill=yellow!30] (appli)            at (1,-2)  {Application C sources};
+\node[src,text width=2.2cm] (applidesc)        at (7,0)  {Data structures (C sources)};
+\node[manager,fill=orange!20] (goil)         at (4,0)  {GOIL OIL compiler};
+\node[manager,fill=orange!20] (c)            at (10,-0.5)  {C compiler + linker};
+\node[exe] (exe)              at (10,-2.5)  {executable code (binary)};
+%\path (sdmlsrc) edge [dashed,->] (sdmlcompiler);
+%\path (sdmlcompiler) edge [dashed,->] (oskernel);
+\path (oskernel) edge [dashed,->] (c);
+\path (osinfra) edge [dashed,->] (c);
+\path (applidesc) edge [dashed,->] (c);
+\path (appli) edge [dashed,->] (c);
+%\path (sdmlcompiler) edge [dashed,->] (template);
+\path (oil) edge [dashed,->] (goil);
+\path (template) edge [dashed,->] (goil);
+\path (goil) edge [dashed,->] (applidesc);
+\path (c) edge [dashed,->] (exe);
+%\draw [thick,dashed,color=red!50] (-1,1) -- (12,1);
+%\draw [dashed,->] ($ (messages.south) + (2mm,0) $) -- ++(0,-4mm) -- ($ (events.south) + (0,-4mm) $) -- (events.south);
+%\draw [dashed,->] ($ (messages.south) - (2mm,0) $) -- ++(0,-6mm) -- ($ (tasks.south) + (0,-6mm) $) -- (tasks.south);
+%\draw [dashed,->] ($ (alarms.south) + (2mm,0) $) -- ++(0,-2mm) -- ($ (tasks.south) + (-2mm,-2mm) $) -- ($ (tasks.south) + (-2mm,0) $);
+%\path (alarms) edge [dashed,->] (events);
+%\path (events) edge [dashed,->] (scheduler);
+%\path (tasks) edge [dashed,->] (scheduler);
+%\path (interrupts) edge [dashed,->] (scheduler);
+%\path (resources) edge [dashed,->] (scheduler);
+
+\end{tikzpicture}
+%!tikz source end
+
+\end{document}
