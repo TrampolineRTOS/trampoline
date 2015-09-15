@@ -1,0 +1,38 @@
+%!tikz editor 1.0
+\documentclass{article}
+\usepackage{tikz}
+\usepackage[graphics, active, tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+
+%!tikz preamble begin
+\usetikzlibrary{arrows,positioning,automata,shadows,shapes,snakes,patterns,decorations}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+
+%!tikz preamble end
+
+
+\begin{document}
+%!tikz source begin
+\begin{tikzpicture}[
+state/.style={draw, circle, fill=white,drop shadow={opacity=0.25},font=\sffamily\scriptsize, text width=1.6cm, text centered, minimum height=1.2cm},
+transched/.style={dashed,->,bend right,thick,font=\sffamily,text centered},
+tranapp/.style={solid,->,bend right,thick,font=\sffamily,text centered},
+tranapp2/.style={solid,->,bend left,thick,font=\sffamily,text centered},
+]
+\node[state] (suspended) at (0,2.8) {SUSPENDED};
+\node[state] (ready) at (-2.5,0) {READY};
+\node[state] (running) at (2.5,0) {RUNNING};
+\node[state] (waiting) at (0,-2.8) {WAITING};
+
+\draw (suspended) edge [tranapp] node [left] {activate} (ready) ;
+\draw (ready) edge [transched] node [below] {start} (running) ;
+\draw (running) edge [transched] node [above] {preempt} (ready) ;
+\draw (running) edge [tranapp] node [right] {terminate} (suspended) ;
+\draw (running) edge [tranapp2] node [right] {block} (waiting) ;
+\draw (waiting) edge [tranapp2] node [left] {release} (ready) ;
+
+\end{tikzpicture}
+%!tikz source end
+
+\end{document}
