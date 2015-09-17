@@ -94,3 +94,7 @@ This example just toggles a led.
 This example presents two tasks and two alarms that interact.
 It uses polling for reading push button states.
 
+### readbutton_isr
+
+This example presents two tasks and one alarm.
+It uses an ISR2 that activates a task. That last task then start or stop an alarm.
