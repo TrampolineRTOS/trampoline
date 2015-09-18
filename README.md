@@ -26,7 +26,7 @@ Some examples have been added (check examples/<instruction set>/<micro-controlle
 
 More examples are coming.
 
-## Precompiled binaries of goil, the OIL compiler:
+## Precompiled binaries of goil, the OIL compiler
 
 * Mac OS X : [goil-mac-os-x.zip](https://dl.dropboxusercontent.com/u/67740546/goil/goil-mac-os-x.zip)
 * Linux 32 bits: [goil-linux-32.zip](https://dl.dropboxusercontent.com/u/67740546/goil/goil-linux-32.zip)
