@@ -111,7 +111,6 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
     [mTextView setAutomaticDashSubstitutionEnabled:NO] ;
     [mTextView.layoutManager setAllowsNonContiguousLayout:YES] ;
     [mTextView.layoutManager setUsesFontLeading:YES] ;
-    [mTextView.layoutManager setBackgroundLayoutEnabled:NO] ;
     mTextView.drawsBackground = NO ;
     if ([mTextView respondsToSelector:@selector(setAutomaticTextReplacementEnabled:)]) {
       [mTextView setValue:[NSNumber numberWithBool:NO] forKey:@"automaticTextReplacementEnabled"] ;
@@ -151,7 +150,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
     [[NSUserDefaultsController sharedUserDefaultsController]
       addObserver:self
       forKeyPath:@"values.PMShowInvisibleCharacters"
-      options:NSKeyValueObservingOptionNew
+      options:0
       context:NULL
     ] ;
     [self refreshShowInvisibleCharacters] ;
@@ -271,7 +270,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//        G O T O    L I N E    A N D     C O L U M N                                                                  *
+//        G O T O    L I N E    A N D     C O L U M N                          *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -294,7 +293,6 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
     range.location = lastStartOfLine ;
     range.length = 0 ;
   }
-  NSBeep () ;
   [mTextView setSelectedRange:range] ;
   [mTextView scrollRangeToVisible:range] ;
 }
@@ -427,7 +425,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
       NSLog (@"currentLineRange [%d, %d]", currentLineRange.location, currentLineRange.length) ;
     #endif
     NSString * lineString = [sourceString substringWithRange:currentLineRange] ;
-    if ([lineString compare:spaceString options:NSLiteralSearch range:NSMakeRange (0, twoSpaceLength)] == NSOrderedSame) {
+    if ([lineString compare:spaceString options:0 range:NSMakeRange (0, twoSpaceLength)] == NSOrderedSame) {
       [mutableSourceString replaceCharactersInRange:NSMakeRange (currentLineRange.location, twoSpaceLength) withString:@""] ;
     //--- Examen du nombre de caractères à l'intérieur de la sélection
       const NSInteger withinSelectionCharacterCount = 

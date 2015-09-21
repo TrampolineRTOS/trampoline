@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2005, ..., 2015 Pierre Molinaro.                                                                     *
+//  Copyright (C) 2005, ..., 2010 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -423,7 +423,6 @@ void cSharedSortedListRoot::addEntry (cSortedListNode * & ioRootPtr,
       inBeforeNode->mNextPtr = ioRootPtr ;
     }
     ioExtension = true ;
-    mCount ++ ;
   }else{
     macroValidPointer (ioRootPtr) ;
     const typeComparisonResult comparaison = ioRootPtr->mAttributes.compareForSorting (inAttributes) ;
@@ -480,6 +479,7 @@ void cSharedSortedListRoot::addObject (capSortedListElement & inAttributes) {
   if (inAttributes.isValid ()) {
     bool extension = false ; // Unused here
     addEntry (mRoot, NULL, inAttributes, extension) ;
+    mCount ++ ;
   }
   #ifndef DO_NOT_GENERATE_CHECKINGS
     checkSortedList (mRoot, mCount, mFirst, mLast COMMA_HERE) ;

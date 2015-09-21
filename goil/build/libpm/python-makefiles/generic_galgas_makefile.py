@@ -72,7 +72,7 @@ class GenericGalgasMakefile :
     for d in SOURCES_DIR:
       includeDirs.append ("-I" + d)
   #--- Make object
-    make = makefile.Make (self.mGoal)
+    make = makefile.Make ()
   #--------------------------------------------------------------------------- Add Compile rule for sources
   #--- Object file directory
     objectDirectory = os.path.normpath (os.getcwd () + "/../build/cli-objects/makefile-" + self.mTargetName + "-objects")
@@ -84,9 +84,9 @@ class GenericGalgasMakefile :
       sourcePath = make.searchFileInDirectories (source, SOURCES_DIR)
       if sourcePath != "" :
         rule = makefile.Rule (objectFile, self.mCompilationMessage + ": " + source)
-        rule.deleteTargetDirectoryOnClean ()
+        #rule.mPriority = os.path.getsize (os.path.abspath (sourcePath))
         rule.mDependences.append (sourcePath)
-        rule.enterSecondaryDependanceFile (objectFile + ".dep", make)
+        rule.enterSecondaryDependanceFile (objectFile + ".dep")
         rule.mCommand += self.mCompilerTool
         rule.mCommand += self.mCompilerReleaseOptions
         rule.mCommand += self.mAllCompilerOptions
@@ -99,8 +99,6 @@ class GenericGalgasMakefile :
   #--------------------------------------------------------------------------- Add EXECUTABLE link rule
     EXECUTABLE = self.mExecutable + self.mExecutableSuffix
     rule = makefile.Rule (EXECUTABLE, self.mLinkingMessage + ": " + EXECUTABLE)
-    rule.mOnErrorDeleteTarget = True
-    rule.deleteTargetFileOnClean ()
     rule.mDependences += objectFileList
     rule.mCommand += self.mLinkerTool
     rule.mCommand += objectFileList
@@ -123,9 +121,9 @@ class GenericGalgasMakefile :
       sourcePath = make.searchFileInDirectories (source, SOURCES_DIR)
       if sourcePath != "" :
         rule = makefile.Rule (objectFile, self.mCompilationMessage + " (debug): " + source)
-        rule.deleteTargetDirectoryOnClean ()
+        #rule.mPriority = os.path.getsize (os.path.abspath (sourcePath))
         rule.mDependences.append (sourcePath)
-        rule.enterSecondaryDependanceFile (objectFile + ".dep", make)
+        rule.enterSecondaryDependanceFile (objectFile + ".dep")
         rule.mCommand += self.mCompilerTool
         rule.mCommand += self.mCompilerDebugOptions
         rule.mCommand += self.mAllCompilerOptions
@@ -138,8 +136,6 @@ class GenericGalgasMakefile :
   #--------------------------------------------------------------------------- Add EXECUTABLE_DEBUG link rule
     EXECUTABLE_DEBUG = self.mExecutable + "-debug" + self.mExecutableSuffix
     rule = makefile.Rule (EXECUTABLE_DEBUG, self.mLinkingMessage + " (debug): " + EXECUTABLE_DEBUG)
-    rule.mOnErrorDeleteTarget = True
-    rule.deleteTargetFileOnClean ()
     rule.mDependences += debugObjectFileList
     rule.mCommand += self.mLinkerTool
     rule.mCommand += debugObjectFileList
@@ -172,7 +168,7 @@ class GenericGalgasMakefile :
       make.addGoal ("install-debug", [INSTALL_EXECUTABLE_DEBUG], "Build and install " + INSTALL_EXECUTABLE_DEBUG)
   #--------------------------------------------------------------------------- Run jobs
 #    make.printGoals ()
-    make.runGoal (self.mMaxParallelJobs, self.mDisplayCommands)
+    make.runGoal (self.mGoal, self.mMaxParallelJobs, self.mDisplayCommands)
   #--------------------------------------------------------------------------- Ok ?
     make.printErrorCountAndExitOnError ()
     displayDurationFromStartTime (startTime)

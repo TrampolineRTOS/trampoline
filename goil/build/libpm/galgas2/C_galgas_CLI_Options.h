@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2006, ..., 2015 Pierre Molinaro.                                                                     *
+//  Copyright (C) 2006, ..., 2011 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -74,7 +74,8 @@ typedef enum {
  kExecutionModeLexicalAnalysisOnly,
  kExecutionModeSyntaxAnalysisOnly,
  kExecutionModeIndexing,
- kExecutionModeLatex
+ kExecutionModeLatex,
+ 
 } EnumExecutionMode ;
 
 EnumExecutionMode executionMode (void) ;

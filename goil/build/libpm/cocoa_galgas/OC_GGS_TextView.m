@@ -59,19 +59,19 @@
     [df
       addObserver:self
       forKeyPath:GGS_uses_page_guide
-      options:NSKeyValueObservingOptionNew
+      options:0
       context:NULL
     ] ;
     [df
       addObserver:self
       forKeyPath:GGS_page_guide_column
-      options:NSKeyValueObservingOptionNew
+      options:0
       context:NULL
     ] ;
     [df
       addObserver:self
       forKeyPath:GGS_editor_background_color
-      options:NSKeyValueObservingOptionNew
+      options:0
       context:NULL
     ] ;
   }

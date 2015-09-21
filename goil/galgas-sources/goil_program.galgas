@@ -24,11 +24,6 @@
 #
 #---------------------------------------------------------------------------*
 
-
- # import semantics xml_types in "xml_types.ggs";
- # import grammar xml_parsing_grammar in "xml_parsing_grammar.ggs" ;
- # import semantics xml_to_goil in "xml_to_goil.ggs";
-
 #--- Prologue routine (sample code for GOIL templates)
   before {
   }

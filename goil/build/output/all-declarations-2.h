@@ -11,28 +11,6 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                                         Function 'template_string_if_exist'                                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_string function_template_5F_string_5F_if_5F_exist (class GALGAS_string inArgument0,
-                                                                class GALGAS_string inArgument1,
-                                                                class C_Compiler * inCompiler
-                                                                COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                             Function 'template_string'                                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_string function_template_5F_string (class GALGAS_string inArgument0,
-                                                 class GALGAS_string inArgument1,
-                                                 class C_Compiler * inCompiler
-                                                 COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
 //                                             Function 'templateFilePath'                                             *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -1377,7 +1355,7 @@ class cPtr_oil_5F_obj : public acPtr_class {
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                              Category Getter '@enumValues mergeWithEnum' (as function)                              *
+//                                     Category Reader '@enumValues mergeWithEnum'                                     *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -1388,7 +1366,7 @@ class GALGAS_enumValues categoryReader_mergeWithEnum (const class GALGAS_enumVal
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//          Category Getter '@implementationObjectMap mergeImplementationObjectAttributesWith' (as function)           *
+//                 Category Reader '@implementationObjectMap mergeImplementationObjectAttributesWith'                  *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 

@@ -201,7 +201,7 @@ static NSArray * gIssueArray ;
   if (source == nil) {
     NSLog (@"Try lossy encoding") ;
     mFileEncoding = NSUTF8StringEncoding ;
-    NSData * data = [NSData dataWithContentsOfURL:fileURL options:NSDataReadingMapped error:nil] ;
+    NSData * data = [NSData dataWithContentsOfURL:fileURL options:0 error:nil] ;
     if (nil != data) {
       const NSUInteger dataLength = [data length] ;
       const unsigned char * bytes = [data bytes] ;

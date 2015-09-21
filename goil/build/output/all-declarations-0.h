@@ -2398,7 +2398,7 @@ class GALGAS_Tvalue function_valueWithVoid (class C_Compiler * inCompiler
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                           Category Getter '@Ttype messageGoilTemplateType' (as function)                            *
+//                                  Category Reader '@Ttype messageGoilTemplateType'                                   *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -9920,7 +9920,7 @@ class GALGAS_TfieldMap callCategoryReader_templateData (const cPtr_applicationDe
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                                  Category Getter '@dataType oilType' (as function)                                  *
+//                                         Category Reader '@dataType oilType'                                         *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 

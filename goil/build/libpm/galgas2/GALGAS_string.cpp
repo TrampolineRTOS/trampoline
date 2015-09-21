@@ -433,8 +433,8 @@ GALGAS_string GALGAS_string::reader_stringByLeftPadding (const GALGAS_uint & inP
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_string GALGAS_string::reader_stringByRightPadding (const GALGAS_uint & inPaddedStringLength,
-                                                          const GALGAS_char & inPaddingChar
-                                                          COMMA_UNUSED_LOCATION_ARGS) const {
+                                                            const GALGAS_char & inPaddingChar
+                                                            COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
   if ((inPaddedStringLength.isValid ()) && (inPaddingChar.isValid ())) {
     const utf32 paddingChar = inPaddingChar.charValue () ;
@@ -1167,38 +1167,30 @@ void GALGAS_string::class_method_generateFile (GALGAS_string inStartPath,
 void GALGAS_string::class_method_generateFileWithPattern (GALGAS_string inStartPath,
                                                           GALGAS_string inFileName,
                                                           GALGAS_string inLineCommentPrefix,
-                                                          GALGAS_string inHeader,
                                                           GALGAS_string inDefaultUserZone1,
                                                           GALGAS_string inGeneratedZone2,
                                                           GALGAS_string inDefaultUserZone2,
                                                           GALGAS_string inGeneratedZone3,
-                                                          GALGAS_bool inMakeExecutable,
                                                           C_Compiler * inCompiler
                                                           COMMA_UNUSED_LOCATION_ARGS) {
   const bool built = (inStartPath.isValid ())
     && (inFileName.isValid ())
     && (inLineCommentPrefix.isValid ())
     && (inDefaultUserZone1.isValid ())
-    && (inHeader.isValid ())
     && (inDefaultUserZone2.isValid ())
     && (inDefaultUserZone2.isValid ())
     && (inGeneratedZone3.isValid ())
-    && (inMakeExecutable.isValid ())
   ;
   if (built) {
     TC_UniqueArray <C_String> directoriesToExclude ;
-    inCompiler->generateFileWithPatternFromPathes (
-      inStartPath.mString,
-      directoriesToExclude,
-      inLineCommentPrefix.mString,
-      inFileName.mString,
-      inHeader.mString,
-      inDefaultUserZone1.mString,
-      inGeneratedZone2.mString,
-      inDefaultUserZone2.mString,
-      inGeneratedZone3.mString,
-      inMakeExecutable.boolValue ()
-    ) ;
+    inCompiler->generateFileWithPatternFromPathes (inStartPath.mString,
+                                        directoriesToExclude,
+                                        inLineCommentPrefix.mString,
+                                        inFileName.mString,
+                                        inDefaultUserZone1.mString,
+                                        inGeneratedZone2.mString,
+                                        inDefaultUserZone2.mString,
+                                        inGeneratedZone3.mString) ;
   }
 }
 

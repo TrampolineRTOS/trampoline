@@ -60,12 +60,16 @@ func chip -> @string chip_name {
 }
 
 #
-# board returns the target board of the chip
+# board returns the target board of the chip.
+# If target components are longer than 3, board is the concatenation of
+# last components with a / between them
 #
 func board -> @string board_name {
   @stringlist components = [[option goil_options.target_platform value] componentsSeparatedByString !"/"]
   if [components length] > 2 then
-    board_name = [components mValueAtIndex !2]
+    [!?components popFirst ?*]
+    [!?components popFirst ?*]   
+    board_name = @string.componentsJoinedByString { !components !"/" }
   else
     board_name = ""
   end
@@ -125,63 +129,6 @@ func templates_directory ?@string prefix -> @string temp_dir {
 #    message "templates = ".temp_dir."\n";
 }
 
-#if the template does not exist, templateString is an empty string.
-# no error is generated.
-func template_string_if_exist
-  ?@string prefix
-  ?@string obj
-  ->@string tpl {
-#    @string target_platform ;
-    @string targ_tpl = ""
-
-# Get the template directory
-    @string temp_dir
-    temp_dir = templates_directory(!prefix)
-
-# Get the template file name
-    @string temp_name = obj+".tpl"
-
-    targ_tpl = temp_dir+arch()+"/"+chip()+"/"+board()+"/"+temp_name
-    if [targ_tpl fileExists]
-    then tpl = @string. stringWithContentsOfFile { !targ_tpl}
-    else
-      targ_tpl = temp_dir+arch()+"/"+chip()+"/"+temp_name
-      if [targ_tpl fileExists]
-      then tpl = @string. stringWithContentsOfFile { !targ_tpl}
-      else
-        targ_tpl = temp_dir+arch()+"/"+temp_name
-        if [targ_tpl fileExists]
-        then tpl = @string. stringWithContentsOfFile { !targ_tpl}
-        else
-     # then in the all_targets path
-          targ_tpl = temp_dir+"all_targets/"+temp_name
-          if [targ_tpl fileExists]
-          then tpl = @string. stringWithContentsOfFile { !targ_tpl}
-          else
-            targ_tpl = temp_dir+temp_name
-            if [targ_tpl fileExists]
-            then tpl = @string. stringWithContentsOfFile { !targ_tpl}
-            else tpl = ""
-            end
-          end
-        end
-      end
-    end
-}
-
-func template_string
-  ?@string prefix
-  ?@string obj
-  ->@string tpl {
-    tpl = template_string_if_exist(!prefix !obj)
-    if tpl == "" then
-        @string target_platform = arch()
-        @string temp_dir
-        temp_dir = templates_directory(!prefix)
-        error @location.here: "No template found for "+obj+" (searched in "+ temp_dir+target_platform
-              +" and in "+temp_dir+"all_targets)"
-    end
-}
 
 func templateFilePath
   ?let @string prefix
