@@ -13,7 +13,7 @@ Its API is aligned with OSEK/VDX OS and AUTOSAR OS 4.1 standards.
 
 And we welcome external contributors to extend this list.
 
-Some examples have been added (check examples/<instruction set>/<micro-controller>/<board>:
+Some examples have been added (check examples):
 
 * thumb2 (aka Cortex-M)/cortex-m4/stf32f4-discovery
   * blink. Blinks a LED using an alarm and a task
