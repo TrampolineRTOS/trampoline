@@ -5,7 +5,7 @@
 #include "tpl_memmap.h"
 FUNC(int, OS_APPL_CODE) main(void)
 {
-  initBoard(BUTTON_NOIT);
+  initBoard(BUTTON_IT);
   StartOS(OSDEFAULTAPPMODE);
   return 0;
 }
@@ -15,16 +15,14 @@ DeclareAlarm(blink_alarm);
 TASK(read_button)
 {
   static int a = 0;
-  if (readButton() == BUTTON_PRESSED) {
-    ledToggle(BLUE);
-    if (a == 0) {
-      SetRelAlarm(blink_alarm, 100, 100);
-      a = 1;
-    }
-    else {
-      CancelAlarm(blink_alarm);
-      a = 0;
-    }
+  ledToggle(BLUE);
+  if (a == 0) {
+    SetRelAlarm(blink_alarm, 100, 100);
+    a = 1;
+  }
+  else {
+    CancelAlarm(blink_alarm);
+    a = 0;
   }
   TerminateTask();
 }
@@ -47,6 +45,7 @@ DeclareTask(read_button);
 
 ISR(isr_button)
 {
+  ledToggle(RED);
   ActivateTask(read_button);
   /* If button is an ISR2 then call CallTerminateISR2 at the end of the handler otherwise do nothing more. */
   CallTerminateISR2();

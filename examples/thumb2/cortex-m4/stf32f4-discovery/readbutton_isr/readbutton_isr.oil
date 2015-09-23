@@ -47,18 +47,6 @@ CPU readbutton_isr {
     SCHEDULE = FULL;
   };
 
-  ALARM read_button_alarm {
-    COUNTER = SystemCounter;
-    ACTION = ACTIVATETASK {
-      TASK = read_button;
-    };
-    AUTOSTART = TRUE {
-      APPMODE = std;
-      ALARMTIME = 50;
-      CYCLETIME = 50;
-    };                                                                      
-  };   
-  
   TASK blink {
     PRIORITY = 1;
     AUTOSTART = FALSE;

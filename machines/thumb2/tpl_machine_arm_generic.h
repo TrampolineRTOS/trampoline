@@ -78,7 +78,7 @@ typedef enum
  * ARM core registers
  */
 /*
- * ARM_CORE_EXCEPTION_FRAME_SIZE is 36 bytes long :
+ * ARM_CORE_EXCEPTION_FRAME_SIZE is 32 bytes long :
  * xpsr
  * pc
  * lr
@@ -87,7 +87,6 @@ typedef enum
  * r2
  * r1
  * r0
- * default value of EXC_RETURN
  */
 #define ARM_CORE_EXCEPTION_FRAME_SIZE ((uint32)32)
 /* ARM_INITIAL_EXC_RETURN

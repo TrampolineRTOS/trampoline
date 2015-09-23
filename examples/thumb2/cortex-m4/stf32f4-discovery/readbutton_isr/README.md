@@ -1,20 +1,24 @@
 |=-----=[ readbutton_isr example ]=-----=|
 
 This application deals with alarms and ISR2.
-There are two tasks : "blink" and ""read_button".
+There is two tasks "blink" and "read_button" and one ISR2 "isr_button".
 
-The task "blink" is activated by the alarm "blink_alarm".
-The task "blink" toggles the GREEN led whenever it is executed.
+At start the program does nothing.
+Something happens when pushing the button on the board.
+A push on the button activates the task "read_button".
 
-The task "read_button" is activated by the alarm "isr_button".
-This task "read_button" toggles the alarm "blink_alarm" and the BLUE led.
+The task "read_button" will toggle the BLUE led and launch or cancel the alarm "blink_alarm".
+This alarm "blink_alarm" will activate the task "blink" on expiration and start again.
 
-Have a look into "alarm.oil" file.
+Leds are toggled by the following resources:
+- "blink" toggles GREEN led,
+- "isr_button" will toggle RED led,
+-"read_button" will toggle BLUE led.
+
+Have a look into "readbutton_isr.oil" file.
 
 The system is based scheduled with a 1ms SysTick "SystemCounter".
 
-At the beginning of the execution, the alarm "read_button_alarm" is started, and that's all.
- 
 Configure the application with
 goil --target=thumb2/cortex-m4/stm32f4-discovery -v --templates=../../../../../goil/templates/ readbutton_isr.oil
 
