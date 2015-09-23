@@ -23,8 +23,8 @@
  * $URL$
  */
 
-	.syntax unified
-	.thumb
+.syntax unified
+.thumb
 
 #include "tpl_assembler.h"
 #include "tpl_asm_definitions.h"
@@ -187,8 +187,8 @@ tpl_sc_handler:
 	sub sp, sp, #KS_FOOTPRINT		/* Make space on top of kernel stack. */
 	mrs r12, psp					/* Copy process stack pointer psp into r12 */
 	str r12, [sp, #KS_PROCESS_SP]	/* and save it into kernel stack. */
-	str r4, [sp, #KS_R4]			/* Save working register r4 on process stack. */
-	str r5, [sp, #KS_R5]			/* Save working register r5 on process stack. */
+	str r4, [sp, #KS_R4]			/* Save working register r4 on kernel stack. */
+	str r5, [sp, #KS_R5]			/* Save working register r5 on kernel stack. */
 	ldr r12, =tpl_kern
 	str r12, [sp, #KS_KERN_PTR] 	/* Store tpl_kern into kernel stack. */
 	str lr, [sp, #KS_LR]			/* Store lr register into kernel stack. */
