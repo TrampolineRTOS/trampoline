@@ -76,6 +76,19 @@ func board -> @string board_name {
 }
 
 #
+# targetPathList returns the target as a list of strings.
+#
+func targetPathList -> @TfieldMapList pathList {
+  @stringlist components = [[option goil_options.target_platform value] componentsSeparatedByString !"/"]
+  pathList = @TfieldMapList.emptyList
+  for (@string comp) in components do
+    @TfieldMap cont = @TfieldMap.emptyMap
+    addStringValue(!?cont !lstringWith(!"VALUE") !comp !emptyLString())
+    pathList += !cont
+  end
+}
+
+#
 # add_path_component adds a path component uh
 #
 func add_path_component
@@ -180,20 +193,6 @@ func allTemplateFilePaths
       notOver = false
     end
   end
-}
-
-func config_file -> @lstring cfg_file {
-    @string cfg = templateFilePath(!"config" !"target.cfg")
-    #message cfg;
-    cfg_file = @lstring. new { !cfg !@location.here}
-}
-
-func extra_config_file -> @lstring cfg_file {
-    @string cfg = oil_dir()+"/target.cfg"
-    if not [cfg fileExists] then
-      cfg = ""
-    end
-    cfg_file = @lstring. new { !cfg !@location.here}
 }
 
 proc prefix ?@prefix_map p ?@string key !@string val {

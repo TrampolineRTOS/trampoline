@@ -56,31 +56,38 @@ ifeq ($(strip $(WITH_IOC)), true)
 include $(IOC_PATH)/Makefile
 endif
 
-ifdef ARCH_PATH
--include $(ARCH_PATH)/Makefile
-override CFLAGS += -I$(ARCH_PATH)
-override CPPFLAGS += -I$(ARCH_PATH)
-TEMP_SOURCE_DIRS += $(ARCH_PATH)
+ifdef MACHINE_INCLUDE_PATH
+-include $(MACHINE_INCLUDE_MAKEFILE)
+override CFLAGS += $(MACHINE_INCLUDE_PATH)
+override CPPFLAGS += $(MACHINE_INCLUDE_PATH)
+TEMP_SOURCE_DIRS += $(MACHINE_PATH)
 endif
 
-ifdef CHIP_PATH
--include $(CHIP_PATH)/Makefile
-override CFLAGS += -I$(CHIP_PATH)
-override CPPFLAGS += -I$(CHIP_PATH)
-TEMP_SOURCE_DIRS += $(CHIP_PATH)
-endif
+#ifdef ARCH_PATH
+#-include $(ARCH_PATH)/Makefile
+#override CFLAGS += -I$(ARCH_PATH)
+#override CPPFLAGS += -I$(ARCH_PATH)
+#TEMP_SOURCE_DIRS += $(ARCH_PATH)
+#endif
+#
+#ifdef CHIP_PATH
+#-include $(CHIP_PATH)/Makefile
+#override CFLAGS += -I$(CHIP_PATH)
+#override CPPFLAGS += -I$(CHIP_PATH)
+#TEMP_SOURCE_DIRS += $(CHIP_PATH)
+#endif
 
-ifdef BOARD_PATH
--include $(BOARD_PATH)/Makefile
-override CFLAGS += -I$(BOARD_PATH)
-override CPPFLAGS += -I$(BOARD_PATH)
-TEMP_SOURCE_DIRS += $(BOARD_PATH)
-endif
+#ifdef BOARD_PATH
+#-include $(BOARD_PATH)/Makefile
+#override CFLAGS += -I$(BOARD_PATH)
+#override CPPFLAGS += -I$(BOARD_PATH)
+#TEMP_SOURCE_DIRS += $(BOARD_PATH)
+#endif
 
 
 
-#add trampoline paths in the include path. 
-override CPPFLAGS += -I$(OIL_OUTPUT_PATH) 
+#add trampoline paths in the include path.
+override CPPFLAGS += -I$(OIL_OUTPUT_PATH)
 override CPPFLAGS += -I$(OS_PATH) -I$(COM_PATH) -I$(IOC_PATH) -I$(DEBUG_PATH)
 override CFLAGS += -I$(OIL_OUTPUT_PATH)
 override CFLAGS += -I$(OS_PATH) -I$(COM_PATH) -I$(IOC_PATH) -I$(DEBUG_PATH)
@@ -108,7 +115,7 @@ FIRST_OIL_OUTPUT =  $(firstword $(OIL_OUTPUTS))
 OTHER_OIL_OUTPUTS = $(filter-out $(FIRST_OIL_OUTPUT), $(OIL_OUTPUTS))
 
 SOURCES += $(OIL_GENERATED_FILES)
-ifdef GOIL_TEMPLATE_PATH 
+ifdef GOIL_TEMPLATE_PATH
 	GOIL_TEMPLATE_STR = --templates=$(GOIL_TEMPLATE_PATH)
 else #use the default template directory.
 	GOIL_TEMPLATE_STR =
@@ -121,11 +128,11 @@ NODIR_SRC = $(notdir $(SOURCES))
 OBJ      :=  $(NODIR_SRC:%=$(OBJ_DIR)/%.o)
 
 #############################################################################
-# End of configuration: 
+# End of configuration:
 # Build rules.
 #############################################################################
 
-.PHONY: ALL 
+.PHONY: ALL
 ALL: $(EXEC)
 
 #generate dependancy only works for gcc/llvm..
@@ -150,16 +157,16 @@ CPP = $(CC)
 # exe rule -> Link
 $(EXEC): $(OBJ)
 	@echo linking $@
-	$(LD) -o $(EXEC) $(OBJ) $(LDFLAGS) 
+	$(LD) -o $(EXEC) $(OBJ) $(LDFLAGS)
 
 #clean
-#.PHONY: clean 
+#.PHONY: clean
 clean:
 	@rm -rf $(OBJ) *~  $(EXTRA_FILES_CLEAN)
 	@rm -rf $(EXEC) $(DEPFILES) $(BUILD_DIR) $(OIL_OUTPUT_PATH)
 
 # generate C file from OIL file, using goil.
-$(OTHER_OIL_OUTPUTS): $(FIRST_OIL_OUTPUT) 
+$(OTHER_OIL_OUTPUTS): $(FIRST_OIL_OUTPUT)
 $(FIRST_OIL_OUTPUT): $(OIL_FILE)
 	@echo compiling goil file $(OIL_FILE)
 	$(GOIL_COMPILER) --target=$(TARGET) $(GOIL_TEMPLATE_STR) $(GENITVEC) $(OIL_FILE)

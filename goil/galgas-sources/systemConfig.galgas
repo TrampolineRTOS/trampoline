@@ -152,6 +152,7 @@ getter @applicationDefinition templateData
   addStringValue ( !?cfg !lstringWith(!"ARCH") !arch() !lstringWith(!"target architecture"))
   addStringValue ( !?cfg !lstringWith(!"CHIP") !chip() !lstringWith(!"target chip"))
   addStringValue ( !?cfg !lstringWith(!"BOARD") !board() !lstringWith(!"target board"))
+  addListValue( !?cfg !lstringWith(!"TARGETPATHLIST") !targetPathList() !lstringWith(!"target path list"))
   # Other options of goil
   addBoolValue ( !?cfg !lstringWith(!"LOGFILE") ![option goil_options.generate_log value] !lstringWith(!"Generated a logfile"))
 

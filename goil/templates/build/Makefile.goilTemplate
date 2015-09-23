@@ -212,7 +212,34 @@ ARCH = % !ARCH
 if CHIP != "" then %
 CHIP = % !CHIP end if
 if BOARD != "" then %
-BOARD = % !BOARD end if %
+BOARD = % !BOARD end if 
+let MACHINESPATH := OS::BUILD_S::TRAMPOLINE_BASE_PATH."/machines"
+let PARTIAL_PATH := MACHINESPATH
+foreach COMPONENT in TARGETPATHLIST
+before %
+MACHINE_INCLUDE_PATH =%
+do 
+  let PARTIAL_PATH := PARTIAL_PATH . "/" . COMPONENT::VALUE
+% -I% !PARTIAL_PATH 
+end foreach
+
+let PARTIAL_PATH := MACHINESPATH
+foreach COMPONENT in TARGETPATHLIST
+before %
+MACHINE_INCLUDE_MAKEFILE =%
+do 
+  let PARTIAL_PATH := PARTIAL_PATH . "/" . COMPONENT::VALUE
+% % !PARTIAL_PATH%/Makefile% 
+end foreach
+
+let PARTIAL_PATH := MACHINESPATH
+foreach COMPONENT in TARGETPATHLIST
+before %
+MACHINE_PATH =%
+do 
+  let PARTIAL_PATH := PARTIAL_PATH . "/" . COMPONENT::VALUE
+% % !PARTIAL_PATH 
+end foreach%
 
 # WITH_USECOM is true if COM is used
 WITH_USECOM = % !trueFalse(USECOM) %
