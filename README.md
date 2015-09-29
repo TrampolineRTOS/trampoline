@@ -17,8 +17,8 @@ Some examples have been added (check examples):
 
 * thumb2 (aka Cortex-M)/cortex-m4/stf32f4-discovery
   * blink. Blinks a LED using an alarm and a task
-  * readButton. Poll the button to start an alarm that activate a task to blink a LED
-  * readButton_isr. Same but the the button trigger an ISR.
+  * readButton. The example polls the button to start an alarm that activates a task to blink a LED
+  * readButton_isr. Same but the button triggers an ISR.
 * avr: 3 examples
   * blink
   * extInterrupt
