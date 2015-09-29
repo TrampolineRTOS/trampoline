@@ -22,7 +22,7 @@ end if
 HEX=$(EXEC).hex
 $(HEX): $(EXEC)
 	@echo generate hex file $@
-	avr-objcopy -j .text -j .data -O ihex $(EXEC) $(HEX)
+	avr-objcopy -R .eeprom -O ihex $(EXEC) $(HEX)
 
 EXTRA_FILES_CLEAN += $(EXEC).hex
 %
@@ -39,9 +39,12 @@ if ARDUINO::BOARD == "UNO" then
   %MCU_FLAGS := -DF_CPU=16000000 -mmcu=atmega328p\n%
   %INCLUDE_PATH += -I$(ARDUINO_PATH)/hardware/variants/standard\n%
   %AVRDUDE_CHIP := m328p\n%
+  %AVRDUDE_PROG := arduino\n%
 elsif ARDUINO::BOARD == "MEGA" then
   %MCU_FLAGS := -DF_CPU=16000000 -mmcu=atmega2560\n%
   %INCLUDE_PATH += -I$(ARDUINO_PATH)/hardware/variants/standard\n%
+  %AVRDUDE_CHIP := m2560\n%
+  %AVRDUDE_PROG := stk500v2\n%
 else
   error ARDUINO : "The BOARD attribute is not defined properly (UNO/MEGA)."
 end if
@@ -162,7 +165,7 @@ SOURCES += hooks.c
 %#add the 'hex' rule for avr
 flash: $(HEX)
 	@echo upload file $@ to Arduino.
-	avrdude -c arduino -p $(AVRDUDE_CHIP) -P $(AVRDUDE_PORT) -U flash:w:$(HEX)
+	avrdude -c $(AVRDUDE_PROG) -p $(AVRDUDE_CHIP) -P $(AVRDUDE_PORT) -U flash:w:$(HEX)
 %else #OS::BUILD_S::ARDUINO
   error OS::ARDUINO : "Arduino is set to FALSE, but the target is arduino."
 end if #OS::BUILD_S::ARDUINO
