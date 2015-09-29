@@ -42,7 +42,7 @@ if ARDUINO::BOARD == "UNO" then
   %AVRDUDE_PROG := arduino\n%
 elsif ARDUINO::BOARD == "MEGA" then
   %MCU_FLAGS := -DF_CPU=16000000 -mmcu=atmega2560\n%
-  %INCLUDE_PATH += -I$(ARDUINO_PATH)/hardware/variants/standard\n%
+  %INCLUDE_PATH += -I$(ARDUINO_PATH)/hardware/variants/mega\n%
   %AVRDUDE_CHIP := m2560\n%
   %AVRDUDE_PROG := stk500v2\n%
 else
