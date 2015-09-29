@@ -1,6 +1,7 @@
-AVR sample projects Arduino Uno boards (ATMega328P)
+AVR sample projects Arduino Mega 2560 boards (ATMega2560)
 see the README.md in the parent folder for general information.
 
+The main difference with the core of ATMega328p (Arduino Uno) is that the program counter uses 3 bytes (2 only on the ATMega328p).
 
 #first run
 In the first run, the `goil` compiler will generate:
