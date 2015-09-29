@@ -1,15 +1,12 @@
 // see blink.oil head of file for information about the compilation process.
 
 #include "tpl_os.h"
-#include <avr/io.h>
 #include "Arduino.h"
 
 void setup()
 {
 	// initialize digital pin 13 as an output.
 	pinMode(13, OUTPUT);
-	pinMode(12, OUTPUT);
-	pinMode(11, OUTPUT);
 }
 
 //The TASK is activated by the alarm "periodicAl":
