@@ -2,7 +2,6 @@
 
 
 //--- END OF USER ZONE 1
-
 #ifndef goil_options_FOR_COCOA_DEFINED
 #define goil_options_FOR_COCOA_DEFINED
 
@@ -16,7 +15,6 @@
 
 
 //--- END OF USER ZONE 2
-
 
 //---------------------------------------------------------------------------------------------------------------------*
 

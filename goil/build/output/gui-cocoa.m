@@ -3,7 +3,6 @@
 
 //--- END OF USER ZONE 1
 
-
 #import "OC_Token.h"
 #import "F_CocoaWrapperForGalgas.h"
 #import "lexique-goil_lexique-cocoa.m"
@@ -24,10 +23,9 @@
 //---------------------------------------------------------------------------------------------------------------------*
 
 NSArray * nibsAndClasses (void) {
-  return [NSArray arrayWithObjects:
-    nil
-  ] ;
+  return [NSArray array] ;
 }
+
 
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -256,6 +254,5 @@ NSArray * tokenizers (void) {
 
 
 //--- END OF USER ZONE 2
-
 
 

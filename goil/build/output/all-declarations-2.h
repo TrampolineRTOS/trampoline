@@ -11,6 +11,16 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
+//                                           Function 'templates_directory'                                            *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_string function_templates_5F_directory (class GALGAS_string inArgument0,
+                                                     class C_Compiler * inCompiler
+                                                     COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //                                             Function 'templateFilePath'                                             *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -1337,7 +1347,7 @@ class cPtr_oil_5F_obj : public acPtr_class {
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                                     Category Reader '@enumValues mergeWithEnum'                                     *
+//                              Category Getter '@enumValues mergeWithEnum' (as function)                              *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -1348,7 +1358,7 @@ class GALGAS_enumValues categoryReader_mergeWithEnum (const class GALGAS_enumVal
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                 Category Reader '@implementationObjectMap mergeImplementationObjectAttributesWith'                  *
+//          Category Getter '@implementationObjectMap mergeImplementationObjectAttributesWith' (as function)           *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 

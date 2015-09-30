@@ -32,6 +32,14 @@ func trueFalse ?let @bool inBool ->@string result {
   end
 }
 
+func TrueFalse ?let @bool inBool ->@string result {
+  if inBool then
+    result = "True"
+  else
+    result = "False"
+  end
+}
+
 func yesNo ?let @bool inBool ->@string result {
   if inBool then
     result = "YES"

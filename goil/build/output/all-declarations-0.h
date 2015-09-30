@@ -220,7 +220,7 @@ class GALGAS_TtypeList : public AC_GALGAS_list {
 } ; // End of GALGAS_TtypeList class
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Enumerator declaration                                                    *
+//   Enumerator declaration                                                                                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cEnumerator_TtypeList : public cGenericAbstractEnumerator {
@@ -404,7 +404,7 @@ class GALGAS_TfieldMap : public AC_GALGAS_map {
 } ; // End of GALGAS_TfieldMap class
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Enumerator declaration                                                    *
+//   Enumerator declaration                                                                                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cEnumerator_TfieldMap : public cGenericAbstractEnumerator {
@@ -533,7 +533,7 @@ class GALGAS_TfieldMapList : public AC_GALGAS_list {
 } ; // End of GALGAS_TfieldMapList class
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Enumerator declaration                                                    *
+//   Enumerator declaration                                                                                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cEnumerator_TfieldMapList : public cGenericAbstractEnumerator {
@@ -1009,7 +1009,7 @@ class GALGAS_TexpressionList : public AC_GALGAS_list {
 } ; // End of GALGAS_TexpressionList class
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Enumerator declaration                                                    *
+//   Enumerator declaration                                                                                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cEnumerator_TexpressionList : public cGenericAbstractEnumerator {
@@ -1213,7 +1213,7 @@ class GALGAS_TenumationList : public AC_GALGAS_list {
 } ; // End of GALGAS_TenumationList class
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Enumerator declaration                                                    *
+//   Enumerator declaration                                                                                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cEnumerator_TenumationList : public cGenericAbstractEnumerator {
@@ -1433,7 +1433,7 @@ class GALGAS_TvarPath : public AC_GALGAS_list {
 } ; // End of GALGAS_TvarPath class
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Enumerator declaration                                                    *
+//   Enumerator declaration                                                                                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cEnumerator_TvarPath : public cGenericAbstractEnumerator {
@@ -1659,6 +1659,7 @@ class C_Lexique_template_5F_scanner : public C_Lexique {
    kToken_warning,
    kToken_while,
    kToken_write,
+   kToken_executable,
    kToken__2A_,
    kToken__7C_,
    kToken__2C_,
@@ -1734,7 +1735,7 @@ class C_Lexique_template_5F_scanner : public C_Lexique {
   protected : virtual C_String getMessageForTerminal (const int16_t inTerminalSymbol) const ;
 
 //--- Get terminal count
-  public : virtual int16_t terminalVocabularyCount (void) const { return 94 ; }
+  public : virtual int16_t terminalVocabularyCount (void) const { return 95 ; }
 
 //--- Get Token String
   public : virtual C_String getCurrentTokenString (const cToken * inTokenPtr) const ;
@@ -1868,7 +1869,7 @@ class GALGAS_sortingKeyList : public AC_GALGAS_list {
 } ; // End of GALGAS_sortingKeyList class
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Enumerator declaration                                                    *
+//   Enumerator declaration                                                                                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cEnumerator_sortingKeyList : public cGenericAbstractEnumerator {
@@ -2334,6 +2335,8 @@ class cParser_template_5F_parser {
 
   protected : virtual int32_t select_template_5F_parser_27 (C_Lexique_template_5F_scanner *) = 0 ;
 
+  protected : virtual int32_t select_template_5F_parser_28 (C_Lexique_template_5F_scanner *) = 0 ;
+
 
 } ;
 
@@ -2398,7 +2401,7 @@ class GALGAS_Tvalue function_valueWithVoid (class C_Compiler * inCompiler
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                                  Category Reader '@Ttype messageGoilTemplateType'                                   *
+//                           Category Getter '@Ttype messageGoilTemplateType' (as function)                            *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -3016,6 +3019,8 @@ class cGrammar_template_5F_grammar : public cParser_template_5F_parser,
   public : virtual int32_t select_template_5F_parser_26 (C_Lexique_template_5F_scanner *) ;
 
   public : virtual int32_t select_template_5F_parser_27 (C_Lexique_template_5F_scanner *) ;
+
+  public : virtual int32_t select_template_5F_parser_28 (C_Lexique_template_5F_scanner *) ;
 
   public : virtual int32_t select_template_5F_expression_5F_parser_0 (C_Lexique_template_5F_scanner *) ;
 
@@ -3807,7 +3812,7 @@ class GALGAS_uint_33__32_List : public AC_GALGAS_list {
 } ; // End of GALGAS_uint_33__32_List class
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Enumerator declaration                                                    *
+//   Enumerator declaration                                                                                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cEnumerator_uint_33__32_List : public cGenericAbstractEnumerator {
@@ -4014,7 +4019,7 @@ class GALGAS_uint_36__34_List : public AC_GALGAS_list {
 } ; // End of GALGAS_uint_36__34_List class
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Enumerator declaration                                                    *
+//   Enumerator declaration                                                                                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cEnumerator_uint_36__34_List : public cGenericAbstractEnumerator {
@@ -4221,7 +4226,7 @@ class GALGAS_sint_33__32_List : public AC_GALGAS_list {
 } ; // End of GALGAS_sint_33__32_List class
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Enumerator declaration                                                    *
+//   Enumerator declaration                                                                                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cEnumerator_sint_33__32_List : public cGenericAbstractEnumerator {
@@ -4428,7 +4433,7 @@ class GALGAS_sint_36__34_List : public AC_GALGAS_list {
 } ; // End of GALGAS_sint_36__34_List class
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Enumerator declaration                                                    *
+//   Enumerator declaration                                                                                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cEnumerator_sint_36__34_List : public cGenericAbstractEnumerator {
@@ -4635,7 +4640,7 @@ class GALGAS_floatList : public AC_GALGAS_list {
 } ; // End of GALGAS_floatList class
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Enumerator declaration                                                    *
+//   Enumerator declaration                                                                                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cEnumerator_floatList : public cGenericAbstractEnumerator {
@@ -4842,7 +4847,7 @@ class GALGAS_numberList : public AC_GALGAS_list {
 } ; // End of GALGAS_numberList class
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Enumerator declaration                                                    *
+//   Enumerator declaration                                                                                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cEnumerator_numberList : public cGenericAbstractEnumerator {
@@ -5112,7 +5117,7 @@ class GALGAS_locationList : public AC_GALGAS_list {
 } ; // End of GALGAS_locationList class
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Enumerator declaration                                                    *
+//   Enumerator declaration                                                                                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cEnumerator_locationList : public cGenericAbstractEnumerator {
@@ -5286,7 +5291,7 @@ class GALGAS_implementationObjectMap : public AC_GALGAS_map {
 } ; // End of GALGAS_implementationObjectMap class
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Enumerator declaration                                                    *
+//   Enumerator declaration                                                                                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cEnumerator_implementationObjectMap : public cGenericAbstractEnumerator {
@@ -5547,7 +5552,7 @@ class GALGAS_enumValues : public AC_GALGAS_map {
 } ; // End of GALGAS_enumValues class
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Enumerator declaration                                                    *
+//   Enumerator declaration                                                                                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cEnumerator_enumValues : public cGenericAbstractEnumerator {
@@ -5755,7 +5760,7 @@ class GALGAS_implementationMap : public AC_GALGAS_map {
 } ; // End of GALGAS_implementationMap class
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Enumerator declaration                                                    *
+//   Enumerator declaration                                                                                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cEnumerator_implementationMap : public cGenericAbstractEnumerator {
@@ -6027,7 +6032,7 @@ class GALGAS_identifierMap : public AC_GALGAS_map {
 } ; // End of GALGAS_identifierMap class
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Enumerator declaration                                                    *
+//   Enumerator declaration                                                                                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cEnumerator_identifierMap : public cGenericAbstractEnumerator {
@@ -6246,7 +6251,7 @@ class GALGAS_identifierList : public AC_GALGAS_list {
 } ; // End of GALGAS_identifierList class
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Enumerator declaration                                                    *
+//   Enumerator declaration                                                                                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cEnumerator_identifierList : public cGenericAbstractEnumerator {
@@ -6412,7 +6417,7 @@ class GALGAS_stringMap : public AC_GALGAS_map {
 } ; // End of GALGAS_stringMap class
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Enumerator declaration                                                    *
+//   Enumerator declaration                                                                                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cEnumerator_stringMap : public cGenericAbstractEnumerator {
@@ -6615,7 +6620,7 @@ class GALGAS_lstringMap : public AC_GALGAS_map {
 } ; // End of GALGAS_lstringMap class
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Enumerator declaration                                                    *
+//   Enumerator declaration                                                                                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cEnumerator_lstringMap : public cGenericAbstractEnumerator {
@@ -6836,7 +6841,7 @@ class GALGAS_prefix_5F_map : public AC_GALGAS_map {
 } ; // End of GALGAS_prefix_5F_map class
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Enumerator declaration                                                    *
+//   Enumerator declaration                                                                                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cEnumerator_prefix_5F_map : public cGenericAbstractEnumerator {
@@ -7052,7 +7057,7 @@ class GALGAS_stringset_5F_map : public AC_GALGAS_map {
 } ; // End of GALGAS_stringset_5F_map class
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Enumerator declaration                                                    *
+//   Enumerator declaration                                                                                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cEnumerator_stringset_5F_map : public cGenericAbstractEnumerator {
@@ -7274,7 +7279,7 @@ class GALGAS_ident_5F_list : public AC_GALGAS_list {
 } ; // End of GALGAS_ident_5F_list class
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Enumerator declaration                                                    *
+//   Enumerator declaration                                                                                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cEnumerator_ident_5F_list : public cGenericAbstractEnumerator {
@@ -7448,7 +7453,7 @@ class GALGAS_ident_5F_list_5F_map : public AC_GALGAS_map {
 } ; // End of GALGAS_ident_5F_list_5F_map class
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Enumerator declaration                                                    *
+//   Enumerator declaration                                                                                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cEnumerator_ident_5F_list_5F_map : public cGenericAbstractEnumerator {
@@ -7656,7 +7661,7 @@ class GALGAS_objectsMap : public AC_GALGAS_map {
 } ; // End of GALGAS_objectsMap class
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Enumerator declaration                                                    *
+//   Enumerator declaration                                                                                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cEnumerator_objectsMap : public cGenericAbstractEnumerator {
@@ -7922,7 +7927,7 @@ class GALGAS_objectKindMap : public AC_GALGAS_map {
 } ; // End of GALGAS_objectKindMap class
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   Enumerator declaration                                                    *
+//   Enumerator declaration                                                                                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cEnumerator_objectKindMap : public cGenericAbstractEnumerator {
@@ -8116,6 +8121,8 @@ class cParser_goil_5F_syntax {
 
   protected : virtual void nt_application_5F_definition_ (const class GALGAS_implementation constinArgument0,
                                                           class GALGAS_applicationDefinition & ioArgument1,
+                                                          class GALGAS_string & ioArgument2,
+                                                          const class GALGAS_bool constinArgument3,
                                                           class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected : virtual void nt_application_5F_definition_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
@@ -8132,6 +8139,8 @@ class cParser_goil_5F_syntax {
 
   protected : virtual void nt_file_ (class GALGAS_implementation & ioArgument0,
                                      class GALGAS_applicationDefinition & ioArgument1,
+                                     class GALGAS_string & ioArgument2,
+                                     const class GALGAS_bool constinArgument3,
                                      class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected : virtual void nt_file_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
@@ -8143,18 +8152,24 @@ class cParser_goil_5F_syntax {
 
   protected : virtual void nt_include_5F_cpu_5F_level_ (const class GALGAS_implementation constinArgument0,
                                                         class GALGAS_objectsMap & ioArgument1,
+                                                        class GALGAS_string & ioArgument2,
+                                                        const class GALGAS_bool constinArgument3,
                                                         class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected : virtual void nt_include_5F_cpu_5F_level_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected : virtual void nt_include_5F_file_5F_level_ (class GALGAS_implementation & ioArgument0,
                                                          class GALGAS_applicationDefinition & ioArgument1,
+                                                         class GALGAS_string & ioArgument2,
+                                                         const class GALGAS_bool constinArgument3,
                                                          class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected : virtual void nt_include_5F_file_5F_level_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected : virtual void nt_object_5F_definition_5F_list_ (const class GALGAS_implementation constinArgument0,
                                                              class GALGAS_objectsMap & ioArgument1,
+                                                             class GALGAS_string & ioArgument2,
+                                                             const class GALGAS_bool constinArgument3,
                                                              class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected : virtual void nt_object_5F_definition_5F_list_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
@@ -8188,6 +8203,8 @@ class cParser_goil_5F_syntax {
 
   protected : void rule_goil_5F_syntax_file_i1_ (GALGAS_implementation & ioArgument0,
                                                  GALGAS_applicationDefinition & ioArgument1,
+                                                 GALGAS_string & ioArgument2,
+                                                 const GALGAS_bool constinArgument3,
                                                  C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected : void rule_goil_5F_syntax_file_i1_parse (C_Lexique_goil_5F_lexique * inLexique) ;
@@ -8210,12 +8227,16 @@ class cParser_goil_5F_syntax {
 
   protected : void rule_goil_5F_syntax_application_5F_definition_i5_ (const GALGAS_implementation constinArgument0,
                                                                       GALGAS_applicationDefinition & ioArgument1,
+                                                                      GALGAS_string & ioArgument2,
+                                                                      const GALGAS_bool constinArgument3,
                                                                       C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected : void rule_goil_5F_syntax_application_5F_definition_i5_parse (C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected : void rule_goil_5F_syntax_object_5F_definition_5F_list_i6_ (const GALGAS_implementation constinArgument0,
                                                                          GALGAS_objectsMap & ioArgument1,
+                                                                         GALGAS_string & ioArgument2,
+                                                                         const GALGAS_bool constinArgument3,
                                                                          C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected : void rule_goil_5F_syntax_object_5F_definition_5F_list_i6_parse (C_Lexique_goil_5F_lexique * inLexique) ;
@@ -8239,12 +8260,16 @@ class cParser_goil_5F_syntax {
 
   protected : void rule_goil_5F_syntax_include_5F_file_5F_level_i10_ (GALGAS_implementation & ioArgument0,
                                                                       GALGAS_applicationDefinition & ioArgument1,
+                                                                      GALGAS_string & ioArgument2,
+                                                                      const GALGAS_bool constinArgument3,
                                                                       C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected : void rule_goil_5F_syntax_include_5F_file_5F_level_i10_parse (C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected : void rule_goil_5F_syntax_include_5F_cpu_5F_level_i11_ (const GALGAS_implementation constinArgument0,
                                                                      GALGAS_objectsMap & ioArgument1,
+                                                                     GALGAS_string & ioArgument2,
+                                                                     const GALGAS_bool constinArgument3,
                                                                      C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected : void rule_goil_5F_syntax_include_5F_cpu_5F_level_i11_parse (C_Lexique_goil_5F_lexique * inLexique) ;
@@ -9920,7 +9945,7 @@ class GALGAS_TfieldMap callCategoryReader_templateData (const cPtr_applicationDe
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                                         Category Reader '@dataType oilType'                                         *
+//                                  Category Getter '@dataType oilType' (as function)                                  *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -9993,6 +10018,8 @@ class cGrammar_goil_5F_cpu_5F_level_5F_include : public cParser_goil_5F_syntax {
 //----------- '' label
   public : virtual void nt_application_5F_definition_ (const GALGAS_implementation inArgument0,
                                                        GALGAS_applicationDefinition & ioArgument1,
+                                                       GALGAS_string & ioArgument2,
+                                                       const GALGAS_bool inArgument3,
                                                        C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //------------------------------------- 'boolean' non terminal
@@ -10018,6 +10045,8 @@ class cGrammar_goil_5F_cpu_5F_level_5F_include : public cParser_goil_5F_syntax {
 //----------- '' label
   public : virtual void nt_file_ (GALGAS_implementation & ioArgument0,
                                   GALGAS_applicationDefinition & ioArgument1,
+                                  GALGAS_string & ioArgument2,
+                                  const GALGAS_bool inArgument3,
                                   C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //------------------------------------- 'implementation_definition' non terminal
@@ -10035,6 +10064,8 @@ class cGrammar_goil_5F_cpu_5F_level_5F_include : public cParser_goil_5F_syntax {
 //----------- '' label
   public : virtual void nt_include_5F_cpu_5F_level_ (const GALGAS_implementation inArgument0,
                                                      GALGAS_objectsMap & ioArgument1,
+                                                     GALGAS_string & ioArgument2,
+                                                     const GALGAS_bool inArgument3,
                                                      C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //------------------------------------- 'include_file_level' non terminal
@@ -10044,6 +10075,8 @@ class cGrammar_goil_5F_cpu_5F_level_5F_include : public cParser_goil_5F_syntax {
 //----------- '' label
   public : virtual void nt_include_5F_file_5F_level_ (GALGAS_implementation & ioArgument0,
                                                       GALGAS_applicationDefinition & ioArgument1,
+                                                      GALGAS_string & ioArgument2,
+                                                      const GALGAS_bool inArgument3,
                                                       C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //------------------------------------- 'object_definition_list' non terminal
@@ -10053,19 +10086,25 @@ class cGrammar_goil_5F_cpu_5F_level_5F_include : public cParser_goil_5F_syntax {
 //----------- '' label
   public : virtual void nt_object_5F_definition_5F_list_ (const GALGAS_implementation inArgument0,
                                                           GALGAS_objectsMap & ioArgument1,
+                                                          GALGAS_string & ioArgument2,
+                                                          const GALGAS_bool inArgument3,
                                                           C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //--- Start symbol
   public : static void _performSourceFileParsing_ (C_Compiler * inCompiler,
                                                    GALGAS_lstring inFileName,
                                                    const GALGAS_implementation inArgument0,
-                                                   GALGAS_objectsMap & ioArgument1
+                                                   GALGAS_objectsMap & ioArgument1,
+                                                   GALGAS_string & ioArgument2,
+                                                   const GALGAS_bool inArgument3
                                                    COMMA_LOCATION_ARGS) ;
 
   public : static void _performSourceStringParsing_ (C_Compiler * inCompiler,
                                                      GALGAS_string inSourceString,
                                                      const GALGAS_implementation inArgument0,
-                                                     GALGAS_objectsMap & ioArgument1
+                                                     GALGAS_objectsMap & ioArgument1,
+                                                     GALGAS_string & ioArgument2,
+                                                     const GALGAS_bool inArgument3
                                                      COMMA_LOCATION_ARGS) ;
 
 //--- Indexing
@@ -10483,6 +10522,8 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //----------- '' label
   public : virtual void nt_application_5F_definition_ (const GALGAS_implementation inArgument0,
                                                        GALGAS_applicationDefinition & ioArgument1,
+                                                       GALGAS_string & ioArgument2,
+                                                       const GALGAS_bool inArgument3,
                                                        C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //------------------------------------- 'boolean' non terminal
@@ -10534,19 +10575,25 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //----------- '' label
   public : virtual void nt_file_ (GALGAS_implementation & ioArgument0,
                                   GALGAS_applicationDefinition & ioArgument1,
+                                  GALGAS_string & ioArgument2,
+                                  const GALGAS_bool inArgument3,
                                   C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //--- Start symbol
   public : static void _performSourceFileParsing_ (C_Compiler * inCompiler,
                                                    GALGAS_lstring inFileName,
                                                    GALGAS_implementation & ioArgument0,
-                                                   GALGAS_applicationDefinition & ioArgument1
+                                                   GALGAS_applicationDefinition & ioArgument1,
+                                                   GALGAS_string & ioArgument2,
+                                                   const GALGAS_bool inArgument3
                                                    COMMA_LOCATION_ARGS) ;
 
   public : static void _performSourceStringParsing_ (C_Compiler * inCompiler,
                                                      GALGAS_string inSourceString,
                                                      GALGAS_implementation & ioArgument0,
-                                                     GALGAS_applicationDefinition & ioArgument1
+                                                     GALGAS_applicationDefinition & ioArgument1,
+                                                     GALGAS_string & ioArgument2,
+                                                     const GALGAS_bool inArgument3
                                                      COMMA_LOCATION_ARGS) ;
 
 //--- Indexing
@@ -10617,6 +10664,8 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //----------- '' label
   public : virtual void nt_include_5F_cpu_5F_level_ (const GALGAS_implementation inArgument0,
                                                      GALGAS_objectsMap & ioArgument1,
+                                                     GALGAS_string & ioArgument2,
+                                                     const GALGAS_bool inArgument3,
                                                      C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //------------------------------------- 'include_file_level' non terminal
@@ -10626,6 +10675,8 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //----------- '' label
   public : virtual void nt_include_5F_file_5F_level_ (GALGAS_implementation & ioArgument0,
                                                       GALGAS_applicationDefinition & ioArgument1,
+                                                      GALGAS_string & ioArgument2,
+                                                      const GALGAS_bool inArgument3,
                                                       C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //------------------------------------- 'int_or_float' non terminal
@@ -10662,6 +10713,8 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //----------- '' label
   public : virtual void nt_object_5F_definition_5F_list_ (const GALGAS_implementation inArgument0,
                                                           GALGAS_objectsMap & ioArgument1,
+                                                          GALGAS_string & ioArgument2,
+                                                          const GALGAS_bool inArgument3,
                                                           C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //------------------------------------- 'objref_option' non terminal
@@ -10881,6 +10934,8 @@ void callCategoryMethod_checkObjectReferences (const class cPtr_implementation *
 //                               Bool options                                                                          *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
+
+extern C_BoolCommandLineOption gOption_goil_5F_options_dependancies ;
 
 extern C_BoolCommandLineOption gOption_goil_5F_options_generate_5F_log ;
 

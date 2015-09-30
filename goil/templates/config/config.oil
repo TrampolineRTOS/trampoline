@@ -1,3 +1,28 @@
+/**
+ * @file config.oil
+ *
+ * @section desc File description
+ *
+ * Trampoline OIL implementation
+ *
+ * @section copyright Copyright
+ *
+ * Trampoline RTOS
+ *
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
+ * Trampoline is protected by the French intellectual property law.
+ *
+ * This software is distributed under the GNU Public Licence V2.
+ * Check the LICENSE file in the root directory of Trampoline
+ *
+ * @section infos File informations
+ *
+ * $Date:$
+ * $Rev:$
+ * $Author:$
+ * $URL:$
+ */
+
 IMPLEMENTATION trampoline_common {
   
   KERNEL [] {
@@ -9,6 +34,7 @@ IMPLEMENTATION trampoline_common {
     STRING FILE[];
     STRING HEADER[];
     IDENTIFIER ID_PREFIX;
+    STRING DIRECTORY;
     STRUCT {
       BOOLEAN HIDDEN = FALSE;
       IDENTIFIER WITH_AUTO ACTUAL;
@@ -26,6 +52,37 @@ IMPLEMENTATION trampoline_common {
     } CONST[];
   };
   
+  /* Machines specific files to add to the build system */
+  PLATFORM_FILES [] {
+    STRING PATH;
+    STRING CFILE[];
+    STRING ASFILE[];
+  };
+  
+  /* Machines specific generated files to add to the build system */
+  GENERATED_FILES [] {
+    STRING CFILE[];
+    STRING ASFILE[];
+  };
+  
+  POSTBUILD [] {
+    STRUCT {
+      ENUM  [
+        COMPILER,
+        ASSEMBLER,
+        LINKER,
+        COPIER,
+        CUSTOM { STRING NAME; }
+      ] TYPE;
+      ENUM [
+        TARGET,
+        INTERMEDIATE { POSTBUILD_TYPE EXT; }
+      ] INPUT;
+      STRING OUTPUT;
+      STRING PREOPTION[];
+      STRING POSTOPTION[];
+    } COMMAND[];
+  };
   OS {
     /* Standard OIL attributes */
     ENUM [STANDARD, EXTENDED] STATUS;
@@ -69,6 +126,7 @@ IMPLEMENTATION trampoline_common {
         STRING ASSEMBLER = "gcc";
         STRING LINKER = "gcc";
         STRING COPIER = "objcopy";
+        ENUM [MAKE, PYTHON] SYSTEM = MAKE;
       },
       FALSE
     ] BUILD = FALSE;

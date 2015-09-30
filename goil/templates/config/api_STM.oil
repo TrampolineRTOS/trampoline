@@ -4,6 +4,7 @@ CPU api {
    */
   APICONFIG stm {
     ID_PREFIX = OS;
+    DIRECTORY = "os";
     FILE = "tpl_os_stm_kernel";
     HEADER = "tpl_os_stm";
     

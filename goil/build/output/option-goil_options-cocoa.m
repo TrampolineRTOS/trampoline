@@ -2,7 +2,6 @@
 
 
 //--- END OF USER ZONE 1
-
 //---------------------------------------------------------------------------------------------------------------------*
 
 #import "option-goil_options-cocoa.h"
@@ -15,6 +14,15 @@ void enterOptionsFor_goil_5F_options (NSMutableArray * ioBoolOptionArray,
                                                        NSMutableArray * ioStringOptionArray,
                                                        NSMutableArray * ioStringListOptionArray) {
   OC_GGS_CommandLineOption * option ;
+  option = [[OC_GGS_CommandLineOption alloc]
+    initWithDomainName:@"goil_options"
+    identifier:@"dependancies"
+    commandChar:100
+    commandString:@"dependencies"
+    comment:@"generate a dependancies file for included OIL files"
+    defaultValue:@""
+  ] ;
+  [ioBoolOptionArray addObject:option] ;
   option = [[OC_GGS_CommandLineOption alloc]
     initWithDomainName:@"goil_options"
     identifier:@"generate_log"
@@ -77,6 +85,5 @@ void enterOptionsFor_goil_5F_options (NSMutableArray * ioBoolOptionArray,
 
 
 //--- END OF USER ZONE 2
-
 
 

@@ -544,6 +544,8 @@ class cGrammar_goil_5F_grammar : public cParser_goil_5F_syntax,
 //----------- '' label
   public : virtual void nt_application_5F_definition_ (const GALGAS_implementation inArgument0,
                                                        GALGAS_applicationDefinition & ioArgument1,
+                                                       GALGAS_string & ioArgument2,
+                                                       const GALGAS_bool inArgument3,
                                                        C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //------------------------------------- 'boolean' non terminal
@@ -595,6 +597,8 @@ class cGrammar_goil_5F_grammar : public cParser_goil_5F_syntax,
 //----------- '' label
   public : virtual void nt_file_ (GALGAS_implementation & ioArgument0,
                                   GALGAS_applicationDefinition & ioArgument1,
+                                  GALGAS_string & ioArgument2,
+                                  const GALGAS_bool inArgument3,
                                   C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //------------------------------------- 'identifier_or_attribute' non terminal
@@ -653,6 +657,8 @@ class cGrammar_goil_5F_grammar : public cParser_goil_5F_syntax,
 //----------- '' label
   public : virtual void nt_include_5F_cpu_5F_level_ (const GALGAS_implementation inArgument0,
                                                      GALGAS_objectsMap & ioArgument1,
+                                                     GALGAS_string & ioArgument2,
+                                                     const GALGAS_bool inArgument3,
                                                      C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //------------------------------------- 'include_file_level' non terminal
@@ -662,6 +668,8 @@ class cGrammar_goil_5F_grammar : public cParser_goil_5F_syntax,
 //----------- '' label
   public : virtual void nt_include_5F_file_5F_level_ (GALGAS_implementation & ioArgument0,
                                                       GALGAS_applicationDefinition & ioArgument1,
+                                                      GALGAS_string & ioArgument2,
+                                                      const GALGAS_bool inArgument3,
                                                       C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //------------------------------------- 'int_or_float' non terminal
@@ -698,6 +706,8 @@ class cGrammar_goil_5F_grammar : public cParser_goil_5F_syntax,
 //----------- '' label
   public : virtual void nt_object_5F_definition_5F_list_ (const GALGAS_implementation inArgument0,
                                                           GALGAS_objectsMap & ioArgument1,
+                                                          GALGAS_string & ioArgument2,
+                                                          const GALGAS_bool inArgument3,
                                                           C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //------------------------------------- 'objref_option' non terminal
@@ -1272,6 +1282,16 @@ class GALGAS_string function_computeTemplate (const class GALGAS_string & consti
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_string function_trueFalse (const class GALGAS_bool & constinArgument0,
+                                        class C_Compiler * inCompiler
+                                        COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                                Function 'TrueFalse'                                                 *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_string function_TrueFalse (const class GALGAS_bool & constinArgument0,
                                         class C_Compiler * inCompiler
                                         COMMA_LOCATION_ARGS) ;
 
@@ -3065,15 +3085,5 @@ class GALGAS_string function_add_5F_path_5F_component (class GALGAS_string inArg
                                                        class GALGAS_string inArgument1,
                                                        class C_Compiler * inCompiler
                                                        COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                           Function 'templates_directory'                                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_string function_templates_5F_directory (class GALGAS_string inArgument0,
-                                                     class C_Compiler * inCompiler
-                                                     COMMA_LOCATION_ARGS) ;
 
 #endif

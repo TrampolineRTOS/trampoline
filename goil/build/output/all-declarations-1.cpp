@@ -29,7 +29,7 @@
 #define END_PRODUCTION  (0)
 
 static const int16_t gProductions_template_grammar [] = {
-// At index 0 : <goil_template_start_symbol>, in file 'template_parser.ggs', line 591
+// At index 0 : <goil_template_start_symbol>, in file 'template_parser.ggs', line 601
   NONTERMINAL (6) // <template_instruction_list>
 , END_PRODUCTION
 // At index 2 : <template_instruction>, in file 'template_parser.ggs', line 87
@@ -39,558 +39,564 @@ static const int16_t gProductions_template_grammar [] = {
 // At index 5 : <template_instruction>, in file 'template_parser.ggs', line 134
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_write) // $write$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_to) // $to$
+, NONTERMINAL (13) // <select_template_5F_parser_0>
 , NONTERMINAL (5) // <expression>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__3A_) // $:$
 , NONTERMINAL (6) // <template_instruction_list>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_end) // $end$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_write) // $write$
 , END_PRODUCTION
-// At index 13 : <template_instruction>, in file 'template_parser.ggs', line 210
+// At index 14 : <template_instruction>, in file 'template_parser.ggs', line 220
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_template) // $template$
-, NONTERMINAL (14) // <select_template_5F_parser_1>
+, NONTERMINAL (15) // <select_template_5F_parser_2>
 , END_PRODUCTION
-// At index 16 : <template_instruction>, in file 'template_parser.ggs', line 285
+// At index 17 : <template_instruction>, in file 'template_parser.ggs', line 295
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__3F_) // $?$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
 , END_PRODUCTION
-// At index 19 : <template_instruction>, in file 'template_parser.ggs', line 318
+// At index 20 : <template_instruction>, in file 'template_parser.ggs', line 328
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_function) // $function$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__28_) // $($
-, NONTERMINAL (18) // <select_template_5F_parser_5>
+, NONTERMINAL (19) // <select_template_5F_parser_6>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__29_) // $)$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_functionContent) // $functionContent$
 , END_PRODUCTION
-// At index 26 : <template_instruction>, in file 'template_parser.ggs', line 351
+// At index 27 : <template_instruction>, in file 'template_parser.ggs', line 361
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_call) // $call$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__28_) // $($
-, NONTERMINAL (20) // <select_template_5F_parser_7>
+, NONTERMINAL (21) // <select_template_5F_parser_8>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__29_) // $)$
 , END_PRODUCTION
-// At index 32 : <template_instruction>, in file 'template_parser.ggs', line 418
+// At index 33 : <template_instruction>, in file 'template_parser.ggs', line 428
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_return) // $return$
 , NONTERMINAL (5) // <expression>
 , END_PRODUCTION
-// At index 35 : <template_instruction>, in file 'template_parser.ggs', line 483
+// At index 36 : <template_instruction>, in file 'template_parser.ggs', line 493
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_if) // $if$
 , NONTERMINAL (5) // <expression>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_then) // $then$
 , NONTERMINAL (6) // <template_instruction_list>
-, NONTERMINAL (22) // <select_template_5F_parser_9>
 , NONTERMINAL (23) // <select_template_5F_parser_10>
+, NONTERMINAL (24) // <select_template_5F_parser_11>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_end) // $end$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_if) // $if$
 , END_PRODUCTION
-// At index 44 : <template_instruction>, in file 'template_parser.ggs', line 611
+// At index 45 : <template_instruction>, in file 'template_parser.ggs', line 621
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_foreach) // $foreach$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_in) // $in$
 , NONTERMINAL (5) // <expression>
-, NONTERMINAL (25) // <select_template_5F_parser_12>
 , NONTERMINAL (26) // <select_template_5F_parser_13>
+, NONTERMINAL (27) // <select_template_5F_parser_14>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_do) // $do$
 , NONTERMINAL (6) // <template_instruction_list>
-, NONTERMINAL (27) // <select_template_5F_parser_14>
 , NONTERMINAL (28) // <select_template_5F_parser_15>
+, NONTERMINAL (29) // <select_template_5F_parser_16>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_end) // $end$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_foreach) // $foreach$
 , END_PRODUCTION
-// At index 57 : <template_instruction>, in file 'template_parser.ggs', line 748
+// At index 58 : <template_instruction>, in file 'template_parser.ggs', line 758
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_for) // $for$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_in) // $in$
 , NONTERMINAL (5) // <expression>
-, NONTERMINAL (29) // <select_template_5F_parser_16>
+, NONTERMINAL (30) // <select_template_5F_parser_17>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_do) // $do$
 , NONTERMINAL (6) // <template_instruction_list>
-, NONTERMINAL (30) // <select_template_5F_parser_17>
+, NONTERMINAL (31) // <select_template_5F_parser_18>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_end) // $end$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_for) // $for$
 , END_PRODUCTION
-// At index 68 : <template_instruction>, in file 'template_parser.ggs', line 838
+// At index 69 : <template_instruction>, in file 'template_parser.ggs', line 848
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_loop) // $loop$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_from) // $from$
 , NONTERMINAL (5) // <expression>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_to) // $to$
 , NONTERMINAL (5) // <expression>
-, NONTERMINAL (31) // <select_template_5F_parser_18>
+, NONTERMINAL (32) // <select_template_5F_parser_19>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_do) // $do$
 , NONTERMINAL (6) // <template_instruction_list>
-, NONTERMINAL (32) // <select_template_5F_parser_19>
 , NONTERMINAL (33) // <select_template_5F_parser_20>
+, NONTERMINAL (34) // <select_template_5F_parser_21>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_end) // $end$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_loop) // $loop$
 , END_PRODUCTION
-// At index 82 : <template_instruction>, in file 'template_parser.ggs', line 977
+// At index 83 : <template_instruction>, in file 'template_parser.ggs', line 987
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_let) // $let$
 , NONTERMINAL (3) // <variable>
-, NONTERMINAL (34) // <select_template_5F_parser_21>
+, NONTERMINAL (35) // <select_template_5F_parser_22>
 , END_PRODUCTION
-// At index 86 : <template_instruction>, in file 'template_parser.ggs', line 1075
+// At index 87 : <template_instruction>, in file 'template_parser.ggs', line 1085
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_error) // $error$
 , NONTERMINAL (4) // <variable_or_here>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__3A_) // $:$
 , NONTERMINAL (5) // <expression>
 , END_PRODUCTION
-// At index 91 : <template_instruction>, in file 'template_parser.ggs', line 1107
+// At index 92 : <template_instruction>, in file 'template_parser.ggs', line 1117
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_warning) // $warning$
 , NONTERMINAL (4) // <variable_or_here>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__3A_) // $:$
 , NONTERMINAL (5) // <expression>
 , END_PRODUCTION
-// At index 96 : <template_instruction>, in file 'template_parser.ggs', line 1137
+// At index 97 : <template_instruction>, in file 'template_parser.ggs', line 1147
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_display) // $display$
 , NONTERMINAL (3) // <variable>
 , END_PRODUCTION
-// At index 99 : <template_instruction>, in file 'template_parser.ggs', line 1169
+// At index 100 : <template_instruction>, in file 'template_parser.ggs', line 1179
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_sort) // $sort$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_by) // $by$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
 , NONTERMINAL (2) // <sorting_order>
+, NONTERMINAL (38) // <select_template_5F_parser_25>
+, END_PRODUCTION
+// At index 107 : <sorting_order>, in file 'template_parser.ggs', line 1168
 , NONTERMINAL (37) // <select_template_5F_parser_24>
 , END_PRODUCTION
-// At index 106 : <sorting_order>, in file 'template_parser.ggs', line 1158
+// At index 109 : <variable>, in file 'template_parser.ggs', line 1221
+, TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
+, NONTERMINAL (39) // <select_template_5F_parser_26>
+, NONTERMINAL (40) // <select_template_5F_parser_27>
+, END_PRODUCTION
+// At index 113 : <variable_or_here>, in file 'template_parser.ggs', line 1065
 , NONTERMINAL (36) // <select_template_5F_parser_23>
 , END_PRODUCTION
-// At index 108 : <variable>, in file 'template_parser.ggs', line 1211
-, TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
-, NONTERMINAL (38) // <select_template_5F_parser_25>
-, NONTERMINAL (39) // <select_template_5F_parser_26>
-, END_PRODUCTION
-// At index 112 : <variable_or_here>, in file 'template_parser.ggs', line 1055
-, NONTERMINAL (35) // <select_template_5F_parser_22>
-, END_PRODUCTION
-// At index 114 : <expression>, in file 'template_expression_parser.ggs', line 96
+// At index 115 : <expression>, in file 'template_expression_parser.ggs', line 96
 , NONTERMINAL (8) // <relation_term>
-, NONTERMINAL (41) // <select_template_5F_expression_5F_parser_0>
+, NONTERMINAL (42) // <select_template_5F_expression_5F_parser_0>
 , END_PRODUCTION
-// At index 117 : <template_instruction_list>, in file 'template_parser.ggs', line 562
-, NONTERMINAL (24) // <select_template_5F_parser_11>
+// At index 118 : <template_instruction_list>, in file 'template_parser.ggs', line 572
+, NONTERMINAL (25) // <select_template_5F_parser_12>
 , END_PRODUCTION
-// At index 119 : <template_file_name>, in file 'template_parser.ggs', line 188
-, NONTERMINAL (13) // <select_template_5F_parser_0>
+// At index 120 : <template_file_name>, in file 'template_parser.ggs', line 198
+, NONTERMINAL (14) // <select_template_5F_parser_1>
 , END_PRODUCTION
-// At index 121 : <relation_term>, in file 'template_expression_parser.ggs', line 158
+// At index 122 : <relation_term>, in file 'template_expression_parser.ggs', line 158
 , NONTERMINAL (9) // <relation_factor>
-, NONTERMINAL (42) // <select_template_5F_expression_5F_parser_1>
+, NONTERMINAL (43) // <select_template_5F_expression_5F_parser_1>
 , END_PRODUCTION
-// At index 124 : <relation_factor>, in file 'template_expression_parser.ggs', line 201
+// At index 125 : <relation_factor>, in file 'template_expression_parser.ggs', line 201
 , NONTERMINAL (10) // <simple_expression>
-, NONTERMINAL (43) // <select_template_5F_expression_5F_parser_2>
+, NONTERMINAL (44) // <select_template_5F_expression_5F_parser_2>
 , END_PRODUCTION
-// At index 127 : <simple_expression>, in file 'template_expression_parser.ggs', line 407
+// At index 128 : <simple_expression>, in file 'template_expression_parser.ggs', line 407
 , NONTERMINAL (11) // <term>
-, NONTERMINAL (44) // <select_template_5F_expression_5F_parser_3>
+, NONTERMINAL (45) // <select_template_5F_expression_5F_parser_3>
 , END_PRODUCTION
-// At index 130 : <term>, in file 'template_expression_parser.ggs', line 510
+// At index 131 : <term>, in file 'template_expression_parser.ggs', line 510
 , NONTERMINAL (12) // <factor>
-, NONTERMINAL (45) // <select_template_5F_expression_5F_parser_4>
+, NONTERMINAL (46) // <select_template_5F_expression_5F_parser_4>
 , END_PRODUCTION
-// At index 133 : <factor>, in file 'template_expression_parser.ggs', line 582
+// At index 134 : <factor>, in file 'template_expression_parser.ggs', line 582
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__28_) // $($
 , NONTERMINAL (5) // <expression>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__29_) // $)$
 , END_PRODUCTION
-// At index 137 : <factor>, in file 'template_expression_parser.ggs', line 606
+// At index 138 : <factor>, in file 'template_expression_parser.ggs', line 606
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_not) // $not$
 , NONTERMINAL (12) // <factor>
 , END_PRODUCTION
-// At index 140 : <factor>, in file 'template_expression_parser.ggs', line 633
+// At index 141 : <factor>, in file 'template_expression_parser.ggs', line 633
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__7E_) // $~$
 , NONTERMINAL (12) // <factor>
 , END_PRODUCTION
-// At index 143 : <factor>, in file 'template_expression_parser.ggs', line 660
+// At index 144 : <factor>, in file 'template_expression_parser.ggs', line 660
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__2D_) // $-$
 , NONTERMINAL (12) // <factor>
 , END_PRODUCTION
-// At index 146 : <factor>, in file 'template_expression_parser.ggs', line 687
+// At index 147 : <factor>, in file 'template_expression_parser.ggs', line 687
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__2B_) // $+$
 , NONTERMINAL (12) // <factor>
 , END_PRODUCTION
-// At index 149 : <factor>, in file 'template_expression_parser.ggs', line 714
+// At index 150 : <factor>, in file 'template_expression_parser.ggs', line 714
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_yes) // $yes$
 , END_PRODUCTION
-// At index 151 : <factor>, in file 'template_expression_parser.ggs', line 732
+// At index 152 : <factor>, in file 'template_expression_parser.ggs', line 732
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_no) // $no$
 , END_PRODUCTION
-// At index 153 : <factor>, in file 'template_expression_parser.ggs', line 750
+// At index 154 : <factor>, in file 'template_expression_parser.ggs', line 750
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_signed_5F_literal_5F_integer_36__34_) // $signed_literal_integer64$
 , END_PRODUCTION
-// At index 155 : <factor>, in file 'template_expression_parser.ggs', line 769
+// At index 156 : <factor>, in file 'template_expression_parser.ggs', line 769
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_string) // $string$
 , END_PRODUCTION
-// At index 157 : <factor>, in file 'template_expression_parser.ggs', line 788
+// At index 158 : <factor>, in file 'template_expression_parser.ggs', line 788
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__5B_) // $[$
 , NONTERMINAL (5) // <expression>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
-, NONTERMINAL (46) // <select_template_5F_expression_5F_parser_5>
+, NONTERMINAL (47) // <select_template_5F_expression_5F_parser_5>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__5D_) // $]$
 , END_PRODUCTION
-// At index 163 : <factor>, in file 'template_expression_parser.ggs', line 843
+// At index 164 : <factor>, in file 'template_expression_parser.ggs', line 843
 , NONTERMINAL (3) // <variable>
-, NONTERMINAL (48) // <select_template_5F_expression_5F_parser_7>
+, NONTERMINAL (49) // <select_template_5F_expression_5F_parser_7>
 , END_PRODUCTION
-// At index 166 : <factor>, in file 'template_expression_parser.ggs', line 976
+// At index 167 : <factor>, in file 'template_expression_parser.ggs', line 976
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_exists) // $exists$
 , NONTERMINAL (3) // <variable>
-, NONTERMINAL (50) // <select_template_5F_expression_5F_parser_9>
+, NONTERMINAL (51) // <select_template_5F_expression_5F_parser_9>
 , END_PRODUCTION
-// At index 170 : <factor>, in file 'template_expression_parser.ggs', line 1024
+// At index 171 : <factor>, in file 'template_expression_parser.ggs', line 1024
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_typeof) // $typeof$
 , NONTERMINAL (3) // <variable>
 , END_PRODUCTION
-// At index 173 : <factor>, in file 'template_expression_parser.ggs', line 1042
-, NONTERMINAL (51) // <select_template_5F_expression_5F_parser_10>
+// At index 174 : <factor>, in file 'template_expression_parser.ggs', line 1042
+, NONTERMINAL (52) // <select_template_5F_expression_5F_parser_10>
 , END_PRODUCTION
-// At index 175 : <factor>, in file 'template_expression_parser.ggs', line 1061
+// At index 176 : <factor>, in file 'template_expression_parser.ggs', line 1061
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__40_) // $@$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
 , END_PRODUCTION
-// At index 178 : <factor>, in file 'template_expression_parser.ggs', line 1075
+// At index 179 : <factor>, in file 'template_expression_parser.ggs', line 1075
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_emptylist) // $emptylist$
 , END_PRODUCTION
-// At index 180 : <factor>, in file 'template_expression_parser.ggs', line 1089
+// At index 181 : <factor>, in file 'template_expression_parser.ggs', line 1089
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_emptymap) // $emptymap$
 , END_PRODUCTION
-// At index 182 : <factor>, in file 'template_expression_parser.ggs', line 1103
+// At index 183 : <factor>, in file 'template_expression_parser.ggs', line 1103
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_mapof) // $mapof$
 , NONTERMINAL (5) // <expression>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_by) // $by$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
 , END_PRODUCTION
-// At index 187 : <factor>, in file 'template_expression_parser.ggs', line 1147
+// At index 188 : <factor>, in file 'template_expression_parser.ggs', line 1147
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_listof) // $listof$
 , NONTERMINAL (3) // <variable>
 , END_PRODUCTION
 //---- Added productions from 'select' and 'repeat' instructions
-// At index 190 : <select_template_5F_parser_0>, in file 'template_parser.ggs', line 194
+// At index 191 : <select_template_5F_parser_0>, in file 'template_parser.ggs', line 145
+, TERMINAL (C_Lexique_template_5F_scanner::kToken_executable) // $executable$
+, END_PRODUCTION
+// At index 193 : <select_template_5F_parser_0>, in file 'template_parser.ggs', line 145
+, END_PRODUCTION
+// At index 194 : <select_template_5F_parser_1>, in file 'template_parser.ggs', line 204
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
 , END_PRODUCTION
-// At index 192 : <select_template_5F_parser_0>, in file 'template_parser.ggs', line 194
+// At index 196 : <select_template_5F_parser_1>, in file 'template_parser.ggs', line 204
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_from) // $from$
 , NONTERMINAL (5) // <expression>
 , END_PRODUCTION
-// At index 195 : <select_template_5F_parser_1>, in file 'template_parser.ggs', line 220
+// At index 199 : <select_template_5F_parser_2>, in file 'template_parser.ggs', line 230
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_if) // $if$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_exists) // $exists$
 , NONTERMINAL (7) // <template_file_name>
-, NONTERMINAL (15) // <select_template_5F_parser_2>
 , NONTERMINAL (16) // <select_template_5F_parser_3>
-, END_PRODUCTION
-// At index 201 : <select_template_5F_parser_1>, in file 'template_parser.ggs', line 220
-, NONTERMINAL (7) // <template_file_name>
 , NONTERMINAL (17) // <select_template_5F_parser_4>
 , END_PRODUCTION
-// At index 204 : <select_template_5F_parser_2>, in file 'template_parser.ggs', line 225
+// At index 205 : <select_template_5F_parser_2>, in file 'template_parser.ggs', line 230
+, NONTERMINAL (7) // <template_file_name>
+, NONTERMINAL (18) // <select_template_5F_parser_5>
+, END_PRODUCTION
+// At index 208 : <select_template_5F_parser_3>, in file 'template_parser.ggs', line 235
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_in) // $in$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
 , END_PRODUCTION
-// At index 207 : <select_template_5F_parser_2>, in file 'template_parser.ggs', line 225
+// At index 211 : <select_template_5F_parser_3>, in file 'template_parser.ggs', line 235
 , END_PRODUCTION
-// At index 208 : <select_template_5F_parser_3>, in file 'template_parser.ggs', line 240
+// At index 212 : <select_template_5F_parser_4>, in file 'template_parser.ggs', line 250
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_or) // $or$
 , NONTERMINAL (6) // <template_instruction_list>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_end) // $end$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_template) // $template$
 , END_PRODUCTION
-// At index 213 : <select_template_5F_parser_3>, in file 'template_parser.ggs', line 240
+// At index 217 : <select_template_5F_parser_4>, in file 'template_parser.ggs', line 250
 , END_PRODUCTION
-// At index 214 : <select_template_5F_parser_4>, in file 'template_parser.ggs', line 263
+// At index 218 : <select_template_5F_parser_5>, in file 'template_parser.ggs', line 273
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_in) // $in$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
 , END_PRODUCTION
-// At index 217 : <select_template_5F_parser_4>, in file 'template_parser.ggs', line 263
+// At index 221 : <select_template_5F_parser_5>, in file 'template_parser.ggs', line 273
 , END_PRODUCTION
-// At index 218 : <select_template_5F_parser_5>, in file 'template_parser.ggs', line 330
+// At index 222 : <select_template_5F_parser_6>, in file 'template_parser.ggs', line 340
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
-, NONTERMINAL (19) // <select_template_5F_parser_6>
+, NONTERMINAL (20) // <select_template_5F_parser_7>
 , END_PRODUCTION
-// At index 221 : <select_template_5F_parser_5>, in file 'template_parser.ggs', line 330
+// At index 225 : <select_template_5F_parser_6>, in file 'template_parser.ggs', line 340
 , END_PRODUCTION
-// At index 222 : <select_template_5F_parser_6>, in file 'template_parser.ggs', line 334
+// At index 226 : <select_template_5F_parser_7>, in file 'template_parser.ggs', line 344
 , END_PRODUCTION
-// At index 223 : <select_template_5F_parser_6>, in file 'template_parser.ggs', line 334
+// At index 227 : <select_template_5F_parser_7>, in file 'template_parser.ggs', line 344
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__2C_) // $,$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
-, NONTERMINAL (19) // <select_template_5F_parser_6>
+, NONTERMINAL (20) // <select_template_5F_parser_7>
 , END_PRODUCTION
-// At index 227 : <select_template_5F_parser_7>, in file 'template_parser.ggs', line 363
+// At index 231 : <select_template_5F_parser_8>, in file 'template_parser.ggs', line 373
 , NONTERMINAL (5) // <expression>
-, NONTERMINAL (21) // <select_template_5F_parser_8>
+, NONTERMINAL (22) // <select_template_5F_parser_9>
 , END_PRODUCTION
-// At index 230 : <select_template_5F_parser_7>, in file 'template_parser.ggs', line 363
+// At index 234 : <select_template_5F_parser_8>, in file 'template_parser.ggs', line 373
 , END_PRODUCTION
-// At index 231 : <select_template_5F_parser_8>, in file 'template_parser.ggs', line 374
+// At index 235 : <select_template_5F_parser_9>, in file 'template_parser.ggs', line 384
 , END_PRODUCTION
-// At index 232 : <select_template_5F_parser_8>, in file 'template_parser.ggs', line 374
+// At index 236 : <select_template_5F_parser_9>, in file 'template_parser.ggs', line 384
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__2C_) // $,$
 , NONTERMINAL (5) // <expression>
-, NONTERMINAL (21) // <select_template_5F_parser_8>
+, NONTERMINAL (22) // <select_template_5F_parser_9>
 , END_PRODUCTION
-// At index 236 : <select_template_5F_parser_9>, in file 'template_parser.ggs', line 493
+// At index 240 : <select_template_5F_parser_10>, in file 'template_parser.ggs', line 503
 , END_PRODUCTION
-// At index 237 : <select_template_5F_parser_9>, in file 'template_parser.ggs', line 493
+// At index 241 : <select_template_5F_parser_10>, in file 'template_parser.ggs', line 503
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_elsif) // $elsif$
 , NONTERMINAL (5) // <expression>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_then) // $then$
 , NONTERMINAL (6) // <template_instruction_list>
-, NONTERMINAL (22) // <select_template_5F_parser_9>
+, NONTERMINAL (23) // <select_template_5F_parser_10>
 , END_PRODUCTION
-// At index 243 : <select_template_5F_parser_10>, in file 'template_parser.ggs', line 534
+// At index 247 : <select_template_5F_parser_11>, in file 'template_parser.ggs', line 544
 , END_PRODUCTION
-// At index 244 : <select_template_5F_parser_10>, in file 'template_parser.ggs', line 534
+// At index 248 : <select_template_5F_parser_11>, in file 'template_parser.ggs', line 544
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_else) // $else$
 , NONTERMINAL (6) // <template_instruction_list>
 , END_PRODUCTION
-// At index 247 : <select_template_5F_parser_11>, in file 'template_parser.ggs', line 573
+// At index 251 : <select_template_5F_parser_12>, in file 'template_parser.ggs', line 583
 , END_PRODUCTION
-// At index 248 : <select_template_5F_parser_11>, in file 'template_parser.ggs', line 573
+// At index 252 : <select_template_5F_parser_12>, in file 'template_parser.ggs', line 583
 , NONTERMINAL (1) // <template_instruction>
-, NONTERMINAL (24) // <select_template_5F_parser_11>
+, NONTERMINAL (25) // <select_template_5F_parser_12>
 , END_PRODUCTION
-// At index 251 : <select_template_5F_parser_12>, in file 'template_parser.ggs', line 644
+// At index 255 : <select_template_5F_parser_13>, in file 'template_parser.ggs', line 654
 , END_PRODUCTION
-// At index 252 : <select_template_5F_parser_12>, in file 'template_parser.ggs', line 644
+// At index 256 : <select_template_5F_parser_13>, in file 'template_parser.ggs', line 654
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_prefixedby) // $prefixedby$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
 , END_PRODUCTION
-// At index 255 : <select_template_5F_parser_13>, in file 'template_parser.ggs', line 653
+// At index 259 : <select_template_5F_parser_14>, in file 'template_parser.ggs', line 663
 , END_PRODUCTION
-// At index 256 : <select_template_5F_parser_13>, in file 'template_parser.ggs', line 653
+// At index 260 : <select_template_5F_parser_14>, in file 'template_parser.ggs', line 663
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_before) // $before$
 , NONTERMINAL (6) // <template_instruction_list>
 , END_PRODUCTION
-// At index 259 : <select_template_5F_parser_14>, in file 'template_parser.ggs', line 701
+// At index 263 : <select_template_5F_parser_15>, in file 'template_parser.ggs', line 711
 , END_PRODUCTION
-// At index 260 : <select_template_5F_parser_14>, in file 'template_parser.ggs', line 701
+// At index 264 : <select_template_5F_parser_15>, in file 'template_parser.ggs', line 711
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_between) // $between$
 , NONTERMINAL (6) // <template_instruction_list>
 , END_PRODUCTION
-// At index 263 : <select_template_5F_parser_15>, in file 'template_parser.ggs', line 722
+// At index 267 : <select_template_5F_parser_16>, in file 'template_parser.ggs', line 732
 , END_PRODUCTION
-// At index 264 : <select_template_5F_parser_15>, in file 'template_parser.ggs', line 722
+// At index 268 : <select_template_5F_parser_16>, in file 'template_parser.ggs', line 732
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_after) // $after$
 , NONTERMINAL (6) // <template_instruction_list>
 , END_PRODUCTION
-// At index 267 : <select_template_5F_parser_16>, in file 'template_parser.ggs', line 762
+// At index 271 : <select_template_5F_parser_17>, in file 'template_parser.ggs', line 772
 , END_PRODUCTION
-// At index 268 : <select_template_5F_parser_16>, in file 'template_parser.ggs', line 762
+// At index 272 : <select_template_5F_parser_17>, in file 'template_parser.ggs', line 772
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__2C_) // $,$
 , NONTERMINAL (5) // <expression>
-, NONTERMINAL (29) // <select_template_5F_parser_16>
+, NONTERMINAL (30) // <select_template_5F_parser_17>
 , END_PRODUCTION
-// At index 272 : <select_template_5F_parser_17>, in file 'template_parser.ggs', line 809
+// At index 276 : <select_template_5F_parser_18>, in file 'template_parser.ggs', line 819
 , END_PRODUCTION
-// At index 273 : <select_template_5F_parser_17>, in file 'template_parser.ggs', line 809
+// At index 277 : <select_template_5F_parser_18>, in file 'template_parser.ggs', line 819
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_between) // $between$
 , NONTERMINAL (6) // <template_instruction_list>
 , END_PRODUCTION
-// At index 276 : <select_template_5F_parser_18>, in file 'template_parser.ggs', line 874
+// At index 280 : <select_template_5F_parser_19>, in file 'template_parser.ggs', line 884
 , END_PRODUCTION
-// At index 277 : <select_template_5F_parser_18>, in file 'template_parser.ggs', line 874
+// At index 281 : <select_template_5F_parser_19>, in file 'template_parser.ggs', line 884
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_before) // $before$
 , NONTERMINAL (6) // <template_instruction_list>
 , END_PRODUCTION
-// At index 280 : <select_template_5F_parser_19>, in file 'template_parser.ggs', line 922
+// At index 284 : <select_template_5F_parser_20>, in file 'template_parser.ggs', line 932
 , END_PRODUCTION
-// At index 281 : <select_template_5F_parser_19>, in file 'template_parser.ggs', line 922
+// At index 285 : <select_template_5F_parser_20>, in file 'template_parser.ggs', line 932
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_between) // $between$
 , NONTERMINAL (6) // <template_instruction_list>
 , END_PRODUCTION
-// At index 284 : <select_template_5F_parser_20>, in file 'template_parser.ggs', line 943
+// At index 288 : <select_template_5F_parser_21>, in file 'template_parser.ggs', line 953
 , END_PRODUCTION
-// At index 285 : <select_template_5F_parser_20>, in file 'template_parser.ggs', line 943
+// At index 289 : <select_template_5F_parser_21>, in file 'template_parser.ggs', line 953
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_after) // $after$
 , NONTERMINAL (6) // <template_instruction_list>
 , END_PRODUCTION
-// At index 288 : <select_template_5F_parser_21>, in file 'template_parser.ggs', line 990
+// At index 292 : <select_template_5F_parser_22>, in file 'template_parser.ggs', line 1000
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__3A__3D_) // $:=$
 , NONTERMINAL (5) // <expression>
 , END_PRODUCTION
-// At index 291 : <select_template_5F_parser_21>, in file 'template_parser.ggs', line 990
+// At index 295 : <select_template_5F_parser_22>, in file 'template_parser.ggs', line 1000
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__2B__3D_) // $+=$
 , NONTERMINAL (5) // <expression>
 , END_PRODUCTION
-// At index 294 : <select_template_5F_parser_21>, in file 'template_parser.ggs', line 990
+// At index 298 : <select_template_5F_parser_22>, in file 'template_parser.ggs', line 1000
 , END_PRODUCTION
-// At index 295 : <select_template_5F_parser_22>, in file 'template_parser.ggs', line 1061
+// At index 299 : <select_template_5F_parser_23>, in file 'template_parser.ggs', line 1071
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_here) // $here$
 , END_PRODUCTION
-// At index 297 : <select_template_5F_parser_22>, in file 'template_parser.ggs', line 1061
+// At index 301 : <select_template_5F_parser_23>, in file 'template_parser.ggs', line 1071
 , NONTERMINAL (3) // <variable>
 , END_PRODUCTION
-// At index 299 : <select_template_5F_parser_23>, in file 'template_parser.ggs', line 1160
+// At index 303 : <select_template_5F_parser_24>, in file 'template_parser.ggs', line 1170
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__3E_) // $>$
 , END_PRODUCTION
-// At index 301 : <select_template_5F_parser_23>, in file 'template_parser.ggs', line 1160
+// At index 305 : <select_template_5F_parser_24>, in file 'template_parser.ggs', line 1170
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__3C_) // $<$
 , END_PRODUCTION
-// At index 303 : <select_template_5F_parser_24>, in file 'template_parser.ggs', line 1186
+// At index 307 : <select_template_5F_parser_25>, in file 'template_parser.ggs', line 1196
 , END_PRODUCTION
-// At index 304 : <select_template_5F_parser_24>, in file 'template_parser.ggs', line 1186
+// At index 308 : <select_template_5F_parser_25>, in file 'template_parser.ggs', line 1196
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__2C_) // $,$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
 , NONTERMINAL (2) // <sorting_order>
-, NONTERMINAL (37) // <select_template_5F_parser_24>
+, NONTERMINAL (38) // <select_template_5F_parser_25>
 , END_PRODUCTION
-// At index 309 : <select_template_5F_parser_25>, in file 'template_parser.ggs', line 1221
+// At index 313 : <select_template_5F_parser_26>, in file 'template_parser.ggs', line 1231
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__5B_) // $[$
 , NONTERMINAL (5) // <expression>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__5D_) // $]$
 , END_PRODUCTION
-// At index 313 : <select_template_5F_parser_25>, in file 'template_parser.ggs', line 1221
+// At index 317 : <select_template_5F_parser_26>, in file 'template_parser.ggs', line 1231
 , END_PRODUCTION
-// At index 314 : <select_template_5F_parser_26>, in file 'template_parser.ggs', line 1237
+// At index 318 : <select_template_5F_parser_27>, in file 'template_parser.ggs', line 1247
 , END_PRODUCTION
-// At index 315 : <select_template_5F_parser_26>, in file 'template_parser.ggs', line 1237
+// At index 319 : <select_template_5F_parser_27>, in file 'template_parser.ggs', line 1247
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__3A__3A_) // $::$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) // $identifier$
+, NONTERMINAL (41) // <select_template_5F_parser_28>
 , NONTERMINAL (40) // <select_template_5F_parser_27>
-, NONTERMINAL (39) // <select_template_5F_parser_26>
 , END_PRODUCTION
-// At index 320 : <select_template_5F_parser_27>, in file 'template_parser.ggs', line 1242
+// At index 324 : <select_template_5F_parser_28>, in file 'template_parser.ggs', line 1252
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__5B_) // $[$
 , NONTERMINAL (5) // <expression>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__5D_) // $]$
 , END_PRODUCTION
-// At index 324 : <select_template_5F_parser_27>, in file 'template_parser.ggs', line 1242
+// At index 328 : <select_template_5F_parser_28>, in file 'template_parser.ggs', line 1252
 , END_PRODUCTION
-// At index 325 : <select_template_5F_expression_5F_parser_0>, in file 'template_expression_parser.ggs', line 110
-, END_PRODUCTION
-// At index 326 : <select_template_5F_expression_5F_parser_0>, in file 'template_expression_parser.ggs', line 110
-, TERMINAL (C_Lexique_template_5F_scanner::kToken__7C_) // $|$
-, NONTERMINAL (8) // <relation_term>
-, NONTERMINAL (41) // <select_template_5F_expression_5F_parser_0>
+// At index 329 : <select_template_5F_expression_5F_parser_0>, in file 'template_expression_parser.ggs', line 110
 , END_PRODUCTION
 // At index 330 : <select_template_5F_expression_5F_parser_0>, in file 'template_expression_parser.ggs', line 110
+, TERMINAL (C_Lexique_template_5F_scanner::kToken__7C_) // $|$
+, NONTERMINAL (8) // <relation_term>
+, NONTERMINAL (42) // <select_template_5F_expression_5F_parser_0>
+, END_PRODUCTION
+// At index 334 : <select_template_5F_expression_5F_parser_0>, in file 'template_expression_parser.ggs', line 110
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__5E_) // $^$
 , NONTERMINAL (8) // <relation_term>
-, NONTERMINAL (41) // <select_template_5F_expression_5F_parser_0>
+, NONTERMINAL (42) // <select_template_5F_expression_5F_parser_0>
 , END_PRODUCTION
-// At index 334 : <select_template_5F_expression_5F_parser_1>, in file 'template_expression_parser.ggs', line 172
+// At index 338 : <select_template_5F_expression_5F_parser_1>, in file 'template_expression_parser.ggs', line 172
 , END_PRODUCTION
-// At index 335 : <select_template_5F_expression_5F_parser_1>, in file 'template_expression_parser.ggs', line 172
+// At index 339 : <select_template_5F_expression_5F_parser_1>, in file 'template_expression_parser.ggs', line 172
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__26_) // $&$
 , NONTERMINAL (9) // <relation_factor>
-, NONTERMINAL (42) // <select_template_5F_expression_5F_parser_1>
+, NONTERMINAL (43) // <select_template_5F_expression_5F_parser_1>
 , END_PRODUCTION
-// At index 339 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 215
+// At index 343 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 215
 , END_PRODUCTION
-// At index 340 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 215
+// At index 344 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 215
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__3D__3D_) // $==$
 , NONTERMINAL (10) // <simple_expression>
 , END_PRODUCTION
-// At index 343 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 215
+// At index 347 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 215
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__21__3D_) // $!=$
 , NONTERMINAL (10) // <simple_expression>
 , END_PRODUCTION
-// At index 346 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 215
+// At index 350 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 215
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__3C__3D_) // $<=$
 , NONTERMINAL (10) // <simple_expression>
 , END_PRODUCTION
-// At index 349 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 215
+// At index 353 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 215
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__3E__3D_) // $>=$
 , NONTERMINAL (10) // <simple_expression>
 , END_PRODUCTION
-// At index 352 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 215
+// At index 356 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 215
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__3E_) // $>$
 , NONTERMINAL (10) // <simple_expression>
 , END_PRODUCTION
-// At index 355 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 215
+// At index 359 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 215
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__3C_) // $<$
 , NONTERMINAL (10) // <simple_expression>
 , END_PRODUCTION
-// At index 358 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 421
-, END_PRODUCTION
-// At index 359 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 421
-, TERMINAL (C_Lexique_template_5F_scanner::kToken__3C__3C_) // $<<$
-, NONTERMINAL (11) // <term>
-, NONTERMINAL (44) // <select_template_5F_expression_5F_parser_3>
+// At index 362 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 421
 , END_PRODUCTION
 // At index 363 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 421
-, TERMINAL (C_Lexique_template_5F_scanner::kToken__3E__3E_) // $>>$
+, TERMINAL (C_Lexique_template_5F_scanner::kToken__3C__3C_) // $<<$
 , NONTERMINAL (11) // <term>
-, NONTERMINAL (44) // <select_template_5F_expression_5F_parser_3>
+, NONTERMINAL (45) // <select_template_5F_expression_5F_parser_3>
 , END_PRODUCTION
 // At index 367 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 421
-, TERMINAL (C_Lexique_template_5F_scanner::kToken__2B_) // $+$
+, TERMINAL (C_Lexique_template_5F_scanner::kToken__3E__3E_) // $>>$
 , NONTERMINAL (11) // <term>
-, NONTERMINAL (44) // <select_template_5F_expression_5F_parser_3>
+, NONTERMINAL (45) // <select_template_5F_expression_5F_parser_3>
 , END_PRODUCTION
 // At index 371 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 421
-, TERMINAL (C_Lexique_template_5F_scanner::kToken__2E_) // $.$
+, TERMINAL (C_Lexique_template_5F_scanner::kToken__2B_) // $+$
 , NONTERMINAL (11) // <term>
-, NONTERMINAL (44) // <select_template_5F_expression_5F_parser_3>
+, NONTERMINAL (45) // <select_template_5F_expression_5F_parser_3>
 , END_PRODUCTION
 // At index 375 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 421
+, TERMINAL (C_Lexique_template_5F_scanner::kToken__2E_) // $.$
+, NONTERMINAL (11) // <term>
+, NONTERMINAL (45) // <select_template_5F_expression_5F_parser_3>
+, END_PRODUCTION
+// At index 379 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 421
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__2D_) // $-$
 , NONTERMINAL (11) // <term>
-, NONTERMINAL (44) // <select_template_5F_expression_5F_parser_3>
+, NONTERMINAL (45) // <select_template_5F_expression_5F_parser_3>
 , END_PRODUCTION
-// At index 379 : <select_template_5F_expression_5F_parser_4>, in file 'template_expression_parser.ggs', line 524
-, END_PRODUCTION
-// At index 380 : <select_template_5F_expression_5F_parser_4>, in file 'template_expression_parser.ggs', line 524
-, TERMINAL (C_Lexique_template_5F_scanner::kToken__2A_) // $*$
-, NONTERMINAL (12) // <factor>
-, NONTERMINAL (45) // <select_template_5F_expression_5F_parser_4>
+// At index 383 : <select_template_5F_expression_5F_parser_4>, in file 'template_expression_parser.ggs', line 524
 , END_PRODUCTION
 // At index 384 : <select_template_5F_expression_5F_parser_4>, in file 'template_expression_parser.ggs', line 524
-, TERMINAL (C_Lexique_template_5F_scanner::kToken__2F_) // $/$
+, TERMINAL (C_Lexique_template_5F_scanner::kToken__2A_) // $*$
 , NONTERMINAL (12) // <factor>
-, NONTERMINAL (45) // <select_template_5F_expression_5F_parser_4>
+, NONTERMINAL (46) // <select_template_5F_expression_5F_parser_4>
 , END_PRODUCTION
 // At index 388 : <select_template_5F_expression_5F_parser_4>, in file 'template_expression_parser.ggs', line 524
+, TERMINAL (C_Lexique_template_5F_scanner::kToken__2F_) // $/$
+, NONTERMINAL (12) // <factor>
+, NONTERMINAL (46) // <select_template_5F_expression_5F_parser_4>
+, END_PRODUCTION
+// At index 392 : <select_template_5F_expression_5F_parser_4>, in file 'template_expression_parser.ggs', line 524
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_mod) // $mod$
 , NONTERMINAL (12) // <factor>
-, NONTERMINAL (45) // <select_template_5F_expression_5F_parser_4>
+, NONTERMINAL (46) // <select_template_5F_expression_5F_parser_4>
 , END_PRODUCTION
-// At index 392 : <select_template_5F_expression_5F_parser_5>, in file 'template_expression_parser.ggs', line 810
+// At index 396 : <select_template_5F_expression_5F_parser_5>, in file 'template_expression_parser.ggs', line 810
 , END_PRODUCTION
-// At index 393 : <select_template_5F_expression_5F_parser_5>, in file 'template_expression_parser.ggs', line 810
+// At index 397 : <select_template_5F_expression_5F_parser_5>, in file 'template_expression_parser.ggs', line 810
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__3A_) // $:$
 , NONTERMINAL (5) // <expression>
-, NONTERMINAL (47) // <select_template_5F_expression_5F_parser_6>
+, NONTERMINAL (48) // <select_template_5F_expression_5F_parser_6>
 , END_PRODUCTION
-// At index 397 : <select_template_5F_expression_5F_parser_6>, in file 'template_expression_parser.ggs', line 813
+// At index 401 : <select_template_5F_expression_5F_parser_6>, in file 'template_expression_parser.ggs', line 813
 , END_PRODUCTION
-// At index 398 : <select_template_5F_expression_5F_parser_6>, in file 'template_expression_parser.ggs', line 813
+// At index 402 : <select_template_5F_expression_5F_parser_6>, in file 'template_expression_parser.ggs', line 813
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__2C_) // $,$
 , NONTERMINAL (5) // <expression>
-, NONTERMINAL (47) // <select_template_5F_expression_5F_parser_6>
+, NONTERMINAL (48) // <select_template_5F_expression_5F_parser_6>
 , END_PRODUCTION
-// At index 402 : <select_template_5F_expression_5F_parser_7>, in file 'template_expression_parser.ggs', line 852
+// At index 406 : <select_template_5F_expression_5F_parser_7>, in file 'template_expression_parser.ggs', line 852
 , END_PRODUCTION
-// At index 403 : <select_template_5F_expression_5F_parser_7>, in file 'template_expression_parser.ggs', line 852
+// At index 407 : <select_template_5F_expression_5F_parser_7>, in file 'template_expression_parser.ggs', line 852
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__28_) // $($
 , NONTERMINAL (5) // <expression>
-, NONTERMINAL (49) // <select_template_5F_expression_5F_parser_8>
+, NONTERMINAL (50) // <select_template_5F_expression_5F_parser_8>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__29_) // $)$
 , END_PRODUCTION
-// At index 408 : <select_template_5F_expression_5F_parser_8>, in file 'template_expression_parser.ggs', line 861
+// At index 412 : <select_template_5F_expression_5F_parser_8>, in file 'template_expression_parser.ggs', line 861
 , END_PRODUCTION
-// At index 409 : <select_template_5F_expression_5F_parser_8>, in file 'template_expression_parser.ggs', line 861
+// At index 413 : <select_template_5F_expression_5F_parser_8>, in file 'template_expression_parser.ggs', line 861
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__2C_) // $,$
 , NONTERMINAL (5) // <expression>
-, NONTERMINAL (49) // <select_template_5F_expression_5F_parser_8>
+, NONTERMINAL (50) // <select_template_5F_expression_5F_parser_8>
 , END_PRODUCTION
-// At index 413 : <select_template_5F_expression_5F_parser_9>, in file 'template_expression_parser.ggs', line 992
+// At index 417 : <select_template_5F_expression_5F_parser_9>, in file 'template_expression_parser.ggs', line 992
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_default) // $default$
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__28_) // $($
 , NONTERMINAL (5) // <expression>
 , TERMINAL (C_Lexique_template_5F_scanner::kToken__29_) // $)$
 , END_PRODUCTION
-// At index 418 : <select_template_5F_expression_5F_parser_9>, in file 'template_expression_parser.ggs', line 992
+// At index 422 : <select_template_5F_expression_5F_parser_9>, in file 'template_expression_parser.ggs', line 992
 , END_PRODUCTION
-// At index 419 : <select_template_5F_expression_5F_parser_10>, in file 'template_expression_parser.ggs', line 1049
+// At index 423 : <select_template_5F_expression_5F_parser_10>, in file 'template_expression_parser.ggs', line 1049
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_true) // $true$
 , END_PRODUCTION
-// At index 421 : <select_template_5F_expression_5F_parser_10>, in file 'template_expression_parser.ggs', line 1049
+// At index 425 : <select_template_5F_expression_5F_parser_10>, in file 'template_expression_parser.ggs', line 1049
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_false) // $false$
 , END_PRODUCTION
-// At index 423 : <>, in file '.ggs', line 0
+// At index 427 : <>, in file '.ggs', line 0
 , NONTERMINAL (0) // <goil_template_start_symbol>
 , END_PRODUCTION
 } ;
@@ -601,75 +607,75 @@ static const int16_t gProductions_template_grammar [] = {
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const cProductionNameDescriptor gProductionNames_template_grammar [138] = {
+static const cProductionNameDescriptor gProductionNames_template_grammar [140] = {
  {"<goil_template_start_symbol>", "template_parser", 0}, // at index 0
  {"<template_instruction>", "template_parser", 2}, // at index 1
  {"<template_instruction>", "template_parser", 5}, // at index 2
- {"<template_instruction>", "template_parser", 13}, // at index 3
- {"<template_instruction>", "template_parser", 16}, // at index 4
- {"<template_instruction>", "template_parser", 19}, // at index 5
- {"<template_instruction>", "template_parser", 26}, // at index 6
- {"<template_instruction>", "template_parser", 32}, // at index 7
- {"<template_instruction>", "template_parser", 35}, // at index 8
- {"<template_instruction>", "template_parser", 44}, // at index 9
- {"<template_instruction>", "template_parser", 57}, // at index 10
- {"<template_instruction>", "template_parser", 68}, // at index 11
- {"<template_instruction>", "template_parser", 82}, // at index 12
- {"<template_instruction>", "template_parser", 86}, // at index 13
- {"<template_instruction>", "template_parser", 91}, // at index 14
- {"<template_instruction>", "template_parser", 96}, // at index 15
- {"<template_instruction>", "template_parser", 99}, // at index 16
- {"<sorting_order>", "template_parser", 106}, // at index 17
- {"<variable>", "template_parser", 108}, // at index 18
- {"<variable_or_here>", "template_parser", 112}, // at index 19
- {"<expression>", "template_expression_parser", 114}, // at index 20
- {"<template_instruction_list>", "template_parser", 117}, // at index 21
- {"<template_file_name>", "template_parser", 119}, // at index 22
- {"<relation_term>", "template_expression_parser", 121}, // at index 23
- {"<relation_factor>", "template_expression_parser", 124}, // at index 24
- {"<simple_expression>", "template_expression_parser", 127}, // at index 25
- {"<term>", "template_expression_parser", 130}, // at index 26
- {"<factor>", "template_expression_parser", 133}, // at index 27
- {"<factor>", "template_expression_parser", 137}, // at index 28
- {"<factor>", "template_expression_parser", 140}, // at index 29
- {"<factor>", "template_expression_parser", 143}, // at index 30
- {"<factor>", "template_expression_parser", 146}, // at index 31
- {"<factor>", "template_expression_parser", 149}, // at index 32
- {"<factor>", "template_expression_parser", 151}, // at index 33
- {"<factor>", "template_expression_parser", 153}, // at index 34
- {"<factor>", "template_expression_parser", 155}, // at index 35
- {"<factor>", "template_expression_parser", 157}, // at index 36
- {"<factor>", "template_expression_parser", 163}, // at index 37
- {"<factor>", "template_expression_parser", 166}, // at index 38
- {"<factor>", "template_expression_parser", 170}, // at index 39
- {"<factor>", "template_expression_parser", 173}, // at index 40
- {"<factor>", "template_expression_parser", 175}, // at index 41
- {"<factor>", "template_expression_parser", 178}, // at index 42
- {"<factor>", "template_expression_parser", 180}, // at index 43
- {"<factor>", "template_expression_parser", 182}, // at index 44
- {"<factor>", "template_expression_parser", 187}, // at index 45
- {"<select_template_5F_parser_0>", "template_parser", 190}, // at index 46
- {"<select_template_5F_parser_0>", "template_parser", 192}, // at index 47
- {"<select_template_5F_parser_1>", "template_parser", 195}, // at index 48
- {"<select_template_5F_parser_1>", "template_parser", 201}, // at index 49
- {"<select_template_5F_parser_2>", "template_parser", 204}, // at index 50
- {"<select_template_5F_parser_2>", "template_parser", 207}, // at index 51
+ {"<template_instruction>", "template_parser", 14}, // at index 3
+ {"<template_instruction>", "template_parser", 17}, // at index 4
+ {"<template_instruction>", "template_parser", 20}, // at index 5
+ {"<template_instruction>", "template_parser", 27}, // at index 6
+ {"<template_instruction>", "template_parser", 33}, // at index 7
+ {"<template_instruction>", "template_parser", 36}, // at index 8
+ {"<template_instruction>", "template_parser", 45}, // at index 9
+ {"<template_instruction>", "template_parser", 58}, // at index 10
+ {"<template_instruction>", "template_parser", 69}, // at index 11
+ {"<template_instruction>", "template_parser", 83}, // at index 12
+ {"<template_instruction>", "template_parser", 87}, // at index 13
+ {"<template_instruction>", "template_parser", 92}, // at index 14
+ {"<template_instruction>", "template_parser", 97}, // at index 15
+ {"<template_instruction>", "template_parser", 100}, // at index 16
+ {"<sorting_order>", "template_parser", 107}, // at index 17
+ {"<variable>", "template_parser", 109}, // at index 18
+ {"<variable_or_here>", "template_parser", 113}, // at index 19
+ {"<expression>", "template_expression_parser", 115}, // at index 20
+ {"<template_instruction_list>", "template_parser", 118}, // at index 21
+ {"<template_file_name>", "template_parser", 120}, // at index 22
+ {"<relation_term>", "template_expression_parser", 122}, // at index 23
+ {"<relation_factor>", "template_expression_parser", 125}, // at index 24
+ {"<simple_expression>", "template_expression_parser", 128}, // at index 25
+ {"<term>", "template_expression_parser", 131}, // at index 26
+ {"<factor>", "template_expression_parser", 134}, // at index 27
+ {"<factor>", "template_expression_parser", 138}, // at index 28
+ {"<factor>", "template_expression_parser", 141}, // at index 29
+ {"<factor>", "template_expression_parser", 144}, // at index 30
+ {"<factor>", "template_expression_parser", 147}, // at index 31
+ {"<factor>", "template_expression_parser", 150}, // at index 32
+ {"<factor>", "template_expression_parser", 152}, // at index 33
+ {"<factor>", "template_expression_parser", 154}, // at index 34
+ {"<factor>", "template_expression_parser", 156}, // at index 35
+ {"<factor>", "template_expression_parser", 158}, // at index 36
+ {"<factor>", "template_expression_parser", 164}, // at index 37
+ {"<factor>", "template_expression_parser", 167}, // at index 38
+ {"<factor>", "template_expression_parser", 171}, // at index 39
+ {"<factor>", "template_expression_parser", 174}, // at index 40
+ {"<factor>", "template_expression_parser", 176}, // at index 41
+ {"<factor>", "template_expression_parser", 179}, // at index 42
+ {"<factor>", "template_expression_parser", 181}, // at index 43
+ {"<factor>", "template_expression_parser", 183}, // at index 44
+ {"<factor>", "template_expression_parser", 188}, // at index 45
+ {"<select_template_5F_parser_0>", "template_parser", 191}, // at index 46
+ {"<select_template_5F_parser_0>", "template_parser", 193}, // at index 47
+ {"<select_template_5F_parser_1>", "template_parser", 194}, // at index 48
+ {"<select_template_5F_parser_1>", "template_parser", 196}, // at index 49
+ {"<select_template_5F_parser_2>", "template_parser", 199}, // at index 50
+ {"<select_template_5F_parser_2>", "template_parser", 205}, // at index 51
  {"<select_template_5F_parser_3>", "template_parser", 208}, // at index 52
- {"<select_template_5F_parser_3>", "template_parser", 213}, // at index 53
- {"<select_template_5F_parser_4>", "template_parser", 214}, // at index 54
+ {"<select_template_5F_parser_3>", "template_parser", 211}, // at index 53
+ {"<select_template_5F_parser_4>", "template_parser", 212}, // at index 54
  {"<select_template_5F_parser_4>", "template_parser", 217}, // at index 55
  {"<select_template_5F_parser_5>", "template_parser", 218}, // at index 56
  {"<select_template_5F_parser_5>", "template_parser", 221}, // at index 57
  {"<select_template_5F_parser_6>", "template_parser", 222}, // at index 58
- {"<select_template_5F_parser_6>", "template_parser", 223}, // at index 59
- {"<select_template_5F_parser_7>", "template_parser", 227}, // at index 60
- {"<select_template_5F_parser_7>", "template_parser", 230}, // at index 61
+ {"<select_template_5F_parser_6>", "template_parser", 225}, // at index 59
+ {"<select_template_5F_parser_7>", "template_parser", 226}, // at index 60
+ {"<select_template_5F_parser_7>", "template_parser", 227}, // at index 61
  {"<select_template_5F_parser_8>", "template_parser", 231}, // at index 62
- {"<select_template_5F_parser_8>", "template_parser", 232}, // at index 63
- {"<select_template_5F_parser_9>", "template_parser", 236}, // at index 64
- {"<select_template_5F_parser_9>", "template_parser", 237}, // at index 65
- {"<select_template_5F_parser_10>", "template_parser", 243}, // at index 66
- {"<select_template_5F_parser_10>", "template_parser", 244}, // at index 67
+ {"<select_template_5F_parser_8>", "template_parser", 234}, // at index 63
+ {"<select_template_5F_parser_9>", "template_parser", 235}, // at index 64
+ {"<select_template_5F_parser_9>", "template_parser", 236}, // at index 65
+ {"<select_template_5F_parser_10>", "template_parser", 240}, // at index 66
+ {"<select_template_5F_parser_10>", "template_parser", 241}, // at index 67
  {"<select_template_5F_parser_11>", "template_parser", 247}, // at index 68
  {"<select_template_5F_parser_11>", "template_parser", 248}, // at index 69
  {"<select_template_5F_parser_12>", "template_parser", 251}, // at index 70
@@ -682,8 +688,8 @@ static const cProductionNameDescriptor gProductionNames_template_grammar [138] =
  {"<select_template_5F_parser_15>", "template_parser", 264}, // at index 77
  {"<select_template_5F_parser_16>", "template_parser", 267}, // at index 78
  {"<select_template_5F_parser_16>", "template_parser", 268}, // at index 79
- {"<select_template_5F_parser_17>", "template_parser", 272}, // at index 80
- {"<select_template_5F_parser_17>", "template_parser", 273}, // at index 81
+ {"<select_template_5F_parser_17>", "template_parser", 271}, // at index 80
+ {"<select_template_5F_parser_17>", "template_parser", 272}, // at index 81
  {"<select_template_5F_parser_18>", "template_parser", 276}, // at index 82
  {"<select_template_5F_parser_18>", "template_parser", 277}, // at index 83
  {"<select_template_5F_parser_19>", "template_parser", 280}, // at index 84
@@ -691,55 +697,57 @@ static const cProductionNameDescriptor gProductionNames_template_grammar [138] =
  {"<select_template_5F_parser_20>", "template_parser", 284}, // at index 86
  {"<select_template_5F_parser_20>", "template_parser", 285}, // at index 87
  {"<select_template_5F_parser_21>", "template_parser", 288}, // at index 88
- {"<select_template_5F_parser_21>", "template_parser", 291}, // at index 89
- {"<select_template_5F_parser_21>", "template_parser", 294}, // at index 90
+ {"<select_template_5F_parser_21>", "template_parser", 289}, // at index 89
+ {"<select_template_5F_parser_22>", "template_parser", 292}, // at index 90
  {"<select_template_5F_parser_22>", "template_parser", 295}, // at index 91
- {"<select_template_5F_parser_22>", "template_parser", 297}, // at index 92
+ {"<select_template_5F_parser_22>", "template_parser", 298}, // at index 92
  {"<select_template_5F_parser_23>", "template_parser", 299}, // at index 93
  {"<select_template_5F_parser_23>", "template_parser", 301}, // at index 94
  {"<select_template_5F_parser_24>", "template_parser", 303}, // at index 95
- {"<select_template_5F_parser_24>", "template_parser", 304}, // at index 96
- {"<select_template_5F_parser_25>", "template_parser", 309}, // at index 97
- {"<select_template_5F_parser_25>", "template_parser", 313}, // at index 98
- {"<select_template_5F_parser_26>", "template_parser", 314}, // at index 99
- {"<select_template_5F_parser_26>", "template_parser", 315}, // at index 100
- {"<select_template_5F_parser_27>", "template_parser", 320}, // at index 101
- {"<select_template_5F_parser_27>", "template_parser", 324}, // at index 102
- {"<select_template_5F_expression_5F_parser_0>", "template_expression_parser", 325}, // at index 103
- {"<select_template_5F_expression_5F_parser_0>", "template_expression_parser", 326}, // at index 104
- {"<select_template_5F_expression_5F_parser_0>", "template_expression_parser", 330}, // at index 105
- {"<select_template_5F_expression_5F_parser_1>", "template_expression_parser", 334}, // at index 106
- {"<select_template_5F_expression_5F_parser_1>", "template_expression_parser", 335}, // at index 107
- {"<select_template_5F_expression_5F_parser_2>", "template_expression_parser", 339}, // at index 108
- {"<select_template_5F_expression_5F_parser_2>", "template_expression_parser", 340}, // at index 109
+ {"<select_template_5F_parser_24>", "template_parser", 305}, // at index 96
+ {"<select_template_5F_parser_25>", "template_parser", 307}, // at index 97
+ {"<select_template_5F_parser_25>", "template_parser", 308}, // at index 98
+ {"<select_template_5F_parser_26>", "template_parser", 313}, // at index 99
+ {"<select_template_5F_parser_26>", "template_parser", 317}, // at index 100
+ {"<select_template_5F_parser_27>", "template_parser", 318}, // at index 101
+ {"<select_template_5F_parser_27>", "template_parser", 319}, // at index 102
+ {"<select_template_5F_parser_28>", "template_parser", 324}, // at index 103
+ {"<select_template_5F_parser_28>", "template_parser", 328}, // at index 104
+ {"<select_template_5F_expression_5F_parser_0>", "template_expression_parser", 329}, // at index 105
+ {"<select_template_5F_expression_5F_parser_0>", "template_expression_parser", 330}, // at index 106
+ {"<select_template_5F_expression_5F_parser_0>", "template_expression_parser", 334}, // at index 107
+ {"<select_template_5F_expression_5F_parser_1>", "template_expression_parser", 338}, // at index 108
+ {"<select_template_5F_expression_5F_parser_1>", "template_expression_parser", 339}, // at index 109
  {"<select_template_5F_expression_5F_parser_2>", "template_expression_parser", 343}, // at index 110
- {"<select_template_5F_expression_5F_parser_2>", "template_expression_parser", 346}, // at index 111
- {"<select_template_5F_expression_5F_parser_2>", "template_expression_parser", 349}, // at index 112
- {"<select_template_5F_expression_5F_parser_2>", "template_expression_parser", 352}, // at index 113
- {"<select_template_5F_expression_5F_parser_2>", "template_expression_parser", 355}, // at index 114
- {"<select_template_5F_expression_5F_parser_3>", "template_expression_parser", 358}, // at index 115
- {"<select_template_5F_expression_5F_parser_3>", "template_expression_parser", 359}, // at index 116
- {"<select_template_5F_expression_5F_parser_3>", "template_expression_parser", 363}, // at index 117
- {"<select_template_5F_expression_5F_parser_3>", "template_expression_parser", 367}, // at index 118
- {"<select_template_5F_expression_5F_parser_3>", "template_expression_parser", 371}, // at index 119
- {"<select_template_5F_expression_5F_parser_3>", "template_expression_parser", 375}, // at index 120
- {"<select_template_5F_expression_5F_parser_4>", "template_expression_parser", 379}, // at index 121
- {"<select_template_5F_expression_5F_parser_4>", "template_expression_parser", 380}, // at index 122
- {"<select_template_5F_expression_5F_parser_4>", "template_expression_parser", 384}, // at index 123
- {"<select_template_5F_expression_5F_parser_4>", "template_expression_parser", 388}, // at index 124
- {"<select_template_5F_expression_5F_parser_5>", "template_expression_parser", 392}, // at index 125
- {"<select_template_5F_expression_5F_parser_5>", "template_expression_parser", 393}, // at index 126
- {"<select_template_5F_expression_5F_parser_6>", "template_expression_parser", 397}, // at index 127
- {"<select_template_5F_expression_5F_parser_6>", "template_expression_parser", 398}, // at index 128
- {"<select_template_5F_expression_5F_parser_7>", "template_expression_parser", 402}, // at index 129
- {"<select_template_5F_expression_5F_parser_7>", "template_expression_parser", 403}, // at index 130
- {"<select_template_5F_expression_5F_parser_8>", "template_expression_parser", 408}, // at index 131
- {"<select_template_5F_expression_5F_parser_8>", "template_expression_parser", 409}, // at index 132
- {"<select_template_5F_expression_5F_parser_9>", "template_expression_parser", 413}, // at index 133
- {"<select_template_5F_expression_5F_parser_9>", "template_expression_parser", 418}, // at index 134
- {"<select_template_5F_expression_5F_parser_10>", "template_expression_parser", 419}, // at index 135
- {"<select_template_5F_expression_5F_parser_10>", "template_expression_parser", 421}, // at index 136
- {"<>", "", 423} // at index 137
+ {"<select_template_5F_expression_5F_parser_2>", "template_expression_parser", 344}, // at index 111
+ {"<select_template_5F_expression_5F_parser_2>", "template_expression_parser", 347}, // at index 112
+ {"<select_template_5F_expression_5F_parser_2>", "template_expression_parser", 350}, // at index 113
+ {"<select_template_5F_expression_5F_parser_2>", "template_expression_parser", 353}, // at index 114
+ {"<select_template_5F_expression_5F_parser_2>", "template_expression_parser", 356}, // at index 115
+ {"<select_template_5F_expression_5F_parser_2>", "template_expression_parser", 359}, // at index 116
+ {"<select_template_5F_expression_5F_parser_3>", "template_expression_parser", 362}, // at index 117
+ {"<select_template_5F_expression_5F_parser_3>", "template_expression_parser", 363}, // at index 118
+ {"<select_template_5F_expression_5F_parser_3>", "template_expression_parser", 367}, // at index 119
+ {"<select_template_5F_expression_5F_parser_3>", "template_expression_parser", 371}, // at index 120
+ {"<select_template_5F_expression_5F_parser_3>", "template_expression_parser", 375}, // at index 121
+ {"<select_template_5F_expression_5F_parser_3>", "template_expression_parser", 379}, // at index 122
+ {"<select_template_5F_expression_5F_parser_4>", "template_expression_parser", 383}, // at index 123
+ {"<select_template_5F_expression_5F_parser_4>", "template_expression_parser", 384}, // at index 124
+ {"<select_template_5F_expression_5F_parser_4>", "template_expression_parser", 388}, // at index 125
+ {"<select_template_5F_expression_5F_parser_4>", "template_expression_parser", 392}, // at index 126
+ {"<select_template_5F_expression_5F_parser_5>", "template_expression_parser", 396}, // at index 127
+ {"<select_template_5F_expression_5F_parser_5>", "template_expression_parser", 397}, // at index 128
+ {"<select_template_5F_expression_5F_parser_6>", "template_expression_parser", 401}, // at index 129
+ {"<select_template_5F_expression_5F_parser_6>", "template_expression_parser", 402}, // at index 130
+ {"<select_template_5F_expression_5F_parser_7>", "template_expression_parser", 406}, // at index 131
+ {"<select_template_5F_expression_5F_parser_7>", "template_expression_parser", 407}, // at index 132
+ {"<select_template_5F_expression_5F_parser_8>", "template_expression_parser", 412}, // at index 133
+ {"<select_template_5F_expression_5F_parser_8>", "template_expression_parser", 413}, // at index 134
+ {"<select_template_5F_expression_5F_parser_9>", "template_expression_parser", 417}, // at index 135
+ {"<select_template_5F_expression_5F_parser_9>", "template_expression_parser", 422}, // at index 136
+ {"<select_template_5F_expression_5F_parser_10>", "template_expression_parser", 423}, // at index 137
+ {"<select_template_5F_expression_5F_parser_10>", "template_expression_parser", 425}, // at index 138
+ {"<>", "", 427} // at index 139
 } ;
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -748,145 +756,147 @@ static const cProductionNameDescriptor gProductionNames_template_grammar [138] =
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const int16_t gProductionIndexes_template_grammar [138] = {
-0, // index 0 : <goil_template_start_symbol>, in file 'template_parser.ggs', line 591
+static const int16_t gProductionIndexes_template_grammar [140] = {
+0, // index 0 : <goil_template_start_symbol>, in file 'template_parser.ggs', line 601
 2, // index 1 : <template_instruction>, in file 'template_parser.ggs', line 87
 5, // index 2 : <template_instruction>, in file 'template_parser.ggs', line 134
-13, // index 3 : <template_instruction>, in file 'template_parser.ggs', line 210
-16, // index 4 : <template_instruction>, in file 'template_parser.ggs', line 285
-19, // index 5 : <template_instruction>, in file 'template_parser.ggs', line 318
-26, // index 6 : <template_instruction>, in file 'template_parser.ggs', line 351
-32, // index 7 : <template_instruction>, in file 'template_parser.ggs', line 418
-35, // index 8 : <template_instruction>, in file 'template_parser.ggs', line 483
-44, // index 9 : <template_instruction>, in file 'template_parser.ggs', line 611
-57, // index 10 : <template_instruction>, in file 'template_parser.ggs', line 748
-68, // index 11 : <template_instruction>, in file 'template_parser.ggs', line 838
-82, // index 12 : <template_instruction>, in file 'template_parser.ggs', line 977
-86, // index 13 : <template_instruction>, in file 'template_parser.ggs', line 1075
-91, // index 14 : <template_instruction>, in file 'template_parser.ggs', line 1107
-96, // index 15 : <template_instruction>, in file 'template_parser.ggs', line 1137
-99, // index 16 : <template_instruction>, in file 'template_parser.ggs', line 1169
-106, // index 17 : <sorting_order>, in file 'template_parser.ggs', line 1158
-108, // index 18 : <variable>, in file 'template_parser.ggs', line 1211
-112, // index 19 : <variable_or_here>, in file 'template_parser.ggs', line 1055
-114, // index 20 : <expression>, in file 'template_expression_parser.ggs', line 96
-117, // index 21 : <template_instruction_list>, in file 'template_parser.ggs', line 562
-119, // index 22 : <template_file_name>, in file 'template_parser.ggs', line 188
-121, // index 23 : <relation_term>, in file 'template_expression_parser.ggs', line 158
-124, // index 24 : <relation_factor>, in file 'template_expression_parser.ggs', line 201
-127, // index 25 : <simple_expression>, in file 'template_expression_parser.ggs', line 407
-130, // index 26 : <term>, in file 'template_expression_parser.ggs', line 510
-133, // index 27 : <factor>, in file 'template_expression_parser.ggs', line 582
-137, // index 28 : <factor>, in file 'template_expression_parser.ggs', line 606
-140, // index 29 : <factor>, in file 'template_expression_parser.ggs', line 633
-143, // index 30 : <factor>, in file 'template_expression_parser.ggs', line 660
-146, // index 31 : <factor>, in file 'template_expression_parser.ggs', line 687
-149, // index 32 : <factor>, in file 'template_expression_parser.ggs', line 714
-151, // index 33 : <factor>, in file 'template_expression_parser.ggs', line 732
-153, // index 34 : <factor>, in file 'template_expression_parser.ggs', line 750
-155, // index 35 : <factor>, in file 'template_expression_parser.ggs', line 769
-157, // index 36 : <factor>, in file 'template_expression_parser.ggs', line 788
-163, // index 37 : <factor>, in file 'template_expression_parser.ggs', line 843
-166, // index 38 : <factor>, in file 'template_expression_parser.ggs', line 976
-170, // index 39 : <factor>, in file 'template_expression_parser.ggs', line 1024
-173, // index 40 : <factor>, in file 'template_expression_parser.ggs', line 1042
-175, // index 41 : <factor>, in file 'template_expression_parser.ggs', line 1061
-178, // index 42 : <factor>, in file 'template_expression_parser.ggs', line 1075
-180, // index 43 : <factor>, in file 'template_expression_parser.ggs', line 1089
-182, // index 44 : <factor>, in file 'template_expression_parser.ggs', line 1103
-187, // index 45 : <factor>, in file 'template_expression_parser.ggs', line 1147
-190, // index 46 : <select_template_5F_parser_0>, in file 'template_parser.ggs', line 194
-192, // index 47 : <select_template_5F_parser_0>, in file 'template_parser.ggs', line 194
-195, // index 48 : <select_template_5F_parser_1>, in file 'template_parser.ggs', line 220
-201, // index 49 : <select_template_5F_parser_1>, in file 'template_parser.ggs', line 220
-204, // index 50 : <select_template_5F_parser_2>, in file 'template_parser.ggs', line 225
-207, // index 51 : <select_template_5F_parser_2>, in file 'template_parser.ggs', line 225
-208, // index 52 : <select_template_5F_parser_3>, in file 'template_parser.ggs', line 240
-213, // index 53 : <select_template_5F_parser_3>, in file 'template_parser.ggs', line 240
-214, // index 54 : <select_template_5F_parser_4>, in file 'template_parser.ggs', line 263
-217, // index 55 : <select_template_5F_parser_4>, in file 'template_parser.ggs', line 263
-218, // index 56 : <select_template_5F_parser_5>, in file 'template_parser.ggs', line 330
-221, // index 57 : <select_template_5F_parser_5>, in file 'template_parser.ggs', line 330
-222, // index 58 : <select_template_5F_parser_6>, in file 'template_parser.ggs', line 334
-223, // index 59 : <select_template_5F_parser_6>, in file 'template_parser.ggs', line 334
-227, // index 60 : <select_template_5F_parser_7>, in file 'template_parser.ggs', line 363
-230, // index 61 : <select_template_5F_parser_7>, in file 'template_parser.ggs', line 363
-231, // index 62 : <select_template_5F_parser_8>, in file 'template_parser.ggs', line 374
-232, // index 63 : <select_template_5F_parser_8>, in file 'template_parser.ggs', line 374
-236, // index 64 : <select_template_5F_parser_9>, in file 'template_parser.ggs', line 493
-237, // index 65 : <select_template_5F_parser_9>, in file 'template_parser.ggs', line 493
-243, // index 66 : <select_template_5F_parser_10>, in file 'template_parser.ggs', line 534
-244, // index 67 : <select_template_5F_parser_10>, in file 'template_parser.ggs', line 534
-247, // index 68 : <select_template_5F_parser_11>, in file 'template_parser.ggs', line 573
-248, // index 69 : <select_template_5F_parser_11>, in file 'template_parser.ggs', line 573
-251, // index 70 : <select_template_5F_parser_12>, in file 'template_parser.ggs', line 644
-252, // index 71 : <select_template_5F_parser_12>, in file 'template_parser.ggs', line 644
-255, // index 72 : <select_template_5F_parser_13>, in file 'template_parser.ggs', line 653
-256, // index 73 : <select_template_5F_parser_13>, in file 'template_parser.ggs', line 653
-259, // index 74 : <select_template_5F_parser_14>, in file 'template_parser.ggs', line 701
-260, // index 75 : <select_template_5F_parser_14>, in file 'template_parser.ggs', line 701
-263, // index 76 : <select_template_5F_parser_15>, in file 'template_parser.ggs', line 722
-264, // index 77 : <select_template_5F_parser_15>, in file 'template_parser.ggs', line 722
-267, // index 78 : <select_template_5F_parser_16>, in file 'template_parser.ggs', line 762
-268, // index 79 : <select_template_5F_parser_16>, in file 'template_parser.ggs', line 762
-272, // index 80 : <select_template_5F_parser_17>, in file 'template_parser.ggs', line 809
-273, // index 81 : <select_template_5F_parser_17>, in file 'template_parser.ggs', line 809
-276, // index 82 : <select_template_5F_parser_18>, in file 'template_parser.ggs', line 874
-277, // index 83 : <select_template_5F_parser_18>, in file 'template_parser.ggs', line 874
-280, // index 84 : <select_template_5F_parser_19>, in file 'template_parser.ggs', line 922
-281, // index 85 : <select_template_5F_parser_19>, in file 'template_parser.ggs', line 922
-284, // index 86 : <select_template_5F_parser_20>, in file 'template_parser.ggs', line 943
-285, // index 87 : <select_template_5F_parser_20>, in file 'template_parser.ggs', line 943
-288, // index 88 : <select_template_5F_parser_21>, in file 'template_parser.ggs', line 990
-291, // index 89 : <select_template_5F_parser_21>, in file 'template_parser.ggs', line 990
-294, // index 90 : <select_template_5F_parser_21>, in file 'template_parser.ggs', line 990
-295, // index 91 : <select_template_5F_parser_22>, in file 'template_parser.ggs', line 1061
-297, // index 92 : <select_template_5F_parser_22>, in file 'template_parser.ggs', line 1061
-299, // index 93 : <select_template_5F_parser_23>, in file 'template_parser.ggs', line 1160
-301, // index 94 : <select_template_5F_parser_23>, in file 'template_parser.ggs', line 1160
-303, // index 95 : <select_template_5F_parser_24>, in file 'template_parser.ggs', line 1186
-304, // index 96 : <select_template_5F_parser_24>, in file 'template_parser.ggs', line 1186
-309, // index 97 : <select_template_5F_parser_25>, in file 'template_parser.ggs', line 1221
-313, // index 98 : <select_template_5F_parser_25>, in file 'template_parser.ggs', line 1221
-314, // index 99 : <select_template_5F_parser_26>, in file 'template_parser.ggs', line 1237
-315, // index 100 : <select_template_5F_parser_26>, in file 'template_parser.ggs', line 1237
-320, // index 101 : <select_template_5F_parser_27>, in file 'template_parser.ggs', line 1242
-324, // index 102 : <select_template_5F_parser_27>, in file 'template_parser.ggs', line 1242
-325, // index 103 : <select_template_5F_expression_5F_parser_0>, in file 'template_expression_parser.ggs', line 110
-326, // index 104 : <select_template_5F_expression_5F_parser_0>, in file 'template_expression_parser.ggs', line 110
-330, // index 105 : <select_template_5F_expression_5F_parser_0>, in file 'template_expression_parser.ggs', line 110
-334, // index 106 : <select_template_5F_expression_5F_parser_1>, in file 'template_expression_parser.ggs', line 172
-335, // index 107 : <select_template_5F_expression_5F_parser_1>, in file 'template_expression_parser.ggs', line 172
-339, // index 108 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 215
-340, // index 109 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 215
+14, // index 3 : <template_instruction>, in file 'template_parser.ggs', line 220
+17, // index 4 : <template_instruction>, in file 'template_parser.ggs', line 295
+20, // index 5 : <template_instruction>, in file 'template_parser.ggs', line 328
+27, // index 6 : <template_instruction>, in file 'template_parser.ggs', line 361
+33, // index 7 : <template_instruction>, in file 'template_parser.ggs', line 428
+36, // index 8 : <template_instruction>, in file 'template_parser.ggs', line 493
+45, // index 9 : <template_instruction>, in file 'template_parser.ggs', line 621
+58, // index 10 : <template_instruction>, in file 'template_parser.ggs', line 758
+69, // index 11 : <template_instruction>, in file 'template_parser.ggs', line 848
+83, // index 12 : <template_instruction>, in file 'template_parser.ggs', line 987
+87, // index 13 : <template_instruction>, in file 'template_parser.ggs', line 1085
+92, // index 14 : <template_instruction>, in file 'template_parser.ggs', line 1117
+97, // index 15 : <template_instruction>, in file 'template_parser.ggs', line 1147
+100, // index 16 : <template_instruction>, in file 'template_parser.ggs', line 1179
+107, // index 17 : <sorting_order>, in file 'template_parser.ggs', line 1168
+109, // index 18 : <variable>, in file 'template_parser.ggs', line 1221
+113, // index 19 : <variable_or_here>, in file 'template_parser.ggs', line 1065
+115, // index 20 : <expression>, in file 'template_expression_parser.ggs', line 96
+118, // index 21 : <template_instruction_list>, in file 'template_parser.ggs', line 572
+120, // index 22 : <template_file_name>, in file 'template_parser.ggs', line 198
+122, // index 23 : <relation_term>, in file 'template_expression_parser.ggs', line 158
+125, // index 24 : <relation_factor>, in file 'template_expression_parser.ggs', line 201
+128, // index 25 : <simple_expression>, in file 'template_expression_parser.ggs', line 407
+131, // index 26 : <term>, in file 'template_expression_parser.ggs', line 510
+134, // index 27 : <factor>, in file 'template_expression_parser.ggs', line 582
+138, // index 28 : <factor>, in file 'template_expression_parser.ggs', line 606
+141, // index 29 : <factor>, in file 'template_expression_parser.ggs', line 633
+144, // index 30 : <factor>, in file 'template_expression_parser.ggs', line 660
+147, // index 31 : <factor>, in file 'template_expression_parser.ggs', line 687
+150, // index 32 : <factor>, in file 'template_expression_parser.ggs', line 714
+152, // index 33 : <factor>, in file 'template_expression_parser.ggs', line 732
+154, // index 34 : <factor>, in file 'template_expression_parser.ggs', line 750
+156, // index 35 : <factor>, in file 'template_expression_parser.ggs', line 769
+158, // index 36 : <factor>, in file 'template_expression_parser.ggs', line 788
+164, // index 37 : <factor>, in file 'template_expression_parser.ggs', line 843
+167, // index 38 : <factor>, in file 'template_expression_parser.ggs', line 976
+171, // index 39 : <factor>, in file 'template_expression_parser.ggs', line 1024
+174, // index 40 : <factor>, in file 'template_expression_parser.ggs', line 1042
+176, // index 41 : <factor>, in file 'template_expression_parser.ggs', line 1061
+179, // index 42 : <factor>, in file 'template_expression_parser.ggs', line 1075
+181, // index 43 : <factor>, in file 'template_expression_parser.ggs', line 1089
+183, // index 44 : <factor>, in file 'template_expression_parser.ggs', line 1103
+188, // index 45 : <factor>, in file 'template_expression_parser.ggs', line 1147
+191, // index 46 : <select_template_5F_parser_0>, in file 'template_parser.ggs', line 145
+193, // index 47 : <select_template_5F_parser_0>, in file 'template_parser.ggs', line 145
+194, // index 48 : <select_template_5F_parser_1>, in file 'template_parser.ggs', line 204
+196, // index 49 : <select_template_5F_parser_1>, in file 'template_parser.ggs', line 204
+199, // index 50 : <select_template_5F_parser_2>, in file 'template_parser.ggs', line 230
+205, // index 51 : <select_template_5F_parser_2>, in file 'template_parser.ggs', line 230
+208, // index 52 : <select_template_5F_parser_3>, in file 'template_parser.ggs', line 235
+211, // index 53 : <select_template_5F_parser_3>, in file 'template_parser.ggs', line 235
+212, // index 54 : <select_template_5F_parser_4>, in file 'template_parser.ggs', line 250
+217, // index 55 : <select_template_5F_parser_4>, in file 'template_parser.ggs', line 250
+218, // index 56 : <select_template_5F_parser_5>, in file 'template_parser.ggs', line 273
+221, // index 57 : <select_template_5F_parser_5>, in file 'template_parser.ggs', line 273
+222, // index 58 : <select_template_5F_parser_6>, in file 'template_parser.ggs', line 340
+225, // index 59 : <select_template_5F_parser_6>, in file 'template_parser.ggs', line 340
+226, // index 60 : <select_template_5F_parser_7>, in file 'template_parser.ggs', line 344
+227, // index 61 : <select_template_5F_parser_7>, in file 'template_parser.ggs', line 344
+231, // index 62 : <select_template_5F_parser_8>, in file 'template_parser.ggs', line 373
+234, // index 63 : <select_template_5F_parser_8>, in file 'template_parser.ggs', line 373
+235, // index 64 : <select_template_5F_parser_9>, in file 'template_parser.ggs', line 384
+236, // index 65 : <select_template_5F_parser_9>, in file 'template_parser.ggs', line 384
+240, // index 66 : <select_template_5F_parser_10>, in file 'template_parser.ggs', line 503
+241, // index 67 : <select_template_5F_parser_10>, in file 'template_parser.ggs', line 503
+247, // index 68 : <select_template_5F_parser_11>, in file 'template_parser.ggs', line 544
+248, // index 69 : <select_template_5F_parser_11>, in file 'template_parser.ggs', line 544
+251, // index 70 : <select_template_5F_parser_12>, in file 'template_parser.ggs', line 583
+252, // index 71 : <select_template_5F_parser_12>, in file 'template_parser.ggs', line 583
+255, // index 72 : <select_template_5F_parser_13>, in file 'template_parser.ggs', line 654
+256, // index 73 : <select_template_5F_parser_13>, in file 'template_parser.ggs', line 654
+259, // index 74 : <select_template_5F_parser_14>, in file 'template_parser.ggs', line 663
+260, // index 75 : <select_template_5F_parser_14>, in file 'template_parser.ggs', line 663
+263, // index 76 : <select_template_5F_parser_15>, in file 'template_parser.ggs', line 711
+264, // index 77 : <select_template_5F_parser_15>, in file 'template_parser.ggs', line 711
+267, // index 78 : <select_template_5F_parser_16>, in file 'template_parser.ggs', line 732
+268, // index 79 : <select_template_5F_parser_16>, in file 'template_parser.ggs', line 732
+271, // index 80 : <select_template_5F_parser_17>, in file 'template_parser.ggs', line 772
+272, // index 81 : <select_template_5F_parser_17>, in file 'template_parser.ggs', line 772
+276, // index 82 : <select_template_5F_parser_18>, in file 'template_parser.ggs', line 819
+277, // index 83 : <select_template_5F_parser_18>, in file 'template_parser.ggs', line 819
+280, // index 84 : <select_template_5F_parser_19>, in file 'template_parser.ggs', line 884
+281, // index 85 : <select_template_5F_parser_19>, in file 'template_parser.ggs', line 884
+284, // index 86 : <select_template_5F_parser_20>, in file 'template_parser.ggs', line 932
+285, // index 87 : <select_template_5F_parser_20>, in file 'template_parser.ggs', line 932
+288, // index 88 : <select_template_5F_parser_21>, in file 'template_parser.ggs', line 953
+289, // index 89 : <select_template_5F_parser_21>, in file 'template_parser.ggs', line 953
+292, // index 90 : <select_template_5F_parser_22>, in file 'template_parser.ggs', line 1000
+295, // index 91 : <select_template_5F_parser_22>, in file 'template_parser.ggs', line 1000
+298, // index 92 : <select_template_5F_parser_22>, in file 'template_parser.ggs', line 1000
+299, // index 93 : <select_template_5F_parser_23>, in file 'template_parser.ggs', line 1071
+301, // index 94 : <select_template_5F_parser_23>, in file 'template_parser.ggs', line 1071
+303, // index 95 : <select_template_5F_parser_24>, in file 'template_parser.ggs', line 1170
+305, // index 96 : <select_template_5F_parser_24>, in file 'template_parser.ggs', line 1170
+307, // index 97 : <select_template_5F_parser_25>, in file 'template_parser.ggs', line 1196
+308, // index 98 : <select_template_5F_parser_25>, in file 'template_parser.ggs', line 1196
+313, // index 99 : <select_template_5F_parser_26>, in file 'template_parser.ggs', line 1231
+317, // index 100 : <select_template_5F_parser_26>, in file 'template_parser.ggs', line 1231
+318, // index 101 : <select_template_5F_parser_27>, in file 'template_parser.ggs', line 1247
+319, // index 102 : <select_template_5F_parser_27>, in file 'template_parser.ggs', line 1247
+324, // index 103 : <select_template_5F_parser_28>, in file 'template_parser.ggs', line 1252
+328, // index 104 : <select_template_5F_parser_28>, in file 'template_parser.ggs', line 1252
+329, // index 105 : <select_template_5F_expression_5F_parser_0>, in file 'template_expression_parser.ggs', line 110
+330, // index 106 : <select_template_5F_expression_5F_parser_0>, in file 'template_expression_parser.ggs', line 110
+334, // index 107 : <select_template_5F_expression_5F_parser_0>, in file 'template_expression_parser.ggs', line 110
+338, // index 108 : <select_template_5F_expression_5F_parser_1>, in file 'template_expression_parser.ggs', line 172
+339, // index 109 : <select_template_5F_expression_5F_parser_1>, in file 'template_expression_parser.ggs', line 172
 343, // index 110 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 215
-346, // index 111 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 215
-349, // index 112 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 215
-352, // index 113 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 215
-355, // index 114 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 215
-358, // index 115 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 421
-359, // index 116 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 421
-363, // index 117 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 421
-367, // index 118 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 421
-371, // index 119 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 421
-375, // index 120 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 421
-379, // index 121 : <select_template_5F_expression_5F_parser_4>, in file 'template_expression_parser.ggs', line 524
-380, // index 122 : <select_template_5F_expression_5F_parser_4>, in file 'template_expression_parser.ggs', line 524
-384, // index 123 : <select_template_5F_expression_5F_parser_4>, in file 'template_expression_parser.ggs', line 524
-388, // index 124 : <select_template_5F_expression_5F_parser_4>, in file 'template_expression_parser.ggs', line 524
-392, // index 125 : <select_template_5F_expression_5F_parser_5>, in file 'template_expression_parser.ggs', line 810
-393, // index 126 : <select_template_5F_expression_5F_parser_5>, in file 'template_expression_parser.ggs', line 810
-397, // index 127 : <select_template_5F_expression_5F_parser_6>, in file 'template_expression_parser.ggs', line 813
-398, // index 128 : <select_template_5F_expression_5F_parser_6>, in file 'template_expression_parser.ggs', line 813
-402, // index 129 : <select_template_5F_expression_5F_parser_7>, in file 'template_expression_parser.ggs', line 852
-403, // index 130 : <select_template_5F_expression_5F_parser_7>, in file 'template_expression_parser.ggs', line 852
-408, // index 131 : <select_template_5F_expression_5F_parser_8>, in file 'template_expression_parser.ggs', line 861
-409, // index 132 : <select_template_5F_expression_5F_parser_8>, in file 'template_expression_parser.ggs', line 861
-413, // index 133 : <select_template_5F_expression_5F_parser_9>, in file 'template_expression_parser.ggs', line 992
-418, // index 134 : <select_template_5F_expression_5F_parser_9>, in file 'template_expression_parser.ggs', line 992
-419, // index 135 : <select_template_5F_expression_5F_parser_10>, in file 'template_expression_parser.ggs', line 1049
-421, // index 136 : <select_template_5F_expression_5F_parser_10>, in file 'template_expression_parser.ggs', line 1049
-423 // index 137 : <>, in file '.ggs', line 0
+344, // index 111 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 215
+347, // index 112 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 215
+350, // index 113 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 215
+353, // index 114 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 215
+356, // index 115 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 215
+359, // index 116 : <select_template_5F_expression_5F_parser_2>, in file 'template_expression_parser.ggs', line 215
+362, // index 117 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 421
+363, // index 118 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 421
+367, // index 119 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 421
+371, // index 120 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 421
+375, // index 121 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 421
+379, // index 122 : <select_template_5F_expression_5F_parser_3>, in file 'template_expression_parser.ggs', line 421
+383, // index 123 : <select_template_5F_expression_5F_parser_4>, in file 'template_expression_parser.ggs', line 524
+384, // index 124 : <select_template_5F_expression_5F_parser_4>, in file 'template_expression_parser.ggs', line 524
+388, // index 125 : <select_template_5F_expression_5F_parser_4>, in file 'template_expression_parser.ggs', line 524
+392, // index 126 : <select_template_5F_expression_5F_parser_4>, in file 'template_expression_parser.ggs', line 524
+396, // index 127 : <select_template_5F_expression_5F_parser_5>, in file 'template_expression_parser.ggs', line 810
+397, // index 128 : <select_template_5F_expression_5F_parser_5>, in file 'template_expression_parser.ggs', line 810
+401, // index 129 : <select_template_5F_expression_5F_parser_6>, in file 'template_expression_parser.ggs', line 813
+402, // index 130 : <select_template_5F_expression_5F_parser_6>, in file 'template_expression_parser.ggs', line 813
+406, // index 131 : <select_template_5F_expression_5F_parser_7>, in file 'template_expression_parser.ggs', line 852
+407, // index 132 : <select_template_5F_expression_5F_parser_7>, in file 'template_expression_parser.ggs', line 852
+412, // index 133 : <select_template_5F_expression_5F_parser_8>, in file 'template_expression_parser.ggs', line 861
+413, // index 134 : <select_template_5F_expression_5F_parser_8>, in file 'template_expression_parser.ggs', line 861
+417, // index 135 : <select_template_5F_expression_5F_parser_9>, in file 'template_expression_parser.ggs', line 992
+422, // index 136 : <select_template_5F_expression_5F_parser_9>, in file 'template_expression_parser.ggs', line 992
+423, // index 137 : <select_template_5F_expression_5F_parser_10>, in file 'template_expression_parser.ggs', line 1049
+425, // index 138 : <select_template_5F_expression_5F_parser_10>, in file 'template_expression_parser.ggs', line 1049
+427 // index 139 : <>, in file '.ggs', line 0
 } ;
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -895,7 +905,7 @@ static const int16_t gProductionIndexes_template_grammar [138] = {
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const int16_t gFirstProductionIndexes_template_grammar [54] = {
+static const int16_t gFirstProductionIndexes_template_grammar [55] = {
 0, // at 0 : <goil_template_start_symbol>
 1, // at 1 : <template_instruction>
 17, // at 2 : <sorting_order>
@@ -931,24 +941,25 @@ static const int16_t gFirstProductionIndexes_template_grammar [54] = {
 84, // at 32 : <select_template_5F_parser_19>
 86, // at 33 : <select_template_5F_parser_20>
 88, // at 34 : <select_template_5F_parser_21>
-91, // at 35 : <select_template_5F_parser_22>
+90, // at 35 : <select_template_5F_parser_22>
 93, // at 36 : <select_template_5F_parser_23>
 95, // at 37 : <select_template_5F_parser_24>
 97, // at 38 : <select_template_5F_parser_25>
 99, // at 39 : <select_template_5F_parser_26>
 101, // at 40 : <select_template_5F_parser_27>
-103, // at 41 : <select_template_5F_expression_5F_parser_0>
-106, // at 42 : <select_template_5F_expression_5F_parser_1>
-108, // at 43 : <select_template_5F_expression_5F_parser_2>
-115, // at 44 : <select_template_5F_expression_5F_parser_3>
-121, // at 45 : <select_template_5F_expression_5F_parser_4>
-125, // at 46 : <select_template_5F_expression_5F_parser_5>
-127, // at 47 : <select_template_5F_expression_5F_parser_6>
-129, // at 48 : <select_template_5F_expression_5F_parser_7>
-131, // at 49 : <select_template_5F_expression_5F_parser_8>
-133, // at 50 : <select_template_5F_expression_5F_parser_9>
-135, // at 51 : <select_template_5F_expression_5F_parser_10>
-137, // at 52 : <>
+103, // at 41 : <select_template_5F_parser_28>
+105, // at 42 : <select_template_5F_expression_5F_parser_0>
+108, // at 43 : <select_template_5F_expression_5F_parser_1>
+110, // at 44 : <select_template_5F_expression_5F_parser_2>
+117, // at 45 : <select_template_5F_expression_5F_parser_3>
+123, // at 46 : <select_template_5F_expression_5F_parser_4>
+127, // at 47 : <select_template_5F_expression_5F_parser_5>
+129, // at 48 : <select_template_5F_expression_5F_parser_6>
+131, // at 49 : <select_template_5F_expression_5F_parser_7>
+133, // at 50 : <select_template_5F_expression_5F_parser_8>
+135, // at 51 : <select_template_5F_expression_5F_parser_9>
+137, // at 52 : <select_template_5F_expression_5F_parser_10>
+139, // at 53 : <>
 0} ;
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -1021,128 +1032,132 @@ C_Lexique_template_5F_scanner::kToken_listof, -1, // Choice 19
   -1,
 //---- Added non terminal symbols from 'select' and 'repeat' instructions
 // At index 84 : <select_template_5F_parser_0>
+C_Lexique_template_5F_scanner::kToken_executable, -1, // Choice 1
+C_Lexique_template_5F_scanner::kToken_identifier, C_Lexique_template_5F_scanner::kToken_exists, C_Lexique_template_5F_scanner::kToken__28_, C_Lexique_template_5F_scanner::kToken__5B_, C_Lexique_template_5F_scanner::kToken__2B_, C_Lexique_template_5F_scanner::kToken__2D_, C_Lexique_template_5F_scanner::kToken_not, C_Lexique_template_5F_scanner::kToken__7E_, C_Lexique_template_5F_scanner::kToken_yes, C_Lexique_template_5F_scanner::kToken_no, C_Lexique_template_5F_scanner::kToken_signed_5F_literal_5F_integer_36__34_, C_Lexique_template_5F_scanner::kToken_string, C_Lexique_template_5F_scanner::kToken_typeof, C_Lexique_template_5F_scanner::kToken_true, C_Lexique_template_5F_scanner::kToken_false, C_Lexique_template_5F_scanner::kToken__40_, C_Lexique_template_5F_scanner::kToken_emptylist, C_Lexique_template_5F_scanner::kToken_emptymap, C_Lexique_template_5F_scanner::kToken_mapof, C_Lexique_template_5F_scanner::kToken_listof, -1, // Choice 2
+  -1,
+// At index 108 : <select_template_5F_parser_1>
 C_Lexique_template_5F_scanner::kToken_identifier, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken_from, -1, // Choice 2
   -1,
-// At index 89 : <select_template_5F_parser_1>
+// At index 113 : <select_template_5F_parser_2>
 C_Lexique_template_5F_scanner::kToken_if, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken_identifier, C_Lexique_template_5F_scanner::kToken_from, -1, // Choice 2
   -1,
-// At index 95 : <select_template_5F_parser_2>
+// At index 119 : <select_template_5F_parser_3>
 C_Lexique_template_5F_scanner::kToken_in, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken_or, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken_sort, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 2
   -1,
-// At index 123 : <select_template_5F_parser_3>
+// At index 147 : <select_template_5F_parser_4>
 C_Lexique_template_5F_scanner::kToken_or, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken_sort, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 2
   -1,
-// At index 150 : <select_template_5F_parser_4>
+// At index 174 : <select_template_5F_parser_5>
 C_Lexique_template_5F_scanner::kToken_in, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken_sort, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 2
   -1,
-// At index 177 : <select_template_5F_parser_5>
+// At index 201 : <select_template_5F_parser_6>
 C_Lexique_template_5F_scanner::kToken_identifier, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__29_, -1, // Choice 2
   -1,
-// At index 182 : <select_template_5F_parser_6>
+// At index 206 : <select_template_5F_parser_7>
 C_Lexique_template_5F_scanner::kToken__29_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__2C_, -1, // Choice 2
   -1,
-// At index 187 : <select_template_5F_parser_7>
+// At index 211 : <select_template_5F_parser_8>
 C_Lexique_template_5F_scanner::kToken_identifier, C_Lexique_template_5F_scanner::kToken_exists, C_Lexique_template_5F_scanner::kToken__28_, C_Lexique_template_5F_scanner::kToken__5B_, C_Lexique_template_5F_scanner::kToken__2B_, C_Lexique_template_5F_scanner::kToken__2D_, C_Lexique_template_5F_scanner::kToken_not, C_Lexique_template_5F_scanner::kToken__7E_, C_Lexique_template_5F_scanner::kToken_yes, C_Lexique_template_5F_scanner::kToken_no, C_Lexique_template_5F_scanner::kToken_signed_5F_literal_5F_integer_36__34_, C_Lexique_template_5F_scanner::kToken_string, C_Lexique_template_5F_scanner::kToken_typeof, C_Lexique_template_5F_scanner::kToken_true, C_Lexique_template_5F_scanner::kToken_false, C_Lexique_template_5F_scanner::kToken__40_, C_Lexique_template_5F_scanner::kToken_emptylist, C_Lexique_template_5F_scanner::kToken_emptymap, C_Lexique_template_5F_scanner::kToken_mapof, C_Lexique_template_5F_scanner::kToken_listof, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__29_, -1, // Choice 2
   -1,
-// At index 211 : <select_template_5F_parser_8>
+// At index 235 : <select_template_5F_parser_9>
 C_Lexique_template_5F_scanner::kToken__29_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__2C_, -1, // Choice 2
   -1,
-// At index 216 : <select_template_5F_parser_9>
+// At index 240 : <select_template_5F_parser_10>
 C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_else, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken_elsif, -1, // Choice 2
   -1,
-// At index 222 : <select_template_5F_parser_10>
+// At index 246 : <select_template_5F_parser_11>
 C_Lexique_template_5F_scanner::kToken_end, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken_else, -1, // Choice 2
   -1,
-// At index 227 : <select_template_5F_parser_11>
+// At index 251 : <select_template_5F_parser_12>
 C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken_sort, -1, // Choice 2
   -1,
-// At index 253 : <select_template_5F_parser_12>
+// At index 277 : <select_template_5F_parser_13>
 C_Lexique_template_5F_scanner::kToken_before, C_Lexique_template_5F_scanner::kToken_do, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken_prefixedby, -1, // Choice 2
   -1,
-// At index 259 : <select_template_5F_parser_13>
+// At index 283 : <select_template_5F_parser_14>
 C_Lexique_template_5F_scanner::kToken_do, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken_before, -1, // Choice 2
   -1,
-// At index 264 : <select_template_5F_parser_14>
+// At index 288 : <select_template_5F_parser_15>
 C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_after, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken_between, -1, // Choice 2
   -1,
-// At index 270 : <select_template_5F_parser_15>
+// At index 294 : <select_template_5F_parser_16>
 C_Lexique_template_5F_scanner::kToken_end, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken_after, -1, // Choice 2
   -1,
-// At index 275 : <select_template_5F_parser_16>
+// At index 299 : <select_template_5F_parser_17>
 C_Lexique_template_5F_scanner::kToken_do, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__2C_, -1, // Choice 2
   -1,
-// At index 280 : <select_template_5F_parser_17>
+// At index 304 : <select_template_5F_parser_18>
 C_Lexique_template_5F_scanner::kToken_end, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken_between, -1, // Choice 2
   -1,
-// At index 285 : <select_template_5F_parser_18>
+// At index 309 : <select_template_5F_parser_19>
 C_Lexique_template_5F_scanner::kToken_do, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken_before, -1, // Choice 2
   -1,
-// At index 290 : <select_template_5F_parser_19>
+// At index 314 : <select_template_5F_parser_20>
 C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_after, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken_between, -1, // Choice 2
   -1,
-// At index 296 : <select_template_5F_parser_20>
+// At index 320 : <select_template_5F_parser_21>
 C_Lexique_template_5F_scanner::kToken_end, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken_after, -1, // Choice 2
   -1,
-// At index 301 : <select_template_5F_parser_21>
+// At index 325 : <select_template_5F_parser_22>
 C_Lexique_template_5F_scanner::kToken__3A__3D_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__2B__3D_, -1, // Choice 2
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken_sort, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 3
   -1,
-// At index 330 : <select_template_5F_parser_22>
+// At index 354 : <select_template_5F_parser_23>
 C_Lexique_template_5F_scanner::kToken_here, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken_identifier, -1, // Choice 2
   -1,
-// At index 335 : <select_template_5F_parser_23>
+// At index 359 : <select_template_5F_parser_24>
 C_Lexique_template_5F_scanner::kToken__3E_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__3C_, -1, // Choice 2
   -1,
-// At index 340 : <select_template_5F_parser_24>
+// At index 364 : <select_template_5F_parser_25>
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken_sort, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__2C_, -1, // Choice 2
   -1,
-// At index 367 : <select_template_5F_parser_25>
+// At index 391 : <select_template_5F_parser_26>
 C_Lexique_template_5F_scanner::kToken__5B_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_to, C_Lexique_template_5F_scanner::kToken__3A_, C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_identifier, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken_in, C_Lexique_template_5F_scanner::kToken_or, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken__28_, C_Lexique_template_5F_scanner::kToken__2C_, C_Lexique_template_5F_scanner::kToken__29_, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_then, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_prefixedby, C_Lexique_template_5F_scanner::kToken_before, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken__3A__3D_, C_Lexique_template_5F_scanner::kToken__2B__3D_, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken__3E_, C_Lexique_template_5F_scanner::kToken__3C_, C_Lexique_template_5F_scanner::kToken_sort, C_Lexique_template_5F_scanner::kToken_by, C_Lexique_template_5F_scanner::kToken__5D_, C_Lexique_template_5F_scanner::kToken__3A__3A_, C_Lexique_template_5F_scanner::kToken__7C_, C_Lexique_template_5F_scanner::kToken__5E_, C_Lexique_template_5F_scanner::kToken__26_, C_Lexique_template_5F_scanner::kToken__3D__3D_, C_Lexique_template_5F_scanner::kToken__21__3D_, C_Lexique_template_5F_scanner::kToken__3C__3D_, C_Lexique_template_5F_scanner::kToken__3E__3D_, C_Lexique_template_5F_scanner::kToken__3C__3C_, C_Lexique_template_5F_scanner::kToken__3E__3E_, C_Lexique_template_5F_scanner::kToken__2B_, C_Lexique_template_5F_scanner::kToken__2E_, C_Lexique_template_5F_scanner::kToken__2D_, C_Lexique_template_5F_scanner::kToken__2A_, C_Lexique_template_5F_scanner::kToken__2F_, C_Lexique_template_5F_scanner::kToken_mod, C_Lexique_template_5F_scanner::kToken_default, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 2
   -1,
-// At index 428 : <select_template_5F_parser_26>
+// At index 452 : <select_template_5F_parser_27>
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_to, C_Lexique_template_5F_scanner::kToken__3A_, C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_identifier, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken_in, C_Lexique_template_5F_scanner::kToken_or, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken__28_, C_Lexique_template_5F_scanner::kToken__2C_, C_Lexique_template_5F_scanner::kToken__29_, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_then, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_prefixedby, C_Lexique_template_5F_scanner::kToken_before, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken__3A__3D_, C_Lexique_template_5F_scanner::kToken__2B__3D_, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken__3E_, C_Lexique_template_5F_scanner::kToken__3C_, C_Lexique_template_5F_scanner::kToken_sort, C_Lexique_template_5F_scanner::kToken_by, C_Lexique_template_5F_scanner::kToken__5D_, C_Lexique_template_5F_scanner::kToken__7C_, C_Lexique_template_5F_scanner::kToken__5E_, C_Lexique_template_5F_scanner::kToken__26_, C_Lexique_template_5F_scanner::kToken__3D__3D_, C_Lexique_template_5F_scanner::kToken__21__3D_, C_Lexique_template_5F_scanner::kToken__3C__3D_, C_Lexique_template_5F_scanner::kToken__3E__3D_, C_Lexique_template_5F_scanner::kToken__3C__3C_, C_Lexique_template_5F_scanner::kToken__3E__3E_, C_Lexique_template_5F_scanner::kToken__2B_, C_Lexique_template_5F_scanner::kToken__2E_, C_Lexique_template_5F_scanner::kToken__2D_, C_Lexique_template_5F_scanner::kToken__2A_, C_Lexique_template_5F_scanner::kToken__2F_, C_Lexique_template_5F_scanner::kToken_mod, C_Lexique_template_5F_scanner::kToken_default, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__3A__3A_, -1, // Choice 2
   -1,
-// At index 488 : <select_template_5F_parser_27>
+// At index 512 : <select_template_5F_parser_28>
 C_Lexique_template_5F_scanner::kToken__5B_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_to, C_Lexique_template_5F_scanner::kToken__3A_, C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_identifier, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken_in, C_Lexique_template_5F_scanner::kToken_or, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken__28_, C_Lexique_template_5F_scanner::kToken__2C_, C_Lexique_template_5F_scanner::kToken__29_, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_then, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_prefixedby, C_Lexique_template_5F_scanner::kToken_before, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken__3A__3D_, C_Lexique_template_5F_scanner::kToken__2B__3D_, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken__3E_, C_Lexique_template_5F_scanner::kToken__3C_, C_Lexique_template_5F_scanner::kToken_sort, C_Lexique_template_5F_scanner::kToken_by, C_Lexique_template_5F_scanner::kToken__5D_, C_Lexique_template_5F_scanner::kToken__3A__3A_, C_Lexique_template_5F_scanner::kToken__7C_, C_Lexique_template_5F_scanner::kToken__5E_, C_Lexique_template_5F_scanner::kToken__26_, C_Lexique_template_5F_scanner::kToken__3D__3D_, C_Lexique_template_5F_scanner::kToken__21__3D_, C_Lexique_template_5F_scanner::kToken__3C__3D_, C_Lexique_template_5F_scanner::kToken__3E__3D_, C_Lexique_template_5F_scanner::kToken__3C__3C_, C_Lexique_template_5F_scanner::kToken__3E__3E_, C_Lexique_template_5F_scanner::kToken__2B_, C_Lexique_template_5F_scanner::kToken__2E_, C_Lexique_template_5F_scanner::kToken__2D_, C_Lexique_template_5F_scanner::kToken__2A_, C_Lexique_template_5F_scanner::kToken__2F_, C_Lexique_template_5F_scanner::kToken_mod, C_Lexique_template_5F_scanner::kToken_default, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 2
   -1,
-// At index 549 : <select_template_5F_expression_5F_parser_0>
+// At index 573 : <select_template_5F_expression_5F_parser_0>
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_to, C_Lexique_template_5F_scanner::kToken__3A_, C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_identifier, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken_in, C_Lexique_template_5F_scanner::kToken_or, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken__2C_, C_Lexique_template_5F_scanner::kToken__29_, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_then, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_prefixedby, C_Lexique_template_5F_scanner::kToken_before, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken_sort, C_Lexique_template_5F_scanner::kToken_by, C_Lexique_template_5F_scanner::kToken__5D_, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__7C_, -1, // Choice 2
 C_Lexique_template_5F_scanner::kToken__5E_, -1, // Choice 3
   -1,
-// At index 590 : <select_template_5F_expression_5F_parser_1>
+// At index 614 : <select_template_5F_expression_5F_parser_1>
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_to, C_Lexique_template_5F_scanner::kToken__3A_, C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_identifier, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken_in, C_Lexique_template_5F_scanner::kToken_or, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken__2C_, C_Lexique_template_5F_scanner::kToken__29_, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_then, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_prefixedby, C_Lexique_template_5F_scanner::kToken_before, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken_sort, C_Lexique_template_5F_scanner::kToken_by, C_Lexique_template_5F_scanner::kToken__5D_, C_Lexique_template_5F_scanner::kToken__7C_, C_Lexique_template_5F_scanner::kToken__5E_, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__26_, -1, // Choice 2
   -1,
-// At index 631 : <select_template_5F_expression_5F_parser_2>
+// At index 655 : <select_template_5F_expression_5F_parser_2>
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_to, C_Lexique_template_5F_scanner::kToken__3A_, C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_identifier, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken_in, C_Lexique_template_5F_scanner::kToken_or, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken__2C_, C_Lexique_template_5F_scanner::kToken__29_, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_then, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_prefixedby, C_Lexique_template_5F_scanner::kToken_before, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken_sort, C_Lexique_template_5F_scanner::kToken_by, C_Lexique_template_5F_scanner::kToken__5D_, C_Lexique_template_5F_scanner::kToken__7C_, C_Lexique_template_5F_scanner::kToken__5E_, C_Lexique_template_5F_scanner::kToken__26_, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__3D__3D_, -1, // Choice 2
 C_Lexique_template_5F_scanner::kToken__21__3D_, -1, // Choice 3
@@ -1151,7 +1166,7 @@ C_Lexique_template_5F_scanner::kToken__3E__3D_, -1, // Choice 5
 C_Lexique_template_5F_scanner::kToken__3E_, -1, // Choice 6
 C_Lexique_template_5F_scanner::kToken__3C_, -1, // Choice 7
   -1,
-// At index 683 : <select_template_5F_expression_5F_parser_3>
+// At index 707 : <select_template_5F_expression_5F_parser_3>
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_to, C_Lexique_template_5F_scanner::kToken__3A_, C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_identifier, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken_in, C_Lexique_template_5F_scanner::kToken_or, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken__2C_, C_Lexique_template_5F_scanner::kToken__29_, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_then, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_prefixedby, C_Lexique_template_5F_scanner::kToken_before, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken__3E_, C_Lexique_template_5F_scanner::kToken__3C_, C_Lexique_template_5F_scanner::kToken_sort, C_Lexique_template_5F_scanner::kToken_by, C_Lexique_template_5F_scanner::kToken__5D_, C_Lexique_template_5F_scanner::kToken__7C_, C_Lexique_template_5F_scanner::kToken__5E_, C_Lexique_template_5F_scanner::kToken__26_, C_Lexique_template_5F_scanner::kToken__3D__3D_, C_Lexique_template_5F_scanner::kToken__21__3D_, C_Lexique_template_5F_scanner::kToken__3C__3D_, C_Lexique_template_5F_scanner::kToken__3E__3D_, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__3C__3C_, -1, // Choice 2
 C_Lexique_template_5F_scanner::kToken__3E__3E_, -1, // Choice 3
@@ -1159,37 +1174,37 @@ C_Lexique_template_5F_scanner::kToken__2B_, -1, // Choice 4
 C_Lexique_template_5F_scanner::kToken__2E_, -1, // Choice 5
 C_Lexique_template_5F_scanner::kToken__2D_, -1, // Choice 6
   -1,
-// At index 739 : <select_template_5F_expression_5F_parser_4>
+// At index 763 : <select_template_5F_expression_5F_parser_4>
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_to, C_Lexique_template_5F_scanner::kToken__3A_, C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_identifier, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken_in, C_Lexique_template_5F_scanner::kToken_or, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken__2C_, C_Lexique_template_5F_scanner::kToken__29_, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_then, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_prefixedby, C_Lexique_template_5F_scanner::kToken_before, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken__3E_, C_Lexique_template_5F_scanner::kToken__3C_, C_Lexique_template_5F_scanner::kToken_sort, C_Lexique_template_5F_scanner::kToken_by, C_Lexique_template_5F_scanner::kToken__5D_, C_Lexique_template_5F_scanner::kToken__7C_, C_Lexique_template_5F_scanner::kToken__5E_, C_Lexique_template_5F_scanner::kToken__26_, C_Lexique_template_5F_scanner::kToken__3D__3D_, C_Lexique_template_5F_scanner::kToken__21__3D_, C_Lexique_template_5F_scanner::kToken__3C__3D_, C_Lexique_template_5F_scanner::kToken__3E__3D_, C_Lexique_template_5F_scanner::kToken__3C__3C_, C_Lexique_template_5F_scanner::kToken__3E__3E_, C_Lexique_template_5F_scanner::kToken__2B_, C_Lexique_template_5F_scanner::kToken__2E_, C_Lexique_template_5F_scanner::kToken__2D_, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__2A_, -1, // Choice 2
 C_Lexique_template_5F_scanner::kToken__2F_, -1, // Choice 3
 C_Lexique_template_5F_scanner::kToken_mod, -1, // Choice 4
   -1,
-// At index 796 : <select_template_5F_expression_5F_parser_5>
+// At index 820 : <select_template_5F_expression_5F_parser_5>
 C_Lexique_template_5F_scanner::kToken__5D_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__3A_, -1, // Choice 2
   -1,
-// At index 801 : <select_template_5F_expression_5F_parser_6>
+// At index 825 : <select_template_5F_expression_5F_parser_6>
 C_Lexique_template_5F_scanner::kToken__5D_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__2C_, -1, // Choice 2
   -1,
-// At index 806 : <select_template_5F_expression_5F_parser_7>
+// At index 830 : <select_template_5F_expression_5F_parser_7>
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_to, C_Lexique_template_5F_scanner::kToken__3A_, C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_identifier, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken_in, C_Lexique_template_5F_scanner::kToken_or, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken__2C_, C_Lexique_template_5F_scanner::kToken__29_, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_then, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_prefixedby, C_Lexique_template_5F_scanner::kToken_before, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken__3E_, C_Lexique_template_5F_scanner::kToken__3C_, C_Lexique_template_5F_scanner::kToken_sort, C_Lexique_template_5F_scanner::kToken_by, C_Lexique_template_5F_scanner::kToken__5D_, C_Lexique_template_5F_scanner::kToken__7C_, C_Lexique_template_5F_scanner::kToken__5E_, C_Lexique_template_5F_scanner::kToken__26_, C_Lexique_template_5F_scanner::kToken__3D__3D_, C_Lexique_template_5F_scanner::kToken__21__3D_, C_Lexique_template_5F_scanner::kToken__3C__3D_, C_Lexique_template_5F_scanner::kToken__3E__3D_, C_Lexique_template_5F_scanner::kToken__3C__3C_, C_Lexique_template_5F_scanner::kToken__3E__3E_, C_Lexique_template_5F_scanner::kToken__2B_, C_Lexique_template_5F_scanner::kToken__2E_, C_Lexique_template_5F_scanner::kToken__2D_, C_Lexique_template_5F_scanner::kToken__2A_, C_Lexique_template_5F_scanner::kToken__2F_, C_Lexique_template_5F_scanner::kToken_mod, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__28_, -1, // Choice 2
   -1,
-// At index 862 : <select_template_5F_expression_5F_parser_8>
+// At index 886 : <select_template_5F_expression_5F_parser_8>
 C_Lexique_template_5F_scanner::kToken__29_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__2C_, -1, // Choice 2
   -1,
-// At index 867 : <select_template_5F_expression_5F_parser_9>
+// At index 891 : <select_template_5F_expression_5F_parser_9>
 C_Lexique_template_5F_scanner::kToken_default, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__21_, C_Lexique_template_5F_scanner::kToken_write, C_Lexique_template_5F_scanner::kToken_to, C_Lexique_template_5F_scanner::kToken__3A_, C_Lexique_template_5F_scanner::kToken_end, C_Lexique_template_5F_scanner::kToken_identifier, C_Lexique_template_5F_scanner::kToken_template, C_Lexique_template_5F_scanner::kToken_if, C_Lexique_template_5F_scanner::kToken_in, C_Lexique_template_5F_scanner::kToken_or, C_Lexique_template_5F_scanner::kToken__3F_, C_Lexique_template_5F_scanner::kToken_function, C_Lexique_template_5F_scanner::kToken__2C_, C_Lexique_template_5F_scanner::kToken__29_, C_Lexique_template_5F_scanner::kToken_call, C_Lexique_template_5F_scanner::kToken_return, C_Lexique_template_5F_scanner::kToken_then, C_Lexique_template_5F_scanner::kToken_elsif, C_Lexique_template_5F_scanner::kToken_else, C_Lexique_template_5F_scanner::kToken_foreach, C_Lexique_template_5F_scanner::kToken_prefixedby, C_Lexique_template_5F_scanner::kToken_before, C_Lexique_template_5F_scanner::kToken_do, C_Lexique_template_5F_scanner::kToken_between, C_Lexique_template_5F_scanner::kToken_after, C_Lexique_template_5F_scanner::kToken_for, C_Lexique_template_5F_scanner::kToken_loop, C_Lexique_template_5F_scanner::kToken_let, C_Lexique_template_5F_scanner::kToken_error, C_Lexique_template_5F_scanner::kToken_warning, C_Lexique_template_5F_scanner::kToken_display, C_Lexique_template_5F_scanner::kToken__3E_, C_Lexique_template_5F_scanner::kToken__3C_, C_Lexique_template_5F_scanner::kToken_sort, C_Lexique_template_5F_scanner::kToken_by, C_Lexique_template_5F_scanner::kToken__5D_, C_Lexique_template_5F_scanner::kToken__7C_, C_Lexique_template_5F_scanner::kToken__5E_, C_Lexique_template_5F_scanner::kToken__26_, C_Lexique_template_5F_scanner::kToken__3D__3D_, C_Lexique_template_5F_scanner::kToken__21__3D_, C_Lexique_template_5F_scanner::kToken__3C__3D_, C_Lexique_template_5F_scanner::kToken__3E__3D_, C_Lexique_template_5F_scanner::kToken__3C__3C_, C_Lexique_template_5F_scanner::kToken__3E__3E_, C_Lexique_template_5F_scanner::kToken__2B_, C_Lexique_template_5F_scanner::kToken__2E_, C_Lexique_template_5F_scanner::kToken__2D_, C_Lexique_template_5F_scanner::kToken__2A_, C_Lexique_template_5F_scanner::kToken__2F_, C_Lexique_template_5F_scanner::kToken_mod, C_Lexique_template_5F_scanner::kToken_, -1, // Choice 2
   -1,
-// At index 923 : <select_template_5F_expression_5F_parser_10>
+// At index 947 : <select_template_5F_expression_5F_parser_10>
 C_Lexique_template_5F_scanner::kToken_true, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken_false, -1, // Choice 2
   -1,
-// At index 928 : <> only one production, no choice
+// At index 952 : <> only one production, no choice
   -1,
 0} ;
 
@@ -1199,7 +1214,7 @@ C_Lexique_template_5F_scanner::kToken_false, -1, // Choice 2
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const int16_t gDecisionIndexes_template_grammar [54] = {
+static const int16_t gDecisionIndexes_template_grammar [55] = {
 0, // at 0 : <goil_template_start_symbol>
 1, // at 1 : <template_instruction>
 34, // at 2 : <sorting_order>
@@ -1214,45 +1229,46 @@ static const int16_t gDecisionIndexes_template_grammar [54] = {
 43, // at 11 : <term>
 44, // at 12 : <factor>
 84, // at 13 : <select_template_5F_parser_0>
-89, // at 14 : <select_template_5F_parser_1>
-95, // at 15 : <select_template_5F_parser_2>
-123, // at 16 : <select_template_5F_parser_3>
-150, // at 17 : <select_template_5F_parser_4>
-177, // at 18 : <select_template_5F_parser_5>
-182, // at 19 : <select_template_5F_parser_6>
-187, // at 20 : <select_template_5F_parser_7>
+108, // at 14 : <select_template_5F_parser_1>
+113, // at 15 : <select_template_5F_parser_2>
+119, // at 16 : <select_template_5F_parser_3>
+147, // at 17 : <select_template_5F_parser_4>
+174, // at 18 : <select_template_5F_parser_5>
+201, // at 19 : <select_template_5F_parser_6>
+206, // at 20 : <select_template_5F_parser_7>
 211, // at 21 : <select_template_5F_parser_8>
-216, // at 22 : <select_template_5F_parser_9>
-222, // at 23 : <select_template_5F_parser_10>
-227, // at 24 : <select_template_5F_parser_11>
-253, // at 25 : <select_template_5F_parser_12>
-259, // at 26 : <select_template_5F_parser_13>
-264, // at 27 : <select_template_5F_parser_14>
-270, // at 28 : <select_template_5F_parser_15>
-275, // at 29 : <select_template_5F_parser_16>
-280, // at 30 : <select_template_5F_parser_17>
-285, // at 31 : <select_template_5F_parser_18>
-290, // at 32 : <select_template_5F_parser_19>
-296, // at 33 : <select_template_5F_parser_20>
-301, // at 34 : <select_template_5F_parser_21>
-330, // at 35 : <select_template_5F_parser_22>
-335, // at 36 : <select_template_5F_parser_23>
-340, // at 37 : <select_template_5F_parser_24>
-367, // at 38 : <select_template_5F_parser_25>
-428, // at 39 : <select_template_5F_parser_26>
-488, // at 40 : <select_template_5F_parser_27>
-549, // at 41 : <select_template_5F_expression_5F_parser_0>
-590, // at 42 : <select_template_5F_expression_5F_parser_1>
-631, // at 43 : <select_template_5F_expression_5F_parser_2>
-683, // at 44 : <select_template_5F_expression_5F_parser_3>
-739, // at 45 : <select_template_5F_expression_5F_parser_4>
-796, // at 46 : <select_template_5F_expression_5F_parser_5>
-801, // at 47 : <select_template_5F_expression_5F_parser_6>
-806, // at 48 : <select_template_5F_expression_5F_parser_7>
-862, // at 49 : <select_template_5F_expression_5F_parser_8>
-867, // at 50 : <select_template_5F_expression_5F_parser_9>
-923, // at 51 : <select_template_5F_expression_5F_parser_10>
-928, // at 52 : <>
+235, // at 22 : <select_template_5F_parser_9>
+240, // at 23 : <select_template_5F_parser_10>
+246, // at 24 : <select_template_5F_parser_11>
+251, // at 25 : <select_template_5F_parser_12>
+277, // at 26 : <select_template_5F_parser_13>
+283, // at 27 : <select_template_5F_parser_14>
+288, // at 28 : <select_template_5F_parser_15>
+294, // at 29 : <select_template_5F_parser_16>
+299, // at 30 : <select_template_5F_parser_17>
+304, // at 31 : <select_template_5F_parser_18>
+309, // at 32 : <select_template_5F_parser_19>
+314, // at 33 : <select_template_5F_parser_20>
+320, // at 34 : <select_template_5F_parser_21>
+325, // at 35 : <select_template_5F_parser_22>
+354, // at 36 : <select_template_5F_parser_23>
+359, // at 37 : <select_template_5F_parser_24>
+364, // at 38 : <select_template_5F_parser_25>
+391, // at 39 : <select_template_5F_parser_26>
+452, // at 40 : <select_template_5F_parser_27>
+512, // at 41 : <select_template_5F_parser_28>
+573, // at 42 : <select_template_5F_expression_5F_parser_0>
+614, // at 43 : <select_template_5F_expression_5F_parser_1>
+655, // at 44 : <select_template_5F_expression_5F_parser_2>
+707, // at 45 : <select_template_5F_expression_5F_parser_3>
+763, // at 46 : <select_template_5F_expression_5F_parser_4>
+820, // at 47 : <select_template_5F_expression_5F_parser_5>
+825, // at 48 : <select_template_5F_expression_5F_parser_6>
+830, // at 49 : <select_template_5F_expression_5F_parser_7>
+886, // at 50 : <select_template_5F_expression_5F_parser_8>
+891, // at 51 : <select_template_5F_expression_5F_parser_9>
+947, // at 52 : <select_template_5F_expression_5F_parser_10>
+952, // at 53 : <>
 0} ;
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -1296,7 +1312,7 @@ void cGrammar_template_5F_grammar::performOnlySyntaxAnalysis (C_Compiler * inCom
   macroMyNew (scanner, C_Lexique_template_5F_scanner (inCompiler, "", "", inSourceFilePath COMMA_HERE)) ;
   if (scanner->sourceText () != NULL) {
     scanner->performTopDownParsing (gProductions_template_grammar, gProductionNames_template_grammar, gProductionIndexes_template_grammar,
-                                    gFirstProductionIndexes_template_grammar, gDecision_template_grammar, gDecisionIndexes_template_grammar, 423) ;
+                                    gFirstProductionIndexes_template_grammar, gDecision_template_grammar, gDecisionIndexes_template_grammar, 427) ;
   }
   macroDetachSharedObject (scanner) ;
 }
@@ -1328,7 +1344,7 @@ void cGrammar_template_5F_grammar::_performSourceFileParsing_ (C_Compiler * inCo
     macroMyNew (scanner, C_Lexique_template_5F_scanner (inCompiler, "", "", filePath COMMA_HERE)) ;
     if (scanner->sourceText () != NULL) {
       const bool ok = scanner->performTopDownParsing (gProductions_template_grammar, gProductionNames_template_grammar, gProductionIndexes_template_grammar,
-                                                      gFirstProductionIndexes_template_grammar, gDecision_template_grammar, gDecisionIndexes_template_grammar, 423) ;
+                                                      gFirstProductionIndexes_template_grammar, gDecision_template_grammar, gDecisionIndexes_template_grammar, 427) ;
       if (ok && ! executionModeIsSyntaxAnalysisOnly ()) {
         cGrammar_template_5F_grammar grammar ;
         grammar.nt_goil_5F_template_5F_start_5F_symbol_ (parameter_1, parameter_2, parameter_3, parameter_4, parameter_5, parameter_6, parameter_7, scanner) ;
@@ -1366,7 +1382,7 @@ void cGrammar_template_5F_grammar::_performSourceStringParsing_ (C_Compiler * in
     C_Lexique_template_5F_scanner * scanner = NULL ;
     macroMyNew (scanner, C_Lexique_template_5F_scanner (inCompiler, sourceString, "" COMMA_HERE)) ;
     const bool ok = scanner->performTopDownParsing (gProductions_template_grammar, gProductionNames_template_grammar, gProductionIndexes_template_grammar,
-                                                    gFirstProductionIndexes_template_grammar, gDecision_template_grammar, gDecisionIndexes_template_grammar, 423) ;
+                                                    gFirstProductionIndexes_template_grammar, gDecision_template_grammar, gDecisionIndexes_template_grammar, 427) ;
     if (ok && ! executionModeIsSyntaxAnalysisOnly ()) {
       cGrammar_template_5F_grammar grammar ;
       grammar.nt_goil_5F_template_5F_start_5F_symbol_ (parameter_1, parameter_2, parameter_3, parameter_4, parameter_5, parameter_6, parameter_7, scanner) ;
@@ -2108,6 +2124,16 @@ int32_t cGrammar_template_5F_grammar::select_template_5F_parser_26 (C_Lexique_te
 //---------------------------------------------------------------------------------------------------------------------*
 
 int32_t cGrammar_template_5F_grammar::select_template_5F_parser_27 (C_Lexique_template_5F_scanner * inLexique) {
+  return inLexique->nextProductionIndex () ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                          'select_template_5F_parser_28' added non terminal implementation                           *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+int32_t cGrammar_template_5F_grammar::select_template_5F_parser_28 (C_Lexique_template_5F_scanner * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
@@ -3497,23 +3523,23 @@ static const int16_t gProductions_goil_file_level_include [] = {
 , NONTERMINAL (5) // <OIL_version>
 , NONTERMINAL (2) // <file>
 , END_PRODUCTION
-// At index 10 : <file>, in file 'goil_syntax.ggs', line 104
+// At index 10 : <file>, in file 'goil_syntax.ggs', line 111
 , NONTERMINAL (32) // <select_goil_5F_syntax_0>
 , END_PRODUCTION
-// At index 12 : <sign>, in file 'goil_syntax.ggs', line 112
+// At index 12 : <sign>, in file 'goil_syntax.ggs', line 127
 , NONTERMINAL (33) // <select_goil_5F_syntax_1>
 , END_PRODUCTION
-// At index 14 : <description>, in file 'goil_syntax.ggs', line 125
+// At index 14 : <description>, in file 'goil_syntax.ggs', line 140
 , NONTERMINAL (34) // <select_goil_5F_syntax_2>
 , END_PRODUCTION
-// At index 16 : <OIL_version>, in file 'goil_syntax.ggs', line 149
+// At index 16 : <OIL_version>, in file 'goil_syntax.ggs', line 164
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_OIL_5F_VERSION) // $OIL_VERSION$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) // $string$
 , NONTERMINAL (4) // <description>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) // $;$
 , END_PRODUCTION
-// At index 22 : <application_definition>, in file 'goil_syntax.ggs', line 156
+// At index 22 : <application_definition>, in file 'goil_syntax.ggs', line 171
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_CPU) // $CPU$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) // ${$
@@ -3522,25 +3548,25 @@ static const int16_t gProductions_goil_file_level_include [] = {
 , NONTERMINAL (4) // <description>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) // $;$
 , END_PRODUCTION
-// At index 30 : <object_definition_list>, in file 'goil_syntax.ggs', line 165
+// At index 30 : <object_definition_list>, in file 'goil_syntax.ggs', line 185
 , NONTERMINAL (36) // <select_goil_5F_syntax_4>
 , END_PRODUCTION
-// At index 32 : <boolean>, in file 'goil_syntax.ggs', line 208
+// At index 32 : <boolean>, in file 'goil_syntax.ggs', line 233
 , NONTERMINAL (37) // <select_goil_5F_syntax_5>
 , END_PRODUCTION
-// At index 34 : <oil_declaration_list>, in file 'goil_syntax.ggs', line 218
+// At index 34 : <oil_declaration_list>, in file 'goil_syntax.ggs', line 243
 , NONTERMINAL (38) // <select_goil_5F_syntax_6>
 , END_PRODUCTION
-// At index 36 : <oil_declaration>, in file 'goil_syntax.ggs', line 227
+// At index 36 : <oil_declaration>, in file 'goil_syntax.ggs', line 252
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , NONTERMINAL (39) // <select_goil_5F_syntax_7>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) // $;$
 , END_PRODUCTION
-// At index 40 : <include_file_level>, in file 'goil_syntax.ggs', line 400
+// At index 40 : <include_file_level>, in file 'goil_syntax.ggs', line 425
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_include) // $include$
 , NONTERMINAL (44) // <select_goil_5F_syntax_12>
 , END_PRODUCTION
-// At index 43 : <include_cpu_level>, in file 'goil_syntax.ggs', line 412
+// At index 43 : <include_cpu_level>, in file 'goil_syntax.ggs', line 442
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_include) // $include$
 , NONTERMINAL (45) // <select_goil_5F_syntax_13>
 , END_PRODUCTION
@@ -3635,44 +3661,44 @@ static const int16_t gProductions_goil_file_level_include [] = {
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , END_PRODUCTION
 //---- Added productions from 'select' and 'repeat' instructions
-// At index 117 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 105
+// At index 117 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 120
 , END_PRODUCTION
-// At index 118 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 105
+// At index 118 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 120
 , NONTERMINAL (11) // <include_file_level>
 , NONTERMINAL (32) // <select_goil_5F_syntax_0>
 , END_PRODUCTION
-// At index 121 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 105
+// At index 121 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 120
 , NONTERMINAL (0) // <implementation_definition>
 , NONTERMINAL (32) // <select_goil_5F_syntax_0>
 , END_PRODUCTION
-// At index 124 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 105
+// At index 124 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 120
 , NONTERMINAL (6) // <application_definition>
 , NONTERMINAL (32) // <select_goil_5F_syntax_0>
 , END_PRODUCTION
-// At index 127 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 113
+// At index 127 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 128
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__2D_) // $-$
 , END_PRODUCTION
-// At index 129 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 113
+// At index 129 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 128
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__2B_) // $+$
 , END_PRODUCTION
-// At index 131 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 113
+// At index 131 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 128
 , END_PRODUCTION
-// At index 132 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 126
+// At index 132 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 141
 , END_PRODUCTION
-// At index 133 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 126
+// At index 133 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 141
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3A_) // $:$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) // $string$
 , NONTERMINAL (35) // <select_goil_5F_syntax_3>
 , END_PRODUCTION
-// At index 137 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 133
+// At index 137 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 148
 , END_PRODUCTION
-// At index 138 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 133
+// At index 138 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 148
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) // $string$
 , NONTERMINAL (35) // <select_goil_5F_syntax_3>
 , END_PRODUCTION
-// At index 141 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 166
+// At index 141 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 191
 , END_PRODUCTION
-// At index 142 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 166
+// At index 142 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 191
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) // ${$
@@ -3682,87 +3708,87 @@ static const int16_t gProductions_goil_file_level_include [] = {
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) // $;$
 , NONTERMINAL (36) // <select_goil_5F_syntax_4>
 , END_PRODUCTION
-// At index 151 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 166
+// At index 151 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 191
 , NONTERMINAL (12) // <include_cpu_level>
 , NONTERMINAL (36) // <select_goil_5F_syntax_4>
 , END_PRODUCTION
-// At index 154 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 209
+// At index 154 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 234
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_TRUE) // $TRUE$
 , END_PRODUCTION
-// At index 156 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 209
+// At index 156 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 234
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_FALSE) // $FALSE$
 , END_PRODUCTION
-// At index 158 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 221
+// At index 158 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 246
 , END_PRODUCTION
-// At index 159 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 221
+// At index 159 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 246
 , NONTERMINAL (10) // <oil_declaration>
 , NONTERMINAL (38) // <select_goil_5F_syntax_6>
 , END_PRODUCTION
-// At index 162 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 244
+// At index 162 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 269
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3D_) // $=$
 , NONTERMINAL (40) // <select_goil_5F_syntax_8>
 , END_PRODUCTION
-// At index 165 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 244
+// At index 165 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 269
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) // ${$
 , NONTERMINAL (9) // <oil_declaration_list>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) // $}$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 171 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 246
+// At index 171 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , NONTERMINAL (41) // <select_goil_5F_syntax_9>
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 175 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 246
+// At index 175 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
 , NONTERMINAL (3) // <sign>
 , NONTERMINAL (42) // <select_goil_5F_syntax_10>
 , END_PRODUCTION
-// At index 178 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 246
+// At index 178 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
 , NONTERMINAL (8) // <boolean>
 , NONTERMINAL (43) // <select_goil_5F_syntax_11>
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 182 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 246
+// At index 182 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) // $string$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 185 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 246
+// At index 185 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_AUTO) // $AUTO$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 188 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 267
+// At index 188 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 292
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) // ${$
 , NONTERMINAL (9) // <oil_declaration_list>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) // $}$
 , END_PRODUCTION
-// At index 192 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 267
+// At index 192 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 292
 , END_PRODUCTION
-// At index 193 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 284
+// At index 193 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 309
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_uint_5F_number) // $uint_number$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 196 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 284
+// At index 196 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 309
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_float_5F_number) // $float_number$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 199 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 315
+// At index 199 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 340
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) // ${$
 , NONTERMINAL (9) // <oil_declaration_list>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) // $}$
 , END_PRODUCTION
-// At index 203 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 315
+// At index 203 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 340
 , END_PRODUCTION
-// At index 204 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 403
+// At index 204 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 433
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_g_5F_string) // $g_string$
 , END_PRODUCTION
-// At index 206 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 403
+// At index 206 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 433
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) // $string$
 , END_PRODUCTION
-// At index 208 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 415
+// At index 208 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 450
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_g_5F_string) // $g_string$
 , END_PRODUCTION
-// At index 210 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 415
+// At index 210 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 450
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) // $string$
 , END_PRODUCTION
 // At index 212 : <select_implementation_5F_parser_0>, in file 'implementation_parser.ggs', line 58
@@ -4168,17 +4194,17 @@ static const cProductionNameDescriptor gProductionNames_goil_file_level_include 
 static const int16_t gProductionIndexes_goil_file_level_include [136] = {
 0, // index 0 : <implementation_definition>, in file 'implementation_parser.ggs', line 55
 7, // index 1 : <start>, in file 'goil_syntax.ggs', line 38
-10, // index 2 : <file>, in file 'goil_syntax.ggs', line 104
-12, // index 3 : <sign>, in file 'goil_syntax.ggs', line 112
-14, // index 4 : <description>, in file 'goil_syntax.ggs', line 125
-16, // index 5 : <OIL_version>, in file 'goil_syntax.ggs', line 149
-22, // index 6 : <application_definition>, in file 'goil_syntax.ggs', line 156
-30, // index 7 : <object_definition_list>, in file 'goil_syntax.ggs', line 165
-32, // index 8 : <boolean>, in file 'goil_syntax.ggs', line 208
-34, // index 9 : <oil_declaration_list>, in file 'goil_syntax.ggs', line 218
-36, // index 10 : <oil_declaration>, in file 'goil_syntax.ggs', line 227
-40, // index 11 : <include_file_level>, in file 'goil_syntax.ggs', line 400
-43, // index 12 : <include_cpu_level>, in file 'goil_syntax.ggs', line 412
+10, // index 2 : <file>, in file 'goil_syntax.ggs', line 111
+12, // index 3 : <sign>, in file 'goil_syntax.ggs', line 127
+14, // index 4 : <description>, in file 'goil_syntax.ggs', line 140
+16, // index 5 : <OIL_version>, in file 'goil_syntax.ggs', line 164
+22, // index 6 : <application_definition>, in file 'goil_syntax.ggs', line 171
+30, // index 7 : <object_definition_list>, in file 'goil_syntax.ggs', line 185
+32, // index 8 : <boolean>, in file 'goil_syntax.ggs', line 233
+34, // index 9 : <oil_declaration_list>, in file 'goil_syntax.ggs', line 243
+36, // index 10 : <oil_declaration>, in file 'goil_syntax.ggs', line 252
+40, // index 11 : <include_file_level>, in file 'goil_syntax.ggs', line 425
+43, // index 12 : <include_cpu_level>, in file 'goil_syntax.ggs', line 442
 46, // index 13 : <implementation_objects>, in file 'implementation_parser.ggs', line 86
 50, // index 14 : <implementation_list>, in file 'implementation_parser.ggs', line 131
 54, // index 15 : <implementation_type>, in file 'implementation_parser.ggs', line 159
@@ -4198,41 +4224,41 @@ static const int16_t gProductionIndexes_goil_file_level_include [136] = {
 111, // index 29 : <multiple>, in file 'implementation_parser.ggs', line 503
 113, // index 30 : <identifier_or_attribute>, in file 'implementation_parser.ggs', line 513
 115, // index 31 : <identifier_or_enum_value>, in file 'implementation_parser.ggs', line 518
-117, // index 32 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 105
-118, // index 33 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 105
-121, // index 34 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 105
-124, // index 35 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 105
-127, // index 36 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 113
-129, // index 37 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 113
-131, // index 38 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 113
-132, // index 39 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 126
-133, // index 40 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 126
-137, // index 41 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 133
-138, // index 42 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 133
-141, // index 43 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 166
-142, // index 44 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 166
-151, // index 45 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 166
-154, // index 46 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 209
-156, // index 47 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 209
-158, // index 48 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 221
-159, // index 49 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 221
-162, // index 50 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 244
-165, // index 51 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 244
-171, // index 52 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 246
-175, // index 53 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 246
-178, // index 54 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 246
-182, // index 55 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 246
-185, // index 56 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 246
-188, // index 57 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 267
-192, // index 58 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 267
-193, // index 59 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 284
-196, // index 60 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 284
-199, // index 61 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 315
-203, // index 62 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 315
-204, // index 63 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 403
-206, // index 64 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 403
-208, // index 65 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 415
-210, // index 66 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 415
+117, // index 32 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 120
+118, // index 33 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 120
+121, // index 34 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 120
+124, // index 35 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 120
+127, // index 36 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 128
+129, // index 37 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 128
+131, // index 38 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 128
+132, // index 39 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 141
+133, // index 40 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 141
+137, // index 41 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 148
+138, // index 42 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 148
+141, // index 43 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 191
+142, // index 44 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 191
+151, // index 45 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 191
+154, // index 46 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 234
+156, // index 47 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 234
+158, // index 48 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 246
+159, // index 49 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 246
+162, // index 50 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 269
+165, // index 51 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 269
+171, // index 52 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
+175, // index 53 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
+178, // index 54 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
+182, // index 55 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
+185, // index 56 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
+188, // index 57 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 292
+192, // index 58 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 292
+193, // index 59 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 309
+196, // index 60 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 309
+199, // index 61 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 340
+203, // index 62 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 340
+204, // index 63 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 433
+206, // index 64 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 433
+208, // index 65 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 450
+210, // index 66 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 450
 212, // index 67 : <select_implementation_5F_parser_0>, in file 'implementation_parser.ggs', line 58
 213, // index 68 : <select_implementation_5F_parser_0>, in file 'implementation_parser.ggs', line 58
 217, // index 69 : <select_implementation_5F_parser_1>, in file 'implementation_parser.ggs', line 93
@@ -4772,8 +4798,10 @@ void cGrammar_goil_5F_file_5F_level_5F_include::nt_file_parse (C_Lexique_goil_5F
 
 void cGrammar_goil_5F_file_5F_level_5F_include::nt_file_ (GALGAS_implementation & parameter_1,
                                 GALGAS_applicationDefinition & parameter_2,
+                                GALGAS_string & parameter_3,
+                                const GALGAS_bool parameter_4,
                                 C_Lexique_goil_5F_lexique * inLexique) {
-  rule_goil_5F_syntax_file_i1_(parameter_1, parameter_2, inLexique) ;
+  rule_goil_5F_syntax_file_i1_(parameter_1, parameter_2, parameter_3, parameter_4, inLexique) ;
 }
 
 void cGrammar_goil_5F_file_5F_level_5F_include::performIndexing (C_Compiler * /* inCompiler */,
@@ -4810,7 +4838,9 @@ void cGrammar_goil_5F_file_5F_level_5F_include::performOnlySyntaxAnalysis (C_Com
 void cGrammar_goil_5F_file_5F_level_5F_include::_performSourceFileParsing_ (C_Compiler * inCompiler,
                                 GALGAS_lstring inFilePath,
                                 GALGAS_implementation &  parameter_1,
-                                GALGAS_applicationDefinition &  parameter_2
+                                GALGAS_applicationDefinition &  parameter_2,
+                                GALGAS_string &  parameter_3,
+                                const GALGAS_bool  parameter_4
                                 COMMA_LOCATION_ARGS) {
   if (inFilePath.isValid ()) {
     const GALGAS_string filePathAsString = inFilePath.reader_string (HERE) ;
@@ -4826,7 +4856,7 @@ void cGrammar_goil_5F_file_5F_level_5F_include::_performSourceFileParsing_ (C_Co
                                                       gFirstProductionIndexes_goil_file_level_include, gDecision_goil_file_level_include, gDecisionIndexes_goil_file_level_include, 388) ;
       if (ok && ! executionModeIsSyntaxAnalysisOnly ()) {
         cGrammar_goil_5F_file_5F_level_5F_include grammar ;
-        grammar.nt_file_ (parameter_1, parameter_2, scanner) ;
+        grammar.nt_file_ (parameter_1, parameter_2, parameter_3, parameter_4, scanner) ;
         }
       }else{
         C_String message ;
@@ -4849,7 +4879,9 @@ void cGrammar_goil_5F_file_5F_level_5F_include::_performSourceFileParsing_ (C_Co
 void cGrammar_goil_5F_file_5F_level_5F_include::_performSourceStringParsing_ (C_Compiler * inCompiler,
                                 GALGAS_string inSourceString,
                                 GALGAS_implementation &  parameter_1,
-                                GALGAS_applicationDefinition &  parameter_2
+                                GALGAS_applicationDefinition &  parameter_2,
+                                GALGAS_string &  parameter_3,
+                                const GALGAS_bool  parameter_4
                                 COMMA_UNUSED_LOCATION_ARGS) {
   if (inSourceString.isValid ()) {
     const C_String sourceString = inSourceString.stringValue () ;
@@ -4859,7 +4891,7 @@ void cGrammar_goil_5F_file_5F_level_5F_include::_performSourceStringParsing_ (C_
                                                     gFirstProductionIndexes_goil_file_level_include, gDecision_goil_file_level_include, gDecisionIndexes_goil_file_level_include, 388) ;
     if (ok && ! executionModeIsSyntaxAnalysisOnly ()) {
       cGrammar_goil_5F_file_5F_level_5F_include grammar ;
-      grammar.nt_file_ (parameter_1, parameter_2, scanner) ;
+      grammar.nt_file_ (parameter_1, parameter_2, parameter_3, parameter_4, scanner) ;
     }
     macroDetachSharedObject (scanner) ;
   }
@@ -4923,8 +4955,10 @@ void cGrammar_goil_5F_file_5F_level_5F_include::nt_application_5F_definition_par
 
 void cGrammar_goil_5F_file_5F_level_5F_include::nt_application_5F_definition_ (const GALGAS_implementation parameter_1,
                                 GALGAS_applicationDefinition & parameter_2,
+                                GALGAS_string & parameter_3,
+                                const GALGAS_bool parameter_4,
                                 C_Lexique_goil_5F_lexique * inLexique) {
-  rule_goil_5F_syntax_application_5F_definition_i5_(parameter_1, parameter_2, inLexique) ;
+  rule_goil_5F_syntax_application_5F_definition_i5_(parameter_1, parameter_2, parameter_3, parameter_4, inLexique) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -4939,8 +4973,10 @@ void cGrammar_goil_5F_file_5F_level_5F_include::nt_object_5F_definition_5F_list_
 
 void cGrammar_goil_5F_file_5F_level_5F_include::nt_object_5F_definition_5F_list_ (const GALGAS_implementation parameter_1,
                                 GALGAS_objectsMap & parameter_2,
+                                GALGAS_string & parameter_3,
+                                const GALGAS_bool parameter_4,
                                 C_Lexique_goil_5F_lexique * inLexique) {
-  rule_goil_5F_syntax_object_5F_definition_5F_list_i6_(parameter_1, parameter_2, inLexique) ;
+  rule_goil_5F_syntax_object_5F_definition_5F_list_i6_(parameter_1, parameter_2, parameter_3, parameter_4, inLexique) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -5002,8 +5038,10 @@ void cGrammar_goil_5F_file_5F_level_5F_include::nt_include_5F_file_5F_level_pars
 
 void cGrammar_goil_5F_file_5F_level_5F_include::nt_include_5F_file_5F_level_ (GALGAS_implementation & parameter_1,
                                 GALGAS_applicationDefinition & parameter_2,
+                                GALGAS_string & parameter_3,
+                                const GALGAS_bool parameter_4,
                                 C_Lexique_goil_5F_lexique * inLexique) {
-  rule_goil_5F_syntax_include_5F_file_5F_level_i10_(parameter_1, parameter_2, inLexique) ;
+  rule_goil_5F_syntax_include_5F_file_5F_level_i10_(parameter_1, parameter_2, parameter_3, parameter_4, inLexique) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -5018,8 +5056,10 @@ void cGrammar_goil_5F_file_5F_level_5F_include::nt_include_5F_cpu_5F_level_parse
 
 void cGrammar_goil_5F_file_5F_level_5F_include::nt_include_5F_cpu_5F_level_ (const GALGAS_implementation parameter_1,
                                 GALGAS_objectsMap & parameter_2,
+                                GALGAS_string & parameter_3,
+                                const GALGAS_bool parameter_4,
                                 C_Lexique_goil_5F_lexique * inLexique) {
-  rule_goil_5F_syntax_include_5F_cpu_5F_level_i11_(parameter_1, parameter_2, inLexique) ;
+  rule_goil_5F_syntax_include_5F_cpu_5F_level_i11_(parameter_1, parameter_2, parameter_3, parameter_4, inLexique) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -5767,23 +5807,23 @@ static const int16_t gProductions_goil_grammar [] = {
 , NONTERMINAL (5) // <OIL_version>
 , NONTERMINAL (2) // <file>
 , END_PRODUCTION
-// At index 10 : <file>, in file 'goil_syntax.ggs', line 104
+// At index 10 : <file>, in file 'goil_syntax.ggs', line 111
 , NONTERMINAL (32) // <select_goil_5F_syntax_0>
 , END_PRODUCTION
-// At index 12 : <sign>, in file 'goil_syntax.ggs', line 112
+// At index 12 : <sign>, in file 'goil_syntax.ggs', line 127
 , NONTERMINAL (33) // <select_goil_5F_syntax_1>
 , END_PRODUCTION
-// At index 14 : <description>, in file 'goil_syntax.ggs', line 125
+// At index 14 : <description>, in file 'goil_syntax.ggs', line 140
 , NONTERMINAL (34) // <select_goil_5F_syntax_2>
 , END_PRODUCTION
-// At index 16 : <OIL_version>, in file 'goil_syntax.ggs', line 149
+// At index 16 : <OIL_version>, in file 'goil_syntax.ggs', line 164
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_OIL_5F_VERSION) // $OIL_VERSION$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) // $string$
 , NONTERMINAL (4) // <description>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) // $;$
 , END_PRODUCTION
-// At index 22 : <application_definition>, in file 'goil_syntax.ggs', line 156
+// At index 22 : <application_definition>, in file 'goil_syntax.ggs', line 171
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_CPU) // $CPU$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) // ${$
@@ -5792,25 +5832,25 @@ static const int16_t gProductions_goil_grammar [] = {
 , NONTERMINAL (4) // <description>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) // $;$
 , END_PRODUCTION
-// At index 30 : <object_definition_list>, in file 'goil_syntax.ggs', line 165
+// At index 30 : <object_definition_list>, in file 'goil_syntax.ggs', line 185
 , NONTERMINAL (36) // <select_goil_5F_syntax_4>
 , END_PRODUCTION
-// At index 32 : <boolean>, in file 'goil_syntax.ggs', line 208
+// At index 32 : <boolean>, in file 'goil_syntax.ggs', line 233
 , NONTERMINAL (37) // <select_goil_5F_syntax_5>
 , END_PRODUCTION
-// At index 34 : <oil_declaration_list>, in file 'goil_syntax.ggs', line 218
+// At index 34 : <oil_declaration_list>, in file 'goil_syntax.ggs', line 243
 , NONTERMINAL (38) // <select_goil_5F_syntax_6>
 , END_PRODUCTION
-// At index 36 : <oil_declaration>, in file 'goil_syntax.ggs', line 227
+// At index 36 : <oil_declaration>, in file 'goil_syntax.ggs', line 252
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , NONTERMINAL (39) // <select_goil_5F_syntax_7>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) // $;$
 , END_PRODUCTION
-// At index 40 : <include_file_level>, in file 'goil_syntax.ggs', line 400
+// At index 40 : <include_file_level>, in file 'goil_syntax.ggs', line 425
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_include) // $include$
 , NONTERMINAL (44) // <select_goil_5F_syntax_12>
 , END_PRODUCTION
-// At index 43 : <include_cpu_level>, in file 'goil_syntax.ggs', line 412
+// At index 43 : <include_cpu_level>, in file 'goil_syntax.ggs', line 442
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_include) // $include$
 , NONTERMINAL (45) // <select_goil_5F_syntax_13>
 , END_PRODUCTION
@@ -5905,44 +5945,44 @@ static const int16_t gProductions_goil_grammar [] = {
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , END_PRODUCTION
 //---- Added productions from 'select' and 'repeat' instructions
-// At index 117 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 105
+// At index 117 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 120
 , END_PRODUCTION
-// At index 118 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 105
+// At index 118 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 120
 , NONTERMINAL (11) // <include_file_level>
 , NONTERMINAL (32) // <select_goil_5F_syntax_0>
 , END_PRODUCTION
-// At index 121 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 105
+// At index 121 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 120
 , NONTERMINAL (0) // <implementation_definition>
 , NONTERMINAL (32) // <select_goil_5F_syntax_0>
 , END_PRODUCTION
-// At index 124 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 105
+// At index 124 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 120
 , NONTERMINAL (6) // <application_definition>
 , NONTERMINAL (32) // <select_goil_5F_syntax_0>
 , END_PRODUCTION
-// At index 127 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 113
+// At index 127 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 128
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__2D_) // $-$
 , END_PRODUCTION
-// At index 129 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 113
+// At index 129 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 128
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__2B_) // $+$
 , END_PRODUCTION
-// At index 131 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 113
+// At index 131 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 128
 , END_PRODUCTION
-// At index 132 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 126
+// At index 132 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 141
 , END_PRODUCTION
-// At index 133 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 126
+// At index 133 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 141
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3A_) // $:$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) // $string$
 , NONTERMINAL (35) // <select_goil_5F_syntax_3>
 , END_PRODUCTION
-// At index 137 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 133
+// At index 137 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 148
 , END_PRODUCTION
-// At index 138 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 133
+// At index 138 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 148
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) // $string$
 , NONTERMINAL (35) // <select_goil_5F_syntax_3>
 , END_PRODUCTION
-// At index 141 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 166
+// At index 141 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 191
 , END_PRODUCTION
-// At index 142 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 166
+// At index 142 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 191
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) // ${$
@@ -5952,87 +5992,87 @@ static const int16_t gProductions_goil_grammar [] = {
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) // $;$
 , NONTERMINAL (36) // <select_goil_5F_syntax_4>
 , END_PRODUCTION
-// At index 151 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 166
+// At index 151 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 191
 , NONTERMINAL (12) // <include_cpu_level>
 , NONTERMINAL (36) // <select_goil_5F_syntax_4>
 , END_PRODUCTION
-// At index 154 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 209
+// At index 154 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 234
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_TRUE) // $TRUE$
 , END_PRODUCTION
-// At index 156 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 209
+// At index 156 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 234
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_FALSE) // $FALSE$
 , END_PRODUCTION
-// At index 158 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 221
+// At index 158 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 246
 , END_PRODUCTION
-// At index 159 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 221
+// At index 159 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 246
 , NONTERMINAL (10) // <oil_declaration>
 , NONTERMINAL (38) // <select_goil_5F_syntax_6>
 , END_PRODUCTION
-// At index 162 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 244
+// At index 162 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 269
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3D_) // $=$
 , NONTERMINAL (40) // <select_goil_5F_syntax_8>
 , END_PRODUCTION
-// At index 165 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 244
+// At index 165 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 269
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) // ${$
 , NONTERMINAL (9) // <oil_declaration_list>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) // $}$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 171 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 246
+// At index 171 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , NONTERMINAL (41) // <select_goil_5F_syntax_9>
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 175 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 246
+// At index 175 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
 , NONTERMINAL (3) // <sign>
 , NONTERMINAL (42) // <select_goil_5F_syntax_10>
 , END_PRODUCTION
-// At index 178 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 246
+// At index 178 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
 , NONTERMINAL (8) // <boolean>
 , NONTERMINAL (43) // <select_goil_5F_syntax_11>
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 182 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 246
+// At index 182 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) // $string$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 185 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 246
+// At index 185 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_AUTO) // $AUTO$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 188 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 267
+// At index 188 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 292
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) // ${$
 , NONTERMINAL (9) // <oil_declaration_list>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) // $}$
 , END_PRODUCTION
-// At index 192 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 267
+// At index 192 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 292
 , END_PRODUCTION
-// At index 193 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 284
+// At index 193 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 309
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_uint_5F_number) // $uint_number$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 196 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 284
+// At index 196 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 309
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_float_5F_number) // $float_number$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 199 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 315
+// At index 199 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 340
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) // ${$
 , NONTERMINAL (9) // <oil_declaration_list>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) // $}$
 , END_PRODUCTION
-// At index 203 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 315
+// At index 203 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 340
 , END_PRODUCTION
-// At index 204 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 403
+// At index 204 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 433
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_g_5F_string) // $g_string$
 , END_PRODUCTION
-// At index 206 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 403
+// At index 206 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 433
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) // $string$
 , END_PRODUCTION
-// At index 208 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 415
+// At index 208 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 450
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_g_5F_string) // $g_string$
 , END_PRODUCTION
-// At index 210 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 415
+// At index 210 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 450
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) // $string$
 , END_PRODUCTION
 // At index 212 : <select_implementation_5F_parser_0>, in file 'implementation_parser.ggs', line 58
@@ -6438,17 +6478,17 @@ static const cProductionNameDescriptor gProductionNames_goil_grammar [136] = {
 static const int16_t gProductionIndexes_goil_grammar [136] = {
 0, // index 0 : <implementation_definition>, in file 'implementation_parser.ggs', line 55
 7, // index 1 : <start>, in file 'goil_syntax.ggs', line 38
-10, // index 2 : <file>, in file 'goil_syntax.ggs', line 104
-12, // index 3 : <sign>, in file 'goil_syntax.ggs', line 112
-14, // index 4 : <description>, in file 'goil_syntax.ggs', line 125
-16, // index 5 : <OIL_version>, in file 'goil_syntax.ggs', line 149
-22, // index 6 : <application_definition>, in file 'goil_syntax.ggs', line 156
-30, // index 7 : <object_definition_list>, in file 'goil_syntax.ggs', line 165
-32, // index 8 : <boolean>, in file 'goil_syntax.ggs', line 208
-34, // index 9 : <oil_declaration_list>, in file 'goil_syntax.ggs', line 218
-36, // index 10 : <oil_declaration>, in file 'goil_syntax.ggs', line 227
-40, // index 11 : <include_file_level>, in file 'goil_syntax.ggs', line 400
-43, // index 12 : <include_cpu_level>, in file 'goil_syntax.ggs', line 412
+10, // index 2 : <file>, in file 'goil_syntax.ggs', line 111
+12, // index 3 : <sign>, in file 'goil_syntax.ggs', line 127
+14, // index 4 : <description>, in file 'goil_syntax.ggs', line 140
+16, // index 5 : <OIL_version>, in file 'goil_syntax.ggs', line 164
+22, // index 6 : <application_definition>, in file 'goil_syntax.ggs', line 171
+30, // index 7 : <object_definition_list>, in file 'goil_syntax.ggs', line 185
+32, // index 8 : <boolean>, in file 'goil_syntax.ggs', line 233
+34, // index 9 : <oil_declaration_list>, in file 'goil_syntax.ggs', line 243
+36, // index 10 : <oil_declaration>, in file 'goil_syntax.ggs', line 252
+40, // index 11 : <include_file_level>, in file 'goil_syntax.ggs', line 425
+43, // index 12 : <include_cpu_level>, in file 'goil_syntax.ggs', line 442
 46, // index 13 : <implementation_objects>, in file 'implementation_parser.ggs', line 86
 50, // index 14 : <implementation_list>, in file 'implementation_parser.ggs', line 131
 54, // index 15 : <implementation_type>, in file 'implementation_parser.ggs', line 159
@@ -6468,41 +6508,41 @@ static const int16_t gProductionIndexes_goil_grammar [136] = {
 111, // index 29 : <multiple>, in file 'implementation_parser.ggs', line 503
 113, // index 30 : <identifier_or_attribute>, in file 'implementation_parser.ggs', line 513
 115, // index 31 : <identifier_or_enum_value>, in file 'implementation_parser.ggs', line 518
-117, // index 32 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 105
-118, // index 33 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 105
-121, // index 34 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 105
-124, // index 35 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 105
-127, // index 36 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 113
-129, // index 37 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 113
-131, // index 38 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 113
-132, // index 39 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 126
-133, // index 40 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 126
-137, // index 41 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 133
-138, // index 42 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 133
-141, // index 43 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 166
-142, // index 44 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 166
-151, // index 45 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 166
-154, // index 46 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 209
-156, // index 47 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 209
-158, // index 48 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 221
-159, // index 49 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 221
-162, // index 50 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 244
-165, // index 51 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 244
-171, // index 52 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 246
-175, // index 53 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 246
-178, // index 54 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 246
-182, // index 55 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 246
-185, // index 56 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 246
-188, // index 57 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 267
-192, // index 58 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 267
-193, // index 59 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 284
-196, // index 60 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 284
-199, // index 61 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 315
-203, // index 62 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 315
-204, // index 63 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 403
-206, // index 64 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 403
-208, // index 65 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 415
-210, // index 66 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 415
+117, // index 32 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 120
+118, // index 33 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 120
+121, // index 34 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 120
+124, // index 35 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 120
+127, // index 36 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 128
+129, // index 37 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 128
+131, // index 38 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 128
+132, // index 39 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 141
+133, // index 40 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 141
+137, // index 41 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 148
+138, // index 42 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 148
+141, // index 43 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 191
+142, // index 44 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 191
+151, // index 45 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 191
+154, // index 46 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 234
+156, // index 47 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 234
+158, // index 48 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 246
+159, // index 49 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 246
+162, // index 50 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 269
+165, // index 51 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 269
+171, // index 52 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
+175, // index 53 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
+178, // index 54 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
+182, // index 55 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
+185, // index 56 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
+188, // index 57 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 292
+192, // index 58 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 292
+193, // index 59 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 309
+196, // index 60 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 309
+199, // index 61 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 340
+203, // index 62 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 340
+204, // index 63 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 433
+206, // index 64 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 433
+208, // index 65 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 450
+210, // index 66 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 450
 212, // index 67 : <select_implementation_5F_parser_0>, in file 'implementation_parser.ggs', line 58
 213, // index 68 : <select_implementation_5F_parser_0>, in file 'implementation_parser.ggs', line 58
 217, // index 69 : <select_implementation_5F_parser_1>, in file 'implementation_parser.ggs', line 93
@@ -7127,8 +7167,10 @@ void cGrammar_goil_5F_grammar::nt_file_parse (C_Lexique_goil_5F_lexique * inLexi
 
 void cGrammar_goil_5F_grammar::nt_file_ (GALGAS_implementation & parameter_1,
                                 GALGAS_applicationDefinition & parameter_2,
+                                GALGAS_string & parameter_3,
+                                const GALGAS_bool parameter_4,
                                 C_Lexique_goil_5F_lexique * inLexique) {
-  rule_goil_5F_syntax_file_i1_(parameter_1, parameter_2, inLexique) ;
+  rule_goil_5F_syntax_file_i1_(parameter_1, parameter_2, parameter_3, parameter_4, inLexique) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -7189,8 +7231,10 @@ void cGrammar_goil_5F_grammar::nt_application_5F_definition_parse (C_Lexique_goi
 
 void cGrammar_goil_5F_grammar::nt_application_5F_definition_ (const GALGAS_implementation parameter_1,
                                 GALGAS_applicationDefinition & parameter_2,
+                                GALGAS_string & parameter_3,
+                                const GALGAS_bool parameter_4,
                                 C_Lexique_goil_5F_lexique * inLexique) {
-  rule_goil_5F_syntax_application_5F_definition_i5_(parameter_1, parameter_2, inLexique) ;
+  rule_goil_5F_syntax_application_5F_definition_i5_(parameter_1, parameter_2, parameter_3, parameter_4, inLexique) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -7205,8 +7249,10 @@ void cGrammar_goil_5F_grammar::nt_object_5F_definition_5F_list_parse (C_Lexique_
 
 void cGrammar_goil_5F_grammar::nt_object_5F_definition_5F_list_ (const GALGAS_implementation parameter_1,
                                 GALGAS_objectsMap & parameter_2,
+                                GALGAS_string & parameter_3,
+                                const GALGAS_bool parameter_4,
                                 C_Lexique_goil_5F_lexique * inLexique) {
-  rule_goil_5F_syntax_object_5F_definition_5F_list_i6_(parameter_1, parameter_2, inLexique) ;
+  rule_goil_5F_syntax_object_5F_definition_5F_list_i6_(parameter_1, parameter_2, parameter_3, parameter_4, inLexique) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -7268,8 +7314,10 @@ void cGrammar_goil_5F_grammar::nt_include_5F_file_5F_level_parse (C_Lexique_goil
 
 void cGrammar_goil_5F_grammar::nt_include_5F_file_5F_level_ (GALGAS_implementation & parameter_1,
                                 GALGAS_applicationDefinition & parameter_2,
+                                GALGAS_string & parameter_3,
+                                const GALGAS_bool parameter_4,
                                 C_Lexique_goil_5F_lexique * inLexique) {
-  rule_goil_5F_syntax_include_5F_file_5F_level_i10_(parameter_1, parameter_2, inLexique) ;
+  rule_goil_5F_syntax_include_5F_file_5F_level_i10_(parameter_1, parameter_2, parameter_3, parameter_4, inLexique) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -7284,8 +7332,10 @@ void cGrammar_goil_5F_grammar::nt_include_5F_cpu_5F_level_parse (C_Lexique_goil_
 
 void cGrammar_goil_5F_grammar::nt_include_5F_cpu_5F_level_ (const GALGAS_implementation parameter_1,
                                 GALGAS_objectsMap & parameter_2,
+                                GALGAS_string & parameter_3,
+                                const GALGAS_bool parameter_4,
                                 C_Lexique_goil_5F_lexique * inLexique) {
-  rule_goil_5F_syntax_include_5F_cpu_5F_level_i11_(parameter_1, parameter_2, inLexique) ;
+  rule_goil_5F_syntax_include_5F_cpu_5F_level_i11_(parameter_1, parameter_2, parameter_3, parameter_4, inLexique) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -9884,273 +9934,273 @@ void routine_setVariableInPath (GALGAS_TvarPath inArgument_path,
   GALGAS_lstring var_key ;
   GALGAS_lsint var_idx ;
   {
-  inArgument_path.modifier_popFirst (var_varName, var_key, var_idx, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1330)) ;
+  inArgument_path.modifier_popFirst (var_varName, var_key, var_idx, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1340)) ;
   }
-  const enumGalgasBool test_0 = ioArgument_ioFieldMap.reader_hasKey (var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1332)) COMMA_SOURCE_FILE ("template_parser.galgas", 1332)).boolEnum () ;
+  const enumGalgasBool test_0 = ioArgument_ioFieldMap.reader_hasKey (var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1342)) COMMA_SOURCE_FILE ("template_parser.galgas", 1342)).boolEnum () ;
   if (kBoolTrue == test_0) {
     GALGAS_Ttype var_fieldType ;
     GALGAS_Tvalue var_fieldValue ;
-    ioArgument_ioFieldMap.method_searchKey (var_varName, var_fieldType, var_fieldValue, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1335)) ;
-    const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, var_fieldType.objectCompare (GALGAS_Ttype::constructor_mapType (SOURCE_FILE ("template_parser.galgas", 1336)))).boolEnum () ;
+    ioArgument_ioFieldMap.method_searchKey (var_varName, var_fieldType, var_fieldValue, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1345)) ;
+    const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, var_fieldType.objectCompare (GALGAS_Ttype::constructor_mapType (SOURCE_FILE ("template_parser.galgas", 1346)))).boolEnum () ;
     if (kBoolTrue == test_1) {
-      const enumGalgasBool test_2 = GALGAS_bool (kIsNotEqual, var_key.reader_string (SOURCE_FILE ("template_parser.galgas", 1338)).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+      const enumGalgasBool test_2 = GALGAS_bool (kIsNotEqual, var_key.reader_string (SOURCE_FILE ("template_parser.galgas", 1348)).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
       if (kBoolTrue == test_2) {
-        GALGAS_TfieldMap var_items = var_fieldValue.reader_mStructValue (SOURCE_FILE ("template_parser.galgas", 1340)) ;
-        const enumGalgasBool test_3 = var_items.reader_hasKey (var_key.reader_string (SOURCE_FILE ("template_parser.galgas", 1341)) COMMA_SOURCE_FILE ("template_parser.galgas", 1341)).boolEnum () ;
+        GALGAS_TfieldMap var_items = var_fieldValue.reader_mStructValue (SOURCE_FILE ("template_parser.galgas", 1350)) ;
+        const enumGalgasBool test_3 = var_items.reader_hasKey (var_key.reader_string (SOURCE_FILE ("template_parser.galgas", 1351)) COMMA_SOURCE_FILE ("template_parser.galgas", 1351)).boolEnum () ;
         if (kBoolTrue == test_3) {
-          const enumGalgasBool test_4 = GALGAS_bool (kIsEqual, inArgument_path.reader_length (SOURCE_FILE ("template_parser.galgas", 1342)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+          const enumGalgasBool test_4 = GALGAS_bool (kIsEqual, inArgument_path.reader_length (SOURCE_FILE ("template_parser.galgas", 1352)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
           if (kBoolTrue == test_4) {
             {
-            var_items.modifier_setMTypeForKey (constinArgument_expressionType, var_key.reader_string (SOURCE_FILE ("template_parser.galgas", 1343)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1343)) ;
+            var_items.modifier_setMTypeForKey (constinArgument_expressionType, var_key.reader_string (SOURCE_FILE ("template_parser.galgas", 1353)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1353)) ;
             }
             {
-            var_items.modifier_setMValueForKey (constinArgument_enumeratedValue, var_key.reader_string (SOURCE_FILE ("template_parser.galgas", 1344)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1344)) ;
+            var_items.modifier_setMValueForKey (constinArgument_enumeratedValue, var_key.reader_string (SOURCE_FILE ("template_parser.galgas", 1354)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1354)) ;
             }
           }else if (kBoolFalse == test_4) {
             GALGAS_Ttype var_itemType ;
             GALGAS_Tvalue var_itemValue ;
-            var_items.method_searchKey (var_key, var_itemType, var_itemValue, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1348)) ;
-            GALGAS_TfieldMap var_nextFieldMap = var_itemValue.reader_mStructValue (SOURCE_FILE ("template_parser.galgas", 1349)) ;
+            var_items.method_searchKey (var_key, var_itemType, var_itemValue, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1358)) ;
+            GALGAS_TfieldMap var_nextFieldMap = var_itemValue.reader_mStructValue (SOURCE_FILE ("template_parser.galgas", 1359)) ;
             {
-            routine_setVariableInPath (inArgument_path, var_nextFieldMap, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1350)) ;
+            routine_setVariableInPath (inArgument_path, var_nextFieldMap, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1360)) ;
             }
             var_itemValue.mAttribute_mStructValue = var_nextFieldMap ;
-            var_itemType = GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1352)) ;
+            var_itemType = GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1362)) ;
             {
-            var_items.modifier_setMTypeForKey (var_itemType, var_key.reader_string (SOURCE_FILE ("template_parser.galgas", 1353)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1353)) ;
+            var_items.modifier_setMTypeForKey (var_itemType, var_key.reader_string (SOURCE_FILE ("template_parser.galgas", 1363)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1363)) ;
             }
             {
-            var_items.modifier_setMValueForKey (var_itemValue, var_key.reader_string (SOURCE_FILE ("template_parser.galgas", 1354)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1354)) ;
+            var_items.modifier_setMValueForKey (var_itemValue, var_key.reader_string (SOURCE_FILE ("template_parser.galgas", 1364)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1364)) ;
             }
           }
         }else if (kBoolFalse == test_3) {
-          const enumGalgasBool test_5 = GALGAS_bool (kIsEqual, inArgument_path.reader_length (SOURCE_FILE ("template_parser.galgas", 1357)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+          const enumGalgasBool test_5 = GALGAS_bool (kIsEqual, inArgument_path.reader_length (SOURCE_FILE ("template_parser.galgas", 1367)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
           if (kBoolTrue == test_5) {
             {
-            var_items.modifier_insertKey (var_key, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1358)) ;
+            var_items.modifier_insertKey (var_key, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1368)) ;
             }
           }else if (kBoolFalse == test_5) {
-            GALGAS_TfieldMap var_nextFieldMap = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1360)) ;
+            GALGAS_TfieldMap var_nextFieldMap = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1370)) ;
             {
-            routine_setVariableInPath (inArgument_path, var_nextFieldMap, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1361)) ;
+            routine_setVariableInPath (inArgument_path, var_nextFieldMap, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1371)) ;
             }
             {
-            var_items.modifier_insertKey (var_key, GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1362)), function_valueWithStruct (var_nextFieldMap, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1362)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1362)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1362)) ;
+            var_items.modifier_insertKey (var_key, GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1372)), function_valueWithStruct (var_nextFieldMap, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1372)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1372)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1372)) ;
             }
           }
         }
         var_fieldValue.mAttribute_mStructValue = var_items ;
         {
-        ioArgument_ioFieldMap.modifier_setMTypeForKey (var_fieldType, var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1366)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1366)) ;
+        ioArgument_ioFieldMap.modifier_setMTypeForKey (var_fieldType, var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1376)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1376)) ;
         }
         {
-        ioArgument_ioFieldMap.modifier_setMValueForKey (var_fieldValue, var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1367)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1367)) ;
+        ioArgument_ioFieldMap.modifier_setMValueForKey (var_fieldValue, var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1377)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1377)) ;
         }
       }else if (kBoolFalse == test_2) {
-        const enumGalgasBool test_6 = GALGAS_bool (kIsEqual, inArgument_path.reader_length (SOURCE_FILE ("template_parser.galgas", 1369)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+        const enumGalgasBool test_6 = GALGAS_bool (kIsEqual, inArgument_path.reader_length (SOURCE_FILE ("template_parser.galgas", 1379)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
         if (kBoolTrue == test_6) {
           {
-          ioArgument_ioFieldMap.modifier_setMTypeForKey (constinArgument_expressionType, var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1371)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1371)) ;
+          ioArgument_ioFieldMap.modifier_setMTypeForKey (constinArgument_expressionType, var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1381)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1381)) ;
           }
           {
-          ioArgument_ioFieldMap.modifier_setMValueForKey (constinArgument_enumeratedValue, var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1372)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1372)) ;
+          ioArgument_ioFieldMap.modifier_setMValueForKey (constinArgument_enumeratedValue, var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1382)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1382)) ;
           }
         }else if (kBoolFalse == test_6) {
-          GALGAS_TfieldMap var_nextFieldMap = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1375)) ;
+          GALGAS_TfieldMap var_nextFieldMap = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1385)) ;
           {
-          routine_setVariableInPath (inArgument_path, var_nextFieldMap, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1376)) ;
+          routine_setVariableInPath (inArgument_path, var_nextFieldMap, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1386)) ;
           }
           {
-          ioArgument_ioFieldMap.modifier_setMTypeForKey (GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1377)), var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1377)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1377)) ;
+          ioArgument_ioFieldMap.modifier_setMTypeForKey (GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1387)), var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1387)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1387)) ;
           }
           {
-          ioArgument_ioFieldMap.modifier_setMValueForKey (function_valueWithStruct (var_nextFieldMap, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1378)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1378)), var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1378)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1378)) ;
+          ioArgument_ioFieldMap.modifier_setMValueForKey (function_valueWithStruct (var_nextFieldMap, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1388)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1388)), var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1388)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1388)) ;
           }
         }
       }
     }else if (kBoolFalse == test_1) {
-      const enumGalgasBool test_7 = GALGAS_bool (kIsEqual, var_fieldType.objectCompare (GALGAS_Ttype::constructor_listType (SOURCE_FILE ("template_parser.galgas", 1381)))).boolEnum () ;
+      const enumGalgasBool test_7 = GALGAS_bool (kIsEqual, var_fieldType.objectCompare (GALGAS_Ttype::constructor_listType (SOURCE_FILE ("template_parser.galgas", 1391)))).boolEnum () ;
       if (kBoolTrue == test_7) {
-        const enumGalgasBool test_8 = GALGAS_bool (kIsNotEqual, var_idx.reader_sint (SOURCE_FILE ("template_parser.galgas", 1383)).objectCompare (GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1383)))).boolEnum () ;
+        const enumGalgasBool test_8 = GALGAS_bool (kIsNotEqual, var_idx.reader_sint (SOURCE_FILE ("template_parser.galgas", 1393)).objectCompare (GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1393)))).boolEnum () ;
         if (kBoolTrue == test_8) {
-          const enumGalgasBool test_9 = GALGAS_bool (kIsEqual, inArgument_path.reader_length (SOURCE_FILE ("template_parser.galgas", 1384)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+          const enumGalgasBool test_9 = GALGAS_bool (kIsEqual, inArgument_path.reader_length (SOURCE_FILE ("template_parser.galgas", 1394)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
           if (kBoolTrue == test_9) {
-            const enumGalgasBool test_10 = GALGAS_bool (kIsEqual, constinArgument_expressionType.objectCompare (GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1385)))).boolEnum () ;
+            const enumGalgasBool test_10 = GALGAS_bool (kIsEqual, constinArgument_expressionType.objectCompare (GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1395)))).boolEnum () ;
             if (kBoolTrue == test_10) {
-              GALGAS_TfieldMapList var_theList = var_fieldValue.reader_mMapListValue (SOURCE_FILE ("template_parser.galgas", 1387)) ;
+              GALGAS_TfieldMapList var_theList = var_fieldValue.reader_mMapListValue (SOURCE_FILE ("template_parser.galgas", 1397)) ;
               {
-              var_theList.modifier_setMMapAtIndex (constinArgument_enumeratedValue.reader_mStructValue (SOURCE_FILE ("template_parser.galgas", 1388)), var_idx.mAttribute_sint.reader_uint (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1388)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1388)) ;
+              var_theList.modifier_setMMapAtIndex (constinArgument_enumeratedValue.reader_mStructValue (SOURCE_FILE ("template_parser.galgas", 1398)), var_idx.mAttribute_sint.reader_uint (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1398)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1398)) ;
               }
               var_fieldValue.mAttribute_mMapListValue = var_theList ;
             }else if (kBoolFalse == test_10) {
               GALGAS_location location_11 (var_varName.reader_location (HERE)) ; // Implicit use of 'location' reader
-              inCompiler->emitSemanticError (location_11, GALGAS_string ("struct expression expected")  COMMA_SOURCE_FILE ("template_parser.galgas", 1392)) ;
+              inCompiler->emitSemanticError (location_11, GALGAS_string ("struct expression expected")  COMMA_SOURCE_FILE ("template_parser.galgas", 1402)) ;
             }
           }else if (kBoolFalse == test_9) {
-            GALGAS_TfieldMapList var_theList = var_fieldValue.reader_mMapListValue (SOURCE_FILE ("template_parser.galgas", 1396)) ;
-            GALGAS_TfieldMap var_nextFieldMap = var_theList.reader_mMapAtIndex (var_idx.mAttribute_sint.reader_uint (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1397)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1397)) ;
+            GALGAS_TfieldMapList var_theList = var_fieldValue.reader_mMapListValue (SOURCE_FILE ("template_parser.galgas", 1406)) ;
+            GALGAS_TfieldMap var_nextFieldMap = var_theList.reader_mMapAtIndex (var_idx.mAttribute_sint.reader_uint (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1407)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1407)) ;
             {
-            routine_setVariableInPath (inArgument_path, var_nextFieldMap, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1398)) ;
+            routine_setVariableInPath (inArgument_path, var_nextFieldMap, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1408)) ;
             }
             {
-            var_theList.modifier_setMMapAtIndex (var_nextFieldMap, var_idx.mAttribute_sint.reader_uint (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1399)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1399)) ;
+            var_theList.modifier_setMMapAtIndex (var_nextFieldMap, var_idx.mAttribute_sint.reader_uint (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1409)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1409)) ;
             }
             var_fieldValue.mAttribute_mMapListValue = var_theList ;
           }
           {
-          ioArgument_ioFieldMap.modifier_setMTypeForKey (var_fieldType, var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1402)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1402)) ;
+          ioArgument_ioFieldMap.modifier_setMTypeForKey (var_fieldType, var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1412)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1412)) ;
           }
           {
-          ioArgument_ioFieldMap.modifier_setMValueForKey (var_fieldValue, var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1403)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1403)) ;
+          ioArgument_ioFieldMap.modifier_setMValueForKey (var_fieldValue, var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1413)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1413)) ;
           }
         }else if (kBoolFalse == test_8) {
-          const enumGalgasBool test_12 = GALGAS_bool (kIsEqual, inArgument_path.reader_length (SOURCE_FILE ("template_parser.galgas", 1406)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+          const enumGalgasBool test_12 = GALGAS_bool (kIsEqual, inArgument_path.reader_length (SOURCE_FILE ("template_parser.galgas", 1416)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
           if (kBoolTrue == test_12) {
             {
-            ioArgument_ioFieldMap.modifier_setMTypeForKey (constinArgument_expressionType, var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1408)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1408)) ;
+            ioArgument_ioFieldMap.modifier_setMTypeForKey (constinArgument_expressionType, var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1418)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1418)) ;
             }
             {
-            ioArgument_ioFieldMap.modifier_setMValueForKey (constinArgument_enumeratedValue, var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1409)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1409)) ;
+            ioArgument_ioFieldMap.modifier_setMValueForKey (constinArgument_enumeratedValue, var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1419)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1419)) ;
             }
           }else if (kBoolFalse == test_12) {
-            GALGAS_TfieldMap var_nextFieldMap = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1412)) ;
+            GALGAS_TfieldMap var_nextFieldMap = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1422)) ;
             {
-            routine_setVariableInPath (inArgument_path, var_nextFieldMap, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1413)) ;
+            routine_setVariableInPath (inArgument_path, var_nextFieldMap, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1423)) ;
             }
             {
-            ioArgument_ioFieldMap.modifier_setMTypeForKey (GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1414)), var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1414)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1414)) ;
+            ioArgument_ioFieldMap.modifier_setMTypeForKey (GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1424)), var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1424)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1424)) ;
             }
             {
-            ioArgument_ioFieldMap.modifier_setMValueForKey (function_valueWithStruct (var_nextFieldMap, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1415)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1415)), var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1415)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1415)) ;
+            ioArgument_ioFieldMap.modifier_setMValueForKey (function_valueWithStruct (var_nextFieldMap, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1425)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1425)), var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1425)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1425)) ;
             }
           }
         }
       }else if (kBoolFalse == test_7) {
-        const enumGalgasBool test_13 = GALGAS_bool (kIsEqual, var_fieldType.objectCompare (GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1418)))).boolEnum () ;
+        const enumGalgasBool test_13 = GALGAS_bool (kIsEqual, var_fieldType.objectCompare (GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1428)))).boolEnum () ;
         if (kBoolTrue == test_13) {
-          const enumGalgasBool test_14 = GALGAS_bool (kIsEqual, inArgument_path.reader_length (SOURCE_FILE ("template_parser.galgas", 1419)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+          const enumGalgasBool test_14 = GALGAS_bool (kIsEqual, inArgument_path.reader_length (SOURCE_FILE ("template_parser.galgas", 1429)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
           if (kBoolTrue == test_14) {
             {
-            ioArgument_ioFieldMap.modifier_setMTypeForKey (constinArgument_expressionType, var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1421)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1421)) ;
+            ioArgument_ioFieldMap.modifier_setMTypeForKey (constinArgument_expressionType, var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1431)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1431)) ;
             }
             {
-            ioArgument_ioFieldMap.modifier_setMValueForKey (constinArgument_enumeratedValue, var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1422)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1422)) ;
+            ioArgument_ioFieldMap.modifier_setMValueForKey (constinArgument_enumeratedValue, var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1432)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1432)) ;
             }
           }else if (kBoolFalse == test_14) {
-            GALGAS_TfieldMap var_nextFieldMap = var_fieldValue.reader_mStructValue (SOURCE_FILE ("template_parser.galgas", 1425)) ;
+            GALGAS_TfieldMap var_nextFieldMap = var_fieldValue.reader_mStructValue (SOURCE_FILE ("template_parser.galgas", 1435)) ;
             {
-            routine_setVariableInPath (inArgument_path, var_nextFieldMap, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1426)) ;
+            routine_setVariableInPath (inArgument_path, var_nextFieldMap, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1436)) ;
             }
             var_fieldValue.mAttribute_mStructValue = var_nextFieldMap ;
             {
-            ioArgument_ioFieldMap.modifier_setMValueForKey (var_fieldValue, var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1429)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1429)) ;
+            ioArgument_ioFieldMap.modifier_setMValueForKey (var_fieldValue, var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1439)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1439)) ;
             }
           }
         }else if (kBoolFalse == test_13) {
-          const enumGalgasBool test_15 = GALGAS_bool (kIsEqual, var_key.reader_string (SOURCE_FILE ("template_parser.galgas", 1432)).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+          const enumGalgasBool test_15 = GALGAS_bool (kIsEqual, var_key.reader_string (SOURCE_FILE ("template_parser.galgas", 1442)).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
           if (kBoolTrue == test_15) {
-            const enumGalgasBool test_16 = GALGAS_bool (kIsEqual, var_idx.reader_sint (SOURCE_FILE ("template_parser.galgas", 1433)).objectCompare (GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1433)))).boolEnum () ;
+            const enumGalgasBool test_16 = GALGAS_bool (kIsEqual, var_idx.reader_sint (SOURCE_FILE ("template_parser.galgas", 1443)).objectCompare (GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1443)))).boolEnum () ;
             if (kBoolTrue == test_16) {
-              const enumGalgasBool test_17 = GALGAS_bool (kIsEqual, inArgument_path.reader_length (SOURCE_FILE ("template_parser.galgas", 1434)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+              const enumGalgasBool test_17 = GALGAS_bool (kIsEqual, inArgument_path.reader_length (SOURCE_FILE ("template_parser.galgas", 1444)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
               if (kBoolTrue == test_17) {
                 {
-                ioArgument_ioFieldMap.modifier_setMTypeForKey (constinArgument_expressionType, var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1436)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1436)) ;
+                ioArgument_ioFieldMap.modifier_setMTypeForKey (constinArgument_expressionType, var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1446)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1446)) ;
                 }
                 {
-                ioArgument_ioFieldMap.modifier_setMValueForKey (constinArgument_enumeratedValue, var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1437)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1437)) ;
+                ioArgument_ioFieldMap.modifier_setMValueForKey (constinArgument_enumeratedValue, var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1447)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1447)) ;
                 }
               }else if (kBoolFalse == test_17) {
-                GALGAS_TfieldMap var_nextFieldMap = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1439)) ;
+                GALGAS_TfieldMap var_nextFieldMap = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1449)) ;
                 {
-                routine_setVariableInPath (inArgument_path, var_nextFieldMap, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1440)) ;
+                routine_setVariableInPath (inArgument_path, var_nextFieldMap, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1450)) ;
                 }
                 {
-                ioArgument_ioFieldMap.modifier_setMTypeForKey (GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1441)), var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1441)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1441)) ;
+                ioArgument_ioFieldMap.modifier_setMTypeForKey (GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1451)), var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1451)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1451)) ;
                 }
                 {
-                ioArgument_ioFieldMap.modifier_setMValueForKey (function_valueWithStruct (var_nextFieldMap, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1442)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1442)), var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1442)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1442)) ;
+                ioArgument_ioFieldMap.modifier_setMValueForKey (function_valueWithStruct (var_nextFieldMap, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1452)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1452)), var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1452)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1452)) ;
                 }
               }
             }else if (kBoolFalse == test_16) {
               GALGAS_location location_18 (var_varName.reader_location (HERE)) ; // Implicit use of 'location' reader
-              inCompiler->emitSemanticError (location_18, GALGAS_string ("A list must exist before setting one of its item")  COMMA_SOURCE_FILE ("template_parser.galgas", 1446)) ;
+              inCompiler->emitSemanticError (location_18, GALGAS_string ("A list must exist before setting one of its item")  COMMA_SOURCE_FILE ("template_parser.galgas", 1456)) ;
             }
           }else if (kBoolFalse == test_15) {
-            GALGAS_TfieldMap var_newMap = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1450)) ;
-            const enumGalgasBool test_19 = GALGAS_bool (kIsEqual, inArgument_path.reader_length (SOURCE_FILE ("template_parser.galgas", 1451)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+            GALGAS_TfieldMap var_newMap = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1460)) ;
+            const enumGalgasBool test_19 = GALGAS_bool (kIsEqual, inArgument_path.reader_length (SOURCE_FILE ("template_parser.galgas", 1461)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
             if (kBoolTrue == test_19) {
               {
-              var_newMap.modifier_insertKey (var_key, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1452)) ;
+              var_newMap.modifier_insertKey (var_key, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1462)) ;
               }
             }else if (kBoolFalse == test_19) {
-              GALGAS_TfieldMap var_nextFieldMap = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1454)) ;
+              GALGAS_TfieldMap var_nextFieldMap = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1464)) ;
               {
-              routine_setVariableInPath (inArgument_path, var_nextFieldMap, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1455)) ;
+              routine_setVariableInPath (inArgument_path, var_nextFieldMap, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1465)) ;
               }
               {
-              var_newMap.modifier_insertKey (var_key, GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1456)), function_valueWithStruct (var_nextFieldMap, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1456)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1456)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1456)) ;
+              var_newMap.modifier_insertKey (var_key, GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1466)), function_valueWithStruct (var_nextFieldMap, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1466)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1466)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1466)) ;
               }
             }
             {
-            ioArgument_ioFieldMap.modifier_setMTypeForKey (GALGAS_Ttype::constructor_mapType (SOURCE_FILE ("template_parser.galgas", 1458)), var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1458)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1458)) ;
+            ioArgument_ioFieldMap.modifier_setMTypeForKey (GALGAS_Ttype::constructor_mapType (SOURCE_FILE ("template_parser.galgas", 1468)), var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1468)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1468)) ;
             }
             {
-            ioArgument_ioFieldMap.modifier_setMValueForKey (function_valueWithMap (var_newMap, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1459)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1459)), var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1459)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1459)) ;
+            ioArgument_ioFieldMap.modifier_setMValueForKey (function_valueWithMap (var_newMap, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1469)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1469)), var_varName.reader_string (SOURCE_FILE ("template_parser.galgas", 1469)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1469)) ;
             }
           }
         }
       }
     }
   }else if (kBoolFalse == test_0) {
-    const enumGalgasBool test_20 = GALGAS_bool (kIsEqual, inArgument_path.reader_length (SOURCE_FILE ("template_parser.galgas", 1464)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+    const enumGalgasBool test_20 = GALGAS_bool (kIsEqual, inArgument_path.reader_length (SOURCE_FILE ("template_parser.galgas", 1474)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
     if (kBoolTrue == test_20) {
-      const enumGalgasBool test_21 = GALGAS_bool (kIsEqual, var_key.reader_string (SOURCE_FILE ("template_parser.galgas", 1465)).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+      const enumGalgasBool test_21 = GALGAS_bool (kIsEqual, var_key.reader_string (SOURCE_FILE ("template_parser.galgas", 1475)).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
       if (kBoolTrue == test_21) {
-        const enumGalgasBool test_22 = GALGAS_bool (kIsEqual, var_idx.reader_sint (SOURCE_FILE ("template_parser.galgas", 1466)).objectCompare (GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1466)))).boolEnum () ;
+        const enumGalgasBool test_22 = GALGAS_bool (kIsEqual, var_idx.reader_sint (SOURCE_FILE ("template_parser.galgas", 1476)).objectCompare (GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1476)))).boolEnum () ;
         if (kBoolTrue == test_22) {
           {
-          ioArgument_ioFieldMap.modifier_insertKey (var_varName, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1467)) ;
+          ioArgument_ioFieldMap.modifier_insertKey (var_varName, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1477)) ;
           }
         }else if (kBoolFalse == test_22) {
           GALGAS_location location_23 (var_varName.reader_location (HERE)) ; // Implicit use of 'location' reader
-          inCompiler->emitSemanticError (location_23, GALGAS_string ("A list must exist before setting one of its item")  COMMA_SOURCE_FILE ("template_parser.galgas", 1470)) ;
+          inCompiler->emitSemanticError (location_23, GALGAS_string ("A list must exist before setting one of its item")  COMMA_SOURCE_FILE ("template_parser.galgas", 1480)) ;
         }
       }else if (kBoolFalse == test_21) {
-        GALGAS_TfieldMap var_newMap = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1473)) ;
+        GALGAS_TfieldMap var_newMap = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1483)) ;
         {
-        var_newMap.modifier_insertKey (var_key, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1474)) ;
+        var_newMap.modifier_insertKey (var_key, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1484)) ;
         }
         {
-        ioArgument_ioFieldMap.modifier_insertKey (var_varName, GALGAS_Ttype::constructor_mapType (SOURCE_FILE ("template_parser.galgas", 1475)), function_valueWithMap (var_newMap, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1475)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1475)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1475)) ;
+        ioArgument_ioFieldMap.modifier_insertKey (var_varName, GALGAS_Ttype::constructor_mapType (SOURCE_FILE ("template_parser.galgas", 1485)), function_valueWithMap (var_newMap, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1485)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1485)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1485)) ;
         }
       }
     }else if (kBoolFalse == test_20) {
-      const enumGalgasBool test_24 = GALGAS_bool (kIsEqual, var_key.reader_string (SOURCE_FILE ("template_parser.galgas", 1478)).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+      const enumGalgasBool test_24 = GALGAS_bool (kIsEqual, var_key.reader_string (SOURCE_FILE ("template_parser.galgas", 1488)).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
       if (kBoolTrue == test_24) {
-        const enumGalgasBool test_25 = GALGAS_bool (kIsEqual, var_idx.reader_sint (SOURCE_FILE ("template_parser.galgas", 1479)).objectCompare (GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1479)))).boolEnum () ;
+        const enumGalgasBool test_25 = GALGAS_bool (kIsEqual, var_idx.reader_sint (SOURCE_FILE ("template_parser.galgas", 1489)).objectCompare (GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1489)))).boolEnum () ;
         if (kBoolTrue == test_25) {
-          GALGAS_TfieldMap var_nextFieldMap = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1480)) ;
+          GALGAS_TfieldMap var_nextFieldMap = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1490)) ;
           {
-          routine_setVariableInPath (inArgument_path, var_nextFieldMap, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1481)) ;
+          routine_setVariableInPath (inArgument_path, var_nextFieldMap, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1491)) ;
           }
           {
-          ioArgument_ioFieldMap.modifier_insertKey (var_varName, GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1482)), function_valueWithStruct (var_nextFieldMap, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1482)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1482)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1482)) ;
+          ioArgument_ioFieldMap.modifier_insertKey (var_varName, GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1492)), function_valueWithStruct (var_nextFieldMap, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1492)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1492)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1492)) ;
           }
         }else if (kBoolFalse == test_25) {
           GALGAS_location location_26 (var_varName.reader_location (HERE)) ; // Implicit use of 'location' reader
-          inCompiler->emitSemanticError (location_26, GALGAS_string ("A list must exist before setting one of its item")  COMMA_SOURCE_FILE ("template_parser.galgas", 1485)) ;
+          inCompiler->emitSemanticError (location_26, GALGAS_string ("A list must exist before setting one of its item")  COMMA_SOURCE_FILE ("template_parser.galgas", 1495)) ;
         }
       }else if (kBoolFalse == test_24) {
-        GALGAS_TfieldMap var_newMap = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1488)) ;
-        GALGAS_TfieldMap var_nextFieldMap = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1489)) ;
+        GALGAS_TfieldMap var_newMap = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1498)) ;
+        GALGAS_TfieldMap var_nextFieldMap = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1499)) ;
         {
-        routine_setVariableInPath (inArgument_path, var_nextFieldMap, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1490)) ;
+        routine_setVariableInPath (inArgument_path, var_nextFieldMap, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1500)) ;
         }
         {
-        var_newMap.modifier_insertKey (var_key, GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1491)), function_valueWithStruct (var_nextFieldMap, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1491)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1491)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1491)) ;
+        var_newMap.modifier_insertKey (var_key, GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1501)), function_valueWithStruct (var_nextFieldMap, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1501)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1501)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1501)) ;
         }
         {
-        ioArgument_ioFieldMap.modifier_insertKey (var_varName, GALGAS_Ttype::constructor_mapType (SOURCE_FILE ("template_parser.galgas", 1492)), function_valueWithMap (var_newMap, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1492)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1492)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1492)) ;
+        ioArgument_ioFieldMap.modifier_insertKey (var_varName, GALGAS_Ttype::constructor_mapType (SOURCE_FILE ("template_parser.galgas", 1502)), function_valueWithMap (var_newMap, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1502)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1502)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1502)) ;
         }
       }
     }
@@ -10169,76 +10219,76 @@ void routine_printVariable (GALGAS_uint inArgument_indent,
                             const GALGAS_Tvalue constinArgument_variableValue,
                             C_Compiler * inCompiler
                             COMMA_UNUSED_LOCATION_ARGS) {
-  inArgument_indent = inArgument_indent.add_operation (GALGAS_uint ((uint32_t) 4U), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1503)) ;
-  GALGAS_string var_offset = GALGAS_string::constructor_stringWithSequenceOfCharacters (GALGAS_char (TO_UNICODE (32)), inArgument_indent  COMMA_SOURCE_FILE ("template_parser.galgas", 1504)) ;
+  inArgument_indent = inArgument_indent.add_operation (GALGAS_uint ((uint32_t) 4U), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1513)) ;
+  GALGAS_string var_offset = GALGAS_string::constructor_stringWithSequenceOfCharacters (GALGAS_char (TO_UNICODE (32)), inArgument_indent  COMMA_SOURCE_FILE ("template_parser.galgas", 1514)) ;
   switch (constinArgument_variableType.enumValue ()) {
   case GALGAS_Ttype::kNotBuilt:
     break ;
   case GALGAS_Ttype::kEnum_boolType:
     {
-      const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, constinArgument_variableValue.reader_mInt_36__34_Value (SOURCE_FILE ("template_parser.galgas", 1507)).objectCompare (GALGAS_sint_36__34_ ((int64_t) 1LL))).boolEnum () ;
+      const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, constinArgument_variableValue.reader_mInt_36__34_Value (SOURCE_FILE ("template_parser.galgas", 1517)).objectCompare (GALGAS_sint_36__34_ ((int64_t) 1LL))).boolEnum () ;
       if (kBoolTrue == test_0) {
-        inCompiler->printMessage (var_offset.add_operation (GALGAS_string ("true\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1508))  COMMA_SOURCE_FILE ("template_parser.galgas", 1508)) ;
+        inCompiler->printMessage (var_offset.add_operation (GALGAS_string ("true\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1518))  COMMA_SOURCE_FILE ("template_parser.galgas", 1518)) ;
       }else if (kBoolFalse == test_0) {
-        inCompiler->printMessage (var_offset.add_operation (GALGAS_string ("false\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1510))  COMMA_SOURCE_FILE ("template_parser.galgas", 1510)) ;
+        inCompiler->printMessage (var_offset.add_operation (GALGAS_string ("false\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1520))  COMMA_SOURCE_FILE ("template_parser.galgas", 1520)) ;
       }
     }
     break ;
   case GALGAS_Ttype::kEnum_intType:
     {
-      inCompiler->printMessage (var_offset.add_operation (constinArgument_variableValue.reader_mInt_36__34_Value (SOURCE_FILE ("template_parser.galgas", 1513)).reader_string (SOURCE_FILE ("template_parser.galgas", 1513)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1513)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1513))  COMMA_SOURCE_FILE ("template_parser.galgas", 1513)) ;
+      inCompiler->printMessage (var_offset.add_operation (constinArgument_variableValue.reader_mInt_36__34_Value (SOURCE_FILE ("template_parser.galgas", 1523)).reader_string (SOURCE_FILE ("template_parser.galgas", 1523)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1523)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1523))  COMMA_SOURCE_FILE ("template_parser.galgas", 1523)) ;
     }
     break ;
   case GALGAS_Ttype::kEnum_floatType:
     {
-      inCompiler->printMessage (var_offset.add_operation (constinArgument_variableValue.reader_mFloatValue (SOURCE_FILE ("template_parser.galgas", 1515)).reader_string (SOURCE_FILE ("template_parser.galgas", 1515)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1515)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1515))  COMMA_SOURCE_FILE ("template_parser.galgas", 1515)) ;
+      inCompiler->printMessage (var_offset.add_operation (constinArgument_variableValue.reader_mFloatValue (SOURCE_FILE ("template_parser.galgas", 1525)).reader_string (SOURCE_FILE ("template_parser.galgas", 1525)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1525)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1525))  COMMA_SOURCE_FILE ("template_parser.galgas", 1525)) ;
     }
     break ;
   case GALGAS_Ttype::kEnum_stringType:
     {
-      inCompiler->printMessage (var_offset.add_operation (GALGAS_string ("\""), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1517)).add_operation (constinArgument_variableValue.reader_mStringValue (SOURCE_FILE ("template_parser.galgas", 1517)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1517)).add_operation (GALGAS_string ("\"\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1517))  COMMA_SOURCE_FILE ("template_parser.galgas", 1517)) ;
+      inCompiler->printMessage (var_offset.add_operation (GALGAS_string ("\""), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1527)).add_operation (constinArgument_variableValue.reader_mStringValue (SOURCE_FILE ("template_parser.galgas", 1527)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1527)).add_operation (GALGAS_string ("\"\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1527))  COMMA_SOURCE_FILE ("template_parser.galgas", 1527)) ;
     }
     break ;
   case GALGAS_Ttype::kEnum_enumType:
     {
-      inCompiler->printMessage (var_offset.add_operation (constinArgument_variableValue.reader_mStringValue (SOURCE_FILE ("template_parser.galgas", 1519)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1519)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1519))  COMMA_SOURCE_FILE ("template_parser.galgas", 1519)) ;
+      inCompiler->printMessage (var_offset.add_operation (constinArgument_variableValue.reader_mStringValue (SOURCE_FILE ("template_parser.galgas", 1529)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1529)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1529))  COMMA_SOURCE_FILE ("template_parser.galgas", 1529)) ;
     }
     break ;
   case GALGAS_Ttype::kEnum_listType:
     {
-      cEnumerator_TfieldMapList enumerator_45185 (constinArgument_variableValue.reader_mMapListValue (SOURCE_FILE ("template_parser.galgas", 1521)), kEnumeration_up) ;
-      GALGAS_uint index_45148 ((uint32_t) 0) ;
-      while (enumerator_45185.hasCurrentObject ()) {
-        inCompiler->printMessage (var_offset.add_operation (GALGAS_string ("item at "), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1522)).add_operation (index_45148.reader_string (SOURCE_FILE ("template_parser.galgas", 1522)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1522)).add_operation (GALGAS_string (":\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1522))  COMMA_SOURCE_FILE ("template_parser.galgas", 1522)) ;
+      cEnumerator_TfieldMapList enumerator_45548 (constinArgument_variableValue.reader_mMapListValue (SOURCE_FILE ("template_parser.galgas", 1531)), kEnumeration_up) ;
+      GALGAS_uint index_45511 ((uint32_t) 0) ;
+      while (enumerator_45548.hasCurrentObject ()) {
+        inCompiler->printMessage (var_offset.add_operation (GALGAS_string ("item at "), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1532)).add_operation (index_45511.reader_string (SOURCE_FILE ("template_parser.galgas", 1532)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1532)).add_operation (GALGAS_string (":\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1532))  COMMA_SOURCE_FILE ("template_parser.galgas", 1532)) ;
         {
-        routine_printVariable (inArgument_indent, GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1523)), GALGAS_Tvalue::constructor_new (GALGAS_sint_36__34_ ((int64_t) 0LL), GALGAS_double (0), GALGAS_string::makeEmptyString (), GALGAS_TfieldMapList::constructor_emptyList (SOURCE_FILE ("template_parser.galgas", 1523)), enumerator_45185.current_mMap (HERE), function_dummyFunction (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1523)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1523))  COMMA_SOURCE_FILE ("template_parser.galgas", 1523)), inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1523)) ;
+        routine_printVariable (inArgument_indent, GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1533)), GALGAS_Tvalue::constructor_new (GALGAS_sint_36__34_ ((int64_t) 0LL), GALGAS_double (0), GALGAS_string::makeEmptyString (), GALGAS_TfieldMapList::constructor_emptyList (SOURCE_FILE ("template_parser.galgas", 1533)), enumerator_45548.current_mMap (HERE), function_dummyFunction (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1533)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1533))  COMMA_SOURCE_FILE ("template_parser.galgas", 1533)), inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1533)) ;
         }
-        enumerator_45185.gotoNextObject () ;
-        index_45148.increment_operation (inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1521)) ;
+        enumerator_45548.gotoNextObject () ;
+        index_45511.increment_operation (inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1531)) ;
       }
     }
     break ;
   case GALGAS_Ttype::kEnum_mapType:
     {
-      cEnumerator_TfieldMap enumerator_45451 (constinArgument_variableValue.reader_mStructValue (SOURCE_FILE ("template_parser.galgas", 1526)), kEnumeration_up) ;
-      while (enumerator_45451.hasCurrentObject ()) {
-        inCompiler->printMessage (var_offset.add_operation (enumerator_45451.current_lkey (HERE).reader_string (SOURCE_FILE ("template_parser.galgas", 1527)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1527)).add_operation (GALGAS_string (":\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1527))  COMMA_SOURCE_FILE ("template_parser.galgas", 1527)) ;
+      cEnumerator_TfieldMap enumerator_45814 (constinArgument_variableValue.reader_mStructValue (SOURCE_FILE ("template_parser.galgas", 1536)), kEnumeration_up) ;
+      while (enumerator_45814.hasCurrentObject ()) {
+        inCompiler->printMessage (var_offset.add_operation (enumerator_45814.current_lkey (HERE).reader_string (SOURCE_FILE ("template_parser.galgas", 1537)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1537)).add_operation (GALGAS_string (":\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1537))  COMMA_SOURCE_FILE ("template_parser.galgas", 1537)) ;
         {
-        routine_printVariable (inArgument_indent, enumerator_45451.current_mType (HERE), enumerator_45451.current_mValue (HERE), inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1528)) ;
+        routine_printVariable (inArgument_indent, enumerator_45814.current_mType (HERE), enumerator_45814.current_mValue (HERE), inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1538)) ;
         }
-        enumerator_45451.gotoNextObject () ;
+        enumerator_45814.gotoNextObject () ;
       }
     }
     break ;
   case GALGAS_Ttype::kEnum_structType:
     {
-      cEnumerator_TfieldMap enumerator_45603 (constinArgument_variableValue.reader_mStructValue (SOURCE_FILE ("template_parser.galgas", 1531)), kEnumeration_up) ;
-      while (enumerator_45603.hasCurrentObject ()) {
-        inCompiler->printMessage (var_offset.add_operation (enumerator_45603.current_lkey (HERE).reader_string (SOURCE_FILE ("template_parser.galgas", 1532)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1532)).add_operation (GALGAS_string (":\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1532))  COMMA_SOURCE_FILE ("template_parser.galgas", 1532)) ;
+      cEnumerator_TfieldMap enumerator_45966 (constinArgument_variableValue.reader_mStructValue (SOURCE_FILE ("template_parser.galgas", 1541)), kEnumeration_up) ;
+      while (enumerator_45966.hasCurrentObject ()) {
+        inCompiler->printMessage (var_offset.add_operation (enumerator_45966.current_lkey (HERE).reader_string (SOURCE_FILE ("template_parser.galgas", 1542)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1542)).add_operation (GALGAS_string (":\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1542))  COMMA_SOURCE_FILE ("template_parser.galgas", 1542)) ;
         {
-        routine_printVariable (inArgument_indent, enumerator_45603.current_mType (HERE), enumerator_45603.current_mValue (HERE), inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1533)) ;
+        routine_printVariable (inArgument_indent, enumerator_45966.current_mType (HERE), enumerator_45966.current_mValue (HERE), inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1543)) ;
         }
-        enumerator_45603.gotoNextObject () ;
+        enumerator_45966.gotoNextObject () ;
       }
     }
     break ;
@@ -10263,35 +10313,35 @@ GALGAS_sint function_structCompare (const GALGAS_TfieldMap & constinArgument_s_3
                                     C_Compiler * inCompiler
                                     COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_sint result_result ; // Returned variable
-  const enumGalgasBool test_0 = GALGAS_bool (kIsStrictSup, inArgument_fieldList.reader_length (SOURCE_FILE ("template_parser.galgas", 1551)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+  const enumGalgasBool test_0 = GALGAS_bool (kIsStrictSup, inArgument_fieldList.reader_length (SOURCE_FILE ("template_parser.galgas", 1561)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
   if (kBoolTrue == test_0) {
     GALGAS_lstring var_field ;
     GALGAS_lsint var_order ;
     {
-    inArgument_fieldList.modifier_popFirst (var_field, var_order, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1554)) ;
+    inArgument_fieldList.modifier_popFirst (var_field, var_order, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1564)) ;
     }
     GALGAS_Ttype var_s_31_Type ;
     GALGAS_Tvalue var_s_31_Value ;
-    constinArgument_s_31_.method_searchKey (var_field, var_s_31_Type, var_s_31_Value, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1557)) ;
+    constinArgument_s_31_.method_searchKey (var_field, var_s_31_Type, var_s_31_Value, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1567)) ;
     GALGAS_Ttype var_s_32_Type ;
     GALGAS_Tvalue var_s_32_Value ;
-    constinArgument_s_32_.method_searchKey (var_field, var_s_32_Type, var_s_32_Value, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1560)) ;
-    const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, var_s_31_Type.objectCompare (var_s_32_Type)).operator_and (GALGAS_bool (kIsEqual, var_s_31_Type.objectCompare (GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_parser.galgas", 1561)))) COMMA_SOURCE_FILE ("template_parser.galgas", 1561)).boolEnum () ;
+    constinArgument_s_32_.method_searchKey (var_field, var_s_32_Type, var_s_32_Value, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1570)) ;
+    const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, var_s_31_Type.objectCompare (var_s_32_Type)).operator_and (GALGAS_bool (kIsEqual, var_s_31_Type.objectCompare (GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_parser.galgas", 1571)))) COMMA_SOURCE_FILE ("template_parser.galgas", 1571)).boolEnum () ;
     if (kBoolTrue == test_1) {
-      const enumGalgasBool test_2 = GALGAS_bool (kIsStrictInf, var_s_31_Value.reader_mInt_36__34_Value (SOURCE_FILE ("template_parser.galgas", 1563)).objectCompare (var_s_32_Value.reader_mInt_36__34_Value (SOURCE_FILE ("template_parser.galgas", 1563)))).boolEnum () ;
+      const enumGalgasBool test_2 = GALGAS_bool (kIsStrictInf, var_s_31_Value.reader_mInt_36__34_Value (SOURCE_FILE ("template_parser.galgas", 1573)).objectCompare (var_s_32_Value.reader_mInt_36__34_Value (SOURCE_FILE ("template_parser.galgas", 1573)))).boolEnum () ;
       if (kBoolTrue == test_2) {
-        result_result = GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1565)).multiply_operation (var_order.reader_sint (SOURCE_FILE ("template_parser.galgas", 1565)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1565)) ;
+        result_result = GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1575)).multiply_operation (var_order.reader_sint (SOURCE_FILE ("template_parser.galgas", 1575)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1575)) ;
       }else if (kBoolFalse == test_2) {
-        const enumGalgasBool test_3 = GALGAS_bool (kIsStrictSup, var_s_31_Value.reader_mInt_36__34_Value (SOURCE_FILE ("template_parser.galgas", 1567)).objectCompare (var_s_32_Value.reader_mInt_36__34_Value (SOURCE_FILE ("template_parser.galgas", 1567)))).boolEnum () ;
+        const enumGalgasBool test_3 = GALGAS_bool (kIsStrictSup, var_s_31_Value.reader_mInt_36__34_Value (SOURCE_FILE ("template_parser.galgas", 1577)).objectCompare (var_s_32_Value.reader_mInt_36__34_Value (SOURCE_FILE ("template_parser.galgas", 1577)))).boolEnum () ;
         if (kBoolTrue == test_3) {
-          result_result = GALGAS_sint ((int32_t) 1L).multiply_operation (var_order.reader_sint (SOURCE_FILE ("template_parser.galgas", 1569)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1569)) ;
+          result_result = GALGAS_sint ((int32_t) 1L).multiply_operation (var_order.reader_sint (SOURCE_FILE ("template_parser.galgas", 1579)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1579)) ;
         }else if (kBoolFalse == test_3) {
-          result_result = function_structCompare (constinArgument_s_31_, constinArgument_s_32_, inArgument_fieldList, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1572)) ;
+          result_result = function_structCompare (constinArgument_s_31_, constinArgument_s_32_, inArgument_fieldList, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1582)) ;
         }
       }
     }else if (kBoolFalse == test_1) {
       GALGAS_location location_4 (var_field.reader_location (HERE)) ; // Implicit use of 'location' reader
-      inCompiler->emitSemanticError (location_4, GALGAS_string ("unsigned sort key required")  COMMA_SOURCE_FILE ("template_parser.galgas", 1576)) ;
+      inCompiler->emitSemanticError (location_4, GALGAS_string ("unsigned sort key required")  COMMA_SOURCE_FILE ("template_parser.galgas", 1586)) ;
       result_result.drop () ; // Release error dropped variable
     }
   }else if (kBoolFalse == test_0) {
@@ -10354,12 +10404,12 @@ void routine_swap (GALGAS_TfieldMapList & ioArgument_t,
                    const GALGAS_uint constinArgument_index_32_,
                    C_Compiler * inCompiler
                    COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_TfieldMap var_temp = ioArgument_t.reader_mMapAtIndex (constinArgument_index_31_, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1588)) ;
+  GALGAS_TfieldMap var_temp = ioArgument_t.reader_mMapAtIndex (constinArgument_index_31_, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1598)) ;
   {
-  ioArgument_t.modifier_setMMapAtIndex (ioArgument_t.reader_mMapAtIndex (constinArgument_index_32_, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1589)), constinArgument_index_31_, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1589)) ;
+  ioArgument_t.modifier_setMMapAtIndex (ioArgument_t.reader_mMapAtIndex (constinArgument_index_32_, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1599)), constinArgument_index_31_, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1599)) ;
   }
   {
-  ioArgument_t.modifier_setMMapAtIndex (var_temp, constinArgument_index_32_, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1590)) ;
+  ioArgument_t.modifier_setMMapAtIndex (var_temp, constinArgument_index_32_, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1600)) ;
   }
 }
 
@@ -10377,39 +10427,39 @@ void routine_partition (GALGAS_TfieldMapList & ioArgument_t,
                         GALGAS_uint & ioArgument_pivotIndex,
                         C_Compiler * inCompiler
                         COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_TfieldMap var_pivot = ioArgument_t.reader_mMapAtIndex (ioArgument_pivotIndex, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1599)) ;
+  GALGAS_TfieldMap var_pivot = ioArgument_t.reader_mMapAtIndex (ioArgument_pivotIndex, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1609)) ;
   {
-  routine_swap (ioArgument_t, ioArgument_pivotIndex, inArgument_max, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1600)) ;
+  routine_swap (ioArgument_t, ioArgument_pivotIndex, inArgument_max, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1610)) ;
   }
   GALGAS_uint var_storeIndex = inArgument_min ;
   GALGAS_uint var_i = inArgument_min ;
-  if (inArgument_max.substract_operation (inArgument_min, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1603)).isValid ()) {
-    uint32_t variant_47352 = inArgument_max.substract_operation (inArgument_min, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1603)).uintValue () ;
-    bool loop_47352 = true ;
-    while (loop_47352) {
-      loop_47352 = GALGAS_bool (kIsStrictInf, var_i.objectCompare (inArgument_max)).isValid () ;
-      if (loop_47352) {
-        loop_47352 = GALGAS_bool (kIsStrictInf, var_i.objectCompare (inArgument_max)).boolValue () ;
+  if (inArgument_max.substract_operation (inArgument_min, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1613)).isValid ()) {
+    uint32_t variant_47715 = inArgument_max.substract_operation (inArgument_min, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1613)).uintValue () ;
+    bool loop_47715 = true ;
+    while (loop_47715) {
+      loop_47715 = GALGAS_bool (kIsStrictInf, var_i.objectCompare (inArgument_max)).isValid () ;
+      if (loop_47715) {
+        loop_47715 = GALGAS_bool (kIsStrictInf, var_i.objectCompare (inArgument_max)).boolValue () ;
       }
-      if (loop_47352 && (0 == variant_47352)) {
-        loop_47352 = false ;
-        inCompiler->loopRunTimeVariantError (SOURCE_FILE ("template_parser.galgas", 1603)) ;
+      if (loop_47715 && (0 == variant_47715)) {
+        loop_47715 = false ;
+        inCompiler->loopRunTimeVariantError (SOURCE_FILE ("template_parser.galgas", 1613)) ;
       }
-      if (loop_47352) {
-        variant_47352 -- ;
-        const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, function_structCompare (ioArgument_t.reader_mMapAtIndex (var_i, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1605)), var_pivot, constinArgument_fieldList, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1605)).objectCompare (GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1605)))).boolEnum () ;
+      if (loop_47715) {
+        variant_47715 -- ;
+        const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, function_structCompare (ioArgument_t.reader_mMapAtIndex (var_i, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1615)), var_pivot, constinArgument_fieldList, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1615)).objectCompare (GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1615)))).boolEnum () ;
         if (kBoolTrue == test_0) {
           {
-          routine_swap (ioArgument_t, var_i, var_storeIndex, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1606)) ;
+          routine_swap (ioArgument_t, var_i, var_storeIndex, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1616)) ;
           }
-          var_storeIndex.increment_operation (inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1607)) ;
+          var_storeIndex.increment_operation (inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1617)) ;
         }
-        var_i.increment_operation (inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1609)) ;
+        var_i.increment_operation (inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1619)) ;
       }
     }
   }
   {
-  routine_swap (ioArgument_t, var_storeIndex, inArgument_max, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1611)) ;
+  routine_swap (ioArgument_t, var_storeIndex, inArgument_max, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1621)) ;
   }
   ioArgument_pivotIndex = var_storeIndex ;
 }
@@ -10429,15 +10479,15 @@ void routine_quickSort (GALGAS_TfieldMapList & ioArgument_t,
                         COMMA_UNUSED_LOCATION_ARGS) {
   const enumGalgasBool test_0 = GALGAS_bool (kIsStrictInf, constinArgument_min.objectCompare (constinArgument_max)).boolEnum () ;
   if (kBoolTrue == test_0) {
-    GALGAS_uint var_pivotIndex = constinArgument_max.add_operation (constinArgument_min, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1622)).divide_operation (GALGAS_uint ((uint32_t) 2U), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1622)) ;
+    GALGAS_uint var_pivotIndex = constinArgument_max.add_operation (constinArgument_min, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1632)).divide_operation (GALGAS_uint ((uint32_t) 2U), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1632)) ;
     {
-    routine_partition (ioArgument_t, constinArgument_min, constinArgument_max, constinArgument_fieldList, var_pivotIndex, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1624)) ;
+    routine_partition (ioArgument_t, constinArgument_min, constinArgument_max, constinArgument_fieldList, var_pivotIndex, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1634)) ;
     }
     {
-    routine_quickSort (ioArgument_t, constinArgument_min, var_pivotIndex, constinArgument_fieldList, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1625)) ;
+    routine_quickSort (ioArgument_t, constinArgument_min, var_pivotIndex, constinArgument_fieldList, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1635)) ;
     }
     {
-    routine_quickSort (ioArgument_t, var_pivotIndex.add_operation (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1626)), constinArgument_max, constinArgument_fieldList, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1626)) ;
+    routine_quickSort (ioArgument_t, var_pivotIndex.add_operation (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1636)), constinArgument_max, constinArgument_fieldList, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1636)) ;
     }
   }
 }
@@ -11290,6 +11340,58 @@ C_galgas_function_descriptor functionDescriptor_trueFalse ("trueFalse",
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
+//                                                Function 'TrueFalse'                                                 *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_string function_TrueFalse (const GALGAS_bool & constinArgument_inBool,
+                                  C_Compiler * /* inCompiler */
+                                  COMMA_UNUSED_LOCATION_ARGS) {
+  GALGAS_string result_result ; // Returned variable
+  const enumGalgasBool test_0 = constinArgument_inBool.boolEnum () ;
+  if (kBoolTrue == test_0) {
+    result_result = GALGAS_string ("True") ;
+  }else if (kBoolFalse == test_0) {
+    result_result = GALGAS_string ("False") ;
+  }
+//---
+  return result_result ;
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+//  Function introspection                                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+
+static const C_galgas_type_descriptor * functionArgs_TrueFalse [2] = {
+  & kTypeDescriptor_GALGAS_bool,
+  NULL
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+static GALGAS_object functionWithGenericHeader_TrueFalse (C_Compiler * inCompiler,
+                                                          const cObjectArray & inEffectiveParameterArray,
+                                                          const GALGAS_location & /* §§ inErrorLocation */
+                                                          COMMA_LOCATION_ARGS) {
+  const GALGAS_bool operand0 = GALGAS_bool::extractObject (inEffectiveParameterArray.objectAtIndex (0 COMMA_HERE),
+                                                           inCompiler
+                                                           COMMA_THERE) ;
+  return function_TrueFalse (operand0,
+                             inCompiler
+                             COMMA_THERE).reader_object (THERE) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_galgas_function_descriptor functionDescriptor_TrueFalse ("TrueFalse",
+                                                           functionWithGenericHeader_TrueFalse,
+                                                           & kTypeDescriptor_GALGAS_string,
+                                                           1,
+                                                           functionArgs_TrueFalse) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //                                                  Function 'yesNo'                                                   *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -11397,6 +11499,12 @@ C_galgas_function_descriptor functionDescriptor_TRUEFALSE ("TRUEFALSE",
 //                               Bool options                                                                          *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
+
+C_BoolCommandLineOption gOption_goil_5F_options_dependancies ("goil_options",
+                                         "dependancies",
+                                         100,
+                                         "dependencies",
+                                         "generate a dependancies file for included OIL files") ;
 
 C_BoolCommandLineOption gOption_goil_5F_options_generate_5F_log ("goil_options",
                                          "generate_log",
@@ -14109,128 +14217,4 @@ C_galgas_function_descriptor functionDescriptor_add_5F_path_5F_component ("add_p
                                                                           & kTypeDescriptor_GALGAS_string,
                                                                           2,
                                                                           functionArgs_add_5F_path_5F_component) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                          Function 'rootTemplatesDirectory'                                          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_string function_rootTemplatesDirectory (C_Compiler * inCompiler
-                                               COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_string result_templateDirectory ; // Returned variable
-  const enumGalgasBool test_0 = GALGAS_bool (kIsNotEqual, GALGAS_string (gOption_goil_5F_options_template_5F_dir.reader_value ()).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
-  if (kBoolTrue == test_0) {
-    result_templateDirectory = GALGAS_string (gOption_goil_5F_options_template_5F_dir.reader_value ()) ;
-  }else if (kBoolFalse == test_0) {
-    GALGAS_string var_env = GALGAS_string::constructor_stringWithEnvironmentVariableOrEmpty (GALGAS_string ("GOIL_TEMPLATES")  COMMA_SOURCE_FILE ("goil_routines.galgas", 110)) ;
-    const enumGalgasBool test_1 = GALGAS_bool (kIsNotEqual, var_env.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
-    if (kBoolTrue == test_1) {
-      result_templateDirectory = var_env ;
-    }else if (kBoolFalse == test_1) {
-      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("goil_routines.galgas", 114)), GALGAS_string ("The templates path is not set. Use --templates option or set the GOIL_TEMPLATES environment variable")  COMMA_SOURCE_FILE ("goil_routines.galgas", 114)) ;
-      result_templateDirectory.drop () ; // Release error dropped variable
-    }
-  }
-  result_templateDirectory = result_templateDirectory.reader_unixPathWithNativePath (SOURCE_FILE ("goil_routines.galgas", 117)) ;
-  result_templateDirectory = result_templateDirectory.reader_stringByStandardizingPath (SOURCE_FILE ("goil_routines.galgas", 118)) ;
-  const enumGalgasBool test_2 = GALGAS_bool (kIsNotEqual, result_templateDirectory.reader_characterAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 119)).objectCompare (GALGAS_char (TO_UNICODE (47)))).boolEnum () ;
-  if (kBoolTrue == test_2) {
-    GALGAS_string var_currentDirectory = GALGAS_string::constructor_stringWithCurrentDirectory (SOURCE_FILE ("goil_routines.galgas", 120)) ;
-    result_templateDirectory = var_currentDirectory.add_operation (GALGAS_string ("/"), inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 121)).add_operation (result_templateDirectory, inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 121)) ;
-    result_templateDirectory = result_templateDirectory.reader_stringByStandardizingPath (SOURCE_FILE ("goil_routines.galgas", 122)) ;
-  }
-//---
-  return result_templateDirectory ;
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
-
-static const C_galgas_type_descriptor * functionArgs_rootTemplatesDirectory [1] = {
-  NULL
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static GALGAS_object functionWithGenericHeader_rootTemplatesDirectory (C_Compiler * inCompiler,
-                                                                       const cObjectArray & /* inEffectiveParameterArray */,
-                                                                       const GALGAS_location & /* inErrorLocation */
-                                                                       COMMA_LOCATION_ARGS) {
-  return function_rootTemplatesDirectory (inCompiler COMMA_THERE).reader_object (THERE) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-C_galgas_function_descriptor functionDescriptor_rootTemplatesDirectory ("rootTemplatesDirectory",
-                                                                        functionWithGenericHeader_rootTemplatesDirectory,
-                                                                        & kTypeDescriptor_GALGAS_string,
-                                                                        0,
-                                                                        functionArgs_rootTemplatesDirectory) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                           Function 'templates_directory'                                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_string function_templates_5F_directory (GALGAS_string inArgument_prefix,
-                                               C_Compiler * inCompiler
-                                               COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_string result_temp_5F_dir ; // Returned variable
-  result_temp_5F_dir = function_rootTemplatesDirectory (inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 127)) ;
-  const enumGalgasBool test_0 = GALGAS_bool (kIsNotEqual, result_temp_5F_dir.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
-  if (kBoolTrue == test_0) {
-    result_temp_5F_dir = function_add_5F_path_5F_component (result_temp_5F_dir, inArgument_prefix, inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 129)) ;
-    const enumGalgasBool test_1 = GALGAS_bool (kIsNotEqual, result_temp_5F_dir.reader_characterAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 131)).objectCompare (GALGAS_char (TO_UNICODE (47)))).boolEnum () ;
-    if (kBoolTrue == test_1) {
-      GALGAS_string var_curdir = GALGAS_string::constructor_stringWithCurrentDirectory (SOURCE_FILE ("goil_routines.galgas", 132)) ;
-      const enumGalgasBool test_2 = GALGAS_bool (kIsEqual, result_temp_5F_dir.reader_characterAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 133)).objectCompare (GALGAS_char (TO_UNICODE (46)))).operator_and (GALGAS_bool (kIsEqual, result_temp_5F_dir.reader_characterAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 133)).objectCompare (GALGAS_char (TO_UNICODE (47)))) COMMA_SOURCE_FILE ("goil_routines.galgas", 133)).boolEnum () ;
-      if (kBoolTrue == test_2) {
-        result_temp_5F_dir = result_temp_5F_dir.reader_stringByRemovingCharacterAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 134)).reader_stringByRemovingCharacterAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 134)) ;
-      }
-      result_temp_5F_dir = var_curdir.add_operation (GALGAS_string ("/"), inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 136)).add_operation (result_temp_5F_dir, inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 136)) ;
-    }
-    const enumGalgasBool test_3 = GALGAS_bool (kIsNotEqual, result_temp_5F_dir.reader_characterAtIndex (result_temp_5F_dir.reader_length (SOURCE_FILE ("goil_routines.galgas", 138)).substract_operation (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 138)), inCompiler COMMA_SOURCE_FILE ("goil_routines.galgas", 138)).objectCompare (GALGAS_char (TO_UNICODE (47)))).boolEnum () ;
-    if (kBoolTrue == test_3) {
-      result_temp_5F_dir.dotAssign_operation (GALGAS_string ("/")  COMMA_SOURCE_FILE ("goil_routines.galgas", 139)) ;
-    }
-  }
-//---
-  return result_temp_5F_dir ;
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
-
-static const C_galgas_type_descriptor * functionArgs_templates_5F_directory [2] = {
-  & kTypeDescriptor_GALGAS_string,
-  NULL
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static GALGAS_object functionWithGenericHeader_templates_5F_directory (C_Compiler * inCompiler,
-                                                                       const cObjectArray & inEffectiveParameterArray,
-                                                                       const GALGAS_location & /* §§ inErrorLocation */
-                                                                       COMMA_LOCATION_ARGS) {
-  const GALGAS_string operand0 = GALGAS_string::extractObject (inEffectiveParameterArray.objectAtIndex (0 COMMA_HERE),
-                                                               inCompiler
-                                                               COMMA_THERE) ;
-  return function_templates_5F_directory (operand0,
-                                          inCompiler
-                                          COMMA_THERE).reader_object (THERE) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-C_galgas_function_descriptor functionDescriptor_templates_5F_directory ("templates_directory",
-                                                                        functionWithGenericHeader_templates_5F_directory,
-                                                                        & kTypeDescriptor_GALGAS_string,
-                                                                        1,
-                                                                        functionArgs_templates_5F_directory) ;
 

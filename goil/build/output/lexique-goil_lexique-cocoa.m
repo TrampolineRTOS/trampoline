@@ -3,7 +3,6 @@
 
 //--- END OF USER ZONE 1
 
-
 #import "lexique-goil_lexique-cocoa.h"
 #import "PMDebug.h"
 
@@ -65,9 +64,8 @@
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (NSArray *) indexingTitles { // Array of NSString
-  return [NSArray arrayWithObjects:
-    NULL
-  ] ;
+
+  return [NSArray array] ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -560,6 +558,5 @@ static NSInteger search_into_goil_5F_lexique_oilVersion (NSString * inSearchedSt
 
 
 //--- END OF USER ZONE 2
-
 
 

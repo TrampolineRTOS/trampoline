@@ -3,7 +3,6 @@
 
 //--- END OF USER ZONE 1
 
-
 #import "lexique-template_scanner-cocoa.h"
 #import "PMDebug.h"
 
@@ -80,9 +79,8 @@ static NSArray * kTemplateDefinitionArray_template_5F_scanner ;
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (NSArray *) indexingTitles { // Array of NSString
-  return [NSArray arrayWithObjects:
-    NULL
-  ] ;
+
+  return [NSArray array] ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -91,7 +89,7 @@ static NSArray * kTemplateDefinitionArray_template_5F_scanner ;
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const BOOL kEndOfScriptInTemplateArray_template_5F_scanner [94] = {
+static const BOOL kEndOfScriptInTemplateArray_template_5F_scanner [95] = {
   NO /* identifier */,
   NO /* functionContent */,
   NO /* literal_double */,
@@ -149,6 +147,7 @@ static const BOOL kEndOfScriptInTemplateArray_template_5F_scanner [94] = {
   NO /* warning */,
   NO /* while */,
   NO /* write */,
+  NO /* executable */,
   NO /* * */,
   NO /* | */,
   NO /* , */,
@@ -195,7 +194,7 @@ static const BOOL kEndOfScriptInTemplateArray_template_5F_scanner [94] = {
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const C_cocoa_lexique_table_entry ktable_for_template_5F_scanner_goilTemplateKeyWordList [45] = {
+static const C_cocoa_lexique_table_entry ktable_for_template_5F_scanner_goilTemplateKeyWordList [46] = {
   {"by", template_scanner_1_by},
   {"do", template_scanner_1_do},
   {"if", template_scanner_1_if},
@@ -240,11 +239,12 @@ static const C_cocoa_lexique_table_entry ktable_for_template_5F_scanner_goilTemp
   {"function", template_scanner_1_function},
   {"template", template_scanner_1_template},
   {"emptylist", template_scanner_1_emptylist},
+  {"executable", template_scanner_1_executable},
   {"prefixedby", template_scanner_1_prefixedby}
 } ;
 
 static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSString * inSearchedString) {
-  return searchStringInTable (inSearchedString, ktable_for_template_5F_scanner_goilTemplateKeyWordList, 45) ;
+  return searchStringInTable (inSearchedString, ktable_for_template_5F_scanner_goilTemplateKeyWordList, 46) ;
 }
 
 
@@ -530,7 +530,7 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (NSUInteger) terminalVocabularyCount {
-  return 94 ;
+  return 95 ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -560,7 +560,7 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (NSUInteger) styleIndexForTerminal: (NSInteger) inTerminal {
-  static const NSUInteger kTerminalSymbolStyles [95] = {0,
+  static const NSUInteger kTerminalSymbolStyles [96] = {0,
     0 /* template_scanner_1_identifier */,
     0 /* template_scanner_1_functionContent */,
     5 /* template_scanner_1_literal_5F_double */,
@@ -618,6 +618,7 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
     1 /* template_scanner_1_warning */,
     1 /* template_scanner_1_while */,
     1 /* template_scanner_1_write */,
+    1 /* template_scanner_1_executable */,
     2 /* template_scanner_1__2A_ */,
     2 /* template_scanner_1__7C_ */,
     2 /* template_scanner_1__2C_ */,
@@ -666,7 +667,7 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (BOOL) atomicSelectionForToken: (NSUInteger) inTokenIndex {
-  static const BOOL kTerminalAtomicSelection [95] = {NO,
+  static const BOOL kTerminalAtomicSelection [96] = {NO,
     YES /* template_scanner_1_identifier */,
     YES /* template_scanner_1_functionContent */,
     YES /* template_scanner_1_literal_5F_double */,
@@ -724,6 +725,7 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
     YES /* template_scanner_1_warning */,
     YES /* template_scanner_1_while */,
     YES /* template_scanner_1_write */,
+    YES /* template_scanner_1_executable */,
     YES /* template_scanner_1__2A_ */,
     YES /* template_scanner_1__7C_ */,
     YES /* template_scanner_1__2C_ */,
@@ -831,6 +833,5 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
 
 
 //--- END OF USER ZONE 2
-
 
 
