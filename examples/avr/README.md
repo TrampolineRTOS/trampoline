@@ -24,7 +24,7 @@ In the different sub-directories, the command line compilation is detailed, incl
 ### Atmel Studio
 The Atmel Studio project allows to insert breakpoints and interactive debug. The generation of a project is not automatic, and should be based on the source files that are compiled in the classic `Makefile` based approach…
 
-* create a new C++ project (ATMega328P device)
+* create a new C++ project (ATMega328P device for Arduino Uno)
 * add all the files compiled using the `make` command line (see section before)
 * update project properties (`projet->toolchain->C compiler->directories`) with the directories defined in the compilation rules of the 'make' command line (directories starting with -I...)
 * copy and paste these directories in `C++ compiler-> directories` and `assembler/General`

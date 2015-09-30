@@ -5,6 +5,7 @@
 
 void setup()
 {
+	Serial.begin(115200); //115200 bps 8N1
 	// initialize digital pin 13 as an output.
 	pinMode(13, OUTPUT);
 }
@@ -20,5 +21,7 @@ TASK(periodicTask)
 	nb++;
 	if(nb & 1) digitalWrite(13, HIGH); //odd
 	else digitalWrite(13, LOW);        //even
-}
 
+	Serial.print(nb);
+	Serial.println(" done");
+}
