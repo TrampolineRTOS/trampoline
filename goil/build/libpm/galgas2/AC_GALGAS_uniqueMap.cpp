@@ -2014,7 +2014,7 @@ void cSharedUniqueMapRoot::populateEnumerationArray (capCollectionElementArray &
   case kENUMERATION_ENTER_ORDER :
   case kENUMERATION_REVERSE_ENTER_ORDER :
     MF_RunTimeError ("invalid inEnumerationOrder %lld", enumerationOrderValue (inEnumerationOrder), 0) ;
-    break ;
+//    break ;
   }
   MF_Assert (mNodeCount == ioEnumerationArray.count (), "mNodeCount (%lld) != ioEnumerationArray.count () (%lld)", mNodeCount, ioEnumerationArray.count ()) ;
 }

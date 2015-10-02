@@ -20392,9 +20392,9 @@ void cParser_goil_5F_syntax::rule_goil_5F_syntax_start_i0_ (C_Lexique_goil_5F_le
     routine_generate_5F_all (var_templateData, inCompiler  COMMA_SOURCE_FILE ("goil_syntax.galgas", 102)) ;
     }
   }
-  var_fileIncludeList = GALGAS_string::constructor_stringWithSourceFilePath (inCompiler  COMMA_SOURCE_FILE ("goil_syntax.galgas", 105)).reader_lastPathComponent (SOURCE_FILE ("goil_syntax.galgas", 105)).add_operation (GALGAS_string (": \\\n"), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 105)).add_operation (var_fileIncludeList, inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 105)) ;
+  var_fileIncludeList = GALGAS_string::constructor_stringWithSourceFilePath (inCompiler  COMMA_SOURCE_FILE ("goil_syntax.galgas", 105)).reader_lastPathComponent (SOURCE_FILE ("goil_syntax.galgas", 105)).add_operation (GALGAS_string (":"), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 105)).add_operation (var_fileIncludeList, inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 105)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 105)) ;
   GALGAS_string var_oilDepFileName = GALGAS_string::constructor_stringWithSourceFilePath (inCompiler  COMMA_SOURCE_FILE ("goil_syntax.galgas", 106)).reader_stringByDeletingLastPathComponent (SOURCE_FILE ("goil_syntax.galgas", 106)).add_operation (GALGAS_string ("/build/"), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 106)).add_operation (GALGAS_string::constructor_stringWithSourceFilePath (inCompiler  COMMA_SOURCE_FILE ("goil_syntax.galgas", 107)).reader_lastPathComponent (SOURCE_FILE ("goil_syntax.galgas", 107)), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 107)).add_operation (GALGAS_string (".dep"), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 107)) ;
-  var_fileIncludeList.method_writeToFile (var_oilDepFileName, inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 108)) ;
+  var_fileIncludeList.method_writeToFile (var_oilDepFileName, inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 109)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -20412,9 +20412,10 @@ void cParser_goil_5F_syntax::rule_goil_5F_syntax_file_i1_ (GALGAS_implementation
                                                            GALGAS_string & ioArgument_fileIncludeList,
                                                            const GALGAS_bool constinArgument_rootFile,
                                                            C_Lexique_goil_5F_lexique * inCompiler) {
-  const enumGalgasBool test_0 = constinArgument_rootFile.operator_not (SOURCE_FILE ("goil_syntax.galgas", 117)).boolEnum () ;
+  const enumGalgasBool test_0 = constinArgument_rootFile.operator_not (SOURCE_FILE ("goil_syntax.galgas", 118)).boolEnum () ;
   if (kBoolTrue == test_0) {
-    ioArgument_fileIncludeList.dotAssign_operation (GALGAS_string (" ").add_operation (GALGAS_string::constructor_stringWithSourceFilePath (inCompiler  COMMA_SOURCE_FILE ("goil_syntax.galgas", 118)), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 118)).add_operation (GALGAS_string (" \\\n"), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 118))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 118)) ;
+    ioArgument_fileIncludeList.dotAssign_operation (GALGAS_string (" \\\n"
+      " ").add_operation (GALGAS_string::constructor_stringWithSourceFilePath (inCompiler  COMMA_SOURCE_FILE ("goil_syntax.galgas", 119)), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 119))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 119)) ;
   }
   bool repeatFlag_1 = true ;
   while (repeatFlag_1) {
@@ -20465,11 +20466,11 @@ void cParser_goil_5F_syntax::rule_goil_5F_syntax_sign_i2_ (GALGAS_bool & outArgu
   outArgument_signed.drop () ; // Release 'out' argument
   switch (select_goil_5F_syntax_1 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__2D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 129)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__2D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 130)) ;
     outArgument_signed = GALGAS_bool (true) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__2B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 131)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__2B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 132)) ;
     outArgument_signed = GALGAS_bool (false) ;
   } break ;
   case 3: {
@@ -20485,10 +20486,10 @@ void cParser_goil_5F_syntax::rule_goil_5F_syntax_sign_i2_ (GALGAS_bool & outArgu
 void cParser_goil_5F_syntax::rule_goil_5F_syntax_sign_i2_parse (C_Lexique_goil_5F_lexique * inCompiler) {
   switch (select_goil_5F_syntax_1 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__2D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 129)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__2D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 130)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__2B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 131)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__2B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 132)) ;
   } break ;
   case 3: {
   } break ;
@@ -20505,33 +20506,33 @@ void cParser_goil_5F_syntax::rule_goil_5F_syntax_description_i3_ (GALGAS_lstring
   outArgument_desc.drop () ; // Release 'out' argument
   switch (select_goil_5F_syntax_2 (inCompiler)) {
   case 1: {
-    outArgument_desc = function_lstringWith (GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 142)) ;
+    outArgument_desc = function_lstringWith (GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 143)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__3A_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 144)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__3A_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 145)) ;
     GALGAS_lstring var_partialString ;
     var_partialString = inCompiler->synthetizedAttribute_a_5F_string () ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 146)) ;
-    GALGAS_string var_result = var_partialString.reader_string (SOURCE_FILE ("goil_syntax.galgas", 147)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 147)) ;
+    GALGAS_string var_result = var_partialString.reader_string (SOURCE_FILE ("goil_syntax.galgas", 148)) ;
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
       switch (select_goil_5F_syntax_3 (inCompiler)) {
       case 2: {
         var_partialString = inCompiler->synthetizedAttribute_a_5F_string () ;
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 150)) ;
-        GALGAS_string var_toappend = var_partialString.reader_string (SOURCE_FILE ("goil_syntax.galgas", 151)) ;
-        const enumGalgasBool test_1 = GALGAS_bool (kIsNotEqual, var_result.reader_rightSubString (GALGAS_uint ((uint32_t) 2U) COMMA_SOURCE_FILE ("goil_syntax.galgas", 152)).objectCompare (GALGAS_string ("\\n"))).boolEnum () ;
+        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 151)) ;
+        GALGAS_string var_toappend = var_partialString.reader_string (SOURCE_FILE ("goil_syntax.galgas", 152)) ;
+        const enumGalgasBool test_1 = GALGAS_bool (kIsNotEqual, var_result.reader_rightSubString (GALGAS_uint ((uint32_t) 2U) COMMA_SOURCE_FILE ("goil_syntax.galgas", 153)).objectCompare (GALGAS_string ("\\n"))).boolEnum () ;
         if (kBoolTrue == test_1) {
-          var_toappend = GALGAS_string (" ").add_operation (var_toappend, inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 153)) ;
+          var_toappend = GALGAS_string (" ").add_operation (var_toappend, inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 154)) ;
         }
-        var_result.dotAssign_operation (var_toappend  COMMA_SOURCE_FILE ("goil_syntax.galgas", 155)) ;
+        var_result.dotAssign_operation (var_toappend  COMMA_SOURCE_FILE ("goil_syntax.galgas", 156)) ;
       } break ;
       default:
         repeatFlag_0 = false ;
         break ;
       }
     }
-    outArgument_desc = GALGAS_lstring::constructor_new (var_result.reader_stringByReplacingStringByString (GALGAS_string ("\\n"), GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 157)), var_partialString.reader_location (SOURCE_FILE ("goil_syntax.galgas", 157))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 157)) ;
+    outArgument_desc = GALGAS_lstring::constructor_new (var_result.reader_stringByReplacingStringByString (GALGAS_string ("\\n"), GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 158)), var_partialString.reader_location (SOURCE_FILE ("goil_syntax.galgas", 158))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 158)) ;
   } break ;
   default:
     break ;
@@ -20545,13 +20546,13 @@ void cParser_goil_5F_syntax::rule_goil_5F_syntax_description_i3_parse (C_Lexique
   case 1: {
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__3A_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 144)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 146)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__3A_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 145)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 147)) ;
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
       switch (select_goil_5F_syntax_3 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 150)) ;
+        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 151)) ;
       } break ;
       default:
         repeatFlag_0 = false ;
@@ -20572,22 +20573,22 @@ void cParser_goil_5F_syntax::rule_goil_5F_syntax_OIL_5F_version_i4_ (GALGAS_lstr
                                                                      C_Lexique_goil_5F_lexique * inCompiler) {
   outArgument_version.drop () ; // Release 'out' argument
   outArgument_desc.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_OIL_5F_VERSION) COMMA_SOURCE_FILE ("goil_syntax.galgas", 165)) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__3D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 165)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_OIL_5F_VERSION) COMMA_SOURCE_FILE ("goil_syntax.galgas", 166)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__3D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 166)) ;
   outArgument_version = inCompiler->synthetizedAttribute_a_5F_string () ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 165)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 166)) ;
   nt_description_ (outArgument_desc, inCompiler) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 165)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 166)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_goil_5F_syntax::rule_goil_5F_syntax_OIL_5F_version_i4_parse (C_Lexique_goil_5F_lexique * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_OIL_5F_VERSION) COMMA_SOURCE_FILE ("goil_syntax.galgas", 165)) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__3D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 165)) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 165)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_OIL_5F_VERSION) COMMA_SOURCE_FILE ("goil_syntax.galgas", 166)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__3D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 166)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 166)) ;
   nt_description_parse (inCompiler) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 165)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 166)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -20598,35 +20599,35 @@ void cParser_goil_5F_syntax::rule_goil_5F_syntax_application_5F_definition_i5_ (
                                                                                 GALGAS_string & ioArgument_fileIncludeList,
                                                                                 const GALGAS_bool constinArgument_rootFile,
                                                                                 C_Lexique_goil_5F_lexique * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_CPU) COMMA_SOURCE_FILE ("goil_syntax.galgas", 177)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_CPU) COMMA_SOURCE_FILE ("goil_syntax.galgas", 178)) ;
   GALGAS_lstring var_cpuName = inCompiler->synthetizedAttribute_att_5F_token () ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) COMMA_SOURCE_FILE ("goil_syntax.galgas", 177)) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 177)) ;
-  GALGAS_objectsMap var_objects = ioArgument_application.reader_objects (SOURCE_FILE ("goil_syntax.galgas", 178)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) COMMA_SOURCE_FILE ("goil_syntax.galgas", 178)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 178)) ;
+  GALGAS_objectsMap var_objects = ioArgument_application.reader_objects (SOURCE_FILE ("goil_syntax.galgas", 179)) ;
   nt_object_5F_definition_5F_list_ (constinArgument_imp, var_objects, ioArgument_fileIncludeList, constinArgument_rootFile, inCompiler) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 180)) ;
-  GALGAS_lstring joker_5208 ; // Joker input parameter
-  nt_description_ (joker_5208, inCompiler) ;
-  joker_5208.drop () ; // Release temporary input variables (joker in source)
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 180)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 181)) ;
+  GALGAS_lstring joker_5268 ; // Joker input parameter
+  nt_description_ (joker_5268, inCompiler) ;
+  joker_5268.drop () ; // Release temporary input variables (joker in source)
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 181)) ;
   {
-  ioArgument_application.modifier_setName (var_cpuName COMMA_SOURCE_FILE ("goil_syntax.galgas", 181)) ;
+  ioArgument_application.modifier_setName (var_cpuName COMMA_SOURCE_FILE ("goil_syntax.galgas", 182)) ;
   }
   {
-  ioArgument_application.modifier_setObjects (var_objects COMMA_SOURCE_FILE ("goil_syntax.galgas", 182)) ;
+  ioArgument_application.modifier_setObjects (var_objects COMMA_SOURCE_FILE ("goil_syntax.galgas", 183)) ;
   }
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_goil_5F_syntax::rule_goil_5F_syntax_application_5F_definition_i5_parse (C_Lexique_goil_5F_lexique * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_CPU) COMMA_SOURCE_FILE ("goil_syntax.galgas", 177)) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) COMMA_SOURCE_FILE ("goil_syntax.galgas", 177)) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 177)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_CPU) COMMA_SOURCE_FILE ("goil_syntax.galgas", 178)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) COMMA_SOURCE_FILE ("goil_syntax.galgas", 178)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 178)) ;
   nt_object_5F_definition_5F_list_parse (inCompiler) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 180)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 181)) ;
   nt_description_parse (inCompiler) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 180)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 181)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -20643,54 +20644,54 @@ void cParser_goil_5F_syntax::rule_goil_5F_syntax_object_5F_definition_5F_list_i6
     case 2: {
       GALGAS_lstring var_objectKind ;
       var_objectKind = inCompiler->synthetizedAttribute_att_5F_token () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) COMMA_SOURCE_FILE ("goil_syntax.galgas", 194)) ;
-      GALGAS_implementationObject var_impObjOfKind = callCategoryReader_impObject ((const cPtr_implementation *) constinArgument_imp.ptr (), var_objectKind.reader_string (SOURCE_FILE ("goil_syntax.galgas", 195)), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 195)) ;
-      GALGAS_objectKind var_objectsForKind = GALGAS_objectKind::constructor_new (GALGAS_objectKindMap::constructor_emptyMap (SOURCE_FILE ("goil_syntax.galgas", 196))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 196)) ;
-      const enumGalgasBool test_1 = ioArgument_objects.reader_hasKey (var_objectKind.reader_string (SOURCE_FILE ("goil_syntax.galgas", 197)) COMMA_SOURCE_FILE ("goil_syntax.galgas", 197)).boolEnum () ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) COMMA_SOURCE_FILE ("goil_syntax.galgas", 195)) ;
+      GALGAS_implementationObject var_impObjOfKind = callCategoryReader_impObject ((const cPtr_implementation *) constinArgument_imp.ptr (), var_objectKind.reader_string (SOURCE_FILE ("goil_syntax.galgas", 196)), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 196)) ;
+      GALGAS_objectKind var_objectsForKind = GALGAS_objectKind::constructor_new (GALGAS_objectKindMap::constructor_emptyMap (SOURCE_FILE ("goil_syntax.galgas", 197))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 197)) ;
+      const enumGalgasBool test_1 = ioArgument_objects.reader_hasKey (var_objectKind.reader_string (SOURCE_FILE ("goil_syntax.galgas", 198)) COMMA_SOURCE_FILE ("goil_syntax.galgas", 198)).boolEnum () ;
       if (kBoolTrue == test_1) {
-        const enumGalgasBool test_2 = GALGAS_bool (kIsEqual, var_impObjOfKind.reader_multiple (SOURCE_FILE ("goil_syntax.galgas", 201)).reader_bool (SOURCE_FILE ("goil_syntax.galgas", 201)).objectCompare (GALGAS_bool (false))).boolEnum () ;
+        const enumGalgasBool test_2 = GALGAS_bool (kIsEqual, var_impObjOfKind.reader_multiple (SOURCE_FILE ("goil_syntax.galgas", 202)).reader_bool (SOURCE_FILE ("goil_syntax.galgas", 202)).objectCompare (GALGAS_bool (false))).boolEnum () ;
         if (kBoolTrue == test_2) {
-          inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("goil_syntax.galgas", 202)), GALGAS_string ("object ").add_operation (var_objectKind.reader_string (SOURCE_FILE ("goil_syntax.galgas", 202)), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 202)).add_operation (GALGAS_string (" may not have multiple instance"), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 202))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 202)) ;
+          inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("goil_syntax.galgas", 203)), GALGAS_string ("object ").add_operation (var_objectKind.reader_string (SOURCE_FILE ("goil_syntax.galgas", 203)), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 203)).add_operation (GALGAS_string (" may not have multiple instance"), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 203))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 203)) ;
         }
         {
-        ioArgument_objects.modifier_del (var_objectKind, var_objectsForKind, inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 204)) ;
+        ioArgument_objects.modifier_del (var_objectKind, var_objectsForKind, inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 205)) ;
         }
       }
       GALGAS_lstring var_objectName ;
       var_objectName = inCompiler->synthetizedAttribute_att_5F_token () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) COMMA_SOURCE_FILE ("goil_syntax.galgas", 207)) ;
-      GALGAS_objectAttributes var_object = function_emptyObject (inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 208)) ;
-      GALGAS_objectKindMap var_objectsKind = var_objectsForKind.reader_objects (SOURCE_FILE ("goil_syntax.galgas", 209)) ;
-      const enumGalgasBool test_3 = var_objectsKind.reader_hasKey (var_objectName.reader_string (SOURCE_FILE ("goil_syntax.galgas", 210)) COMMA_SOURCE_FILE ("goil_syntax.galgas", 210)).boolEnum () ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) COMMA_SOURCE_FILE ("goil_syntax.galgas", 208)) ;
+      GALGAS_objectAttributes var_object = function_emptyObject (inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 209)) ;
+      GALGAS_objectKindMap var_objectsKind = var_objectsForKind.reader_objects (SOURCE_FILE ("goil_syntax.galgas", 210)) ;
+      const enumGalgasBool test_3 = var_objectsKind.reader_hasKey (var_objectName.reader_string (SOURCE_FILE ("goil_syntax.galgas", 211)) COMMA_SOURCE_FILE ("goil_syntax.galgas", 211)).boolEnum () ;
       if (kBoolTrue == test_3) {
         {
-        var_objectsKind.modifier_del (var_objectName, var_object, inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 211)) ;
+        var_objectsKind.modifier_del (var_objectName, var_object, inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 212)) ;
         }
       }
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 213)) ;
-      nt_oil_5F_declaration_5F_list_ (var_impObjOfKind.reader_attributes (SOURCE_FILE ("goil_syntax.galgas", 214)), var_object, inCompiler) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 215)) ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 214)) ;
+      nt_oil_5F_declaration_5F_list_ (var_impObjOfKind.reader_attributes (SOURCE_FILE ("goil_syntax.galgas", 215)), var_object, inCompiler) ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 216)) ;
       GALGAS_lstring var_oil_5F_desc ;
       nt_description_ (var_oil_5F_desc, inCompiler) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 217)) ;
-      GALGAS_identifierMap var_attributes = var_object.reader_objectParams (SOURCE_FILE ("goil_syntax.galgas", 218)) ;
-      const enumGalgasBool test_4 = var_attributes.reader_hasKey (GALGAS_string ("NAME") COMMA_SOURCE_FILE ("goil_syntax.galgas", 219)).operator_not (SOURCE_FILE ("goil_syntax.galgas", 219)).boolEnum () ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 218)) ;
+      GALGAS_identifierMap var_attributes = var_object.reader_objectParams (SOURCE_FILE ("goil_syntax.galgas", 219)) ;
+      const enumGalgasBool test_4 = var_attributes.reader_hasKey (GALGAS_string ("NAME") COMMA_SOURCE_FILE ("goil_syntax.galgas", 220)).operator_not (SOURCE_FILE ("goil_syntax.galgas", 220)).boolEnum () ;
       if (kBoolTrue == test_4) {
         {
-        var_attributes.modifier_put (GALGAS_lstring::constructor_new (GALGAS_string ("NAME"), var_objectName.reader_location (SOURCE_FILE ("goil_syntax.galgas", 220))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 220)), GALGAS_stringAttribute::constructor_new (var_oil_5F_desc, var_objectName.reader_location (SOURCE_FILE ("goil_syntax.galgas", 220)), var_objectName.reader_string (SOURCE_FILE ("goil_syntax.galgas", 220))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 220)), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 220)) ;
+        var_attributes.modifier_put (GALGAS_lstring::constructor_new (GALGAS_string ("NAME"), var_objectName.reader_location (SOURCE_FILE ("goil_syntax.galgas", 221))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 221)), GALGAS_stringAttribute::constructor_new (var_oil_5F_desc, var_objectName.reader_location (SOURCE_FILE ("goil_syntax.galgas", 221)), var_objectName.reader_string (SOURCE_FILE ("goil_syntax.galgas", 221))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 221)), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 221)) ;
         }
         {
-        var_object.modifier_setObjectParams (var_attributes COMMA_SOURCE_FILE ("goil_syntax.galgas", 221)) ;
+        var_object.modifier_setObjectParams (var_attributes COMMA_SOURCE_FILE ("goil_syntax.galgas", 222)) ;
         }
       }
       {
-      var_objectsKind.modifier_put (var_objectName, var_object, inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 223)) ;
+      var_objectsKind.modifier_put (var_objectName, var_object, inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 224)) ;
       }
       {
-      var_objectsForKind.modifier_setObjects (var_objectsKind COMMA_SOURCE_FILE ("goil_syntax.galgas", 224)) ;
+      var_objectsForKind.modifier_setObjects (var_objectsKind COMMA_SOURCE_FILE ("goil_syntax.galgas", 225)) ;
       }
       {
-      ioArgument_objects.modifier_put (var_objectKind, var_objectsForKind, inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 225)) ;
+      ioArgument_objects.modifier_put (var_objectKind, var_objectsForKind, inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 226)) ;
       }
     } break ;
     case 3: {
@@ -20710,13 +20711,13 @@ void cParser_goil_5F_syntax::rule_goil_5F_syntax_object_5F_definition_5F_list_i6
   while (repeatFlag_0) {
     switch (select_goil_5F_syntax_4 (inCompiler)) {
     case 2: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) COMMA_SOURCE_FILE ("goil_syntax.galgas", 194)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) COMMA_SOURCE_FILE ("goil_syntax.galgas", 207)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 213)) ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) COMMA_SOURCE_FILE ("goil_syntax.galgas", 195)) ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) COMMA_SOURCE_FILE ("goil_syntax.galgas", 208)) ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 214)) ;
       nt_oil_5F_declaration_5F_list_parse (inCompiler) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 215)) ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 216)) ;
       nt_description_parse (inCompiler) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 217)) ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 218)) ;
     } break ;
     case 3: {
       nt_include_5F_cpu_5F_level_parse (inCompiler) ;
@@ -20736,12 +20737,12 @@ void cParser_goil_5F_syntax::rule_goil_5F_syntax_boolean_i7_ (GALGAS_lbool & out
   outArgument_val.drop () ; // Release 'out' argument
   switch (select_goil_5F_syntax_5 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_TRUE) COMMA_SOURCE_FILE ("goil_syntax.galgas", 235)) ;
-    outArgument_val = GALGAS_lbool::constructor_new (GALGAS_bool (true), GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("goil_syntax.galgas", 236))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 236)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_TRUE) COMMA_SOURCE_FILE ("goil_syntax.galgas", 236)) ;
+    outArgument_val = GALGAS_lbool::constructor_new (GALGAS_bool (true), GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("goil_syntax.galgas", 237))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 237)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_FALSE) COMMA_SOURCE_FILE ("goil_syntax.galgas", 238)) ;
-    outArgument_val = GALGAS_lbool::constructor_new (GALGAS_bool (false), GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("goil_syntax.galgas", 239))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 239)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_FALSE) COMMA_SOURCE_FILE ("goil_syntax.galgas", 239)) ;
+    outArgument_val = GALGAS_lbool::constructor_new (GALGAS_bool (false), GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("goil_syntax.galgas", 240))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 240)) ;
   } break ;
   default:
     break ;
@@ -20753,10 +20754,10 @@ void cParser_goil_5F_syntax::rule_goil_5F_syntax_boolean_i7_ (GALGAS_lbool & out
 void cParser_goil_5F_syntax::rule_goil_5F_syntax_boolean_i7_parse (C_Lexique_goil_5F_lexique * inCompiler) {
   switch (select_goil_5F_syntax_5 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_TRUE) COMMA_SOURCE_FILE ("goil_syntax.galgas", 235)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_TRUE) COMMA_SOURCE_FILE ("goil_syntax.galgas", 236)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_FALSE) COMMA_SOURCE_FILE ("goil_syntax.galgas", 238)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_FALSE) COMMA_SOURCE_FILE ("goil_syntax.galgas", 239)) ;
   } break ;
   default:
     break ;
@@ -20807,43 +20808,43 @@ void cParser_goil_5F_syntax::rule_goil_5F_syntax_oil_5F_declaration_i9_ (const G
   GALGAS_lstring var_idf ;
   GALGAS_object_5F_t var_val ;
   var_idf = inCompiler->synthetizedAttribute_att_5F_token () ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) COMMA_SOURCE_FILE ("goil_syntax.galgas", 257)) ;
-  GALGAS_locationList temp_0 = GALGAS_locationList::constructor_emptyList (SOURCE_FILE ("goil_syntax.galgas", 261)) ;
-  temp_0.addAssign_operation (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("goil_syntax.galgas", 261))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 261)) ;
-  GALGAS_impType var_type = GALGAS_impVoid::constructor_new (temp_0, GALGAS_dataType::constructor_void (SOURCE_FILE ("goil_syntax.galgas", 261)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 261)), GALGAS_bool (false), GALGAS_lstringlist::constructor_emptyList (SOURCE_FILE ("goil_syntax.galgas", 261))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 261)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) COMMA_SOURCE_FILE ("goil_syntax.galgas", 258)) ;
+  GALGAS_locationList temp_0 = GALGAS_locationList::constructor_emptyList (SOURCE_FILE ("goil_syntax.galgas", 262)) ;
+  temp_0.addAssign_operation (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("goil_syntax.galgas", 262))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 262)) ;
+  GALGAS_impType var_type = GALGAS_impVoid::constructor_new (temp_0, GALGAS_dataType::constructor_void (SOURCE_FILE ("goil_syntax.galgas", 262)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 262)), GALGAS_bool (false), GALGAS_lstringlist::constructor_emptyList (SOURCE_FILE ("goil_syntax.galgas", 262))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 262)) ;
   GALGAS_bool var_typeOk = GALGAS_bool (false) ;
-  const enumGalgasBool test_1 = constinArgument_types.reader_hasKey (var_idf.reader_string (SOURCE_FILE ("goil_syntax.galgas", 263)) COMMA_SOURCE_FILE ("goil_syntax.galgas", 263)).boolEnum () ;
+  const enumGalgasBool test_1 = constinArgument_types.reader_hasKey (var_idf.reader_string (SOURCE_FILE ("goil_syntax.galgas", 264)) COMMA_SOURCE_FILE ("goil_syntax.galgas", 264)).boolEnum () ;
   if (kBoolTrue == test_1) {
-    constinArgument_types.method_get (var_idf, var_type, inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 264)) ;
+    constinArgument_types.method_get (var_idf, var_type, inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 265)) ;
     var_typeOk = GALGAS_bool (true) ;
   }else if (kBoolFalse == test_1) {
     GALGAS_location location_2 (var_idf.reader_location (HERE)) ; // Implicit use of 'location' reader
-    inCompiler->emitSemanticError (location_2, var_idf.reader_string (SOURCE_FILE ("goil_syntax.galgas", 267)).add_operation (GALGAS_string (" is not declared in the IMPLEMENTATION"), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 267))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 267)) ;
+    inCompiler->emitSemanticError (location_2, var_idf.reader_string (SOURCE_FILE ("goil_syntax.galgas", 268)).add_operation (GALGAS_string (" is not declared in the IMPLEMENTATION"), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 268))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 268)) ;
   }
   switch (select_goil_5F_syntax_7 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__3D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 270)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__3D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 271)) ;
     switch (select_goil_5F_syntax_8 (inCompiler)) {
     case 1: {
       GALGAS_lstring var_value ;
       var_value = inCompiler->synthetizedAttribute_att_5F_token () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) COMMA_SOURCE_FILE ("goil_syntax.galgas", 274)) ;
-      GALGAS_implementationObjectMap var_subTypes = GALGAS_implementationObjectMap::constructor_emptyMap (SOURCE_FILE ("goil_syntax.galgas", 275)) ;
-      GALGAS_objectAttributes var_subAttributes = function_emptyObject (inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 276)) ;
-      switch (var_type.reader_type (SOURCE_FILE ("goil_syntax.galgas", 277)).enumValue ()) {
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) COMMA_SOURCE_FILE ("goil_syntax.galgas", 275)) ;
+      GALGAS_implementationObjectMap var_subTypes = GALGAS_implementationObjectMap::constructor_emptyMap (SOURCE_FILE ("goil_syntax.galgas", 276)) ;
+      GALGAS_objectAttributes var_subAttributes = function_emptyObject (inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 277)) ;
+      switch (var_type.reader_type (SOURCE_FILE ("goil_syntax.galgas", 278)).enumValue ()) {
       case GALGAS_dataType::kNotBuilt:
         break ;
       case GALGAS_dataType::kEnum_enumeration:
         {
           if (var_type.isValid ()) {
             if (var_type.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_impEnumType) {
-              GALGAS_impEnumType cast_8307_enumType ((cPtr_impEnumType *) var_type.ptr ()) ;
-              const enumGalgasBool test_3 = cast_8307_enumType.reader_valuesMap (SOURCE_FILE ("goil_syntax.galgas", 281)).reader_hasKey (var_value.reader_string (SOURCE_FILE ("goil_syntax.galgas", 281)) COMMA_SOURCE_FILE ("goil_syntax.galgas", 281)).boolEnum () ;
+              GALGAS_impEnumType cast_8367_enumType ((cPtr_impEnumType *) var_type.ptr ()) ;
+              const enumGalgasBool test_3 = cast_8367_enumType.reader_valuesMap (SOURCE_FILE ("goil_syntax.galgas", 282)).reader_hasKey (var_value.reader_string (SOURCE_FILE ("goil_syntax.galgas", 282)) COMMA_SOURCE_FILE ("goil_syntax.galgas", 282)).boolEnum () ;
               if (kBoolTrue == test_3) {
-                cast_8307_enumType.reader_valuesMap (SOURCE_FILE ("goil_syntax.galgas", 282)).method_get (var_value, var_subTypes, inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 282)) ;
+                cast_8367_enumType.reader_valuesMap (SOURCE_FILE ("goil_syntax.galgas", 283)).method_get (var_value, var_subTypes, inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 283)) ;
               }else if (kBoolFalse == test_3) {
                 GALGAS_location location_4 (var_value.reader_location (HERE)) ; // Implicit use of 'location' reader
-                inCompiler->emitSemanticError (location_4, var_value.reader_string (SOURCE_FILE ("goil_syntax.galgas", 284)).add_operation (GALGAS_string (" ENUM value undeclared. One of the following values are expected: "), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 284)).add_operation (function_valueList (cast_8307_enumType.reader_valuesMap (SOURCE_FILE ("goil_syntax.galgas", 284)), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 284)), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 284))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 284)) ;
+                inCompiler->emitSemanticError (location_4, var_value.reader_string (SOURCE_FILE ("goil_syntax.galgas", 285)).add_operation (GALGAS_string (" ENUM value undeclared. One of the following values are expected: "), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 285)).add_operation (function_valueList (cast_8367_enumType.reader_valuesMap (SOURCE_FILE ("goil_syntax.galgas", 285)), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 285)), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 285))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 285)) ;
               }
             }
           }
@@ -20868,15 +20869,15 @@ void cParser_goil_5F_syntax::rule_goil_5F_syntax_oil_5F_declaration_i9_ (const G
       case GALGAS_dataType::kEnum_boolean:
         {
           GALGAS_location location_5 (var_idf.reader_location (HERE)) ; // Implicit use of 'location' reader
-          inCompiler->emitSemanticError (location_5, var_idf.reader_string (SOURCE_FILE ("goil_syntax.galgas", 290)).add_operation (GALGAS_string (" is not an ENUM nor and IDENTIFIER nor an object reference"), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 290))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 290)) ;
+          inCompiler->emitSemanticError (location_5, var_idf.reader_string (SOURCE_FILE ("goil_syntax.galgas", 291)).add_operation (GALGAS_string (" is not an ENUM nor and IDENTIFIER nor an object reference"), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 291))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 291)) ;
         }
         break ;
       }
       switch (select_goil_5F_syntax_9 (inCompiler)) {
       case 1: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 293)) ;
+        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 294)) ;
         nt_oil_5F_declaration_5F_list_ (var_subTypes, var_subAttributes, inCompiler) ;
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 295)) ;
+        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 296)) ;
       } break ;
       case 2: {
       } break ;
@@ -20885,15 +20886,15 @@ void cParser_goil_5F_syntax::rule_goil_5F_syntax_oil_5F_declaration_i9_ (const G
       }
       GALGAS_lstring var_oil_5F_desc ;
       nt_description_ (var_oil_5F_desc, inCompiler) ;
-      const enumGalgasBool test_6 = GALGAS_bool (kIsEqual, var_type.reader_type (SOURCE_FILE ("goil_syntax.galgas", 298)).objectCompare (GALGAS_dataType::constructor_enumeration (SOURCE_FILE ("goil_syntax.galgas", 298)))).boolEnum () ;
+      const enumGalgasBool test_6 = GALGAS_bool (kIsEqual, var_type.reader_type (SOURCE_FILE ("goil_syntax.galgas", 299)).objectCompare (GALGAS_dataType::constructor_enumeration (SOURCE_FILE ("goil_syntax.galgas", 299)))).boolEnum () ;
       if (kBoolTrue == test_6) {
-        var_val = GALGAS_enumAttribute::constructor_new (var_oil_5F_desc, var_value.reader_location (SOURCE_FILE ("goil_syntax.galgas", 299)), var_value.reader_string (SOURCE_FILE ("goil_syntax.galgas", 299)), var_subAttributes  COMMA_SOURCE_FILE ("goil_syntax.galgas", 299)) ;
+        var_val = GALGAS_enumAttribute::constructor_new (var_oil_5F_desc, var_value.reader_location (SOURCE_FILE ("goil_syntax.galgas", 300)), var_value.reader_string (SOURCE_FILE ("goil_syntax.galgas", 300)), var_subAttributes  COMMA_SOURCE_FILE ("goil_syntax.galgas", 300)) ;
       }else if (kBoolFalse == test_6) {
-        const enumGalgasBool test_7 = GALGAS_bool (kIsEqual, var_type.reader_type (SOURCE_FILE ("goil_syntax.galgas", 300)).objectCompare (GALGAS_dataType::constructor_objectType (SOURCE_FILE ("goil_syntax.galgas", 300)))).boolEnum () ;
+        const enumGalgasBool test_7 = GALGAS_bool (kIsEqual, var_type.reader_type (SOURCE_FILE ("goil_syntax.galgas", 301)).objectCompare (GALGAS_dataType::constructor_objectType (SOURCE_FILE ("goil_syntax.galgas", 301)))).boolEnum () ;
         if (kBoolTrue == test_7) {
-          var_val = GALGAS_objectRefAttribute::constructor_new (var_oil_5F_desc, var_value.reader_location (SOURCE_FILE ("goil_syntax.galgas", 301)), var_value  COMMA_SOURCE_FILE ("goil_syntax.galgas", 301)) ;
+          var_val = GALGAS_objectRefAttribute::constructor_new (var_oil_5F_desc, var_value.reader_location (SOURCE_FILE ("goil_syntax.galgas", 302)), var_value  COMMA_SOURCE_FILE ("goil_syntax.galgas", 302)) ;
         }else if (kBoolFalse == test_7) {
-          var_val = GALGAS_string_5F_class::constructor_new (var_oil_5F_desc, var_value.reader_location (SOURCE_FILE ("goil_syntax.galgas", 303)), var_value.reader_string (SOURCE_FILE ("goil_syntax.galgas", 303))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 303)) ;
+          var_val = GALGAS_string_5F_class::constructor_new (var_oil_5F_desc, var_value.reader_location (SOURCE_FILE ("goil_syntax.galgas", 304)), var_value.reader_string (SOURCE_FILE ("goil_syntax.galgas", 304))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 304)) ;
         }
       }
     } break ;
@@ -20904,18 +20905,18 @@ void cParser_goil_5F_syntax::rule_goil_5F_syntax_oil_5F_declaration_i9_ (const G
       case 1: {
         GALGAS_luint_36__34_ var_value ;
         var_value = inCompiler->synthetizedAttribute_integerNumber () ;
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_uint_5F_number) COMMA_SOURCE_FILE ("goil_syntax.galgas", 312)) ;
+        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_uint_5F_number) COMMA_SOURCE_FILE ("goil_syntax.galgas", 313)) ;
         GALGAS_lstring var_oil_5F_desc ;
         nt_description_ (var_oil_5F_desc, inCompiler) ;
-        var_val = function_checkAndGetIntegerNumber (var_oil_5F_desc, var_type.reader_type (SOURCE_FILE ("goil_syntax.galgas", 314)), var_value, var_sign, inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 314)) ;
+        var_val = function_checkAndGetIntegerNumber (var_oil_5F_desc, var_type.reader_type (SOURCE_FILE ("goil_syntax.galgas", 315)), var_value, var_sign, inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 315)) ;
       } break ;
       case 2: {
         GALGAS_ldouble var_value ;
         var_value = inCompiler->synthetizedAttribute_floatNumber () ;
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_float_5F_number) COMMA_SOURCE_FILE ("goil_syntax.galgas", 318)) ;
+        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_float_5F_number) COMMA_SOURCE_FILE ("goil_syntax.galgas", 319)) ;
         GALGAS_lstring var_oil_5F_desc ;
         nt_description_ (var_oil_5F_desc, inCompiler) ;
-        var_val = function_checkAndGetFloatNumber (var_oil_5F_desc, var_type.reader_type (SOURCE_FILE ("goil_syntax.galgas", 320)), var_value, var_sign, inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 320)) ;
+        var_val = function_checkAndGetFloatNumber (var_oil_5F_desc, var_type.reader_type (SOURCE_FILE ("goil_syntax.galgas", 321)), var_value, var_sign, inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 321)) ;
       } break ;
       default:
         break ;
@@ -20924,35 +20925,35 @@ void cParser_goil_5F_syntax::rule_goil_5F_syntax_oil_5F_declaration_i9_ (const G
     case 3: {
       GALGAS_lbool var_value ;
       nt_boolean_ (var_value, inCompiler) ;
-      GALGAS_implementationObjectMap var_subTypes = GALGAS_implementationObjectMap::constructor_emptyMap (SOURCE_FILE ("goil_syntax.galgas", 326)) ;
-      GALGAS_objectAttributes var_subAttributes = function_emptyObject (inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 327)) ;
-      const enumGalgasBool test_8 = GALGAS_bool (kIsNotEqual, var_type.reader_type (SOURCE_FILE ("goil_syntax.galgas", 328)).objectCompare (GALGAS_dataType::constructor_boolean (SOURCE_FILE ("goil_syntax.galgas", 328)))).boolEnum () ;
+      GALGAS_implementationObjectMap var_subTypes = GALGAS_implementationObjectMap::constructor_emptyMap (SOURCE_FILE ("goil_syntax.galgas", 327)) ;
+      GALGAS_objectAttributes var_subAttributes = function_emptyObject (inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 328)) ;
+      const enumGalgasBool test_8 = GALGAS_bool (kIsNotEqual, var_type.reader_type (SOURCE_FILE ("goil_syntax.galgas", 329)).objectCompare (GALGAS_dataType::constructor_boolean (SOURCE_FILE ("goil_syntax.galgas", 329)))).boolEnum () ;
       if (kBoolTrue == test_8) {
         GALGAS_location location_9 (var_idf.reader_location (HERE)) ; // Implicit use of 'location' reader
-        inCompiler->emitSemanticError (location_9, categoryReader_oilType (var_type.reader_type (SOURCE_FILE ("goil_syntax.galgas", 329)), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 329)).add_operation (GALGAS_string (" expected, got a BOOLEAN"), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 329))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 329)) ;
+        inCompiler->emitSemanticError (location_9, categoryReader_oilType (var_type.reader_type (SOURCE_FILE ("goil_syntax.galgas", 330)), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 330)).add_operation (GALGAS_string (" expected, got a BOOLEAN"), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 330))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 330)) ;
       }else if (kBoolFalse == test_8) {
         if (var_type.isValid ()) {
           if (var_type.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_impBoolType) {
-            GALGAS_impBoolType cast_10269_boolType ((cPtr_impBoolType *) var_type.ptr ()) ;
-            const enumGalgasBool test_10 = var_value.reader_bool (SOURCE_FILE ("goil_syntax.galgas", 333)).boolEnum () ;
+            GALGAS_impBoolType cast_10329_boolType ((cPtr_impBoolType *) var_type.ptr ()) ;
+            const enumGalgasBool test_10 = var_value.reader_bool (SOURCE_FILE ("goil_syntax.galgas", 334)).boolEnum () ;
             if (kBoolTrue == test_10) {
-              var_subTypes = cast_10269_boolType.reader_trueSubAttributes (SOURCE_FILE ("goil_syntax.galgas", 334)) ;
+              var_subTypes = cast_10329_boolType.reader_trueSubAttributes (SOURCE_FILE ("goil_syntax.galgas", 335)) ;
             }else if (kBoolFalse == test_10) {
-              var_subTypes = cast_10269_boolType.reader_falseSubAttributes (SOURCE_FILE ("goil_syntax.galgas", 336)) ;
+              var_subTypes = cast_10329_boolType.reader_falseSubAttributes (SOURCE_FILE ("goil_syntax.galgas", 337)) ;
             }
           }
         }
       }
       switch (select_goil_5F_syntax_11 (inCompiler)) {
       case 1: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 341)) ;
-        const enumGalgasBool test_11 = GALGAS_bool (kIsEqual, var_subTypes.reader_count (SOURCE_FILE ("goil_syntax.galgas", 342)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 342)) ;
+        const enumGalgasBool test_11 = GALGAS_bool (kIsEqual, var_subTypes.reader_count (SOURCE_FILE ("goil_syntax.galgas", 343)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
         if (kBoolTrue == test_11) {
           GALGAS_location location_12 (var_value.reader_location (HERE)) ; // Implicit use of 'location' reader
-          inCompiler->emitSemanticError (location_12, function_stringLBool (var_value, inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 343)).add_operation (GALGAS_string (" value of "), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 343)).add_operation (var_idf.reader_string (SOURCE_FILE ("goil_syntax.galgas", 343)), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 343)).add_operation (GALGAS_string (" has no sub-attribute"), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 343))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 343)) ;
+          inCompiler->emitSemanticError (location_12, function_stringLBool (var_value, inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 344)).add_operation (GALGAS_string (" value of "), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 344)).add_operation (var_idf.reader_string (SOURCE_FILE ("goil_syntax.galgas", 344)), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 344)).add_operation (GALGAS_string (" has no sub-attribute"), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 344))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 344)) ;
         }
         nt_oil_5F_declaration_5F_list_ (var_subTypes, var_subAttributes, inCompiler) ;
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 346)) ;
+        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 347)) ;
       } break ;
       case 2: {
       } break ;
@@ -20961,25 +20962,25 @@ void cParser_goil_5F_syntax::rule_goil_5F_syntax_oil_5F_declaration_i9_ (const G
       }
       GALGAS_lstring var_oil_5F_desc ;
       nt_description_ (var_oil_5F_desc, inCompiler) ;
-      var_val = GALGAS_boolAttribute::constructor_new (var_oil_5F_desc, var_idf.reader_location (SOURCE_FILE ("goil_syntax.galgas", 349)), var_value.reader_bool (SOURCE_FILE ("goil_syntax.galgas", 349)), var_subAttributes  COMMA_SOURCE_FILE ("goil_syntax.galgas", 349)) ;
+      var_val = GALGAS_boolAttribute::constructor_new (var_oil_5F_desc, var_idf.reader_location (SOURCE_FILE ("goil_syntax.galgas", 350)), var_value.reader_bool (SOURCE_FILE ("goil_syntax.galgas", 350)), var_subAttributes  COMMA_SOURCE_FILE ("goil_syntax.galgas", 350)) ;
     } break ;
     case 4: {
       GALGAS_lstring var_literalString ;
       var_literalString = inCompiler->synthetizedAttribute_a_5F_string () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 353)) ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 354)) ;
       GALGAS_lstring var_oil_5F_desc ;
       nt_description_ (var_oil_5F_desc, inCompiler) ;
-      var_val = GALGAS_stringAttribute::constructor_new (var_oil_5F_desc, var_literalString.reader_location (SOURCE_FILE ("goil_syntax.galgas", 355)), var_literalString.reader_string (SOURCE_FILE ("goil_syntax.galgas", 355))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 355)) ;
+      var_val = GALGAS_stringAttribute::constructor_new (var_oil_5F_desc, var_literalString.reader_location (SOURCE_FILE ("goil_syntax.galgas", 356)), var_literalString.reader_string (SOURCE_FILE ("goil_syntax.galgas", 356))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 356)) ;
     } break ;
     case 5: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_AUTO) COMMA_SOURCE_FILE ("goil_syntax.galgas", 358)) ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_AUTO) COMMA_SOURCE_FILE ("goil_syntax.galgas", 359)) ;
       GALGAS_lstring var_oil_5F_desc ;
       nt_description_ (var_oil_5F_desc, inCompiler) ;
-      const enumGalgasBool test_13 = callCategoryReader_autoAllowed ((const cPtr_impType *) var_type.ptr (), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 361)).boolEnum () ;
+      const enumGalgasBool test_13 = callCategoryReader_autoAllowed ((const cPtr_impType *) var_type.ptr (), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 362)).boolEnum () ;
       if (kBoolTrue == test_13) {
-        var_val = GALGAS_auto::constructor_new (var_oil_5F_desc, GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("goil_syntax.galgas", 362))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 362)) ;
+        var_val = GALGAS_auto::constructor_new (var_oil_5F_desc, GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("goil_syntax.galgas", 363))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 363)) ;
       }else if (kBoolFalse == test_13) {
-        inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("goil_syntax.galgas", 377)), GALGAS_string ("AUTO is not allowed")  COMMA_SOURCE_FILE ("goil_syntax.galgas", 377)) ;
+        inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("goil_syntax.galgas", 378)), GALGAS_string ("AUTO is not allowed")  COMMA_SOURCE_FILE ("goil_syntax.galgas", 378)) ;
         var_val.drop () ; // Release error dropped variable
       }
     } break ;
@@ -20989,79 +20990,79 @@ void cParser_goil_5F_syntax::rule_goil_5F_syntax_oil_5F_declaration_i9_ (const G
   } break ;
   case 2: {
     GALGAS_lstring var_name = inCompiler->synthetizedAttribute_att_5F_token () ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) COMMA_SOURCE_FILE ("goil_syntax.galgas", 381)) ;
-    GALGAS_implementationObjectMap var_subTypes = GALGAS_implementationObjectMap::constructor_emptyMap (SOURCE_FILE ("goil_syntax.galgas", 382)) ;
-    GALGAS_objectAttributes var_subAttributes = function_emptyObject (inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 383)) ;
-    const enumGalgasBool test_14 = GALGAS_bool (kIsNotEqual, var_type.reader_type (SOURCE_FILE ("goil_syntax.galgas", 385)).objectCompare (GALGAS_dataType::constructor_structType (SOURCE_FILE ("goil_syntax.galgas", 385)))).boolEnum () ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) COMMA_SOURCE_FILE ("goil_syntax.galgas", 382)) ;
+    GALGAS_implementationObjectMap var_subTypes = GALGAS_implementationObjectMap::constructor_emptyMap (SOURCE_FILE ("goil_syntax.galgas", 383)) ;
+    GALGAS_objectAttributes var_subAttributes = function_emptyObject (inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 384)) ;
+    const enumGalgasBool test_14 = GALGAS_bool (kIsNotEqual, var_type.reader_type (SOURCE_FILE ("goil_syntax.galgas", 386)).objectCompare (GALGAS_dataType::constructor_structType (SOURCE_FILE ("goil_syntax.galgas", 386)))).boolEnum () ;
     if (kBoolTrue == test_14) {
       GALGAS_location location_15 (var_idf.reader_location (HERE)) ; // Implicit use of 'location' reader
-      inCompiler->emitSemanticError (location_15, categoryReader_oilType (var_type.reader_type (SOURCE_FILE ("goil_syntax.galgas", 386)), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 386)).add_operation (GALGAS_string (" expected, got a STRUCT"), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 386))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 386)) ;
+      inCompiler->emitSemanticError (location_15, categoryReader_oilType (var_type.reader_type (SOURCE_FILE ("goil_syntax.galgas", 387)), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 387)).add_operation (GALGAS_string (" expected, got a STRUCT"), inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 387))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 387)) ;
     }else if (kBoolFalse == test_14) {
       if (var_type.isValid ()) {
         if (var_type.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_impStructType) {
-          GALGAS_impStructType cast_12295_structType ((cPtr_impStructType *) var_type.ptr ()) ;
-          var_subTypes = cast_12295_structType.reader_structAttributes (SOURCE_FILE ("goil_syntax.galgas", 390)) ;
+          GALGAS_impStructType cast_12355_structType ((cPtr_impStructType *) var_type.ptr ()) ;
+          var_subTypes = cast_12355_structType.reader_structAttributes (SOURCE_FILE ("goil_syntax.galgas", 391)) ;
         }
       }
     }
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 393)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 394)) ;
     nt_oil_5F_declaration_5F_list_ (var_subTypes, var_subAttributes, inCompiler) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 395)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 396)) ;
     GALGAS_lstring var_oil_5F_desc ;
     nt_description_ (var_oil_5F_desc, inCompiler) ;
-    var_val = GALGAS_structAttribute::constructor_new (var_oil_5F_desc, GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("goil_syntax.galgas", 397)), var_name, var_subAttributes  COMMA_SOURCE_FILE ("goil_syntax.galgas", 397)) ;
+    var_val = GALGAS_structAttribute::constructor_new (var_oil_5F_desc, GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("goil_syntax.galgas", 398)), var_name, var_subAttributes  COMMA_SOURCE_FILE ("goil_syntax.galgas", 398)) ;
   } break ;
   default:
     break ;
   }
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 399)) ;
-  GALGAS_identifierMap var_idfs = ioArgument_identifiers.reader_objectParams (SOURCE_FILE ("goil_syntax.galgas", 402)) ;
-  const enumGalgasBool test_16 = var_type.reader_multiple (SOURCE_FILE ("goil_syntax.galgas", 403)).boolEnum () ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 400)) ;
+  GALGAS_identifierMap var_idfs = ioArgument_identifiers.reader_objectParams (SOURCE_FILE ("goil_syntax.galgas", 403)) ;
+  const enumGalgasBool test_16 = var_type.reader_multiple (SOURCE_FILE ("goil_syntax.galgas", 404)).boolEnum () ;
   if (kBoolTrue == test_16) {
-    const enumGalgasBool test_17 = var_idfs.reader_hasKey (var_idf.reader_string (SOURCE_FILE ("goil_syntax.galgas", 404)) COMMA_SOURCE_FILE ("goil_syntax.galgas", 404)).boolEnum () ;
+    const enumGalgasBool test_17 = var_idfs.reader_hasKey (var_idf.reader_string (SOURCE_FILE ("goil_syntax.galgas", 405)) COMMA_SOURCE_FILE ("goil_syntax.galgas", 405)).boolEnum () ;
     if (kBoolTrue == test_17) {
       GALGAS_object_5F_t var_attributeList ;
       {
-      var_idfs.modifier_del (var_idf, var_attributeList, inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 408)) ;
+      var_idfs.modifier_del (var_idf, var_attributeList, inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 409)) ;
       }
       if (var_attributeList.isValid ()) {
         if (var_attributeList.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_multipleAttribute) {
-          GALGAS_multipleAttribute cast_12949_multiAttribute ((cPtr_multipleAttribute *) var_attributeList.ptr ()) ;
-          GALGAS_identifierList var_aList = cast_12949_multiAttribute.reader_items (SOURCE_FILE ("goil_syntax.galgas", 411)) ;
-          var_aList.addAssign_operation (var_val  COMMA_SOURCE_FILE ("goil_syntax.galgas", 412)) ;
-          var_val = GALGAS_multipleAttribute::constructor_new (function_emptyLString (inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 413)), cast_12949_multiAttribute.reader_location (SOURCE_FILE ("goil_syntax.galgas", 413)), var_aList  COMMA_SOURCE_FILE ("goil_syntax.galgas", 413)) ;
+          GALGAS_multipleAttribute cast_13009_multiAttribute ((cPtr_multipleAttribute *) var_attributeList.ptr ()) ;
+          GALGAS_identifierList var_aList = cast_13009_multiAttribute.reader_items (SOURCE_FILE ("goil_syntax.galgas", 412)) ;
+          var_aList.addAssign_operation (var_val  COMMA_SOURCE_FILE ("goil_syntax.galgas", 413)) ;
+          var_val = GALGAS_multipleAttribute::constructor_new (function_emptyLString (inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 414)), cast_13009_multiAttribute.reader_location (SOURCE_FILE ("goil_syntax.galgas", 414)), var_aList  COMMA_SOURCE_FILE ("goil_syntax.galgas", 414)) ;
         }
       }
     }else if (kBoolFalse == test_17) {
-      var_val = GALGAS_multipleAttribute::constructor_new (function_emptyLString (inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 416)), var_val.reader_location (SOURCE_FILE ("goil_syntax.galgas", 416)), GALGAS_identifierList::constructor_listWithValue (var_val  COMMA_SOURCE_FILE ("goil_syntax.galgas", 416))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 416)) ;
+      var_val = GALGAS_multipleAttribute::constructor_new (function_emptyLString (inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 417)), var_val.reader_location (SOURCE_FILE ("goil_syntax.galgas", 417)), GALGAS_identifierList::constructor_listWithValue (var_val  COMMA_SOURCE_FILE ("goil_syntax.galgas", 417))  COMMA_SOURCE_FILE ("goil_syntax.galgas", 417)) ;
     }
   }
   const enumGalgasBool test_18 = var_typeOk.boolEnum () ;
   if (kBoolTrue == test_18) {
     {
-    var_idfs.modifier_put (var_idf, var_val, inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 420)) ;
+    var_idfs.modifier_put (var_idf, var_val, inCompiler COMMA_SOURCE_FILE ("goil_syntax.galgas", 421)) ;
     }
   }
   {
-  ioArgument_identifiers.modifier_setObjectParams (var_idfs COMMA_SOURCE_FILE ("goil_syntax.galgas", 422)) ;
+  ioArgument_identifiers.modifier_setObjectParams (var_idfs COMMA_SOURCE_FILE ("goil_syntax.galgas", 423)) ;
   }
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_goil_5F_syntax::rule_goil_5F_syntax_oil_5F_declaration_i9_parse (C_Lexique_goil_5F_lexique * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) COMMA_SOURCE_FILE ("goil_syntax.galgas", 257)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) COMMA_SOURCE_FILE ("goil_syntax.galgas", 258)) ;
   switch (select_goil_5F_syntax_7 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__3D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 270)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__3D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 271)) ;
     switch (select_goil_5F_syntax_8 (inCompiler)) {
     case 1: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) COMMA_SOURCE_FILE ("goil_syntax.galgas", 274)) ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) COMMA_SOURCE_FILE ("goil_syntax.galgas", 275)) ;
       switch (select_goil_5F_syntax_9 (inCompiler)) {
       case 1: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 293)) ;
+        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 294)) ;
         nt_oil_5F_declaration_5F_list_parse (inCompiler) ;
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 295)) ;
+        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 296)) ;
       } break ;
       case 2: {
       } break ;
@@ -21074,11 +21075,11 @@ void cParser_goil_5F_syntax::rule_goil_5F_syntax_oil_5F_declaration_i9_parse (C_
       nt_sign_parse (inCompiler) ;
       switch (select_goil_5F_syntax_10 (inCompiler)) {
       case 1: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_uint_5F_number) COMMA_SOURCE_FILE ("goil_syntax.galgas", 312)) ;
+        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_uint_5F_number) COMMA_SOURCE_FILE ("goil_syntax.galgas", 313)) ;
         nt_description_parse (inCompiler) ;
       } break ;
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_float_5F_number) COMMA_SOURCE_FILE ("goil_syntax.galgas", 318)) ;
+        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_float_5F_number) COMMA_SOURCE_FILE ("goil_syntax.galgas", 319)) ;
         nt_description_parse (inCompiler) ;
       } break ;
       default:
@@ -21089,9 +21090,9 @@ void cParser_goil_5F_syntax::rule_goil_5F_syntax_oil_5F_declaration_i9_parse (C_
       nt_boolean_parse (inCompiler) ;
       switch (select_goil_5F_syntax_11 (inCompiler)) {
       case 1: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 341)) ;
+        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 342)) ;
         nt_oil_5F_declaration_5F_list_parse (inCompiler) ;
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 346)) ;
+        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 347)) ;
       } break ;
       case 2: {
       } break ;
@@ -21101,11 +21102,11 @@ void cParser_goil_5F_syntax::rule_goil_5F_syntax_oil_5F_declaration_i9_parse (C_
       nt_description_parse (inCompiler) ;
     } break ;
     case 4: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 353)) ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 354)) ;
       nt_description_parse (inCompiler) ;
     } break ;
     case 5: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_AUTO) COMMA_SOURCE_FILE ("goil_syntax.galgas", 358)) ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_AUTO) COMMA_SOURCE_FILE ("goil_syntax.galgas", 359)) ;
       nt_description_parse (inCompiler) ;
     } break ;
     default:
@@ -21113,16 +21114,16 @@ void cParser_goil_5F_syntax::rule_goil_5F_syntax_oil_5F_declaration_i9_parse (C_
     }
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) COMMA_SOURCE_FILE ("goil_syntax.galgas", 381)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 393)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) COMMA_SOURCE_FILE ("goil_syntax.galgas", 382)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 394)) ;
     nt_oil_5F_declaration_5F_list_parse (inCompiler) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 395)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 396)) ;
     nt_description_parse (inCompiler) ;
   } break ;
   default:
     break ;
   }
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 399)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) COMMA_SOURCE_FILE ("goil_syntax.galgas", 400)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -21133,36 +21134,36 @@ void cParser_goil_5F_syntax::rule_goil_5F_syntax_include_5F_file_5F_level_i10_ (
                                                                                 GALGAS_string & ioArgument_fileIncludeList,
                                                                                 const GALGAS_bool constinArgument_rootFile,
                                                                                 C_Lexique_goil_5F_lexique * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_include) COMMA_SOURCE_FILE ("goil_syntax.galgas", 431)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_include) COMMA_SOURCE_FILE ("goil_syntax.galgas", 432)) ;
   GALGAS_lstring var_file_5F_name ;
   switch (select_goil_5F_syntax_12 (inCompiler)) {
   case 1: {
     var_file_5F_name = inCompiler->synthetizedAttribute_a_5F_string () ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_g_5F_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 434)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_g_5F_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 435)) ;
     {
-    routine_file_5F_in_5F_path (var_file_5F_name, inCompiler  COMMA_SOURCE_FILE ("goil_syntax.galgas", 435)) ;
+    routine_file_5F_in_5F_path (var_file_5F_name, inCompiler  COMMA_SOURCE_FILE ("goil_syntax.galgas", 436)) ;
     }
   } break ;
   case 2: {
     var_file_5F_name = inCompiler->synthetizedAttribute_a_5F_string () ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 437)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 438)) ;
   } break ;
   default:
     break ;
   }
-  cGrammar_goil_5F_file_5F_level_5F_include::_performSourceFileParsing_ (inCompiler, var_file_5F_name, ioArgument_imp, ioArgument_application, ioArgument_fileIncludeList, constinArgument_rootFile  COMMA_SOURCE_FILE ("goil_syntax.galgas", 439)) ;
+  cGrammar_goil_5F_file_5F_level_5F_include::_performSourceFileParsing_ (inCompiler, var_file_5F_name, ioArgument_imp, ioArgument_application, ioArgument_fileIncludeList, constinArgument_rootFile  COMMA_SOURCE_FILE ("goil_syntax.galgas", 440)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_goil_5F_syntax::rule_goil_5F_syntax_include_5F_file_5F_level_i10_parse (C_Lexique_goil_5F_lexique * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_include) COMMA_SOURCE_FILE ("goil_syntax.galgas", 431)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_include) COMMA_SOURCE_FILE ("goil_syntax.galgas", 432)) ;
   switch (select_goil_5F_syntax_12 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_g_5F_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 434)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_g_5F_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 435)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 437)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 438)) ;
   } break ;
   default:
     break ;
@@ -21177,36 +21178,36 @@ void cParser_goil_5F_syntax::rule_goil_5F_syntax_include_5F_cpu_5F_level_i11_ (c
                                                                                GALGAS_string & ioArgument_fileIncludeList,
                                                                                const GALGAS_bool constinArgument_rootFile,
                                                                                C_Lexique_goil_5F_lexique * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_include) COMMA_SOURCE_FILE ("goil_syntax.galgas", 448)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_include) COMMA_SOURCE_FILE ("goil_syntax.galgas", 449)) ;
   GALGAS_lstring var_file_5F_name ;
   switch (select_goil_5F_syntax_13 (inCompiler)) {
   case 1: {
     var_file_5F_name = inCompiler->synthetizedAttribute_a_5F_string () ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_g_5F_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 451)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_g_5F_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 452)) ;
     {
-    routine_file_5F_in_5F_path (var_file_5F_name, inCompiler  COMMA_SOURCE_FILE ("goil_syntax.galgas", 452)) ;
+    routine_file_5F_in_5F_path (var_file_5F_name, inCompiler  COMMA_SOURCE_FILE ("goil_syntax.galgas", 453)) ;
     }
   } break ;
   case 2: {
     var_file_5F_name = inCompiler->synthetizedAttribute_a_5F_string () ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 454)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 455)) ;
   } break ;
   default:
     break ;
   }
-  cGrammar_goil_5F_cpu_5F_level_5F_include::_performSourceFileParsing_ (inCompiler, var_file_5F_name, constinArgument_imp, ioArgument_objects, ioArgument_fileIncludeList, constinArgument_rootFile  COMMA_SOURCE_FILE ("goil_syntax.galgas", 456)) ;
+  cGrammar_goil_5F_cpu_5F_level_5F_include::_performSourceFileParsing_ (inCompiler, var_file_5F_name, constinArgument_imp, ioArgument_objects, ioArgument_fileIncludeList, constinArgument_rootFile  COMMA_SOURCE_FILE ("goil_syntax.galgas", 457)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_goil_5F_syntax::rule_goil_5F_syntax_include_5F_cpu_5F_level_i11_parse (C_Lexique_goil_5F_lexique * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_include) COMMA_SOURCE_FILE ("goil_syntax.galgas", 448)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_include) COMMA_SOURCE_FILE ("goil_syntax.galgas", 449)) ;
   switch (select_goil_5F_syntax_13 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_g_5F_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 451)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_g_5F_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 452)) ;
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 454)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) COMMA_SOURCE_FILE ("goil_syntax.galgas", 455)) ;
   } break ;
   default:
     break ;
@@ -21239,23 +21240,23 @@ static const int16_t gProductions_goil_cpu_level_include [] = {
   NONTERMINAL (5) // <OIL_version>
 , NONTERMINAL (2) // <file>
 , END_PRODUCTION
-// At index 3 : <file>, in file 'goil_syntax.ggs', line 111
+// At index 3 : <file>, in file 'goil_syntax.ggs', line 112
 , NONTERMINAL (13) // <select_goil_5F_syntax_0>
 , END_PRODUCTION
-// At index 5 : <sign>, in file 'goil_syntax.ggs', line 127
+// At index 5 : <sign>, in file 'goil_syntax.ggs', line 128
 , NONTERMINAL (14) // <select_goil_5F_syntax_1>
 , END_PRODUCTION
-// At index 7 : <description>, in file 'goil_syntax.ggs', line 140
+// At index 7 : <description>, in file 'goil_syntax.ggs', line 141
 , NONTERMINAL (15) // <select_goil_5F_syntax_2>
 , END_PRODUCTION
-// At index 9 : <OIL_version>, in file 'goil_syntax.ggs', line 164
+// At index 9 : <OIL_version>, in file 'goil_syntax.ggs', line 165
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_OIL_5F_VERSION) // $OIL_VERSION$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3D_) // $=$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) // $string$
 , NONTERMINAL (4) // <description>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) // $;$
 , END_PRODUCTION
-// At index 15 : <application_definition>, in file 'goil_syntax.ggs', line 171
+// At index 15 : <application_definition>, in file 'goil_syntax.ggs', line 172
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_CPU) // $CPU$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) // ${$
@@ -21264,67 +21265,67 @@ static const int16_t gProductions_goil_cpu_level_include [] = {
 , NONTERMINAL (4) // <description>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) // $;$
 , END_PRODUCTION
-// At index 23 : <object_definition_list>, in file 'goil_syntax.ggs', line 185
+// At index 23 : <object_definition_list>, in file 'goil_syntax.ggs', line 186
 , NONTERMINAL (17) // <select_goil_5F_syntax_4>
 , END_PRODUCTION
-// At index 25 : <boolean>, in file 'goil_syntax.ggs', line 233
+// At index 25 : <boolean>, in file 'goil_syntax.ggs', line 234
 , NONTERMINAL (18) // <select_goil_5F_syntax_5>
 , END_PRODUCTION
-// At index 27 : <oil_declaration_list>, in file 'goil_syntax.ggs', line 243
+// At index 27 : <oil_declaration_list>, in file 'goil_syntax.ggs', line 244
 , NONTERMINAL (19) // <select_goil_5F_syntax_6>
 , END_PRODUCTION
-// At index 29 : <oil_declaration>, in file 'goil_syntax.ggs', line 252
+// At index 29 : <oil_declaration>, in file 'goil_syntax.ggs', line 253
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , NONTERMINAL (20) // <select_goil_5F_syntax_7>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) // $;$
 , END_PRODUCTION
-// At index 33 : <include_file_level>, in file 'goil_syntax.ggs', line 425
+// At index 33 : <include_file_level>, in file 'goil_syntax.ggs', line 426
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_include) // $include$
 , NONTERMINAL (25) // <select_goil_5F_syntax_12>
 , END_PRODUCTION
-// At index 36 : <include_cpu_level>, in file 'goil_syntax.ggs', line 442
+// At index 36 : <include_cpu_level>, in file 'goil_syntax.ggs', line 443
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_include) // $include$
 , NONTERMINAL (26) // <select_goil_5F_syntax_13>
 , END_PRODUCTION
 //---- Added productions from 'select' and 'repeat' instructions
-// At index 39 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 120
+// At index 39 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 121
 , END_PRODUCTION
-// At index 40 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 120
+// At index 40 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 121
 , NONTERMINAL (11) // <include_file_level>
 , NONTERMINAL (13) // <select_goil_5F_syntax_0>
 , END_PRODUCTION
-// At index 43 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 120
+// At index 43 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 121
 , NONTERMINAL (0) // <implementation_definition>
 , NONTERMINAL (13) // <select_goil_5F_syntax_0>
 , END_PRODUCTION
-// At index 46 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 120
+// At index 46 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 121
 , NONTERMINAL (6) // <application_definition>
 , NONTERMINAL (13) // <select_goil_5F_syntax_0>
 , END_PRODUCTION
-// At index 49 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 128
+// At index 49 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 129
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__2D_) // $-$
 , END_PRODUCTION
-// At index 51 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 128
+// At index 51 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 129
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__2B_) // $+$
 , END_PRODUCTION
-// At index 53 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 128
+// At index 53 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 129
 , END_PRODUCTION
-// At index 54 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 141
+// At index 54 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 142
 , END_PRODUCTION
-// At index 55 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 141
+// At index 55 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 142
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3A_) // $:$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) // $string$
 , NONTERMINAL (16) // <select_goil_5F_syntax_3>
 , END_PRODUCTION
-// At index 59 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 148
+// At index 59 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 149
 , END_PRODUCTION
-// At index 60 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 148
+// At index 60 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 149
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) // $string$
 , NONTERMINAL (16) // <select_goil_5F_syntax_3>
 , END_PRODUCTION
-// At index 63 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 191
+// At index 63 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 192
 , END_PRODUCTION
-// At index 64 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 191
+// At index 64 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 192
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) // ${$
@@ -21334,87 +21335,87 @@ static const int16_t gProductions_goil_cpu_level_include [] = {
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) // $;$
 , NONTERMINAL (17) // <select_goil_5F_syntax_4>
 , END_PRODUCTION
-// At index 73 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 191
+// At index 73 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 192
 , NONTERMINAL (12) // <include_cpu_level>
 , NONTERMINAL (17) // <select_goil_5F_syntax_4>
 , END_PRODUCTION
-// At index 76 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 234
+// At index 76 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 235
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_TRUE) // $TRUE$
 , END_PRODUCTION
-// At index 78 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 234
+// At index 78 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 235
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_FALSE) // $FALSE$
 , END_PRODUCTION
-// At index 80 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 246
+// At index 80 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 247
 , END_PRODUCTION
-// At index 81 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 246
+// At index 81 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 247
 , NONTERMINAL (10) // <oil_declaration>
 , NONTERMINAL (19) // <select_goil_5F_syntax_6>
 , END_PRODUCTION
-// At index 84 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 269
+// At index 84 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 270
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3D_) // $=$
 , NONTERMINAL (21) // <select_goil_5F_syntax_8>
 , END_PRODUCTION
-// At index 87 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 269
+// At index 87 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 270
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) // ${$
 , NONTERMINAL (9) // <oil_declaration_list>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) // $}$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 93 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
+// At index 93 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 272
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , NONTERMINAL (22) // <select_goil_5F_syntax_9>
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 97 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
+// At index 97 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 272
 , NONTERMINAL (3) // <sign>
 , NONTERMINAL (23) // <select_goil_5F_syntax_10>
 , END_PRODUCTION
-// At index 100 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
+// At index 100 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 272
 , NONTERMINAL (8) // <boolean>
 , NONTERMINAL (24) // <select_goil_5F_syntax_11>
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 104 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
+// At index 104 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 272
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) // $string$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 107 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
+// At index 107 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 272
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_AUTO) // $AUTO$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 110 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 292
+// At index 110 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 293
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) // ${$
 , NONTERMINAL (9) // <oil_declaration_list>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) // $}$
 , END_PRODUCTION
-// At index 114 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 292
+// At index 114 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 293
 , END_PRODUCTION
-// At index 115 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 309
+// At index 115 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 310
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_uint_5F_number) // $uint_number$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 118 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 309
+// At index 118 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 310
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_float_5F_number) // $float_number$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 121 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 340
+// At index 121 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 341
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) // ${$
 , NONTERMINAL (9) // <oil_declaration_list>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) // $}$
 , END_PRODUCTION
-// At index 125 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 340
+// At index 125 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 341
 , END_PRODUCTION
-// At index 126 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 433
+// At index 126 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 434
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_g_5F_string) // $g_string$
 , END_PRODUCTION
-// At index 128 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 433
+// At index 128 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 434
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) // $string$
 , END_PRODUCTION
-// At index 130 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 450
+// At index 130 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 451
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_g_5F_string) // $g_string$
 , END_PRODUCTION
-// At index 132 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 450
+// At index 132 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 451
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) // $string$
 , END_PRODUCTION
 // At index 134 : <>, in file '.ggs', line 0
@@ -21487,52 +21488,52 @@ static const cProductionNameDescriptor gProductionNames_goil_cpu_level_include [
 
 static const int16_t gProductionIndexes_goil_cpu_level_include [48] = {
 0, // index 0 : <start>, in file 'goil_syntax.ggs', line 38
-3, // index 1 : <file>, in file 'goil_syntax.ggs', line 111
-5, // index 2 : <sign>, in file 'goil_syntax.ggs', line 127
-7, // index 3 : <description>, in file 'goil_syntax.ggs', line 140
-9, // index 4 : <OIL_version>, in file 'goil_syntax.ggs', line 164
-15, // index 5 : <application_definition>, in file 'goil_syntax.ggs', line 171
-23, // index 6 : <object_definition_list>, in file 'goil_syntax.ggs', line 185
-25, // index 7 : <boolean>, in file 'goil_syntax.ggs', line 233
-27, // index 8 : <oil_declaration_list>, in file 'goil_syntax.ggs', line 243
-29, // index 9 : <oil_declaration>, in file 'goil_syntax.ggs', line 252
-33, // index 10 : <include_file_level>, in file 'goil_syntax.ggs', line 425
-36, // index 11 : <include_cpu_level>, in file 'goil_syntax.ggs', line 442
-39, // index 12 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 120
-40, // index 13 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 120
-43, // index 14 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 120
-46, // index 15 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 120
-49, // index 16 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 128
-51, // index 17 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 128
-53, // index 18 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 128
-54, // index 19 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 141
-55, // index 20 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 141
-59, // index 21 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 148
-60, // index 22 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 148
-63, // index 23 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 191
-64, // index 24 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 191
-73, // index 25 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 191
-76, // index 26 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 234
-78, // index 27 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 234
-80, // index 28 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 246
-81, // index 29 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 246
-84, // index 30 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 269
-87, // index 31 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 269
-93, // index 32 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
-97, // index 33 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
-100, // index 34 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
-104, // index 35 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
-107, // index 36 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
-110, // index 37 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 292
-114, // index 38 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 292
-115, // index 39 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 309
-118, // index 40 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 309
-121, // index 41 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 340
-125, // index 42 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 340
-126, // index 43 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 433
-128, // index 44 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 433
-130, // index 45 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 450
-132, // index 46 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 450
+3, // index 1 : <file>, in file 'goil_syntax.ggs', line 112
+5, // index 2 : <sign>, in file 'goil_syntax.ggs', line 128
+7, // index 3 : <description>, in file 'goil_syntax.ggs', line 141
+9, // index 4 : <OIL_version>, in file 'goil_syntax.ggs', line 165
+15, // index 5 : <application_definition>, in file 'goil_syntax.ggs', line 172
+23, // index 6 : <object_definition_list>, in file 'goil_syntax.ggs', line 186
+25, // index 7 : <boolean>, in file 'goil_syntax.ggs', line 234
+27, // index 8 : <oil_declaration_list>, in file 'goil_syntax.ggs', line 244
+29, // index 9 : <oil_declaration>, in file 'goil_syntax.ggs', line 253
+33, // index 10 : <include_file_level>, in file 'goil_syntax.ggs', line 426
+36, // index 11 : <include_cpu_level>, in file 'goil_syntax.ggs', line 443
+39, // index 12 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 121
+40, // index 13 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 121
+43, // index 14 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 121
+46, // index 15 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 121
+49, // index 16 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 129
+51, // index 17 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 129
+53, // index 18 : <select_goil_5F_syntax_1>, in file 'goil_syntax.ggs', line 129
+54, // index 19 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 142
+55, // index 20 : <select_goil_5F_syntax_2>, in file 'goil_syntax.ggs', line 142
+59, // index 21 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 149
+60, // index 22 : <select_goil_5F_syntax_3>, in file 'goil_syntax.ggs', line 149
+63, // index 23 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 192
+64, // index 24 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 192
+73, // index 25 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 192
+76, // index 26 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 235
+78, // index 27 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 235
+80, // index 28 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 247
+81, // index 29 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 247
+84, // index 30 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 270
+87, // index 31 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 270
+93, // index 32 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 272
+97, // index 33 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 272
+100, // index 34 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 272
+104, // index 35 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 272
+107, // index 36 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 272
+110, // index 37 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 293
+114, // index 38 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 293
+115, // index 39 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 310
+118, // index 40 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 310
+121, // index 41 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 341
+125, // index 42 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 341
+126, // index 43 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 434
+128, // index 44 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 434
+130, // index 45 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 451
+132, // index 46 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 451
 134 // index 47 : <>, in file '.ggs', line 0
 } ;
 

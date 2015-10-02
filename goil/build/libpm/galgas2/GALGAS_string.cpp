@@ -35,6 +35,32 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+
+#ifndef COMPILE_FOR_WIN32
+  #include <pwd.h>
+#endif
+
+#ifdef COMPILE_FOR_WIN32
+  #include <Shlobj.h>
+#endif
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+#ifndef COMPILE_FOR_WIN32
+  GALGAS_string GALGAS_string::constructor_homeDirectory (UNUSED_LOCATION_ARGS) {
+    return GALGAS_string (getpwuid (getuid ())->pw_dir) ;
+  }
+#endif
+
+#ifdef COMPILE_FOR_WIN32
+  GALGAS_string GALGAS_string::constructor_homeDirectory (UNUSED_LOCATION_ARGS) {
+    char path [MAX_PATH] ;
+    SHGetFolderPath (NULL, CSIDL_PROFILE, NULL, 0, path) ;
+    return GALGAS_string (path).reader_unixPathWithNativePath (HERE) ;
+  }
+#endif
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
@@ -433,8 +459,8 @@ GALGAS_string GALGAS_string::reader_stringByLeftPadding (const GALGAS_uint & inP
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_string GALGAS_string::reader_stringByRightPadding (const GALGAS_uint & inPaddedStringLength,
-                                                            const GALGAS_char & inPaddingChar
-                                                            COMMA_UNUSED_LOCATION_ARGS) const {
+                                                          const GALGAS_char & inPaddingChar
+                                                          COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
   if ((inPaddedStringLength.isValid ()) && (inPaddingChar.isValid ())) {
     const utf32 paddingChar = inPaddingChar.charValue () ;
@@ -495,7 +521,7 @@ GALGAS_string GALGAS_string::reader_stringByReplacingStringByString (const GALGA
     }else{
       bool ok = false ;
       uint32_t replacementCount = 0 ;
-      const C_String s = mString.stringByReplacingStringByString (inSearchedString.mString, inReplacementString.mString, replacementCount, ok COMMA_THERE) ;
+      const C_String s = mString.stringByReplacingStringByString (inSearchedString.mString, inReplacementString.mString, replacementCount, ok) ;
       result = GALGAS_string (s) ;
     }
   }
@@ -1052,7 +1078,7 @@ void GALGAS_string::class_method_deleteFile (GALGAS_string inFilePath,
     }else{
       const C_String errorMessage = C_FileManager::deleteFile (inFilePath.mString) ;
       if (errorMessage.length () == 0) {
-        ggs_printFileOperationSuccess (C_String ("Deleted '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
+        ggs_printFileOperationSuccess (C_String ("Deleted '") + inFilePath.mString + "'.\n") ;
       }else{
         C_String message ;
         message << "cannot perform delete '" << inFilePath.mString << "' file: " << errorMessage ;
@@ -1167,30 +1193,38 @@ void GALGAS_string::class_method_generateFile (GALGAS_string inStartPath,
 void GALGAS_string::class_method_generateFileWithPattern (GALGAS_string inStartPath,
                                                           GALGAS_string inFileName,
                                                           GALGAS_string inLineCommentPrefix,
+                                                          GALGAS_string inHeader,
                                                           GALGAS_string inDefaultUserZone1,
                                                           GALGAS_string inGeneratedZone2,
                                                           GALGAS_string inDefaultUserZone2,
                                                           GALGAS_string inGeneratedZone3,
+                                                          GALGAS_bool inMakeExecutable,
                                                           C_Compiler * inCompiler
                                                           COMMA_UNUSED_LOCATION_ARGS) {
   const bool built = (inStartPath.isValid ())
     && (inFileName.isValid ())
     && (inLineCommentPrefix.isValid ())
     && (inDefaultUserZone1.isValid ())
+    && (inHeader.isValid ())
     && (inDefaultUserZone2.isValid ())
     && (inDefaultUserZone2.isValid ())
     && (inGeneratedZone3.isValid ())
+    && (inMakeExecutable.isValid ())
   ;
   if (built) {
     TC_UniqueArray <C_String> directoriesToExclude ;
-    inCompiler->generateFileWithPatternFromPathes (inStartPath.mString,
-                                        directoriesToExclude,
-                                        inLineCommentPrefix.mString,
-                                        inFileName.mString,
-                                        inDefaultUserZone1.mString,
-                                        inGeneratedZone2.mString,
-                                        inDefaultUserZone2.mString,
-                                        inGeneratedZone3.mString) ;
+    inCompiler->generateFileWithPatternFromPathes (
+      inStartPath.mString,
+      directoriesToExclude,
+      inLineCommentPrefix.mString,
+      inFileName.mString,
+      inHeader.mString,
+      inDefaultUserZone1.mString,
+      inGeneratedZone2.mString,
+      inDefaultUserZone2.mString,
+      inGeneratedZone3.mString,
+      inMakeExecutable.boolValue ()
+    ) ;
   }
 }
 
@@ -1237,9 +1271,9 @@ void GALGAS_string::method_writeToFile (GALGAS_string inFilePath,
       const bool verboseOptionOn = gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ;
       const bool ok = C_FileManager::writeStringToFile (mString, inFilePath.mString) ;
       if (ok && verboseOptionOn && fileAlreadyExists) {
-        ggs_printFileOperationSuccess (C_String ("Replaced '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
+        ggs_printFileOperationSuccess (C_String ("Replaced '") + inFilePath.mString + "'.\n") ;
       }else if (ok && verboseOptionOn && ! fileAlreadyExists) {
-        ggs_printFileCreationSuccess (C_String ("Created '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
+        ggs_printFileCreationSuccess (C_String ("Created '") + inFilePath.mString + "'.\n") ;
       }else if (! ok) {
         C_String message ;
         message << "cannot write '" << inFilePath.mString << "' file" ;
@@ -1278,9 +1312,9 @@ void GALGAS_string::method_writeToFileWhenDifferentContents (GALGAS_string inFil
         }else{
           ok = C_FileManager::writeStringToFile (mString, inFilePath.mString) ;
           if (ok && verboseOptionOn && fileAlreadyExists) {
-            ggs_printFileOperationSuccess (C_String ("Replaced '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
+            ggs_printFileOperationSuccess (C_String ("Replaced '") + inFilePath.mString + "'.\n") ;
           }else if (ok && verboseOptionOn && ! fileAlreadyExists) {
-            ggs_printFileCreationSuccess (C_String ("Created '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
+            ggs_printFileCreationSuccess (C_String ("Created '") + inFilePath.mString + "'.\n") ;
           }else if (! ok) {
             C_String message ;
             message << "cannot write '" << inFilePath.mString << "' file" ;
@@ -1307,9 +1341,9 @@ void GALGAS_string::method_writeToExecutableFile (GALGAS_string inFilePath,
       const bool verboseOptionOn = gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ;
       const bool ok = C_FileManager::writeStringToExecutableFile (mString, inFilePath.mString) ;
       if (ok && verboseOptionOn && fileAlreadyExists) {
-        ggs_printFileOperationSuccess (C_String ("Replaced '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
+        ggs_printFileOperationSuccess (C_String ("Replaced '") + inFilePath.mString + "'.\n") ;
       }else if (ok && verboseOptionOn && ! fileAlreadyExists) {
-        ggs_printFileCreationSuccess (C_String ("Created '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
+        ggs_printFileCreationSuccess (C_String ("Created '") + inFilePath.mString + "'.\n") ;
       }else if (! ok) {
         C_String message ;
         message << "cannot write '" << inFilePath.mString << "' file" ;
@@ -1348,9 +1382,9 @@ void GALGAS_string::method_writeToExecutableFileWhenDifferentContents (GALGAS_st
         }else{
           ok = C_FileManager::writeStringToExecutableFile (mString, inFilePath.mString) ;
           if (ok && verboseOptionOn && fileAlreadyExists) {
-            ggs_printFileOperationSuccess (C_String ("Replaced '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
+            ggs_printFileOperationSuccess (C_String ("Replaced '") + inFilePath.mString + "'.\n") ;
           }else if (ok && verboseOptionOn && ! fileAlreadyExists) {
-            ggs_printFileCreationSuccess (C_String ("Created '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
+            ggs_printFileCreationSuccess (C_String ("Created '") + inFilePath.mString + "'.\n") ;
           }else if (! ok) {
             C_String message ;
             message << "cannot write '" << inFilePath.mString << "' file" ;
@@ -1544,7 +1578,7 @@ AC_OutputStream & operator << (AC_OutputStream & inStream,
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//    S Y M B O L I C    L I N K S                                           *
+//    S Y M B O L I C    L I N K S                                                                                     *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -1596,7 +1630,7 @@ void GALGAS_string::method_makeSymbolicLinkWithPath (GALGAS_string inPath,
 //---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark Reader popen
+  #pragma mark Getter popen
 #endif
 
 //---------------------------------------------------------------------------------------------------------------------*

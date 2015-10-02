@@ -195,7 +195,7 @@ void scanner_routine_convertHexStringIntoSInt (C_Lexique & inLexique,
                                               const utf32 * inCharacterIsNotHexDigitError) ;
 
 void scanner_routine_convertHexStringIntoSInt64 (C_Lexique & inLexique,
-                                                const C_String & inDecimalString,
+                                                const C_String & inHexString,
                                                 int64_t & outValue,
                                                 const utf32 * inNumberTooLargeError,
                                                 const utf32 * inCharacterIsNotHexDigitError) ;
@@ -219,6 +219,27 @@ scanner_routine_codePointToUnicode (C_Lexique & inLexique,
 //--- Methods introduced in GALGAS 3.0.0
 void scanner_routine_resetString (C_Lexique & inLexique,
                                   C_String & ioString) ;
+
+//--- Methods introduced in GALGAS 3.1.0
+void scanner_routine_enterDecimalDigitIntoBigInt (C_Lexique & inLexique,
+                                                  const utf32 inCharacter,
+                                                  class C_BigInt & ioBigInt,
+                                                  const utf32 * inCharacterIsNotDecimalDigitError) ;
+
+void scanner_routine_enterHexDigitIntoBigInt (C_Lexique & inLexique,
+                                              const utf32 inCharacter,
+                                              class C_BigInt & ioBigInt,
+                                              const utf32 * inCharacterIsNotDecimalDigitError) ;
+
+void scanner_routine_convertDecimalStringIntoBigInt (C_Lexique & inLexique,
+                                                     const C_String & inDecimalString,
+                                                     C_BigInt & outValue,
+                                                     const utf32 * inCharacterIsNotDecimalDigitError) ;
+
+void scanner_routine_convertHexStringIntoBigInt (C_Lexique & inLexique,
+                                                 const C_String & inHexString,
+                                                 C_BigInt & outValue,
+                                                 const utf32 * inCharacterIsNotHexDigitError) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 

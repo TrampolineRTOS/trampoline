@@ -944,6 +944,55 @@ uint64_t C_BDD::valueCount64 (const uint32_t inVariableCount) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
+static void internalValueCount64UsingCache (const uint32_t inValue,
+                                            const uint32_t inVariableCount,
+                                            uint64_t & nombreDirect,
+                                            uint64_t & nombreComplement,
+                                            TC_UniqueArray <uint64_t> & ioDirectCacheArray,
+                                            TC_UniqueArray <uint64_t> & ioComplementCacheArray
+                                            COMMA_LOCATION_ARGS) {
+  const uint32_t nodeIndex = nodeIndexForRoot (inValue COMMA_THERE) ;
+  if (bothBranches (gNodeArray [nodeIndex]) == 0) {
+    nombreDirect = 0 ;
+    nombreComplement = 1 << inVariableCount ;
+  }else if ((ioDirectCacheArray.count () > (int32_t) (inValue / 2))
+      && ((ioDirectCacheArray (inValue / 2 COMMA_HERE) != 0) || (ioComplementCacheArray (inValue / 2 COMMA_HERE) != 0))) {
+    const uint32_t var = gNodeArray [nodeIndex].mVariableIndex ;
+    nombreDirect = ioDirectCacheArray (inValue / 2 COMMA_HERE) << (inVariableCount - var - 1) ;
+    nombreComplement = ioComplementCacheArray (inValue / 2 COMMA_HERE) << (inVariableCount - var - 1) ;
+  }else{
+    const uint32_t var = gNodeArray [nodeIndex].mVariableIndex ;
+    uint64_t nd0, nc0, nd1, nc1 ;
+    internalValueCount64UsingCache (gNodeArray [nodeIndex].mELSE, var, nd0, nc0, ioDirectCacheArray, ioComplementCacheArray COMMA_THERE) ;
+    internalValueCount64UsingCache (gNodeArray [nodeIndex].mTHEN, var, nd1, nc1, ioDirectCacheArray, ioComplementCacheArray COMMA_THERE) ;
+    nombreDirect = nd0 + nd1 ;
+    nombreComplement = nc0 + nc1 ;
+    ioDirectCacheArray.forceObjectAtIndex (inValue / 2, nombreDirect, 0 COMMA_HERE) ;
+    ioComplementCacheArray.forceObjectAtIndex (inValue / 2, nombreComplement, 0 COMMA_HERE) ;
+    nombreDirect <<= (inVariableCount - var - 1) ;
+    nombreComplement <<= (inVariableCount - var - 1) ;
+  }
+//---
+  if ((inValue & 1) != 0) {
+    const uint64_t tempo = nombreDirect ;
+    nombreDirect = nombreComplement ;
+    nombreComplement = tempo ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+uint64_t C_BDD::valueCount64UsingCache (const uint32_t inVariableCount,
+                                        TC_UniqueArray <uint64_t> & ioDirectCacheArray,
+                                        TC_UniqueArray <uint64_t> & ioComplementCacheArray) const {
+  uint64_t nombreDirect = 0 ;
+  uint64_t nombreComplement = 0 ;
+  internalValueCount64UsingCache (mBDDvalue, inVariableCount, nombreDirect, nombreComplement, ioDirectCacheArray, ioComplementCacheArray COMMA_HERE) ;
+  return nombreDirect ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Value Count (128)
 #endif
@@ -1041,50 +1090,94 @@ PMUInt128 C_BDD::valueCount128UsingCache (const uint32_t inVariableCount,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-static void internalValueCount64UsingCache (const uint32_t inValue,
-                                            const uint32_t inVariableCount,
-                                            uint64_t & nombreDirect,
-                                            uint64_t & nombreComplement,
-                                            TC_UniqueArray <uint64_t> & ioDirectCacheArray,
-                                            TC_UniqueArray <uint64_t> & ioComplementCacheArray
-                                            COMMA_LOCATION_ARGS) {
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark Value Count (Big ints)
+#endif
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void internalValueCount (const uint32_t inValue,
+                                const uint32_t inVariableCount,
+                                C_BigInt & nombreDirect,
+                                C_BigInt & nombreComplement
+                                COMMA_LOCATION_ARGS) {
   const uint32_t nodeIndex = nodeIndexForRoot (inValue COMMA_THERE) ;
   if (bothBranches (gNodeArray [nodeIndex]) == 0) {
-    nombreDirect = 0 ;
-    nombreComplement = 1 << inVariableCount ;
-  }else if ((ioDirectCacheArray.count () > (int32_t) (inValue / 2))
-      && ((ioDirectCacheArray (inValue / 2 COMMA_HERE) != 0) || (ioComplementCacheArray (inValue / 2 COMMA_HERE) != 0))) {
-    const uint32_t var = gNodeArray [nodeIndex].mVariableIndex ;
-    nombreDirect = ioDirectCacheArray (inValue / 2 COMMA_HERE) << (inVariableCount - var - 1) ;
-    nombreComplement = ioComplementCacheArray (inValue / 2 COMMA_HERE) << (inVariableCount - var - 1) ;
+    nombreDirect.setToZero () ;
+    nombreComplement.setFromUnsigned (1) ;
+    nombreComplement <<= inVariableCount ;
   }else{
     const uint32_t var = gNodeArray [nodeIndex].mVariableIndex ;
-    uint64_t nd0, nc0, nd1, nc1 ;
-    internalValueCount64UsingCache (gNodeArray [nodeIndex].mELSE, var, nd0, nc0, ioDirectCacheArray, ioComplementCacheArray COMMA_THERE) ;
-    internalValueCount64UsingCache (gNodeArray [nodeIndex].mTHEN, var, nd1, nc1, ioDirectCacheArray, ioComplementCacheArray COMMA_THERE) ;
+    C_BigInt nd0, nc0, nd1, nc1 ;
+    internalValueCount (gNodeArray [nodeIndex].mELSE, var, nd0, nc0 COMMA_THERE) ;
+    internalValueCount (gNodeArray [nodeIndex].mTHEN, var, nd1, nc1 COMMA_THERE) ;
     nombreDirect = nd0 + nd1 ;
     nombreComplement = nc0 + nc1 ;
-    ioDirectCacheArray.forceObjectAtIndex (inValue / 2, nombreDirect, 0 COMMA_HERE) ;
-    ioComplementCacheArray.forceObjectAtIndex (inValue / 2, nombreComplement, 0 COMMA_HERE) ;
-    nombreDirect <<= (inVariableCount - var - 1) ;
-    nombreComplement <<= (inVariableCount - var - 1) ;
+    const int32_t shiftCount = ((int32_t) inVariableCount) - ((int32_t) var) - 1 ;
+    if (shiftCount > 0) {
+      nombreDirect <<= (uint32_t) shiftCount ;
+      nombreComplement <<= (uint32_t) shiftCount ;
+    }
   }
-//---
   if ((inValue & 1) != 0) {
-    const uint64_t tempo = nombreDirect ;
-    nombreDirect = nombreComplement ;
-    nombreComplement = tempo ;
+    swap (nombreDirect, nombreComplement) ;
   }
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-uint64_t C_BDD::valueCount64UsingCache (const uint32_t inVariableCount,
-                                        TC_UniqueArray <uint64_t> & ioDirectCacheArray,
-                                        TC_UniqueArray <uint64_t> & ioComplementCacheArray) const {
-  uint64_t nombreDirect = 0 ;
-  uint64_t nombreComplement = 0 ;
-  internalValueCount64UsingCache (mBDDvalue, inVariableCount, nombreDirect, nombreComplement, ioDirectCacheArray, ioComplementCacheArray COMMA_HERE) ;
+C_BigInt C_BDD::valueCount (const uint32_t inVariableCount) const {
+  C_BigInt nombreDirect ;
+  C_BigInt nombreComplement ;
+  internalValueCount (mBDDvalue, inVariableCount, nombreDirect, nombreComplement COMMA_HERE) ;
+  return nombreDirect ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void internalValueCountUsingCache (const uint32_t inValue,
+                                          const uint32_t inVariableCount,
+                                          C_BigInt & nombreDirect,
+                                          C_BigInt & nombreComplement,
+                                          TC_UniqueArray <C_BigInt> & ioDirectCacheArray,
+                                          TC_UniqueArray <C_BigInt> & ioComplementCacheArray
+                                          COMMA_LOCATION_ARGS) {
+  const uint32_t nodeIndex = nodeIndexForRoot (inValue COMMA_THERE) ;
+  if (bothBranches (gNodeArray [nodeIndex]) == 0) {
+    nombreDirect.setToZero () ;
+    nombreComplement.setFromUnsigned (1) ; nombreComplement <<= inVariableCount ;
+  }else if ((ioDirectCacheArray.count () > (int32_t) (inValue / 2))
+    && (((!ioDirectCacheArray (inValue / 2 COMMA_HERE).isZero ()) || (!ioComplementCacheArray (inValue / 2 COMMA_HERE).isZero())))) {
+    nombreDirect = ioDirectCacheArray (inValue / 2 COMMA_HERE) ;
+    nombreComplement = ioComplementCacheArray (inValue / 2 COMMA_HERE) ;
+  }else{
+    const uint32_t var = gNodeArray [nodeIndex].mVariableIndex ;
+    C_BigInt nd0, nc0, nd1, nc1 ;
+    internalValueCountUsingCache (gNodeArray [nodeIndex].mELSE, var, nd0, nc0, ioDirectCacheArray, ioComplementCacheArray COMMA_THERE) ;
+    internalValueCountUsingCache (gNodeArray [nodeIndex].mTHEN, var, nd1, nc1, ioDirectCacheArray, ioComplementCacheArray COMMA_THERE) ;
+    nombreDirect = nd0 + nd1 ;
+    nombreComplement = nc0 + nc1 ;
+    const int32_t shiftCount = ((int32_t) inVariableCount) - ((int32_t) var) - 1 ;
+    if (shiftCount > 0) {
+      nombreDirect <<= (uint32_t) shiftCount ;
+      nombreComplement <<= (uint32_t) shiftCount ;
+    }
+    ioDirectCacheArray.forceObjectAtIndex (inValue / 2, nombreDirect, C_BigInt () COMMA_HERE) ;
+    ioComplementCacheArray.forceObjectAtIndex (inValue / 2, nombreComplement, C_BigInt () COMMA_HERE) ;
+  }
+  if ((inValue & 1) != 0) {
+    swap (nombreDirect, nombreComplement) ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_BigInt C_BDD::valueCountUsingCache (const uint32_t inVariableCount,
+                                      TC_UniqueArray <C_BigInt> & ioDirectCacheArray,
+                                      TC_UniqueArray <C_BigInt> & ioComplementCacheArray) const {
+  C_BigInt nombreDirect ;
+  C_BigInt nombreComplement ;
+  internalValueCountUsingCache (mBDDvalue, inVariableCount, nombreDirect, nombreComplement, ioDirectCacheArray, ioComplementCacheArray COMMA_HERE) ;
   return nombreDirect ;
 }
 
@@ -1811,6 +1904,127 @@ void C_BDD::printWithHeader (AC_OutputStream & outputStream) const {
 //---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark Print BDD with variables
+#endif
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void printLineWithSeparator (AC_OutputStream & outputStream,
+                                    const TC_UniqueArray <int32_t> & inValueSeparation,
+                                    const TC_UniqueArray <int32_t> & inBitCounts,
+                                    const TC_UniqueArray <char> & inValueArray) {
+  int32_t bitIndex = inValueArray.count () - 1 ;
+  for (int32_t i=0 ; i<inBitCounts.count () ; i++) {
+    outputStream << " " << C_String::spaces (inValueSeparation (i COMMA_HERE)) ;
+    for (int32_t j=0 ; j<inBitCounts (i COMMA_HERE) ; j++) {
+      outputStream << cStringWithCharacter (inValueArray (bitIndex COMMA_HERE)) ;
+      bitIndex -- ;
+    }
+  }
+  outputStream << "\n" ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void internalPrintWithSeparator (AC_OutputStream & outputStream,
+                                        const TC_UniqueArray <int32_t> & inValueSeparation,
+                                        const TC_UniqueArray <int32_t> & inBitCounts,
+                                        const uint32_t inValue,
+                                        TC_UniqueArray <char> & inDisplayString,
+                                        uint32_t inVariableIndex) {
+  const uint32_t nodeIndex = nodeIndexForRoot (inValue COMMA_HERE) ;
+  const uint32_t complement = inValue & 1 ;
+  if (bothBranches (gNodeArray [nodeIndex]) == 0) {
+    if (complement == 1) {
+      printLineWithSeparator (outputStream, inValueSeparation, inBitCounts, inDisplayString) ;
+    }
+  }else{
+    const uint32_t var = gNodeArray [nodeIndex].mVariableIndex ;
+    while (inVariableIndex > var) {
+      inDisplayString.setObjectAtIndex ('X', (int32_t) inVariableIndex COMMA_HERE) ;
+      inVariableIndex -- ;
+    }
+  //--- Branche Zero
+    const uint32_t branche0 = gNodeArray [nodeIndex].mELSE ^ complement ;
+    if (branche0 != 0) {
+      inDisplayString.setObjectAtIndex ('0', (int32_t) var COMMA_HERE) ;
+      if (branche0 == 1) {
+        for (uint32_t i=0 ; i<var ; i++) {
+          inDisplayString.setObjectAtIndex ('X', (int32_t) i COMMA_HERE) ;
+        }
+        printLineWithSeparator (outputStream, inValueSeparation, inBitCounts, inDisplayString) ;
+      }else{
+        internalPrintWithSeparator (outputStream, inValueSeparation, inBitCounts, branche0, inDisplayString, (uint32_t) (inVariableIndex - 1)) ;
+      }
+    }
+  //--- Branche 1
+    const uint32_t branche1 = gNodeArray [nodeIndex].mTHEN ^ complement ;
+    if (branche1 != 0) {
+      inDisplayString.setObjectAtIndex ('1', (int32_t) var COMMA_HERE) ;
+      if (branche1 == 1) {
+        for (uint32_t i=0 ; i<var ; i++) {
+          inDisplayString.setObjectAtIndex ('X', (int32_t) i COMMA_HERE) ;
+        }
+        printLineWithSeparator (outputStream, inValueSeparation, inBitCounts, inDisplayString) ;
+      }else{
+        internalPrintWithSeparator (outputStream, inValueSeparation, inBitCounts, branche1, inDisplayString, (uint32_t) (inVariableIndex - 1)) ;
+      }
+    }
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void C_BDD::print (AC_OutputStream & outputStream,
+                   const TC_UniqueArray <C_String> & inVariablesNames,
+                   const TC_UniqueArray <int32_t> & inBitCounts) const {
+//--- Build separators
+  TC_UniqueArray <int32_t> variableNameSeparation ;
+  TC_UniqueArray <int32_t> valuesSeparation ;
+  for (int32_t i=0 ; i<inVariablesNames.count () ; i++) {
+    const int32_t variableLength = inVariablesNames (i COMMA_HERE).length () ;
+    const int32_t bitCount = inBitCounts (i COMMA_HERE) ;
+    const int32_t length = (variableLength > bitCount) ? variableLength : bitCount ;
+    variableNameSeparation.addObject (length - variableLength) ;
+    valuesSeparation.addObject (length - bitCount) ;
+  }
+//--- Print header
+  for (int32_t i=0 ; i<inVariablesNames.count () ; i++) {
+    outputStream << " " << C_String::spaces (variableNameSeparation (i COMMA_HERE)) << inVariablesNames (i COMMA_HERE) ;
+  }
+  outputStream << "\n" ;
+//--- Print value
+  print (outputStream, valuesSeparation, inBitCounts, 1) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void C_BDD::print (AC_OutputStream & outputStream,
+                   const TC_UniqueArray <int32_t> & inValueSeparation,
+                   const TC_UniqueArray <int32_t> & inBitCounts,
+                   const int32_t inPrefixedSpaceCount) const {
+  if (mBDDvalue == 0) {
+    outputStream << C_String::spaces (inPrefixedSpaceCount) << "(false)\n" ;
+  }else if (mBDDvalue == 1) {
+    outputStream << C_String::spaces (inPrefixedSpaceCount) << "(true)\n" ;
+  }else{
+    uint32_t totalBitCount = 0 ;
+    for (int32_t i=0 ; i<inBitCounts.count () ; i++) {
+      totalBitCount += (uint32_t) inBitCounts (i COMMA_HERE) ;
+    }
+    TC_UniqueArray <char> displayString ((int32_t) totalBitCount, 'X' COMMA_HERE) ;
+    internalPrintWithSeparator (outputStream,
+                                inValueSeparation,
+                                inBitCounts,
+                                mBDDvalue,
+                                displayString,
+                                totalBitCount - 1) ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+#ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Graphviz representation
 #endif
 
@@ -1818,9 +2032,10 @@ void C_BDD::printWithHeader (AC_OutputStream & outputStream) const {
 
 static void buildGraphvizRepresentation (C_String & ioString,
                                          const C_String & inSourceNode,
-                                         const uint32_t inBDDValue) {
+                                         const uint32_t inBDDValue,
+                                         const TC_UniqueArray <C_String> & inBitNames) {
   const uint32_t nodeIndex = nodeIndexForRoot (inBDDValue COMMA_HERE) ;
-  const uint32_t var = gNodeArray [nodeIndex].mVariableIndex ;
+  const int32_t var = (int32_t) gNodeArray [nodeIndex].mVariableIndex ;
   const C_String node = C_String ("N") + cStringWithUnsigned (nodeIndex) ;
   if (! isNodeMarkedThenMark (inBDDValue COMMA_HERE)) {
     const uint32_t THENbranch = gNodeArray [nodeIndex].mTHEN ;
@@ -1841,12 +2056,12 @@ static void buildGraphvizRepresentation (C_String & ioString,
     }else{
       ELSElabel << "<f0>" ;
     }
-    ioString << "  " << node << " [label=\"{" << cStringWithUnsigned (var) << "|{" << ELSElabel << "|" << THENlabel << "}}\"]\n" ;
+    ioString << "  " << node << " [label=\"{" << inBitNames (var COMMA_HERE) << "|{" << ELSElabel << "|" << THENlabel << "}}\"]\n" ;
     if (ELSEbranch > 1) {
-      buildGraphvizRepresentation (ioString, node + ":f0:c", ELSEbranch) ;
+      buildGraphvizRepresentation (ioString, node + ":f0:c", ELSEbranch, inBitNames) ;
     }
     if (THENbranch > 1) {
-      buildGraphvizRepresentation (ioString, node + ":f1:c", THENbranch) ;
+      buildGraphvizRepresentation (ioString, node + ":f1:c", THENbranch, inBitNames) ;
     }
   }
   ioString << "  " << inSourceNode << " -> " << node << "" ;
@@ -1859,6 +2074,21 @@ static void buildGraphvizRepresentation (C_String & ioString,
 //---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_BDD::graphvizRepresentation (void) const {
+  int32_t varCount = 0 ;
+  if (mBDDvalue > 1) {
+    const uint32_t nodeIndex = nodeIndexForRoot (mBDDvalue COMMA_HERE) ;
+    varCount = ((int32_t) gNodeArray [nodeIndex].mVariableIndex) + 1 ;
+  }
+  TC_UniqueArray <C_String> bitNames ;
+  for (int32_t i=0 ; i<varCount ; i++) {
+    bitNames.addObject (cStringWithSigned (i)) ;
+  }
+  return graphvizRepresentationWithNames (bitNames) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_String C_BDD::graphvizRepresentationWithNames (const TC_UniqueArray <C_String> & inBitNames) const {
   unmarkAllExistingBDDnodes () ;
   C_String result ;
   result << "digraph G {\n" ;
@@ -1870,7 +2100,7 @@ C_String C_BDD::graphvizRepresentation (void) const {
     result << "  edge [arrowhead=vee, tailclip=false]\n"
            << "  node [fontname=courier, shape=record]\n"
            << "  N [label=\"\", shape=rectangle]\n" ;
-    buildGraphvizRepresentation (result, "N", mBDDvalue) ;
+    buildGraphvizRepresentation (result, "N", mBDDvalue, inBitNames) ;
   }
   result << "}\n" ;
   return result ;

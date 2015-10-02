@@ -563,6 +563,23 @@ GALGAS_uint_36__34_ GALGAS_binaryset::reader_valueCount (const GALGAS_uint & inV
 
 //---------------------------------------------------------------------------------------------------------------------*
 
+GALGAS_bigint GALGAS_binaryset::reader_bigValueCount (const GALGAS_uint & inVariableCount,
+                                                      C_Compiler * inCompiler
+                                                      COMMA_LOCATION_ARGS) const {
+  GALGAS_bigint result ;
+  if (inVariableCount.isValid ()) {
+    if (mBDD.significantVariableCount () > inVariableCount.uintValue ()) {
+      inCompiler->onTheFlyRunTimeError ("needed variable count is greater than variable count argument" COMMA_THERE) ;
+    }else{
+      const PMUInt128 r = mBDD.valueCount128 (inVariableCount.uintValue ()) ;
+      result = GALGAS_bigint (C_BigInt (r.high (), r.low (), false)) ;
+    }
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
 GALGAS_uint_36__34_ GALGAS_binaryset::reader_compressedValueCount (UNUSED_LOCATION_ARGS) const {
   TC_UniqueArray <C_String> valuesArray ;
   mBDD.buildCompressedLittleEndianStringValueArray (valuesArray COMMA_HERE) ;
@@ -697,6 +714,82 @@ GALGAS_binaryset GALGAS_binaryset::reader_existOnBitIndexAndBeyond (const GALGAS
   GALGAS_binaryset result ;
   if (inVariableIndex.isValid ()) {
     result = GALGAS_binaryset (mBDD.existsOnBitsAfterNumber (inVariableIndex.uintValue ())) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_string GALGAS_binaryset::reader_print (const GALGAS_stringlist & inVariableList,
+                                              const GALGAS_uintlist & inBDDCount
+                                              COMMA_UNUSED_LOCATION_ARGS) const {
+  GALGAS_string result ;
+  if (isValid () && inVariableList.isValid () && inBDDCount.isValid ()) {
+    TC_UniqueArray <C_String> variablesNames ;
+    TC_UniqueArray <int32_t> bitCounts ;
+    cEnumerator_stringlist variableEnumerator (inVariableList, kEnumeration_up) ;
+    cEnumerator_uintlist bddCountEnumerator (inBDDCount, kEnumeration_up) ;
+    while (variableEnumerator.hasCurrentObject () && bddCountEnumerator.hasCurrentObject ()) {
+      const C_String name = variableEnumerator.current_mValue (HERE).stringValue () ;
+      variablesNames.addObject (name) ;
+      const uint32_t bddCount = bddCountEnumerator.current_mValue (HERE).uintValue () ;
+      bitCounts.addObject ((int32_t) bddCount) ;
+      variableEnumerator.gotoNextObject () ;
+      bddCountEnumerator.gotoNextObject () ;
+    }
+    C_String s ;
+    mBDD.print (s, variablesNames, bitCounts) ;
+    result = GALGAS_string (s) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_binaryset GALGAS_binaryset::reader_transformedBy (const GALGAS_uintlist & inTransformationArray
+                                                         COMMA_LOCATION_ARGS) const {
+  GALGAS_binaryset result ;
+  if (isValid () && inTransformationArray.isValid ()) {
+    uint32_t * substitutionArray = NULL ;
+    macroMyNewPODArray (substitutionArray, uint32_t, inTransformationArray.count ()) ;
+    cEnumerator_uintlist enumerator (inTransformationArray, kEnumeration_up) ;
+    uint32_t idx = 0 ;
+    while (enumerator.hasCurrentObject ()) {
+      const uint32_t value = enumerator.current_mValue (HERE).uintValue () ;
+      substitutionArray [idx] = value ;
+      idx ++ ;
+      enumerator.gotoNextObject () ;
+    }
+    result = GALGAS_binaryset (mBDD.substitution (substitutionArray, idx COMMA_THERE)) ;
+    macroMyDeletePODArray (substitutionArray) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_uint_36__34_ GALGAS_binaryset::reader_nodeCount (UNUSED_LOCATION_ARGS) const {
+  GALGAS_uint_36__34_ result ;
+  if (isValid ()) {
+    result = GALGAS_uint_36__34_ (mBDD.getBDDnodesCount ()) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_string GALGAS_binaryset::reader_graphviz (const GALGAS_stringlist & inBitNameList
+                                                 COMMA_UNUSED_LOCATION_ARGS) const {
+  GALGAS_string result ;
+  if (isValid () && inBitNameList.isValid ()) {
+    TC_UniqueArray <C_String> bitNameArray ;
+    cEnumerator_stringlist variableEnumerator (inBitNameList, kEnumeration_up) ;
+    while (variableEnumerator.hasCurrentObject ()) {
+      const C_String name = variableEnumerator.current_mValue (HERE).stringValue () ;
+      bitNameArray.addObject (name) ;
+      variableEnumerator.gotoNextObject () ;
+    }
+    result = GALGAS_string (mBDD.graphvizRepresentationWithNames (bitNameArray)) ;
   }
   return result ;
 }
@@ -907,6 +1000,24 @@ typeComparisonResult GALGAS_binaryset::objectCompare (const GALGAS_binaryset & i
     }
   }
   return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_binaryset::class_method_setNodeTableSize (class GALGAS_uint inTableSize
+                                                      COMMA_UNUSED_LOCATION_ARGS) {
+  if (inTableSize.isValid ()) {
+    C_BDD::setHashMapMaxSize (inTableSize.uintValue ()) ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_binaryset::class_method_setAndTableSize (class GALGAS_uint inTableSize
+                                                     COMMA_UNUSED_LOCATION_ARGS) {
+  if (inTableSize.isValid ()) {
+    C_BDD::setANDOperationCacheMaxSize (inTableSize.uintValue ()) ;
+  }
 }
 
 //---------------------------------------------------------------------------------------------------------------------*

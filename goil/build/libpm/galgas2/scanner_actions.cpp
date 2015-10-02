@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2009, ..., 2014 Pierre Molinaro.                                                                     *
+//  Copyright (C) 2009, ..., 2015 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes, ECN, École Centrale de Nantes (France)  *
@@ -21,6 +21,7 @@
 
 #include "galgas2/scanner_actions.h"
 #include "strings/unicode_character_cpp.h"
+#include "utilities/C_BigInt.h"
 
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -794,6 +795,77 @@ scanner_routine_codePointToUnicode (C_Lexique & inLexique,
 void scanner_routine_resetString (C_Lexique & /* inLexique */,
                                   C_String & ioString) {
   ioString.setLengthToZero () ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark ========= Predefined Scanner Actions (from GALGAS 3.1.0)
+#endif
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void scanner_routine_enterDecimalDigitIntoBigInt (C_Lexique & inLexique,
+                                                  const utf32 inCharacter,
+                                                  C_BigInt & ioBigInt,
+                                                  const utf32 * inCharacterIsNotDecimalDigitError) {
+  if ((UNICODE_VALUE (inCharacter) < '0') || (UNICODE_VALUE (inCharacter) > '9')) {
+    inLexique.lexicalError (inCharacterIsNotDecimalDigitError LINE_AND_SOURCE_FILE_FOR_SCANNER_ACTIONS) ;
+  }else{
+    const uint32_t digit = UNICODE_VALUE (inCharacter) - '0' ;
+    ioBigInt *= 10 ;
+    ioBigInt += digit ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void scanner_routine_enterHexDigitIntoBigInt (C_Lexique & inLexique,
+                                              const utf32 inCharacter,
+                                              C_BigInt & ioBigInt,
+                                              const utf32 * inCharacterIsNotDecimalDigitError) {
+  
+  if ((UNICODE_VALUE (inCharacter) >= '0') && (UNICODE_VALUE (inCharacter) <= '9')) {
+    const uint32_t digit = UNICODE_VALUE (inCharacter) - '0' ;
+    ioBigInt *= 16 ;
+    ioBigInt += digit ;
+  }else if ((UNICODE_VALUE (inCharacter) >= 'A') && (UNICODE_VALUE (inCharacter) <= 'F')) {
+    const uint32_t digit = UNICODE_VALUE (inCharacter) - 'A' + 10 ;
+    ioBigInt *= 16 ;
+    ioBigInt += digit ;
+  }else if ((UNICODE_VALUE (inCharacter) >= 'a') && (UNICODE_VALUE (inCharacter) <= 'f')) {
+    const uint32_t digit = UNICODE_VALUE (inCharacter) - 'a' + 10 ;
+    ioBigInt *= 16 ;
+    ioBigInt += digit ;
+  }else{
+    inLexique.lexicalError (inCharacterIsNotDecimalDigitError LINE_AND_SOURCE_FILE_FOR_SCANNER_ACTIONS) ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void scanner_routine_convertDecimalStringIntoBigInt (C_Lexique & inLexique,
+                                                     const C_String & inDecimalString,
+                                                     C_BigInt & outValue,
+                                                     const utf32 * inCharacterIsNotDecimalDigitError) {
+  bool ok = true ;
+  outValue = C_BigInt (inDecimalString.cString (HERE), 10, ok) ;
+  if (! ok) {
+    inLexique.lexicalError (inCharacterIsNotDecimalDigitError LINE_AND_SOURCE_FILE_FOR_SCANNER_ACTIONS) ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void scanner_routine_convertHexStringIntoBigInt (C_Lexique & inLexique,
+                                                 const C_String & inHexString,
+                                                 C_BigInt & outValue,
+                                                 const utf32 * inCharacterIsNotHexDigitError) {
+  bool ok = true ;
+  outValue = C_BigInt (inHexString.cString (HERE), 16, ok) ;
+  if (! ok) {
+    inLexique.lexicalError (inCharacterIsNotHexDigitError LINE_AND_SOURCE_FILE_FOR_SCANNER_ACTIONS) ;
+  }
 }
 
 //---------------------------------------------------------------------------------------------------------------------*

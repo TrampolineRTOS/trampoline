@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2010, ..., 2010 Pierre Molinaro.                                                                     *
+//  Copyright (C) 2010, ..., 2015 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -77,6 +77,8 @@ class AC_GALGAS_graph : public AC_GALGAS_root {
 //--------------------------------- Readers
   public : VIRTUAL_IN_DEBUG GALGAS_uint reader_count (LOCATION_ARGS) const ;
 
+  public : VIRTUAL_IN_DEBUG GALGAS_bool reader_isNodeDefined (const GALGAS_string & inKey COMMA_LOCATION_ARGS) const ;
+
   public : VIRTUAL_IN_DEBUG GALGAS_stringlist reader_keyList (LOCATION_ARGS) const ;
 
   public : VIRTUAL_IN_DEBUG GALGAS_lstringlist reader_lkeyList (LOCATION_ARGS) const ;
@@ -135,6 +137,10 @@ class AC_GALGAS_graph : public AC_GALGAS_root {
                                                              GALGAS_lstringlist & outUnsortedNodeKeyList,
                                                              C_Compiler * inCompiler
                                                              COMMA_LOCATION_ARGS) const ;
+
+  protected : VIRTUAL_IN_DEBUG void internalFindCircularities (cSharedList * & outInfoList,
+                                                               GALGAS_lstringlist & outNodeKeyList
+                                                               COMMA_UNUSED_LOCATION_ARGS) const ;
 
   protected : VIRTUAL_IN_DEBUG void internalNodesWithNoPredecessor (cSharedList * & outSortedList,
                                                                     GALGAS_lstringlist & outSortedNodeKeyList

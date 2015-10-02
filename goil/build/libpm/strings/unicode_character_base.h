@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2008, ..., 2009 Pierre Molinaro.                                                                     *
+//  Copyright (C) 2008, ..., 2015 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -18,6 +18,11 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+#ifndef UNICODE_BASE_ROUTINES_DEFINED
+#define UNICODE_BASE_ROUTINES_DEFINED
+
 //---------------------------------------------------------------------------------------------------------------------*
 
 //--- Character assigned ?
@@ -77,7 +82,7 @@ extern const utf32 UNICODE_MAX_LEGAL_UTF32_CHARACTER ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//   D E C O D E    H T M L    E N C O D I N G                               *
+//   D E C O D E    H T M L    E N C O D I N G                                                                         *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -107,3 +112,5 @@ int32_t UTF8StringFromUTF32Character (const utf32 inUnicodeChar, char outSequenc
 #endif
 
 //---------------------------------------------------------------------------------------------------------------------*
+
+#endif

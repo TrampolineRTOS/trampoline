@@ -637,8 +637,8 @@
                                  (intptr_t) nomFichierSource, inSourceFileLine, IN_SOURCE_FILE, IN_SOURCE_LINE) ;
         }
         break ;
-      default : // Alloue hors macro
-        break ;
+//      default : // Alloue hors macro
+//        break ;
       }
       myFreeRoutine (pointerToDelete) ;
       gPointersCurrentCount -- ;
@@ -695,8 +695,8 @@
       case kAllocatedByMacroMyNewPODArray :
         printf ("POD array") ;
         break ;
-      default :
-        break ;
+//      default :
+//        break ;
       }
       printf (" | %11u | %s\n", inRoot->mSourceLine, inRoot->mSourceFileName) ;
     //---

@@ -79,7 +79,6 @@ enumGalgasBool GALGAS_bool::boolEnum (void) const {
 //---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult GALGAS_bool::objectCompare (const GALGAS_bool & inOperand) const {
-  //printf ("COMPARE BOOL %d %d\n", inOperand1.mBoolValue, inOperand2.mBoolValue) ;
   typeComparisonResult result = kOperandNotValid ;
   if (isValid () && inOperand.isValid ()) {
     if (mBoolValue < inOperand.mBoolValue) {
@@ -96,7 +95,7 @@ typeComparisonResult GALGAS_bool::objectCompare (const GALGAS_bool & inOperand) 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_bool GALGAS_bool::operator_and (const GALGAS_bool & inOperand2
-                                           COMMA_UNUSED_LOCATION_ARGS) const {
+                                       COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
   if (isValid () && inOperand2.isValid ()) {
     result = GALGAS_bool (mBoolValue && inOperand2.mBoolValue) ;
@@ -107,7 +106,7 @@ GALGAS_bool GALGAS_bool::operator_and (const GALGAS_bool & inOperand2
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_bool GALGAS_bool::operator_or (const GALGAS_bool & inOperand2
-                                          COMMA_UNUSED_LOCATION_ARGS) const {
+                                      COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
   if (isValid () && (inOperand2.isValid ())) {
     result = GALGAS_bool (mBoolValue || inOperand2.mBoolValue) ;
@@ -139,37 +138,71 @@ GALGAS_bool GALGAS_bool::operator_not (UNUSED_LOCATION_ARGS) const {
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_string GALGAS_bool::reader_cString (UNUSED_LOCATION_ARGS) const {
-  return GALGAS_string (mBoolValue ? "true" : "false") ;
+  GALGAS_string result ;
+  if (isValid ()) {
+    result = GALGAS_string (mBoolValue ? "true" : "false") ;
+  }
+  return result ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_string GALGAS_bool::reader_ocString (UNUSED_LOCATION_ARGS) const {
-  return GALGAS_string (mBoolValue ? "YES" : "NO") ;
+  GALGAS_string result ;
+  if (isValid ()) {
+    result = GALGAS_string (mBoolValue ? "YES" : "NO") ;
+  }
+  return result ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_uint GALGAS_bool::reader_uint (UNUSED_LOCATION_ARGS) const {
-  return GALGAS_uint ((uint32_t) (mBoolValue ? 1 : 0)) ;
+  GALGAS_uint result ;
+  if (isValid ()) {
+    result = GALGAS_uint ((uint32_t) (mBoolValue ? 1 : 0)) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_bigint GALGAS_bool::reader_bigint (UNUSED_LOCATION_ARGS) const {
+  GALGAS_bigint result ;
+  if (isValid ()) {
+    result = GALGAS_bigint (C_BigInt ((uint32_t) (mBoolValue ? 1 : 0))) ;
+  }
+  return result ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_sint GALGAS_bool::reader_sint (UNUSED_LOCATION_ARGS) const {
-  return GALGAS_sint (mBoolValue ? 1 : 0) ;
+  GALGAS_sint result ;
+  if (isValid ()) {
+    result = GALGAS_sint (mBoolValue ? 1 : 0) ;
+  }
+  return result ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_uint_36__34_ GALGAS_bool::reader_uint_36__34_ (UNUSED_LOCATION_ARGS) const {
-  return GALGAS_uint_36__34_ (mBoolValue ? 1 : 0) ;
+  GALGAS_uint_36__34_ result ;
+  if (isValid ()) {
+    result = GALGAS_uint_36__34_ (mBoolValue ? 1 : 0) ;
+  }
+  return result ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_sint_36__34_ GALGAS_bool::reader_sint_36__34_ (UNUSED_LOCATION_ARGS) const {
-  return GALGAS_sint_36__34_ (mBoolValue ? 1 : 0) ;
+  GALGAS_sint_36__34_ result ;
+  if (isValid ()) {
+    result = GALGAS_sint_36__34_ (mBoolValue ? 1 : 0) ;
+  }
+  return result ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*

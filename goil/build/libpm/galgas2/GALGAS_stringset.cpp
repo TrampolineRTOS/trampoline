@@ -966,7 +966,7 @@ void GALGAS_stringset::populateEnumerationArray (capCollectionElementArray & inE
     case kENUMERATION_DOWN: enterDescendingEnumeration (mSharedRoot->root (), inEnumerationArray) ; break ;
     case kENUMERATION_ENTER_ORDER : case kENUMERATION_REVERSE_ENTER_ORDER:
      MF_Assert (false, "invalid inEnumerationOrder %lld", enumerationOrderValue (inEnumerationOrder), 0) ;
-     break ;
+ //    break ;
     }
     #ifndef DO_NOT_GENERATE_CHECKINGS
       MF_Assert (mSharedRoot->count () == inEnumerationArray.count (),

@@ -262,9 +262,9 @@ void GALGAS_data::method_writeToFileWhenDifferentContents (GALGAS_string inFileP
         }else{
           ok = C_FileManager::writeBinaryDataToFile (mData, inFilePath.stringValue ()) ;
           if (ok && verboseOptionOn && fileAlreadyExists) {
-            ggs_printFileOperationSuccess (C_String ("Replaced '") + inFilePath.stringValue () + "'.\n" COMMA_THERE) ;
+            ggs_printFileOperationSuccess (C_String ("Replaced '") + inFilePath.stringValue () + "'.\n") ;
           }else if (ok && verboseOptionOn && ! fileAlreadyExists) {
-            ggs_printFileCreationSuccess (C_String ("Created '") + inFilePath.stringValue () + "'.\n" COMMA_HERE) ;
+            ggs_printFileCreationSuccess (C_String ("Created '") + inFilePath.stringValue () + "'.\n") ;
           }else if (! ok) {
             C_String message ;
             message << "cannot write '" << inFilePath.stringValue () << "' file" ;
@@ -303,9 +303,9 @@ void GALGAS_data::method_writeToFile (GALGAS_string inFilePath,
         binaryFile.appendData (mData) ;
         const bool ok = binaryFile.close () ;
         if (ok && verboseOptionOn && fileAlreadyExists) {
-          ggs_printFileOperationSuccess (C_String ("Replaced '") + filePath + "'.\n" COMMA_THERE) ;
+          ggs_printFileOperationSuccess (C_String ("Replaced '") + filePath + "'.\n") ;
         }else if (ok && verboseOptionOn && ! fileAlreadyExists) {
-          ggs_printFileCreationSuccess (C_String ("Created '") + filePath + "'.\n" COMMA_THERE) ;
+          ggs_printFileCreationSuccess (C_String ("Created '") + filePath + "'.\n") ;
         }else if (! ok) {
           C_String message ;
           message << "cannot write '" << filePath << "' file" ;
@@ -341,9 +341,9 @@ void GALGAS_data::method_writeToExecutableFile (GALGAS_string inFilePath,
         const bool ok = binaryFile.close () ;
         C_FileManager::makeFileExecutable (filePath) ;
         if (ok && verboseOptionOn && fileAlreadyExists) {
-          ggs_printFileOperationSuccess (C_String ("Replaced '") + filePath + "'.\n" COMMA_THERE) ;
+          ggs_printFileOperationSuccess (C_String ("Replaced '") + filePath + "'.\n") ;
         }else if (ok && verboseOptionOn && ! fileAlreadyExists) {
-          ggs_printFileOperationSuccess (C_String ("Created '") + filePath + "'.\n" COMMA_THERE) ;
+          ggs_printFileOperationSuccess (C_String ("Created '") + filePath + "'.\n") ;
         }else if (! ok) {
           C_String message ;
           message << "cannot write '" << filePath << "' file" ;
@@ -355,7 +355,7 @@ void GALGAS_data::method_writeToExecutableFile (GALGAS_string inFilePath,
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//   cCollectionElement_data                                                 *
+//   cCollectionElement_data                                                                                           *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cCollectionElement_data : public cCollectionElement {
@@ -459,7 +459,7 @@ void GALGAS_data::populateEnumerationArray (capCollectionElementArray & inEnumer
     break ;
   case kENUMERATION_ENTER_ORDER : case kENUMERATION_REVERSE_ENTER_ORDER:
     MF_Assert (false, "invalid inEnumerationOrder %lld", enumerationOrderValue (inEnumerationOrder), 0) ;
-    break ;
+//    break ;
   }
 }
 

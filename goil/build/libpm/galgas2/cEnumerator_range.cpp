@@ -60,6 +60,20 @@ bool cEnumerator_range::hasCurrentObject (void) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
+bool cEnumerator_range::hasNextObject (void) const {
+  bool ok = false ;
+  if (mIsValid) {
+    if (mAscending) {
+      ok = (mCurrent + 1) < (mStart + mLength) ;
+    }else{
+      ok = mCurrent > mStart ;
+    }
+  }
+  return ok ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
 void cEnumerator_range::gotoNextObject (void) {
   if (mAscending) {
     mCurrent ++ ;
