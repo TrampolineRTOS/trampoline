@@ -21,7 +21,7 @@
  <key>LSMinimumSystemVersion</key>
  <string>10.6</string>
  <key>CFBundleShortVersionString</key>
- <string>2.1.12</string>
+ <string>2.1.13</string>
  <key>NSMainNibFile</key>
  <string>MainMenu</string>
  <key>NSPrincipalClass</key>

@@ -102,9 +102,10 @@ rule <start> {
     generate_all ( !templateData)
   end
   
-  fileIncludeList = [@string.stringWithSourceFilePath lastPathComponent] + ": \\\n" + fileIncludeList
+  fileIncludeList = [@string.stringWithSourceFilePath lastPathComponent] + ":" + fileIncludeList + "\n"
   @string oilDepFileName = [@string.stringWithSourceFilePath stringByDeletingLastPathComponent]
     + "/build/" + [@string.stringWithSourceFilePath lastPathComponent] + ".dep"  
+  #message "Writing dependancies to " + oilDepFileName + "\n";
   [fileIncludeList writeToFile !oilDepFileName]
 }
 
@@ -115,7 +116,7 @@ rule <file>
   ?let @bool rootFile
 {
   if not rootFile then
-    fileIncludeList += " " + @string.stringWithSourceFilePath + " \\\n"
+    fileIncludeList += " \\\n " + @string.stringWithSourceFilePath
   end
   repeat
   while <include_file_level> !?imp !?application !?fileIncludeList !false

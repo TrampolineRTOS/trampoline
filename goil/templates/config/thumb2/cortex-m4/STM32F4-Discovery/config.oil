@@ -9,5 +9,15 @@ CPU stm32_discovery {
     CFILE = "misc.c";
     CFILE = "tp.c";
   };
+  POSTCOMMAND burn {
+    COMMAND flash {
+      MESSAGE = "Flashing";
+      COMMAND = "st-flash";
+      INPUT = TARGET { EXT = ".bin"; };
+      PREOPTION = "write";
+      POSTOPTION = "0x8000000";
+    };
+  };
 };
+
 

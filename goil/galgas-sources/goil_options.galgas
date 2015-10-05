@@ -59,10 +59,5 @@ option goil_options {
   'l',
   "logfile"
   -> "generate a goil.log file containing the a log of the compilation"
-
-@bool dependancies :
-  'd',
-  "dependencies"
-  -> "generate a dependancies file for included OIL files"
 }
 # vim:ft=ggs:ts=4:sw=4

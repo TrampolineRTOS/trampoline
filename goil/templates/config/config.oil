@@ -52,19 +52,40 @@ IMPLEMENTATION trampoline_common {
     } CONST[];
   };
   
-  /* Machines specific files to add to the build system */
+  /*===========================================================================
+   * Machines specific files to add to the build system
+   */
   PLATFORM_FILES [] {
     STRING PATH;
     STRING CFILE[];
     STRING ASFILE[];
   };
   
-  /* Machines specific generated files to add to the build system */
+  /*===========================================================================
+   * Machines specific generated files to add to the build system
+   */
   GENERATED_FILES [] {
     STRING CFILE[];
     STRING ASFILE[];
   };
   
+  /*===========================================================================
+   * Additional GOAL definition
+   */
+  GOAL [] {
+    ENUM [
+      TARGET,
+      CUSTOM { STRING NAME; }
+    ] DEPENDENCY[];
+    STRING MESSAGE;
+    STRING COMMAND;
+    STRING ARGUMENT[];
+  };
+  
+  /*===========================================================================
+   * Postbuild command definition.
+   * The name of a post-build command is the GOAL.
+   */
   POSTBUILD [] {
     STRUCT {
       ENUM  [
@@ -72,17 +93,31 @@ IMPLEMENTATION trampoline_common {
         ASSEMBLER,
         LINKER,
         COPIER,
-        CUSTOM { STRING NAME; }
+        CUSTOM { STRING MESSAGE; STRING NAME; }
       ] TYPE;
       ENUM [
         TARGET,
-        INTERMEDIATE { POSTBUILD_TYPE EXT; }
+        INTERMEDIATE { IDENTIFIER SOURCE; }
       ] INPUT;
-      STRING OUTPUT;
+      STRING WITH_AUTO OUTPUT;
       STRING PREOPTION[];
       STRING POSTOPTION[];
     } COMMAND[];
   };
+  
+  POSTCOMMAND [] {
+    STRUCT {
+      STRING MESSAGE;
+      STRING COMMAND;
+      ENUM [ TARGET  { IDENTIFIER EXT; },
+        INTERMEDIATE { IDENTIFIER SOURCE; }
+      ] INPUT;
+      STRING WITH_AUTO OUTPUT;
+      STRING PREOPTION[];
+      STRING POSTOPTION[];
+    } COMMAND[];
+  };
+  
   OS {
     /* Standard OIL attributes */
     ENUM [STANDARD, EXTENDED] STATUS;

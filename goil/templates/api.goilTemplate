@@ -95,6 +95,9 @@ if OS::BUILD then
     write to executable "build.py":
       template if exists build_py in build
     end write
+    write to executable "make.py":
+      template if exists make_py in build
+    end write
   end if
 end if
 

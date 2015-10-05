@@ -2,11 +2,21 @@
 # -*- coding: UTF-8 -*-
 
 #----------------------------------------------------------------------------*
+#   Releases                                                                 *
+#----------------------------------------------------------------------------*
+# 1.0: march 18th, 2015
+#        first release
+# 2.0: october 2th, 2015
+#        added several target definition for rules
+# 2.1: october 5th, 2015
+#        added checking routine formal argument run-time types
+#
+#----------------------------------------------------------------------------*
 
 import subprocess, sys, os, copy
 import urllib, shutil, subprocess
 import platform, json, operator
-import threading
+import threading, types, traceback
 
 if sys.version_info >= (2, 6) :
   import multiprocessing
@@ -191,7 +201,7 @@ class PostCommand:
 #----------------------------------------------------------------------------*
 
 class Job:
-  mTarget = ""
+  mTargets = []
   mCommand = []
   mTitle = ""
   mRequiredFiles = []
@@ -204,8 +214,8 @@ class Job:
   
   #--------------------------------------------------------------------------*
 
-  def __init__ (self, target, requiredFiles, command, postCommands, priority, title, openSourceOnError):
-    self.mTarget = copy.deepcopy (target)
+  def __init__ (self, targets, requiredFiles, command, postCommands, priority, title, openSourceOnError):
+    self.mTargets = copy.deepcopy (targets)
     self.mCommand = copy.deepcopy (command)
     self.mRequiredFiles = copy.deepcopy (requiredFiles)
     self.mTitle = copy.deepcopy (title)
@@ -256,7 +266,7 @@ class Job:
 #----------------------------------------------------------------------------*
 
 class Rule:
-  mTarget = ""
+  mTargets = []
   mDependences = []
   mCommand = []
   mSecondaryMostRecentModificationDate = 0.0 # Far in the past
@@ -269,8 +279,22 @@ class Rule:
   
   #--------------------------------------------------------------------------*
 
-  def __init__ (self, target, title = ""):
-    self.mTarget = copy.deepcopy (target)
+  def __init__ (self, targets, title = ""):
+    if not isinstance (targets, types.ListType):
+      print BOLD_RED () + "*** Rule type instanciation: first argument 'targets' is not a list ***" + ENDC ()
+      traceback.print_stack ()
+      sys.exit (1)
+    else:
+      for aTarget in targets:
+        if not isinstance (aTarget, types.StringTypes):
+          print BOLD_RED () + "*** Rule type instanciation: an element of first argument 'targets' is not a string ***" + ENDC ()
+          traceback.print_stack ()
+          sys.exit (1)
+    if not isinstance (title, types.StringTypes):
+      print BOLD_RED () + "*** Rule type instanciation: second argument 'title' is not a string ***" + ENDC ()
+      traceback.print_stack ()
+      sys.exit (1)
+    self.mTargets = copy.deepcopy (targets)
     self.mDependences = []
     self.mCommand = []
     self.mSecondaryMostRecentModificationDate = 0.0
@@ -280,7 +304,9 @@ class Rule:
     self.mOpenSourceOnError = False # Do not try to open source file on error
     self.mCleanOperation = 0 # No operation on clean
     if title == "":
-      self.mTitle = "Building " + target
+      self.mTitle = "Building"
+      for s in targets:
+        self.mTitle += " " + s
     else:
       self.mTitle = copy.deepcopy (title)
   
@@ -297,6 +323,10 @@ class Rule:
   #--------------------------------------------------------------------------*
 
   def enterSecondaryDependanceFile (self, secondaryDependanceFile, make):
+    if not isinstance (secondaryDependanceFile, types.StringTypes):
+      print BOLD_RED () + "*** Rule.enterSecondaryDependanceFile: 'secondaryDependanceFile' argument is not a string ***" + ENDC ()
+      traceback.print_stack ()
+      sys.exit (1)
     if make.mSelectedGoal != "clean":
       filePath = os.path.abspath (secondaryDependanceFile)
       if not os.path.exists (filePath):
@@ -334,10 +364,15 @@ class Make:
   mSelectedGoal = ""
   mLinuxTextEditor = ""
   mMacTextEditor = ""
+  mSimulateClean = False
 
   #--------------------------------------------------------------------------*
 
   def __init__ (self, goal):
+    if not isinstance (goal, types.StringTypes):
+      print BOLD_RED () + "*** Make instanciation: 'goal' argument is not a string ***" + ENDC ()
+      traceback.print_stack ()
+      sys.exit (1)
     self.mRuleList = []
     self.mJobList = []
     self.mErrorCount = 0
@@ -350,6 +385,10 @@ class Make:
   #--------------------------------------------------------------------------*
 
   def addRule (self, rule):
+    if not isinstance (rule, Rule):
+      print BOLD_RED () + "*** Make.addRule: 'rule' argument is not an instance of Rule type ***" + ENDC ()
+      traceback.print_stack ()
+      sys.exit (1)
     self.mRuleList.append (copy.deepcopy (rule))
 
   #--------------------------------------------------------------------------*
@@ -357,7 +396,10 @@ class Make:
   def printRules (self):
     print BOLD_BLUE () + "--- Print " + str (len (self.mRuleList)) + " rule" + ("s" if len (self.mRuleList) > 1 else "") + " ---" + ENDC ()
     for rule in self.mRuleList:
-      print BOLD_GREEN () + "Target: \"" + rule.mTarget + "\"" + ENDC ()
+      message = ""
+      for s in rule.mTargets:
+        message += " \"" + s + "\""
+      print BOLD_GREEN () + "Target:" + message +  ENDC ()
       for dep in rule.mDependences:
         print "  Dependence: \"" + dep + "\""
       s = "  Command: "
@@ -368,9 +410,16 @@ class Make:
       print "  Delete target on error: " + ("yes" if rule.mDeleteTargetOnError else "no")
       cleanOp = "none"
       if rule.mCleanOperation == 1:
-        cleanOp = "delete target file: \"" + rule.mTarget + "\""
+        cleanOp = "delete target file(s)"
       elif rule.mCleanOperation == 2:
-        cleanOp = "delete target directory: \"" + os.path.dirname (rule.mTarget) + "\""
+        dirSet = set ()
+        for s in rule.mTargets:
+          path = os.path.dirname (s)
+          if path != "":
+            dirSet.add (path)
+        cleanOp = "delete target directory:"
+        for s in dirSet:
+          cleanOp += " \"" + s + "\""
       print "  Clean operation: " + cleanOp
       index = 0
       for postCommand in rule.mPostCommands:
@@ -390,9 +439,10 @@ class Make:
     s += "  node [fontname=courier]\n"
     arrowSet = set ()
     for rule in self.mRuleList:
-      s += '  "' + rule.mTarget + '" [shape=rectangle]\n'
-      for dep in rule.mDependences:
-        arrowSet.add ('  "' + rule.mTarget + '" -> "' + dep + '"\n')
+      for target in rule.mTargets:
+        s += '  "' + target + '" [shape=rectangle]\n'
+        for dep in rule.mDependences:
+          arrowSet.add ('  "' + target + '" -> "' + dep + '"\n')
     for arrow in arrowSet:
       s += arrow
     s += "}\n"
@@ -420,9 +470,10 @@ class Make:
             depIdx = depIdx + 1
             hasBuildRule = False
             for r in ruleList:
-              if dep == r.mTarget:
-                hasBuildRule = True
-                break
+              for target in r.mTargets:
+                if dep == target:
+                  hasBuildRule = True
+                  break
             if not hasBuildRule:
               looping = True
               if not os.path.exists (os.path.abspath (dep)):
@@ -439,14 +490,18 @@ class Make:
             while idx < len (ruleList):
               r = ruleList [idx]
               idx = idx + 1
-              while r.mDependences.count (aRule.mTarget) > 0 :
-                r.mDependences.remove (aRule.mTarget)
+              for target in aRule.mTargets:
+                while r.mDependences.count (target) > 0 :
+                  r.mDependences.remove (target)
     #--- Error if rules remain
       if len (ruleList) > 0:
         self.mErrorCount = self.mErrorCount + 1
         print BOLD_RED () + "Check rules error; circulary dependances between:" + ENDC ()
-        for aRule in ruleList: 
-          print BOLD_RED () + "  - '" + aRule.mTarget + "', depends from:" + ENDC ()
+        for aRule in ruleList:
+          targetList = ""
+          for target in aRule.mTargets:
+            targetList += " '" + aRule.mTarget + "'"
+          print BOLD_RED () + "  - " + targetList + ", depends from:" + ENDC ()
           for dep in aRule.mDependences:
             print BOLD_RED () + "      '" + dep + "'" + ENDC ()
 
@@ -454,8 +509,9 @@ class Make:
 
   def existsJobForTarget (self, target):
     for job in self.mJobList:
-      if job.mTarget == target:
-        return True
+      for aTarget in job.mTargets:
+        if aTarget == target:
+          return True
     return False
 
   #--------------------------------------------------------------------------*
@@ -472,9 +528,10 @@ class Make:
     rule = None
     matchCount = 0
     for r in self.mRuleList:
-      if target == r.mTarget:
-        matchCount = matchCount + 1
-        rule = r
+      for aTarget in r.mTargets:
+        if target == aTarget:
+          matchCount = matchCount + 1
+          rule = r
     if matchCount == 0:
       absTarget = os.path.abspath (target)
       if not os.path.exists (absTarget):
@@ -509,7 +566,7 @@ class Make:
         appendToJobList = True
   #--- Append to job list
     if appendToJobList:
-      self.mJobList.append (Job (target, jobDependenceFiles, rule.mCommand, rule.mPostCommands, rule.mPriority, rule.mTitle, rule.mOpenSourceOnError))
+      self.mJobList.append (Job (rule.mTargets, jobDependenceFiles, rule.mCommand, rule.mPostCommands, rule.mPriority, rule.mTitle, rule.mOpenSourceOnError))
   #--- Return
     return appendToJobList
 
@@ -542,11 +599,12 @@ class Make:
             if (returnCode == 0) and (jobCount < maxConcurrentJobs):
               if (job.mState == 0) and (len (job.mRequiredFiles) == 0):
                 #--- Create target directory if does not exist
-                absTargetDirectory = os.path.dirname (os.path.abspath (job.mTarget))
-                if not os.path.exists (absTargetDirectory):
-                  displayLock.acquire ()
-                  runCommand (["mkdir", "-p", os.path.dirname (job.mTarget)], "Making \"" + os.path.dirname (job.mTarget) + "\" directory", showCommand)
-                  displayLock.release ()
+                for aTarget in job.mTargets:
+                  absTargetDirectory = os.path.dirname (os.path.abspath (aTarget))
+                  if not os.path.exists (absTargetDirectory):
+                    displayLock.acquire ()
+                    runCommand (["mkdir", "-p", os.path.dirname (aTarget)], "Making \"" + os.path.dirname (aTarget) + "\" directory", showCommand)
+                    displayLock.release ()
                 #--- Run job
                 job.run (displayLock, terminationSemaphore, showCommand)
                 jobCount = jobCount + 1
@@ -566,10 +624,11 @@ class Make:
             index = index + 1
             if (job.mState == 1) and (job.mReturnCode == 0) : # Terminated without error
               jobCount = jobCount - 1
-              if not os.path.exists (os.path.abspath (job.mTarget)): # Warning: target does not exist
-                displayLock.acquire ()
-                print MAGENTA () + BOLD () + "Warning: target \"" + job.mTarget + "\" was not created by rule execution." + ENDC ()
-                displayLock.release ()
+              for aTarget in job.mTargets:
+                if not os.path.exists (os.path.abspath (aTarget)): # Warning: target does not exist
+                  displayLock.acquire ()
+                  print MAGENTA () + BOLD () + "Warning: target \"" + aTarget + "\" was not created by rule execution." + ENDC ()
+                  displayLock.release ()
               if len (job.mPostCommands) > 0:
                 job.mState = 2 # Ready to execute next post command
               else:
@@ -609,8 +668,9 @@ class Make:
               while idx < len (self.mJobList):
                 aJob = self.mJobList [idx]
                 idx = idx + 1
-                while aJob.mRequiredFiles.count (job.mTarget) > 0 :
-                  aJob.mRequiredFiles.remove (job.mTarget)
+                for aTarget in job.mTargets:
+                  while aJob.mRequiredFiles.count (aTarget) > 0 :
+                    aJob.mRequiredFiles.remove (aTarget)
                   #print "  Removed from '" + aJob.mTitle + "': " + str (len (aJob.mRequiredFiles))
               #displayLock.release ()
               #--- Signal error ?
@@ -644,6 +704,24 @@ class Make:
   #--------------------------------------------------------------------------*
 
   def addGoal (self, goal, targetList, message):
+    if not isinstance (goal, types.StringTypes):
+      print BOLD_RED () + "*** Make.addGoal: 'goal' first argument is not a string ***" + ENDC ()
+      traceback.print_stack ()
+      sys.exit (1)
+    if not isinstance (targetList, types.ListType):
+      print BOLD_RED () + "*** Make.addGoal: 'targetList' second argument is not a list ***" + ENDC ()
+      traceback.print_stack ()
+      sys.exit (1)
+    else:
+      for aTarget in targetList:
+        if not isinstance (aTarget, types.StringTypes):
+          print BOLD_RED () + "*** Make.addGoal: an element of 'targetList' second argument 'targets' is not a string ***" + ENDC ()
+          traceback.print_stack ()
+          sys.exit (1)
+    if not isinstance (message, types.StringTypes):
+      print BOLD_RED () + "*** Make.addGoal: 'message' third argument is not a string ***" + ENDC ()
+      traceback.print_stack ()
+      sys.exit (1)
     if self.mGoals.has_key (goal) or (goal == "clean") :
       self.enterError ("The '" + goal + "' goal is already defined")
     else:
@@ -666,6 +744,14 @@ class Make:
   #--------------------------------------------------------------------------*
 
   def runGoal (self, maxConcurrentJobs, showCommand):
+    if not isinstance (maxConcurrentJobs, types.IntType):
+      print BOLD_RED () + "*** Make.runGoal: 'maxConcurrentJobs' first argument is not an integer ***" + ENDC ()
+      traceback.print_stack ()
+      sys.exit (1)
+    if not isinstance (showCommand, types.BooleanType):
+      print BOLD_RED () + "*** Make.runGoal: 'showCommand' second argument is not a boolean ***" + ENDC ()
+      traceback.print_stack ()
+      sys.exit (1)
     if self.mGoals.has_key (self.mSelectedGoal) :
       (targetList, message) = self.mGoals [self.mSelectedGoal]
       for target in targetList:
@@ -673,22 +759,35 @@ class Make:
       self.runJobs (maxConcurrentJobs, showCommand)
       if self.mErrorCount > 0:
         for rule in self.mRuleList:
-          if rule.mDeleteTargetOnError and os.path.exists (os.path.abspath (rule.mTarget)):
-            runCommand (["rm", rule.mTarget], "Delete \"" + rule.mTarget + "\" on error", showCommand)
+          for aTarget in rule.mTargets:
+            if rule.mDeleteTargetOnError and os.path.exists (os.path.abspath (aTarget)):
+              runCommand (["rm", aTarget], "Delete \"" + aTarget + "\" on error", showCommand)
     elif self.mSelectedGoal == "clean" :
       filesToRemoveList = []
       directoriesToRemoveSet = set ()
       for rule in self.mRuleList:
         if rule.mCleanOperation == 1: # Delete target
-          filesToRemoveList.append (rule.mTarget)
+          for aTarget in rule.mTargets:
+            filesToRemoveList.append (aTarget)
         elif rule.mCleanOperation == 2: # Delete target directories
-          directoriesToRemoveSet.add (os.path.dirname (rule.mTarget))
+          for aTarget in rule.mTargets:
+            dirPath = os.path.dirname (aTarget)
+            if dirPath == "":
+              filesToRemoveList.append (aTarget)
+            else:
+              directoriesToRemoveSet.add (dirPath)
       for dir in directoriesToRemoveSet:
         if os.path.exists (os.path.abspath (dir)):
-          runCommand (["rm", "-fr", dir], "Removing \"" + dir + "\"", showCommand)
+          if self.mSimulateClean:
+            print MAGENTA () + BOLD () + "Simulated clean command: " + ENDC () + "rm -fr '" + dir + "'"
+          else:
+            runCommand (["rm", "-fr", dir], "Removing \"" + dir + "\"", showCommand)
       for file in filesToRemoveList:
         if os.path.exists (os.path.abspath (file)):
-          runCommand (["rm", "-f", file], "Deleting \"" + file + "\"", showCommand)
+          if self.mSimulateClean:
+            print MAGENTA () + BOLD () + "Simulated clean command: " + ENDC () + "rm -f '" + file + "'"
+          else:
+            runCommand (["rm", "-f", file], "Deleting \"" + file + "\"", showCommand)
     else:
       errorMessage = "The '" + self.mSelectedGoal + "' goal is not defined; defined goals:"
       for key in self.mGoals:
@@ -696,6 +795,11 @@ class Make:
         errorMessage += "\n  '" + key + "': " + message
       print BOLD_RED () + errorMessage + ENDC ()
       self.mErrorCount = self.mErrorCount + 1
+
+  #--------------------------------------------------------------------------*
+
+  def simulateClean (self):
+    self.mSimulateClean = True
 
   #--------------------------------------------------------------------------*
 
