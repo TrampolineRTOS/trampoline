@@ -6,7 +6,7 @@
 
 # Verify a subgoal is not used in more than one goal
 let usedGoal := emptymap
-foreach pb in POSTBUILD do
+foreach pb in exists POSTBUILD default(emptylist) do
   foreach cmd in exists pb::COMMAND default (emptylist) do
     if exists pb::SUBGOAL then
       if pb::SUBGOAL == true then

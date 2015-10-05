@@ -3,15 +3,15 @@
 # Template to generate a build file in Python using the system developed by Pierre Molinaro
 #
 if not exists OS::BUILD_S::CFLAGS then
-  let OS::BUILD_S::CFLAGS := emtylist
+  let OS::BUILD_S::CFLAGS := emptylist
 end if
 
 if not exists OS::BUILD_S::ASFLAGS then
-  let OS::BUILD_S::ASFLAGS := emtylist
+  let OS::BUILD_S::ASFLAGS := emptylist
 end if
 
 if not exists OS::BUILD_S::LDFLAGS then
-  let OS::BUILD_S::LDFLAGS := emtylist
+  let OS::BUILD_S::LDFLAGS := emptylist
 end if
 
 let postgoals := emptymap
@@ -327,7 +327,7 @@ make.runGoal(0, False)
 #----------------------------------------------------------------------
 #--- post commands if any
 #----------------------------------------------------------------------%
-foreach pc in POSTCOMMAND do%
+foreach pc in exists POSTCOMMAND default (emptylist) do%
 if askedGoal == "% !pc::NAME %" :%
   foreach cmd in pc::COMMAND do
     let commandLine := cmd::COMMAND . " "
