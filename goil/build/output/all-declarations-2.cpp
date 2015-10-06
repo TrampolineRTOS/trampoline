@@ -10677,6 +10677,9 @@ int mainForLIBPM (int inArgc, const char * inArgv []) {
         const GALGAS_lstring sourceFilePath (sfp, location) ;
         int16_t r = 0 ;
         if (fileExtension == "oil") {
+          if (! executionModeIsIndexing ()) {
+            routine_programRule_5F__30_ (sourceFilePath, commonLexique COMMA_HERE) ;
+          }
           switch (executionMode ()) {
           case kExecutionModeNormal :
             routine_programRule_5F__30_ (sourceFilePath, commonLexique COMMA_HERE) ;
@@ -10695,6 +10698,9 @@ int mainForLIBPM (int inArgc, const char * inArgv []) {
             break ;
           }
         }else if (fileExtension == "OIL") {
+          if (! executionModeIsIndexing ()) {
+            routine_programRule_5F__31_ (sourceFilePath, commonLexique COMMA_HERE) ;
+          }
           switch (executionMode ()) {
           case kExecutionModeNormal :
             routine_programRule_5F__31_ (sourceFilePath, commonLexique COMMA_HERE) ;
@@ -10713,6 +10719,9 @@ int mainForLIBPM (int inArgc, const char * inArgv []) {
             break ;
           }
         }else if (fileExtension == "goilTemplate") {
+          if (! executionModeIsIndexing ()) {
+            routine_programRule_5F__32_ (sourceFilePath, commonLexique COMMA_HERE) ;
+          }
           switch (executionMode ()) {
           case kExecutionModeNormal :
             routine_programRule_5F__32_ (sourceFilePath, commonLexique COMMA_HERE) ;

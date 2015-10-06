@@ -1,4 +1,4 @@
-//——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
@@ -16,7 +16,7 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+//---------------------------------------------------------------------------------------------------------------------*
 
 #import "OC_GGS_DocumentData.h"
 #import "OC_GGS_Document.h"
@@ -25,157 +25,161 @@
 #import "F_CocoaWrapperForGalgas.h"
 #import "PMDebug.h"
 #import "PMIssueDescriptor.h"
-#import "OC_GGS_FileEventStream.h"
 
-//——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+//---------------------------------------------------------------------------------------------------------------------*
 
 //#define DEBUG_MESSAGES
 
-//——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+//---------------------------------------------------------------------------------------------------------------------*
 
 static NSMutableDictionary * gDocumentDataDictionary ;
 
-//——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+//---------------------------------------------------------------------------------------------------------------------*
 
 @implementation OC_GGS_DocumentData
 
-  //····················································································································
+//---------------------------------------------------------------------------------------------------------------------*
 
-  @synthesize document ;
-  @synthesize fileURL ;
+@synthesize document ;
+@synthesize fileURL ;
 
-  //····················································································································
-  //    -locationForLineInSource:
-  //····················································································································
+//---------------------------------------------------------------------------------------------------------------------*
+//    -locationForLineInSource:                                                                                        *
+//---------------------------------------------------------------------------------------------------------------------*
 
-  - (NSUInteger) locationForLineInSource: (NSUInteger) inLine {
-     NSString * sourceString = mTextSyntaxColoring.sourceString ;
-    const NSUInteger sourceStringLength = sourceString.length ;
-    NSUInteger lineIndex = 0 ;
-    NSUInteger idx = 0 ;
-    BOOL found = NO ;
-    while ((idx < sourceStringLength) && ! found) {
-      lineIndex ++ ;
-      if (inLine == lineIndex) {
-        found = YES ;
-      }else{
-        const NSRange lineRange = [sourceString lineRangeForRange:NSMakeRange (idx, 1)] ;
-        idx = lineRange.location + lineRange.length ;
-      }
-    }
-    return idx ;
-  }
-
-  //····················································································································
-  //    setIssueArray:
-  //····················································································································
-
-  - (void) setIssueArray: (NSArray *) inIssueArray {
-    mIssueArray = [NSMutableArray new] ;
-    for (PMIssueDescriptor * issue in inIssueArray) {
-      // NSLog (@"issue.issueURL %@, fileURL %@", issue.issueStandardizedURL, fileURL) ;
-      if ([issue.issueStandardizedURL isEqualTo:fileURL.standardizedURL]) {
-        [issue setLocationInSourceString:[self locationForLineInSource:issue.issueLine] + issue.issueColumn - 1] ;
-        [mIssueArray addObject:issue] ;
-      }
-    }
-    [mTextSyntaxColoring setIssueArray:mIssueArray] ;
-  }
-
-  //····················································································································
-  //    broadcastIssueArray:
-  //····················································································································
-
-  static NSArray * gIssueArray ;
-
-  //····················································································································
-
-  + (void) broadcastIssueArray: (NSArray *) inIssueArray {
-    gIssueArray = inIssueArray.copy ;
-    for (OC_GGS_DocumentData * documentData in gDocumentDataDictionary.allValues) {
-      [documentData setIssueArray:gIssueArray] ;
+- (NSUInteger) locationForLineInSource: (NSUInteger) inLine {
+   NSString * sourceString = mTextSyntaxColoring.sourceString ;
+  const NSUInteger sourceStringLength = sourceString.length ;
+  NSUInteger lineIndex = 0 ;
+  NSUInteger idx = 0 ;
+  BOOL found = NO ;
+  while ((idx < sourceStringLength) && ! found) {
+    lineIndex ++ ;
+    if (inLine == lineIndex) {
+      found = YES ;
+    }else{
+      const NSRange lineRange = [sourceString lineRangeForRange:NSMakeRange (idx, 1)] ;
+      idx = lineRange.location + lineRange.length ;
     }
   }
+  return idx ;
+}
 
-  //····················································································································
+//---------------------------------------------------------------------------------------------------------------------*
+//    setIssueArray:                                                                                                   *
+//---------------------------------------------------------------------------------------------------------------------*
 
-  - (void) performCharacterConversion {
-    #ifdef DEBUG_MESSAGES
-      NSLog (@"%s", __PRETTY_FUNCTION__) ;
-    #endif
-  //--- Get source string
-    NSString * source = [mTextSyntaxColoring sourceString] ;
-  //--- Search for "\r" ?
-    BOOL needsConversionForCR = NO ;
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"PMConvert_CRLF_And_CR_To_LF_AtStartUp"]) {
-      // NSLog (@"Convert CRLF and CR to LF") ;
-      needsConversionForCR = [source rangeOfString:@"\r"].location != NSNotFound ;
+- (void) setIssueArray: (NSArray *) inIssueArray {
+  mIssueArray = [NSMutableArray new] ;
+  for (PMIssueDescriptor * issue in inIssueArray) {
+    // NSLog (@"issue.issueURL %@, fileURL %@", issue.issueStandardizedURL, fileURL) ;
+    if ([issue.issueStandardizedURL isEqualTo:fileURL.standardizedURL]) {
+      [issue setLocationInSourceString:[self locationForLineInSource:issue.issueLine] + issue.issueColumn - 1] ;
+      [mIssueArray addObject:issue] ;
     }
-    BOOL needsConversionForHTAB = NO ;
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"PMConvert_HTAB_To_SPACE_AtStartUp"]) {
-      // NSLog (@"Convert HTAB to SPACE") ;
-      needsConversionForHTAB = [source rangeOfString:@"\x09"].location != NSNotFound ;
-    }
-    if (needsConversionForCR || needsConversionForHTAB) {
-      NSMutableString * s = [NSMutableString new] ;
-      if (needsConversionForCR) {
-      //--- Convert CR LF to LF
-        NSArray * a = [source componentsSeparatedByString:@"\r\n"] ;
-        const NSUInteger CRLFcount = [a count] - 1 ;
-        if (CRLFcount > 0) {
-          source = [a componentsJoinedByString:@"\n"] ;
-          if (CRLFcount == 1) {
-            [s appendFormat:@"1 CRLF has been converted to LF."] ;
-          }else if (CRLFcount > 1) {
-            [s appendFormat:@"%lu CRLF have been converted to LF.", CRLFcount] ;
-          }
-        }
-      //--- Convert CR to LF
-        a = [source componentsSeparatedByString:@"\r"] ;
-        const NSUInteger CRcount = [a count] - 1 ;
-        if (CRcount > 0) {
-          source = [a componentsJoinedByString:@"\n"] ;
-          if ([s length] > 0) {
-            [s appendString:@"\n"] ;
-          }
-          if (CRcount == 1) {
-            [s appendFormat:@"1 CR has been converted to LF."] ;
-          }else if (CRcount > 1) {
-            [s appendFormat:@"%lu CR have been converted to LF.", CRcount] ;
-          }
+  }
+  [mTextSyntaxColoring setIssueArray:mIssueArray] ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//    broadcastIssueArray:                                                                                             *
+//---------------------------------------------------------------------------------------------------------------------*
+
+static NSArray * gIssueArray ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
++ (void) broadcastIssueArray: (NSArray *) inIssueArray {
+  gIssueArray = inIssueArray.copy ;
+  for (OC_GGS_DocumentData * documentData in gDocumentDataDictionary.allValues) {
+    [documentData setIssueArray:gIssueArray] ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+- (void) performCharacterConversion {
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
+  #endif
+//--- Get source string
+  NSString * source = [mTextSyntaxColoring sourceString] ;
+//--- Search for "\r" ?
+  BOOL needsConversionForCR = NO ;
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"PMConvert_CRLF_And_CR_To_LF_AtStartUp"]) {
+    // NSLog (@"Convert CRLF and CR to LF") ;
+    needsConversionForCR = [source rangeOfString:@"\r"].location != NSNotFound ;
+  }
+  BOOL needsConversionForHTAB = NO ;
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"PMConvert_HTAB_To_SPACE_AtStartUp"]) {
+    // NSLog (@"Convert HTAB to SPACE") ;
+    needsConversionForHTAB = [source rangeOfString:@"\x09"].location != NSNotFound ;
+  }
+  if (needsConversionForCR || needsConversionForHTAB) {
+    NSMutableString * s = [NSMutableString new] ;
+    if (needsConversionForCR) {
+    //--- Convert CR LF to LF
+      NSArray * a = [source componentsSeparatedByString:@"\r\n"] ;
+      const NSUInteger CRLFcount = [a count] - 1 ;
+      if (CRLFcount > 0) {
+        source = [a componentsJoinedByString:@"\n"] ;
+        if (CRLFcount == 1) {
+          [s appendFormat:@"1 CRLF has been converted to LF."] ;
+        }else if (CRLFcount > 1) {
+          [s appendFormat:@"%lu CRLF have been converted to LF.", CRLFcount] ;
         }
       }
-      if (needsConversionForHTAB) {
-        NSArray * a = [source componentsSeparatedByString:@"\x09"] ;
-        const NSUInteger HTABcount = [a count] - 1 ;
-        if (HTABcount > 0) {
-          source = [a componentsJoinedByString:@" "] ;
-          if ([s length] > 0) {
-            [s appendString:@"\n"] ;
-          }
-          if (HTABcount == 1) {
-            [s appendFormat:@"1 HTAB has been converted to SPACE."] ;
-          }else if (HTABcount > 1) {
-            [s appendFormat:@"%lu HTAB have been converted to SPACE.", HTABcount] ;
-          }
+    //--- Convert CR to LF
+      a = [source componentsSeparatedByString:@"\r"] ;
+      const NSUInteger CRcount = [a count] - 1 ;
+      if (CRcount > 0) {
+        source = [a componentsJoinedByString:@"\n"] ;
+        if ([s length] > 0) {
+          [s appendString:@"\n"] ;
+        }
+        if (CRcount == 1) {
+          [s appendFormat:@"1 CR has been converted to LF."] ;
+        }else if (CRcount > 1) {
+          [s appendFormat:@"%lu CR have been converted to LF.", CRcount] ;
         }
       }
-    //--- Display sheet if conversion done
-      if ([s length] > 0) {
-        [mTextSyntaxColoring replaceSourceStringWithString:source] ;
-        NSAlert * alert = [NSAlert 
-          alertWithMessageText:@"Source String Conversion"
-          defaultButton:@"Ok"
-          alternateButton:nil
-          otherButton:nil
-          informativeTextWithFormat:@"%@", s
-        ] ;
-        [alert runModal] ;
+    }
+    if (needsConversionForHTAB) {
+      NSArray * a = [source componentsSeparatedByString:@"\x09"] ;
+      const NSUInteger HTABcount = [a count] - 1 ;
+      if (HTABcount > 0) {
+        source = [a componentsJoinedByString:@" "] ;
+        if ([s length] > 0) {
+          [s appendString:@"\n"] ;
+        }
+        if (HTABcount == 1) {
+          [s appendFormat:@"1 HTAB has been converted to SPACE."] ;
+        }else if (HTABcount > 1) {
+          [s appendFormat:@"%lu HTAB have been converted to SPACE.", HTABcount] ;
+        }
       }
     }
+  //--- Display sheet if conversion done
+    if ([s length] > 0) {
+      [mTextSyntaxColoring replaceSourceStringWithString:source] ;
+      NSAlert * alert = [NSAlert 
+        alertWithMessageText:@"Source String Conversion"
+        defaultButton:@"Ok"
+        alternateButton:nil
+        otherButton:nil
+        informativeTextWithFormat:@"%@", s
+      ] ;
+      [alert
+        beginSheetModalForWindow:nil // [self windowForSheet]
+        modalDelegate:nil
+        didEndSelector:NULL
+        contextInfo:NULL
+      ] ;
+    }
   }
+}
 
-  //····················································································································
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) readDocumentFromFile {
 //--- Try UTF8
@@ -197,7 +201,7 @@ static NSMutableDictionary * gDocumentDataDictionary ;
   if (source == nil) {
     NSLog (@"Try lossy encoding") ;
     mFileEncoding = NSUTF8StringEncoding ;
-    NSData * data = [NSData dataWithContentsOfURL:fileURL options:NSDataReadingMapped error:nil] ;
+    NSData * data = [NSData dataWithContentsOfURL:fileURL options:0 error:nil] ;
     if (nil != data) {
       const NSUInteger dataLength = [data length] ;
       const unsigned char * bytes = [data bytes] ;
@@ -232,199 +236,175 @@ static NSMutableDictionary * gDocumentDataDictionary ;
   }
 }
 
-  //····················································································································
+//---------------------------------------------------------------------------------------------------------------------*
 
-  - (OC_GGS_DocumentData *) initWithDataFromURL: (NSURL *) inDocumentURL {
-    self = [super init] ;
-    if (self) {
-      noteObjectAllocation (self) ;
-      fileURL = inDocumentURL ;
-      mFileEncoding = NSUTF8StringEncoding ;
-      [self readDocumentFromFile] ;
-    //  addFileEventStreamForDocument (self) ;
-    }
-    return self ;
+- (OC_GGS_DocumentData *) initWithDataFromURL: (NSURL *) inDocumentURL {
+  self = [super init] ;
+  if (self) {
+    noteObjectAllocation (self) ;
+    fileURL = inDocumentURL ;
+    mFileEncoding = NSUTF8StringEncoding ;
+    [self readDocumentFromFile] ;
   }
+  return self ;
+}
 
-  //····················································································································
+//---------------------------------------------------------------------------------------------------------------------*
 
-  - (void) FINALIZE_OR_DEALLOC {
-    noteObjectDeallocation (self) ;
-    macroSuperFinalize ;
+- (void) FINALIZE_OR_DEALLOC {
+  noteObjectDeallocation (self) ;
+  macroSuperFinalize ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+- (void) setCocoaDocument: (OC_GGS_Document *) inDocument {
+  if (nil != inDocument) {
+    document = inDocument ;
   }
+}
 
-  //····················································································································
+//---------------------------------------------------------------------------------------------------------------------*
 
-  - (void) setCocoaDocument: (OC_GGS_Document *) inDocument {
-    if (nil != inDocument) {
-      document = inDocument ;
-    }
-  }
+- (void) detach {
+  [mTextSyntaxColoring detach] ;
+  mTextSyntaxColoring = nil ;
+}
 
-  //····················································································································
+//---------------------------------------------------------------------------------------------------------------------*
 
-  - (void) detach {
-    [mTextSyntaxColoring detach] ;
-    mTextSyntaxColoring = nil ;
-  }
+- (void) detachFromCocoaDocument {
+  document = nil ;
+}
 
-  //····················································································································
+//---------------------------------------------------------------------------------------------------------------------*
 
-  - (void) detachFromCocoaDocument {
-    document = nil ;
-  }
-
-  //····················································································································
-
-  + (void) cocoaDocumentWillClose: (OC_GGS_DocumentData *) inDocumentData {
-    [OC_GGS_DocumentData saveAllDocuments] ;
-    [inDocumentData detachFromCocoaDocument] ;
-    // removeFileEventStreamForDocument (inDocumentData) ;
-    for (OC_GGS_DocumentData * documentData in gDocumentDataDictionary.allValues.copy) {
-      // NSLog (@"%lu for %@", documentData.textSyntaxColoring.displayDescriptorCount, documentData.fileURL) ;
-      if (documentData.textSyntaxColoring.displayDescriptorCount == 0) {
-        [documentData detach] ;
-        [gDocumentDataDictionary removeObjectForKey:documentData.fileURL.path.stringByStandardizingPath] ;
-      }
-    }
-    if (gDocumentDataDictionary.count == 0) {
-      gIssueArray = nil ;
-      gDocumentDataDictionary = nil ;
++ (void) cocoaDocumentWillClose: (OC_GGS_DocumentData *) inDocumentData {
+  [OC_GGS_DocumentData saveAllDocuments] ;
+  [inDocumentData detachFromCocoaDocument] ;
+  for (OC_GGS_DocumentData * documentData in gDocumentDataDictionary.allValues.copy) {
+    // NSLog (@"%lu for %@", documentData.textSyntaxColoring.displayDescriptorCount, documentData.fileURL) ;
+    if (documentData.textSyntaxColoring.displayDescriptorCount == 0) {
+      [documentData detach] ;
+      [gDocumentDataDictionary removeObjectForKey:documentData.fileURL.path.stringByStandardizingPath] ;
     }
   }
+  if (gDocumentDataDictionary.count == 0) {
+    gIssueArray = nil ;
+    gDocumentDataDictionary = nil ;
+  }
+}
 
-  //····················································································································
+//---------------------------------------------------------------------------------------------------------------------*
 
-  + (OC_GGS_DocumentData *) findOrAddDataForDocumentURL: (NSURL *) inDocumentURL
-                            forCocoaDocument: (OC_GGS_Document *) inDocument {
-    if (nil == gDocumentDataDictionary) {
-      gDocumentDataDictionary = [NSMutableDictionary new] ;
++ (OC_GGS_DocumentData *) findOrAddDataForDocumentURL: (NSURL *) inDocumentURL
+                          forCocoaDocument: (OC_GGS_Document *) inDocument {
+  if (nil == gDocumentDataDictionary) {
+    gDocumentDataDictionary = [NSMutableDictionary new] ;
+  }
+  NSString * standardizedPath = inDocumentURL.path.stringByStandardizingPath ;
+  OC_GGS_DocumentData * documentData = [gDocumentDataDictionary objectForKey:standardizedPath] ;
+  if (nil == documentData) {
+    NSFileManager * fm = [NSFileManager new] ;
+    if ([fm isReadableFileAtPath:inDocumentURL.path]) {
+      documentData = [[OC_GGS_DocumentData alloc]
+        initWithDataFromURL:inDocumentURL
+      ] ;
+      [documentData setIssueArray:gIssueArray] ;
+      [gDocumentDataDictionary setObject:documentData forKey:standardizedPath] ;
     }
-    NSString * standardizedPath = inDocumentURL.path.stringByStandardizingPath ;
-    OC_GGS_DocumentData * documentData = [gDocumentDataDictionary objectForKey:standardizedPath] ;
-    if (nil == documentData) {
-      NSFileManager * fm = [NSFileManager new] ;
-      if ([fm isReadableFileAtPath:inDocumentURL.path]) {
-        documentData = [[OC_GGS_DocumentData alloc]
-          initWithDataFromURL:inDocumentURL
-        ] ;
-        [documentData setIssueArray:gIssueArray] ;
-        [gDocumentDataDictionary setObject:documentData forKey:standardizedPath] ;
-      }
-    }
-    [documentData setCocoaDocument:inDocument] ;
-    return documentData ;
   }
+  [documentData setCocoaDocument:inDocument] ;
+  return documentData ;
+}
 
-  //····················································································································
+//---------------------------------------------------------------------------------------------------------------------*
 
-  + (OC_GGS_DocumentData *) findDocumentDataForFilePath: (NSString *) inFilePath {
-    return [gDocumentDataDictionary objectForKey:inFilePath.stringByStandardizingPath] ;
++ (OC_GGS_DocumentData *) findDocumentDataForFilePath: (NSString *) inFilePath {
+  return [gDocumentDataDictionary objectForKey:inFilePath.stringByStandardizingPath] ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+- (OC_GGS_TextDisplayDescriptor *) newSourceDisplayDescriptorForDocument: (OC_GGS_Document *) inDocumentUsedForDisplaying {
+  OC_GGS_TextDisplayDescriptor * tdd = [[OC_GGS_TextDisplayDescriptor alloc]
+    initWithDocumentData:self
+    displayDocument:inDocumentUsedForDisplaying
+  ] ;
+  return tdd ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+- (NSString *) sourceString {
+  return mTextSyntaxColoring.sourceString ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+- (OC_GGS_TextSyntaxColoring *) textSyntaxColoring {
+  return mTextSyntaxColoring ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+- (void) replaceSourceStringWithString: (NSString *) inString {
+  [mTextSyntaxColoring replaceSourceStringWithString:inString] ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+- (void) replaceCharactersInRange: (NSRange) inRange
+         withString: (NSString *) inReplaceString {
+  [mTextSyntaxColoring replaceCharactersInRange:inRange withString:inReplaceString] ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+- (BOOL) performSaveToURL: (NSURL *) inAbsoluteURL {
+//  NSLog (@"performSaveToURL %@, fileURL %@", inAbsoluteURL, fileURL) ;
+  [mTextSyntaxColoring breakUndoCoalescing] ;
+  NSString * string = mTextSyntaxColoring.sourceString ;
+  NSError * error = nil ;
+  const BOOL ok = [string
+    writeToURL:(inAbsoluteURL == nil) ? fileURL : inAbsoluteURL
+    atomically:YES
+    encoding:NSUTF8StringEncoding
+    error:& error
+  ] ;
+//---
+  if (ok) {
+    [mTextSyntaxColoring documentHasBeenSaved] ;
+  }else{
+    [NSApp presentError:error] ;
   }
+  return ok ;
+}
 
-  //····················································································································
+//---------------------------------------------------------------------------------------------------------------------*
 
-  - (OC_GGS_TextDisplayDescriptor *) newSourceDisplayDescriptorForDocument: (OC_GGS_Document *) inDocumentUsedForDisplaying {
-    OC_GGS_TextDisplayDescriptor * tdd = [[OC_GGS_TextDisplayDescriptor alloc]
-      initWithDocumentData:self
-      displayDocument:inDocumentUsedForDisplaying
-    ] ;
-    return tdd ;
-  }
-
-  //····················································································································
-
-  - (NSString *) sourceString {
-    return mTextSyntaxColoring.sourceString ;
-  }
-
-  //····················································································································
-
-  - (OC_GGS_TextSyntaxColoring *) textSyntaxColoring {
-    return mTextSyntaxColoring ;
-  }
-
-  //····················································································································
-
-  - (void) replaceSourceStringWithString: (NSString *) inString {
-    [mTextSyntaxColoring replaceSourceStringWithString:inString] ;
-  }
-
-  //····················································································································
-
-  - (void) replaceCharactersInRange: (NSRange) inRange
-           withString: (NSString *) inReplaceString {
-    [mTextSyntaxColoring replaceCharactersInRange:inRange withString:inReplaceString] ;
-  }
-
-  //····················································································································
-
-  - (BOOL) performSaveToURL: (NSURL *) inAbsoluteURL {
-  //  NSLog (@"performSaveToURL %@, fileURL %@", inAbsoluteURL, fileURL) ;
-    [mTextSyntaxColoring breakUndoCoalescing] ;
-    NSString * string = mTextSyntaxColoring.sourceString ;
-    NSError * error = nil ;
-    const BOOL ok = [string
-      writeToURL:(inAbsoluteURL == nil) ? fileURL : inAbsoluteURL
-      atomically:YES
-      encoding:NSUTF8StringEncoding
-      error:& error
-    ] ;
-  //---
-    if (ok) {
-      [mTextSyntaxColoring documentHasBeenSaved] ;
+- (void) save {
+//  NSLog (@"isDirty: %@", mTextSyntaxColoring.isDirty ? @"yes" : @"no") ;
+  if (mTextSyntaxColoring.isDirty) {
+   // NSLog (@"document: %@", fileURL) ;
+    if (nil == self.document) {
+      [self performSaveToURL:nil] ;
     }else{
-      [NSApp presentError:error] ;
-    }
-    return ok ;
-  }
-
-  //····················································································································
-
-  - (void) save {
-  //  NSLog (@"isDirty: %@", mTextSyntaxColoring.isDirty ? @"yes" : @"no") ;
-    if (mTextSyntaxColoring.isDirty) {
-     // NSLog (@"document: %@", fileURL) ;
-      if (nil == self.document) {
-        [self performSaveToURL:nil] ;
-      }else{
-        [self.document saveDocument:nil] ;
-      }
+      [self.document saveDocument:nil] ;
     }
   }
+}
 
-  //····················································································································
+//---------------------------------------------------------------------------------------------------------------------*
 
-  + (void) saveAllDocuments {
-    for (OC_GGS_DocumentData * documentData in gDocumentDataDictionary.allValues) {
-      [documentData save] ;
-    }
++ (void) saveAllDocuments {
+  for (OC_GGS_DocumentData * documentData in gDocumentDataDictionary.allValues) {
+    [documentData save] ;
   }
+}
 
-  //····················································································································
-
-#pragma mark Reload from file system
-
-  //····················································································································
-
-  - (void) fileDidChangeInFileSystem {
-/*    NSString * filePath = self.fileURL.path ;
-    NSError * error = nil ;
-    NSString * newContents = [NSString
-      stringWithContentsOfFile:filePath
-      encoding:NSUTF8StringEncoding
-      error:& error
-    ] ;
-    if (error == nil) {
-      [self replaceSourceStringWithString:newContents] ;
-    }else{
-      [NSApp presentError:error] ;
-    } */
-  }
-
-
-  //····················································································································
+//---------------------------------------------------------------------------------------------------------------------*
 
 @end
 
-//——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+//---------------------------------------------------------------------------------------------------------------------*

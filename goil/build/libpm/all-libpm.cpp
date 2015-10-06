@@ -49,7 +49,6 @@
 //--- Utilities
 #include "utilities/C_PrologueEpilogue.cpp"
 #include "utilities/C_SharedObject.cpp"
-#include "utilities/C_BigInt.cpp"
 #include "utilities/C_Data.cpp"
 #include "utilities/F_DisplayException.cpp"
 #include "utilities/MF_Assert.cpp"

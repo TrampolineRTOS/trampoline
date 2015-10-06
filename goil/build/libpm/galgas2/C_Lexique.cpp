@@ -1692,7 +1692,6 @@ void C_Lexique::appendCharacterToLatexFile (const utf32 inUnicodeCharacter) {
   case '<' : mLatexOutputString << "\\textless{}" ; break ;
   case '~' : mLatexOutputString << "$\\sim$" ; break ;
   case '^' : mLatexOutputString << "$\\wedge$" ; break ;
-  case '|' : mLatexOutputString << "\\textbar{}" ; break ;
   case '&' : mLatexOutputString << "\\&" ; break ;
   case '%' : mLatexOutputString << "\\%" ; break ;
   case '#' : mLatexOutputString << "\\#" ; break ;

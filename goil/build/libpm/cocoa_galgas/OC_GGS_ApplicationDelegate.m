@@ -43,12 +43,6 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifndef NS_ENUM
-  typedef NSUInteger NSAutoresizingMaskOptions ;
-#endif
-
-//---------------------------------------------------------------------------------------------------------------------*
-
 @implementation OC_GGS_ApplicationDelegate
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -257,14 +251,13 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
-  const NSAutoresizingMaskOptions mask = (NSAutoresizingMaskOptions) (NSViewMaxXMargin | NSViewMinYMargin) ;
   NSUserDefaultsController * udc = [NSUserDefaultsController sharedUserDefaultsController] ;
 //--- Add background color well
   ioRect->origin.x = 10.0 ;
   ioRect->size.width = 40.0 ;
   NSColorWell * colorWell = [[NSColorWell alloc] initWithFrame:*ioRect] ;
   [colorWell setToolTip: @"Background Color"] ;
-  [colorWell setAutoresizingMask: mask] ;
+  [colorWell setAutoresizingMask: NSViewMaxXMargin | NSViewMinYMargin] ;
   [colorWell
     bind:@"value"
     toObject:udc
@@ -279,7 +272,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   NSButton * cb = [[NSButton alloc] initWithFrame:*ioRect] ;
   [cb setToolTip: @"Enable background"] ;
   [cb setButtonType: NSSwitchButton] ;
-  [cb setAutoresizingMask: mask] ;
+  [cb setAutoresizingMask: NSViewMaxXMargin | NSViewMinYMargin] ;
   [cb
     bind:@"value"
     toObject:udc
@@ -304,7 +297,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   [cb setToolTip: @"Font"] ;
   [cb setButtonType: NSMomentaryLightButton] ;
   [cb setBezelStyle: NSSmallSquareBezelStyle] ;
-  [cb setAutoresizingMask: mask] ;
+  [cb setAutoresizingMask: NSViewMaxXMargin | NSViewMinYMargin] ;
   [cb
     bind:@"fontValue"
     toObject:udc
@@ -318,7 +311,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   ioRect->size.width = 40.0 ;
   colorWell = [[NSColorWell alloc] initWithFrame:*ioRect] ;
   [colorWell setToolTip: @"Foreground Color"] ;
-  [colorWell setAutoresizingMask: mask] ;
+  [colorWell setAutoresizingMask: NSViewMaxXMargin | NSViewMinYMargin] ;
   [colorWell
     bind:@"value"
     toObject:udc
@@ -334,7 +327,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   [f setDrawsBackground: NO] ;
   [f setBordered:NO] ;
   [f setAlignment: NSLeftTextAlignment] ;
-  [f setAutoresizingMask: mask] ;
+  [f setAutoresizingMask: NSViewMaxXMargin | NSViewMinYMargin] ;
   [f setStringValue: inTitle] ;
   NSDictionary * d = [NSDictionary dictionaryWithObjectsAndKeys:
     [f font], NSFontAttributeName,
@@ -700,7 +693,6 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
-  const NSAutoresizingMaskOptions mask = (NSAutoresizingMaskOptions) (NSViewMaxXMargin | NSViewMinYMargin) ;
   NSUserDefaultsController * udc = [NSUserDefaultsController sharedUserDefaultsController] ;
   NSRect r  ;
   r.origin.x = 10.0 ;
@@ -719,7 +711,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
     [cb setFrame:r] ;
     [cb setTitle: title] ;
     [cb setButtonType: NSSwitchButton] ;
-    [cb setAutoresizingMask: mask] ;
+    [cb setAutoresizingMask: NSViewMaxXMargin | NSViewMinYMargin] ;
     [cb
       bind:@"value"
       toObject:udc
@@ -742,7 +734,6 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
-  const NSAutoresizingMaskOptions mask = (NSAutoresizingMaskOptions) (NSViewMaxXMargin | NSViewMinYMargin) ;
   NSUserDefaultsController * udc = [NSUserDefaultsController sharedUserDefaultsController] ;
   NSDictionary * optionDictionary = [NSDictionary
     dictionaryWithObject:[NSNumber numberWithBool:YES]
@@ -756,7 +747,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
     OC_GGS_CommandLineOption * option = [mUIntOptionArray objectAtIndex:i] ;
   //--- Input text field
     NSTextField * tx = [NSTextField new] ;
-    [tx setAutoresizingMask: mask] ;
+    [tx setAutoresizingMask: NSViewMaxXMargin | NSViewMinYMargin] ;
   //--- Add formatter
     NSNumberFormatter * format = [NSNumberFormatter new] ;
     [format setFormat:@"#0;0;-#0"] ;
@@ -781,7 +772,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
     NSString * title = [option title] ;
  //   [tx setTitleWithMnemonic: title] ;
     [tx setStringValue:title] ;
-    [tx setAutoresizingMask: mask] ;
+    [tx setAutoresizingMask: NSViewMaxXMargin | NSViewMinYMargin] ;
     NSDictionary * d = [NSDictionary dictionaryWithObjectsAndKeys:
       [tx font], NSFontAttributeName,
       nil
@@ -809,7 +800,6 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
-  const NSAutoresizingMaskOptions mask = (NSAutoresizingMaskOptions) (NSViewMaxXMargin | NSViewMinYMargin) ;
   NSUserDefaultsController * udc = [NSUserDefaultsController sharedUserDefaultsController] ;
   NSDictionary * optionDictionary = [NSDictionary
     dictionaryWithObject:[NSNumber numberWithBool:YES]
@@ -825,7 +815,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
     OC_GGS_CommandLineOption * option = [mStringOptionArray objectAtIndex:i] ;
   //--- Input text field
     NSTextField * tx = [NSTextField new] ;
-    [tx setAutoresizingMask: mask] ;
+    [tx setAutoresizingMask: NSViewMaxXMargin | NSViewMinYMargin] ;
     r.origin.y -= 25.0 ;
     r.origin.x = 10.0 ;
     r.size.width = 280.0 ;
@@ -843,7 +833,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
     NSString * title = [option title] ;
 //    [tx setTitleWithMnemonic: title] ;
     [tx setStringValue:title] ;
-    [tx setAutoresizingMask: mask] ;
+    [tx setAutoresizingMask: NSViewMaxXMargin | NSViewMinYMargin] ;
     NSDictionary * d = [NSDictionary dictionaryWithObjectsAndKeys:
       [tx font], NSFontAttributeName,
       nil
@@ -984,14 +974,15 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   }
 //--- Get default settings
   NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults] ;
-//--- Tab Key inserts spaces
-  if ([defaults integerForKey:GGS_editor_space_for_tab] == 0) {
-    [defaults setInteger:2 forKey:GGS_editor_space_for_tab] ;
+//--- Check "Shift Left Inserted space count"
+  if ([defaults integerForKey:@"PMShiftLeftInsertedSpaceCount"] == 0) {
+    [defaults setInteger:2 forKey:@"PMShiftLeftInsertedSpaceCount"] ;
   }
-  [mTabInsertsSpacesTextField
+//--- Bind "Shift Left Inserted space count" Textfield
+  [mShiftLeftInsertedSpaceTextField
     bind:@"value"
     toObject:udc
-    withKeyPath:@"values." GGS_editor_space_for_tab
+    withKeyPath:@"values.PMShiftLeftInsertedSpaceCount"
     options:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] forKey:NSContinuouslyUpdatesValueBindingOption]
   ] ;
 //--- Make this object delegate of associated window (for tracking window moves and resizes)

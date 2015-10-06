@@ -59,19 +59,19 @@
     [df
       addObserver:self
       forKeyPath:GGS_uses_page_guide
-      options:NSKeyValueObservingOptionNew
+      options:0
       context:NULL
     ] ;
     [df
       addObserver:self
       forKeyPath:GGS_page_guide_column
-      options:NSKeyValueObservingOptionNew
+      options:0
       context:NULL
     ] ;
     [df
       addObserver:self
       forKeyPath:GGS_editor_background_color
-      options:NSKeyValueObservingOptionNew
+      options:0
       context:NULL
     ] ;
   }
@@ -162,7 +162,6 @@
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (void) drawRect: (NSRect) inRect {
-  // NSLog (@"%s", __PRETTY_FUNCTION__) ;
 //--- Draw page guide
   NSUserDefaults * ud = [NSUserDefaults standardUserDefaults] ;
   if ([ud boolForKey:GGS_uses_page_guide] && (self.string.length > 0)) {
@@ -243,26 +242,15 @@
     [super keyDown:inEvent] ;
   }else{
     const unichar c = [keys characterAtIndex:0] ;
+    // NSLog (@"%d", c) ;
     switch (c) {
     case 9 : // A Tab Character ?
       { const NSRange selectedRange = self.selectedRange ;
-        const NSInteger alignment = [[NSUserDefaults standardUserDefaults] integerForKey:GGS_editor_space_for_tab] ;
-        NSInteger spacesToInsert = alignment - ((NSInteger) selectedRange.location) % alignment ;
-        NSInteger characterAfterSelection = (NSInteger) (selectedRange.location + selectedRange.length) ;
-        while ((spacesToInsert > 0)
-            && (characterAfterSelection < (NSInteger) self.string.length)
-            && ([self.string characterAtIndex:(NSUInteger)characterAfterSelection] == ' ')) {
-          characterAfterSelection ++ ;
-          spacesToInsert -- ;
+        if ((selectedRange.location & 1) !=0) {
+          [self insertText:@"  "] ; // Odd location: insert 2 spaces
+        }else{
+          [self insertText:@" "] ; // Even location: insert 1 space
         }
-        if (spacesToInsert == 0) {
-          spacesToInsert = alignment ;
-        }
-        NSMutableString * s = [NSMutableString new] ;
-        for (NSInteger i=0 ; i<spacesToInsert ; i++) {
-          [s appendString:@" "] ;
-        }
-        [self insertText:s] ;
       }break ;
     case 13 : // A Carriage Return Character ?
       { const NSRange selectedRange = [self selectedRange] ;

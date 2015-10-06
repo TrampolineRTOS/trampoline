@@ -104,11 +104,9 @@ foreach flags in OS::BUILD_S::CFLAGS do
 cflags += "% !flags::VALUE %".split()%
 end foreach
 let MACHINESPATH := OS::BUILD_S::TRAMPOLINE_BASE_PATH."/machines"
-let PARTIAL_PATH := MACHINESPATH
-foreach COMPONENT in TARGETPATHLIST do 
-  let PARTIAL_PATH := PARTIAL_PATH . "/" . COMPONENT::VALUE
-%
-cflags += ["-I","% !PARTIAL_PATH %"]%
+display PLATFORM_FILES
+foreach platform in exists PLATFORM_FILES default (emptylist) do%
+cflags += ["-I","% !MACHINESPATH . "/" . platform::PATH %"]%
 end foreach
 %
 if with_ioc:

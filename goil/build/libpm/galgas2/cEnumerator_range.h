@@ -48,7 +48,6 @@ class cEnumerator_range {
 
 //--- 
   public : bool hasCurrentObject (void) const ;
-  public : bool hasNextObject (void) const ;
   public : void gotoNextObject (void) ;
 
 //--- Current element access
