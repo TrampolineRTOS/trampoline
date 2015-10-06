@@ -1,12 +1,33 @@
 %
 #
-# Template to generate a make file in Python using the system developed
-# by Pierre Molinaro
+# @file make_py.goilTemplate
+#
+# @section desc File description
+#
+# Template to generate a make file in Python using the system
+# developed by Pierre Molinaro
+#
+# @section copyright Copyright
+#
+# Trampoline RTOS
+#
+# Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
+# Trampoline is protected by the French intellectual property law.
+#
+# This software is distributed under the GNU Public Licence V2.
+# Check the LICENSE file in the root directory of Trampoline
+#
+# @section infos File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
 #
 
 # Verify a subgoal is not used in more than one goal
 let usedGoal := emptymap
-foreach pb in POSTBUILD do
+foreach pb in exists POSTBUILD default(emptylist) do
   foreach cmd in exists pb::COMMAND default (emptylist) do
     if exists pb::SUBGOAL then
       if pb::SUBGOAL == true then
