@@ -25,12 +25,15 @@
 #---------------------------------------------------------------------------*
 
 grammar goil_file_level_include "LL1" {
-#--- References to syntax components used when source file extension is .gGrammar
-#    Theses constructs are silently parsed when source file extension is .ggs
     syntax goil_syntax
     syntax implementation_parser
 
-     <file> ?!@implementation imp ?!@applicationDefinition application
+    <file>
+      ?!@implementation        imp
+      ?!@applicationDefinition application
+      ?!@string                fileIncludeList
+      ?let @bool               rootFile
+
  unused <start>
  unused <OIL_version>
 }

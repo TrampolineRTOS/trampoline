@@ -39,6 +39,8 @@ rule <start> {
   @implementation imp  = @implementation. new { !@implementationMap. emptyMap}
   @applicationDefinition application = emptyApplicationDefinition()
 
+  @string fileIncludeList = ""
+    
   # First the OIL_VERSION must be present
   @lstring version
   @lstring desc = lstringWith(!"")
@@ -50,19 +52,17 @@ rule <start> {
 
   # includes the config files
   @stringlist configFiles = allTemplateFilePaths(!"config" !config_file_name+".oil")
-#  log configFiles;
   # files are stored from the deepest to the shallowest and we should go from the
   # shallowest to the deepest.
   for > (@string file) in  configFiles do
-#    message file . "\n";
-    grammar goil_file_level_include in lstringWith(!file) !?imp !?application
+    grammar goil_file_level_include in lstringWith(!file) !?imp !?application !?fileIncludeList !false
   end
 
   # then look for config files suffixed by the OIL version
   @stringlist configVersionFiles = allTemplateFilePaths(!"config" !config_file_name+version+".oil")
   for > (@string file) in  configVersionFiles do
 #    message file . "\n";
-    grammar goil_file_level_include in lstringWith(!file) !?imp !?application
+    grammar goil_file_level_include in lstringWith(!file) !?imp !?application !?fileIncludeList !false
   end
   
 #  log imp;
@@ -72,7 +72,7 @@ rule <start> {
 #    grammar goil_file_level_include in lstringWith[!oilConfigFile] !?imp !?application;
 #  end if;
 
-  <file> !?imp !?application
+  <file> !?imp !?application !?fileIncludeList !true
 
   # semantics constraint checking
   # per object static verification
@@ -99,13 +99,27 @@ rule <start> {
 
     generate_all ( !templateData)
   end
+  
+  fileIncludeList = [@string.stringWithSourceFilePath lastPathComponent] + ":" + fileIncludeList + "\n"
+  @string oilDepFileName = [@string.stringWithSourceFilePath stringByDeletingLastPathComponent]
+    + "/build/" + [@string.stringWithSourceFilePath lastPathComponent] + ".dep"  
+  #message "Writing dependancies to " + oilDepFileName + "\n";
+  [fileIncludeList writeToFile !oilDepFileName]
 }
 
-rule <file> ?!@implementation imp ?!@applicationDefinition application {
+rule <file>
+  ?!@implementation        imp
+  ?!@applicationDefinition application
+  ?!@string fileIncludeList
+  ?let @bool rootFile
+{
+  if not rootFile then
+    fileIncludeList += " \\\n " + @string.stringWithSourceFilePath
+  end
   repeat
-  while <include_file_level> !?imp !?application
-  while <implementation_definition> !?imp
-  while <application_definition> !imp !?application
+  while <include_file_level> !?imp !?application !?fileIncludeList !false
+  while <implementation_definition> !?imp 
+  while <application_definition> !imp !?application !?fileIncludeList !false
   end
 }
 
@@ -153,16 +167,26 @@ rule <OIL_version> !@lstring version !@lstring desc {
 #--------------------------------------------------------------------
 # Application definition part
 #--------------------------------------------------------------------
-rule <application_definition> ?let @implementation imp ?!@applicationDefinition application {
+rule <application_definition>
+  ?let @implementation imp
+  ?!@applicationDefinition application
+  ?!@string fileIncludeList
+  ?let @bool rootFile
+{
   $CPU$ $idf$ ?var @lstring cpuName ${$
   @objectsMap objects = [application objects]
-  <object_definition_list> !imp !?objects
+  <object_definition_list> !imp !?objects !?fileIncludeList !rootFile
   $}$ <description> ?* $;$
   [!?application setName !cpuName]
   [!?application setObjects !objects]
 }
 
-rule <object_definition_list> ?let @implementation imp ?!@objectsMap objects {
+rule <object_definition_list>
+  ?let @implementation imp
+  ?!@objectsMap objects
+  ?!@string fileIncludeList
+  ?let @bool rootFile
+{
   repeat
   while
     @lstring objectKind
@@ -198,7 +222,7 @@ rule <object_definition_list> ?let @implementation imp ?!@objectsMap objects {
     [!?objectsKind put !objectName !object]
     [!?objectsForKind setObjects !objectsKind]
     [!?objects put !objectKind !objectsForKind]
-  while <include_cpu_level> !imp !?objects
+  while <include_cpu_level> !imp !?objects !?fileIncludeList !rootFile
   end
 }
 
@@ -397,7 +421,12 @@ rule <oil_declaration>
   [!?identifiers setObjectParams !idfs]
 }
 
-rule <include_file_level> ?!@implementation imp ?!@applicationDefinition application {
+rule <include_file_level>
+  ?!@implementation        imp
+  ?!@applicationDefinition application
+  ?!@string fileIncludeList
+  ?let @bool rootFile
+{
   $include$
   @lstring file_name
   select
@@ -406,10 +435,15 @@ rule <include_file_level> ?!@implementation imp ?!@applicationDefinition applica
   or
     $string$ ?file_name
   end
-  grammar goil_file_level_include in file_name !?imp !?application
+  grammar goil_file_level_include in file_name !?imp !?application !?fileIncludeList !rootFile
 }
 
-rule <include_cpu_level> ?let @implementation imp ?!@objectsMap objects {
+rule <include_cpu_level>
+  ?let @implementation imp
+  ?!@objectsMap objects
+  ?!@string fileIncludeList
+  ?let @bool rootFile
+{
   $include$
   @lstring file_name
   select
@@ -418,7 +452,7 @@ rule <include_cpu_level> ?let @implementation imp ?!@objectsMap objects {
   or
     $string$ ?file_name
   end
-  grammar goil_cpu_level_include in file_name !imp !?objects
+  grammar goil_cpu_level_include in file_name !imp !?objects !?fileIncludeList !rootFile
 }
 
 }

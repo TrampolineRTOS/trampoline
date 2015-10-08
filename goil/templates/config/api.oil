@@ -6,6 +6,7 @@ CPU api {
    */
   APICONFIG alarm {
     ID_PREFIX = OS;
+    DIRECTORY = "os";
     FILE = "tpl_os_alarm_kernel";
     HEADER = "tpl_os_alarm";
     SYSCALL GetAlarmBase {
@@ -81,6 +82,7 @@ CPU api {
     ID_PREFIX = OS;
     FILE = "tpl_os_task_kernel";
     HEADER = "tpl_os_task";
+    DIRECTORY = "os";
     SYSCALL ActivateTask {
       KERNEL = tpl_activate_task_service;
       RETURN_TYPE = StatusType
@@ -143,6 +145,7 @@ CPU api {
     ID_PREFIX = OS;
     FILE = "tpl_os_interrupt_kernel";
     HEADER = "tpl_os_interrupt";
+    DIRECTORY = "os";
     SYSCALL EnableAllInterrupts  { KERNEL = tpl_enable_all_interrupts_service;  }
       : "This service restores the state saved by DisableAllInterrupts.";
     SYSCALL DisableAllInterrupts { KERNEL = tpl_disable_all_interrupts_service; }
@@ -171,6 +174,7 @@ CPU api {
     ID_PREFIX = OS;
     FILE = "tpl_os_resource_kernel";
     HEADER = "tpl_os_resource";
+    DIRECTORY = "os";
     SYSCALL GetResource {
       KERNEL = tpl_get_resource_service;
       RETURN_TYPE = StatusType
@@ -201,6 +205,7 @@ CPU api {
     ID_PREFIX = OS;
     FILE = "tpl_os_event_kernel";
     HEADER = "tpl_os_event";
+    DIRECTORY = "os";
     SYSCALL SetEvent {
       KERNEL = tpl_set_event_service;
       RETURN_TYPE = StatusType
@@ -262,6 +267,7 @@ CPU api {
     FILE = "tpl_os_os_kernel";
     FILE = "tpl_os_os";
     HEADER = "tpl_os_os";
+    DIRECTORY = "os";
     SYSCALL GetActiveApplicationMode {
       KERNEL = tpl_get_active_application_mode_service;
       RETURN_TYPE = AppModeType
@@ -289,6 +295,7 @@ CPU api {
     ID_PREFIX = COM;
     FILE = "tpl_com_message_kernel";
     HEADER = "tpl_com_internal";
+    DIRECTORY = "com";
 /*  StartCOM                  -> tpl_start_com_service;
   StopCOM                   -> tpl_stop_com_service;
   GetCOMApplicationMode     -> tpl_get_com_application_mode_service;
@@ -357,6 +364,7 @@ CPU api {
     ID_PREFIX = OS;
     FILE = "tpl_as_counter_kernel";
     HEADER = "tpl_as_counter";
+    DIRECTORY = "autosar";
     SYSCALL IncrementCounter {
       KERNEL = tpl_increment_counter_service;
       RETURN_TYPE = StatusType
@@ -398,6 +406,7 @@ CPU api {
     ID_PREFIX = OS;
     FILE = "tpl_as_st_kernel";
     HEADER = "tpl_as_schedtable";
+    DIRECTORY = "autosar";
     SYSCALL StartScheduleTableRel {
       KERNEL = tpl_start_schedule_table_rel_service;
       RETURN_TYPE = StatusType
@@ -467,6 +476,7 @@ CPU api {
   APICONFIG globaltime {
     ID_PREFIX = OS;
     FILE = "tpl_as_gt_kernel";
+    DIRECTORY = "autosar";
     SYSCALL StartScheduleTableSynchron {
       KERNEL = tpl_start_schedule_table_synchron_service;
       RETURN_TYPE = StatusType
@@ -507,6 +517,7 @@ CPU api {
     ID_PREFIX = OS;
     FILE = "tpl_as_isr_kernel";
     HEADER = "tpl_as_isr";
+    DIRECTORY = "autosar";
     SYSCALL GetISRID {
       KERNEL = tpl_get_isr_id_service;
       RETURN_TYPE = ISRType
@@ -522,6 +533,7 @@ CPU api {
     ID_PREFIX = OS;
     FILE = "tpl_as_app_kernel";
     HEADER = "tpl_as_application";
+    DIRECTORY = "autosar";
     SYSCALL GetApplicationID {
       KERNEL = tpl_get_application_id_service;
       RETURN_TYPE = ApplicationType
@@ -589,6 +601,7 @@ CPU api {
     ID_PREFIX = OS;
     FILE = "tpl_os_multicore_kernel";
     HEADER = "tpl_os_multicore";
+    DIRECTORY = "os";
     SYSCALL GetCoreID {
       KERNEL = tpl_get_core_id_service;
       RETURN_TYPE = CoreIdType

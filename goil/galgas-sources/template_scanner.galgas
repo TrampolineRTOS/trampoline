@@ -100,7 +100,9 @@ list goilTemplateKeyWordList style keywordsStyle error message "the '%K' keyword
   "yes",
   "warning",
   "while",
-  "write"}
+  "write",
+  "executable"
+}
 
 message unterminatedFunction : "unterminated function definition"
 

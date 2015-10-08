@@ -25,17 +25,19 @@
 #---------------------------------------------------------------------------*
 
 grammar goil_cpu_level_include "LL1" {
-#--- References to syntax components used when source file extension is .gGrammar
-#    Theses constructs are silently parsed when source file extension is .ggs
-    syntax goil_syntax
+  syntax goil_syntax
+  <object_definition_list>
+    ?let @implementation imp
+    ?!@objectsMap        objects
+    ?!@string            fileIncludeList
+    ?let @bool rootFile
 
-     <object_definition_list> ?let @implementation imp ?!@objectsMap objects
- unused <OIL_version>
- unused <application_definition>
- unused <file>
- unused <implementation_definition>
- unused <include_file_level>
- unused <start>
+  unused <OIL_version>
+  unused <application_definition>
+  unused <file>
+  unused <implementation_definition>
+  unused <include_file_level>
+  unused <start>
 }
 
 # vim:ft=ggs:ts=4:sw=4

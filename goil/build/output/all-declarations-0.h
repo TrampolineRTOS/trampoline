@@ -1659,6 +1659,7 @@ class C_Lexique_template_5F_scanner : public C_Lexique {
    kToken_warning,
    kToken_while,
    kToken_write,
+   kToken_executable,
    kToken__2A_,
    kToken__7C_,
    kToken__2C_,
@@ -1734,7 +1735,7 @@ class C_Lexique_template_5F_scanner : public C_Lexique {
   protected : virtual C_String getMessageForTerminal (const int16_t inTerminalSymbol) const ;
 
 //--- Get terminal count
-  public : virtual int16_t terminalVocabularyCount (void) const { return 94 ; }
+  public : virtual int16_t terminalVocabularyCount (void) const { return 95 ; }
 
 //--- Get Token String
   public : virtual C_String getCurrentTokenString (const cToken * inTokenPtr) const ;
@@ -2333,6 +2334,8 @@ class cParser_template_5F_parser {
   protected : virtual int32_t select_template_5F_parser_26 (C_Lexique_template_5F_scanner *) = 0 ;
 
   protected : virtual int32_t select_template_5F_parser_27 (C_Lexique_template_5F_scanner *) = 0 ;
+
+  protected : virtual int32_t select_template_5F_parser_28 (C_Lexique_template_5F_scanner *) = 0 ;
 
 
 } ;
@@ -3016,6 +3019,8 @@ class cGrammar_template_5F_grammar : public cParser_template_5F_parser,
   public : virtual int32_t select_template_5F_parser_26 (C_Lexique_template_5F_scanner *) ;
 
   public : virtual int32_t select_template_5F_parser_27 (C_Lexique_template_5F_scanner *) ;
+
+  public : virtual int32_t select_template_5F_parser_28 (C_Lexique_template_5F_scanner *) ;
 
   public : virtual int32_t select_template_5F_expression_5F_parser_0 (C_Lexique_template_5F_scanner *) ;
 
@@ -8116,6 +8121,8 @@ class cParser_goil_5F_syntax {
 
   protected : virtual void nt_application_5F_definition_ (const class GALGAS_implementation constinArgument0,
                                                           class GALGAS_applicationDefinition & ioArgument1,
+                                                          class GALGAS_string & ioArgument2,
+                                                          const class GALGAS_bool constinArgument3,
                                                           class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected : virtual void nt_application_5F_definition_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
@@ -8132,6 +8139,8 @@ class cParser_goil_5F_syntax {
 
   protected : virtual void nt_file_ (class GALGAS_implementation & ioArgument0,
                                      class GALGAS_applicationDefinition & ioArgument1,
+                                     class GALGAS_string & ioArgument2,
+                                     const class GALGAS_bool constinArgument3,
                                      class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected : virtual void nt_file_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
@@ -8143,18 +8152,24 @@ class cParser_goil_5F_syntax {
 
   protected : virtual void nt_include_5F_cpu_5F_level_ (const class GALGAS_implementation constinArgument0,
                                                         class GALGAS_objectsMap & ioArgument1,
+                                                        class GALGAS_string & ioArgument2,
+                                                        const class GALGAS_bool constinArgument3,
                                                         class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected : virtual void nt_include_5F_cpu_5F_level_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected : virtual void nt_include_5F_file_5F_level_ (class GALGAS_implementation & ioArgument0,
                                                          class GALGAS_applicationDefinition & ioArgument1,
+                                                         class GALGAS_string & ioArgument2,
+                                                         const class GALGAS_bool constinArgument3,
                                                          class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected : virtual void nt_include_5F_file_5F_level_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected : virtual void nt_object_5F_definition_5F_list_ (const class GALGAS_implementation constinArgument0,
                                                              class GALGAS_objectsMap & ioArgument1,
+                                                             class GALGAS_string & ioArgument2,
+                                                             const class GALGAS_bool constinArgument3,
                                                              class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
 
   protected : virtual void nt_object_5F_definition_5F_list_parse (class C_Lexique_goil_5F_lexique * inLexique) = 0 ;
@@ -8188,6 +8203,8 @@ class cParser_goil_5F_syntax {
 
   protected : void rule_goil_5F_syntax_file_i1_ (GALGAS_implementation & ioArgument0,
                                                  GALGAS_applicationDefinition & ioArgument1,
+                                                 GALGAS_string & ioArgument2,
+                                                 const GALGAS_bool constinArgument3,
                                                  C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected : void rule_goil_5F_syntax_file_i1_parse (C_Lexique_goil_5F_lexique * inLexique) ;
@@ -8210,12 +8227,16 @@ class cParser_goil_5F_syntax {
 
   protected : void rule_goil_5F_syntax_application_5F_definition_i5_ (const GALGAS_implementation constinArgument0,
                                                                       GALGAS_applicationDefinition & ioArgument1,
+                                                                      GALGAS_string & ioArgument2,
+                                                                      const GALGAS_bool constinArgument3,
                                                                       C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected : void rule_goil_5F_syntax_application_5F_definition_i5_parse (C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected : void rule_goil_5F_syntax_object_5F_definition_5F_list_i6_ (const GALGAS_implementation constinArgument0,
                                                                          GALGAS_objectsMap & ioArgument1,
+                                                                         GALGAS_string & ioArgument2,
+                                                                         const GALGAS_bool constinArgument3,
                                                                          C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected : void rule_goil_5F_syntax_object_5F_definition_5F_list_i6_parse (C_Lexique_goil_5F_lexique * inLexique) ;
@@ -8239,12 +8260,16 @@ class cParser_goil_5F_syntax {
 
   protected : void rule_goil_5F_syntax_include_5F_file_5F_level_i10_ (GALGAS_implementation & ioArgument0,
                                                                       GALGAS_applicationDefinition & ioArgument1,
+                                                                      GALGAS_string & ioArgument2,
+                                                                      const GALGAS_bool constinArgument3,
                                                                       C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected : void rule_goil_5F_syntax_include_5F_file_5F_level_i10_parse (C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected : void rule_goil_5F_syntax_include_5F_cpu_5F_level_i11_ (const GALGAS_implementation constinArgument0,
                                                                      GALGAS_objectsMap & ioArgument1,
+                                                                     GALGAS_string & ioArgument2,
+                                                                     const GALGAS_bool constinArgument3,
                                                                      C_Lexique_goil_5F_lexique * inLexique) ;
 
   protected : void rule_goil_5F_syntax_include_5F_cpu_5F_level_i11_parse (C_Lexique_goil_5F_lexique * inLexique) ;
@@ -9993,6 +10018,8 @@ class cGrammar_goil_5F_cpu_5F_level_5F_include : public cParser_goil_5F_syntax {
 //----------- '' label
   public : virtual void nt_application_5F_definition_ (const GALGAS_implementation inArgument0,
                                                        GALGAS_applicationDefinition & ioArgument1,
+                                                       GALGAS_string & ioArgument2,
+                                                       const GALGAS_bool inArgument3,
                                                        C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //------------------------------------- 'boolean' non terminal
@@ -10018,6 +10045,8 @@ class cGrammar_goil_5F_cpu_5F_level_5F_include : public cParser_goil_5F_syntax {
 //----------- '' label
   public : virtual void nt_file_ (GALGAS_implementation & ioArgument0,
                                   GALGAS_applicationDefinition & ioArgument1,
+                                  GALGAS_string & ioArgument2,
+                                  const GALGAS_bool inArgument3,
                                   C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //------------------------------------- 'implementation_definition' non terminal
@@ -10035,6 +10064,8 @@ class cGrammar_goil_5F_cpu_5F_level_5F_include : public cParser_goil_5F_syntax {
 //----------- '' label
   public : virtual void nt_include_5F_cpu_5F_level_ (const GALGAS_implementation inArgument0,
                                                      GALGAS_objectsMap & ioArgument1,
+                                                     GALGAS_string & ioArgument2,
+                                                     const GALGAS_bool inArgument3,
                                                      C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //------------------------------------- 'include_file_level' non terminal
@@ -10044,6 +10075,8 @@ class cGrammar_goil_5F_cpu_5F_level_5F_include : public cParser_goil_5F_syntax {
 //----------- '' label
   public : virtual void nt_include_5F_file_5F_level_ (GALGAS_implementation & ioArgument0,
                                                       GALGAS_applicationDefinition & ioArgument1,
+                                                      GALGAS_string & ioArgument2,
+                                                      const GALGAS_bool inArgument3,
                                                       C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //------------------------------------- 'object_definition_list' non terminal
@@ -10053,19 +10086,25 @@ class cGrammar_goil_5F_cpu_5F_level_5F_include : public cParser_goil_5F_syntax {
 //----------- '' label
   public : virtual void nt_object_5F_definition_5F_list_ (const GALGAS_implementation inArgument0,
                                                           GALGAS_objectsMap & ioArgument1,
+                                                          GALGAS_string & ioArgument2,
+                                                          const GALGAS_bool inArgument3,
                                                           C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //--- Start symbol
   public : static void _performSourceFileParsing_ (C_Compiler * inCompiler,
                                                    GALGAS_lstring inFileName,
                                                    const GALGAS_implementation inArgument0,
-                                                   GALGAS_objectsMap & ioArgument1
+                                                   GALGAS_objectsMap & ioArgument1,
+                                                   GALGAS_string & ioArgument2,
+                                                   const GALGAS_bool inArgument3
                                                    COMMA_LOCATION_ARGS) ;
 
   public : static void _performSourceStringParsing_ (C_Compiler * inCompiler,
                                                      GALGAS_string inSourceString,
                                                      const GALGAS_implementation inArgument0,
-                                                     GALGAS_objectsMap & ioArgument1
+                                                     GALGAS_objectsMap & ioArgument1,
+                                                     GALGAS_string & ioArgument2,
+                                                     const GALGAS_bool inArgument3
                                                      COMMA_LOCATION_ARGS) ;
 
 //--- Indexing
@@ -10483,6 +10522,8 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //----------- '' label
   public : virtual void nt_application_5F_definition_ (const GALGAS_implementation inArgument0,
                                                        GALGAS_applicationDefinition & ioArgument1,
+                                                       GALGAS_string & ioArgument2,
+                                                       const GALGAS_bool inArgument3,
                                                        C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //------------------------------------- 'boolean' non terminal
@@ -10534,19 +10575,25 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //----------- '' label
   public : virtual void nt_file_ (GALGAS_implementation & ioArgument0,
                                   GALGAS_applicationDefinition & ioArgument1,
+                                  GALGAS_string & ioArgument2,
+                                  const GALGAS_bool inArgument3,
                                   C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //--- Start symbol
   public : static void _performSourceFileParsing_ (C_Compiler * inCompiler,
                                                    GALGAS_lstring inFileName,
                                                    GALGAS_implementation & ioArgument0,
-                                                   GALGAS_applicationDefinition & ioArgument1
+                                                   GALGAS_applicationDefinition & ioArgument1,
+                                                   GALGAS_string & ioArgument2,
+                                                   const GALGAS_bool inArgument3
                                                    COMMA_LOCATION_ARGS) ;
 
   public : static void _performSourceStringParsing_ (C_Compiler * inCompiler,
                                                      GALGAS_string inSourceString,
                                                      GALGAS_implementation & ioArgument0,
-                                                     GALGAS_applicationDefinition & ioArgument1
+                                                     GALGAS_applicationDefinition & ioArgument1,
+                                                     GALGAS_string & ioArgument2,
+                                                     const GALGAS_bool inArgument3
                                                      COMMA_LOCATION_ARGS) ;
 
 //--- Indexing
@@ -10617,6 +10664,8 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //----------- '' label
   public : virtual void nt_include_5F_cpu_5F_level_ (const GALGAS_implementation inArgument0,
                                                      GALGAS_objectsMap & ioArgument1,
+                                                     GALGAS_string & ioArgument2,
+                                                     const GALGAS_bool inArgument3,
                                                      C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //------------------------------------- 'include_file_level' non terminal
@@ -10626,6 +10675,8 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //----------- '' label
   public : virtual void nt_include_5F_file_5F_level_ (GALGAS_implementation & ioArgument0,
                                                       GALGAS_applicationDefinition & ioArgument1,
+                                                      GALGAS_string & ioArgument2,
+                                                      const GALGAS_bool inArgument3,
                                                       C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //------------------------------------- 'int_or_float' non terminal
@@ -10662,6 +10713,8 @@ class cGrammar_goil_5F_file_5F_level_5F_include : public cParser_goil_5F_syntax,
 //----------- '' label
   public : virtual void nt_object_5F_definition_5F_list_ (const GALGAS_implementation inArgument0,
                                                           GALGAS_objectsMap & ioArgument1,
+                                                          GALGAS_string & ioArgument2,
+                                                          const GALGAS_bool inArgument3,
                                                           C_Lexique_goil_5F_lexique * inCompiler) ;
 
 //------------------------------------- 'objref_option' non terminal

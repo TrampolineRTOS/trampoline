@@ -60,5 +60,4 @@ option goil_options {
   "logfile"
   -> "generate a goil.log file containing the a log of the compilation"
 }
-
 # vim:ft=ggs:ts=4:sw=4

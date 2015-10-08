@@ -140,7 +140,9 @@ rule <template_instruction>
   !@Tvalue returnedValue
   !@Ttype returnedType {
   @bool fileNameOk = true
+  @bool executableFile = false
   $write$ $to$
+  select $executable$ executableFile = true or end
   @Tvalue expression
   @Ttype expressionType
   @TfieldMap templateVariableMap = ioTemplateVariableMap
@@ -177,8 +179,16 @@ rule <template_instruction>
     !?writeBlockResult
     ?*
     ?*
-  if fileNameOk & @uint. errorCount == 0 then
-    [writeBlockResult makeDirectoryAndWriteToFile ![expression mStringValue]]
+  if fileNameOk & @uint.errorCount == 0 then
+    if executableFile then
+      @string directory = [[expression mStringValue] stringByDeletingLastPathComponent]
+      if directory != "" then
+        [directory makeDirectory]
+      end
+      [writeBlockResult writeToExecutableFile ![expression mStringValue]]
+    else
+      [writeBlockResult makeDirectoryAndWriteToFile ![expression mStringValue]]
+    end
   end
   $end$ $write$ 
   returnedValue = valueWithVoid()   

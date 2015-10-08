@@ -107,6 +107,28 @@ CPU stm32f407_discovery {
     INTERRUPT CRYP_IRQ               { VECT = 95; VECTOR_TYPE = HANDLER { NAME =  "CRYP_Handler"; }; };
     INTERRUPT HASH_RNG_IRQ           { VECT = 96; VECTOR_TYPE = HANDLER { NAME =  "HASH_RNG_Handler"; }; };
     INTERRUPT FPU_IRQ                { VECT = 97; VECTOR_TYPE = HANDLER { NAME =  "FPU_Handler"; }; };
+
+    PLATFORM_FILES cortex_m4 {
+      PATH = "thumb2/cortex-m4";
+      CFILE = "startup_cm.c";
+      CFILE = "startup_stm32f4xx.c";
+      CFILE = "system_stm32f4xx.c";
+      CFILE = "cm4_irq.c";
+      CFILE = "cm4_tpl_stubs.c";
+    };
+    GENERATED_FILES cortex_m4 {
+      CFILE = "tpl_first_stage_irq.S";
+      CFILE = "tpl_second_stage_irq.S";
+      CFILE = "tpl_vectors.c";
+    };
+    POSTBUILD all {
+      COMMAND buildbin {
+        TYPE = COPIER;
+        INPUT = TARGET;
+        OUTPUT = ".bin";
+        PREOPTION = "-O binary";
+      };
+    };
 };
 
 

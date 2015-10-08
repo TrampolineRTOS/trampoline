@@ -85,10 +85,19 @@ end write
 end if
 
 if OS::BUILD then
+  if OS::BUILD_S::SYSTEM == "MAKE" then
 %Makefile
 %
-  write to "Makefile":
-    template Makefile in build
-  end write
+    write to "Makefile":
+      template Makefile in build
+    end write
+  elsif OS::BUILD_S::SYSTEM == "PYTHON" then
+    write to executable "build.py":
+      template if exists build_py in build
+    end write
+    write to executable "make.py":
+      template if exists make_py in build
+    end write
+  end if
 end if
 

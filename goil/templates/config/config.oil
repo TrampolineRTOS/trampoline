@@ -1,3 +1,28 @@
+/**
+ * @file config.oil
+ *
+ * @section desc File description
+ *
+ * Trampoline OIL implementation
+ *
+ * @section copyright Copyright
+ *
+ * Trampoline RTOS
+ *
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
+ * Trampoline is protected by the French intellectual property law.
+ *
+ * This software is distributed under the GNU Public Licence V2.
+ * Check the LICENSE file in the root directory of Trampoline
+ *
+ * @section infos File informations
+ *
+ * $Date:$
+ * $Rev:$
+ * $Author:$
+ * $URL:$
+ */
+
 IMPLEMENTATION trampoline_common {
   
   KERNEL [] {
@@ -9,6 +34,7 @@ IMPLEMENTATION trampoline_common {
     STRING FILE[];
     STRING HEADER[];
     IDENTIFIER ID_PREFIX;
+    STRING DIRECTORY;
     STRUCT {
       BOOLEAN HIDDEN = FALSE;
       IDENTIFIER WITH_AUTO ACTUAL;
@@ -24,6 +50,72 @@ IMPLEMENTATION trampoline_common {
       IDENTIFIER STORAGE;
       STRING VALUE;
     } CONST[];
+  };
+  
+  /*===========================================================================
+   * Machines specific files to add to the build system
+   */
+  PLATFORM_FILES [] {
+    STRING PATH;
+    STRING CFILE[];
+    STRING ASFILE[];
+  };
+  
+  /*===========================================================================
+   * Machines specific generated files to add to the build system
+   */
+  GENERATED_FILES [] {
+    STRING CFILE[];
+    STRING ASFILE[];
+  };
+  
+  /*===========================================================================
+   * Additional GOAL definition
+   */
+  GOAL [] {
+    ENUM [
+      TARGET,
+      CUSTOM { STRING NAME; }
+    ] DEPENDENCY[];
+    STRING MESSAGE;
+    STRING COMMAND;
+    STRING ARGUMENT[];
+  };
+  
+  /*===========================================================================
+   * Postbuild command definition.
+   * The name of a post-build command is the GOAL.
+   */
+  POSTBUILD [] {
+    STRUCT {
+      ENUM  [
+        COMPILER,
+        ASSEMBLER,
+        LINKER,
+        COPIER,
+        CUSTOM { STRING MESSAGE; STRING NAME; }
+      ] TYPE;
+      ENUM [
+        TARGET,
+        INTERMEDIATE { STRING SOURCE; }
+      ] INPUT;
+      STRING WITH_AUTO OUTPUT;
+      STRING PREOPTION[];
+      STRING POSTOPTION[];
+    } COMMAND[];
+  };
+  
+  POSTCOMMAND [] {
+    STRUCT {
+      STRING MESSAGE;
+      STRING COMMAND;
+      ENUM [ TARGET  { STRING EXT; },
+        INTERMEDIATE { STRING SOURCE; }
+      ] INPUT;
+      STRING WITH_AUTO OUTPUT;
+      STRING PREOPTION[];
+      STRING POSTOPTION[];
+    } COMMAND[];
   };
   
   OS {
@@ -69,6 +161,7 @@ IMPLEMENTATION trampoline_common {
         STRING ASSEMBLER = "gcc";
         STRING LINKER = "gcc";
         STRING COPIER = "objcopy";
+        ENUM [MAKE, PYTHON] SYSTEM = MAKE;
       },
       FALSE
     ] BUILD = FALSE;
