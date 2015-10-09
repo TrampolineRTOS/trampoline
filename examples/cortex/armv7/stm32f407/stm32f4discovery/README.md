@@ -12,7 +12,8 @@ The stm32f4-discovery board is equiped with a st-link/v2 embedded debug tool int
 You need a compiler for your plateform.
 Trampoline has been previously compiled with industrial compilers and GNU GCC.
 The examples have all been compiled with :
-gcc version 4.8.4 20140526 (release) [ARM/embedded-4_8-branch revision 211358] (GNU Tools for ARM Embedded Processors)
+(GNU Tools for ARM Embedded Processors) 4.9.3 20150529 (release) [ARM/embedded-4_9-branch revision 227977]
+from https://launchpad.net/gcc-arm-embedded
 
 ### Program and debug
  
