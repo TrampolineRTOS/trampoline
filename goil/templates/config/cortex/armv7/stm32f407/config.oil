@@ -87,14 +87,22 @@ CPU stm32f407 {
     
   PLATFORM_FILES stm32f407 {
     PATH = "cortex/armv7/stm32f407";
-    CFILE = "stm32f4_discovery.c";
+    CFILE = "tpl_memory_protection.c";
+  };
+
+  PLATFORM_FILES stm32f407_std_libs_includes {
+    PATH = "cortex/armv7/stm32f407/STM32F4xx_StdPeriph_Driver/inc";
+  };
+
+  PLATFORM_FILES stm32f407_std_libs_src {
+    PATH = "cortex/armv7/stm32f407/STM32F4xx_StdPeriph_Driver/src";
     CFILE = "stm32f4xx_gpio.c";
     CFILE = "stm32f4xx_rcc.c";
     CFILE = "stm32f4xx_exti.c";
     CFILE = "stm32f4xx_syscfg.c";
     CFILE = "misc.c";
-    CFILE = "tp.c";
   };
+
   POSTCOMMAND burn {
     COMMAND flash {
       MESSAGE = "Flashing";

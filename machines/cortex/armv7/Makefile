@@ -28,11 +28,10 @@
 #
 #kernel OS architecture dependant files
 
-SOURCES += startup_cm.c \
-startup_stm32f4xx.c \
+SOURCES += startup_stm32f4xx.c \
 system_stm32f4xx.c \
-cm4_irq.c \
-cm4_tpl_stubs.c \
+handlers_stm32f4xx.c \
+tpl_machine_cortex_specific.c \
 
 ##########
 # Drivers

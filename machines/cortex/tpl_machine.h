@@ -25,7 +25,7 @@
 #ifndef TPL_MACHINE_H
 #define TPL_MACHINE_H
 
-#include "../tpl_machine_arm_generic.h"
+#include "../tpl_machine_cortex.h"
 #include "cmsis_wrapper.h"
 
 /**

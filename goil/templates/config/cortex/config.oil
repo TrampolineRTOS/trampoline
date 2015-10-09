@@ -30,13 +30,18 @@ CPU thumb2_ressource {
   COUNTER SystemCounter {
     SOURCE = SysTick;
   };  
+
   PLATFORM_FILES cortex {
     PATH = "cortex";
-    CFILE  = "tpl_machine_arm_generic.c";
-    CFILE  = "tpl_memory_protection.c";
+    CFILE  = "tpl_machine_cortex.c";
     CFILE = "tpl_system_call.S";
     CFILE = "tpl_ctx_switch.S";
   };
+  
+  PLATFORM_FILES cortex_cmsis {
+    PATH = "cortex/CMSIS/Include";
+  };
+
   INTERRUPT InitialSPValue { VECT = 0; EXCEPTION = TRUE; VECTOR_TYPE = REFERENCE { NAME = "&_estack"; }; ACK = FALSE; };
   INTERRUPT Reset          { VECT = 1; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME = "Reset_Handler"; }; };
   INTERRUPT NMI            { VECT = 2; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NMI_Handler"; }; };

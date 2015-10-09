@@ -1,54 +1,152 @@
-//
-// This file is part of the GNU ARM Eclipse Plug-in
-// Copyright (c) 2013 Liviu Ionescu
-//
+#include <sys/types.h>
 
-#include "stm32f4xx.h"
+void __attribute__((weak)) Reset_Handler(void);
 
-#if defined (__VFP_FP__) && !defined (__SOFTFP__)
+// The CMSIS system initialisation routine.
+extern void SystemInit(void);
 
-void
-__attribute__((section(".after_vectors")))
-fpu_init()
-  {
-    // Code to enable the Cortex-M4 FPU only included
-    // if appropriate build options have been selected.
-    // Code taken from Section 7.1, Cortex-M4 TRM (DDI0439C)
-    asm volatile
-    (
-        " LDR.W           R0, =0xE000ED88 \n" // CPACR is located at address 0xE000ED88
-        " LDR             R1, [R0] \n"// Read CPACR
-        " ORR             R1, R1, #(0xF << 20) \n"// Set bits 20-23 to enable CP10 and CP11 coprocessor
-        " STR             R1, [R0]"// Write back the modified value to the CPACR
-        : /* out */
-        : /* in */
-        : /* clobber */
-    );
-  }
+// Initialise the data section
+inline void data_init(unsigned int* from, unsigned int* section_begin, unsigned int* section_end);
 
-// The .preinit_array_platform section is defined in sections.ld as the second
-// sub-section in the .preinit_array, so it is guaranteed that this function
-// is executed after SystemInit and before all other initialisations.
-void*
-__attribute__((section(".preinit_array_platform")))
-p_fpu_init = (void*)fpu_init;
-#endif // (__VFP_FP__) && !(__SOFTFP__)
+// Begin address for the initialisation values of the .data section.
+// defined in linker script
+extern unsigned int _sidata;
+// Begin address for the .data section; defined in linker script
+extern unsigned int _sdata;
+// End address for the .data section; defined in linker script
+extern unsigned int _edata;
 
-// Usually main() doesn't return, but if it does, on debug
-// we'll just enter an infinite loop, while on Release we restart.
-// You can redefine it in the application, if more functionality
-// is required
-void
-__attribute__((weak))
-_exit(int r)
+// Clear the bss section
+inline void bss_init(unsigned int* section_begin, unsigned int* section_end);
+
+// Begin address for the .bss section; defined in linker script
+extern unsigned int __bss_start__;
+// End address for the .bss section; defined in linker script
+extern unsigned int __bss_end__;
+
+// Iterate over all the preinit/init routines.
+extern void __libc_init_array(void);
+
+// Run all the cleanup routines.
+extern void __libc_fini_array(void);
+
+// The entry point for the application.
+// main() is the entry point for Newlib based applications
+extern int main(void);
+
+// The implementation for the exit routine, where for embedded
+// applications, a system reset is performed.
+extern void _exit(int);
+
+//*****************************************************************************
+
+inline void
+__attribute__((always_inline)) data_init(unsigned int* from, unsigned int* section_begin,
+    unsigned int* section_end)
 {
-#if defined(DEBUG)
-  while(1)
-  ;
-#else
-  NVIC_SystemReset();
-  while (1)
-    ;
-#endif
+  // Iterate and copy word by word.
+  // It is assumed that the pointers are word aligned.
+  unsigned int *p = section_begin;
+  while (p < section_end)
+    *p++ = *from++;
 }
 
+inline void __attribute__((always_inline))
+bss_init(unsigned int* section_begin, unsigned int* section_end)
+{
+  // Iterate and clear word by word.
+  // It is assumed that the pointers are word aligned.
+  unsigned int *p = section_begin;
+  while (p < section_end)
+    *p++ = 0;
+}
+
+// These magic symbols are provided by the linker.
+extern void (*__preinit_array_start[])(void) __attribute__((weak));
+extern void (*__preinit_array_end[])(void) __attribute__((weak));
+extern void (*__init_array_start[])(void) __attribute__((weak));
+extern void (*__init_array_end[])(void) __attribute__((weak));
+extern void (*__fini_array_start[])(void) __attribute__((weak));
+extern void (*__fini_array_end[])(void) __attribute__((weak));
+
+// Iterate over all the preinit/init routines.
+inline void __libc_init_array(void)
+{
+  size_t count;
+  size_t i;
+
+  count = __preinit_array_end - __preinit_array_start;
+  for (i = 0; i < count; i++)
+    __preinit_array_start[i]();
+
+  // If you need to run the code in the .init section, please use
+  // the startup files, since this requires the code in crti.o and crtn.o
+  // to add the function prologue/epilogue.
+  //_init();
+
+  count = __init_array_end - __init_array_start;
+  for (i = 0; i < count; i++)
+    __init_array_start[i]();
+}
+
+// Run all the cleanup routines.
+inline void __libc_fini_array(void)
+{
+  size_t count;
+  size_t i;
+
+  count = __fini_array_end - __fini_array_start;
+  for (i = count; i > 0; i--)
+    __fini_array_start[i - 1]();
+
+  // If you need to run the code in the .fini section, please use
+  // the startup files, since this requires the code in crti.o and crtn.o
+  // to add the function prologue/epilogue.
+  //_fini();
+}
+
+// This is the place where Cortex-M core will go immediately after reset.
+void __attribute__ ((section(".after_vectors"))) Reset_Handler(void)
+{
+
+  // Use Old Style Data and BSS section initialisation,
+  // That will initialise a single BSS sections.
+
+  // Zero fill the bss segment
+  bss_init(&__bss_start__, &__bss_end__);
+
+  // Call the standard library initialisation (mandatory, SystemInit()
+  // and C++ static constructors are called from here).
+  __libc_init_array();
+
+  // Call the main entry point, and save the exit code.
+  int r = main();
+
+  // Run the static destructors.
+  __libc_fini_array();
+
+  // On test platforms, like semihosting, this can be used to inform
+  // the host on the test result.
+  // On embedded platforms, usually reset the processor.
+  _exit(r);
+
+}
+
+// System initialisation, executed before constructors.
+void __attribute__((section(".after_vectors"))) system_init()
+{
+  // Copy the data segment from Flash to RAM.
+  // This is here since some library crt0 code does not perform it there
+  // so we must be sure it is executed somewhere.
+  // (for example librdimon)
+  data_init(&_sidata, &_sdata, &_edata);
+
+  // Call the CSMSIS system initialisation routine
+  SystemInit();
+}
+
+// The .preinit_array_sysinit section is defined in sections.ld as the first
+// sub-section in the .preinit_array, so it is guaranteed that this function
+// is executed before all other initialisations.
+void* __attribute__((section(".preinit_array_sysinit")))
+p_system_init = (void*) system_init; // pointer to the above function

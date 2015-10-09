@@ -29,7 +29,7 @@
 	.syntax unified
 	.thumb
 
-#include "tpl_asm_definitions.h"
+#include "tpl_machine_cortex.h"
 #include "tpl_os_kernel_stack.h"
 #include "tpl_os_process_stack.h"
 #include "tpl_app_define.h"
