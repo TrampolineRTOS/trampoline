@@ -41,12 +41,12 @@ We present hereafter the successive steps to follow to get the first example [ b
 
 2 - Replace paths into blink.oil file
    You must replace those path in file blink.oil looking for tags
-    [YOUR PATH TO COMPILER]
+    [YOUR PATH TO COMPILER LIB GCC]
     [YOUR PATH TO COMPILER LIB]
-    For example, my personal path are 
-    /usr/local/dev-arm/i386-Darwin-arm-gcc-4.9.2/lib/gcc/arm-eabi/4.9.2
-    /usr/local/dev-arm/i386-Darwin-arm-gcc-4.9.2/arm-eabi/lib/thumb
- 
+    For example, my personal path are
+    ~/Tools/gcc/gcc-arm-none-eabi/lib/gcc/arm-none-eabi/4.9.3
+    ~/Tools/gcc/gcc-arm-none-eabi/arm-none-eabi/lib/thumb
+
 2 - Generate all source files from a configuration with the command :
     > goil --target=thumb2/cortex-m4/stm32f4-discovery -v --templates=../../../../../goil/templates/ blink.oil
 
