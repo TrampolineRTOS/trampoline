@@ -14,7 +14,8 @@ Trampoline has been previously compiled with industrial compilers and GNU GCC.
 The examples have all been compiled with :
 
 (GNU Tools for ARM Embedded Processors) 4.9.3 20150529 (release) [ARM/embedded-4_9-branch revision 227977]
-from https://launchpad.net/gcc-arm-embedded
+from 
+https://launchpad.net/gcc-arm-embedded
 
 ### Program and debug
  
@@ -30,7 +31,7 @@ Read the documentation README form the Github repository.
 For MAC OS X plateform you'll have to install it with BREW
 http://brew.sh
 
-> brew install libusb
+    > brew install libusb
 
 We will use st-util hereafter.
 
@@ -39,7 +40,7 @@ We will use st-util hereafter.
 We present hereafter the successive steps to follow to get the first example [ blink ] run.
 
 1 - Step into the example directory
-    
+
     > cd examples/cortex/armv7/stm32f407/stm32f4discovery/blink 
 
 2 - Replace paths into blink.oil file
@@ -57,13 +58,13 @@ We present hereafter the successive steps to follow to get the first example [ b
     > goil --target=cortex/armv7/stm32f407/stm32f4discovery -v --templates=../../../../../../goil/templates/ blink.oil
 
 3 - Compile
-    
+
     > make
 
 4 - Connect a stm32f4-discovery board with a USB cable
 
 5 - Flash the binary file
-    
+
     > make burn 
 
 6 - You should see the BLUE led blink 
@@ -71,13 +72,13 @@ We present hereafter the successive steps to follow to get the first example [ b
 ## How to debug an example
 
 1 - Open a terminal [ 0 ] and launch the server for listening on default port 
-    
+
     [ 0 ]> st-util
-    
+
 2 - Open another [ 1 ] and initialize the debug session
-    
+
     [ 1 ]> arm-none-eabi-gdb blink_exe
-    
+
     [ 1 ]> source init.gdb
 
 You are now ready to debug blink_exe
