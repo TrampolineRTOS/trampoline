@@ -49,7 +49,7 @@ We present hereafter the successive steps to follow to get the first example [ b
     ~/Tools/gcc/gcc-arm-none-eabi/arm-none-eabi/lib/thumb
 
 2 - Generate all source files from a configuration with the command :
-    > goil --target=thumb2/cortex-m4/stm32f4-discovery -v --templates=../../../../../goil/templates/ blink.oil
+    > goil --target=cortex/armv7/stm32f407/stm32f4discovery -v --templates=../../../../../../goil/templates/ blink.oil
 
 3 - Compile
     > make
@@ -63,14 +63,12 @@ We present hereafter the successive steps to follow to get the first example [ b
 
 ## How to debug an example
 
-You should have a terminal opened [ 0 ].
-
-1 - Open another terminal and launch the server for listening on default port 
-    > st-util
+1 - Open a terminal [ 0 ] and launch the server for listening on default port 
+    [ 0 ]> st-util
     
-2 - Launch gdb in the previous terminal [ 0 ] and initialize the debug session
-    > arm-none-eabi-gdb blink_exe
-    > source init.gdb
+2 - Open another [ 1 ] and initialize the debug session
+    [ 1 ]> arm-none-eabi-gdb blink_exe
+    [ 1 ]> source init.gdb
 You are now ready to debug blink_exe
 
 ## Tips
