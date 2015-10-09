@@ -171,7 +171,7 @@ scriptDir = os.path.dirname (os.path.abspath (sys.argv [0]))
 os.chdir (scriptDir)
 
 #--- Launch build.py
-childProcess = subprocess.Popen (["python", "build.py", askedGoal])
+childProcess = subprocess.Popen (["python", "build.py", askedGoal, str(maxParallelJobs)])
 
 #--- Wait for subprocess termination
 if childProcess.poll () == None :

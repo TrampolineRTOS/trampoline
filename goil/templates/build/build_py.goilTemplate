@@ -82,6 +82,11 @@ if askedGoal == "all" or askedGoal == "clean" :
 else :
   goal = "all"
 
+#--- Get max parallel jobs as second argument
+maxParallelJobs = 0 # 0 means use host processor count
+if len (sys.argv) > 2 :
+  maxParallelJobs = int (sys.argv [2])
+
 #--- Instanciate a new makefile object
 make = makefile.Make(goal)
 
@@ -342,7 +347,7 @@ make.addGoal("% !goal::NAME %", depList, "% !goal::MESSAGE %")%
 end foreach
 %
 
-make.runGoal(0, False)
+make.runGoal(maxParallelJobs, maxParallelJobs == 1)
 
 #----------------------------------------------------------------------
 #--- post commands if any
