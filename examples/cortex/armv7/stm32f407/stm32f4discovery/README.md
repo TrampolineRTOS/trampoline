@@ -12,7 +12,10 @@ The stm32f4-discovery board is equiped with a st-link/v2 embedded debug tool int
 You need a compiler for your plateform.
 Trampoline has been previously compiled with industrial compilers and GNU GCC.
 The examples have all been compiled with :
-gcc version 4.8.4 20140526 (release) [ARM/embedded-4_8-branch revision 211358] (GNU Tools for ARM Embedded Processors)
+
+(GNU Tools for ARM Embedded Processors) 4.9.3 20150529 (release) [ARM/embedded-4_9-branch revision 227977]
+from 
+https://launchpad.net/gcc-arm-embedded
 
 ### Program and debug
  
@@ -28,7 +31,7 @@ Read the documentation README form the Github repository.
 For MAC OS X plateform you'll have to install it with BREW
 http://brew.sh
 
-> brew install libusb
+    > brew install libusb
 
 We will use st-util hereafter.
 
@@ -37,39 +40,47 @@ We will use st-util hereafter.
 We present hereafter the successive steps to follow to get the first example [ blink ] run.
 
 1 - Step into the example directory
-    > cd blink 
+
+    > cd examples/cortex/armv7/stm32f407/stm32f4discovery/blink 
 
 2 - Replace paths into blink.oil file
    You must replace those path in file blink.oil looking for tags
-    [YOUR PATH TO COMPILER]
+    [YOUR PATH TO COMPILER LIB GCC]
     [YOUR PATH TO COMPILER LIB]
-    For example, my personal path are 
-    /usr/local/dev-arm/i386-Darwin-arm-gcc-4.9.2/lib/gcc/arm-eabi/4.9.2
-    /usr/local/dev-arm/i386-Darwin-arm-gcc-4.9.2/arm-eabi/lib/thumb
- 
+    For example, my personal path are
+    
+    ~/Tools/gcc/gcc-arm-none-eabi/lib/gcc/arm-none-eabi/4.9.3
+    
+    ~/Tools/gcc/gcc-arm-none-eabi/arm-none-eabi/lib/thumb
+
 2 - Generate all source files from a configuration with the command :
-    > goil --target=thumb2/cortex-m4/stm32f4-discovery -v --templates=../../../../../goil/templates/ blink.oil
+
+    > goil --target=cortex/armv7/stm32f407/stm32f4discovery -v --templates=../../../../../../goil/templates/ blink.oil
 
 3 - Compile
+
     > make
 
 4 - Connect a stm32f4-discovery board with a USB cable
 
 5 - Flash the binary file
+
     > make burn 
 
 6 - You should see the BLUE led blink 
 
 ## How to debug an example
 
-You should have a terminal opened [ 0 ].
+1 - Open a terminal [ 0 ] and launch the server for listening on default port 
 
-1 - Open another terminal and launch the server for listening on default port 
-    > st-util
-    
-2 - Launch gdb in the previous terminal [ 0 ] and initialize the debug session
-    > arm-none-eabi-gdb blink_exe
-    > source init.gdb
+    [ 0 ]> st-util
+
+2 - Open another [ 1 ] and initialize the debug session
+
+    [ 1 ]> arm-none-eabi-gdb blink_exe
+
+    [ 1 ]> source init.gdb
+
 You are now ready to debug blink_exe
 
 ## Tips

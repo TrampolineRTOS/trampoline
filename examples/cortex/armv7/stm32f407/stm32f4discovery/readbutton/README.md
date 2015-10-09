@@ -16,5 +16,5 @@ The system is based scheduled with a 1ms SysTick "SystemCounter".
 At the beginning of the execution, the alarm "read_button_alarm" is started, and that's all.
  
 Configure the application with
-goil --target=thumb2/cortex-m4/stm32f4-discovery -v --templates=../../../../../goil/templates/ readbutton.oil
+goil --target=cortex/armv7/stm32f407/stm32f4discovery -v --templates=../../../../../../goil/templates/ readbutton.oil
 
