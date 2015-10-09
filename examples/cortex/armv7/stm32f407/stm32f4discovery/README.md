@@ -38,7 +38,7 @@ We will use st-util hereafter.
 We present hereafter the successive steps to follow to get the first example [ blink ] run.
 
 1 - Step into the example directory
-    > cd blink 
+    > cd examples/cortex/armv7/stm32f407/stm32f4discovery/blink 
 
 2 - Replace paths into blink.oil file
    You must replace those path in file blink.oil looking for tags
