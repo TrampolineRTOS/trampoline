@@ -188,15 +188,15 @@ CPU mk20dx256 {
       
     INTERRUPT Unused102              { VECT = 102; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
 
-    INTERRUPT PORTA_IRQ              { VECT = 103; VECTOR_TYPE = HANDLER { NAME =  "PORTA_IRQ_Handler"; }; }:
+    INTERRUPT PORTA_IRQ              { VECT = 103; VECTOR_TYPE = HANDLER { NAME =  "PORTA_IRQ_Handler"; }; }
       : "Pin detect (Port A)";
-    INTERRUPT PORTB_IRQ              { VECT = 104; VECTOR_TYPE = HANDLER { NAME =  "PORTB_IRQ_Handler"; }; }:
+    INTERRUPT PORTB_IRQ              { VECT = 104; VECTOR_TYPE = HANDLER { NAME =  "PORTB_IRQ_Handler"; }; }
       : "Pin detect (Port B)";
-    INTERRUPT PORTC_IRQ              { VECT = 105; VECTOR_TYPE = HANDLER { NAME =  "PORTC_IRQ_Handler"; }; }:
+    INTERRUPT PORTC_IRQ              { VECT = 105; VECTOR_TYPE = HANDLER { NAME =  "PORTC_IRQ_Handler"; }; }
       : "Pin detect (Port C)";
-    INTERRUPT PORTD_IRQ              { VECT = 106; VECTOR_TYPE = HANDLER { NAME =  "PORTD_IRQ_Handler"; }; }:
+    INTERRUPT PORTD_IRQ              { VECT = 106; VECTOR_TYPE = HANDLER { NAME =  "PORTD_IRQ_Handler"; }; }
       : "Pin detect (Port D)";
-    INTERRUPT PORTE_IRQ              { VECT = 107; VECTOR_TYPE = HANDLER { NAME =  "PORTE_IRQ_Handler"; }; }:
+    INTERRUPT PORTE_IRQ              { VECT = 107; VECTOR_TYPE = HANDLER { NAME =  "PORTE_IRQ_Handler"; }; }
       : "Pin detect (Port E)";
       
     INTERRUPT Unused108              { VECT = 108; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };

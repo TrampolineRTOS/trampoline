@@ -104,7 +104,6 @@ foreach flags in OS::BUILD_S::CFLAGS do
 cflags += "% !flags::VALUE %".split()%
 end foreach
 let MACHINESPATH := OS::BUILD_S::TRAMPOLINE_BASE_PATH."/machines"
-display PLATFORM_FILES
 foreach platform in exists PLATFORM_FILES default (emptylist) do%
 cflags += ["-I","% !MACHINESPATH . "/" . platform::PATH %"]%
 end foreach
