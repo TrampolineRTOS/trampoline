@@ -18,7 +18,7 @@ CPU readbutton_isr {
     STATUS = EXTENDED;
     
     BUILD = TRUE {
-      TRAMPOLINE_BASE_PATH = "../../../../..";
+      TRAMPOLINE_BASE_PATH = "../../../../../..";
       APP_SRC = "readbutton_isr.c";
       APP_NAME = "readbutton_isr_exe";
       CFLAGS  = "-g -O0 -Wall -Wno-unused-but-set-variable -Wformat -std=c99 -mcpu=cortex-m4 -Wmissing-field-initializers -mthumb -mfloat-abi=soft -mfpu=fpv4-sp-d16 -nostartfiles"; 
