@@ -1,0 +1,141 @@
+/* Interrupt table vector */
+#include "tpl_compiler.h"
+#include "tpl_os.h"
+#include "tpl_os_interrupt_kernel.h"
+#include "tpl_machine.h"
+%
+
+let IT_SOURCES := mapof INTERRUPT by NAME
+foreach counter in HARDWARECOUNTERS do 
+  if not exists IT_SOURCES[counter::SOURCE] then
+    error counter::SOURCE : "Interrupt source ".counter::SOURCE." does not exist"
+  end if
+end foreach
+foreach isr in ISRS2 do
+  if not exists IT_SOURCES[isr::SOURCE] then
+    error isr::SOURCE : "Interrupt source ".isr::SOURCE." does not exist"
+  end if
+end foreach
+
+loop ENTRY from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
+  before
+%
+  /* Extern declaration of primary_irq_handlers */
+%
+  do
+    let entryFound := false
+    foreach interrupt in INTERRUPT do
+      if ENTRY == interrupt::VECT then
+        # check first for EXCEPTION Vector
+        if interrupt::EXCEPTION then
+          let entryFound := true
+          if interrupt::VECTOR_TYPE == "HANDLER" & interrupt::VECTOR_TYPE_S::NAME != "NONE" then
+%extern FUNC(void, OS_CODE) % !interrupt::VECTOR_TYPE_S::NAME %(P2CONST(void, OS_APPL_DATA, AUTOMATIC));
+%
+          end if 
+        end if
+        # check first for counters
+        foreach counter in HARDWARECOUNTERS do
+          if counter::SOURCE == interrupt::NAME & not entryFound & interrupt::VECTOR_TYPE == "HANDLER" & interrupt::VECTOR_TYPE_S::NAME != "NONE" then
+%extern FUNC(void, OS_CODE) tpl_primary_irq_handler_% !interrupt::NAME %(P2CONST(void, OS_APPL_DATA, AUTOMATIC));
+%
+            let entryFound := true
+          end if
+        end foreach
+        if not entryFound then
+          foreach isr in ISRS2 do
+            if isr::SOURCE == interrupt::NAME & not entryFound & interrupt::VECTOR_TYPE == "HANDLER" & interrupt::VECTOR_TYPE_S::NAME != "NONE" then
+%extern FUNC(void, OS_CODE) tpl_primary_irq_handler_% !interrupt::NAME %(P2CONST(void, OS_APPL_DATA, AUTOMATIC));
+%
+              let entryFound := true
+            end if
+          end foreach
+          foreach isr in ISRS1 do
+            if isr::SOURCE == interrupt::NAME & not entryFound & interrupt::VECTOR_TYPE == "HANDLER" & interrupt::VECTOR_TYPE_S::NAME != "NONE" then
+%extern FUNC(void, OS_CODE) % !isr::NAME %_function();
+%
+              let entryFound := true
+            end if
+          end foreach
+        end if
+      end if
+    end foreach
+    if not entryFound then
+    end if
+  between %%
+    after
+%
+%
+end loop
+  
+loop ENTRY from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
+  before
+%
+//#define OS_START_SEC_CONST_UNSPECIFIED
+//#include "tpl_memmap.h"
+__attribute__ ((section(".isr_vector"))) CONST(tpl_it_handler, AUTOMATIC) tpl_it_vectors[% !INTERRUPT_COUNT::IT_TABLE_SIZE %] =
+{
+  /* Core Level - CM4 */
+%
+  do
+    let entryFound := false
+      foreach interrupt in INTERRUPT do
+        if ENTRY == interrupt::VECT then
+          # check first for EXCEPTION Vector
+          if interrupt::EXCEPTION then
+          let entryFound := true
+          if interrupt::VECTOR_TYPE == "HANDLER" then
+            if interrupt::VECTOR_TYPE_S::NAME != "NONE" then
+%  (tpl_it_handler)% !interrupt::VECTOR_TYPE_S::NAME
+            else
+%  0%
+            end if
+          else
+            if interrupt::VECTOR_TYPE == "REFERENCE" then
+%  (tpl_it_handler)% !interrupt::VECTOR_TYPE_S::NAME
+            end if
+          end if 
+        end if
+        # check second for counters
+        if not entryFound then
+          foreach counter in HARDWARECOUNTERS do
+            if counter::SOURCE == interrupt::NAME & not entryFound & interrupt::VECTOR_TYPE == "HANDLER" & interrupt::VECTOR_TYPE_S::NAME != "NONE" then
+%  (tpl_it_handler)tpl_primary_irq_handler_% !interrupt::NAME
+              let entryFound := true
+            end if
+          end foreach
+        end if
+        if not entryFound then
+          foreach isr in ISRS2 do
+            if isr::SOURCE == interrupt::NAME & not entryFound & interrupt::VECTOR_TYPE == "HANDLER" & interrupt::VECTOR_TYPE_S::NAME != "NONE" then
+%  (tpl_it_handler)tpl_primary_irq_handler_% !interrupt::NAME
+              let entryFound := true
+            end if
+          end foreach
+        end if
+        if not entryFound then
+          foreach isr in ISRS1 do
+            if isr::SOURCE == interrupt::NAME & not entryFound & interrupt::VECTOR_TYPE == "HANDLER" & interrupt::VECTOR_TYPE_S::NAME != "NONE" then
+%  (tpl_it_handler)% !isr::NAME %_function%
+              let entryFound := true
+            end if
+          end foreach
+        end if
+      end if
+    end foreach
+    if not entryFound then
+%  (tpl_it_handler)tpl_null_it%
+    end if
+  between %,
+%
+    after
+%
+};
+//#define OS_STOP_SEC_CONST_UNSPECIFIED
+//#include "tpl_memmap.h"
+%
+  end loop
+%
+%
+
+# vim:ft=goil_templates

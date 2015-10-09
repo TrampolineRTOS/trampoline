@@ -1,0 +1,29 @@
+	/* 
+	 * Service % !api_func::NAME %
+	 */
+	.global % !exists api_func::ACTUAL default ( api_func::NAME ) %
+	.type   % !exists api_func::ACTUAL default ( api_func::NAME ) %, \%function
+% !exists api_func::ACTUAL default ( api_func::NAME ) %:
+	/* manage reentrance of kernel */
+	ldr r3, =nested_kernel_entrance_counter
+	ldr r3, [r3]
+	cmp r3,#1 /* If nested_kernel_entrance_counter is greater or equal than 1 */
+	          /* then we are in Handler mode and we must call the service with a direct call to the function */
+	beq % !api_func::NAME %_direct_call
+	/* Exception call to the service : use SVC exception */
+% !api_func::NAME %_exception_call:
+	mov r3,#% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME %
+	svc #% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME %
+	b % !api_func::NAME %_exit_call
+	/* Procedural call to the service */
+% !api_func::NAME %_direct_call:
+	/* get the appropriate system call address into R3 */
+	ldr r3, =tpl_dispatch_table
+	ldr r3, [r3, #% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME %<<2]
+	/* call the service  */
+	push {lr}
+	blx r3
+	pop {lr}
+	/* Function call */
+% !api_func::NAME %_exit_call:
+	bx lr

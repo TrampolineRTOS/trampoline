@@ -1,0 +1,41 @@
+/*
+ * This configuration file adds a SOURCE attribute to ISR and COUNTER
+ * It also define a new object type: INTERRUPT
+ */
+IMPLEMENTATION thumb2_ressource {
+  TASK {
+    BOOLEAN USEFLOAT = FALSE;
+  };
+  ISR [] {
+    INTERRUPT_TYPE SOURCE;
+  };
+  COUNTER [] {
+    INTERRUPT_TYPE SOURCE;
+  };
+  INTERRUPT [] { 
+    UINT32 VECT;
+    BOOLEAN EXCEPTION = FALSE;
+    ENUM [
+      HANDLER { STRING NAME; },
+      REFERENCE { STRING NAME; }
+    ] VECTOR_TYPE;
+    BOOLEAN ACK = TRUE;
+  };
+  INTERRUPT_COUNT {
+    UINT32 IT_TABLE_SIZE;
+  };
+};
+
+CPU thumb2_ressource {
+  COUNTER SystemCounter {
+    SOURCE = SysTick;
+  };  
+  PLATFORM_FILES cortex {
+    PATH = "cortex";
+    CFILE  = "tpl_machine_arm_generic.c";
+    CFILE  = "tpl_memory_protection.c";
+    CFILE = "tpl_system_call.S";
+    CFILE = "tpl_ctx_switch.S";
+  };
+};
+

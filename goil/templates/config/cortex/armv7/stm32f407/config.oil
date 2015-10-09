@@ -1,0 +1,21 @@
+CPU stm32_discovery {
+  PLATFORM_FILES stm32f407 {
+    PATH = "cortex/armv7/stm32f407";
+    CFILE = "stm32f4_discovery.c";
+    CFILE = "stm32f4xx_gpio.c";
+    CFILE = "stm32f4xx_rcc.c";
+    CFILE = "stm32f4xx_exti.c";
+    CFILE = "stm32f4xx_syscfg.c";
+    CFILE = "misc.c";
+    CFILE = "tp.c";
+  };
+  POSTCOMMAND burn {
+    COMMAND flash {
+      MESSAGE = "Flashing";
+      COMMAND = "st-flash";
+      INPUT = TARGET { EXT = ".bin"; };
+      PREOPTION = "write";
+      POSTOPTION = "0x8000000";
+    };
+  };
+};

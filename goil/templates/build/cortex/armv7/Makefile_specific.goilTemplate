@@ -1,0 +1,24 @@
+
+OIL_GENERATED_FILES += tpl_first_stage_irq.S
+OIL_GENERATED_FILES += tpl_second_stage_irq.S
+OIL_GENERATED_FILES += tpl_vectors.c
+
+LIBRARY_PATH = $(BOARD_PATH)/StdPeriph_Driver/src
+
+TEMP_SOURCE_DIRS += $(LIBRARY_PATH)
+
+# File format transformation
+OBJCOPY = % ! OS::BUILD_S::COPIER%
+DOWNLOAD = st-flash
+
+# Build binary files
+img: $(EXEC)
+	$(OBJCOPY) -O ihex $(EXEC) $(EXEC).hex
+	$(OBJCOPY) -O binary $(EXEC) $(EXEC).bin
+
+# Flash the STM32F4
+burn: $(EXEC).bin
+	$(DOWNLOAD) write $(EXEC).bin 0x8000000
+
+EXTRA_FILES_CLEAN += $(EXEC).hex
+EXTRA_FILES_CLEAN += $(EXEC).bin
