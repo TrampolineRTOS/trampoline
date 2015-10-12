@@ -29,7 +29,6 @@
 	.syntax unified
 	.thumb
 
-#include "tpl_machine_cortex.h"
 #include "tpl_os_kernel_stack.h"
 #include "tpl_os_process_stack.h"
 #include "tpl_app_define.h"
@@ -49,7 +48,7 @@
 #define CTX_GPR0		0
 #define CTX_GPR1		4
 #define CTX_GPR2		8
-#define CTX_GPR3		12	
+#define CTX_GPR3		12
 #define CTX_GPR4		16
 #define CTX_GPR5		20
 #define CTX_GPR6		24
@@ -75,7 +74,7 @@
 tpl_save_context:
 	ldr r12, [r12, #INT_CONTEXT]
 	/* <!DGAR> Don t forget to save caller SP from kernel stack (saved at the beginning of exception call) to context */
-	/* 
+	/*
 	 * setup the kernel stack stuff
 	 */
 	/* PSP */
@@ -114,7 +113,7 @@ tpl_save_context:
 	 */
 tpl_load_context:
 	ldr r12, [r12, #INT_CONTEXT] /* Get the pointer to the integer context */
-	/* 
+	/*
 	 * setup the kernel stack stuff
 	 */
 	/* PSP */
