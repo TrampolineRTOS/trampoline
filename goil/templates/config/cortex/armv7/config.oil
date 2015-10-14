@@ -9,17 +9,6 @@ CPU armv7 {
 
   INTERRUPT SysTick        { VECT = 15; VECTOR_TYPE = HANDLER { NAME =  "SysTick_Handler"; }; ACK = FALSE; };
 
-    PLATFORM_FILES cortex_m4_discovery {
-      PATH = "cortex/armv7/stm32f407/stm32f4discovery";
-    };
-    
-    PLATFORM_FILES cortex_m4 {
-      PATH = "cortex/armv7";
-      CFILE = "startup_stm32f4xx.c";
-      CFILE = "system_stm32f4xx.c";
-      CFILE = "handlers_stm32f4xx.c";
-    };
-
   GENERATED_FILES cortex_m4 {
     CFILE = "tpl_first_stage_irq.S";
     CFILE = "tpl_second_stage_irq.S";

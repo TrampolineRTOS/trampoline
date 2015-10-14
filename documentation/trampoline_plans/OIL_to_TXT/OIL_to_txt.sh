@@ -2,7 +2,7 @@
 
 echo "Generate sequence description files from OIL files..."
 
-if [ "$1" = "-f" ] 
+if [ "$1" = "-f" ]
 then
 	force=1
 else
@@ -12,12 +12,12 @@ fi
 for first_path in "GOIL" "functional"
 do
 	echo "${first_path} tests sequences"
-	
-	PAT="../../../check/$first_path/"
+
+	PAT="../../../tests/$first_path/"
 
 	for name in `cat ${PAT}${first_path}_testSequences.txt`
 	do
-			
+
 		bracket=1
 		full=0
 		end=0
@@ -25,7 +25,7 @@ do
 		date_file=0
 		appmode_passed=0
 		go_to_copy_the_oil_file=0
-	
+
 		#if full, do the txt file, otherwise, do nothing
 		if [ "`echo $name | grep -c non`" = "0" ]
 		then
@@ -38,7 +38,7 @@ do
 				#echo "normal : $name"
 				file=${name}
 			fi	#[ "`echo $name | grep -c full`" != "0" ]
-			
+
 			#if no modifications since last time, don't create again the file
 			if ( `test -f ${file}.txt` )
 			then
@@ -48,12 +48,12 @@ do
 			#else
 				#echo "file doesn't exist here `pwd`"
 			fi
-			
+
 			if [ $date_oil -gt $date_file ] || ( ! `test -f ${file}.txt` ) || [ "$force" = "1" ]
-			then		
+			then
 				#create a new file
 				> ${file}.txt
-			
+
 				#copy in the old file the paragraph needed
 				old_IFS=$IFS
 				IFS=$'\n'     # nouveau séparateur de champ, le caractère fin de ligne
@@ -62,7 +62,7 @@ do
 				do
 					line_number=`expr $line_number + 1`
 					#echo "line_number:$line_number"
-					
+
 					#if TASK has elapsed, count the { and } and copy until } has one more than {
 					if [ "`echo $go_to_copy_the_oil_file`" = "1" ]
 					then
@@ -96,7 +96,7 @@ do
 							appmode_passed=1
 							#echo "APPMODE appears at line:$line_number"
 						fi
-						
+
 						if [ "`echo $ligne | grep -c 'TASK '`" != "0" ]
 						then
 						    #echo "TASK appears at line:$line_number - check if APPMODE appeared before or not. If yes set copy to 2 (or another flag)"
@@ -109,11 +109,11 @@ do
 					fi
 				done
 				IFS=$old_IFS
-				
+
 			fi # [ $date_oil -gt $date_file ] || ( ! `test -f ${file}.txt` )
-			
+
 		fi # [ "`echo $name | grep -c non`" = "0" ]
-	
+
 	done
 
 done

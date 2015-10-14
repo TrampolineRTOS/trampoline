@@ -5,3 +5,4 @@ CPU stm32_discovery {
     CFILE = "tp.c";
   };
 };
+    

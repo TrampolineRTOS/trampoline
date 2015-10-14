@@ -88,6 +88,10 @@ CPU stm32f407 {
   PLATFORM_FILES stm32f407 {
     PATH = "cortex/armv7/stm32f407";
     CFILE = "tpl_memory_protection.c";
+    CFILE = "tpl_machine_stm32f407.c";
+    CFILE = "startup_stm32f4xx.c";
+    CFILE = "system_stm32f4xx.c";
+    CFILE = "handlers_stm32f4xx.c";
   };
 
   PLATFORM_FILES stm32f407_std_libs_includes {

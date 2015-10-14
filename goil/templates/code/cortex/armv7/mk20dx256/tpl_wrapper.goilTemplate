@@ -1,0 +1,4 @@
+#define F_CPU 96000000
+#include "core_cm_func_mk20dx256.h"
+#define __MK20DX256__
+#include "kinetis.h"

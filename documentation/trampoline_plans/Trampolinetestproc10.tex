@@ -885,7 +885,7 @@ This chapter contains the specification of the test sequences that will be run d
 	t1	& GetTaskState(t2, \&TaskState)		& E\_OK, TaskState=READY				&  \\ \hline
 	t1 	& GetEvent(t2, \&EventMask) 			& E\_OK, EventMask= Event1$|$Event2		&  \\ \hline
 	t1 	& SetEvent(t2, Event3)				& E\_OK 								& 9 \\ \hline
-	t1	& GetEvent(t1, \&EventMask) 			& E\_OK, EventMask= Event1$|$Event2$|$Event3	&   \\ \hline
+	t1	& GetEvent(t2, \&EventMask) 			& E\_OK, EventMask= Event1$|$Event2$|$Event3	&   \\ \hline
 	t1 	& ActivateTask(t3)					& E\_OK 								& \\ \hline
 	t1 	& SetEvent(t2, Event3)				& E\_OK 								& 9\endnote{as said in Trampoline Test Plan - 2.3 Event Mechanism, this test set an event to a READY\_AND\_NEW task unlike the other test cases 9 and 10.}\\ \hline
 	t1 	& TerminateTask()					&									& \\ \hline

@@ -61,14 +61,6 @@ volatile VAR (uint32, OS_VAR) nested_kernel_entrance_counter;
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
-FUNC(void, OS_CODE) setTimer()
-{
-	if (SysTick_Config(SystemCoreClock / 1000))
-	{
-		while(1);
-	}
-}
-
 FUNC (void, OS_CODE) tpl_init_machine_generic (void)
 {
 #if WITH_MEMORY_PROTECTION == YES
@@ -81,7 +73,7 @@ FUNC (void, OS_CODE) tpl_init_machine_specific (void)
 	tpl_kernel_stack_top = (uint32)&tpl_kernel_stack[KERNEL_STACK_SIZE - 1];
 	nested_kernel_entrance_counter = 0;
 	__set_MSP(tpl_kernel_stack_top);
-  setTimer();
+  tpl_set_systick_timer();
 	__set_CONTROL(0x3); // Switch to use Process Stack, privileged state
 	__ISB(); // Execute ISB after changing CONTROL (architectural recommendation)
   /* Set SVCall priority to 2 */

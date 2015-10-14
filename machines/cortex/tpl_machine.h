@@ -25,7 +25,7 @@
 #ifndef TPL_MACHINE_H
 #define TPL_MACHINE_H
 
-#include "../tpl_machine_cortex.h"
+#include "tpl_machine_cortex.h"
 #include "cmsis_wrapper.h"
 
 /**
@@ -58,7 +58,13 @@ typedef struct ARM_CORE_CONTEXT *tpl_context;
 
 extern struct ARM_CORE_CONTEXT idle_task_context;
 
-extern unsigned int _estack;
+extern unsigned long _estack;
+
+/*
+ * Configuration of systick timer (can be a generic timer if systick is not available
+ * on the target) for alarms and schedule tables.
+ */
+FUNC(void, OS_CODE) tpl_set_systick_timer();
 
 #endif /* TPL_MACHINE_H */
 
