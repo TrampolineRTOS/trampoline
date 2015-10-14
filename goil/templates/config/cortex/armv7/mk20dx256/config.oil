@@ -211,6 +211,25 @@ CPU mk20dx256 {
 
   INTERRUPT SOFTWARE_IRQ           { VECT = 110; VECTOR_TYPE = HANDLER { NAME =  "SOFTWARE_IRQ_Handler"; }; }
     : "Software interrupt";
+
+  POSTBUILD mk20dx256 {
+    COMMAND buildbin {
+      TYPE = COPIER;
+      INPUT = TARGET;
+      OUTPUT = ".hex";
+      PREOPTION = "-O ihex";
+    };
+  };
+
+  POSTCOMMAND burn {
+    COMMAND flash {
+      MESSAGE = "Flashing";
+      COMMAND = "/Users/DavidGarriou/dev-arm/dev-arm-Intel-Darwin-gccarm-4_9-2015q3-20150921-openocd-0.8.0/bin/teensy-loader-cli";
+      INPUT = TARGET { EXT = ".hex"; };
+      PREOPTION = "-w -v -mmcu=mk20dx128";
+    };
+  };
+
 };
 
 
