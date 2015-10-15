@@ -88,7 +88,7 @@ __attribute__ ((section(".isr_vector"))) CONST(tpl_it_handler, AUTOMATIC) tpl_it
             if interrupt::VECTOR_TYPE_S::NAME != "NONE" then
 %  (tpl_it_handler)% !interrupt::VECTOR_TYPE_S::NAME
             else
-%  0%
+%  (tpl_it_handler)tpl_null_it%
             end if
           else
             if interrupt::VECTOR_TYPE == "REFERENCE" then
