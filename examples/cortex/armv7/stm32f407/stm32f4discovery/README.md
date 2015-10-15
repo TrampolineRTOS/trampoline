@@ -46,7 +46,7 @@ We present hereafter the successive steps to follow to get the first example [ b
 2 - Replace paths into blink.oil file
    You must replace those path in file blink.oil looking for tags
     [YOUR PATH TO COMPILER LIB GCC]
-    [YOUR PATH TO COMPILER LIB]
+    [YOUR PATH TO COMPILER LIB C]
     For example, my personal path are
     
     ~/Tools/gcc/gcc-arm-none-eabi/lib/gcc/arm-none-eabi/4.9.3
