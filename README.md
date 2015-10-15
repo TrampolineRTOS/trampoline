@@ -5,7 +5,7 @@ Its API is aligned with OSEK/VDX OS and AUTOSAR OS 4.1 standards.
 
 5 platforms are supported by now :
 
-* thumb2: ARM Cortex-M (and others) instruction set
+* cortex: ARM Cortex-M (and others) instruction set
 * ppc: PowerPC 32bits instruction set
 * posix: virtual platform for POSIX systems (tested on Linux and OS X)
 * avr: AVR 8 bits microcontrollers
@@ -15,7 +15,7 @@ And we welcome external contributors to extend this list.
 
 Some examples have been added (check examples):
 
-* thumb2 (aka Cortex-M)/cortex-m4/stf32f4-discovery
+* cortex/armv7/stm32f407/stf32f4discovery
   * blink. Blinks a LED using an alarm and a task
   * readButton. The example polls the button to start an alarm that activates a task to blink a LED
   * readButton_isr. Same but the button triggers an ISR.
