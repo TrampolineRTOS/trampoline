@@ -25,7 +25,7 @@ CPU blink {
       APP_NAME = "blink_exe";
       CFLAGS  = "-g -O0 -Wall -Wno-unused-but-set-variable -Wformat -std=c99 -mcpu=cortex-m4 -Wmissing-field-initializers -mthumb -mfloat-abi=soft -mfpu=fpv4-sp-d16 -nostartfiles"; 
       ASFLAGS = "-g -Wall -mcpu=cortex-m4 -mthumb --fatal-warnings -mfloat-abi=soft -mfpu=fpv4-sp-d16";
-       LDFLAGS = "--fatal-warnings --warn-common --no-undefined -L/Users/DavidGarriou/Tools/gcc/gcc-arm-none-eabi/lib/gcc/arm-none-eabi/4.9.3 -lc -L/Users/DavidGarriou/Tools/gcc/gcc-arm-none-eabi/arm-none-eabi/lib/thumb -lgcc -Map=blink.map";
+      LDFLAGS = "--fatal-warnings --warn-common --no-undefined -L[YOUR PATH TO COMPILER LIBC] -lc -L[YOUR PATH TO COMPILER LIB GCC] -lgcc -Map=blink.map";
       COMPILER = "arm-none-eabi-gcc";
       ASSEMBLER = "arm-none-eabi-as";
       LINKER = "arm-none-eabi-ld";
@@ -37,7 +37,7 @@ CPU blink {
       COMPILER = gcc;
       LINKER = gnu_ld { SCRIPT = "script.ld"; };
       ASSEMBLER = gnu_as;
-      MEMORY_PROTECTION = FALSE;
+      MEMORY_PROTECTION = TRUE;
     };
   };
   

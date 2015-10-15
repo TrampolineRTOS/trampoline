@@ -1,7 +1,6 @@
 OIL_VERSION = "2.5";
 
 IMPLEMENTATION trampoline {
-
     /* This fix the default STACKSIZE of tasks */
     TASK {
         UINT32 STACKSIZE = 300 ;
@@ -23,7 +22,7 @@ CPU readbutton_isr {
       APP_NAME = "readbutton_isr_exe";
       CFLAGS  = "-g -O0 -Wall -Wno-unused-but-set-variable -Wformat -std=c99 -mcpu=cortex-m4 -Wmissing-field-initializers -mthumb -mfloat-abi=soft -mfpu=fpv4-sp-d16 -nostartfiles"; 
       ASFLAGS = "-g -Wall -mcpu=cortex-m4 -mthumb --fatal-warnings -mfloat-abi=soft -mfpu=fpv4-sp-d16";
-      LDFLAGS = "--fatal-warnings --warn-common --no-undefined -L/usr/local/dev-arm/i386-Darwin-arm-gcc-4.9.2/arm-eabi/lib/thumb -lc -L/usr/local/dev-arm/i386-Darwin-arm-gcc-4.9.2/lib/gcc/arm-eabi/4.9.2 -lgcc -Map=readbutton_isr.map";
+      LDFLAGS = "--fatal-warnings --warn-common --no-undefined -L[YOUR PATH TO COMPILER LIBC] -lc -L[YOUR PATH TO COMPILER LIB GCC] -lgcc Map=readbutton_isr.map";
       COMPILER = "arm-none-eabi-gcc";
       ASSEMBLER = "arm-none-eabi-as";
       LINKER = "arm-none-eabi-ld";
