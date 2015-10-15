@@ -23,6 +23,8 @@
  * $URL$
  */
 
+#include "tpl_os_std_types.h"
+
 #ifndef CORE_CM_FUNC_MK20DX256_H
 #define CORE_CM_FUNC_MK20DX256_H
 

@@ -32,6 +32,7 @@
 #define _kinetis_h_
 
 #include <stdint.h>
+#include "cmsis_wrapper.h"
 
 // Teensy 3.0
 #if defined(__MK20DX128__)
