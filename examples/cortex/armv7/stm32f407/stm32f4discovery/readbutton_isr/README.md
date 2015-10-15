@@ -20,5 +20,5 @@ Have a look into "readbutton_isr.oil" file.
 The system is based scheduled with a 1ms SysTick "SystemCounter".
 
 Configure the application with
-goil --target=thumb2/cortex-m4/stm32f4-discovery -v --templates=../../../../../goil/templates/ readbutton_isr.oil
+goil --target=cortex/armv7/stm32f407/stm32f4discovery -v --templates=../../../../../../goil/templates/ readbutton_isr.oil
 
