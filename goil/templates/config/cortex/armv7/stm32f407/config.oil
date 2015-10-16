@@ -111,6 +111,15 @@ CPU stm32f407 {
     CFILE = "misc.c";
   };
 
+  POSTBUILD all {
+    COMMAND buildbin {
+      TYPE = COPIER;
+      INPUT = TARGET;
+      OUTPUT = ".bin";
+      PREOPTION = "-O binary";
+    };
+  };
+
   POSTCOMMAND burn {
     COMMAND flash {
       MESSAGE = "Flashing";

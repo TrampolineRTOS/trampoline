@@ -14,15 +14,6 @@ CPU armv7 {
     CFILE = "tpl_second_stage_irq.S";
     CFILE = "tpl_vectors.c";
   };
-
-  POSTBUILD all {
-    COMMAND buildbin {
-      TYPE = COPIER;
-      INPUT = TARGET;
-      OUTPUT = ".bin";
-      PREOPTION = "-O binary";
-    };
-  };
 };
 
 

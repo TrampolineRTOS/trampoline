@@ -16,16 +16,17 @@ IMPLEMENTATION trampoline {
 CPU blink {
   OS config {
     STATUS = EXTENDED;
-    PRETASKHOOK = TRUE;
-    POSTTASKHOOK = TRUE;
+    PRETASKHOOK = FALSE;
+    POSTTASKHOOK = FALSE;
     
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../../../..";
       APP_SRC = "blink.c";
       APP_NAME = "blink_exe";
       CFLAGS  = "-g -O0 -Wall -Wno-unused-but-set-variable -Wformat -std=c99 -mcpu=cortex-m4 -Wmissing-field-initializers -mthumb -mfloat-abi=soft -mfpu=fpv4-sp-d16 -nostartfiles"; 
+      CFLAGS = "--specs=nosys.specs";
       ASFLAGS = "-g -Wall -mcpu=cortex-m4 -mthumb --fatal-warnings -mfloat-abi=soft -mfpu=fpv4-sp-d16";
-       LDFLAGS = "--fatal-warnings --warn-common --no-undefined -L/Users/jlb/Tools/gcc/gcc-arm-none-eabi/arm-none-eabi/lib/thumb -lc -L/Users/jlb/Tools/gcc/gcc-arm-none-eabi/lib/gcc/arm-none-eabi/4.9.3/thumb -lgcc -Map=blink.map";
+      LDFLAGS = "--fatal-warnings --warn-common --no-undefined -L/Users/DavidGarriou/Tools/gcc/gcc-arm-none-eabi/arm-none-eabi/lib/thumb -lc -L/Users/DavidGarriou/Tools/gcc/gcc-arm-none-eabi/lib/gcc/arm-none-eabi/4.9.3/thumb -lgcc -Map=blink.map";
       COMPILER = "arm-none-eabi-gcc";
       ASSEMBLER = "arm-none-eabi-as";
       LINKER = "arm-none-eabi-ld";
