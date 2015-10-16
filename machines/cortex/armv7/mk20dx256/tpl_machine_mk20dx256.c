@@ -26,28 +26,28 @@
 #include "tpl_compiler.h"
 #include "tpl_os_std_types.h"
 #include "tpl_machine.h"
-#include "kinetis.h"
+#include "mk20dx256.h"
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 FUNC(void, OS_CODE) tpl_set_systick_timer()
 {
-	/*
-	 * initialize the SysTick counter at a 1ms cycle
-	 * F_CPU is the frequency of the clock expressed in milliseconds
-	 */
-	SYST_RVR = (F_CPU / 1000) - 1;  /* SysTick Reload value  */
-	SYST_CVR = 0;                   /* SysTick Current value */
-	/*
-	 * Note:  Clearing the SysTick Current Value register by a register write
-	 *        in software does not cause SysTick to be pended.
-	 */
-	SYST_CSR =                /* SysTick Control and Status                              */
-	  SYST_CSR_CLKSOURCE |    /* 1 = core clock used for SysTick                         */
-	  SYST_CSR_TICKINT |      /* 1 = counting down to 0 will cause the SysTick exception */
-	  SYST_CSR_ENABLE;        /* 1 = the counter will operate in a multi-shot manner.    */
-
-	SCB_SHPR3 = 0x7F200000;   /* Systick priority = 127 */
+// 	
+// 	 * initialize the SysTick counter at a 1ms cycle
+// 	 * F_CPU is the frequency of the clock expressed in milliseconds
+// 	 */
+// 	SYST_RVR = (F_CPU / 1000) - 1;  /* SysTick Reload value  */
+// 	SYST_CVR = 0;                   /* SysTick Current value */
+// 	
+// 	 * Note:  Clearing the SysTick Current Value register by a register write
+// 	 *        in software does not cause SysTick to be pended.
+// 	 */
+// 	SYST_CSR =                /* SysTick Control and Status                              */
+// 	  SYST_CSR_CLKSOURCE |    /* 1 = core clock used for SysTick                         */
+// 	  SYST_CSR_TICKINT |      /* 1 = counting down to 0 will cause the SysTick exception */
+// 	  SYST_CSR_ENABLE;        /* 1 = the counter will operate in a multi-shot manner.    */
+// 
+// 	SCB_SHPR3 = 0x7F200000;   /* Systick priority = 127 */
 }
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

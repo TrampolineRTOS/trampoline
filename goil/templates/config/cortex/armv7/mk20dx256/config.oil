@@ -216,8 +216,8 @@ CPU mk20dx256 {
   INTERRUPT SOFTWARE_IRQ           { VECT = 110; VECTOR_TYPE = HANDLER { NAME =  "SOFTWARE_IRQ_Handler"; }; }
     : "Software interrupt";
 
-  POSTBUILD mk20dx256 {
-    COMMAND buildbin {
+  POSTBUILD all {
+    COMMAND buildhex {
       TYPE = COPIER;
       INPUT = TARGET;
       OUTPUT = ".hex";

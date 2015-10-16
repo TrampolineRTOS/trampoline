@@ -26,7 +26,7 @@
 #include "tpl_os.h"
 #include "tpl_os_interrupt_kernel.h"
 #include "tpl_compiler.h"
-#include "kinetis.h"
+#include "mk20dx256.h"
 
 extern void tpl_primary_syscall_handler(void);
 

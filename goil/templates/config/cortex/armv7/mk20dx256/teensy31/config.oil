@@ -2,13 +2,7 @@ CPU teensy31 {
   PLATFORM_FILES teensy31 {
     PATH = "cortex/armv7/mk20dx256/teensy31";
     CFILE = "tp.c";
-  };
-
-  PLATFORM_FILES teensy31_core {
-    PATH = "cortex/armv7/mk20dx256/teensy31/core";
-    CFILE = "pins_teensy.c";
-    CFILE = "analog.c";
-    CFILE = "usb_dev.c";
+    CFILE = "teensy31_gpio.c";
   };
 };
     
