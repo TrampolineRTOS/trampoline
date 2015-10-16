@@ -217,7 +217,7 @@ CPU mk20dx256 {
     : "Software interrupt";
 
   POSTBUILD mk20dx256 {
-    COMMAND buildbin {
+    COMMAND buildhex {
       TYPE = COPIER;
       INPUT = TARGET;
       OUTPUT = ".hex";
