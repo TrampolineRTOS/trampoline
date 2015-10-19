@@ -1,0 +1,128 @@
+/**
+ * @file startStopBlink.oil
+ *
+ * @section desc File description
+ *
+ * The basis of this application is the same as the blink example.
+ * A periodic task  toggles the built in led of the teensy the board.
+ * This runs at start.
+ *
+ * A second alarm with a period of 20ms scans a button connected on pin 8.
+ * When the button is pressed, the alarm is cancelled.
+ * When the button is pressed again the alarm is started again.
+ *
+ * @section copyright Copyright
+ *
+ * Trampoline RTOS
+ *
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
+ * Trampoline is protected by the French intellectual property law.
+ *
+ * This software is distributed under the GNU Public Licence V2.
+ * Check the LICENSE file in the root directory of Trampoline
+ *
+ * @section infos File informations
+ *
+ * $Date$
+ * $Rev$
+ * $Author$
+ * $URL$
+ */
+OIL_VERSION = "2.5";
+
+IMPLEMENTATION trampoline {
+
+    /* This fix the default STACKSIZE of tasks */
+    TASK {
+        UINT32 STACKSIZE = 100 ;
+    } ;
+
+    /* This fix the default STACKSIZE of ISRs */
+    ISR {
+        UINT32 STACKSIZE = 100 ;
+    } ;
+};
+
+CPU blink {
+  OS config {
+    STATUS = EXTENDED;
+    PRETASKHOOK = FALSE;
+    POSTTASKHOOK = FALSE;
+    
+    BUILD = TRUE {
+      TRAMPOLINE_BASE_PATH = "../../../../../..";
+      APP_SRC = "startStopBlink.c";
+      APP_NAME = "startStopBlink_exe";
+      CFLAGS = "-g -O0 -Wall -Wno-unused-but-set-variable -Wformat -std=c99";
+      CFLAGS = "-mcpu=cortex-m4 -Wmissing-field-initializers -mthumb";
+      CFLAGS = "-mfloat-abi=soft -mfpu=fpv4-sp-d16 -nostartfiles"; 
+      CFLAGS = "--specs=nosys.specs";
+      ASFLAGS = "-g -Wall -mcpu=cortex-m4 -mthumb --fatal-warnings";
+      ASFLAGS = "-mfloat-abi=soft -mfpu=fpv4-sp-d16";
+      LDFLAGS = "--fatal-warnings --warn-common --no-undefined";
+      
+      /* This path should be changed to the location where the libc is */
+      LDFLAGS = "-L/Users/jlb/Tools/gcc/gcc-arm-none-eabi/arm-none-eabi/lib/thumb";
+      LDFLAGS = "-lc";
+
+      /* This path should be changed to the location where the libgcc is */
+      LDFLAGS = "-L/Users/jlb/Tools/gcc/gcc-arm-none-eabi/lib/gcc/arm-none-eabi/4.9.3/thumb";
+      LDFLAGS = "-lgcc";
+      
+      LDFLAGS = "-Map=startStopBlink.map";
+      COMPILER = "arm-none-eabi-gcc";
+      ASSEMBLER = "arm-none-eabi-as";
+      LINKER = "arm-none-eabi-ld";
+      COPIER = "arm-none-eabi-objcopy";
+      SYSTEM = PYTHON;
+    };
+    SYSTEM_CALL = TRUE;
+    MEMMAP = TRUE {
+      COMPILER = gcc;
+      LINKER = gnu_ld { SCRIPT = "script.ld"; };
+      ASSEMBLER = gnu_as;
+      MEMORY_PROTECTION = FALSE;
+    };
+  };
+  
+  APPMODE std {};
+  
+  TASK blink {
+    PRIORITY = 1;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+  
+  ALARM blink_blink {
+    COUNTER = SystemCounter;
+    ACTION = ACTIVATETASK {
+      TASK = blink;
+    };
+    AUTOSTART = TRUE {
+      APPMODE = std;
+      ALARMTIME = 500;
+      CYCLETIME = 500;
+    };
+  };
+  
+  TASK button_scanner {
+    PRIORITY = 2;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+  
+  ALARM run_button_scanner {
+    COUNTER = SystemCounter;
+    ACTION = ACTIVATETASK {
+      TASK = button_scanner;
+    };
+    AUTOSTART = TRUE {
+      APPMODE = std;
+      ALARMTIME = 20;
+      CYCLETIME = 20;
+    };
+  };
+};
+

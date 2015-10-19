@@ -9,12 +9,12 @@
 #include "tpl_os_std_types.h"
 #include "gpio.h"
 
-typedef enum {
-  BUTTON_RELEASED,
-  BUTTON_PRESSED,
-  BUTTON_ON,
-  BUTTON_OFF
-} ButtonState;
+// typedef enum {
+//   BUTTON_RELEASED,
+//   BUTTON_PRESSED,
+//   BUTTON_ON,
+//   BUTTON_OFF
+// } ButtonState;
 
 typedef enum {
   BUTTON_IT,
@@ -71,7 +71,7 @@ FUNC(void, OS_CODE) ledToggle(Led_TypeDef led);
  *
  * retourne BUTTON_ON ou BUTTON_OFF
  */
-FUNC(ButtonState, OS_CODE) readButton();
+//FUNC(ButtonState, OS_CODE) readButton();
 
 /*
  * delay comme sur l'arduino
