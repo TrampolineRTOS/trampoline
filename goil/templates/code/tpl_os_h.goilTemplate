@@ -33,9 +33,11 @@ if OS::SCALABILITYCLASS > 0 then
 #include "tpl_as_definitions.h"
 #include "tpl_as_error.h"%
 end if
+
+template if exists extra_headers
+
 foreach api in APIUSED do
 %
-
 /*--------------------------------------------------------------------------*
  * % !api::NAME % system calls.
  * corresponding kernel implementation is in files%

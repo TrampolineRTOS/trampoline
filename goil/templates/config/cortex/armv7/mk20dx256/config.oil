@@ -6,7 +6,6 @@
 
 CPU mk20dx256 {
 
-
   PLATFORM_FILES cortex_armv7_mk20dx256 {
     PATH = "cortex/armv7/mk20dx256";
     CFILE = "tpl_machine_mk20dx256.c";
@@ -14,11 +13,6 @@ CPU mk20dx256 {
     CFILE = "startup_mk20dx256.c";
   };
 
-
-  PLATFORM_FILES cortex_armv7_mk20dx256_teensy31 {
-    PATH = "cortex/armv7/mk20dx256/teensy31";
-  };
-  
   INTERRUPT_COUNT nb_it {
     IT_TABLE_SIZE = 110; /* Size of the interrupt vector table */
   };
@@ -244,16 +238,5 @@ CPU mk20dx256 {
       PREOPTION = "-O ihex";
     };
   };
-
-
-  POSTCOMMAND burn {
-    COMMAND flash {
-      MESSAGE = "Flashing";
-      COMMAND = "/Users/DavidGarriou/dev-arm/dev-arm-Intel-Darwin-gccarm-4_9-2015q3-20150921-openocd-0.8.0/bin/teensy-loader-cli";
-      INPUT = TARGET { EXT = ".hex"; };
-      PREOPTION = "-w -v -mmcu=mk20dx128";
-    };
-  };
-
 
 };

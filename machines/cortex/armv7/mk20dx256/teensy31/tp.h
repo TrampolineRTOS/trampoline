@@ -7,7 +7,7 @@
 
 #include "tpl_compiler.h"
 #include "tpl_os_std_types.h"
-#include "teensy31_gpio.h"
+#include "gpio.h"
 
 typedef enum {
   BUTTON_RELEASED,
@@ -30,15 +30,15 @@ typedef uint8 Led_TypeDef;
 #define LED4     (7)
 #define LEDBOARD (13)
 
-#define HIGH (1)
-#define LOW  (0)
-
-#define INPUT		 (0)
-#define OUTPUT		 (1)
-#define INPUT_PULLUP (2)
+// #define HIGH (1)
+// #define LOW  (0)
+//
+// #define INPUT		 (0)
+// #define OUTPUT		 (1)
+// #define INPUT_PULLUP (2)
 
 /*
- * 
+ *
  */
 FUNC(void, OS_CODE) initBoard(void);
 

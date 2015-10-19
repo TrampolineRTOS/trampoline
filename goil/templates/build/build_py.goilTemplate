@@ -66,7 +66,7 @@ import sys, os, subprocess, string
 sys.path.append("% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/make")
 
 #--- Import the makefile system in python
-import makefile, projfile
+import makefile, projfile, findexe
 
 #--- To work with relative paths
 scriptDir = os.path.dirname (os.path.abspath (sys.argv[0]))
@@ -373,7 +373,10 @@ if askedGoal == "% !pc::NAME %" :%
       let commandLine := commandLine . opt::VALUE . " "
     end foreach%
 #  print "% !commandLine %"
-  subprocess.call("% !commandLine %".split())%
+  if findexe.find_executable("% !cmd::COMMAND %") != None:
+    subprocess.call("% !commandLine %".split())
+  else:
+    print("Command '% !cmd::COMMAND %' not in PATH")%
   end foreach
 end foreach%
 

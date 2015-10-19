@@ -1,8 +1,18 @@
 CPU teensy31 {
   PLATFORM_FILES teensy31 {
     PATH = "cortex/armv7/mk20dx256/teensy31";
-    CFILE = "tp.c";
-    CFILE = "teensy31_gpio.c";
+//    CFILE = "tp.c";
+    CFILE = "gpio.c";
   };
+
+  POSTCOMMAND burn {
+    COMMAND flash {
+      MESSAGE = "Flashing";
+      COMMAND = "teensy_loader_cli";
+      INPUT = TARGET { EXT = ".hex"; };
+      PREOPTION = "-w -v -mmcu=mk20dx128";
+    };
+  };
+
 };
     
