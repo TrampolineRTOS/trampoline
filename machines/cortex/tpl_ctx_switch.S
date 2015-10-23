@@ -44,7 +44,6 @@
 	/*
 	 * Mapping in the context structures
 	 */
-#define CTX_RETURN_CODE	0
 #define CTX_GPR0		0
 #define CTX_GPR1		4
 #define CTX_GPR2		8
@@ -80,9 +79,6 @@ tpl_save_context:
 	/* PSP */
 	ldr r4, [r5, #KS_PROCESS_SP]	/* Load process SP into r4 */
 	str r4, [r12, #CTX_PROCESS_SP]	/* and save it into context */
-	/* RETURN_CODE */
-	ldr r4, [r5, #KS_RETURN_CODE]	/* Load return code of service into r4 */
-	str r4, [r12, #CTX_RETURN_CODE]	/* and save it into context */
 	/* R4 */
 	ldr r4, [r5, #KS_R4]			/* Load R4 into r4 */
 	str r4, [r12, #CTX_GPR4]		/* and save it into context */
@@ -119,9 +115,6 @@ tpl_load_context:
 	/* PSP */
 	ldr r4, [r12, #CTX_PROCESS_SP]	/* load process sp */
 	str r4, [r5, #KS_PROCESS_SP]	/* and put it into kernel stack */
-	/* RETURN_CODE */
-	ldr r4, [r12, #CTX_RETURN_CODE]	/* Load return code of service */
-	str r4, [r5, #KS_RETURN_CODE]	/* and put it into kernel stack */
 	/* R4 */
 	ldr r4, [r12, #CTX_GPR4]		/* and save it into context */
 	str r4, [r5, #KS_R4]			/* Load R4 into r4 */

@@ -236,9 +236,10 @@ tpl_sc_handler:
 	/*
 	 * r0 holds the return code of the service.
 	 * r0 will be destroyed by the call to tpl_save_context.
-	 * It is saved into kernel stack.
+	 * It is saved into the saved frame (process stack).
 	 */
-	str r0, [r5, #KS_RETURN_CODE]
+    ldr r12, [r5, #KS_PROCESS_SP]
+    str r0, [r12]
 
 	/*
 	 * Do we need to switch context ?
@@ -310,12 +311,6 @@ no_context_switch:
 	ldr r12, [r5, #KS_KERN_PTR]						/* load the tpl_kern base address */
 	mov r4, #NO_NEED_SWITCH_NOR_SCHEDULE
 	strb r4, [r12, #TPL_KERN_OFFSET_NEED_SWITCH]
-
-	/*
-	 * The return value of service has been saved into KS(KS_RETURN_CODE).
-	 * Copy back this return value into r0
-	 */
-	ldr r0, [r5, #KS_RETURN_CODE]
 
 	/* __5__LEAVE_KERNEL
  	 * Leave kernel
