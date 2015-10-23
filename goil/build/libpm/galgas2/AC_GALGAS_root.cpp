@@ -39,7 +39,7 @@ void AC_GALGAS_root::log (const char * inMessage COMMA_LOCATION_ARGS) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string AC_GALGAS_root::reader_description (UNUSED_LOCATION_ARGS) const {
+GALGAS_string AC_GALGAS_root::getter_description (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
   if (isValid ()) {
     C_String s ;
@@ -57,19 +57,19 @@ const C_galgas_type_descriptor * AC_GALGAS_root::dynamicTypeDescriptor (void) co
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_type AC_GALGAS_root::reader_staticType (UNUSED_LOCATION_ARGS) const {
+GALGAS_type AC_GALGAS_root::getter_staticType (UNUSED_LOCATION_ARGS) const {
   return GALGAS_type (staticTypeDescriptor ()) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_type AC_GALGAS_root::reader_dynamicType (UNUSED_LOCATION_ARGS) const {
+GALGAS_type AC_GALGAS_root::getter_dynamicType (UNUSED_LOCATION_ARGS) const {
   return GALGAS_type (dynamicTypeDescriptor ()) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_object AC_GALGAS_root::reader_object (LOCATION_ARGS) const {
+GALGAS_object AC_GALGAS_root::getter_object (LOCATION_ARGS) const {
   return GALGAS_object (clonedObject () COMMA_THERE) ;
 }
 

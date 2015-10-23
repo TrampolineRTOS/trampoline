@@ -616,14 +616,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">mAllocatedObjectCountTextField</string>
-						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="381938415"/>
-					</object>
-					<int key="connectionID">102</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">mStatsTableView</string>
 						<reference key="source" ref="1001"/>
 						<reference key="destination" ref="54967480"/>

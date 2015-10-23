@@ -284,6 +284,22 @@ scanner_cocoa_routine_codePointToUnicode (BOOL * ioNoLexicalError,
 void scanner_cocoa_routine_resetString (BOOL * ioNoLexicalError,
                                         NSMutableString * ioString) ;
 
+//--- Methods introduced in GALGAS 3.1.0
+void scanner_cocoa_routine_enterDecimalDigitIntoBigInt (BOOL * ioScanningOk,
+                                                        const utf32 inChar,
+                                                        NSMutableString * ioString) ;
+
+void scanner_cocoa_routine_enterHexDigitIntoBigInt (BOOL * ioScanningOk,
+                                                    const utf32 inChar,
+                                                    NSMutableString * ioString) ;
+
+void scanner_cocoa_routine_convertDecimalStringIntoBigInt (BOOL * ioNoLexicalError,
+                                                           NSString * inDecimalString,
+                                                           NSMutableString * ioString) ;
+
+void scanner_cocoa_routine_convertHexStringIntoBigInt (BOOL * ioNoLexicalError,
+                                                       NSString * inHexString,
+                                                       NSMutableString * ioString) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 

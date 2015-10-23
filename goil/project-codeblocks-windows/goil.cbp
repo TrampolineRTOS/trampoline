@@ -7,6 +7,7 @@
   <Option compiler="gcc" />
   <Build>
    <Target title="Release">
+    <Option platforms="Windows;" />
     <Option output="goil.exe" prefix_auto="0" extension_auto="0" />
     <Option object_output="objects" />
     <Option type="1" />
@@ -14,27 +15,25 @@
     <Option projectResourceIncludeDirsRelation="1" />
     <Compiler>
      <Add option="-fomit-frame-pointer" />
-     <Add option="-fexpensive-optimizations" />
      <Add option="-O2" />
      <Add option="-Wnon-virtual-dtor" />
      <Add option="-Winit-self" />
      <Add option="-Wredundant-decls" />
      <Add option="-Wundef" />
-     <Add option="-Wfloat-equal" />
-     <Add option="-Winline" />
      <Add option="-Wunreachable-code" />
      <Add option="-Wmissing-declarations" />
      <Add option="-Wmissing-include-dirs" />
-     <Add option="-Wswitch-default" />
      <Add option="-Weffc++" />
      <Add option="-Wmain" />
      <Add option="-std=c++98" />
      <Add option="-Wall" />
      <Add option="-W" />
      <Add option="-DDO_NOT_GENERATE_CHECKINGS" />
+     <Add option="-D_WIN32_WINNT=0x0501" />
     </Compiler>
    </Target>
    <Target title="Debug">
+    <Option platforms="Windows;" />
     <Option output="goil-debug.exe" prefix_auto="0" extension_auto="0" />
     <Option object_output="objects_debug" />
     <Option deps_output=".deps_debug" />
@@ -47,17 +46,16 @@
      <Add option="-Winit-self" />
      <Add option="-Wredundant-decls" />
      <Add option="-Wundef" />
-     <Add option="-Wfloat-equal" />
      <Add option="-Winline" />
      <Add option="-Wunreachable-code" />
      <Add option="-Wmissing-declarations" />
      <Add option="-Wmissing-include-dirs" />
-     <Add option="-Wswitch-default" />
      <Add option="-Weffc++" />
      <Add option="-Wmain" />
      <Add option="-std=c++98" />
      <Add option="-Wall" />
      <Add option="-W" />
+     <Add option="-D_WIN32_WINNT=0x0501" />
     </Compiler>
    </Target>
   </Build>
@@ -70,13 +68,128 @@
    <Add directory="../build/output" />
   </Compiler>
   <Linker>
-   <Add library="comdlg32" />
+   <Add library="comdlg32" /><Add library="Ws2_32" />
   </Linker>
   <Unit filename="../build/libpm/all-libpm.cpp" />
   <Unit filename="../build/libpm/galgas2/all-galgas.cpp" />
+  <Unit filename="../build/output/all-declarations-3.cpp" />
   <Unit filename="../build/output/all-declarations-2.cpp" />
   <Unit filename="../build/output/all-declarations-1.cpp" />
   <Unit filename="../build/output/all-declarations-0.cpp" />
+
+  <Unit filename="../build/libpm/gmp/32-mp_bases.c" />
+  <Unit filename="../build/libpm/gmp/64-mp_bases.c" />
+  <Unit filename="../build/libpm/gmp/mpn-add.c" />
+  <Unit filename="../build/libpm/gmp/mpn-add_1.c" />
+  <Unit filename="../build/libpm/gmp/mpn-add_n.c" />
+  <Unit filename="../build/libpm/gmp/mpn-addmul_1.c" />
+  <Unit filename="../build/libpm/gmp/mpn-bdiv_dbm1c.c" />
+  <Unit filename="../build/libpm/gmp/mpn-cmp.c" />
+  <Unit filename="../build/libpm/gmp/mpn-dcpi1_div_qr.c" />
+  <Unit filename="../build/libpm/gmp/mpn-dive_1.c" />
+  <Unit filename="../build/libpm/gmp/mpn-divrem_1.c" />
+  <Unit filename="../build/libpm/gmp/mpn-divrem_2.c" />
+  <Unit filename="../build/libpm/gmp/mpn-get_str.c" />
+  <Unit filename="../build/libpm/gmp/mpn-invertappr.c" />
+  <Unit filename="../build/libpm/gmp/mpn-lshift.c" />
+  <Unit filename="../build/libpm/gmp/mpn-lshiftc.c" />
+  <Unit filename="../build/libpm/gmp/mpn-mu_div_qr.c" />
+  <Unit filename="../build/libpm/gmp/mpn-mul.c" />
+  <Unit filename="../build/libpm/gmp/mpn-mul_1.c" />
+  <Unit filename="../build/libpm/gmp/mpn-mul_basecase.c" />
+  <Unit filename="../build/libpm/gmp/mpn-mul_fft.c" />
+  <Unit filename="../build/libpm/gmp/mpn-mul_n.c" />
+  <Unit filename="../build/libpm/gmp/mpn-mulmod_bnm1.c" />
+  <Unit filename="../build/libpm/gmp/mpn-nussbaumer_mul.c" />
+  <Unit filename="../build/libpm/gmp/mpn-pre_divrem_1.c" />
+  <Unit filename="../build/libpm/gmp/mpn-rshift.c" />
+  <Unit filename="../build/libpm/gmp/mpn-sbpi1_div_qr.c" />
+  <Unit filename="../build/libpm/gmp/mpn-sbpi1_divappr_q.c" />
+  <Unit filename="../build/libpm/gmp/mpn-set_str.c" />
+  <Unit filename="../build/libpm/gmp/mpn-sqr.c" />
+  <Unit filename="../build/libpm/gmp/mpn-sqr_basecase.c" />
+  <Unit filename="../build/libpm/gmp/mpn-sqrmod_bnm1.c" />
+  <Unit filename="../build/libpm/gmp/mpn-sub.c" />
+  <Unit filename="../build/libpm/gmp/mpn-sub_1.c" />
+  <Unit filename="../build/libpm/gmp/mpn-sub_n.c" />
+  <Unit filename="../build/libpm/gmp/mpn-submul_1.c" />
+  <Unit filename="../build/libpm/gmp/mpn-tdiv_qr.c" />
+  <Unit filename="../build/libpm/gmp/mpn-toom22_mul.c" />
+  <Unit filename="../build/libpm/gmp/mpn-toom2_sqr.c" />
+  <Unit filename="../build/libpm/gmp/mpn-toom32_mul.c" />
+  <Unit filename="../build/libpm/gmp/mpn-toom33_mul.c" />
+  <Unit filename="../build/libpm/gmp/mpn-toom3_sqr.c" />
+  <Unit filename="../build/libpm/gmp/mpn-toom42_mul.c" />
+  <Unit filename="../build/libpm/gmp/mpn-toom43_mul.c" />
+  <Unit filename="../build/libpm/gmp/mpn-toom44_mul.c" />
+  <Unit filename="../build/libpm/gmp/mpn-toom4_sqr.c" />
+  <Unit filename="../build/libpm/gmp/mpn-toom53_mul.c" />
+  <Unit filename="../build/libpm/gmp/mpn-toom63_mul.c" />
+  <Unit filename="../build/libpm/gmp/mpn-toom6_sqr.c" />
+  <Unit filename="../build/libpm/gmp/mpn-toom6h_mul.c" />
+  <Unit filename="../build/libpm/gmp/mpn-toom8_sqr.c" />
+  <Unit filename="../build/libpm/gmp/mpn-toom8h_mul.c" />
+  <Unit filename="../build/libpm/gmp/mpn-toom_couple_handling.c" />
+  <Unit filename="../build/libpm/gmp/mpn-toom_eval_dgr3_pm1.c" />
+  <Unit filename="../build/libpm/gmp/mpn-toom_eval_dgr3_pm2.c" />
+  <Unit filename="../build/libpm/gmp/mpn-toom_eval_pm1.c" />
+  <Unit filename="../build/libpm/gmp/mpn-toom_eval_pm2.c" />
+  <Unit filename="../build/libpm/gmp/mpn-toom_eval_pm2exp.c" />
+  <Unit filename="../build/libpm/gmp/mpn-toom_eval_pm2rexp.c" />
+  <Unit filename="../build/libpm/gmp/mpn-toom_interpolate_12pts.c" />
+  <Unit filename="../build/libpm/gmp/mpn-toom_interpolate_16pts.c" />
+  <Unit filename="../build/libpm/gmp/mpn-toom_interpolate_5pts.c" />
+  <Unit filename="../build/libpm/gmp/mpn-toom_interpolate_6pts.c" />
+  <Unit filename="../build/libpm/gmp/mpn-toom_interpolate_7pts.c" />
+  <Unit filename="../build/libpm/gmp/mpn-toom_interpolate_8pts.c" />
+  <Unit filename="../build/libpm/gmp/mpz-abs.c" />
+  <Unit filename="../build/libpm/gmp/mpz-add.c" />
+  <Unit filename="../build/libpm/gmp/mpz-add_ui.c" />
+  <Unit filename="../build/libpm/gmp/mpz-and.c" />
+  <Unit filename="../build/libpm/gmp/mpz-cdiv_q_ui.c" />
+  <Unit filename="../build/libpm/gmp/mpz-cdiv_qr.c" />
+  <Unit filename="../build/libpm/gmp/mpz-cfdiv_q_2exp.c" />
+  <Unit filename="../build/libpm/gmp/mpz-clear.c" />
+  <Unit filename="../build/libpm/gmp/mpz-clrbit.c" />
+  <Unit filename="../build/libpm/gmp/mpz-cmp.c" />
+  <Unit filename="../build/libpm/gmp/mpz-cmp_si.c" />
+  <Unit filename="../build/libpm/gmp/mpz-cmp_ui.c" />
+  <Unit filename="../build/libpm/gmp/mpz-com.c" />
+  <Unit filename="../build/libpm/gmp/mpz-combit.c" />
+  <Unit filename="../build/libpm/gmp/mpz-export.c" />
+  <Unit filename="../build/libpm/gmp/mpz-fdiv_q_ui.c" />
+  <Unit filename="../build/libpm/gmp/mpz-fdiv_qr.c" />
+  <Unit filename="../build/libpm/gmp/mpz-fits_sint.c" />
+  <Unit filename="../build/libpm/gmp/mpz-fits_uint.c" />
+  <Unit filename="../build/libpm/gmp/mpz-get_si.c" />
+  <Unit filename="../build/libpm/gmp/mpz-get_str.c" />
+  <Unit filename="../build/libpm/gmp/mpz-get_ui.c" />
+  <Unit filename="../build/libpm/gmp/mpz-init.c" />
+  <Unit filename="../build/libpm/gmp/mpz-ior.c" />
+  <Unit filename="../build/libpm/gmp/mpz-mul.c" />
+  <Unit filename="../build/libpm/gmp/mpz-mul_2exp.c" />
+  <Unit filename="../build/libpm/gmp/mpz-mul_ui.c" />
+  <Unit filename="../build/libpm/gmp/mpz-neg.c" />
+  <Unit filename="../build/libpm/gmp/mpz-realloc.c" />
+  <Unit filename="../build/libpm/gmp/mpz-set.c" />
+  <Unit filename="../build/libpm/gmp/mpz-set_str.c" />
+  <Unit filename="../build/libpm/gmp/mpz-set_ui.c" />
+  <Unit filename="../build/libpm/gmp/mpz-setbit.c" />
+  <Unit filename="../build/libpm/gmp/mpz-sizeinbase.c" />
+  <Unit filename="../build/libpm/gmp/mpz-sub.c" />
+  <Unit filename="../build/libpm/gmp/mpz-sub_ui.c" />
+  <Unit filename="../build/libpm/gmp/mpz-swap.c" />
+  <Unit filename="../build/libpm/gmp/mpz-tdiv_qr.c" />
+  <Unit filename="../build/libpm/gmp/mpz-tstbit.c" />
+  <Unit filename="../build/libpm/gmp/mpz-xor.c" />
+  <Unit filename="../build/libpm/gmp/root-assert.c" />
+  <Unit filename="../build/libpm/gmp/root-errno.c" />
+  <Unit filename="../build/libpm/gmp/root-memory.c" />
+  <Unit filename="../build/libpm/gmp/root-mp_bpl.c" />
+  <Unit filename="../build/libpm/gmp/root-mp_clz_tab.c" />
+  <Unit filename="../build/libpm/gmp/root-mp_dv_tab.c" />
+  <Unit filename="../build/libpm/gmp/root-mp_minv_tab.c" />" />" />
+  <Unit filename="../build/libpm/gmp/root-tal-notreent.c"
   <Extensions>
    <code_completion />
    <envvars />

@@ -133,7 +133,7 @@ GALGAS_function GALGAS_function::constructor_functionWithName (const GALGAS_stri
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_typelist GALGAS_function::reader_formalParameterTypeList (LOCATION_ARGS) const {
+GALGAS_typelist GALGAS_function::getter_formalParameterTypeList (LOCATION_ARGS) const {
   GALGAS_typelist result = GALGAS_typelist::constructor_emptyList (THERE) ;
   for (uint32_t i=0 ; i<mFunctionDescriptor->mParameterCount ; i++) {
     result.addAssign_operation (GALGAS_type (mFunctionDescriptor->mFormalParameterTypeList [i]) COMMA_HERE) ;
@@ -143,19 +143,19 @@ GALGAS_typelist GALGAS_function::reader_formalParameterTypeList (LOCATION_ARGS) 
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_function::reader_name (UNUSED_LOCATION_ARGS) const {
+GALGAS_string GALGAS_function::getter_name (UNUSED_LOCATION_ARGS) const {
   return GALGAS_string (mFunctionDescriptor->mFunctionName) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_type GALGAS_function::reader_resultType (UNUSED_LOCATION_ARGS) const {
+GALGAS_type GALGAS_function::getter_resultType (UNUSED_LOCATION_ARGS) const {
   return GALGAS_type (mFunctionDescriptor->mResultType) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_object GALGAS_function::reader_invoke (const GALGAS_objectlist & inObjectList,
+GALGAS_object GALGAS_function::getter_invoke (const GALGAS_objectlist & inObjectList,
                                               const GALGAS_location & inErrorLocation,
                                               C_Compiler * inCompiler
                                               COMMA_LOCATION_ARGS) const {
@@ -177,7 +177,7 @@ GALGAS_object GALGAS_function::reader_invoke (const GALGAS_objectlist & inObject
     const GALGAS_object parameter = argumentsArray.objectAtIndex (i COMMA_HERE) ;
     ok = parameter.isValid () ;
     if (ok) {
-      const C_galgas_type_descriptor * t = parameter.reader_objectStaticType (HERE).typeValue () ;
+      const C_galgas_type_descriptor * t = parameter.getter_objectStaticType (HERE).typeValue () ;
       ok = t == mFunctionDescriptor->mFormalParameterTypeList [i] ;
       while ((! ok) && (NULL != t->mSuperclassDescriptor)) {
         t = t->mSuperclassDescriptor ;

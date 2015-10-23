@@ -139,9 +139,9 @@ CONST(tpl_it_vector_entry, OS_CONST) tpl_it_vector[% !INTERRUPT_COUNT::IT_TABLE_
         end if
       end foreach
       if not interrupt_source_detected then
-        %  { tpl_null_it, (void *)NULL }%
+        %  { (tpl_it_handler)tpl_null_it, (void *)NULL }%
    else
-        %  { tpl_interrupt_source_% !ENTRY %, (void *)NULL }%
+        %  { (tpl_it_handler)tpl_interrupt_source_% !ENTRY %, (void *)NULL }%
       end if
    between %,
 %

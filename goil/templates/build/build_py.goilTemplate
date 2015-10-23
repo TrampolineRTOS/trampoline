@@ -60,7 +60,7 @@ end if
 #---     produced. This is done by the build.py file.
 #---     build.py is generated each time goil is called by make.py
 #----------------------------------------------------------------------
-import sys, os, subprocess, string
+import sys, os, subprocess, string, distutils.spawn
 
 #--- Add the location of makefile.py to the import path
 sys.path.append("% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/make")
@@ -94,6 +94,7 @@ make = makefile.Make(goal)
 #--- Various variables used after
 #----------------------------------------------------------------------
 compiler = "% !OS::BUILD_S::COMPILER %"
+cppCompiler = "% !OS::BUILD_S::CPPCOMPILER %"
 linker = "% !OS::BUILD_S::LINKER %"
 assembler = "% !OS::BUILD_S::ASSEMBLER %"
 autosar = % ! TrueFalse(AUTOSAR) %
@@ -103,22 +104,56 @@ with_ioc = % ! TrueFalse([IOC length] > 0) %
 with_com = % ! TrueFalse(USECOM) %
 scheduler = "% !OS::SCHEDULER %"
 trampoline_base_path = "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/"
-cflags = []%
-foreach flags in OS::BUILD_S::CFLAGS do
+cflags = []
+cppflags = []
+ldflags = []%
+foreach optionSet in exists BUILDOPTIONS default (emptylist) do
+  foreach flags in exists optionSet::CFLAGS default (emptylist) do
+    %
+cflags += "% !flags::VALUE %".split()%
+  end foreach
+end foreach
+foreach flags in exists OS::BUILD_S::CFLAGS default (emptylist) do
   %
 cflags += "% !flags::VALUE %".split()%
 end foreach
+foreach optionSet in exists BUILDOPTIONS default (emptylist) do
+  foreach flags in exists optionSet::CPPFLAGS default (emptylist) do
+  %
+cppflags += "% !flags::VALUE %".split()%
+  end foreach
+end foreach
+foreach flags in exists OS::BUILD_S::CPPFLAGS default (emptylist) do
+  %
+cppflags += "% !flags::VALUE %".split()%
+end foreach
+foreach optionSet in exists BUILDOPTIONS default (emptylist) do
+  foreach flags in exists optionSet::COMMONFLAGS default (emptylist) do
+  %
+cflags += "% !flags::VALUE %".split()
+cppflags += "% !flags::VALUE %".split()%
+  end foreach
+end foreach
+foreach flags in exists OS::BUILD_S::COMMONFLAGS default (emptylist) do
+  %
+cflags += "% !flags::VALUE %".split()
+cppflags += "% !flags::VALUE %".split()%
+end foreach
 let MACHINESPATH := OS::BUILD_S::TRAMPOLINE_BASE_PATH."/machines"
 foreach platform in exists PLATFORM_FILES default (emptylist) do%
-cflags += ["-I","% !MACHINESPATH . "/" . platform::PATH %"]%
+cflags += ["-I","% !MACHINESPATH . "/" . platform::PATH %"]
+cppflags += ["-I","% !MACHINESPATH . "/" . platform::PATH %"]%
 end foreach
 %
 if with_ioc:
   cflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/ioc"] 
+  cppflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/ioc"] 
 cflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/os"] 
 cflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/debug"] 
 cflags += ["-I", "% !PROJECT %"]
-ldflags = []%
+cppflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/os"] 
+cppflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/debug"] 
+cppflags += ["-I", "% !PROJECT %"]%
 foreach flags in OS::BUILD_S::LDFLAGS do
   %
 ldflags += "% !flags::VALUE %".split()%
@@ -135,10 +170,29 @@ asflags += "% !flags::VALUE %".split()%
 end foreach
 %
 
+%
+let stdlibVariant := exists STDLIBVARIANT::KIND default ("")
+%
+#----------------------------------------------------------------------
+#--- Try to detect automatically the location of libc and libgcc
+#----------------------------------------------------------------------
+if "gcc" in compiler:
+  compilerFullPath = distutils.spawn.find_executable(compiler)
+  if compilerFullPath != None:
+    compilerToolChainPath = os.path.dirname(os.path.dirname(compilerFullPath))
+    compilerVersion = subprocess.check_output([compiler, '-dumpversion'])[:-1]
+    libcPath = compilerToolChainPath + '/arm-none-eabi/lib%
+      if stdlibVariant != "" then %/% !stdlibVariant end if%'
+    libgccPath = compilerToolChainPath + '/lib/gcc/arm-none-eabi/' + compilerVersion%
+      if stdlibVariant != "" then % + '/% !stdlibVariant %'% end if %
+    ldflags += ['-L' + libcPath, '-lc']
+    ldflags += ['-L' + libgccPath, '-lgcc']
+
 #----------------------------------------------------------------------
 #--- Build the source files list
 #----------------------------------------------------------------------
 cSourceList = []
+cppSourceList = []
 sSourceList = []
 oilSourceList = []
 
@@ -156,7 +210,8 @@ end foreach
 
 if USECOM then
 %
-cflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/com"]%
+cflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/com"]
+cppflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/com"]%
   let path := KERNEL_MAP["com_kernel"]::PATH."/"
   foreach file in KERNEL_MAP["com_kernel"]::FILE do
 %
@@ -166,7 +221,8 @@ end if
 
 if OS::SCALABILITYCLASS > 0 then
 %
-cflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/autosar"]%
+cflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/autosar"]
+cppflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/autosar"]%
   let path := KERNEL_MAP["autosar_kernel"]::PATH."/"
   foreach file in KERNEL_MAP["autosar_kernel"]::FILE do
 %
@@ -189,10 +245,19 @@ foreach src in exists OS::BUILD_S::APP_SRC default (emptylist)
 before
 %
 
-#--- Add files of the application%
+#--- Add C files of the application%
 do
 %
 cSourceList.append(projfile.ProjectFile("% !src::VALUE %"))%
+end foreach
+foreach src in exists OS::BUILD_S::APP_CPPSRC default (emptylist)
+before
+%
+
+#--- Add C++ files of the application%
+do
+%
+cppSourceList.append(projfile.ProjectFile("% !src::VALUE %"))%
 end foreach
 %
 
@@ -229,10 +294,15 @@ sSourceList.append(projfile.ProjectFile("% !PROJECT."/".file::VALUE %"))%
 end foreach
 foreach platform in exists PLATFORM_FILES default (emptylist) do
   if not exists platform::CFILE then let platform::CFILE := emptylist end if
+  if not exists platform::CPPFILE then let platform::CPPFILE := emptylist end if
   if not exists platform::ASFILE then let platform::ASFILE := emptylist end if
   foreach file in platform::CFILE do
 %
 cSourceList.append(projfile.ProjectFile("% !"machines/".platform::PATH."/".file::VALUE %", trampoline_base_path))%
+  end foreach
+  foreach file in platform::CPPFILE do
+%
+cppSourceList.append(projfile.ProjectFile("% !"machines/".platform::PATH."/".file::VALUE %", trampoline_base_path))%
   end foreach
   foreach file in platform::ASFILE do
 %
@@ -258,6 +328,22 @@ for sourceFile in cSourceList:
   rule.mCommand += ["-o", object]
   rule.mCommand += ["-MD", "-MP", "-MF", depObject]
   rule.mCommand += cflags
+  rule.enterSecondaryDependanceFile (depObject, make)
+  make.addRule(rule)
+
+for sourceFile in cppSourceList:
+  source = sourceFile.src() 
+  object = sourceFile.obj("build")
+  depObject = sourceFile.dep("build")
+  objectList.append(object)
+  rule = makefile.Rule([object], "Compiling " + source)
+  rule.deleteTargetDirectoryOnClean()
+  rule.mDependences.append(source)
+  rule.mCommand.append(cppCompiler)
+  rule.mCommand += ["-c", source]
+  rule.mCommand += ["-o", object]
+  rule.mCommand += ["-MD", "-MP", "-MF", depObject]
+  rule.mCommand += cppflags
   rule.enterSecondaryDependanceFile (depObject, make)
   make.addRule(rule)
 

@@ -28,6 +28,7 @@
 #include "utilities/PMUInt128.h"
 #include "collections/TC_UniqueArray.h"
 #include "collections/TC_Array.h"
+#include "utilities/C_BigInt.h"
 
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -108,22 +109,19 @@ class C_BDD {
   public : C_BDD compareWithBDD (const compareEnum inComparison, const C_BDD & inOperand) const ;
 
 //--- Build a BDD result of integer comparison
-  public : static C_BDD
-  varCompareVar (const uint32_t inLeftFirstIndex,
-                 const uint32_t inDimension,
-                 const compareEnum inComparison,
-                 const uint32_t inRightFirstIndex) ;
+  public : static C_BDD varCompareVar (const uint32_t inLeftFirstIndex,
+                                       const uint32_t inDimension,
+                                       const compareEnum inComparison,
+                                       const uint32_t inRightFirstIndex) ;
 
-  public : static
-  C_BDD varCompareConst (const uint32_t inFirstIndex,
-                         const uint32_t inDimension,
-                         const compareEnum inComparison,
-                         const uint64_t inComparisonConstant) ;
+  public : static C_BDD varCompareConst (const uint32_t inFirstIndex,
+                                         const uint32_t inDimension,
+                                         const compareEnum inComparison,
+                                         const uint64_t inComparisonConstant) ;
 
-  public : static
-  C_BDD bddWithConstants (const uint32_t inValues [],
-                          const uint32_t inBitCount [],
-                          const int32_t inEntryCount) ;
+  public : static C_BDD bddWithConstants (const uint32_t inValues [],
+                                          const uint32_t inBitCount [],
+                                          const int32_t inEntryCount) ;
 
 //--- Buil a BDD from a value list. This method sorts value list in ascending order
   public : static C_BDD buildBDDFromValueList (uint64_t ioValueList [],
@@ -135,6 +133,8 @@ class C_BDD {
 
   public : PMUInt128 valueCount128 (const uint32_t inVariableCount) const ;
 
+  public : C_BigInt valueCount (const uint32_t inVariableCount) const ;
+
   public : uint64_t valueCount64UsingCache (const uint32_t inVariableCount,
                                             TC_UniqueArray <uint64_t> & ioDirectCacheArray,
                                             TC_UniqueArray <uint64_t> & ioComplementCacheArray) const ;
@@ -143,7 +143,11 @@ class C_BDD {
                                               TC_UniqueArray <PMUInt128> & ioDirectCacheArray,
                                               TC_UniqueArray <PMUInt128> & ioComplementCacheArray) const ;
 
-//--- Return highest bit index + 1 
+  public : C_BigInt valueCountUsingCache (const uint32_t inVariableCount,
+                                          TC_UniqueArray <C_BigInt> & ioDirectCacheArray,
+                                          TC_UniqueArray <C_BigInt> & ioComplementCacheArray) const ;
+
+//--- Return highest bit index + 1
   public : uint32_t significantVariableCount (void) const ;
 
 //--- Get nth BDD value
@@ -234,6 +238,7 @@ class C_BDD {
 
 //--- Printing
   public : C_String graphvizRepresentation (void) const ;
+  public : C_String graphvizRepresentationWithNames (const TC_UniqueArray <C_String> & inBitNames) const ;
 
   public : void print (AC_OutputStream & outputStream) const ;
 
@@ -241,27 +246,14 @@ class C_BDD {
 
   public : void printWithHeader (AC_OutputStream & outputStream) const ;
 
-/*  public : void printWithSeparator (AC_OutputStream & outputStream,
-                                    const TC_UniqueArray <C_String> & inSeparatorArray) const ;
-
   public : void print (AC_OutputStream & outputStream,
                        const TC_UniqueArray <C_String> & inVariablesNames,
-                       const int32_t inLeadingSpacesCount) const ;
+                       const TC_UniqueArray <int32_t> & inBitCounts) const ;
 
   public : void print (AC_OutputStream & outputStream,
-                       const TC_UniqueArray <C_String> & inVariablesNames,
-                       const int32_t inVariableCount,
-                       const int32_t inLeadingSpacesCount) const ;
-
-  public : void printHeader (AC_OutputStream & outputStream,
-                             const TC_UniqueArray <C_String> & inVariablesNames,
-                             const int32_t inVariableCount,
-                             const int32_t inLeadingSpacesCount) const ;
-
-  public : void printWithoutHeader (AC_OutputStream & outputStream,
-                                    const TC_UniqueArray <C_String> & inVariablesNames,
-                                    const int32_t inVariableCount,
-                                    const int32_t inLeadingSpacesCount) const ; */
+                       const TC_UniqueArray <int32_t> & inValueSeparation,
+                       const TC_UniqueArray <int32_t> & inBitCounts,
+                       const int32_t inPrefixedSpaceCount) const ;
 
 //--- Buid string compressed representation
   public : void buildCompressedLittleEndianStringValueArray (TC_UniqueArray <C_String> & outStringArray

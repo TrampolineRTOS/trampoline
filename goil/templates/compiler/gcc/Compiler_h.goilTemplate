@@ -38,7 +38,7 @@
 #define AUTOMATIC
 #define TYPEDEF
 #define STATIC static
-#define NULL_PTR ((void *)0)
+#define NULL_PTR (0)
 #define INLINE (#pragma INLINE)
 
 #define CURRENT_LINKER_CODE_SECTION_NAME

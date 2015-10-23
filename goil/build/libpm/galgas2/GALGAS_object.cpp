@@ -101,7 +101,7 @@ typeComparisonResult GALGAS_object::objectCompare (const GALGAS_object & inOpera
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_type GALGAS_object::reader_objectStaticType (UNUSED_LOCATION_ARGS) const {
+GALGAS_type GALGAS_object::getter_objectStaticType (UNUSED_LOCATION_ARGS) const {
   GALGAS_type result ;
   if (isValid ()) {
     result = mSharedObject->objectStaticType () ;
@@ -111,7 +111,7 @@ GALGAS_type GALGAS_object::reader_objectStaticType (UNUSED_LOCATION_ARGS) const 
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_type GALGAS_object::reader_objectDynamicType (UNUSED_LOCATION_ARGS) const {
+GALGAS_type GALGAS_object::getter_objectDynamicType (UNUSED_LOCATION_ARGS) const {
   GALGAS_type result ;
   if (isValid ()) {
     result = mSharedObject->objectDynamicType () ;

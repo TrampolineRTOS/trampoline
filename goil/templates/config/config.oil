@@ -58,6 +58,7 @@ IMPLEMENTATION trampoline_common {
   PLATFORM_FILES [] {
     STRING PATH;
     STRING CFILE[];
+    STRING CPPFILE[];
     STRING ASFILE[];
   };
   
@@ -118,6 +119,14 @@ IMPLEMENTATION trampoline_common {
     } COMMAND[];
   };
   
+  BUILDOPTIONS [] {
+    STRING CFLAGS[];
+    STRING CPPFLAGS[];
+    STRING COMMONFLAGS[]; /* common flags for C++ and C */
+    STRING ASFLAGS[];
+    STRING LDFLAGS[];
+  };
+  
   OS {
     /* Standard OIL attributes */
     ENUM [STANDARD, EXTENDED] STATUS;
@@ -151,13 +160,17 @@ IMPLEMENTATION trampoline_common {
     BOOLEAN [
       TRUE {
         STRING APP_SRC[];
+        STRING APP_CPPSRC[];
         STRING CFLAGS[];
         STRING CPPFLAGS[];
+        STRING COMMONFLAGS[]; /* common flags for C++ and C */
         STRING ASFLAGS[];
         STRING LDFLAGS[];
         STRING APP_NAME = "trampoline";
         STRING TRAMPOLINE_BASE_PATH = "..";
         STRING COMPILER = "gcc";
+        STRING COMPILER = "gcc";
+        STRING CPPCOMPILER = "g++";
         STRING ASSEMBLER = "gcc";
         STRING LINKER = "gcc";
         STRING COPIER = "objcopy";

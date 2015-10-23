@@ -14,7 +14,7 @@ import cross_compiler_download
 def buildForLinux64OnMacOSX (dictionary, EXECUTABLE, GOAL, maxParallelJobs, displayCommands) :
 #--- Too chain installation
   GCC_VERSION = "4.9.2"
-  BINUTILS_VERSION = "2.24"
+  BINUTILS_VERSION = "2.25"
   TOOL_CHAIN_NAME = "binutils-" + BINUTILS_VERSION + "-gcc-" + GCC_VERSION + "-for-linux64"
   installDir = tool_chain_installation_path.toolChainInstallationPath ()
   TOOL_CHAIN_INSTALL_PATH = installDir + "/" + TOOL_CHAIN_NAME
@@ -36,6 +36,7 @@ def buildForLinux64OnMacOSX (dictionary, EXECUTABLE, GOAL, maxParallelJobs, disp
   gmf.mCompilationMessage = "Compiling for Linux64"
   gmf.mLinkingMessage = "Linking for Linux64"
   gmf.mStripMessage = "Stripping"
+  gmf.mCrossCompilation = "Linux-x86_64"
 #--- Options for all compilers
   gmf.mAllCompilerOptions = default_build_options.allCompilerOptions (["-Wconversion"])
 #--- Options for release mode

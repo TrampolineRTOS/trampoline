@@ -103,7 +103,7 @@ bool GALGAS_location::isValidAndNotNowhere (void) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_bool GALGAS_location::reader_isNowhere (UNUSED_LOCATION_ARGS) const {
+GALGAS_bool GALGAS_location::getter_isNowhere (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
   if (mIsValid) {
     result = GALGAS_bool (NULL == mSourceText) ;
@@ -161,7 +161,7 @@ void GALGAS_location::description (C_String & ioString,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_location::reader_locationString (C_Compiler * inCompiler
+GALGAS_string GALGAS_location::getter_locationString (C_Compiler * inCompiler
                                                       COMMA_LOCATION_ARGS) const {
   GALGAS_string result ;
   if (isValid ()) {
@@ -181,7 +181,7 @@ GALGAS_string GALGAS_location::reader_locationString (C_Compiler * inCompiler
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_location::reader_file (C_Compiler * inCompiler
+GALGAS_string GALGAS_location::getter_file (C_Compiler * inCompiler
                                             COMMA_LOCATION_ARGS) const {
   GALGAS_string result ;
   if (isValid ()) {
@@ -196,7 +196,7 @@ GALGAS_string GALGAS_location::reader_file (C_Compiler * inCompiler
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_uint GALGAS_location::reader_locationIndex (C_Compiler * inCompiler
+GALGAS_uint GALGAS_location::getter_locationIndex (C_Compiler * inCompiler
                                                    COMMA_LOCATION_ARGS) const {
   GALGAS_uint result ;
   if (isValid ()) {
@@ -211,7 +211,7 @@ GALGAS_uint GALGAS_location::reader_locationIndex (C_Compiler * inCompiler
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_uint GALGAS_location::reader_column (C_Compiler * inCompiler
+GALGAS_uint GALGAS_location::getter_column (C_Compiler * inCompiler
                                             COMMA_LOCATION_ARGS) const {
   GALGAS_uint result ;
   if (isValid ()) {
@@ -226,7 +226,7 @@ GALGAS_uint GALGAS_location::reader_column (C_Compiler * inCompiler
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_uint GALGAS_location::reader_line (C_Compiler * inCompiler
+GALGAS_uint GALGAS_location::getter_line (C_Compiler * inCompiler
                                           COMMA_LOCATION_ARGS) const {
   GALGAS_uint result ;
   if (isValid ()) {

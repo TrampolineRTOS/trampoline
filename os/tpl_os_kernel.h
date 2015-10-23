@@ -251,8 +251,8 @@ typedef struct
   P2CONST(tpl_proc_static, TYPEDEF, OS_CONST) s_elected;
   P2VAR(tpl_proc, TYPEDEF, OS_VAR)            running;
   P2VAR(tpl_proc, TYPEDEF, OS_VAR)            elected;
-  VAR(uint32, TYPEDEF)                        running_id;
-  VAR(uint32, TYPEDEF)                        elected_id;
+  VAR(sint32, TYPEDEF)                        running_id;
+  VAR(sint32, TYPEDEF)                        elected_id;
 
 /**
  * 2 bits are used in this field.

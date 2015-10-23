@@ -522,12 +522,10 @@ appendCppHyphenLineComment (void) {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-static void
-internalWriteCstringConstant (AC_OutputStream & ioStream,
-                              const C_String & inString,
-                              const int32_t inStringLength,
-                              const int32_t inLineMaxLength) {
-  ioStream << "\"" ;
+static void internalWriteCstringConstantWithoutDelimiters (AC_OutputStream & ioStream,
+                                                           const C_String & inString,
+                                                           const int32_t inStringLength,
+                                                           const int32_t inLineMaxLength) {
   int32_t currentColumn = 0 ;
   for (int32_t i=0 ; i<inStringLength ; i++) {
     if (currentColumn > inLineMaxLength) {
@@ -587,30 +585,42 @@ internalWriteCstringConstant (AC_OutputStream & ioStream,
       }
     }
   }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void internalWriteCstringConstant (AC_OutputStream & ioStream,
+                                          const C_String & inString,
+                                          const int32_t inStringLength,
+                                          const int32_t inLineMaxLength) {
+  ioStream << "\"" ;
+  internalWriteCstringConstantWithoutDelimiters (ioStream, inString, inStringLength, inLineMaxLength) ;
   ioStream << "\"" ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void AC_OutputStream::
-appendCLiteralStringConstant (const C_String & inString) {
+void AC_OutputStream::appendCLiteralStringConstant (const C_String & inString) {
   internalWriteCstringConstant (*this, inString, inString.length (), 150) ;
 }
 
+//---------------------------------------------------------------------------------------------------------------------*
+
+void AC_OutputStream::appendCLiteralStringConstantWithoutDelimiters (const C_String & inString) {
+  internalWriteCstringConstantWithoutDelimiters (*this, inString, inString.length (), 150) ;
+}
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void AC_OutputStream::
-appendCLiteralStringConstant (const C_String & inString,
-                              const int32_t inLineMaxLength) {
+void AC_OutputStream::appendCLiteralStringConstant (const C_String & inString,
+                                                    const int32_t inLineMaxLength) {
   internalWriteCstringConstant (*this, inString, inString.length (), inLineMaxLength) ;
 }
 
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void AC_OutputStream::
-appendCLiteralCharConstant (const utf32 c) {
+void AC_OutputStream::appendCLiteralCharConstant (const utf32 c) {
   switch (UNICODE_VALUE (c)) {
   case '\0' :
     *this << ("'\\0'") ;
@@ -662,11 +672,10 @@ appendCLiteralCharConstant (const utf32 c) {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void AC_OutputStream::
-appendFileHeaderComment (const C_String & inLineCommentPrefix,
-                         const C_String & inTitle,
-                         const C_String & in_generatedBy_subtitle,
-                         const bool inIncludeLGPLtext) {
+void AC_OutputStream::appendFileHeaderComment (const C_String & inLineCommentPrefix,
+                                               const C_String & inTitle,
+                                               const C_String & in_generatedBy_subtitle,
+                                               const bool inIncludeLGPLtext) {
   if (inLineCommentPrefix.length () > 0) {
     appendCppHyphenLineCommentWithoutExtraBlankLine () ;
     appendCppSpaceLineComment () ;

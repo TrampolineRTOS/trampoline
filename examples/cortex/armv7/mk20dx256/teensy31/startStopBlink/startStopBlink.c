@@ -87,23 +87,24 @@ ButtonState readButton()
 
 TASK(button_scanner)
 {
-  static uint8 state = 1;
+  static uint8 state = HIGH;
   ButtonState button = readButton();
 
   if (button == BUTTON_PUSH) {
-    if (state)
+    if (state == HIGH)
     {
       CancelAlarm(blink_blink);
-      digitalWrite(3, LOW);
-      state = 0;
+      state = LOW;
     }
     else
     {
       SetRelAlarm(blink_blink, 500, 500);
-      digitalWrite(3, HIGH);
-      state = 1;
+      state = HIGH;
     }
   }
+
+  /* update the LED according to the state */
+  digitalWrite(3, state);
 
   TerminateTask();
 }

@@ -46,7 +46,7 @@ class C_UIntCommandLineOption : public C_CommandLineOption {
 //--- Attributes
   private : C_UIntCommandLineOption * mNext ;
   public : uint32_t mValue ;
-  public : inline uint32_t reader_value (void) const { return mValue ; }
+  public : inline uint32_t getter_value (void) const { return mValue ; }
   public : const uint32_t mDefaultValue ;
 
 //--- Static methods

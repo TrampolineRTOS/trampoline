@@ -36,13 +36,19 @@ SECTIONS
   ostext : {
     *(.SC_handler)
     *(.EI_handler)
-    *(.osCode)
+    /*--- Initialisation des objets globaux C++ */
+    . = ALIGN (4) ;
+    __constructor_array_start = . ;
+    KEEP (*(.init_array)) ;
+    . = ALIGN (4) ;
+    __constructor_array_end = . ;
+    KEEP(*(.osCode))
     *(.appCommonCode) 
   } >FLASH
 
   . = ALIGN(4);
   osconst : {
-    *(.osConst)
+    KEEP(*(.osConst))
   } >FLASH
 
   /*
@@ -161,7 +167,7 @@ end foreach
     __data_start = . ;
     * (.data.*init*) ;
     * (.data*) ;
-    *(.osVar)
+    KEEP(*(.osVar)) ;
 %
 foreach proc in PROCESSES do
 %

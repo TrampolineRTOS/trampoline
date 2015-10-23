@@ -32,7 +32,7 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                               awakeFromNib                                  *
+//                               awakeFromNib                                                                          *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -50,7 +50,7 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                                initialize                                   *
+//                                initialize                                                                           *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -80,7 +80,7 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                    bind:toObject:withKeyPath:options:                       *
+//                    bind:toObject:withKeyPath:options:                                                               *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -94,7 +94,7 @@
     [inObservableObject
       addObserver:self
       forKeyPath:inObservableKeyPath
-      options:0
+      options:NSKeyValueObservingOptionNew
       context:nil
     ] ;
     id value = [inObservableObject valueForKeyPath:inObservableKeyPath] ;
@@ -106,7 +106,7 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                                 unbind:                                     *
+//                                 unbind:                                                                             *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -193,7 +193,7 @@
   if (self) {
     mInheritedEnableState = [super isEnabled] ;
     mFontButtonBindingEnableState = YES ;
-    [self setTitle:nil] ;
+    [self setTitle:@""] ;
   }
   return self ;
 }
@@ -208,7 +208,7 @@
   if (self) {
     mInheritedEnableState = [super isEnabled] ;
     mFontButtonBindingEnableState = YES ;
-    [self setTitle:nil] ;
+    [self setTitle:@""] ;
   }
   return self ;
 }
@@ -223,7 +223,7 @@
   if (self) {
     mInheritedEnableState = [super isEnabled] ;
     mFontButtonBindingEnableState = YES ;
-    [self setTitle:nil] ;
+    [self setTitle:@""] ;
   }
   return self ;
 }

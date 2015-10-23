@@ -35,6 +35,32 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+
+#ifndef COMPILE_FOR_WIN32
+  #include <pwd.h>
+#endif
+
+#ifdef COMPILE_FOR_WIN32
+  #include <Shlobj.h>
+#endif
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+#ifndef COMPILE_FOR_WIN32
+  GALGAS_string GALGAS_string::constructor_homeDirectory (UNUSED_LOCATION_ARGS) {
+    return GALGAS_string (getpwuid (getuid ())->pw_dir) ;
+  }
+#endif
+
+#ifdef COMPILE_FOR_WIN32
+  GALGAS_string GALGAS_string::constructor_homeDirectory (UNUSED_LOCATION_ARGS) {
+    char path [MAX_PATH] ;
+    SHGetFolderPath (NULL, CSIDL_PROFILE, NULL, 0, path) ;
+    return GALGAS_string (path).getter_unixPathWithNativePath (HERE) ;
+  }
+#endif
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
@@ -120,7 +146,7 @@ GALGAS_string GALGAS_string::add_operation (const GALGAS_string & inOperand2,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_lstring GALGAS_string::reader_nowhere (LOCATION_ARGS) const {
+GALGAS_lstring GALGAS_string::getter_nowhere (LOCATION_ARGS) const {
   GALGAS_lstring result ;
   if (isValid ()) {
     result.mAttribute_string = * this ;
@@ -131,7 +157,7 @@ GALGAS_lstring GALGAS_string::reader_nowhere (LOCATION_ARGS) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_bool GALGAS_string::reader_fileExists (UNUSED_LOCATION_ARGS) const {
+GALGAS_bool GALGAS_string::getter_fileExists (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
   if (isValid ()) {
     result = GALGAS_bool (C_FileManager::fileExistsAtPath (mString)) ;
@@ -141,7 +167,7 @@ GALGAS_bool GALGAS_string::reader_fileExists (UNUSED_LOCATION_ARGS) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_bool GALGAS_string::reader_directoryExists (UNUSED_LOCATION_ARGS) const {
+GALGAS_bool GALGAS_string::getter_directoryExists (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
   if (isValid ()) {
     result = GALGAS_bool (C_FileManager::directoryExists (mString)) ;
@@ -151,7 +177,7 @@ GALGAS_bool GALGAS_string::reader_directoryExists (UNUSED_LOCATION_ARGS) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_uint GALGAS_string::reader_length (UNUSED_LOCATION_ARGS) const {
+GALGAS_uint GALGAS_string::getter_length (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
   if (isValid ()) {
     result = GALGAS_uint ((uint32_t) mString.length ()) ;
@@ -161,7 +187,7 @@ GALGAS_uint GALGAS_string::reader_length (UNUSED_LOCATION_ARGS) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_range GALGAS_string::reader_range (UNUSED_LOCATION_ARGS) const {
+GALGAS_range GALGAS_string::getter_range (UNUSED_LOCATION_ARGS) const {
   GALGAS_range result ;
   if (isValid ()) {
     result = GALGAS_range (GALGAS_uint (0), GALGAS_uint ((uint32_t) mString.length ())) ;
@@ -171,7 +197,7 @@ GALGAS_range GALGAS_string::reader_range (UNUSED_LOCATION_ARGS) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_string::reader_md_35_ (UNUSED_LOCATION_ARGS) const {
+GALGAS_string GALGAS_string::getter_md_35_ (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
   if (isValid ()) {
     result = GALGAS_string (mString.md5 ()) ;
@@ -181,7 +207,7 @@ GALGAS_string GALGAS_string::reader_md_35_ (UNUSED_LOCATION_ARGS) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_string::reader_utf_33__32_Representation (UNUSED_LOCATION_ARGS) const {
+GALGAS_string GALGAS_string::getter_utf_33__32_Representation (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
   if (isValid ()) {
     C_String s ;
@@ -193,7 +219,7 @@ GALGAS_string GALGAS_string::reader_utf_33__32_Representation (UNUSED_LOCATION_A
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_string::reader_HTMLRepresentation (UNUSED_LOCATION_ARGS) const {
+GALGAS_string GALGAS_string::getter_HTMLRepresentation (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
   if (isValid ()) {
     result = GALGAS_string (mString.HTMLRepresentation ()) ;
@@ -203,7 +229,7 @@ GALGAS_string GALGAS_string::reader_HTMLRepresentation (UNUSED_LOCATION_ARGS) co
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_string::reader_utf_38_Representation (UNUSED_LOCATION_ARGS) const {
+GALGAS_string GALGAS_string::getter_utf_38_Representation (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
   if (isValid ()) {
     C_String s ;
@@ -215,7 +241,19 @@ GALGAS_string GALGAS_string::reader_utf_38_Representation (UNUSED_LOCATION_ARGS)
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_string::reader_identifierRepresentation (UNUSED_LOCATION_ARGS) const {
+GALGAS_string GALGAS_string::getter_utf_38_RepresentationWithoutDelimiters (UNUSED_LOCATION_ARGS) const {
+  GALGAS_string result ;
+  if (isValid ()) {
+    C_String s ;
+    s.appendCLiteralStringConstantWithoutDelimiters (mString) ;
+    result = GALGAS_string (s) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_string GALGAS_string::getter_identifierRepresentation (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
   if (isValid ()) {
     result = GALGAS_string (mString.identifierRepresentation ()) ;
@@ -225,7 +263,7 @@ GALGAS_string GALGAS_string::reader_identifierRepresentation (UNUSED_LOCATION_AR
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_string::reader_nameRepresentation (UNUSED_LOCATION_ARGS) const {
+GALGAS_string GALGAS_string::getter_nameRepresentation (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
   if (isValid ()) {
     result = GALGAS_string (mString.nameRepresentation ()) ;
@@ -235,7 +273,7 @@ GALGAS_string GALGAS_string::reader_nameRepresentation (UNUSED_LOCATION_ARGS) co
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_string::reader_subStringFromIndex (const GALGAS_uint & inStartIndex
+GALGAS_string GALGAS_string::getter_subStringFromIndex (const GALGAS_uint & inStartIndex
                                                         COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
   if (inStartIndex.isValid ()) {
@@ -246,7 +284,7 @@ GALGAS_string GALGAS_string::reader_subStringFromIndex (const GALGAS_uint & inSt
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_string::reader_rightSubString (const GALGAS_uint & inLength
+GALGAS_string GALGAS_string::getter_rightSubString (const GALGAS_uint & inLength
                                                     COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
   if (inLength.isValid ()) {
@@ -257,7 +295,7 @@ GALGAS_string GALGAS_string::reader_rightSubString (const GALGAS_uint & inLength
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_string::reader_leftSubString (const GALGAS_uint & inLength
+GALGAS_string GALGAS_string::getter_leftSubString (const GALGAS_uint & inLength
                                                    COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
   if (inLength.isValid ()) {
@@ -268,7 +306,7 @@ GALGAS_string GALGAS_string::reader_leftSubString (const GALGAS_uint & inLength
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_string::reader_subString (const GALGAS_uint & inStart,
+GALGAS_string GALGAS_string::getter_subString (const GALGAS_uint & inStart,
                                                const GALGAS_uint & inLength
                                                COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
@@ -282,7 +320,7 @@ GALGAS_string GALGAS_string::reader_subString (const GALGAS_uint & inStart,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_string::reader_absolutePathFromPath (const GALGAS_string & inBasePath
+GALGAS_string GALGAS_string::getter_absolutePathFromPath (const GALGAS_string & inBasePath
                                                           COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
   if (inBasePath.isValid ()) {
@@ -303,7 +341,7 @@ GALGAS_string GALGAS_string::reader_absolutePathFromPath (const GALGAS_string & 
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_string::reader_relativePathFromPath (const GALGAS_string & inReferencePath
+GALGAS_string GALGAS_string::getter_relativePathFromPath (const GALGAS_string & inReferencePath
                                                           COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
   if (isValid () && inReferencePath.isValid ()) {
@@ -314,7 +352,7 @@ GALGAS_string GALGAS_string::reader_relativePathFromPath (const GALGAS_string & 
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_char GALGAS_string::reader_lastCharacter (C_Compiler * inCompiler
+GALGAS_char GALGAS_string::getter_lastCharacter (C_Compiler * inCompiler
                                                  COMMA_LOCATION_ARGS) const {
   GALGAS_char result ;
   if (isValid ()) {
@@ -332,67 +370,67 @@ GALGAS_char GALGAS_string::reader_lastCharacter (C_Compiler * inCompiler
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_string::reader_stringByStandardizingPath (UNUSED_LOCATION_ARGS) const {
+GALGAS_string GALGAS_string::getter_stringByStandardizingPath (UNUSED_LOCATION_ARGS) const {
   return GALGAS_string (mString.stringByStandardizingPath ()) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_string::reader_pathExtension (UNUSED_LOCATION_ARGS) const {
+GALGAS_string GALGAS_string::getter_pathExtension (UNUSED_LOCATION_ARGS) const {
   return GALGAS_string (mString.pathExtension ()) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_char GALGAS_string::reader_firstCharacterOrNul (UNUSED_LOCATION_ARGS) const {
+GALGAS_char GALGAS_string::getter_firstCharacterOrNul (UNUSED_LOCATION_ARGS) const {
   return GALGAS_char (mString.readCharOrNul (0 COMMA_HERE)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_string::reader_stringByDeletingPathExtension (UNUSED_LOCATION_ARGS) const {
+GALGAS_string GALGAS_string::getter_stringByDeletingPathExtension (UNUSED_LOCATION_ARGS) const {
   return GALGAS_string (mString.stringByDeletingPathExtension ()) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_string::reader_stringByDeletingLastPathComponent (UNUSED_LOCATION_ARGS) const {
+GALGAS_string GALGAS_string::getter_stringByDeletingLastPathComponent (UNUSED_LOCATION_ARGS) const {
   return GALGAS_string (mString.stringByDeletingLastPathComponent ()) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_string::reader_stringByCapitalizingFirstCharacter (UNUSED_LOCATION_ARGS) const {
+GALGAS_string GALGAS_string::getter_stringByCapitalizingFirstCharacter (UNUSED_LOCATION_ARGS) const {
   return GALGAS_string (mString.stringByCapitalizingFirstCharacter ()) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_string::reader_uppercaseString (UNUSED_LOCATION_ARGS) const {
+GALGAS_string GALGAS_string::getter_uppercaseString (UNUSED_LOCATION_ARGS) const {
   return GALGAS_string (mString.uppercaseString ()) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_string::reader_lowercaseString (UNUSED_LOCATION_ARGS) const {
+GALGAS_string GALGAS_string::getter_lowercaseString (UNUSED_LOCATION_ARGS) const {
   return GALGAS_string (mString.lowercaseString ()) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_string::reader_reversedString (UNUSED_LOCATION_ARGS) const {
+GALGAS_string GALGAS_string::getter_reversedString (UNUSED_LOCATION_ARGS) const {
   return GALGAS_string (mString.reversedString ()) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_string::reader_stringByTrimmingWhiteSpaces (UNUSED_LOCATION_ARGS) const {
+GALGAS_string GALGAS_string::getter_stringByTrimmingWhiteSpaces (UNUSED_LOCATION_ARGS) const {
   return GALGAS_string (mString.stringByTrimmingSeparators ()) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_uint GALGAS_string::reader_currentColumn (UNUSED_LOCATION_ARGS) const {
+GALGAS_uint GALGAS_string::getter_currentColumn (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
   if (isValid ()) {
     result = GALGAS_uint (mString.currentColumn ()) ;
@@ -412,7 +450,7 @@ void GALGAS_string::modifier_appendSpacesUntilColumn (GALGAS_uint inColumnIndex,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_string::reader_stringByLeftPadding (const GALGAS_uint & inPaddedStringLength,
+GALGAS_string GALGAS_string::getter_stringByLeftPadding (const GALGAS_uint & inPaddedStringLength,
                                                          const GALGAS_char & inPaddingChar
                                                          COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
@@ -432,9 +470,9 @@ GALGAS_string GALGAS_string::reader_stringByLeftPadding (const GALGAS_uint & inP
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_string::reader_stringByRightPadding (const GALGAS_uint & inPaddedStringLength,
-                                                            const GALGAS_char & inPaddingChar
-                                                            COMMA_UNUSED_LOCATION_ARGS) const {
+GALGAS_string GALGAS_string::getter_stringByRightPadding (const GALGAS_uint & inPaddedStringLength,
+                                                          const GALGAS_char & inPaddingChar
+                                                          COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
   if ((inPaddedStringLength.isValid ()) && (inPaddingChar.isValid ())) {
     const utf32 paddingChar = inPaddingChar.charValue () ;
@@ -452,7 +490,7 @@ GALGAS_string GALGAS_string::reader_stringByRightPadding (const GALGAS_uint & in
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_string::reader_stringByLeftAndRightPadding (const GALGAS_uint & inPaddedStringLength,
+GALGAS_string GALGAS_string::getter_stringByLeftAndRightPadding (const GALGAS_uint & inPaddedStringLength,
                                                                    const GALGAS_char & inPaddingChar
                                                                    COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
@@ -475,13 +513,13 @@ GALGAS_string GALGAS_string::reader_stringByLeftAndRightPadding (const GALGAS_ui
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_string::reader_lastPathComponent (UNUSED_LOCATION_ARGS) const {
+GALGAS_string GALGAS_string::getter_lastPathComponent (UNUSED_LOCATION_ARGS) const {
   return GALGAS_string (mString.lastPathComponent ()) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_string::reader_stringByReplacingStringByString (const GALGAS_string & inSearchedString,
+GALGAS_string GALGAS_string::getter_stringByReplacingStringByString (const GALGAS_string & inSearchedString,
                                                                        const GALGAS_string & inReplacementString,
                                                                        C_Compiler * inCompiler
                                                                        COMMA_LOCATION_ARGS) const {
@@ -495,7 +533,7 @@ GALGAS_string GALGAS_string::reader_stringByReplacingStringByString (const GALGA
     }else{
       bool ok = false ;
       uint32_t replacementCount = 0 ;
-      const C_String s = mString.stringByReplacingStringByString (inSearchedString.mString, inReplacementString.mString, replacementCount, ok COMMA_THERE) ;
+      const C_String s = mString.stringByReplacingStringByString (inSearchedString.mString, inReplacementString.mString, replacementCount, ok) ;
       result = GALGAS_string (s) ;
     }
   }
@@ -504,7 +542,7 @@ GALGAS_string GALGAS_string::reader_stringByReplacingStringByString (const GALGA
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_string::reader_stringByRemovingCharacterAtIndex (const GALGAS_uint & inIndex,
+GALGAS_string GALGAS_string::getter_stringByRemovingCharacterAtIndex (const GALGAS_uint & inIndex,
                                                                         C_Compiler * inCompiler
                                                                         COMMA_LOCATION_ARGS) const {
   GALGAS_string result ;
@@ -525,7 +563,7 @@ GALGAS_string GALGAS_string::reader_stringByRemovingCharacterAtIndex (const GALG
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_char GALGAS_string::reader_characterAtIndex (const GALGAS_uint & inIndex,
+GALGAS_char GALGAS_string::getter_characterAtIndex (const GALGAS_uint & inIndex,
                                                       C_Compiler * inCompiler
                                                       COMMA_LOCATION_ARGS) const {
   GALGAS_char result ;
@@ -545,7 +583,7 @@ GALGAS_char GALGAS_string::reader_characterAtIndex (const GALGAS_uint & inIndex,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_bool GALGAS_string::reader_containsCharacter (const GALGAS_char & inCharacter
+GALGAS_bool GALGAS_string::getter_containsCharacter (const GALGAS_char & inCharacter
                                                      COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
   if (isValid () && inCharacter.isValid ()) {
@@ -556,7 +594,7 @@ GALGAS_bool GALGAS_string::reader_containsCharacter (const GALGAS_char & inChara
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_bool GALGAS_string::reader_containsCharacterInRange (const GALGAS_char & inFirstCharacter,
+GALGAS_bool GALGAS_string::getter_containsCharacterInRange (const GALGAS_char & inFirstCharacter,
                                                             const GALGAS_char & inLastCharacter
                                                             COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
@@ -581,19 +619,19 @@ void GALGAS_string::description (C_String & ioString,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_string::reader_unixPathWithNativePath (UNUSED_LOCATION_ARGS) const {
+GALGAS_string GALGAS_string::getter_unixPathWithNativePath (UNUSED_LOCATION_ARGS) const {
   return GALGAS_string (C_FileManager::unixPathWithNativePath (mString)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_string::reader_nativePathWithUnixPath (UNUSED_LOCATION_ARGS) const {
+GALGAS_string GALGAS_string::getter_nativePathWithUnixPath (UNUSED_LOCATION_ARGS) const {
   return GALGAS_string (C_FileManager::nativePathWithUnixPath (mString)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_stringlist GALGAS_string::reader_componentsSeparatedByString (const GALGAS_string & inSeparator
+GALGAS_stringlist GALGAS_string::getter_componentsSeparatedByString (const GALGAS_string & inSeparator
                                                                     COMMA_LOCATION_ARGS) const {
   GALGAS_stringlist result ;
   if (inSeparator.isValid ()) {
@@ -609,7 +647,7 @@ GALGAS_stringlist GALGAS_string::reader_componentsSeparatedByString (const GALGA
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_sint GALGAS_string::reader_system (UNUSED_LOCATION_ARGS) const {
+GALGAS_sint GALGAS_string::getter_system (UNUSED_LOCATION_ARGS) const {
   return GALGAS_sint (::system (mString.cString (HERE))) ;
 }
 
@@ -647,7 +685,7 @@ static void recursiveSearchForRegularFiles (const C_String & inUnixStartPath,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_stringlist GALGAS_string::reader_regularFiles (const GALGAS_bool & inRecursiveSearch
+GALGAS_stringlist GALGAS_string::getter_regularFiles (const GALGAS_bool & inRecursiveSearch
                                                       COMMA_LOCATION_ARGS) const {
   GALGAS_stringlist result ;
   if (inRecursiveSearch.isValid ()) {
@@ -695,7 +733,7 @@ recursiveSearchForHiddenFiles (const C_String & inUnixStartPath,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_stringlist GALGAS_string::reader_hiddenFiles (const GALGAS_bool & inRecursiveSearch
+GALGAS_stringlist GALGAS_string::getter_hiddenFiles (const GALGAS_bool & inRecursiveSearch
                                                      COMMA_LOCATION_ARGS) const {
   GALGAS_stringlist result ;
   if (inRecursiveSearch.isValid ()) {
@@ -742,7 +780,7 @@ recursiveSearchForDirectories (const C_String & inUnixStartPath,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_stringlist GALGAS_string::reader_directories (const GALGAS_bool & inRecursiveSearch
+GALGAS_stringlist GALGAS_string::getter_directories (const GALGAS_bool & inRecursiveSearch
                                                      COMMA_LOCATION_ARGS) const {
   GALGAS_stringlist result ;
   if (inRecursiveSearch.isValid ()) {
@@ -803,7 +841,7 @@ recursiveSearchForRegularFiles (const C_String & inUnixStartPath,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_stringlist GALGAS_string::reader_regularFilesWithExtensions (const GALGAS_bool & inRecursiveSearch,
+GALGAS_stringlist GALGAS_string::getter_regularFilesWithExtensions (const GALGAS_bool & inRecursiveSearch,
                                                                       const GALGAS_stringlist & inExtensionList
                                                                       COMMA_LOCATION_ARGS) const {
   GALGAS_stringlist result ;
@@ -867,7 +905,7 @@ recursiveSearchForDirectories (const C_String & inUnixStartPath,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_stringlist GALGAS_string::reader_directoriesWithExtensions (const GALGAS_bool & inRecursiveSearch,
+GALGAS_stringlist GALGAS_string::getter_directoriesWithExtensions (const GALGAS_bool & inRecursiveSearch,
                                                                    const GALGAS_stringlist & inExtensionList
                                                                    COMMA_LOCATION_ARGS) const {
   GALGAS_stringlist result ;
@@ -1035,7 +1073,7 @@ GALGAS_string GALGAS_string::constructor_retrieveAndResetTemplateString (C_Compi
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_bool GALGAS_string::reader_doesEnvironmentVariableExist (UNUSED_LOCATION_ARGS) const {
+GALGAS_bool GALGAS_string::getter_doesEnvironmentVariableExist (UNUSED_LOCATION_ARGS) const {
   return GALGAS_bool (::getenv (mString.cString (HERE)) != NULL) ;
 }
 
@@ -1052,7 +1090,7 @@ void GALGAS_string::class_method_deleteFile (GALGAS_string inFilePath,
     }else{
       const C_String errorMessage = C_FileManager::deleteFile (inFilePath.mString) ;
       if (errorMessage.length () == 0) {
-        ggs_printFileOperationSuccess (C_String ("Deleted '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
+        ggs_printFileOperationSuccess (C_String ("Deleted '") + inFilePath.mString + "'.\n") ;
       }else{
         C_String message ;
         message << "cannot perform delete '" << inFilePath.mString << "' file: " << errorMessage ;
@@ -1167,30 +1205,38 @@ void GALGAS_string::class_method_generateFile (GALGAS_string inStartPath,
 void GALGAS_string::class_method_generateFileWithPattern (GALGAS_string inStartPath,
                                                           GALGAS_string inFileName,
                                                           GALGAS_string inLineCommentPrefix,
+                                                          GALGAS_string inHeader,
                                                           GALGAS_string inDefaultUserZone1,
                                                           GALGAS_string inGeneratedZone2,
                                                           GALGAS_string inDefaultUserZone2,
                                                           GALGAS_string inGeneratedZone3,
+                                                          GALGAS_bool inMakeExecutable,
                                                           C_Compiler * inCompiler
                                                           COMMA_UNUSED_LOCATION_ARGS) {
   const bool built = (inStartPath.isValid ())
     && (inFileName.isValid ())
     && (inLineCommentPrefix.isValid ())
     && (inDefaultUserZone1.isValid ())
+    && (inHeader.isValid ())
     && (inDefaultUserZone2.isValid ())
     && (inDefaultUserZone2.isValid ())
     && (inGeneratedZone3.isValid ())
+    && (inMakeExecutable.isValid ())
   ;
   if (built) {
     TC_UniqueArray <C_String> directoriesToExclude ;
-    inCompiler->generateFileWithPatternFromPathes (inStartPath.mString,
-                                        directoriesToExclude,
-                                        inLineCommentPrefix.mString,
-                                        inFileName.mString,
-                                        inDefaultUserZone1.mString,
-                                        inGeneratedZone2.mString,
-                                        inDefaultUserZone2.mString,
-                                        inGeneratedZone3.mString) ;
+    inCompiler->generateFileWithPatternFromPathes (
+      inStartPath.mString,
+      directoriesToExclude,
+      inLineCommentPrefix.mString,
+      inFileName.mString,
+      inHeader.mString,
+      inDefaultUserZone1.mString,
+      inGeneratedZone2.mString,
+      inDefaultUserZone2.mString,
+      inGeneratedZone3.mString,
+      inMakeExecutable.boolValue ()
+    ) ;
   }
 }
 
@@ -1237,9 +1283,9 @@ void GALGAS_string::method_writeToFile (GALGAS_string inFilePath,
       const bool verboseOptionOn = gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ;
       const bool ok = C_FileManager::writeStringToFile (mString, inFilePath.mString) ;
       if (ok && verboseOptionOn && fileAlreadyExists) {
-        ggs_printFileOperationSuccess (C_String ("Replaced '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
+        ggs_printFileOperationSuccess (C_String ("Replaced '") + inFilePath.mString + "'.\n") ;
       }else if (ok && verboseOptionOn && ! fileAlreadyExists) {
-        ggs_printFileCreationSuccess (C_String ("Created '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
+        ggs_printFileCreationSuccess (C_String ("Created '") + inFilePath.mString + "'.\n") ;
       }else if (! ok) {
         C_String message ;
         message << "cannot write '" << inFilePath.mString << "' file" ;
@@ -1278,9 +1324,9 @@ void GALGAS_string::method_writeToFileWhenDifferentContents (GALGAS_string inFil
         }else{
           ok = C_FileManager::writeStringToFile (mString, inFilePath.mString) ;
           if (ok && verboseOptionOn && fileAlreadyExists) {
-            ggs_printFileOperationSuccess (C_String ("Replaced '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
+            ggs_printFileOperationSuccess (C_String ("Replaced '") + inFilePath.mString + "'.\n") ;
           }else if (ok && verboseOptionOn && ! fileAlreadyExists) {
-            ggs_printFileCreationSuccess (C_String ("Created '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
+            ggs_printFileCreationSuccess (C_String ("Created '") + inFilePath.mString + "'.\n") ;
           }else if (! ok) {
             C_String message ;
             message << "cannot write '" << inFilePath.mString << "' file" ;
@@ -1307,9 +1353,9 @@ void GALGAS_string::method_writeToExecutableFile (GALGAS_string inFilePath,
       const bool verboseOptionOn = gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ;
       const bool ok = C_FileManager::writeStringToExecutableFile (mString, inFilePath.mString) ;
       if (ok && verboseOptionOn && fileAlreadyExists) {
-        ggs_printFileOperationSuccess (C_String ("Replaced '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
+        ggs_printFileOperationSuccess (C_String ("Replaced '") + inFilePath.mString + "'.\n") ;
       }else if (ok && verboseOptionOn && ! fileAlreadyExists) {
-        ggs_printFileCreationSuccess (C_String ("Created '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
+        ggs_printFileCreationSuccess (C_String ("Created '") + inFilePath.mString + "'.\n") ;
       }else if (! ok) {
         C_String message ;
         message << "cannot write '" << inFilePath.mString << "' file" ;
@@ -1348,9 +1394,9 @@ void GALGAS_string::method_writeToExecutableFileWhenDifferentContents (GALGAS_st
         }else{
           ok = C_FileManager::writeStringToExecutableFile (mString, inFilePath.mString) ;
           if (ok && verboseOptionOn && fileAlreadyExists) {
-            ggs_printFileOperationSuccess (C_String ("Replaced '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
+            ggs_printFileOperationSuccess (C_String ("Replaced '") + inFilePath.mString + "'.\n") ;
           }else if (ok && verboseOptionOn && ! fileAlreadyExists) {
-            ggs_printFileCreationSuccess (C_String ("Created '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
+            ggs_printFileCreationSuccess (C_String ("Created '") + inFilePath.mString + "'.\n") ;
           }else if (! ok) {
             C_String message ;
             message << "cannot write '" << inFilePath.mString << "' file" ;
@@ -1367,7 +1413,7 @@ void GALGAS_string::method_writeToExecutableFileWhenDifferentContents (GALGAS_st
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_uint GALGAS_string::reader_capacity (UNUSED_LOCATION_ARGS) const {
+GALGAS_uint GALGAS_string::getter_capacity (UNUSED_LOCATION_ARGS) const {
   return GALGAS_uint ((uint32_t) mString.capacity ()) ;
 }
 
@@ -1485,7 +1531,7 @@ GALGAS_string GALGAS_string::constructor_CppString (const GALGAS_string & inStri
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_bool GALGAS_string::reader_isDecimalUnsignedNumber (UNUSED_LOCATION_ARGS) const {
+GALGAS_bool GALGAS_string::getter_isDecimalUnsignedNumber (UNUSED_LOCATION_ARGS) const {
   bool isDecimalUnsignedNumber = true ;
   for (int32_t i=0 ; (i<mString.length ()) && isDecimalUnsignedNumber ; i++) {
     const utf32 c = mString (i COMMA_HERE) ;
@@ -1496,7 +1542,7 @@ GALGAS_bool GALGAS_string::reader_isDecimalUnsignedNumber (UNUSED_LOCATION_ARGS)
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_uint GALGAS_string::reader_decimalUnsignedNumber (C_Compiler * inCompiler
+GALGAS_uint GALGAS_string::getter_decimalUnsignedNumber (C_Compiler * inCompiler
                                                            COMMA_LOCATION_ARGS) const {
   bool ok = true ;
   const uint32_t max = UINT32_MAX / 10 ;
@@ -1544,11 +1590,11 @@ AC_OutputStream & operator << (AC_OutputStream & inStream,
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//    S Y M B O L I C    L I N K S                                           *
+//    S Y M B O L I C    L I N K S                                                                                     *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_bool GALGAS_string::reader_isSymbolicLink (UNUSED_LOCATION_ARGS) const {
+GALGAS_bool GALGAS_string::getter_isSymbolicLink (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
   if (isValid ()) {
     result = GALGAS_bool (C_FileManager::isSymbolicLink (mString)) ;
@@ -1596,7 +1642,7 @@ void GALGAS_string::method_makeSymbolicLinkWithPath (GALGAS_string inPath,
 //---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark Reader popen
+  #pragma mark Getter popen
 #endif
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -1658,7 +1704,7 @@ void GALGAS_string::method_makeSymbolicLinkWithPath (GALGAS_string inPath,
 //---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef COMPILE_FOR_WIN32
-  GALGAS_string GALGAS_string::reader_popen (C_Compiler * inCompiler
+  GALGAS_string GALGAS_string::getter_popen (C_Compiler * inCompiler
                                              COMMA_LOCATION_ARGS) const {
     GALGAS_string result ;
     if (isValid ()) {
@@ -1728,7 +1774,7 @@ void GALGAS_string::method_makeSymbolicLinkWithPath (GALGAS_string inPath,
 //---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef COMPILE_FOR_WIN32
-  GALGAS_string GALGAS_string::reader_popen (C_Compiler * /* inCompiler */
+  GALGAS_string GALGAS_string::getter_popen (C_Compiler * /* inCompiler */
                                              COMMA_UNUSED_LOCATION_ARGS) const {
     GALGAS_string result ;
     if (isValid ()) {

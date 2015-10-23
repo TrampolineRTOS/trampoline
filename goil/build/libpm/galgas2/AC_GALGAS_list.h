@@ -85,8 +85,8 @@ class AC_GALGAS_list : public AC_GALGAS_root {
   public : typeComparisonResult objectCompare (const AC_GALGAS_list & inOperand) const ;
 
 //--- Readers
-  public : VIRTUAL_IN_DEBUG GALGAS_uint reader_length (LOCATION_ARGS) const ;
-  public : VIRTUAL_IN_DEBUG GALGAS_range reader_range (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_uint getter_length (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_range getter_range (LOCATION_ARGS) const ;
 
 //--- Description
   public : VIRTUAL_IN_DEBUG void description (C_String & ioString,
@@ -246,11 +246,11 @@ class AC_GALGAS_listmap : public AC_GALGAS_root {
   protected : cSharedList * listForKey (const GALGAS_string & inKey) const ;
 
 //--------------------------------- Readers
-  public : VIRTUAL_IN_DEBUG GALGAS_uint reader_count (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_uint getter_count (LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_stringset reader_allKeys (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_stringset getter_allKeys (LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_stringlist reader_keyList (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_stringlist getter_keyList (LOCATION_ARGS) const ;
 
 //--- Attribute
   private : cSharedListMapRoot * mSharedListMap ;

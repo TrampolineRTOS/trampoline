@@ -98,14 +98,22 @@ static inline uint32_t uimax32 (const uint32_t inA, const uint32_t inB) {
   class utf32 {
     private : uint32_t mCode ;
     public : inline uint32_t value (void) const { return mCode ; }
-    public : inline static utf32 construct (const uint32_t inCode) {
-      utf32 code ;
-      code.mCode = inCode ;
-      return code ;
+    public : utf32 (void) :
+    mCode (0) {
+    }
+    public : utf32 (const uint32_t & inCode) :
+    mCode (inCode) {
+    }
+    public : utf32 (const utf32 & inOperand) :
+    mCode (inOperand.mCode) {
+    }
+    public : utf32 & operator = (const utf32 & inOperand) {
+      mCode = inOperand.mCode ;
+      return *this ;
     }
   } ;
   #define UNICODE_VALUE(C) ((C).value ())
-  #define TO_UNICODE(C) utf32::construct (C)
+  #define TO_UNICODE(C) utf32 (C)
 #else
   typedef uint32_t utf32 ;
   #define UNICODE_VALUE(C) (C)

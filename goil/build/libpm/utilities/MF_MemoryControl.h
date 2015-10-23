@@ -243,7 +243,6 @@ void displayAllocatedBlocksInfo (void) ;
 //---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS 
-  void prologueForNew () ;
   void registerPointer (const void * inPointer COMMA_LOCATION_ARGS) ;
   void * allocAndRegisterPODArray (const size_t inSize COMMA_LOCATION_ARGS) ;
   void registerArray (const void * inPointer COMMA_LOCATION_ARGS) ;
@@ -252,7 +251,6 @@ void displayAllocatedBlocksInfo (void) ;
   void routineFreePointer (const void * inPointer COMMA_LOCATION_ARGS) ;
   void routineFreePODArrayPointer (void * inPointer COMMA_LOCATION_ARGS) ;
   void routineFreeArrayPointer (const void * inPointer COMMA_LOCATION_ARGS) ;
-  void displayAllocatedBlockSizeStats (void) ;
   void * reallocAndRegisterPODArray (void * inPointer,
                                      const size_t inSize
                                      COMMA_LOCATION_ARGS) ;

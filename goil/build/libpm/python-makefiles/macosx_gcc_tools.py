@@ -20,7 +20,7 @@ def buildForMacOSX (dictionary, EXECUTABLE, GOAL, maxParallelJobs, showCommands)
 #---
   gmf.mCompilerTool = ["gcc"]
   gmf.mLinkerTool   = ["g++"]
-  gmf.mStripTool    = ["strip", "-A", "-n", "-r", "-u"]
+  gmf.mStripTool    = ["strip"] # , "-A", "-r", "-n", "-u"
   gmf.mSudoTool     = ["sudo"]
   gmf.mCompilationMessage = "Native Compiling for Mac OS X"
   gmf.mLinkingMessage = "Native Linking for Mac OS X"

@@ -29,6 +29,7 @@
        delegate: (id) inDelegate
        downloadDidEndSelector: (SEL) inDownloadDidEndSelector
        userInfo: (id) inUserInfo {
+  // NSLog (@"inURLString '%@'" , inURLString) ;
   self = [super init] ;
   if (self) {
     mDownloadDidEndSelector = inDownloadDidEndSelector ;

@@ -14,7 +14,7 @@ import cross_compiler_download
 def buildForWin32OnMacOSX (dictionary, EXECUTABLE, GOAL, maxParallelJobs, displayCommands) :
 #--- Too chain installation
   GCC_VERSION = "4.9.2"
-  BINUTILS_VERSION = "2.24"
+  BINUTILS_VERSION = "2.25"
   TOOL_CHAIN_NAME = "binutils-" + BINUTILS_VERSION + "-gcc-" + GCC_VERSION + "-for-mingw32"
   installDir = tool_chain_installation_path.toolChainInstallationPath ()
   TOOL_CHAIN_INSTALL_PATH = installDir + "/" + TOOL_CHAIN_NAME
@@ -51,6 +51,8 @@ def buildForWin32OnMacOSX (dictionary, EXECUTABLE, GOAL, maxParallelJobs, displa
   gmf.m_ObjectiveC_CompilerOptions = default_build_options.ObjectiveC_CompilerOptions ([])
 #--- Options for Objective-C++ compiling (.mm extension)
   gmf.m_ObjectiveCpp_CompilerOptions = default_build_options.ObjectiveCpp_CompilerOptions ([])
+#--- Library to use for gmp
+  gmf.mCrossCompilation = "win32"
 #--- Run makefile
   gmf.run ()
 

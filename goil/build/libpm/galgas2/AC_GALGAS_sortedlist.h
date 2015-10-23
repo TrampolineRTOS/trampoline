@@ -106,7 +106,7 @@ class AC_GALGAS_sortedlist : public AC_GALGAS_root {
   public : typeComparisonResult objectCompare (const AC_GALGAS_sortedlist & inOperand) const ;
 
 //--------------------------------- Readers
-  public : VIRTUAL_IN_DEBUG GALGAS_uint reader_length (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_uint getter_length (LOCATION_ARGS) const ;
 
 //--------------------------------- introspection
   public : virtual const C_galgas_type_descriptor * staticTypeDescriptor (void) const  = 0;

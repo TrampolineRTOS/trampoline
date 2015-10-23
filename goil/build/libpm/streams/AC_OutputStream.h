@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 1997, ..., 2014 Pierre Molinaro.                                                                     *
+//  Copyright (C) 1997, ..., 2015 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -124,6 +124,7 @@ class AC_OutputStream {
   public : void appendCLiteralStringConstant (const C_String & inString, const int32_t inLineMaxLength) ;
   public : void appendCLiteralStringConstant (const C_String & inCstring) ;
   public : void appendCLiteralCharConstant (const utf32 c) ;
+  public : void appendCLiteralStringConstantWithoutDelimiters (const C_String & inCstring) ;
 
 //--- Writing C++ Comments (// ...)
   public : void appendCppTitleComment (const C_String & inCommentString) ;

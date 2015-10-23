@@ -45,7 +45,7 @@ class C_StringCommandLineOption : public C_CommandLineOption {
 //--- Attributes
   private : C_StringCommandLineOption * mNext ;
   public : C_String mValue ;
-  public : inline C_String reader_value (void) const { return mValue ; }
+  public : inline C_String getter_value (void) const { return mValue ; }
   public : const char * mDefaultValue ;
 
 //--- Static methods

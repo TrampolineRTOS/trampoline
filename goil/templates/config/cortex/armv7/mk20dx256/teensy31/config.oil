@@ -3,6 +3,27 @@ CPU teensy31 {
     PATH = "cortex/armv7/mk20dx256/teensy31";
 //    CFILE = "tp.c";
     CFILE = "gpio.c";
+    CFILE = "itoa.c";
+  };
+
+  PLATFORM_FILES teensy31CompAVR {
+    PATH = "cortex/armv7/mk20dx256/teensy31/avr";
+    CFILE = "dtostrf.c";
+  };
+
+  PLATFORM_FILES WString {
+    PATH = "cortex/armv7/mk20dx256/teensy31/libraries/WString";
+    CPPFILE = "WString.cpp";
+  };
+
+  PLATFORM_FILES Print {
+    PATH = "cortex/armv7/mk20dx256/teensy31/libraries/Print";
+    CPPFILE = "Print.cpp";
+  };
+
+  PLATFORM_FILES LiquidCrystalFast {
+    PATH = "cortex/armv7/mk20dx256/teensy31/libraries/LiquidCrystalFast";
+    CPPFILE = "LiquidCrystalFast.cpp";
   };
 
   POSTCOMMAND burn {

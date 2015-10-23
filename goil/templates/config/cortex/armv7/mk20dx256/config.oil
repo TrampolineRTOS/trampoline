@@ -6,11 +6,16 @@
 
 CPU mk20dx256 {
 
+  STDLIBVARIANT cortex_armv7_mk20dx256 {
+    KIND = "armv7e-m";
+  };
+  
   PLATFORM_FILES cortex_armv7_mk20dx256 {
     PATH = "cortex/armv7/mk20dx256";
     CFILE = "tpl_machine_mk20dx256.c";
     CFILE = "handlers_mk20dx256.c";
     CFILE = "startup_mk20dx256.c";
+    CFILE = "syscalls.c";
   };
 
   INTERRUPT_COUNT nb_it {

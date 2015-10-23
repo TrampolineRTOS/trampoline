@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2008, ..., 2014 Pierre Molinaro.                                                                     *
+//  Copyright (C) 2008, ..., 2015 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -67,14 +67,17 @@ class cSharedGraph : public C_SharedObject {
   private : C_DirectedGraph mDirectedGraph ;
   private : TC_UniqueArray <cGraphNode *> mNodeArray ;
 
-//--- Count
-  public : inline uint32_t allNodeCount (void) const { return (uint32_t) mNodeArray.count () ; }
-
 //--- Constructor
   public : cSharedGraph (LOCATION_ARGS) ;
 
 //--- Destructor
   public : virtual ~ cSharedGraph (void) ;
+
+//--- Count
+  public : inline uint32_t allNodeCount (void) const { return (uint32_t) mNodeArray.count () ; }
+
+//--- isNodeDefined
+  public : bool isNodeDefined (const C_String & inKey) const ;
 
 //--- Internal methods
   public : void description (C_String & ioString,
@@ -114,6 +117,10 @@ class cSharedGraph : public C_SharedObject {
                                          cSharedList * & outUnsortedList,
                                          GALGAS_lstringlist & outUnsortedNodeKeyList) const ;
 
+
+  public : void internalFindCircularities (cSharedList * & outInfoList,
+                                           GALGAS_lstringlist & outNodeKeyList) const ;
+
   public : void internalNodesWithNoPredecessor (cSharedList * & outInfoList,
                                                 GALGAS_lstringlist & outNodeKeyList) const ;
 
@@ -135,7 +142,7 @@ class cSharedGraph : public C_SharedObject {
 
   public : GALGAS_lstringlist lkeyList (void) const ;
 
-  public : C_String reader_graphviz (void) const ;
+  public : C_String getter_graphviz (void) const ;
 
   public : void edges (GALGAS__32_stringlist & ioList) const ;
 
@@ -308,7 +315,7 @@ uint32_t AC_GALGAS_graph::count () const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_uint AC_GALGAS_graph::reader_count (UNUSED_LOCATION_ARGS) const {
+GALGAS_uint AC_GALGAS_graph::getter_count (UNUSED_LOCATION_ARGS) const {
   return GALGAS_uint (count ()) ;
 }
 
@@ -336,7 +343,35 @@ void AC_GALGAS_graph::insulateGraph (LOCATION_ARGS) {
 //---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark reader_keyList
+  #pragma mark getter_hasKey
+#endif
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_bool AC_GALGAS_graph::getter_isNodeDefined (const GALGAS_string & inKey
+                                                   COMMA_UNUSED_LOCATION_ARGS) const {
+  GALGAS_bool result ;
+  if (isValid () && inKey.isValid ()) {
+    result = mSharedGraph->isNodeDefined (inKey.stringValue ()) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+bool cSharedGraph::isNodeDefined (const C_String & inKey) const {
+  bool result = false ;
+  for (int32_t i=0 ; (i<mNodeArray.count ()) && !result ; i++) {
+    const cGraphNode * p = mNodeArray (i COMMA_HERE) ;
+    result = p->mIsDefined && (p->mKey == inKey) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark getter_keyList
 #endif
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -351,7 +386,7 @@ GALGAS_stringlist cSharedGraph::keyList (void) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_stringlist AC_GALGAS_graph::reader_keyList (UNUSED_LOCATION_ARGS) const {
+GALGAS_stringlist AC_GALGAS_graph::getter_keyList (UNUSED_LOCATION_ARGS) const {
   GALGAS_stringlist result ;
   if (isValid ()) {
     result = mSharedGraph->keyList () ;
@@ -362,7 +397,7 @@ GALGAS_stringlist AC_GALGAS_graph::reader_keyList (UNUSED_LOCATION_ARGS) const {
 //---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark reader_lkeyList
+  #pragma mark getter_lkeyList
 #endif
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -382,7 +417,7 @@ GALGAS_lstringlist cSharedGraph::lkeyList (void) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_lstringlist AC_GALGAS_graph::reader_lkeyList (UNUSED_LOCATION_ARGS) const {
+GALGAS_lstringlist AC_GALGAS_graph::getter_lkeyList (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstringlist result ;
   if (isValid ()) {
     result = mSharedGraph->lkeyList () ;
@@ -815,7 +850,7 @@ void AC_GALGAS_graph::modifier_addEdge (const GALGAS_lstring & inSourceNodeKey,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-C_String cSharedGraph::reader_graphviz (void) const {
+C_String cSharedGraph::getter_graphviz (void) const {
   TC_UniqueArray <C_String> nodeNameArray ;
   for (int32_t i=0 ; i<mNodeArray.count () ; i++) {
     nodeNameArray.addObject (mNodeArray (i COMMA_HERE)->mKey) ;
@@ -825,10 +860,10 @@ C_String cSharedGraph::reader_graphviz (void) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string AC_GALGAS_graph::reader_graphviz (UNUSED_LOCATION_ARGS) const {
+GALGAS_string AC_GALGAS_graph::getter_graphviz (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
   if (isValid ()) {
-    result = GALGAS_string (mSharedGraph->reader_graphviz ()) ;
+    result = GALGAS_string (mSharedGraph->getter_graphviz ()) ;
   }
   return result ;
 }
@@ -854,7 +889,7 @@ void cSharedGraph::edges (GALGAS__32_stringlist & ioList) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS__32_stringlist AC_GALGAS_graph::reader_edges (LOCATION_ARGS) const {
+GALGAS__32_stringlist AC_GALGAS_graph::getter_edges (LOCATION_ARGS) const {
   GALGAS__32_stringlist result ;
   if (isValid ()) {
     result = GALGAS__32_stringlist::constructor_emptyList (THERE) ;
@@ -866,7 +901,7 @@ GALGAS__32_stringlist AC_GALGAS_graph::reader_edges (LOCATION_ARGS) const {
 //---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark reader_undefinedNodeCount
+  #pragma mark getter_undefinedNodeCount
 #endif
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -883,7 +918,7 @@ static void countUndefinedNodeCount (const cGraphNode * inNode, uint32_t & ioCou
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_uint AC_GALGAS_graph::reader_undefinedNodeCount (UNUSED_LOCATION_ARGS) const {
+GALGAS_uint AC_GALGAS_graph::getter_undefinedNodeCount (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
   if (isValid ()) {
     uint32_t undefinedNodeCount = 0 ;
@@ -896,7 +931,7 @@ GALGAS_uint AC_GALGAS_graph::reader_undefinedNodeCount (UNUSED_LOCATION_ARGS) co
 //---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark reader_undefinedNodeKeyList
+  #pragma mark getter_undefinedNodeKeyList
 #endif
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -913,13 +948,50 @@ static void buildUndefinedNodeKeyList (const cGraphNode * inNode, GALGAS_stringl
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_stringlist AC_GALGAS_graph::reader_undefinedNodeKeyList (LOCATION_ARGS) const {
+GALGAS_stringlist AC_GALGAS_graph::getter_undefinedNodeKeyList (LOCATION_ARGS) const {
   GALGAS_stringlist result ;
   if (isValid ()) {
     result = GALGAS_stringlist::constructor_emptyList (THERE) ;
     buildUndefinedNodeKeyList (mSharedGraph->root (), result) ;
   }
   return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark Find circularities
+#endif
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void cSharedGraph::internalFindCircularities (cSharedList * & outInfoList,
+                                              GALGAS_lstringlist & outNodeKeyList) const {
+  TC_UniqueArray <uint32_t> nodeArray ;
+  mDirectedGraph.getNodesInvolvedInCircularities (nodeArray) ;
+//--- Add nodes
+  AC_GALGAS_list::makeNewSharedList (outInfoList COMMA_HERE) ;
+  outNodeKeyList = GALGAS_lstringlist::constructor_emptyList (HERE) ;
+  for (int32_t i=0 ; i<nodeArray.count () ; i++) {
+    const uint32_t nodeIndex = nodeArray (i COMMA_HERE) ;
+    const cGraphNode * nodePtr = mNodeArray ((int32_t) nodeIndex COMMA_HERE) ;
+    AC_GALGAS_list::insertInSharedList (outInfoList, nodePtr->mAttributes) ;
+    GALGAS_lstring lkey ;
+    lkey.mAttribute_location = nodePtr->mDefinitionLocation ;
+    lkey.mAttribute_string = GALGAS_string (nodePtr->mKey) ;
+    outNodeKeyList.addAssign_operation (lkey COMMA_HERE) ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void AC_GALGAS_graph::internalFindCircularities (cSharedList * & outInfoList,
+                                                 GALGAS_lstringlist & outNodeKeyList
+                                                 COMMA_UNUSED_LOCATION_ARGS) const {
+  outNodeKeyList.drop () ;
+  if (isValid ()) {
+    mSharedGraph->internalFindCircularities (outInfoList, outNodeKeyList) ;
+  }
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -1137,7 +1209,7 @@ void AC_GALGAS_graph::internalDepthFirstTopologicalSort (cSharedList * & outSort
 //---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark reader_undefinedNodeReferenceList
+  #pragma mark getter_undefinedNodeReferenceList
 #endif
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -1160,7 +1232,7 @@ static void buildUndefinedNodeReferenceList (const cGraphNode * inNode,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_lstringlist AC_GALGAS_graph::reader_undefinedNodeReferenceList (LOCATION_ARGS) const {
+GALGAS_lstringlist AC_GALGAS_graph::getter_undefinedNodeReferenceList (LOCATION_ARGS) const {
   GALGAS_lstringlist result ;
   if (isValid ()) {
     result = GALGAS_lstringlist::constructor_emptyList (THERE) ;

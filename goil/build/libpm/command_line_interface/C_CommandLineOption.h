@@ -52,9 +52,9 @@ class C_CommandLineOption {
   public : const char * const mComment ;
 
 //--- Accessing option parameters from GALGAS
-  public : inline char reader_char (void) const { return mCommandChar ; }
-  public : inline const char * reader_string (void) const { return mCommandString ; }
-  public : inline const char * reader_comment (void) const { return mComment ; }
+  public : inline char getter_char (void) const { return mCommandChar ; }
+  public : inline const char * getter_string (void) const { return mCommandString ; }
+  public : inline const char * getter_comment (void) const { return mComment ; }
 } ;
 
 //---------------------------------------------------------------------------------------------------------------------*

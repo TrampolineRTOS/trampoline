@@ -33,7 +33,7 @@ mCount (0) {
   mCount = inObjectList.count () ;
   macroMyNewArray (mArray, GALGAS_object, mCount) ;
   for (uint32_t i=0 ; i<mCount ; i++) {
-    mArray [i] = inObjectList.reader_mValueAtIndex (GALGAS_uint (i), inCompiler COMMA_THERE) ;
+    mArray [i] = inObjectList.getter_mValueAtIndex (GALGAS_uint (i), inCompiler COMMA_THERE) ;
   }
 }
 

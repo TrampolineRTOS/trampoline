@@ -104,7 +104,7 @@
 info_stack_pointer:
   mov r0, sp
   bx lr
-  
+
 /*******************************************************************************
  *
  *******************************************************************************/
@@ -117,7 +117,7 @@ tpl_enter_kernel:
 	bl tpl_kernel_mp
 	pop {lr}
 	#endif
-	/* 
+	/*
 	 * Manage reentrance of kernel
 	 * Increment nested_kernel_entrance_counter
 	 */
@@ -125,7 +125,7 @@ tpl_enter_kernel:
 	ldr r4, [r12]
 	add r4, r4, #1
 	str r4, [r12]
-	/* 
+	/*
 	 * NA: Switch to the kernel stack
 	 * Automatic (configuration) for the Cortex-M4
 	 */
@@ -134,7 +134,7 @@ tpl_enter_kernel:
 	 * NA: Make space on the stack to call C functions
 	 * Automatic for the Cortex-M4
 	 */
-tpl_enter_kernel_exit:	
+tpl_enter_kernel_exit:
 	bx lr
 
 /*******************************************************************************
@@ -145,13 +145,13 @@ tpl_leave_kernel:
 	 * NA: Restore saved registers in the system stack
 	 * Automatic for the Cortex-M4
 	 */
-	
-	/* 
+
+	/*
 	 * Manage reentrance of kernel
 	 * Decrement nested_kernel_entrance_counter
 	 *
 	 * We update kernel reentrance counter while registers are freely
-	 * usable and as we know we won't enter in kernel again (IRQ locked and
+	 * usable and as we know we won t enter in kernel again (IRQ locked and
 	 * no SWI can occur)
 	 *
 	 * NA: If it reaches 0, the process stack is restored
@@ -161,7 +161,7 @@ tpl_leave_kernel:
 	ldr r4, [r12]
 	sub r4, r4, #1
 	str r4, [r12]
-	
+
 	#if WITH_MEMORY_PROTECTION == YES
 	/*
 	 * Switch to user memory protection scheme
@@ -180,7 +180,7 @@ tpl_leave_kernel_exit:
 	.type   tpl_primary_syscall_handler, %function
 tpl_primary_syscall_handler:
 	b tpl_sc_handler
-	
+
 tpl_sc_handler:
 	/*
 	 * Stack is MSP now
@@ -210,7 +210,7 @@ tpl_sc_handler:
 	push {lr}
 	bl tpl_enter_kernel
 	pop {lr}
-	
+
 	/*
 	 * Get the appropriate system call address into R3
 	 */
@@ -239,8 +239,8 @@ tpl_sc_handler:
 	 * It is saved into kernel stack.
 	 */
 	str r0, [r5, #KS_RETURN_CODE]
-	
-	/* 
+
+	/*
 	 * Do we need to switch context ?
 	 * (requested by system service)
 	 */
@@ -288,7 +288,7 @@ call_tpl_run_elected:
 	 * tpl_kern.need_switch (stored into r3) is copied into r0
 	 */
 	bl tpl_run_elected
-	
+
 	/*
 	 * Load context:
 	 * get s_running (it has been changed by tpl_run_elected)
@@ -305,25 +305,25 @@ call_tpl_run_elected:
 invalid_service_id:  /* currently, if invalid service id is specified, we do nothing */
 no_context_switch:
 	/*
- 	 * Reset the tpl_need_switch variable to NO_NEED_SWITCH 
+ 	 * Reset the tpl_need_switch variable to NO_NEED_SWITCH
  	 */
 	ldr r12, [r5, #KS_KERN_PTR]						/* load the tpl_kern base address */
 	mov r4, #NO_NEED_SWITCH_NOR_SCHEDULE
 	strb r4, [r12, #TPL_KERN_OFFSET_NEED_SWITCH]
 
-	/* 
+	/*
 	 * The return value of service has been saved into KS(KS_RETURN_CODE).
 	 * Copy back this return value into r0
 	 */
 	ldr r0, [r5, #KS_RETURN_CODE]
-	
+
 	/* __5__LEAVE_KERNEL
  	 * Leave kernel
  	 */
 	push {lr}
 	bl tpl_leave_kernel
 	pop {lr}
-	
+
 	/* __6__HANDLER_EPILOG
  	 * Leave kernel
  	 */
@@ -338,7 +338,7 @@ no_context_switch:
 
 	ldr r12, [sp, #KS_PROCESS_SP]
 	msr psp, r12
-	add sp, sp, #KS_FOOTPRINT	
+	add sp, sp, #KS_FOOTPRINT
 
 tpl_sc_handler_exit:
 	bx lr

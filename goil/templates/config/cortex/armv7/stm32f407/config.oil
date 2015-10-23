@@ -1,4 +1,8 @@
 CPU stm32f407 {
+    STDLIBVARIANT cortex_armv7_stm32f407 {
+      KIND = "armv7e-m";
+    };
+  
     INTERRUPT_COUNT nb_it {
       IT_TABLE_SIZE = 98;
     };

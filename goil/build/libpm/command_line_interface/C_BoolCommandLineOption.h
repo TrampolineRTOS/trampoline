@@ -46,7 +46,7 @@ class C_BoolCommandLineOption : public C_CommandLineOption {
 //--- Attributes
   private : C_BoolCommandLineOption * mNext ;
   public : bool mValue ;
-  public : inline bool reader_value (void) const { return mValue ; }
+  public : inline bool getter_value (void) const { return mValue ; }
 
 //--- Static methods
   public : static void setBoolOptionForCommandChar (const char inCommandChar,

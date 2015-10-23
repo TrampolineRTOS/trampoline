@@ -82,10 +82,6 @@ C_Compiler::C_Compiler (C_Compiler * inCallerCompiler,
                         const C_String & /* inDependencyFilePath */
                         COMMA_LOCATION_ARGS) :
 C_SharedObject (THERE),
-#ifdef USE_THREADS
-  mSemaphore (),
-  mThread (NULL),
-#endif
 mCallerCompiler (NULL),
 mSentString (),
 mSentStringIsValid (true),
@@ -102,13 +98,6 @@ mCheckedVariableList () {
 //---------------------------------------------------------------------------------------------------------------------*
 
 C_Compiler::~C_Compiler (void) {
-  #ifdef USE_THREADS
-    mSemaphore.lock () ;
-    if (NULL != mThread) {
-      mThread->join () ;
-      macroMyDelete (mThread) ;
-    }
-  #endif
   macroDetachSharedObject (mSourceTextPtr) ;
   macroDetachSharedObject (mCallerCompiler) ;
 }
@@ -371,7 +360,7 @@ void C_Compiler::semanticErrorWith_K_L_message (const GALGAS_lstring & inKey,
       if (UNICODE_VALUE (c) == 'K') {
         message << key ;
       }else if (UNICODE_VALUE (c) == 'L') {
-        message << inExistingKeyLocation.reader_locationString (this COMMA_THERE) ; // §§
+        message << inExistingKeyLocation.getter_locationString (this COMMA_THERE) ; // §§
       }
       perCentFound = false ;
     }else if (UNICODE_VALUE (c) == '%') {
@@ -511,59 +500,42 @@ void closeTrace (void) {
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-#define START_OF_USER_ZONE_1  "--- START OF USER ZONE 1\n"
-#define END_OF_USER_ZONE_1    "--- END OF USER ZONE 1\n\n"
-#define START_OF_USER_ZONE_2  "--- START OF USER ZONE 2\n"
-#define END_OF_USER_ZONE_2    "--- END OF USER ZONE 2\n\n"
+static const char * START_OF_USER_ZONE_1 =  "--- START OF USER ZONE 1\n" ;
+static const char * END_OF_USER_ZONE_1   =  "--- END OF USER ZONE 1\n" ;
+static const char * START_OF_USER_ZONE_2 =  "--- START OF USER ZONE 2\n" ;
+static const char * END_OF_USER_ZONE_2   =  "--- END OF USER ZONE 2\n" ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::generateFile (const C_String & inLineCommentPrefix,
                                const TC_UniqueArray <C_String> & inDirectoriesToExclude,
                                const C_String & inFileName,
+                               const C_String & inHeader,
                                const C_String & inDefaultUserZone1,
                                const C_String & inGeneratedZone2,
                                const C_String & inDefaultUserZone2,
-                               const C_String & inGeneratedZone3) {
+                               const C_String & inGeneratedZone3,
+                               const bool inMakeExecutable) {
   generateFileWithPatternFromPathes (sourceFilePath ().stringByDeletingLastPathComponent (),
                           inDirectoriesToExclude,
                           inLineCommentPrefix,
                           inFileName,
+                          inHeader,
                           inDefaultUserZone1,
                           inGeneratedZone2,
                           inDefaultUserZone2,
-                          inGeneratedZone3) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void C_Compiler::generateFileInGALGAS_OUTPUT (const C_String & inLineCommentPrefix,
-                                              const C_String & inFileName,
-                                              const C_String & inDefaultUserZone1,
-                                              const C_String & inGeneratedZone2,
-                                              const C_String & inDefaultUserZone2,
-                                              const C_String & inGeneratedZone3) {
-  const TC_UniqueArray <C_String> directoriesToExclude ;
-  generateFileWithPatternFromPathes (sourceFilePath ().stringByDeletingLastPathComponent () + "/GALGAS_OUTPUT",
-                          directoriesToExclude,
-                          inLineCommentPrefix,
-                          inFileName,
-                          inDefaultUserZone1,
-                          inGeneratedZone2,
-                          inDefaultUserZone2,
-                          inGeneratedZone3) ;
+                          inGeneratedZone3,
+                          inMakeExecutable) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::generateFileFromPathes (const C_String & inStartPath,
-                                        const TC_UniqueArray <C_String> & inDirectoriesToExclude,
-                                        const C_String & inFileName,
-                                        const C_String & inContents) {
+                                         const TC_UniqueArray <C_String> & inDirectoriesToExclude,
+                                         const C_String & inFileName,
+                                         const C_String & inContents) {
 //--- Verbose option ?
   const bool verboseOptionOn = gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ;
-//--- Very Verbose (?)
-  const bool veryVerboseOptionOn = false ;
 //--- Start path : by default, use source file directory
   const C_String startPath = (inStartPath.length () == 0)
    ? sourceFilePath ().stringByDeletingLastPathComponent ()
@@ -571,11 +543,6 @@ void C_Compiler::generateFileFromPathes (const C_String & inStartPath,
 //--- Search file in directory
   const C_String fullPathName = C_FileManager::findFileInDirectory (startPath, inFileName, inDirectoriesToExclude) ;
   if (fullPathName.length () == 0) {
-    if (veryVerboseOptionOn) {
-      C_String message ;
-      message << "File '" << inFileName << "' not found.\n" ;
-      ggs_printMessage (message COMMA_HERE) ;
-    }
   //--- File does not exist : create it
     C_String fileName = startPath ;
     fileName.appendString ("/") ;
@@ -593,18 +560,13 @@ void C_Compiler::generateFileFromPathes (const C_String & inStartPath,
         onTheFlySemanticError (message COMMA_HERE) ;
       }
       f << inContents ;
-      if (verboseOptionOn || veryVerboseOptionOn) {
-        ggs_printFileOperationSuccess (C_String ("Created '") + fileName + "'.\n" COMMA_HERE) ;
+      if (verboseOptionOn) {
+        ggs_printFileOperationSuccess (C_String ("Created '") + fileName + "'.\n") ;
       }
     }else{
       ggs_printWarning (NULL, C_LocationInSource (), C_String ("Need to create '") + fileName + "'.\n" COMMA_HERE) ;
     }
   }else{
-    if (veryVerboseOptionOn) {
-      C_String message ;
-      message << "Found '" << fullPathName << "' file.\n" ;
-      ggs_printMessage (message COMMA_HERE) ;
-    }
     const C_String previousContents = C_FileManager::stringWithContentOfFile (fullPathName) ;
     const bool same = previousContents == inContents ;
     if (! same) {
@@ -616,8 +578,8 @@ void C_Compiler::generateFileFromPathes (const C_String & inStartPath,
           onTheFlySemanticError (message COMMA_HERE) ;
         }else{
           f << inContents ;
-          if (verboseOptionOn || veryVerboseOptionOn) {
-            ggs_printFileOperationSuccess (C_String ("Replaced '") + fullPathName + "'.\n" COMMA_HERE) ;
+          if (verboseOptionOn) {
+            ggs_printFileOperationSuccess (C_String ("Replaced '") + fullPathName + "'.\n") ;
           }
         }
       }else{
@@ -633,8 +595,8 @@ void C_Compiler::enterPragma (const GALGAS_lstring & inPragmaName,
                               const GALGAS_lstring & inPragmaArgument
                               COMMA_LOCATION_ARGS) {
   if (inPragmaName.isValid () && inPragmaArgument.isValid ()) {
-    const C_String pragmaName = inPragmaName.reader_string (THERE).stringValue () ;
-    const C_String pragmaArgument = inPragmaArgument.reader_string (THERE).stringValue () ;
+    const C_String pragmaName = inPragmaName.getter_string (THERE).stringValue () ;
+    const C_String pragmaArgument = inPragmaArgument.getter_string (THERE).stringValue () ;
     if (pragmaName == "traceVariableState") {
       if (pragmaArgument.length () == 0) {
         mCheckedVariableList.free () ;
@@ -642,7 +604,7 @@ void C_Compiler::enterPragma (const GALGAS_lstring & inPragmaName,
         mCheckedVariableList.addObject (pragmaArgument) ;
       }
     }else{
-      semanticErrorAtLocation (inPragmaName.reader_location (THERE), "invalid name: only 'traceVariableState' is allowed here" COMMA_HERE) ;
+      semanticErrorAtLocation (inPragmaName.getter_location (THERE), "invalid name: only 'traceVariableState' is allowed here" COMMA_HERE) ;
     }
   }
 }
@@ -662,104 +624,33 @@ C_String C_Compiler::checkedVariableAtIndex (const int32_t inIndex COMMA_LOCATIO
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifdef USE_THREADS
-  static void codeThread (C_Compiler * inCompiler,
-                          const C_String & inStartPath,
-                          const C_String & inLineCommentPrefix,
-                          const C_String & inFileName,
-                          const C_String & inDefaultUserZone1,
-                          const C_String & inGeneratedZone2,
-                          const C_String & inDefaultUserZone2,
-                          const C_String & inGeneratedZone3) {
-    inCompiler->actualGenerateFileWithPatternFromPathes (inStartPath,
-                                                         inLineCommentPrefix,
-                                                         inFileName,
-                                                         inDefaultUserZone1,
-                                                         inGeneratedZone2,
-                                                         inDefaultUserZone2,
-                                                         inGeneratedZone3) ;
-  }
-#endif
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void C_Compiler::generateFileWithPatternFromPathes (const C_String & inStartPath,
-                                                    const TC_UniqueArray <C_String> & inDirectoriesToExclude,
-                                                    const C_String & inLineCommentPrefix,
-                                                    const C_String & inFileName,
-                                                    const C_String & inDefaultUserZone1,
-                                                    const C_String & inGeneratedZone2,
-                                                    const C_String & inDefaultUserZone2,
-                                                    const C_String & inGeneratedZone3) {
-  #ifdef USE_THREADS
-    inStartPath.insulate () ;
-    inLineCommentPrefix.insulate () ;
-    inLineCommentPrefix.insulate () ;
-    inFileName.insulate () ;
-    inDefaultUserZone1.insulate () ;
-    inGeneratedZone2.insulate () ;
-    inDefaultUserZone2.insulate () ;
-    inGeneratedZone3.insulate () ;
-    mSemaphore.lock () ;
-    if (NULL != mThread) {
-      mThread->join () ;
-      macroMyDelete (mThread) ;
-    }
-    macroMyNew (mThread, std::thread (codeThread, this,
-                                             inStartPath,
-                                             inLineCommentPrefix,
-                                             inFileName,
-                                             inDefaultUserZone1,
-                                             inGeneratedZone2,
-                                             inDefaultUserZone2,
-                                             inGeneratedZone3)) ;
-  #else
-    actualGenerateFileWithPatternFromPathes (inStartPath,
-                                             inDirectoriesToExclude,
-                                             inLineCommentPrefix,
-                                             inFileName,
-                                             inDefaultUserZone1,
-                                             inGeneratedZone2,
-                                             inDefaultUserZone2,
-                                             inGeneratedZone3) ;
-  #endif
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void C_Compiler::actualGenerateFileWithPatternFromPathes (const C_String & inStartPath,
-                                                    const TC_UniqueArray <C_String> & inDirectoriesToExclude,
-                                                    const C_String & inLineCommentPrefix,
-                                                    const C_String & inFileName,
-                                                    const C_String & inDefaultUserZone1,
-                                                    const C_String & inGeneratedZone2,
-                                                    const C_String & inDefaultUserZone2,
-                                                    const C_String & inGeneratedZone3) {
-//  const TC_UniqueArray <C_String> inDirectoriesToExclude ;
+void C_Compiler::generateFileWithPatternFromPathes (
+  const C_String & inStartPath,
+  const TC_UniqueArray <C_String> & inDirectoriesToExclude,
+  const C_String & inLineCommentPrefix,
+  const C_String & inFileName,
+  const C_String & inHeader,
+  const C_String & inDefaultUserZone1,
+  const C_String & inGeneratedZone2,
+  const C_String & inDefaultUserZone2,
+  const C_String & inGeneratedZone3,
+  const bool inMakeExecutable
+) {
 //--- Verbose option ?
   const bool verboseOptionOn = gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ;
-//--- Very Verbose (?)
-  const bool veryVerboseOptionOn = false ;
 //--- User zones
   const C_String kSTART_OF_USER_ZONE_1 = C_String (inLineCommentPrefix) + START_OF_USER_ZONE_1 ;
   const C_String kEND_OF_USER_ZONE_1   = C_String (inLineCommentPrefix) + END_OF_USER_ZONE_1 ;
   const C_String kSTART_OF_USER_ZONE_2 = C_String (inLineCommentPrefix) + START_OF_USER_ZONE_2 ;
   const C_String kEND_OF_USER_ZONE_2   = C_String (inLineCommentPrefix) + END_OF_USER_ZONE_2 ;
-//--- Build generated zone 1
-  C_String generatedZone1 ;
-  generatedZone1.appendFileHeaderComment (inLineCommentPrefix, C_String ("File '") + inFileName + "'", compilerVersionString (), false) ;
 //--- Start path : by default, use source file directory
   const C_String startPath = (inStartPath.length () == 0)
-   ? sourceFilePath ().stringByDeletingLastPathComponent ()
-   : inStartPath ;
+    ? sourceFilePath ().stringByDeletingLastPathComponent ()
+    : inStartPath
+  ;
 //--- Search file in directory
   const C_String fullPathName = C_FileManager::findFileInDirectory (startPath, inFileName, inDirectoriesToExclude) ;
   if (fullPathName.length () == 0) {
-    if (veryVerboseOptionOn) {
-      C_String message ;
-      message << "File '" << inFileName << "' not found.\n" ;
-      ggs_printMessage (message COMMA_HERE) ;
-    }
   //--- File does not exist : create it
     C_String fileName = startPath ;
     fileName.appendString ("/") ;
@@ -776,21 +667,25 @@ void C_Compiler::actualGenerateFileWithPatternFromPathes (const C_String & inSta
         message << "Cannot open '" << fileName << "' file in write mode." ;
         onTheFlySemanticError (message COMMA_HERE) ;
       }
-      f << generatedZone1 << kSTART_OF_USER_ZONE_1 << inDefaultUserZone1 << kEND_OF_USER_ZONE_1
+      f << inHeader << kSTART_OF_USER_ZONE_1 << inDefaultUserZone1 << kEND_OF_USER_ZONE_1
         << inGeneratedZone2 << kSTART_OF_USER_ZONE_2 << inDefaultUserZone2 << kEND_OF_USER_ZONE_2
         << inGeneratedZone3 ;
-      if (verboseOptionOn || veryVerboseOptionOn) {
-        ggs_printFileCreationSuccess (C_String ("Created '") + fileName + "'.\n" COMMA_HERE) ;
+      if (verboseOptionOn) {
+        ggs_printFileCreationSuccess (C_String ("Created '") + fileName + "'.\n") ;
+      }
+      f.close () ;
+      if (inMakeExecutable) {
+        #ifndef COMPILE_FOR_WIN32
+          struct stat fileStat ;
+          ::stat (fileName.cString (HERE), & fileStat) ;
+            // printf ("FILE MODE 0x%X\n", fileStat.st_mode) ;
+          ::chmod (fileName.cString (HERE), fileStat.st_mode | S_IXUSR | S_IXGRP | S_IXOTH) ;
+        #endif
       }
     }else{
       ggs_printWarning (NULL, C_LocationInSource (), C_String ("Need to create '") + fileName + "'.\n" COMMA_HERE) ;
     }
   }else{
-    if (veryVerboseOptionOn) {
-      C_String message ;
-      message << "Found '" << fullPathName << "' file.\n" ;
-      ggs_printMessage (message COMMA_HERE) ;
-    }
     C_String firstUserPart ;
     C_String secondUserPart ;
     C_String firstGeneratedPart ;
@@ -832,21 +727,27 @@ void C_Compiler::actualGenerateFileWithPatternFromPathes (const C_String & inSta
         message << "Cannot open '" << fullPathName << "' file in write mode." ;
         onTheFlySemanticError (message COMMA_HERE) ;
       }
-      f << generatedZone1
+      f << inHeader
         << kSTART_OF_USER_ZONE_1 << firstUserPart << kEND_OF_USER_ZONE_1
         << inGeneratedZone2
         << kSTART_OF_USER_ZONE_2 << secondUserPart << kEND_OF_USER_ZONE_2
         << inGeneratedZone3 ;
-      if (verboseOptionOn || veryVerboseOptionOn) {
-        ggs_printFileOperationSuccess (C_String ("Replaced '") + fullPathName + "'.\n" COMMA_HERE) ;
+      if (verboseOptionOn) {
+        ggs_printFileOperationSuccess (C_String ("Replaced '") + fullPathName + "'.\n") ;
+      }
+      f.close () ;
+      if (inMakeExecutable) {
+        #ifndef COMPILE_FOR_WIN32
+          struct stat fileStat ;
+          ::stat (fullPathName.cString (HERE), & fileStat) ;
+            // printf ("FILE MODE 0x%X\n", fileStat.st_mode) ;
+          ::chmod (fullPathName.cString (HERE), fileStat.st_mode | S_IXUSR | S_IXGRP | S_IXOTH) ;
+        #endif
       }
     }else{
       ggs_printWarning (NULL, C_LocationInSource (), C_String ("Need to replace '") + fullPathName + "'.\n" COMMA_HERE) ;
     }
   }
-  #ifdef USE_THREADS
-    mSemaphore.unlock () ;
-  #endif
 }
 
 

@@ -63,25 +63,6 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-- (void) refreshRulers {
-  #ifdef DEBUG_MESSAGES
-    NSLog (@"%s", __PRETTY_FUNCTION__) ;
-  #endif
-  for (NSLayoutManager * lm in mSourceTextStorage.layoutManagers) {
-    for (NSTextContainer * tc in lm.textContainers) {
-      NSTextView * tw = [tc textView] ;
-      NSScrollView * sv = (NSScrollView *) [[tw superview] superview] ;
-      // NSLog (@"%@", sv) ;
-      if ([sv isKindOfClass:[NSScrollView class]]) {
-        NSRulerView * ruler = [sv verticalRulerView] ;
-        [ruler setNeedsDisplay:YES] ;
-      }
-    }    
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
 - (void) computeMaxLineHeight: (BOOL *) outLineHeightDidChange {
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
@@ -158,13 +139,6 @@
       name:NSUndoManagerDidRedoChangeNotification
       object:mUndoManager
     ] ;
-  //---
-    [[NSNotificationCenter defaultCenter]
-      addObserver:self
-      selector:@selector(textStorageDidProcessEditingNotification:)
-      name: NSTextStorageDidProcessEditingNotification
-      object:mSourceTextStorage
-    ] ;
   //--------------------------------------------------- Add foreground color observers
     NSUserDefaultsController * udc = [NSUserDefaultsController sharedUserDefaultsController] ;
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults] ;
@@ -173,7 +147,7 @@
       [udc
         addObserver:self
         forKeyPath:keyPath
-        options:0
+        options:NSKeyValueObservingOptionNew
         context:(void *) (TAG_FOR_TEMPLATE_FOREGROUND_COLOR)
       ] ;
       NSString * name = [NSString stringWithFormat:@"%@_%@", GGS_template_foreground_color, [mTokenizer styleIdentifierForStyleIndex:0]] ;
@@ -190,7 +164,7 @@
       [udc
         addObserver:self
         forKeyPath:keyPath
-        options:0
+        options:NSKeyValueObservingOptionNew
         context:(void *) (TAG_FOR_FOREGROUND_COLOR | i)
       ] ;
     }
@@ -200,14 +174,14 @@
       [udc
         addObserver:self
         forKeyPath:keyPath
-        options:0
+        options:NSKeyValueObservingOptionNew
         context:(void *) (TAG_FOR_TEMPLATE_BACKGROUND_COLOR)
       ] ;
       keyPath = [NSString stringWithFormat:@"values.%@_%@", GGS_enable_template_background, [mTokenizer styleIdentifierForStyleIndex:0]] ;
       [udc
         addObserver:self
         forKeyPath:keyPath
-        options:0
+        options:NSKeyValueObservingOptionNew
         context:(void *) (TAG_FOR_ENABLE_TEMPLATE_BACKGROUND)
       ] ;
       NSString * name = [NSString stringWithFormat:@"%@_%@", GGS_enable_template_background, [mTokenizer styleIdentifierForStyleIndex:0]] ;
@@ -227,14 +201,14 @@
       [udc
         addObserver:self
         forKeyPath:keyPath
-        options:0
+        options:NSKeyValueObservingOptionNew
         context:(void *) (TAG_FOR_BACKGROUND_COLOR | i)
       ] ;
       keyPath = [NSString stringWithFormat:@"values.%@_%@", GGS_named_enable_background, [mTokenizer styleIdentifierForStyleIndex:i]] ;
       [udc
         addObserver:self
         forKeyPath:keyPath
-        options:0
+        options:NSKeyValueObservingOptionNew
         context:(void *) (TAG_FOR_ENABLING_BACKGROUND | i)
       ] ;
     }
@@ -244,7 +218,7 @@
       [udc
         addObserver:self
         forKeyPath:keyPath
-        options:0
+        options:NSKeyValueObservingOptionNew
         context:(void *) (TAG_FOR_TEMPLATE_FONT_ATTRIBUTE)
       ] ;
     //--- Add font attribute   
@@ -260,7 +234,7 @@
       [udc
         addObserver:self
         forKeyPath:keyPath
-        options:0
+        options:NSKeyValueObservingOptionNew
         context:(void *) (TAG_FOR_FONT_ATTRIBUTE | i)
       ] ;
     }
@@ -302,6 +276,13 @@
     }
   //--- Max line height
     [self computeMaxLineHeight:NULL] ;
+  //---
+    [[NSNotificationCenter defaultCenter]
+      addObserver:self
+      selector:@selector(textStorageDidProcessEditingNotification:)
+      name: NSTextStorageDidProcessEditingNotification
+      object:mSourceTextStorage
+    ] ;
   //--- Enter source string
     [mSourceTextStorage beginEditing] ;
     [mSourceTextStorage replaceCharactersInRange:NSMakeRange (0, mSourceTextStorage.length) withString:inSource] ;
@@ -451,14 +432,14 @@
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
   if ((mTokenizer != NULL) && ([mSourceTextStorage length] > 0)) {
-    [self refreshRulers] ;
+//    [self refreshRulers] ;
   //--- Remove observer so that textStorageDidProcessEditingNotification will not be called at the end of edition
-    [[NSNotificationCenter defaultCenter]
+ /*   [[NSNotificationCenter defaultCenter]
       removeObserver:self
       name: NSTextStorageDidProcessEditingNotification
       object:mSourceTextStorage
-    ];
-    [mSourceTextStorage beginEditing] ;
+    ]; */
+ //   [mSourceTextStorage beginEditing] ;
   //--- Change default style ?
     if (inChangedColorIndex == 0) {
       const NSRange allTextRange = {0, [mSourceTextStorage length]} ;
@@ -513,14 +494,14 @@
         }
       }
     }
-    [mSourceTextStorage endEditing] ;
+/*    [mSourceTextStorage endEditing] ;
   //--- Resinstall observer
     [[NSNotificationCenter defaultCenter]
       addObserver:self
       selector:@selector(textStorageDidProcessEditingNotification:)
       name: NSTextStorageDidProcessEditingNotification
       object:mSourceTextStorage
-    ] ;
+    ] ; */
     #ifdef DEBUG_MESSAGES
       NSLog (@"%s DONE", __PRETTY_FUNCTION__) ;
     #endif
@@ -572,10 +553,8 @@
   for (OC_GGS_TextDisplayDescriptor * textDisplay in mTextDisplayDescriptorSet) {
     [textDisplay setTextDisplayIssueArray:mIssueArray] ; 
   }
-//--- mIssueArray is nil on init, so this prevent search result to be changed
-//    by insertion of file contents
+//--- mIssueArray is nil on init, so this prevent search result to be changed by insertion of file contents
   if (nil != mIssueArray) {
-  
     for (OC_GGS_Document * doc in [[NSDocumentController sharedDocumentController] documents]) {
       [doc
         updateSearchResultForFile:self.documentData.fileURL.path
@@ -604,6 +583,7 @@
 
 - (void) updateSyntaxColoringForEditedRange: (NSRange) inEditedRange
          changeInLength: (NSInteger) inChangeInLength {
+  // NSDate * startDate = [NSDate date] ;
   const NSUInteger textLength = mSourceTextStorage.string.length ;
   if (textLength > 0) {
     #ifdef DEBUG_MESSAGES
@@ -677,11 +657,13 @@
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s DONE", __PRETTY_FUNCTION__) ;
   #endif
+  //NSLog (@"%f", [[NSDate date] timeIntervalSinceDate:startDate]) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (void) textStorageDidProcessEditingNotification: (NSNotification *) inNotification {
+//  NSDate * startDate = [NSDate date] ;
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
@@ -709,12 +691,14 @@
       forMode:NSDefaultRunLoopMode
     ] ;
   }
+//  NSLog (@"%f", [[NSDate date] timeIntervalSinceDate:startDate]) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (void) autosaveTimerDidFire: (NSTimer *) inTimer {
   // NSLog (@"Timer did fire %@", self.documentData.fileURL) ;
+  [mTimerForAutosaving invalidate] ;
   mTimerForAutosaving = nil ;
   [documentData save] ;
 }
@@ -731,7 +715,7 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//           C O M M E N T R A N G E                                           *
+//           C O M M E N T R A N G E                                                                                   *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -782,24 +766,21 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                       U N C O M M E N T R A N G E                           *
+//                       U N C O M M E N T R A N G E                                                                   *
 //                                                                                                                     *
-// Cette méthode a plusieurs rôles :                                           *
-//   - supprimer les marques de commentaires des lignes concernées par la      *
-//     sélection, uniquement quand ces le commentaire commence une ligne ;     *
-//   - ajuster la sélection en conséquence ; en effet, dès que la méthode      *
-//     replaceCharactersInRange:withString: est appelée, Cocoa ramène la       *
-//     sélection à un point d'insertion. La sélection est ajustée et           *
-//     maintenue dans la variable finalSelectedRange.                          *
+// Cette méthode a plusieurs rôles :                                                                                   *
+//   - supprimer les marques de commentaires des lignes concernées par la sélection, uniquement quand le               *
+//     commentaire commence une ligne ;                                                                                *
+//   - ajuster la sélection en conséquence ; en effet, dès que la méthode replaceCharactersInRange:withString: est     *
+//     appelée, Cocoa ramène la sélection à un point d'insertion. La sélection est ajustée et maintenue dans la        *
+//     variable finalSelectedRange.                                                                                    *
 //                                                                                                                     *
-// Le plus difficile est l'ajustement de la sélection. Pour cela, on calcule:  *
-//   - le nombre beforeSelectionCharacterCount de caractères du commentaire    *
-//     supprimé qui sont avant la sélection ; si ce nombre est > 0, on         *
-//     le début de la sélection du min entre ce nombre et le nombre de carac-  *
-//     tères du commentaire ;                                                  *
-//   - le nombre withinSelectionCharacterCount de caractères du commentaire    *
-//     supprimé qui sont à l'intérieur de la sélection ; si ce nombre est      *
-//     > 0, on le retranche de la longueur de la sélection.                    *
+// Le plus difficile est l'ajustement de la sélection. Pour cela, on calcule :                                         *
+//   - le nombre beforeSelectionCharacterCount de caractères du commentaire supprimé qui sont avant la sélection ; si  *
+//     ce nombre est > 0, on le début de la sélection du min entre ce nombre et le nombre de caractères du             *
+//     commentaire ;                                                                                                   *
+//   - le nombre withinSelectionCharacterCount de caractères du commentaire supprimé qui sont à l'intérieur de la      *
+//     sélection ; si ce nombre est > 0, on le retranche de la longueur de la sélection.                               *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -841,7 +822,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
       NSLog (@"currentLineRange [%d, %d]", currentLineRange.location, currentLineRange.length) ;
     #endif
     NSString * lineString = [sourceString substringWithRange:currentLineRange] ;
-    if ([lineString compare:blockCommentString options:0 range:NSMakeRange (0, blockCommentLength)] == NSOrderedSame) {
+    if ([lineString compare:blockCommentString options:NSLiteralSearch range:NSMakeRange (0, blockCommentLength)] == NSOrderedSame) {
       [mutableSourceString replaceCharactersInRange:NSMakeRange (currentLineRange.location, blockCommentLength) withString:@""] ;
     //--- Examen du nombre de caractères à l'intérieur de la sélection
       const NSInteger withinSelectionCharacterCount = 
@@ -934,6 +915,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
     NSLog (@"%s, inKeyPath '%@'", __PRETTY_FUNCTION__, inKeyPath) ;
   #endif
   if (mTokenizer != NULL) {
+    [mSourceTextStorage beginEditing] ;
     BOOL lineHeightDidChange = NO ;
     NSColor * color = nil ;
     NSMutableDictionary * d = nil ;
@@ -1030,6 +1012,7 @@ static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return 
     default:
       break;
     }
+    [mSourceTextStorage endEditing] ;
   }
 }
 

@@ -157,20 +157,20 @@ class AC_GALGAS_uniqueMapProxy : public AC_GALGAS_root {
   protected : VIRTUAL_IN_DEBUG void makeNullProxy (LOCATION_ARGS) ;
 
 //--------------------------------- Reader invocation declaration
-  public : VIRTUAL_IN_DEBUG GALGAS_bool reader_isRegular (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_bool getter_isRegular (LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_bool reader_isNull (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_bool getter_isNull (LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_bool reader_isSolved (C_Compiler * inCompiler
+  public : VIRTUAL_IN_DEBUG GALGAS_bool getter_isSolved (C_Compiler * inCompiler
                                                          COMMA_LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_string reader_identifierRepresentation (C_Compiler * inCompiler
+  public : VIRTUAL_IN_DEBUG GALGAS_string getter_identifierRepresentation (C_Compiler * inCompiler
                                                                            COMMA_LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_lstring reader_lkey (C_Compiler * inCompiler
+  public : VIRTUAL_IN_DEBUG GALGAS_lstring getter_lkey (C_Compiler * inCompiler
                                                         COMMA_LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_string reader_key (C_Compiler * inCompiler
+  public : VIRTUAL_IN_DEBUG GALGAS_string getter_key (C_Compiler * inCompiler
                                                       COMMA_LOCATION_ARGS) const ;
 
 //--------------------------------- Get attribute list
@@ -277,24 +277,24 @@ class AC_GALGAS_uniqueMap : public AC_GALGAS_root {
                                                                           COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Readers
-  public : VIRTUAL_IN_DEBUG GALGAS_bool reader_hasKey (const GALGAS_string & inKey
+  public : VIRTUAL_IN_DEBUG GALGAS_bool getter_hasKey (const GALGAS_string & inKey
                                                        COMMA_LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_string reader_edgeGraphvizRepresentation (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_string getter_edgeGraphvizRepresentation (LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_location reader_locationForKey (const GALGAS_string & inKey,
+  public : VIRTUAL_IN_DEBUG GALGAS_location getter_locationForKey (const GALGAS_string & inKey,
                                                                    C_Compiler * inCompiler
                                                                    COMMA_LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_stringset reader_allKeys (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_stringset getter_allKeys (LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_lstringlist reader_allKeyList (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_lstringlist getter_allKeyList (LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_uint reader_count (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_uint getter_count (LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_uint reader_unsolvedProxyCount (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_uint getter_unsolvedProxyCount (LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_lstringlist reader_unsolvedProxyList (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_lstringlist getter_unsolvedProxyList (LOCATION_ARGS) const ;
 
 //--------------------------------- Introspection
   public : virtual const C_galgas_type_descriptor * staticTypeDescriptor (void) const = 0 ;

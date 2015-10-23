@@ -864,7 +864,7 @@ GALGAS_stringset GALGAS_stringset::substract_operation (const GALGAS_stringset &
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_stringlist GALGAS_stringset::reader_stringList (LOCATION_ARGS) const {
+GALGAS_stringlist GALGAS_stringset::getter_stringList (LOCATION_ARGS) const {
   GALGAS_stringlist result ;
   if (isValid ()) {
     result = GALGAS_stringlist::constructor_emptyList (THERE) ;
@@ -875,7 +875,7 @@ GALGAS_stringlist GALGAS_stringset::reader_stringList (LOCATION_ARGS) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_bool GALGAS_stringset::reader_hasKey (const GALGAS_string & inKey
+GALGAS_bool GALGAS_stringset::getter_hasKey (const GALGAS_string & inKey
                                              COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
   if (isValid () && inKey.isValid ()) {
@@ -887,7 +887,7 @@ GALGAS_bool GALGAS_stringset::reader_hasKey (const GALGAS_string & inKey
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_uint GALGAS_stringset::reader_count (UNUSED_LOCATION_ARGS) const {
+GALGAS_uint GALGAS_stringset::getter_count (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
   if (isValid ()) {
     result = GALGAS_uint (mSharedRoot->count ()) ;
@@ -897,7 +897,7 @@ GALGAS_uint GALGAS_stringset::reader_count (UNUSED_LOCATION_ARGS) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_stringset::reader_anyString (C_Compiler * inCompiler
+GALGAS_string GALGAS_stringset::getter_anyString (C_Compiler * inCompiler
                                                   COMMA_LOCATION_ARGS) const {
   GALGAS_string result ;
   if (isValid ()) {
@@ -966,7 +966,7 @@ void GALGAS_stringset::populateEnumerationArray (capCollectionElementArray & inE
     case kENUMERATION_DOWN: enterDescendingEnumeration (mSharedRoot->root (), inEnumerationArray) ; break ;
     case kENUMERATION_ENTER_ORDER : case kENUMERATION_REVERSE_ENTER_ORDER:
      MF_Assert (false, "invalid inEnumerationOrder %lld", enumerationOrderValue (inEnumerationOrder), 0) ;
-     break ;
+ //    break ;
     }
     #ifndef DO_NOT_GENERATE_CHECKINGS
       MF_Assert (mSharedRoot->count () == inEnumerationArray.count (),
@@ -1094,7 +1094,7 @@ GALGAS_stringset GALGAS_stringset::constructor_setWithLStringList (const GALGAS_
     result = constructor_emptySet (THERE) ;
     cEnumerator_lstringlist enumerator (inStringList, kEnumeration_up) ;
     while (enumerator.hasCurrentObject ()) {
-      result.addAssign_operation (enumerator.current_mValue (THERE).reader_string(THERE) COMMA_THERE) ;
+      result.addAssign_operation (enumerator.current_mValue (THERE).getter_string(THERE) COMMA_THERE) ;
       enumerator.gotoNextObject () ;
     }
     #ifndef DO_NOT_GENERATE_CHECKINGS

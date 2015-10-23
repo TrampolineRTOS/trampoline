@@ -84,14 +84,14 @@ class AC_GALGAS_root {
                                      const int32_t inIndentation) const = 0 ;
 
 //--- Readers implemented in this class
-  public : VIRTUAL_IN_DEBUG GALGAS_string reader_description (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_string getter_description (LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_type reader_staticType (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_type getter_staticType (LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_type reader_dynamicType (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_type getter_dynamicType (LOCATION_ARGS) const ;
 
 //--- "object" reader
-  public : VIRTUAL_IN_DEBUG GALGAS_object reader_object (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_object getter_object (LOCATION_ARGS) const ;
   protected : virtual AC_GALGAS_root * clonedObject (void) const = 0 ;
 
   #ifndef DO_NOT_GENERATE_CHECKINGS

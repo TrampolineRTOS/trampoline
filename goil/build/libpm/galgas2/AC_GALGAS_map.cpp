@@ -807,7 +807,7 @@ void AC_GALGAS_map::performInsert (const capCollectionElement & inAttributes,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_uint AC_GALGAS_map::reader_count (UNUSED_LOCATION_ARGS) const {
+GALGAS_uint AC_GALGAS_map::getter_count (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
   if (isValid ()) {
     result = GALGAS_uint (mSharedMap->count ()) ;
@@ -853,7 +853,7 @@ GALGAS_stringset cSharedMapRoot::keySet (LOCATION_ARGS) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_stringset AC_GALGAS_map::reader_keySet (LOCATION_ARGS) const {
+GALGAS_stringset AC_GALGAS_map::getter_keySet (LOCATION_ARGS) const {
   GALGAS_stringset result ;
   if (isValid ()) {
     result = mSharedMap->keySet (THERE) ;
@@ -892,7 +892,7 @@ GALGAS_lstringlist cSharedMapRoot::keyList (LOCATION_ARGS) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_lstringlist AC_GALGAS_map::reader_keyList (LOCATION_ARGS) const {
+GALGAS_lstringlist AC_GALGAS_map::getter_keyList (LOCATION_ARGS) const {
   GALGAS_lstringlist result ;
   if (isValid ()) {
     result = mSharedMap->keyList (THERE) ;
@@ -930,7 +930,7 @@ GALGAS_location cSharedMapRoot::locationForKey (const GALGAS_string & inKey,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_location AC_GALGAS_map::reader_locationForKey (const GALGAS_string & inKey,
+GALGAS_location AC_GALGAS_map::getter_locationForKey (const GALGAS_string & inKey,
                                                       C_Compiler * inCompiler
                                                       COMMA_LOCATION_ARGS) const {
   GALGAS_location result ;
@@ -960,7 +960,7 @@ GALGAS_uint cSharedMapRoot::levels (UNUSED_LOCATION_ARGS) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_uint AC_GALGAS_map::reader_levels (LOCATION_ARGS) const {
+GALGAS_uint AC_GALGAS_map::getter_levels (LOCATION_ARGS) const {
   GALGAS_uint result ;
   if (isValid ()) {
     result = mSharedMap->levels (THERE) ;
@@ -990,7 +990,7 @@ GALGAS_bool cSharedMapRoot::hasKeyAtLevel (const GALGAS_string & inKey,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_bool AC_GALGAS_map::reader_hasKeyAtLevel (const GALGAS_string & inKey,
+GALGAS_bool AC_GALGAS_map::getter_hasKeyAtLevel (const GALGAS_string & inKey,
                                                  const GALGAS_uint & inLevel
                                                  COMMA_LOCATION_ARGS) const {
   GALGAS_bool result ;
@@ -1021,7 +1021,7 @@ GALGAS_bool cSharedMapRoot::hasKey (const GALGAS_string & inKey
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_bool AC_GALGAS_map::reader_hasKey (const GALGAS_string & inKey
+GALGAS_bool AC_GALGAS_map::getter_hasKey (const GALGAS_string & inKey
                                           COMMA_LOCATION_ARGS) const {
   GALGAS_bool result ;
   if (isValid ()) {
@@ -1537,7 +1537,7 @@ void cSharedMapRoot::populateEnumerationArray (capCollectionElementArray & ioEnu
   case kENUMERATION_ENTER_ORDER :
   case kENUMERATION_REVERSE_ENTER_ORDER :
     MF_RunTimeError ("invalid inEnumerationOrder %lld", enumerationOrderValue (inEnumerationOrder), 0) ;
-    break ;
+//    break ;
   }
   MF_Assert (mCount == ioEnumerationArray.count (), "mCount (%lld) != ioEnumerationArray.count () (%lld)", mCount, ioEnumerationArray.count ()) ;
 }

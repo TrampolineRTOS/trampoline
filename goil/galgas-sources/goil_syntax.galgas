@@ -189,8 +189,7 @@ rule <object_definition_list>
 {
   repeat
   while
-    @lstring objectKind
-    $idf$ ?objectKind
+    $idf$ ?let @lstring objectKind
     @implementationObject impObjOfKind = [imp impObject ![objectKind string]]   
     @objectKind objectsForKind = @objectKind. new { !@objectKindMap. emptyMap}
     if [objects hasKey ![objectKind string]] then
@@ -202,8 +201,7 @@ rule <object_definition_list>
       end
       [!?objects del !objectKind ?objectsForKind]
     end
-    @lstring objectName
-    $idf$ ?objectName
+    $idf$ ?let @lstring objectName
     @objectAttributes object = emptyObject()
     @objectKindMap objectsKind = [objectsForKind objects]
     if [objectsKind hasKey ![objectName string]] then

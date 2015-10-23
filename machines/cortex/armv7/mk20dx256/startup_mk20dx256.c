@@ -48,16 +48,16 @@ const uint8_t flashconfigbytes[16] = {
 	0xFF, 0xFF, 0xFF, 0xFF, 0xFE, 0xFF, 0xFF, 0xFF
 };
 
-static void startup_default_early_hook(void) {
-#if defined(KINETISK)
-	WDOG_STCTRLH = WDOG_STCTRLH_ALLOWUPDATE;
-#elif defined(KINETISL)
-	SIM_COPC = 0;  // disable the watchdog
-#endif
-}
-static void startup_default_late_hook(void) {}
-void startup_early_hook(void)		__attribute__ ((weak, alias("startup_default_early_hook")));
-void startup_late_hook(void)		__attribute__ ((weak, alias("startup_default_late_hook")));
+// static void startup_default_early_hook(void) {
+// #if defined(KINETISK)
+// 	WDOG_STCTRLH = WDOG_STCTRLH_ALLOWUPDATE;
+// #elif defined(KINETISL)
+// 	SIM_COPC = 0;  // disable the watchdog
+// #endif
+// }
+// static void startup_default_late_hook(void) {}
+// void startup_early_hook(void)		__attribute__ ((weak, alias("startup_default_early_hook")));
+// void startup_late_hook(void)		__attribute__ ((weak, alias("startup_default_late_hook")));
 
 void Reset_Handler(void)
 {
@@ -69,7 +69,7 @@ void Reset_Handler(void)
   SIM_SCGC3 = SIM_SCGC3_ADC1 | SIM_SCGC3_FTM2;
   SIM_SCGC5 = 0x00043F82;    // clocks active to all GPIO
   SIM_SCGC6 = SIM_SCGC6_RTC | SIM_SCGC6_FTM0 | SIM_SCGC6_FTM1 | SIM_SCGC6_ADC0 | SIM_SCGC6_FTFL;
-  
+
   // if the RTC oscillator isn't enabled, get it started early
   if (!(RTC_CR & RTC_CR_OSCE)) {
     RTC_SR = 0;
@@ -156,13 +156,13 @@ void Reset_Handler(void)
   SYST_CSR = SYST_CSR_CLKSOURCE | SYST_CSR_TICKINT | SYST_CSR_ENABLE ;
 
 //---------5- Exécuter les constructeurs des variables globales
-//   extern void (* __constructor_array_start) (void) ;
-//   extern void (* __constructor_array_end) (void) ;
-//   void (** ptr) (void) = & __constructor_array_start ;
-//   while (ptr != & __constructor_array_end) {
-//     (* ptr) () ;
-//     ptr ++ ;
-//   }
+  extern void (* __constructor_array_start) (void) ;
+  extern void (* __constructor_array_end) (void) ;
+  void (** ptr) (void) = & __constructor_array_start ;
+  while (ptr != & __constructor_array_end) {
+    (* ptr) () ;
+    ptr ++ ;
+  }
 //---------6- Exécuter les routines d'initialisation de la section init_routine_array
 //   extern void (* __init_routine_array_start) (void) ;
 //   extern void (* __init_routine_array_end) (void) ;

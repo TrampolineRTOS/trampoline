@@ -51,7 +51,7 @@ cPtr_object::~cPtr_object (void) {
 GALGAS_type cPtr_object::objectStaticType (void) const {
   GALGAS_type result ;
   if (NULL != mEmbeddedObjectPtr) {
-    result = mEmbeddedObjectPtr->reader_staticType (HERE) ;
+    result = mEmbeddedObjectPtr->getter_staticType (HERE) ;
   }
   return result ;
 }
@@ -61,7 +61,7 @@ GALGAS_type cPtr_object::objectStaticType (void) const {
 GALGAS_type cPtr_object::objectDynamicType (void) const {
   GALGAS_type result ;
   if (NULL != mEmbeddedObjectPtr) {
-    result = mEmbeddedObjectPtr->reader_dynamicType (HERE) ;
+    result = mEmbeddedObjectPtr->getter_dynamicType (HERE) ;
   }
   return result ;
 }

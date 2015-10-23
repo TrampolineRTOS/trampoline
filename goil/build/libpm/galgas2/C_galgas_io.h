@@ -219,11 +219,9 @@ void ggs_printWarning (const C_SourceTextInString * inSourceTextPtr,
                        const C_String & inMessage
                        COMMA_LOCATION_ARGS) ;
 
-void ggs_printFileOperationSuccess (const C_String & inMessage
-                                    COMMA_LOCATION_ARGS) ;
+void ggs_printFileOperationSuccess (const C_String & inMessage) ;
 
-void ggs_printFileCreationSuccess (const C_String & inMessage
-                                   COMMA_UNUSED_LOCATION_ARGS) ;
+void ggs_printFileCreationSuccess (const C_String & inMessage) ;
 
 void ggs_printMessage (const C_String & inMessage
                        COMMA_LOCATION_ARGS) ;

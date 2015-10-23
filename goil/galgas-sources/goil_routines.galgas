@@ -169,6 +169,21 @@ func templateFilePath
   end
 }
 
+func allTemplatePaths
+  ?let @string prefix
+  ->@stringlist paths
+{
+  @stringlist components = [[option goil_options.target_platform value] componentsSeparatedByString !"/"]
+  @string partialPath = templates_directory(!prefix)
+  
+  paths = @stringlist. listWithValue { !partialPath }
+  
+  for  (@string directory) in components do
+    partialPath = add_path_component(!partialPath !directory)
+    [!?paths insertAtIndex !partialPath !0]
+  end
+}
+
 func allTemplateFilePaths
   ?let @string prefix
   ?let @string file
@@ -371,8 +386,20 @@ proc add_to_stringset
 
 proc file_in_path
     ?!@lstring file_name {
-    @string include_path = @string. stringWithEnvironmentVariable { !"GOIL_INCLUDE_PATH"}
-    @stringlist path_list = [include_path componentsSeparatedByString !":"]
+    @string include_path = @string. stringWithEnvironmentVariableOrEmpty { !"GOIL_INCLUDE_PATH"}
+
+    # Append the current directory and the directories along the path of 
+    # the target in reverse order
+    @stringlist systemPaths = allTemplatePaths(!"config")
+    @stringlist includePathList
+    if (include_path != "") then
+      includePathList = [include_path componentsSeparatedByString !":"]
+    else
+      includePathList = @stringlist.emptyList
+    end
+    @stringlist path_list =
+      @stringlist.listWithValue{!"."} + systemPaths + includePathList
+
     @bool not_found = true
     for (@string path) in  path_list do
         @string full_file_path = path

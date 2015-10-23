@@ -87,19 +87,19 @@ GALGAS_typelist GALGAS_type::constructor_typeList (LOCATION_ARGS) {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_type::reader_name (UNUSED_LOCATION_ARGS) const {
+GALGAS_string GALGAS_type::getter_name (UNUSED_LOCATION_ARGS) const {
   return GALGAS_string (mTypeDescriptor->mGalgasTypeName) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_bool GALGAS_type::reader_hasSuperclass (UNUSED_LOCATION_ARGS) const {
+GALGAS_bool GALGAS_type::getter_hasSuperclass (UNUSED_LOCATION_ARGS) const {
   return GALGAS_bool (NULL != mTypeDescriptor->mSuperclassDescriptor) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_type GALGAS_type::reader_superclass (C_Compiler * inCompiler
+GALGAS_type GALGAS_type::getter_superclass (C_Compiler * inCompiler
                                               COMMA_LOCATION_ARGS) const {
   GALGAS_type result ;
   if (mTypeDescriptor != NULL) {

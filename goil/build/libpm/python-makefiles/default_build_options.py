@@ -57,6 +57,7 @@ def compilerDebugOptions (platformOptions):
 
 def C_CompilerOptions (platformOptions):
   result = platformOptions
+  result.append ("-std=c99")
   return result
 
 #----------------------------------------------------------------------------------------------------------------------*

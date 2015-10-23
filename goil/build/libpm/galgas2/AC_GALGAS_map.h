@@ -136,24 +136,24 @@ class AC_GALGAS_map : public AC_GALGAS_root {
 
 
 //--------------------------------- Readers
-  public : VIRTUAL_IN_DEBUG GALGAS_uint reader_levels (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_uint getter_levels (LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_bool reader_hasKey (const GALGAS_string & inKey
+  public : VIRTUAL_IN_DEBUG GALGAS_bool getter_hasKey (const GALGAS_string & inKey
                                                        COMMA_LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_bool reader_hasKeyAtLevel (const GALGAS_string & inKey,
+  public : VIRTUAL_IN_DEBUG GALGAS_bool getter_hasKeyAtLevel (const GALGAS_string & inKey,
                                                               const GALGAS_uint & inLevel
                                                               COMMA_LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_location reader_locationForKey (const GALGAS_string & inKey,
+  public : VIRTUAL_IN_DEBUG GALGAS_location getter_locationForKey (const GALGAS_string & inKey,
                                                                    C_Compiler * inCompiler
                                                                    COMMA_LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_stringset reader_keySet (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_stringset getter_keySet (LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_lstringlist reader_keyList (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_lstringlist getter_keyList (LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_uint reader_count (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_uint getter_count (LOCATION_ARGS) const ;
 
 //--------------------------------- Introspection
   public : virtual const C_galgas_type_descriptor * staticTypeDescriptor (void) const = 0 ;

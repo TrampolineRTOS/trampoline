@@ -52,24 +52,12 @@ CPU blink {
       TRAMPOLINE_BASE_PATH = "../../../../../..";
       APP_SRC = "blink.c";
       APP_NAME = "blink_exe";
-      CFLAGS = "-g -O0 -Wall -Wno-unused-but-set-variable -Wformat -std=c99";
-      CFLAGS = "-mcpu=cortex-m4 -Wmissing-field-initializers -mthumb";
-      CFLAGS = "-mfloat-abi=soft -mfpu=fpv4-sp-d16 -nostartfiles"; 
-      CFLAGS = "--specs=nosys.specs";
-      ASFLAGS = "-g -Wall -mcpu=cortex-m4 -mthumb --fatal-warnings";
-      ASFLAGS = "-mfloat-abi=soft -mfpu=fpv4-sp-d16";
-      LDFLAGS = "--fatal-warnings --warn-common --no-undefined";
-      
-      /* This path should be changed to the location where the libc is */
-      LDFLAGS = "-L/Users/jlb/Tools/gcc/gcc-arm-none-eabi/arm-none-eabi/lib/thumb";
-      LDFLAGS = "-lc";
-
-      /* This path should be changed to the location where the libgcc is */
-      LDFLAGS = "-L/Users/jlb/Tools/gcc/gcc-arm-none-eabi/lib/gcc/arm-none-eabi/4.9.3/thumb";
-      LDFLAGS = "-lgcc";
-      
+      COMMONFLAGS = "-O0";
+      COMMONFLAGS = "-DARDUINO=10603 -DTEENSYDUINO=124";
       LDFLAGS = "-Map=blink.map";
+
       COMPILER = "arm-none-eabi-gcc";
+      CPPCOMPILER = "arm-none-eabi-g++";
       ASSEMBLER = "arm-none-eabi-as";
       LINKER = "arm-none-eabi-ld";
       COPIER = "arm-none-eabi-objcopy";

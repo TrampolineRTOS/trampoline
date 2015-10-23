@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2010, ..., 2010 Pierre Molinaro.                                                                     *
+//  Copyright (C) 2010, ..., 2015 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -75,15 +75,17 @@ class AC_GALGAS_graph : public AC_GALGAS_root {
   protected : VIRTUAL_IN_DEBUG void makeNewEmptyGraph (LOCATION_ARGS) ;
 
 //--------------------------------- Readers
-  public : VIRTUAL_IN_DEBUG GALGAS_uint reader_count (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_uint getter_count (LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_stringlist reader_keyList (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_bool getter_isNodeDefined (const GALGAS_string & inKey COMMA_LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_lstringlist reader_lkeyList (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_stringlist getter_keyList (LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_uint reader_undefinedNodeCount (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_lstringlist getter_lkeyList (LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_stringlist reader_undefinedNodeKeyList (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_uint getter_undefinedNodeCount (LOCATION_ARGS) const ;
+
+  public : VIRTUAL_IN_DEBUG GALGAS_stringlist getter_undefinedNodeKeyList (LOCATION_ARGS) const ;
 
 //--------------------------------- Modifiers
   public : VIRTUAL_IN_DEBUG void modifier_addEdge (const GALGAS_lstring & inSourceNodeKey,
@@ -127,7 +129,7 @@ class AC_GALGAS_graph : public AC_GALGAS_root {
   public : VIRTUAL_IN_DEBUG void modifier_noteNode (const GALGAS_lstring & inKey
                                                     COMMA_LOCATION_ARGS) ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_lstringlist reader_undefinedNodeReferenceList (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_lstringlist getter_undefinedNodeReferenceList (LOCATION_ARGS) const ;
 
   protected : VIRTUAL_IN_DEBUG void internalTopologicalSort (cSharedList * & outSortedList,
                                                              GALGAS_lstringlist & outSortedNodeKeyList,
@@ -135,6 +137,10 @@ class AC_GALGAS_graph : public AC_GALGAS_root {
                                                              GALGAS_lstringlist & outUnsortedNodeKeyList,
                                                              C_Compiler * inCompiler
                                                              COMMA_LOCATION_ARGS) const ;
+
+  protected : VIRTUAL_IN_DEBUG void internalFindCircularities (cSharedList * & outInfoList,
+                                                               GALGAS_lstringlist & outNodeKeyList
+                                                               COMMA_UNUSED_LOCATION_ARGS) const ;
 
   protected : VIRTUAL_IN_DEBUG void internalNodesWithNoPredecessor (cSharedList * & outSortedList,
                                                                     GALGAS_lstringlist & outSortedNodeKeyList
@@ -151,9 +157,9 @@ class AC_GALGAS_graph : public AC_GALGAS_root {
                                                                        C_Compiler * inCompiler
                                                                        COMMA_LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_string reader_graphviz (UNUSED_LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_string getter_graphviz (UNUSED_LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS__32_stringlist reader_edges (UNUSED_LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS__32_stringlist getter_edges (UNUSED_LOCATION_ARGS) const ;
 
   friend class cSharedGraph ;
 } ;

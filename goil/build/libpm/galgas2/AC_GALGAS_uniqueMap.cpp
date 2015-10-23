@@ -141,16 +141,16 @@ class cSharedUniqueMapRoot : public C_SharedObject {
                                                                           COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Readers
-  protected : VIRTUAL_IN_DEBUG GALGAS_bool reader_hasKey (const GALGAS_string & inKey
+  protected : VIRTUAL_IN_DEBUG GALGAS_bool getter_hasKey (const GALGAS_string & inKey
                                                           COMMA_LOCATION_ARGS) const ;
 
-  protected : VIRTUAL_IN_DEBUG GALGAS_location reader_locationForKey (const GALGAS_string & inKey,
+  protected : VIRTUAL_IN_DEBUG GALGAS_location getter_locationForKey (const GALGAS_string & inKey,
                                                                       C_Compiler * inCompiler
                                                                       COMMA_LOCATION_ARGS) const ;
 
-  protected : VIRTUAL_IN_DEBUG GALGAS_stringset reader_allKeys (LOCATION_ARGS) const ;
+  protected : VIRTUAL_IN_DEBUG GALGAS_stringset getter_allKeys (LOCATION_ARGS) const ;
 
-  protected : VIRTUAL_IN_DEBUG GALGAS_lstringlist reader_allKeyList (LOCATION_ARGS) const ;
+  protected : VIRTUAL_IN_DEBUG GALGAS_lstringlist getter_allKeyList (LOCATION_ARGS) const ;
 
 //--------------------------------- Implementation of reader 'description'
   public : VIRTUAL_IN_DEBUG void description (C_String & ioString,
@@ -729,8 +729,8 @@ void AC_GALGAS_uniqueMap::modifier_enterEdge (const GALGAS_lstring & inSource,
                                               const GALGAS_lstring & inTarget
                                               COMMA_LOCATION_ARGS) {
   if (isValid () && inSource.isValid () && inTarget.isValid( )) {
-    cUniqueMapNode * source = mSharedMap->performInsertProxy (inSource.reader_string (THERE).stringValue (), inSource.reader_location (THERE)) ;
-    cUniqueMapNode * target = mSharedMap->performInsertProxy (inTarget.reader_string (THERE).stringValue (), inTarget.reader_location (THERE)) ;
+    cUniqueMapNode * source = mSharedMap->performInsertProxy (inSource.getter_string (THERE).stringValue (), inSource.getter_location (THERE)) ;
+    cUniqueMapNode * target = mSharedMap->performInsertProxy (inTarget.getter_string (THERE).stringValue (), inTarget.getter_location (THERE)) ;
     mSharedMap->enterEdge (source, target) ;
   }
 }
@@ -806,7 +806,7 @@ void cSharedUniqueMapRoot::internalTopologicalSort (GALGAS_lstringlist & outSort
  /*  printf ("*** Working array:\n") ;
     for (int32_t i=0 ; i<array.count () ; i++) {
       cTopologicalSortElement & entry = array (i COMMA_HERE) ;
-      printf ("#%d '%s' dep %d :", i, entry.mKey.reader_string (HERE).stringValue ().cString (HERE), entry.mDependencyCount) ;
+      printf ("#%d '%s' dep %d :", i, entry.mKey.getter_string (HERE).stringValue ().cString (HERE), entry.mDependencyCount) ;
       for (int32_t j=0 ; j<entry.mDependenceArray.count () ; j++) {
         printf (" %d", entry.mDependenceArray (j COMMA_HERE)) ;
       }
@@ -893,7 +893,7 @@ C_String cSharedUniqueMapRoot::edgeGraphvizRepresentation (void) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string AC_GALGAS_uniqueMap::reader_edgeGraphvizRepresentation (UNUSED_LOCATION_ARGS) const {
+GALGAS_string AC_GALGAS_uniqueMap::getter_edgeGraphvizRepresentation (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
   if (isValid ()) {
     result = GALGAS_string (mSharedMap->edgeGraphvizRepresentation ()) ;
@@ -909,7 +909,7 @@ GALGAS_string AC_GALGAS_uniqueMap::reader_edgeGraphvizRepresentation (UNUSED_LOC
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_uint AC_GALGAS_uniqueMap::reader_count (UNUSED_LOCATION_ARGS) const {
+GALGAS_uint AC_GALGAS_uniqueMap::getter_count (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
   if (isValid ()) {
     result = GALGAS_uint (mSharedMap->count ()) ;
@@ -947,7 +947,7 @@ static void enterKeyInStringSet (const cUniqueMapNode * inNode,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_stringset cSharedUniqueMapRoot::reader_allKeys (LOCATION_ARGS) const {
+GALGAS_stringset cSharedUniqueMapRoot::getter_allKeys (LOCATION_ARGS) const {
   GALGAS_stringset result = GALGAS_stringset::constructor_emptySet (THERE) ;
   enterKeyInStringSet (mRoot, result) ;
   return result ;
@@ -955,10 +955,10 @@ GALGAS_stringset cSharedUniqueMapRoot::reader_allKeys (LOCATION_ARGS) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_stringset AC_GALGAS_uniqueMap::reader_allKeys (LOCATION_ARGS) const {
+GALGAS_stringset AC_GALGAS_uniqueMap::getter_allKeys (LOCATION_ARGS) const {
   GALGAS_stringset result ;
   if (isValid ()) {
-    result = mSharedMap->reader_allKeys (THERE) ;
+    result = mSharedMap->getter_allKeys (THERE) ;
   }
   return result ;
 }
@@ -986,7 +986,7 @@ static void enterKeyInLStringList (cUniqueMapNode * inNode,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_lstringlist cSharedUniqueMapRoot::reader_allKeyList (LOCATION_ARGS) const {
+GALGAS_lstringlist cSharedUniqueMapRoot::getter_allKeyList (LOCATION_ARGS) const {
   GALGAS_lstringlist result = GALGAS_lstringlist::constructor_emptyList (THERE) ;
   enterKeyInLStringList (mRoot, result) ;
   return result ;
@@ -994,10 +994,10 @@ GALGAS_lstringlist cSharedUniqueMapRoot::reader_allKeyList (LOCATION_ARGS) const
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_lstringlist AC_GALGAS_uniqueMap::reader_allKeyList (LOCATION_ARGS) const {
+GALGAS_lstringlist AC_GALGAS_uniqueMap::getter_allKeyList (LOCATION_ARGS) const {
   GALGAS_lstringlist result ;
   if (isValid ()) {
-    result = mSharedMap->reader_allKeyList (THERE) ;
+    result = mSharedMap->getter_allKeyList (THERE) ;
   }
   return result ;
 }
@@ -1028,7 +1028,7 @@ uint32_t cSharedUniqueMapRoot::unsolvedProxyCount (void) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_uint AC_GALGAS_uniqueMap::reader_unsolvedProxyCount (UNUSED_LOCATION_ARGS) const {
+GALGAS_uint AC_GALGAS_uniqueMap::getter_unsolvedProxyCount (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
   if (isValid ()) {
     result = GALGAS_uint (mSharedMap->unsolvedProxyCount ()) ;
@@ -1072,7 +1072,7 @@ void cSharedUniqueMapRoot::unsolvedProxyKeyList (GALGAS_lstringlist & ioList) co
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_lstringlist AC_GALGAS_uniqueMap::reader_unsolvedProxyList (UNUSED_LOCATION_ARGS) const {
+GALGAS_lstringlist AC_GALGAS_uniqueMap::getter_unsolvedProxyList (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstringlist result ;
   if (isValid ()) {
     mSharedMap->unsolvedProxyKeyList (result) ;
@@ -1088,7 +1088,7 @@ GALGAS_lstringlist AC_GALGAS_uniqueMap::reader_unsolvedProxyList (UNUSED_LOCATIO
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_location cSharedUniqueMapRoot::reader_locationForKey (const GALGAS_string & inKey,
+GALGAS_location cSharedUniqueMapRoot::getter_locationForKey (const GALGAS_string & inKey,
                                                        C_Compiler * inCompiler
                                                        COMMA_LOCATION_ARGS) const {
   GALGAS_location result ;
@@ -1110,12 +1110,12 @@ GALGAS_location cSharedUniqueMapRoot::reader_locationForKey (const GALGAS_string
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_location AC_GALGAS_uniqueMap::reader_locationForKey (const GALGAS_string & inKey,
+GALGAS_location AC_GALGAS_uniqueMap::getter_locationForKey (const GALGAS_string & inKey,
                                                    C_Compiler * inCompiler
                                                    COMMA_LOCATION_ARGS) const {
   GALGAS_location result ;
   if (isValid ()) {
-    result = mSharedMap->reader_locationForKey (inKey, inCompiler COMMA_THERE) ;
+    result = mSharedMap->getter_locationForKey (inKey, inCompiler COMMA_THERE) ;
   }
   return result ;
 }
@@ -1128,7 +1128,7 @@ GALGAS_location AC_GALGAS_uniqueMap::reader_locationForKey (const GALGAS_string 
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_bool cSharedUniqueMapRoot::reader_hasKey (const GALGAS_string & inKey
+GALGAS_bool cSharedUniqueMapRoot::getter_hasKey (const GALGAS_string & inKey
                                            COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
   if (inKey.isValid ()) {
@@ -1141,11 +1141,11 @@ GALGAS_bool cSharedUniqueMapRoot::reader_hasKey (const GALGAS_string & inKey
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_bool AC_GALGAS_uniqueMap::reader_hasKey (const GALGAS_string & inKey
+GALGAS_bool AC_GALGAS_uniqueMap::getter_hasKey (const GALGAS_string & inKey
                                           COMMA_LOCATION_ARGS) const {
   GALGAS_bool result ;
   if (isValid ()) {
-    result = mSharedMap->reader_hasKey (inKey COMMA_THERE) ;
+    result = mSharedMap->getter_hasKey (inKey COMMA_THERE) ;
   }
   return result ;
 }
@@ -1312,14 +1312,14 @@ const cCollectionElement * AC_GALGAS_uniqueMap::performSearch (const GALGAS_lstr
       MF_Assert (node->mCurrentState < inAutomatonStateCount, "node->mCurrentState (%lld) >= inAutomatonStateCount (%lld)", (int64_t) node->mCurrentState, (int64_t) inAutomatonStateCount) ;
       MF_Assert (inActionIndex < inAutomatonActionCount, "inActionIndex (%lld) >= inAutomatonActionCount (%lld)", (int64_t) inActionIndex, (int64_t) inAutomatonActionCount) ;
       const cMapAutomatonTransition & transition = inTransitionArray [node->mCurrentState * inAutomatonActionCount + inActionIndex] ;
-      // printf ("NODE '%s' : %d -> %d\n", inKey.reader_string (HERE).stringValue ().cString (HERE), node->mCurrentState, transition.mTargetStateIndex) ;
+      // printf ("NODE '%s' : %d -> %d\n", inKey.getter_string (HERE).stringValue ().cString (HERE), node->mCurrentState, transition.mTargetStateIndex) ;
       const int32_t checkedVariableListEntryCount = inCompiler->checkedVariableListEntryCount () ;
       for (int32_t i=0 ; i<checkedVariableListEntryCount ; i++) {
         const C_String variableName = inCompiler->checkedVariableAtIndex (i COMMA_HERE) ;
-        if (variableName == inKey.reader_string (HERE).stringValue ()) {
+        if (variableName == inKey.getter_string (HERE).stringValue ()) {
           printf ("[traceVariableState '%s' at line %d : %s |- %s -> %s]\n",
                   variableName.cString (HERE),
-                  inKey.reader_location (HERE).startLocation ().lineNumber (),
+                  inKey.getter_location (HERE).startLocation ().lineNumber (),
                   inAutomatonStateNames [node->mCurrentState],
                   inAutomatonActionNames [inActionIndex],
                   inAutomatonStateNames [transition.mTargetStateIndex]) ;
@@ -2014,7 +2014,7 @@ void cSharedUniqueMapRoot::populateEnumerationArray (capCollectionElementArray &
   case kENUMERATION_ENTER_ORDER :
   case kENUMERATION_REVERSE_ENTER_ORDER :
     MF_RunTimeError ("invalid inEnumerationOrder %lld", enumerationOrderValue (inEnumerationOrder), 0) ;
-    break ;
+//    break ;
   }
   MF_Assert (mNodeCount == ioEnumerationArray.count (), "mNodeCount (%lld) != ioEnumerationArray.count () (%lld)", mNodeCount, ioEnumerationArray.count ()) ;
 }
@@ -2128,7 +2128,7 @@ void AC_GALGAS_uniqueMapProxy::attachProxyToMapNode (cUniqueMapNode * inMapNode)
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_bool AC_GALGAS_uniqueMapProxy::reader_isRegular (UNUSED_LOCATION_ARGS) const {
+GALGAS_bool AC_GALGAS_uniqueMapProxy::getter_isRegular (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
   if (isValid ()) {
     result = GALGAS_bool (kIsRegular == mState) ;
@@ -2138,7 +2138,7 @@ GALGAS_bool AC_GALGAS_uniqueMapProxy::reader_isRegular (UNUSED_LOCATION_ARGS) co
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_bool AC_GALGAS_uniqueMapProxy::reader_isNull (UNUSED_LOCATION_ARGS) const {
+GALGAS_bool AC_GALGAS_uniqueMapProxy::getter_isNull (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
   if (isValid ()) {
     result = GALGAS_bool (kIsNull == mState) ;
@@ -2148,7 +2148,7 @@ GALGAS_bool AC_GALGAS_uniqueMapProxy::reader_isNull (UNUSED_LOCATION_ARGS) const
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_bool AC_GALGAS_uniqueMapProxy::reader_isSolved (C_Compiler * inCompiler
+GALGAS_bool AC_GALGAS_uniqueMapProxy::getter_isSolved (C_Compiler * inCompiler
                                                        COMMA_LOCATION_ARGS) const {
   GALGAS_bool result ;
   switch (mState) {
@@ -2198,7 +2198,7 @@ const cMapElement * AC_GALGAS_uniqueMapProxy::getAttributeListPointer (C_Compile
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_lstring AC_GALGAS_uniqueMapProxy::reader_lkey (C_Compiler * inCompiler
+GALGAS_lstring AC_GALGAS_uniqueMapProxy::getter_lkey (C_Compiler * inCompiler
                                                       COMMA_LOCATION_ARGS) const {
   GALGAS_lstring result ;
   const cMapElement * p = getAttributeListPointer (inCompiler, "lkey" COMMA_THERE) ;
@@ -2211,7 +2211,7 @@ GALGAS_lstring AC_GALGAS_uniqueMapProxy::reader_lkey (C_Compiler * inCompiler
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string AC_GALGAS_uniqueMapProxy::reader_key (C_Compiler * inCompiler
+GALGAS_string AC_GALGAS_uniqueMapProxy::getter_key (C_Compiler * inCompiler
                                                     COMMA_LOCATION_ARGS) const {
   GALGAS_string result ;
   switch (mState) {
@@ -2235,7 +2235,7 @@ GALGAS_string AC_GALGAS_uniqueMapProxy::reader_key (C_Compiler * inCompiler
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string AC_GALGAS_uniqueMapProxy::reader_identifierRepresentation (C_Compiler * inCompiler
+GALGAS_string AC_GALGAS_uniqueMapProxy::getter_identifierRepresentation (C_Compiler * inCompiler
                                                                          COMMA_LOCATION_ARGS) const {
   GALGAS_string result ;
   switch (mState) {
@@ -2400,8 +2400,8 @@ void AC_GALGAS_uniqueMapProxy::internalMakeProxy (AC_GALGAS_uniqueMap & ioMap,
                                                   COMMA_LOCATION_ARGS) {
   drop () ;
   if (inKey.isValid ()) {
-    cUniqueMapNode * node = ioMap.performInsertProxy (inKey.reader_string (THERE).stringValue (),
-                                                      inKey.reader_location (THERE)
+    cUniqueMapNode * node = ioMap.performInsertProxy (inKey.getter_string (THERE).stringValue (),
+                                                      inKey.getter_location (THERE)
                                                       COMMA_THERE) ;
     macroValidPointer (node) ;
     attachProxyToMapNode (node) ;

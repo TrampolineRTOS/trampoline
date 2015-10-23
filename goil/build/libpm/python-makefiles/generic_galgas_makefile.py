@@ -49,6 +49,7 @@ class GenericGalgasMakefile :
   mTargetName = ""
   mLinkerOptions = []
   mExecutableSuffix = ""
+  mCrossCompilation = ""
 
   def run (self) :
     startTime = time.time ()
@@ -56,6 +57,16 @@ class GenericGalgasMakefile :
     SOURCES = self.mDictionary ["SOURCES"]
   #--- LIBPM
     LIBPM_DIRECTORY_PATH = self.mDictionary ["LIBPM_DIRECTORY_PATH"]
+  #--------------------------------------------------------------------------- System
+    if self.mCrossCompilation == "":
+      (SYSTEM_NAME, MODE_NAME, SYSTEM_RELEASE, SYSTEM_VERSION, MACHINE) = os.uname ()
+      if SYSTEM_NAME == "Darwin":
+        MACHINE = "Intel"
+      SYSTEM_MACHINE = SYSTEM_NAME + "-" + MACHINE
+    else:
+      SYSTEM_MACHINE = self.mCrossCompilation
+  #--- GMP
+    GMP_DIRECTORY_PATH = LIBPM_DIRECTORY_PATH + "/gmp"
   #--- Source directory list
     SOURCES_DIR = self.mDictionary ["SOURCES_DIR"]
   #--------------------------------------------------------------------------- Include dirs
@@ -64,15 +75,16 @@ class GenericGalgasMakefile :
     SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/files")
     SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/galgas")
     SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/galgas2")
+    SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/gmp")
     SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/streams")
     SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/time")
     SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/strings")
     SOURCES_DIR.append (LIBPM_DIRECTORY_PATH + "/utilities")
-    includeDirs = []
+    includeDirs = ["-I" + GMP_DIRECTORY_PATH]
     for d in SOURCES_DIR:
       includeDirs.append ("-I" + d)
   #--- Make object
-    make = makefile.Make ()
+    make = makefile.Make (self.mGoal)
   #--------------------------------------------------------------------------- Add Compile rule for sources
   #--- Object file directory
     objectDirectory = os.path.normpath (os.getcwd () + "/../build/cli-objects/makefile-" + self.mTargetName + "-objects")
@@ -83,14 +95,18 @@ class GenericGalgasMakefile :
       objectFileList.append (objectFile)
       sourcePath = make.searchFileInDirectories (source, SOURCES_DIR)
       if sourcePath != "" :
-        rule = makefile.Rule (objectFile, self.mCompilationMessage + ": " + source)
-        #rule.mPriority = os.path.getsize (os.path.abspath (sourcePath))
+        extension = os.path.splitext (source) [1]
+        rule = makefile.Rule ([objectFile], self.mCompilationMessage + ": " + source)
+        rule.deleteTargetDirectoryOnClean ()
         rule.mDependences.append (sourcePath)
-        rule.enterSecondaryDependanceFile (objectFile + ".dep")
+        rule.enterSecondaryDependanceFile (objectFile + ".dep", make)
         rule.mCommand += self.mCompilerTool
         rule.mCommand += self.mCompilerReleaseOptions
         rule.mCommand += self.mAllCompilerOptions
-        rule.mCommand += self.m_Cpp_CompilerOptions
+        if extension == ".c":
+          rule.mCommand += self.m_C_CompilerOptions
+        elif extension == ".cpp":
+          rule.mCommand += self.m_Cpp_CompilerOptions
         rule.mCommand += ["-c", sourcePath]
         rule.mCommand += ["-o", objectFile]
         rule.mCommand += includeDirs
@@ -98,7 +114,9 @@ class GenericGalgasMakefile :
         make.addRule (rule) ;
   #--------------------------------------------------------------------------- Add EXECUTABLE link rule
     EXECUTABLE = self.mExecutable + self.mExecutableSuffix
-    rule = makefile.Rule (EXECUTABLE, self.mLinkingMessage + ": " + EXECUTABLE)
+    rule = makefile.Rule ([EXECUTABLE], self.mLinkingMessage + ": " + EXECUTABLE)
+    rule.mOnErrorDeleteTarget = True
+    rule.deleteTargetFileOnClean ()
     rule.mDependences += objectFileList
     rule.mCommand += self.mLinkerTool
     rule.mCommand += objectFileList
@@ -120,14 +138,18 @@ class GenericGalgasMakefile :
       debugObjectFileList.append (objectFile)
       sourcePath = make.searchFileInDirectories (source, SOURCES_DIR)
       if sourcePath != "" :
-        rule = makefile.Rule (objectFile, self.mCompilationMessage + " (debug): " + source)
-        #rule.mPriority = os.path.getsize (os.path.abspath (sourcePath))
+        extension = os.path.splitext (source) [1]
+        rule = makefile.Rule ([objectFile], self.mCompilationMessage + " (debug): " + source)
+        rule.deleteTargetDirectoryOnClean ()
         rule.mDependences.append (sourcePath)
-        rule.enterSecondaryDependanceFile (objectFile + ".dep")
+        rule.enterSecondaryDependanceFile (objectFile + ".dep", make)
         rule.mCommand += self.mCompilerTool
         rule.mCommand += self.mCompilerDebugOptions
         rule.mCommand += self.mAllCompilerOptions
-        rule.mCommand += self.m_Cpp_CompilerOptions
+        if extension == ".c":
+          rule.mCommand += self.m_C_CompilerOptions
+        elif extension == ".cpp":
+          rule.mCommand += self.m_Cpp_CompilerOptions
         rule.mCommand += ["-c", sourcePath]
         rule.mCommand += ["-o", objectFile]
         rule.mCommand += includeDirs
@@ -135,17 +157,20 @@ class GenericGalgasMakefile :
         make.addRule (rule) ;
   #--------------------------------------------------------------------------- Add EXECUTABLE_DEBUG link rule
     EXECUTABLE_DEBUG = self.mExecutable + "-debug" + self.mExecutableSuffix
-    rule = makefile.Rule (EXECUTABLE_DEBUG, self.mLinkingMessage + " (debug): " + EXECUTABLE_DEBUG)
+    rule = makefile.Rule ([EXECUTABLE_DEBUG], self.mLinkingMessage + " (debug): " + EXECUTABLE_DEBUG)
+    rule.mOnErrorDeleteTarget = True
+    rule.deleteTargetFileOnClean ()
     rule.mDependences += debugObjectFileList
     rule.mCommand += self.mLinkerTool
     rule.mCommand += debugObjectFileList
     rule.mCommand += ["-o", EXECUTABLE_DEBUG]
+#    rule.mCommand += ["-L", GMP_DIRECTORY_PATH, "-lgmp-" + SYSTEM_MACHINE]
     rule.mCommand += self.mLinkerOptions
     make.addRule (rule) ;
   #--------------------------------------------------------------------------- Add install EXECUTABLE file rule
     if len (self.mSudoTool) > 0:
       INSTALL_EXECUTABLE = "/usr/local/bin/" + EXECUTABLE
-      rule = makefile.Rule (INSTALL_EXECUTABLE, self.mInstallationgMessage + ": " + INSTALL_EXECUTABLE)
+      rule = makefile.Rule ([INSTALL_EXECUTABLE], self.mInstallationgMessage + ": " + INSTALL_EXECUTABLE)
       rule.mDependences.append (EXECUTABLE)
       rule.mCommand += self.mSudoTool
       rule.mCommand += ["cp", EXECUTABLE, INSTALL_EXECUTABLE]
@@ -153,7 +178,7 @@ class GenericGalgasMakefile :
   #--------------------------------------------------------------------------- Add install EXECUTABLE-debug file rule
     if len (self.mSudoTool) > 0:
       INSTALL_EXECUTABLE_DEBUG = "/usr/local/bin/" + EXECUTABLE_DEBUG
-      rule = makefile.Rule (INSTALL_EXECUTABLE_DEBUG, self.mInstallationgMessage + " (debug): " + INSTALL_EXECUTABLE_DEBUG)
+      rule = makefile.Rule ([INSTALL_EXECUTABLE_DEBUG], self.mInstallationgMessage + " (debug): " + INSTALL_EXECUTABLE_DEBUG)
       rule.mDependences.append (INSTALL_EXECUTABLE_DEBUG)
       rule.mCommand += self.mSudoTool
       rule.mCommand += ["cp", EXECUTABLE_DEBUG, INSTALL_EXECUTABLE_DEBUG]
@@ -168,7 +193,7 @@ class GenericGalgasMakefile :
       make.addGoal ("install-debug", [INSTALL_EXECUTABLE_DEBUG], "Build and install " + INSTALL_EXECUTABLE_DEBUG)
   #--------------------------------------------------------------------------- Run jobs
 #    make.printGoals ()
-    make.runGoal (self.mGoal, self.mMaxParallelJobs, self.mDisplayCommands)
+    make.runGoal (self.mMaxParallelJobs, self.mDisplayCommands)
   #--------------------------------------------------------------------------- Ok ?
     make.printErrorCountAndExitOnError ()
     displayDurationFromStartTime (startTime)

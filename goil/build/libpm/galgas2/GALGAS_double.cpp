@@ -78,7 +78,7 @@ GALGAS_double GALGAS_double::constructor_doubleWithBinaryImage (const GALGAS_uin
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_uint_36__34_ GALGAS_double::reader_binaryImage (UNUSED_LOCATION_ARGS) const {
+GALGAS_uint_36__34_ GALGAS_double::getter_binaryImage (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint_36__34_ result ;
   if (isValid ()) {
     union {
@@ -93,7 +93,7 @@ GALGAS_uint_36__34_ GALGAS_double::reader_binaryImage (UNUSED_LOCATION_ARGS) con
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_double GALGAS_double::reader_cos (UNUSED_LOCATION_ARGS) const {
+GALGAS_double GALGAS_double::getter_cos (UNUSED_LOCATION_ARGS) const {
   GALGAS_double result ;
   if (isValid ()) {
     result = GALGAS_double (cos (mDoubleValue)) ;
@@ -103,7 +103,7 @@ GALGAS_double GALGAS_double::reader_cos (UNUSED_LOCATION_ARGS) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_double GALGAS_double::reader_sqrt (C_Compiler * inCompiler
+GALGAS_double GALGAS_double::getter_sqrt (C_Compiler * inCompiler
                                           COMMA_LOCATION_ARGS) const {
   GALGAS_double result ;
   if (isValid ()) {
@@ -120,7 +120,7 @@ GALGAS_double GALGAS_double::reader_sqrt (C_Compiler * inCompiler
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_double GALGAS_double::reader_log_32_ (C_Compiler * inCompiler
+GALGAS_double GALGAS_double::getter_log_32_ (C_Compiler * inCompiler
                                              COMMA_LOCATION_ARGS) const {
   GALGAS_double result ;
   if (isValid ()) {
@@ -137,7 +137,7 @@ GALGAS_double GALGAS_double::reader_log_32_ (C_Compiler * inCompiler
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_double GALGAS_double::reader_log_31__30_ (C_Compiler * inCompiler
+GALGAS_double GALGAS_double::getter_log_31__30_ (C_Compiler * inCompiler
                                                  COMMA_LOCATION_ARGS) const {
   GALGAS_double result ;
   if (isValid ()) {
@@ -154,7 +154,7 @@ GALGAS_double GALGAS_double::reader_log_31__30_ (C_Compiler * inCompiler
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_double GALGAS_double::reader_logn (C_Compiler * inCompiler
+GALGAS_double GALGAS_double::getter_logn (C_Compiler * inCompiler
                                                  COMMA_LOCATION_ARGS) const {
   GALGAS_double result ;
   if (isValid ()) {
@@ -171,7 +171,7 @@ GALGAS_double GALGAS_double::reader_logn (C_Compiler * inCompiler
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_double GALGAS_double::reader_exp (UNUSED_LOCATION_ARGS) const {
+GALGAS_double GALGAS_double::getter_exp (UNUSED_LOCATION_ARGS) const {
   GALGAS_double result ;
   if (isValid ()) {
     result = GALGAS_double (::exp (mDoubleValue)) ;
@@ -181,7 +181,7 @@ GALGAS_double GALGAS_double::reader_exp (UNUSED_LOCATION_ARGS) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_double GALGAS_double::reader_cosDegree (UNUSED_LOCATION_ARGS) const {
+GALGAS_double GALGAS_double::getter_cosDegree (UNUSED_LOCATION_ARGS) const {
   GALGAS_double result ;
   if (isValid ()) {
     result = GALGAS_double (cos (mDoubleValue * PI_CONSTANT / 180.0)) ;
@@ -191,7 +191,7 @@ GALGAS_double GALGAS_double::reader_cosDegree (UNUSED_LOCATION_ARGS) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_double GALGAS_double::reader_sin (UNUSED_LOCATION_ARGS) const {
+GALGAS_double GALGAS_double::getter_sin (UNUSED_LOCATION_ARGS) const {
   GALGAS_double result ;
   if (isValid ()) {
     result = GALGAS_double (sin (mDoubleValue)) ;
@@ -201,7 +201,7 @@ GALGAS_double GALGAS_double::reader_sin (UNUSED_LOCATION_ARGS) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_double GALGAS_double::reader_sinDegree (UNUSED_LOCATION_ARGS) const {
+GALGAS_double GALGAS_double::getter_sinDegree (UNUSED_LOCATION_ARGS) const {
   GALGAS_double result ;
   if (isValid ()) {
     result = GALGAS_double (sin (mDoubleValue * PI_CONSTANT / 180.0)) ;
@@ -211,7 +211,7 @@ GALGAS_double GALGAS_double::reader_sinDegree (UNUSED_LOCATION_ARGS) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_double GALGAS_double::reader_tan (UNUSED_LOCATION_ARGS) const {
+GALGAS_double GALGAS_double::getter_tan (UNUSED_LOCATION_ARGS) const {
   GALGAS_double result ;
   if (isValid ()) {
     result = GALGAS_double (tan (mDoubleValue)) ;
@@ -221,7 +221,7 @@ GALGAS_double GALGAS_double::reader_tan (UNUSED_LOCATION_ARGS) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_double GALGAS_double::reader_tanDegree (UNUSED_LOCATION_ARGS) const {
+GALGAS_double GALGAS_double::getter_tanDegree (UNUSED_LOCATION_ARGS) const {
   GALGAS_double result ;
   if (isValid ()) {
     result = GALGAS_double (tan (mDoubleValue * PI_CONSTANT / 180.0)) ;
@@ -231,7 +231,7 @@ GALGAS_double GALGAS_double::reader_tanDegree (UNUSED_LOCATION_ARGS) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_double GALGAS_double::reader_power (const GALGAS_double & inExponant,
+GALGAS_double GALGAS_double::getter_power (const GALGAS_double & inExponant,
                                            C_Compiler * /* inCompiler */
                                            COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_double result ;
@@ -243,7 +243,7 @@ GALGAS_double GALGAS_double::reader_power (const GALGAS_double & inExponant,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_uint GALGAS_double::reader_uint (C_Compiler * inCompiler
+GALGAS_uint GALGAS_double::getter_uint (C_Compiler * inCompiler
                                         COMMA_LOCATION_ARGS) const {
   GALGAS_uint result ;
   if ((mDoubleValue > (double) UINT32_MAX) || (mDoubleValue < 0.0)) {
@@ -260,7 +260,7 @@ GALGAS_uint GALGAS_double::reader_uint (C_Compiler * inCompiler
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_uint_36__34_ GALGAS_double::reader_uint_36__34_ (C_Compiler * inCompiler
+GALGAS_uint_36__34_ GALGAS_double::getter_uint_36__34_ (C_Compiler * inCompiler
                                                         COMMA_LOCATION_ARGS) const {
   GALGAS_uint_36__34_ result ;
   if ((mDoubleValue > (double) UINT64_MAX) || (mDoubleValue < 0.0)) {
@@ -277,7 +277,7 @@ GALGAS_uint_36__34_ GALGAS_double::reader_uint_36__34_ (C_Compiler * inCompiler
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_sint GALGAS_double::reader_sint (C_Compiler * inCompiler
+GALGAS_sint GALGAS_double::getter_sint (C_Compiler * inCompiler
                                           COMMA_LOCATION_ARGS) const {
   GALGAS_sint result ;
   if ((mDoubleValue > (double) INT32_MAX) || (mDoubleValue < (double) INT32_MIN)) {
@@ -294,7 +294,7 @@ GALGAS_sint GALGAS_double::reader_sint (C_Compiler * inCompiler
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_sint_36__34_ GALGAS_double::reader_sint_36__34_ (C_Compiler * inCompiler
+GALGAS_sint_36__34_ GALGAS_double::getter_sint_36__34_ (C_Compiler * inCompiler
                                                           COMMA_LOCATION_ARGS) const {
   GALGAS_sint_36__34_ result ;
   if ((mDoubleValue > (double) INT64_MAX) || (mDoubleValue < (double) INT64_MIN)) {
@@ -340,7 +340,7 @@ void GALGAS_double::description (C_String & ioString,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_double::reader_string (UNUSED_LOCATION_ARGS) const {
+GALGAS_string GALGAS_double::getter_string (UNUSED_LOCATION_ARGS) const {
   C_String s ;
   s.appendDouble (mDoubleValue) ;
   return GALGAS_string (s) ;
