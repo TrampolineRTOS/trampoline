@@ -76,8 +76,8 @@ typedef enum
  * ARM core registers
  */
 struct ARM_CONTEXT {
-  u32 r[16];
-  u32 psr;
+  uint32 r[16];
+  uint32 psr;
 };
 
 /**
@@ -88,12 +88,12 @@ typedef struct ARM_CONTEXT arm_context;
 /**
  * default size of an element in a stack
  */
-typedef u32 tpl_stack_word;
+typedef uint32 tpl_stack_word;
 
 /**
  * type of a stack size
  */
-typedef u32 tpl_stack_size;
+typedef uint32 tpl_stack_size;
 
 /**
  * Stack definition
@@ -158,6 +158,8 @@ extern VAR(tpl_stack_word, OS_VAR) idle_stack[SIZE_OF_IDLE_STACK/sizeof(tpl_stac
                                             : \
                                             : "r0")
                                             
+
+FUNC (void, OS_CODE) tpl_init_machine_generic (void);
                                             
 #endif /* TPL_MACHINE_ARM_GENERIC_H */
 

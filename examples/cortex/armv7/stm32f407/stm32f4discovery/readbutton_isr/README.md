@@ -1,7 +1,7 @@
 |=-----=[ readbutton_isr example ]=-----=|
 
 This application deals with alarms and ISR2.
-There is two tasks "blink" and "read_button" and one ISR2 "isr_button".
+There are two tasks "blink" and "read_button" and one ISR2 "isr_button".
 
 At start the program does nothing.
 Something happens when pushing the button on the board.

@@ -47,7 +47,7 @@ VAR (arm_context, OS_VAR) idle_task_context;
 /**
  * Kernel entry counter
  */
-volatile VAR (u32, OS_VAR) nested_kernel_entrance_counter;
+volatile VAR (uint32, OS_VAR) nested_kernel_entrance_counter;
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
@@ -68,6 +68,22 @@ extern FUNC(void, OS_CODE) CallTerminateISR2(void);
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
+FUNC (void, OS_CODE) tpl_init_machine_generic (void)
+{
+  nested_kernel_entrance_counter = 0;
+#if WITH_MEMORY_PROTECTION == YES
+  tpl_init_mp();
+#endif
+}
+
+/*
+ * tpl_sleep is used by the idle task
+ */
+void idle_function(void)
+{
+    while(1);
+}
+
 /**
  * Call Terminate Task function when no TerminateTask hasn't been called
  * or when TerminateTask didn't success because of resource hold or
@@ -83,13 +99,6 @@ extern FUNC(void, OS_CODE) CallTerminateTask(void);
  *
  */
 extern FUNC(void, OS_CODE) CallTerminateISR2(void);
-
-
-
-FUNC (void, OS_CODE) tpl_init_machine_generic (void)
-{
-  nested_kernel_entrance_counter = 0;
-}
 
 /*
  * As kernel mode is non-interruptible, these function does nothing
@@ -152,9 +161,9 @@ FUNC(void, OS_CODE) tpl_init_context(
   core_context = the_proc->context;
 
   /* setup entry point */
-  core_context->r[armreg_pc] = (u32)(the_proc->entry);
+  core_context->r[armreg_pc] = (uint32)(the_proc->entry);
   /* setup initial stack pointer */
-  core_context->r[armreg_sp] = ((u32)the_proc->stack.stack_zone)
+  core_context->r[armreg_sp] = ((uint32)the_proc->stack.stack_zone)
       + the_proc->stack.stack_size;
   /* task runs at a defined processor mode */
   core_context->psr = USER_TASKS_ARM_MODE; /* macro defined into subarch part */
@@ -167,16 +176,16 @@ FUNC(void, OS_CODE) tpl_init_context(
    * the behaviour is controled
    */
   core_context->r[armreg_lr] = (IS_ROUTINE == the_proc->type) ?
-                                (u32)(CallTerminateISR2) :
-                                (u32)(CallTerminateTask); /*  lr  */
+                                (uint32)(CallTerminateISR2) :
+                                (uint32)(CallTerminateTask); /*  lr  */
 
   /* TODO: initialize stack footprint */
 }
 
-FUNC(u8, OS_CODE) tpl_check_stack_footprint (
+FUNC(uint8, OS_CODE) tpl_check_stack_footprint (
     CONST(tpl_proc_id, OS_APPL_DATA) proc_id)
 {
-  u8 tmp;
+  uint8 tmp;
   /*to do*/
   tmp=0;
   return tmp;
