@@ -7124,32 +7124,32 @@ void routine_setDefaults (const GALGAS_implementation constinArgument_imp,
                           C_Compiler * inCompiler
                           COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_objectsMap var_objects = ioArgument_application.getter_objects (SOURCE_FILE ("defaults.galgas", 32)) ;
-  cEnumerator_lstringlist enumerator_1019 (var_objects.getter_keyList (SOURCE_FILE ("defaults.galgas", 38)), kEnumeration_up) ;
-  while (enumerator_1019.hasCurrentObject ()) {
-    cMapElement_objectsMap * objectArray_1031 = (cMapElement_objectsMap *) var_objects.readWriteAccessForWithInstructionWithErrorMessage (inCompiler, enumerator_1019.current_mValue (HERE), kSearchErrorMessage_objectsMap_get  COMMA_SOURCE_FILE ("defaults.galgas", 39)) ;
-    if (NULL != objectArray_1031) {
-        macroValidSharedObject (objectArray_1031, cMapElement_objectsMap) ;
-      GALGAS_objectKindMap var_objOfKind = objectArray_1031->mAttribute_objectsOfKind.getter_objects (SOURCE_FILE ("defaults.galgas", 40)) ;
-      cEnumerator_lstringlist enumerator_1190 (var_objOfKind.getter_keyList (SOURCE_FILE ("defaults.galgas", 41)), kEnumeration_up) ;
-      while (enumerator_1190.hasCurrentObject ()) {
-        cMapElement_objectKindMap * objectArray_1206 = (cMapElement_objectKindMap *) var_objOfKind.readWriteAccessForWithInstructionWithErrorMessage (inCompiler, enumerator_1190.current_mValue (HERE), kSearchErrorMessage_objectKindMap_get  COMMA_SOURCE_FILE ("defaults.galgas", 42)) ;
-        if (NULL != objectArray_1206) {
-            macroValidSharedObject (objectArray_1206, cMapElement_objectKindMap) ;
-          GALGAS_implementationObject var_impObject = callCategoryGetter_impObject ((const cPtr_implementation *) constinArgument_imp.ptr (), enumerator_1019.current_mValue (HERE).getter_string (SOURCE_FILE ("defaults.galgas", 43)), inCompiler COMMA_SOURCE_FILE ("defaults.galgas", 43)) ;
+  cEnumerator_lstringlist enumerator_980 (var_objects.getter_keyList (SOURCE_FILE ("defaults.galgas", 35)), kEnumeration_up) ;
+  while (enumerator_980.hasCurrentObject ()) {
+    cMapElement_objectsMap * objectArray_992 = (cMapElement_objectsMap *) var_objects.readWriteAccessForWithInstructionWithErrorMessage (inCompiler, enumerator_980.current_mValue (HERE), kSearchErrorMessage_objectsMap_get  COMMA_SOURCE_FILE ("defaults.galgas", 36)) ;
+    if (NULL != objectArray_992) {
+        macroValidSharedObject (objectArray_992, cMapElement_objectsMap) ;
+      GALGAS_objectKindMap var_objOfKind = objectArray_992->mAttribute_objectsOfKind.getter_objects (SOURCE_FILE ("defaults.galgas", 37)) ;
+      cEnumerator_lstringlist enumerator_1151 (var_objOfKind.getter_keyList (SOURCE_FILE ("defaults.galgas", 38)), kEnumeration_up) ;
+      while (enumerator_1151.hasCurrentObject ()) {
+        cMapElement_objectKindMap * objectArray_1167 = (cMapElement_objectKindMap *) var_objOfKind.readWriteAccessForWithInstructionWithErrorMessage (inCompiler, enumerator_1151.current_mValue (HERE), kSearchErrorMessage_objectKindMap_get  COMMA_SOURCE_FILE ("defaults.galgas", 39)) ;
+        if (NULL != objectArray_1167) {
+            macroValidSharedObject (objectArray_1167, cMapElement_objectKindMap) ;
+          GALGAS_implementationObject var_impObject = callCategoryGetter_impObject ((const cPtr_implementation *) constinArgument_imp.ptr (), enumerator_980.current_mValue (HERE).getter_string (SOURCE_FILE ("defaults.galgas", 40)), inCompiler COMMA_SOURCE_FILE ("defaults.galgas", 40)) ;
           {
-          routine_setDefaultsForType (var_impObject.getter_attributes (SOURCE_FILE ("defaults.galgas", 44)), objectArray_1206->mAttribute_attributes, inCompiler  COMMA_SOURCE_FILE ("defaults.galgas", 44)) ;
+          routine_setDefaultsForType (var_impObject.getter_attributes (SOURCE_FILE ("defaults.galgas", 41)), objectArray_1167->mAttribute_attributes, inCompiler  COMMA_SOURCE_FILE ("defaults.galgas", 41)) ;
           }
         }
-        enumerator_1190.gotoNextObject () ;
+        enumerator_1151.gotoNextObject () ;
       }
       {
-      objectArray_1031->mAttribute_objectsOfKind.modifier_setObjects (var_objOfKind COMMA_SOURCE_FILE ("defaults.galgas", 47)) ;
+      objectArray_992->mAttribute_objectsOfKind.modifier_setObjects (var_objOfKind COMMA_SOURCE_FILE ("defaults.galgas", 44)) ;
       }
     }
-    enumerator_1019.gotoNextObject () ;
+    enumerator_980.gotoNextObject () ;
   }
   {
-  ioArgument_application.modifier_setObjects (var_objects COMMA_SOURCE_FILE ("defaults.galgas", 51)) ;
+  ioArgument_application.modifier_setObjects (var_objects COMMA_SOURCE_FILE ("defaults.galgas", 48)) ;
   }
 }
 
