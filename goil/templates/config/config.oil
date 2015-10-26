@@ -53,6 +53,13 @@ IMPLEMENTATION trampoline_common {
   };
   
   /*===========================================================================
+   * Variant of the standard libraries
+   */
+  STDLIBVARIANT {
+    STRING KIND;
+  };
+
+  /*===========================================================================
    * Machines specific files to add to the build system
    */
   PLATFORM_FILES [] {
