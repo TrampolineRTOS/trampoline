@@ -171,23 +171,36 @@ end foreach
 %
 
 %
-let stdlibVariant := exists STDLIBVARIANT::KIND default ("")
+if exists OS::BUILD_S::SYSTEM_S::GUESSLIBPATH default (true) then
+  let stdlibVariant := exists STDLIBVARIANT::KIND default ("")
 %
 #----------------------------------------------------------------------
 #--- Try to detect automatically the location of libc and libgcc
+#--- This supposes the compiler has a (something)-gcc name
 #----------------------------------------------------------------------
 if "gcc" in compiler:
   compilerFullPath = distutils.spawn.find_executable(compiler)
   if compilerFullPath != None:
+    #--- Extract the (something) from the compiler executable name
+    compilerParts = compiler.split('-')
+    compilerParts.pop()
+    compilerPrefix = "-".join(compilerParts)
+    #--- Get the full path of the compiler
     compilerToolChainPath = os.path.dirname(os.path.dirname(compilerFullPath))
+    #--- Get the version of the compiler, [:-1] removes the carriage return
     compilerVersion = subprocess.check_output([compiler, '-dumpversion'])[:-1]
-    libcPath = compilerToolChainPath + '/arm-none-eabi/lib%
+    #--- Build the libc path
+    libcPath = compilerToolChainPath + '/' + compilerPrefix + '/lib%
       if stdlibVariant != "" then %/% !stdlibVariant end if%'
-    libgccPath = compilerToolChainPath + '/lib/gcc/arm-none-eabi/' + compilerVersion%
+    #--- Build the libgcc path
+    libgccPath = compilerToolChainPath + '/lib/gcc/' + compilerPrefix + '/' + compilerVersion%
       if stdlibVariant != "" then % + '/% !stdlibVariant %'% end if %
+    #--- Add both to linker flags
     ldflags += ['-L' + libcPath, '-lc']
     ldflags += ['-L' + libgccPath, '-lgcc']
-
+%
+end if
+%
 #----------------------------------------------------------------------
 #--- Build the source files list
 #----------------------------------------------------------------------

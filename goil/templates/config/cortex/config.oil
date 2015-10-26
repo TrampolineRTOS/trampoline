@@ -24,9 +24,6 @@ IMPLEMENTATION thumb2_ressource {
   INTERRUPT_COUNT {
     UINT32 IT_TABLE_SIZE;
   };
-  STDLIBVARIANT {
-    STRING KIND;
-  };
 };
 
 CPU thumb2_ressource {

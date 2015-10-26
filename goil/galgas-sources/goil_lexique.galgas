@@ -213,7 +213,9 @@ rule '0'->'9'{
 # Include mechanism
 #
 list commands style keywordsStyle error message "command '%K'"{
-    "include"}
+    "include",
+    "includeifexists"
+}
 
 $command$ !att_token style commandStyle error message "command"
 

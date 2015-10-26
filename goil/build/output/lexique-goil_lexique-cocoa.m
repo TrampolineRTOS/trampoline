@@ -97,12 +97,13 @@ static NSInteger search_into_goil_5F_lexique_boolean (NSString * inSearchedStrin
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const C_cocoa_lexique_table_entry ktable_for_goil_5F_lexique_commands [1] = {
-  {"include", goil_lexique_1_include}
+static const C_cocoa_lexique_table_entry ktable_for_goil_5F_lexique_commands [2] = {
+  {"include", goil_lexique_1_include},
+  {"includeifexists", goil_lexique_1_includeifexists}
 } ;
 
 static NSInteger search_into_goil_5F_lexique_commands (NSString * inSearchedString) {
-  return searchStringInTable (inSearchedString, ktable_for_goil_5F_lexique_commands, 1) ;
+  return searchStringInTable (inSearchedString, ktable_for_goil_5F_lexique_commands, 2) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -363,7 +364,7 @@ static NSInteger search_into_goil_5F_lexique_oilVersion (NSString * inSearchedSt
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (NSUInteger) terminalVocabularyCount {
-  return 39 ;
+  return 40 ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -393,7 +394,7 @@ static NSInteger search_into_goil_5F_lexique_oilVersion (NSString * inSearchedSt
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (NSUInteger) styleIndexForTerminal: (NSInteger) inTerminal {
-  static const NSUInteger kTerminalSymbolStyles [40] = {0,
+  static const NSUInteger kTerminalSymbolStyles [41] = {0,
     9 /* goil_lexique_1_comment */,
     2 /* goil_lexique_1_idf */,
     4 /* goil_lexique_1_string */,
@@ -432,7 +433,8 @@ static NSInteger search_into_goil_5F_lexique_oilVersion (NSString * inSearchedSt
     3 /* goil_lexique_1__2E_ */,
     3 /* goil_lexique_1__2B_ */,
     3 /* goil_lexique_1__2D_ */,
-    1 /* goil_lexique_1_include */
+    1 /* goil_lexique_1_include */,
+    1 /* goil_lexique_1_includeifexists */
   } ;
   return kTerminalSymbolStyles [inTerminal] ;
 }
@@ -444,7 +446,7 @@ static NSInteger search_into_goil_5F_lexique_oilVersion (NSString * inSearchedSt
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (BOOL) atomicSelectionForToken: (NSUInteger) inTokenIndex {
-  static const BOOL kTerminalAtomicSelection [40] = {NO,
+  static const BOOL kTerminalAtomicSelection [41] = {NO,
     YES /* goil_lexique_1_comment */,
     YES /* goil_lexique_1_idf */,
     YES /* goil_lexique_1_string */,
@@ -483,7 +485,8 @@ static NSInteger search_into_goil_5F_lexique_oilVersion (NSString * inSearchedSt
     YES /* goil_lexique_1__2E_ */,
     YES /* goil_lexique_1__2B_ */,
     YES /* goil_lexique_1__2D_ */,
-    YES /* goil_lexique_1_include */
+    YES /* goil_lexique_1_include */,
+    YES /* goil_lexique_1_includeifexists */
   } ;
   return kTerminalAtomicSelection [inTokenIndex] ;
 }
