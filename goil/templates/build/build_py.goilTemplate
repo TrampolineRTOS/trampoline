@@ -175,15 +175,20 @@ let stdlibVariant := exists STDLIBVARIANT::KIND default ("")
 %
 #----------------------------------------------------------------------
 #--- Try to detect automatically the location of libc and libgcc
+#--- This supposes the compiler has a (something)-gcc name
 #----------------------------------------------------------------------
 if "gcc" in compiler:
   compilerFullPath = distutils.spawn.find_executable(compiler)
   if compilerFullPath != None:
+    compilerParts = compiler.split('-')
+    compilerParts.pop()
+    compilerPrefix = "-".join(compilerParts)
+    print compilerPrefix
     compilerToolChainPath = os.path.dirname(os.path.dirname(compilerFullPath))
     compilerVersion = subprocess.check_output([compiler, '-dumpversion'])[:-1]
-    libcPath = compilerToolChainPath + '/arm-none-eabi/lib%
+    libcPath = compilerToolChainPath + '/' + compilerPrefix + '/lib%
       if stdlibVariant != "" then %/% !stdlibVariant end if%'
-    libgccPath = compilerToolChainPath + '/lib/gcc/arm-none-eabi/' + compilerVersion%
+    libgccPath = compilerToolChainPath + '/lib/gcc/' + compilerPrefix + '/' + compilerVersion%
       if stdlibVariant != "" then % + '/% !stdlibVariant %'% end if %
     ldflags += ['-L' + libcPath, '-lc']
     ldflags += ['-L' + libgccPath, '-lgcc']
