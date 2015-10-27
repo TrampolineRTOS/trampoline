@@ -1,6 +1,6 @@
 #include <sys/types.h>
 
-void __attribute__((weak)) Reset_Handler(void);
+void __attribute__((weak)) tpl_continue_reset_handler(void);
 
 // The CMSIS system initialisation routine.
 extern void SystemInit(void);
@@ -106,9 +106,13 @@ inline void __libc_fini_array(void)
 }
 
 // This is the place where Cortex-M core will go immediately after reset.
-void __attribute__ ((section(".after_vectors"))) Reset_Handler(void)
+void __attribute__ ((section(".after_vectors"))) tpl_continue_reset_handler(void)
 {
-
+  /*
+   * Initialize the stacks and mode
+   */
+  
+   
   // Use Old Style Data and BSS section initialisation,
   // That will initialise a single BSS sections.
 

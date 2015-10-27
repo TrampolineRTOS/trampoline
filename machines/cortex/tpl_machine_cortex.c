@@ -46,13 +46,6 @@ extern FUNC(void, OS_CODE) CallTerminateTask(void);
 #endif
 
 /*
- * The kernel stack. When a system call is done, the sc handler switches
- * to the kernel stack.
- */
-VAR (uint32, OS_VAR) tpl_kernel_stack[KERNEL_STACK_SIZE];
-VAR (uint32, OS_VAR) tpl_kernel_stack_top;
-
-/*
  * Kernel entry counter
  */
 volatile VAR (uint32, OS_VAR) nested_kernel_entrance_counter;
@@ -70,12 +63,17 @@ FUNC (void, OS_CODE) tpl_init_machine_generic (void)
 
 FUNC (void, OS_CODE) tpl_init_machine_specific (void)
 {
-	tpl_kernel_stack_top = (uint32)&tpl_kernel_stack[KERNEL_STACK_SIZE - 1];
-	nested_kernel_entrance_counter = 0;
-	__set_MSP(tpl_kernel_stack_top);
+  nested_kernel_entrance_counter = 0;
   tpl_set_systick_timer();
-	__set_CONTROL(0x3); // Switch to use Process Stack, privileged state
-	__ISB(); // Execute ISB after changing CONTROL (architectural recommendation)
+  /*
+   * Switch to use PSP, unprivileged state 
+   */
+  __set_CONTROL(0x3);
+  /*
+   * Instruction SynchronizationBarrier
+   * Execute ISB after changing CONTROL (architectural recommendation)
+   */
+  __ISB();
   /* Set SVCall priority to 2 */
 //	NVIC_SetPriority(SVCall_IRQn, 2);
 }

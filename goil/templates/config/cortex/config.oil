@@ -36,6 +36,7 @@ CPU thumb2_ressource {
     CFILE = "tpl_machine_cortex.c";
     CFILE = "tpl_system_call.S";
     CFILE = "tpl_ctx_switch.S";
+    CFILE = "tpl_startup.S";
   };
   
   PLATFORM_FILES cortex_cmsis {
@@ -43,7 +44,7 @@ CPU thumb2_ressource {
   };
 
   INTERRUPT InitialSPValue { VECT = 0; EXCEPTION = TRUE; VECTOR_TYPE = REFERENCE { NAME = "&_estack"; }; ACK = FALSE; };
-  INTERRUPT Reset          { VECT = 1; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME = "Reset_Handler"; }; };
+  INTERRUPT Reset          { VECT = 1; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "tpl_reset_handler"; }; };
   INTERRUPT NMI            { VECT = 2; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NMI_Handler"; }; };
   INTERRUPT HardFault      { VECT = 3; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "HardFault_Handler"; }; };
   INTERRUPT MemManage      { VECT = 4; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "MemManage_Handler"; }; };
