@@ -29,7 +29,7 @@ CPU teensy31 {
   POSTCOMMAND burn {
     COMMAND flash {
       MESSAGE = "Flashing";
-      COMMAND = "teensy_loader_cli";
+      COMMAND = "teensy-loader-cli";
       INPUT = TARGET { EXT = ".hex"; };
       PREOPTION = "-w -v -mmcu=mk20dx128";
     };

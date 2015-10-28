@@ -388,8 +388,8 @@ proc file_in_path
     ?!@lstring file_name {
     @string include_path = @string. stringWithEnvironmentVariableOrEmpty { !"GOIL_INCLUDE_PATH"}
 
-    # Append the current directory and the directories along the path of 
-    # the target in reverse order
+    # Append the directories along the path of 
+    # the target in reverse order but after the GOIL_INCLUDE_PATH
     @stringlist systemPaths = allTemplatePaths(!"config")
     @stringlist includePathList
     if (include_path != "") then
@@ -397,8 +397,7 @@ proc file_in_path
     else
       includePathList = @stringlist.emptyList
     end
-    @stringlist path_list =
-      @stringlist.listWithValue{!"."} + systemPaths + includePathList
+    @stringlist path_list = includePathList + systemPaths
 
     @bool not_found = true
     for (@string path) in  path_list do
