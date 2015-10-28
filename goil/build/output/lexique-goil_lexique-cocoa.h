@@ -63,7 +63,8 @@ enum {goil_lexique_1_,
   goil_lexique_1__2E_,
   goil_lexique_1__2B_,
   goil_lexique_1__2D_,
-  goil_lexique_1_include
+  goil_lexique_1_include,
+  goil_lexique_1_includeifexists
 } ;
 
 //---------------------------------------------------------------------------------------------------------------------*

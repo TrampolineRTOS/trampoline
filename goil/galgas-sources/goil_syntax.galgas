@@ -425,7 +425,12 @@ rule <include_file_level>
   ?!@string fileIncludeList
   ?let @bool rootFile
 {
-  $include$
+  @bool includeIfExists = false
+  select
+    $include$
+  or
+    $includeifexists$ includeIfExists = true
+  end
   @lstring file_name
   select
     $g_string$ ?file_name
@@ -433,7 +438,9 @@ rule <include_file_level>
   or
     $string$ ?file_name
   end
-  grammar goil_file_level_include in file_name !?imp !?application !?fileIncludeList !rootFile
+  if not includeIfExists || (includeIfExists && [file_name fileExists]) then
+    grammar goil_file_level_include in file_name !?imp !?application !?fileIncludeList !rootFile
+  end  
 }
 
 rule <include_cpu_level>
@@ -442,7 +449,12 @@ rule <include_cpu_level>
   ?!@string fileIncludeList
   ?let @bool rootFile
 {
-  $include$
+  @bool includeIfExists = false
+  select
+    $include$
+  or
+    $includeifexists$ includeIfExists = true
+  end
   @lstring file_name
   select
     $g_string$ ?file_name
@@ -450,7 +462,9 @@ rule <include_cpu_level>
   or
     $string$ ?file_name
   end
-  grammar goil_cpu_level_include in file_name !imp !?objects !?fileIncludeList !rootFile
+  if not includeIfExists || (includeIfExists && [file_name fileExists]) then
+    grammar goil_cpu_level_include in file_name !imp !?objects !?fileIncludeList !rootFile
+  end  
 }
 
 }

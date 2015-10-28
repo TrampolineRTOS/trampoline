@@ -21,4 +21,15 @@ CPU arm_interrupt {
   COUNTER SystemCounter {
     SOURCE = it_timer1;
   };
+  
+  PLATFORM_FILES arm {
+    PATH = "arm";
+    CFILE = "tpl_irq.S";
+    CFILE = "tpl_system_call.S";
+    CFILE = "tpl_stacks.S";
+    CFILE = "tpl_trusted_fct.S";
+    CFILE = "tpl_vector_table.s";
+    CFILE = "tpl_machine_arm.c";
+  };
+
 };

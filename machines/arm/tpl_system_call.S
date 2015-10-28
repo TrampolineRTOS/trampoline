@@ -146,13 +146,15 @@ skip_kernel_enter:
     * CONTEXT SWITCHING STAGE *
     ***************************/
 context_switch_swi:
-  /* load the tpl_kern base address */
-    ldr r0, =tpl_kern
-
+    /* load the tpl_kern base address */
+    ldr r1, =tpl_kern
+    
     /* do we need to save the context ? if not, jump to load */
-    ldrb r2, [r0, #TPL_KERN_OFFSET_NEED_SWITCH]
+   	mov r0, #0	/* set save parameter to 0 */
+    ldrb r2, [r1, #TPL_KERN_OFFSET_NEED_SWITCH]
     tst r2, #NEED_SAVE
     beq skip_save_context_swi
+    mov r0, #1	/* set save parameter to 1 */
 
     /*
      * SAVES OLD CONTEXT
@@ -160,7 +162,7 @@ context_switch_swi:
 save_context_swi:
 
     /* get the context block address */
-    ldr r2, [r0, #TPL_KERN_OFFSET_S_OLD] /* get the address of the context bloc */
+    ldr r2, [r1, #TPL_KERN_OFFSET_S_OLD] /* get the address of the context bloc */
     ldr r2, [r2]                /* jump to context bloc (from static descriptor) */
     add r2, r2, #(4 * 4)        /* jump over r0-r3 saving zone */
     stmia r2, {r4-r14}^
@@ -184,6 +186,13 @@ save_context_swi:
     /* only executed if context saving step has not been done */
 skip_save_context_swi:
     add sp, sp, #(5 * 4) /* discards kernel enter stack frame */
+
+call_tpl_run_elected:
+	/* First call tpl_run_elected with the value of tpl_kern.need_switch
+	 * and get the value of the elected task.
+	 * tpl_kern.need_switch (stored into r3) is copied into r0
+	 */
+	bl tpl_run_elected
 
     /*
      * LOADS NEW CONTEXT

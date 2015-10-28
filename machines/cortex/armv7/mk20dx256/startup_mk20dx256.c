@@ -59,7 +59,7 @@ const uint8_t flashconfigbytes[16] = {
 // void startup_early_hook(void)		__attribute__ ((weak, alias("startup_default_early_hook")));
 // void startup_late_hook(void)		__attribute__ ((weak, alias("startup_default_late_hook")));
 
-void Reset_Handler(void)
+void tpl_continue_reset_handler(void)
 {
 //---------1- Inhiber le chien de garde
   WDOG_UNLOCK = 0xC520 ;

@@ -1,14 +1,30 @@
-/*
- * <INIT_POLICY> 
- * - NO_INIT, used for variables that are never cleared and never initialized.
- * - CLEARED, used for variables that are cleared to zero after every reset.
- * - POWER_ON_CLEARED, used for variables that are cleared to zero only after power on reset.
- * - INIT, used for variables that are initialized with values after every reset.
- * - POWER_ON_INIT, used for variables that are initialized with values only after power on reset.
- */
- 
-/* Entry Point */
-ENTRY(Reset_Handler)
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                                   Link script                              */
+/*                                                                            */
+/*                                   stm32f407                                */
+/*                                                                            */
+/* <INIT_POLICY>                                                              */
+/* - NO_INIT :          used for variables that are never cleared and never   */
+/*                      initialized.                                          */
+/* - CLEARED :          used for variables that are cleared to zero after     */
+/*                      every reset.                                          */
+/* - POWER_ON_CLEARED : used for variables that are cleared to zero only      */
+/*                      after power on reset.                                 */
+/* - INIT :             used for variables that are initialized with values   */
+/*                      after every  reset.                                   */
+/* - POWER_ON_INIT :    used for variables that are initialized with values   */
+/*                      only after power on reset.                            */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                                   Configuration                            */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
+ENTRY(tpl_reset_handler)
 
 /* Highest address of the user mode stack */
 _estack = 0x20020000;    /* end of 128K RAM on AHB bus*/
@@ -17,51 +33,76 @@ _estack = 0x20020000;    /* end of 128K RAM on AHB bus*/
 _Min_Heap_Size = 0;      /* required amount of heap  */
 _Min_Stack_Size = 0x400; /* required amount of stack */
 
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                                   Memory                                   */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
 %
 template memory_map
 %
-/* Define output sections */
-SECTIONS
-{
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                                ISR Vectors                                 */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
+SECTIONS {
   /* The startup code goes first into FLASH */
-  .isr_vector :
-  {
+  .isr_vector : {
     . = ALIGN(4);
     KEEP(*(.isr_vector)) /* Startup code */
     . = ALIGN(4);
   } >VECTOR
+}
 
-  /*
-   * code and consts of the operating system (Trampoline).
-   * this section is not accessible from an untrusted process
-   */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                                    Code                                    */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
+/*
+ * code and const of the operating system (Trampoline).
+ * this section is not accessible from an untrusted process
+ */
+SECTIONS {
   . = ALIGN(4);
+  /* --- code of OS --- */
   ostext : {
     *(.SC_handler)
     *(.EI_handler)
     *(.osCode)
-    *(.appCommonCode) 
+    *(.osApiCode)  /* API functions */
+    *(.appCommonCode)
   } >FLASH
-
   . = ALIGN(4);
+  /* --- const of OS --- */
   osconst : {
     *(.osConst)
+    *(.osApiConst) /* API constants */
   } >FLASH
+}
 
-  /*
-   * code and consts of the processes of the applications
-   */
+/*
+ * code and const of the processes of the applications ]
+ */
+SECTIONS {
   . = ALIGN(4);
   apptext : {
     __PROGCONST_SECTION_START = .;
     __SEG_START_APP_CODE_CONST_RGN = .;
   . = ALIGN(4);
-    *(.osApiConst)  /* API constants    */
-    *(.rodata)      /* litteral strings (constants, strings, etc.) */
-    *(.rodata*)     /* litteral strings (constants, strings, etc.) */
-    . = ALIGN(4);
-    *(.osApiCode)   /* API functions    */
-    /* Sections for code of tasks and ISR */%
+  /* --- Sections for application code --- */
+
+  /* --- Sections for code of tasks and ISR --- */%
 foreach proc in PROCESSES do
 %
     *(.% !proc::KIND %_% !proc::NAME %Code)
@@ -69,10 +110,11 @@ foreach proc in PROCESSES do
 end foreach
 %
   } >FLASH
-
   . = ALIGN(4);
   appconst : {
-     /* Sections for application const */  
+  /* --- Sections for application const --- */
+    *(.rodata)     /* litteral strings (constants, strings, etc.) */
+    *(.rodata*)    /* litteral strings (constants, strings, etc.) */
 %
 foreach app in APPLICATIONS do
  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
@@ -84,10 +126,14 @@ foreach app in APPLICATIONS do
 end foreach
 %
   } >FLASH
+}
 
+/*
+ * Sections for const of tasks and ISR
+ */
+SECTIONS {
   . = ALIGN(4);
   procconst : {
-    /* Sections for const of tasks and ISR */
 %
 foreach proc in PROCESSES do
  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
@@ -102,8 +148,10 @@ end foreach
     __SEG_STOP_APP_CODE_CONST_RGN = . - 1;
     __PROGCONST_SECTION_STOP = . - 1;
   } >FLASH
+}
 
   /* remaining .text (ie no section given) */
+SECTIONS {
   .text :
   {
     . = ALIGN(4);
@@ -111,7 +159,7 @@ end foreach
     *(.text*)          /* .text* sections (code) */
     *(.glue_7)         /* glue arm to thumb code */
     *(.glue_7t)        /* glue thumb to arm code */
-	*(.eh_frame)
+ *(.eh_frame)
 
     KEEP (*(.init))
     KEEP (*(.fini))
@@ -120,21 +168,27 @@ end foreach
     _etext = .;        /* define a global symbols at end of code */
     _exit = .;
   } >FLASH
+}
 
-
+SECTIONS {
    .ARM.extab   : { *(.ARM.extab* .gnu.linkonce.armextab.*) } >FLASH
     .ARM : {
     __exidx_start = .;
       *(.ARM.exidx*)
       __exidx_end = .;
     } >FLASH
+}
 
+SECTIONS {
   .preinit_array     :
   {
     PROVIDE_HIDDEN (__preinit_array_start = .);
     KEEP (*(.preinit_array*))
     PROVIDE_HIDDEN (__preinit_array_end = .);
   } >FLASH
+}
+
+SECTIONS {
   .init_array :
   {
     PROVIDE_HIDDEN (__init_array_start = .);
@@ -142,6 +196,9 @@ end foreach
     KEEP (*(.init_array*))
     PROVIDE_HIDDEN (__init_array_end = .);
   } >FLASH
+}
+
+SECTIONS {
   .fini_array :
   {
     PROVIDE_HIDDEN (__fini_array_start = .);
@@ -149,10 +206,10 @@ end foreach
     KEEP (*(SORT(.fini_array.*)))
     PROVIDE_HIDDEN (__fini_array_end = .);
   } >FLASH
-  
-  _etext = .;
+}  
 
   /* used by the startup to initialize data */
+SECTIONS {
   _sidata = .;
 
   /* Initialized data sections goes into RAM, load LMA copy after code */
@@ -190,17 +247,19 @@ end foreach
     . = ALIGN(4);
     _edata = .;        /* define a global symbol at data end */
   } >RAM
+}
 
   /*
    * private data of processes
    */
+SECTIONS {
 %
 
 foreach proc in PROCESSES do
 %  .% !proc::KIND %_% !proc::NAME %_SEC_VAR : {
     . = ALIGN(__SEG_ALIGN_% !proc::KIND %_% !proc::NAME %_VAR_RGN);
     __SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN = .;
-/* Initialized variables section of % !proc::KIND % % !proc::NAME % */
+  /* --- Initialized variables section of % !proc::KIND % % !proc::NAME % */
 %
   for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
     for SECTION_KIND in "_NOINIT_","_FAST_","_" do
@@ -220,14 +279,17 @@ foreach proc in PROCESSES do
   } >RAM
 %
 end foreach
-%
-  
-  /*
-   * stack of processes
-   */
-%
+%}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                                Stack of processes                          */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
+SECTIONS {%
 foreach proc in PROCESSES do %
-  /* Section of stack of % !proc::KIND % % !proc::NAME %  */
+  /* --- Section of stack of % !proc::KIND % % !proc::NAME %  */
   .% !proc::KIND %_% !proc::NAME %_SEC_STACK : {
     . = ALIGN(__SEG_ALIGN_% !proc::KIND %_% !proc::NAME %_STACK_RGN);
     __SEG_START_% !proc::KIND %_% !proc::NAME %_STACK_RGN = .;
@@ -246,7 +308,15 @@ foreach proc in PROCESSES do %
 %
 end foreach
 %
+}
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                                OS application data                         */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
+SECTIONS {
   /*
    * os application data
    */
@@ -255,7 +325,7 @@ end foreach
 foreach app in APPLICATIONS do
 %    . = ALIGN(__SEG_ALIGN_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN)
     __SEG_START_OS_APP_% !app::NAME %_VAR_RGN = .;
-/* Initialized variables section of OS_APP % !app::NAME % */
+  /* --- Initialized variables section of OS_APP % !app::NAME % */
 %
   for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
     for SECTION_KIND in "_NOINIT_","_FAST_","_" do
@@ -277,8 +347,23 @@ foreach app in APPLICATIONS do
 end foreach
 % 
   } >RAM
+}
 
-  /* Uninitialized data section */
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                          Data (initialized data)                           */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                          BSS (uninitialized data)                          */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
+SECTIONS {
   . = ALIGN(4);
   .bss :
   {
@@ -288,27 +373,38 @@ end foreach
     *(.bss)
     *(.bss*)
     *(COMMON)
-
     . = ALIGN(4);
     _ebss = .;         /* define a global symbol at bss end */
     __bss_end__ = _ebss;
   } >RAM
+}
 
-  /* User_heap_stack section, used to check that there is enough RAM left */
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                                    Heap                                    */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
+  /* _user_heap_stack section, used to check that there is enough RAM left */
+SECTIONS {
   ._user_heap_stack :
   {
     . = ALIGN(4);
+    __heap_start__ = . ;
     PROVIDE ( end = . );
     PROVIDE ( _end = . );
     . = . + _Min_Heap_Size;
     . = . + _Min_Stack_Size;
     . = ALIGN(4);
   } >RAM
+}
 
 %
 template if exists script_specific
 %
+
   /* Remove information from the standard libraries */
+SECTIONS {
   /DISCARD/ :
   {
     libc.a ( * )

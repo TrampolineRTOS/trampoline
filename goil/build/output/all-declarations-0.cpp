@@ -12269,12 +12269,42 @@ static const utf32 gSyntaxErrorMessage_goil_5F_lexique_include [] = {
   TO_UNICODE (0)
 } ;
 
+//--- Syntax error message for terminal '$includeifexists$' :
+static const utf32 gSyntaxErrorMessage_goil_5F_lexique_includeifexists [] = {
+  TO_UNICODE ('c'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('d'),
+  TO_UNICODE (' '),
+  TO_UNICODE ('\''),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('c'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('u'),
+  TO_UNICODE ('d'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('f'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('x'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('s'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('s'),
+  TO_UNICODE ('\''),
+  TO_UNICODE (0)
+} ;
+
 //---------------------------------------------------------------------------------------------------------------------*
 //                getMessageForTerminal                                                                                *
 //---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_Lexique_goil_5F_lexique::getMessageForTerminal (const int16_t inTerminalIndex) const {
-  static const utf32 * syntaxErrorMessageArray [40] = {kEndOfSourceLexicalErrorMessage,
+  static const utf32 * syntaxErrorMessageArray [41] = {kEndOfSourceLexicalErrorMessage,
     gSyntaxErrorMessage_goil_5F_lexique_comment,
     gSyntaxErrorMessage_goil_5F_lexique_idf,
     gSyntaxErrorMessage_goil_5F_lexique_string,
@@ -12313,7 +12343,8 @@ C_String C_Lexique_goil_5F_lexique::getMessageForTerminal (const int16_t inTermi
     gSyntaxErrorMessage_goil_5F_lexique__2E_,
     gSyntaxErrorMessage_goil_5F_lexique__2B_,
     gSyntaxErrorMessage_goil_5F_lexique__2D_,
-    gSyntaxErrorMessage_goil_5F_lexique_include} ;
+    gSyntaxErrorMessage_goil_5F_lexique_include,
+    gSyntaxErrorMessage_goil_5F_lexique_includeifexists} ;
   return syntaxErrorMessageArray [inTerminalIndex] ;
 }
 
@@ -12639,6 +12670,26 @@ static const utf32 kUnicodeString_goil_5F_lexique_include [] = {
   TO_UNICODE (0)
 } ;
 
+//--- Unicode string for '$includeifexists$'
+static const utf32 kUnicodeString_goil_5F_lexique_includeifexists [] = {
+  TO_UNICODE ('i'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('c'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('u'),
+  TO_UNICODE ('d'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('f'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('x'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('s'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('s'),
+  TO_UNICODE (0)
+} ;
+
 //--- Unicode string for '$_7B_$'
 static const utf32 kUnicodeString_goil_5F_lexique__7B_ [] = {
   TO_UNICODE ('{'),
@@ -12695,10 +12746,11 @@ int16_t C_Lexique_goil_5F_lexique::search_into_boolean (const C_String & inSearc
 //             Key words table 'commands'                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const int32_t ktable_size_goil_5F_lexique_commands = 1 ;
+static const int32_t ktable_size_goil_5F_lexique_commands = 2 ;
 
 static const C_unicode_lexique_table_entry ktable_for_goil_5F_lexique_commands [ktable_size_goil_5F_lexique_commands] = {
-  C_unicode_lexique_table_entry (kUnicodeString_goil_5F_lexique_include, 7, C_Lexique_goil_5F_lexique::kToken_include)
+  C_unicode_lexique_table_entry (kUnicodeString_goil_5F_lexique_include, 7, C_Lexique_goil_5F_lexique::kToken_include),
+  C_unicode_lexique_table_entry (kUnicodeString_goil_5F_lexique_includeifexists, 15, C_Lexique_goil_5F_lexique::kToken_includeifexists)
 } ;
 
 int16_t C_Lexique_goil_5F_lexique::search_into_commands (const C_String & inSearchedString) {
@@ -12995,6 +13047,11 @@ C_String C_Lexique_goil_5F_lexique::getCurrentTokenString (const cToken * inToke
     case kToken_include:
       s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
       s.appendCString ("include") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_includeifexists:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("includeifexists") ;
       s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
       break ;
     default:
@@ -13382,6 +13439,7 @@ GALGAS_stringlist C_Lexique_goil_5F_lexique::symbols (LOCATION_ARGS) {
   result.addAssign_operation (GALGAS_string ("+") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string ("-") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string ("include") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("includeifexists") COMMA_THERE) ;
   return result ;
 }
 
@@ -13390,7 +13448,7 @@ GALGAS_stringlist C_Lexique_goil_5F_lexique::symbols (LOCATION_ARGS) {
 //---------------------------------------------------------------------------------------------------------------------*
 
 uint32_t C_Lexique_goil_5F_lexique::styleIndexForTerminal (const int32_t inTerminalIndex) const {
-  static const uint32_t kTerminalSymbolStyles [40] = {0,
+  static const uint32_t kTerminalSymbolStyles [41] = {0,
     9 /* goil_lexique_1_comment */,
     2 /* goil_lexique_1_idf */,
     4 /* goil_lexique_1_string */,
@@ -13429,7 +13487,8 @@ uint32_t C_Lexique_goil_5F_lexique::styleIndexForTerminal (const int32_t inTermi
     3 /* goil_lexique_1__2E_ */,
     3 /* goil_lexique_1__2B_ */,
     3 /* goil_lexique_1__2D_ */,
-    1 /* goil_lexique_1_include */
+    1 /* goil_lexique_1_include */,
+    1 /* goil_lexique_1_includeifexists */
   } ;
   return (inTerminalIndex >= 0) ? kTerminalSymbolStyles [inTerminalIndex] : 0 ;
 }
@@ -16570,280 +16629,6 @@ GALGAS_locationList GALGAS_locationList::extractObject (const GALGAS_object & in
       result = *p ;
     }else{
       inCompiler->castError ("locationList", p->dynamicTypeDescriptor () COMMA_THERE) ;
-    }  
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-cMapElement_implementationObjectMap::cMapElement_implementationObjectMap (const GALGAS_lstring & inKey,
-                                                                          const GALGAS_impType & in_type
-                                                                          COMMA_LOCATION_ARGS) :
-cMapElement (inKey COMMA_THERE),
-mAttribute_type (in_type) {
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-bool cMapElement_implementationObjectMap::isValid (void) const {
-  return mAttribute_lkey.isValid () && mAttribute_type.isValid () ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-cMapElement * cMapElement_implementationObjectMap::copy (void) {
-  cMapElement * result = NULL ;
-  macroMyNew (result, cMapElement_implementationObjectMap (mAttribute_lkey, mAttribute_type COMMA_HERE)) ;
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void cMapElement_implementationObjectMap::description (C_String & ioString, const int32_t inIndentation) const {
-  ioString << "\n" ;
-  ioString.writeStringMultiple ("| ", inIndentation) ;
-  ioString << "type" ":" ;
-  mAttribute_type.description (ioString, inIndentation) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-typeComparisonResult cMapElement_implementationObjectMap::compare (const cCollectionElement * inOperand) const {
-  cMapElement_implementationObjectMap * operand = (cMapElement_implementationObjectMap *) inOperand ;
-  typeComparisonResult result = mAttribute_lkey.objectCompare (operand->mAttribute_lkey) ;
-  if (kOperandEqual == result) {
-    result = mAttribute_type.objectCompare (operand->mAttribute_type) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_implementationObjectMap::GALGAS_implementationObjectMap (void) :
-AC_GALGAS_map () {
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_implementationObjectMap::GALGAS_implementationObjectMap (const GALGAS_implementationObjectMap & inSource) :
-AC_GALGAS_map (inSource) {
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_implementationObjectMap & GALGAS_implementationObjectMap::operator = (const GALGAS_implementationObjectMap & inSource) {
-  * ((AC_GALGAS_map *) this) = inSource ;
-  return * this ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_implementationObjectMap GALGAS_implementationObjectMap::constructor_emptyMap (LOCATION_ARGS) {
-  GALGAS_implementationObjectMap result ;
-  result.makeNewEmptyMap (THERE) ;
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_implementationObjectMap GALGAS_implementationObjectMap::constructor_mapWithMapToOverride (const GALGAS_implementationObjectMap & inMapToOverride
-                                                                                                 COMMA_LOCATION_ARGS) {
-  GALGAS_implementationObjectMap result ;
-  result.makeNewEmptyMapWithMapToOverride (inMapToOverride COMMA_THERE) ;
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_implementationObjectMap GALGAS_implementationObjectMap::getter_overriddenMap (C_Compiler * inCompiler
-                                                                                     COMMA_LOCATION_ARGS) const {
-  GALGAS_implementationObjectMap result ;
-  getOverridenMap (result, inCompiler COMMA_THERE) ;
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void GALGAS_implementationObjectMap::addAssign_operation (const GALGAS_lstring & inKey,
-                                                          const GALGAS_impType & inArgument0,
-                                                          C_Compiler * inCompiler
-                                                          COMMA_LOCATION_ARGS) {
-  cMapElement_implementationObjectMap * p = NULL ;
-  macroMyNew (p, cMapElement_implementationObjectMap (inKey, inArgument0 COMMA_HERE)) ;
-  capCollectionElement attributes ;
-  attributes.setPointer (p) ;
-  macroDetachSharedObject (p) ;
-  const char * kInsertErrorMessage = "@implementationObjectMap insert error: '%K' already in map" ;
-  const char * kShadowErrorMessage = "" ;
-  performInsert (attributes, inCompiler, kInsertErrorMessage, kShadowErrorMessage COMMA_THERE) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void GALGAS_implementationObjectMap::modifier_put (GALGAS_lstring inKey,
-                                                   GALGAS_impType inArgument0,
-                                                   C_Compiler * inCompiler
-                                                   COMMA_LOCATION_ARGS) {
-  cMapElement_implementationObjectMap * p = NULL ;
-  macroMyNew (p, cMapElement_implementationObjectMap (inKey, inArgument0 COMMA_HERE)) ;
-  capCollectionElement attributes ;
-  attributes.setPointer (p) ;
-  macroDetachSharedObject (p) ;
-  const char * kInsertErrorMessage = "%K is duplicated in %L" ;
-  const char * kShadowErrorMessage = "" ;
-  performInsert (attributes, inCompiler, kInsertErrorMessage, kShadowErrorMessage COMMA_THERE) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-const char * kSearchErrorMessage_implementationObjectMap_get = "%K does not exists" ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void GALGAS_implementationObjectMap::method_get (GALGAS_lstring inKey,
-                                                 GALGAS_impType & outArgument0,
-                                                 C_Compiler * inCompiler
-                                                 COMMA_LOCATION_ARGS) const {
-  const cMapElement_implementationObjectMap * p = (const cMapElement_implementationObjectMap *) performSearch (inKey,
-                                                                                                                 inCompiler,
-                                                                                                                 kSearchErrorMessage_implementationObjectMap_get
-                                                                                                                 COMMA_THERE) ;
-  if (NULL == p) {
-    outArgument0.drop () ;
-  }else{
-    macroValidSharedObject (p, cMapElement_implementationObjectMap) ;
-    outArgument0 = p->mAttribute_type ;
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void GALGAS_implementationObjectMap::modifier_del (GALGAS_lstring inKey,
-                                                   GALGAS_impType & outArgument0,
-                                                   C_Compiler * inCompiler
-                                                   COMMA_LOCATION_ARGS) {
-  const char * kRemoveErrorMessage = "%K does not exists" ;
-  capCollectionElement attributes ;
-  performRemove (inKey, attributes, inCompiler, kRemoveErrorMessage COMMA_THERE) ;
-  cMapElement_implementationObjectMap * p = (cMapElement_implementationObjectMap *) attributes.ptr () ;
-  if (NULL != p) {
-    macroValidSharedObject (p, cMapElement_implementationObjectMap) ;
-    outArgument0 = p->mAttribute_type ;
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_impType GALGAS_implementationObjectMap::getter_typeForKey (const GALGAS_string & inKey,
-                                                                  C_Compiler * inCompiler
-                                                                  COMMA_LOCATION_ARGS) const {
-  const cCollectionElement * attributes = searchForReadingAttribute (inKey, inCompiler COMMA_THERE) ;
-  const cMapElement_implementationObjectMap * p = (const cMapElement_implementationObjectMap *) attributes ;
-  GALGAS_impType result ;
-  if (NULL != p) {
-    macroValidSharedObject (p, cMapElement_implementationObjectMap) ;
-    result = p->mAttribute_type ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void GALGAS_implementationObjectMap::modifier_setTypeForKey (GALGAS_impType inAttributeValue,
-                                                             GALGAS_string inKey,
-                                                             C_Compiler * inCompiler
-                                                             COMMA_LOCATION_ARGS) {
-  cCollectionElement * attributes = searchForReadWriteAttribute (inKey, inCompiler COMMA_THERE) ;
-  cMapElement_implementationObjectMap * p = (cMapElement_implementationObjectMap *) attributes ;
-  if (NULL != p) {
-    macroValidSharedObject (p, cMapElement_implementationObjectMap) ;
-    p->mAttribute_type = inAttributeValue ;
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-cMapElement_implementationObjectMap * GALGAS_implementationObjectMap::readWriteAccessForWithInstruction (C_Compiler * inCompiler,
-                                                                                                         const GALGAS_string & inKey
-                                                                                                         COMMA_LOCATION_ARGS) {
-  cMapElement_implementationObjectMap * result = (cMapElement_implementationObjectMap *) searchForReadWriteAttribute (inKey, inCompiler COMMA_THERE) ;
-  macroNullOrValidSharedObject (result, cMapElement_implementationObjectMap) ;
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-cEnumerator_implementationObjectMap::cEnumerator_implementationObjectMap (const GALGAS_implementationObjectMap & inEnumeratedObject,
-                                                                          const typeEnumerationOrder inOrder) :
-cGenericAbstractEnumerator () {
-  inEnumeratedObject.populateEnumerationArray (mEnumerationArray, inOrder) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_implementationObjectMap_2D_element cEnumerator_implementationObjectMap::current (LOCATION_ARGS) const {
-  const cMapElement_implementationObjectMap * p = (const cMapElement_implementationObjectMap *) currentObjectPtr (THERE) ;
-  macroValidSharedObject (p, cMapElement_implementationObjectMap) ;
-  return GALGAS_implementationObjectMap_2D_element (p->mAttribute_lkey, p->mAttribute_type) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_lstring cEnumerator_implementationObjectMap::current_lkey (LOCATION_ARGS) const {
-  const cMapElement * p = (const cMapElement *) currentObjectPtr (THERE) ;
-  macroValidSharedObject (p, cMapElement) ;
-  return p->mAttribute_lkey ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_impType cEnumerator_implementationObjectMap::current_type (LOCATION_ARGS) const {
-  const cMapElement_implementationObjectMap * p = (const cMapElement_implementationObjectMap *) currentObjectPtr (THERE) ;
-  macroValidSharedObject (p, cMapElement_implementationObjectMap) ;
-  return p->mAttribute_type ;
-}
-
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                            @implementationObjectMap type                                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-const C_galgas_type_descriptor
-kTypeDescriptor_GALGAS_implementationObjectMap ("implementationObjectMap",
-                                                NULL) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-const C_galgas_type_descriptor * GALGAS_implementationObjectMap::staticTypeDescriptor (void) const {
-  return & kTypeDescriptor_GALGAS_implementationObjectMap ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-AC_GALGAS_root * GALGAS_implementationObjectMap::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
-  if (isValid ()) {
-    macroMyNew (result, GALGAS_implementationObjectMap (*this)) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_implementationObjectMap GALGAS_implementationObjectMap::extractObject (const GALGAS_object & inObject,
-                                                                              C_Compiler * inCompiler
-                                                                              COMMA_LOCATION_ARGS) {
-  GALGAS_implementationObjectMap result ;
-  const GALGAS_implementationObjectMap * p = (const GALGAS_implementationObjectMap *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_implementationObjectMap *> (p)) {
-      result = *p ;
-    }else{
-      inCompiler->castError ("implementationObjectMap", p->dynamicTypeDescriptor () COMMA_THERE) ;
     }  
   }
   return result ;

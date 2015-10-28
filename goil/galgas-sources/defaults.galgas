@@ -31,9 +31,6 @@ proc setDefaults
   ?!@applicationDefinition application {
   @objectsMap objects = [application objects]
   
-#  addSystemCounter
-#      !?objects;
-
 # set defaults for objects
   for (@lstring objectKind) in  [objects keyList] do
     with objectKind in !?objects error message get  do

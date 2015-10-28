@@ -95,27 +95,28 @@ tpl_primary_irq_handler:
      * on the way to exit IRQ routine (with or without *
      * context switch)                                 *
      ***************************************************/
-    /* then, do we need to switch context ? */
-    ldr r2, =tpl_kern
-    ldrb r2, [r2, #TPL_KERN_OFFSET_NEED_SWITCH]
-    cmp r2, #NO_NEED_SWITCH
-    beq irq_no_context_switch
-
 context_switch_irq:
     /* load the tpl_kern base address */
-    ldr r0, =tpl_kern
+    ldr r1, =tpl_kern
+
+    /* then, do we need to switch context ? */
+   	mov r0, #0	/* set save parameter to 0 */
+    ldrb r2, [r1, #TPL_KERN_OFFSET_NEED_SWITCH]
+    cmp r2, #NO_NEED_SWITCH
+    beq irq_no_context_switch
+    mov r0, #1	/* set save parameter to 1 */
 
     /*
      * SAVES OLD CONTEXT
      */
 
     /* do we need to save the context ? if not, jump to load */
-    ldrb r2, [r0, #TPL_KERN_OFFSET_NEED_SWITCH]
+    ldrb r2, [r1, #TPL_KERN_OFFSET_NEED_SWITCH]
     tst r2, #NEED_SAVE
     beq skip_save_context_irq
 
     /* get the context block address */
-    ldr r2, [r0, #TPL_KERN_OFFSET_S_OLD] /* get the address of the context bloc */
+    ldr r2, [r1, #TPL_KERN_OFFSET_S_OLD] /* get the address of the context bloc */
     ldr r2, [r2]                /* jump to context bloc (from static descriptor) */
     add r2, r2, #(4 * 4)        /* jump over r0-r3 saving zone */
     stmia r2, {r4-r14}^         /* save callee saved registers (r9 and r12 will be overwritten) */
@@ -138,6 +139,13 @@ context_switch_irq:
     /* only executed if context saving step has not been done */
 skip_save_context_irq:
     add sp, sp, #(8 * 4) /* skip saved register frame (8 = r0-r3 + r9 + r11 + r12 + r14) */
+
+call_tpl_run_elected:
+	/* First call tpl_run_elected with the value of tpl_kern.need_switch
+	 * and get the value of the elected task.
+	 * tpl_kern.need_switch (stored into r3) is copied into r0
+	 */
+	bl tpl_run_elected
 
 load_context_irq:
 
