@@ -1,4 +1,4 @@
-# startStopBlink example
+# liquidCrystal example
 
 NOT YET WORKING
 
