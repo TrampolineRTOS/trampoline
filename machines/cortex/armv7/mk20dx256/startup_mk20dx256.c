@@ -150,10 +150,8 @@ void tpl_continue_reset_handler(void)
     pSrc ++ ;
   }
 
-//----------- Configure systick interrupt
-  SYST_RVR = 96000 - 1 ; // Interrupt every 96000 core clocks, i.e. every ms
-  SYST_CVR = 0 ;
-  SYST_CSR = SYST_CSR_CLKSOURCE | SYST_CSR_TICKINT | SYST_CSR_ENABLE ;
+// Systick configuration is done in tpl_set_systick which is called
+// when StartOS is called
 
 //---------5- Exécuter les constructeurs des variables globales
   extern void (* __constructor_array_start) (void) ;
