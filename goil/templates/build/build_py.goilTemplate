@@ -66,7 +66,7 @@ import sys, os, subprocess, string, distutils.spawn
 sys.path.append("% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/make")
 
 #--- Import the makefile system in python
-import makefile, projfile, findexe
+import makefile, projfile
 
 #--- To work with relative paths
 scriptDir = os.path.dirname (os.path.abspath (sys.argv[0]))
@@ -106,7 +106,8 @@ scheduler = "% !OS::SCHEDULER %"
 trampoline_base_path = "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/"
 cflags = []
 cppflags = []
-ldflags = []%
+ldflags = []
+asflags = []%
 foreach optionSet in exists BUILDOPTIONS default (emptylist) do
   foreach flags in exists optionSet::CFLAGS default (emptylist) do
     %
@@ -154,6 +155,12 @@ cflags += ["-I", "% !PROJECT %"]
 cppflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/os"] 
 cppflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/debug"] 
 cppflags += ["-I", "% !PROJECT %"]%
+foreach optionSet in exists BUILDOPTIONS default (emptylist) do
+  foreach flags in exists optionSet::LDFLAGS default (emptylist) do
+  %
+ldflags += "% !flags::VALUE %".split()%
+  end foreach
+end foreach
 foreach flags in OS::BUILD_S::LDFLAGS do
   %
 ldflags += "% !flags::VALUE %".split()%
@@ -162,8 +169,12 @@ if exists OS::MEMMAP_S::LINKER then
 %
 ldflags += ["-T", "% !PROJECT %/% !OS::MEMMAP_S::LINKER_S::SCRIPT %"]%
 end if
-%
-asflags = []%
+foreach optionSet in exists BUILDOPTIONS default (emptylist) do
+  foreach flags in exists optionSet::ASFLAGS default (emptylist) do
+  %
+asflags += "% !flags::VALUE %".split()%
+  end foreach
+end foreach
 foreach flags in OS::BUILD_S::ASFLAGS do
   %
 asflags += "% !flags::VALUE %".split()%
@@ -179,7 +190,7 @@ if exists OS::BUILD_S::SYSTEM_S::GUESSLIBPATH default (true) then
 #--- This supposes the compiler has a (something)-gcc name
 #----------------------------------------------------------------------
 if "gcc" in compiler:
-  compilerFullPath = distutils.spawn.find_executable(compiler)
+  compilerFullPath = makefile.find_executable(compiler)
   if compilerFullPath != None:
     #--- Extract the (something) from the compiler executable name
     compilerParts = compiler.split('-')
@@ -472,7 +483,7 @@ if askedGoal == "% !pc::NAME %" :%
       let commandLine := commandLine . opt::VALUE . " "
     end foreach%
 #  print "% !commandLine %"
-  if findexe.find_executable("% !cmd::COMMAND %") != None:
+  if makefile.find_executable("% !cmd::COMMAND %") != None:
     subprocess.call("% !commandLine %".split())
   else:
     print("Command '% !cmd::COMMAND %' not in PATH")%
