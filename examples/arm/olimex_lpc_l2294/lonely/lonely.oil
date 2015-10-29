@@ -23,6 +23,9 @@ CPU lonely {
       APP_SRC = "lonely.c";
       APP_NAME = "lonely_exe";
       CFLAGS  = "-O0";
+      CFLAGS  = "-ggdb3";
+      ASFLAGS  = "-ggdb3";
+//      LDFLAGS  = "-ggdb";
       CFLAGS  = "-std=c99";
       CFLAGS = "-pedantic";
       CFLAGS = "-Wformat"; 

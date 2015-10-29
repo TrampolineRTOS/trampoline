@@ -2,7 +2,7 @@
  * ARMv7 build options for gcc
  */
 CPU buildOptions {
-  BUILDOPTIONS defaultBuildOptionsForARMv7 {
+  BUILDOPTIONS defaultBuildOptionsForARM7tdmi {
     /*
      * Common flags for C and C++ compiling
      */
@@ -44,6 +44,6 @@ CPU buildOptions {
     LDFLAGS = "--fatal-warnings";                 // A warning is an error
     LDFLAGS = "--warn-common";                    // Warn when a common symbol is combined with another common symbol
     LDFLAGS = "--no-undefined";                   // Report unresolved symbol references
-    LDFLAGS = "--gc-sections";                    // Remove unused sections. Works with -ffunction-sections and -fdata-sections, see above
+/*    LDFLAGS = "--gc-sections";                    // Remove unused sections. Works with -ffunction-sections and -fdata-sections, see above*/
   };
 };
