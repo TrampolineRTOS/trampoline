@@ -23,7 +23,7 @@ Some examples have been added (check examples):
 * cortex/armv7/mk20dx256/teensy31
   * blink. Blinks the Teensy 3.1 LED using an alarm and a task. 
   * startStopBlink. The example polls a button connected to pin 8 to start an alarm that activates a task to blink a LED. 
-  * liquidCrystal. StartStopBlink extended. In addition the periodic task prints a value on a LCD. 
+  * liquidCrystal. startStopBlink extended. In addition the periodic task prints a value on a LCD. 
 * avr: 3 examples for Arduino Uno (ATMega328p chip) and Arduino Mega (ATMega2560 chip)
   * blink. Blinks a LED using an alarm and a task. 
   * serial. improve 'blink': use the standard Arduino serial API.
