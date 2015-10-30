@@ -34,16 +34,34 @@
 #include "tpl_os.h"
 #include "LiquidCrystalFast.h"
 
+#define APP_Task_blink_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+/*
+ * A LiquidCrystalFast object is instantiated.
+ * Pin numbers are per Teensyduino specification
+ */
+LiquidCrystalFast lcd(18,17,16,15,14,19);
+
+#define APP_Task_blink_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 FUNC(int, OS_APPL_CODE) main(void)
 {
   /* board LED as output */
   pinMode(13, OUTPUT);
+  /* running LED as output and running at start */
   pinMode(3, OUTPUT);
+  digitalWrite(3, HIGH);
   /* pin 8 as input for the button */
   pinMode(8, INPUT_PULLUP);
 
+  /* start display, it is supposed to be a 20x4 */
+  lcd.begin(20, 4);
+  lcd.println("Trampoline");
+  lcd.print("LCD example");
+  
   StartOS(OSDEFAULTAPPMODE);
   return 0;
 }
@@ -54,10 +72,18 @@ FUNC(int, OS_APPL_CODE) main(void)
 #include "tpl_memmap.h"
 TASK(blink)
 {
+  static uint32 count = 0;
   static uint8 ledState = HIGH;
 
   digitalWrite(13, ledState);
   ledState = !ledState;
+
+  if (ledState == HIGH)
+  {
+    lcd.setCursor(0,3);
+    lcd.print(count);
+    count++;
+  }
 
   TerminateTask();
 }
@@ -109,20 +135,5 @@ TASK(button_scanner)
   TerminateTask();
 }
 #define APP_Task_button_scanner_STOP_SEC_CODE
-#include "tpl_memmap.h"
-
-#define APP_Task_display_START_SEC_VAR_UNSPECIFIED
-#include "tpl_memmap.h"
-//LiquidCrystalFast lcd(18,17,16,15,14,19);
-#define APP_Task_display_STOP_SEC_VAR_UNSPECIFIED
-#include "tpl_memmap.h"
-
-#define APP_Task_display_START_SEC_CODE
-#include "tpl_memmap.h"
-TASK(display)
-{
-  TerminateTask();
-}
-#define APP_Task_display_STOP_SEC_CODE
 #include "tpl_memmap.h"
 

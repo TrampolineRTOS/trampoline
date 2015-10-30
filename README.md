@@ -16,15 +16,16 @@ And we welcome external contributors to extend this list.
 Some examples have been added (check examples):
 
 * cortex/armv7/stm32f407/stf32f4discovery
-  * blink. Blinks a LED using an alarm and a task
+  * blink. Blinks a LED using an alarm and a task. 
   * readButton. The example polls the button to start an alarm that activates a task to blink a LED
   * readButton_isr. Same but the button triggers an ISR.
   * alarms. It is the same example than readButton_isr but we test the return value of SetRelAlarm for return parameters when in kernel (system call) mode.
 * cortex/armv7/mk20dx256/teensy31
-  * blink. Blinks the Teensy 3.1 LED using an alarm and a task
-  * startStopBlink. The example polls a button connected to pin 8 to start an alarm that activates a task to blink a LED
+  * blink. Blinks the Teensy 3.1 LED using an alarm and a task. 
+  * startStopBlink. The example polls a button connected to pin 8 to start an alarm that activates a task to blink a LED. 
+  * liquidCrystal. startStopBlink extended. In addition the periodic task prints a value on a LCD. 
 * avr: 3 examples for Arduino Uno (ATMega328p chip) and Arduino Mega (ATMega2560 chip)
-  * blink. Blinks a LED using an alarm and a task
+  * blink. Blinks a LED using an alarm and a task. 
   * serial. improve 'blink': use the standard Arduino serial API.
   * extInterrupt. improve 'serial': add 2 ISRs to change the alarm period.
 

@@ -461,9 +461,10 @@ make.runGoal(maxParallelJobs, maxParallelJobs == 1)
 
 #----------------------------------------------------------------------
 #--- post commands if any
-#----------------------------------------------------------------------%
+#----------------------------------------------------------------------
+if make.errorCount() == 0:%
 foreach pc in exists POSTCOMMAND default (emptylist) do%
-if askedGoal == "% !pc::NAME %" :%
+  if askedGoal == "% !pc::NAME %" :%
   foreach cmd in pc::COMMAND do
     let commandLine := cmd::COMMAND . " "
     foreach opt in exists cmd::PREOPTION default (emptylist) do
@@ -482,11 +483,10 @@ if askedGoal == "% !pc::NAME %" :%
     foreach opt in exists cmd::POSTOPTION default (emptylist) do
       let commandLine := commandLine . opt::VALUE . " "
     end foreach%
-#  print "% !commandLine %"
-  if makefile.find_executable("% !cmd::COMMAND %") != None:
-    subprocess.call("% !commandLine %".split())
-  else:
-    print("Command '% !cmd::COMMAND %' not in PATH")%
+    if makefile.find_executable("% !cmd::COMMAND %") != None:
+      subprocess.call("% !commandLine %".split())
+    else:
+      print("Command '% !cmd::COMMAND %' not in PATH")%
   end foreach
 end foreach%
 

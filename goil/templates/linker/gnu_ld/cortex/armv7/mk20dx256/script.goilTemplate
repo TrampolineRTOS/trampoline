@@ -324,7 +324,7 @@ end foreach
   .system_stack :{
     . = ALIGN (4) ;
     __system_stack_start = . ;
-    . += 1k ;
+    . += 2k ;
     . = ALIGN (4) ;
     __system_stack_end = . ;
     _estack = . ;

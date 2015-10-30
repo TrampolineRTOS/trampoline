@@ -3,7 +3,9 @@
  *
  * @section desc File description
  *
- * A periodic task prints its activation count on the LCD.
+ * A periodic task blinks the built LED of the Teensy, 
+ * prints its activation count on the LCD. A button allow to start and stop
+ * the periodic task.
  *
  * @section copyright Copyright
  *
@@ -48,7 +50,7 @@ CPU liquidCrystal {
       APP_CPPSRC = "liquidCrystal.cpp";
       APP_NAME = "liquidCrystal_exe";
       COMMONFLAGS = "-O0";
-      COMMONFLAGS = "-DARDUINO=10603 -DTEENSYDUINO=124";
+      COMMONFLAGS = "-DARDUINO=10603 -DTEENSYDUINO=124 -DF_CPU=96000000";
       LDFLAGS = "-Map=project.map";
       
       COMPILER = "arm-none-eabi-gcc";
@@ -74,6 +76,7 @@ CPU liquidCrystal {
     AUTOSTART = FALSE;
     ACTIVATION = 1;
     SCHEDULE = FULL;
+    STACKSIZE = 500; // Needed by LiquidCrystalFast functions call
   };
   
   ALARM blink_blink {
@@ -105,13 +108,6 @@ CPU liquidCrystal {
       ALARMTIME = 20;
       CYCLETIME = 20;
     };
-  };
-  
-  TASK display {
-    PRIORITY = 3;
-    AUTOSTART = FALSE;
-    ACTIVATION = 1;
-    SCHEDULE = FULL;    
   };
 };
 

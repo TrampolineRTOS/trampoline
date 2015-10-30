@@ -810,12 +810,12 @@ void yield(void);
 
 void delay(uint32_t msec);
 
-extern volatile uint32_t systick_millis_count;
+extern volatile uint32_t tpl_time_counter;
 
 static inline uint32_t millis(void) __attribute__((always_inline, unused));
 static inline uint32_t millis(void)
 {
-	return systick_millis_count; // single aligned 32 bit is atomic;
+	return tpl_time_counter; // single aligned 32 bit is atomic;
 }
 
 uint32_t micros(void);
@@ -848,15 +848,15 @@ static inline void delayMicroseconds(uint32_t usec)
 #endif
     // changed because a delay of 1 micro Sec @ 2MHz will be 0
 	if (n == 0) return;
-	__asm__ volatile(
-		"L_%=_delayMicroseconds:"		"\n\t"
-#if F_CPU < 24000000
-		"nop"					"\n\t"
-#endif
-		"subs   %0, #1"				"\n\t"
-		"bne    L_%=_delayMicroseconds"		"\n"
-		: "+r" (n) :
-	);
+ 	__asm__ volatile(
+ 		"L_%=_delayMicroseconds:"		"\n\t"
+ #if F_CPU < 24000000
+ 		"nop"					"\n\t"
+ #endif
+ 		"subs   %0, #1"				"\n\t"
+ 		"bne    L_%=_delayMicroseconds"		"\n"
+ 		: "+r" (n) :
+ 	);
 }
 
 #ifdef __cplusplus
