@@ -202,7 +202,7 @@ void LCDSendChar(unsigned long a)
  */
 void LCDSendTxt(char* a)
 {
-  char i=0;
+  uint32 i=0;
   while(a[i]!='\0') 
   {
     LCDSendChar(a[i]);

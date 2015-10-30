@@ -31,12 +31,14 @@
 /*
  * tpl_kern data structure offsets (for use into assembler sources)
  */
-#define TPL_KERN_OFFSET_S_OLD        0
-#define TPL_KERN_OFFSET_S_RUNNING    4
-#define TPL_KERN_OFFSET_OLD          8
-#define TPL_KERN_OFFSET_RUNNING     12
-#define TPL_KERN_OFFSET_RUNNING_ID  16
-#define TPL_KERN_OFFSET_NEED_SWITCH 20
+#define TPL_KERN_OFFSET_S_RUNNING 0
+#define TPL_KERN_OFFSET_S_ELECTED 4
+#define TPL_KERN_OFFSET_RUNNING   8
+#define TPL_KERN_OFFSET_ELECTED   12
+#define TPL_KERN_OFFSET_RUNNING_ID 16
+#define TPL_KERN_OFFSET_ELECTED_ID 20
+#define TPL_KERN_OFFSET_NEED_SWITCH 24
+#define TPL_KERN_OFFSET_NEED_SCHEDULE 25
 
 /**
  * tpl_proc data structure offsets

@@ -116,7 +116,7 @@ context_switch_irq:
     beq skip_save_context_irq
 
     /* get the context block address */
-    ldr r2, [r1, #TPL_KERN_OFFSET_S_OLD] /* get the address of the context bloc */
+    ldr r2, [r1, #TPL_KERN_OFFSET_S_RUNNING] /* get the address of the context bloc */
     ldr r2, [r2]                /* jump to context bloc (from static descriptor) */
     add r2, r2, #(4 * 4)        /* jump over r0-r3 saving zone */
     stmia r2, {r4-r14}^         /* save callee saved registers (r9 and r12 will be overwritten) */
