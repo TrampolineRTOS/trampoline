@@ -1,8 +1,6 @@
 # liquidCrystal example
 
-NOT YET WORKING
-
-A periodic task increments a variable and display it on the LCD
+A periodic task increments a variable and display it on the LCD. 
 The corresponding alarm runs at start.
 
 Have a look at "liquidCrystal.oil" file.
