@@ -31,7 +31,7 @@ CPU teensy31 {
       MESSAGE = "Flashing";
       COMMAND = "teensy-loader-cli";
       INPUT = TARGET { EXT = ".hex"; };
-      PREOPTION = "-w -v -mmcu=mk20dx128";
+      PREOPTION = "-w -v -mmcu=mk20dx256";
     };
   };
 
