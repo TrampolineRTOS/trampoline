@@ -1,10 +1,13 @@
 # isr example
 
-The basis of this application is the same as the blink example.
-A periodic task  toggles the built in led of the teensy the board.
-This runs at start.
+A periodic task toggles the built in led of the teensy the board every
+500ms by using an alarm. In addition the task gets the current value
+of the PIT0 timer and print it on the LCD. This runs at start.
 
-An ISR is programmed on the PIT0 channel
+PIT0 timer is programmed to count down from 100000000 (100 millions).
+With the 48MHz clock, this corresponds to a 2,0833333 seconds period
+An IRQ (PIT0_IRQ) is programmed and, when the timer reaches 0, it
+leads to the execution of ISR category 2 timer.
 
 Have a look into "isr.oil" file.
 
