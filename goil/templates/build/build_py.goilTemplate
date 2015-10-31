@@ -145,6 +145,10 @@ foreach platform in exists PLATFORM_FILES default (emptylist) do%
 cflags += ["-I","% !MACHINESPATH . "/" . platform::PATH %"]
 cppflags += ["-I","% !MACHINESPATH . "/" . platform::PATH %"]%
 end foreach
+foreach library in exists LIBRARY default (emptylist) do%
+cflags += ["-I","% !MACHINESPATH . "/" . library::PATH %"]
+cppflags += ["-I","% !MACHINESPATH . "/" . library::PATH %"]%
+end foreach
 %
 if with_ioc:
   cflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/ioc"] 
@@ -331,6 +335,25 @@ cppSourceList.append(projfile.ProjectFile("% !"machines/".platform::PATH."/".fil
   foreach file in platform::ASFILE do
 %
 sSourceList.append(projfile.ProjectFile("% !"machines/".platform::PATH."/".file::VALUE %", trampoline_base_path))%
+  end foreach
+end foreach
+
+# add the libraries
+foreach library in exists LIBRARY default (emptylist) do
+  if not exists library::CFILE then let library::CFILE := emptylist end if
+  if not exists library::CPPFILE then let library::CPPFILE := emptylist end if
+  if not exists library::ASFILE then let library::ASFILE := emptylist end if
+  foreach file in library::CFILE do
+%
+cSourceList.append(projfile.ProjectFile("% !"machines/".library::PATH."/".file::VALUE %", trampoline_base_path))%
+  end foreach
+  foreach file in library::CPPFILE do
+%
+cppSourceList.append(projfile.ProjectFile("% !"machines/".library::PATH."/".file::VALUE %", trampoline_base_path))%
+  end foreach
+  foreach file in library::ASFILE do
+%
+sSourceList.append(projfile.ProjectFile("% !"machines/".library::PATH."/".file::VALUE %", trampoline_base_path))%
   end foreach
 end foreach
 %

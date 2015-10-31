@@ -70,6 +70,17 @@ IMPLEMENTATION trampoline_common {
   };
   
   /*===========================================================================
+   * Libraries to add to the build system
+   */
+  LIBRARY [] {
+    IDENTIFIER NEEDS [];
+    STRING PATH;
+    STRING CFILE[];
+    STRING CPPFILE[];
+    STRING ASFILE[];
+  };
+
+  /*===========================================================================
    * Machines specific generated files to add to the build system
    */
   GENERATED_FILES [] {
