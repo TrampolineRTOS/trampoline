@@ -5,7 +5,7 @@ A periodic task toggles the built in led of the teensy the board every
 of the PIT0 timer and print it on the LCD. This runs at start.
 
 PIT0 timer is programmed to count down from 100000000 (100 millions).
-With the 48MHz clock, this corresponds to a 2,0833333 seconds period
+With the 48MHz clock, this corresponds to a 2,0833333 seconds period.
 An IRQ (PIT0_IRQ) is programmed and, when the timer reaches 0, it
 leads to the execution of ISR category 2 timer.
 
