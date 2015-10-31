@@ -47,7 +47,8 @@ FUNC(void, OS_CODE) tpl_set_systick_timer()
  	  SYST_CSR_TICKINT |      /* 1 = counting down to 0 will cause the SysTick exception */
  	  SYST_CSR_ENABLE;        /* 1 = the counter will operate in a multi-shot manner.    */
  
- 	SCB_SHPR3 = 0x7F200000;   /* Systick priority = 127 */
+ 	SCB_SHPR3 = 0x80000000;   /* Systick priority = 128 */
+ 	SCB_SHPR2 = 0x80000000;   /* SVCall priority = 128 */
 }
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

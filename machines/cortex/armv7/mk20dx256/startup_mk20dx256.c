@@ -1,5 +1,5 @@
 /**
- * @file handlers_mk20dx256.c
+ * @file startup_mk20dx256.c
  *
  * @section descr File description
  *

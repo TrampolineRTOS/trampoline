@@ -36,7 +36,7 @@ extern FUNC (void, OS_CODE) tpl_init_machine_generic (void);
 void tpl_init_machine()
 {
   tpl_init_machine_generic ();
-	tpl_init_machine_specific();
+  tpl_init_machine_specific();
   //Init();
 }
 
