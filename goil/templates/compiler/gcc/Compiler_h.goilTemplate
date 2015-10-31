@@ -76,6 +76,9 @@
      vartype memclass \
           CURRENT_LINKER_DATA_SECTION_NAME
 
+#define INLINE_FUNC(vartype, memclass) \
+   static inline vartype __attribute__((always_inline, unused))
+
 /*****************************************************************************/
 /* PUBLISHED INFORMATION                                                     */
 /*****************************************************************************/
