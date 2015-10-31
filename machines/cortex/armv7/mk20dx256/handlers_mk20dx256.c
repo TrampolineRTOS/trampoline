@@ -27,6 +27,7 @@
 #include "tpl_os_interrupt_kernel.h"
 #include "tpl_compiler.h"
 #include "mk20dx256.h"
+#include "gpio.h"
 
 extern void tpl_primary_syscall_handler(void);
 
@@ -43,6 +44,8 @@ FUNC(void, OS_CODE)NMI_Handler(void)
 
 FUNC(void, OS_CODE)HardFault_Handler(void)
 {
+  pinMode(7, OUTPUT);
+  digitalWrite(7, HIGH);
 	while (1) {
 		// keep polling some communication while in fault
 		// mode, so we don't completely die.
