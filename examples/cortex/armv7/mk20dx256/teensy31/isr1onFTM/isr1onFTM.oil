@@ -1,0 +1,128 @@
+/**
+ * @file isr1onFTM.oil
+ *
+ * @section desc File description
+ *
+ * Periodic task "pulse" runs every 20ms (ALARMTIME and CYCLETIME = 20).
+ * I sets output 3 to HIGH and programs the FTM0 to generate an interrupt
+ * after a time between 66,67µs and 13,33ms. The time is updated according
+ * to the speed variable. This runs at start.
+ *
+ * ISR 1 "fmt_timer" sets output 3 to LOW and stops FTM0.
+ *
+ * As a result a pulse with a width between 66,67µs and 13,33ms is generated
+ * on output 3. 
+ *
+ * A periodic task toggles the built in led of the teensy the board every
+ * 500ms by using an alarm. In addition the task gets the pulse width and
+ * the speed variable and print it on the LCD. This runs at start.
+ *
+ * @section copyright Copyright
+ *
+ * Trampoline RTOS
+ *
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
+ * Trampoline is protected by the French intellectual property law.
+ *
+ * This software is distributed under the GNU Public Licence V2.
+ * Check the LICENSE file in the root directory of Trampoline
+ *
+ * @section infos File informations
+ *
+ * $Date$
+ * $Rev$
+ * $Author$
+ * $URL$
+ */
+OIL_VERSION = "2.5";
+
+IMPLEMENTATION trampoline {
+
+    /* This fix the default STACKSIZE of tasks */
+    TASK {
+        UINT32 STACKSIZE = 500 ;
+    } ;
+
+    /* This fix the default STACKSIZE of ISRs */
+    ISR {
+        UINT32 STACKSIZE = 100 ;
+    } ;
+};
+
+CPU blink {
+  OS config {
+    STATUS = EXTENDED;
+    PRETASKHOOK = FALSE;
+    POSTTASKHOOK = FALSE;
+    
+    BUILD = TRUE {
+      TRAMPOLINE_BASE_PATH = "../../../../../..";
+      APP_SRC = "isr1onFTM.cpp";
+      APP_NAME = "isr1onFTM_exe";
+      COMMONFLAGS = "-O1";
+      COMMONFLAGS = "-DARDUINO=10603 -DTEENSYDUINO=124";
+      LDFLAGS = "-Map=isr1onFTM.map";
+
+      COMPILER = "arm-none-eabi-gcc";
+      CPPCOMPILER = "arm-none-eabi-g++";
+      ASSEMBLER = "arm-none-eabi-as";
+      LINKER = "arm-none-eabi-ld";
+      COPIER = "arm-none-eabi-objcopy";
+      SYSTEM = PYTHON;
+    };
+    SYSTEM_CALL = TRUE;
+    MEMMAP = TRUE {
+      COMPILER = gcc;
+      LINKER = gnu_ld { SCRIPT = "script.ld"; };
+      ASSEMBLER = gnu_as;
+      MEMORY_PROTECTION = FALSE;
+    };
+  };
+  
+  APPMODE std_appmode {};
+  
+  TASK blink {
+    PRIORITY = 1;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+  
+  ALARM blink_blink {
+    COUNTER = SystemCounter;
+    ACTION = ACTIVATETASK {
+      TASK = blink;
+    };
+    AUTOSTART = TRUE {
+      APPMODE = std_appmode;
+      ALARMTIME = 500;
+      CYCLETIME = 500;
+    };
+  };
+  
+  TASK pulse {
+    PRIORITY = 2;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+  
+  ALARM generate_pulse {
+    COUNTER = SystemCounter;
+    ACTION = ACTIVATETASK {
+      TASK = pulse;
+    };
+    AUTOSTART = TRUE {
+      APPMODE = std_appmode;
+      ALARMTIME = 20;
+      CYCLETIME = 20;
+    };
+  };
+  
+  ISR ftm_timer {
+    CATEGORY = 1;
+    PRIORITY = 1;
+    SOURCE = FTM0_IRQ;
+  };
+};
+
