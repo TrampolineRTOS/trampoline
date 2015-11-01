@@ -105,7 +105,7 @@
 /**
  * @def E_OS_ACCESS
  *
- * This error code means : calling task is not an extended task"
+ * This error code means : calling task is not an extended task
  *
  * @warning OSEK error code meanings are not globally defined. Refer to each
  * standard service definition to know the exact meaning.
