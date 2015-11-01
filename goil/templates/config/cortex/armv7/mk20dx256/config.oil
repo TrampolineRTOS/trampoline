@@ -23,6 +23,11 @@ CPU mk20dx256 {
     CFILE = "pit_mk20dx256.c";
   };
   
+  LIBRARY ftm {
+    PATH = "cortex/armv7/mk20dx256/libraries/ftm";
+    CFILE = "ftm_mk20dx256.c";
+  };
+  
   INTERRUPT_COUNT nb_it {
     IT_TABLE_SIZE = 110; /* Size of the interrupt vector table */
   };
