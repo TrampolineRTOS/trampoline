@@ -58,6 +58,9 @@ CPU liquidCrystal {
       ASSEMBLER = "arm-none-eabi-as";
       LINKER = "arm-none-eabi-ld";
       COPIER = "arm-none-eabi-objcopy";
+      
+      LIBRARY = LiquidCrystalFast;
+      
       SYSTEM = PYTHON;
     };
     SYSTEM_CALL = TRUE;
