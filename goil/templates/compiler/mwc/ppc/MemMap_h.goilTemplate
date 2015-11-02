@@ -374,6 +374,124 @@ foreach proc in PROCESSES do
   end for
 end foreach
 %
+%
+foreach isr in ISR1 do
+%
+/*-----------------------------------------------------------------------------
+ * % !proc::KIND % % !proc::NAME % memory mapping to sections
+ *
+ * Code section
+ */
+#ifdef APP_% !proc::KIND %_% !proc::NAME %_START_SEC_CODE
+  #undef APP_% !proc::KIND %_% !proc::NAME %_START_SEC_CODE
+  #ifdef CURRENT_LINKER_CODE_SECTION
+    #error "Starting a new % !proc::NAME % % !proc::KIND % code section while a section is already started"
+  #else
+    #undef MEMMAP_ERROR
+    #pragma section code_type ".% !proc::KIND %_% !proc::NAME %Code"
+    #define CURRENT_LINKER_CODE_SECTION
+  #endif
+#endif
+#ifdef APP_% !proc::KIND %_% !proc::NAME %_STOP_SEC_CODE
+  #undef APP_% !proc::KIND %_% !proc::NAME %_STOP_SEC_CODE
+  #ifdef CURRENT_LINKER_CODE_SECTION
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_CODE_SECTION
+    #pragma section all_types
+  #else
+    #error "No section started"
+  #endif
+#endif
+
+/*
+ * Variables sections
+ */
+%
+  for SECTION_KIND in "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" do
+    for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+%
+#ifdef APP_% !proc::KIND %_% !proc::NAME %_START_SEC_VAR% !SECTION_KIND !DATA_SIZE %
+  #undef APP_% !proc::KIND %_% !proc::NAME %_START_SEC_VAR% !SECTION_KIND !DATA_SIZE %
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #error "Starting a new % !proc::KIND % % !proc::NAME % data section while a section is already started"
+  #else
+    #undef MEMMAP_ERROR
+    #pragma section data_type ".% !proc::KIND %_% !proc::NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %" ".% !proc::KIND %_% !proc::NAME %_noInit_SEC_VAR% !SECTION_KIND !DATA_SIZE %"
+    #define CURRENT_LINKER_DATA_SECTION
+  #endif
+#endif
+#ifdef APP_% !proc::KIND %_% !proc::NAME %_STOP_SEC_VAR% !SECTION_KIND !DATA_SIZE %
+  #undef APP_% !proc::KIND %_% !proc::NAME %_STOP_SEC_VAR% !SECTION_KIND !DATA_SIZE %
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_DATA_SECTION
+    #pragma section all_types
+  #else
+    #error "No section started"
+  #endif
+#endif
+%
+    end for
+  end for
+%
+
+/*
+ * Stack sections
+ */
+#ifdef APP_% !proc::KIND %_% !proc::NAME %_START_SEC_STACK
+  #undef APP_% !proc::KIND %_% !proc::NAME %_START_SEC_STACK
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #error "Starting a new % !proc::KIND % % !proc::NAME % stack section while a section is already started"
+  #else
+    #undef MEMMAP_ERROR
+    #pragma section data_type ".% !proc::KIND %_% !proc::NAME %Stack" ".% !proc::KIND %_% !proc::NAME %Stack"
+    #define CURRENT_LINKER_DATA_SECTION
+  #endif
+#endif
+#ifdef APP_% !proc::KIND %_% !proc::NAME %_STOP_SEC_STACK
+  #undef APP_% !proc::KIND %_% !proc::NAME %_STOP_SEC_STACK
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_DATA_SECTION
+    #pragma section all_types
+  #else
+    #error "No section started"
+  #endif
+#endif
+
+/*
+ * Const, Calibration, Carto, Configuration data sections
+ */
+%
+  for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
+    for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+%
+#ifdef APP_% !proc::KIND %_% !proc::NAME %_START_SEC% !SECTION_KIND !DATA_SIZE %
+  #undef APP_% !proc::KIND %_% !proc::NAME %_START_SEC% !SECTION_KIND !DATA_SIZE %
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #error "Starting a new % !proc::KIND % % !proc::NAME % data section while a section is already started"
+  #else
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_DATA_SECTION_NAME
+    #pragma section const_type ".% !proc::KIND %_% !proc::NAME %_SEC% !SECTION_KIND !DATA_SIZE %"
+    #define CURRENT_LINKER_DATA_SECTION
+  #endif
+#endif
+#ifdef APP_% !proc::KIND %_% !proc::NAME %_STOP_SEC% !SECTION_KIND !DATA_SIZE %
+  #undef APP_% !proc::KIND %_% !proc::NAME %_STOP_SEC% !SECTION_KIND !DATA_SIZE %
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_DATA_SECTION
+    #pragma section all_types
+  #else
+    #error "No section started"
+  #endif
+#endif
+%
+    end for
+  end for
+end foreach
+%
 #ifdef MEMMAP_ERROR
   #error "MemMap.h, wrong section command"
 #endif

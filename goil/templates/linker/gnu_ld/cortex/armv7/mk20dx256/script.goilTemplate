@@ -70,6 +70,11 @@ foreach proc in PROCESSES do
     *(.% !proc::KIND %_% !proc::NAME %Code)
 %
 end foreach
+foreach isr in ISRS1 do
+%
+    *(.ISR_% !isr::NAME %Code)
+%
+end foreach
 %
   } >FLASH
 

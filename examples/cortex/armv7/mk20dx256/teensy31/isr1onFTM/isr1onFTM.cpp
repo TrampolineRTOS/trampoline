@@ -13,7 +13,7 @@
  * ISR 1 "fmt_timer" sets output 3 to LOW and stops FTM0.
  *
  * As a result a pulse with a width between 66,67µs and 13,33ms is generated
- * on output 3. 
+ * on output 3.
  *
  * A periodic task toggles the built in led of the teensy the board every
  * 500ms by using an alarm. In addition the task gets the pulse width and
@@ -58,17 +58,17 @@ FUNC(int, OS_APPL_CODE) main(void)
 {
   /* For LCD 20 columns, 4 rows */
   lcd.begin(20,4);
-  
+
   /* board LED as output */
   pinMode(13, OUTPUT);
   /* LED L0-3 as output */
   pinMode(3, OUTPUT);
   /* LED L1-4 as output */
   pinMode(4, OUTPUT);
-  
+
   /* pin 8 as input for the button */
   pinMode(8, INPUT_PULLUP);
-  
+
   /*
    * Priority of Systick and SVCCall are set to 128
    * Priority of FTM0 is set to 112 (priority higher than 128).
@@ -77,9 +77,9 @@ FUNC(int, OS_APPL_CODE) main(void)
    */
   NVIC_SET_PRIORITY(IRQ_FTM0, 112);
   NVIC_ENABLE_IRQ(IRQ_FTM0);
-       
+
   /*
-   * Enable access to the FTM0 module registers when in 
+   * Enable access to the FTM0 module registers when in
    * unprivileged thread mode
    */
   FTMEnableUserAccess(0);
@@ -102,8 +102,8 @@ FUNC(int, OS_APPL_CODE) main(void)
   FTMEnableTimerInterrupt(0);
   /* Start FTM 0 */
 //  FTMSetClockSource(0, FTM_SystemClock);
-  
-  
+
+
   StartOS(OSDEFAULTAPPMODE);
   return 0;
 }
@@ -131,14 +131,14 @@ TASK(blink)
   ledState = !ledState;
 
   /* Print the current pulse width */
-  lcd.setCursor(0,0);  
+  lcd.setCursor(0,0);
   lcd.print(pulseWidth / 3);
   lcd.print("    ");
   /* And the current speed */
-  lcd.setCursor(0,1);  
+  lcd.setCursor(0,1);
   lcd.print(speed);
   lcd.print(' ');
-  
+
   /* End of pulse on output 4 to see the execution of the task */
   digitalWrite(4, LOW);
 
@@ -162,7 +162,7 @@ TASK (pulse)
 
   /* Update the pulse width */
   pulseWidth += speed;
-  
+
   if (pulseWidth > 40000) speed = -100;
   if (pulseWidth < 200) speed = 100;
 
@@ -171,6 +171,8 @@ TASK (pulse)
 #define APP_Task_pulse_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
+#define APP_ISR_ftm_timer_START_SEC_CODE
+#include "tpl_memmap.h"
 /*
  * This ISR1 is triggered by the FTM0 interrupt
  */
@@ -178,10 +180,12 @@ ISR(ftm_timer)
 {
   /* stop the pulse */
   digitalWrite(3, LOW);
-  
+
   /* stop the counter */
   FTMStopCounter(0);
-  
+
   /* Acknowledge the timer interrupt */
   FTMAcknowledgeTimerInterrupt(0);
 }
+#define APP_ISR_ftm_timer_STOP_SEC_CODE
+#include "tpl_memmap.h"

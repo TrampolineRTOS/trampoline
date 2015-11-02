@@ -49,7 +49,7 @@ IMPLEMENTATION trampoline {
     } ;
 };
 
-CPU blink {
+CPU isr1onFTM {
   OS config {
     STATUS = EXTENDED;
     PRETASKHOOK = FALSE;
