@@ -53,17 +53,17 @@ FUNC(int, OS_APPL_CODE) main(void)
 {
   /* For LCD 20 columns, 4 rows */
   lcd.begin(20,4);
-  
+
   /* board LED as output */
   pinMode(13, OUTPUT);
   /* LED L0-3 as output */
   pinMode(3, OUTPUT);
   /* LED L1-4 as output */
   pinMode(4, OUTPUT);
-  
+
   /* pin 8 as input for the button */
   pinMode(8, INPUT_PULLUP);
-  
+
   /*
    * Priority of Systick and SVCCall are set to 128
    * So priority of PIT0 is set to 128 too. That way
@@ -72,9 +72,9 @@ FUNC(int, OS_APPL_CODE) main(void)
    */
   NVIC_SET_PRIORITY(IRQ_PIT_CH0, 128);
   NVIC_ENABLE_IRQ(IRQ_PIT_CH0);
-       
+
   /*
-   * Enable access to the PIT module registers when in 
+   * Enable access to the PIT module registers when in
    * unprivileged thread mode
    */
   PITEnableUserAccess();
@@ -88,7 +88,7 @@ FUNC(int, OS_APPL_CODE) main(void)
   PITEnableTimerInterrupt(0);
   /* Start timer 0 */
   PITEnableTimer(0);
-  
+
   StartOS(OSDEFAULTAPPMODE);
   return 0;
 }
@@ -106,11 +106,12 @@ TASK(blink)
   digitalWrite(13, ledState);
   ledState = !ledState;
 
-  lcd.setCursor(0,0);  
+  lcd.setCursor(0,0);
   lcd.print(PITTimerValue(0));
+  lcd.print("        ");
   lcd.setCursor(0,2);
-  lcd.print(PIT_CHANNEL[0].PIT_TFLG);  
-  
+  lcd.print(PIT_CHANNEL[0].PIT_TFLG);
+
   digitalWrite(4, LOW);
 
   TerminateTask();
