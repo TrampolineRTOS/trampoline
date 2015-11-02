@@ -1,5 +1,5 @@
 /**
- * @file isr1onFTM.c
+ * @file isr1onFTM.cpp
  *
  * @section desc File description
  *
