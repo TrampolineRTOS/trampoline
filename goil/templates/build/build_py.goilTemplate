@@ -481,12 +481,14 @@ end foreach
 %
 
 make.runGoal(maxParallelJobs, maxParallelJobs == 1)
-
+%
+foreach pc in exists POSTCOMMAND default (emptylist)
+  before%
 #----------------------------------------------------------------------
-#--- post commands if any
+#--- post commands
 #----------------------------------------------------------------------
-if make.errorCount() == 0:%
-foreach pc in exists POSTCOMMAND default (emptylist) do%
+if make.errorCount() == 0:%    
+  do%
   if askedGoal == "% !pc::NAME %" :%
   foreach cmd in pc::COMMAND do
     let commandLine := cmd::COMMAND . " "
@@ -512,4 +514,8 @@ foreach pc in exists POSTCOMMAND default (emptylist) do%
       print("Command '% !cmd::COMMAND %' not in PATH")%
   end foreach
 end foreach%
+
+#----------------------------------------------------------------------
+#-- End of build.py
+#----------------------------------------------------------------------
 
