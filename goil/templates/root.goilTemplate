@@ -1266,6 +1266,37 @@ foreach api_sec in APICONFIG do
   end if
 end foreach
 
+#------------------------------------------------------------------------------*
+# build the library tree dependencies
+#
+let AVAILABLELIB := mapof LIBRARY by NAME
+let USEDLIB := emptymap
+foreach lib in exists OS::BUILD_S::LIBRARY default (emptylist) do
+  let key := lib::VALUE
+  if not exists USEDLIB[key] then
+    let USEDLIB[key] := AVAILABLELIB[key]
+  end if
+end foreach
+
+let PRIMARYUSEDLIB := USEDLIB
+
+repeat
+  let added := false
+  let NEWLYADDEDLIB := emptymap
+  foreach lib in USEDLIB do
+    foreach needs in exists lib::NEEDS default (emptylist) do
+      if not exists USEDLIB[needs::VALUE] & not exists USEDLIB[needs::VALUE] then
+        let added := true
+        let NEWLYADDEDLIB[needs::VALUE] := AVAILABLELIB[needs::VALUE]
+      end if
+    end foreach
+  end foreach
+  foreach lib in NEWLYADDEDLIB do
+    let USEDLIB[lib::NAME] := lib
+  end foreach
+while added
+end repeat  
+
 %
 Goil run on % !TIMESTAMP%
 Generated files are:

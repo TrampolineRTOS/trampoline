@@ -32,7 +32,6 @@
  */
 
 #include "tpl_os.h"
-#include "LiquidCrystalFast.h"
 
 #define APP_Task_blink_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -61,7 +60,7 @@ FUNC(int, OS_APPL_CODE) main(void)
   lcd.begin(20, 4);
   lcd.println("Trampoline");
   lcd.print("LCD example");
-  
+
   StartOS(OSDEFAULTAPPMODE);
   return 0;
 }

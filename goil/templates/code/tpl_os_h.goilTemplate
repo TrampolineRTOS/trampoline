@@ -36,6 +36,20 @@ end if
 
 template if exists extra_headers
 
+#---------------------------------------------------------------------------*
+# Add the C library headers
+#---------------------------------------------------------------------------*
+let countCPPHeader := 0
+foreach lib in PRIMARYUSEDLIB do
+  if exists lib::CPPHEADER then
+    let countCPPHeader := countCPPHeader + [lib::CPPHEADER length]
+  end if
+  foreach header in exists lib::CHEADER default (emptylist) do
+%
+#include "% !header::VALUE %"%
+  end foreach
+end foreach
+
 foreach api in APIUSED do
 %
 /*--------------------------------------------------------------------------*
@@ -88,6 +102,27 @@ end foreach
 #ifdef __cplusplus
 }
 #endif
+
+%
+#---------------------------------------------------------------------------*
+# Add the CPP library headers
+#---------------------------------------------------------------------------*
+if countCPPHeader > 0 then
+%
+#ifdef __cplusplus%
+end if
+foreach lib in PRIMARYUSEDLIB do
+  foreach header in exists lib::CPPHEADER default (emptylist) do
+%
+#include "% !header::VALUE %"%
+  end foreach
+end foreach
+if countCPPHeader > 0 then
+%
+#endif%
+end if
+%
+
 %
 if [TRANSACTION length] > 0 then
   foreach obj in OBJECT

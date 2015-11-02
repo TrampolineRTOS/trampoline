@@ -974,6 +974,56 @@ rule <template_instruction>
   returnedType = @Ttype. unconstructedType
 }
 
+#---------------------------------------------------------------------------*
+
+rule <template_instruction>
+  ?let @string inPrefix
+  ?let @string inPath
+  ?let @string inTemplateDirectory
+  ?!@TfieldMap ioTemplateVariableMap
+  ?!@string ioResultingString
+  !@Tvalue returnedValue
+  !@Ttype returnedType
+{
+  $repeat$
+  @bool continueLoop = true 
+  var templateVariableMap =@TfieldMap.mapWithMapToOverride{ !ioTemplateVariableMap}
+  parse loop 2000000000 
+#--- Do block
+  while continueLoop do
+    <template_instruction_list>
+      !inPrefix
+      !inPath
+      !inTemplateDirectory
+      !?templateVariableMap
+      !?ioResultingString
+      ?*
+      ?*
+    $while$
+    @Ttype conditionType
+    @Tvalue conditionValue
+    <expression>
+      !inPrefix
+      !inPath
+      !inTemplateDirectory
+      !templateVariableMap
+      ?conditionValue
+      ?conditionType
+    if conditionType != @Ttype. boolType then
+      error @location.here:"repeat loop continue condition should be a boolean"
+    else      
+      continueLoop = [conditionValue mInt64Value] != 0LS
+    end
+  end
+  @string s = @string. retrieveAndResetTemplateString # Value not used
+#---
+  $end$
+  $repeat$
+  ioTemplateVariableMap = [templateVariableMap overriddenMap]
+  returnedValue = valueWithVoid()   
+  returnedType = @Ttype. unconstructedType
+}
+
 #rule <struct_path>
 #  ?!@lstringlist path
 #:

@@ -145,7 +145,7 @@ foreach platform in exists PLATFORM_FILES default (emptylist) do%
 cflags += ["-I","% !MACHINESPATH . "/" . platform::PATH %"]
 cppflags += ["-I","% !MACHINESPATH . "/" . platform::PATH %"]%
 end foreach
-foreach library in exists LIBRARY default (emptylist) do%
+foreach library in exists USEDLIB default (emptylist) do%
 cflags += ["-I","% !MACHINESPATH . "/" . library::PATH %"]
 cppflags += ["-I","% !MACHINESPATH . "/" . library::PATH %"]%
 end foreach
@@ -339,7 +339,7 @@ sSourceList.append(projfile.ProjectFile("% !"machines/".platform::PATH."/".file:
 end foreach
 
 # add the libraries
-foreach library in exists LIBRARY default (emptylist) do
+foreach library in exists USEDLIB default (emptylist) do
   if not exists library::CFILE then let library::CFILE := emptylist end if
   if not exists library::CPPFILE then let library::CPPFILE := emptylist end if
   if not exists library::ASFILE then let library::ASFILE := emptylist end if

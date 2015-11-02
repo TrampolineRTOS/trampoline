@@ -89,7 +89,7 @@ static NSArray * kTemplateDefinitionArray_template_5F_scanner ;
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const BOOL kEndOfScriptInTemplateArray_template_5F_scanner [95] = {
+static const BOOL kEndOfScriptInTemplateArray_template_5F_scanner [96] = {
   NO /* identifier */,
   NO /* functionContent */,
   NO /* literal_double */,
@@ -136,6 +136,7 @@ static const BOOL kEndOfScriptInTemplateArray_template_5F_scanner [95] = {
   NO /* not */,
   NO /* or */,
   NO /* prefixedby */,
+  NO /* repeat */,
   NO /* return */,
   NO /* sort */,
   NO /* template */,
@@ -194,7 +195,7 @@ static const BOOL kEndOfScriptInTemplateArray_template_5F_scanner [95] = {
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const C_cocoa_lexique_table_entry ktable_for_template_5F_scanner_goilTemplateKeyWordList [46] = {
+static const C_cocoa_lexique_table_entry ktable_for_template_5F_scanner_goilTemplateKeyWordList [47] = {
   {"by", template_scanner_1_by},
   {"do", template_scanner_1_do},
   {"if", template_scanner_1_if},
@@ -228,6 +229,7 @@ static const C_cocoa_lexique_table_entry ktable_for_template_5F_scanner_goilTemp
   {"before", template_scanner_1_before},
   {"exists", template_scanner_1_exists},
   {"listof", template_scanner_1_listof},
+  {"repeat", template_scanner_1_repeat},
   {"return", template_scanner_1_return},
   {"typeof", template_scanner_1_typeof},
   {"between", template_scanner_1_between},
@@ -244,7 +246,7 @@ static const C_cocoa_lexique_table_entry ktable_for_template_5F_scanner_goilTemp
 } ;
 
 static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSString * inSearchedString) {
-  return searchStringInTable (inSearchedString, ktable_for_template_5F_scanner_goilTemplateKeyWordList, 46) ;
+  return searchStringInTable (inSearchedString, ktable_for_template_5F_scanner_goilTemplateKeyWordList, 47) ;
 }
 
 
@@ -530,7 +532,7 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (NSUInteger) terminalVocabularyCount {
-  return 95 ;
+  return 96 ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -560,7 +562,7 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (NSUInteger) styleIndexForTerminal: (NSInteger) inTerminal {
-  static const NSUInteger kTerminalSymbolStyles [96] = {0,
+  static const NSUInteger kTerminalSymbolStyles [97] = {0,
     0 /* template_scanner_1_identifier */,
     0 /* template_scanner_1_functionContent */,
     5 /* template_scanner_1_literal_5F_double */,
@@ -607,6 +609,7 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
     1 /* template_scanner_1_not */,
     1 /* template_scanner_1_or */,
     1 /* template_scanner_1_prefixedby */,
+    1 /* template_scanner_1_repeat */,
     1 /* template_scanner_1_return */,
     1 /* template_scanner_1_sort */,
     1 /* template_scanner_1_template */,
@@ -667,7 +670,7 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (BOOL) atomicSelectionForToken: (NSUInteger) inTokenIndex {
-  static const BOOL kTerminalAtomicSelection [96] = {NO,
+  static const BOOL kTerminalAtomicSelection [97] = {NO,
     YES /* template_scanner_1_identifier */,
     YES /* template_scanner_1_functionContent */,
     YES /* template_scanner_1_literal_5F_double */,
@@ -714,6 +717,7 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
     YES /* template_scanner_1_not */,
     YES /* template_scanner_1_or */,
     YES /* template_scanner_1_prefixedby */,
+    YES /* template_scanner_1_repeat */,
     YES /* template_scanner_1_return */,
     YES /* template_scanner_1_sort */,
     YES /* template_scanner_1_template */,

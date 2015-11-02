@@ -65,6 +65,10 @@ CPU blink {
       ASSEMBLER = "arm-none-eabi-as";
       LINKER = "arm-none-eabi-ld";
       COPIER = "arm-none-eabi-objcopy";
+      
+      LIBRARY = LiquidCrystalFast;
+      LIBRARY = pit;
+      
       SYSTEM = PYTHON;
     };
     SYSTEM_CALL = TRUE;

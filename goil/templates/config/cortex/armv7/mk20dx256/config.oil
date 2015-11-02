@@ -20,11 +20,13 @@ CPU mk20dx256 {
 
   LIBRARY pit {
     PATH = "cortex/armv7/mk20dx256/libraries/pit";
+    CHEADER = "pit_mk20dx256.h";
     CFILE = "pit_mk20dx256.c";
   };
   
   LIBRARY ftm {
     PATH = "cortex/armv7/mk20dx256/libraries/ftm";
+    CHEADER = "ftm_mk20dx256.h";
     CFILE = "ftm_mk20dx256.c";
   };
   

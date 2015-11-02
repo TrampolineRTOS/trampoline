@@ -11,18 +11,23 @@ CPU teensy31 {
     CFILE = "dtostrf.c";
   };
 
-  PLATFORM_FILES WString {
+  LIBRARY WString {
     PATH = "cortex/armv7/mk20dx256/teensy31/libraries/WString";
+    CPPHEADER = "WString.h";
     CPPFILE = "WString.cpp";
   };
 
-  PLATFORM_FILES Print {
+  LIBRARY Print {
+    NEEDS = WString;
     PATH = "cortex/armv7/mk20dx256/teensy31/libraries/Print";
+    CPPHEADER = "Print.h";
     CPPFILE = "Print.cpp";
   };
 
-  PLATFORM_FILES LiquidCrystalFast {
+  LIBRARY LiquidCrystalFast {
+    NEEDS = Print;
     PATH = "cortex/armv7/mk20dx256/teensy31/libraries/LiquidCrystalFast";
+    CPPHEADER = "LiquidCrystalFast.h";
     CPPFILE = "LiquidCrystalFast.cpp";
   };
 

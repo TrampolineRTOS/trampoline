@@ -33,8 +33,6 @@
  */
 
 #include "tpl_os.h"
-#include "pit_mk20dx256.h"
-#include "LiquidCrystalFast.h"
 
 #define APP_Task_blink_START_SEC_CODE
 #include "tpl_memmap.h"

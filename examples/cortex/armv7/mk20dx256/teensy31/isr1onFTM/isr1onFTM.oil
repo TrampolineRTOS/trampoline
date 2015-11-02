@@ -68,6 +68,10 @@ CPU isr1onFTM {
       ASSEMBLER = "arm-none-eabi-as";
       LINKER = "arm-none-eabi-ld";
       COPIER = "arm-none-eabi-objcopy";
+      
+      LIBRARY = ftm;
+      LIBRARY = LiquidCrystalFast;
+      
       SYSTEM = PYTHON;
     };
     SYSTEM_CALL = TRUE;

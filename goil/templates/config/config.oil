@@ -73,7 +73,9 @@ IMPLEMENTATION trampoline_common {
    * Libraries to add to the build system
    */
   LIBRARY [] {
-    IDENTIFIER NEEDS [];
+    LIBRARY_TYPE NEEDS [];
+    STRING CHEADER[];
+    STRING CPPHEADER[];
     STRING PATH;
     STRING CFILE[];
     STRING CPPFILE[];
@@ -192,6 +194,7 @@ IMPLEMENTATION trampoline_common {
         STRING ASSEMBLER = "gcc";
         STRING LINKER = "gcc";
         STRING COPIER = "objcopy";
+        LIBRARY_TYPE LIBRARY[];
         ENUM [
           MAKE,
           PYTHON { BOOLEAN GUESSLIBPATH; }

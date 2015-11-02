@@ -1648,6 +1648,7 @@ class C_Lexique_template_5F_scanner : public C_Lexique {
    kToken_not,
    kToken_or,
    kToken_prefixedby,
+   kToken_repeat,
    kToken_return,
    kToken_sort,
    kToken_template,
@@ -1735,7 +1736,7 @@ class C_Lexique_template_5F_scanner : public C_Lexique {
   protected : virtual C_String getMessageForTerminal (const int16_t inTerminalSymbol) const ;
 
 //--- Get terminal count
-  public : virtual int16_t terminalVocabularyCount (void) const { return 95 ; }
+  public : virtual int16_t terminalVocabularyCount (void) const { return 96 ; }
 
 //--- Get Token String
   public : virtual C_String getCurrentTokenString (const cToken * inTokenPtr) const ;
@@ -2209,16 +2210,7 @@ class cParser_template_5F_parser {
 
   protected : void rule_template_5F_parser_template_5F_instruction_i14_parse (C_Lexique_template_5F_scanner * inLexique) ;
 
-  protected : void rule_template_5F_parser_variable_5F_or_5F_here_i15_ (const GALGAS_string constinArgument0,
-                                                                        const GALGAS_string constinArgument1,
-                                                                        const GALGAS_string constinArgument2,
-                                                                        const GALGAS_TfieldMap constinArgument3,
-                                                                        GALGAS_location & outArgument4,
-                                                                        C_Lexique_template_5F_scanner * inLexique) ;
-
-  protected : void rule_template_5F_parser_variable_5F_or_5F_here_i15_parse (C_Lexique_template_5F_scanner * inLexique) ;
-
-  protected : void rule_template_5F_parser_template_5F_instruction_i16_ (const GALGAS_string constinArgument0,
+  protected : void rule_template_5F_parser_template_5F_instruction_i15_ (const GALGAS_string constinArgument0,
                                                                          const GALGAS_string constinArgument1,
                                                                          const GALGAS_string constinArgument2,
                                                                          GALGAS_TfieldMap & ioArgument3,
@@ -2227,7 +2219,16 @@ class cParser_template_5F_parser {
                                                                          GALGAS_Ttype & outArgument6,
                                                                          C_Lexique_template_5F_scanner * inLexique) ;
 
-  protected : void rule_template_5F_parser_template_5F_instruction_i16_parse (C_Lexique_template_5F_scanner * inLexique) ;
+  protected : void rule_template_5F_parser_template_5F_instruction_i15_parse (C_Lexique_template_5F_scanner * inLexique) ;
+
+  protected : void rule_template_5F_parser_variable_5F_or_5F_here_i16_ (const GALGAS_string constinArgument0,
+                                                                        const GALGAS_string constinArgument1,
+                                                                        const GALGAS_string constinArgument2,
+                                                                        const GALGAS_TfieldMap constinArgument3,
+                                                                        GALGAS_location & outArgument4,
+                                                                        C_Lexique_template_5F_scanner * inLexique) ;
+
+  protected : void rule_template_5F_parser_variable_5F_or_5F_here_i16_parse (C_Lexique_template_5F_scanner * inLexique) ;
 
   protected : void rule_template_5F_parser_template_5F_instruction_i17_ (const GALGAS_string constinArgument0,
                                                                          const GALGAS_string constinArgument1,
@@ -2251,12 +2252,7 @@ class cParser_template_5F_parser {
 
   protected : void rule_template_5F_parser_template_5F_instruction_i18_parse (C_Lexique_template_5F_scanner * inLexique) ;
 
-  protected : void rule_template_5F_parser_sorting_5F_order_i19_ (GALGAS_lsint & outArgument0,
-                                                                  C_Lexique_template_5F_scanner * inLexique) ;
-
-  protected : void rule_template_5F_parser_sorting_5F_order_i19_parse (C_Lexique_template_5F_scanner * inLexique) ;
-
-  protected : void rule_template_5F_parser_template_5F_instruction_i20_ (const GALGAS_string constinArgument0,
+  protected : void rule_template_5F_parser_template_5F_instruction_i19_ (const GALGAS_string constinArgument0,
                                                                          const GALGAS_string constinArgument1,
                                                                          const GALGAS_string constinArgument2,
                                                                          GALGAS_TfieldMap & ioArgument3,
@@ -2265,16 +2261,32 @@ class cParser_template_5F_parser {
                                                                          GALGAS_Ttype & outArgument6,
                                                                          C_Lexique_template_5F_scanner * inLexique) ;
 
-  protected : void rule_template_5F_parser_template_5F_instruction_i20_parse (C_Lexique_template_5F_scanner * inLexique) ;
+  protected : void rule_template_5F_parser_template_5F_instruction_i19_parse (C_Lexique_template_5F_scanner * inLexique) ;
 
-  protected : void rule_template_5F_parser_variable_i21_ (const GALGAS_string constinArgument0,
+  protected : void rule_template_5F_parser_sorting_5F_order_i20_ (GALGAS_lsint & outArgument0,
+                                                                  C_Lexique_template_5F_scanner * inLexique) ;
+
+  protected : void rule_template_5F_parser_sorting_5F_order_i20_parse (C_Lexique_template_5F_scanner * inLexique) ;
+
+  protected : void rule_template_5F_parser_template_5F_instruction_i21_ (const GALGAS_string constinArgument0,
+                                                                         const GALGAS_string constinArgument1,
+                                                                         const GALGAS_string constinArgument2,
+                                                                         GALGAS_TfieldMap & ioArgument3,
+                                                                         GALGAS_string & ioArgument4,
+                                                                         GALGAS_Tvalue & outArgument5,
+                                                                         GALGAS_Ttype & outArgument6,
+                                                                         C_Lexique_template_5F_scanner * inLexique) ;
+
+  protected : void rule_template_5F_parser_template_5F_instruction_i21_parse (C_Lexique_template_5F_scanner * inLexique) ;
+
+  protected : void rule_template_5F_parser_variable_i22_ (const GALGAS_string constinArgument0,
                                                           const GALGAS_string constinArgument1,
                                                           const GALGAS_string constinArgument2,
                                                           const GALGAS_TfieldMap constinArgument3,
                                                           GALGAS_TvarPath & outArgument4,
                                                           C_Lexique_template_5F_scanner * inLexique) ;
 
-  protected : void rule_template_5F_parser_variable_i21_parse (C_Lexique_template_5F_scanner * inLexique) ;
+  protected : void rule_template_5F_parser_variable_i22_parse (C_Lexique_template_5F_scanner * inLexique) ;
 
 
 
