@@ -22,13 +22,8 @@ CPU lonely {
       TRAMPOLINE_BASE_PATH = "../../../..";
       APP_SRC = "lonely.c";
       APP_NAME = "lonely_exe";
+//      CFLAGS = "-S";
       CFLAGS  = "-O0";
-      CFLAGS  = "-ggdb3";
-      ASFLAGS  = "-ggdb3";
-//      LDFLAGS  = "-ggdb";
-      CFLAGS  = "-std=c99";
-      CFLAGS = "-pedantic";
-      CFLAGS = "-Wformat"; 
       CFLAGS = "-I../../../machines/arm/olimex_lpc_l2294/drivers";
       LDFLAGS = "-L/Users/DavidGarriou/Tools/gcc/gcc-arm-none-eabi/lib/gcc/arm-none-eabi/4.9.3 -lgcc"; 
       LDFLAGS = "-L/Users/DavidGarriou/Tools/gcc/gcc-arm-none-eabi/arm-none-eabi/lib -lc";

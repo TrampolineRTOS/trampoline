@@ -8,17 +8,12 @@ CPU buildOptions {
      */
     COMMONFLAGS = "-g";                           // Produce debugging information
     COMMONFLAGS = "-Wall";                        // All warnings on
-    COMMONFLAGS = "-Wno-unused-but-set-variable"; // Except unused variables
-    COMMONFLAGS = "-Wmissing-field-initializers"; // Struct initialized with incorrect number of fiels
+    COMMONFLAGS = "-pedantic";
+    COMMONFLAGS = "-Wformat";
+    COMMONFLAGS = "-std=c99";
     COMMONFLAGS = "-mcpu=arm7tdmi-s";              // Compile for arm7tdmi
+    COMMONFLAGS = "-Wmissing-field-initializers"; // Struct initialized with incorrect number of fiels
     COMMONFLAGS = "-mfloat-abi=soft";             // Floating point numbers are computed in software
-    COMMONFLAGS = "-mfpu=fpv4-sp-d16";            // Truly obscure option to set. Check http://stackoverflow.com/questions/19464556/how-to-link-gcc-options-to-the-arm-mcu-fpu-datasheet
-    COMMONFLAGS = "-nostartfiles";                // Default startfiles (crt0.c) are not used
-    COMMONFLAGS = "--specs=nosys.specs";          // 
-    COMMONFLAGS = "-fno-exceptions";              // No exceptions managed
-    COMMONFLAGS = "-nostdlib";                    // Do not used implicitely the standard libraries to link
-    COMMONFLAGS = "-ffunction-sections";          // Each function is put in its own section. Required to deleted unused code
-    COMMONFLAGS = "-fdata-sections";              // Each data is put in its own section. Required to deleted unused data
     
     /*
      * C++ compiler flags
@@ -33,14 +28,11 @@ CPU buildOptions {
      * Assembler flags
      */
     ASFLAGS = "-g";                               // Produce debugging information
-    ASFLAGS = "-Wall";                            // All warnings on
     ASFLAGS = "-mcpu=arm7tdmi-s";                 // Assemble for arm7tdmi
-    ASFLAGS = "-mthumb";                          // Thumb instruction set
     ASFLAGS = "--fatal-warnings";                 // A warning is an error
-    ASFLAGS = "-mfloat-abi=soft";                 // Floating point numbers are computed in software
-    ASFLAGS = "-mfpu=fpv4-sp-d16";                // Truly obscure option to set. Check http://stackoverflow.com/questions/19464556/how-to-link-gcc-options-to-the-arm-mcu-fpu-datasheet
+    ASFLAGS = "-mfloat-abi=soft";                 // Floating point numbers are computed in software gcc-options-to-the-arm-mcu-fpu-datasheet
 
-    
+    LDFLAGS = "-g";
     LDFLAGS = "--fatal-warnings";                 // A warning is an error
     LDFLAGS = "--warn-common";                    // Warn when a common symbol is combined with another common symbol
     LDFLAGS = "--no-undefined";                   // Report unresolved symbol references

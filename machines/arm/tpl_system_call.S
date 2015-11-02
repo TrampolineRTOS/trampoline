@@ -89,7 +89,7 @@ tpl_primary_syscall_handler:
     bhi skip_kernel_enter
 
 #if WITH_MEMORY_PROTECTION == YES
-    stmfd sp!, {r3}    /* r3 must not be altered : it contains service's identifier */
+    stmfd sp!, {r3}    /* r3 must not be altered : it contains service s identifier */
     bl tpl_mp_kernel_enter
     ldmfd sp!, {r3}
 #endif /* WITH_MEMORY_PROTECTION == YES */
@@ -187,17 +187,17 @@ save_context_swi:
 skip_save_context_swi:
     add sp, sp, #(5 * 4) /* discards kernel enter stack frame */
 
+    /*
+     * LOADS NEW CONTEXT
+     */
+load_context_swi:
+
 call_tpl_run_elected:
 	/* First call tpl_run_elected with the value of tpl_kern.need_switch
 	 * and get the value of the elected task.
 	 * tpl_kern.need_switch (stored into r3) is copied into r0
 	 */
 	bl tpl_run_elected
-
-    /*
-     * LOADS NEW CONTEXT
-     */
-load_context_swi:
 
 #if WITH_MEMORY_PROTECTION == YES
     bl tpl_mp_kernel_exit
@@ -216,8 +216,8 @@ load_context_swi:
      * We use r14 as it will be restored separatly and later, it
      * is useful for the following ldmia instruction
      */
-    ldr r0, =tpl_kern
-    ldr lr, [r0, #TPL_KERN_OFFSET_S_RUNNING] /* get the address of the context bloc */
+    ldr r1, =tpl_kern
+    ldr lr, [r1, #TPL_KERN_OFFSET_S_RUNNING] /* get the address of the context bloc */
     ldr lr, [lr]                   /* jump to context bloc (from static descriptor) */
 
     /* loads SPSR*/

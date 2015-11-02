@@ -13,7 +13,20 @@ FUNC(int, OS_APPL_CODE) main(void)
 {            
     // set io pins for led P1.23
     IO1DIR |= (1 << 23) ;  // pin P1.23 is an output, everything else is input after reset
-    IO1CLR = 1 << 23;
+    IO1SET =  1 << 23 ;  // led off
+    IO1CLR =  1 << 23 ;  // led on
+    IO1DIR |= (1 << 20) ;  // pin P1.23 is an output, everything else is input after reset
+    IO1CLR =  1 << 20 ;  // led off
+    IO1SET =  1 << 20 ;  // led on
+    IO1DIR |= (1 << 21) ;  // pin P1.23 is an output, everything else is input after reset
+    IO1CLR =  1 << 21 ;  // led off
+    IO1SET =  1 << 21 ;  // led on
+    IO1DIR |= (1 << 22) ;  // pin P1.23 is an output, everything else is input after reset
+    IO1CLR =  1 << 22 ;  // led off
+    IO1SET =  1 << 22 ;  // led on
+    IO1DIR |= (1 << 24) ;  // pin P1.23 is an output, everything else is input after reset
+    IO1CLR =  1 << 24 ;  // led off
+    IO1SET =  1 << 24 ;  // led on
     StartOS(OSDEFAULTAPPMODE);
     return 0;
 }
@@ -67,11 +80,11 @@ void PreTaskHook()
 #include "tpl_memmap.h"
 TASK(task1)
 {
-/*    LCDSendTxt("1");
+    LCDSendTxt("task1");
     
     ActivateTask(task3);
     
-    LCDSendTxt("3");
+/*    LCDSendTxt("3");
  */       
     TerminateTask();
     
@@ -103,7 +116,7 @@ TASK(task2)
 #include "tpl_memmap.h"
 TASK(task3)
 {
-/*  LCDSendTxt("2");*/
+  LCDSendTxt("task3");
   TerminateTask();    
     
 }
