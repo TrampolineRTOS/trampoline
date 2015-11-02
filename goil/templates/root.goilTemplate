@@ -1269,7 +1269,12 @@ end foreach
 #------------------------------------------------------------------------------*
 # build the library tree dependencies
 #
-let AVAILABLELIB := mapof LIBRARY by NAME
+if exists LIBRARY then
+  let AVAILABLELIB := mapof LIBRARY by NAME
+else
+  let AVAILABLELIB := emptymap
+end if
+
 let USEDLIB := emptymap
 foreach lib in exists OS::BUILD_S::LIBRARY default (emptylist) do
   let key := lib::VALUE
