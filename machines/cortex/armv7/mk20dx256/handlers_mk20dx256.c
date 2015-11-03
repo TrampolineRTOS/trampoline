@@ -25,6 +25,7 @@
 
 #include "tpl_os.h"
 #include "tpl_os_interrupt_kernel.h"
+#include "tpl_os_hooks.h"
 #include "tpl_compiler.h"
 #include "mk20dx256.h"
 #include "gpio.h"
@@ -36,6 +37,7 @@ extern void tpl_primary_syscall_handler(void);
  ******************************************************************************/
 FUNC(void, OS_CODE)NMI_Handler(void)
 {
+  CALL_PANIC_HOOK(PANIC_NMI);
 	__ASM volatile("BKPT #01");
 	while (1)
     {
@@ -44,9 +46,8 @@ FUNC(void, OS_CODE)NMI_Handler(void)
 
 FUNC(void, OS_CODE)HardFault_Handler(void)
 {
-  pinMode(7, OUTPUT);
-  digitalWrite(7, HIGH);
-	while (1) {
+  CALL_PANIC_HOOK(PANIC_HARDFAULT);
+  while (1) {
 		// keep polling some communication while in fault
 		// mode, so we don't completely die.
 /*		if (SIM_SCGC4 & SIM_SCGC4_USBOTG) usb_isr();
@@ -58,6 +59,7 @@ FUNC(void, OS_CODE)HardFault_Handler(void)
 
 FUNC(void, OS_CODE)MemManage_Handler(void)
 {
+  CALL_PANIC_HOOK(PANIC_MEMMANAGE);
 	__ASM volatile("BKPT #03");
 	while (1)
     {
@@ -66,6 +68,7 @@ FUNC(void, OS_CODE)MemManage_Handler(void)
 
 FUNC(void, OS_CODE)BusFault_Handler(void)
 {
+  CALL_PANIC_HOOK(PANIC_BUSFAULT);
 	__ASM volatile("BKPT #04");
 	while (1)
     {
@@ -74,6 +77,7 @@ FUNC(void, OS_CODE)BusFault_Handler(void)
 
 FUNC(void, OS_CODE)UsageFault_Handler(void)
 {
+  CALL_PANIC_HOOK(PANIC_USAGEFAULT);
 	__ASM volatile("BKPT #05");
 	while (1)
     {

@@ -47,6 +47,7 @@ CPU blink {
     STATUS = EXTENDED;
     PRETASKHOOK = FALSE;
     POSTTASKHOOK = FALSE;
+    PANICHOOK = TRUE;
     
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../../../..";
