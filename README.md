@@ -45,7 +45,7 @@ Updated to version 2.1.18
 
 ## Precompiled binaries of tools
 
-* [teeny-loader-cli](https://www.dropbox.com/s/579hpikxmmswmxv/teensy-loader-cli.zip?dl=0) the command line loader for the Teensy written by Paul Stoffregen and compiled for Mac OS X.
+* [teeny-loader-cli](https://www.dropbox.com/s/579hpikxmmswmxv/teensy-loader-cli.zip?dl=1) the command line loader for the Teensy written by Paul Stoffregen and compiled for Mac OS X.
 
 ## Useful links
 
