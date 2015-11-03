@@ -35,10 +35,10 @@ More examples are coming.
 
 ## Precompiled binaries of goil, the OIL compiler
 
-Updated to version 2.1.17
+Updated to version 2.1.18
 
 * Mac OS X: [goil-mac-os-x.zip](https://dl.dropboxusercontent.com/u/67740546/goil/goil-mac-os-x.zip)
-* Mac OS X Cocoa Application with editor: [CocoaGoil.app.zip](https://dl.dropboxusercontent.com/u/67740546/goil/CocoaGoil.app.zip)
+* Mac OS X Cocoa Application with editor: [CocoaGoil.app.zip](https://dl.dropboxusercontent.com/u/67740546/goil/CocoaGoil.app.zip) (v2.1.16)
 * Linux 32 bits: [goil-linux-32.zip](https://dl.dropboxusercontent.com/u/67740546/goil/goil-linux-32.zip)
 * Linux 64 bits: [goil-linux-64.zip](https://dl.dropboxusercontent.com/u/67740546/goil/goil-linux-64.zip)
 * Windows: [goil-windows.zip](https://dl.dropboxusercontent.com/u/67740546/goil/goil-windows.zip)
