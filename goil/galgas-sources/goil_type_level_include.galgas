@@ -1,0 +1,48 @@
+#---------------------------------------------------------------------------*
+#
+#  @file goil_cpu_level_include.galgas
+#
+#  @section desc File description
+#
+#  Grammar of includes inside the CPU object.
+#
+#  @section copyright Copyright
+#
+#  Goil OIL compiler, part of Trampoline RTOS
+#
+#  Trampoline is copyright (c) CNRS, University of Nantes,
+#  Ecole Centrale de Nantes
+#  Trampoline is protected by the French intellectual property law.
+#
+#  This software is distributed under the GNU Public Licence V2.
+#  Check the LICENSE file in the root directory of Trampoline
+#
+#  $Date$
+#  $Rev$
+#  $Author$
+#  $URL$
+#
+#---------------------------------------------------------------------------*
+
+grammar goil_type_level_include "LL1" {
+  syntax goil_syntax
+  syntax implementation_parser
+  <implementation_list>
+    ?!@implementationObjectMap objectAttributes
+    
+  unused <OIL_version>
+  unused <application_definition>
+  unused <file>
+  unused <implementation_definition>
+  unused <include_file_level>
+  unused <start>
+  unused <object_definition_list>
+  unused <include_cpu_level>
+  unused <oil_declaration_list>
+  unused <oil_declaration>
+  unused <include_object_level>
+  unused <implementation_object_list>
+  unused <include_implementation_level>
+  unused <implementation_objects>}
+
+# vim:ft=ggs:ts=4:sw=4

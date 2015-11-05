@@ -24,7 +24,7 @@
 #
 #---------------------------------------------------------------------------*
 
-project (2:1:18) -> "goil" {
+project (2:1:19) -> "goil" {
 
 #  feature libpmAtPath : "../galgas_sources/GALGAS_OUTPUT/libpm" ;
   %makefile-macosx
@@ -89,8 +89,11 @@ project (2:1:18) -> "goil" {
   "galgas-sources/goil_code_generation.galgas"
   
   "galgas-sources/goil_grammar.galgas"
+  "galgas-sources/goil_object_level_include.galgas"
   "galgas-sources/goil_file_level_include.galgas"
   "galgas-sources/goil_cpu_level_include.galgas"
+  "galgas-sources/goil_implementation_level_include.galgas"
+  "galgas-sources/goil_type_level_include.galgas"
   "galgas-sources/goil_program.galgas"
   
   #
