@@ -1,0 +1,6 @@
+liquidCrystal
+build
+*_exe
+*.hex
+*.map
+*.py
