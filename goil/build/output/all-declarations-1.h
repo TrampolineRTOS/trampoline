@@ -750,6 +750,134 @@ class GALGAS_implementationMap_2D_element : public AC_GALGAS_root {
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_implementationMap_2D_element ;
 
+
+#ifndef options_5F_scanner_CLASS_DEFINED
+#define options_5F_scanner_CLASS_DEFINED
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+#include "galgas2/C_Lexique.h"
+#include "galgas2/predefined-types.h"
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                    E X T E R N    R O U T I N E S                                                                   *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                    E X T E R N    F U N C T I O N S                                                                 *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                       T O K E N    C L A S S                                                                        *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class cTokenFor_options_5F_scanner : public cToken {
+  public : double mLexicalAttribute_floatNumber ;
+  public : uint64_t mLexicalAttribute_integerNumber ;
+  public : C_String mLexicalAttribute_key ;
+  public : C_String mLexicalAttribute_number ;
+  public : C_String mLexicalAttribute_string ;
+
+  public : cTokenFor_options_5F_scanner (void) ;
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                     S C A N N E R    C L A S S                                                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class C_Lexique_options_5F_scanner : public C_Lexique {
+//--- Constructors
+  public : C_Lexique_options_5F_scanner (C_Compiler * inCallerCompiler,
+                       const C_String & inDependencyFileExtension,
+                       const C_String & inDependencyFilePath,
+                       const C_String & inSourceFileName
+                       COMMA_LOCATION_ARGS) ;
+
+  public : C_Lexique_options_5F_scanner (C_Compiler * inCallerCompiler,
+                       const C_String & inSourceString,
+                       const C_String & inStringForError
+                       COMMA_LOCATION_ARGS) ;
+
+//--- Instrospection
+  public : static GALGAS_stringlist symbols (LOCATION_ARGS) ;
+
+//--- Declaring a protected virtual destructor enables the compiler to raise
+//    an error if a direct delete is performed; only the static method
+//    C_SharedObject::detachPointer may invoke delete.
+  #ifndef DO_NOT_GENERATE_CHECKINGS
+    protected : virtual ~ C_Lexique_options_5F_scanner (void) {}
+  #endif
+
+
+
+//--- Terminal symbols enumeration
+  public : enum {kToken_,
+   kToken_idf,
+   kToken_string,
+   kToken_uint_5F_number,
+   kToken_float_5F_number,
+   kToken__3D_,
+   kToken__2C_,
+   kToken__2D_,
+   kToken__28_,
+   kToken__29_} ;
+
+//--- Key words table 'optionsDelimiters'
+  public : static int16_t search_into_optionsDelimiters (const C_String & inSearchedString) ;
+  
+
+//--- Assign from attribute
+  public : GALGAS_ldouble synthetizedAttribute_floatNumber (void) const ;
+  public : GALGAS_luint_36__34_ synthetizedAttribute_integerNumber (void) const ;
+  public : GALGAS_lstring synthetizedAttribute_key (void) const ;
+  public : GALGAS_lstring synthetizedAttribute_number (void) const ;
+  public : GALGAS_lstring synthetizedAttribute_string (void) const ;
+
+
+//--- Attribute access
+  public : double attributeValue_floatNumber (void) const ;
+  public : uint64_t attributeValue_integerNumber (void) const ;
+  public : C_String attributeValue_key (void) const ;
+  public : C_String attributeValue_number (void) const ;
+  public : C_String attributeValue_string (void) const ;
+
+
+//--- Indexing keys
+
+//--- Indexing directory
+  protected : virtual C_String indexingDirectory (void) const ;
+
+//--- Parse lexical token
+  protected : virtual bool parseLexicalToken (void) ;
+
+//--- Get terminal message
+  protected : virtual C_String getMessageForTerminal (const int16_t inTerminalSymbol) const ;
+
+//--- Get terminal count
+  public : virtual int16_t terminalVocabularyCount (void) const { return 9 ; }
+
+//--- Get Token String
+  public : virtual C_String getCurrentTokenString (const cToken * inTokenPtr) const ;
+
+//--- Enter Token
+  protected : void enterToken (const cTokenFor_options_5F_scanner & inToken) ;
+
+//--- Style name for Latex
+  protected : virtual C_String styleNameForIndex (const uint32_t inStyleIndex) const ;
+  protected : virtual uint32_t styleIndexForTerminal (const int32_t inTerminalIndex) const ;
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+#endif
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //                                                 @identifierMap map                                                  *
@@ -6087,7 +6215,11 @@ extern C_BoolCommandLineOption gOption_goil_5F_options_warnMultiple ;
 
 extern C_StringCommandLineOption gOption_goil_5F_options_config ;
 
+extern C_StringCommandLineOption gOption_goil_5F_options_passOption ;
+
 extern C_StringCommandLineOption gOption_goil_5F_options_project_5F_dir ;
+
+extern C_StringCommandLineOption gOption_goil_5F_options_root ;
 
 extern C_StringCommandLineOption gOption_goil_5F_options_target_5F_platform ;
 
@@ -6142,6 +6274,83 @@ void routine_verifyAll (const class GALGAS_implementation constinArgument0,
                         const class GALGAS_applicationDefinition constinArgument1,
                         class C_Compiler * inCompiler
                         COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                      Parser class 'options_parser' declaration                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class cParser_options_5F_parser {
+//--- Virtual destructor
+  public : virtual ~ cParser_options_5F_parser (void) {}
+
+//--- Non terminal declarations
+  protected : virtual void nt_list_5F_option_5F_value_ (class GALGAS_Ttype & outArgument0,
+                                                        class GALGAS_Tvalue & outArgument1,
+                                                        class C_Lexique_options_5F_scanner * inLexique) = 0 ;
+
+  protected : virtual void nt_list_5F_option_5F_value_parse (class C_Lexique_options_5F_scanner * inLexique) = 0 ;
+
+  protected : virtual void nt_option_5F_parser_5F_start_ (class GALGAS_TfieldMap & outArgument0,
+                                                          class C_Lexique_options_5F_scanner * inLexique) = 0 ;
+
+  protected : virtual void nt_option_5F_parser_5F_start_parse (class C_Lexique_options_5F_scanner * inLexique) = 0 ;
+
+  protected : virtual void nt_option_5F_value_ (class GALGAS_Ttype & outArgument0,
+                                                class GALGAS_Tvalue & outArgument1,
+                                                class C_Lexique_options_5F_scanner * inLexique) = 0 ;
+
+  protected : virtual void nt_option_5F_value_parse (class C_Lexique_options_5F_scanner * inLexique) = 0 ;
+
+
+//--- Rule declarations
+  protected : void rule_options_5F_parser_option_5F_parser_5F_start_i0_ (GALGAS_TfieldMap & outArgument0,
+                                                                         C_Lexique_options_5F_scanner * inLexique) ;
+
+  protected : void rule_options_5F_parser_option_5F_parser_5F_start_i0_parse (C_Lexique_options_5F_scanner * inLexique) ;
+
+  protected : void rule_options_5F_parser_option_5F_value_i1_ (GALGAS_Ttype & outArgument0,
+                                                               GALGAS_Tvalue & outArgument1,
+                                                               C_Lexique_options_5F_scanner * inLexique) ;
+
+  protected : void rule_options_5F_parser_option_5F_value_i1_parse (C_Lexique_options_5F_scanner * inLexique) ;
+
+  protected : void rule_options_5F_parser_option_5F_value_i2_ (GALGAS_Ttype & outArgument0,
+                                                               GALGAS_Tvalue & outArgument1,
+                                                               C_Lexique_options_5F_scanner * inLexique) ;
+
+  protected : void rule_options_5F_parser_option_5F_value_i2_parse (C_Lexique_options_5F_scanner * inLexique) ;
+
+  protected : void rule_options_5F_parser_option_5F_value_i3_ (GALGAS_Ttype & outArgument0,
+                                                               GALGAS_Tvalue & outArgument1,
+                                                               C_Lexique_options_5F_scanner * inLexique) ;
+
+  protected : void rule_options_5F_parser_option_5F_value_i3_parse (C_Lexique_options_5F_scanner * inLexique) ;
+
+  protected : void rule_options_5F_parser_option_5F_value_i4_ (GALGAS_Ttype & outArgument0,
+                                                               GALGAS_Tvalue & outArgument1,
+                                                               C_Lexique_options_5F_scanner * inLexique) ;
+
+  protected : void rule_options_5F_parser_option_5F_value_i4_parse (C_Lexique_options_5F_scanner * inLexique) ;
+
+  protected : void rule_options_5F_parser_list_5F_option_5F_value_i5_ (GALGAS_Ttype & outArgument0,
+                                                                       GALGAS_Tvalue & outArgument1,
+                                                                       C_Lexique_options_5F_scanner * inLexique) ;
+
+  protected : void rule_options_5F_parser_list_5F_option_5F_value_i5_parse (C_Lexique_options_5F_scanner * inLexique) ;
+
+
+
+//--- Select methods
+  protected : virtual int32_t select_options_5F_parser_0 (C_Lexique_options_5F_scanner *) = 0 ;
+
+  protected : virtual int32_t select_options_5F_parser_1 (C_Lexique_options_5F_scanner *) = 0 ;
+
+  protected : virtual int32_t select_options_5F_parser_2 (C_Lexique_options_5F_scanner *) = 0 ;
+
+
+} ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *

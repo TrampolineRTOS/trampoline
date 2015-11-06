@@ -802,7 +802,7 @@ proc generate_all
 #            error here: "No api.desc file found in config templates";
 #          end if;
           
-          @string goilLog = computeTemplate(!"" !cfg !"root")
+          @string goilLog = computeTemplate(!"" !cfg ![option goil_options.root value])
           if [option goil_options.generate_log value] then
             [goilLog writeToFile !"goil.log"]
           end

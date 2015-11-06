@@ -417,7 +417,7 @@ rule <template_instruction>
     end
     @string result = ""
 #    message "calling ".[[value mFunctionValue] name]."\n";
-    grammar template_grammar on [[value mFunctionValue] content] !inPrefix !inPath !inTemplateDirectory !locals !?result ?* ?*
+    grammar template_grammar on ([[value mFunctionValue] content], "") !inPrefix !inPath !inTemplateDirectory !locals !?result ?* ?*
   end  
   returnedValue = valueWithVoid()   
   returnedType = @Ttype. unconstructedType

@@ -1,0 +1,104 @@
+#---------------------------------------------------------------------------*
+#
+#  @file options_parser.galgas
+#
+#  @section desc File description
+#
+#  Options passed on command line to templates parser.
+#
+#  @section copyright Copyright
+#
+#  Goil OIL compiler, part of Trampoline RTOS
+#
+#  Trampoline is copyright (c) CNRS, University of Nantes,
+#  Ecole Centrale de Nantes
+#  Trampoline is protected by the French intellectual property law.
+#
+#  This software is distributed under the GNU Public Licence V2.
+#  Check the LICENSE file in the root directory of Trampoline
+#
+#  $Date$
+#  $Rev$
+#  $Author$
+#  $URL$
+#
+#---------------------------------------------------------------------------*
+
+syntax options_parser(options_scanner) {
+
+rule <option_parser_start>
+  !@TfieldMap options
+{
+  options = .emptyMap
+  repeat
+    $idf$ ?let @lstring key
+    $=$
+    @Ttype  type
+    @Tvalue value
+    select
+      <option_value> ?type ?value
+    or
+      <list_option_value> ?type ?value
+    end
+    [!?options insertKey !key !type ! value] 
+  while $,$
+  end
+}
+
+rule <option_value>
+  !@Ttype  type
+  !@Tvalue value
+{
+  $string$ ?let @lstring str
+  type = @Ttype.stringType
+  value = valueWithString(![str string] !emptyLString())
+}
+
+rule <option_value>
+  !@Ttype  type
+  !@Tvalue value
+{
+  $idf$ ?let @lstring str
+  type = @Ttype.stringType
+  value = valueWithString(![str string] !emptyLString())
+}
+
+rule <option_value>
+  !@Ttype  type
+  !@Tvalue value
+{
+  $uint_number$ ?let @luint64 num
+  type = @Ttype.intType
+  value = valueWithSigned(![[num uint64] sint64] !emptyLString())
+}
+
+rule <option_value>
+  !@Ttype  type
+  !@Tvalue value
+{
+  $-$
+  $uint_number$ ?let @luint64 num
+  type = @Ttype.intType
+  value = valueWithSigned(!-[[num uint64] sint64] !emptyLString())
+}
+
+rule <list_option_value>
+  !@Ttype  type
+  !@Tvalue value
+{
+  @TfieldMapList listOption = .emptyList
+  $($
+  repeat
+  <option_value> ?let @Ttype valType ?let @Tvalue valVal
+  @TfieldMap item = .emptyMap
+  [!?item insertKey !lstringWith(!"VALUE") !valType !valVal]
+  listOption += !item
+  while $,$
+  end
+  type = @Ttype.listType
+  value = valueWithList(!listOption !emptyLString())
+  $)$
+}
+
+
+}

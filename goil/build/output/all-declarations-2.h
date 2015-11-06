@@ -10,6 +10,69 @@
 #include "all-declarations-1.h"
 
 //---------------------------------------------------------------------------------------------------------------------*
+//  GRAMMAR options_grammar
+//---------------------------------------------------------------------------------------------------------------------*
+
+class cGrammar_options_5F_grammar : public cParser_options_5F_parser {
+//------------------------------------- 'list_option_value' non terminal
+//--- 'parse' label
+  public : virtual void nt_list_5F_option_5F_value_parse (C_Lexique_options_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_list_5F_option_5F_value_ (GALGAS_Ttype & outArgument0,
+                                                     GALGAS_Tvalue & outArgument1,
+                                                     C_Lexique_options_5F_scanner * inCompiler) ;
+
+//------------------------------------- 'option_parser_start' non terminal
+//--- 'parse' label
+  public : virtual void nt_option_5F_parser_5F_start_parse (C_Lexique_options_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_option_5F_parser_5F_start_ (GALGAS_TfieldMap & outArgument0,
+                                                       C_Lexique_options_5F_scanner * inCompiler) ;
+
+//--- Start symbol
+  public : static void _performSourceFileParsing_ (C_Compiler * inCompiler,
+                                                   GALGAS_lstring inFileName,
+                                                   GALGAS_TfieldMap & outArgument0
+                                                   COMMA_LOCATION_ARGS) ;
+
+  public : static void _performSourceStringParsing_ (C_Compiler * inCompiler,
+                                                     GALGAS_string inSourceString,
+                                                     GALGAS_string inNameString,
+                                                     GALGAS_TfieldMap & outArgument0
+                                                     COMMA_LOCATION_ARGS) ;
+
+//--- Indexing
+  public : static void performIndexing (C_Compiler * inCompiler,
+                                        const C_String & inSourceFilePath) ;
+
+//--- Only lexical analysis
+  public : static void performOnlyLexicalAnalysis (C_Compiler * inCompiler,
+                                                   const C_String & inSourceFilePath) ;
+
+//--- Only syntax analysis
+  public : static void performOnlySyntaxAnalysis (C_Compiler * inCompiler,
+                                                  const C_String & inSourceFilePath) ;
+
+//------------------------------------- 'option_value' non terminal
+//--- 'parse' label
+  public : virtual void nt_option_5F_value_parse (C_Lexique_options_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_option_5F_value_ (GALGAS_Ttype & outArgument0,
+                                             GALGAS_Tvalue & outArgument1,
+                                             C_Lexique_options_5F_scanner * inCompiler) ;
+
+  public : virtual int32_t select_options_5F_parser_0 (C_Lexique_options_5F_scanner *) ;
+
+  public : virtual int32_t select_options_5F_parser_1 (C_Lexique_options_5F_scanner *) ;
+
+  public : virtual int32_t select_options_5F_parser_2 (C_Lexique_options_5F_scanner *) ;
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
 //  GRAMMAR goil_grammar
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -700,83 +763,5 @@ class GALGAS_string function_displayTypeAndValue (const class GALGAS_Ttype & con
                                                   const class GALGAS_Tvalue & constinArgument1,
                                                   class C_Compiler * inCompiler
                                                   COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        Routine 'displayTemplateVariableMap'                                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-void routine_displayTemplateVariableMap (const class GALGAS_TfieldMap constinArgument0,
-                                         class C_Compiler * inCompiler
-                                         COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                              Routine 'displayPathList'                                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-void routine_displayPathList (const class GALGAS_stringlist constinArgument0,
-                              class C_Compiler * inCompiler
-                              COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                            Routine 'findFileInHierarchy'                                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-void routine_findFileInHierarchy (const class GALGAS_string constinArgument0,
-                                  const class GALGAS_string constinArgument1,
-                                  const class GALGAS_string constinArgument2,
-                                  class GALGAS_stringlist & ioArgument3,
-                                  class GALGAS_bool & ioArgument4,
-                                  class GALGAS_string & ioArgument5,
-                                  class C_Compiler * inCompiler
-                                  COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                          Routine 'findAllFilesInHierarchy'                                          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-void routine_findAllFilesInHierarchy (const class GALGAS_string constinArgument0,
-                                      const class GALGAS_string constinArgument1,
-                                      const class GALGAS_string constinArgument2,
-                                      class GALGAS_stringlist & ioArgument3,
-                                      class GALGAS_stringlist & ioArgument4,
-                                      class C_Compiler * inCompiler
-                                      COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                            Routine 'findFileInPathList'                                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-void routine_findFileInPathList (const class GALGAS_string constinArgument0,
-                                 const class GALGAS_stringlist constinArgument1,
-                                 const class GALGAS_string constinArgument2,
-                                 class GALGAS_stringlist & outArgument3,
-                                 class GALGAS_bool & outArgument4,
-                                 class GALGAS_string & outArgument5,
-                                 class C_Compiler * inCompiler
-                                 COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                          Routine 'findAllFilesInPathList'                                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-void routine_findAllFilesInPathList (const class GALGAS_string constinArgument0,
-                                     const class GALGAS_stringlist constinArgument1,
-                                     const class GALGAS_string constinArgument2,
-                                     class GALGAS_stringlist & outArgument3,
-                                     class GALGAS_stringlist & outArgument4,
-                                     class C_Compiler * inCompiler
-                                     COMMA_LOCATION_ARGS) ;
 
 #endif

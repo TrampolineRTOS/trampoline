@@ -43,11 +43,29 @@ void enterOptionsFor_goil_5F_options (NSMutableArray * ioBoolOptionArray,
   [ioStringOptionArray addObject:option] ;
   option = [[OC_GGS_CommandLineOption alloc]
     initWithDomainName:@"goil_options"
+    identifier:@"passOption"
+    commandChar:111
+    commandString:@"option"
+    comment:@"Pass options to the template root script"
+    defaultValue:@""
+  ] ;
+  [ioStringOptionArray addObject:option] ;
+  option = [[OC_GGS_CommandLineOption alloc]
+    initWithDomainName:@"goil_options"
     identifier:@"project_dir"
     commandChar:112
     commandString:@"project"
     comment:@"Specifies project directory (by default, the project directory is the name of the oil file, without the .oil extension)"
     defaultValue:@""
+  ] ;
+  [ioStringOptionArray addObject:option] ;
+  option = [[OC_GGS_CommandLineOption alloc]
+    initWithDomainName:@"goil_options"
+    identifier:@"root"
+    commandChar:114
+    commandString:@"root"
+    comment:@"Specifies the root template file to use to generate the output files"
+    defaultValue:@"root"
   ] ;
   [ioStringOptionArray addObject:option] ;
   option = [[OC_GGS_CommandLineOption alloc]

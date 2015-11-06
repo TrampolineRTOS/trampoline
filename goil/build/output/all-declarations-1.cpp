@@ -831,6 +831,831 @@ GALGAS_implementationMap GALGAS_implementationMap::extractObject (const GALGAS_o
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//     L E X I Q U E                                                                                                   *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+#include "strings/unicode_character_cpp.h"
+#include "galgas2/scanner_actions.h"
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+cTokenFor_options_5F_scanner::cTokenFor_options_5F_scanner (void) :
+mLexicalAttribute_floatNumber (),
+mLexicalAttribute_integerNumber (),
+mLexicalAttribute_key (),
+mLexicalAttribute_number (),
+mLexicalAttribute_string () {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_Lexique_options_5F_scanner::C_Lexique_options_5F_scanner (C_Compiler * inCallerCompiler,
+                const C_String & inDependencyFileExtension,
+                const C_String & inDependencyFilePath,
+                const C_String & inSourceFileName
+                COMMA_LOCATION_ARGS) :
+C_Lexique (inCallerCompiler, inDependencyFileExtension, inDependencyFilePath, inSourceFileName COMMA_THERE) {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_Lexique_options_5F_scanner::C_Lexique_options_5F_scanner (C_Compiler * inCallerCompiler,
+                const C_String & inSourceString,
+                const C_String & inStringForError
+                COMMA_LOCATION_ARGS) :
+C_Lexique (inCallerCompiler, inSourceString, inStringForError COMMA_THERE) {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                 I N D E X I N G    D I R E C T O R Y                                                                *
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_String C_Lexique_options_5F_scanner::indexingDirectory (void) const {
+  return "" ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                        Lexical error message list                                                                   *
+//---------------------------------------------------------------------------------------------------------------------*
+
+static const utf32 gLexicalMessage_options_5F_scanner_decimalNumberTooLarge [] = {
+  TO_UNICODE ('d'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('c'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('l'),
+  TO_UNICODE (' '),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('u'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('b'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('r'),
+  TO_UNICODE (' '),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('o'),
+  TO_UNICODE (' '),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('g'),
+  TO_UNICODE ('e'),
+  TO_UNICODE (0)
+} ;
+
+static const utf32 gLexicalMessage_options_5F_scanner_internalError [] = {
+  TO_UNICODE ('i'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('l'),
+  TO_UNICODE (' '),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('r'),
+  TO_UNICODE (0)
+} ;
+
+static const utf32 gLexicalMessage_options_5F_scanner_unableToConvertToDouble [] = {
+  TO_UNICODE ('U'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('b'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('e'),
+  TO_UNICODE (' '),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('o'),
+  TO_UNICODE (' '),
+  TO_UNICODE ('c'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('v'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('t'),
+  TO_UNICODE (' '),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('h'),
+  TO_UNICODE ('e'),
+  TO_UNICODE (' '),
+  TO_UNICODE ('s'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('g'),
+  TO_UNICODE (' '),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('o'),
+  TO_UNICODE (' '),
+  TO_UNICODE ('d'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('u'),
+  TO_UNICODE ('b'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('e'),
+  TO_UNICODE (0)
+} ;
+
+static const utf32 gLexicalMessage_options_5F_scanner_unterminatedLitteralString [] = {
+  TO_UNICODE ('U'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('d'),
+  TO_UNICODE (' '),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('l'),
+  TO_UNICODE (' '),
+  TO_UNICODE ('s'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('g'),
+  TO_UNICODE (0)
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//          Syntax error messages, for every terminal symbol                                                           *
+//---------------------------------------------------------------------------------------------------------------------*
+
+//--- Syntax error message for terminal '$idf$' :
+static const utf32 gSyntaxErrorMessage_options_5F_scanner_idf [] = {
+  TO_UNICODE ('i'),
+  TO_UNICODE ('d'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('f'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('r'),
+  TO_UNICODE (0)
+} ;
+
+//--- Syntax error message for terminal '$string$' :
+static const utf32 gSyntaxErrorMessage_options_5F_scanner_string [] = {
+  TO_UNICODE ('l'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('l'),
+  TO_UNICODE (' '),
+  TO_UNICODE ('s'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('g'),
+  TO_UNICODE (0)
+} ;
+
+//--- Syntax error message for terminal '$uint_number$' :
+static const utf32 gSyntaxErrorMessage_options_5F_scanner_uint_5F_number [] = {
+  TO_UNICODE ('l'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('l'),
+  TO_UNICODE (' '),
+  TO_UNICODE ('u'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('s'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('g'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('d'),
+  TO_UNICODE (' '),
+  TO_UNICODE ('6'),
+  TO_UNICODE ('4'),
+  TO_UNICODE (' '),
+  TO_UNICODE ('b'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('s'),
+  TO_UNICODE (' '),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('n'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('g'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('r'),
+  TO_UNICODE (0)
+} ;
+
+//--- Syntax error message for terminal '$float_number$' :
+static const utf32 gSyntaxErrorMessage_options_5F_scanner_float_5F_number [] = {
+  TO_UNICODE ('l'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('l'),
+  TO_UNICODE (' '),
+  TO_UNICODE ('f'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('t'),
+  TO_UNICODE (0)
+} ;
+
+//--- Syntax error message for terminal '$=$' :
+static const utf32 gSyntaxErrorMessage_options_5F_scanner__3D_ [] = {
+  TO_UNICODE ('\''),
+  TO_UNICODE ('='),
+  TO_UNICODE ('\''),
+  TO_UNICODE (' '),
+  TO_UNICODE ('d'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('r'),
+  TO_UNICODE (0)
+} ;
+
+//--- Syntax error message for terminal '$,$' :
+static const utf32 gSyntaxErrorMessage_options_5F_scanner__2C_ [] = {
+  TO_UNICODE ('\''),
+  TO_UNICODE (','),
+  TO_UNICODE ('\''),
+  TO_UNICODE (' '),
+  TO_UNICODE ('d'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('r'),
+  TO_UNICODE (0)
+} ;
+
+//--- Syntax error message for terminal '$-$' :
+static const utf32 gSyntaxErrorMessage_options_5F_scanner__2D_ [] = {
+  TO_UNICODE ('\''),
+  TO_UNICODE ('-'),
+  TO_UNICODE ('\''),
+  TO_UNICODE (' '),
+  TO_UNICODE ('d'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('r'),
+  TO_UNICODE (0)
+} ;
+
+//--- Syntax error message for terminal '$($' :
+static const utf32 gSyntaxErrorMessage_options_5F_scanner__28_ [] = {
+  TO_UNICODE ('\''),
+  TO_UNICODE ('('),
+  TO_UNICODE ('\''),
+  TO_UNICODE (' '),
+  TO_UNICODE ('d'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('r'),
+  TO_UNICODE (0)
+} ;
+
+//--- Syntax error message for terminal '$)$' :
+static const utf32 gSyntaxErrorMessage_options_5F_scanner__29_ [] = {
+  TO_UNICODE ('\''),
+  TO_UNICODE (')'),
+  TO_UNICODE ('\''),
+  TO_UNICODE (' '),
+  TO_UNICODE ('d'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('r'),
+  TO_UNICODE (0)
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                getMessageForTerminal                                                                                *
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_String C_Lexique_options_5F_scanner::getMessageForTerminal (const int16_t inTerminalIndex) const {
+  static const utf32 * syntaxErrorMessageArray [10] = {kEndOfSourceLexicalErrorMessage,
+    gSyntaxErrorMessage_options_5F_scanner_idf,
+    gSyntaxErrorMessage_options_5F_scanner_string,
+    gSyntaxErrorMessage_options_5F_scanner_uint_5F_number,
+    gSyntaxErrorMessage_options_5F_scanner_float_5F_number,
+    gSyntaxErrorMessage_options_5F_scanner__3D_,
+    gSyntaxErrorMessage_options_5F_scanner__2C_,
+    gSyntaxErrorMessage_options_5F_scanner__2D_,
+    gSyntaxErrorMessage_options_5F_scanner__28_,
+    gSyntaxErrorMessage_options_5F_scanner__29_} ;
+  return syntaxErrorMessageArray [inTerminalIndex] ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                      U N I C O D E    S T R I N G S                                                                 *
+//---------------------------------------------------------------------------------------------------------------------*
+
+//--- Unicode string for '$_28_$'
+static const utf32 kUnicodeString_options_5F_scanner__28_ [] = {
+  TO_UNICODE ('('),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_29_$'
+static const utf32 kUnicodeString_options_5F_scanner__29_ [] = {
+  TO_UNICODE (')'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_2C_$'
+static const utf32 kUnicodeString_options_5F_scanner__2C_ [] = {
+  TO_UNICODE (','),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_2D_$'
+static const utf32 kUnicodeString_options_5F_scanner__2D_ [] = {
+  TO_UNICODE ('-'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_30_X$'
+static const utf32 kUnicodeString_options_5F_scanner__30_X [] = {
+  TO_UNICODE ('0'),
+  TO_UNICODE ('X'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_30_x$'
+static const utf32 kUnicodeString_options_5F_scanner__30_x [] = {
+  TO_UNICODE ('0'),
+  TO_UNICODE ('x'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_3D_$'
+static const utf32 kUnicodeString_options_5F_scanner__3D_ [] = {
+  TO_UNICODE ('='),
+  TO_UNICODE (0)
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//             Key words table 'optionsDelimiters'                            *
+//---------------------------------------------------------------------------------------------------------------------*
+
+static const int32_t ktable_size_options_5F_scanner_optionsDelimiters = 5 ;
+
+static const C_unicode_lexique_table_entry ktable_for_options_5F_scanner_optionsDelimiters [ktable_size_options_5F_scanner_optionsDelimiters] = {
+  C_unicode_lexique_table_entry (kUnicodeString_options_5F_scanner__28_, 1, C_Lexique_options_5F_scanner::kToken__28_),
+  C_unicode_lexique_table_entry (kUnicodeString_options_5F_scanner__29_, 1, C_Lexique_options_5F_scanner::kToken__29_),
+  C_unicode_lexique_table_entry (kUnicodeString_options_5F_scanner__2C_, 1, C_Lexique_options_5F_scanner::kToken__2C_),
+  C_unicode_lexique_table_entry (kUnicodeString_options_5F_scanner__2D_, 1, C_Lexique_options_5F_scanner::kToken__2D_),
+  C_unicode_lexique_table_entry (kUnicodeString_options_5F_scanner__3D_, 1, C_Lexique_options_5F_scanner::kToken__3D_)
+} ;
+
+int16_t C_Lexique_options_5F_scanner::search_into_optionsDelimiters (const C_String & inSearchedString) {
+  return searchInList (inSearchedString, ktable_for_options_5F_scanner_optionsDelimiters, ktable_size_options_5F_scanner_optionsDelimiters) ;
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                          getCurrentTokenString                                                                      *
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_String C_Lexique_options_5F_scanner::getCurrentTokenString (const cToken * inTokenPtr) const {
+  const cTokenFor_options_5F_scanner * ptr = (const cTokenFor_options_5F_scanner *) inTokenPtr ;
+  C_String s ;
+  if (ptr == NULL) {
+    s.appendCString("$$") ;
+  }else{
+    switch (ptr->mTokenCode) {
+    case kToken_:
+      s.appendCString("$$") ;
+      break ;
+    case kToken_idf:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("idf") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendUnicodeCharacter (TO_UNICODE (' ') COMMA_HERE) ;
+      s.appendCLiteralStringConstant (ptr->mLexicalAttribute_key) ;
+      break ;
+    case kToken_string:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("string") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendUnicodeCharacter (TO_UNICODE (' ') COMMA_HERE) ;
+      s.appendCLiteralStringConstant (ptr->mLexicalAttribute_string) ;
+      break ;
+    case kToken_uint_5F_number:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("uint_number") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendUnicodeCharacter (TO_UNICODE (' ') COMMA_HERE) ;
+      s.appendUnsigned (ptr->mLexicalAttribute_integerNumber) ;
+      break ;
+    case kToken_float_5F_number:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("float_number") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendUnicodeCharacter (TO_UNICODE (' ') COMMA_HERE) ;
+      s.appendDouble (ptr->mLexicalAttribute_floatNumber) ;
+      break ;
+    case kToken__3D_:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("=") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken__2C_:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString (",") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken__2D_:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("-") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken__28_:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("(") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken__29_:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString (")") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    default:
+      break ;
+    }
+  }
+  return s ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                           Template Delimiters                                                                       *
+//---------------------------------------------------------------------------------------------------------------------*
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                           Template Replacements                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+//            Terminal Symbols as end of script in template mark                                                       *
+//---------------------------------------------------------------------------------------------------------------------*
+
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+//               P A R S E    L E X I C A L    T O K E N                                                               *
+//---------------------------------------------------------------------------------------------------------------------*
+
+bool C_Lexique_options_5F_scanner::parseLexicalToken (void) {
+  cTokenFor_options_5F_scanner token ;
+  mLoop = true ;
+  token.mTokenCode = -1 ;
+  while ((token.mTokenCode < 0) && (UNICODE_VALUE (mCurrentChar) != '\0')) {
+    token.mLexicalAttribute_floatNumber = 0.0 ;
+    token.mLexicalAttribute_integerNumber = 0 ;
+    token.mLexicalAttribute_key.setLengthToZero () ;
+    token.mLexicalAttribute_number.setLengthToZero () ;
+    token.mLexicalAttribute_string.setLengthToZero () ;
+    mTokenStartLocation = mCurrentLocation ;
+    try{
+      if (testForInputUTF32CharRange (TO_UNICODE ('a'), TO_UNICODE ('z')) || testForInputUTF32CharRange (TO_UNICODE ('A'), TO_UNICODE ('Z'))) {
+        do {
+          ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_key, previousChar ()) ;
+          if (testForInputUTF32CharRange (TO_UNICODE ('a'), TO_UNICODE ('z')) || testForInputUTF32CharRange (TO_UNICODE ('A'), TO_UNICODE ('Z')) || testForInputUTF32Char (TO_UNICODE ('_')) || testForInputUTF32CharRange (TO_UNICODE ('0'), TO_UNICODE ('9'))) {
+          }else{
+            mLoop = false ;
+          }
+        }while (mLoop) ;
+        mLoop = true ;
+        token.mTokenCode = kToken_idf ;
+        enterToken (token) ;
+      }else if (testForInputUTF32Char (TO_UNICODE ('\"'))) {
+        do {
+          if (testForInputUTF32CharRange (TO_UNICODE (' '), TO_UNICODE ('!')) || testForInputUTF32CharRange (TO_UNICODE ('#'), TO_UNICODE (65533))) {
+            ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_string, previousChar ()) ;
+          }else{
+            mLoop = false ;
+          }
+        }while (mLoop) ;
+        mLoop = true ;
+        if (testForInputUTF32Char (TO_UNICODE ('\"'))) {
+          token.mTokenCode = kToken_string ;
+          enterToken (token) ;
+        }else{
+          lexicalError (gLexicalMessage_options_5F_scanner_unterminatedLitteralString COMMA_LINE_AND_SOURCE_FILE) ;
+        }
+      }else if (testForInputUTF32Char (TO_UNICODE ('\''))) {
+        do {
+          if (testForInputUTF32CharRange (TO_UNICODE (' '), TO_UNICODE ('!')) || testForInputUTF32CharRange (TO_UNICODE ('#'), TO_UNICODE (65533))) {
+            ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_string, previousChar ()) ;
+          }else{
+            mLoop = false ;
+          }
+        }while (mLoop) ;
+        mLoop = true ;
+        if (testForInputUTF32Char (TO_UNICODE ('\''))) {
+          token.mTokenCode = kToken_string ;
+          enterToken (token) ;
+        }else{
+          lexicalError (gLexicalMessage_options_5F_scanner_unterminatedLitteralString COMMA_LINE_AND_SOURCE_FILE) ;
+        }
+      }else if (testForInputUTF32String (kUnicodeString_options_5F_scanner__30_x, 2, true) || testForInputUTF32String (kUnicodeString_options_5F_scanner__30_X, 2, true)) {
+        do {
+          if (testForInputUTF32CharRange (TO_UNICODE ('0'), TO_UNICODE ('9')) || testForInputUTF32CharRange (TO_UNICODE ('a'), TO_UNICODE ('f')) || testForInputUTF32CharRange (TO_UNICODE ('A'), TO_UNICODE ('F'))) {
+            ::scanner_routine_enterHexDigitIntoUInt64 (*this, previousChar (), token.mLexicalAttribute_integerNumber, gLexicalMessage_options_5F_scanner_decimalNumberTooLarge, gLexicalMessage_options_5F_scanner_internalError) ;
+          }else{
+            mLoop = false ;
+          }
+        }while (mLoop) ;
+        mLoop = true ;
+        token.mTokenCode = kToken_uint_5F_number ;
+        enterToken (token) ;
+      }else if (testForInputUTF32CharRange (TO_UNICODE ('0'), TO_UNICODE ('9'))) {
+        do {
+          ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_number, previousChar ()) ;
+          ::scanner_routine_enterDigitIntoUInt64 (*this, previousChar (), token.mLexicalAttribute_integerNumber, gLexicalMessage_options_5F_scanner_decimalNumberTooLarge, gLexicalMessage_options_5F_scanner_internalError) ;
+          if (testForInputUTF32CharRange (TO_UNICODE ('0'), TO_UNICODE ('9'))) {
+          }else{
+            mLoop = false ;
+          }
+        }while (mLoop) ;
+        mLoop = true ;
+        if (testForInputUTF32Char (TO_UNICODE ('.'))) {
+          do {
+            ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_number, previousChar ()) ;
+            if (testForInputUTF32CharRange (TO_UNICODE ('0'), TO_UNICODE ('9'))) {
+            }else{
+              mLoop = false ;
+            }
+          }while (mLoop) ;
+          mLoop = true ;
+          ::scanner_routine_convertStringToDouble (*this, token.mLexicalAttribute_number, token.mLexicalAttribute_floatNumber, gLexicalMessage_options_5F_scanner_unableToConvertToDouble) ;
+          token.mTokenCode = kToken_float_5F_number ;
+          enterToken (token) ;
+        }else{
+          token.mTokenCode = kToken_uint_5F_number ;
+          enterToken (token) ;
+        }
+      }else if (testForInputUTF32String (kUnicodeString_options_5F_scanner__3D_, 1, true)) {
+        token.mTokenCode = kToken__3D_ ;
+        enterToken (token) ;
+      }else if (testForInputUTF32String (kUnicodeString_options_5F_scanner__2D_, 1, true)) {
+        token.mTokenCode = kToken__2D_ ;
+        enterToken (token) ;
+      }else if (testForInputUTF32String (kUnicodeString_options_5F_scanner__2C_, 1, true)) {
+        token.mTokenCode = kToken__2C_ ;
+        enterToken (token) ;
+      }else if (testForInputUTF32String (kUnicodeString_options_5F_scanner__29_, 1, true)) {
+        token.mTokenCode = kToken__29_ ;
+        enterToken (token) ;
+      }else if (testForInputUTF32String (kUnicodeString_options_5F_scanner__28_, 1, true)) {
+        token.mTokenCode = kToken__28_ ;
+        enterToken (token) ;
+      }else if (testForInputUTF32Char (TO_UNICODE ('\0'))) { // End of source text ? 
+        token.mTokenCode = kToken_ ; // Empty string code
+      }else{ // Unknown input character
+        unknownCharacterLexicalError (LINE_AND_SOURCE_FILE) ;
+      }
+    }catch (const C_lexicalErrorException &) {
+      token.mTokenCode = -1 ; // No token
+      advance () ; // ... go throught unknown character
+    }
+  }
+  if ((UNICODE_VALUE (mCurrentChar) == '\0') && (token.mTemplateStringBeforeToken.length () > 0)) {
+    token.mTokenCode = 0 ;
+    enterToken (token) ;
+  }
+  return token.mTokenCode > 0 ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                         E N T E R    T O K E N                                                                      *
+//---------------------------------------------------------------------------------------------------------------------*
+
+void C_Lexique_options_5F_scanner::enterToken (const cTokenFor_options_5F_scanner & inToken) {
+  cTokenFor_options_5F_scanner * ptr = NULL ;
+  macroMyNew (ptr, cTokenFor_options_5F_scanner ()) ;
+  ptr->mTokenCode = inToken.mTokenCode ;
+  ptr->mStartLocation = mTokenStartLocation ;
+  ptr->mEndLocation = mTokenEndLocation ;
+  ptr->mTemplateStringBeforeToken = inToken.mTemplateStringBeforeToken ;
+  ptr->mLexicalAttribute_floatNumber = inToken.mLexicalAttribute_floatNumber ;
+  ptr->mLexicalAttribute_integerNumber = inToken.mLexicalAttribute_integerNumber ;
+  ptr->mLexicalAttribute_key = inToken.mLexicalAttribute_key ;
+  ptr->mLexicalAttribute_number = inToken.mLexicalAttribute_number ;
+  ptr->mLexicalAttribute_string = inToken.mLexicalAttribute_string ;
+  enterTokenFromPointer (ptr) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//               A T T R I B U T E   A C C E S S                                                                       *
+//---------------------------------------------------------------------------------------------------------------------*
+
+double C_Lexique_options_5F_scanner::attributeValue_floatNumber (void) const {
+  cTokenFor_options_5F_scanner * ptr = (cTokenFor_options_5F_scanner *) mCurrentTokenPtr ;
+  return ptr->mLexicalAttribute_floatNumber ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+uint64_t C_Lexique_options_5F_scanner::attributeValue_integerNumber (void) const {
+  cTokenFor_options_5F_scanner * ptr = (cTokenFor_options_5F_scanner *) mCurrentTokenPtr ;
+  return ptr->mLexicalAttribute_integerNumber ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_String C_Lexique_options_5F_scanner::attributeValue_key (void) const {
+  cTokenFor_options_5F_scanner * ptr = (cTokenFor_options_5F_scanner *) mCurrentTokenPtr ;
+  return ptr->mLexicalAttribute_key ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_String C_Lexique_options_5F_scanner::attributeValue_number (void) const {
+  cTokenFor_options_5F_scanner * ptr = (cTokenFor_options_5F_scanner *) mCurrentTokenPtr ;
+  return ptr->mLexicalAttribute_number ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_String C_Lexique_options_5F_scanner::attributeValue_string (void) const {
+  cTokenFor_options_5F_scanner * ptr = (cTokenFor_options_5F_scanner *) mCurrentTokenPtr ;
+  return ptr->mLexicalAttribute_string ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//         A S S I G N    F R O M    A T T R I B U T E                                                                 *
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_ldouble C_Lexique_options_5F_scanner::synthetizedAttribute_floatNumber (void) const {
+  cTokenFor_options_5F_scanner * ptr = (cTokenFor_options_5F_scanner *) mCurrentTokenPtr ;
+  macroValidSharedObject (ptr, cTokenFor_options_5F_scanner) ;
+  GALGAS_location currentLocation (ptr->mStartLocation, ptr->mEndLocation, sourceText ()) ;
+  GALGAS_double value (ptr->mLexicalAttribute_floatNumber) ;
+  GALGAS_ldouble result (value, currentLocation) ;
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_luint_36__34_ C_Lexique_options_5F_scanner::synthetizedAttribute_integerNumber (void) const {
+  cTokenFor_options_5F_scanner * ptr = (cTokenFor_options_5F_scanner *) mCurrentTokenPtr ;
+  macroValidSharedObject (ptr, cTokenFor_options_5F_scanner) ;
+  GALGAS_location currentLocation (ptr->mStartLocation, ptr->mEndLocation, sourceText ()) ;
+  GALGAS_uint_36__34_ value (ptr->mLexicalAttribute_integerNumber) ;
+  GALGAS_luint_36__34_ result (value, currentLocation) ;
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_lstring C_Lexique_options_5F_scanner::synthetizedAttribute_key (void) const {
+  cTokenFor_options_5F_scanner * ptr = (cTokenFor_options_5F_scanner *) mCurrentTokenPtr ;
+  macroValidSharedObject (ptr, cTokenFor_options_5F_scanner) ;
+  GALGAS_location currentLocation (ptr->mStartLocation, ptr->mEndLocation, sourceText ()) ;
+  GALGAS_string value (ptr->mLexicalAttribute_key) ;
+  GALGAS_lstring result (value, currentLocation) ;
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_lstring C_Lexique_options_5F_scanner::synthetizedAttribute_number (void) const {
+  cTokenFor_options_5F_scanner * ptr = (cTokenFor_options_5F_scanner *) mCurrentTokenPtr ;
+  macroValidSharedObject (ptr, cTokenFor_options_5F_scanner) ;
+  GALGAS_location currentLocation (ptr->mStartLocation, ptr->mEndLocation, sourceText ()) ;
+  GALGAS_string value (ptr->mLexicalAttribute_number) ;
+  GALGAS_lstring result (value, currentLocation) ;
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_lstring C_Lexique_options_5F_scanner::synthetizedAttribute_string (void) const {
+  cTokenFor_options_5F_scanner * ptr = (cTokenFor_options_5F_scanner *) mCurrentTokenPtr ;
+  macroValidSharedObject (ptr, cTokenFor_options_5F_scanner) ;
+  GALGAS_location currentLocation (ptr->mStartLocation, ptr->mEndLocation, sourceText ()) ;
+  GALGAS_string value (ptr->mLexicalAttribute_string) ;
+  GALGAS_lstring result (value, currentLocation) ;
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                         I N T R O S P E C T I O N                                                                   *
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_stringlist C_Lexique_options_5F_scanner::symbols (LOCATION_ARGS) {
+  GALGAS_stringlist result = GALGAS_stringlist::constructor_emptyList (THERE) ;
+  result.addAssign_operation (GALGAS_string ("idf") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("string") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("uint_number") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("float_number") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("=") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string (",") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("-") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("(") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string (")") COMMA_THERE) ;
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//   S T Y L E   I N D E X    F O R    T E R M I N A L                                                                 *
+//---------------------------------------------------------------------------------------------------------------------*
+
+uint32_t C_Lexique_options_5F_scanner::styleIndexForTerminal (const int32_t inTerminalIndex) const {
+  static const uint32_t kTerminalSymbolStyles [10] = {0,
+    1 /* options_scanner_1_idf */,
+    3 /* options_scanner_1_string */,
+    4 /* options_scanner_1_uint_5F_number */,
+    5 /* options_scanner_1_float_5F_number */,
+    2 /* options_scanner_1__3D_ */,
+    2 /* options_scanner_1__2C_ */,
+    2 /* options_scanner_1__2D_ */,
+    2 /* options_scanner_1__28_ */,
+    2 /* options_scanner_1__29_ */
+  } ;
+  return (inTerminalIndex >= 0) ? kTerminalSymbolStyles [inTerminalIndex] : 0 ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//   S T Y L E   N A M E    F O R    S T Y L E    I N D E X                                                            *
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_String C_Lexique_options_5F_scanner::styleNameForIndex (const uint32_t inStyleIndex) const {
+  C_String result ;
+  if (inStyleIndex < 6) {
+    static const char * kStyleArray [6] = {
+      "",
+      "identifierStyle",
+      "delimitersStyle",
+      "stringStyle",
+      "integerStyle",
+      "floatStyle"
+    } ;
+    result = kStyleArray [inStyleIndex] ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+//---------------------------------------------------------------------------------------------------------------------*
 
 cMapElement_identifierMap::cMapElement_identifierMap (const GALGAS_lstring & inKey,
                                                       const GALGAS_object_5F_t & in_value
@@ -6942,6 +7767,209 @@ int32_t cGrammar_goil_5F_cpu_5F_level_5F_include::select_goil_5F_syntax_17 (C_Le
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
+
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void cParser_options_5F_parser::rule_options_5F_parser_option_5F_parser_5F_start_i0_ (GALGAS_TfieldMap & outArgument_options,
+                                                                                      C_Lexique_options_5F_scanner * inCompiler) {
+  outArgument_options.drop () ; // Release 'out' argument
+  outArgument_options = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("options_parser.galgas", 32)) ;
+  bool repeatFlag_0 = true ;
+  while (repeatFlag_0) {
+    GALGAS_lstring var_key = inCompiler->synthetizedAttribute_key () ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_options_5F_scanner::kToken_idf) COMMA_SOURCE_FILE ("options_parser.galgas", 34)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_options_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("options_parser.galgas", 35)) ;
+    GALGAS_Ttype var_type ;
+    GALGAS_Tvalue var_value ;
+    switch (select_options_5F_parser_1 (inCompiler)) {
+    case 1: {
+      nt_option_5F_value_ (var_type, var_value, inCompiler) ;
+    } break ;
+    case 2: {
+      nt_list_5F_option_5F_value_ (var_type, var_value, inCompiler) ;
+    } break ;
+    default:
+      break ;
+    }
+    {
+    outArgument_options.modifier_insertKey (var_key, var_type, var_value, inCompiler COMMA_SOURCE_FILE ("options_parser.galgas", 43)) ;
+    }
+    switch (select_options_5F_parser_0 (inCompiler)) {
+    case 2: {
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_options_5F_scanner::kToken__2C_) COMMA_SOURCE_FILE ("options_parser.galgas", 44)) ;
+    } break ;
+    default:
+      repeatFlag_0 = false ;
+      break ;
+    }
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void cParser_options_5F_parser::rule_options_5F_parser_option_5F_parser_5F_start_i0_parse (C_Lexique_options_5F_scanner * inCompiler) {
+  bool repeatFlag_0 = true ;
+  while (repeatFlag_0) {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_options_5F_scanner::kToken_idf) COMMA_SOURCE_FILE ("options_parser.galgas", 34)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_options_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("options_parser.galgas", 35)) ;
+    switch (select_options_5F_parser_1 (inCompiler)) {
+    case 1: {
+      nt_option_5F_value_parse (inCompiler) ;
+    } break ;
+    case 2: {
+      nt_list_5F_option_5F_value_parse (inCompiler) ;
+    } break ;
+    default:
+      break ;
+    }
+    switch (select_options_5F_parser_0 (inCompiler)) {
+    case 2: {
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_options_5F_scanner::kToken__2C_) COMMA_SOURCE_FILE ("options_parser.galgas", 44)) ;
+    } break ;
+    default:
+      repeatFlag_0 = false ;
+      break ;
+    }
+  }
+  inCompiler->resetTemplateString () ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void cParser_options_5F_parser::rule_options_5F_parser_option_5F_value_i1_ (GALGAS_Ttype & outArgument_type,
+                                                                            GALGAS_Tvalue & outArgument_value,
+                                                                            C_Lexique_options_5F_scanner * inCompiler) {
+  outArgument_type.drop () ; // Release 'out' argument
+  outArgument_value.drop () ; // Release 'out' argument
+  GALGAS_lstring var_str = inCompiler->synthetizedAttribute_string () ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_options_5F_scanner::kToken_string) COMMA_SOURCE_FILE ("options_parser.galgas", 52)) ;
+  outArgument_type = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("options_parser.galgas", 53)) ;
+  outArgument_value = function_valueWithString (var_str.getter_string (SOURCE_FILE ("options_parser.galgas", 54)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("options_parser.galgas", 54)), inCompiler COMMA_SOURCE_FILE ("options_parser.galgas", 54)) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void cParser_options_5F_parser::rule_options_5F_parser_option_5F_value_i1_parse (C_Lexique_options_5F_scanner * inCompiler) {
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_options_5F_scanner::kToken_string) COMMA_SOURCE_FILE ("options_parser.galgas", 52)) ;
+  inCompiler->resetTemplateString () ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void cParser_options_5F_parser::rule_options_5F_parser_option_5F_value_i2_ (GALGAS_Ttype & outArgument_type,
+                                                                            GALGAS_Tvalue & outArgument_value,
+                                                                            C_Lexique_options_5F_scanner * inCompiler) {
+  outArgument_type.drop () ; // Release 'out' argument
+  outArgument_value.drop () ; // Release 'out' argument
+  GALGAS_lstring var_str = inCompiler->synthetizedAttribute_key () ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_options_5F_scanner::kToken_idf) COMMA_SOURCE_FILE ("options_parser.galgas", 61)) ;
+  outArgument_type = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("options_parser.galgas", 62)) ;
+  outArgument_value = function_valueWithString (var_str.getter_string (SOURCE_FILE ("options_parser.galgas", 63)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("options_parser.galgas", 63)), inCompiler COMMA_SOURCE_FILE ("options_parser.galgas", 63)) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void cParser_options_5F_parser::rule_options_5F_parser_option_5F_value_i2_parse (C_Lexique_options_5F_scanner * inCompiler) {
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_options_5F_scanner::kToken_idf) COMMA_SOURCE_FILE ("options_parser.galgas", 61)) ;
+  inCompiler->resetTemplateString () ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void cParser_options_5F_parser::rule_options_5F_parser_option_5F_value_i3_ (GALGAS_Ttype & outArgument_type,
+                                                                            GALGAS_Tvalue & outArgument_value,
+                                                                            C_Lexique_options_5F_scanner * inCompiler) {
+  outArgument_type.drop () ; // Release 'out' argument
+  outArgument_value.drop () ; // Release 'out' argument
+  GALGAS_luint_36__34_ var_num = inCompiler->synthetizedAttribute_integerNumber () ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_options_5F_scanner::kToken_uint_5F_number) COMMA_SOURCE_FILE ("options_parser.galgas", 70)) ;
+  outArgument_type = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("options_parser.galgas", 71)) ;
+  outArgument_value = function_valueWithSigned (var_num.getter_uint_36__34_ (SOURCE_FILE ("options_parser.galgas", 72)).getter_sint_36__34_ (inCompiler COMMA_SOURCE_FILE ("options_parser.galgas", 72)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("options_parser.galgas", 72)), inCompiler COMMA_SOURCE_FILE ("options_parser.galgas", 72)) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void cParser_options_5F_parser::rule_options_5F_parser_option_5F_value_i3_parse (C_Lexique_options_5F_scanner * inCompiler) {
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_options_5F_scanner::kToken_uint_5F_number) COMMA_SOURCE_FILE ("options_parser.galgas", 70)) ;
+  inCompiler->resetTemplateString () ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void cParser_options_5F_parser::rule_options_5F_parser_option_5F_value_i4_ (GALGAS_Ttype & outArgument_type,
+                                                                            GALGAS_Tvalue & outArgument_value,
+                                                                            C_Lexique_options_5F_scanner * inCompiler) {
+  outArgument_type.drop () ; // Release 'out' argument
+  outArgument_value.drop () ; // Release 'out' argument
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_options_5F_scanner::kToken__2D_) COMMA_SOURCE_FILE ("options_parser.galgas", 79)) ;
+  GALGAS_luint_36__34_ var_num = inCompiler->synthetizedAttribute_integerNumber () ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_options_5F_scanner::kToken_uint_5F_number) COMMA_SOURCE_FILE ("options_parser.galgas", 80)) ;
+  outArgument_type = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("options_parser.galgas", 81)) ;
+  outArgument_value = function_valueWithSigned (var_num.getter_uint_36__34_ (SOURCE_FILE ("options_parser.galgas", 82)).getter_sint_36__34_ (inCompiler COMMA_SOURCE_FILE ("options_parser.galgas", 82)).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("options_parser.galgas", 82)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("options_parser.galgas", 82)), inCompiler COMMA_SOURCE_FILE ("options_parser.galgas", 82)) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void cParser_options_5F_parser::rule_options_5F_parser_option_5F_value_i4_parse (C_Lexique_options_5F_scanner * inCompiler) {
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_options_5F_scanner::kToken__2D_) COMMA_SOURCE_FILE ("options_parser.galgas", 79)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_options_5F_scanner::kToken_uint_5F_number) COMMA_SOURCE_FILE ("options_parser.galgas", 80)) ;
+  inCompiler->resetTemplateString () ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void cParser_options_5F_parser::rule_options_5F_parser_list_5F_option_5F_value_i5_ (GALGAS_Ttype & outArgument_type,
+                                                                                    GALGAS_Tvalue & outArgument_value,
+                                                                                    C_Lexique_options_5F_scanner * inCompiler) {
+  outArgument_type.drop () ; // Release 'out' argument
+  outArgument_value.drop () ; // Release 'out' argument
+  GALGAS_TfieldMapList var_listOption = GALGAS_TfieldMapList::constructor_emptyList (SOURCE_FILE ("options_parser.galgas", 89)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_options_5F_scanner::kToken__28_) COMMA_SOURCE_FILE ("options_parser.galgas", 90)) ;
+  bool repeatFlag_0 = true ;
+  while (repeatFlag_0) {
+    GALGAS_Ttype var_valType ;
+    GALGAS_Tvalue var_valVal ;
+    nt_option_5F_value_ (var_valType, var_valVal, inCompiler) ;
+    GALGAS_TfieldMap var_item = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("options_parser.galgas", 93)) ;
+    {
+    var_item.modifier_insertKey (function_lstringWith (GALGAS_string ("VALUE"), inCompiler COMMA_SOURCE_FILE ("options_parser.galgas", 94)), var_valType, var_valVal, inCompiler COMMA_SOURCE_FILE ("options_parser.galgas", 94)) ;
+    }
+    var_listOption.addAssign_operation (var_item  COMMA_SOURCE_FILE ("options_parser.galgas", 95)) ;
+    switch (select_options_5F_parser_2 (inCompiler)) {
+    case 2: {
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_options_5F_scanner::kToken__2C_) COMMA_SOURCE_FILE ("options_parser.galgas", 96)) ;
+    } break ;
+    default:
+      repeatFlag_0 = false ;
+      break ;
+    }
+  }
+  outArgument_type = GALGAS_Ttype::constructor_listType (SOURCE_FILE ("options_parser.galgas", 98)) ;
+  outArgument_value = function_valueWithList (var_listOption, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("options_parser.galgas", 99)), inCompiler COMMA_SOURCE_FILE ("options_parser.galgas", 99)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_options_5F_scanner::kToken__29_) COMMA_SOURCE_FILE ("options_parser.galgas", 100)) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void cParser_options_5F_parser::rule_options_5F_parser_list_5F_option_5F_value_i5_parse (C_Lexique_options_5F_scanner * inCompiler) {
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_options_5F_scanner::kToken__28_) COMMA_SOURCE_FILE ("options_parser.galgas", 90)) ;
+  bool repeatFlag_0 = true ;
+  while (repeatFlag_0) {
+    nt_option_5F_value_parse (inCompiler) ;
+    switch (select_options_5F_parser_2 (inCompiler)) {
+    case 2: {
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_options_5F_scanner::kToken__2C_) COMMA_SOURCE_FILE ("options_parser.galgas", 96)) ;
+    } break ;
+    default:
+      repeatFlag_0 = false ;
+      break ;
+    }
+  }
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_options_5F_scanner::kToken__29_) COMMA_SOURCE_FILE ("options_parser.galgas", 100)) ;
+  inCompiler->resetTemplateString () ;
+}
 
 //---------------------------------------------------------------------------------------------------------------------*
 

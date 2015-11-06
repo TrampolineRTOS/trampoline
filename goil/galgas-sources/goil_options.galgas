@@ -59,5 +59,16 @@ option goil_options {
   'l',
   "logfile"
   -> "generate a goil.log file containing the a log of the compilation"
+
+@string root :
+  'r',
+  "root"
+  -> "Specifies the root template file to use to generate the output files" default "root"
+  
+@string passOption :
+  'o',
+  "option"
+  -> "Pass options to the template root script"
 }
+
 # vim:ft=ggs:ts=4:sw=4
