@@ -24,7 +24,12 @@
 #
 #---------------------------------------------------------------------------*
 
-project (2:1:20) -> "goil" {
+# 2.1.21   Added a print and println instructions to template language
+#          Fixed a bug in -o option handling. Crashed when -o was an empty
+#          string
+# 2.1.20   Added -o and -r options to goil
+
+project (2:1:21) -> "goil" {
 
 #  feature libpmAtPath : "../galgas_sources/GALGAS_OUTPUT/libpm" ;
   %makefile-macosx

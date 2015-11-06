@@ -62,20 +62,6 @@ rule '"' {
   end
 }
 
-rule '\'' {
-  repeat
-  while '\u0020'->'\u0021' | '\u0023' -> '\uFFFD' :
-    enterCharacterIntoString ( !?string !* )
-  end
-  select
-    case '\'' :
-      send $string$
-    default
-      error unterminatedLitteralString
-  end
-}
-
-
 #--------------------------------- Numbers ------------------------------------
 @string number
 @uint64 integerNumber
@@ -120,10 +106,15 @@ rule '0'->'9'{
 }
 
 
+#-------------------------------- Delimiters ----------------------------------
 list optionsDelimiters style delimitersStyle error message "'%K' delimiter"{
   "=", ",", "-", "(", ")"
 }
 
 rule list optionsDelimiters
+
+#------------------------------ Eat witespaces --------------------------------
+rule '\u0001'->' '{
+}
 
 }

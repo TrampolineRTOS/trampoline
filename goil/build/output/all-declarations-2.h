@@ -23,6 +23,14 @@ class cGrammar_options_5F_grammar : public cParser_options_5F_parser {
                                                      GALGAS_Tvalue & outArgument1,
                                                      C_Lexique_options_5F_scanner * inCompiler) ;
 
+//------------------------------------- 'option_item' non terminal
+//--- 'parse' label
+  public : virtual void nt_option_5F_item_parse (C_Lexique_options_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_option_5F_item_ (GALGAS_TfieldMap & ioArgument0,
+                                            C_Lexique_options_5F_scanner * inCompiler) ;
+
 //------------------------------------- 'option_parser_start' non terminal
 //--- 'parse' label
   public : virtual void nt_option_5F_parser_5F_start_parse (C_Lexique_options_5F_scanner * inCompiler) ;
@@ -69,6 +77,8 @@ class cGrammar_options_5F_grammar : public cParser_options_5F_parser {
   public : virtual int32_t select_options_5F_parser_1 (C_Lexique_options_5F_scanner *) ;
 
   public : virtual int32_t select_options_5F_parser_2 (C_Lexique_options_5F_scanner *) ;
+
+  public : virtual int32_t select_options_5F_parser_3 (C_Lexique_options_5F_scanner *) ;
 } ;
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -531,17 +541,6 @@ class GALGAS_Tvalue function_valueWithBool (const class GALGAS_bool & constinArg
                                             const class GALGAS_lstring & constinArgument1,
                                             class C_Compiler * inCompiler
                                             COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                              Function 'valueWithFloat'                                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_Tvalue function_valueWithFloat (const class GALGAS_double & constinArgument0,
-                                             const class GALGAS_lstring & constinArgument1,
-                                             class C_Compiler * inCompiler
-                                             COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *

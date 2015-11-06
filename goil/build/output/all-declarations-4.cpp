@@ -1661,6 +1661,60 @@ C_PrologueEpilogue gGetter_objectAttributes_fieldMap (defineCategoryGetter_objec
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
+//                                         Category Getter '@string trimLeft'                                          *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_string extensionGetter_trimLeft (const GALGAS_string & inObject,
+                                        C_Compiler * inCompiler
+                                        COMMA_UNUSED_LOCATION_ARGS) {
+  GALGAS_string result_result ; // Returned variable
+  const GALGAS_string temp_0 = inObject ;
+  const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, temp_0.getter_leftSubString (GALGAS_uint ((uint32_t) 1U) COMMA_SOURCE_FILE ("systemConfig.galgas", 137)).objectCompare (GALGAS_string (" "))).boolEnum () ;
+  if (kBoolTrue == test_1) {
+    const GALGAS_string temp_2 = inObject ;
+    const GALGAS_string temp_3 = inObject ;
+    result_result = extensionGetter_trimLeft (temp_2.getter_rightSubString (temp_3.getter_length (SOURCE_FILE ("systemConfig.galgas", 138)).substract_operation (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 138)) COMMA_SOURCE_FILE ("systemConfig.galgas", 138)), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 138)) ;
+  }else if (kBoolFalse == test_1) {
+    const GALGAS_string temp_4 = inObject ;
+    result_result = temp_4 ;
+  }
+//---
+  return result_result ;
+}
+
+
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                         Category Getter '@string trimRight'                                         *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_string extensionGetter_trimRight (const GALGAS_string & inObject,
+                                         C_Compiler * inCompiler
+                                         COMMA_UNUSED_LOCATION_ARGS) {
+  GALGAS_string result_result ; // Returned variable
+  const GALGAS_string temp_0 = inObject ;
+  const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, temp_0.getter_rightSubString (GALGAS_uint ((uint32_t) 1U) COMMA_SOURCE_FILE ("systemConfig.galgas", 147)).objectCompare (GALGAS_string (" "))).boolEnum () ;
+  if (kBoolTrue == test_1) {
+    const GALGAS_string temp_2 = inObject ;
+    const GALGAS_string temp_3 = inObject ;
+    result_result = extensionGetter_trimRight (temp_2.getter_leftSubString (temp_3.getter_length (SOURCE_FILE ("systemConfig.galgas", 148)).substract_operation (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 148)) COMMA_SOURCE_FILE ("systemConfig.galgas", 148)), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 148)) ;
+  }else if (kBoolFalse == test_1) {
+    const GALGAS_string temp_4 = inObject ;
+    result_result = temp_4 ;
+  }
+//---
+  return result_result ;
+}
+
+
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //                                 Category method '@implementation verifyApplication'                                 *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -6305,86 +6359,90 @@ static GALGAS_TfieldMap extensionGetter_applicationDefinition_templateData (cons
   GALGAS_TfieldMap result_cfg ; // Returned variable
   const cPtr_applicationDefinition * object = inObject ;
   macroValidSharedObject (object, cPtr_applicationDefinition) ;
-  result_cfg = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("systemConfig.galgas", 138)) ;
+  result_cfg = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("systemConfig.galgas", 158)) ;
   {
-  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("OILFILENAME"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 144)), GALGAS_string::constructor_stringWithSourceFilePath (inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 144)).getter_lastPathComponent (SOURCE_FILE ("systemConfig.galgas", 144)), function_lstringWith (GALGAS_string::constructor_stringWithSourceFilePath (inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 144)), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 144)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 144)) ;
+  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("OILFILENAME"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 164)), GALGAS_string::constructor_stringWithSourceFilePath (inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 164)).getter_lastPathComponent (SOURCE_FILE ("systemConfig.galgas", 164)), function_lstringWith (GALGAS_string::constructor_stringWithSourceFilePath (inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 164)), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 164)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 164)) ;
   }
   {
-  routine_addLStringValue (result_cfg, GALGAS_string ("CPUNAME"), object->mAttribute_name, function_lstringWith (GALGAS_string ("name of the CPU object"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 145)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 145)) ;
+  routine_addLStringValue (result_cfg, GALGAS_string ("CPUNAME"), object->mAttribute_name, function_lstringWith (GALGAS_string ("name of the CPU object"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 165)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 165)) ;
   }
   {
-  routine_addLStringValue (result_cfg, GALGAS_string ("CPUDESCRIPTION"), object->mAttribute_cpuDescription, function_lstringWith (GALGAS_string ("description of the CPU object"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 146)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 146)) ;
+  routine_addLStringValue (result_cfg, GALGAS_string ("CPUDESCRIPTION"), object->mAttribute_cpuDescription, function_lstringWith (GALGAS_string ("description of the CPU object"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 166)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 166)) ;
   }
   {
-  routine_addLStringValue (result_cfg, GALGAS_string ("OILVERSION"), object->mAttribute_version, function_lstringWith (GALGAS_string ("OIL version"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 147)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 147)) ;
+  routine_addLStringValue (result_cfg, GALGAS_string ("OILVERSION"), object->mAttribute_version, function_lstringWith (GALGAS_string ("OIL version"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 167)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 167)) ;
   }
   {
-  routine_addLStringValue (result_cfg, GALGAS_string ("OILDESCRIPTION"), object->mAttribute_versionDescription, function_lstringWith (GALGAS_string ("OIL version description"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 148)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 148)) ;
+  routine_addLStringValue (result_cfg, GALGAS_string ("OILDESCRIPTION"), object->mAttribute_versionDescription, function_lstringWith (GALGAS_string ("OIL version description"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 168)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 168)) ;
   }
   {
-  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("TIMESTAMP"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 149)), GALGAS_string::constructor_stringWithCurrentDateTime (SOURCE_FILE ("systemConfig.galgas", 149)), function_lstringWith (GALGAS_string ("timestamp of OIL compiling"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 149)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 149)) ;
+  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("TIMESTAMP"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 169)), GALGAS_string::constructor_stringWithCurrentDateTime (SOURCE_FILE ("systemConfig.galgas", 169)), function_lstringWith (GALGAS_string ("timestamp of OIL compiling"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 169)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 169)) ;
   }
   {
-  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("PROJECT"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 150)), function_projectName (inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 150)).getter_lastPathComponent (SOURCE_FILE ("systemConfig.galgas", 150)), function_lstringWith (GALGAS_string ("project name"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 150)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 150)) ;
+  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("PROJECT"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 170)), function_projectName (inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 170)).getter_lastPathComponent (SOURCE_FILE ("systemConfig.galgas", 170)), function_lstringWith (GALGAS_string ("project name"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 170)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 170)) ;
   }
   {
-  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("TARGET"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 151)), GALGAS_string (gOption_goil_5F_options_target_5F_platform.getter_value ()), function_lstringWith (GALGAS_string ("target architecture/chip/board"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 151)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 151)) ;
+  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("TARGET"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 171)), GALGAS_string (gOption_goil_5F_options_target_5F_platform.getter_value ()), function_lstringWith (GALGAS_string ("target architecture/chip/board"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 171)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 171)) ;
   }
   {
-  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("TEMPLATEPATH"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 152)), GALGAS_string (gOption_goil_5F_options_template_5F_dir.getter_value ()), function_lstringWith (GALGAS_string ("path of the templates used"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 152)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 152)) ;
+  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("TEMPLATEPATH"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 172)), GALGAS_string (gOption_goil_5F_options_template_5F_dir.getter_value ()), function_lstringWith (GALGAS_string ("path of the templates used"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 172)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 172)) ;
   }
   {
-  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("ARCH"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 153)), function_arch (inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 153)), function_lstringWith (GALGAS_string ("target architecture"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 153)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 153)) ;
+  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("ARCH"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 173)), function_arch (inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 173)), function_lstringWith (GALGAS_string ("target architecture"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 173)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 173)) ;
   }
   {
-  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("CHIP"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 154)), function_chip (inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 154)), function_lstringWith (GALGAS_string ("target chip"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 154)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 154)) ;
+  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("CHIP"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 174)), function_chip (inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 174)), function_lstringWith (GALGAS_string ("target chip"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 174)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 174)) ;
   }
   {
-  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("BOARD"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 155)), function_board (inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 155)), function_lstringWith (GALGAS_string ("target board"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 155)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 155)) ;
+  routine_addStringValue (result_cfg, function_lstringWith (GALGAS_string ("BOARD"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 175)), function_board (inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 175)), function_lstringWith (GALGAS_string ("target board"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 175)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 175)) ;
   }
   {
-  routine_addListValue (result_cfg, function_lstringWith (GALGAS_string ("TARGETPATHLIST"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 156)), function_targetPathList (inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 156)), function_lstringWith (GALGAS_string ("target path list"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 156)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 156)) ;
+  routine_addListValue (result_cfg, function_lstringWith (GALGAS_string ("TARGETPATHLIST"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 176)), function_targetPathList (inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 176)), function_lstringWith (GALGAS_string ("target path list"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 176)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 176)) ;
   }
   {
-  routine_addBoolValue (result_cfg, function_lstringWith (GALGAS_string ("LOGFILE"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 158)), GALGAS_bool (gOption_goil_5F_options_generate_5F_log.getter_value ()), function_lstringWith (GALGAS_string ("Generated a logfile"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 158)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 158)) ;
+  routine_addBoolValue (result_cfg, function_lstringWith (GALGAS_string ("LOGFILE"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 178)), GALGAS_bool (gOption_goil_5F_options_generate_5F_log.getter_value ()), function_lstringWith (GALGAS_string ("Generated a logfile"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 178)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 178)) ;
   }
-  GALGAS_TfieldMap var_opts ;
-  var_opts.drop () ;
-  cGrammar_options_5F_grammar::_performSourceStringParsing_ (inCompiler, GALGAS_string (gOption_goil_5F_options_passOption.getter_value ()), GALGAS_string ("Passed options"), var_opts  COMMA_SOURCE_FILE ("systemConfig.galgas", 161)) ;
+  GALGAS_TfieldMap var_opts = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("systemConfig.galgas", 181)) ;
+  GALGAS_string var_optionString = extensionGetter_trimRight (extensionGetter_trimLeft (GALGAS_string (gOption_goil_5F_options_passOption.getter_value ()), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 182)), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 182)) ;
+  const enumGalgasBool test_0 = GALGAS_bool (kIsStrictSup, var_optionString.getter_length (SOURCE_FILE ("systemConfig.galgas", 183)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+  if (kBoolTrue == test_0) {
+    var_opts.drop () ;
+    cGrammar_options_5F_grammar::_performSourceStringParsing_ (inCompiler, GALGAS_string (gOption_goil_5F_options_passOption.getter_value ()), GALGAS_string ("Passed options"), var_opts  COMMA_SOURCE_FILE ("systemConfig.galgas", 184)) ;
+  }
   {
-  routine_addStructValue (result_cfg, function_lstringWith (GALGAS_string ("PASSEDOPTIONS"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 162)), var_opts, function_lstringWith (GALGAS_string ("Passed options from command line"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 162)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 162)) ;
+  routine_addStructValue (result_cfg, function_lstringWith (GALGAS_string ("PASSEDOPTIONS"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 186)), var_opts, function_lstringWith (GALGAS_string ("Passed options from command line"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 186)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 186)) ;
   }
-  cEnumerator_objectsMap enumerator_6459 (object->mAttribute_objects, kEnumeration_up) ;
-  while (enumerator_6459.hasCurrentObject ()) {
+  cEnumerator_objectsMap enumerator_6975 (object->mAttribute_objects, kEnumeration_up) ;
+  while (enumerator_6975.hasCurrentObject ()) {
     GALGAS_implementationObject var_implementationObject ;
-    constinArgument_imp.getter_imp (SOURCE_FILE ("systemConfig.galgas", 169)).method_get (enumerator_6459.current_lkey (HERE), var_implementationObject, inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 169)) ;
-    const enumGalgasBool test_0 = var_implementationObject.getter_multiple (SOURCE_FILE ("systemConfig.galgas", 170)).getter_bool (SOURCE_FILE ("systemConfig.galgas", 170)).boolEnum () ;
-    if (kBoolTrue == test_0) {
-      GALGAS_TfieldMapList var_objs = GALGAS_TfieldMapList::constructor_emptyList (SOURCE_FILE ("systemConfig.galgas", 171)) ;
-      cEnumerator_objectKindMap enumerator_6860 (enumerator_6459.current_objectsOfKind (HERE).getter_objects (SOURCE_FILE ("systemConfig.galgas", 172)), kEnumeration_up) ;
-      while (enumerator_6860.hasCurrentObject ()) {
-        GALGAS_TfieldMap var_attrs = callCategoryGetter_fieldMap ((const cPtr_objectAttributes *) enumerator_6860.current_attributes (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 173)) ;
-        var_objs.addAssign_operation (var_attrs  COMMA_SOURCE_FILE ("systemConfig.galgas", 174)) ;
-        enumerator_6860.gotoNextObject () ;
+    constinArgument_imp.getter_imp (SOURCE_FILE ("systemConfig.galgas", 193)).method_get (enumerator_6975.current_lkey (HERE), var_implementationObject, inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 193)) ;
+    const enumGalgasBool test_1 = var_implementationObject.getter_multiple (SOURCE_FILE ("systemConfig.galgas", 194)).getter_bool (SOURCE_FILE ("systemConfig.galgas", 194)).boolEnum () ;
+    if (kBoolTrue == test_1) {
+      GALGAS_TfieldMapList var_objs = GALGAS_TfieldMapList::constructor_emptyList (SOURCE_FILE ("systemConfig.galgas", 195)) ;
+      cEnumerator_objectKindMap enumerator_7376 (enumerator_6975.current_objectsOfKind (HERE).getter_objects (SOURCE_FILE ("systemConfig.galgas", 196)), kEnumeration_up) ;
+      while (enumerator_7376.hasCurrentObject ()) {
+        GALGAS_TfieldMap var_attrs = callCategoryGetter_fieldMap ((const cPtr_objectAttributes *) enumerator_7376.current_attributes (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 197)) ;
+        var_objs.addAssign_operation (var_attrs  COMMA_SOURCE_FILE ("systemConfig.galgas", 198)) ;
+        enumerator_7376.gotoNextObject () ;
       }
       {
-      routine_addListValue (result_cfg, enumerator_6459.current_lkey (HERE), var_objs, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 176)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 176)) ;
+      routine_addListValue (result_cfg, enumerator_6975.current_lkey (HERE), var_objs, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 200)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 200)) ;
       }
-    }else if (kBoolFalse == test_0) {
-      const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, enumerator_6459.current_objectsOfKind (HERE).getter_objects (SOURCE_FILE ("systemConfig.galgas", 179)).getter_count (SOURCE_FILE ("systemConfig.galgas", 179)).objectCompare (GALGAS_uint ((uint32_t) 1U))).boolEnum () ;
-      if (kBoolTrue == test_1) {
-        GALGAS_TfieldMap var_attrs = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("systemConfig.galgas", 180)) ;
-        cEnumerator_objectKindMap enumerator_7176 (enumerator_6459.current_objectsOfKind (HERE).getter_objects (SOURCE_FILE ("systemConfig.galgas", 181)), kEnumeration_up) ;
-        while (enumerator_7176.hasCurrentObject ()) {
-          var_attrs = callCategoryGetter_fieldMap ((const cPtr_objectAttributes *) enumerator_7176.current_attributes (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 182)) ;
-          enumerator_7176.gotoNextObject () ;
+    }else if (kBoolFalse == test_1) {
+      const enumGalgasBool test_2 = GALGAS_bool (kIsEqual, enumerator_6975.current_objectsOfKind (HERE).getter_objects (SOURCE_FILE ("systemConfig.galgas", 203)).getter_count (SOURCE_FILE ("systemConfig.galgas", 203)).objectCompare (GALGAS_uint ((uint32_t) 1U))).boolEnum () ;
+      if (kBoolTrue == test_2) {
+        GALGAS_TfieldMap var_attrs = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("systemConfig.galgas", 204)) ;
+        cEnumerator_objectKindMap enumerator_7692 (enumerator_6975.current_objectsOfKind (HERE).getter_objects (SOURCE_FILE ("systemConfig.galgas", 205)), kEnumeration_up) ;
+        while (enumerator_7692.hasCurrentObject ()) {
+          var_attrs = callCategoryGetter_fieldMap ((const cPtr_objectAttributes *) enumerator_7692.current_attributes (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 206)) ;
+          enumerator_7692.gotoNextObject () ;
         }
         {
-        routine_addStructValue (result_cfg, enumerator_6459.current_lkey (HERE), var_attrs, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 184)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 184)) ;
+        routine_addStructValue (result_cfg, enumerator_6975.current_lkey (HERE), var_attrs, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 208)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 208)) ;
         }
       }
     }
-    enumerator_6459.gotoNextObject () ;
+    enumerator_6975.gotoNextObject () ;
   }
 //---
   return result_cfg ;

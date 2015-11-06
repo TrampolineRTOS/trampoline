@@ -31,18 +31,24 @@ rule <option_parser_start>
 {
   options = .emptyMap
   repeat
-    $idf$ ?let @lstring key
-    $=$
-    @Ttype  type
-    @Tvalue value
-    select
-      <option_value> ?type ?value
-    or
-      <list_option_value> ?type ?value
-    end
-    [!?options insertKey !key !type ! value] 
+    <option_item> !?options
   while $,$
   end
+}
+
+rule <option_item>
+  ?!@TfieldMap options
+{
+  $idf$ ?let @lstring key
+  $=$
+  @Ttype  type
+  @Tvalue value
+  select
+    <option_value> ?type ?value
+  or
+    <list_option_value> ?type ?value
+  end
+  [!?options insertKey !key !type ! value] 
 }
 
 rule <option_value>
@@ -76,10 +82,25 @@ rule <option_value>
   !@Ttype  type
   !@Tvalue value
 {
+  $float_number$ ?let @ldouble num
+  type = @Ttype.floatType
+  value = valueWithFloat(![num double] !emptyLString())
+}
+
+rule <option_value>
+  !@Ttype  type
+  !@Tvalue value
+{
   $-$
-  $uint_number$ ?let @luint64 num
-  type = @Ttype.intType
-  value = valueWithSigned(!-[[num uint64] sint64] !emptyLString())
+  select
+    $uint_number$ ?let @luint64 num
+    type = @Ttype.intType
+    value = valueWithSigned(!-[[num uint64] sint64] !emptyLString())
+  or
+    $float_number$ ?let @ldouble num
+    type = @Ttype.floatType
+    value = valueWithFloat(!-[num double] !emptyLString())
+  end
 }
 
 rule <list_option_value>

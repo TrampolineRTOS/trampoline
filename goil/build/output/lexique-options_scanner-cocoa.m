@@ -119,20 +119,6 @@
       }else{
         scanningOk = NO ;
       }
-    }else if (scanningOk && ([self testForInputChar:39])) {
-      do {
-        if (scanningOk && ([self testForInputFromChar:32 toChar:33] || [self testForInputFromChar:35 toChar:65533])) {
-          scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_string, mPreviousChar) ;
-        }else{
-          mLoop = NO ;
-        }
-      }while (mLoop && scanningOk) ;
-      mLoop = YES ;
-      if (scanningOk && ([self testForInputChar:39])) {
-        mTokenCode = options_scanner_1_string ;
-      }else{
-        scanningOk = NO ;
-      }
     }else if (scanningOk && ([self testForInputString:@"0x" advance:YES] || [self testForInputString:@"0X" advance:YES])) {
       do {
         if (scanningOk && ([self testForInputFromChar:48 toChar:57] || [self testForInputFromChar:97 toChar:102] || [self testForInputFromChar:65 toChar:70])) {
@@ -177,6 +163,7 @@
       mTokenCode = options_scanner_1__29_ ;
     }else if (scanningOk && [self testForInputString:@"(" advance:YES]) {
       mTokenCode = options_scanner_1__28_ ;
+    }else if (scanningOk && ([self testForInputFromChar:1 toChar:32])) {
     }else if ([self testForInputChar:'\0']) { // End of source text ? 
       mTokenCode = options_scanner_1_ ; // Empty string code
     }else{ // Unknown input character

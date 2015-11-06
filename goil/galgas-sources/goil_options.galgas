@@ -68,7 +68,7 @@ option goil_options {
 @string passOption :
   'o',
   "option"
-  -> "Pass options to the template root script"
+  -> "Pass options to the template root script" default " "
 }
 
 # vim:ft=ggs:ts=4:sw=4

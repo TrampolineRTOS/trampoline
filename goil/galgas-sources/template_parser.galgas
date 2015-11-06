@@ -1194,6 +1194,54 @@ rule <template_instruction>
   returnedType = @Ttype. unconstructedType
 }
 
+#---------------------------------------------------------------------------*
+
+rule <template_instruction>
+  ?let @string inPrefix
+  ?let @string inPath
+  ?let @string inTemplateDirectory
+  ?!@TfieldMap ioTemplateVariableMap
+  ?!@string unused ioResultingString
+  !@Tvalue returnedValue
+  !@Ttype returnedType
+{
+  @bool carriageReturn
+  select
+    $print$ carriageReturn = false
+  or
+    $println$ carriageReturn = true
+  end
+  @Tvalue enumeratedValue
+  @Ttype expressionType
+  <expression>
+    !inPrefix
+    !inPath
+    !inTemplateDirectory
+    !ioTemplateVariableMap
+    ?enumeratedValue
+    ?expressionType
+    
+  switch expressionType
+  case boolType:
+    if [enumeratedValue mInt64Value] == 1LS then
+      message "true"
+    else
+      message "false"
+    end
+  case intType:
+    message [[enumeratedValue mInt64Value] string]
+  case floatType: 
+    message [[enumeratedValue mFloatValue] string]
+  case stringType:
+    message [enumeratedValue mStringValue]
+  case listType, mapType, structType, enumType, functionType, unconstructedType:
+    error @location.here: "Only strings, numbers and booleans my be printed"
+  end
+  if carriageReturn then message "\n" end
+  returnedValue = valueWithVoid()   
+  returnedType = @Ttype. unconstructedType
+}
+
 rule <template_instruction>
   ?let @string inPrefix
   ?let @string inPath

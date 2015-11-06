@@ -89,6 +89,8 @@ list goilTemplateKeyWordList style keywordsStyle error message "the '%K' keyword
   "not",
   "or",
   "prefixedby",
+  "print",
+  "println",
   "repeat",
   "return",
   "sort",

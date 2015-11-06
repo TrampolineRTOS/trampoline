@@ -719,7 +719,7 @@ C_StringCommandLineOption gOption_goil_5F_options_passOption ("goil_options",
                                          111,
                                          "option",
                                          "Pass options to the template root script",
-                                         "") ;
+                                         " ") ;
 
 C_StringCommandLineOption gOption_goil_5F_options_project_5F_dir ("goil_options",
                                          "project_dir",

@@ -47,7 +47,7 @@ void enterOptionsFor_goil_5F_options (NSMutableArray * ioBoolOptionArray,
     commandChar:111
     commandString:@"option"
     comment:@"Pass options to the template root script"
-    defaultValue:@""
+    defaultValue:@" "
   ] ;
   [ioStringOptionArray addObject:option] ;
   option = [[OC_GGS_CommandLineOption alloc]

@@ -6292,6 +6292,11 @@ class cParser_options_5F_parser {
 
   protected : virtual void nt_list_5F_option_5F_value_parse (class C_Lexique_options_5F_scanner * inLexique) = 0 ;
 
+  protected : virtual void nt_option_5F_item_ (class GALGAS_TfieldMap & ioArgument0,
+                                               class C_Lexique_options_5F_scanner * inLexique) = 0 ;
+
+  protected : virtual void nt_option_5F_item_parse (class C_Lexique_options_5F_scanner * inLexique) = 0 ;
+
   protected : virtual void nt_option_5F_parser_5F_start_ (class GALGAS_TfieldMap & outArgument0,
                                                           class C_Lexique_options_5F_scanner * inLexique) = 0 ;
 
@@ -6310,11 +6315,10 @@ class cParser_options_5F_parser {
 
   protected : void rule_options_5F_parser_option_5F_parser_5F_start_i0_parse (C_Lexique_options_5F_scanner * inLexique) ;
 
-  protected : void rule_options_5F_parser_option_5F_value_i1_ (GALGAS_Ttype & outArgument0,
-                                                               GALGAS_Tvalue & outArgument1,
-                                                               C_Lexique_options_5F_scanner * inLexique) ;
+  protected : void rule_options_5F_parser_option_5F_item_i1_ (GALGAS_TfieldMap & ioArgument0,
+                                                              C_Lexique_options_5F_scanner * inLexique) ;
 
-  protected : void rule_options_5F_parser_option_5F_value_i1_parse (C_Lexique_options_5F_scanner * inLexique) ;
+  protected : void rule_options_5F_parser_option_5F_item_i1_parse (C_Lexique_options_5F_scanner * inLexique) ;
 
   protected : void rule_options_5F_parser_option_5F_value_i2_ (GALGAS_Ttype & outArgument0,
                                                                GALGAS_Tvalue & outArgument1,
@@ -6334,11 +6338,23 @@ class cParser_options_5F_parser {
 
   protected : void rule_options_5F_parser_option_5F_value_i4_parse (C_Lexique_options_5F_scanner * inLexique) ;
 
-  protected : void rule_options_5F_parser_list_5F_option_5F_value_i5_ (GALGAS_Ttype & outArgument0,
+  protected : void rule_options_5F_parser_option_5F_value_i5_ (GALGAS_Ttype & outArgument0,
+                                                               GALGAS_Tvalue & outArgument1,
+                                                               C_Lexique_options_5F_scanner * inLexique) ;
+
+  protected : void rule_options_5F_parser_option_5F_value_i5_parse (C_Lexique_options_5F_scanner * inLexique) ;
+
+  protected : void rule_options_5F_parser_option_5F_value_i6_ (GALGAS_Ttype & outArgument0,
+                                                               GALGAS_Tvalue & outArgument1,
+                                                               C_Lexique_options_5F_scanner * inLexique) ;
+
+  protected : void rule_options_5F_parser_option_5F_value_i6_parse (C_Lexique_options_5F_scanner * inLexique) ;
+
+  protected : void rule_options_5F_parser_list_5F_option_5F_value_i7_ (GALGAS_Ttype & outArgument0,
                                                                        GALGAS_Tvalue & outArgument1,
                                                                        C_Lexique_options_5F_scanner * inLexique) ;
 
-  protected : void rule_options_5F_parser_list_5F_option_5F_value_i5_parse (C_Lexique_options_5F_scanner * inLexique) ;
+  protected : void rule_options_5F_parser_list_5F_option_5F_value_i7_parse (C_Lexique_options_5F_scanner * inLexique) ;
 
 
 
@@ -6349,8 +6365,21 @@ class cParser_options_5F_parser {
 
   protected : virtual int32_t select_options_5F_parser_2 (C_Lexique_options_5F_scanner *) = 0 ;
 
+  protected : virtual int32_t select_options_5F_parser_3 (C_Lexique_options_5F_scanner *) = 0 ;
+
 
 } ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                              Function 'valueWithFloat'                                              *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_Tvalue function_valueWithFloat (const class GALGAS_double & constinArgument0,
+                                             const class GALGAS_lstring & constinArgument1,
+                                             class C_Compiler * inCompiler
+                                             COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
