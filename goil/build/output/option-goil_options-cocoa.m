@@ -25,6 +25,15 @@ void enterOptionsFor_goil_5F_options (NSMutableArray * ioBoolOptionArray,
   [ioBoolOptionArray addObject:option] ;
   option = [[OC_GGS_CommandLineOption alloc]
     initWithDomainName:@"goil_options"
+    identifier:@"pierreOption"
+    commandChar:0
+    commandString:@"pierre"
+    comment:@"Special option to pass a galgas bug to Pierre"
+    defaultValue:@""
+  ] ;
+  [ioBoolOptionArray addObject:option] ;
+  option = [[OC_GGS_CommandLineOption alloc]
+    initWithDomainName:@"goil_options"
     identifier:@"warnMultiple"
     commandChar:0
     commandString:@"warn-multiple"
@@ -47,7 +56,7 @@ void enterOptionsFor_goil_5F_options (NSMutableArray * ioBoolOptionArray,
     commandChar:111
     commandString:@"option"
     comment:@"Pass options to the template root script"
-    defaultValue:@" "
+    defaultValue:@""
   ] ;
   [ioStringOptionArray addObject:option] ;
   option = [[OC_GGS_CommandLineOption alloc]

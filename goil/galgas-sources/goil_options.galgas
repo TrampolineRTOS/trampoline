@@ -68,7 +68,12 @@ option goil_options {
 @string passOption :
   'o',
   "option"
-  -> "Pass options to the template root script" default " "
+  -> "Pass options to the template root script" default ""
+
+@bool pierreOption :
+  '\0',
+  "pierre"
+  -> "Special option to pass a galgas bug to Pierre"
 }
 
 # vim:ft=ggs:ts=4:sw=4

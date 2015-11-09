@@ -6404,45 +6404,49 @@ static GALGAS_TfieldMap extensionGetter_applicationDefinition_templateData (cons
   }
   GALGAS_TfieldMap var_opts = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("systemConfig.galgas", 181)) ;
   GALGAS_string var_optionString = extensionGetter_trimRight (extensionGetter_trimLeft (GALGAS_string (gOption_goil_5F_options_passOption.getter_value ()), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 182)), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 182)) ;
-  const enumGalgasBool test_0 = GALGAS_bool (kIsStrictSup, var_optionString.getter_length (SOURCE_FILE ("systemConfig.galgas", 183)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
-  if (kBoolTrue == test_0) {
+  GALGAS_bool test_0 = GALGAS_bool (kIsStrictSup, var_optionString.getter_length (SOURCE_FILE ("systemConfig.galgas", 183)).objectCompare (GALGAS_uint ((uint32_t) 0U))) ;
+  if (kBoolTrue != test_0.boolEnum ()) {
+    test_0 = GALGAS_bool (gOption_goil_5F_options_pierreOption.getter_value ()) ;
+  }
+  const enumGalgasBool test_1 = test_0.boolEnum () ;
+  if (kBoolTrue == test_1) {
     var_opts.drop () ;
     cGrammar_options_5F_grammar::_performSourceStringParsing_ (inCompiler, GALGAS_string (gOption_goil_5F_options_passOption.getter_value ()), GALGAS_string ("Passed options"), var_opts  COMMA_SOURCE_FILE ("systemConfig.galgas", 184)) ;
   }
   {
   routine_addStructValue (result_cfg, function_lstringWith (GALGAS_string ("PASSEDOPTIONS"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 186)), var_opts, function_lstringWith (GALGAS_string ("Passed options from command line"), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 186)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 186)) ;
   }
-  cEnumerator_objectsMap enumerator_6975 (object->mAttribute_objects, kEnumeration_up) ;
-  while (enumerator_6975.hasCurrentObject ()) {
+  cEnumerator_objectsMap enumerator_7019 (object->mAttribute_objects, kEnumeration_up) ;
+  while (enumerator_7019.hasCurrentObject ()) {
     GALGAS_implementationObject var_implementationObject ;
-    constinArgument_imp.getter_imp (SOURCE_FILE ("systemConfig.galgas", 193)).method_get (enumerator_6975.current_lkey (HERE), var_implementationObject, inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 193)) ;
-    const enumGalgasBool test_1 = var_implementationObject.getter_multiple (SOURCE_FILE ("systemConfig.galgas", 194)).getter_bool (SOURCE_FILE ("systemConfig.galgas", 194)).boolEnum () ;
-    if (kBoolTrue == test_1) {
+    constinArgument_imp.getter_imp (SOURCE_FILE ("systemConfig.galgas", 193)).method_get (enumerator_7019.current_lkey (HERE), var_implementationObject, inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 193)) ;
+    const enumGalgasBool test_2 = var_implementationObject.getter_multiple (SOURCE_FILE ("systemConfig.galgas", 194)).getter_bool (SOURCE_FILE ("systemConfig.galgas", 194)).boolEnum () ;
+    if (kBoolTrue == test_2) {
       GALGAS_TfieldMapList var_objs = GALGAS_TfieldMapList::constructor_emptyList (SOURCE_FILE ("systemConfig.galgas", 195)) ;
-      cEnumerator_objectKindMap enumerator_7376 (enumerator_6975.current_objectsOfKind (HERE).getter_objects (SOURCE_FILE ("systemConfig.galgas", 196)), kEnumeration_up) ;
-      while (enumerator_7376.hasCurrentObject ()) {
-        GALGAS_TfieldMap var_attrs = callCategoryGetter_fieldMap ((const cPtr_objectAttributes *) enumerator_7376.current_attributes (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 197)) ;
+      cEnumerator_objectKindMap enumerator_7420 (enumerator_7019.current_objectsOfKind (HERE).getter_objects (SOURCE_FILE ("systemConfig.galgas", 196)), kEnumeration_up) ;
+      while (enumerator_7420.hasCurrentObject ()) {
+        GALGAS_TfieldMap var_attrs = callCategoryGetter_fieldMap ((const cPtr_objectAttributes *) enumerator_7420.current_attributes (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 197)) ;
         var_objs.addAssign_operation (var_attrs  COMMA_SOURCE_FILE ("systemConfig.galgas", 198)) ;
-        enumerator_7376.gotoNextObject () ;
+        enumerator_7420.gotoNextObject () ;
       }
       {
-      routine_addListValue (result_cfg, enumerator_6975.current_lkey (HERE), var_objs, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 200)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 200)) ;
+      routine_addListValue (result_cfg, enumerator_7019.current_lkey (HERE), var_objs, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 200)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 200)) ;
       }
-    }else if (kBoolFalse == test_1) {
-      const enumGalgasBool test_2 = GALGAS_bool (kIsEqual, enumerator_6975.current_objectsOfKind (HERE).getter_objects (SOURCE_FILE ("systemConfig.galgas", 203)).getter_count (SOURCE_FILE ("systemConfig.galgas", 203)).objectCompare (GALGAS_uint ((uint32_t) 1U))).boolEnum () ;
-      if (kBoolTrue == test_2) {
+    }else if (kBoolFalse == test_2) {
+      const enumGalgasBool test_3 = GALGAS_bool (kIsEqual, enumerator_7019.current_objectsOfKind (HERE).getter_objects (SOURCE_FILE ("systemConfig.galgas", 203)).getter_count (SOURCE_FILE ("systemConfig.galgas", 203)).objectCompare (GALGAS_uint ((uint32_t) 1U))).boolEnum () ;
+      if (kBoolTrue == test_3) {
         GALGAS_TfieldMap var_attrs = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("systemConfig.galgas", 204)) ;
-        cEnumerator_objectKindMap enumerator_7692 (enumerator_6975.current_objectsOfKind (HERE).getter_objects (SOURCE_FILE ("systemConfig.galgas", 205)), kEnumeration_up) ;
-        while (enumerator_7692.hasCurrentObject ()) {
-          var_attrs = callCategoryGetter_fieldMap ((const cPtr_objectAttributes *) enumerator_7692.current_attributes (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 206)) ;
-          enumerator_7692.gotoNextObject () ;
+        cEnumerator_objectKindMap enumerator_7736 (enumerator_7019.current_objectsOfKind (HERE).getter_objects (SOURCE_FILE ("systemConfig.galgas", 205)), kEnumeration_up) ;
+        while (enumerator_7736.hasCurrentObject ()) {
+          var_attrs = callCategoryGetter_fieldMap ((const cPtr_objectAttributes *) enumerator_7736.current_attributes (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 206)) ;
+          enumerator_7736.gotoNextObject () ;
         }
         {
-        routine_addStructValue (result_cfg, enumerator_6975.current_lkey (HERE), var_attrs, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 208)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 208)) ;
+        routine_addStructValue (result_cfg, enumerator_7019.current_lkey (HERE), var_attrs, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 208)), inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 208)) ;
         }
       }
     }
-    enumerator_6975.gotoNextObject () ;
+    enumerator_7019.gotoNextObject () ;
   }
 //---
   return result_cfg ;

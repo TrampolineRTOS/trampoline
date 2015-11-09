@@ -689,6 +689,12 @@ C_BoolCommandLineOption gOption_goil_5F_options_generate_5F_log ("goil_options",
                                          "logfile",
                                          "generate a goil.log file containing the a log of the compilation") ;
 
+C_BoolCommandLineOption gOption_goil_5F_options_pierreOption ("goil_options",
+                                         "pierreOption",
+                                         0,
+                                         "pierre",
+                                         "Special option to pass a galgas bug to Pierre") ;
+
 C_BoolCommandLineOption gOption_goil_5F_options_warnMultiple ("goil_options",
                                          "warnMultiple",
                                          0,
@@ -719,7 +725,7 @@ C_StringCommandLineOption gOption_goil_5F_options_passOption ("goil_options",
                                          111,
                                          "option",
                                          "Pass options to the template root script",
-                                         " ") ;
+                                         "") ;
 
 C_StringCommandLineOption gOption_goil_5F_options_project_5F_dir ("goil_options",
                                          "project_dir",

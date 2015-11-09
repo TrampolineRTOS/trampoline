@@ -6199,6 +6199,8 @@ void callCategoryMethod_checkObjectReferences (const class cPtr_implementation *
 
 extern C_BoolCommandLineOption gOption_goil_5F_options_generate_5F_log ;
 
+extern C_BoolCommandLineOption gOption_goil_5F_options_pierreOption ;
+
 extern C_BoolCommandLineOption gOption_goil_5F_options_warnMultiple ;
 
 //---------------------------------------------------------------------------------------------------------------------*

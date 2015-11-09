@@ -180,7 +180,7 @@ getter @applicationDefinition templateData
   # Parse the -o option
   @TfieldMap opts = .emptyMap
   @string optionString = [[[option goil_options.passOption value] trimLeft] trimRight]
-  if [optionString length] > 0 then
+  if [optionString length] > 0 || [option goil_options.pierreOption value] then
     grammar options_grammar on ([option goil_options.passOption value],"Passed options") ?opts
   end
   addStructValue(!?cfg !lstringWith(!"PASSEDOPTIONS") !opts !lstringWith(!"Passed options from command line"))
