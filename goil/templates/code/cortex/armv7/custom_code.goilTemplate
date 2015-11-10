@@ -27,14 +27,9 @@ write to PROJECT."/tpl_vectors.c":
  template tpl_interrupt_vectors in code
 end write
 
-write to PROJECT."/tpl_first_stage_irq.S":
- let EXTENSIONFIRSTSTAGE := "S"
- template tpl_first_stage_irq in code
-end write
-
-write to PROJECT."/tpl_second_stage_irq.S":
+write to PROJECT."/tpl_primary_irq.S":
  let EXTENSIONSECONDSTAGE := "S"
- template tpl_second_stage_irq in code
+ template tpl_primary_irq in code
 end write
 
 write to PROJECT."/cmsis_wrapper.h":

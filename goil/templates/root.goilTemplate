@@ -1302,6 +1302,36 @@ repeat
 while added
 end repeat  
 
+#------------------------------------------------------------------------------*
+# build the maps for IRQ
+# Used into interrupt_table.goilTemplate
+
+let objForIRQ := emptymap
+
+# Map ISR into objForIRQ
+foreach isr in ISR do
+  let key := isr::SOURCE
+  if not exists objForIRQ[key] then
+    let objForIRQ[key] := emptylist
+  end if
+  let isr::KIND := "ISR"
+  let objForIRQ[key] += isr
+end foreach
+
+# Map COUNTER into objForIRQ
+foreach cnt in COUNTER do
+  let key := cnt::SOURCE
+  if not exists objForIRQ[key] then
+    let objForIRQ[key] := emptylist
+  end if
+  let cnt::KIND := "COUNTER"
+  let objForIRQ[key] += cnt
+end foreach
+
+let INTERRUPTMAP := mapof INTERRUPT by NAME
+
+#------------------------------------------------------------------------------*
+
 %
 Goil run on % !TIMESTAMP%
 Generated files are:
@@ -1404,3 +1434,4 @@ template if exists custom_code in code
 write to PROJECT."/stm_structure.c":
   template stm_structure_c in code
 end write
+

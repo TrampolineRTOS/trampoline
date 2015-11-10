@@ -12,28 +12,26 @@ volatile VAR(uint32, OS_VAR) tpl_time_counter = 0;
 #include "tpl_memmap.h"
 %
 
-foreach interrupt in INTERRUPT do
-  let counterFct := emptylist
-  foreach counter in COUNTERS do
-    if counter::SOURCE == interrupt::NAME then
-      let counterFct += counter::NAME
+foreach objList in objForIRQ do
+  let counterList := emptylist
+  foreach obj in objList do
+    if obj::KIND == "COUNTER" then
+      let counterList += obj
     end if
-  end foreach
-  foreach cpt_fct in counterFct
-    before
-%
-FUNC(tpl_bool, OS_CODE) tpl_tick_% !interrupt::NAME %()
+    if [counterList length] > 0 then
+    %
+FUNC(tpl_bool, OS_CODE) tpl_tick_% !obj::NAME %(void)
 {
 %
-    do
-      %  tpl_counter_tick(&% !cpt_fct::VALUE %_counter_desc);
+      foreach elt in counterList do
+        %  tpl_counter_tick(&% !elt::NAME %_counter_desc);
 %
-      if interrupt::NAME == "SysTick" then
+        if elt::SOURCE == "SysTick" then
         %  tpl_time_counter++;
 %
-      end if
-    after 
-if OS::NUMBER_OF_CORES == 1 then
+        end if
+      end foreach
+    if OS::NUMBER_OF_CORES == 1 then
 %
   if (tpl_kern.need_schedule == TRUE)
   {
@@ -41,7 +39,7 @@ if OS::NUMBER_OF_CORES == 1 then
     LOCAL_SWITCH_CONTEXT()
   }
 %
-else
+    else
 %
   GET_CURRENT_CORE_ID(core_id)
   tpl_multi_schedule();
@@ -51,13 +49,15 @@ else
     LOCAL_SWITCH_CONTEXT()
   }
 %
-end if
+    end if
 %
   return TRUE;
 }
 %
+    end if
   end foreach
 end foreach
+
 %
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
