@@ -39,6 +39,13 @@ FUNC(int, OS_APPL_CODE) main(void)
   StartOS(OSDEFAULTAPPMODE);
   return 0;
 }
+
+FUNC(void, OS_CODE) PanicHook(VAR(uint8, AUTOMATIC) fault)
+{
+  pinMode(7, OUTPUT);
+  digitalWrite(7, HIGH);
+}
+
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 

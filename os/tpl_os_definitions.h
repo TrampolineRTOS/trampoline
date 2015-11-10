@@ -588,57 +588,6 @@ extern CONST(TickType, OS_CONST) OSMINCYCLE_##counter_id
  */
 #define PREEMPTABLE_MASK    0x4
 
-/**
- * @def tpl_is_basic
- *
- * @param obj exec object to test
- *
- * true if obj is a basic task
- */
-#define tpl_is_basic(obj)     \
-    ((obj->static_desc->type & MASK_EXECTYPE) == TASK_BASIC)
-
-/**
- * @def tpl_is_extended
- *
- * @param obj exec object to test
- *
- * true if obj is an extended task
- */
-#define tpl_is_extended(obj)  \
-    ((obj->static_desc->type & MASK_EXECTYPE) == TASK_EXTENDED)
-
-/**
- * @def tpl_is_full_preemptable
- *
- * @param obj exec object to test
- *
- * true if obj is preemptable
- */
-#define tpl_is_full_preemptable(obj)   \
-    ((obj->static_desc->type & PREEMPTABLE_MASK) == FULL_PREEMTABLE_TASK)
-
-/**
- * @def tpl_is_non_preemptable
- *
- * @param obj exec object to test
- *
- * true if obj is not preemptable
- */
-#define tpl_is_non_preemptable(obj)    \
-    ((obj->static_desc->type & PREEMPTABLE_MASK) == NON_PREEMPTABLE_TASK)
-
-/**
- * @def tpl_is_isr
- *
- * @param obj exec object to test
- *
- * true if obj is an ISR
- */
-#define tpl_is_isr(obj)     \
-    ((obj->static_desc->type & MASK_EXECTYPE) == IS_ROUTINE)
-
-
 
 #if WITH_AUTOSAR == YES
 /**
@@ -667,6 +616,31 @@ extern CONST(TickType, OS_CONST) OSMINCYCLE_##counter_id
 #define LOCKED_LOCK         1
 
 #endif
+
+/**
+ * @def PANIC_NMI
+ */
+#define PANIC_NMI         1
+
+/**
+ * @def PANIC_HARDFAULT
+ */
+#define PANIC_HARDFAULT   2
+
+/**
+ * @def PANIC_MEMMANAGE
+ */
+#define PANIC_MEMMANAGE   3
+
+/**
+ * @def PANIC_BUSFAULT
+ */
+#define PANIC_BUSFAULT    4
+
+/**
+ * @def PANIC_USAGEFAULT
+ */
+#define PANIC_USAGEFAULT  5
 
 #endif /* TPL_OS_DEFINITIONS_H */
 

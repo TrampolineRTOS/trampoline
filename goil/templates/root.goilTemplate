@@ -1269,10 +1269,9 @@ end foreach
 #------------------------------------------------------------------------------*
 # build the library tree dependencies
 #
+let AVAILABLELIB := emptymap
 if exists LIBRARY then
   let AVAILABLELIB := mapof LIBRARY by NAME
-else
-  let AVAILABLELIB := emptymap
 end if
 
 let USEDLIB := emptymap

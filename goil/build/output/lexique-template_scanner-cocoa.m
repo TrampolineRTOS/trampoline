@@ -89,7 +89,7 @@ static NSArray * kTemplateDefinitionArray_template_5F_scanner ;
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const BOOL kEndOfScriptInTemplateArray_template_5F_scanner [96] = {
+static const BOOL kEndOfScriptInTemplateArray_template_5F_scanner [98] = {
   NO /* identifier */,
   NO /* functionContent */,
   NO /* literal_double */,
@@ -136,6 +136,8 @@ static const BOOL kEndOfScriptInTemplateArray_template_5F_scanner [96] = {
   NO /* not */,
   NO /* or */,
   NO /* prefixedby */,
+  NO /* print */,
+  NO /* println */,
   NO /* repeat */,
   NO /* return */,
   NO /* sort */,
@@ -195,7 +197,7 @@ static const BOOL kEndOfScriptInTemplateArray_template_5F_scanner [96] = {
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const C_cocoa_lexique_table_entry ktable_for_template_5F_scanner_goilTemplateKeyWordList [47] = {
+static const C_cocoa_lexique_table_entry ktable_for_template_5F_scanner_goilTemplateKeyWordList [49] = {
   {"by", template_scanner_1_by},
   {"do", template_scanner_1_do},
   {"if", template_scanner_1_if},
@@ -224,6 +226,7 @@ static const C_cocoa_lexique_table_entry ktable_for_template_5F_scanner_goilTemp
   {"error", template_scanner_1_error},
   {"false", template_scanner_1_false},
   {"mapof", template_scanner_1_mapof},
+  {"print", template_scanner_1_print},
   {"while", template_scanner_1_while},
   {"write", template_scanner_1_write},
   {"before", template_scanner_1_before},
@@ -236,6 +239,7 @@ static const C_cocoa_lexique_table_entry ktable_for_template_5F_scanner_goilTemp
   {"default", template_scanner_1_default},
   {"display", template_scanner_1_display},
   {"foreach", template_scanner_1_foreach},
+  {"println", template_scanner_1_println},
   {"warning", template_scanner_1_warning},
   {"emptymap", template_scanner_1_emptymap},
   {"function", template_scanner_1_function},
@@ -246,7 +250,7 @@ static const C_cocoa_lexique_table_entry ktable_for_template_5F_scanner_goilTemp
 } ;
 
 static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSString * inSearchedString) {
-  return searchStringInTable (inSearchedString, ktable_for_template_5F_scanner_goilTemplateKeyWordList, 47) ;
+  return searchStringInTable (inSearchedString, ktable_for_template_5F_scanner_goilTemplateKeyWordList, 49) ;
 }
 
 
@@ -532,7 +536,7 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (NSUInteger) terminalVocabularyCount {
-  return 96 ;
+  return 98 ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -562,7 +566,7 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (NSUInteger) styleIndexForTerminal: (NSInteger) inTerminal {
-  static const NSUInteger kTerminalSymbolStyles [97] = {0,
+  static const NSUInteger kTerminalSymbolStyles [99] = {0,
     0 /* template_scanner_1_identifier */,
     0 /* template_scanner_1_functionContent */,
     5 /* template_scanner_1_literal_5F_double */,
@@ -609,6 +613,8 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
     1 /* template_scanner_1_not */,
     1 /* template_scanner_1_or */,
     1 /* template_scanner_1_prefixedby */,
+    1 /* template_scanner_1_print */,
+    1 /* template_scanner_1_println */,
     1 /* template_scanner_1_repeat */,
     1 /* template_scanner_1_return */,
     1 /* template_scanner_1_sort */,
@@ -670,7 +676,7 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (BOOL) atomicSelectionForToken: (NSUInteger) inTokenIndex {
-  static const BOOL kTerminalAtomicSelection [97] = {NO,
+  static const BOOL kTerminalAtomicSelection [99] = {NO,
     YES /* template_scanner_1_identifier */,
     YES /* template_scanner_1_functionContent */,
     YES /* template_scanner_1_literal_5F_double */,
@@ -717,6 +723,8 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
     YES /* template_scanner_1_not */,
     YES /* template_scanner_1_or */,
     YES /* template_scanner_1_prefixedby */,
+    YES /* template_scanner_1_print */,
+    YES /* template_scanner_1_println */,
     YES /* template_scanner_1_repeat */,
     YES /* template_scanner_1_return */,
     YES /* template_scanner_1_sort */,

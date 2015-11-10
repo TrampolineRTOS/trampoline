@@ -64,13 +64,18 @@ typedef struct {
   VAR(uint32, TYPEDEF) FTM_INVCTRL;     /**< FTM inverting control          */
   VAR(uint32, TYPEDEF) FTM_SWOCTRL;     /**< FTM software output control    */
   VAR(uint32, TYPEDEF) FTM_PWMLOAD;     /**< FTM PWM load                   */
-  CONST(uint32, TYPEDEF) garbage[0x3DA];
 } ftm;
 
+static CONSTP2VAR(ftm, OS_CONST, OS_VAR) ftm_adress[3] = {
+  (ftm *)0x40038000,
+  (ftm *)0x40039000,
+  (ftm *)0x400B8000
+};
+
 /*
- * So access to a FTM is done using FTM_TIMER[n]. n being 0, 1 or 2
+ * So access to a FTM is done using FTM_TIMER(n). n being 0, 1 or 2
  */
-#define FTM_TIMER  ((volatile ftm *)0x40038000)
+#define FTM_TIMER(n)  (*ftm_adress[n])
 
 /**
  * Enable clock gating for the FTM.
@@ -137,11 +142,11 @@ INLINE_FUNC(tpl_status, OS_CODE) FTMDisableClock(
  * @return E_OS_VALUE timer is out of range
  *
  * This is done by setting bits SP, WP et TP to 0 in corresponding PACR
- * register. 
+ * register.
  * - PACRH of AIPS0, slot 0 for FTM0
  * - PACRH of AIPS0, slot 1 for FTM1
  * - PACRH of AIPS1, slot 0 for FTM2
- * 
+ *
  * See pages 147 and 345-361 of the mk20dx256 manual.
  */
 INLINE_FUNC(tpl_status, OS_CODE) FTMEnableUserAccess(
@@ -179,9 +184,9 @@ INLINE_FUNC(tpl_status, OS_CODE) FTMEnableProtection(
   CONST(uint32, AUTOMATIC) timer)
 {
   if (timer > 2) return E_OS_VALUE;
-  FTM_TIMER[timer].FTM_MODE &= ~FTM_MODE_WPDIS;
-  return E_OK;  
-} 
+  FTM_TIMER(timer).FTM_MODE &= ~FTM_MODE_WPDIS;
+  return E_OK;
+}
 
 /**
  *
@@ -200,9 +205,9 @@ INLINE_FUNC(tpl_status, OS_CODE) FTMDisableProtection(
   CONST(uint32, AUTOMATIC) timer)
 {
   if (timer > 2) return E_OS_VALUE;
-  FTM_TIMER[timer].FTM_MODE |= FTM_MODE_WPDIS;
-  return E_OK;  
-} 
+  FTM_TIMER(timer).FTM_MODE |= FTM_MODE_WPDIS;
+  return E_OK;
+}
 
 /**
  *
@@ -221,11 +226,11 @@ INLINE_FUNC(tpl_status, OS_CODE) FTMDisableProtection(
 INLINE_FUNC(tpl_bool, OS_CODE) FTMOverflow(
   CONST(uint32, AUTOMATIC) timer)
 {
-  if (timer < 3) 
+  if (timer < 3)
   {
     /* Get a boolean result according to TOF bit */
     CONST(tpl_bool, AUTOMATIC) overflow =
-      (FTM_TIMER[timer].FTM_SC & FTM_SC_TOF) != 0;
+      (FTM_TIMER(timer).FTM_SC & FTM_SC_TOF) != 0;
     return overflow;
   }
   else return FALSE;
@@ -247,12 +252,12 @@ INLINE_FUNC(tpl_bool, OS_CODE) FTMAcknowledgeTimerInterrupt(
   CONST(uint32, AUTOMATIC) timer)
 {
   if (timer < 3)
-  {  
+  {
     /* Get a boolean result according to TOF bit */
     CONST(tpl_bool, AUTOMATIC) overflow =
-      (FTM_TIMER[timer].FTM_SC & FTM_SC_TOF) != 0;
+      (FTM_TIMER(timer).FTM_SC & FTM_SC_TOF) != 0;
     /* Reset the TOF bit */
-    FTM_TIMER[timer].FTM_SC &= ~FTM_SC_TOF;
+    FTM_TIMER(timer).FTM_SC &= ~FTM_SC_TOF;
     return overflow;
   }
   else return FALSE;
@@ -273,7 +278,7 @@ INLINE_FUNC(tpl_status, OS_CODE) FTMEnableTimerInterrupt(
   CONST(uint32, AUTOMATIC) timer)
 {
   if (timer > 2) return E_OS_VALUE;
-  FTM_TIMER[timer].FTM_SC |= FTM_SC_TOIE;
+  FTM_TIMER(timer).FTM_SC |= FTM_SC_TOIE;
   return E_OK;
 }
 
@@ -292,7 +297,7 @@ INLINE_FUNC(tpl_status, OS_CODE) FTMDisableTimerInterrupt(
   CONST(uint32, AUTOMATIC) timer)
 {
   if (timer > 2) return E_OS_VALUE;
-  FTM_TIMER[timer].FTM_SC &= ~FTM_SC_TOIE;
+  FTM_TIMER(timer).FTM_SC &= ~FTM_SC_TOIE;
   return E_OK;
 }
 
@@ -319,8 +324,8 @@ INLINE_FUNC(tpl_status, OS_CODE) FTMSetClockSource(
 {
   if (timer > 2) return E_OS_VALUE;
   if (clock > 3) return E_OS_NOFUNC;
-  FTM_TIMER[timer].FTM_SC &= ~FTM_SC_CLKS(0x03); /* reset field to no clock */
-  FTM_TIMER[timer].FTM_SC |= FTM_SC_CLKS(clock);
+  FTM_TIMER(timer).FTM_SC &= ~FTM_SC_CLKS(0x03); /* reset field to no clock */
+  FTM_TIMER(timer).FTM_SC |= FTM_SC_CLKS(clock);
   return E_OK;
 }
 
@@ -338,7 +343,7 @@ INLINE_FUNC(tpl_status, OS_CODE) FTMStopCounter(
   CONST(uint32, AUTOMATIC) timer)
 {
   if (timer > 2) return E_OS_VALUE;
-  FTM_TIMER[timer].FTM_SC &= ~FTM_SC_CLKS(0x03); /* reset field to no clock */
+  FTM_TIMER(timer).FTM_SC &= ~FTM_SC_CLKS(0x03); /* reset field to no clock */
   return E_OK;
 }
 
@@ -356,7 +361,7 @@ INLINE_FUNC(tpl_status, OS_CODE) FTMSetUpCounting(
   CONST(uint32, AUTOMATIC) timer)
 {
   if (timer > 2) return E_OS_VALUE;
-  FTM_TIMER[timer].FTM_SC &= ~FTM_SC_CPWMS; /* CPWMS = 0 */
+  FTM_TIMER(timer).FTM_SC &= ~FTM_SC_CPWMS; /* CPWMS = 0 */
   return E_OK;
 }
 
@@ -374,7 +379,7 @@ INLINE_FUNC(tpl_status, OS_CODE) FTMSetUpDownCounting(
   CONST(uint32, AUTOMATIC) timer)
 {
   if (timer > 2) return E_OS_VALUE;
-  FTM_TIMER[timer].FTM_SC |= FTM_SC_CPWMS; /* CPWMS = 1 */
+  FTM_TIMER(timer).FTM_SC |= FTM_SC_CPWMS; /* CPWMS = 1 */
   return E_OK;
 }
 
@@ -390,7 +395,7 @@ INLINE_FUNC(tpl_status, OS_CODE) FTMSetUpDownCounting(
  *
  * See page 781 of the mk20dx256 manual.
  */
- 
+
 /* Corresponding prescaler values */
 #define FTM_PS_1    0x00ul
 #define FTM_PS_2    0x01ul
@@ -406,8 +411,8 @@ INLINE_FUNC(tpl_status, OS_CODE) FTMSetPrescaler(
   CONST(uint32, AUTOMATIC) prescaler)
 {
   if (timer > 2) return E_OS_VALUE;
-  FTM_TIMER[timer].FTM_SC &= FTM_SC_PS(7);          /* Reset prescaler to 0 */
-  FTM_TIMER[timer].FTM_SC |= FTM_SC_PS(prescaler);  /* Set the new value    */
+  FTM_TIMER(timer).FTM_SC &= FTM_SC_PS(7);          /* Reset prescaler to 0 */
+  FTM_TIMER(timer).FTM_SC |= FTM_SC_PS(prescaler);  /* Set the new value    */
   return E_OK;
 }
 
@@ -425,8 +430,8 @@ INLINE_FUNC(uint32, OS_CODE) FTMCounterValue(
   CONST(uint32, AUTOMATIC) timer)
 {
   if (timer > 2) return 0;
-  return FTM_TIMER[timer].FTM_CNT;
-} 
+  return FTM_TIMER(timer).FTM_CNT;
+}
 
 /**
  * Reset the value of the counter to its min value
@@ -443,9 +448,9 @@ INLINE_FUNC(uint32, OS_CODE) FTMResetCounterValue(
 {
   if (timer > 2) return E_OS_VALUE;
   /* Writing any value to CNT reset the counter to its min value (CNTIN) */
-  FTM_TIMER[timer].FTM_CNT = 0;
+  FTM_TIMER(timer).FTM_CNT = 0;
   return E_OK;
-} 
+}
 
 /**
  * Set the minimum counter value aka FTMx_CNTIN
@@ -462,7 +467,7 @@ INLINE_FUNC(tpl_status, OS_CODE) FTMSetMinCounterValue(
   CONST(uint32, AUTOMATIC) value)
 {
   if (timer > 2) return E_OS_VALUE;
-  FTM_TIMER[timer].FTM_CNTIN = value;
+  FTM_TIMER(timer).FTM_CNTIN = value;
   return E_OK;
 }
 
@@ -481,7 +486,7 @@ INLINE_FUNC(tpl_status, OS_CODE) FTMSetMaxCounterValue(
   CONST(uint32, AUTOMATIC) value)
 {
   if (timer > 2) return E_OS_VALUE;
-  FTM_TIMER[timer].FTM_MOD = value;
+  FTM_TIMER(timer).FTM_MOD = value;
   return E_OK;
 }
 

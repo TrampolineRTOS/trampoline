@@ -55,10 +55,59 @@ rule <sign> !@bool signed
 rule <implementation_definition>
   ?!@implementation implementation {
   $IMPLEMENTATION$ $idf$ ?var @lstring implementationName ${$
+  <implementation_object_list> !?implementation
+  $}$ $;$
+}
+
+rule <implementation_object_list>
+  ?!@implementation implementation
+{
   repeat
   while <implementation_objects> !?implementation $;$
+  while <include_implementation_level> !?implementation
   end
-  $}$ $;$
+}
+
+rule <include_implementation_level>
+  ?!@implementation implementation
+{
+  @bool includeIfExists = false
+  select
+    $include$
+  or
+    $includeifexists$ includeIfExists = true
+  end
+  @lstring file_name
+  select
+    $g_string$ ?file_name
+    file_in_path ( !?file_name)
+  or
+    $string$ ?file_name
+  end
+  if not includeIfExists || (includeIfExists && [file_name fileExists]) then
+    grammar goil_implementation_level_include in file_name !?implementation
+  end  
+}
+
+rule <include_type_level>
+  ?!@implementationObjectMap objectAttributes
+{
+  @bool includeIfExists = false
+  select
+    $include$
+  or
+    $includeifexists$ includeIfExists = true
+  end
+  @lstring file_name
+  select
+    $g_string$ ?file_name
+    file_in_path ( !?file_name)
+  or
+    $string$ ?file_name
+  end
+  if not includeIfExists || (includeIfExists && [file_name fileExists]) then
+    grammar goil_type_level_include in file_name !?objectAttributes
+  end
 }
 
 #routine addToImplementation
@@ -98,7 +147,10 @@ rule <implementation_objects>
   end
 
   @implementationObjectMap objectAttributes = .emptyMap
+
+  ${$
   <implementation_list> !?objectAttributes
+  $}$
   
   @implementationObject newObject = .new { !multiple !objectAttributes }
   
@@ -129,8 +181,8 @@ rule <implementation_objects>
 }
 
 rule <implementation_list>
-  ?!@implementationObjectMap objectAttributes {
-  ${$
+  ?!@implementationObjectMap objectAttributes
+{
   repeat
   while
     @lstring attributeName
@@ -152,8 +204,9 @@ rule <implementation_list>
       [!?objectAttributes put !attributeName !type]
     end
     $;$
+  while
+    <include_type_level> !?objectAttributes
   end
-  $}$
 }
 
 rule <implementation_type>
@@ -188,8 +241,10 @@ rule <struct_options>
   !@lstring name
   !@impType options {
   var structAttributes =@implementationObjectMap.emptyMap{}
-  select 
+  select
+    ${$ 
     <implementation_list> !?structAttributes
+    $}$
   or end
   <identifier_or_attribute> ?name
   @bool multiple
@@ -259,15 +314,19 @@ rule <boolean_options>
   select
     $[$
     $TRUE$
-    select 
+    select
+      ${$ 
       <implementation_list> !?trueSubAttributes
+      $}$
     or
       trueSubAttributes = @implementationObjectMap. emptyMap
     end
     $,$
     $FALSE$
-    select 
+    select
+      ${$ 
       <implementation_list> !?falseSubAttributes
+      $}$
     or
       falseSubAttributes = @implementationObjectMap. emptyMap
     end
@@ -296,7 +355,9 @@ rule <enum_item>
   var subAttributes =@implementationObjectMap.emptyMap{}
   <identifier_or_enum_value> ?enumItem
   select
+    ${$
     <implementation_list> !?subAttributes
+    $}$
   or end
   [!?items put !enumItem !subAttributes]
 }

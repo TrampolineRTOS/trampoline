@@ -126,6 +126,20 @@
 #   define CALL_OSAPPLICATION_SHUTDOWN_HOOKS()
 #endif
 
+/**
+ * @def CALL_PANIC_HOOK
+ *
+ * Generate a call to the panic hook
+ */
+#if WITH_PANIC_HOOK == YES
+#   define CALL_PANIC_HOOK(fault)   \
+    SET_RUNNING_TRUSTED             \
+    PanicHook(fault);               \
+    RESET_RUNNING_TRUSTED
+#else
+#   define CALL_PANIC_HOOK(error)
+#endif
+
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
@@ -155,6 +169,13 @@ extern FUNC(void, OS_CODE) StartupHook(void);
  * Prototype of the shutdown hook routine
  */
 extern FUNC(void, OS_CODE) ShutdownHook(VAR(StatusType, AUTOMATIC) error);
+#endif
+
+#if WITH_PANIC_HOOK == YES
+/**
+ * Prototype of the shutdown hook routine
+ */
+extern FUNC(void, OS_CODE) PanicHook(VAR(uint8, AUTOMATIC) fault);
 #endif
 
 #define OS_STOP_SEC_CODE

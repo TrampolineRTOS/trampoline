@@ -131,9 +131,30 @@ getter @objectAttributes fieldMap
   end
 }
 
+getter @string trimLeft
+  -> @string result
+{
+  if [self leftSubString !1] == " " then
+    result = [[self rightSubString ![self length]-1] trimLeft]
+  else
+    result = self
+  end
+}
+
+getter @string trimRight
+  -> @string result
+{
+  if [self rightSubString !1] == " " then
+    result = [[self leftSubString ![self length]-1] trimRight]
+  else
+    result = self
+  end
+}
+
 getter @applicationDefinition templateData
   ?let @implementation imp
-  ->@TfieldMap cfg {
+  ->@TfieldMap cfg
+{
   cfg = @TfieldMap. emptyMap
 
 #  log objects;
@@ -155,6 +176,14 @@ getter @applicationDefinition templateData
   addListValue( !?cfg !lstringWith(!"TARGETPATHLIST") !targetPathList() !lstringWith(!"target path list"))
   # Other options of goil
   addBoolValue ( !?cfg !lstringWith(!"LOGFILE") ![option goil_options.generate_log value] !lstringWith(!"Generated a logfile"))
+  
+  # Parse the -o option
+  @TfieldMap opts = .emptyMap
+  @string optionString = [[[option goil_options.passOption value] trimLeft] trimRight]
+  if [optionString length] > 0 || [option goil_options.pierreOption value] then
+    grammar options_grammar on ([option goil_options.passOption value],"Passed options") ?opts
+  end
+  addStructValue(!?cfg !lstringWith(!"PASSEDOPTIONS") !opts !lstringWith(!"Passed options from command line"))
 
   for () in  objects do
 #    message [lkey string]."\n";
