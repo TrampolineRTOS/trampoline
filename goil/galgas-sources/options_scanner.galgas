@@ -1,0 +1,120 @@
+#---------------------------------------------------------------------------*
+#
+#  @file options_scanner.galgas
+#
+#  @section desc File description
+#
+#  Options passed on command line to templates scanner.
+#
+#  @section copyright Copyright
+#
+#  Goil OIL compiler, part of Trampoline RTOS
+#
+#  Trampoline is copyright (c) CNRS, University of Nantes,
+#  Ecole Centrale de Nantes
+#  Trampoline is protected by the French intellectual property law.
+#
+#  This software is distributed under the GNU Public Licence V2.
+#  Check the LICENSE file in the root directory of Trampoline
+#
+#  $Date$
+#  $Rev$
+#  $Author$
+#  $URL$
+#
+#---------------------------------------------------------------------------*
+
+lexique options_scanner {
+
+style identifierStyle -> "Option:"
+style delimitersStyle -> "Delimiters:"
+style stringStyle -> "String literals:"
+style integerStyle -> "Integer Literals:"
+style floatStyle -> "Floating Point Literals:"
+
+#------------------------------ Identifiers -----------------------------------
+@string key
+$idf$ !key  style identifierStyle error message "identifier"
+
+rule 'a'->'z' | 'A'->'Z' {
+  repeat
+    enterCharacterIntoString (!?key !*)
+  while 'a'->'z' | 'A'->'Z' | '_' | '0'->'9' :
+  end
+  send $idf$
+}
+
+#-------------------------------- Strings -------------------------------------
+message unterminatedLitteralString : "Unterminated literal string" 
+@string string
+$string$ !string  style stringStyle error message "literal string"
+
+rule '"' {
+  repeat
+  while '\u0020'->'\u0021' | '\u0023' -> '\uFFFD' :
+    enterCharacterIntoString ( !?string !* )
+  end
+  select
+    case '"' :
+      send $string$
+    default
+      error unterminatedLitteralString
+  end
+}
+
+#--------------------------------- Numbers ------------------------------------
+@string number
+@uint64 integerNumber
+$uint_number$ !integerNumber  style integerStyle error message "literal unsigned 64 bits integer"
+@double floatNumber
+$float_number$ !floatNumber  style floatStyle error message "literal float" 
+
+message internalError : "internal error"
+message decimalNumberTooLarge : "decimal number too large"
+message unableToConvertToDouble : "Unable to convert the string to double"
+#
+# Unsigned literal number. This rule scans hexadecimal integers
+# 
+rule "0x" | "0X" {
+  repeat
+  while '0'->'9' | 'a'->'f' | 'A'->'F':
+    enterHexDigitIntoUInt64 ( !* !?integerNumber error decimalNumberTooLarge, internalError)
+  end
+  send $uint_number$
+}
+
+#
+# Unsigned literal number. This rule scans decimal integers
+# 
+rule '0'->'9'{
+  repeat
+    enterCharacterIntoString ( !?number !* )
+    enterDigitIntoUInt64 ( !* !?integerNumber error decimalNumberTooLarge, internalError)
+  while '0'->'9' :
+  end
+  select
+    case '.' :
+      repeat
+        enterCharacterIntoString ( !?number !* )
+      while '0'->'9' :
+      end
+      convertStringToDouble ( !number !?floatNumber error unableToConvertToDouble)
+      send $float_number$
+    default
+      send $uint_number$
+  end
+}
+
+
+#-------------------------------- Delimiters ----------------------------------
+list optionsDelimiters style delimitersStyle error message "'%K' delimiter"{
+  "=", ",", "-", "(", ")"
+}
+
+rule list optionsDelimiters
+
+#------------------------------ Eat witespaces --------------------------------
+rule '\u0001'->' '{
+}
+
+}

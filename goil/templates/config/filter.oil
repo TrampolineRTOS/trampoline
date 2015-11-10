@@ -1,0 +1,43 @@
+/**
+ * @file filter.oil
+ *
+ * @section desc File description
+ *
+ * Filter definition.
+ * Used in each message property.
+ * Included by config.oil
+ *
+ * @section copyright Copyright
+ *
+ * Trampoline RTOS
+ *
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
+ * Trampoline is protected by the French intellectual property law.
+ *
+ * This software is distributed under the GNU Public Licence V2.
+ * Check the LICENSE file in the root directory of Trampoline
+ *
+ * @section infos File informations
+ *
+ * $Date:$
+ * $Rev:$
+ * $Author:$
+ * $URL:$
+ */
+        ENUM [
+          ALWAYS,
+          NEVER,
+          MASKEDNEWEQUALSX { UINT64 MASK; UINT64 X; },
+          MASKEDNEWDIFFERSX { UINT64 MASK; UINT64 X; },
+          NEWISEQUAL,
+          NEWISDIFFERENT,
+          MASKEDNEWEQUALSMASKEDOLD { UINT64 MASK; },
+          MASKEDNEWDIFFERSMASKEDOLD { UINT64 MASK; },
+          NEWISWITHIN { UINT64 MIN; UINT64 MAX; },
+          NEWISOUTSIDE { UINT64 MIN; UINT64 MAX; },
+          NEWISGREATER,
+          NEWISLESSOREQUAL,
+          NEWISLESS,
+          NEWISGREATEROREQUAL,
+          ONEEVERYN { UINT64 PERIOD; UINT64 OFFSET; }
+        ] FILTER = ALWAYS;

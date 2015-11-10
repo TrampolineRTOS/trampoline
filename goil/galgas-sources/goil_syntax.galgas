@@ -239,10 +239,13 @@ rule <boolean> !@lbool val {
 
 rule <oil_declaration_list>
   ?let @implementationObjectMap types
-  ?!@objectAttributes identifiers {
+  ?!@objectAttributes identifiers
+{
   repeat
   while
     <oil_declaration> !types !?identifiers
+  while
+    <include_object_level> !types !?identifiers
   end
 }
 
@@ -464,6 +467,28 @@ rule <include_cpu_level>
   end
   if not includeIfExists || (includeIfExists && [file_name fileExists]) then
     grammar goil_cpu_level_include in file_name !imp !?objects !?fileIncludeList !rootFile
+  end  
+}
+
+rule <include_object_level>
+  ?let @implementationObjectMap types
+  ?!@objectAttributes identifiers
+{
+  @bool includeIfExists = false
+  select
+    $include$
+  or
+    $includeifexists$ includeIfExists = true
+  end
+  @lstring file_name
+  select
+    $g_string$ ?file_name
+    file_in_path ( !?file_name)
+  or
+    $string$ ?file_name
+  end
+  if not includeIfExists || (includeIfExists && [file_name fileExists]) then
+    grammar goil_object_level_include in file_name !types !?identifiers
   end  
 }
 
