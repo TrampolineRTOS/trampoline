@@ -3,8 +3,8 @@ set -e
 
 cd `dirname $0` &&
 ARGUMENT= &&
-ARGUMENT="$ARGUMENT -f /usr/local/share/openocd/scripts/interface/arm-usb-ocd.cfg" &&
-ARGUMENT="$ARGUMENT -f /usr/local/dev-arm/arm-dev-files/openocd-scripts/olimex-lpc-e2294_14745600.cfg" &&
+ARGUMENT="$ARGUMENT -f olimex-arm-usb-ocd.cfg" &&
+ARGUMENT="$ARGUMENT -f olimex-lpc-l2294-1Mo.cfg" &&
 
 SUDO_ON_LINUX="" &&
 if [ `uname -s` \= Linux ] ; then

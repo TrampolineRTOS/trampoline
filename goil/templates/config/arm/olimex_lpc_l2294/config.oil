@@ -30,8 +30,7 @@ CPU olimex_lpc_l2294 {
   PLATFORM_FILES arm_olimex_lpc_l2294_drivers {
     PATH = "arm/olimex_lpc_l2294/drivers";
     CFILE = "initialize-lpc2200-pll.c";
-    CFILE = "Init.c";
-    CFILE = "lcd.c";
+    CFILE = "tp_ecn.c";
     CFILE = "timer.c";
     CFILE = "extint.c";
   };
