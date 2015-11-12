@@ -63,9 +63,9 @@ CPU lonely {
   };
 
   ISR isr_button1 {
-    CATEGORY = 1;
+    CATEGORY = 2;
     PRIORITY = 1;
-    SOURCE = button015;
+    SOURCE = button014;
   };
 
   ISR isr_button2 {

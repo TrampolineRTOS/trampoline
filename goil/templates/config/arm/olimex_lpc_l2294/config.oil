@@ -10,10 +10,10 @@ CPU olimex_lpc_l2294 {
     INTERRUPT it_timer1 {
       ID = 5;
     };
-    INTERRUPT button016 {
+    INTERRUPT button014 {
       ID = 14;
     };
-    INTERRUPT button015 {
+    INTERRUPT button016 {
       ID = 16;
     };
     
