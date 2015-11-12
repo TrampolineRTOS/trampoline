@@ -9,7 +9,7 @@ Its API is aligned with OSEK/VDX OS and AUTOSAR OS 4.1 standards.
 * ppc: PowerPC 32bits instruction set
 * posix: virtual platform for POSIX systems (tested on Linux and OS X)
 * avr: AVR 8 bits microcontrollers
-* ARM (currently not working, updated soon): ARM 32 bits instruction set
+* ARM: ARM 32 bits instruction set
 
 And we welcome external contributors to extend this list.
 
@@ -30,6 +30,8 @@ Some examples have been added (check examples):
   * blink. Blinks a LED using an alarm and a task. 
   * serial. improve 'blink': use the standard Arduino serial API.
   * extInterrupt. improve 'serial': add 2 ISRs to change the alarm period.
+* arm: 1 example for Olimex lpc2294 board
+  * lonely. Blinks a led, 3 tasks, ISR category 1 or 2, counts interrupts from the push button.
 
 More examples are coming.
 
