@@ -35,7 +35,6 @@
 void tpl_init_machine()
 {
     tpl_init_machine_generic ();
-    Init();
 }
 
 void tpl_shutdown ()

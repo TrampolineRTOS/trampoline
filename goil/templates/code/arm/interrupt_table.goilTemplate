@@ -29,6 +29,49 @@
 
 let current_entry := 0
 %
+/* Functions prototypes */
+%
+  loop ENTRY from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
+    do
+      let current_entry := ENTRY
+      let function_generated := false # don't produce function entry twice for one source id
+      let source_user_found := false # don't produce function while source is not used
+      foreach interrupt in INTERRUPT do
+        if ENTRY == interrupt::ID then
+          if not function_generated then
+            foreach counter in HARDWARECOUNTERS do
+              if counter::SOURCE == interrupt::NAME then
+                let source_user_found := true
+              end if
+            end foreach
+            foreach isr1 in ISRS1 do
+              if isr1::SOURCE == interrupt::NAME then
+                let source_user_found := true
+              end if
+            end foreach
+            foreach isr2 in ISRS2 do
+              if isr2::SOURCE == interrupt::NAME then
+                let source_user_found := true
+              end if
+            end foreach
+          end if
+
+          # Nothing to do for hardware counters (software counters call directly tpl_counter_tick function)
+          # Nothing to do for ISR category 2
+          # Declare prototypes handlers for ISR category 1
+          foreach isr1 in ISRS1 do
+            if isr1::SOURCE == interrupt::NAME then
+%
+extern FUNC(void, OS_CODE) % !isr1::NAME %_function(void); 
+%
+            end if
+          end foreach
+        end if
+      end foreach
+  end loop
+
+let current_entry := 0
+%
 /* Interrupt functions */
 %
   loop ENTRY from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1

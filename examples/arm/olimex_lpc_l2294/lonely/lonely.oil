@@ -22,7 +22,6 @@ CPU lonely {
       TRAMPOLINE_BASE_PATH = "../../../..";
       APP_SRC = "lonely.c";
       APP_NAME = "lonely_exe";
-//      CFLAGS = "-S";
       CFLAGS  = "-O0";
       CFLAGS = "-I../../../machines/arm/olimex_lpc_l2294/drivers";
       LDFLAGS = "-L/Users/DavidGarriou/Tools/gcc/gcc-arm-none-eabi/lib/gcc/arm-none-eabi/4.9.3 -lgcc"; 
@@ -48,14 +47,14 @@ CPU lonely {
     ACTIVATION = 1;
     SCHEDULE = FULL;
   };   
-    
+
   TASK task2 {
     PRIORITY = 2;
     AUTOSTART = FALSE;
     ACTIVATION = 1;
     SCHEDULE = FULL;
   };
-    
+
   TASK task3 {
     PRIORITY = 3;
     AUTOSTART = FALSE;
@@ -66,7 +65,7 @@ CPU lonely {
   ISR isr_button1 {
     CATEGORY = 2;
     PRIORITY = 1;
-    SOURCE = button015;
+    SOURCE = button014;
   };
 
   ISR isr_button2 {
@@ -74,13 +73,13 @@ CPU lonely {
     PRIORITY = 1;
     SOURCE = button016;
   };
-    
+
   COUNTER SystemCounter { 
     MAXALLOWEDVALUE = 2000;
     TICKSPERBASE = 10;
     MINCYCLE = 1; 
   };
-    
+
   ALARM Alarm1{
     COUNTER = SystemCounter;
     ACTION = ACTIVATETASK {

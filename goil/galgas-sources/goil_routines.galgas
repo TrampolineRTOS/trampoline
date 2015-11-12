@@ -103,7 +103,8 @@ func add_path_component
 }
 
 func rootTemplatesDirectory
-  ->@string templateDirectory {
+  ->@string templateDirectory
+{
   if [option goil_options.template_dir value] != "" then
     templateDirectory = [option goil_options.template_dir value]
   else
@@ -114,11 +115,19 @@ func rootTemplatesDirectory
       error @location.here : "The templates path is not set. Use --templates option or set the GOIL_TEMPLATES environment variable" : templateDirectory
     end
   end
+
   templateDirectory = [templateDirectory unixPathWithNativePath]
   templateDirectory = [templateDirectory stringByStandardizingPath]
+
   if [templateDirectory characterAtIndex !0] != '/' then
-    @string currentDirectory = @string. stringWithCurrentDirectory
-    templateDirectory = currentDirectory + "/" + templateDirectory
+    if [templateDirectory characterAtIndex !0] == '~' then
+      @string home = @string.stringWithEnvironmentVariableOrEmpty { !"HOME"}
+      @string relativeToHome = [templateDirectory rightSubString ![templateDirectory length] - 1]
+      templateDirectory = home + relativeToHome
+    else
+      @string currentDirectory = @string. stringWithCurrentDirectory
+      templateDirectory = currentDirectory + "/" + templateDirectory
+    end
     templateDirectory = [templateDirectory stringByStandardizingPath]
   end
 }

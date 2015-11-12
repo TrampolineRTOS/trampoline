@@ -33,9 +33,8 @@ void InitExtInt(void)
 
 void InitEInt0(void)
 {
-  
   PINSEL1 = (PINSEL1 & ~(0x00000003)) | (0x00000001);
-  
+
   /* Enable external internupt (EINT0 |= 1 ; EINT1 |= 2 ; EINT2 |= 4 ; EINT3 |= 8) to wake up the ARM from power down mode */ 
   //EXTWAKE |= 0x1;
   
@@ -69,7 +68,6 @@ void EINT0InterruptServiceRoutine(void)
   /* Reset interrupt flags after receiving interrupt */
   EXTINT |= (0x00000001);  
 }
-
 
 void InitEInt2(void)
 {
