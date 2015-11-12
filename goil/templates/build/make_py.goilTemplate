@@ -97,7 +97,9 @@ oilFileDep = "build/" + oilFile + ".dep"
 oilCompiler = "goil"
 oilFlags = ["-t=% !TARGET %"%
 if exists TEMPLATEPATH then
+  if TEMPLATEPATH != "" then
 %, "--templates=% !TEMPLATEPATH %"%
+  end if
 end if %]
 trampoline_base_path = "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/"
 

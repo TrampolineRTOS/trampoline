@@ -63,7 +63,7 @@ let current_entry := 0
 
           if (not function_generated) & source_user_found then
 %
-FUNC(void, OS_CODE) tpl_interrupt_source_% !interrupt::ID %()
+FUNC(void, OS_CODE) % !isr1::NAME %_Handler()
 {
 %
             template if exists tpl_interrupt_ack in code
@@ -89,12 +89,13 @@ FUNC(void, OS_CODE) tpl_interrupt_source_% !interrupt::ID %()
           foreach isr1 in ISRS1 do
             if isr1::SOURCE == interrupt::NAME then
 %
-  % !isr1::NAME %_function(); 
+  % !isr1::NAME %_(); 
 %
             end if
           end foreach
         end if
-
+%  % !interrupt::NAME %_ClearFlag
+%
    # Close the function bracket if it has been produced
       after
         if function_generated then
@@ -141,7 +142,7 @@ CONST(tpl_it_vector_entry, OS_CONST) tpl_it_vector[% !INTERRUPT_COUNT::IT_TABLE_
       if not interrupt_source_detected then
         %  { (tpl_it_handler)tpl_null_it, (void *)NULL }%
    else
-        %  { (tpl_it_handler)tpl_interrupt_source_% !ENTRY %, (void *)NULL }%
+        %  { (tpl_it_handler)% !isr1::NAME %_Handler, (void *)NULL }%
       end if
    between %,
 %
