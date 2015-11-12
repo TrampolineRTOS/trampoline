@@ -1403,3 +1403,7 @@ template if exists custom_code in code
 write to PROJECT."/stm_structure.c":
   template stm_structure_c in code
 end write
+
+#let taskdic := mapof TASK by NAME
+#   display taskdic["t1"]::TIMING_PROTECTION_S::TOTO
+

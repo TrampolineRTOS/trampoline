@@ -42,7 +42,7 @@ template process_specific
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 %
-# *TODO
+# *
 %
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"

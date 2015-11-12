@@ -18,7 +18,10 @@ IMPLEMENTATION trampoline_autosar {
 
   TASK [] {
     BOOLEAN [
-      TRUE,
+      TRUE {
+        UINT32 EXECUTIONBUDGET;
+        UINT32 TIMEFRAME;
+      },
       FALSE
     ] TIMING_PROTECTION = FALSE;
     APPLICATION_TYPE ACCESSING_APPLICATION[];
