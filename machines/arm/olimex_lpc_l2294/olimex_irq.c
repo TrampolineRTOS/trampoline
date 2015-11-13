@@ -31,34 +31,28 @@ extern CONST(tpl_it_vector_entry, OS_CONST) tpl_it_vector[31];
 
 void tpl_arm_subarch_irq_handler ()
 {
-  VAR(uint32, AUTOMATIC) isr_id_hex;
   VAR(uint32, AUTOMATIC) isr_id_dec = 0;
-  VAR(uint32, AUTOMATIC) i;
+  volatile VAR(uint32, AUTOMATIC) leading_zeros = 0;
+  
   VAR(tpl_it_handler, AUTOMATIC) isr_vector;
   
-  /* get interrupt id */
-  isr_id_hex = VICIRQStatus;
-   
+  /* get interrupt id
+   *
+   * __builtin_clz counts the leading zero's in register VICIRQStatus
+   */
+  leading_zeros = (uint32)__builtin_clz(VICIRQStatus);
+  isr_id_dec = (uint32)31 - leading_zeros;
+  
   /* clear interrupt */
   void (* routine) (void) = (void (*) (void)) VICVectAddr ;
   routine () ;    
   
-  /* Convert the interrupt id which is in hexadecimal in decimal */
-  for(i=0; i<31; i++)
-  {
-    if ((isr_id_hex >> i) == 1)
-    {
-      isr_id_dec = i;
-    }
-  }  
-    
   /* launch interrupt fonction (ISR2, timer...) */
   isr_vector = tpl_it_vector[isr_id_dec].func;
   isr_vector(tpl_it_vector[isr_id_dec].args);
  
   /* acknowlege interrupts */
   VICVectAddr = 0 ;
-    
 }
 
 /* End of file olimex_irq.c */

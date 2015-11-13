@@ -46,6 +46,7 @@ CPU lonely {
     AUTOSTART = TRUE { APPMODE = std; };
     ACTIVATION = 1;
     SCHEDULE = FULL;
+    RESOURCE = lcd_resource;
   };   
 
   TASK task2 {
@@ -53,6 +54,7 @@ CPU lonely {
     AUTOSTART = FALSE;
     ACTIVATION = 1;
     SCHEDULE = FULL;
+    RESOURCE = lcd_resource;
   };
 
   TASK task3 {
@@ -60,18 +62,21 @@ CPU lonely {
     AUTOSTART = FALSE;
     ACTIVATION = 1;
     SCHEDULE = FULL;
+    RESOURCE = lcd_resource;
   };
 
   ISR isr_button1 {
     CATEGORY = 2;
     PRIORITY = 1;
     SOURCE = button014;
+    RESOURCE = lcd_resource;
   };
 
   ISR isr_button2 {
     CATEGORY = 2;
     PRIORITY = 1;
     SOURCE = button016;
+    RESOURCE = lcd_resource;
   };
 
   COUNTER SystemCounter { 
@@ -90,5 +95,9 @@ CPU lonely {
       CYCLETIME = 50; //each 1s.
       APPMODE = std;
     };
+  };
+  
+  RESOURCE lcd_resource {
+    RESOURCEPROPERTY = STANDARD;
   };
 };
