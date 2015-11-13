@@ -6,6 +6,7 @@ steps) on the lcd).
 Task2 is activated by an autostart alarm (with a period of 1s) and blinks the lcd light.
 If you press B1 (on the mother board, button BUT) then "B1" with the number of interrupts 
 is displayed on the lcd.
+The lcd is declared as a resource to avoid conflicts.
 ISR isr_button2 is not used for the moment.
 
 This application tests the drivers for the timers (timer0 to initialize lcd and timer1 
