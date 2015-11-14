@@ -36,7 +36,6 @@
 
 void F_Analyze_CLI_Options (const int argv,
                             const char * argc [],
-                            const char * inVersionString,
                             TC_UniqueArray <C_String> & outSourceFileArray,
                             const char * inExtensions [],
                             const char * inHelpMessages [],
@@ -44,7 +43,15 @@ void F_Analyze_CLI_Options (const int argv,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-const char * compilerVersionString (void) ;
+const char * projectVersionString (void) ;
+
+const char * galgasVersionString (void) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+uint32_t commandLineArgumentCount (void) ;
+
+C_String commandLineArgumentAtIndex (const uint32_t inIndex) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 

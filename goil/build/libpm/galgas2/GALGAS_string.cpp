@@ -973,18 +973,6 @@ GALGAS_string GALGAS_string::constructor_stringWithContentsOfFile (const GALGAS_
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_string GALGAS_string::constructor_stringWithMainFirstArgument (UNUSED_LOCATION_ARGS) {
-  return GALGAS_string (C_String (mainFirstArgument ())) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_string GALGAS_string::constructor_stringWithVersionString (UNUSED_LOCATION_ARGS) {
-  return GALGAS_string (C_String (compilerVersionString ())) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
 GALGAS_string GALGAS_string::constructor_stringWithCurrentDirectory (UNUSED_LOCATION_ARGS) {
   return GALGAS_string (C_FileManager::currentDirectory ()) ;
 }

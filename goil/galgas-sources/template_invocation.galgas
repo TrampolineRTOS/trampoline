@@ -245,6 +245,7 @@ proc templateInvocation
   ?let @string    inPath
   ?let @string    inTemplateDirectory
   ?let @bool      inErrorIfNotFound
+  ?let @bool      inIsRoot
   ?let @TfieldMap inTemplateVariableMap
   ?!@string    ioResultingString
   !@bool       outNoErrorOccured {
@@ -286,7 +287,7 @@ proc templateInvocation
           pathList += !fullTemplatePath
           found = [fullTemplatePath fileExists]
           if found then
-            grammar template_grammar in @lstring. new { !fullTemplatePath !@location.here} !inPrefix !inPath !inTemplateDirectory !inTemplateVariableMap !?ioResultingString ?* ?*
+            grammar template_grammar in @lstring. new { !fullTemplatePath !@location.here} !inPrefix !inPath !inTemplateDirectory !inTemplateVariableMap !?ioResultingString !inIsRoot ?* ?*
           end
         end
         @string targetTemplatePartialPath = targetDir
@@ -298,7 +299,7 @@ proc templateInvocation
           found = [fullTemplatePath fileExists]
           if found then
             #displayPathList !pathList;
-            grammar template_grammar in @lstring. new { !fullTemplatePath !@location.here} !inPrefix !inPath !inTemplateDirectory !inTemplateVariableMap !?ioResultingString ?* ?*
+            grammar template_grammar in @lstring. new { !fullTemplatePath !@location.here} !inPrefix !inPath !inTemplateDirectory !inTemplateVariableMap !?ioResultingString !inIsRoot ?* ?*
           else
             targetTemplatePartialPath = [targetTemplatePartialPath stringByDeletingLastPathComponent]
           end
@@ -309,7 +310,7 @@ proc templateInvocation
           found = [fullTemplatePath fileExists]
           if found then
             #displayPathList !pathList;
-            grammar template_grammar in @lstring. new { !fullTemplatePath !@location.here} !inPrefix !inPath !inTemplateDirectory !inTemplateVariableMap !?ioResultingString ?* ?*
+            grammar template_grammar in @lstring. new { !fullTemplatePath !@location.here} !inPrefix !inPath !inTemplateDirectory !inTemplateVariableMap !?ioResultingString !inIsRoot ?* ?*
           end
         end
         if not found then

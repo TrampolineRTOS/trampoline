@@ -1,17 +1,21 @@
 #! /usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-#----------------------------------------------------------------------------*
-#   Releases                                                                 *
-#----------------------------------------------------------------------------*
+#——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+#   Releases                                                                                                           *
+#——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 # 1.0: march 18th, 2015
 #        first release
 # 2.0: october 2th, 2015
 #        added several target definition for rules
 # 2.1: october 5th, 2015
 #        added checking routine formal argument run-time types
+# 2.2: october 24th, 2015
+#        changed subprocess.Popen to subprocess.call in runCommand
+#        added command tool checking using 'find_executable' function
+#        added optional argument to Make class initializer to log command utility tool path
 #
-#----------------------------------------------------------------------------*
+#——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 import subprocess, sys, os, copy
 import urllib, shutil, subprocess
@@ -21,9 +25,49 @@ import threading, types, traceback
 if sys.version_info >= (2, 6) :
   import multiprocessing
 
-#----------------------------------------------------------------------------*
-#   processorCount                                                           *
-#----------------------------------------------------------------------------*
+#——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+#   find_executable                                                                                                    *
+# From:                                                                                                                *
+# https://gist.github.com/4368898                                                                                      *
+# Public domain code by anatoly techtonik <techtonik@gmail.com>                                                        *
+#——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+def find_executable(executable, path=None):
+    """Try to find 'executable' in the directories listed in 'path' (a
+    string listing directories separated by 'os.pathsep'; defaults to
+    os.environ['PATH']).  Returns the complete filename or None if not
+    found
+    """
+    if path is None:
+        path = os.environ['PATH']
+    paths = path.split(os.pathsep)
+    extlist = ['']
+    if os.name == 'os2':
+        (base, ext) = os.path.splitext(executable)
+        # executable files on OS/2 can have an arbitrary extension, but
+        # .exe is automatically appended if no dot is present in the name
+        if not ext:
+            executable = executable + ".exe"
+    elif sys.platform == 'win32':
+        pathext = os.environ['PATHEXT'].lower().split(os.pathsep)
+        (base, ext) = os.path.splitext(executable)
+        if ext.lower() not in pathext:
+            extlist = pathext
+    for ext in extlist:
+        execname = executable + ext
+        if os.path.isfile(execname):
+            return execname
+        else:
+            for p in paths:
+                f = os.path.join(p, execname)
+                if os.path.isfile(f):
+                    return f
+    else:
+        return None
+
+#——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+#   processorCount                                                                                                     *
+#——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 def processorCount () :
   if sys.version_info >= (2, 6) :
@@ -32,88 +76,94 @@ def processorCount () :
     coreCount = 1
   return coreCount
 
-#----------------------------------------------------------------------------*
-#   FOR PRINTING IN COLOR                                                    *
-#----------------------------------------------------------------------------*
+#——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+#   FOR PRINTING IN COLOR                                                                                              *
+#——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 def BLACK () :
   return '\033[90m'
 
-#----------------------------------------------------------------------------*
+#······················································································································*
 
 def RED () :
   return '\033[91m'
 
-#----------------------------------------------------------------------------*
+#······················································································································*
 
 def GREEN () :
   return '\033[92m'
 
-#----------------------------------------------------------------------------*
+#······················································································································*
 
 def YELLOW () :
   return '\033[93m'
 
-#----------------------------------------------------------------------------*
+#······················································································································*
 
 def BLUE () :
   return '\033[94m'
 
-#----------------------------------------------------------------------------*
+#······················································································································*
 
 def MAGENTA () :
   return '\033[95m'
 
-#----------------------------------------------------------------------------*
+#······················································································································*
 
 def CYAN () :
   return '\033[96m'
 
-#----------------------------------------------------------------------------*
+#······················································································································*
 
 def WHITE () :
   return '\033[97m'
 
-#----------------------------------------------------------------------------*
+#······················································································································*
 
 def ENDC () :
   return '\033[0m'
 
-#----------------------------------------------------------------------------*
+#······················································································································*
 
 def BOLD () :
   return '\033[1m'
 
-#----------------------------------------------------------------------------*
+#······················································································································*
 
 def UNDERLINE () :
   return '\033[4m'
 
-#----------------------------------------------------------------------------*
+#······················································································································*
 
 def BLINK () :
   return '\033[5m'
 
-#----------------------------------------------------------------------------*
+#······················································································································*
 
 def BOLD_BLUE () :
   return BOLD () + BLUE ()
 
-#----------------------------------------------------------------------------*
+#······················································································································*
 
 def BOLD_GREEN () :
   return BOLD () + GREEN ()
 
-#----------------------------------------------------------------------------*
+#······················································································································*
 
 def BOLD_RED () :
   return BOLD () + RED ()
 
-#----------------------------------------------------------------------------*
-#   runHiddenCommand                                                         *
-#----------------------------------------------------------------------------*
+#——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+#   runHiddenCommand                                                                                                   *
+#——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-def runHiddenCommand (cmd) :
+def runHiddenCommand (cmd, logUtilityTool=False) :
+  executable = find_executable (cmd [0])
+  if executable == None:
+    print BOLD_RED () + "*** Cannot find '" + cmd[0] + "' executable ***" + ENDC ()
+    sys.exit (1)
+  if logUtilityTool:
+    print "Utility tool is '" + executable + "'"
   result = ""
   childProcess = subprocess.Popen (cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
   while True:
@@ -126,11 +176,11 @@ def runHiddenCommand (cmd) :
         sys.exit (childProcess.returncode)
       return result
 
-#----------------------------------------------------------------------------*
-#   runCommand                                                               *
-#----------------------------------------------------------------------------*
+#——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+#   runCommand                                                                                                         *
+#——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
-def runCommand (cmd, title, showCommand) :
+def runCommand (cmd, title, showCommand, logUtilityTool) :
   if title != "":
     print BOLD_BLUE () + title + ENDC ()
   if (title == "") or showCommand :
@@ -141,33 +191,46 @@ def runCommand (cmd, title, showCommand) :
       else:
         cmdAsString += s + ' '
     print cmdAsString
-  childProcess = subprocess.Popen (cmd)
-  childProcess.wait ()
-  if childProcess.returncode != 0 :
-    sys.exit (childProcess.returncode)
+  executable = find_executable (cmd [0])
+  if executable == None:
+    print BOLD_RED () + "*** Cannot find '" + cmd[0] + "' executable ***" + ENDC ()
+    sys.exit (1)
+  if logUtilityTool:
+    print "Utility tool is '" + executable + "'"
+  returncode = subprocess.call (cmd)
+  if returncode != 0 :
+    sys.exit (returncode)
 
-#----------------------------------------------------------------------------*
-#   runInThread                                                              *
-#----------------------------------------------------------------------------*
+#——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+#   runInThread                                                                                                        *
+#——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 def runInThread (job, displayLock, terminationSemaphore):
-  childProcess = subprocess.Popen (job.mCommand, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-  while True:
-    line = childProcess.stdout.readline ()
-    if line != "":
-      job.mOutputLines.append (line)
-      displayLock.acquire ()
-      sys.stdout.write (line) # Print without newline
-      displayLock.release ()
-    else:
-      childProcess.wait ()
-      job.mReturnCode = childProcess.returncode
-      terminationSemaphore.release ()
-      break
+  executable = find_executable (job.mCommand [0])
+  if executable == None:
+    print BOLD_RED () + "*** Cannot find '" + job.mCommand[0] + "' executable ***" + ENDC ()
+    job.mReturnCode = 1
+    terminationSemaphore.release ()
+  else:
+    if job.mLogUtilityTool :
+      print "Utility tool is '" + executable + "'"
+    childProcess = subprocess.Popen (job.mCommand, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    while True:
+      line = childProcess.stdout.readline ()
+      if line != "":
+        job.mOutputLines.append (line)
+        displayLock.acquire ()
+        sys.stdout.write (line) # Print without newline
+        displayLock.release ()
+      else:
+        childProcess.wait ()
+        job.mReturnCode = childProcess.returncode
+        terminationSemaphore.release ()
+        break
 
-#----------------------------------------------------------------------------*
-#   modificationDateForFile                                                  *
-#----------------------------------------------------------------------------*
+#——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+#   modificationDateForFile                                                                                            *
+#——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 def modificationDateForFile (dateCacheDictionary, file):
   absFilePath = os.path.abspath (file)
@@ -182,23 +245,23 @@ def modificationDateForFile (dateCacheDictionary, file):
     dateCacheDictionary [absFilePath] = date
     return date
 
-#----------------------------------------------------------------------------*
-#   class PostCommand                                                        *
-#----------------------------------------------------------------------------*
+#——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+#   class PostCommand                                                                                                  *
+#——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class PostCommand:
   mCommand = []
   mTitle = ""
 
-  #--------------------------------------------------------------------------*
+  #····················································································································*
 
   def __init__ (self, title = ""):
     self.mCommand = []
     self.mTitle = title
 
-#----------------------------------------------------------------------------*
-#   class Job                                                                *
-#----------------------------------------------------------------------------*
+#——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+#   class Job                                                                                                          *
+#——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class Job:
   mTargets = []
@@ -211,10 +274,11 @@ class Job:
   mState = 0 # 0: waiting for execution
   mOutputLines = []
   mOpenSourceOnError = False # Do not try to open source file on error
+  mLogUtilityTool = False
   
-  #--------------------------------------------------------------------------*
+  #····················································································································*
 
-  def __init__ (self, targets, requiredFiles, command, postCommands, priority, title, openSourceOnError):
+  def __init__ (self, targets, requiredFiles, command, postCommands, priority, title, openSourceOnError, logUtilityTool):
     self.mTargets = copy.deepcopy (targets)
     self.mCommand = copy.deepcopy (command)
     self.mRequiredFiles = copy.deepcopy (requiredFiles)
@@ -223,8 +287,9 @@ class Job:
     self.mPriority = priority
     self.mOutputLines = []
     self.mOpenSourceOnError = openSourceOnError
+    self.mLogUtilityTool = logUtilityTool
 
-  #--------------------------------------------------------------------------*
+  #····················································································································*
 
   def run (self, displayLock, terminationSemaphore, showCommand):
     displayLock.acquire ()
@@ -242,7 +307,7 @@ class Job:
     thread = threading.Thread (target=runInThread, args=(self, displayLock, terminationSemaphore))
     thread.start()
 
-  #--------------------------------------------------------------------------*
+  #····················································································································*
 
   def runPostCommand (self, displayLock, terminationSemaphore, showCommand):
     postCommand = self.mPostCommands [0]
@@ -261,9 +326,9 @@ class Job:
     thread = threading.Thread (target=runInThread, args=(self, displayLock, terminationSemaphore))
     thread.start()
 
-#----------------------------------------------------------------------------*
-#   class Rule                                                               *
-#----------------------------------------------------------------------------*
+#——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+#   class Rule                                                                                                         *
+#——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class Rule:
   mTargets = []
@@ -277,7 +342,7 @@ class Rule:
   mCleanOperation = 0 # No operation on clean
   mOpenSourceOnError = False # Do not try to open source file on error
   
-  #--------------------------------------------------------------------------*
+  #····················································································································*
 
   def __init__ (self, targets, title = ""):
     if not isinstance (targets, types.ListType):
@@ -310,17 +375,17 @@ class Rule:
     else:
       self.mTitle = copy.deepcopy (title)
   
-  #--------------------------------------------------------------------------*
+  #····················································································································*
 
   def deleteTargetFileOnClean (self):
     self.mCleanOperation = 1
   
-  #--------------------------------------------------------------------------*
+  #····················································································································*
 
   def deleteTargetDirectoryOnClean (self):
     self.mCleanOperation = 2
   
-  #--------------------------------------------------------------------------*
+  #····················································································································*
 
   def enterSecondaryDependanceFile (self, secondaryDependanceFile, make):
     if not isinstance (secondaryDependanceFile, types.StringTypes):
@@ -351,9 +416,9 @@ class Rule:
               self.mSecondaryMostRecentModificationDate = modifDate
               #print BOLD_BLUE () + str (modifDate) + ENDC ()
     
-#----------------------------------------------------------------------------*
-#   class Make                                                               *
-#----------------------------------------------------------------------------*
+#——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+#   class Make                                                                                                         *
+#——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 
 class Make:
   mRuleList = []
@@ -365,10 +430,11 @@ class Make:
   mLinuxTextEditor = ""
   mMacTextEditor = ""
   mSimulateClean = False
+  mLogUtilityTool = True
 
-  #--------------------------------------------------------------------------*
+  #····················································································································*
 
-  def __init__ (self, goal):
+  def __init__ (self, goal, logUtilityTool=False):
     if not isinstance (goal, types.StringTypes):
       print BOLD_RED () + "*** Make instanciation: 'goal' argument is not a string ***" + ENDC ()
       traceback.print_stack ()
@@ -381,8 +447,9 @@ class Make:
     self.mSelectedGoal = goal
     self.mLinuxTextEditor = "gEdit"
     self.mMacTextEditor = "TextEdit"
+    self.mLogUtilityTool = logUtilityTool
 
-  #--------------------------------------------------------------------------*
+  #····················································································································*
 
   def addRule (self, rule):
     if not isinstance (rule, Rule):
@@ -391,7 +458,7 @@ class Make:
       sys.exit (1)
     self.mRuleList.append (copy.deepcopy (rule))
 
-  #--------------------------------------------------------------------------*
+  #····················································································································*
 
   def printRules (self):
     print BOLD_BLUE () + "--- Print " + str (len (self.mRuleList)) + " rule" + ("s" if len (self.mRuleList) > 1 else "") + " ---" + ENDC ()
@@ -432,7 +499,7 @@ class Make:
         
     print BOLD_BLUE () + "--- End of print rule ---" + ENDC ()
 
-  #--------------------------------------------------------------------------*
+  #····················································································································*
 
   def writeRuleDependancesInDotFile (self, dotFileName):
     s = "digraph G {\n"
@@ -450,7 +517,7 @@ class Make:
     f.write (s)
     f.close ()
 
-  #--------------------------------------------------------------------------*
+  #····················································································································*
 
   def checkRules (self):
     if self.mErrorCount == 0:
@@ -505,7 +572,7 @@ class Make:
           for dep in aRule.mDependences:
             print BOLD_RED () + "      '" + dep + "'" + ENDC ()
 
-  #--------------------------------------------------------------------------*
+  #····················································································································*
 
   def existsJobForTarget (self, target):
     for job in self.mJobList:
@@ -514,7 +581,7 @@ class Make:
           return True
     return False
 
-  #--------------------------------------------------------------------------*
+  #····················································································································*
 
   def makeJob (self, target): # Return a bool indicating wheither the target should be built
   #--- If there are errors, return immediatly
@@ -566,11 +633,20 @@ class Make:
         appendToJobList = True
   #--- Append to job list
     if appendToJobList:
-      self.mJobList.append (Job (rule.mTargets, jobDependenceFiles, rule.mCommand, rule.mPostCommands, rule.mPriority, rule.mTitle, rule.mOpenSourceOnError))
+      self.mJobList.append (Job (
+        rule.mTargets,
+        jobDependenceFiles,
+        rule.mCommand,
+        rule.mPostCommands,
+        rule.mPriority,
+        rule.mTitle,
+        rule.mOpenSourceOnError,
+        self.mLogUtilityTool
+      ))
   #--- Return
     return appendToJobList
 
-  #--------------------------------------------------------------------------*
+  #····················································································································*
   #Job state
   # 0: waiting
   # 1:running
@@ -603,7 +679,11 @@ class Make:
                   absTargetDirectory = os.path.dirname (os.path.abspath (aTarget))
                   if not os.path.exists (absTargetDirectory):
                     displayLock.acquire ()
-                    runCommand (["mkdir", "-p", os.path.dirname (aTarget)], "Making \"" + os.path.dirname (aTarget) + "\" directory", showCommand)
+                    runCommand (
+                      ["mkdir", "-p", os.path.dirname (aTarget)], "Making \"" + os.path.dirname (aTarget) + "\" directory",
+                      showCommand,
+                      job.mLogUtilityTool
+                    )
                     displayLock.release ()
                 #--- Run job
                 job.run (displayLock, terminationSemaphore, showCommand)
@@ -682,7 +762,7 @@ class Make:
                 returnCode = job.mReturnCode
           loop = (len (self.mJobList) > 0) if (returnCode == 0) else (jobCount > 0)
 
-  #--------------------------------------------------------------------------*
+  #····················································································································*
 
   def searchFileInDirectories (self, file, directoryList): # returns "" if not found, register error
     matchCount = 0
@@ -701,7 +781,7 @@ class Make:
       result = ""
     return result
 
-  #--------------------------------------------------------------------------*
+  #····················································································································*
 
   def addGoal (self, goal, targetList, message):
     if not isinstance (goal, types.StringTypes):
@@ -728,7 +808,7 @@ class Make:
       self.mGoals [goal] = (targetList, message)
     #print '%s' % ', '.join(map(str, self.mGoals))
 
-  #--------------------------------------------------------------------------*
+  #····················································································································*
 
   def printGoals (self):
     print BOLD_BLUE () + "--- Print " + str (len (self.mGoals)) + " goal" + ("s" if len (self.mGoals) > 1 else "") + " ---" + ENDC ()
@@ -741,7 +821,7 @@ class Make:
         
     print BOLD_BLUE () + "--- End of print goals ---" + ENDC ()
 
-  #--------------------------------------------------------------------------*
+  #····················································································································*
 
   def runGoal (self, maxConcurrentJobs, showCommand):
     if not isinstance (maxConcurrentJobs, types.IntType):
@@ -761,7 +841,7 @@ class Make:
         for rule in self.mRuleList:
           for aTarget in rule.mTargets:
             if rule.mDeleteTargetOnError and os.path.exists (os.path.abspath (aTarget)):
-              runCommand (["rm", aTarget], "Delete \"" + aTarget + "\" on error", showCommand)
+              runCommand (["rm", aTarget], "Delete \"" + aTarget + "\" on error", showCommand, self.mLogUtilityTool)
     elif self.mSelectedGoal == "clean" :
       filesToRemoveList = []
       directoriesToRemoveSet = set ()
@@ -781,13 +861,13 @@ class Make:
           if self.mSimulateClean:
             print MAGENTA () + BOLD () + "Simulated clean command: " + ENDC () + "rm -fr '" + dir + "'"
           else:
-            runCommand (["rm", "-fr", dir], "Removing \"" + dir + "\"", showCommand)
+            runCommand (["rm", "-fr", dir], "Removing \"" + dir + "\"", showCommand, self.mLogUtilityTool)
       for file in filesToRemoveList:
         if os.path.exists (os.path.abspath (file)):
           if self.mSimulateClean:
             print MAGENTA () + BOLD () + "Simulated clean command: " + ENDC () + "rm -f '" + file + "'"
           else:
-            runCommand (["rm", "-f", file], "Deleting \"" + file + "\"", showCommand)
+            runCommand (["rm", "-f", file], "Deleting \"" + file + "\"", showCommand, self.mLogUtilityTool)
     else:
       errorMessage = "The '" + self.mSelectedGoal + "' goal is not defined; defined goals:"
       for key in self.mGoals:
@@ -796,18 +876,18 @@ class Make:
       print BOLD_RED () + errorMessage + ENDC ()
       self.mErrorCount = self.mErrorCount + 1
 
-  #--------------------------------------------------------------------------*
+  #····················································································································*
 
   def simulateClean (self):
     self.mSimulateClean = True
 
-  #--------------------------------------------------------------------------*
+  #····················································································································*
 
   def enterError (self, message):
     print BOLD_RED () + message + ENDC ()
     self.mErrorCount = self.mErrorCount + 1
 
-  #--------------------------------------------------------------------------*
+  #····················································································································*
 
   def printErrorCountAndExitOnError (self):
     if self.mErrorCount == 1:
@@ -817,7 +897,7 @@ class Make:
       print BOLD_RED () + str (self.mErrorCount) + " errors." + ENDC ()
       sys.exit (1)
 
-  #--------------------------------------------------------------------------*
+  #····················································································································*
 
   def printErrorCount (self):
     if self.mErrorCount == 1:
@@ -825,9 +905,9 @@ class Make:
     elif self.mErrorCount > 1:
       print BOLD_RED () + str (self.mErrorCount) + " errors." + ENDC ()
 
-  #--------------------------------------------------------------------------*
+  #····················································································································*
 
   def errorCount (self):
     return self.mErrorCount
 
-#----------------------------------------------------------------------------*
+#——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
