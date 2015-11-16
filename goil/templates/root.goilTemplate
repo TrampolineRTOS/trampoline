@@ -1302,12 +1302,6 @@ while added
 end repeat  
 
 #------------------------------------------------------------------------------*
-# Target specific initializations
-#
-let objForIRQ := emptymap
-template if exists target_specific
-
-#------------------------------------------------------------------------------*
 #
 #
 %

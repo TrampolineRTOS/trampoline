@@ -6,6 +6,35 @@
 #include "tpl_memmap.h"
 %
 
+#------------------------------------------------------------------------------*
+# Target specific initializations
+# build the maps for IRQ
+#
+let objForIRQ := emptymap
+
+# Map ISR into objForIRQ
+foreach isr in ISR do
+  let key := isr::SOURCE
+  if not exists objForIRQ[key] then
+    let objForIRQ[key] := emptylist
+  end if
+  let isr::KIND := "ISR"
+  let objForIRQ[key] += isr
+end foreach
+
+# Map COUNTER into objForIRQ
+foreach cnt in COUNTER do
+  let key := cnt::SOURCE
+  if not exists objForIRQ[key] then
+    let objForIRQ[key] := emptylist
+  end if
+  let cnt::KIND := "COUNTER"
+  let objForIRQ[key] += cnt
+end foreach
+
+let INTERRUPTMAP := mapof INTERRUPT by NAME
+#------------------------------------------------------------------------------*
+
 foreach objList in objForIRQ do
   let indexISR2 := 0
   foreach obj in objList do
