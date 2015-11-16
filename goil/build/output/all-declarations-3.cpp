@@ -219,6 +219,7 @@ void routine_templateInvocation (const GALGAS_lstring constinArgument_inTemplate
                                  const GALGAS_string constinArgument_inPath,
                                  const GALGAS_string constinArgument_inTemplateDirectory,
                                  const GALGAS_bool constinArgument_inErrorIfNotFound,
+                                 const GALGAS_bool constinArgument_inIsRoot,
                                  const GALGAS_TfieldMap constinArgument_inTemplateVariableMap,
                                  GALGAS_string & ioArgument_ioResultingString,
                                  GALGAS_bool & outArgument_outNoErrorOccured,
@@ -226,18 +227,18 @@ void routine_templateInvocation (const GALGAS_lstring constinArgument_inTemplate
                                  COMMA_UNUSED_LOCATION_ARGS) {
   outArgument_outNoErrorOccured.drop () ; // Release 'out' argument
   outArgument_outNoErrorOccured = GALGAS_bool (true) ;
-  const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, GALGAS_uint::constructor_errorCount (SOURCE_FILE ("template_invocation.galgas", 252)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+  const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, GALGAS_uint::constructor_errorCount (SOURCE_FILE ("template_invocation.galgas", 253)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
   if (kBoolTrue == test_0) {
     GALGAS_string var_templateDir = constinArgument_inTemplateDirectory ;
-    const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, var_templateDir.getter_length (SOURCE_FILE ("template_invocation.galgas", 254)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+    const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, var_templateDir.getter_length (SOURCE_FILE ("template_invocation.galgas", 255)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
     if (kBoolTrue == test_1) {
       GALGAS_location location_2 (constinArgument_inTemplateName.getter_location (HERE)) ; // Implicit use of 'location' getter
-      inCompiler->emitSemanticError (location_2, GALGAS_string ("the '--goil-templates' option or the environment variable GOIL_TEMPLATES is required for generating code")  COMMA_SOURCE_FILE ("template_invocation.galgas", 255)) ;
+      inCompiler->emitSemanticError (location_2, GALGAS_string ("the '--goil-templates' option or the environment variable GOIL_TEMPLATES is required for generating code")  COMMA_SOURCE_FILE ("template_invocation.galgas", 256)) ;
     }else if (kBoolFalse == test_1) {
-      const enumGalgasBool test_3 = var_templateDir.getter_directoryExists (SOURCE_FILE ("template_invocation.galgas", 256)).operator_not (SOURCE_FILE ("template_invocation.galgas", 256)).boolEnum () ;
+      const enumGalgasBool test_3 = var_templateDir.getter_directoryExists (SOURCE_FILE ("template_invocation.galgas", 257)).operator_not (SOURCE_FILE ("template_invocation.galgas", 257)).boolEnum () ;
       if (kBoolTrue == test_3) {
         GALGAS_location location_4 (constinArgument_inTemplateName.getter_location (HERE)) ; // Implicit use of 'location' getter
-        inCompiler->emitSemanticError (location_4, GALGAS_string ("the template path '").add_operation (var_templateDir, inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 257)).add_operation (GALGAS_string ("' exists but is not a valid directory path"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 257))  COMMA_SOURCE_FILE ("template_invocation.galgas", 257)) ;
+        inCompiler->emitSemanticError (location_4, GALGAS_string ("the template path '").add_operation (var_templateDir, inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 258)).add_operation (GALGAS_string ("' exists but is not a valid directory path"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 258))  COMMA_SOURCE_FILE ("template_invocation.galgas", 258)) ;
       }else if (kBoolFalse == test_3) {
         GALGAS_string var_targetDir = GALGAS_string (gOption_goil_5F_options_target_5F_platform.getter_value ()) ;
         GALGAS_string var_fullTemplateDir ;
@@ -245,19 +246,19 @@ void routine_templateInvocation (const GALGAS_lstring constinArgument_inTemplate
         if (kBoolTrue == test_5) {
           var_fullTemplateDir = var_templateDir ;
         }else if (kBoolFalse == test_5) {
-          var_fullTemplateDir = var_templateDir.add_operation (GALGAS_string ("/"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 264)).add_operation (constinArgument_inPrefix, inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 264)) ;
+          var_fullTemplateDir = var_templateDir.add_operation (GALGAS_string ("/"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 265)).add_operation (constinArgument_inPrefix, inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 265)) ;
         }
-        const enumGalgasBool test_6 = GALGAS_bool (kIsEqual, var_targetDir.getter_length (SOURCE_FILE ("template_invocation.galgas", 266)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+        const enumGalgasBool test_6 = GALGAS_bool (kIsEqual, var_targetDir.getter_length (SOURCE_FILE ("template_invocation.galgas", 267)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
         if (kBoolTrue == test_6) {
           GALGAS_location location_7 (constinArgument_inTemplateName.getter_location (HERE)) ; // Implicit use of 'location' getter
-          inCompiler->emitSemanticError (location_7, GALGAS_string ("the '--target' (or '-t') option is required for generating code")  COMMA_SOURCE_FILE ("template_invocation.galgas", 267)) ;
+          inCompiler->emitSemanticError (location_7, GALGAS_string ("the '--target' (or '-t') option is required for generating code")  COMMA_SOURCE_FILE ("template_invocation.galgas", 268)) ;
         }else if (kBoolFalse == test_6) {
-          const enumGalgasBool test_8 = var_fullTemplateDir.getter_directoryExists (SOURCE_FILE ("template_invocation.galgas", 268)).operator_not (SOURCE_FILE ("template_invocation.galgas", 268)).boolEnum () ;
+          const enumGalgasBool test_8 = var_fullTemplateDir.getter_directoryExists (SOURCE_FILE ("template_invocation.galgas", 269)).operator_not (SOURCE_FILE ("template_invocation.galgas", 269)).boolEnum () ;
           if (kBoolTrue == test_8) {
             GALGAS_location location_9 (constinArgument_inTemplateName.getter_location (HERE)) ; // Implicit use of 'location' getter
-            inCompiler->emitSemanticError (location_9, GALGAS_string ("internal. no '").add_operation (var_fullTemplateDir, inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 269)).add_operation (GALGAS_string ("' template found"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 269))  COMMA_SOURCE_FILE ("template_invocation.galgas", 269)) ;
+            inCompiler->emitSemanticError (location_9, GALGAS_string ("internal. no '").add_operation (var_fullTemplateDir, inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 270)).add_operation (GALGAS_string ("' template found"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 270))  COMMA_SOURCE_FILE ("template_invocation.galgas", 270)) ;
           }else if (kBoolFalse == test_8) {
-            GALGAS_stringlist var_pathList = GALGAS_stringlist::constructor_emptyList (SOURCE_FILE ("template_invocation.galgas", 276)) ;
+            GALGAS_stringlist var_pathList = GALGAS_stringlist::constructor_emptyList (SOURCE_FILE ("template_invocation.galgas", 277)) ;
             GALGAS_bool var_found = GALGAS_bool (false) ;
             const enumGalgasBool test_10 = GALGAS_bool (kIsNotEqual, constinArgument_inPath.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
             if (kBoolTrue == test_10) {
@@ -266,73 +267,73 @@ void routine_templateInvocation (const GALGAS_lstring constinArgument_inTemplate
               if (kBoolTrue == test_11) {
                 var_userTemplateDir = constinArgument_inPath ;
               }else if (kBoolFalse == test_11) {
-                var_userTemplateDir = constinArgument_inPath.add_operation (GALGAS_string ("/"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 283)).add_operation (constinArgument_inPrefix, inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 283)) ;
+                var_userTemplateDir = constinArgument_inPath.add_operation (GALGAS_string ("/"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 284)).add_operation (constinArgument_inPrefix, inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 284)) ;
               }
-              GALGAS_string var_fullTemplatePath = GALGAS_string::constructor_stringWithCurrentDirectory (SOURCE_FILE ("template_invocation.galgas", 285)).add_operation (GALGAS_string ("/"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 285)).add_operation (var_userTemplateDir, inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 285)).add_operation (GALGAS_string ("/"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 285)).add_operation (constinArgument_inTemplateName.getter_string (SOURCE_FILE ("template_invocation.galgas", 285)), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 285)).add_operation (GALGAS_string (".goilTemplate"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 285)) ;
-              var_pathList.addAssign_operation (var_fullTemplatePath  COMMA_SOURCE_FILE ("template_invocation.galgas", 286)) ;
-              var_found = var_fullTemplatePath.getter_fileExists (SOURCE_FILE ("template_invocation.galgas", 287)) ;
+              GALGAS_string var_fullTemplatePath = GALGAS_string::constructor_stringWithCurrentDirectory (SOURCE_FILE ("template_invocation.galgas", 286)).add_operation (GALGAS_string ("/"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 286)).add_operation (var_userTemplateDir, inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 286)).add_operation (GALGAS_string ("/"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 286)).add_operation (constinArgument_inTemplateName.getter_string (SOURCE_FILE ("template_invocation.galgas", 286)), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 286)).add_operation (GALGAS_string (".goilTemplate"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 286)) ;
+              var_pathList.addAssign_operation (var_fullTemplatePath  COMMA_SOURCE_FILE ("template_invocation.galgas", 287)) ;
+              var_found = var_fullTemplatePath.getter_fileExists (SOURCE_FILE ("template_invocation.galgas", 288)) ;
               const enumGalgasBool test_12 = var_found.boolEnum () ;
               if (kBoolTrue == test_12) {
-                GALGAS_Tvalue joker_9446 ; // Joker input parameter
-                GALGAS_Ttype joker_9449 ; // Joker input parameter
-                cGrammar_template_5F_grammar::_performSourceFileParsing_ (inCompiler, GALGAS_lstring::constructor_new (var_fullTemplatePath, GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_invocation.galgas", 289))  COMMA_SOURCE_FILE ("template_invocation.galgas", 289)), constinArgument_inPrefix, constinArgument_inPath, constinArgument_inTemplateDirectory, constinArgument_inTemplateVariableMap, ioArgument_ioResultingString, joker_9446, joker_9449  COMMA_SOURCE_FILE ("template_invocation.galgas", 289)) ;
+                GALGAS_Tvalue joker_9483 ; // Joker input parameter
+                GALGAS_Ttype joker_9486 ; // Joker input parameter
+                cGrammar_template_5F_grammar::_performSourceFileParsing_ (inCompiler, GALGAS_lstring::constructor_new (var_fullTemplatePath, GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_invocation.galgas", 290))  COMMA_SOURCE_FILE ("template_invocation.galgas", 290)), constinArgument_inPrefix, constinArgument_inPath, constinArgument_inTemplateDirectory, constinArgument_inTemplateVariableMap, ioArgument_ioResultingString, constinArgument_inIsRoot, joker_9483, joker_9486  COMMA_SOURCE_FILE ("template_invocation.galgas", 290)) ;
               }
             }
             GALGAS_string var_targetTemplatePartialPath = var_targetDir ;
-            if (var_targetDir.getter_length (SOURCE_FILE ("template_invocation.galgas", 293)).isValid ()) {
-              uint32_t variant_9543 = var_targetDir.getter_length (SOURCE_FILE ("template_invocation.galgas", 293)).uintValue () ;
-              bool loop_9543 = true ;
-              while (loop_9543) {
-                loop_9543 = GALGAS_bool (kIsStrictSup, var_targetTemplatePartialPath.getter_length (SOURCE_FILE ("template_invocation.galgas", 294)).objectCompare (GALGAS_uint ((uint32_t) 0U))).operator_and (var_found.operator_not (SOURCE_FILE ("template_invocation.galgas", 294)) COMMA_SOURCE_FILE ("template_invocation.galgas", 294)).isValid () ;
-                if (loop_9543) {
-                  loop_9543 = GALGAS_bool (kIsStrictSup, var_targetTemplatePartialPath.getter_length (SOURCE_FILE ("template_invocation.galgas", 294)).objectCompare (GALGAS_uint ((uint32_t) 0U))).operator_and (var_found.operator_not (SOURCE_FILE ("template_invocation.galgas", 294)) COMMA_SOURCE_FILE ("template_invocation.galgas", 294)).boolValue () ;
+            if (var_targetDir.getter_length (SOURCE_FILE ("template_invocation.galgas", 294)).isValid ()) {
+              uint32_t variant_9580 = var_targetDir.getter_length (SOURCE_FILE ("template_invocation.galgas", 294)).uintValue () ;
+              bool loop_9580 = true ;
+              while (loop_9580) {
+                loop_9580 = GALGAS_bool (kIsStrictSup, var_targetTemplatePartialPath.getter_length (SOURCE_FILE ("template_invocation.galgas", 295)).objectCompare (GALGAS_uint ((uint32_t) 0U))).operator_and (var_found.operator_not (SOURCE_FILE ("template_invocation.galgas", 295)) COMMA_SOURCE_FILE ("template_invocation.galgas", 295)).isValid () ;
+                if (loop_9580) {
+                  loop_9580 = GALGAS_bool (kIsStrictSup, var_targetTemplatePartialPath.getter_length (SOURCE_FILE ("template_invocation.galgas", 295)).objectCompare (GALGAS_uint ((uint32_t) 0U))).operator_and (var_found.operator_not (SOURCE_FILE ("template_invocation.galgas", 295)) COMMA_SOURCE_FILE ("template_invocation.galgas", 295)).boolValue () ;
                 }
-                if (loop_9543 && (0 == variant_9543)) {
-                  loop_9543 = false ;
-                  inCompiler->loopRunTimeVariantError (SOURCE_FILE ("template_invocation.galgas", 293)) ;
+                if (loop_9580 && (0 == variant_9580)) {
+                  loop_9580 = false ;
+                  inCompiler->loopRunTimeVariantError (SOURCE_FILE ("template_invocation.galgas", 294)) ;
                 }
-                if (loop_9543) {
-                  variant_9543 -- ;
-                  GALGAS_string var_fullTemplatePath = var_fullTemplateDir.add_operation (GALGAS_string ("/"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 296)).add_operation (var_targetTemplatePartialPath, inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 296)).add_operation (GALGAS_string ("/"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 296)).add_operation (constinArgument_inTemplateName.getter_string (SOURCE_FILE ("template_invocation.galgas", 296)), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 296)).add_operation (GALGAS_string (".goilTemplate"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 296)) ;
-                  var_pathList.addAssign_operation (var_fullTemplatePath  COMMA_SOURCE_FILE ("template_invocation.galgas", 297)) ;
-                  var_found = var_fullTemplatePath.getter_fileExists (SOURCE_FILE ("template_invocation.galgas", 298)) ;
+                if (loop_9580) {
+                  variant_9580 -- ;
+                  GALGAS_string var_fullTemplatePath = var_fullTemplateDir.add_operation (GALGAS_string ("/"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 297)).add_operation (var_targetTemplatePartialPath, inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 297)).add_operation (GALGAS_string ("/"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 297)).add_operation (constinArgument_inTemplateName.getter_string (SOURCE_FILE ("template_invocation.galgas", 297)), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 297)).add_operation (GALGAS_string (".goilTemplate"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 297)) ;
+                  var_pathList.addAssign_operation (var_fullTemplatePath  COMMA_SOURCE_FILE ("template_invocation.galgas", 298)) ;
+                  var_found = var_fullTemplatePath.getter_fileExists (SOURCE_FILE ("template_invocation.galgas", 299)) ;
                   const enumGalgasBool test_13 = var_found.boolEnum () ;
                   if (kBoolTrue == test_13) {
-                    GALGAS_Tvalue joker_10101 ; // Joker input parameter
-                    GALGAS_Ttype joker_10104 ; // Joker input parameter
-                    cGrammar_template_5F_grammar::_performSourceFileParsing_ (inCompiler, GALGAS_lstring::constructor_new (var_fullTemplatePath, GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_invocation.galgas", 301))  COMMA_SOURCE_FILE ("template_invocation.galgas", 301)), constinArgument_inPrefix, constinArgument_inPath, constinArgument_inTemplateDirectory, constinArgument_inTemplateVariableMap, ioArgument_ioResultingString, joker_10101, joker_10104  COMMA_SOURCE_FILE ("template_invocation.galgas", 301)) ;
+                    GALGAS_Tvalue joker_10148 ; // Joker input parameter
+                    GALGAS_Ttype joker_10151 ; // Joker input parameter
+                    cGrammar_template_5F_grammar::_performSourceFileParsing_ (inCompiler, GALGAS_lstring::constructor_new (var_fullTemplatePath, GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_invocation.galgas", 302))  COMMA_SOURCE_FILE ("template_invocation.galgas", 302)), constinArgument_inPrefix, constinArgument_inPath, constinArgument_inTemplateDirectory, constinArgument_inTemplateVariableMap, ioArgument_ioResultingString, constinArgument_inIsRoot, joker_10148, joker_10151  COMMA_SOURCE_FILE ("template_invocation.galgas", 302)) ;
                   }else if (kBoolFalse == test_13) {
-                    var_targetTemplatePartialPath = var_targetTemplatePartialPath.getter_stringByDeletingLastPathComponent (SOURCE_FILE ("template_invocation.galgas", 303)) ;
+                    var_targetTemplatePartialPath = var_targetTemplatePartialPath.getter_stringByDeletingLastPathComponent (SOURCE_FILE ("template_invocation.galgas", 304)) ;
                   }
                 }
               }
             }
-            const enumGalgasBool test_14 = var_found.operator_not (SOURCE_FILE ("template_invocation.galgas", 306)).boolEnum () ;
+            const enumGalgasBool test_14 = var_found.operator_not (SOURCE_FILE ("template_invocation.galgas", 307)).boolEnum () ;
             if (kBoolTrue == test_14) {
-              GALGAS_string var_fullTemplatePath = var_fullTemplateDir.add_operation (GALGAS_string ("/"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 307)).add_operation (constinArgument_inTemplateName.getter_string (SOURCE_FILE ("template_invocation.galgas", 307)), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 307)).add_operation (GALGAS_string (".goilTemplate"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 307)) ;
-              var_pathList.addAssign_operation (var_fullTemplatePath  COMMA_SOURCE_FILE ("template_invocation.galgas", 308)) ;
-              var_found = var_fullTemplatePath.getter_fileExists (SOURCE_FILE ("template_invocation.galgas", 309)) ;
+              GALGAS_string var_fullTemplatePath = var_fullTemplateDir.add_operation (GALGAS_string ("/"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 308)).add_operation (constinArgument_inTemplateName.getter_string (SOURCE_FILE ("template_invocation.galgas", 308)), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 308)).add_operation (GALGAS_string (".goilTemplate"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 308)) ;
+              var_pathList.addAssign_operation (var_fullTemplatePath  COMMA_SOURCE_FILE ("template_invocation.galgas", 309)) ;
+              var_found = var_fullTemplatePath.getter_fileExists (SOURCE_FILE ("template_invocation.galgas", 310)) ;
               const enumGalgasBool test_15 = var_found.boolEnum () ;
               if (kBoolTrue == test_15) {
-                GALGAS_Tvalue joker_10699 ; // Joker input parameter
-                GALGAS_Ttype joker_10702 ; // Joker input parameter
-                cGrammar_template_5F_grammar::_performSourceFileParsing_ (inCompiler, GALGAS_lstring::constructor_new (var_fullTemplatePath, GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_invocation.galgas", 312))  COMMA_SOURCE_FILE ("template_invocation.galgas", 312)), constinArgument_inPrefix, constinArgument_inPath, constinArgument_inTemplateDirectory, constinArgument_inTemplateVariableMap, ioArgument_ioResultingString, joker_10699, joker_10702  COMMA_SOURCE_FILE ("template_invocation.galgas", 312)) ;
+                GALGAS_Tvalue joker_10756 ; // Joker input parameter
+                GALGAS_Ttype joker_10759 ; // Joker input parameter
+                cGrammar_template_5F_grammar::_performSourceFileParsing_ (inCompiler, GALGAS_lstring::constructor_new (var_fullTemplatePath, GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_invocation.galgas", 313))  COMMA_SOURCE_FILE ("template_invocation.galgas", 313)), constinArgument_inPrefix, constinArgument_inPath, constinArgument_inTemplateDirectory, constinArgument_inTemplateVariableMap, ioArgument_ioResultingString, constinArgument_inIsRoot, joker_10756, joker_10759  COMMA_SOURCE_FILE ("template_invocation.galgas", 313)) ;
               }
             }
-            const enumGalgasBool test_16 = var_found.operator_not (SOURCE_FILE ("template_invocation.galgas", 315)).boolEnum () ;
+            const enumGalgasBool test_16 = var_found.operator_not (SOURCE_FILE ("template_invocation.galgas", 316)).boolEnum () ;
             if (kBoolTrue == test_16) {
               outArgument_outNoErrorOccured = GALGAS_bool (false) ;
               const enumGalgasBool test_17 = constinArgument_inErrorIfNotFound.boolEnum () ;
               if (kBoolTrue == test_17) {
-                GALGAS_string var_m = GALGAS_string ("cannot find a valid path for the '").add_operation (constinArgument_inTemplateName.getter_string (SOURCE_FILE ("template_invocation.galgas", 318)), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 318)).add_operation (GALGAS_string ("' template; I have tried:"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 318)) ;
-                cEnumerator_stringlist enumerator_10967 (var_pathList, kEnumeration_up) ;
-                while (enumerator_10967.hasCurrentObject ()) {
+                GALGAS_string var_m = GALGAS_string ("cannot find a valid path for the '").add_operation (constinArgument_inTemplateName.getter_string (SOURCE_FILE ("template_invocation.galgas", 319)), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 319)).add_operation (GALGAS_string ("' template; I have tried:"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 319)) ;
+                cEnumerator_stringlist enumerator_11024 (var_pathList, kEnumeration_up) ;
+                while (enumerator_11024.hasCurrentObject ()) {
                   var_m.dotAssign_operation (GALGAS_string ("\n"
-                    "  - '").add_operation (enumerator_10967.current_mValue (HERE), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 320)).add_operation (GALGAS_string ("';"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 320))  COMMA_SOURCE_FILE ("template_invocation.galgas", 320)) ;
-                  enumerator_10967.gotoNextObject () ;
+                    "  - '").add_operation (enumerator_11024.current_mValue (HERE), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 321)).add_operation (GALGAS_string ("';"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 321))  COMMA_SOURCE_FILE ("template_invocation.galgas", 321)) ;
+                  enumerator_11024.gotoNextObject () ;
                 }
                 GALGAS_location location_18 (constinArgument_inTemplateName.getter_location (HERE)) ; // Implicit use of 'location' getter
-                inCompiler->emitSemanticError (location_18, var_m  COMMA_SOURCE_FILE ("template_invocation.galgas", 322)) ;
+                inCompiler->emitSemanticError (location_18, var_m  COMMA_SOURCE_FILE ("template_invocation.galgas", 323)) ;
               }
             }
           }
@@ -342,69 +343,6 @@ void routine_templateInvocation (const GALGAS_lstring constinArgument_inTemplate
   }
 }
 
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                              Function 'goil_template'                                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_string function_goil_5F_template (const GALGAS_string & constinArgument_prefix,
-                                         const GALGAS_TfieldMap & constinArgument_cfg,
-                                         const GALGAS_string & constinArgument_name,
-                                         C_Compiler * inCompiler
-                                         COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_string result_result ; // Returned variable
-  result_result = GALGAS_string::makeEmptyString () ;
-  {
-  GALGAS_bool joker_958 ; // Joker input parameter
-  routine_templateInvocation (GALGAS_lstring::constructor_new (constinArgument_name, GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_routines.galgas", 34))  COMMA_SOURCE_FILE ("template_routines.galgas", 34)), constinArgument_prefix, GALGAS_string ("templates"), function_rootTemplatesDirectory (inCompiler COMMA_SOURCE_FILE ("template_routines.galgas", 37)), GALGAS_bool (true), constinArgument_cfg, result_result, joker_958, inCompiler  COMMA_SOURCE_FILE ("template_routines.galgas", 33)) ;
-  }
-//---
-  return result_result ;
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-//  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
-
-static const C_galgas_type_descriptor * functionArgs_goil_5F_template [4] = {
-  & kTypeDescriptor_GALGAS_string,
-  & kTypeDescriptor_GALGAS_TfieldMap,
-  & kTypeDescriptor_GALGAS_string,
-  NULL
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static GALGAS_object functionWithGenericHeader_goil_5F_template (C_Compiler * inCompiler,
-                                                                 const cObjectArray & inEffectiveParameterArray,
-                                                                 const GALGAS_location & /* §§ inErrorLocation */
-                                                                 COMMA_LOCATION_ARGS) {
-  const GALGAS_string operand0 = GALGAS_string::extractObject (inEffectiveParameterArray.objectAtIndex (0 COMMA_HERE),
-                                                               inCompiler
-                                                               COMMA_THERE) ;
-  const GALGAS_TfieldMap operand1 = GALGAS_TfieldMap::extractObject (inEffectiveParameterArray.objectAtIndex (1 COMMA_HERE),
-                                                                     inCompiler
-                                                                     COMMA_THERE) ;
-  const GALGAS_string operand2 = GALGAS_string::extractObject (inEffectiveParameterArray.objectAtIndex (2 COMMA_HERE),
-                                                               inCompiler
-                                                               COMMA_THERE) ;
-  return function_goil_5F_template (operand0,
-                                    operand1,
-                                    operand2,
-                                    inCompiler
-                                    COMMA_THERE).getter_object (THERE) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-C_galgas_function_descriptor functionDescriptor_goil_5F_template ("goil_template",
-                                                                  functionWithGenericHeader_goil_5F_template,
-                                                                  & kTypeDescriptor_GALGAS_string,
-                                                                  3,
-                                                                  functionArgs_goil_5F_template) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
@@ -420,8 +358,8 @@ GALGAS_string function_computeTemplate (const GALGAS_string & constinArgument_pr
   GALGAS_string result_result ; // Returned variable
   result_result = GALGAS_string::makeEmptyString () ;
   {
-  GALGAS_bool joker_1247 ; // Joker input parameter
-  routine_templateInvocation (GALGAS_lstring::constructor_new (constinArgument_name, GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_routines.galgas", 51))  COMMA_SOURCE_FILE ("template_routines.galgas", 51)), constinArgument_prefix, GALGAS_string ("templates"), function_rootTemplatesDirectory (inCompiler COMMA_SOURCE_FILE ("template_routines.galgas", 54)), GALGAS_bool (true), constinArgument_cfg, result_result, joker_1247, inCompiler  COMMA_SOURCE_FILE ("template_routines.galgas", 50)) ;
+  GALGAS_bool joker_970 ; // Joker input parameter
+  routine_templateInvocation (GALGAS_lstring::constructor_new (constinArgument_name, GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_routines.galgas", 34))  COMMA_SOURCE_FILE ("template_routines.galgas", 34)), constinArgument_prefix, GALGAS_string ("templates"), function_rootTemplatesDirectory (inCompiler COMMA_SOURCE_FILE ("template_routines.galgas", 37)), GALGAS_bool (true), GALGAS_bool (true), constinArgument_cfg, result_result, joker_970, inCompiler  COMMA_SOURCE_FILE ("template_routines.galgas", 33)) ;
   }
 //---
   return result_result ;

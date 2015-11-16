@@ -35,6 +35,7 @@ grammar template_grammar "LL1" {
     ?let @string inTemplateDirectory
     ?@TfieldMap inTemplateVariableMap
     ?!@string ioResultingString
+    ?let @bool inIsRoot
     !@Tvalue returnedValue
     !@Ttype returnedType
 }

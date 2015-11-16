@@ -25,8 +25,7 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-template <typename TYPE>
-inline void swap (TYPE & ioOperand1, TYPE & ioOperand2) {
+template <typename TYPE> inline void swap (TYPE & ioOperand1, TYPE & ioOperand2) {
   TYPE temporary = ioOperand1 ;
   ioOperand1 = ioOperand2 ;
   ioOperand2 = temporary ;

@@ -63,20 +63,6 @@ bool cocoaOutput (void) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       V E R S I O N    S T R I N G                                                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-static const char * gCompilerVersionString ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-const char * compilerVersionString (void) {
-  return gCompilerVersionString ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
 
 static const uint32_t kDisplayLength = 20 ;
 
@@ -380,12 +366,10 @@ static void analyze_one_option (const char * inCommand,
 
 void F_Analyze_CLI_Options (const int argv,
                             const char * argc [],
-                            const char * inVersionString,
                             TC_UniqueArray <C_String> & outSourceFileArray,
                             const char * inExtensions [],
                             const char * inHelpMessages [],
                             void print_tool_help_message (void)) {
-  gCompilerVersionString = inVersionString ;
 //--- Analyze command
   bool errorFound = false ;
   for (int32_t i=1 ; i<argv ; i++) {
@@ -408,7 +392,11 @@ void F_Analyze_CLI_Options (const int argv,
   #endif
 //--- Print version ?
   if (gOption_generic_5F_cli_5F_options_display_5F_version.mValue) {
-    co << argc [0] << " : " << inVersionString << "\n" ;
+    co << argc [0] << " : " << projectVersionString () ;
+    #ifndef DO_NOT_GENERATE_CHECKINGS
+      co << " [DEBUG]" ;
+    #endif
+    co << ", build with GALGAS " << galgasVersionString () << "\n" ;
   }
 //--- Print Help ?
   if (gOption_generic_5F_cli_5F_options_display_5F_help.mValue) {
