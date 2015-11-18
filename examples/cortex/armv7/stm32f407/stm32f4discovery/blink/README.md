@@ -13,4 +13,7 @@ This alarm starts 250ms (ALARMTIME) after "StartOS".
 This alarm has a 250ms (CYCLETIME) period.
 
 Configure the application with
+
+`
 goil --target=cortex/armv7/stm32f407/stm32f4discovery -v --templates=../../../../../../goil/templates/ blink.oil
+`

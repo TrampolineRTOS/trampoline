@@ -1,4 +1,11 @@
 *~
 ## Vim...
 .*.swp
+##python
+*.pyc
+##Xcode related file
+*.pbxproj
+##build stuff
+*.o
+*.dep
 
