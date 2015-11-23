@@ -35,7 +35,7 @@ FUNC(int, OS_APPL_CODE) main(void)
   /* Prescaler so the counter count every half milli */
   TIM_TimeBaseStructure.TIM_Prescaler = 42000 - 1;
 
-  /* Time set to 60 */
+  /* Time set to 30 ms */
   TIM_TimeBaseStructure.TIM_Period = 60 - 1;
 
   TIM_TimeBaseStructure.TIM_ClockDivision = 0;

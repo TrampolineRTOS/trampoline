@@ -1,23 +1,21 @@
-|=-----=[ readbutton_isr example ]=-----=|
+# timer example
 
 This application deals with alarms and ISR2.
-There are two tasks "blink" and "read_button" and one ISR2 "isr_button".
+Task `blink` trigered by alarm `blink_alarm`.
 
-At start the program does nothing.
-Something happens when pushing the button on the board.
-A push on the button activates the task "read_button".
-
-The task "read_button" will toggle the BLUE led and launch or cancel the alarm "blink_alarm".
-This alarm "blink_alarm" will activate the task "blink" on expiration and start again.
+alarm `blink_alarm` runs at start and activates task `blink` every 100ms
+Task `blink` programs timer TIM2 to triger an interrupt after 30ms
+ISR2 `isr_timer` is connected to TIM2_IRQ.
 
 Leds are toggled by the following resources:
-- "blink" toggles GREEN led,
-- "isr_button" will toggle RED led,
--"read_button" will toggle BLUE led.
+* `blink` toggles the GREEN led,
+* `isr_timer` toggles the RED led,
 
-Have a look into "readbutton_isr.oil" file.
+Both leds are toggled every 100ms but the RED led toggle is delayed by 30ms
 
-The system is based scheduled with a 1ms SysTick "SystemCounter".
+Have a look into `timer.oil` file.
+
+The system is based scheduled with a 1ms SysTick `SystemCounter`.
 
 Configure the application with
 goil --target=cortex/armv7/stm32f407/stm32f4discovery --templates=../../../../../../goil/templates/ timer.oil
