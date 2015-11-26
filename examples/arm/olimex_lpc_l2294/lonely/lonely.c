@@ -98,6 +98,7 @@ VAR(uint32, AUTOMATIC) isr2counter = 0;
 DeclareTask(task1);
 DeclareTask(task2);
 DeclareTask(task3);
+DeclareResource(lcd_resource);
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -115,10 +116,12 @@ void PreTaskHook()
 TASK(task1)
 {
   task1Counter++;
+  GetResource(lcd_resource);
   lcd_goto_line_column(1,0);
   lcd_print_string("T1 - ");
   lcd_goto_line_column(1,5);
   lcd_print_unsigned(task1Counter);
+  ReleaseResource(lcd_resource);
   ActivateTask(task3);
 
   TerminateTask();  
@@ -134,10 +137,12 @@ TASK(task2)
   static int state = 0;
   
   task2Counter++;
+  GetResource(lcd_resource);
   lcd_goto_line_column(2,0);
   lcd_print_string("T2 - ");
   lcd_goto_line_column(2,5);
   lcd_print_unsigned(task2Counter);
+  ReleaseResource(lcd_resource);
 
     if (state == 0) {
       state = 1;
@@ -160,10 +165,12 @@ TASK(task2)
 TASK(task3)
 {
   task3Counter++;
+  GetResource(lcd_resource);
   lcd_goto_line_column(3,0);
   lcd_print_string("T3 - ");
   lcd_goto_line_column(3,5);
   lcd_print_unsigned(task3Counter);
+  ReleaseResource(lcd_resource);
 
   TerminateTask();  
 }
@@ -176,10 +183,12 @@ TASK(task3)
 ISR(isr_button1)
 {
   isr1counter++;
+  GetResource(lcd_resource);
   lcd_goto_line_column(1,12);
   lcd_print_string("B1 - ");
   lcd_goto_line_column(1,17);
   lcd_print_unsigned(isr1counter);
+  ReleaseResource(lcd_resource);
   
   /* If isr_button1 is an ISR 2 then de comment the line hereafter */
   //CallTerminateISR2();
@@ -192,10 +201,13 @@ ISR(isr_button1)
 ISR(isr_button2)
 {
   isr2counter++;
+  GetResource(lcd_resource);
   lcd_goto_line_column(2,12);
   lcd_print_string("B2 - ");
   lcd_goto_line_column(2,17);
-  lcd_print_unsigned(0); 
+  lcd_print_unsigned(0);
+  ReleaseResource(lcd_resource);
+
   CallTerminateISR2();
 }
 #define APP_ISR_isr_button2_STOP_SEC_CODE

@@ -3,7 +3,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2010, ..., 2012 Pierre Molinaro.                                                                     *
+//  Copyright (C) 2010, ..., 2015 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -24,6 +24,7 @@
 #include "command_line_interface/C_BoolCommandLineOption.h"
 #include "command_line_interface/C_UIntCommandLineOption.h"
 #include "command_line_interface/C_StringCommandLineOption.h"
+#include "command_line_interface/F_Analyze_CLI_Options.h"
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
@@ -214,6 +215,50 @@ GALGAS_string GALGAS_application::constructor_stringOptionCommentString (const G
   if (inDomainName.isValid () && inIdentifier.isValid ()) {
     const C_String s = C_StringCommandLineOption::getStringOptionCommentString (inDomainName.stringValue (), inIdentifier.stringValue ()) ;
     result = GALGAS_string (s) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//  Version strings
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_string GALGAS_application::constructor_projectVersionString (UNUSED_LOCATION_ARGS) {
+  return GALGAS_string (projectVersionString ()) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_string GALGAS_application::constructor_galgasVersionString (UNUSED_LOCATION_ARGS) {
+  return GALGAS_string (galgasVersionString ()) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//  Command line arguments
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_uint GALGAS_application::constructor_commandLineArgumentCount (UNUSED_LOCATION_ARGS) {
+  return GALGAS_uint (commandLineArgumentCount ()) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_string GALGAS_application::constructor_commandLineArgumentAtIndex (const GALGAS_uint & inIndex,
+                                                                          C_Compiler * inCompiler
+                                                                          COMMA_LOCATION_ARGS) {
+  GALGAS_string result ;
+  if (inIndex.isValid ()) {
+    const uint32_t idx = inIndex.uintValue () ;
+    if (idx < commandLineArgumentCount ()) {
+      result = GALGAS_string (commandLineArgumentAtIndex (idx)) ;
+    }else{
+      C_String message ;
+      message << "@application.commandLineArgumentAtIndex: index "
+              << cStringWithUnsigned (idx)
+              << " >= argument count = "
+              << cStringWithUnsigned (commandLineArgumentCount ()) ;
+      inCompiler->onTheFlySemanticError (message COMMA_THERE) ;
+    }
   }
   return result ;
 }

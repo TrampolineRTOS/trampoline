@@ -892,7 +892,7 @@ rule <factor>
         end
         @string result = ""
 #        message "calling ".[[fct mFunctionValue] name]."\n";
-        grammar template_grammar on ([[fct mFunctionValue] content],"") !inPrefix !inPath !inTemplateDirectory !locals !?result ?outValue ?outResultType
+        grammar template_grammar on ([[fct mFunctionValue] content],"") !inPrefix !inPath !inTemplateDirectory !locals !?result !false ?outValue ?outResultType
       end
 #      error functionOrVariableName : "there is no '" . functionOrVariableName . "' function defined in GOIL template language" : f;
     else

@@ -38,7 +38,24 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const char * gArgv0 ;
+static uint32_t gArgc = 0 ;
+static const char ** gArgv ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+uint32_t commandLineArgumentCount (void) {
+  return gArgc ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_String commandLineArgumentAtIndex (const uint32_t inIndex) {
+  const char * result = "" ;
+  if (inIndex < gArgc) {
+    result = gArgv [inIndex] ;
+  }
+  return result ;
+}
 
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -48,9 +65,10 @@ static const char * gArgv0 ;
 //---------------------------------------------------------------------------------------------------------------------*
 
 int main (int argc, const char * argv []) {
+  gArgc = (uint32_t) argc ;
+  gArgv = argv ;
   // PMUInt128::example () ;
   // C_DirectedGraph::example () ;
-  gArgv0 = argv [0] ;
   C_DateTime::enterCurrentToolModificationTime (argv [0]) ;
   int returnCode = 0 ; // No error
 //--- Print options
@@ -92,12 +110,6 @@ int main (int argc, const char * argv []) {
     }
   }
   return returnCode ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-const char * mainFirstArgument (void) {
-  return gArgv0 ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*

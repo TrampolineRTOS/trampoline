@@ -33,7 +33,7 @@ grammar goil_grammar "LL1" {
 #--- References to syntax components used when source file extension is .ggs
 #    Theses constructs are silently parsed when source file extension is .gGrammar
      <start>
-
+     
 }
 
 # vim:ft=ggs:ts=4:sw=4

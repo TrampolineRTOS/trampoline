@@ -38,7 +38,7 @@ mBufferLength (0) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//                                Close                                        *
+//                                Close                                                                                *
 //---------------------------------------------------------------------------------------------------------------------*
 
 bool C_TextFileWrite::close (void) {
@@ -55,8 +55,8 @@ bool C_TextFileWrite::close (void) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//                             Destructor                                      *
-// Cannot call the virtual 'close' method in destructor                        *
+//                             Destructor                                                                              *
+// Cannot call the virtual 'close' method in destructor                                                                *
 //---------------------------------------------------------------------------------------------------------------------*
 
 C_TextFileWrite::~C_TextFileWrite (void) {
@@ -67,7 +67,7 @@ C_TextFileWrite::~C_TextFileWrite (void) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//                  Write a character string into the file                     *
+//                  Write a character string into the file                                                             *
 //---------------------------------------------------------------------------------------------------------------------*
 
 void C_TextFileWrite::performActualCharArrayOutput (const char * inCharArray,
@@ -105,7 +105,7 @@ void C_TextFileWrite::performActualUnicodeArrayOutput (const utf32 * inCharArray
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-//                   Flush print                                               *
+//                   Flush print                                                                                       *
 //---------------------------------------------------------------------------------------------------------------------*
 
 void C_TextFileWrite::flush (void) {

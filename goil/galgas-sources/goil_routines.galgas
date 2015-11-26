@@ -193,10 +193,31 @@ func allTemplatePaths
   end
 }
 
+proc checkTemplatesPath
+{
+  @string configDir = rootTemplatesDirectory() + "/config"
+  if not [configDir directoryExists] then
+    error @location.here: "The templates path '" + configDir + "' is not set to the templates directory"
+  else
+    @string partialPath = configDir
+    @bool continueIt = true
+    @stringlist components = [[option goil_options.target_platform value] componentsSeparatedByString !"/"]
+    for (@string comp) in components do
+      partialPath = partialPath + "/" + comp
+      if continueIt && not [partialPath directoryExists] then
+        error @location.here: "The templates path '" + partialPath + "' does not exist in the templates directory"
+        continueIt = false
+      end
+    end
+  end
+}
+
+
 func allTemplateFilePaths
   ?let @string prefix
   ?let @string file
-  ->@stringlist paths {
+  ->@stringlist paths
+{
   @stringlist components = [[option goil_options.target_platform value] componentsSeparatedByString !"/"]
   @string templateDir = templates_directory(!prefix)
   @bool notOver = true
