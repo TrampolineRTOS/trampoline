@@ -303,6 +303,11 @@ if OS::SCALABILITYCLASS > 0 then
 SOURCES += % !file::VALUE
   end foreach
 end if
+
+if exists OS::TIMINGPROTECTION default (false) then
+%
+SOURCES += tpl_as_timing_protec.c tpl_as_protec_hook.c%
+end if
 %
 
 #############################################################################

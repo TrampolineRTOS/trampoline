@@ -60,7 +60,7 @@ end if%
 #define WITH_AUTOSAR                     % !yesNo(AUTOSAR) %
 #define WITH_PROTECTION_HOOK             % !yesNo(exists OS::PROTECTIONHOOK default(false)) %
 #define WITH_STACK_MONITORING            % !yesNo(exists OS::STACKMONITORING default(false)) %
-#define WITH_AUTOSAR_TIMING_PROTECTION   % !yesNo(exists OS::STACKMONITORING default(false)) %
+#define WITH_AUTOSAR_TIMING_PROTECTION   % !yesNo(exists OS::TIMINGPROTECTION default(false)) %
 #define AUTOSAR_SC                       % !OS::SCALABILITYCLASS %
 #define WITH_OSAPPLICATION               % !yesNo(OS::SCALABILITYCLASS > 2)%
 #define WITH_OSAPPLICATION_STARTUP_HOOK  % !yesNo(OS::APPLICATIONSTARTUPHOOK > 0) %

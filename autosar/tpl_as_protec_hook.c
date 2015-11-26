@@ -27,8 +27,9 @@
  */
 #include "tpl_as_protec_hook.h"
 #include "tpl_os_kernel.h"
-#include "tpl_os_rez_kernel.h"
-#include "tpl_os_it_kernel.h"
+#include "tpl_os_os_kernel.h"
+#include "tpl_os_resource_kernel.h"
+#include "tpl_os_interrupt_kernel.h"
 #include "tpl_as_app_kernel.h"
 
 #include "tpl_machine_interface.h"
@@ -47,7 +48,6 @@ extern CONST(tpl_proc_id, AUTOMATIC) INVALID_PROC;
 
 FUNC(void, OS_CODE) tpl_call_protection_hook(VAR(tpl_status, AUTOMATIC) error)
 {
-  GET_CURRENT_CORE_ID(core_id)
 
 #if WITH_PROTECTION_HOOK == YES
   VAR(ProtectionReturnType, AUTOMATIC) result;
@@ -89,11 +89,11 @@ FUNC(void, OS_CODE) tpl_call_protection_hook(VAR(tpl_status, AUTOMATIC) error)
         /* terminate the running task */
         tpl_terminate();
         /* start the highest priority task */
-        tpl_start(tpl_get_proc());
+        tpl_start();
         /* task switching should occur */
-        TPL_KERN(core_id).need_switch = NEED_SWITCH;
+        tpl_kern.need_switch = NEED_SWITCH;
         
-        LOCAL_SWITCH_CONTEXT(core_id)
+        LOCAL_SWITCH_CONTEXT()
         
       }
       else

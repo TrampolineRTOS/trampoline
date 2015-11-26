@@ -63,7 +63,7 @@ CPU test {
             TRAMPOLINE_BASE_PATH = "../../..";
             APP_NAME = "autosar_tp_s1_exe";
             CFLAGS = "-I../../embUnit";
-            CFLAGS  = "-Wall -pedantic";
+            CFLAGS  = "-Wall -pedantic -std=c99";
             CFLAGS  = "-Wmissing-field-initializers";
             LDFLAGS = "-L../../lib -lembUnit";
         };
@@ -82,7 +82,7 @@ CPU test {
         ACTIVATION = 1;
         SCHEDULE = FULL;
         TIMING_PROTECTION = TRUE {
-            EXECUTIONBUDGET = 10000; 
+            EXECUTIONBUDGET = 100; 
             /* 
                 Long enough to let the task executes itself plus t2 (to test a
                 task preempted and finishing before the Execution budget) 
@@ -106,7 +106,7 @@ CPU test {
         ACTIVATION = 1;
         SCHEDULE = FULL;
         TIMING_PROTECTION = TRUE {
-            EXECUTIONBUDGET = 10000;
+            EXECUTIONBUDGET = 100;
             TIMEFRAME = 1;
             /*
                MAXOSINTERRUPTLOCKTIME = 1;
