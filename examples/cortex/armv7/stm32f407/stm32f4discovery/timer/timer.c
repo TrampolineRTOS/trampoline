@@ -44,7 +44,7 @@ FUNC(int, OS_APPL_CODE) main(void)
 
   TIM_SelectOnePulseMode(TIM2, TIM_OPMode_Single);
 
-  initBoard(BUTTON_NOIT);
+  initBoard();
 
   StartOS(OSDEFAULTAPPMODE);
   return 0;

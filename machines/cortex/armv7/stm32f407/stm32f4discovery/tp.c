@@ -13,18 +13,13 @@ extern volatile VAR(uint32, OS_VAR) tpl_time_counter;
  * Initialise la carte avec les ports d'E/S configurés pour allumer les LED
  * et lire le poussoir en mode GPIO ou IT
  */
-FUNC(void, OS_CODE) initBoard(ButtonMode mode)
+FUNC(void, OS_CODE) initBoard(void)
 {
   STM_EVAL_LEDInit(LED3);
   STM_EVAL_LEDInit(LED4);
   STM_EVAL_LEDInit(LED5);
   STM_EVAL_LEDInit(LED6);
-  if (mode == BUTTON_IT) {
-    STM_EVAL_PBInit(BUTTON_USER, BUTTON_MODE_EXTI);
-  }
-  else {
-    STM_EVAL_PBInit(BUTTON_USER, BUTTON_MODE_GPIO);
-  }
+  STM_EVAL_PBInit(BUTTON_USER, BUTTON_MODE_GPIO);
 }
 
 /*

@@ -61,9 +61,18 @@ CPU readbutton_isr {
     AUTOSTART = FALSE;
   };
 
+  /*
+   * Connect a category 2 ISR to the user button (the blue one)
+   * of the board.
+   * 
+   * The description allows to program the GPIO, the corresponding
+   * external interrupt line and the NVIC
+   * 
+   * 
+   */
   ISR isr_button {
     CATEGORY = 2;
     PRIORITY = 1;
-    SOURCE = EXTI0_IRQ;
+    SOURCE = EXTI0_IRQ { PIN = PA0 { TRIGGER = RISING; PULL = NONE; }; };
   };
 };
