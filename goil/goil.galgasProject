@@ -24,6 +24,9 @@
 #
 #---------------------------------------------------------------------------*
 
+# 2.1.25   Added a variant of mapof to convert a struct into a map 
+#          Added the tab instruction
+# 2.1.24   Checks the version of goil and the version in root template
 # 2.1.23   Checks the Templates directory and the target path
 # 2.1.22   Handle the ~ expansion in --templates option
 # 2.1.21   Added a print and println instructions to template language
@@ -31,7 +34,7 @@
 #          string
 # 2.1.20   Added -o and -r options to goil
 
-project (2:1:24) -> "goil" {
+project (2:1:25) -> "goil" {
 
 #  feature libpmAtPath : "../galgas_sources/GALGAS_OUTPUT/libpm" ;
   %makefile-macosx

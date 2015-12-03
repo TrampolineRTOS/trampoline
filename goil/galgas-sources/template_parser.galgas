@@ -1317,7 +1317,8 @@ rule <template_instruction>
   ?!@TfieldMap ioTemplateVariableMap
   ?!@string unused ioResultingString
   !@Tvalue returnedValue
-  !@Ttype returnedType {
+  !@Ttype returnedType
+{
   $sort$ $identifier$ ?var @lstring variableName
   @Ttype variableType
   @Tvalue variableValue
@@ -1348,6 +1349,45 @@ rule <template_instruction>
   end
   returnedValue = valueWithVoid()   
   returnedType = @Ttype. unconstructedType
+}
+
+#---------------------------------------------------------------------------*
+
+rule <template_instruction>
+  ?let @string inPrefix
+  ?let @string inPath
+  ?let @string inTemplateDirectory
+  ?!@TfieldMap ioTemplateVariableMap
+  ?!@string ioResultingString
+  !@Tvalue returnedValue
+  !@Ttype returnedType
+{
+  $tab$ 
+  <expression>
+    !inPrefix
+    !inPath
+    !inTemplateDirectory
+    !ioTemplateVariableMap
+    ?let @Tvalue enumeratedValue
+    ?let @Ttype expressionType
+  if expressionType != @Ttype. intType then
+    error @location.here: "tab should have an integer argument" :
+      returnedValue, returnedType
+  else
+    @uint currentColumn = [ioResultingString currentColumn]
+    if [enumeratedValue mInt64Value] >= 0LS then
+      @uint tabColumn = [[enumeratedValue mInt64Value] uint]
+      if tabColumn > currentColumn then
+        ioResultingString += @string.stringWithSequenceOfCharacters{
+          !' '
+          !tabColumn - currentColumn - 1
+        }
+      end
+    end
+    
+    returnedValue = valueWithVoid()   
+    returnedType = @Ttype. unconstructedType
+  end
 }
 
 #---------------------------------------------------------------------------*

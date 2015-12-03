@@ -36,3 +36,8 @@ write to PROJECT."/cmsis_wrapper.h":
  let EXTENSIONSECONDSTAGE := "h"
  template tpl_wrapper in code
 end write
+
+write to PROJECT."/tpl_external_interrupts.c":
+ let EXTENSIONSECONDSTAGE := "c"
+ template if exists tpl_external_interrupts_c in code
+end write

@@ -7,10 +7,10 @@ IMPLEMENTATION thumb2_ressource {
     BOOLEAN USEFLOAT = FALSE;
   };
   ISR [] {
-    INTERRUPT_TYPE SOURCE;
+    #include <interruptSources.oil>
   };
   COUNTER [] {
-    INTERRUPT_TYPE SOURCE;
+    #include <interruptSources.oil>
   };
   INTERRUPT [] { 
     UINT32 VECT;

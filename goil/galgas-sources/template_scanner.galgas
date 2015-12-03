@@ -94,6 +94,7 @@ list goilTemplateKeyWordList style keywordsStyle error message "the '%K' keyword
   "repeat",
   "return",
   "sort",
+  "tab",
   "template",
 #  "templateresult",
   "then",
