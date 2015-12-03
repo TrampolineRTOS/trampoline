@@ -303,6 +303,13 @@ foreach obj in PRIO2 do
   end if
 end foreach
 
+# Check no extended task as an ACTIVATION attribute greater than 1
+foreach task in EXTENDEDTASKS do
+  if task::ACTIVATION > 1 then
+    error task::ACTIVATION : "An extended task cannot have ACTIVATION greater than 1"
+  end if
+end foreach
+
 # increase the RESSCHEDULERPRIORITY by one and have it
 # set between the highest priority task and the lowest ISR priority
 let OS::RESSCHEDULERPRIORITY := OS::RESSCHEDULERPRIORITY + 1
