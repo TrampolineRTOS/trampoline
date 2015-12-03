@@ -64,6 +64,6 @@ CPU alarms {
   ISR isr_button {
     CATEGORY = 2;
     PRIORITY = 1;
-    SOURCE = EXTI0_IRQ;
+    SOURCE = EXTI0_IRQ { PIN = PA0 { TRIGGER = RISING; PULL = NONE; }; };
   };
 };

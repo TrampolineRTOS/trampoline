@@ -5,7 +5,7 @@
 #include "tpl_memmap.h"
 FUNC(int, OS_APPL_CODE) main(void)
 {
-  initBoard(BUTTON_NOIT);
+  initBoard();
   StartOS(OSDEFAULTAPPMODE);
   return 0;
 }
@@ -16,7 +16,6 @@ TASK(read_button)
 {
   static int a = 0;
   if (readButton() == BUTTON_PRESSED) {
-    TickType remainingTicks;
     ledToggle(BLUE);
     if (a == 0) {
       SetRelAlarm(blink_alarm, 100, 100);

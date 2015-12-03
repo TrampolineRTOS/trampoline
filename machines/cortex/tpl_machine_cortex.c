@@ -52,6 +52,11 @@ volatile VAR (uint32, OS_VAR) nested_kernel_entrance_counter;
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
+/*
+ * Generated functions prototypes
+ */
+extern FUNC(void, OS_CODE) tpl_init_external_interrupts();
+
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 FUNC (void, OS_CODE) tpl_init_machine_generic (void)
@@ -65,8 +70,9 @@ FUNC (void, OS_CODE) tpl_init_machine_specific (void)
 {
   nested_kernel_entrance_counter = 0;
   tpl_set_systick_timer();
+  tpl_init_external_interrupts();
   /*
-   * Switch to use PSP, unprivileged state 
+   * Switch to use PSP, unprivileged state
    */
   __set_CONTROL(0x3);
   /*

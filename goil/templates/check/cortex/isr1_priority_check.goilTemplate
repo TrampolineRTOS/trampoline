@@ -1,0 +1,25 @@
+%
+#------------------------------------------------------------------------------*
+# Check the priority of ISR1 connected to the same IRQ are the same
+#
+
+let isr1ForIRQ := emptymap
+
+foreach isr in ISRS1 do
+  if not exists isr1ForIRQ[isr::SOURCE] then
+    let isr1ForIRQ[isr::SOURCE] := emptylist
+  end if
+  let isr1ForIRQ[isr::SOURCE] += isr
+end foreach
+
+foreach src in isr1ForIRQ do
+  let firstISR := [src first]
+  let priority := firstISR::PRIORITY
+  foreach isr in src do
+    if priority != isr::PRIORITY then
+      error isr::PRIORITY : "ISR category 1 connected to the same IRQ should have the same priority"
+      warning firstISR::PRIORITY : "Different priority is here"
+    end if
+  end foreach
+end foreach
+
