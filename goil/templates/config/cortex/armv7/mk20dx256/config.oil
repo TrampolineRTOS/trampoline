@@ -30,6 +30,11 @@ CPU mk20dx256 {
     CFILE = "ftm_mk20dx256.c";
   };
   
+  LIBRARY port {
+    PATH = "cortex/armv7/mk20dx256/libraries/port";
+    CHEADER = "port_mk20dx256.h";
+  };
+    
   INTERRUPT_COUNT nb_it {
     IT_TABLE_SIZE = 110; /* Size of the interrupt vector table */
   };

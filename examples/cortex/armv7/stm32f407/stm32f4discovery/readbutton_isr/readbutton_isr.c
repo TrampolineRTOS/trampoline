@@ -47,8 +47,6 @@ ISR(isr_button)
 {
   ledToggle(RED);
   ActivateTask(read_button);
-  /* If button is an ISR2 then call CallTerminateISR2 at the end of the handler otherwise do nothing more. */
-  CallTerminateISR2();
 }
 #define APP_ISR_isr_button_STOP_SEC_CODE
 #include "tpl_memmap.h"
