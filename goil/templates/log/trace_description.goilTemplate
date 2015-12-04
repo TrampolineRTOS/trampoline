@@ -8,7 +8,7 @@ end foreach
   </tasks>
   <isrs>%
 foreach isr in ISRS2 do %
-    <isr name="% !task::NAME %" id="% !INDEX+[TASKS length] %"/>%
+    <isr name="% !isr::NAME %" id="% !INDEX+[TASKS length] %"/>%
 end foreach
 %
   </isrs>
