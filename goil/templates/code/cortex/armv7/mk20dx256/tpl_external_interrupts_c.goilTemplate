@@ -27,6 +27,9 @@
 #include "tpl_machine.h"
 
 %
+
+display ISR
+
 #
 # Initialize registers according to the pin selected to trigger an external
 # interrupt.
@@ -35,7 +38,7 @@
 #
 %
 /*
- * External Interrupts initialization for the MK20DX256 Microcontroller
+ * External Interrupts initialization for the % !BOARD % Microcontroller
  *
  * Interrupt vectors are PORTA_IRQ, PORTB_IRQ, PORTC_IRQ, PORTD_IRQ and
  * PORTE_IRQ,
