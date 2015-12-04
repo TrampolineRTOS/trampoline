@@ -2965,74 +2965,6 @@ static const utf32 gSyntaxErrorMessage_template_5F_scanner__2E__2E__2E_ [] = {
   TO_UNICODE (0)
 } ;
 
-//--- Syntax error message for terminal '$<$' :
-static const utf32 gSyntaxErrorMessage_template_5F_scanner__3C_ [] = {
-  TO_UNICODE ('t'),
-  TO_UNICODE ('h'),
-  TO_UNICODE ('e'),
-  TO_UNICODE (' '),
-  TO_UNICODE ('\''),
-  TO_UNICODE ('<'),
-  TO_UNICODE ('\''),
-  TO_UNICODE (' '),
-  TO_UNICODE ('d'),
-  TO_UNICODE ('e'),
-  TO_UNICODE ('l'),
-  TO_UNICODE ('i'),
-  TO_UNICODE ('m'),
-  TO_UNICODE ('i'),
-  TO_UNICODE ('t'),
-  TO_UNICODE ('o'),
-  TO_UNICODE ('r'),
-  TO_UNICODE (0)
-} ;
-
-//--- Syntax error message for terminal '$<=$' :
-static const utf32 gSyntaxErrorMessage_template_5F_scanner__3C__3D_ [] = {
-  TO_UNICODE ('t'),
-  TO_UNICODE ('h'),
-  TO_UNICODE ('e'),
-  TO_UNICODE (' '),
-  TO_UNICODE ('\''),
-  TO_UNICODE ('<'),
-  TO_UNICODE ('='),
-  TO_UNICODE ('\''),
-  TO_UNICODE (' '),
-  TO_UNICODE ('d'),
-  TO_UNICODE ('e'),
-  TO_UNICODE ('l'),
-  TO_UNICODE ('i'),
-  TO_UNICODE ('m'),
-  TO_UNICODE ('i'),
-  TO_UNICODE ('t'),
-  TO_UNICODE ('o'),
-  TO_UNICODE ('r'),
-  TO_UNICODE (0)
-} ;
-
-//--- Syntax error message for terminal '$<<$' :
-static const utf32 gSyntaxErrorMessage_template_5F_scanner__3C__3C_ [] = {
-  TO_UNICODE ('t'),
-  TO_UNICODE ('h'),
-  TO_UNICODE ('e'),
-  TO_UNICODE (' '),
-  TO_UNICODE ('\''),
-  TO_UNICODE ('<'),
-  TO_UNICODE ('<'),
-  TO_UNICODE ('\''),
-  TO_UNICODE (' '),
-  TO_UNICODE ('d'),
-  TO_UNICODE ('e'),
-  TO_UNICODE ('l'),
-  TO_UNICODE ('i'),
-  TO_UNICODE ('m'),
-  TO_UNICODE ('i'),
-  TO_UNICODE ('t'),
-  TO_UNICODE ('o'),
-  TO_UNICODE ('r'),
-  TO_UNICODE (0)
-} ;
-
 //--- Syntax error message for terminal '$string$' :
 static const utf32 gSyntaxErrorMessage_template_5F_scanner_string [] = {
   TO_UNICODE ('l'),
@@ -4891,6 +4823,29 @@ static const utf32 gSyntaxErrorMessage_template_5F_scanner__26_ [] = {
   TO_UNICODE (0)
 } ;
 
+//--- Syntax error message for terminal '$<=$' :
+static const utf32 gSyntaxErrorMessage_template_5F_scanner__3C__3D_ [] = {
+  TO_UNICODE ('t'),
+  TO_UNICODE ('h'),
+  TO_UNICODE ('e'),
+  TO_UNICODE (' '),
+  TO_UNICODE ('\''),
+  TO_UNICODE ('<'),
+  TO_UNICODE ('='),
+  TO_UNICODE ('\''),
+  TO_UNICODE (' '),
+  TO_UNICODE ('d'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('r'),
+  TO_UNICODE (0)
+} ;
+
 //--- Syntax error message for terminal '${$' :
 static const utf32 gSyntaxErrorMessage_template_5F_scanner__7B_ [] = {
   TO_UNICODE ('t'),
@@ -4967,6 +4922,28 @@ static const utf32 gSyntaxErrorMessage_template_5F_scanner__2D__3D_ [] = {
   TO_UNICODE ('\''),
   TO_UNICODE ('-'),
   TO_UNICODE ('='),
+  TO_UNICODE ('\''),
+  TO_UNICODE (' '),
+  TO_UNICODE ('d'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('r'),
+  TO_UNICODE (0)
+} ;
+
+//--- Syntax error message for terminal '$<$' :
+static const utf32 gSyntaxErrorMessage_template_5F_scanner__3C_ [] = {
+  TO_UNICODE ('t'),
+  TO_UNICODE ('h'),
+  TO_UNICODE ('e'),
+  TO_UNICODE (' '),
+  TO_UNICODE ('\''),
+  TO_UNICODE ('<'),
   TO_UNICODE ('\''),
   TO_UNICODE (' '),
   TO_UNICODE ('d'),
@@ -5071,6 +5048,29 @@ static const utf32 gSyntaxErrorMessage_template_5F_scanner__3C__2D_ [] = {
   TO_UNICODE (0)
 } ;
 
+//--- Syntax error message for terminal '$<<$' :
+static const utf32 gSyntaxErrorMessage_template_5F_scanner__3C__3C_ [] = {
+  TO_UNICODE ('t'),
+  TO_UNICODE ('h'),
+  TO_UNICODE ('e'),
+  TO_UNICODE (' '),
+  TO_UNICODE ('\''),
+  TO_UNICODE ('<'),
+  TO_UNICODE ('<'),
+  TO_UNICODE ('\''),
+  TO_UNICODE (' '),
+  TO_UNICODE ('d'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('i'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('r'),
+  TO_UNICODE (0)
+} ;
+
 //--- Syntax error message for terminal '$@$' :
 static const utf32 gSyntaxErrorMessage_template_5F_scanner__40_ [] = {
   TO_UNICODE ('t'),
@@ -5106,9 +5106,6 @@ C_String C_Lexique_template_5F_scanner::getMessageForTerminal (const int16_t inT
     gSyntaxErrorMessage_template_5F_scanner__2E_,
     gSyntaxErrorMessage_template_5F_scanner__2E__3D_,
     gSyntaxErrorMessage_template_5F_scanner__2E__2E__2E_,
-    gSyntaxErrorMessage_template_5F_scanner__3C_,
-    gSyntaxErrorMessage_template_5F_scanner__3C__3D_,
-    gSyntaxErrorMessage_template_5F_scanner__3C__3C_,
     gSyntaxErrorMessage_template_5F_scanner_string,
     gSyntaxErrorMessage_template_5F_scanner_comment,
     gSyntaxErrorMessage_template_5F_scanner_after,
@@ -5189,14 +5186,17 @@ C_String C_Lexique_template_5F_scanner::getMessageForTerminal (const int16_t inT
     gSyntaxErrorMessage_template_5F_scanner__21__3D_,
     gSyntaxErrorMessage_template_5F_scanner__3E__3D_,
     gSyntaxErrorMessage_template_5F_scanner__26_,
+    gSyntaxErrorMessage_template_5F_scanner__3C__3D_,
     gSyntaxErrorMessage_template_5F_scanner__7B_,
     gSyntaxErrorMessage_template_5F_scanner__7D_,
     gSyntaxErrorMessage_template_5F_scanner__2B__3E_,
     gSyntaxErrorMessage_template_5F_scanner__2D__3D_,
+    gSyntaxErrorMessage_template_5F_scanner__3C_,
     gSyntaxErrorMessage_template_5F_scanner__5E_,
     gSyntaxErrorMessage_template_5F_scanner__3E__3E_,
     gSyntaxErrorMessage_template_5F_scanner__7E_,
     gSyntaxErrorMessage_template_5F_scanner__3C__2D_,
+    gSyntaxErrorMessage_template_5F_scanner__3C__3C_,
     gSyntaxErrorMessage_template_5F_scanner__40_} ;
   return syntaxErrorMessageArray [inTerminalIndex] ;
 }
@@ -5360,10 +5360,30 @@ static const utf32 kUnicodeString_template_5F_scanner__3B_ [] = {
   TO_UNICODE (0)
 } ;
 
+//--- Unicode string for '$_3C_$'
+static const utf32 kUnicodeString_template_5F_scanner__3C_ [] = {
+  TO_UNICODE ('<'),
+  TO_UNICODE (0)
+} ;
+
 //--- Unicode string for '$_3C__2D_$'
 static const utf32 kUnicodeString_template_5F_scanner__3C__2D_ [] = {
   TO_UNICODE ('<'),
   TO_UNICODE ('-'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_3C__3C_$'
+static const utf32 kUnicodeString_template_5F_scanner__3C__3C_ [] = {
+  TO_UNICODE ('<'),
+  TO_UNICODE ('<'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_3C__3D_$'
+static const utf32 kUnicodeString_template_5F_scanner__3C__3D_ [] = {
+  TO_UNICODE ('<'),
+  TO_UNICODE ('='),
   TO_UNICODE (0)
 } ;
 
@@ -5996,7 +6016,7 @@ static const utf32 kUnicodeString_template_5F_scanner__7E_ [] = {
 //             Key words table 'galgasDelimitorsList'                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const int32_t ktable_size_template_5F_scanner_galgasDelimitorsList = 37 ;
+static const int32_t ktable_size_template_5F_scanner_galgasDelimitorsList = 40 ;
 
 static const C_unicode_lexique_table_entry ktable_for_template_5F_scanner_galgasDelimitorsList [ktable_size_template_5F_scanner_galgasDelimitorsList] = {
   C_unicode_lexique_table_entry (kUnicodeString_template_5F_scanner__21_, 1, C_Lexique_template_5F_scanner::kToken__21_),
@@ -6010,6 +6030,7 @@ static const C_unicode_lexique_table_entry ktable_for_template_5F_scanner_galgas
   C_unicode_lexique_table_entry (kUnicodeString_template_5F_scanner__2F_, 1, C_Lexique_template_5F_scanner::kToken__2F_),
   C_unicode_lexique_table_entry (kUnicodeString_template_5F_scanner__3A_, 1, C_Lexique_template_5F_scanner::kToken__3A_),
   C_unicode_lexique_table_entry (kUnicodeString_template_5F_scanner__3B_, 1, C_Lexique_template_5F_scanner::kToken__3B_),
+  C_unicode_lexique_table_entry (kUnicodeString_template_5F_scanner__3C_, 1, C_Lexique_template_5F_scanner::kToken__3C_),
   C_unicode_lexique_table_entry (kUnicodeString_template_5F_scanner__3E_, 1, C_Lexique_template_5F_scanner::kToken__3E_),
   C_unicode_lexique_table_entry (kUnicodeString_template_5F_scanner__3F_, 1, C_Lexique_template_5F_scanner::kToken__3F_),
   C_unicode_lexique_table_entry (kUnicodeString_template_5F_scanner__40_, 1, C_Lexique_template_5F_scanner::kToken__40_),
@@ -6031,6 +6052,8 @@ static const C_unicode_lexique_table_entry ktable_for_template_5F_scanner_galgas
   C_unicode_lexique_table_entry (kUnicodeString_template_5F_scanner__3A__3A_, 2, C_Lexique_template_5F_scanner::kToken__3A__3A_),
   C_unicode_lexique_table_entry (kUnicodeString_template_5F_scanner__3A__3D_, 2, C_Lexique_template_5F_scanner::kToken__3A__3D_),
   C_unicode_lexique_table_entry (kUnicodeString_template_5F_scanner__3C__2D_, 2, C_Lexique_template_5F_scanner::kToken__3C__2D_),
+  C_unicode_lexique_table_entry (kUnicodeString_template_5F_scanner__3C__3C_, 2, C_Lexique_template_5F_scanner::kToken__3C__3C_),
+  C_unicode_lexique_table_entry (kUnicodeString_template_5F_scanner__3C__3D_, 2, C_Lexique_template_5F_scanner::kToken__3C__3D_),
   C_unicode_lexique_table_entry (kUnicodeString_template_5F_scanner__3D__3D_, 2, C_Lexique_template_5F_scanner::kToken__3D__3D_),
   C_unicode_lexique_table_entry (kUnicodeString_template_5F_scanner__3E__3D_, 2, C_Lexique_template_5F_scanner::kToken__3E__3D_),
   C_unicode_lexique_table_entry (kUnicodeString_template_5F_scanner__3E__3E_, 2, C_Lexique_template_5F_scanner::kToken__3E__3E_),
@@ -6163,21 +6186,6 @@ C_String C_Lexique_template_5F_scanner::getCurrentTokenString (const cToken * in
     case kToken__2E__2E__2E_:
       s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
       s.appendCString ("...") ;
-      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
-      break ;
-    case kToken__3C_:
-      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
-      s.appendCString ("<") ;
-      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
-      break ;
-    case kToken__3C__3D_:
-      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
-      s.appendCString ("<=") ;
-      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
-      break ;
-    case kToken__3C__3C_:
-      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
-      s.appendCString ("<<") ;
       s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
       break ;
     case kToken_string:
@@ -6582,6 +6590,11 @@ C_String C_Lexique_template_5F_scanner::getCurrentTokenString (const cToken * in
       s.appendCString ("&") ;
       s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
       break ;
+    case kToken__3C__3D_:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("<=") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
     case kToken__7B_:
       s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
       s.appendCString ("{") ;
@@ -6602,6 +6615,11 @@ C_String C_Lexique_template_5F_scanner::getCurrentTokenString (const cToken * in
       s.appendCString ("-=") ;
       s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
       break ;
+    case kToken__3C_:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("<") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
     case kToken__5E_:
       s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
       s.appendCString ("^") ;
@@ -6620,6 +6638,11 @@ C_String C_Lexique_template_5F_scanner::getCurrentTokenString (const cToken * in
     case kToken__3C__2D_:
       s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
       s.appendCString ("<-") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken__3C__3C_:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("<<") ;
       s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
       break ;
     case kToken__40_:
@@ -6664,9 +6687,6 @@ static const bool kEndOfScriptInTemplateArray [99] = {
   false /* . */,
   false /* .= */,
   false /* ... */,
-  false /* < */,
-  false /* <= */,
-  false /* << */,
   false /* string */,
   false /* comment */,
   false /* after */,
@@ -6747,14 +6767,17 @@ static const bool kEndOfScriptInTemplateArray [99] = {
   false /* != */,
   false /* >= */,
   false /* & */,
+  false /* <= */,
   false /* { */,
   false /* } */,
   false /* +> */,
   false /* -= */,
+  false /* < */,
   false /* ^ */,
   false /* >> */,
   false /* ~ */,
   false /* <- */,
+  false /* << */,
   false /* @ */
 } ;
 
@@ -6954,6 +6977,12 @@ bool C_Lexique_template_5F_scanner::parseLexicalToken (void) {
         }else if (testForInputUTF32String (kUnicodeString_template_5F_scanner__3D__3D_, 2, true)) {
           token.mTokenCode = kToken__3D__3D_ ;
           enterToken (token) ;
+        }else if (testForInputUTF32String (kUnicodeString_template_5F_scanner__3C__3D_, 2, true)) {
+          token.mTokenCode = kToken__3C__3D_ ;
+          enterToken (token) ;
+        }else if (testForInputUTF32String (kUnicodeString_template_5F_scanner__3C__3C_, 2, true)) {
+          token.mTokenCode = kToken__3C__3C_ ;
+          enterToken (token) ;
         }else if (testForInputUTF32String (kUnicodeString_template_5F_scanner__3C__2D_, 2, true)) {
           token.mTokenCode = kToken__3C__2D_ ;
           enterToken (token) ;
@@ -7017,6 +7046,9 @@ bool C_Lexique_template_5F_scanner::parseLexicalToken (void) {
         }else if (testForInputUTF32String (kUnicodeString_template_5F_scanner__3E_, 1, true)) {
           token.mTokenCode = kToken__3E_ ;
           enterToken (token) ;
+        }else if (testForInputUTF32String (kUnicodeString_template_5F_scanner__3C_, 1, true)) {
+          token.mTokenCode = kToken__3C_ ;
+          enterToken (token) ;
         }else if (testForInputUTF32String (kUnicodeString_template_5F_scanner__3B_, 1, true)) {
           token.mTokenCode = kToken__3B_ ;
           enterToken (token) ;
@@ -7050,17 +7082,6 @@ bool C_Lexique_template_5F_scanner::parseLexicalToken (void) {
         }else if (testForInputUTF32String (kUnicodeString_template_5F_scanner__21_, 1, true)) {
           token.mTokenCode = kToken__21_ ;
           enterToken (token) ;
-        }else if (testForInputUTF32Char (TO_UNICODE ('<'))) {
-          if (testForInputUTF32Char (TO_UNICODE ('='))) {
-            token.mTokenCode = kToken__3C__3D_ ;
-            enterToken (token) ;
-          }else if (testForInputUTF32Char (TO_UNICODE ('<'))) {
-            token.mTokenCode = kToken__3C__3C_ ;
-            enterToken (token) ;
-          }else{
-            token.mTokenCode = kToken__3C_ ;
-            enterToken (token) ;
-          }
         }else if (testForInputUTF32Char (TO_UNICODE ('\"'))) {
           do {
             if (testForInputUTF32CharRange (TO_UNICODE (' '), TO_UNICODE ('!')) || testForInputUTF32CharRange (TO_UNICODE ('#'), TO_UNICODE (65533))) {
@@ -7253,9 +7274,6 @@ GALGAS_stringlist C_Lexique_template_5F_scanner::symbols (LOCATION_ARGS) {
   result.addAssign_operation (GALGAS_string (".") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string (".=") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string ("...") COMMA_THERE) ;
-  result.addAssign_operation (GALGAS_string ("<") COMMA_THERE) ;
-  result.addAssign_operation (GALGAS_string ("<=") COMMA_THERE) ;
-  result.addAssign_operation (GALGAS_string ("<<") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string ("string") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string ("comment") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string ("after") COMMA_THERE) ;
@@ -7336,14 +7354,17 @@ GALGAS_stringlist C_Lexique_template_5F_scanner::symbols (LOCATION_ARGS) {
   result.addAssign_operation (GALGAS_string ("!=") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string (">=") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string ("&") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("<=") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string ("{") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string ("}") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string ("+>") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string ("-=") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("<") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string ("^") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string (">>") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string ("~") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string ("<-") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("<<") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string ("@") COMMA_THERE) ;
   return result ;
 }
@@ -7361,9 +7382,6 @@ uint32_t C_Lexique_template_5F_scanner::styleIndexForTerminal (const int32_t inT
     2 /* template_scanner_1__2E_ */,
     2 /* template_scanner_1__2E__3D_ */,
     2 /* template_scanner_1__2E__2E__2E_ */,
-    2 /* template_scanner_1__3C_ */,
-    2 /* template_scanner_1__3C__3D_ */,
-    2 /* template_scanner_1__3C__3C_ */,
     6 /* template_scanner_1_string */,
     7 /* template_scanner_1_comment */,
     1 /* template_scanner_1_after */,
@@ -7444,14 +7462,17 @@ uint32_t C_Lexique_template_5F_scanner::styleIndexForTerminal (const int32_t inT
     2 /* template_scanner_1__21__3D_ */,
     2 /* template_scanner_1__3E__3D_ */,
     2 /* template_scanner_1__26_ */,
+    2 /* template_scanner_1__3C__3D_ */,
     2 /* template_scanner_1__7B_ */,
     2 /* template_scanner_1__7D_ */,
     2 /* template_scanner_1__2B__3E_ */,
     2 /* template_scanner_1__2D__3D_ */,
+    2 /* template_scanner_1__3C_ */,
     2 /* template_scanner_1__5E_ */,
     2 /* template_scanner_1__3E__3E_ */,
     2 /* template_scanner_1__7E_ */,
     2 /* template_scanner_1__3C__2D_ */,
+    2 /* template_scanner_1__3C__3C_ */,
     2 /* template_scanner_1__40_ */
   } ;
   return (inTerminalIndex >= 0) ? kTerminalSymbolStyles [inTerminalIndex] : 0 ;
@@ -11704,6 +11725,142 @@ void cParser_template_5F_expression_5F_parser::rule_template_5F_expression_5F_pa
 void cParser_template_5F_expression_5F_parser::rule_template_5F_expression_5F_parser_factor_i23_parse (C_Lexique_template_5F_scanner * inCompiler) {
   inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_template_5F_scanner::kToken_listof) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1165)) ;
   nt_variable_parse (inCompiler) ;
+  inCompiler->resetTemplateString () ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void cParser_template_5F_expression_5F_parser::rule_template_5F_expression_5F_parser_list_5F_item_i24_ (const GALGAS_string constinArgument_inPrefix,
+                                                                                                        const GALGAS_string constinArgument_inPath,
+                                                                                                        const GALGAS_string constinArgument_inTemplateDirectory,
+                                                                                                        const GALGAS_TfieldMap constinArgument_inVariableMap,
+                                                                                                        GALGAS_Tvalue & outArgument_outValue,
+                                                                                                        GALGAS_Ttype & outArgument_outResultType,
+                                                                                                        C_Lexique_template_5F_scanner * inCompiler) {
+  outArgument_outValue.drop () ; // Release 'out' argument
+  outArgument_outResultType.drop () ; // Release 'out' argument
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_template_5F_scanner::kToken__5B_) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1198)) ;
+  GALGAS_TfieldMap var_resultStruct = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_expression_parser.galgas", 1199)) ;
+  bool repeatFlag_0 = true ;
+  while (repeatFlag_0) {
+    GALGAS_lstring var_fieldName = inCompiler->synthetizedAttribute_tokenString () ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1201)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_template_5F_scanner::kToken__3A_) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1202)) ;
+    GALGAS_Tvalue var_fieldValue ;
+    GALGAS_Ttype var_fieldType ;
+    nt_expression_ (constinArgument_inPrefix, constinArgument_inPath, constinArgument_inTemplateDirectory, constinArgument_inVariableMap, var_fieldValue, var_fieldType, inCompiler) ;
+    {
+    var_resultStruct.modifier_insertKey (var_fieldName, var_fieldType, var_fieldValue, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1210)) ;
+    }
+    switch (select_template_5F_expression_5F_parser_12 (inCompiler)) {
+    case 2: {
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_template_5F_scanner::kToken__2C_) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1211)) ;
+    } break ;
+    default:
+      repeatFlag_0 = false ;
+      break ;
+    }
+  }
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_template_5F_scanner::kToken__5D_) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1213)) ;
+  outArgument_outResultType = GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_expression_parser.galgas", 1214)) ;
+  outArgument_outValue = function_valueWithStruct (var_resultStruct, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1215)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1215)) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void cParser_template_5F_expression_5F_parser::rule_template_5F_expression_5F_parser_list_5F_item_i24_parse (C_Lexique_template_5F_scanner * inCompiler) {
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_template_5F_scanner::kToken__5B_) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1198)) ;
+  bool repeatFlag_0 = true ;
+  while (repeatFlag_0) {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_template_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1201)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_template_5F_scanner::kToken__3A_) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1202)) ;
+    nt_expression_parse (inCompiler) ;
+    switch (select_template_5F_expression_5F_parser_12 (inCompiler)) {
+    case 2: {
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_template_5F_scanner::kToken__2C_) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1211)) ;
+    } break ;
+    default:
+      repeatFlag_0 = false ;
+      break ;
+    }
+  }
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_template_5F_scanner::kToken__5D_) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1213)) ;
+  inCompiler->resetTemplateString () ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void cParser_template_5F_expression_5F_parser::rule_template_5F_expression_5F_parser_factor_i25_ (const GALGAS_string constinArgument_inPrefix,
+                                                                                                  const GALGAS_string constinArgument_inPath,
+                                                                                                  const GALGAS_string constinArgument_inTemplateDirectory,
+                                                                                                  const GALGAS_TfieldMap constinArgument_inVariableMap,
+                                                                                                  GALGAS_Tvalue & outArgument_outValue,
+                                                                                                  GALGAS_Ttype & outArgument_outResultType,
+                                                                                                  C_Lexique_template_5F_scanner * inCompiler) {
+  outArgument_outValue.drop () ; // Release 'out' argument
+  outArgument_outResultType.drop () ; // Release 'out' argument
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_template_5F_scanner::kToken_list) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1226)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_template_5F_scanner::kToken__5B_) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1226)) ;
+  GALGAS_TfieldMapList var_resultList = GALGAS_TfieldMapList::constructor_emptyList (SOURCE_FILE ("template_expression_parser.galgas", 1227)) ;
+  switch (select_template_5F_expression_5F_parser_13 (inCompiler)) {
+  case 1: {
+    bool repeatFlag_0 = true ;
+    while (repeatFlag_0) {
+      GALGAS_Tvalue var_itemValue ;
+      GALGAS_Ttype var_itemType ;
+      nt_list_5F_item_ (constinArgument_inPrefix, constinArgument_inPath, constinArgument_inTemplateDirectory, constinArgument_inVariableMap, var_itemValue, var_itemType, inCompiler) ;
+      const enumGalgasBool test_1 = GALGAS_bool (kIsNotEqual, var_itemType.objectCompare (GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_expression_parser.galgas", 1237)))).boolEnum () ;
+      if (kBoolTrue == test_1) {
+        inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1238)), GALGAS_string ("Internal error")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1238)) ;
+      }else if (kBoolFalse == test_1) {
+        var_resultList.addAssign_operation (var_itemValue.getter_mStructValue (SOURCE_FILE ("template_expression_parser.galgas", 1240))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1240)) ;
+      }
+      switch (select_template_5F_expression_5F_parser_14 (inCompiler)) {
+      case 2: {
+        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_template_5F_scanner::kToken__2C_) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1242)) ;
+      } break ;
+      default:
+        repeatFlag_0 = false ;
+        break ;
+      }
+    }
+  } break ;
+  case 2: {
+  } break ;
+  default:
+    break ;
+  }
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_template_5F_scanner::kToken__5D_) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1246)) ;
+  outArgument_outResultType = GALGAS_Ttype::constructor_listType (SOURCE_FILE ("template_expression_parser.galgas", 1247)) ;
+  outArgument_outValue = function_valueWithList (var_resultList, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1248)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1248)) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void cParser_template_5F_expression_5F_parser::rule_template_5F_expression_5F_parser_factor_i25_parse (C_Lexique_template_5F_scanner * inCompiler) {
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_template_5F_scanner::kToken_list) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1226)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_template_5F_scanner::kToken__5B_) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1226)) ;
+  switch (select_template_5F_expression_5F_parser_13 (inCompiler)) {
+  case 1: {
+    bool repeatFlag_0 = true ;
+    while (repeatFlag_0) {
+      nt_list_5F_item_parse (inCompiler) ;
+      switch (select_template_5F_expression_5F_parser_14 (inCompiler)) {
+      case 2: {
+        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_template_5F_scanner::kToken__2C_) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1242)) ;
+      } break ;
+      default:
+        repeatFlag_0 = false ;
+        break ;
+      }
+    }
+  } break ;
+  case 2: {
+  } break ;
+  default:
+    break ;
+  }
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_template_5F_scanner::kToken__5D_) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1246)) ;
   inCompiler->resetTemplateString () ;
 }
 

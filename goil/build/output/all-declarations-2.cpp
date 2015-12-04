@@ -9180,7 +9180,7 @@ void routine_matchAndOperatorForTemplate (const GALGAS_Ttype constinArgument_inL
     }else if ((constinArgument_inLeftExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType) && (constinArgument_inRightExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType)) {
       outArgument_outResultType = constinArgument_inLeftExpressionType ;
     }else{
-      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1249)), GALGAS_string ("operand type error : (").add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1249)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1249)).add_operation (GALGAS_string (" & "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1249)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1250)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1250)).add_operation (GALGAS_string (") is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1250))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1249)) ;
+      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1313)), GALGAS_string ("operand type error : (").add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1313)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1313)).add_operation (GALGAS_string (" & "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1313)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1314)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1314)).add_operation (GALGAS_string (") is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1314))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1313)) ;
       outArgument_outResultType.drop () ; // Release error dropped variable
     }
   }
@@ -9205,7 +9205,7 @@ void routine_matchOrOperatorForTemplate (const GALGAS_Ttype constinArgument_inLe
     }else if ((constinArgument_inLeftExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType) && (constinArgument_inRightExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType)) {
       outArgument_outResultType = constinArgument_inLeftExpressionType ;
     }else{
-      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1271)), GALGAS_string ("operand type error : (").add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1271)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1271)).add_operation (GALGAS_string (" | "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1271)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1272)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1272)).add_operation (GALGAS_string (") is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1272))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1271)) ;
+      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1335)), GALGAS_string ("operand type error : (").add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1335)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1335)).add_operation (GALGAS_string (" | "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1335)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1336)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1336)).add_operation (GALGAS_string (") is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1336))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1335)) ;
       outArgument_outResultType.drop () ; // Release error dropped variable
     }
   }
@@ -9230,7 +9230,7 @@ void routine_matchXorOperatorForTemplate (const GALGAS_Ttype constinArgument_inL
     }else if ((constinArgument_inLeftExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType) && (constinArgument_inRightExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType)) {
       outArgument_outResultType = constinArgument_inLeftExpressionType ;
     }else{
-      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1293)), GALGAS_string ("operand type error : (").add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1293)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1293)).add_operation (GALGAS_string (" | "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1293)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1294)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1294)).add_operation (GALGAS_string (") is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1294))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1293)) ;
+      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1357)), GALGAS_string ("operand type error : (").add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1357)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1357)).add_operation (GALGAS_string (" | "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1357)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1358)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1358)).add_operation (GALGAS_string (") is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1358))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1357)) ;
       outArgument_outResultType.drop () ; // Release error dropped variable
     }
   }
@@ -9248,9 +9248,9 @@ void routine_checkNotOperatorForTemplate (const GALGAS_Ttype constinArgument_inO
                                           C_Compiler * inCompiler
                                           COMMA_UNUSED_LOCATION_ARGS) {
   outArgument_outResultType.drop () ; // Release 'out' argument
-  const enumGalgasBool test_0 = GALGAS_bool (kIsNotEqual, constinArgument_inOperandType.objectCompare (GALGAS_Ttype::constructor_boolType (SOURCE_FILE ("template_expression_parser.galgas", 1308)))).boolEnum () ;
+  const enumGalgasBool test_0 = GALGAS_bool (kIsNotEqual, constinArgument_inOperandType.objectCompare (GALGAS_Ttype::constructor_boolType (SOURCE_FILE ("template_expression_parser.galgas", 1372)))).boolEnum () ;
   if (kBoolTrue == test_0) {
-    inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1309)), GALGAS_string ("the 'not' operator is not defined for an ").add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inOperandType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1310)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1309)).add_operation (GALGAS_string (" type"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1310))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1309)) ;
+    inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1373)), GALGAS_string ("the 'not' operator is not defined for an ").add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inOperandType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1374)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1373)).add_operation (GALGAS_string (" type"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1374))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1373)) ;
   }
   outArgument_outResultType = constinArgument_inOperandType ;
 }
@@ -9268,9 +9268,9 @@ void routine_checkBitComplementOperatorForTemplate (const GALGAS_Ttype constinAr
                                                     COMMA_UNUSED_LOCATION_ARGS) {
   outArgument_outResultType.drop () ; // Release 'out' argument
   outArgument_outResultType = constinArgument_inOperandType ;
-  const enumGalgasBool test_0 = GALGAS_bool (kIsNotEqual, constinArgument_inOperandType.objectCompare (GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1325)))).boolEnum () ;
+  const enumGalgasBool test_0 = GALGAS_bool (kIsNotEqual, constinArgument_inOperandType.objectCompare (GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1389)))).boolEnum () ;
   if (kBoolTrue == test_0) {
-    inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1326)), GALGAS_string ("the ~ operator is not defined for an ").add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inOperandType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1327)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1326)).add_operation (GALGAS_string (" type"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1327))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1326)) ;
+    inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1390)), GALGAS_string ("the ~ operator is not defined for an ").add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inOperandType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1391)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1390)).add_operation (GALGAS_string (" type"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1391))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1390)) ;
   }
 }
 
@@ -9291,7 +9291,7 @@ void routine_comparison_5F_types_5F_checkForTemplate (const GALGAS_Ttype constin
     }else if ((constinArgument_inLeftExpressionType.enumValue () == GALGAS_Ttype::kEnum_stringType) && (constinArgument_inRightExpressionType.enumValue () == GALGAS_Ttype::kEnum_stringType)) {
     }else if ((constinArgument_inLeftExpressionType.enumValue () == GALGAS_Ttype::kEnum_enumType) && (constinArgument_inRightExpressionType.enumValue () == GALGAS_Ttype::kEnum_enumType)) {
     }else{
-      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1346)), GALGAS_string ("comparison between ").add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1346)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1346)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1346)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1347)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1347)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1347))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1346)) ;
+      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1410)), GALGAS_string ("comparison between ").add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1410)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1410)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1410)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1411)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1411)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1411))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1410)) ;
     }
   }
 }
@@ -9312,7 +9312,7 @@ void routine_magnitude_5F_comparison_5F_types_5F_checkForTemplate (const GALGAS_
     }else if ((constinArgument_inLeftExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType) && (constinArgument_inRightExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType)) {
     }else if ((constinArgument_inLeftExpressionType.enumValue () == GALGAS_Ttype::kEnum_stringType) && (constinArgument_inRightExpressionType.enumValue () == GALGAS_Ttype::kEnum_stringType)) {
     }else{
-      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1365)), GALGAS_string ("comparison between ").add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1365)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1365)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1365)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1366)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1366)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1366))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1365)) ;
+      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1429)), GALGAS_string ("comparison between ").add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1429)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1429)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1429)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1430)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1430)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1430))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1429)) ;
     }
   }
 }
@@ -9334,7 +9334,7 @@ void routine_left_5F_shift_5F_types_5F_checkForTemplate (const GALGAS_Ttype cons
     if ((constinArgument_inLeftExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType) && (constinArgument_inRightExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType)) {
       outArgument_outResultType = constinArgument_inLeftExpressionType ;
     }else{
-      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1384)), GALGAS_string ("shift between ").add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1384)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1384)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1384)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1385)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1385)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1385))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1384)) ;
+      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1448)), GALGAS_string ("shift between ").add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1448)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1448)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1448)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1449)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1449)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1449))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1448)) ;
       outArgument_outResultType.drop () ; // Release error dropped variable
     }
   }
@@ -9357,7 +9357,7 @@ void routine_right_5F_shift_5F_types_5F_checkForTemplate (const GALGAS_Ttype con
     if ((constinArgument_inLeftExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType) && (constinArgument_inRightExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType)) {
       outArgument_outResultType = constinArgument_inLeftExpressionType ;
     }else{
-      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1400)), GALGAS_string ("shift between ").add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1400)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1400)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1400)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1401)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1401)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1401))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1400)) ;
+      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1464)), GALGAS_string ("shift between ").add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1464)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1464)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1464)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1465)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1465)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1465))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1464)) ;
       outArgument_outResultType.drop () ; // Release error dropped variable
     }
   }
@@ -9380,7 +9380,7 @@ void routine_addition_5F_types_5F_checkForTemplate (const GALGAS_Ttype constinAr
     if ((constinArgument_inLeftExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType) && (constinArgument_inRightExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType)) {
       outArgument_outResultType = constinArgument_inLeftExpressionType ;
     }else{
-      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1420)), GALGAS_string ("addition between ").add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1420)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1420)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1420)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1421)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1421)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1421))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1420)) ;
+      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1484)), GALGAS_string ("addition between ").add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1484)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1484)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1484)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1485)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1485)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1485))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1484)) ;
       outArgument_outResultType.drop () ; // Release error dropped variable
     }
   }
@@ -9405,7 +9405,7 @@ void routine_concatenation_5F_types_5F_checkForTemplate (const GALGAS_Ttype cons
     }else if ((constinArgument_inLeftExpressionType.enumValue () == GALGAS_Ttype::kEnum_listType) && (constinArgument_inRightExpressionType.enumValue () == GALGAS_Ttype::kEnum_listType)) {
       outArgument_outResultType = constinArgument_inLeftExpressionType ;
     }else{
-      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1442)), GALGAS_string ("addition between ").add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1442)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1442)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1442)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1443)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1443)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1443))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1442)) ;
+      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1506)), GALGAS_string ("addition between ").add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1506)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1506)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1506)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1507)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1507)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1507))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1506)) ;
       outArgument_outResultType.drop () ; // Release error dropped variable
     }
   }
@@ -9428,7 +9428,7 @@ void routine_substraction_5F_types_5F_checkForTemplate (const GALGAS_Ttype const
     if ((constinArgument_inLeftExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType) && (constinArgument_inRightExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType)) {
       outArgument_outResultType = constinArgument_inLeftExpressionType ;
     }else{
-      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1462)), GALGAS_string ("substraction between ").add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1462)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1462)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1462)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1463)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1463)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1463))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1462)) ;
+      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1526)), GALGAS_string ("substraction between ").add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1526)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1526)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1526)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1527)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1527)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1527))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1526)) ;
       outArgument_outResultType.drop () ; // Release error dropped variable
     }
   }
@@ -9451,7 +9451,7 @@ void routine_multiply_5F_types_5F_checkForTemplate (const GALGAS_Ttype constinAr
     if ((constinArgument_inLeftExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType) && (constinArgument_inRightExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType)) {
       outArgument_outResultType = constinArgument_inLeftExpressionType ;
     }else{
-      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1482)), GALGAS_string ("multiplication between ").add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1482)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1482)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1482)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1483)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1483)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1483))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1482)) ;
+      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1546)), GALGAS_string ("multiplication between ").add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1546)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1546)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1546)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1547)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1547)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1547))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1546)) ;
       outArgument_outResultType.drop () ; // Release error dropped variable
     }
   }
@@ -9474,7 +9474,7 @@ void routine_divide_5F_types_5F_checkForTemplate (const GALGAS_Ttype constinArgu
     if ((constinArgument_inLeftExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType) && (constinArgument_inRightExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType)) {
       outArgument_outResultType = constinArgument_inLeftExpressionType ;
     }else{
-      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1502)), GALGAS_string ("division between ").add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1502)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1502)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1502)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1503)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1503)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1503))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1502)) ;
+      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1566)), GALGAS_string ("division between ").add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1566)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1566)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1566)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1567)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1567)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1567))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1566)) ;
       outArgument_outResultType.drop () ; // Release error dropped variable
     }
   }
@@ -9497,7 +9497,7 @@ void routine_modulo_5F_types_5F_checkForTemplate (const GALGAS_Ttype constinArgu
     if ((constinArgument_inLeftExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType) && (constinArgument_inRightExpressionType.enumValue () == GALGAS_Ttype::kEnum_intType)) {
       outArgument_outResultType = constinArgument_inLeftExpressionType ;
     }else{
-      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1522)), GALGAS_string ("modulo between ").add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1522)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1522)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1522)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1523)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1523)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1523))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1522)) ;
+      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1586)), GALGAS_string ("modulo between ").add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inLeftExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1586)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1586)).add_operation (GALGAS_string (" and "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1586)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inRightExpressionType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1587)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1587)).add_operation (GALGAS_string (" is not valid"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1587))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1586)) ;
       outArgument_outResultType.drop () ; // Release error dropped variable
     }
   }
@@ -9515,24 +9515,24 @@ GALGAS_string function_argumentListSignature (const GALGAS_TexpressionList & con
                                               COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_string result_outResult ; // Returned variable
   result_outResult = GALGAS_string (" this method call has ") ;
-  result_outResult.dotAssign_operation (constinArgument_inParameterTypeList.getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1538)).getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1538)).add_operation (GALGAS_string (" argument"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1538))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1538)) ;
+  result_outResult.dotAssign_operation (constinArgument_inParameterTypeList.getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1602)).getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1602)).add_operation (GALGAS_string (" argument"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1602))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1602)) ;
   GALGAS_string temp_0 ;
-  const enumGalgasBool test_1 = GALGAS_bool (kIsStrictSup, constinArgument_inParameterTypeList.getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1539)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+  const enumGalgasBool test_1 = GALGAS_bool (kIsStrictSup, constinArgument_inParameterTypeList.getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1603)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
   if (kBoolTrue == test_1) {
     temp_0 = GALGAS_string ("s") ;
   }else if (kBoolFalse == test_1) {
     temp_0 = GALGAS_string::makeEmptyString () ;
   }
-  result_outResult.dotAssign_operation (temp_0  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1539)) ;
-  cEnumerator_TexpressionList enumerator_52699 (constinArgument_inParameterTypeList, kEnumeration_up) ;
+  result_outResult.dotAssign_operation (temp_0  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1603)) ;
+  cEnumerator_TexpressionList enumerator_54126 (constinArgument_inParameterTypeList, kEnumeration_up) ;
   const bool bool_2 = true ;
-  if (enumerator_52699.hasCurrentObject () && bool_2) {
-    result_outResult.dotAssign_operation (GALGAS_string (": ")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1541)) ;
-    while (enumerator_52699.hasCurrentObject () && bool_2) {
-      result_outResult.dotAssign_operation (extensionGetter_messageGoilTemplateType (enumerator_52699.current_mType (HERE), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1542))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1542)) ;
-      enumerator_52699.gotoNextObject () ;
-      if (enumerator_52699.hasCurrentObject () && bool_2) {
-        result_outResult.dotAssign_operation (GALGAS_string (", ")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1543)) ;
+  if (enumerator_54126.hasCurrentObject () && bool_2) {
+    result_outResult.dotAssign_operation (GALGAS_string (": ")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1605)) ;
+    while (enumerator_54126.hasCurrentObject () && bool_2) {
+      result_outResult.dotAssign_operation (extensionGetter_messageGoilTemplateType (enumerator_54126.current_mType (HERE), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1606))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1606)) ;
+      enumerator_54126.gotoNextObject () ;
+      if (enumerator_54126.hasCurrentObject () && bool_2) {
+        result_outResult.dotAssign_operation (GALGAS_string (", ")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1607)) ;
       }
     }
   }
@@ -9583,10 +9583,10 @@ void routine_checkInvocationHasNoArgument (const GALGAS_Ttype constinArgument_in
                                            const GALGAS_TexpressionList constinArgument_inParameterTypeList,
                                            C_Compiler * inCompiler
                                            COMMA_UNUSED_LOCATION_ARGS) {
-  const enumGalgasBool test_0 = GALGAS_bool (kIsStrictSup, constinArgument_inParameterTypeList.getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1557)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+  const enumGalgasBool test_0 = GALGAS_bool (kIsStrictSup, constinArgument_inParameterTypeList.getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1621)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
   if (kBoolTrue == test_0) {
     GALGAS_location location_1 (constinArgument_inMethodName.getter_location (HERE)) ; // Implicit use of 'location' getter
-    inCompiler->emitSemanticError (location_1, GALGAS_string ("calling '").add_operation (constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1558)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1558)).add_operation (GALGAS_string ("' on a "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1558)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1559)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1558)).add_operation (GALGAS_string (" type requires no argument; "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1559)).add_operation (function_argumentListSignature (constinArgument_inParameterTypeList, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1560)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1559))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1558)) ;
+    inCompiler->emitSemanticError (location_1, GALGAS_string ("calling '").add_operation (constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1622)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1622)).add_operation (GALGAS_string ("' on a "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1622)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1623)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1622)).add_operation (GALGAS_string (" type requires no argument; "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1623)).add_operation (function_argumentListSignature (constinArgument_inParameterTypeList, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1624)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1623))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1622)) ;
   }
 }
 
@@ -9605,12 +9605,12 @@ void routine_checkInvocationHasArguments (const GALGAS_Ttype constinArgument_inT
                                           C_Compiler * inCompiler
                                           COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_Ttype var_parameterType ;
-  GALGAS_Tvalue joker_53822 ; // Joker input parameter
-  constinArgument_inParameterTypeList.method_first (joker_53822, var_parameterType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1571)) ;
-  const enumGalgasBool test_0 = GALGAS_bool (kIsNotEqual, constinArgument_inParameterTypeList.getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1572)).objectCompare (constinArgument_argsNumber)).operator_or (GALGAS_bool (kIsNotEqual, var_parameterType.objectCompare (constinArgument_inExpectedType)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1572)).boolEnum () ;
+  GALGAS_Tvalue joker_55249 ; // Joker input parameter
+  constinArgument_inParameterTypeList.method_first (joker_55249, var_parameterType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1635)) ;
+  const enumGalgasBool test_0 = GALGAS_bool (kIsNotEqual, constinArgument_inParameterTypeList.getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1636)).objectCompare (constinArgument_argsNumber)).operator_or (GALGAS_bool (kIsNotEqual, var_parameterType.objectCompare (constinArgument_inExpectedType)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1636)).boolEnum () ;
   if (kBoolTrue == test_0) {
     GALGAS_location location_1 (constinArgument_inMethodName.getter_location (HERE)) ; // Implicit use of 'location' getter
-    inCompiler->emitSemanticError (location_1, GALGAS_string ("calling '").add_operation (constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1573)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1573)).add_operation (GALGAS_string ("' on a "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1573)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1574)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1573)).add_operation (GALGAS_string (" type requires "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1574)).add_operation (constinArgument_argsNumber.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1574)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1574)).add_operation (GALGAS_string (" unsigned argument(s); "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1574)).add_operation (function_argumentListSignature (constinArgument_inParameterTypeList, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1575)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1574))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1573)) ;
+    inCompiler->emitSemanticError (location_1, GALGAS_string ("calling '").add_operation (constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1637)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1637)).add_operation (GALGAS_string ("' on a "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1637)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1638)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1637)).add_operation (GALGAS_string (" type requires "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1638)).add_operation (constinArgument_argsNumber.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1638)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1638)).add_operation (GALGAS_string (" unsigned argument(s); "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1638)).add_operation (function_argumentListSignature (constinArgument_inParameterTypeList, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1639)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1638))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1637)) ;
   }
 }
 
@@ -9631,59 +9631,59 @@ void routine_templateMethodInvocation (const GALGAS_Ttype constinArgument_inType
                                        COMMA_UNUSED_LOCATION_ARGS) {
   outArgument_outResultType.drop () ; // Release 'out' argument
   outArgument_outResultValue.drop () ; // Release 'out' argument
-  const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1592)).objectCompare (GALGAS_string ("description"))).boolEnum () ;
+  const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1656)).objectCompare (GALGAS_string ("description"))).boolEnum () ;
   if (kBoolTrue == test_0) {
     {
-    routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1593)) ;
+    routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1657)) ;
     }
-    outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1594)) ;
-    outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mDescription (SOURCE_FILE ("template_expression_parser.galgas", 1595)).getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1595)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1595)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1595)) ;
+    outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1658)) ;
+    outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mDescription (SOURCE_FILE ("template_expression_parser.galgas", 1659)).getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1659)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1659)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1659)) ;
   }else if (kBoolFalse == test_0) {
     switch (constinArgument_inType.enumValue ()) {
     case GALGAS_Ttype::kNotBuilt:
       break ;
     case GALGAS_Ttype::kEnum_boolType:
       {
-        const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1599)).objectCompare (GALGAS_string ("trueOrFalse"))).boolEnum () ;
+        const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1663)).objectCompare (GALGAS_string ("trueOrFalse"))).boolEnum () ;
         if (kBoolTrue == test_1) {
           {
-          routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1600)) ;
+          routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1664)) ;
           }
-          outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1601)) ;
+          outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1665)) ;
           GALGAS_string temp_2 ;
-          const enumGalgasBool test_3 = GALGAS_bool (kIsStrictSup, constinArgument_inValue.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1603)).objectCompare (GALGAS_sint_36__34_ ((int64_t) 0LL))).boolEnum () ;
+          const enumGalgasBool test_3 = GALGAS_bool (kIsStrictSup, constinArgument_inValue.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1667)).objectCompare (GALGAS_sint_36__34_ ((int64_t) 0LL))).boolEnum () ;
           if (kBoolTrue == test_3) {
             temp_2 = GALGAS_string ("true") ;
           }else if (kBoolFalse == test_3) {
             temp_2 = GALGAS_string ("false") ;
           }
-          outArgument_outResultValue = function_valueWithString (temp_2, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1604)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1602)) ;
+          outArgument_outResultValue = function_valueWithString (temp_2, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1668)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1666)) ;
         }else if (kBoolFalse == test_1) {
-          const enumGalgasBool test_4 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1606)).objectCompare (GALGAS_string ("yesOrNo"))).boolEnum () ;
+          const enumGalgasBool test_4 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1670)).objectCompare (GALGAS_string ("yesOrNo"))).boolEnum () ;
           if (kBoolTrue == test_4) {
             {
-            routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1607)) ;
+            routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1671)) ;
             }
-            outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1608)) ;
+            outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1672)) ;
             GALGAS_string temp_5 ;
-            const enumGalgasBool test_6 = GALGAS_bool (kIsStrictSup, constinArgument_inValue.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1610)).objectCompare (GALGAS_sint_36__34_ ((int64_t) 0LL))).boolEnum () ;
+            const enumGalgasBool test_6 = GALGAS_bool (kIsStrictSup, constinArgument_inValue.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1674)).objectCompare (GALGAS_sint_36__34_ ((int64_t) 0LL))).boolEnum () ;
             if (kBoolTrue == test_6) {
               temp_5 = GALGAS_string ("yes") ;
             }else if (kBoolFalse == test_6) {
               temp_5 = GALGAS_string ("no") ;
             }
-            outArgument_outResultValue = function_valueWithString (temp_5, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1611)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1609)) ;
+            outArgument_outResultValue = function_valueWithString (temp_5, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1675)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1673)) ;
           }else if (kBoolFalse == test_4) {
-            const enumGalgasBool test_7 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1613)).objectCompare (GALGAS_string ("unsigned"))).boolEnum () ;
+            const enumGalgasBool test_7 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1677)).objectCompare (GALGAS_string ("unsigned"))).boolEnum () ;
             if (kBoolTrue == test_7) {
               {
-              routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1614)) ;
+              routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1678)) ;
               }
-              outArgument_outResultType = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1615)) ;
+              outArgument_outResultType = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1679)) ;
               outArgument_outResultValue = constinArgument_inValue ;
             }else if (kBoolFalse == test_7) {
               GALGAS_location location_8 (constinArgument_inMethodName.getter_location (HERE)) ; // Implicit use of 'location' getter
-              inCompiler->emitSemanticError (location_8, GALGAS_string ("the ").add_operation (constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1618)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1618)).add_operation (GALGAS_string (" template method is not defined"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1618))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1618)) ;
+              inCompiler->emitSemanticError (location_8, GALGAS_string ("the ").add_operation (constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1682)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1682)).add_operation (GALGAS_string (" template method is not defined"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1682))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1682)) ;
               outArgument_outResultValue.drop () ; // Release error dropped variable
               outArgument_outResultType.drop () ; // Release error dropped variable
             }
@@ -9693,95 +9693,95 @@ void routine_templateMethodInvocation (const GALGAS_Ttype constinArgument_inType
       break ;
     case GALGAS_Ttype::kEnum_intType:
       {
-        const enumGalgasBool test_9 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1621)).objectCompare (GALGAS_string ("string"))).boolEnum () ;
+        const enumGalgasBool test_9 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1685)).objectCompare (GALGAS_string ("string"))).boolEnum () ;
         if (kBoolTrue == test_9) {
           {
-          routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1622)) ;
+          routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1686)) ;
           }
-          outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1623)) ;
-          outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1624)).getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1624)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1624)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1624)) ;
+          outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1687)) ;
+          outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1688)).getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1688)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1688)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1688)) ;
         }else if (kBoolFalse == test_9) {
-          const enumGalgasBool test_10 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1625)).objectCompare (GALGAS_string ("hexString"))).boolEnum () ;
+          const enumGalgasBool test_10 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1689)).objectCompare (GALGAS_string ("hexString"))).boolEnum () ;
           if (kBoolTrue == test_10) {
             {
-            routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1626)) ;
+            routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1690)) ;
             }
-            outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1627)) ;
-            outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1628)).getter_uint_36__34_ (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1628)).getter_hexString (SOURCE_FILE ("template_expression_parser.galgas", 1628)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1628)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1628)) ;
+            outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1691)) ;
+            outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1692)).getter_uint_36__34_ (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1692)).getter_hexString (SOURCE_FILE ("template_expression_parser.galgas", 1692)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1692)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1692)) ;
           }else if (kBoolFalse == test_10) {
-            const enumGalgasBool test_11 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1629)).objectCompare (GALGAS_string ("numberOfBytes"))).operator_or (GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1629)).objectCompare (GALGAS_string ("signedNumberOfBytes"))) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1629)).boolEnum () ;
+            const enumGalgasBool test_11 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1693)).objectCompare (GALGAS_string ("numberOfBytes"))).operator_or (GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1693)).objectCompare (GALGAS_string ("signedNumberOfBytes"))) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1693)).boolEnum () ;
             if (kBoolTrue == test_11) {
               {
-              routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1630)) ;
+              routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1694)) ;
               }
-              outArgument_outResultType = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1631)) ;
-              GALGAS_sint_36__34_ var_value = constinArgument_inValue.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1632)) ;
+              outArgument_outResultType = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1695)) ;
+              GALGAS_sint_36__34_ var_value = constinArgument_inValue.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1696)) ;
               GALGAS_uint var_numberOfBytes = GALGAS_uint ((uint32_t) 1U) ;
-              const enumGalgasBool test_12 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1635)).objectCompare (GALGAS_string ("signedNumberOfBytes"))).boolEnum () ;
+              const enumGalgasBool test_12 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1699)).objectCompare (GALGAS_string ("signedNumberOfBytes"))).boolEnum () ;
               if (kBoolTrue == test_12) {
-                var_value = var_value.multiply_operation (GALGAS_uint ((uint32_t) 2U).getter_sint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1636)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1636)) ;
+                var_value = var_value.multiply_operation (GALGAS_uint ((uint32_t) 2U).getter_sint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1700)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1700)) ;
               }
               GALGAS_uint var_count = GALGAS_uint ((uint32_t) 0U) ;
               if (GALGAS_uint ((uint32_t) 4U).isValid ()) {
-                uint32_t variant_57105 = GALGAS_uint ((uint32_t) 4U).uintValue () ;
-                bool loop_57105 = true ;
-                while (loop_57105) {
-                  loop_57105 = GALGAS_bool (kIsStrictInf, var_count.objectCompare (GALGAS_uint ((uint32_t) 4U))).isValid () ;
-                  if (loop_57105) {
-                    loop_57105 = GALGAS_bool (kIsStrictInf, var_count.objectCompare (GALGAS_uint ((uint32_t) 4U))).boolValue () ;
+                uint32_t variant_58532 = GALGAS_uint ((uint32_t) 4U).uintValue () ;
+                bool loop_58532 = true ;
+                while (loop_58532) {
+                  loop_58532 = GALGAS_bool (kIsStrictInf, var_count.objectCompare (GALGAS_uint ((uint32_t) 4U))).isValid () ;
+                  if (loop_58532) {
+                    loop_58532 = GALGAS_bool (kIsStrictInf, var_count.objectCompare (GALGAS_uint ((uint32_t) 4U))).boolValue () ;
                   }
-                  if (loop_57105 && (0 == variant_57105)) {
-                    loop_57105 = false ;
-                    inCompiler->loopRunTimeVariantError (SOURCE_FILE ("template_expression_parser.galgas", 1639)) ;
+                  if (loop_58532 && (0 == variant_58532)) {
+                    loop_58532 = false ;
+                    inCompiler->loopRunTimeVariantError (SOURCE_FILE ("template_expression_parser.galgas", 1703)) ;
                   }
-                  if (loop_57105) {
-                    variant_57105 -- ;
-                    GALGAS_sint_36__34_ var_maxValue = GALGAS_sint_36__34_ ((int64_t) 1LL).left_shift_operation (var_numberOfBytes.multiply_operation (GALGAS_uint ((uint32_t) 8U), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1641)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1641)).substract_operation (GALGAS_sint_36__34_ ((int64_t) 1LL), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1641)) ;
+                  if (loop_58532) {
+                    variant_58532 -- ;
+                    GALGAS_sint_36__34_ var_maxValue = GALGAS_sint_36__34_ ((int64_t) 1LL).left_shift_operation (var_numberOfBytes.multiply_operation (GALGAS_uint ((uint32_t) 8U), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1705)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1705)).substract_operation (GALGAS_sint_36__34_ ((int64_t) 1LL), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1705)) ;
                     const enumGalgasBool test_13 = GALGAS_bool (kIsStrictInf, var_maxValue.objectCompare (var_value)).boolEnum () ;
                     if (kBoolTrue == test_13) {
-                      var_numberOfBytes = var_numberOfBytes.multiply_operation (GALGAS_uint ((uint32_t) 2U), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1643)) ;
+                      var_numberOfBytes = var_numberOfBytes.multiply_operation (GALGAS_uint ((uint32_t) 2U), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1707)) ;
                     }
-                    var_count.increment_operation (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1645)) ;
+                    var_count.increment_operation (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1709)) ;
                   }
                 }
               }
-              outArgument_outResultValue = function_valueWithUnsigned (var_numberOfBytes.getter_uint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1647)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1647)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1647)) ;
+              outArgument_outResultValue = function_valueWithUnsigned (var_numberOfBytes.getter_uint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1711)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1711)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1711)) ;
             }else if (kBoolFalse == test_11) {
-              const enumGalgasBool test_14 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1648)).objectCompare (GALGAS_string ("numberOfBits"))).operator_or (GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1648)).objectCompare (GALGAS_string ("signedNumberOfBits"))) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1648)).boolEnum () ;
+              const enumGalgasBool test_14 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1712)).objectCompare (GALGAS_string ("numberOfBits"))).operator_or (GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1712)).objectCompare (GALGAS_string ("signedNumberOfBits"))) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1712)).boolEnum () ;
               if (kBoolTrue == test_14) {
                 {
-                routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1649)) ;
+                routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1713)) ;
                 }
-                outArgument_outResultType = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1650)) ;
-                GALGAS_sint_36__34_ var_value = constinArgument_inValue.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1651)) ;
-                const enumGalgasBool test_15 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1652)).objectCompare (GALGAS_string ("signedNumberOfBits"))).boolEnum () ;
+                outArgument_outResultType = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1714)) ;
+                GALGAS_sint_36__34_ var_value = constinArgument_inValue.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1715)) ;
+                const enumGalgasBool test_15 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1716)).objectCompare (GALGAS_string ("signedNumberOfBits"))).boolEnum () ;
                 if (kBoolTrue == test_15) {
-                  var_value = var_value.multiply_operation (GALGAS_uint ((uint32_t) 2U).getter_sint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1653)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1653)) ;
+                  var_value = var_value.multiply_operation (GALGAS_uint ((uint32_t) 2U).getter_sint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1717)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1717)) ;
                 }
                 GALGAS_sint_36__34_ var_numberOfBits = GALGAS_sint_36__34_ ((int64_t) 0LL) ;
                 if (GALGAS_uint ((uint32_t) 64U).isValid ()) {
-                  uint32_t variant_57878 = GALGAS_uint ((uint32_t) 64U).uintValue () ;
-                  bool loop_57878 = true ;
-                  while (loop_57878) {
-                    loop_57878 = GALGAS_bool (kIsNotEqual, var_value.objectCompare (GALGAS_sint_36__34_ ((int64_t) 0LL))).isValid () ;
-                    if (loop_57878) {
-                      loop_57878 = GALGAS_bool (kIsNotEqual, var_value.objectCompare (GALGAS_sint_36__34_ ((int64_t) 0LL))).boolValue () ;
+                  uint32_t variant_59305 = GALGAS_uint ((uint32_t) 64U).uintValue () ;
+                  bool loop_59305 = true ;
+                  while (loop_59305) {
+                    loop_59305 = GALGAS_bool (kIsNotEqual, var_value.objectCompare (GALGAS_sint_36__34_ ((int64_t) 0LL))).isValid () ;
+                    if (loop_59305) {
+                      loop_59305 = GALGAS_bool (kIsNotEqual, var_value.objectCompare (GALGAS_sint_36__34_ ((int64_t) 0LL))).boolValue () ;
                     }
-                    if (loop_57878 && (0 == variant_57878)) {
-                      loop_57878 = false ;
-                      inCompiler->loopRunTimeVariantError (SOURCE_FILE ("template_expression_parser.galgas", 1657)) ;
+                    if (loop_59305 && (0 == variant_59305)) {
+                      loop_59305 = false ;
+                      inCompiler->loopRunTimeVariantError (SOURCE_FILE ("template_expression_parser.galgas", 1721)) ;
                     }
-                    if (loop_57878) {
-                      variant_57878 -- ;
-                      var_numberOfBits.increment_operation (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1659)) ;
-                      var_value = var_value.right_shift_operation (GALGAS_uint ((uint32_t) 1U) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1660)) ;
+                    if (loop_59305) {
+                      variant_59305 -- ;
+                      var_numberOfBits.increment_operation (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1723)) ;
+                      var_value = var_value.right_shift_operation (GALGAS_uint ((uint32_t) 1U) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1724)) ;
                     }
                   }
                 }
-                outArgument_outResultValue = function_valueWithSigned (var_numberOfBits, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1662)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1662)) ;
+                outArgument_outResultValue = function_valueWithSigned (var_numberOfBits, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1726)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1726)) ;
               }else if (kBoolFalse == test_14) {
                 GALGAS_location location_16 (constinArgument_inMethodName.getter_location (HERE)) ; // Implicit use of 'location' getter
-                inCompiler->emitSemanticError (location_16, GALGAS_string ("the ").add_operation (constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1664)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1664)).add_operation (GALGAS_string (" template method is not defined for "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1664)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1664)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1664))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1664)) ;
+                inCompiler->emitSemanticError (location_16, GALGAS_string ("the ").add_operation (constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1728)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1728)).add_operation (GALGAS_string (" template method is not defined for "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1728)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1728)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1728))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1728)) ;
                 outArgument_outResultValue.drop () ; // Release error dropped variable
                 outArgument_outResultType.drop () ; // Release error dropped variable
               }
@@ -9792,240 +9792,240 @@ void routine_templateMethodInvocation (const GALGAS_Ttype constinArgument_inType
       break ;
     case GALGAS_Ttype::kEnum_stringType:
       {
-        const enumGalgasBool test_17 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1667)).objectCompare (GALGAS_string ("HTMLRepresentation"))).boolEnum () ;
+        const enumGalgasBool test_17 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1731)).objectCompare (GALGAS_string ("HTMLRepresentation"))).boolEnum () ;
         if (kBoolTrue == test_17) {
           {
-          routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1668)) ;
+          routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1732)) ;
           }
-          outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1669)) ;
-          outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1670)).getter_HTMLRepresentation (SOURCE_FILE ("template_expression_parser.galgas", 1670)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1670)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1670)) ;
+          outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1733)) ;
+          outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1734)).getter_HTMLRepresentation (SOURCE_FILE ("template_expression_parser.galgas", 1734)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1734)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1734)) ;
         }else if (kBoolFalse == test_17) {
-          const enumGalgasBool test_18 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1671)).objectCompare (GALGAS_string ("identifierRepresentation"))).boolEnum () ;
+          const enumGalgasBool test_18 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1735)).objectCompare (GALGAS_string ("identifierRepresentation"))).boolEnum () ;
           if (kBoolTrue == test_18) {
             {
-            routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1672)) ;
+            routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1736)) ;
             }
-            outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1673)) ;
-            outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1674)).getter_identifierRepresentation (SOURCE_FILE ("template_expression_parser.galgas", 1674)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1674)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1674)) ;
+            outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1737)) ;
+            outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1738)).getter_identifierRepresentation (SOURCE_FILE ("template_expression_parser.galgas", 1738)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1738)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1738)) ;
           }else if (kBoolFalse == test_18) {
-            const enumGalgasBool test_19 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1675)).objectCompare (GALGAS_string ("fileExists"))).boolEnum () ;
+            const enumGalgasBool test_19 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1739)).objectCompare (GALGAS_string ("fileExists"))).boolEnum () ;
             if (kBoolTrue == test_19) {
               {
-              routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1676)) ;
+              routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1740)) ;
               }
-              outArgument_outResultType = GALGAS_Ttype::constructor_boolType (SOURCE_FILE ("template_expression_parser.galgas", 1677)) ;
-              outArgument_outResultValue = function_valueWithBool (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1678)).getter_fileExists (SOURCE_FILE ("template_expression_parser.galgas", 1678)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1678)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1678)) ;
+              outArgument_outResultType = GALGAS_Ttype::constructor_boolType (SOURCE_FILE ("template_expression_parser.galgas", 1741)) ;
+              outArgument_outResultValue = function_valueWithBool (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1742)).getter_fileExists (SOURCE_FILE ("template_expression_parser.galgas", 1742)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1742)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1742)) ;
             }else if (kBoolFalse == test_19) {
-              const enumGalgasBool test_20 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1679)).objectCompare (GALGAS_string ("lowercaseString"))).boolEnum () ;
+              const enumGalgasBool test_20 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1743)).objectCompare (GALGAS_string ("lowercaseString"))).boolEnum () ;
               if (kBoolTrue == test_20) {
                 {
-                routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1680)) ;
+                routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1744)) ;
                 }
-                outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1681)) ;
-                outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1682)).getter_lowercaseString (SOURCE_FILE ("template_expression_parser.galgas", 1682)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1682)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1682)) ;
+                outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1745)) ;
+                outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1746)).getter_lowercaseString (SOURCE_FILE ("template_expression_parser.galgas", 1746)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1746)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1746)) ;
               }else if (kBoolFalse == test_20) {
-                const enumGalgasBool test_21 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1683)).objectCompare (GALGAS_string ("length"))).boolEnum () ;
+                const enumGalgasBool test_21 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1747)).objectCompare (GALGAS_string ("length"))).boolEnum () ;
                 if (kBoolTrue == test_21) {
                   {
-                  routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1684)) ;
+                  routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1748)) ;
                   }
-                  outArgument_outResultType = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1685)) ;
-                  outArgument_outResultValue = function_valueWithUnsigned (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1686)).getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1686)).getter_uint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1686)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1686)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1686)) ;
+                  outArgument_outResultType = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1749)) ;
+                  outArgument_outResultValue = function_valueWithUnsigned (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1750)).getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1750)).getter_uint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1750)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1750)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1750)) ;
                 }else if (kBoolFalse == test_21) {
-                  const enumGalgasBool test_22 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1687)).objectCompare (GALGAS_string ("stringByCapitalizingFirstCharacter"))).boolEnum () ;
+                  const enumGalgasBool test_22 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1751)).objectCompare (GALGAS_string ("stringByCapitalizingFirstCharacter"))).boolEnum () ;
                   if (kBoolTrue == test_22) {
                     {
-                    routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1688)) ;
+                    routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1752)) ;
                     }
-                    outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1689)) ;
-                    outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1690)).getter_stringByCapitalizingFirstCharacter (SOURCE_FILE ("template_expression_parser.galgas", 1690)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1690)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1690)) ;
+                    outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1753)) ;
+                    outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1754)).getter_stringByCapitalizingFirstCharacter (SOURCE_FILE ("template_expression_parser.galgas", 1754)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1754)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1754)) ;
                   }else if (kBoolFalse == test_22) {
-                    const enumGalgasBool test_23 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1691)).objectCompare (GALGAS_string ("uppercaseString"))).boolEnum () ;
+                    const enumGalgasBool test_23 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1755)).objectCompare (GALGAS_string ("uppercaseString"))).boolEnum () ;
                     if (kBoolTrue == test_23) {
                       {
-                      routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1692)) ;
+                      routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1756)) ;
                       }
-                      outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1693)) ;
-                      outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1694)).getter_uppercaseString (SOURCE_FILE ("template_expression_parser.galgas", 1694)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1694)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1694)) ;
+                      outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1757)) ;
+                      outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1758)).getter_uppercaseString (SOURCE_FILE ("template_expression_parser.galgas", 1758)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1758)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1758)) ;
                     }else if (kBoolFalse == test_23) {
-                      const enumGalgasBool test_24 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1695)).objectCompare (GALGAS_string ("unsigned"))).boolEnum () ;
+                      const enumGalgasBool test_24 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1759)).objectCompare (GALGAS_string ("unsigned"))).boolEnum () ;
                       if (kBoolTrue == test_24) {
                         {
-                        routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1696)) ;
+                        routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1760)) ;
                         }
-                        outArgument_outResultType = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1697)) ;
-                        outArgument_outResultValue = function_valueWithUnsigned (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1698)).getter_decimalUnsignedNumber (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1698)).getter_uint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1698)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1698)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1698)) ;
+                        outArgument_outResultType = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1761)) ;
+                        outArgument_outResultValue = function_valueWithUnsigned (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1762)).getter_decimalUnsignedNumber (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1762)).getter_uint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1762)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1762)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1762)) ;
                       }else if (kBoolFalse == test_24) {
-                        const enumGalgasBool test_25 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1699)).objectCompare (GALGAS_string ("leftSubString"))).boolEnum () ;
+                        const enumGalgasBool test_25 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1763)).objectCompare (GALGAS_string ("leftSubString"))).boolEnum () ;
                         if (kBoolTrue == test_25) {
                           {
-                          routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1700)), GALGAS_uint ((uint32_t) 1U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1700)) ;
+                          routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1764)), GALGAS_uint ((uint32_t) 1U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1764)) ;
                           }
                           GALGAS_Tvalue var_parameter ;
-                          GALGAS_Ttype joker_60818 ; // Joker input parameter
-                          inArgument_inParameterTypeList.method_first (var_parameter, joker_60818, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1702)) ;
-                          outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1703)) ;
-                          outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1704)).getter_leftSubString (var_parameter.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1704)).getter_uint (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1704)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1704)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1704)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1704)) ;
+                          GALGAS_Ttype joker_62245 ; // Joker input parameter
+                          inArgument_inParameterTypeList.method_first (var_parameter, joker_62245, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1766)) ;
+                          outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1767)) ;
+                          outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1768)).getter_leftSubString (var_parameter.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1768)).getter_uint (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1768)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1768)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1768)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1768)) ;
                         }else if (kBoolFalse == test_25) {
-                          const enumGalgasBool test_26 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1705)).objectCompare (GALGAS_string ("rightSubString"))).boolEnum () ;
+                          const enumGalgasBool test_26 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1769)).objectCompare (GALGAS_string ("rightSubString"))).boolEnum () ;
                           if (kBoolTrue == test_26) {
                             {
-                            routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1706)), GALGAS_uint ((uint32_t) 1U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1706)) ;
+                            routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1770)), GALGAS_uint ((uint32_t) 1U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1770)) ;
                             }
                             GALGAS_Tvalue var_parameter ;
-                            GALGAS_Ttype joker_61229 ; // Joker input parameter
-                            inArgument_inParameterTypeList.method_first (var_parameter, joker_61229, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1708)) ;
-                            outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1709)) ;
-                            outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1710)).getter_rightSubString (var_parameter.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1710)).getter_uint (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1710)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1710)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1710)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1710)) ;
+                            GALGAS_Ttype joker_62656 ; // Joker input parameter
+                            inArgument_inParameterTypeList.method_first (var_parameter, joker_62656, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1772)) ;
+                            outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1773)) ;
+                            outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1774)).getter_rightSubString (var_parameter.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1774)).getter_uint (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1774)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1774)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1774)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1774)) ;
                           }else if (kBoolFalse == test_26) {
-                            const enumGalgasBool test_27 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1711)).objectCompare (GALGAS_string ("subString"))).boolEnum () ;
+                            const enumGalgasBool test_27 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1775)).objectCompare (GALGAS_string ("subString"))).boolEnum () ;
                             if (kBoolTrue == test_27) {
                               {
-                              routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1712)), GALGAS_uint ((uint32_t) 2U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1712)) ;
+                              routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1776)), GALGAS_uint ((uint32_t) 2U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1776)) ;
                               }
-                              GALGAS_Tvalue var_start = inArgument_inParameterTypeList.getter_mValueAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1713)) ;
-                              GALGAS_Tvalue var_length = inArgument_inParameterTypeList.getter_mValueAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1714)) ;
-                              outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1717)) ;
-                              outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1718)).getter_subString (var_start.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1718)).getter_uint (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1718)), var_length.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1718)).getter_uint (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1718)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1718)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1718)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1718)) ;
+                              GALGAS_Tvalue var_start = inArgument_inParameterTypeList.getter_mValueAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1777)) ;
+                              GALGAS_Tvalue var_length = inArgument_inParameterTypeList.getter_mValueAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1778)) ;
+                              outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1781)) ;
+                              outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1782)).getter_subString (var_start.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1782)).getter_uint (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1782)), var_length.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1782)).getter_uint (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1782)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1782)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1782)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1782)) ;
                             }else if (kBoolFalse == test_27) {
-                              const enumGalgasBool test_28 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1719)).objectCompare (GALGAS_string ("reversedString"))).boolEnum () ;
+                              const enumGalgasBool test_28 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1783)).objectCompare (GALGAS_string ("reversedString"))).boolEnum () ;
                               if (kBoolTrue == test_28) {
                                 {
-                                routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1720)) ;
+                                routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1784)) ;
                                 }
-                                outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1721)) ;
-                                outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1722)).getter_reversedString (SOURCE_FILE ("template_expression_parser.galgas", 1722)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1722)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1722)) ;
+                                outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1785)) ;
+                                outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1786)).getter_reversedString (SOURCE_FILE ("template_expression_parser.galgas", 1786)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1786)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1786)) ;
                               }else if (kBoolFalse == test_28) {
-                                const enumGalgasBool test_29 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1723)).objectCompare (GALGAS_string ("componentsSeparatedByString"))).boolEnum () ;
+                                const enumGalgasBool test_29 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1787)).objectCompare (GALGAS_string ("componentsSeparatedByString"))).boolEnum () ;
                                 if (kBoolTrue == test_29) {
                                   {
-                                  routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1724)), GALGAS_uint ((uint32_t) 1U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1724)) ;
+                                  routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1788)), GALGAS_uint ((uint32_t) 1U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1788)) ;
                                   }
                                   GALGAS_Tvalue var_separator ;
-                                  GALGAS_Ttype joker_62461 ; // Joker input parameter
-                                  inArgument_inParameterTypeList.method_first (var_separator, joker_62461, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1726)) ;
-                                  GALGAS_stringlist var_stringlist = constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1727)).getter_componentsSeparatedByString (var_separator.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1727)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1727)) ;
-                                  GALGAS_TfieldMapList var_result = GALGAS_TfieldMapList::constructor_emptyList (SOURCE_FILE ("template_expression_parser.galgas", 1728)) ;
-                                  cEnumerator_stringlist enumerator_62652 (var_stringlist, kEnumeration_up) ;
-                                  while (enumerator_62652.hasCurrentObject ()) {
-                                    GALGAS_TfieldMap var_item = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_expression_parser.galgas", 1730)) ;
+                                  GALGAS_Ttype joker_63888 ; // Joker input parameter
+                                  inArgument_inParameterTypeList.method_first (var_separator, joker_63888, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1790)) ;
+                                  GALGAS_stringlist var_stringlist = constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1791)).getter_componentsSeparatedByString (var_separator.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1791)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1791)) ;
+                                  GALGAS_TfieldMapList var_result = GALGAS_TfieldMapList::constructor_emptyList (SOURCE_FILE ("template_expression_parser.galgas", 1792)) ;
+                                  cEnumerator_stringlist enumerator_64079 (var_stringlist, kEnumeration_up) ;
+                                  while (enumerator_64079.hasCurrentObject ()) {
+                                    GALGAS_TfieldMap var_item = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_expression_parser.galgas", 1794)) ;
                                     {
-                                    routine_addStringValue (var_item, function_lstringWith (GALGAS_string ("VALUE"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1731)), enumerator_62652.current_mValue (HERE), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1731)), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1731)) ;
+                                    routine_addStringValue (var_item, function_lstringWith (GALGAS_string ("VALUE"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1795)), enumerator_64079.current_mValue (HERE), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1795)), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1795)) ;
                                     }
-                                    var_result.addAssign_operation (var_item  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1732)) ;
-                                    enumerator_62652.gotoNextObject () ;
+                                    var_result.addAssign_operation (var_item  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1796)) ;
+                                    enumerator_64079.gotoNextObject () ;
                                   }
-                                  outArgument_outResultType = GALGAS_Ttype::constructor_listType (SOURCE_FILE ("template_expression_parser.galgas", 1734)) ;
-                                  outArgument_outResultValue = function_valueWithList (var_result, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1735)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1735)) ;
+                                  outArgument_outResultType = GALGAS_Ttype::constructor_listType (SOURCE_FILE ("template_expression_parser.galgas", 1798)) ;
+                                  outArgument_outResultValue = function_valueWithList (var_result, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1799)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1799)) ;
                                 }else if (kBoolFalse == test_29) {
-                                  const enumGalgasBool test_30 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1736)).objectCompare (GALGAS_string ("interpretEscape"))).boolEnum () ;
+                                  const enumGalgasBool test_30 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1800)).objectCompare (GALGAS_string ("interpretEscape"))).boolEnum () ;
                                   if (kBoolTrue == test_30) {
                                     {
-                                    routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1737)) ;
+                                    routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1801)) ;
                                     }
-                                    outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1738)) ;
-                                    outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1739)).getter_stringByReplacingStringByString (GALGAS_string ("\\n"), GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1739)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1739)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1739)) ;
+                                    outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1802)) ;
+                                    outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1803)).getter_stringByReplacingStringByString (GALGAS_string ("\\n"), GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1803)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1803)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1803)) ;
                                   }else if (kBoolFalse == test_30) {
-                                    const enumGalgasBool test_31 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1740)).objectCompare (GALGAS_string ("columnPrefixedBy"))).boolEnum () ;
+                                    const enumGalgasBool test_31 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1804)).objectCompare (GALGAS_string ("columnPrefixedBy"))).boolEnum () ;
                                     if (kBoolTrue == test_31) {
                                       {
-                                      routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1741)), GALGAS_uint ((uint32_t) 1U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1741)) ;
+                                      routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1805)), GALGAS_uint ((uint32_t) 1U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1805)) ;
                                       }
                                       GALGAS_Tvalue var_separator ;
-                                      GALGAS_Ttype joker_63478 ; // Joker input parameter
-                                      inArgument_inParameterTypeList.method_first (var_separator, joker_63478, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1743)) ;
-                                      outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1744)) ;
-                                      outArgument_outResultValue = function_valueWithString (var_separator.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1745)).add_operation (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1745)).getter_stringByReplacingStringByString (GALGAS_string ("\n"), GALGAS_string ("\n").add_operation (var_separator.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1745)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1745)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1745)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1745)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1745)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1745)) ;
+                                      GALGAS_Ttype joker_64905 ; // Joker input parameter
+                                      inArgument_inParameterTypeList.method_first (var_separator, joker_64905, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1807)) ;
+                                      outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1808)) ;
+                                      outArgument_outResultValue = function_valueWithString (var_separator.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1809)).add_operation (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1809)).getter_stringByReplacingStringByString (GALGAS_string ("\n"), GALGAS_string ("\n").add_operation (var_separator.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1809)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1809)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1809)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1809)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1809)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1809)) ;
                                     }else if (kBoolFalse == test_31) {
-                                      const enumGalgasBool test_32 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1746)).objectCompare (GALGAS_string ("wrap"))).boolEnum () ;
+                                      const enumGalgasBool test_32 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1810)).objectCompare (GALGAS_string ("wrap"))).boolEnum () ;
                                       if (kBoolTrue == test_32) {
                                         {
-                                        routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1747)), GALGAS_uint ((uint32_t) 2U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1747)) ;
+                                        routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1811)), GALGAS_uint ((uint32_t) 2U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1811)) ;
                                         }
                                         GALGAS_Tvalue var_width ;
                                         {
-                                        GALGAS_Ttype joker_64029 ; // Joker input parameter
-                                        inArgument_inParameterTypeList.modifier_popFirst (var_width, joker_64029, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1750)) ;
+                                        GALGAS_Ttype joker_65456 ; // Joker input parameter
+                                        inArgument_inParameterTypeList.modifier_popFirst (var_width, joker_65456, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1814)) ;
                                         }
                                         GALGAS_Tvalue var_shift ;
                                         {
-                                        GALGAS_Ttype joker_64102 ; // Joker input parameter
-                                        inArgument_inParameterTypeList.modifier_popFirst (var_shift, joker_64102, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1752)) ;
+                                        GALGAS_Ttype joker_65529 ; // Joker input parameter
+                                        inArgument_inParameterTypeList.modifier_popFirst (var_shift, joker_65529, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1816)) ;
                                         }
-                                        GALGAS_string var_stringshift = GALGAS_string::constructor_stringWithSequenceOfCharacters (GALGAS_char (TO_UNICODE (32)), var_shift.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1753)).getter_uint (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1753))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1753)) ;
-                                        GALGAS_string var_result = constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1754)) ;
-                                        GALGAS_stringlist var_paragraph = var_result.getter_componentsSeparatedByString (GALGAS_string ("\n") COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1763)) ;
-                                        GALGAS_stringlist var_resultParagraph = GALGAS_stringlist::constructor_emptyList (SOURCE_FILE ("template_expression_parser.galgas", 1764)) ;
-                                        cEnumerator_stringlist enumerator_64767 (var_paragraph, kEnumeration_up) ;
-                                        while (enumerator_64767.hasCurrentObject ()) {
-                                          GALGAS_stringlist var_parts = enumerator_64767.current_mValue (HERE).getter_componentsSeparatedByString (GALGAS_string (" ") COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1766)) ;
+                                        GALGAS_string var_stringshift = GALGAS_string::constructor_stringWithSequenceOfCharacters (GALGAS_char (TO_UNICODE (32)), var_shift.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1817)).getter_uint (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1817))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1817)) ;
+                                        GALGAS_string var_result = constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1818)) ;
+                                        GALGAS_stringlist var_paragraph = var_result.getter_componentsSeparatedByString (GALGAS_string ("\n") COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1827)) ;
+                                        GALGAS_stringlist var_resultParagraph = GALGAS_stringlist::constructor_emptyList (SOURCE_FILE ("template_expression_parser.galgas", 1828)) ;
+                                        cEnumerator_stringlist enumerator_66194 (var_paragraph, kEnumeration_up) ;
+                                        while (enumerator_66194.hasCurrentObject ()) {
+                                          GALGAS_stringlist var_parts = enumerator_66194.current_mValue (HERE).getter_componentsSeparatedByString (GALGAS_string (" ") COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1830)) ;
                                           GALGAS_sint_36__34_ var_linewidth = GALGAS_sint_36__34_ ((int64_t) 0LL) ;
                                           GALGAS_bool var_newline = GALGAS_bool (true) ;
                                           var_result = GALGAS_string::makeEmptyString () ;
-                                          cEnumerator_stringlist enumerator_64967 (var_parts, kEnumeration_up) ;
-                                          while (enumerator_64967.hasCurrentObject ()) {
-                                            const enumGalgasBool test_33 = GALGAS_bool (kIsStrictSup, var_linewidth.add_operation (enumerator_64967.current_mValue (HERE).getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1771)).getter_sint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1771)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1771)).objectCompare (var_width.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1771)))).boolEnum () ;
+                                          cEnumerator_stringlist enumerator_66394 (var_parts, kEnumeration_up) ;
+                                          while (enumerator_66394.hasCurrentObject ()) {
+                                            const enumGalgasBool test_33 = GALGAS_bool (kIsStrictSup, var_linewidth.add_operation (enumerator_66394.current_mValue (HERE).getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1835)).getter_sint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1835)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1835)).objectCompare (var_width.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1835)))).boolEnum () ;
                                             if (kBoolTrue == test_33) {
-                                              var_result.dotAssign_operation (GALGAS_string ("\n").add_operation (var_stringshift, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1772))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1772)) ;
-                                              var_linewidth = var_shift.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1773)) ;
+                                              var_result.dotAssign_operation (GALGAS_string ("\n").add_operation (var_stringshift, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1836))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1836)) ;
+                                              var_linewidth = var_shift.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1837)) ;
                                               var_newline = GALGAS_bool (true) ;
                                             }
                                             const enumGalgasBool test_34 = GALGAS_bool (kIsEqual, var_newline.objectCompare (GALGAS_bool (false))).boolEnum () ;
                                             if (kBoolTrue == test_34) {
-                                              var_linewidth = var_linewidth.add_operation (GALGAS_sint_36__34_ ((int64_t) 1LL), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1777)) ;
-                                              var_result.dotAssign_operation (GALGAS_string (" ")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1778)) ;
+                                              var_linewidth = var_linewidth.add_operation (GALGAS_sint_36__34_ ((int64_t) 1LL), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1841)) ;
+                                              var_result.dotAssign_operation (GALGAS_string (" ")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1842)) ;
                                             }
-                                            var_linewidth = var_linewidth.add_operation (enumerator_64967.current_mValue (HERE).getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1780)).getter_sint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1780)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1780)) ;
-                                            var_result.dotAssign_operation (enumerator_64967.current_mValue (HERE)  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1781)) ;
+                                            var_linewidth = var_linewidth.add_operation (enumerator_66394.current_mValue (HERE).getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1844)).getter_sint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1844)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1844)) ;
+                                            var_result.dotAssign_operation (enumerator_66394.current_mValue (HERE)  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1845)) ;
                                             var_newline = GALGAS_bool (false) ;
-                                            enumerator_64967.gotoNextObject () ;
+                                            enumerator_66394.gotoNextObject () ;
                                           }
-                                          var_resultParagraph.addAssign_operation (var_result  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1784)) ;
-                                          enumerator_64767.gotoNextObject () ;
+                                          var_resultParagraph.addAssign_operation (var_result  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1848)) ;
+                                          enumerator_66194.gotoNextObject () ;
                                         }
-                                        outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1786)) ;
-                                        outArgument_outResultValue = function_valueWithString (GALGAS_string::constructor_componentsJoinedByString (var_resultParagraph, GALGAS_string ("\n")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1787)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1787)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1787)) ;
+                                        outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1850)) ;
+                                        outArgument_outResultValue = function_valueWithString (GALGAS_string::constructor_componentsJoinedByString (var_resultParagraph, GALGAS_string ("\n")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1851)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1851)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1851)) ;
                                       }else if (kBoolFalse == test_32) {
-                                        const enumGalgasBool test_35 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1788)).objectCompare (GALGAS_string ("substringExists"))).boolEnum () ;
+                                        const enumGalgasBool test_35 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1852)).objectCompare (GALGAS_string ("substringExists"))).boolEnum () ;
                                         if (kBoolTrue == test_35) {
                                           {
-                                          routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1789)), GALGAS_uint ((uint32_t) 1U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1789)) ;
+                                          routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1853)), GALGAS_uint ((uint32_t) 1U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1853)) ;
                                           }
                                           GALGAS_Tvalue var_subString ;
                                           {
-                                          GALGAS_Ttype joker_65876 ; // Joker input parameter
-                                          inArgument_inParameterTypeList.modifier_popFirst (var_subString, joker_65876, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1790)) ;
+                                          GALGAS_Ttype joker_67303 ; // Joker input parameter
+                                          inArgument_inParameterTypeList.modifier_popFirst (var_subString, joker_67303, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1854)) ;
                                           }
                                           GALGAS_uint var_start = GALGAS_uint ((uint32_t) 0U) ;
-                                          GALGAS_uint var_stop = constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1792)).getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1792)).substract_operation (var_subString.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1792)).getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1792)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1792)) ;
+                                          GALGAS_uint var_stop = constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1856)).getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1856)).substract_operation (var_subString.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1856)).getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1856)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1856)) ;
                                           GALGAS_bool var_exists = GALGAS_bool (false) ;
-                                          if (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1794)).getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1794)).isValid ()) {
-                                            uint32_t variant_66034 = constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1794)).getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1794)).uintValue () ;
-                                            bool loop_66034 = true ;
-                                            while (loop_66034) {
-                                              loop_66034 = GALGAS_bool (kIsInfOrEqual, var_start.objectCompare (var_stop)).isValid () ;
-                                              if (loop_66034) {
-                                                loop_66034 = GALGAS_bool (kIsInfOrEqual, var_start.objectCompare (var_stop)).boolValue () ;
+                                          if (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1858)).getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1858)).isValid ()) {
+                                            uint32_t variant_67461 = constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1858)).getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1858)).uintValue () ;
+                                            bool loop_67461 = true ;
+                                            while (loop_67461) {
+                                              loop_67461 = GALGAS_bool (kIsInfOrEqual, var_start.objectCompare (var_stop)).isValid () ;
+                                              if (loop_67461) {
+                                                loop_67461 = GALGAS_bool (kIsInfOrEqual, var_start.objectCompare (var_stop)).boolValue () ;
                                               }
-                                              if (loop_66034 && (0 == variant_66034)) {
-                                                loop_66034 = false ;
-                                                inCompiler->loopRunTimeVariantError (SOURCE_FILE ("template_expression_parser.galgas", 1794)) ;
+                                              if (loop_67461 && (0 == variant_67461)) {
+                                                loop_67461 = false ;
+                                                inCompiler->loopRunTimeVariantError (SOURCE_FILE ("template_expression_parser.galgas", 1858)) ;
                                               }
-                                              if (loop_66034) {
-                                                variant_66034 -- ;
-                                                const enumGalgasBool test_36 = GALGAS_bool (kIsEqual, constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1796)).getter_subString (var_start, var_subString.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1796)).getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1796)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1796)).objectCompare (var_subString.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1796)))).boolEnum () ;
+                                              if (loop_67461) {
+                                                variant_67461 -- ;
+                                                const enumGalgasBool test_36 = GALGAS_bool (kIsEqual, constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1860)).getter_subString (var_start, var_subString.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1860)).getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1860)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1860)).objectCompare (var_subString.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1860)))).boolEnum () ;
                                                 if (kBoolTrue == test_36) {
                                                   var_exists = GALGAS_bool (true) ;
                                                 }
-                                                var_start.increment_operation (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1799)) ;
+                                                var_start.increment_operation (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1863)) ;
                                               }
                                             }
                                           }
-                                          outArgument_outResultType = GALGAS_Ttype::constructor_boolType (SOURCE_FILE ("template_expression_parser.galgas", 1801)) ;
-                                          outArgument_outResultValue = function_valueWithBool (var_exists, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1802)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1802)) ;
+                                          outArgument_outResultType = GALGAS_Ttype::constructor_boolType (SOURCE_FILE ("template_expression_parser.galgas", 1865)) ;
+                                          outArgument_outResultValue = function_valueWithBool (var_exists, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1866)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1866)) ;
                                         }else if (kBoolFalse == test_35) {
                                           GALGAS_location location_37 (constinArgument_inMethodName.getter_location (HERE)) ; // Implicit use of 'location' getter
-                                          inCompiler->emitSemanticError (location_37, GALGAS_string ("the ").add_operation (constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1804)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1804)).add_operation (GALGAS_string (" template method is not defined for "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1804)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1804)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1804))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1804)) ;
+                                          inCompiler->emitSemanticError (location_37, GALGAS_string ("the ").add_operation (constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1868)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1868)).add_operation (GALGAS_string (" template method is not defined for "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1868)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1868)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1868))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1868)) ;
                                           outArgument_outResultValue.drop () ; // Release error dropped variable
                                           outArgument_outResultType.drop () ; // Release error dropped variable
                                         }
@@ -10050,43 +10050,43 @@ void routine_templateMethodInvocation (const GALGAS_Ttype constinArgument_inType
     case GALGAS_Ttype::kEnum_floatType:
       {
         GALGAS_location location_38 (constinArgument_inMethodName.getter_location (HERE)) ; // Implicit use of 'location' getter
-        inCompiler->emitSemanticError (location_38, GALGAS_string ("the ").add_operation (constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1807)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1807)).add_operation (GALGAS_string (" template method is not defined for "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1807)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1807)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1807))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1807)) ;
+        inCompiler->emitSemanticError (location_38, GALGAS_string ("the ").add_operation (constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1871)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1871)).add_operation (GALGAS_string (" template method is not defined for "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1871)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1871)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1871))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1871)) ;
         outArgument_outResultValue.drop () ; // Release error dropped variable
         outArgument_outResultType.drop () ; // Release error dropped variable
       }
       break ;
     case GALGAS_Ttype::kEnum_listType:
       {
-        const enumGalgasBool test_39 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1809)).objectCompare (GALGAS_string ("length"))).boolEnum () ;
+        const enumGalgasBool test_39 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1873)).objectCompare (GALGAS_string ("length"))).boolEnum () ;
         if (kBoolTrue == test_39) {
           {
-          routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1810)) ;
+          routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1874)) ;
           }
-          outArgument_outResultType = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1811)) ;
-          outArgument_outResultValue = function_valueWithUnsigned (constinArgument_inValue.getter_mMapListValue (SOURCE_FILE ("template_expression_parser.galgas", 1812)).getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1812)).getter_uint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1812)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1812)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1812)) ;
+          outArgument_outResultType = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1875)) ;
+          outArgument_outResultValue = function_valueWithUnsigned (constinArgument_inValue.getter_mMapListValue (SOURCE_FILE ("template_expression_parser.galgas", 1876)).getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1876)).getter_uint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1876)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1876)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1876)) ;
         }else if (kBoolFalse == test_39) {
-          const enumGalgasBool test_40 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1813)).objectCompare (GALGAS_string ("first"))).boolEnum () ;
+          const enumGalgasBool test_40 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1877)).objectCompare (GALGAS_string ("first"))).boolEnum () ;
           if (kBoolTrue == test_40) {
             {
-            routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1814)) ;
+            routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1878)) ;
             }
-            outArgument_outResultType = GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_expression_parser.galgas", 1815)) ;
+            outArgument_outResultType = GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_expression_parser.galgas", 1879)) ;
             GALGAS_TfieldMap var_firstElement ;
-            constinArgument_inValue.getter_mMapListValue (SOURCE_FILE ("template_expression_parser.galgas", 1817)).method_first (var_firstElement, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1817)) ;
-            outArgument_outResultValue = function_valueWithStruct (var_firstElement, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1818)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1818)) ;
+            constinArgument_inValue.getter_mMapListValue (SOURCE_FILE ("template_expression_parser.galgas", 1881)).method_first (var_firstElement, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1881)) ;
+            outArgument_outResultValue = function_valueWithStruct (var_firstElement, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1882)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1882)) ;
           }else if (kBoolFalse == test_40) {
-            const enumGalgasBool test_41 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1819)).objectCompare (GALGAS_string ("last"))).boolEnum () ;
+            const enumGalgasBool test_41 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1883)).objectCompare (GALGAS_string ("last"))).boolEnum () ;
             if (kBoolTrue == test_41) {
               {
-              routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1820)) ;
+              routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1884)) ;
               }
-              outArgument_outResultType = GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_expression_parser.galgas", 1821)) ;
+              outArgument_outResultType = GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_expression_parser.galgas", 1885)) ;
               GALGAS_TfieldMap var_lastElement ;
-              constinArgument_inValue.getter_mMapListValue (SOURCE_FILE ("template_expression_parser.galgas", 1823)).method_last (var_lastElement, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1823)) ;
-              outArgument_outResultValue = function_valueWithStruct (var_lastElement, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1824)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1824)) ;
+              constinArgument_inValue.getter_mMapListValue (SOURCE_FILE ("template_expression_parser.galgas", 1887)).method_last (var_lastElement, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1887)) ;
+              outArgument_outResultValue = function_valueWithStruct (var_lastElement, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1888)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1888)) ;
             }else if (kBoolFalse == test_41) {
               GALGAS_location location_42 (constinArgument_inMethodName.getter_location (HERE)) ; // Implicit use of 'location' getter
-              inCompiler->emitSemanticError (location_42, GALGAS_string ("the ").add_operation (constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1826)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1826)).add_operation (GALGAS_string (" template method is not defined for "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1826)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1826)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1826))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1826)) ;
+              inCompiler->emitSemanticError (location_42, GALGAS_string ("the ").add_operation (constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1890)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1890)).add_operation (GALGAS_string (" template method is not defined for "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1890)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1890)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1890))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1890)) ;
               outArgument_outResultValue.drop () ; // Release error dropped variable
               outArgument_outResultType.drop () ; // Release error dropped variable
             }
@@ -10096,16 +10096,16 @@ void routine_templateMethodInvocation (const GALGAS_Ttype constinArgument_inType
       break ;
     case GALGAS_Ttype::kEnum_mapType:
       {
-        const enumGalgasBool test_43 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1829)).objectCompare (GALGAS_string ("length"))).boolEnum () ;
+        const enumGalgasBool test_43 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1893)).objectCompare (GALGAS_string ("length"))).boolEnum () ;
         if (kBoolTrue == test_43) {
           {
-          routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1830)) ;
+          routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1894)) ;
           }
-          outArgument_outResultType = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1831)) ;
-          outArgument_outResultValue = function_valueWithUnsigned (constinArgument_inValue.getter_mStructValue (SOURCE_FILE ("template_expression_parser.galgas", 1832)).getter_count (SOURCE_FILE ("template_expression_parser.galgas", 1832)).getter_uint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1832)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1832)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1832)) ;
+          outArgument_outResultType = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1895)) ;
+          outArgument_outResultValue = function_valueWithUnsigned (constinArgument_inValue.getter_mStructValue (SOURCE_FILE ("template_expression_parser.galgas", 1896)).getter_count (SOURCE_FILE ("template_expression_parser.galgas", 1896)).getter_uint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1896)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1896)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1896)) ;
         }else if (kBoolFalse == test_43) {
           GALGAS_location location_44 (constinArgument_inMethodName.getter_location (HERE)) ; // Implicit use of 'location' getter
-          inCompiler->emitSemanticError (location_44, GALGAS_string ("the ").add_operation (constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1834)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1834)).add_operation (GALGAS_string (" template method is not defined for "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1834)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1834)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1834))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1834)) ;
+          inCompiler->emitSemanticError (location_44, GALGAS_string ("the ").add_operation (constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1898)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1898)).add_operation (GALGAS_string (" template method is not defined for "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1898)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1898)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1898))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1898)) ;
           outArgument_outResultValue.drop () ; // Release error dropped variable
           outArgument_outResultType.drop () ; // Release error dropped variable
         }
@@ -10115,7 +10115,7 @@ void routine_templateMethodInvocation (const GALGAS_Ttype constinArgument_inType
     case GALGAS_Ttype::kEnum_structType:
       {
         GALGAS_location location_45 (constinArgument_inMethodName.getter_location (HERE)) ; // Implicit use of 'location' getter
-        inCompiler->emitSemanticError (location_45, GALGAS_string ("the ").add_operation (constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1837)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1837)).add_operation (GALGAS_string (" template method is not defined for "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1837)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1837)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1837))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1837)) ;
+        inCompiler->emitSemanticError (location_45, GALGAS_string ("the ").add_operation (constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1901)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1901)).add_operation (GALGAS_string (" template method is not defined for "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1901)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1901)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1901))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1901)) ;
         outArgument_outResultValue.drop () ; // Release error dropped variable
         outArgument_outResultType.drop () ; // Release error dropped variable
       }
@@ -10123,7 +10123,7 @@ void routine_templateMethodInvocation (const GALGAS_Ttype constinArgument_inType
     case GALGAS_Ttype::kEnum_unconstructedType:
     case GALGAS_Ttype::kEnum_functionType:
       {
-        inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1839)), GALGAS_string ("internal error, unconstructed type found")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1839)) ;
+        inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1903)), GALGAS_string ("internal error, unconstructed type found")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1903)) ;
         outArgument_outResultValue.drop () ; // Release error dropped variable
         outArgument_outResultType.drop () ; // Release error dropped variable
       }
@@ -10145,25 +10145,25 @@ void routine_typeError (const GALGAS_lstring constinArgument_inFunctionName,
                         const GALGAS_uint constinArgument_inParameterIndex,
                         C_Compiler * inCompiler
                         COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_string var_m = GALGAS_string ("the function requires the parameter ").add_operation (constinArgument_inParameterIndex.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1857)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1857)).add_operation (GALGAS_string (" to be "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1857)).add_operation (constinArgument_inExpectedTypeName, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1858)).add_operation (GALGAS_string ("; its type is "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1858)) ;
+  GALGAS_string var_m = GALGAS_string ("the function requires the parameter ").add_operation (constinArgument_inParameterIndex.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1921)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1921)).add_operation (GALGAS_string (" to be "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1921)).add_operation (constinArgument_inExpectedTypeName, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1922)).add_operation (GALGAS_string ("; its type is "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1922)) ;
   const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, constinArgument_inActualType.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_bool))).boolEnum () ;
   if (kBoolTrue == test_0) {
-    var_m.dotAssign_operation (GALGAS_string ("boolean")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1860)) ;
+    var_m.dotAssign_operation (GALGAS_string ("boolean")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1924)) ;
   }else if (kBoolFalse == test_0) {
     const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, constinArgument_inActualType.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_uint_36__34_))).boolEnum () ;
     if (kBoolTrue == test_1) {
-      var_m.dotAssign_operation (GALGAS_string ("unsigned")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1862)) ;
+      var_m.dotAssign_operation (GALGAS_string ("unsigned")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1926)) ;
     }else if (kBoolFalse == test_1) {
       const enumGalgasBool test_2 = GALGAS_bool (kIsEqual, constinArgument_inActualType.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_string))).boolEnum () ;
       if (kBoolTrue == test_2) {
-        var_m.dotAssign_operation (GALGAS_string ("string")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1864)) ;
+        var_m.dotAssign_operation (GALGAS_string ("string")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1928)) ;
       }else if (kBoolFalse == test_2) {
-        var_m.dotAssign_operation (GALGAS_string ("a not allowed type")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1866)) ;
+        var_m.dotAssign_operation (GALGAS_string ("a not allowed type")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1930)) ;
       }
     }
   }
   GALGAS_location location_3 (constinArgument_inFunctionName.getter_location (HERE)) ; // Implicit use of 'location' getter
-  inCompiler->emitSemanticError (location_3, var_m  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1868)) ;
+  inCompiler->emitSemanticError (location_3, var_m  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1932)) ;
 }
 
 

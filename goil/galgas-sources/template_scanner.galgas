@@ -96,7 +96,6 @@ list goilTemplateKeyWordList style keywordsStyle error message "the '%K' keyword
   "sort",
   "tab",
   "template",
-#  "templateresult",
   "then",
   "to",
   "true",
@@ -231,29 +230,29 @@ list galgasDelimitorsList style delimitersStyle error message "the '%K' delimito
   "-",     "(",    ")",     "->",      "?",
   "==",   "??",    "!",     ":=",     "++",
   "[",     "]",   "+=",     "?!",     "!?",
-  "/",    "!=",   ">=",      "&",
-  "{",     "}",   "+>",     "-=",
-  "^",    ">>",    "~",     "<-",
+  "/",    "!=",   ">=",      "&",     "<=",
+  "{",     "}",   "+>",     "-=",     "<",
+  "^",    ">>",    "~",     "<-",     "<<",
   "@"}
 
 rule list galgasDelimitorsList
 
 
 # --------- Special delimitors / non terminal symbol --------------------------
-$<$  style delimitersStyle error message "the '<' delimitor"
-$<=$  style delimitersStyle error message "the '<=' delimitor"
-$<<$  style delimitersStyle error message "the '<<' delimitor"
+#$<$  style delimitersStyle error message "the '<' delimitor"
+#$<=$  style delimitersStyle error message "the '<=' delimitor"
+#$<<$  style delimitersStyle error message "the '<<' delimitor"
 
-rule '<' {
-  select
-  case '=' :
-    send $<=$
-  case '<' :
-    send $<<$
-  default
-    send $<$
-  end
-}
+#rule '<' {
+#  select
+#  case '=' :
+#    send $<=$
+#  case '<' :
+#    send $<<$
+#  default
+#    send $<$
+#  end
+#}
 
 # ------------------------------------ String ----------------------------
 

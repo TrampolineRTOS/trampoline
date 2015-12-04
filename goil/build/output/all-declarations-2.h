@@ -544,17 +544,6 @@ class GALGAS_Tvalue function_valueWithBool (const class GALGAS_bool & constinArg
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                                             Function 'valueWithStruct'                                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_Tvalue function_valueWithStruct (const class GALGAS_TfieldMap & constinArgument0,
-                                              const class GALGAS_lstring & constinArgument1,
-                                              class C_Compiler * inCompiler
-                                              COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
 //                                               Routine 'addBoolValue'                                                *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*

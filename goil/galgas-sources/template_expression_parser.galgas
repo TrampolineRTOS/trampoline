@@ -1185,6 +1185,70 @@ rule <factor>
   end
 }
 
+#------------------------------------------------------------------------------*
+
+rule <list_item>
+  ?let @string inPrefix
+  ?let @string inPath
+  ?let @string inTemplateDirectory
+  ?let @TfieldMap inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
+{
+  $[$
+  @TfieldMap resultStruct = @TfieldMap.emptyMap{}
+  repeat
+    $identifier$ ?let @lstring fieldName
+    $:$
+    <expression>
+      !inPrefix
+      !inPath
+      !inTemplateDirectory
+      !inVariableMap
+      ?let @Tvalue fieldValue
+      ?let @Ttype fieldType 
+    [!?resultStruct insertKey !fieldName !fieldType !fieldValue]
+  while $,$
+  end
+  $]$
+  outResultType = @Ttype.structType
+  outValue = valueWithStruct(!resultStruct !emptyLString())
+}
+
+rule <factor>
+  ?let @string inPrefix
+  ?let @string inPath
+  ?let @string inTemplateDirectory
+  ?let @TfieldMap inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
+{
+  $list$ $[$
+  var resultList = @TfieldMapList.emptyList{}
+  select
+    repeat
+      <list_item>
+        !inPrefix
+        !inPath
+        !inTemplateDirectory
+        !inVariableMap
+        ?let @Tvalue itemValue
+        ?let @Ttype itemType
+      if itemType != @Ttype.structType then
+         error @location.here : "Internal error"
+      else
+        resultList += ![itemValue  mStructValue]
+      end
+    while $,$
+    end
+  or
+  end
+  $]$
+  outResultType = @Ttype. listType
+  outValue = valueWithList(!resultList !emptyLString())
+}
+
+
 ##------------------------------------------------------------------------------*
 #
 #rule <factor>
