@@ -27,9 +27,6 @@
 #include "tpl_machine.h"
 
 %
-
-display ISR
-
 #
 # Initialize registers according to the pin selected to trigger an external
 # interrupt.
