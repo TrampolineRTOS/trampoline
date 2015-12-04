@@ -39,28 +39,41 @@ foreach cnt in COUNTER do
 end foreach
 
 let INTERRUPTMAP := mapof INTERRUPT by NAME
-#------------------------------------------------------------------------------*
 
+# Build the list of counters to call
+let counterForIRQ := emptymap
+
+# Build a list of virtual objects (counters) each of them holding values :
+# handlerSource, handlerName, handlerAck, generatePrimaryIrq
 foreach objList in objForIRQ do
-  let counterList := emptylist
   foreach obj in objList do
     if obj::KIND == "COUNTER" then
-      let counterList += obj
+      let counterForIRQ[KEY] := emptylist
     end if
-    if [counterList length] > 0 then
+  end foreach
+  foreach obj in objList do
+    if obj::KIND == "COUNTER" then
+      let  counterForIRQ[KEY] += obj::NAME
+    end if
+  end foreach
+end foreach
+
+#------------------------------------------------------------------------------*
+foreach objCounter in counterForIRQ do
+  let obj_KEY := KEY
     %
-FUNC(tpl_bool, OS_CODE) tpl_tick_% !obj::NAME %(void)
+FUNC(tpl_bool, OS_CODE) tpl_tick_% !KEY %(void)
 {
 %
-      foreach elt in counterList do
-        %  tpl_counter_tick(&% !elt::NAME %_counter_desc);
+  foreach obj in objCounter do
+  %  tpl_counter_tick(&% !obj::VALUE %_counter_desc);
 %
-        if elt::SOURCE == "SysTick" then
-        %  tpl_time_counter++;
+  end foreach
+  if obj_KEY == "SysTick" then
+    %  tpl_time_counter++;
 %
-        end if
-      end foreach
-    if OS::NUMBER_OF_CORES == 1 then
+  end if
+  if OS::NUMBER_OF_CORES == 1 then
 %
   if (tpl_kern.need_schedule == TRUE)
   {
@@ -68,7 +81,7 @@ FUNC(tpl_bool, OS_CODE) tpl_tick_% !obj::NAME %(void)
     LOCAL_SWITCH_CONTEXT()
   }
 %
-    else
+  else
 %
   GET_CURRENT_CORE_ID(core_id)
   tpl_multi_schedule();
@@ -78,13 +91,11 @@ FUNC(tpl_bool, OS_CODE) tpl_tick_% !obj::NAME %(void)
     LOCAL_SWITCH_CONTEXT()
   }
 %
-    end if
+  end if
 %
   return TRUE;
 }
 %
-    end if
-  end foreach
 end foreach
 
 %

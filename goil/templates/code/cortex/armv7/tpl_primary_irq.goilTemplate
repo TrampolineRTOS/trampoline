@@ -25,9 +25,31 @@ foreach cnt in COUNTER do
 end foreach
 
 let INTERRUPTMAP := mapof INTERRUPT by NAME
+
+# Build the list of IRQ handlers to call
+let irqStageList := emptylist
+
+# Build a list of virtual objects (sources of interrupts) each of them holding values :
+# handlerSource, handlerName, handlerAck, generatePrimaryIrq
+foreach objList in objForIRQ do
+  let anIrq::handlerSource := KEY
+  let anIrq::handlerName := objList[0]::NAME
+  let anIrq::handlerAck := false
+  let anIrq::generatePrimaryIrq := false
+  foreach obj in objList do
+    let anIrq::handlerAck := INTERRUPTMAP[anIrq::handlerSource]::ACK
+    if obj::KIND == "ISR" then
+      if obj::CATEGORY == 1 then
+        let generatePrimaryIrq := true
+      end if
+    end if
+  end foreach
+  let irqStageList += anIrq 
+end foreach
+
 #------------------------------------------------------------------------------*
 %/**
- * @file tpl_second_stage_irq.% !EXTENSIONSECONDSTAGE %
+ * @file tpl_primary_irq.% !EXTENSIONSECONDSTAGE %
  *
  * @section descr File description
  *
@@ -227,60 +249,26 @@ tpl_leave_kernel_exit:
 
 %
 
-foreach objList in objForIRQ do
-  let src := KEY
-  let handlerAck := false
-  foreach obj in objList
-    before
+foreach irq in irqStageList
+  before
 %
 
 %
-    do
-      let handlerName := obj::NAME
-      let handlerSource := obj::SOURCE
-      let handlerIRQ := handlerSource."_Handler"
-      if INTERRUPTMAP[src]::ACK then
-        let handlerAck := true
-      end if
-      if obj::KIND == "ISR" then
-# ISR 1
-        if obj::CATEGORY == 1 then
+  do
+    let handlerSource := irq::handlerSource
+    let handlerName := irq::handlerName
+    let handlerIRQ := handlerSource."_Handler"
+    if not irq::generatePrimaryIrq then
 %
  /******************************************************************************
- * IRQ Handler for ISR % !obj::NAME % with source vector % !obj::SOURCE % category % !obj::CATEGORY %
+ * IRQ Handler for ISR % !handlerName % with source vector % !handlerSource %
  *******************************************************************************/
 %
-          template if exists handler_body
-        else
-# ISR2
-          if obj::CATEGORY == 2 then
-%
- /******************************************************************************
- * IRQ Handler for ISR % !obj::NAME % with source vector % !obj::SOURCE % category % !obj::CATEGORY %
- *******************************************************************************/
-%
-            template if exists handler_body
-          else
-            error obj::NAME : "This interrupt category ".obj::CATEGORY." does not exist"
-          end if
-        end if
-      else
-# COUNTER
-        if obj::KIND == "COUNTER" then
-%
- /******************************************************************************
- * IRQ Handler for COUNTER % !obj::NAME % with source vector % !obj::SOURCE %
- *******************************************************************************/
-%
-          template if exists handler_body
-        else
-          error obj::NAME : "This kind of object ".obj::KIND." does not exist"
-        end if
-      end if
-    after
+      template if exists handler_body
+    end if
+  after
 %
 %
-  end foreach
 end foreach
 
 %
