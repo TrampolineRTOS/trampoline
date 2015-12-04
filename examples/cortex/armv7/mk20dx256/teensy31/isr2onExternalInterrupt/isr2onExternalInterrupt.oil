@@ -1,0 +1,115 @@
+/**
+ * @file isr2onPIT.oil
+ *
+ * @section desc File description
+ *
+ * Simple isr example.
+ *
+ * A periodic task toggles the built in led of the teensy the board every
+ * 500ms by using an alarm. In addition the task gets the current value
+ * of the PIT0 timer and print it on the LCD. This runs at start.
+ *
+ * PIT0 timer is programmed to count down from 100000000 (100 millions).
+ * With the 48MHz clock, this corresponds to a 2,0833333 seconds period
+ * An IRQ (PIT0_IRQ) is programmed and, when the timer reaches 0, it
+ * leads to the execution of ISR category 2 timer.
+ *
+ * @section copyright Copyright
+ *
+ * Trampoline RTOS
+ *
+ * Trampoline is copyright (c) CNRS, University of Nantes, Ecole Centrale de Nantes
+ * Trampoline is protected by the French intellectual property law.
+ *
+ * This software is distributed under the GNU Public Licence V2.
+ * Check the LICENSE file in the root directory of Trampoline
+ *
+ * @section infos File informations
+ *
+ * $Date$
+ * $Rev$
+ * $Author$
+ * $URL$
+ */
+OIL_VERSION = "2.5";
+
+IMPLEMENTATION trampoline {
+
+    /* This fix the default STACKSIZE of tasks */
+    TASK {
+        UINT32 STACKSIZE = 500 ;
+    } ;
+
+    /* This fix the default STACKSIZE of ISRs */
+    ISR {
+        UINT32 STACKSIZE = 100 ;
+    } ;
+};
+
+CPU blink {
+  OS config {
+    STATUS = EXTENDED;
+    PRETASKHOOK = FALSE;
+    POSTTASKHOOK = FALSE;
+    
+    BUILD = TRUE {
+      TRAMPOLINE_BASE_PATH = "../../../../../..";
+      APP_SRC = "isr2onPIT.cpp";
+      APP_NAME = "isr2onPIT_exe";
+      COMMONFLAGS = "-O2";
+      COMMONFLAGS = "-DARDUINO=10603 -DTEENSYDUINO=124";
+      LDFLAGS = "-Map=isr2onPIT.map";
+
+      COMPILER = "arm-none-eabi-gcc";
+      CPPCOMPILER = "arm-none-eabi-g++";
+      ASSEMBLER = "arm-none-eabi-as";
+      LINKER = "arm-none-eabi-ld";
+      COPIER = "arm-none-eabi-objcopy";
+      
+      LIBRARY = LiquidCrystalFast;
+      LIBRARY = pit;
+      
+      SYSTEM = PYTHON;
+    };
+    SYSTEM_CALL = TRUE;
+    MEMMAP = TRUE {
+      COMPILER = gcc;
+      LINKER = gnu_ld { SCRIPT = "script.ld"; };
+      ASSEMBLER = gnu_as;
+      MEMORY_PROTECTION = FALSE;
+    };
+  };
+  
+  APPMODE std {};
+  
+  TASK blink {
+    PRIORITY = 1;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+  
+  ALARM blink_blink {
+    COUNTER = SystemCounter;
+    ACTION = ACTIVATETASK {
+      TASK = blink;
+    };
+    AUTOSTART = TRUE {
+      APPMODE = std;
+      ALARMTIME = 500;
+      CYCLETIME = 500;
+    };
+  };
+  
+  ISR timer {
+    CATEGORY = 2;
+    PRIORITY = 1;
+    SOURCE = PORTA_IRQ { PIN = PIN31 { TRIGGER = RISING; PULL = NONE; }; };
+  };
+  ISR timer2 {
+    CATEGORY = 1;
+    PRIORITY = 1;
+    SOURCE = PIN25 { TRIGGER = RISING; PULL = NONE; };
+  };
+};
+
