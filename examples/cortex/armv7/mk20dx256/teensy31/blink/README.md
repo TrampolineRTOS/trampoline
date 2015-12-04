@@ -23,6 +23,6 @@ Then compile the application:
 
 `./make.py`
 
-If everything went well, program the board (teensy_loader_cli location should be in your path):
+If everything went well, program the board (teensy-loader-cli location should be in your path):
 
 `./make.py burn`
