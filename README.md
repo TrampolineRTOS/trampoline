@@ -38,7 +38,7 @@ More examples are coming.
 
 ## Precompiled binaries of goil, the OIL compiler
 
-Updated to version 2.1.25
+Updated to version 2.1.26
 
 * Mac OS X: [goil-mac-os-x.zip](https://dl.dropboxusercontent.com/u/67740546/goil/goil-mac-os-x.zip)
 * Mac OS X Cocoa Application with editor: [CocoaGoil.app.zip](https://dl.dropboxusercontent.com/u/67740546/goil/CocoaGoil.app.zip) (version 2.1.24)
