@@ -50,14 +50,14 @@ FUNC(void, OS_CODE)HardFault_Handler(void)
 	uint32 lregSCB_DFSR;
 	uint32 lregSCB_AFSR;
 	uint32 lregSCB_MMFR;
-	
+
 	lregSCB_HFSR = (uint32)0;
 	lregSCB_CFSR = (uint32)0;
 	lregSCB_BFAR = (uint32)0;
 	lregSCB_DFSR = (uint32)0;
 	lregSCB_AFSR = (uint32)0;
 	lregSCB_MMFR = (uint32)0;
-	
+
 	lregSCB_HFSR = (uint32)(SCB->HFSR);
 	if ((SCB->HFSR & (1 << 30)) != 0)
 	{
@@ -74,7 +74,7 @@ FUNC(void, OS_CODE)HardFault_Handler(void)
 		lregSCB_AFSR = (uint32)SCB->AFSR;
 		lregSCB_MMFR = (uint32)SCB->MMFR;
 	}
-	
+
   	while (1)
     {
     }
@@ -128,13 +128,4 @@ FUNC(void, OS_CODE)PendSV_Handler(void)
  ******************************************************************************/
 void SysTick_ClearFlag(void)
 {
-}
-
-void EXTI0_IRQ_ClearFlag(void)
-{
-//  while (EXTI_GetITStatus(USER_BUTTON_EXTI_LINE) != RESET) { NOT SAFE IN EMBEDDED APPLICATION
-    /* Clear the USER Button EXTI line pending bit */
-    EXTI_ClearFlag(USER_BUTTON_EXTI_LINE);
-    EXTI_ClearITPendingBit(USER_BUTTON_EXTI_LINE);
-//  }
 }

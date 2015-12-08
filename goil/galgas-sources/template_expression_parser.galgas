@@ -1112,33 +1112,44 @@ rule <factor>
   @Ttype expType
   <expression> !inPrefix !inPath !inTemplateDirectory !inVariableMap ?expValue ?expType
   @location where = @location.here
-  $by$
-  $identifier$ ?var @lstring key
   
-  if expType != @Ttype. listType then
-    error where: "list expected": outValue, outResultType
-  else
-    # get the elements of the list to build a map, each key being
-    # one of the field of the elements of the list
-    var resultMap =@TfieldMap.emptyMap{}
-    for () in  [expValue mMapListValue] do
-      if [mMap hasKey ![key string]] then
-        # the specified key is found, get it and check it is a string
-        @Ttype keyType
-        @Tvalue keyValue
-        [mMap searchKey !key ?keyType ?keyValue]
-        if keyType == @Ttype. stringType then
-          @lstring keyVal = @lstring. new { ![keyValue mStringValue] ![mMap locationForKey ![key string]]}
-          [!?resultMap insertKey !keyVal !@Ttype. structType !valueWithMap(!mMap !emptyLString())]
+  select
+    $by$
+    $identifier$ ?var @lstring key
+    if expType != @Ttype. listType then
+      error where: "list expected": outValue, outResultType
+    else
+      # get the elements of the list to build a map, each key being
+      # one of the field of the elements of the list
+      var resultMap =@TfieldMap.emptyMap{}
+      for () in  [expValue mMapListValue] do
+        if [mMap hasKey ![key string]] then
+          # the specified key is found, get it and check it is a string
+          @Ttype keyType
+          @Tvalue keyValue
+          [mMap searchKey !key ?keyType ?keyValue]
+          if keyType == @Ttype. stringType then
+            @lstring keyVal = @lstring. new { ![keyValue mStringValue] ![mMap locationForKey ![key string]]}
+            [!?resultMap insertKey !keyVal !@Ttype. structType !valueWithMap(!mMap !emptyLString())]
+          else
+            error [mMap locationForKey ![key string]]: "the list element specified key is not a string"
+          end
         else
-          error [mMap locationForKey ![key string]]: "the list element specified key is not a string"
+          error @location.here: "the list element has not the specified key"
         end
-      else
-        error @location.here: "the list element has not the specified key"
       end
+      outResultType = @Ttype. mapType
+      outValue = valueWithMap(!resultMap !emptyLString())
     end
-    outResultType = @Ttype. mapType
-    outValue = valueWithMap(!resultMap !emptyLString())
+  or 
+    $end$
+    if expType != @Ttype.structType then
+      error where: "struct expected": outValue, outResultType
+    else
+      outResultType = @Ttype. mapType
+      outValue = expValue
+#      outValue = valueWithMap(![expValue mStructValue] ![expValue mDescription])
+    end
   end
 }
 
@@ -1173,6 +1184,70 @@ rule <factor>
     outValue = valueWithList(!resultList !emptyLString())
   end
 }
+
+#------------------------------------------------------------------------------*
+
+rule <list_item>
+  ?let @string inPrefix
+  ?let @string inPath
+  ?let @string inTemplateDirectory
+  ?let @TfieldMap inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
+{
+  $[$
+  @TfieldMap resultStruct = @TfieldMap.emptyMap{}
+  repeat
+    $identifier$ ?let @lstring fieldName
+    $:$
+    <expression>
+      !inPrefix
+      !inPath
+      !inTemplateDirectory
+      !inVariableMap
+      ?let @Tvalue fieldValue
+      ?let @Ttype fieldType 
+    [!?resultStruct insertKey !fieldName !fieldType !fieldValue]
+  while $,$
+  end
+  $]$
+  outResultType = @Ttype.structType
+  outValue = valueWithStruct(!resultStruct !emptyLString())
+}
+
+rule <factor>
+  ?let @string inPrefix
+  ?let @string inPath
+  ?let @string inTemplateDirectory
+  ?let @TfieldMap inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
+{
+  $list$ $[$
+  var resultList = @TfieldMapList.emptyList{}
+  select
+    repeat
+      <list_item>
+        !inPrefix
+        !inPath
+        !inTemplateDirectory
+        !inVariableMap
+        ?let @Tvalue itemValue
+        ?let @Ttype itemType
+      if itemType != @Ttype.structType then
+         error @location.here : "Internal error"
+      else
+        resultList += ![itemValue  mStructValue]
+      end
+    while $,$
+    end
+  or
+  end
+  $]$
+  outResultType = @Ttype. listType
+  outValue = valueWithList(!resultList !emptyLString())
+}
+
 
 ##------------------------------------------------------------------------------*
 #

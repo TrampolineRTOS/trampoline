@@ -1609,9 +1609,6 @@ class C_Lexique_template_5F_scanner : public C_Lexique {
    kToken__2E_,
    kToken__2E__3D_,
    kToken__2E__2E__2E_,
-   kToken__3C_,
-   kToken__3C__3D_,
-   kToken__3C__3C_,
    kToken_string,
    kToken_comment,
    kToken_after,
@@ -1653,6 +1650,7 @@ class C_Lexique_template_5F_scanner : public C_Lexique {
    kToken_repeat,
    kToken_return,
    kToken_sort,
+   kToken_tab,
    kToken_template,
    kToken_then,
    kToken_to,
@@ -1691,14 +1689,17 @@ class C_Lexique_template_5F_scanner : public C_Lexique {
    kToken__21__3D_,
    kToken__3E__3D_,
    kToken__26_,
+   kToken__3C__3D_,
    kToken__7B_,
    kToken__7D_,
    kToken__2B__3E_,
    kToken__2D__3D_,
+   kToken__3C_,
    kToken__5E_,
    kToken__3E__3E_,
    kToken__7E_,
    kToken__3C__2D_,
+   kToken__3C__3C_,
    kToken__40_} ;
 
 //--- Key words table 'goilTemplateKeyWordList'
@@ -1738,7 +1739,7 @@ class C_Lexique_template_5F_scanner : public C_Lexique {
   protected : virtual C_String getMessageForTerminal (const int16_t inTerminalSymbol) const ;
 
 //--- Get terminal count
-  public : virtual int16_t terminalVocabularyCount (void) const { return 98 ; }
+  public : virtual int16_t terminalVocabularyCount (void) const { return 99 ; }
 
 //--- Get Token String
   public : virtual C_String getCurrentTokenString (const cToken * inTokenPtr) const ;
@@ -2296,14 +2297,25 @@ class cParser_template_5F_parser {
 
   protected : void rule_template_5F_parser_template_5F_instruction_i22_parse (C_Lexique_template_5F_scanner * inLexique) ;
 
-  protected : void rule_template_5F_parser_variable_i23_ (const GALGAS_string constinArgument0,
+  protected : void rule_template_5F_parser_template_5F_instruction_i23_ (const GALGAS_string constinArgument0,
+                                                                         const GALGAS_string constinArgument1,
+                                                                         const GALGAS_string constinArgument2,
+                                                                         GALGAS_TfieldMap & ioArgument3,
+                                                                         GALGAS_string & ioArgument4,
+                                                                         GALGAS_Tvalue & outArgument5,
+                                                                         GALGAS_Ttype & outArgument6,
+                                                                         C_Lexique_template_5F_scanner * inLexique) ;
+
+  protected : void rule_template_5F_parser_template_5F_instruction_i23_parse (C_Lexique_template_5F_scanner * inLexique) ;
+
+  protected : void rule_template_5F_parser_variable_i24_ (const GALGAS_string constinArgument0,
                                                           const GALGAS_string constinArgument1,
                                                           const GALGAS_string constinArgument2,
                                                           const GALGAS_TfieldMap constinArgument3,
                                                           GALGAS_TvarPath & outArgument4,
                                                           C_Lexique_template_5F_scanner * inLexique) ;
 
-  protected : void rule_template_5F_parser_variable_i23_parse (C_Lexique_template_5F_scanner * inLexique) ;
+  protected : void rule_template_5F_parser_variable_i24_parse (C_Lexique_template_5F_scanner * inLexique) ;
 
 
 
@@ -2470,6 +2482,16 @@ class cParser_template_5F_expression_5F_parser {
                                        class C_Lexique_template_5F_scanner * inLexique) = 0 ;
 
   protected : virtual void nt_factor_parse (class C_Lexique_template_5F_scanner * inLexique) = 0 ;
+
+  protected : virtual void nt_list_5F_item_ (const class GALGAS_string constinArgument0,
+                                             const class GALGAS_string constinArgument1,
+                                             const class GALGAS_string constinArgument2,
+                                             const class GALGAS_TfieldMap constinArgument3,
+                                             class GALGAS_Tvalue & outArgument4,
+                                             class GALGAS_Ttype & outArgument5,
+                                             class C_Lexique_template_5F_scanner * inLexique) = 0 ;
+
+  protected : virtual void nt_list_5F_item_parse (class C_Lexique_template_5F_scanner * inLexique) = 0 ;
 
   protected : virtual void nt_relation_5F_factor_ (const class GALGAS_string constinArgument0,
                                                    const class GALGAS_string constinArgument1,
@@ -2762,6 +2784,26 @@ class cParser_template_5F_expression_5F_parser {
 
   protected : void rule_template_5F_expression_5F_parser_factor_i23_parse (C_Lexique_template_5F_scanner * inLexique) ;
 
+  protected : void rule_template_5F_expression_5F_parser_list_5F_item_i24_ (const GALGAS_string constinArgument0,
+                                                                            const GALGAS_string constinArgument1,
+                                                                            const GALGAS_string constinArgument2,
+                                                                            const GALGAS_TfieldMap constinArgument3,
+                                                                            GALGAS_Tvalue & outArgument4,
+                                                                            GALGAS_Ttype & outArgument5,
+                                                                            C_Lexique_template_5F_scanner * inLexique) ;
+
+  protected : void rule_template_5F_expression_5F_parser_list_5F_item_i24_parse (C_Lexique_template_5F_scanner * inLexique) ;
+
+  protected : void rule_template_5F_expression_5F_parser_factor_i25_ (const GALGAS_string constinArgument0,
+                                                                      const GALGAS_string constinArgument1,
+                                                                      const GALGAS_string constinArgument2,
+                                                                      const GALGAS_TfieldMap constinArgument3,
+                                                                      GALGAS_Tvalue & outArgument4,
+                                                                      GALGAS_Ttype & outArgument5,
+                                                                      C_Lexique_template_5F_scanner * inLexique) ;
+
+  protected : void rule_template_5F_expression_5F_parser_factor_i25_parse (C_Lexique_template_5F_scanner * inLexique) ;
+
 
 
 //--- Select methods
@@ -2786,6 +2828,14 @@ class cParser_template_5F_expression_5F_parser {
   protected : virtual int32_t select_template_5F_expression_5F_parser_9 (C_Lexique_template_5F_scanner *) = 0 ;
 
   protected : virtual int32_t select_template_5F_expression_5F_parser_10 (C_Lexique_template_5F_scanner *) = 0 ;
+
+  protected : virtual int32_t select_template_5F_expression_5F_parser_11 (C_Lexique_template_5F_scanner *) = 0 ;
+
+  protected : virtual int32_t select_template_5F_expression_5F_parser_12 (C_Lexique_template_5F_scanner *) = 0 ;
+
+  protected : virtual int32_t select_template_5F_expression_5F_parser_13 (C_Lexique_template_5F_scanner *) = 0 ;
+
+  protected : virtual int32_t select_template_5F_expression_5F_parser_14 (C_Lexique_template_5F_scanner *) = 0 ;
 
 
 } ;
@@ -2874,6 +2924,19 @@ class cGrammar_template_5F_grammar : public cParser_template_5F_parser,
 //--- Only syntax analysis
   public : static void performOnlySyntaxAnalysis (C_Compiler * inCompiler,
                                                   const C_String & inSourceFilePath) ;
+
+//------------------------------------- 'list_item' non terminal
+//--- 'parse' label
+  public : virtual void nt_list_5F_item_parse (C_Lexique_template_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_list_5F_item_ (const GALGAS_string inArgument0,
+                                          const GALGAS_string inArgument1,
+                                          const GALGAS_string inArgument2,
+                                          const GALGAS_TfieldMap inArgument3,
+                                          GALGAS_Tvalue & outArgument4,
+                                          GALGAS_Ttype & outArgument5,
+                                          C_Lexique_template_5F_scanner * inCompiler) ;
 
 //------------------------------------- 'relation_factor' non terminal
 //--- 'parse' label
@@ -3081,6 +3144,14 @@ class cGrammar_template_5F_grammar : public cParser_template_5F_parser,
   public : virtual int32_t select_template_5F_expression_5F_parser_9 (C_Lexique_template_5F_scanner *) ;
 
   public : virtual int32_t select_template_5F_expression_5F_parser_10 (C_Lexique_template_5F_scanner *) ;
+
+  public : virtual int32_t select_template_5F_expression_5F_parser_11 (C_Lexique_template_5F_scanner *) ;
+
+  public : virtual int32_t select_template_5F_expression_5F_parser_12 (C_Lexique_template_5F_scanner *) ;
+
+  public : virtual int32_t select_template_5F_expression_5F_parser_13 (C_Lexique_template_5F_scanner *) ;
+
+  public : virtual int32_t select_template_5F_expression_5F_parser_14 (C_Lexique_template_5F_scanner *) ;
 } ;
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -3233,6 +3304,17 @@ class GALGAS_Tvalue function_valueWithMap (const class GALGAS_TfieldMap & consti
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_Tvalue function_valueWithSigned (const class GALGAS_sint_36__34_ & constinArgument0,
+                                              const class GALGAS_lstring & constinArgument1,
+                                              class C_Compiler * inCompiler
+                                              COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                             Function 'valueWithStruct'                                              *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_Tvalue function_valueWithStruct (const class GALGAS_TfieldMap & constinArgument0,
                                               const class GALGAS_lstring & constinArgument1,
                                               class C_Compiler * inCompiler
                                               COMMA_LOCATION_ARGS) ;

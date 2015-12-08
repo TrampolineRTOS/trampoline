@@ -89,7 +89,7 @@ static NSArray * kTemplateDefinitionArray_template_5F_scanner ;
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const BOOL kEndOfScriptInTemplateArray_template_5F_scanner [98] = {
+static const BOOL kEndOfScriptInTemplateArray_template_5F_scanner [99] = {
   NO /* identifier */,
   NO /* functionContent */,
   NO /* literal_double */,
@@ -97,9 +97,6 @@ static const BOOL kEndOfScriptInTemplateArray_template_5F_scanner [98] = {
   NO /* . */,
   NO /* .= */,
   NO /* ... */,
-  NO /* < */,
-  NO /* <= */,
-  NO /* << */,
   NO /* string */,
   NO /* comment */,
   NO /* after */,
@@ -141,6 +138,7 @@ static const BOOL kEndOfScriptInTemplateArray_template_5F_scanner [98] = {
   NO /* repeat */,
   NO /* return */,
   NO /* sort */,
+  NO /* tab */,
   NO /* template */,
   NO /* then */,
   NO /* to */,
@@ -179,14 +177,17 @@ static const BOOL kEndOfScriptInTemplateArray_template_5F_scanner [98] = {
   NO /* != */,
   NO /* >= */,
   NO /* & */,
+  NO /* <= */,
   NO /* { */,
   NO /* } */,
   NO /* +> */,
   NO /* -= */,
+  NO /* < */,
   NO /* ^ */,
   NO /* >> */,
   NO /* ~ */,
   NO /* <- */,
+  NO /* << */,
   NO /* @ */
 } ;
 
@@ -197,7 +198,7 @@ static const BOOL kEndOfScriptInTemplateArray_template_5F_scanner [98] = {
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const C_cocoa_lexique_table_entry ktable_for_template_5F_scanner_goilTemplateKeyWordList [49] = {
+static const C_cocoa_lexique_table_entry ktable_for_template_5F_scanner_goilTemplateKeyWordList [50] = {
   {"by", template_scanner_1_by},
   {"do", template_scanner_1_do},
   {"if", template_scanner_1_if},
@@ -210,6 +211,7 @@ static const C_cocoa_lexique_table_entry ktable_for_template_5F_scanner_goilTemp
   {"let", template_scanner_1_let},
   {"mod", template_scanner_1_mod},
   {"not", template_scanner_1_not},
+  {"tab", template_scanner_1_tab},
   {"yes", template_scanner_1_yes},
   {"call", template_scanner_1_call},
   {"else", template_scanner_1_else},
@@ -250,7 +252,7 @@ static const C_cocoa_lexique_table_entry ktable_for_template_5F_scanner_goilTemp
 } ;
 
 static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSString * inSearchedString) {
-  return searchStringInTable (inSearchedString, ktable_for_template_5F_scanner_goilTemplateKeyWordList, 49) ;
+  return searchStringInTable (inSearchedString, ktable_for_template_5F_scanner_goilTemplateKeyWordList, 50) ;
 }
 
 
@@ -416,6 +418,10 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
         mTokenCode = template_scanner_1__3E__3D_ ;
       }else if (scanningOk && [self testForInputString:@"==" advance:YES]) {
         mTokenCode = template_scanner_1__3D__3D_ ;
+      }else if (scanningOk && [self testForInputString:@"<=" advance:YES]) {
+        mTokenCode = template_scanner_1__3C__3D_ ;
+      }else if (scanningOk && [self testForInputString:@"<<" advance:YES]) {
+        mTokenCode = template_scanner_1__3C__3C_ ;
       }else if (scanningOk && [self testForInputString:@"<-" advance:YES]) {
         mTokenCode = template_scanner_1__3C__2D_ ;
       }else if (scanningOk && [self testForInputString:@":=" advance:YES]) {
@@ -458,6 +464,8 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
         mTokenCode = template_scanner_1__3F_ ;
       }else if (scanningOk && [self testForInputString:@">" advance:YES]) {
         mTokenCode = template_scanner_1__3E_ ;
+      }else if (scanningOk && [self testForInputString:@"<" advance:YES]) {
+        mTokenCode = template_scanner_1__3C_ ;
       }else if (scanningOk && [self testForInputString:@";" advance:YES]) {
         mTokenCode = template_scanner_1__3B_ ;
       }else if (scanningOk && [self testForInputString:@":" advance:YES]) {
@@ -480,14 +488,6 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
         mTokenCode = template_scanner_1__26_ ;
       }else if (scanningOk && [self testForInputString:@"!" advance:YES]) {
         mTokenCode = template_scanner_1__21_ ;
-      }else if (scanningOk && ([self testForInputChar:60])) {
-        if (scanningOk && ([self testForInputChar:61])) {
-          mTokenCode = template_scanner_1__3C__3D_ ;
-        }else if (scanningOk && ([self testForInputChar:60])) {
-          mTokenCode = template_scanner_1__3C__3C_ ;
-        }else{
-          mTokenCode = template_scanner_1__3C_ ;
-        }
       }else if (scanningOk && ([self testForInputChar:34])) {
         do {
           if (scanningOk && ([self testForInputFromChar:32 toChar:33] || [self testForInputFromChar:35 toChar:65533])) {
@@ -536,7 +536,7 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (NSUInteger) terminalVocabularyCount {
-  return 98 ;
+  return 99 ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -566,7 +566,7 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (NSUInteger) styleIndexForTerminal: (NSInteger) inTerminal {
-  static const NSUInteger kTerminalSymbolStyles [99] = {0,
+  static const NSUInteger kTerminalSymbolStyles [100] = {0,
     0 /* template_scanner_1_identifier */,
     0 /* template_scanner_1_functionContent */,
     5 /* template_scanner_1_literal_5F_double */,
@@ -574,9 +574,6 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
     2 /* template_scanner_1__2E_ */,
     2 /* template_scanner_1__2E__3D_ */,
     2 /* template_scanner_1__2E__2E__2E_ */,
-    2 /* template_scanner_1__3C_ */,
-    2 /* template_scanner_1__3C__3D_ */,
-    2 /* template_scanner_1__3C__3C_ */,
     6 /* template_scanner_1_string */,
     7 /* template_scanner_1_comment */,
     1 /* template_scanner_1_after */,
@@ -618,6 +615,7 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
     1 /* template_scanner_1_repeat */,
     1 /* template_scanner_1_return */,
     1 /* template_scanner_1_sort */,
+    1 /* template_scanner_1_tab */,
     1 /* template_scanner_1_template */,
     1 /* template_scanner_1_then */,
     1 /* template_scanner_1_to */,
@@ -656,14 +654,17 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
     2 /* template_scanner_1__21__3D_ */,
     2 /* template_scanner_1__3E__3D_ */,
     2 /* template_scanner_1__26_ */,
+    2 /* template_scanner_1__3C__3D_ */,
     2 /* template_scanner_1__7B_ */,
     2 /* template_scanner_1__7D_ */,
     2 /* template_scanner_1__2B__3E_ */,
     2 /* template_scanner_1__2D__3D_ */,
+    2 /* template_scanner_1__3C_ */,
     2 /* template_scanner_1__5E_ */,
     2 /* template_scanner_1__3E__3E_ */,
     2 /* template_scanner_1__7E_ */,
     2 /* template_scanner_1__3C__2D_ */,
+    2 /* template_scanner_1__3C__3C_ */,
     2 /* template_scanner_1__40_ */
   } ;
   return kTerminalSymbolStyles [inTerminal] ;
@@ -676,7 +677,7 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (BOOL) atomicSelectionForToken: (NSUInteger) inTokenIndex {
-  static const BOOL kTerminalAtomicSelection [99] = {NO,
+  static const BOOL kTerminalAtomicSelection [100] = {NO,
     YES /* template_scanner_1_identifier */,
     YES /* template_scanner_1_functionContent */,
     YES /* template_scanner_1_literal_5F_double */,
@@ -684,9 +685,6 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
     YES /* template_scanner_1__2E_ */,
     YES /* template_scanner_1__2E__3D_ */,
     YES /* template_scanner_1__2E__2E__2E_ */,
-    YES /* template_scanner_1__3C_ */,
-    YES /* template_scanner_1__3C__3D_ */,
-    YES /* template_scanner_1__3C__3C_ */,
     YES /* template_scanner_1_string */,
     YES /* template_scanner_1_comment */,
     YES /* template_scanner_1_after */,
@@ -728,6 +726,7 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
     YES /* template_scanner_1_repeat */,
     YES /* template_scanner_1_return */,
     YES /* template_scanner_1_sort */,
+    YES /* template_scanner_1_tab */,
     YES /* template_scanner_1_template */,
     YES /* template_scanner_1_then */,
     YES /* template_scanner_1_to */,
@@ -766,14 +765,17 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
     YES /* template_scanner_1__21__3D_ */,
     YES /* template_scanner_1__3E__3D_ */,
     YES /* template_scanner_1__26_ */,
+    YES /* template_scanner_1__3C__3D_ */,
     YES /* template_scanner_1__7B_ */,
     YES /* template_scanner_1__7D_ */,
     YES /* template_scanner_1__2B__3E_ */,
     YES /* template_scanner_1__2D__3D_ */,
+    YES /* template_scanner_1__3C_ */,
     YES /* template_scanner_1__5E_ */,
     YES /* template_scanner_1__3E__3E_ */,
     YES /* template_scanner_1__7E_ */,
     YES /* template_scanner_1__3C__2D_ */,
+    YES /* template_scanner_1__3C__3C_ */,
     YES /* template_scanner_1__40_ */
   } ;
   return kTerminalAtomicSelection [inTokenIndex] ;

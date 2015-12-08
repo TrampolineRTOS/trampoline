@@ -1,4 +1,4 @@
-|=-----=[ Lonely example ]=-----=|
+# Lonely example
 
 This application starts by checking the real-time scheduling by activating task1 wich 
 will activate and launch task3 before terminating itself (this will print 123 (for the 3 
@@ -18,12 +18,27 @@ Usage:
 communicate with the JTAG
 
 2 - Configure the application with
-```goil --target=arm/olimex_lpc_l2294 -v --templates=../../../../goil/templates/ lonely.oil```
+
+```
+goil --target=arm/olimex_lpc_l2294 -v --templates=../../../../goil/templates/ lonely.oil
+```
 
 3 - Upload your program into the board :
+
 - by opening the OPENOCD communication server in a terminal
-```2-run-openocd.command```
+
+```
+2-run-openocd.command
+```
+
 - and launch your program in another terminal
-```2a-run-external-ram.command```
+
+```
+2a-run-external-ram.command
+```
+
 or
-```2a-debug-external-ram.command```
+
+```
+2a-debug-external-ram.command
+```

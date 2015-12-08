@@ -5,7 +5,7 @@
 #include "tpl_memmap.h"
 FUNC(int, OS_APPL_CODE) main(void)
 {
-  initBoard(BUTTON_NOIT);
+  initBoard();
   StartOS(OSDEFAULTAPPMODE);
   return 0;
 }

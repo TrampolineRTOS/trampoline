@@ -131,18 +131,6 @@ no_context_switch_% !handlerSource %:
   msr psp, r12
   add sp, sp, #KS_FOOTPRINT 
 
-%
-if handlerAck then
-%  /* Clear flag of interrupt source */
-  push {lr}
-  bl % !handlerSource %_ClearFlag
-  pop {lr}
-%
-else
-%  /* No need to clear flag of interrupt source */
-%
-end if
-%
  /* return to interrupted task */
 tpl_primary_irq_handler_% !handlerSource %_exit:
   bx lr

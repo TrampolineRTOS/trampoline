@@ -30,7 +30,6 @@
 	.thumb
 
 #include "tpl_os_kernel_stack.h"
-#include "tpl_os_process_stack.h"
 #include "tpl_app_define.h"
 
   .global tpl_save_context

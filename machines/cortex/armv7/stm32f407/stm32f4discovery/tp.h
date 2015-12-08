@@ -31,7 +31,7 @@ typedef enum {
  * Initialise la carte avec les ports d'E/S configurer pour allumer les LED
  * et lire le poussoir
  */
-FUNC(void, OS_CODE) initBoard(ButtonMode mode);
+FUNC(void, OS_CODE) initBoard(void);
 
 /*
  * Allume une LED

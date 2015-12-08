@@ -1,4 +1,4 @@
-2.1.24%
+2.1.26%
 # @file root.goilTemplate
 #
 # @section desc File description
@@ -300,6 +300,13 @@ foreach obj in PRIO2 do
     end if
   elsif obj::KIND == "Resource" then
     let RESOURCES += obj
+  end if
+end foreach
+
+# Check no extended task as an ACTIVATION attribute greater than 1
+foreach task in EXTENDEDTASKS do
+  if task::ACTIVATION > 1 then
+    error task::ACTIVATION : "An extended task cannot have ACTIVATION greater than 1"
   end if
 end foreach
 
@@ -1255,6 +1262,10 @@ let PRIORITY_MASK := ((1 << [NUMBER_OF_PRIORITIES numberOfBits]) - 1) << PRIORIT
 let KEY_SIZE := [(1 << ([NUMBER_OF_PRIORITIES numberOfBits] +
                 [MAX_JOBS_AMONG_PRIORITIES numberOfBits])) - 1 numberOfBytes]
 
+#------------------------------------------------------------------------------*
+# Check the priority of ISR1 connected to the same IRQ are the same
+#
+template if exists isr1_priority_check in check
 
 #------------------------------------------------------------------------------*
 # compute the USEDAPI list

@@ -1,0 +1,6 @@
+timer
+build
+*_exe
+*.bin
+*.map
+*.py
