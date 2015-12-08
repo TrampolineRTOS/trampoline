@@ -32,6 +32,9 @@
 extern const int signal_for_counters;
 #endif
 
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
+void tpl_start_tptimer ();
+#endif
 
 void tpl_create_context(tpl_proc_id proc_id);
 
