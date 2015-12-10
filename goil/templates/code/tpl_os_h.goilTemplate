@@ -34,6 +34,11 @@ if OS::SCALABILITYCLASS > 0 then
 #include "tpl_as_error.h"%
 end if
 
+if exists OS::TIMINGPROTECTION default (false) then
+%
+#include "tpl_as_protec_hook.h"%
+end if
+
 template if exists extra_headers
 
 #---------------------------------------------------------------------------*

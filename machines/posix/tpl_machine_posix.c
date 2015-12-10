@@ -215,7 +215,7 @@ void tpl_init_machine(void)
 #endif
 
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
-    tpl_start__tptimer();
+    tpl_start_tptimer();
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 }
 

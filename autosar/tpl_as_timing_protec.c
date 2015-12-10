@@ -127,7 +127,7 @@ FUNC(tpl_bool, OS_CODE) tpl_tp_on_activate_or_release (
     
     if(tp != NULL)
     {
-        now = tpl_get_local_current_date();
+        now = tpl_get_tptimer();
         
         /* Activation is allowed if the current timeframe is finished
          OR  this is the first activation request */
@@ -162,8 +162,6 @@ FUNC(tpl_bool, OS_CODE) tpl_tp_on_terminate_or_wait(
     CONSTP2VAR(tpl_timing_protection, AUTOMATIC, OS_APPL_DATA) tp =
       tpl_stat_proc_table[proc_id]->timing_protection;
 
-  /* printf("TPL_TP : %s(proc %u @ %u)\n", __FUNCTION__, proc_id,  (unsigned int)tpl_get_local_current_date()); */
-    
     if(tp != NULL)
     {
         /* *LOCK watchdogs shall be inactive, therefore, the active watchdog 
@@ -196,9 +194,8 @@ FUNC(tpl_bool, OS_CODE) tpl_tp_on_start(
 
     if(tp != NULL)
     {
-        now = tpl_get_tpltimer();
-   /* printf("TPL_TP : %s(proc %u @ %u)\n", __FUNCTION__, proc_id,  (unsigned int)now); */
-
+        now = tpl_get_tptimer();
+        
         /* 
          * 1/ Updates the start date of active watchdogs
          * 2/ Finds the one with the shortest remaining time
@@ -216,7 +213,6 @@ FUNC(tpl_bool, OS_CODE) tpl_tp_on_start(
         }
         
         /* Set an expiry point when the shortest remaining budget will reach 0 */
-    /* printf("TPL_TP : %s(proc %u @ %u): set expiry point @%d (watchid : %u, remaining : %d)\n", __FUNCTION__, proc_id,  (unsigned int)now, now + tp->watchdogs[min_id].remaining, min_id, tp->watchdogs[min_id].remaining); */
         tpl_tp_set_watchdog_id(min_id);
 
         tpl_set_tpwatchdog(now + tp->watchdogs[min_id].remaining);
@@ -237,7 +233,7 @@ FUNC(tpl_bool, OS_CODE) tpl_tp_on_preempt(
     /* printf("TPL_TP : %s(proc %u @ %u)\n", __FUNCTION__, proc_id, (unsigned int)tpl_get_tptimer()); */
     if(tp != NULL)
     {
-        now = tpl_get_local_current_date();
+        now = tpl_get_tptimer();
 
         /* First, we cancel the expiry point */
         tpl_cancel_tpwatchdog();

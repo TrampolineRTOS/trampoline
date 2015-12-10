@@ -38,15 +38,30 @@ let proc := task
 template process_specific
 %
 
+%
+if exists task::TIMING_PROTECTION default (false) then
+%
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
-%
-# *TODO
-%
+
+tpl_timing_protection timeprotect_% !task::NAME % = {    
+    /* date of the last successful activation */        0,                      
+    /* first instance marker */                         TRUE, 
+    /* set of watchdogs */                              { 
+    /* execution budget watchdog */                       {FALSE, 0, 0}, 
+    /* resource lock -- to modify */                      {FALSE, 0, 0},
+    /* allinterrupt lock watchdog */                      {FALSE, 0, 0},
+    /* osinterrupt lock watchdog */                       {FALSE, 0, 0}
+                                                        }
+                                                    };
+
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 #endif
+%
+end if
+%
 
 /*
 %
@@ -131,8 +146,23 @@ else
 end if
 %
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
+%
+if exists task::TIMING_PROTECTION default (false) then
+%
+  /* execution budget */        % !task::TIMING_PROTECTION_S::EXECUTIONBUDGET %,
+  /* timeframe        */        % !task::TIMING_PROTECTION_S::TIMEFRAME %,
   /* pointer to the timing
-     protection descriptor    */  $TIMING_PROT_REF$
+     protection descriptor    */ &timeprotect_% !task::NAME %
+%
+else 
+%
+  /* execution budget */        0,
+  /* timeframe        */        0, 
+  /* pointer to the timing
+     protection descriptor    */ NULL
+%
+end if
+%
 #endif
 };
 

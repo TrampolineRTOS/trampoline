@@ -36,101 +36,109 @@ OIL_VERSION = "3.1" : "autosar_st_s1" ;
 
 IMPLEMENTATION trampoline {
 
- OS {
-  ENUM [EXTENDED] STATUS;
- };
- 
+    OS {
+        ENUM [EXTENDED] STATUS;
+    };
+
     TASK {
         UINT32 STACKSIZE = 32768 ;
         UINT32 [1..10] PRIORITY = 1 ;
     } ;
 };
 
- CPU test {
+CPU test {
 
     OS config {
         STATUS = EXTENDED;
         BUILD = TRUE {
-          APP_SRC = "autosar_tp_s1.c";
-          APP_SRC = "task1_instance1.c";
-          APP_SRC = "task1_instance2.c";
-          APP_SRC = "task1_instance3.c";
-          APP_SRC = "task2_instance.c";
-          APP_SRC = "task3_instance.c";
-          APP_SRC = "task4_instance.c";
-          APP_SRC = "protection_instance1.c";
-          APP_SRC = "protection_instance2.c";
-          TRAMPOLINE_BASE_PATH = "../../..";
-          APP_NAME = "autosar_tp_s1_exe";
-          CFLAGS = "-I../../embUnit";
-          CFLAGS  = "-Wall -pedantic";
-          CFLAGS  = "-Wmissing-field-initializers";
-          LDFLAGS = "-L../../lib -lembUnit";
+            APP_SRC = "autosar_tp_s1.c";
+            APP_SRC = "task1_instance1.c";
+            APP_SRC = "task1_instance2.c";
+            APP_SRC = "task1_instance3.c";
+            APP_SRC = "task2_instance.c";
+            APP_SRC = "task3_instance.c";
+            APP_SRC = "task4_instance.c";
+            APP_SRC = "protection_instance1.c";
+            APP_SRC = "protection_instance2.c";
+            TRAMPOLINE_BASE_PATH = "../../..";
+            APP_NAME = "autosar_tp_s1_exe";
+            CFLAGS = "-I../../embUnit";
+            CFLAGS  = "-Wall -pedantic -std=c99";
+            CFLAGS  = "-Wmissing-field-initializers";
+            LDFLAGS = "-L../../lib -lembUnit";
         };
         SHUTDOWNHOOK = TRUE;
         ERRORHOOK = TRUE;
         USEGETSERVICEID = TRUE;
         USEPARAMETERACCESS = TRUE;
         PROTECTIONHOOK = TRUE;
- };
+    };
 
- APPMODE std {};
+    APPMODE std {};
 
- TASK t1 {
-  AUTOSTART = FALSE;
-  PRIORITY = 2;
-  ACTIVATION = 1;
-  SCHEDULE = FULL;
-  TIMING_PROTECTION = TRUE/* {
-    EXECUTIONBUDGET = 10000;  long enough to let the task execute itself plus t2 (to test a task preempted and finishing before the Execution budget) 
-    TIMEFRAME = 1;
-    MAXOSINTERRUPTLOCKTIME = 1;
-    MAXALLINTERRUPTLOCKTIME = 1;
-  }*/;
- };
- TASK t2 {
-  AUTOSTART = FALSE;
-  PRIORITY = 3;
-  ACTIVATION = 1;
-  SCHEDULE = FULL;
- };
- TASK t3 {
-  AUTOSTART = FALSE;
-  PRIORITY = 3;
-  ACTIVATION = 1;
-  SCHEDULE = FULL;
-  TIMING_PROTECTION = TRUE /*{
-    EXECUTIONBUDGET = 10000;
-    TIMEFRAME = 1;
-    MAXOSINTERRUPTLOCKTIME = 1;
-    MAXALLINTERRUPTLOCKTIME = 1;
-  }*/;
- };
- TASK t4 {
-  AUTOSTART = FALSE;
-  PRIORITY = 1;
-  ACTIVATION = 1;
-  SCHEDULE = FULL;
- };
- COUNTER Hardware_Counter{
-  MAXALLOWEDVALUE = 16;
-  TICKSPERBASE = 10;
-  MINCYCLE = 1;
-  TYPE = HARDWARE {};
- };
- SCHEDULETABLE sched1 {
-  COUNTER = Hardware_Counter;
-  AUTOSTART = RELATIVE { OFFSET = 1; APPMODE = std; };
-  LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
-  PERIODIC = TRUE;
-  LENGTH = 5;
-  EXPIRY_POINT exp1 {
-   OFFSET = 0;
-   ACTION = ACTIVATETASK {
-    TASK = t1;
-   };
-  };
- };
+    TASK t1 {
+        AUTOSTART = FALSE;
+        PRIORITY = 2;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+        TIMING_PROTECTION = TRUE {
+            EXECUTIONBUDGET = 100; 
+            /* 
+                Long enough to let the task executes itself plus t2 (to test a
+                task preempted and finishing before the Execution budget) 
+            */
+                TIMEFRAME = 1;
+            /*
+               MAXOSINTERRUPTLOCKTIME = 1;
+               MAXALLINTERRUPTLOCKTIME = 1;
+             */
+        };
+    };
+    TASK t2 {
+        AUTOSTART = FALSE;
+        PRIORITY = 3;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };
+    TASK t3 {
+        AUTOSTART = FALSE;
+        PRIORITY = 3;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+        TIMING_PROTECTION = TRUE {
+            EXECUTIONBUDGET = 100;
+            TIMEFRAME = 1;
+            /*
+               MAXOSINTERRUPTLOCKTIME = 1;
+               MAXALLINTERRUPTLOCKTIME = 1;
+             */
+        };
+    };
+    TASK t4 {
+        AUTOSTART = FALSE;
+        PRIORITY = 1;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };
+    COUNTER Hardware_Counter{
+        MAXALLOWEDVALUE = 16;
+        TICKSPERBASE = 10;
+        MINCYCLE = 1;
+        TYPE = HARDWARE {};
+    };
+    SCHEDULETABLE sched1 {
+        COUNTER = Hardware_Counter;
+        AUTOSTART = RELATIVE { OFFSET = 1; APPMODE = std; };
+        LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
+        PERIODIC = TRUE;
+        LENGTH = 5;
+        EXPIRY_POINT exp1 {
+            OFFSET = 0;
+            ACTION = ACTIVATETASK {
+                TASK = t1;
+            };
+        };
+    };
 };
 
 /* End of file autosar_tp_s1/autosar_tp_s1.oil */
