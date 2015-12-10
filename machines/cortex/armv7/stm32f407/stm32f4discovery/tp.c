@@ -6,6 +6,10 @@ extern volatile VAR(uint32, OS_VAR) tpl_time_counter;
 #define OS_STOP_SEC_VAR_32BIT
 #include "tpl_memmap.h"
 
+#ifdef __cplusplus
+extern "C"{
+#endif // __cplusplus
+
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -102,6 +106,10 @@ FUNC(void, OS_CODE) delay(CONST(uint32, AUTOMATIC) howMuch)
   CONST(uint32, AUTOMATIC) start = tpl_time_counter;
   while (tpl_time_counter - start < howMuch);
 }
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

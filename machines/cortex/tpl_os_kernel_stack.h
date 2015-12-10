@@ -31,28 +31,29 @@
 #define TPL_OS_KERNEL_STACK_H
 
 /*
- * The kernel stack is like that:
- *       
+ * The kernel stack frame takes 20 bytes and is as follow:
+ *
  *          |                                 |
  *          +---------------------------------+
- *  SP->    |         sp of the caller        |
+ *  SP-> +0 |         sp of the caller        | KS_PROCESS_SP
  *          +---------------------------------+
- *       +4 |                lr               |
+ *       +4 |                lr               | KS_LR
  *          +---------------------------------+
- *       +8 | return code of the service (r0) |
+ *       +8 | pointer to the tpl_kern struct  | KS_KERN_PTR
  *          +---------------------------------+
- *      +12 | pointer to the tpl_kern struct  |
+ *      +12 |           r4 save area          | KS_R4
+ *          +---------------------------------+
+ *      +16 |           r5 save area          | KS_R5
  *          +---------------------------------+
  */
 
-#define KERNEL_STACK_SIZE	300
 #define KS_FOOTPRINT		20
 
 #define KS_PROCESS_SP		0
-#define KS_LR				4
+#define KS_LR				    4
 #define KS_KERN_PTR			8
-#define KS_R4				12
-#define KS_R5				16
+#define KS_R4				    12
+#define KS_R5				    16
 
 /* TPL_OS_KERNEL_STACK_H */
-#endif 
+#endif

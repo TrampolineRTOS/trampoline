@@ -27,6 +27,10 @@ typedef enum {
 #define RED    LED5
 #define BLUE   LED6
 
+#ifdef __cplusplus
+extern "C"{
+#endif // __cplusplus
+
 /*
  * Initialise la carte avec les ports d'E/S configurer pour allumer les LED
  * et lire le poussoir
@@ -68,6 +72,10 @@ FUNC(ButtonState, OS_CODE) readButton();
  * delay comme sur l'arduino
  */
 FUNC(void, OS_CODE) delay(CONST(uint32, AUTOMATIC) howMuch);
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 
 /* End of file tp.h */
