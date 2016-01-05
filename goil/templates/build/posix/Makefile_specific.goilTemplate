@@ -1,18 +1,18 @@
 OS = $(shell uname)
 #Linux requires -lrt, while Darwin does not.
 ifeq ($(strip $(OS)),Linux)
- LDFLAGS += -lrt -lpthread
+	LDFLAGS += -lrt -lpthread
 endif
 
-# gcc 4.6 warns unused but set variables. Unfortunately
+# gcc>= 4.6 warns unused but set variables. Unfortunately
 # this pattern is mandatory to implement the OSEK API.
-# gcc 4.6 also requires to use -lrt to communicate with viper on Linux
-COMPILER_EXE = $(shell basename ${CC})
-ifeq "${COMPILER_EXE}" "gcc"
-    GCCVERSION = $(shell ${CC} -dumpversion | cut -f 1-2 -d .)
-    ifeq "${GCCVERSION}" "4.6"
-        CFLAGS+=-Wno-unused-but-set-variable
+COMPILER_EXE = $(shell basename $(CC))
+ifeq ($(COMPILER_EXE), gcc)
+	GCC_VER_GTE46 = $(shell echo `gcc -dumpversion | cut -f 1-2 -d .` \>= 4.6 | sed -e 's/\./*100+/g' | bc )
+    ifeq ($(GCC_VER_GTE46),1)
+        override CFLAGS +=-Wno-unused-but-set-variable
     endif
 endif
 
-override CFLAGS += -I$(TPL_BASE_PATH)/viper
+override CFLAGS += -I$(TPL_BASE_PATH)/viper -std=c99
+

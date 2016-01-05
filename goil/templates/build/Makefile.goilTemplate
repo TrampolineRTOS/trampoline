@@ -183,17 +183,36 @@ SCHEDULER = % !OS::SCHEDULER%
 # Program used to compile files.
 # it should be declared as COMPILER in the OS section of the .oil file.
 # default is 'gcc'
-CC = % !OS::BUILD_S::COMPILER %
+%
+if OS::BUILD_S::COMPILER == "comp_undef" then
+  %CC ?= gcc%
+else
+  %CC = % !OS::BUILD_S::COMPILER
+end if
+%
 
 # Program used to link files during compilation process.
 # it should be declared as LINKER in the OS section of the .oil file.
-# default is 'ld'
-LD = % !OS::BUILD_S::LINKER %
+# default is 'gcc'
+
+%
+if OS::BUILD_S::LINKER == "ld_undef" then
+  %LD ?= gcc%
+else
+  %LD = % !OS::BUILD_S::COMPILER
+end if
+%
 
 # Program used to link files during compilation process.
 # it should be declared as ASSEMBLER in the OS section of the .oil file.
 # default is 'gcc'
-AS = % !OS::BUILD_S::ASSEMBLER %
+%
+if OS::BUILD_S::ASSEMBLER == "as_undef" then
+  %AS ?= gcc%
+else
+  %AS = % !OS::BUILD_S::ASSEMBLER
+end if
+%
 
 #############################################################################
 # TRAMPOLINE CONFIGURATION

@@ -189,11 +189,10 @@ IMPLEMENTATION trampoline_common {
         STRING LDFLAGS[];
         STRING APP_NAME = "trampoline";
         STRING TRAMPOLINE_BASE_PATH = "..";
-        STRING COMPILER = "gcc";
-        STRING COMPILER = "gcc";
+        STRING COMPILER = "comp_undef";
         STRING CPPCOMPILER = "g++";
-        STRING ASSEMBLER = "gcc";
-        STRING LINKER = "gcc";
+        STRING ASSEMBLER = "as_undef";
+        STRING LINKER = "ld_undef";
         STRING COPIER = "objcopy";
         LIBRARY_TYPE LIBRARY[];
         ENUM [
