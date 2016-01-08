@@ -6,24 +6,6 @@ ASFLAGS += -x assembler-with-cpp
 #use of macro in os files leads to set unused variables. Remove the warning.
 CFLAGS  += -Wno-unused-but-set-variable
 
-%if OS::BUILD_S::COMPILER == "gcc" then
-%# changes default compiler
-CC = avr-gcc
-%
-end if
-
-if OS::BUILD_S::LINKER == "gcc" then
-%# changes default linker
-LD = avr-gcc
-%
-end if
-
-if OS::BUILD_S::ASSEMBLER == "as" then
-%# changes default assembler
-AS = avr-as
-%
-end if
-%
 #add the 'hex' rule for avr
 HEX=$(EXEC).hex
 

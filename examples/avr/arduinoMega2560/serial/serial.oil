@@ -27,6 +27,9 @@ CPU test {
       TRAMPOLINE_BASE_PATH = "../../../..";
       APP_NAME = "trampuinoSerial";
       APP_SRC = "serial.cpp";
+      COMPILER = "avr-gcc";
+      LINKER = "avr-gcc";
+      ASSEMBLER = "avr-gcc";
     };
 	SYSTEM_CALL = TRUE;
   };

@@ -1,2 +1,2 @@
-goil --target=avr/arduino --templates=../../../../goilv/templates/ serial.oil
+goil --target=avr/arduino --templates=../../../../goil/templates/ serial.oil
 pause

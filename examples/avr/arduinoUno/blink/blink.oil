@@ -27,8 +27,11 @@ CPU test {
       TRAMPOLINE_BASE_PATH = "../../../..";
       APP_NAME = "trampuinoBlink";
       APP_SRC = "blink.cpp";
+      COMPILER = "avr-gcc";
+      LINKER = "avr-gcc";
+      ASSEMBLER = "avr-gcc";
     };
-	SYSTEM_CALL = TRUE;
+    SYSTEM_CALL = TRUE;
   };
 
   APPMODE std {};

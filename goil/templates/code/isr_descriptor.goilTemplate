@@ -122,7 +122,7 @@ end if
 #endif /* WITH_OSAPPLICATION */
   /* activate count                 */  0,
   /* ISR priority                   */  % !isr::PRIORITY %,
-  /* ISR state                      */  SUSPENDED,
+  /* ISR state                      */  PROC_SUSPENDED,
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
   /* activation allowed             */  ,TRUE
 #endif

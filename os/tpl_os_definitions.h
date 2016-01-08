@@ -273,41 +273,41 @@
  * Public states of a task or ISR2  *
  ************************************/
 /**
- * @def SUSPENDED
+ * @def PROC_SUSPENDED
  *
  * Task is suspended.
  *
  * @see #tpl_exec_state
  */
-#define SUSPENDED       0x0
+#define PROC_SUSPENDED  0x0
 
 /**
- * @def READY
+ * @def PROC_READY
  *
  * Task is ready (to be run, or elected by scheduler).
  *
  * @see #tpl_exec_state
  */
-#define READY           0x1
+#define PROC_READY      0x1
 
 /**
- * @def RUNNING
+ * @def PROC_RUNNING
  *
  * Task is currently running.
  *
  * @see #tpl_exec_state
  */
-#define RUNNING         0x2
+#define PROC_RUNNING    0x2
 
 #if (CONFORMANCE_CLASS == CONFORM_ECC1) || (CONFORMANCE_CLASS == CONFORM_ECC2)
 /**
- * @def WAITING
+ * @def PROC_WAITING
  *
  * Task is waiting
  *
  * @see #tpl_exec_state
  */
-#define WAITING         0x3
+#define PROC_WAITING    0x3
 #endif
 
 

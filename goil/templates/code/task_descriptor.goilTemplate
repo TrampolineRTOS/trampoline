@@ -194,7 +194,7 @@ end if
 if task::AUTOSTART then
   %AUTOSTART%
 else
-  %SUSPENDED%
+  %PROC_SUSPENDED%
 end if 
 %
 };
