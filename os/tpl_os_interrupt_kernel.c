@@ -280,7 +280,7 @@ STATIC FUNC(void, OS_CODE) tpl_activate_isr(
         /*  check the isr is in the SUSPENDED state before moving it        */
         if (isr->state == (tpl_proc_state)SUSPENDED)
         {
-          isr->state = (tpl_proc_state)READY_AND_NEW;
+          isr->state = (tpl_proc_state)PROC_READY_AND_NEW;
         }
       }
       /*  put it in the list  */
