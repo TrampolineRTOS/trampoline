@@ -1,6 +1,10 @@
 CPU samd21 {
 
   
+    BUILDOPTIONS buildOptionsForSamD21 {
+       COMMONFLAGS = "-D__SAMD21J18A__"; //processor def.
+    };
+
     //STDLIBVARIANT cortex_armv7_stm32f407 {
     //  KIND = "armv7e-m";
     //};
@@ -46,11 +50,10 @@ CPU samd21 {
     INTERRUPT I2S_IRQ      { VECT = 43; VECTOR_TYPE = HANDLER { NAME =  "I2S_Handler"; }; };
     INTERRUPT AC1_IRQ      { VECT = 44; VECTOR_TYPE = HANDLER { NAME =  "AC1_Handler"; }; };
     
-  PLATFORM_FILES stm32f407 {
+  PLATFORM_FILES samd21 {
     PATH = "cortex/armv6m/samd21";
-//    CFILE = "tpl_memory_protection.c";
-//    CFILE = "tpl_machine_stm32f407.c";
-//    CFILE = "startup_stm32f4xx.c";
+    CFILE = "tpl_machine_samd.c";
+    CFILE = "startup_samd.c";
 //    CFILE = "system_stm32f4xx.c";
 //    CFILE = "handlers_stm32f4xx.c";
   };
@@ -59,9 +62,9 @@ CPU samd21 {
 //    PATH = "cortex/armv7/stm32f407/STM32F4xx_StdPeriph_Driver/inc";
 //  };
 
-//  PLATFORM_FILES stm32f407_cmsis {
-//    PATH = "cortex/armv7/stm32f407/CMSIS-ST/Device/ST/STM32F4xx/Include";
-//  };
+  PLATFORM_FILES stm32f407_cmsis {
+    PATH = "cortex/armv6m/samd21/CMSIS-Atmel/Device/ATMEL";
+  };
 
 //  PLATFORM_FILES stm32f407_std_libs_src {
 //    PATH = "cortex/armv7/stm32f407/STM32F4xx_StdPeriph_Driver/src";

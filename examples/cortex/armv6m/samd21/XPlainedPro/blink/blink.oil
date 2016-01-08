@@ -16,8 +16,6 @@ IMPLEMENTATION trampoline {
 CPU blink {
   OS config {
     STATUS = EXTENDED;
-    PRETASKHOOK = TRUE;
-    POSTTASKHOOK = TRUE;
     
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../../../..";

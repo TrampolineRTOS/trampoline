@@ -1,8 +1,8 @@
 /*
- * ARMv6-M build options for gcc
+ * ARMv6-M build options for gcc (CortexM0+)
  */
 CPU buildOptions {
-  BUILDOPTIONS defaultBuildOptionsForARMv7 {
+  BUILDOPTIONS defaultBuildOptionsForARMv6m {
     /*
      * Common flags for C and C++ compiling
      */
