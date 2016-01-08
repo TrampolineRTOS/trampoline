@@ -44,7 +44,7 @@
  */
 #if WITH_POST_TASK_HOOK == YES
 #   define CALL_POST_TASK_HOOK()                        \
-    if (TPL_KERN_REF(kern).running->state == RUNNING) { \
+    if (TPL_KERN_REF(kern).running->state == PROC_RUNNING) { \
       SET_RUNNING_TRUSTED                               \
       PostTaskHook();                                   \
       RESET_RUNNING_TRUSTED                             \
