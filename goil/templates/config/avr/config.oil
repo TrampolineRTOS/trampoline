@@ -1,6 +1,5 @@
 /*
  * This configuration file adds a SOURCE attribute to ISR and COUNTER
- * It also define a new object type: INTERRUPT
  */
 IMPLEMENTATION avr_interrupt {
   TASK [] {
@@ -19,3 +18,10 @@ IMPLEMENTATION avr_interrupt {
   };
 };
 
+//CPU avr {
+//  OS config {
+//    BUILD = TRUE {
+//      COMPILER = "avr-gcc"
+//    };
+//  };
+//};
