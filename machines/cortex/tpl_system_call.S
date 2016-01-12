@@ -112,9 +112,7 @@ tpl_enter_kernel:
 	/*
 	 * Switch to kernel memory protection scheme
 	 */
-	push {lr}
 	bl tpl_kernel_mp
-	pop {lr}
 	#endif
 	/*
 	 * Manage reentrance of kernel
@@ -165,9 +163,7 @@ tpl_leave_kernel:
 	/*
 	 * Switch to user memory protection scheme
 	 */
-	push {lr}
 	bl tpl_user_mp
-	pop {lr}
 	#endif
 tpl_leave_kernel_exit:
 	bx lr
@@ -206,9 +202,7 @@ tpl_sc_handler:
 	/* __2__ENTER_KERNEL
 	* Enter into kernel
 	*/
-	push {lr}
 	bl tpl_enter_kernel
-	pop {lr}
 
 	/*
 	 * Get the appropriate system call address into R3
@@ -271,9 +265,7 @@ tpl_sc_handler:
 	 */
 	ldr r12, [r5, #KS_KERN_PTR]						/* load the tpl_kern base address */
 	ldr r12, [r12, #TPL_KERN_OFFSET_S_RUNNING]
-	push {lr}
 	bl tpl_save_context
-	pop {lr}
 
 no_save_old_context:
 #if WITH_MEMORY_PROTECTION == YES
@@ -295,9 +287,7 @@ call_tpl_run_elected:
 	 */
 	ldr r12, [r5, #KS_KERN_PTR]						/* load the tpl_kern base address */
 	ldr r12, [r12, #TPL_KERN_OFFSET_S_RUNNING] /* get the address of the context bloc */
-	push {lr}
 	bl tpl_load_context
-	pop {lr}
 
     /********************************************
      * KERNEL EXIT WITHOUT CONTEXT SWITCH STAGE *
@@ -314,9 +304,7 @@ no_context_switch:
 	/* __5__LEAVE_KERNEL
  	 * Leave kernel
  	 */
-	push {lr}
 	bl tpl_leave_kernel
-	pop {lr}
 
 	/* __6__HANDLER_EPILOG
  	 * Leave kernel

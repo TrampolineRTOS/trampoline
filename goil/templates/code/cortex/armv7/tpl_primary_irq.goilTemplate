@@ -186,9 +186,7 @@ tpl_enter_kernel:
  /*
   * Switch to kernel memory protection scheme
   */
-  push {lr}
   bl tpl_kernel_mp
-  pop {lr}
  #endif
  /* 
   * Manage reentrance of kernel
@@ -239,9 +237,7 @@ tpl_leave_kernel:
  /*
   * Switch to user memory protection scheme
   */
-  push {lr}
   bl tpl_user_mp
-  pop {lr}
  #endif
 tpl_leave_kernel_exit:
  bx lr

@@ -23,9 +23,7 @@ tpl_primary_irq_handler_% !handlerSource %:
  /* __2__ENTER_KERNEL
  * Enter into kernel
  */
-  push {lr}
   bl tpl_enter_kernel
-  pop {lr}
  
  /*
   * Reset tpl_kern variables
@@ -69,9 +67,7 @@ tpl_primary_irq_handler_% !handlerSource %:
   */
   ldr r12, [r5, #KS_KERN_PTR]    /* load the tpl_kern base address */
   ldr r12, [r12, #TPL_KERN_OFFSET_S_RUNNING]
-  push {lr}
   bl tpl_save_context
-  pop {lr}
 
 no_save_old_context_% !handlerSource %:
 #if WITH_MEMORY_PROTECTION == YES
@@ -93,9 +89,7 @@ call_tpl_run_elected_% !handlerSource %:
   */
   ldr r12, [r5, #KS_KERN_PTR]      /* load the tpl_kern base address */
   ldr r12, [r12, #TPL_KERN_OFFSET_S_RUNNING] /* get the address of the context bloc */
-  push {lr}
   bl tpl_load_context
-  pop {lr}
 
  /********************************************
  * KERNEL EXIT WITHOUT CONTEXT SWITCH STAGE *
@@ -111,9 +105,7 @@ no_context_switch_% !handlerSource %:
  /* __5__LEAVE_KERNEL
    * Leave kernel
    */
-  push {lr}
   bl tpl_leave_kernel
-  pop {lr}
 
  /* __6__HANDLER_EPILOG
    * Leave kernel
