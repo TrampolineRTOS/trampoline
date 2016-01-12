@@ -172,19 +172,9 @@ typedef struct TPL_STACK tpl_stack;
  */
 #define IDLE_ENTRY tpl_sleep
 
-#define DISABLE_FIQ() __asm__ __volatile__ ("mrs r0, cpsr ;" \
-                                            "orr r0, r0, #0b01000000 ;" \
-                                            "msr cpsr_c, r0" \
-                                            : \
-                                            : \
-                                            : "r0")
+#define DISABLE_FIQ() __asm__ __volatile__ ("cpsid f;")
 
-#define ENABLE_FIQ()  __asm__ __volatile__ ("mrs r0, cpsr ;" \
-                                            "bic r0, r0, #0b01000000 ;" \
-                                            "msr cpsr_c, r0" \
-                                            : \
-                                            : \
-                                            : "r0")
+#define ENABLE_FIQ()  __asm__ __volatile__ ("cpsie f;")
 
 #define DISABLE_IRQ() __asm__ __volatile__ ("cpsid i;")
 
