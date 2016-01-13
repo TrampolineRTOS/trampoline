@@ -13,6 +13,11 @@ CPU armv6m {
     CFILE = "tpl_vectors.c";
     CFILE = "tpl_external_interrupts.c";
   };
+  
+  PLATFORM_FILES cortex_armv6m {
+    PATH = "cortex/armv6m";
+    CFILE = "sys_handlers.c";
+  };
 };
 
 
