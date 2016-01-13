@@ -100,16 +100,7 @@ FUNC(void, OS_CODE) tpl_release_task_lock (void)
  */
 void tpl_enable_interrupts(void)
 {
-  /* unlock is scheduled to next switch back to task */
-  __asm__
-  (
-  //TODO find in stack frame xpsr to disable interrupts
-  //"mrs r0, xpsr ;"
-  "bic r0, r0, #0b11000000 ;"
-  //"msr spsr, r0 ;"
-  : : : "r0" // clobbered register
-  );
-
+  ENABLE_IRQ();
 }
 
 /**
@@ -117,19 +108,7 @@ void tpl_enable_interrupts(void)
  */
 void tpl_disable_interrupts(void)
 {
-  __disable_irq();
-  __asm__
-  (
-	//TODO the same
-  //"mrs r0, cpsr ;"
-  "orr r0, r0, #0b11000000 ;"
-  //"msr cpsr, r0 ;"
-  //"mrs r0, spsr ;" // interrupts remain locked in user space
-  "orr r0, r0, #0b11000000 ;"
-  //"msr spsr, r0"
-  : : : "r0" // clobbered register
-  );
-
+  DISABLE_IRQ();
 }
 
 /*
