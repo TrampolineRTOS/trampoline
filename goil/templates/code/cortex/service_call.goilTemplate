@@ -12,7 +12,7 @@
 	beq % !api_func::NAME %_direct_call
 	/* Exception call to the service : use SVC exception */
 % !api_func::NAME %_exception_call:
-	mov r3,#% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME %
+	movs r3,#% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME %
 	svc #% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME %
 	b % !api_func::NAME %_exit_call
 	/* Procedural call to the service */
@@ -23,7 +23,7 @@
 	/* call the service  */
 	push {lr}
 	blx r3
-	pop {lr}
+	pop {pc}
 	/* Function call */
 % !api_func::NAME %_exit_call:
 	bx lr

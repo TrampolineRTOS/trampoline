@@ -112,9 +112,9 @@ end foreach
  */
 
 /*
- ---------------
- | WITHOUT FPU |
-        ---------------
+ -----------------------------------
+ | WITHOUT FPU (always in CoretxM0+ |
+ -----------------------------------
  STACK BEFORE SYSTEM CALL, BEFORE PUSHING CONTEXT
 
 *          |---------------------------|
@@ -145,35 +145,6 @@ end foreach
 *          | R0                        |
 * SP    -> |---------------------------| <- IRQ Top of stack
 
-        ---------------
- | WITH FPU    |
-        ---------------
- STACK BEFORE SYSTEM CALL, BEFORE PUSHING CONTEXT
-
-*          |---------------------------|
-*          |                           |
-* SP    -> |---------------------------|
-
-  STACK AFTER PUSHING CONTEXT
-
-* SP+32 -> |---------------------------|
-*          | xPSR                      |
-* SP+28 -> |---------------------------|
-*          | PC                        |
-* SP+24 -> |---------------------------|
-*          | LR return address         |
-* SP+20 -> |---------------------------|
-*          | R12                       |
-* SP+16 -> |---------------------------|
-*          | R3 service number         |
-* SP+12 -> |---------------------------|
-*          | R2                        |
-* SP+8  -> |---------------------------|
-*          | R1                        |
-* SP+4  -> |---------------------------|
-*          | R0                        |
-* SP    -> |---------------------------| <- IRQ Top of stack
-
 */
 
 .section .osCode CODE_ACCESS_RIGHT
@@ -182,29 +153,21 @@ end foreach
  *
  *******************************************************************************/
 tpl_enter_kernel:
- #if WITH_MEMORY_PROTECTION == YES
- /*
-  * Switch to kernel memory protection scheme
-  */
-  push {lr}
-  bl tpl_kernel_mp
-  pop {lr}
- #endif
  /* 
   * Manage reentrance of kernel
   * Increment nested_kernel_entrance_counter
   */
-  ldr r12, =nested_kernel_entrance_counter
-  ldr r4, [r12]
-  add r4, r4, #1
-  str r4, [r12]
+  ldr  r5, =nested_kernel_entrance_counter /* TODO: Mik modif r12 par r5 */
+  ldr  r4, [r5]
+  adds r4, r4, #1							/* TODO: Mik, remplace add par adds */
+  str  r4, [r5]
  /* 
   * NA: Switch to the kernel stack
-  * Automatic (configuration) for the Cortex-M4
+  * Automatic (configuration) for the Cortex-M4 // TODO: Mik, et CortexM0+? 
   */
 
  /*
-  * NA: Make space on the stack to call C functions
+  * NA: Make space on the stack to call C functions  // TODO: Mik, idem 
   * Automatic for the Cortex-M4
   */
 tpl_enter_kernel_exit: 
@@ -230,19 +193,11 @@ tpl_leave_kernel:
   * NA: If it reaches 0, the process stack is restored
   * Automatic for the Cortex-M4
   */
-  ldr r12, =nested_kernel_entrance_counter
-  ldr r4, [r12]
-  sub r4, r4, #1
-  str r4, [r12]
+  ldr r5, =nested_kernel_entrance_counter /* TODO: Mik r12 => r5, et sub => subs */
+  ldr r4, [r5]
+  subs r4, r4, #1
+  str r4, [r5]
  
- #if WITH_MEMORY_PROTECTION == YES
- /*
-  * Switch to user memory protection scheme
-  */
-  push {lr}
-  bl tpl_user_mp
-  pop {lr}
- #endif
 tpl_leave_kernel_exit:
  bx lr
 

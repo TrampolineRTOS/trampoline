@@ -117,7 +117,7 @@ void tpl_enable_interrupts(void)
  */
 void tpl_disable_interrupts(void)
 {
-
+  __disable_irq();
   __asm__
   (
 	//TODO the same
