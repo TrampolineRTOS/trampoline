@@ -3,7 +3,6 @@
 tpl_primary_irq_handler_% !handlerSource %:
  /*
   * Stack is MSP now
-  * Cortex exception handling saves xPSR,PC,LR,R12,R3,R2,R1 and R0
   */
 
  /* __1__HANDLER_PROLOG
@@ -11,14 +10,15 @@ tpl_primary_irq_handler_% !handlerSource %:
   * Shall be less than SYSCALL_COUNT
   */
   sub sp, sp, #KS_FOOTPRINT  /* Make space on top of kernel stack. */
+  mov r12,r6 /* save r6 to r12 so that we can work with a 'low register' (armv6m ISA restrictions)*/
+  mrs r6, psp     /* Copy process stack pointer psp into r12 */
+  str r6, [sp, #KS_PROCESS_SP] /* and save it into kernel stack. */
   str r4, [sp, #KS_R4]   /* Save working register r4 on process stack. */
   str r5, [sp, #KS_R5]   /* Save working register r5 on process stack. */
-  mrs r4, psp     /* Copy process stack pointer psp into r4 */
-  str r4, [sp, #KS_PROCESS_SP] /* and save it into kernel stack. */
-  ldr r4, =tpl_kern
-  str r4, [sp, #KS_KERN_PTR]  /* Store tpl_kern into kernel stack. */
-  mov r4, lr /* armv6m cannot handle lr directly, use r4 */ /* TODO: lr deja sauve? */
-  str r4, [sp, #KS_LR]   /* Store lr register into kernel stack. */
+  ldr r6, =tpl_kern
+  str r6, [sp, #KS_KERN_PTR]  /* Store tpl_kern into kernel stack. */
+  mov r6, lr   /* armv6m cannot handle lr directly, use r6 */
+  str r6, [sp, #KS_LR]   /* Store lr register into kernel stack. */
  /* Now use r5 instead of sp */
   mov r5, sp
 
@@ -30,10 +30,10 @@ tpl_primary_irq_handler_% !handlerSource %:
  /*
   * Reset tpl_kern variables
   */
-  ldr r3, [r5, #KS_KERN_PTR]    /* load the tpl_kern base address */
+  ldr r6, [r5, #KS_KERN_PTR]    /* load the tpl_kern base address */
   movs r4, #NO_NEED_SWITCH_NOR_SCHEDULE
-  strb r4, [r3, #TPL_KERN_OFFSET_NEED_SWITCH]
-  strb r4, [r3, #TPL_KERN_OFFSET_NEED_SCHEDULE]
+  strb r4, [r6, #TPL_KERN_OFFSET_NEED_SWITCH]
+  strb r4, [r6, #TPL_KERN_OFFSET_NEED_SCHEDULE]
 
  /* __3__IRQ_PROCESSING_STAGE
   * WARNING : r0 and r3 should not be altered until here
@@ -48,30 +48,29 @@ tpl_primary_irq_handler_% !handlerSource %:
  * context switch)                                 *
  ***************************************************/
  /* Do we need to switch context ? */
-  ldr r12, [r5, #KS_KERN_PTR]    /* load the tpl_kern base address */
-  ldrb r12, [r12, #TPL_KERN_OFFSET_NEED_SWITCH]
-  cmp r12, #NO_NEED_SWITCH
+  ldr r6, [r5, #KS_KERN_PTR]    /* load the tpl_kern base address */
+  ldrb r6, [r6, #TPL_KERN_OFFSET_NEED_SWITCH]
+  cmp r6, #NO_NEED_SWITCH
   beq no_context_switch_% !handlerSource %
  
  /* __4__SWITCH_CONTEXT
   * We are going to switch context.
   * Do we need to save old context ?
   */
-  mov r0, #0 /* set save parameter to 0 */
-  ldr r12, [r5, #KS_KERN_PTR]    /* load the tpl_kern base address */
-  ldrb r12, [r12, #TPL_KERN_OFFSET_NEED_SWITCH]
-  tst r12, #NEED_SAVE
+  movs r0, #0 /* set save parameter to 0 */
+  ldr r6, [r5, #KS_KERN_PTR]    /* load the tpl_kern base address */
+  ldrb r6, [r6, #TPL_KERN_OFFSET_NEED_SWITCH]
+  movs r4, #NEED_SAVE
+  tst r6, r4
   beq no_save_old_context_% !handlerSource %
-  mov r0, #1 /* set save parameter to 1 */
+  movs r0, #1 /* set save parameter to 1 */
 
  /*
   * Save context
   */
-  ldr r12, [r5, #KS_KERN_PTR]    /* load the tpl_kern base address */
-  ldr r12, [r12, #TPL_KERN_OFFSET_S_RUNNING]
-  push {lr}
+  ldr r6, [r5, #KS_KERN_PTR]    /* load the tpl_kern base address */
+  ldr r6, [r6, #TPL_KERN_OFFSET_S_RUNNING]
   bl tpl_save_context
-  pop {lr}
 
 no_save_old_context_% !handlerSource %:
 #if WITH_MEMORY_PROTECTION == YES
@@ -91,11 +90,9 @@ call_tpl_run_elected_% !handlerSource %:
   * Load context:
   * get s_running (it has been changed by tpl_run_elected)
   */
-  ldr r12, [r5, #KS_KERN_PTR]      /* load the tpl_kern base address */
-  ldr r12, [r12, #TPL_KERN_OFFSET_S_RUNNING] /* get the address of the context bloc */
-  push {lr}
+  ldr r6, [r5, #KS_KERN_PTR]      /* load the tpl_kern base address */
+  ldr r6, [r6, #TPL_KERN_OFFSET_S_RUNNING] /* get the address of the context bloc */
   bl tpl_load_context
-  pop {lr}
 
  /********************************************
  * KERNEL EXIT WITHOUT CONTEXT SWITCH STAGE *
@@ -104,16 +101,14 @@ no_context_switch_% !handlerSource %:
  /*
    * Reset the tpl_need_switch variable to NO_NEED_SWITCH 
    */
-  ldr r12, [r5, #KS_KERN_PTR]    /* load the tpl_kern base address */
-  mov r4, #NO_NEED_SWITCH_NOR_SCHEDULE
-  strb r4, [r12, #TPL_KERN_OFFSET_NEED_SWITCH]
+  ldr r6, [r5, #KS_KERN_PTR]    /* load the tpl_kern base address */
+  movs r4, #NO_NEED_SWITCH_NOR_SCHEDULE
+  strb r4, [r6, #TPL_KERN_OFFSET_NEED_SWITCH]
 
  /* __5__LEAVE_KERNEL
    * Leave kernel
    */
-  push {lr}
   bl tpl_leave_kernel
-  pop {lr}
 
  /* __6__HANDLER_EPILOG
    * Leave kernel
@@ -125,10 +120,12 @@ no_context_switch_% !handlerSource %:
   */
   ldr r4, [sp, #KS_R4]
   ldr r5, [sp, #KS_R5]
-  ldr lr, [sp, #KS_LR]
+  mov r6, lr
+  ldr r6, [sp, #KS_LR]
 
-  ldr r12, [sp, #KS_PROCESS_SP]
-  msr psp, r12
+  ldr r6, [sp, #KS_PROCESS_SP]
+  msr psp, r6
+  mov r6,r12 /* get back r6 low reg. */
   add sp, sp, #KS_FOOTPRINT 
 
  /* return to interrupted task */
