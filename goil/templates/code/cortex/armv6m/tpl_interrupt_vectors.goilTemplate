@@ -41,11 +41,11 @@ foreach objList in objForIRQ do
       let handlerAck := true
     end if
 %
-extern FUNC(void, OS_CODE) tpl_primary_irq_handler_% !obj::SOURCE %(P2CONST(void, OS_APPL_DATA, AUTOMATIC));
+extern FUNC(void, OS_CODE) tpl_primary_irq_handler_% !obj::SOURCE %(void);
 %
   end foreach
   if handlerAck then
-%extern FUNC(void, OS_CODE) % !KEY %_ClearFlag(P2CONST(void, OS_APPL_DATA, AUTOMATIC));
+%extern FUNC(void, OS_CODE) % !KEY %_ClearFlag(void);
 %
   end if
   after
@@ -60,7 +60,7 @@ loop ENTRY from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
           foreach objList in objForIRQ do
             if KEY == int::NAME then
               # We have found the list of interrupts to call
-              %extern FUNC(void, OS_CODE) % !KEY %_Handler(P2CONST(void, OS_APPL_DATA, AUTOMATIC));
+              %extern FUNC(void, OS_CODE) % !KEY %_Handler(void);
 %
             end if
           end foreach
@@ -69,7 +69,7 @@ loop ENTRY from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
             let handlerIsEmpty := false
             if int::VECTOR_TYPE == "HANDLER" then
               if int::VECTOR_TYPE_S::NAME != "NONE" then
-                %extern FUNC(void, OS_CODE) % !int::VECTOR_TYPE_S::NAME %(P2CONST(void, OS_APPL_DATA, AUTOMATIC));
+                %extern FUNC(void, OS_CODE) % !int::VECTOR_TYPE_S::NAME %(void);
 %
               end if
             end if
@@ -86,7 +86,7 @@ end loop
 loop ENTRY from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
   before
 %
-__attribute__ ((section(".isr_vector"))) CONST(tpl_it_handler, AUTOMATIC) tpl_it_vectors[% !INTERRUPT_COUNT::IT_TABLE_SIZE %] = {
+__attribute__ ((section(".isr_vector"))) CONST(tpl_it_handler, OS_CONST) tpl_it_vectors[% !INTERRUPT_COUNT::IT_TABLE_SIZE %] = {
 %
   do
     %  %#{ %
