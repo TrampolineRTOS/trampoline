@@ -55,7 +55,7 @@ tpl_reset_handler:
   msr psp, r0
   /* Switch to use PSP, privileged state */
   movs r0, #2
-  msr  control, r0
+  msr control, r0
   /* Instruction Synchronization Barrier */
   isb
   /* Branch to the subsequent reset handler code */
