@@ -261,14 +261,20 @@ end if
 foreach module in exists OS::KERNEL_MODULE default (emptylist)
 do
   if exists KERNEL_MAP[module::VALUE] then
-    let path := KERNEL_MAP[module::VALUE]::PATH."/"
-    foreach file in KERNEL_MAP[module::VALUE]::FILE
-    do
+    if module::VALUE != "osek_kernel" &
+       module::VALUE != "com_kernel" &
+       module::VALUE != "autosar_kernel" then
+      let path := KERNEL_MAP[module::VALUE]::PATH."/"
+%
+cflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/% !KERNEL_MAP[module::VALUE]::PATH%"]%
+      foreach file in KERNEL_MAP[module::VALUE]::FILE
+      do
 %
 cSourceList.append(projfile.ProjectFile("% !path.file::VALUE %", trampoline_base_path))%
-    end foreach
-  else
-    error module:"Module does not exist"
+      end foreach
+    else
+      error module:"Module does not exist"
+    end if
   end if
 end foreach
 
