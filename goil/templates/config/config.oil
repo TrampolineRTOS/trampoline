@@ -217,6 +217,7 @@ IMPLEMENTATION trampoline_common {
     ] TRACE = FALSE;
     /* used to add additional init code for a board. */
     BOOLEAN INITBOARD = FALSE;
+    IDENTIFIER KERNEL_MODULE []; 
   };
   
   APPMODE [] {
