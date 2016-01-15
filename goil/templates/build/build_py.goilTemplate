@@ -258,7 +258,19 @@ cSourceList.append(projfile.ProjectFile("% !path.file::VALUE %", trampoline_base
   end foreach
 end if
 
+foreach module in exists OS::KERNEL_MODULE default (emptylist)
+do
+  if exists KERNEL_MAP[module::VALUE] then
+    let path := KERNEL_MAP[module::VALUE]::PATH."/"
+    foreach file in KERNEL_MAP[module::VALUE]::FILE
+    do
 %
+cSourceList.append(projfile.ProjectFile("% !path.file::VALUE %", trampoline_base_path))%
+    end foreach
+  else
+    error module:"Module does not exist"
+  end if
+end foreach
 
 #--- Services files%
 
