@@ -5,10 +5,8 @@
 #include "tpl_memmap.h"
 FUNC(int, OS_APPL_CODE) main(void)
 {
-  //initBoard();
   //led on PB.30
   PORT->Group[1].DIRSET.reg = 1<<30;
-
   StartOS(OSDEFAULTAPPMODE);
   return 0;
 }

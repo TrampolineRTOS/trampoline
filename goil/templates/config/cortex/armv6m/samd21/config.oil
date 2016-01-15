@@ -4,10 +4,6 @@ CPU samd21 {
     BUILDOPTIONS buildOptionsForSamD21 {
        COMMONFLAGS = "-D__SAMD21J18A__"; //processor def.
     };
-
-    //STDLIBVARIANT cortex_armv7_stm32f407 {
-    //  KIND = "armv7e-m";
-    //};
     
     //LIBRARY gpt {
     //  PATH = "cortex/armv7/stm32f407/STM32F4xx_StdPeriph_Driver/src";
@@ -54,15 +50,13 @@ CPU samd21 {
     PATH = "cortex/armv6m/samd21";
     CFILE = "tpl_machine_samd.c";
     CFILE = "startup_samd.c";
-//    CFILE = "system_stm32f4xx.c";
-//    CFILE = "handlers_stm32f4xx.c";
   };
 
 //  PLATFORM_FILES stm32f407_std_libs_includes {
 //    PATH = "cortex/armv7/stm32f407/STM32F4xx_StdPeriph_Driver/inc";
 //  };
 
-  PLATFORM_FILES stm32f407_cmsis {
+  PLATFORM_FILES sam_cmsis {
     PATH = "cortex/armv6m/samd21/CMSIS-Atmel/Device/ATMEL";
   };
 
@@ -87,10 +81,10 @@ CPU samd21 {
 //  POSTCOMMAND burn {
 //    COMMAND flash {
 //      MESSAGE = "Flashing";
-//      COMMAND = "st-flash";
-//      INPUT = TARGET { EXT = ".bin"; };
-//      PREOPTION = "write";
-//      POSTOPTION = "0x8000000";
+//      COMMAND = "openocd";
+//      INPUT = TARGET { EXT = ""; };
+//      PREOPTION = "-f board/atmel_samd21_xplained_pro.cfg -c \"program";
+//      POSTOPTION = "verify reset exit\"";
 //    };
 //  };
 };

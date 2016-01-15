@@ -2,7 +2,7 @@
 /*                                                                            */
 /*                                   Link script                              */
 /*                                                                            */
-/*                                   stm32f407                                */
+/*                                   samd21                                   */
 /*                                                                            */
 /* <INIT_POLICY>                                                              */
 /* - NO_INIT :          used for variables that are never cleared and never   */
@@ -27,7 +27,8 @@
 ENTRY(tpl_reset_handler)
 
 /* Highest address of the user mode stack */
-_estack = 0x20020000;    /* end of 128K RAM on AHB bus*/
+/* _estack = 0x20008000;     end of 32K RAM on AHB bus*/
+_estack = 0x20002000;     /* tmp: same value as default samd21*/
 
 /* Generate a link error if heap and stack don't fit into RAM */
 _Min_Heap_Size = 0;      /* required amount of heap  */

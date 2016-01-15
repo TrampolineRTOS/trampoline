@@ -157,10 +157,10 @@ tpl_enter_kernel:
   * Manage reentrance of kernel
   * Increment nested_kernel_entrance_counter
   */
-  ldr  r5, =nested_kernel_entrance_counter /* TODO: Mik modif r12 par r5 */
-  ldr  r4, [r5]
-  adds r4, r4, #1							/* TODO: Mik, remplace add par adds */
-  str  r4, [r5]
+  ldr  r6, =nested_kernel_entrance_counter
+  ldr  r4, [r6]
+  adds r4, r4, #1
+  str  r4, [r6]
  /* 
   * NA: Switch to the kernel stack
   * Automatic (configuration) for the Cortex-M4 // TODO: Mik, et CortexM0+? 
@@ -193,10 +193,10 @@ tpl_leave_kernel:
   * NA: If it reaches 0, the process stack is restored
   * Automatic for the Cortex-M4
   */
-  ldr r5, =nested_kernel_entrance_counter /* TODO: Mik r12 => r5, et sub => subs */
-  ldr r4, [r5]
+  ldr r6, =nested_kernel_entrance_counter
+  ldr r4, [r6]
   subs r4, r4, #1
-  str r4, [r5]
+  str r4, [r6]
  
 tpl_leave_kernel_exit:
  bx lr

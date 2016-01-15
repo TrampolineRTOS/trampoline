@@ -321,8 +321,8 @@ no_context_switch:
 	 */
 	ldr r4, [sp, #KS_R4]
 	ldr r5, [sp, #KS_R5]
-	mov r6, lr
 	ldr r6, [sp, #KS_LR]
+	mov lr, r6
 
 	ldr r6, [sp, #KS_PROCESS_SP]
 	msr psp, r6
