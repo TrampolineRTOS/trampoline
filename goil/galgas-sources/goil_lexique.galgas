@@ -129,6 +129,7 @@ message internalError : "internal error"
 message decimalNumberTooLarge : "decimal number too large"
 message unterminatedLitteralString : "Unterminated literal string" 
 message unableToConvertToDouble : "Unable to convert the string to double"
+message illegalEscape : "Illegal escaped character"
 
 @string a_string
 
@@ -136,6 +137,14 @@ $string$ !a_string  style stringStyle error message "literal string"
 
 rule '"' {
   repeat
+  while '\\' :
+    select
+    case '"'  : enterCharacterIntoString ( !?a_string !'"' )
+    case '\\' : enterCharacterIntoString ( !?a_string !'\\' )
+    case 'n'  : enterCharacterIntoString ( !?a_string !'\n' )
+    case 'r'  : enterCharacterIntoString ( !?a_string !'\r' )
+    default error illegalEscape
+    end
   while '\u0020'->'\u0021' | '\u0023' -> '\uFFFD' :
     enterCharacterIntoString ( !?a_string !* )
   end

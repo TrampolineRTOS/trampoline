@@ -47,24 +47,24 @@ gOption_generic_5F_cli_5F_options_display_5F_version ("generic_cli_options",
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifdef COMPILE_FOR_WIN32
-  C_BoolCommandLineOption
-  gOption_generic_5F_cli_5F_options_nodialog ("generic_cli_options",
-                                              "nodialog",
-                                              '\0',
-                                              "no-dialog",
-                                              "Do Not Display any dialog when no input file (Win32 only)") ;
-#endif
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-#ifndef COMPILE_FOR_WIN32
+#if COMPILE_FOR_WINDOWS == 0
   C_BoolCommandLineOption
   gOption_generic_5F_cli_5F_options_no_5F_color ("generic_cli_options",
                                                  "no_color",
                                                  '\0',
                                                  "no-color",
                                                  "Do not issue colored messages") ;
+#endif
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+#if COMPILE_FOR_WINDOWS == 1
+  C_BoolCommandLineOption
+  gOption_generic_5F_cli_5F_options_nodialog ("generic_cli_options",
+                                              "nodialog",
+                                              '\0',
+                                              "no-dialog",
+                                              "Do Not Display any dialog when no input file (Windows only)") ;
 #endif
 
 //---------------------------------------------------------------------------------------------------------------------*

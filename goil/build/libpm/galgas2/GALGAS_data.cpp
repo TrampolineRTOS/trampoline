@@ -28,6 +28,7 @@
 #include "strings/unicode_character_cpp.h"
 #include "galgas2/C_galgas_CLI_Options.h"
 #include "files/C_BinaryFileWrite.h"
+#include "galgas2/F_verbose_output.h"
 
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -252,7 +253,7 @@ void GALGAS_data::method_writeToFileWhenDifferentContents (GALGAS_string inFileP
     outFileWritten = GALGAS_bool (needToWrite) ;
     if (needToWrite) {
       if (C_Compiler::performGeneration ()) {
-        const bool verboseOptionOn = gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ;
+        const bool verboseOptionOn = verboseOutput () ;
         bool ok = C_FileManager::makeDirectoryIfDoesNotExist (inFilePath.stringValue ().stringByDeletingLastPathComponent ()) ;
         if (! ok) {
           C_String message ;
@@ -292,7 +293,7 @@ void GALGAS_data::method_writeToFile (GALGAS_string inFilePath,
       ggs_printWarning (NULL, C_LocationInSource (), C_String ("Need to write '") + filePath + "'.\n" COMMA_HERE) ;
     }else{
       const bool fileAlreadyExists = C_FileManager::fileExistsAtPath (filePath) ;
-      const bool verboseOptionOn = gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ;
+      const bool verboseOptionOn = verboseOutput () ;
       C_FileManager::makeDirectoryIfDoesNotExist (filePath.stringByDeletingLastPathComponent()) ;
       C_BinaryFileWrite binaryFile (filePath) ;
       if (! binaryFile.isOpened ()) {
@@ -329,7 +330,7 @@ void GALGAS_data::method_writeToExecutableFile (GALGAS_string inFilePath,
       ggs_printWarning (NULL, C_LocationInSource (), C_String ("Need to write '") + filePath + "'.\n" COMMA_HERE) ;
     }else{
       const bool fileAlreadyExists = C_FileManager::fileExistsAtPath (filePath) ;
-      const bool verboseOptionOn = gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ;
+      const bool verboseOptionOn = verboseOutput () ;
       C_FileManager::makeDirectoryIfDoesNotExist (filePath.stringByDeletingLastPathComponent()) ;
       C_BinaryFileWrite binaryFile (filePath) ;
       if (! binaryFile.isOpened ()) {

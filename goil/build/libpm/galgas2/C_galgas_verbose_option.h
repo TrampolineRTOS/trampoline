@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2006, ..., 2015 Pierre Molinaro.                                                                     *
+//  Copyright (C) 2015, ..., 2015 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -20,70 +20,16 @@
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifndef GALGAS_CLI_OPTIONS_DEFINED
-#define GALGAS_CLI_OPTIONS_DEFINED
+#ifndef GALGAS_VERBOSE_OPTION_DEFINED
+#define GALGAS_VERBOSE_OPTION_DEFINED
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 #include "command_line_interface/C_BoolCommandLineOption.h"
-#include "command_line_interface/C_UIntCommandLineOption.h"
-#include "command_line_interface/C_StringCommandLineOption.h"
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-extern C_BoolCommandLineOption gOption_galgas_5F_builtin_5F_options_trace ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern C_BoolCommandLineOption gOption_galgas_5F_builtin_5F_options_outputConcreteSyntaxTree ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern C_BoolCommandLineOption gOption_galgas_5F_builtin_5F_options_log_5F_file_5F_read ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern C_BoolCommandLineOption gOption_galgas_5F_builtin_5F_options_do_5F_not_5F_generate_5F_any_5F_file ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern C_BoolCommandLineOption gOption_galgas_5F_builtin_5F_options_treat_5F_warnings_5F_as_5F_error ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern C_UIntCommandLineOption gOption_galgas_5F_builtin_5F_options_max_5F_errors ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern C_UIntCommandLineOption gOption_galgas_5F_builtin_5F_options_max_5F_warnings ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern C_StringCommandLineOption gOption_galgas_5F_builtin_5F_options_mode ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void setExecutionMode (C_String & outErrorMessage) ;
-
-typedef enum {
- kExecutionModeNormal,
- kExecutionModeLexicalAnalysisOnly,
- kExecutionModeSyntaxAnalysisOnly,
- kExecutionModeIndexing,
- kExecutionModeLatex
-} EnumExecutionMode ;
-
-EnumExecutionMode executionMode (void) ;
-
-bool executionModeIsLexicalAnalysisOnly (void) ;
-
-bool executionModeIsSyntaxAnalysisOnly (void) ;
-
-bool executionModeIsIndexing (void) ;
-
-bool executionModeIsLatex (void) ;
-
-C_String latexModeStyleSuffixString (void) ;
+extern C_BoolCommandLineOption gOption_galgas_5F_builtin_5F_options_verbose_5F_output ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 

@@ -47,27 +47,13 @@
 //---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef __MINGW32__
-  //--- Compile for Win32
-  #define COMPILE_FOR_WIN32
-  #define MACHINE_IS_DEFINED
+  #define COMPILE_FOR_WINDOWS (1)
 #elif defined (WIN32)
-  //--- Compile for Win32
-  #define COMPILE_FOR_WIN32
-  #define MACHINE_IS_DEFINED
+  #define COMPILE_FOR_WINDOWS (1)
 #elif defined (__APPLE__)
-  #define PRAGMA_MARK_ALLOWED
-  #ifdef __NEXT_RUNTIME__
-   //--- Compile for Mac OS X Cocoa
-    #define MACHINE_IS_DEFINED
-  #else
-   //--- Compile for Mac OS X Darwin
-    #define UNIX_TOOL
-    #define MACHINE_IS_DEFINED
-  #endif
+  #define COMPILE_FOR_WINDOWS (0)
 #elif defined (__linux)
-  //--- Compile for Linux
-  #define UNIX_TOOL
-  #define MACHINE_IS_DEFINED
+  #define COMPILE_FOR_WINDOWS (0)
 #else
   #error Undefined platform
 #endif

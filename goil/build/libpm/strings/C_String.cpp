@@ -38,18 +38,17 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifdef __MINGW32__
+#ifndef COMPILE_FOR_WINDOWS
+  #error COMPILE_FOR_WINDOWS is undefined
+#endif
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+#if COMPILE_FOR_WINDOWS == 1
   #include <sys/stat.h>
 #endif
 
-#ifdef __MWERKS__
-  #include <unistd.h>
-  #ifdef COMPILE_FOR_WIN32
-    #include <unix.h>
-  #endif
-#endif
-
-#ifdef UNIX_TOOL
+#if COMPILE_FOR_WINDOWS == 0
   #include <unistd.h>
 #endif
 
@@ -1598,7 +1597,7 @@ C_String C_String::XMLEscapedString (void) const {
 //---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_String::stringByStandardizingPath (void) const {
-  #ifdef COMPILE_FOR_WIN32
+  #ifdef COMPILE_FOR_WINDOWS
     C_String path = stringByReplacingCharacterByString (TO_UNICODE ('\\'), "/") ;
   #else
     C_String path = * this ;

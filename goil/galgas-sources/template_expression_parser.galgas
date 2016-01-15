@@ -1800,7 +1800,8 @@ proc templateMethodInvocation
       elsif [inMethodName string] == "interpretEscape" then
         checkInvocationHasNoArgument ( !inType !inMethodName !inParameterTypeList)
         outResultType = @Ttype. stringType
-        outResultValue = valueWithString (![[inValue mStringValue] stringByReplacingStringByString !"\\n" !"\n"] !emptyLString())
+        outResultValue = inValue
+#        outResultValue = valueWithString (![[inValue mStringValue] stringByReplacingStringByString !"\\n" !"\n"] !emptyLString())
       elsif [inMethodName string] == "columnPrefixedBy" then
         checkInvocationHasArguments ( !inType !inMethodName !inParameterTypeList !@Ttype. stringType !1)
         @Tvalue separator
@@ -1829,21 +1830,16 @@ proc templateMethodInvocation
         for () para_ in  paragraph do
           @stringlist parts = [para_mValue componentsSeparatedByString !" "]
           @sint64 linewidth = 0LS
-          @bool newline = true
           result = ""
           for () word_ in  parts do
-            if linewidth + [word_mValue length] > [width mInt64Value] then
-              result += "\n" + stringshift
-              linewidth = [shift mInt64Value]
-              newline = true
+            if word_mValue != "" then
+              if linewidth + [word_mValue length] > [width mInt64Value] then
+                result += "\n" + stringshift
+                linewidth = [shift mInt64Value]
+              end
+              linewidth = linewidth + [word_mValue length] + 1LS
+              result += word_mValue + " " 
             end
-            if newline == false then
-              linewidth = linewidth + 1LS
-              result += " "
-            end
-            linewidth = linewidth + [word_mValue length]
-            result += word_mValue
-            newline = false
           end
           resultParagraph += !result
         end

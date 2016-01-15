@@ -37,7 +37,8 @@ class C_BoolCommandLineOption : public C_CommandLineOption {
                                     const char * inIdentifier,
                                     const char inChar,
                                     const char * inString,
-                                    const char * inComment) ;
+                                    const char * inComment,
+                                    const bool inVisibleInGalgas = true) ;
 
 //--- No Copy
   private : C_BoolCommandLineOption (const C_BoolCommandLineOption &) ;
@@ -47,6 +48,7 @@ class C_BoolCommandLineOption : public C_CommandLineOption {
   private : C_BoolCommandLineOption * mNext ;
   public : bool mValue ;
   public : inline bool getter_value (void) const { return mValue ; }
+  public : const bool mVisibleInGalgas ;
 
 //--- Static methods
   public : static void setBoolOptionForCommandChar (const char inCommandChar,

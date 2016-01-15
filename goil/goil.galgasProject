@@ -24,6 +24,7 @@
 #
 #---------------------------------------------------------------------------*
 
+# 2.1.27   \", \n and \\ in OIL litteral strings
 # 2.1.26   Litteral lists
 # 2.1.25   Added a variant of mapof to convert a struct into a map 
 #          Added the tab instruction
@@ -35,7 +36,7 @@
 #          string
 # 2.1.20   Added -o and -r options to goil
 
-project (2:1:26) -> "goil" {
+project (2:1:27) -> "goil" {
 
 #  feature libpmAtPath : "../galgas_sources/GALGAS_OUTPUT/libpm" ;
   %makefile-macosx

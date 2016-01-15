@@ -28,7 +28,7 @@ def buildForWin32OnMacOSX (dictionary, EXECUTABLE, GOAL, maxParallelJobs, displa
   gmf.mMaxParallelJobs = maxParallelJobs
   gmf.mDisplayCommands = displayCommands
   gmf.mTargetName = "win32"
-  gmf.mLinkerOptions = ["-lcomdlg32", "-lws2_32"]
+  gmf.mLinkerOptions = ["-lws2_32", "-lComdlg32"]
   gmf.mExecutableSuffix = ".exe"
 #---
   gmf.mCompilerTool = [TOOL_CHAIN_INSTALL_PATH + "/bin/i586-mingw32-gcc", "-m32", "-D_WIN32_WINNT=0x501"]

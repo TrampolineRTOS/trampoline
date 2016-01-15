@@ -372,6 +372,57 @@ GALGAS_double GALGAS_double::substract_operation (const GALGAS_double & inOperan
 
 //---------------------------------------------------------------------------------------------------------------------*
 
+void GALGAS_double::plusAssign_operation (const GALGAS_double inOperand,
+                                          C_Compiler *
+                                          COMMA_UNUSED_LOCATION_ARGS) {
+  if (isValid () && inOperand.isValid ()) {
+    mDoubleValue += inOperand.mDoubleValue ;
+  }else{
+    mIsValid = false ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_double::minusAssign_operation (const GALGAS_double inOperand,
+                                           C_Compiler *
+                                           COMMA_UNUSED_LOCATION_ARGS) {
+  if (isValid () && inOperand.isValid ()) {
+    mDoubleValue -= inOperand.mDoubleValue ;
+  }else{
+    mIsValid = false ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_double::mulAssign_operation (const GALGAS_double inOperand,
+                                         C_Compiler * /* inCompiler */
+                                         COMMA_UNUSED_LOCATION_ARGS) {
+  if (isValid () && inOperand.isValid ()) {
+    mDoubleValue *= inOperand.mDoubleValue ;
+  }else{
+    mIsValid = false ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_double::divAssign_operation (const GALGAS_double inOperand,
+                                         C_Compiler * inCompiler
+                                         COMMA_LOCATION_ARGS) {
+  if (isValid () && inOperand.isValid ()) {
+    if (inOperand.mDoubleValue == 0) {
+      inCompiler->onTheFlyRunTimeError ("@double /= divide by zero" COMMA_THERE) ;
+      mIsValid = false ;
+    }else{
+      mDoubleValue /= inOperand.mDoubleValue ;
+    }
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
 GALGAS_double GALGAS_double::multiply_operation (const GALGAS_double & inOperand2,
                                                  C_Compiler * /* inCompiler */
                                                  COMMA_UNUSED_LOCATION_ARGS) const {
@@ -394,6 +445,16 @@ GALGAS_double GALGAS_double::divide_operation (const GALGAS_double & inOperand2,
     }else{
       result = GALGAS_double (mDoubleValue / inOperand2.mDoubleValue) ;
     }
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_double GALGAS_double::divide_operation_no_ovf (const GALGAS_double & inOperand) const {
+  GALGAS_double result ;
+  if (isValid () && inOperand.isValid ()) {
+    result = GALGAS_double ((inOperand.mDoubleValue == 0.0) ? 0.0 : (mDoubleValue / inOperand.mDoubleValue)) ;
   }
   return result ;
 }

@@ -265,7 +265,19 @@ static NSInteger search_into_goil_5F_lexique_oilVersion (NSString * inSearchedSt
     }else if (scanningOk && ([self testForInputFromChar:1 toChar:32])) {
     }else if (scanningOk && ([self testForInputChar:34])) {
       do {
-        if (scanningOk && ([self testForInputFromChar:32 toChar:33] || [self testForInputFromChar:35 toChar:65533])) {
+        if (scanningOk && ([self testForInputChar:92])) {
+          if (scanningOk && ([self testForInputChar:34])) {
+            scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, 34) ;
+          }else if (scanningOk && ([self testForInputChar:92])) {
+            scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, 92) ;
+          }else if (scanningOk && ([self testForInputChar:110])) {
+            scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, 10) ;
+          }else if (scanningOk && ([self testForInputChar:114])) {
+            scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, 13) ;
+          }else{
+            scanningOk = NO ;
+          }
+        }else if (scanningOk && ([self testForInputFromChar:32 toChar:33] || [self testForInputFromChar:35 toChar:65533])) {
           scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_a_string, mPreviousChar) ;
         }else{
           mLoop = NO ;

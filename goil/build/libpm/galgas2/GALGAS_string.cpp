@@ -28,6 +28,7 @@
 #include "strings/unicode_character_cpp.h"
 #include "galgas2/C_galgas_io.h"
 #include "files/C_FileManager.h"
+#include "galgas2/F_verbose_output.h"
 
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -38,23 +39,23 @@
 #include <unistd.h>
 #include <sys/types.h>
 
-#ifndef COMPILE_FOR_WIN32
+#if COMPILE_FOR_WINDOWS == 0
   #include <pwd.h>
 #endif
 
-#ifdef COMPILE_FOR_WIN32
+#if COMPILE_FOR_WINDOWS == 1
   #include <Shlobj.h>
 #endif
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifndef COMPILE_FOR_WIN32
+#if COMPILE_FOR_WINDOWS == 0
   GALGAS_string GALGAS_string::constructor_homeDirectory (UNUSED_LOCATION_ARGS) {
     return GALGAS_string (getpwuid (getuid ())->pw_dir) ;
   }
 #endif
 
-#ifdef COMPILE_FOR_WIN32
+#if COMPILE_FOR_WINDOWS == 1
   GALGAS_string GALGAS_string::constructor_homeDirectory (UNUSED_LOCATION_ARGS) {
     char path [MAX_PATH] ;
     SHGetFolderPath (NULL, CSIDL_PROFILE, NULL, 0, path) ;
@@ -117,17 +118,6 @@ typeComparisonResult GALGAS_string::objectCompare (const GALGAS_string & inOpera
     }else{
       result = kOperandEqual ;
     }
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_string GALGAS_string::operator_concat (const GALGAS_string & inOperand2
-                                              COMMA_UNUSED_LOCATION_ARGS) const {
-  GALGAS_string result ;
-  if (isValid () && inOperand2.isValid ()) {
-    result = GALGAS_string (mString + inOperand2.mString) ;
   }
   return result ;
 }
@@ -1268,7 +1258,7 @@ void GALGAS_string::method_writeToFile (GALGAS_string inFilePath,
   if (inFilePath.isValid ()) {
     if (C_Compiler::performGeneration ()) {
       const bool fileAlreadyExists = C_FileManager::fileExistsAtPath (inFilePath.mString) ;
-      const bool verboseOptionOn = gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ;
+      const bool verboseOptionOn = verboseOutput () ;
       const bool ok = C_FileManager::writeStringToFile (mString, inFilePath.mString) ;
       if (ok && verboseOptionOn && fileAlreadyExists) {
         ggs_printFileOperationSuccess (C_String ("Replaced '") + inFilePath.mString + "'.\n") ;
@@ -1302,7 +1292,7 @@ void GALGAS_string::method_writeToFileWhenDifferentContents (GALGAS_string inFil
     outFileWritten = GALGAS_bool (needToWrite) ;
     if (needToWrite) {
       if (C_Compiler::performGeneration ()) {
-        const bool verboseOptionOn = gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ;
+        const bool verboseOptionOn = verboseOutput () ;
         bool ok = C_FileManager::makeDirectoryIfDoesNotExist (inFilePath.mString.stringByDeletingLastPathComponent ()) ;
         if (! ok) {
           C_String message ;
@@ -1338,7 +1328,7 @@ void GALGAS_string::method_writeToExecutableFile (GALGAS_string inFilePath,
  //   inCompiler->addDependancyOutputFilePath (inFilePath.mString) ;
     const bool fileAlreadyExists = C_FileManager::fileExistsAtPath (inFilePath.mString) ;
     if (C_Compiler::performGeneration ()) {
-      const bool verboseOptionOn = gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ;
+      const bool verboseOptionOn = verboseOutput () ;
       const bool ok = C_FileManager::writeStringToExecutableFile (mString, inFilePath.mString) ;
       if (ok && verboseOptionOn && fileAlreadyExists) {
         ggs_printFileOperationSuccess (C_String ("Replaced '") + inFilePath.mString + "'.\n") ;
@@ -1372,7 +1362,7 @@ void GALGAS_string::method_writeToExecutableFileWhenDifferentContents (GALGAS_st
     outFileWritten = GALGAS_bool (needToWrite) ;
     if (needToWrite) {
       if (C_Compiler::performGeneration ()) {
-        const bool verboseOptionOn = gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ;
+        const bool verboseOptionOn = verboseOutput () ;
         bool ok = C_FileManager::makeDirectoryIfDoesNotExist (inFilePath.mString.stringByDeletingLastPathComponent ()) ;
         if (! ok) {
           C_String message ;
@@ -1464,8 +1454,9 @@ void GALGAS_string::modifier_setCharacterAtIndex (GALGAS_char inCharacter,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void GALGAS_string::dotAssign_operation (GALGAS_string inOperand
-                                         COMMA_UNUSED_LOCATION_ARGS) {
+void GALGAS_string::plusAssign_operation (GALGAS_string inOperand,
+                                          C_Compiler *
+                                          COMMA_UNUSED_LOCATION_ARGS) {
   if (isValid () && inOperand.isValid ()) {
     mString << inOperand.mString ;
   }
@@ -1637,13 +1628,13 @@ void GALGAS_string::method_makeSymbolicLinkWithPath (GALGAS_string inPath,
 
 // http://msdn.microsoft.com/en-us/library/ms682499%28VS.85%29.aspx
 
-#ifdef COMPILE_FOR_WIN32
-  #include <windows.h> 
+#if COMPILE_FOR_WINDOWS == 1
+  #include <windows.h>
 #endif
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifdef COMPILE_FOR_WIN32
+#if COMPILE_FOR_WINDOWS == 1
   static bool CreateChildProcess (HANDLE g_hChildStd_OUT_Wr,
                                   HANDLE g_hChildStd_IN_Rd,
                                   const char * /* inCommandLine */) {
@@ -1691,7 +1682,7 @@ void GALGAS_string::method_makeSymbolicLinkWithPath (GALGAS_string inPath,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifdef COMPILE_FOR_WIN32
+#if COMPILE_FOR_WINDOWS == 1
   GALGAS_string GALGAS_string::getter_popen (C_Compiler * inCompiler
                                              COMMA_LOCATION_ARGS) const {
     GALGAS_string result ;
@@ -1761,7 +1752,7 @@ void GALGAS_string::method_makeSymbolicLinkWithPath (GALGAS_string inPath,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifndef COMPILE_FOR_WIN32
+#if COMPILE_FOR_WINDOWS == 0
   GALGAS_string GALGAS_string::getter_popen (C_Compiler * /* inCompiler */
                                              COMMA_UNUSED_LOCATION_ARGS) const {
     GALGAS_string result ;

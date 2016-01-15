@@ -87,7 +87,7 @@ class GenericGalgasMakefile :
     make = makefile.Make (self.mGoal, self.mMaxParallelJobs == 1) # Display command utility tool path if sequential build
   #--------------------------------------------------------------------------- Add Compile rule for sources
   #--- Object file directory
-    objectDirectory = os.path.normpath (os.getcwd () + "/../build/cli-objects/makefile-" + self.mTargetName + "-objects")
+    objectDirectory = unicode (os.path.normpath (os.getcwd () + "/../build/cli-objects/makefile-" + self.mTargetName + "-objects"))
   #---
     objectFileList = []
     for source in SOURCES:

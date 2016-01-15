@@ -27,6 +27,7 @@
 #include "command_line_interface/F_Analyze_CLI_Options.h"
 #include "galgas2/C_galgas_CLI_Options.h"
 #include "galgas2/C_galgas_class_inspector.h"
+#include "galgas2/F_verbose_output.h"
 
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -196,7 +197,7 @@ void constructErrorOrWarningLocationMessage (C_String & ioMessage,
     const C_String textLine = inSourceTextPtr->getLineForLocation (inErrorLocation) ;
   //--- Construct message
     ioMessage << errorOrWarningLocationString (inErrorLocation, inSourceTextPtr) ;
-    if (gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue) {
+    if (verboseOutput ()) {
       ioMessage << "\n" << textLine << "\n" ;
     //--- Point out column error
       for (int32_t i=1 ; i<inErrorLocation.columnNumber () ; i++) {
@@ -222,7 +223,7 @@ void signalLexicalWarning (const C_SourceTextInString * inSourceTextPtr,
 //--- Construct location warning message
   C_String warningMessage ;
 //--- Add warning
-  warningMessage << (gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ? "lexical " : "")
+  warningMessage << (verboseOutput () ? "lexical " : "")
                  << "warning #" << cStringWithSigned (mTotalWarningCount) << ": " << inLexicalWarningMessage << "\n" ;
 //--- Print
   ggs_printWarning (inSourceTextPtr, inWarningLocation, warningMessage COMMA_THERE) ;
@@ -246,7 +247,7 @@ void signalLexicalError (const C_SourceTextInString * inSourceTextPtr,
   mErrorTotalCount ++ ;
 //--- Construct parsing error message
   C_String errorMessage ;
-  errorMessage << (gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ? "lexical " : "")
+  errorMessage << (verboseOutput () ? "lexical " : "")
                << "error #" << cStringWithSigned (mErrorTotalCount) << ": " << inLexicalErrorMessage << "\n" ;
 //--- Print
   ggs_printError (inSourceTextPtr, inErrorLocation, errorMessage COMMA_THERE) ;
@@ -272,7 +273,7 @@ void signalParsingError (const C_SourceTextInString * inSourceTextPtr,
 //--- Construct location error message
   C_String errorMessage ;
 //--- Construct parsing error message
-  errorMessage << (gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ? "syntax " : "")
+  errorMessage << (verboseOutput () ? "syntax " : "")
                << "error #" << cStringWithSigned (mErrorTotalCount) << ": found " << inFoundTokenMessage <<", expected:\n" ;
   for (int32_t i=0 ; i<inAcceptedTokenNames.count () ; i++) {
     errorMessage << "-  " << inAcceptedTokenNames (i COMMA_HERE) << "\n" ;  
@@ -301,26 +302,26 @@ void signalExtractError (const C_SourceTextInString * inSourceTextPtr,
 //--- Construct location error message
   C_String errorMessage ;
 //--- Print extract error
-  errorMessage << (gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ? "semantic " : "")
+  errorMessage << (verboseOutput () ? "semantic " : "")
                << "error: I have found:\n" ;
-  if (! gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue) {
+  if (! verboseOutput ()) {
     errorMessage << errorOrWarningLocationString (inErrorLocation, inSourceTextPtr)
                  << "error: " ;
   }
   errorMessage << "  - " << inActualFoundClassErrorString <<";\n" ;
-  if (! gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue) {
+  if (! verboseOutput ()) {
     errorMessage << errorOrWarningLocationString (inErrorLocation, inSourceTextPtr)
                  << "error: " ;
   }
   errorMessage << "I was expected:\n" ;
-  if (! gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue) {
+  if (! verboseOutput ()) {
     errorMessage << errorOrWarningLocationString (inErrorLocation, inSourceTextPtr)
                  << "error: " ;
   }
   errorMessage << "  - " << inExpectedClassesErrorStringsArray (0 COMMA_HERE) ;
   for (int32_t i=1 ; i<inExpectedClassesErrorStringsArray.count () ; i++) {
     errorMessage << ";\n" ;
-    if (! gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue) {
+    if (! verboseOutput ()) {
       errorMessage << errorOrWarningLocationString (inErrorLocation, inSourceTextPtr)
                    << "error: " ;
     }
@@ -381,19 +382,19 @@ void signalCastError (const C_SourceTextInString * inSourceTextPtr,
 //--- Print extract error
   C_String errorMessage ;
   expectedClassMessageArray.sortArrayUsingCompareMethod () ;
-  errorMessage << (gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ? "semantic " : "")
+  errorMessage << (verboseOutput () ? "semantic " : "")
                << "error: I have found:\n" ;
-  if (! gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue) {
+  if (! verboseOutput ()) {
     errorMessage << errorOrWarningLocationString (inErrorLocation, inSourceTextPtr)
                  << "error: " ;
   }
   errorMessage << "  - " << inActualFoundClassErrorString <<";\n" ;
-  if (! gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue) {
+  if (! verboseOutput ()) {
     errorMessage << errorOrWarningLocationString (inErrorLocation, inSourceTextPtr)
                  << "error: " ;
   }
   errorMessage << "I was expected:\n" ;
-  if (! gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue) {
+  if (! verboseOutput ()) {
     errorMessage << errorOrWarningLocationString (inErrorLocation, inSourceTextPtr)
                  << "error: " ;
   }
@@ -401,7 +402,7 @@ void signalCastError (const C_SourceTextInString * inSourceTextPtr,
     errorMessage << "  - " << expectedClassMessageArray (0 COMMA_HERE) ;
     for (int32_t i=1 ; i<expectedClassMessageArray.count () ; i++) {
       errorMessage << ";\n" ;
-      if (! gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue) {
+      if (! verboseOutput ()) {
         errorMessage << errorOrWarningLocationString (inErrorLocation, inSourceTextPtr)
                      << "error: " ;
       }
@@ -428,7 +429,7 @@ void signalSemanticWarning (const C_SourceTextInString * inSourceTextPtr,
 //--- Construct location error message
   C_String warningMessage ;
 //--- Add warning
-  warningMessage << (gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ? "semantic " : "")
+  warningMessage << (verboseOutput () ? "semantic " : "")
                  << "warning #" << cStringWithSigned (mTotalWarningCount) << ": " << inWarningMessage << "\n" ;
 //--- Print
   ggs_printWarning (inSourceTextPtr, inWarningLocation, warningMessage COMMA_THERE) ;
@@ -530,17 +531,13 @@ void ggs_printError (const C_SourceTextInString * inSourceTextPtr,
   C_String errorMessage ;
   constructErrorOrWarningLocationMessage (errorMessage, inErrorLocation, inSourceTextPtr) ;
   #ifndef DO_NOT_GENERATE_CHECKINGS
-    if (gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue) {
+    if (verboseOutput ()) {
       errorMessage << "[Raised from file '" << C_String (IN_SOURCE_FILE).lastPathComponent ()
                    << "' at line " << cStringWithSigned (IN_SOURCE_LINE) << "]\n" ;
     }
   #endif
   errorMessage << inMessage ;
 //--- Append source string
-//  if (inSourceTextPtr != NULL) {
-//    macroValidSharedObject (inSourceTextPtr, C_SourceTextInString) ;
-//    inSourceTextPtr->appendSourceContents (errorMessage) ;
-//  }
   if (! executionModeIsIndexing ()) {
     if (cocoaOutput ()) {
       co.setForeColor (kRedForeColor) ;
@@ -573,7 +570,7 @@ void ggs_printWarning (const C_SourceTextInString * inSourceTextPtr,
   C_String warningMessage ;
   constructErrorOrWarningLocationMessage (warningMessage, inWarningLocation, inSourceTextPtr) ;
   #ifndef DO_NOT_GENERATE_CHECKINGS
-    if (gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue) {
+    if (verboseOutput ()) {
       warningMessage << "[Raised from file '" << C_String (IN_SOURCE_FILE).lastPathComponent ()
                      << "' at line " << cStringWithSigned (IN_SOURCE_LINE) << "]\n" ;
     }
@@ -661,7 +658,7 @@ void ggs_printMessage (const C_String & inMessage
   if (! executionModeIsIndexing ()) {
     C_String message = inMessage ;
     #ifndef DO_NOT_GENERATE_CHECKINGS
-      if (gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue) {
+      if (verboseOutput ()) {
         message << "[Displayed from file '" << C_String (IN_SOURCE_FILE).lastPathComponent ()
                 << "' at line " << cStringWithSigned (IN_SOURCE_LINE) << "]\n" ;
       }

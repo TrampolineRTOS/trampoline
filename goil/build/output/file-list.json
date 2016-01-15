@@ -9,6 +9,7 @@
         "all-declarations-2.cpp",
         "all-declarations-1.cpp",
         "all-declarations-0.cpp",
+        "C_galgas_quiet_option.cpp",
 
         "32-mp_bases.c",
         "mpn-invertappr.c",

@@ -35,20 +35,6 @@ see https://www.gnu.org/licenses/.  */
 #include <cstdio>
 #endif
 
-#ifndef __cplusplus
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wsign-compare"
-#pragma GCC diagnostic ignored "-Wunused-value"
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#pragma GCC diagnostic ignored "-Wmissing-prototypes"
-#pragma GCC diagnostic ignored "-Wparentheses"
-#pragma GCC diagnostic ignored "-Wall"
-#pragma GCC diagnostic ignored "-Wpointer-arith"
-#pragma GCC diagnostic ignored "-Werror"
-#pragma GCC diagnostic ignored "-Wundef"
-#pragma GCC diagnostic error "-w"
-#endif
-
 /* Instantiated by configure. */
 /*--- Deleted by PM */
 /* #if ! defined (__GMP_WITHIN_CONFIGURE) */
@@ -497,8 +483,8 @@ typedef __mpq_struct *mpq_ptr;
 
 /* __builtin_expect is in gcc 3.0, and not in 2.95. */
 #if __GMP_GNUC_PREREQ (3,0)
-#define __GMP_LIKELY(cond)    __builtin_expect ((cond) != 0, 1)
-#define __GMP_UNLIKELY(cond)  __builtin_expect ((cond) != 0, 0)
+#define __GMP_LIKELY(cond)    __builtin_expect ((long) ((cond) != 0), (long) 1)
+#define __GMP_UNLIKELY(cond)  __builtin_expect ((long) ((cond) != 0), (long) 0)
 #else
 #define __GMP_LIKELY(cond)    (cond)
 #define __GMP_UNLIKELY(cond)  (cond)
@@ -1832,7 +1818,7 @@ mp_limb_t
 mpz_getlimbn (mpz_srcptr __gmp_z, mp_size_t __gmp_n) __GMP_NOTHROW
 {
   mp_limb_t  __gmp_result = 0;
-  if (__GMP_LIKELY (__gmp_n >= 0 && __gmp_n < __GMP_ABS (__gmp_z->_mp_size)))
+  if (__GMP_LIKELY ((__gmp_n >= 0) && (__gmp_n < __GMP_ABS (__gmp_z->_mp_size))))
     __gmp_result = __gmp_z->_mp_d[__gmp_n];
   return __gmp_result;
 }
