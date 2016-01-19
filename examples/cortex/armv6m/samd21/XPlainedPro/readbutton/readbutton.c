@@ -9,6 +9,7 @@ FUNC(int, OS_APPL_CODE) main(void)
   pinMode(PORTA,15,INPUT);  //button SW0
   pinMode(PORTB,30,OUTPUT); //LED0
   digitalWrite(PORTB,30,1); //switch off led
+
   StartOS(OSDEFAULTAPPMODE);
   return 0;
 }
