@@ -20,7 +20,7 @@ This task is activated by the alarm `blink\_blink`. The alarm:
 You should have: 
 
  * A cross-compiler suite: `arm-none-eabi-gcc`
- * [openocd](http://openocd.org/) to flash the board **` CMSIS-DAP` support**.
+ * [openocd](http://openocd.org/) to flash the board with **` CMSIS-DAP` support**.
 
 
 ## Build

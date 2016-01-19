@@ -106,7 +106,8 @@ inline void __libc_fini_array(void)
 }
 
 // This is the place where Cortex-M core will go immediately after reset.
-void __attribute__ ((section(".after_vectors"))) tpl_continue_reset_handler(void)
+//void __attribute__ ((section(".after_vectors"))) 
+void tpl_continue_reset_handler(void)
 {
   /*
    * Initialize the stacks and mode
