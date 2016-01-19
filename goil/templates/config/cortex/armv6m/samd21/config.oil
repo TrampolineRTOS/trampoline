@@ -52,10 +52,6 @@ CPU samd21 {
     CFILE = "startup_samd.c";
   };
 
-//  PLATFORM_FILES stm32f407_std_libs_includes {
-//    PATH = "cortex/armv7/stm32f407/STM32F4xx_StdPeriph_Driver/inc";
-//  };
-
   PLATFORM_FILES sam_cmsis {
     PATH = "cortex/armv6m/samd21/CMSIS-Atmel/Device/ATMEL";
   };
@@ -69,14 +65,6 @@ CPU samd21 {
 //    CFILE = "misc.c";
 //  };
 
-  POSTBUILD all {
-    COMMAND buildbin {
-      TYPE = COPIER;
-      INPUT = TARGET;
-      OUTPUT = ".bin";
-      PREOPTION = "-O binary";
-    };
-  };
 
 //  POSTCOMMAND burn {
 //    COMMAND flash {

@@ -21,7 +21,7 @@ CPU blink {
       TRAMPOLINE_BASE_PATH = "../../../../../..";
       APP_SRC = "blink.c";
       APP_NAME = "blink_exe";
-      CFLAGS  = "-O0"; 
+      CFLAGS  = "-O3"; 
       LDFLAGS = "-Map=blink.map";
       COMPILER = "arm-none-eabi-gcc";
       ASSEMBLER = "arm-none-eabi-as";
