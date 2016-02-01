@@ -1,4 +1,3 @@
-#include "tp.h"
 #include "tpl_os.h"
 #include "pinAccess.h"	//provided in machines/cortex/armv6m/samd21/utils
 #include "eic.h"		//provided in machines/cortex/armv6m/samd21/utils
