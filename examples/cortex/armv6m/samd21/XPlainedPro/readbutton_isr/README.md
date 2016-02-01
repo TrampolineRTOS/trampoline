@@ -6,15 +6,9 @@ There are two tasks "blink" and "read_button" and one ISR2 "isr_button".
 
 At start the program does nothing.
 Something happens when pushing the button on the board.
-A push on the button activates the task "read_button".
+A push on the button (isr_button) starts the alarm "blink_alarm".
 
-The task "read_button" will toggle the BLUE led and launch or cancel the alarm "blink_alarm".
-This alarm "blink_alarm" will activate the task "blink" on expiration and start again.
-
-Leds are toggled by the following resources:
-- "blink" toggles GREEN led,
-- "isr_button" will toggle RED led,
--"read_button" will toggle BLUE led.
+This alarm "blink_alarm" will activate the task "blink" on expiration and start again (each 100ms).
 
 Have a look into "readbutton_isr.oil" file.
 
