@@ -166,10 +166,8 @@ foreach obj in ITOBJ do
       end if
       if ok then #Ok, can generate code
         let pin2EicDone[EIC_num] := obj::SOURCE_S::PIN
-        #pin mux configuration
         %\n	//config %!obj::SOURCE_S::PIN% with EIC %!EIC_num%\n%
-        %	pinMux(%!PORT%,%!num%,CONFIG_A);\n%
-
+        
         #external interrupt config:
         let filter := exists P::FILTERING default ("FALSE")
         let trigger := exists P::TRIGGER   default ("RISING")
@@ -183,6 +181,9 @@ foreach obj in ITOBJ do
         end if
         %	pinMode(%!PORT%,%!num%,%!pull%);\n%
 
+        #pin mux configuration
+        %	pinMux(%!PORT%,%!num%,CONFIG_A);\n%
+
         let atLeastOneEIC := true
       end if #EIC num check.
     end if #PIN structure
@@ -195,6 +196,12 @@ if atLeastOneEIC then
   %	NVIC_SetPriority(EIC_IRQn,3);\n%
 end if
 %}\n%
+
+###
+# Generate the EIC interrupt handler to dispatch in function of the EIC num
+if atLeastOneEIC then
+  
+end if
 
 ## Generate all the ClearFlag functions.
 #foreach src in USED_EXTI

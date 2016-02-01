@@ -81,17 +81,16 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
 %
   let indexISR2 := 0
   foreach obj in objList do
+    template if exists tpl_interrupt_ack_with_no_vector_start
     if obj::KIND == "ISR" then
 # ISR 1
       if obj::CATEGORY == 1 then
-%
-  % !obj::NAME %_function();
+%  % !obj::NAME %_function();
 %
       else
         if obj::CATEGORY == 2 then
 # ISR2
-%
-  tpl_central_interrupt_handler(% !([TASKS length] + indexISR2) %);
+%  tpl_central_interrupt_handler(% !([TASKS length] + indexISR2) %);
 %
           let indexISR2 := indexISR2 + 1
         else
@@ -99,6 +98,7 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
         end if
       end if
     end if
+    template if exists tpl_interrupt_ack_with_no_vector_stop
   end foreach
   foreach objCounter in counterForIRQ do
     let objCounter_KEY := KEY
