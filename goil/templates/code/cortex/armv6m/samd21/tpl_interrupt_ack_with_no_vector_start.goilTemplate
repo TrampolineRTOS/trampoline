@@ -77,6 +77,7 @@ if exists obj::SOURCE_S then
       %
   if(EIC->INTFLAG.reg & (1 << %!eicNum%))
   {
+    EIC->INTFLAG.reg = (1 << %!eicNum%); //ack
   %
     end if
   end if

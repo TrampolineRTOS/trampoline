@@ -69,8 +69,8 @@ CPU readbutton_isr {
     SOURCE = EIC_IRQ {
 		PIN = PA15 { 
 			TRIGGER = FALLING;	//GND when button pressed
-			PULL = UP;
-			FILTERING = TRUE;	//
+			PULL = UP;			//no external resistor.
+			FILTERING = TRUE;	//to debounce input signal...
 		};
 	};
   };
