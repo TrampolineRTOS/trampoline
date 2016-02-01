@@ -3,7 +3,7 @@
  *
  * @section desc File description
  *
- * Trampoline kernel stack structure for PowerPC port
+ * Trampoline kernel stack structure for Cortex port
  *
  * @section copyright Copyright
  *
@@ -50,10 +50,10 @@
 #define KS_FOOTPRINT		20
 
 #define KS_PROCESS_SP		0
-#define KS_LR				    4
+#define KS_LR				4
 #define KS_KERN_PTR			8
-#define KS_R4				    12
-#define KS_R5				    16
+#define KS_R4				12
+#define KS_R5				16
 
 /* TPL_OS_KERNEL_STACK_H */
 #endif

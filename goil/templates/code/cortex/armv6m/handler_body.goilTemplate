@@ -1,0 +1,134 @@
+  .global tpl_primary_irq_handler_% !handlerSource %
+  .type   tpl_primary_irq_handler_% !handlerSource %, \%function
+tpl_primary_irq_handler_% !handlerSource %:
+ /*
+  * Stack is MSP now
+  */
+
+ /* __1__HANDLER_PROLOG
+  * The first thing to do is to check if the service id is a valid one
+  * Shall be less than SYSCALL_COUNT
+  */
+  sub sp, sp, #KS_FOOTPRINT  /* Make space on top of kernel stack. */
+  mov r12,r6 /* save r6 to r12 so that we can work with a 'low register' (armv6m ISA restrictions)*/
+  mrs r6, psp     /* Copy process stack pointer psp into r12 */
+  str r6, [sp, #KS_PROCESS_SP] /* and save it into kernel stack. */
+  str r4, [sp, #KS_R4]   /* Save working register r4 on process stack. */
+  str r5, [sp, #KS_R5]   /* Save working register r5 on process stack. */
+  ldr r6, =tpl_kern
+  str r6, [sp, #KS_KERN_PTR]  /* Store tpl_kern into kernel stack. */
+  mov r6, lr   /* armv6m cannot handle lr directly, use r6 */
+  str r6, [sp, #KS_LR]   /* Store lr register into kernel stack. */
+ /* Now use r5 instead of sp */
+  mov r5, sp
+
+ /* __2__ENTER_KERNEL
+ * Enter into kernel
+ */
+  bl tpl_enter_kernel
+ 
+ /*
+  * Reset tpl_kern variables
+  */
+  ldr r6, [r5, #KS_KERN_PTR]    /* load the tpl_kern base address */
+  movs r4, #NO_NEED_SWITCH_NOR_SCHEDULE
+  strb r4, [r6, #TPL_KERN_OFFSET_NEED_SWITCH]
+  strb r4, [r6, #TPL_KERN_OFFSET_NEED_SCHEDULE]
+
+ /* __3__IRQ_PROCESSING_STAGE
+  * WARNING : r0 and r3 should not be altered until here
+  * as they are used to :
+  * r3 : give the service identifier while calling the system call
+  * r0 : give some arg to the service
+  */
+  bl % !handlerIRQ %
+
+ /***************************************************
+ * on the way to exit IRQ routine (with or without *
+ * context switch)                                 *
+ ***************************************************/
+ /* Do we need to switch context ? */
+  ldr r6, [r5, #KS_KERN_PTR]    /* load the tpl_kern base address */
+  ldrb r6, [r6, #TPL_KERN_OFFSET_NEED_SWITCH]
+  cmp r6, #NO_NEED_SWITCH
+  beq no_context_switch_% !handlerSource %
+ 
+ /* __4__SWITCH_CONTEXT
+  * We are going to switch context.
+  * Do we need to save old context ?
+  */
+  movs r0, #0 /* set save parameter to 0 */
+  ldr r6, [r5, #KS_KERN_PTR]    /* load the tpl_kern base address */
+  ldrb r6, [r6, #TPL_KERN_OFFSET_NEED_SWITCH]
+  movs r4, #NEED_SAVE
+  tst r6, r4
+  beq no_save_old_context_% !handlerSource %
+  movs r0, #1 /* set save parameter to 1 */
+
+ /*
+  * Save context
+  */
+  ldr r6, [r5, #KS_KERN_PTR]    /* load the tpl_kern base address */
+  ldr r6, [r6, #TPL_KERN_OFFSET_S_RUNNING]
+  bl tpl_save_context
+
+no_save_old_context_% !handlerSource %:
+#if WITH_MEMORY_PROTECTION == YES
+  /*
+   * set up the memory protection for the process that just got the CPU
+   */
+#endif
+
+call_tpl_run_elected_% !handlerSource %:
+ /* First call tpl_run_elected with the value of tpl_kern.need_switch
+  * and get the value of the elected task.
+  * tpl_kern.need_switch (stored into r3) is copied into r0
+  */
+  bl tpl_run_elected
+ 
+ /*
+  * Load context:
+  * get s_running (it has been changed by tpl_run_elected)
+  */
+  ldr r6, [r5, #KS_KERN_PTR]      /* load the tpl_kern base address */
+  ldr r6, [r6, #TPL_KERN_OFFSET_S_RUNNING] /* get the address of the context bloc */
+  bl tpl_load_context
+
+ /********************************************
+ * KERNEL EXIT WITHOUT CONTEXT SWITCH STAGE *
+ ********************************************/
+no_context_switch_% !handlerSource %:
+ /*
+   * Reset the tpl_need_switch variable to NO_NEED_SWITCH 
+   */
+  ldr r6, [r5, #KS_KERN_PTR]    /* load the tpl_kern base address */
+  movs r4, #NO_NEED_SWITCH_NOR_SCHEDULE
+  strb r4, [r6, #TPL_KERN_OFFSET_NEED_SWITCH]
+
+ /* __5__LEAVE_KERNEL
+   * Leave kernel
+   */
+  bl tpl_leave_kernel
+
+ /* __6__HANDLER_EPILOG
+   * Leave kernel
+   */
+ /*
+  * Restore registers from kernel stack before leaving.
+  * sp MUST be the same as at the beginning of routine.
+  * Not necessary to use r5 now.
+  */
+  ldr r4, [sp, #KS_R4]
+  ldr r5, [sp, #KS_R5]
+  ldr r6, [sp, #KS_LR]
+  mov lr,r6
+
+  ldr r6, [sp, #KS_PROCESS_SP]
+  msr psp, r6
+  mov r6,r12 /* get back r6 low reg. */
+  add sp, sp, #KS_FOOTPRINT 
+
+ /* return to interrupted task */
+tpl_primary_irq_handler_% !handlerSource %_exit:
+  bx lr
+%

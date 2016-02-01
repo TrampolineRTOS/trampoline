@@ -229,7 +229,7 @@ void idle_function(void)
 void tpl_init_machine()
 {
     tpl_init_machine_generic ();
-	tpl_init_machine_specific();
+    tpl_init_machine_specific();
     //Init();
 }
 

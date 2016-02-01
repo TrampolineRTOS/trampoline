@@ -80,7 +80,7 @@
 * SP+24 -> |---------------------------|
 *          | LR return address         |
 * SP+20 -> |---------------------------|
-*          | R12                       |
+*          | R12                       | => used to save r6 (low register)
 * SP+16 -> |---------------------------|
 *          | R3 service number         |
 * SP+12 -> |---------------------------|
@@ -118,10 +118,10 @@ tpl_enter_kernel:
 	 * Manage reentrance of kernel
 	 * Increment nested_kernel_entrance_counter
 	 */
-	ldr r12, =nested_kernel_entrance_counter
-	ldr r4, [r12]
-	add r4, r4, #1
-	str r4, [r12]
+	ldr r6, =nested_kernel_entrance_counter
+	ldr r4, [r6]
+	adds r4, r4, #1
+	str r4, [r6]
 	/*
 	 * NA: Switch to the kernel stack
 	 * Automatic (configuration) for the Cortex-M4
@@ -154,10 +154,10 @@ tpl_leave_kernel:
 	 * NA: If it reaches 0, the process stack is restored
 	 * Automatic for the Cortex-M4
 	 */
-	ldr r12, =nested_kernel_entrance_counter
-	ldr r4, [r12]
-	sub r4, r4, #1
-	str r4, [r12]
+	ldr r6, =nested_kernel_entrance_counter
+	ldr r4, [r6]
+	subs r4, r4, #1
+	str r4, [r6]
 
 	#if WITH_MEMORY_PROTECTION == YES
 	/*
@@ -189,13 +189,16 @@ tpl_sc_handler:
 	bhs invalid_service_id
 
 	sub sp, sp, #KS_FOOTPRINT		/* Make space on top of kernel stack. */
-	mrs r12, psp					/* Copy process stack pointer psp into r12 */
-	str r12, [sp, #KS_PROCESS_SP]	/* and save it into kernel stack. */
+    mov r12,r6						/* save r6 to r12 so that we can work 
+									 * with a 'low register' (armv6m ISA)*/
+	mrs r6, psp						/* Copy process stack pointer psp into r6 */
+	str r6, [sp, #KS_PROCESS_SP]	/* and save it into kernel stack. */
 	str r4, [sp, #KS_R4]			/* Save working register r4 on kernel stack. */
 	str r5, [sp, #KS_R5]			/* Save working register r5 on kernel stack. */
-	ldr r12, =tpl_kern
-	str r12, [sp, #KS_KERN_PTR] 	/* Store tpl_kern into kernel stack. */
-	str lr, [sp, #KS_LR]			/* Store lr register into kernel stack. */
+	ldr r6, =tpl_kern
+	str r6, [sp, #KS_KERN_PTR]		/* Store tpl_kern into kernel stack. */
+    mov r6, lr						/* armv6m cannot handle lr directly, use r6 */
+	str r6, [sp, #KS_LR]			/* Store lr register into kernel stack. */
 	/* Now use r5 instead of sp */
 	mov r5, sp
 
@@ -207,16 +210,17 @@ tpl_sc_handler:
 	/*
 	 * Get the appropriate system call address into R3
 	 */
-	ldr r12, =tpl_dispatch_table
-	ldr r3, [r12, r3, LSL #2]
+	ldr r6, =tpl_dispatch_table
+	lsls r3, r3, #2
+	ldr r3, [r6, r3]
 
 	/*
 	 * Reset tpl_kern variables
 	 */
-	ldr r12, [r5, #KS_KERN_PTR]						/* load the tpl_kern base address */
-	mov r4, #NO_NEED_SWITCH_NOR_SCHEDULE
-	strb r4, [r12, #TPL_KERN_OFFSET_NEED_SWITCH]
-	strb r4, [r12, #TPL_KERN_OFFSET_NEED_SCHEDULE]
+	ldr r6, [r5, #KS_KERN_PTR]						/* load the tpl_kern base address */
+	movs r4, #NO_NEED_SWITCH_NOR_SCHEDULE
+	strb r4, [r6, #TPL_KERN_OFFSET_NEED_SWITCH]
+	strb r4, [r6, #TPL_KERN_OFFSET_NEED_SCHEDULE]
 
 	/* __3__SYSTEM_CALL
 	 * System call
@@ -231,21 +235,21 @@ tpl_sc_handler:
 	 * r0 will be destroyed by the call to tpl_save_context.
 	 * It is saved into the saved frame (process stack).
 	 */
-    ldr r12, [r5, #KS_PROCESS_SP]
-    str r0, [r12]
+    ldr r6, [r5, #KS_PROCESS_SP]
+    str r0, [r6]
 
 	/*
 	 * Do we need to switch context ?
 	 * (requested by system service)
 	 */
-	ldr r12, [r5, #KS_KERN_PTR]						/* load the tpl_kern base address */
-	ldrb r12, [r12, #TPL_KERN_OFFSET_NEED_SWITCH]
-	cmp r12, #NO_NEED_SWITCH
+	ldr r6, [r5, #KS_KERN_PTR]						/* load the tpl_kern base address */
+	ldrb r6, [r6, #TPL_KERN_OFFSET_NEED_SWITCH]
+	cmp r6, #NO_NEED_SWITCH
 	beq no_context_switch
 
 	/* do not switch context if nested kernel entrance */
-	ldr r12, =nested_kernel_entrance_counter
-	ldr r4, [r12]
+	ldr r6, =nested_kernel_entrance_counter
+	ldr r4, [r6]
 	cmp r4, #1
 	bhi no_context_switch
 
@@ -253,18 +257,19 @@ tpl_sc_handler:
 	 * We are going to switch context.
 	 * Do we need to save old context ?
 	 */
-	mov r0, #0	/* set save parameter to 0 */
-	ldr r12, [r5, #KS_KERN_PTR]						/* load the tpl_kern base address */
-	ldrb r12, [r12, #TPL_KERN_OFFSET_NEED_SWITCH]
-	tst r12, #NEED_SAVE
+	movs r0, #0	/* set save parameter to 0 */
+	ldr r6, [r5, #KS_KERN_PTR]						/* load the tpl_kern base address */
+	ldrb r6, [r6, #TPL_KERN_OFFSET_NEED_SWITCH]
+    movs r4, #NEED_SAVE								/* tst cannot use immediat in armv6. */
+	tst r6, r4
 	beq no_save_old_context
-	mov r0, #1	/* set save parameter to 1 */
+	movs r0, #1	/* set save parameter to 1 */
 
 	/*
 	 * Save context
 	 */
-	ldr r12, [r5, #KS_KERN_PTR]						/* load the tpl_kern base address */
-	ldr r12, [r12, #TPL_KERN_OFFSET_S_RUNNING]
+	ldr r6, [r5, #KS_KERN_PTR]						/* load the tpl_kern base address */
+	ldr r6, [r6, #TPL_KERN_OFFSET_S_RUNNING]
 	bl tpl_save_context
 
 no_save_old_context:
@@ -285,8 +290,8 @@ call_tpl_run_elected:
 	 * Load context:
 	 * get s_running (it has been changed by tpl_run_elected)
 	 */
-	ldr r12, [r5, #KS_KERN_PTR]						/* load the tpl_kern base address */
-	ldr r12, [r12, #TPL_KERN_OFFSET_S_RUNNING] /* get the address of the context bloc */
+	ldr r6, [r5, #KS_KERN_PTR]						/* load the tpl_kern base address */
+	ldr r6, [r6, #TPL_KERN_OFFSET_S_RUNNING] /* get the address of the context bloc */
 	bl tpl_load_context
 
     /********************************************
@@ -297,9 +302,9 @@ no_context_switch:
 	/*
  	 * Reset the tpl_need_switch variable to NO_NEED_SWITCH
  	 */
-	ldr r12, [r5, #KS_KERN_PTR]						/* load the tpl_kern base address */
-	mov r4, #NO_NEED_SWITCH_NOR_SCHEDULE
-	strb r4, [r12, #TPL_KERN_OFFSET_NEED_SWITCH]
+	ldr r6, [r5, #KS_KERN_PTR]						/* load the tpl_kern base address */
+	movs r4, #NO_NEED_SWITCH_NOR_SCHEDULE
+	strb r4, [r6, #TPL_KERN_OFFSET_NEED_SWITCH]
 
 	/* __5__LEAVE_KERNEL
  	 * Leave kernel
@@ -316,10 +321,12 @@ no_context_switch:
 	 */
 	ldr r4, [sp, #KS_R4]
 	ldr r5, [sp, #KS_R5]
-	ldr lr, [sp, #KS_LR]
+	ldr r6, [sp, #KS_LR]
+	mov lr, r6
 
-	ldr r12, [sp, #KS_PROCESS_SP]
-	msr psp, r12
+	ldr r6, [sp, #KS_PROCESS_SP]
+	msr psp, r6
+	mov r6, r12 /* restore original r6 value from r12 */
 	add sp, sp, #KS_FOOTPRINT
 
 tpl_sc_handler_exit:

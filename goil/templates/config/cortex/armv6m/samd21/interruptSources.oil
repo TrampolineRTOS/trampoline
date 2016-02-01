@@ -1,0 +1,104 @@
+/*
+ * Interrupt sources for the SAMDxx micro-controller
+ */
+ENUM [
+  SysTick,
+  /* configurable interrupts */
+  PM_IRQ,          /* Power Manager  */
+  SYSCTRL_IRQ,     /* System Control */
+  WDT_IRQ,         /* Watchdog timer */
+  RTC_IRQ,         /* Real-Time timer */
+  EIC_IRQ {        /* External Interrupt Controller */
+    ENUM [
+      PA0 { #include <sensibility.oil> },
+      PA1 { #include <sensibility.oil> },
+      PA2 { #include <sensibility.oil> },
+      PA3 { #include <sensibility.oil> },
+      PA4 { #include <sensibility.oil> },
+      PA5 { #include <sensibility.oil> },
+      PA6 { #include <sensibility.oil> },
+      PA7 { #include <sensibility.oil> },
+      PA8 { #include <sensibility.oil> },
+      PA9 { #include <sensibility.oil> },
+      PA10 { #include <sensibility.oil> },
+      PA11 { #include <sensibility.oil> },
+      PA12 { #include <sensibility.oil> },
+      PA13 { #include <sensibility.oil> },
+      PA14 { #include <sensibility.oil> },
+      PA15 { #include <sensibility.oil> },
+      PA16 { #include <sensibility.oil> },
+      PA17 { #include <sensibility.oil> },
+      PA18 { #include <sensibility.oil> },
+      PA19 { #include <sensibility.oil> },
+      PA20 { #include <sensibility.oil> },
+      PA21 { #include <sensibility.oil> },
+      PA22 { #include <sensibility.oil> },
+      PA23 { #include <sensibility.oil> },
+      PA24 { #include <sensibility.oil> },
+      PA25 { #include <sensibility.oil> },
+      PA26 { #include <sensibility.oil> },
+      PA27 { #include <sensibility.oil> },
+      PA28 { #include <sensibility.oil> },
+      PA29 { #include <sensibility.oil> },
+      PA30 { #include <sensibility.oil> },
+      PA31 { #include <sensibility.oil> },
+   
+      PB0 { #include <sensibility.oil> },
+      PB1 { #include <sensibility.oil> },
+      PB2 { #include <sensibility.oil> },
+      PB3 { #include <sensibility.oil> },
+      PB4 { #include <sensibility.oil> },
+      PB5 { #include <sensibility.oil> },
+      PB6 { #include <sensibility.oil> },
+      PB7 { #include <sensibility.oil> },
+      PB8 { #include <sensibility.oil> },
+      PB9 { #include <sensibility.oil> },
+      PB10 { #include <sensibility.oil> },
+      PB11 { #include <sensibility.oil> },
+      PB12 { #include <sensibility.oil> },
+      PB13 { #include <sensibility.oil> },
+      PB14 { #include <sensibility.oil> },
+      PB15 { #include <sensibility.oil> },
+      PB16 { #include <sensibility.oil> },
+      PB17 { #include <sensibility.oil> },
+      PB18 { #include <sensibility.oil> },
+      PB19 { #include <sensibility.oil> },
+      PB20 { #include <sensibility.oil> },
+      PB21 { #include <sensibility.oil> },
+      PB22 { #include <sensibility.oil> },
+      PB23 { #include <sensibility.oil> },
+      PB24 { #include <sensibility.oil> },
+      PB25 { #include <sensibility.oil> },
+      PB26 { #include <sensibility.oil> },
+      PB27 { #include <sensibility.oil> },
+      PB28 { #include <sensibility.oil> },
+      PB29 { #include <sensibility.oil> },
+      PB30 { #include <sensibility.oil> },
+      PB31 { #include <sensibility.oil> }
+    ] PIN;
+  },
+  NVMCTRL_IRQ,         /* Non-Volatile Memory Controller */
+  DMAC_IRQ,            /* Direct Memory Access Controller */
+  USB_IRQ,             /* Universal Serial Bus */
+  EVSYS_IRQ,           /* Event System Interface */
+  SERCOM0_IRQ,         /* Serial Communication Interface 0 */
+  SERCOM1_IRQ,         /* Serial Communication Interface 1 */
+  SERCOM2_IRQ,         /* Serial Communication Interface 2 */
+  SERCOM3_IRQ,         /* Serial Communication Interface 3 */
+  SERCOM4_IRQ,         /* Serial Communication Interface 4 */
+  SERCOM5_IRQ,         /* Serial Communication Interface 5 */
+  TCC0_IRQ,            /* Timer Counter Control 0 */
+  TCC1_IRQ,            /* Timer Counter Control 1 */
+  TCC2_IRQ,            /* Timer Counter Control 2 */
+  TC3_IRQ,             /* Timer Basic Counter 3 */
+  TC4_IRQ,             /* Timer Basic Counter 4 */
+  TC5_IRQ,             /* Timer Basic Counter 5 */
+  TC6_IRQ,             /* Timer Basic Counter 6 */
+  TC7_IRQ,             /* Timer Basic Counter 7 */
+  ADC_IRQ,             /* Analog Digital Converter */
+  AC_IRQ,              /* Analog Comparator 0*/
+  DAC_IRQ,             /* Digital Analog Converter */
+  PTC_IRQ,             /* Peripheral Touch Controller */
+  I2S_IRQ,             /* Inter-IC Sound Interface */
+  AC1_IRQ              /* Analog Comparator 1*/
+] SOURCE;

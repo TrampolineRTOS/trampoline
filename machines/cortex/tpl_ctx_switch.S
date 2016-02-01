@@ -67,35 +67,40 @@
 	 * on the kernel stack so the actual value of some registers to save
 	 * are saved on the kernel stack.
 	 *
-	 * @param   r12 contains the pointer to the context pointers
+	 * @param   r6 contains the pointer to the context pointers
 	 */
 tpl_save_context:
-	ldr r12, [r12, #INT_CONTEXT]
+	ldr r6, [r6, #INT_CONTEXT]
 	/* <!DGAR> Don t forget to save caller SP from kernel stack (saved at the beginning of exception call) to context */
 	/*
 	 * setup the kernel stack stuff
 	 */
 	/* PSP */
 	ldr r4, [r5, #KS_PROCESS_SP]	/* Load process SP into r4 */
-	str r4, [r12, #CTX_PROCESS_SP]	/* and save it into context */
+	str r4, [r6, #CTX_PROCESS_SP]	/* and save it into context */
 	/* R4 */
 	ldr r4, [r5, #KS_R4]			/* Load R4 into r4 */
-	str r4, [r12, #CTX_GPR4]		/* and save it into context */
+	str r4, [r6, #CTX_GPR4]			/* and save it into context */
 	/* R5 */
 	ldr r4, [r5, #KS_R5]			/* Load R5 into r4 */
-	str r4, [r12, #CTX_GPR5]		/* and save it into context */
+	str r4, [r6, #CTX_GPR5]			/* and save it into context */
 	/* R6 */
-	str r6, [r12, #CTX_GPR6]
+	mov r4, r12						/* get back r6 from r12 ARMV6 restriction*/
+	str r4, [r6, #CTX_GPR6]
 	/* R7 */
-	str r7, [r12, #CTX_GPR7]
-	/* R8 */
-	str r8, [r12, #CTX_GPR8]
+	str r7, [r6, #CTX_GPR7]
+	/* R8 */						/*** start high register bank ***/
+	mov r4,r8
+	str r4, [r6, #CTX_GPR8]
 	/* R9 */
-	str r9, [r12, #CTX_GPR9]
+	mov r4,r9
+	str r4, [r6, #CTX_GPR9]
 	/* R10 */
-	str r10, [r12, #CTX_GPR10]
+	mov r4,r10
+	str r4, [r6, #CTX_GPR10]
 	/* R11 */
-	str r11, [r12, #CTX_GPR11]
+	mov r4,r11
+	str r4, [r6, #CTX_GPR11]
 	/* Save return value of service into process frame */
     bx lr
 
@@ -104,32 +109,37 @@ tpl_save_context:
 	 * to the registers and to the kernel stack
 	 * This function is run on the kernel stack
 	 *
-	 * @param   r12 contains the pointer to the context pointers
+	 * @param   r6 contains the pointer to the context pointers
 	 */
 tpl_load_context:
-	ldr r12, [r12, #INT_CONTEXT] /* Get the pointer to the integer context */
+	ldr r6, [r6, #INT_CONTEXT] /* Get the pointer to the integer context */
 	/*
 	 * setup the kernel stack stuff
 	 */
 	/* PSP */
-	ldr r4, [r12, #CTX_PROCESS_SP]	/* load process sp */
+	ldr r4, [r6, #CTX_PROCESS_SP]	/* load process sp */
 	str r4, [r5, #KS_PROCESS_SP]	/* and put it into kernel stack */
 	/* R4 */
-	ldr r4, [r12, #CTX_GPR4]		/* and save it into context */
+	ldr r4, [r6, #CTX_GPR4]			/* and save it into context */
 	str r4, [r5, #KS_R4]			/* Load R4 into r4 */
 	/* R5 */
-	ldr r4, [r12, #CTX_GPR5]		/* and save it into context */
+	ldr r4, [r6, #CTX_GPR5]			/* and save it into context */
 	str r4, [r5, #KS_R5]			/* Load R5 into r4 */
 	/* R6 */
-	ldr r6, [r12, #CTX_GPR6]
+	ldr r4, [r6, #CTX_GPR6]
+	mov r12, r4						/* r12 used to save r6 (ARMv6) */
 	/* R7 */
-	ldr r7, [r12, #CTX_GPR7]
-	/* R8 */
-	ldr r8, [r12, #CTX_GPR8]
+	ldr r7, [r6, #CTX_GPR7]
+	/* R8 */						/*** start high register bank ***/
+	mov r4,r8
+	ldr r4, [r6, #CTX_GPR8]
 	/* R9 */
-	ldr r9, [r12, #CTX_GPR9]
+	mov r4,r9
+	ldr r4, [r6, #CTX_GPR9]
 	/* R10 */
-	ldr r10, [r12, #CTX_GPR10]
+	mov r4,r10
+	ldr r4, [r6, #CTX_GPR10]
 	/* R11 */
-	ldr r11, [r12, #CTX_GPR11]
+	mov r4,r11
+	ldr r4, [r6, #CTX_GPR11]
 	bx lr
