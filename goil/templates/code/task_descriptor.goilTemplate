@@ -192,7 +192,7 @@ end if
   /* task priority                  */  % !task::PRIORITY %,
   /* task state                     */  %
 if task::AUTOSTART then
-  %AUTOSTART%
+  %PROC_AUTOSTART%
 else
   %PROC_SUSPENDED%
 end if 
