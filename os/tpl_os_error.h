@@ -1234,11 +1234,11 @@ tpl_service.parameters.id.ioc_id = (iocid);
  * @note checking is disabled when WITH_OS_EXTENDED == NO
  */
 #if WITH_OS_EXTENDED == YES
-# define CHECK_SUSPENDED_TASK_ERROR(task_id,result)                       \
-  if ((result == (tpl_status)E_OK) &&                                     \
-      (tpl_dyn_proc_table[task_id]->state == (tpl_proc_state)SUSPENDED))  \
-  {                                                                       \
-    result = (tpl_status)E_OS_STATE;                                      \
+# define CHECK_SUSPENDED_TASK_ERROR(task_id,result)                            \
+  if ((result == (tpl_status)E_OK) &&                                          \
+      (tpl_dyn_proc_table[task_id]->state == (tpl_proc_state)PROC_SUSPENDED))  \
+  {                                                                            \
+    result = (tpl_status)E_OS_STATE;                                           \
   }
 #else
 # define CHECK_SUSPENDED_TASK_ERROR(task_id,result)
