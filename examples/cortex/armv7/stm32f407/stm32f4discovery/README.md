@@ -21,17 +21,15 @@ https://launchpad.net/gcc-arm-embedded
 
 ### Program and debug
  
-You need [ stlink ] tool to program and debug with the st-link/v2 embedded debug tool interface.
+You need `stlink` tool to program and debug with the st-link/v2 embedded debug tool interface.
 
-[ stlink ] is a tool to communicate with the st-link/v2 in-circuit debugger.
-You get [ stlink ] from 
-https://github.com/texane/stlink
+`stlink` is a tool to communicate with the st-link/v2 in-circuit debugger.
+You get `stlink` from [github](https://github.com/texane/stlink).
 
 Read the documentation README form the Github repository.
 
-[ stlink ] needs the development version of libusb.
-For MAC OS X plateform you'll have to install it with BREW
-http://brew.sh
+`stlink` needs the development version of libusb.
+For MAC OS X plateform you'll have to install it with [BREW](http://brew.sh)
 
     > brew install libusb
 

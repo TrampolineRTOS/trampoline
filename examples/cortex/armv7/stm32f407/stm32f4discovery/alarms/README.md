@@ -15,14 +15,16 @@ then the alarm is canceled with CancelAlarm.
 This alarm "blink_alarm" will activate the task "blink" on expiration and start again.
 
 Leds are toggled by the following resources:
-- "blink" toggles GREEN led,
-- "isr_button" will toggle RED led,
-- "read_button" will toggle BLUE led.
+
+ * "blink" toggles GREEN led,
+ * "isr_button" will toggle RED led,
+ * "read_button" will toggle BLUE led.
 
 Have a look into "alarms.oil" file.
 
 The system is based scheduled with a 1ms SysTick "SystemCounter".
 
-Configure the application with
-goil --target=cortex/armv7/stm32f407/stm32f4discovery -v --templates=../../../../../../goil/templates/ alarms.oil
-
+Configure the application with:
+```
+goil --target=cortex/armv7/stm32f407/stm32f4discovery --templates=../../../../../../goil/templates/ alarms.oil
+```
