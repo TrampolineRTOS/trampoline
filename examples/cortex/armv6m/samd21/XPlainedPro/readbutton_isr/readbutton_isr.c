@@ -1,4 +1,6 @@
 #include "tpl_os.h"
+//the READY tasks state definition conflicts with registers definition (in sam.h)
+#undef READY
 #include "pinAccess.h"	//provided in machines/cortex/armv6m/samd21/utils
 #include "eic.h"		//provided in machines/cortex/armv6m/samd21/utils
 #include "pinMux.h"		//provided in machines/cortex/armv6m/samd21/utils

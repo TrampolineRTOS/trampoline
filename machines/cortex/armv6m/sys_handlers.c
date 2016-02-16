@@ -23,10 +23,8 @@
  * $URL$
  */
 
+#include "tpl_machine.h"
 #include "tpl_os.h"
-//#include "tpl_os_interrupt_kernel.h"
-//#include "sam.h"
-//#include "tpl_compiler.h"
 
 /******************************************************************************
  * Exception handlers.

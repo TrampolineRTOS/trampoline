@@ -1,4 +1,6 @@
 #include "tpl_os.h"
+//the READY tasks state definition conflicts with registers definition (in sam.h)
+#undef READY
 #include "sam.h"
 
 #define APP_Task_blink_START_SEC_CODE

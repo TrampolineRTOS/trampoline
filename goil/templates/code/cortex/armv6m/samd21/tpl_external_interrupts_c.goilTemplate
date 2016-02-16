@@ -22,6 +22,7 @@
 #include "pinAccess.h"
 #include "pinMux.h"
 #include "eic.h"
+#include "sam.h"
 
 %
 
@@ -203,42 +204,6 @@ if atLeastOneEIC then
   
 end if
 
-## Generate all the ClearFlag functions.
-#foreach src in USED_EXTI
-#before%
-#/*
-# * External Interrupt acknowledge functions
-# */
-#%
-#do
-#%
-#/*
-# * Interrupt acknowledge of % !KEY %
-# */
-#FUNC(void, OS_CODE) % !KEY %_ClearFlag(void)
-#{
-#  EXTI_ClearFlag(%
-#
-#  if exists src["PIN"] then
-#    %EXTI_Line% !usedPortPin[src["PIN"]]::NUMBER
-#  else
-#    let lineList := emptylist
-#    foreach pin in src do
-#      if typeof pin == @string then
-#        let lineList += "EXTI_Line".usedPortPin[pin]::NUMBER
-#      end if 
-#    end foreach
-#    foreach line in lineList
-#    do
-#      !line::VALUE
-#    between
-#      % | %
-#    end foreach
-#  end if
-#  
-#%);  
-#}%
-#end foreach
 %
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

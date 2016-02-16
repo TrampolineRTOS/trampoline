@@ -1,4 +1,4 @@
-# |=-----=[ Blink example ]=-----=|
+# Blink example
 
 ## Example
 This application is a simple periodic example which toggles the orange led of the board.

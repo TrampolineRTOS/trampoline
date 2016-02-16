@@ -27,7 +27,7 @@ You should have:
 Configure the application with: 
 
 ```
-goil --target=cortex/armv6m/samd21/XPlainedPro --templates=../../../../../../goil/templates/ read_button.oil
+goil --target=cortex/armv6m/samd21/XPlainedPro --templates=../../../../../../goil/templates/ readbutton.oil
 ```
 
 The `goil` compiler generates the `make.py` [python build script](https://github.com/TrampolineRTOS/trampoline/wiki/Application-Build-system). Then run the script:
@@ -39,7 +39,7 @@ The `goil` compiler generates the `make.py` [python build script](https://github
 The `blink_exe` should be generated. Then flash the board:
 
 ```
-openocd -f board/atmel_samd21_xplained_pro.cfg -c "program read_button_exe verify reset exit"
+openocd -f board/atmel_samd21_xplained_pro.cfg -c "program readbutton_exe verify reset exit"
 ```
 
 Note: There is no `make.py flash` at this date, because goil cannot escape the `"` (ticket #20).
