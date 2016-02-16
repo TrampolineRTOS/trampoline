@@ -63,7 +63,7 @@ FUNC(void, OS_CODE) StartOS(
   tpl_start_os(mode);
   /*
    * tpl_start_os does not return since the idle task will run
-   * if no other task is PROC_AUTOSTART except if it is called from
+   * if no other task is AUTOSTART except if it is called from
    * within a task or an ISR of (which is forbidden).
    */
 }

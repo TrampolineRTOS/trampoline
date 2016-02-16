@@ -95,22 +95,22 @@ typedef uint8 tpl_os_state;
 #define OS_UNKNOWN  4
 
 /**
- * @def PROC_AUTOSTART
+ * @def AUTOSTART
  *
  * Task is automatically activated at system startup
  *
  * @see #tpl_exec_state
  */
-#define PROC_AUTOSTART       0x4
+#define AUTOSTART       0x4
 
 /**
- * @def PROC_READY_AND_NEW
+ * @def READY_AND_NEW
  *
  * Task is ready and should be initialized when it get the CPU.
  *
  * @see #tpl_exec_state
  */
-#define PROC_READY_AND_NEW   0x5
+#define READY_AND_NEW   0x5
 
 /**
  * @typedef tpl_exec_obj_type
@@ -230,7 +230,7 @@ struct TPL_PROC {
   VAR(tpl_priority, TYPEDEF)
     priority;           /**< current priority                     */
   VAR(tpl_proc_state, TYPEDEF)
-    state;              /**< state (PROC_READY, PROC_RUNNING, ...)*/
+    state;              /**< state (READY, RUNNING, ...)*/
 };
 
 /**
@@ -514,7 +514,7 @@ FUNC(void, OS_CODE) tpl_start_scheduling(CORE_ID_OR_VOID(core_id));
 /**
  * @internal
  *
- * Starts a highest priority PROC_READY process
+ * Starts a highest priority READY process
  */
 FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id));
 
@@ -548,14 +548,14 @@ FUNC(void, OS_CODE) tpl_release(CONST(tpl_task_id, AUTOMATIC) task_id);
 /**
  * @internal
  *
- * Get the highest priority PROC_READY process from the queue
+ * Get the highest priority READY process from the queue
  */
 FUNC(tpl_heap_entry, OS_CODE) tpl_front_proc(CORE_ID_OR_VOID(core_id));
 
 /**
  * @internal
  *
- * Terminate the PROC_RUNNING process
+ * Terminate the RUNNING process
  */
 FUNC(void, OS_CODE) tpl_terminate(void);
 

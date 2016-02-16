@@ -1236,7 +1236,7 @@ tpl_service.parameters.id.ioc_id = (iocid);
 #if WITH_OS_EXTENDED == YES
 # define CHECK_SUSPENDED_TASK_ERROR(task_id,result)                            \
   if ((result == (tpl_status)E_OK) &&                                          \
-      (tpl_dyn_proc_table[task_id]->state == (tpl_proc_state)PROC_SUSPENDED))  \
+      (tpl_dyn_proc_table[task_id]->state == (tpl_proc_state)SUSPENDED))  \
   {                                                                            \
     result = (tpl_status)E_OS_STATE;                                           \
   }

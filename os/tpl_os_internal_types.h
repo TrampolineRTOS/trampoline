@@ -104,13 +104,13 @@ typedef uint8 tpl_status;
  * See page 16+ of the OSEK/VDX 2.2.2 spec
  *
  * Value can be one of :
- * - #PROC_AUTOSTART
- * - #PROC_RUNNING
- * - #PROC_READY
- * - #PROC_SUSPENDED
- * - #PROC_WAITING (only for ECC1 or ECC2 conformance classes)
+ * - #AUTOSTART
+ * - #RUNNING
+ * - #READY
+ * - #SUSPENDED
+ * - #WAITING (only for ECC1 or ECC2 conformance classes)
  * but also :
- * - #PROC_READY_AND_NEW that means a task is in the ready list before running
+ * - #READY_AND_NEW that means a task is in the ready list before running
  *   for the first time and its context needs to be initialized.
  */
 typedef uint8 tpl_proc_state;
