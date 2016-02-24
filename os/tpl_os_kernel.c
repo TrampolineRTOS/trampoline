@@ -595,8 +595,8 @@ FUNC(void, OS_CODE) tpl_preempt(CORE_ID_OR_VOID(core_id))
      */
     DOW_DO(print_kern("inside tpl_preempt"));
 
-    /* The current elected task becomes READY */
-    TPL_KERN_REF(kern).elected->state = (tpl_proc_state)READY;
+    /* The current elected task becomes PROC_READY */
+    TPL_KERN_REF(kern).elected->state = (tpl_proc_state)PROC_READY;
 
     /* And put in the ready list */
     tpl_put_preempted_proc((tpl_proc_id)TPL_KERN_REF(kern).elected_id);
@@ -622,7 +622,7 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
 
   DOW_DO(print_kern("before tpl_run_elected"));
 
-  if ((save) && (TPL_KERN_REF(kern).running->state != WAITING))
+  if ((save) && (TPL_KERN_REF(kern).running->state != PROC_WAITING))
   {
     /*
      * The running task is preempted, so it is time to call the
@@ -638,8 +638,8 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
       proc_name_table[TPL_KERN_REF(kern).running_id])
     );
 
-    /* The current running task becomes READY */
-    TPL_KERN_REF(kern).running->state = (tpl_proc_state)READY;
+    /* The current running task becomes PROC_READY */
+    TPL_KERN_REF(kern).running->state = (tpl_proc_state)PROC_READY;
 
     /* And put in the ready list */
     tpl_put_preempted_proc((tpl_proc_id)TPL_KERN_REF(kern).running_id);
@@ -691,7 +691,7 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
 /**
  * @internal
  *
- * Start the highest priority READY process
+ * Start the highest priority PROC_READY process
  */
 FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
 {
@@ -720,7 +720,7 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
   TPL_KERN_REF(kern).elected = tpl_dyn_proc_table[proc.id];
   TPL_KERN_REF(kern).s_elected = tpl_stat_proc_table[proc.id];
 
-  if (TPL_KERN_REF(kern).elected->state == READY_AND_NEW)
+  if (TPL_KERN_REF(kern).elected->state == PROC_READY_AND_NEW)
   {
     /*
      * the object has not be preempted. So its
@@ -730,7 +730,7 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
     tpl_init_proc(proc.id);
     tpl_dyn_proc_table[proc.id]->priority = proc.key;
 #if NUMBER_OF_CORES > 1
-    TPL_KERN_REF(kern).elected->state = (tpl_proc_state)READY;
+    TPL_KERN_REF(kern).elected->state = (tpl_proc_state)PROC_READY;
 #endif
   }
 
@@ -762,7 +762,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(CORE_ID_OR_VOID(core_id))
 
   if ((READY_LIST(ready_list)[1].key) >
       (tpl_dyn_proc_table[TPL_KERN_REF(kern).elected_id]->priority))
-  {
+        {
     /* Preempts the RUNNING task */
     tpl_preempt(CORE_ID_OR_NOTHING(core_id));
     /* Starts the highest priority READY task */
@@ -803,7 +803,7 @@ FUNC(void, OS_CODE) tpl_terminate(void)
   CALL_POST_TASK_HOOK()
 
   /*
-   * the task loses the CPU because it has been put in the WAITING or
+   * the task loses the CPU because it has been put in the PROC_WAITING or
    * in the DYING state, its internal resource is released.
    */
   tpl_release_internal_resource((tpl_proc_id)TPL_KERN_REF(kern).running_id);
@@ -817,7 +817,7 @@ FUNC(void, OS_CODE) tpl_terminate(void)
      * way when the next instance will be prepared to run it will
      * be initialized.
      */
-    TPL_KERN_REF(kern).running->state = READY_AND_NEW;
+    TPL_KERN_REF(kern).running->state = PROC_READY_AND_NEW;
 
 #if EXTENDED_TASK_COUNT > 0
     /*  if the object is an extended task, init the events          */
@@ -834,9 +834,9 @@ FUNC(void, OS_CODE) tpl_terminate(void)
   {
     /*
      * there is no instance of the dying running object in the ready
-     * list. So it is put in the SUSPENDED state.
+     * list. So it is put in the PROC_SUSPENDED state.
      */
-    TPL_KERN_REF(kern).running->state = SUSPENDED;
+    TPL_KERN_REF(kern).running->state = PROC_SUSPENDED;
   }
 
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
@@ -877,9 +877,9 @@ FUNC(void, OS_CODE) tpl_block(void)
    */
   CALL_POST_TASK_HOOK()
 
-  /* the task goes in the WAITING state */
+  /* the task goes in the PROC_WAITING state */
   TRACE_TASK_WAIT((tpl_proc_id)TPL_KERN_REF(kern).running_id)
-  TPL_KERN_REF(kern).running->state = WAITING;
+  TPL_KERN_REF(kern).running->state = PROC_WAITING;
 
   /* The internal resource is released. */
   tpl_release_internal_resource((tpl_proc_id)TPL_KERN_REF(kern).running_id);
@@ -912,7 +912,7 @@ FUNC(void, OS_CODE) tpl_start_scheduling(CORE_ID_OR_VOID(core_id))
  * notification, schedule table).
  *
  * the activation count is incremented
- * if the task is in the SUSPENDED state, it is moved
+ * if the task is in the PROC_SUSPENDED state, it is moved
  * to the task list
  *
  * @param task_id   the identifier of the task
@@ -945,10 +945,10 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
         GET_PROC_CORE_ID(task_id, core_id)
 
         /*  the initialization is postponed to the time it will
-            get the CPU as indicated by READY_AND_NEW state             */
+            get the CPU as indicated by PROC_READY_AND_NEW state             */
         TRACE_TASK_ACTIVATE(task_id)
 
-        task->state = (tpl_proc_state)READY_AND_NEW;
+        task->state = (tpl_proc_state)PROC_READY_AND_NEW;
 
 #if EXTENDED_TASK_COUNT > 0
         /*  if the object is an extended task, init the events          */
@@ -992,8 +992,8 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
 /**
  * @internal
  *
- * This function releases a task which is in the WAITING state
- * The task become READY and is put in the ready list.
+ * This function releases a task which is in the PROC_WAITING state
+ * The task become PROC_READY and is put in the ready list.
  * This function is used by tpl_set_event
  *
  * @param task_id           id of the task
@@ -1002,9 +1002,9 @@ FUNC(void, OS_CODE) tpl_release(CONST(tpl_task_id, AUTOMATIC) task_id)
 {
   GET_PROC_CORE_ID(task_id, core_id)
   CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) task = tpl_dyn_proc_table[task_id];
-  /*  set the state to READY  */
-  task->state = (tpl_proc_state)READY;
-  /*  put the task in the READY list          */
+  /*  set the state to PROC_READY  */
+  task->state = (tpl_proc_state)PROC_READY;
+  /*  put the task in the PROC_READY list          */
   tpl_put_new_proc(task_id);
   /*  notify a scheduling needs to be done    */
   TPL_KERN(core_id).need_schedule = TRUE;
@@ -1030,7 +1030,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_event(
   CONSTP2VAR(tpl_task_events, AUTOMATIC, OS_APPL_DATA) events =
     tpl_task_events_table[task_id];
 
-  if (task->state != (tpl_proc_state)SUSPENDED)
+  if (task->state != (tpl_proc_state)PROC_SUSPENDED)
   {
     /*  merge the incoming event mask with the old one  */
     events->evt_set |= incoming_event;
@@ -1041,8 +1041,8 @@ FUNC(tpl_status, OS_CODE) tpl_set_event(
       /*  the task was waiting for at least one of the
           event set the wait mask is reset to 0         */
       events->evt_wait = (tpl_event_mask)0;
-      /*  anyway check it is in the WAITING state       */
-      if (task->state == (tpl_proc_state)WAITING)
+      /*  anyway check it is in the PROC_WAITING state       */
+      if (task->state == (tpl_proc_state)PROC_WAITING)
       {
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
         /* a new instance is about to be activated: we need the agreement
