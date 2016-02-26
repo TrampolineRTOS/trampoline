@@ -136,7 +136,7 @@ FUNC(void, OS_CODE) tpl_stop_pit(
   /* stops the channel and disable interrupts */
   *PIT_TCTRL(pit) = (*PIT_TCTRL(pit)) & ~(PIT_TCTRL_TEN | PIT_TCTRL_TIE);
   /* clear interrupt flag */
-  *PIT_TFLG(TPL_WDG_TIMER) = PIT_TFLG_TIF;
+  *PIT_TFLG(pit) = PIT_TFLG_TIF;
 }
 
 
