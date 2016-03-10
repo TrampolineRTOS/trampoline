@@ -762,7 +762,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(CORE_ID_OR_VOID(core_id))
 
   if ((READY_LIST(ready_list)[1].key) >
       (tpl_dyn_proc_table[TPL_KERN_REF(kern).elected_id]->priority))
-  {
+        {
     /* Preempts the RUNNING task */
     tpl_preempt(CORE_ID_OR_NOTHING(core_id));
     /* Starts the highest priority READY task */
