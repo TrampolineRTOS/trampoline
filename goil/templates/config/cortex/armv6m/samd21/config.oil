@@ -5,12 +5,6 @@ CPU samd21 {
        COMMONFLAGS = "-D__SAMD21J18A__"; //processor def.
     };
     
-    //LIBRARY gpt {
-    //  PATH = "cortex/armv7/stm32f407/STM32F4xx_StdPeriph_Driver/src";
-    //  CHEADER = "stm32f4xx_tim.h";
-    //  CFILE = "stm32f4xx_tim.c";
-    //};
-  
     INTERRUPT_COUNT nb_it {
       IT_TABLE_SIZE = 44;
     };
