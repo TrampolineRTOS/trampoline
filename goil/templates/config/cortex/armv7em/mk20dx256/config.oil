@@ -6,12 +6,12 @@
 
 CPU mk20dx256 {
 
-  STDLIBVARIANT cortex_armv7_mk20dx256 {
+  STDLIBVARIANT cortex_armv7em_mk20dx256 {
     KIND = "armv7e-m";
   };
   
-  PLATFORM_FILES cortex_armv7_mk20dx256 {
-    PATH = "cortex/armv7/mk20dx256";
+  PLATFORM_FILES cortex_armv7em_mk20dx256 {
+    PATH = "cortex/armv7em/mk20dx256";
     CFILE = "tpl_machine_mk20dx256.c";
     CFILE = "handlers_mk20dx256.c";
     CFILE = "startup_mk20dx256.c";
@@ -19,19 +19,19 @@ CPU mk20dx256 {
   };
 
   LIBRARY pit {
-    PATH = "cortex/armv7/mk20dx256/libraries/pit";
+    PATH = "cortex/armv7em/mk20dx256/libraries/pit";
     CHEADER = "pit_mk20dx256.h";
     CFILE = "pit_mk20dx256.c";
   };
   
   LIBRARY ftm {
-    PATH = "cortex/armv7/mk20dx256/libraries/ftm";
+    PATH = "cortex/armv7em/mk20dx256/libraries/ftm";
     CHEADER = "ftm_mk20dx256.h";
     CFILE = "ftm_mk20dx256.c";
   };
   
   LIBRARY port {
-    PATH = "cortex/armv7/mk20dx256/libraries/port";
+    PATH = "cortex/armv7em/mk20dx256/libraries/port";
     CHEADER = "port_mk20dx256.h";
   };
     
