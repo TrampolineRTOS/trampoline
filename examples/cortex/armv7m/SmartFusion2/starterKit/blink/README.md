@@ -15,5 +15,5 @@ This alarm has a 250ms (CYCLETIME) period.
 Configure the application with
 
 `
-goil --target=cortex/armv7/SmartFusion2/starterKit --templates=../../../../../../goil/templates/ blink.oil
+goil --target=cortex/armv7m/SmartFusion2/starterKit --templates=../../../../../../goil/templates/ blink.oil
 `

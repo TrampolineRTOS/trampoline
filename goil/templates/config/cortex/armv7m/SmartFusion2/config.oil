@@ -1,10 +1,10 @@
 CPU SmartFusion2 {
-    STDLIBVARIANT cortex_armv7_sf2 {
-      KIND = "armv7e-m";
+    STDLIBVARIANT cortex_armv7m_sf2 {
+      KIND = "armv7-m";
     };
     
 //    LIBRARY gpt {
-//      PATH = "cortex/armv7/stm32f407/STM32F4xx_StdPeriph_Driver/src";
+//      PATH = "cortex/armv7m/stm32f407/STM32F4xx_StdPeriph_Driver/src";
 //      CHEADER = "stm32f4xx_tim.h";
 //      CFILE = "stm32f4xx_tim.c";
 //    };
@@ -96,7 +96,7 @@ CPU SmartFusion2 {
     INTERRUPT GPIO31_IRQ            { VECT = 97; VECTOR_TYPE = HANDLER { NAME = "GPIO31_IRQHandler"; }; };
     
 //  PLATFORM_FILES stm32f407 {
-//    PATH = "cortex/armv7/stm32f407";
+//    PATH = "cortex/armv7m/stm32f407";
 //    CFILE = "tpl_memory_protection.c";
 //    CFILE = "tpl_machine_stm32f407.c";
 //    CFILE = "startup_stm32f4xx.c";
@@ -105,15 +105,15 @@ CPU SmartFusion2 {
 //  };
 
 //  PLATFORM_FILES stm32f407_std_libs_includes {
-//    PATH = "cortex/armv7/stm32f407/STM32F4xx_StdPeriph_Driver/inc";
+//    PATH = "cortex/armv7m/stm32f407/STM32F4xx_StdPeriph_Driver/inc";
 //  };
 
 //  PLATFORM_FILES stm32f407_cmsis {
-//    PATH = "cortex/armv7/stm32f407/CMSIS-ST/Device/ST/STM32F4xx/Include";
+//    PATH = "cortex/armv7m/stm32f407/CMSIS-ST/Device/ST/STM32F4xx/Include";
 //  };
 
 //  PLATFORM_FILES stm32f407_std_libs_src {
-//    PATH = "cortex/armv7/stm32f407/STM32F4xx_StdPeriph_Driver/src";
+//    PATH = "cortex/armv7m/stm32f407/STM32F4xx_StdPeriph_Driver/src";
 //    CFILE = "stm32f4xx_gpio.c";
 //    CFILE = "stm32f4xx_rcc.c";
 //    CFILE = "stm32f4xx_exti.c";
