@@ -1,0 +1,740 @@
+
+Discarded input sections
+
+ .text          0x0000000000000000        0x0 build/os/tpl_os_kernel.c.o
+ .data          0x0000000000000000        0x0 build/os/tpl_os_kernel.c.o
+ .bss           0x0000000000000000        0x0 build/os/tpl_os_kernel.c.o
+ .osVar         0x0000000000000000        0x3 build/os/tpl_os_kernel.c.o
+ .text          0x0000000000000000        0x0 build/os/tpl_os_timeobj_kernel.c.o
+ .data          0x0000000000000000        0x0 build/os/tpl_os_timeobj_kernel.c.o
+ .bss           0x0000000000000000        0x0 build/os/tpl_os_timeobj_kernel.c.o
+ .text          0x0000000000000000        0x0 build/os/tpl_os_action.c.o
+ .data          0x0000000000000000        0x0 build/os/tpl_os_action.c.o
+ .bss           0x0000000000000000        0x0 build/os/tpl_os_action.c.o
+ .text          0x0000000000000000        0x0 build/os/tpl_os_error.c.o
+ .data          0x0000000000000000        0x0 build/os/tpl_os_error.c.o
+ .bss           0x0000000000000000        0x0 build/os/tpl_os_error.c.o
+ .debug_info    0x0000000000000000       0x5d build/os/tpl_os_error.c.o
+ .debug_abbrev  0x0000000000000000       0x1b build/os/tpl_os_error.c.o
+ .debug_aranges
+                0x0000000000000000       0x18 build/os/tpl_os_error.c.o
+ .debug_line    0x0000000000000000       0x1d build/os/tpl_os_error.c.o
+ .debug_str     0x0000000000000000      0x1ba build/os/tpl_os_error.c.o
+ .comment       0x0000000000000000       0x6f build/os/tpl_os_error.c.o
+ .ARM.attributes
+                0x0000000000000000       0x33 build/os/tpl_os_error.c.o
+ .text          0x0000000000000000        0x0 build/os/tpl_os_os_kernel.c.o
+ .data          0x0000000000000000        0x0 build/os/tpl_os_os_kernel.c.o
+ .bss           0x0000000000000000        0x0 build/os/tpl_os_os_kernel.c.o
+ .text          0x0000000000000000        0x0 build/os/tpl_os_os.c.o
+ .data          0x0000000000000000        0x0 build/os/tpl_os_os.c.o
+ .bss           0x0000000000000000        0x0 build/os/tpl_os_os.c.o
+ .text          0x0000000000000000        0x0 build/os/tpl_os_interrupt_kernel.c.o
+ .data          0x0000000000000000        0x0 build/os/tpl_os_interrupt_kernel.c.o
+ .bss           0x0000000000000000        0x0 build/os/tpl_os_interrupt_kernel.c.o
+ .text          0x0000000000000000        0x0 build/os/tpl_os_task_kernel.c.o
+ .data          0x0000000000000000        0x0 build/os/tpl_os_task_kernel.c.o
+ .bss           0x0000000000000000        0x0 build/os/tpl_os_task_kernel.c.o
+ .text          0x0000000000000000        0x0 build/os/tpl_os_resource_kernel.c.o
+ .data          0x0000000000000000        0x0 build/os/tpl_os_resource_kernel.c.o
+ .bss           0x0000000000000000        0x0 build/os/tpl_os_resource_kernel.c.o
+ .osConst       0x0000000000000000        0x2 build/os/tpl_os_resource_kernel.c.o
+ .text          0x0000000000000000        0x0 build/os/tpl_os_alarm_kernel.c.o
+ .data          0x0000000000000000        0x0 build/os/tpl_os_alarm_kernel.c.o
+ .bss           0x0000000000000000        0x0 build/os/tpl_os_alarm_kernel.c.o
+ .osConst       0x0000000000000000        0x1 build/os/tpl_os_alarm_kernel.c.o
+ .text          0x0000000000000000        0x0 build/blink.c.o
+ .data          0x0000000000000000        0x0 build/blink.c.o
+ .bss           0x0000000000000000        0x0 build/blink.c.o
+ .text          0x0000000000000000        0x0 build/blink/tpl_app_config.c.o
+ .data          0x0000000000000000        0x0 build/blink/tpl_app_config.c.o
+ .bss           0x0000000000000000        0x0 build/blink/tpl_app_config.c.o
+ .rodata        0x0000000000000000        0xf build/blink/tpl_app_config.c.o
+ .osApiConst    0x0000000000000000       0x18 build/blink/tpl_app_config.c.o
+ .rodata.std    0x0000000000000000        0x1 build/blink/tpl_app_config.c.o
+ .text          0x0000000000000000        0x0 build/blink/tpl_dispatch_table.c.o
+ .data          0x0000000000000000        0x0 build/blink/tpl_dispatch_table.c.o
+ .bss           0x0000000000000000        0x0 build/blink/tpl_dispatch_table.c.o
+ .text          0x0000000000000000        0x0 build/blink/tpl_invoque.S.o
+ .data          0x0000000000000000        0x0 build/blink/tpl_invoque.S.o
+ .bss           0x0000000000000000        0x0 build/blink/tpl_invoque.S.o
+ .text          0x0000000000000000        0x0 build/blink/tpl_primary_irq.S.o
+ .data          0x0000000000000000        0x0 build/blink/tpl_primary_irq.S.o
+ .bss           0x0000000000000000        0x0 build/blink/tpl_primary_irq.S.o
+ .osVar         0x0000000000000000        0x0 build/blink/tpl_primary_irq.S.o
+ .text          0x0000000000000000        0x0 build/blink/tpl_vectors.c.o
+ .data          0x0000000000000000        0x0 build/blink/tpl_vectors.c.o
+ .bss           0x0000000000000000        0x0 build/blink/tpl_vectors.c.o
+ .text          0x0000000000000000        0x0 build/blink/tpl_external_interrupts.c.o
+ .data          0x0000000000000000        0x0 build/blink/tpl_external_interrupts.c.o
+ .bss           0x0000000000000000        0x0 build/blink/tpl_external_interrupts.c.o
+ .debug_line    0x0000000000000000        0x0 build/blink/tpl_external_interrupts.c.o
+ .debug_str     0x0000000000000000      0x136 build/blink/tpl_external_interrupts.c.o
+ .comment       0x0000000000000000       0x6f build/blink/tpl_external_interrupts.c.o
+ .ARM.attributes
+                0x0000000000000000       0x33 build/blink/tpl_external_interrupts.c.o
+ .text          0x0000000000000000        0x0 build/machines/cortex/tpl_machine_cortex.c.o
+ .data          0x0000000000000000        0x0 build/machines/cortex/tpl_machine_cortex.c.o
+ .bss           0x0000000000000000        0x0 build/machines/cortex/tpl_machine_cortex.c.o
+ .text          0x0000000000000000        0x0 build/machines/cortex/tpl_system_call.S.o
+ .data          0x0000000000000000        0x0 build/machines/cortex/tpl_system_call.S.o
+ .bss           0x0000000000000000        0x0 build/machines/cortex/tpl_system_call.S.o
+ .osVar         0x0000000000000000        0x0 build/machines/cortex/tpl_system_call.S.o
+ .data          0x0000000000000000        0x0 build/machines/cortex/tpl_ctx_switch.S.o
+ .bss           0x0000000000000000        0x0 build/machines/cortex/tpl_ctx_switch.S.o
+ .data          0x0000000000000000        0x0 build/machines/cortex/tpl_startup.S.o
+ .bss           0x0000000000000000        0x0 build/machines/cortex/tpl_startup.S.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+VECTOR           0x0000000008000000 0x0000000000000188 xr
+FLASH            0x0000000008000188 0x000000000000fe78 xr
+RAM              0x0000000020000000 0x0000000000030000 xrw
+MEMORY_B1        0x0000000060000000 0x0000000000000000 xr
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+LOAD build/os/tpl_os_kernel.c.o
+LOAD build/os/tpl_os_timeobj_kernel.c.o
+LOAD build/os/tpl_os_action.c.o
+LOAD build/os/tpl_os_error.c.o
+LOAD build/os/tpl_os_os_kernel.c.o
+LOAD build/os/tpl_os_os.c.o
+LOAD build/os/tpl_os_interrupt_kernel.c.o
+LOAD build/os/tpl_os_task_kernel.c.o
+LOAD build/os/tpl_os_resource_kernel.c.o
+LOAD build/os/tpl_os_alarm_kernel.c.o
+LOAD build/blink.c.o
+LOAD build/blink/tpl_app_config.c.o
+LOAD build/blink/tpl_dispatch_table.c.o
+LOAD build/blink/tpl_invoque.S.o
+LOAD build/blink/tpl_primary_irq.S.o
+LOAD build/blink/tpl_vectors.c.o
+LOAD build/blink/tpl_external_interrupts.c.o
+LOAD build/machines/cortex/tpl_machine_cortex.c.o
+LOAD build/machines/cortex/tpl_system_call.S.o
+LOAD build/machines/cortex/tpl_ctx_switch.S.o
+LOAD build/machines/cortex/tpl_startup.S.o
+                0x0000000020020000                _estack = 0x20020000
+                0x0000000000000000                _Min_Heap_Size = 0x0
+                0x0000000000000400                _Min_Stack_Size = 0x400
+
+.isr_vector     0x0000000008000000      0x188
+                0x0000000008000000                . = ALIGN (0x4)
+ *(.isr_vector)
+ .isr_vector    0x0000000008000000      0x188 build/blink/tpl_vectors.c.o
+                0x0000000008000000                tpl_it_vectors
+                0x0000000008000188                . = ALIGN (0x4)
+                0x0000000008000188                . = ALIGN (0x4)
+
+ostext          0x0000000008000188     0x1b70
+ *(.SC_handler)
+ *(.EI_handler)
+ *(.osCode)
+ .osCode        0x0000000008000188      0x838 build/os/tpl_os_kernel.c.o
+                0x0000000008000188                tpl_current_os_state
+                0x00000000080001dc                tpl_schedule_from_running
+                0x0000000008000224                tpl_start_scheduling
+                0x000000000800023c                tpl_start
+                0x00000000080002a4                tpl_run_elected
+                0x0000000008000320                tpl_block
+                0x000000000800034c                tpl_release
+                0x0000000008000388                tpl_front_proc
+                0x00000000080003b4                tpl_terminate
+                0x00000000080003ec                tpl_init_proc
+                0x0000000008000420                tpl_put_preempted_proc
+                0x0000000008000480                tpl_put_new_proc
+                0x00000000080004f8                tpl_init_os
+                0x000000000800059c                tpl_get_internal_resource
+                0x0000000008000610                tpl_release_internal_resource
+                0x0000000008000660                tpl_call_terminate_task_service
+                0x0000000008000698                tpl_call_terminate_isr2_service
+                0x00000000080006e0                tpl_activate_task
+                0x0000000008000758                tpl_set_event
+                0x0000000008000778                tpl_compare_entries
+                0x00000000080007f8                tpl_bubble_up
+                0x0000000008000878                tpl_bubble_down
+                0x000000000800092c                tpl_remove_front_proc
+                0x0000000008000990                tpl_preempt
+ .osCode        0x00000000080009c0      0x2f4 build/os/tpl_os_timeobj_kernel.c.o
+                0x00000000080009c0                tpl_enable_counters
+                0x00000000080009d8                tpl_insert_time_obj
+                0x0000000008000ab8                tpl_remove_time_obj
+                0x0000000008000b2c                tpl_counter_tick
+ .osCode        0x0000000008000cb4       0x3c build/os/tpl_os_action.c.o
+                0x0000000008000cb4                tpl_action_callback
+                0x0000000008000ccc                tpl_action_activate_task
+ .osCode        0x0000000008000cf0       0x94 build/os/tpl_os_os_kernel.c.o
+                0x0000000008000cf0                tpl_get_active_application_mode_service
+                0x0000000008000d20                tpl_start_os_service
+                0x0000000008000d6c                tpl_shutdown_os_service
+ .osCode        0x0000000008000d84      0x1e4 build/os/tpl_os_interrupt_kernel.c.o
+                0x0000000008000d84                tpl_get_interrupt_lock_status
+                0x0000000008000dc4                tpl_reset_interrupt_lock_status
+                0x0000000008000e00                tpl_terminate_isr2_service
+                0x0000000008000e44                tpl_null_it
+                0x0000000008000e58                tpl_enable_all_interrupts_service
+                0x0000000008000e78                tpl_disable_all_interrupts_service
+                0x0000000008000ea8                tpl_resume_all_interrupts_service
+                0x0000000008000ee0                tpl_suspend_all_interrupts_service
+                0x0000000008000f08                tpl_resume_os_interrupts_service
+                0x0000000008000f40                tpl_suspend_os_interrupts_service
+ .osCode        0x0000000008000f68      0x2b8 build/os/tpl_os_task_kernel.c.o
+                0x0000000008000f68                tpl_activate_task_service
+                0x0000000008000fcc                tpl_terminate_task_service
+                0x000000000800103c                tpl_chain_task_service
+                0x00000000080010ec                tpl_schedule_service
+                0x000000000800116c                tpl_get_task_id_service
+                0x00000000080011bc                tpl_get_task_state_service
+ .osCode        0x0000000008001220      0x1e8 build/os/tpl_os_resource_kernel.c.o
+                0x0000000008001220                tpl_release_all_resources
+                0x000000000800127c                tpl_get_resource_service
+                0x0000000008001358                tpl_release_resource_service
+ .osCode        0x0000000008001408      0x344 build/os/tpl_os_alarm_kernel.c.o
+                0x0000000008001408                tpl_raise_alarm
+                0x000000000800142c                tpl_get_alarm_base_service
+                0x000000000800149c                tpl_get_alarm_service
+                0x0000000008001528                tpl_set_rel_alarm_service
+                0x000000000800161c                tpl_set_abs_alarm_service
+                0x00000000080016e8                tpl_cancel_alarm_service
+ .osCode        0x000000000800174c       0x40 build/blink/tpl_app_config.c.o
+                0x000000000800174c                tpl_tick_SysTick
+                0x0000000008001780                SysTick_Handler
+ .osCode        0x000000000800178c       0x9c build/blink/tpl_primary_irq.S.o
+                0x00000000080017b0                tpl_primary_irq_handler_SysTick
+ .osCode        0x0000000008001828      0x180 build/machines/cortex/tpl_machine_cortex.c.o
+                0x0000000008001828                tpl_init_context
+                0x0000000008001908                tpl_disable_interrupts
+                0x0000000008001918                tpl_enable_interrupts
+                0x0000000008001928                tpl_get_task_lock
+                0x0000000008001934                tpl_release_task_lock
+                0x0000000008001940                tpl_init_machine
+                0x0000000008001950                tpl_shutdown
+                0x000000000800195c                tpl_init_machine_generic
+                0x0000000008001968                tpl_init_machine_specific
+                0x000000000800198c                tpl_check_stack_footprint
+ .osCode        0x00000000080019a8       0xac build/machines/cortex/tpl_system_call.S.o
+                0x00000000080019a8                info_stack_pointer
+                0x00000000080019c0                tpl_primary_syscall_handler
+ *(.osApiCode)
+ .osApiCode     0x0000000008001a54       0x2c build/os/tpl_os_os.c.o
+                0x0000000008001a54                StartOS
+ .osApiCode     0x0000000008001a80      0x278 build/blink/tpl_invoque.S.o
+                0x0000000008001a80                GetActiveApplicationMode
+                0x0000000008001a9a                tpl_start_os
+                0x0000000008001ab4                ShutdownOS
+                0x0000000008001ace                EnableAllInterrupts
+                0x0000000008001ae8                DisableAllInterrupts
+                0x0000000008001b02                ResumeAllInterrupts
+                0x0000000008001b1c                SuspendAllInterrupts
+                0x0000000008001b36                ResumeOSInterrupts
+                0x0000000008001b50                SuspendOSInterrupts
+                0x0000000008001b6a                CallTerminateISR2
+                0x0000000008001b84                ActivateTask
+                0x0000000008001b9e                TerminateTask
+                0x0000000008001bb8                ChainTask
+                0x0000000008001bd2                Schedule
+                0x0000000008001bec                GetTaskID
+                0x0000000008001c06                GetTaskState
+                0x0000000008001c20                CallTerminateTask
+                0x0000000008001c3a                GetResource
+                0x0000000008001c54                ReleaseResource
+                0x0000000008001c6e                GetAlarmBase
+                0x0000000008001c88                GetAlarm
+                0x0000000008001ca2                SetRelAlarm
+                0x0000000008001cbc                SetAbsAlarm
+                0x0000000008001cd6                CancelAlarm
+ *(.appCommonCode)
+                0x0000000008001cf8                . = ALIGN (0x4)
+
+osconst         0x0000000008001cf8       0xc0
+ *(.osConst)
+ .osConst       0x0000000008001cf8        0x2 build/os/tpl_os_kernel.c.o
+                0x0000000008001cf8                INVALID_PROC
+                0x0000000008001cf9                INVALID_TASK
+ *fill*         0x0000000008001cfa        0x2 
+ .osConst       0x0000000008001cfc       0x5c build/blink/tpl_app_config.c.o
+                0x0000000008001cfc                tpl_stat_proc_table
+                0x0000000008001d04                tpl_dyn_proc_table
+                0x0000000008001d0c                tpl_resource_table
+                0x0000000008001d10                IDLE_TASK_task_stat_desc
+                0x0000000008001d28                blink_task_stat_desc
+                0x0000000008001d40                blink_blink_action
+                0x0000000008001d48                blink_blink_static
+                0x0000000008001d54                tpl_alarm_table
+ .osConst       0x0000000008001d58       0x60 build/blink/tpl_dispatch_table.c.o
+                0x0000000008001d58                tpl_dispatch_table
+ *(.osApiConst)
+                0x0000000008001db8                . = ALIGN (0x4)
+
+apptext         0x0000000008001db8       0x28
+                0x0000000008001db8                __PROGCONST_SECTION_START = .
+                0x0000000008001db8                __SEG_START_APP_CODE_CONST_RGN = .
+                0x0000000008001db8                . = ALIGN (0x4)
+ *(.Task_blinkCode)
+ .Task_blinkCode
+                0x0000000008001db8       0x28 build/blink.c.o
+                0x0000000008001db8                main
+                0x0000000008001dd4                blink_function
+                0x0000000008001de0                . = ALIGN (0x4)
+
+appconst        0x0000000008001de0        0x9
+ *(.rodata)
+ *(.rodata*)
+ .rodata.OSDEFAULTAPPMODE
+                0x0000000008001de0        0x1 build/blink/tpl_app_config.c.o
+                0x0000000008001de0                OSDEFAULTAPPMODE
+ *fill*         0x0000000008001de1        0x3 
+ .rodata.tpl_task_app_mode
+                0x0000000008001de4        0x1 build/blink/tpl_app_config.c.o
+                0x0000000008001de4                tpl_task_app_mode
+ *fill*         0x0000000008001de5        0x3 
+ .rodata.tpl_alarm_app_mode
+                0x0000000008001de8        0x1 build/blink/tpl_app_config.c.o
+                0x0000000008001de8                tpl_alarm_app_mode
+                0x0000000008001dec                . = ALIGN (0x4)
+
+procconst       0x0000000008001de9        0x3
+ *(.Task_blink_SEC_CONST_32BIT)
+ *(.Task_blink_SEC_CALIB_32BIT)
+ *(.Task_blink_SEC_CARTO_32BIT)
+ *(.Task_blink_SEC_CONFIG_DATA_32BIT)
+ *(.Task_blink_SEC_CONST_16BIT)
+ *(.Task_blink_SEC_CALIB_16BIT)
+ *(.Task_blink_SEC_CARTO_16BIT)
+ *(.Task_blink_SEC_CONFIG_DATA_16BIT)
+ *(.Task_blink_SEC_CONST_8BIT)
+ *(.Task_blink_SEC_CALIB_8BIT)
+ *(.Task_blink_SEC_CARTO_8BIT)
+ *(.Task_blink_SEC_CONFIG_DATA_8BIT)
+ *(.Task_blink_SEC_CONST_BOOLEAN)
+ *(.Task_blink_SEC_CALIB_BOOLEAN)
+ *(.Task_blink_SEC_CARTO_BOOLEAN)
+ *(.Task_blink_SEC_CONFIG_DATA_BOOLEAN)
+ *(.Task_blink_SEC_CONST_UNSPECIFIED)
+ *(.Task_blink_SEC_CALIB_UNSPECIFIED)
+ *(.Task_blink_SEC_CARTO_UNSPECIFIED)
+ *(.Task_blink_SEC_CONFIG_DATA_UNSPECIFIED)
+                0x0000000008001dec                . = ALIGN (0x4)
+ *fill*         0x0000000008001de9        0x3 
+                0x0000000008001deb                __SEG_STOP_APP_CODE_CONST_RGN = (. - 0x1)
+                0x0000000008001deb                __PROGCONST_SECTION_STOP = (. - 0x1)
+
+.text           0x0000000008001dec       0x6c
+                0x0000000008001dec                . = ALIGN (0x4)
+ *(.text)
+ .text          0x0000000008001dec       0x4c build/machines/cortex/tpl_ctx_switch.S.o
+                0x0000000008001dec                tpl_save_context
+                0x0000000008001e12                tpl_load_context
+ .text          0x0000000008001e38       0x16 build/machines/cortex/tpl_startup.S.o
+                0x0000000008001e38                tpl_reset_handler
+ *(.text*)
+ *fill*         0x0000000008001e4e        0x2 
+ .text.idle_function
+                0x0000000008001e50        0x8 build/machines/cortex/tpl_machine_cortex.c.o
+                0x0000000008001e50                idle_function
+ *(.glue_7)
+ .glue_7        0x0000000008001e58        0x0 linker stubs
+ *(.glue_7t)
+ .glue_7t       0x0000000008001e58        0x0 linker stubs
+ *(.eh_frame)
+ *(.init)
+ *(.fini)
+                0x0000000008001e58                . = ALIGN (0x4)
+                0x0000000008001e58                _etext = .
+                0x0000000008001e58                _exit = .
+
+.vfp11_veneer   0x0000000008001e58        0x0
+ .vfp11_veneer  0x0000000008001e58        0x0 linker stubs
+
+.v4_bx          0x0000000008001e58        0x0
+ .v4_bx         0x0000000008001e58        0x0 linker stubs
+
+.iplt           0x0000000008001e58        0x0
+ .iplt          0x0000000008001e58        0x0 build/os/tpl_os_kernel.c.o
+
+.rel.dyn        0x0000000008001e58        0x0
+ .rel.iplt      0x0000000008001e58        0x0 build/os/tpl_os_kernel.c.o
+
+.ARM.extab
+ *(.ARM.extab* .gnu.linkonce.armextab.*)
+
+.ARM            0x0000000008001e58        0x0
+                0x0000000008001e58                __exidx_start = .
+ *(.ARM.exidx*)
+                0x0000000008001e58                __exidx_end = .
+
+.preinit_array  0x0000000008001e58        0x0
+                [!provide]                        PROVIDE (__preinit_array_start, .)
+ *(.preinit_array*)
+                [!provide]                        PROVIDE (__preinit_array_end, .)
+
+.init_array     0x0000000008001e58        0x0
+                [!provide]                        PROVIDE (__init_array_start, .)
+ *(SORT(.init_array.*))
+ *(.init_array*)
+                [!provide]                        PROVIDE (__init_array_end, .)
+
+.fini_array     0x0000000008001e58        0x0
+                [!provide]                        PROVIDE (__fini_array_start, .)
+ *(.fini_array*)
+ *(SORT(.fini_array.*))
+                [!provide]                        PROVIDE (__fini_array_end, .)
+                0x0000000008001e58                _sidata = .
+
+.data           0x0000000020000000      0x11c load address 0x0000000008001e58
+                0x0000000020000000                . = ALIGN (0x4)
+                0x0000000020000000                _sdata = .
+ *(.data)
+ *(.data*)
+ *(.osVar)
+ .osVar         0x0000000020000000        0x1 build/os/tpl_os_timeobj_kernel.c.o
+ .osVar         0x0000000020000001        0x1 build/os/tpl_os_os_kernel.c.o
+ *fill*         0x0000000020000002        0x2 
+ .osVar         0x0000000020000004       0x14 build/os/tpl_os_interrupt_kernel.c.o
+                0x0000000020000004                tpl_locking_depth
+                0x0000000020000008                tpl_user_task_lock
+                0x000000002000000c                tpl_cpt_user_task_lock_All
+                0x0000000020000010                tpl_cpt_user_task_lock_OS
+                0x0000000020000014                tpl_cpt_os_task_lock
+ .osVar         0x0000000020000018        0x8 build/os/tpl_os_resource_kernel.c.o
+                0x0000000020000018                res_sched_rez_desc
+ .osVar         0x0000000020000020       0xf8 build/blink/tpl_app_config.c.o
+                0x0000000020000020                tpl_kern
+                0x000000002000003c                tpl_ready_list
+                0x0000000020000044                tpl_tail_for_prio
+                0x0000000020000048                SystemCounter_counter_desc
+                0x0000000020000064                tpl_time_counter
+                0x0000000020000068                IDLE_TASK_int_context
+                0x00000000200000ac                IDLE_TASK_task_desc
+                0x00000000200000b4                blink_int_context
+                0x00000000200000f8                blink_task_desc
+                0x0000000020000100                blink_blink_alarm_desc
+ .osVar         0x0000000020000118        0x4 build/machines/cortex/tpl_machine_cortex.c.o
+                0x0000000020000118                nested_kernel_entrance_counter
+ *(.Task_blink_SEC_VAR_POWER_ON_INIT_32BIT)
+ *(.Task_blink_SEC_VAR_POWER_ON_INIT_16BIT)
+ *(.Task_blink_SEC_VAR_POWER_ON_INIT_8BIT)
+ *(.Task_blink_SEC_VAR_POWER_ON_INIT_BOOLEAN)
+ *(.Task_blink_SEC_VAR_POWER_ON_INIT_UNSPECIFIED)
+                0x000000002000011c                . = ALIGN (0x4)
+                0x000000002000011c                _edata = .
+
+.igot.plt       0x000000002000011c        0x0 load address 0x0000000008001f74
+ .igot.plt      0x000000002000011c        0x0 build/os/tpl_os_kernel.c.o
+
+.Task_IDLE_TASKStack
+                0x000000002000011c      0x12c load address 0x0000000008001f74
+ .Task_IDLE_TASKStack
+                0x000000002000011c      0x12c build/blink/tpl_app_config.c.o
+                0x000000002000011c                IDLE_TASK_stack_zone
+
+.Task_blink_SEC_VAR
+                0x0000000020000248       0x18 load address 0x00000000080020a0
+                0x0000000020000260                . = ALIGN (__SEG_ALIGN_Task_blink_VAR_RGN)
+ *fill*         0x0000000020000248       0x18 
+                0x0000000020000260                __SEG_START_Task_blink_VAR_RGN = .
+ *(.Task_blink_SEC_VAR_NOINIT_32BIT)
+ *(.Task_blink_SEC_VAR_FAST_32BIT)
+ *(.Task_blink_SEC_VAR_32BIT)
+ *(.Task_blink_SEC_VAR_NOINIT_16BIT)
+ *(.Task_blink_SEC_VAR_FAST_16BIT)
+ *(.Task_blink_SEC_VAR_16BIT)
+ *(.Task_blink_SEC_VAR_NOINIT_8BIT)
+ *(.Task_blink_SEC_VAR_FAST_8BIT)
+ *(.Task_blink_SEC_VAR_8BIT)
+ *(.Task_blink_SEC_VAR_NOINIT_BOOLEAN)
+ *(.Task_blink_SEC_VAR_FAST_BOOLEAN)
+ *(.Task_blink_SEC_VAR_BOOLEAN)
+ *(.Task_blink_SEC_VAR_NOINIT_UNSPECIFIED)
+ *(.Task_blink_SEC_VAR_FAST_UNSPECIFIED)
+ *(.Task_blink_SEC_VAR_UNSPECIFIED)
+                0x0000000020000260                __SEG_END_Task_blink_VAR_RGN = .
+                0x0000000000001000                __SEG_SIZE_Task_blink_VAR_RGN = ((__SEG_END_Task_blink_VAR_RGN - __SEG_START_Task_blink_VAR_RGN) < 0x1000)?0x1000:__SEG_SIZE_Task_blink_VAR_RGN
+                0x0000000000000400                __SEG_SIZE_Task_blink_VAR_RGN = ((__SEG_END_Task_blink_VAR_RGN - __SEG_START_Task_blink_VAR_RGN) < 0x400)?0x400:__SEG_SIZE_Task_blink_VAR_RGN
+                0x0000000000000200                __SEG_SIZE_Task_blink_VAR_RGN = ((__SEG_END_Task_blink_VAR_RGN - __SEG_START_Task_blink_VAR_RGN) < 0x200)?0x200:__SEG_SIZE_Task_blink_VAR_RGN
+                0x0000000000000100                __SEG_SIZE_Task_blink_VAR_RGN = ((__SEG_END_Task_blink_VAR_RGN - __SEG_START_Task_blink_VAR_RGN) < 0x100)?0x100:__SEG_SIZE_Task_blink_VAR_RGN
+                0x0000000000000080                __SEG_SIZE_Task_blink_VAR_RGN = ((__SEG_END_Task_blink_VAR_RGN - __SEG_START_Task_blink_VAR_RGN) < 0x80)?0x80:__SEG_SIZE_Task_blink_VAR_RGN
+                0x0000000000000040                __SEG_SIZE_Task_blink_VAR_RGN = ((__SEG_END_Task_blink_VAR_RGN - __SEG_START_Task_blink_VAR_RGN) < 0x40)?0x40:__SEG_SIZE_Task_blink_VAR_RGN
+                0x0000000000000020                __SEG_SIZE_Task_blink_VAR_RGN = ((__SEG_END_Task_blink_VAR_RGN - __SEG_START_Task_blink_VAR_RGN) < 0x20)?0x20:__SEG_SIZE_Task_blink_VAR_RGN
+                0x0000000020000268                __SEG_ALIGN_Task_blink_VAR_RGN = __SEG_SIZE_Task_blink_VAR_RGN
+
+.Task_blink_SEC_STACK
+                0x0000000020000260      0x2cc load address 0x00000000080020b8
+                0x0000000020000400                . = ALIGN (__SEG_ALIGN_Task_blink_STACK_RGN)
+ *fill*         0x0000000020000260      0x1a0 
+                0x0000000020000400                __SEG_START_Task_blink_STACK_RGN = .
+ *(.Task_blinkStack)
+ .Task_blinkStack
+                0x0000000020000400      0x12c build/blink/tpl_app_config.c.o
+                0x0000000020000400                blink_stack_zone
+                0x000000002000052c                . = ALIGN (0x4)
+                0x000000002000052c                __SEG_END_Task_blink_STACK_RGN = .
+                0x0000000000001000                __SEG_SIZE_Task_blink_STACK_RGN = ((__SEG_END_Task_blink_STACK_RGN - __SEG_START_Task_blink_STACK_RGN) < 0x1000)?0x1000:__SEG_SIZE_Task_blink_STACK_RGN
+                0x0000000000000400                __SEG_SIZE_Task_blink_STACK_RGN = ((__SEG_END_Task_blink_STACK_RGN - __SEG_START_Task_blink_STACK_RGN) < 0x400)?0x400:__SEG_SIZE_Task_blink_STACK_RGN
+                0x0000000000000200                __SEG_SIZE_Task_blink_STACK_RGN = ((__SEG_END_Task_blink_STACK_RGN - __SEG_START_Task_blink_STACK_RGN) < 0x200)?0x200:__SEG_SIZE_Task_blink_STACK_RGN
+                [0x0000000020000460]                __SEG_SIZE_Task_blink_STACK_RGN = ((__SEG_END_Task_blink_STACK_RGN - __SEG_START_Task_blink_STACK_RGN) < 0x100)?0x100:__SEG_SIZE_Task_blink_STACK_RGN
+                [0x0000000020000460]                __SEG_SIZE_Task_blink_STACK_RGN = ((__SEG_END_Task_blink_STACK_RGN - __SEG_START_Task_blink_STACK_RGN) < 0x80)?0x80:__SEG_SIZE_Task_blink_STACK_RGN
+                [0x0000000020000460]                __SEG_SIZE_Task_blink_STACK_RGN = ((__SEG_END_Task_blink_STACK_RGN - __SEG_START_Task_blink_STACK_RGN) < 0x40)?0x40:__SEG_SIZE_Task_blink_STACK_RGN
+                [0x0000000020000460]                __SEG_SIZE_Task_blink_STACK_RGN = ((__SEG_END_Task_blink_STACK_RGN - __SEG_START_Task_blink_STACK_RGN) < 0x20)?0x20:__SEG_SIZE_Task_blink_STACK_RGN
+                0x0000000020000460                __SEG_ALIGN_Task_blink_STACK_RGN = __SEG_SIZE_Task_blink_STACK_RGN
+
+appvars
+                0x000000002000052c                . = ALIGN (0x4)
+
+.bss            0x000000002000052c        0x0
+                0x000000002000052c                _sbss = .
+                0x000000002000052c                __bss_start__ = _sbss
+ *(.bss)
+ *(.bss*)
+ *(COMMON)
+                0x000000002000052c                . = ALIGN (0x4)
+                0x000000002000052c                _ebss = .
+                0x000000002000052c                __bss_end__ = _ebss
+
+._user_heap_stack
+                0x000000002000052c      0x400 load address 0x0000000008002384
+                0x000000002000052c                . = ALIGN (0x4)
+                0x000000002000052c                __heap_start__ = .
+                [!provide]                        PROVIDE (end, .)
+                [!provide]                        PROVIDE (_end, .)
+                0x000000002000052c                . = (. + _Min_Heap_Size)
+                0x000000002000092c                . = (. + _Min_Stack_Size)
+ *fill*         0x000000002000052c      0x400 
+                0x000000002000092c                . = ALIGN (0x4)
+
+.memory_b1_text
+ *(.mb1text)
+ *(.mb1text*)
+ *(.mb1rodata)
+ *(.mb1rodata*)
+
+/DISCARD/
+ libc.a(*)
+ libm.a(*)
+ libgcc.a(*)
+
+.ARM.attributes
+                0x0000000000000000       0x35
+ *(.ARM.attributes)
+ .ARM.attributes
+                0x0000000000000000       0x33 build/os/tpl_os_kernel.c.o
+ .ARM.attributes
+                0x0000000000000033       0x33 build/os/tpl_os_timeobj_kernel.c.o
+ .ARM.attributes
+                0x0000000000000066       0x33 build/os/tpl_os_action.c.o
+ .ARM.attributes
+                0x0000000000000099       0x33 build/os/tpl_os_os_kernel.c.o
+ .ARM.attributes
+                0x00000000000000cc       0x33 build/os/tpl_os_os.c.o
+ .ARM.attributes
+                0x00000000000000ff       0x33 build/os/tpl_os_interrupt_kernel.c.o
+ .ARM.attributes
+                0x0000000000000132       0x33 build/os/tpl_os_task_kernel.c.o
+ .ARM.attributes
+                0x0000000000000165       0x33 build/os/tpl_os_resource_kernel.c.o
+ .ARM.attributes
+                0x0000000000000198       0x33 build/os/tpl_os_alarm_kernel.c.o
+ .ARM.attributes
+                0x00000000000001cb       0x33 build/blink.c.o
+ .ARM.attributes
+                0x00000000000001fe       0x33 build/blink/tpl_app_config.c.o
+ .ARM.attributes
+                0x0000000000000231       0x33 build/blink/tpl_dispatch_table.c.o
+ .ARM.attributes
+                0x0000000000000264       0x25 build/blink/tpl_invoque.S.o
+ .ARM.attributes
+                0x0000000000000289       0x25 build/blink/tpl_primary_irq.S.o
+ .ARM.attributes
+                0x00000000000002ae       0x33 build/blink/tpl_vectors.c.o
+ .ARM.attributes
+                0x00000000000002e1       0x33 build/machines/cortex/tpl_machine_cortex.c.o
+ .ARM.attributes
+                0x0000000000000314       0x25 build/machines/cortex/tpl_system_call.S.o
+ .ARM.attributes
+                0x0000000000000339       0x25 build/machines/cortex/tpl_ctx_switch.S.o
+ .ARM.attributes
+                0x000000000000035e       0x25 build/machines/cortex/tpl_startup.S.o
+LOAD /usr/local/arm-none-eabi/arm-none-eabi/lib/armv7e-m/libc.a
+LOAD /usr/local/arm-none-eabi/lib/gcc/arm-none-eabi/5.2.1/armv7e-m/libgcc.a
+OUTPUT(blink_exe elf32-littlearm)
+
+.debug_info     0x0000000000000000     0x390e
+ .debug_info    0x0000000000000000      0xbcd build/os/tpl_os_kernel.c.o
+ .debug_info    0x0000000000000bcd      0x39c build/os/tpl_os_timeobj_kernel.c.o
+ .debug_info    0x0000000000000f69      0x1c1 build/os/tpl_os_action.c.o
+ .debug_info    0x000000000000112a      0x143 build/os/tpl_os_os_kernel.c.o
+ .debug_info    0x000000000000126d       0xaf build/os/tpl_os_os.c.o
+ .debug_info    0x000000000000131c      0x493 build/os/tpl_os_interrupt_kernel.c.o
+ .debug_info    0x00000000000017af      0x4e1 build/os/tpl_os_task_kernel.c.o
+ .debug_info    0x0000000000001c90      0x51d build/os/tpl_os_resource_kernel.c.o
+ .debug_info    0x00000000000021ad      0x530 build/os/tpl_os_alarm_kernel.c.o
+ .debug_info    0x00000000000026dd       0xb8 build/blink.c.o
+ .debug_info    0x0000000000002795      0x917 build/blink/tpl_app_config.c.o
+ .debug_info    0x00000000000030ac       0x95 build/blink/tpl_dispatch_table.c.o
+ .debug_info    0x0000000000003141       0x94 build/blink/tpl_invoque.S.o
+ .debug_info    0x00000000000031d5       0x98 build/blink/tpl_primary_irq.S.o
+ .debug_info    0x000000000000326d       0xb1 build/blink/tpl_vectors.c.o
+ .debug_info    0x000000000000331e      0x3d9 build/machines/cortex/tpl_machine_cortex.c.o
+ .debug_info    0x00000000000036f7       0xb4 build/machines/cortex/tpl_system_call.S.o
+ .debug_info    0x00000000000037ab       0xb3 build/machines/cortex/tpl_ctx_switch.S.o
+ .debug_info    0x000000000000385e       0xb0 build/machines/cortex/tpl_startup.S.o
+
+.debug_abbrev   0x0000000000000000      0xf16
+ .debug_abbrev  0x0000000000000000      0x249 build/os/tpl_os_kernel.c.o
+ .debug_abbrev  0x0000000000000249      0x115 build/os/tpl_os_timeobj_kernel.c.o
+ .debug_abbrev  0x000000000000035e       0xc1 build/os/tpl_os_action.c.o
+ .debug_abbrev  0x000000000000041f       0x87 build/os/tpl_os_os_kernel.c.o
+ .debug_abbrev  0x00000000000004a6       0x5c build/os/tpl_os_os.c.o
+ .debug_abbrev  0x0000000000000502      0x182 build/os/tpl_os_interrupt_kernel.c.o
+ .debug_abbrev  0x0000000000000684      0x14a build/os/tpl_os_task_kernel.c.o
+ .debug_abbrev  0x00000000000007ce      0x14f build/os/tpl_os_resource_kernel.c.o
+ .debug_abbrev  0x000000000000091d      0x144 build/os/tpl_os_alarm_kernel.c.o
+ .debug_abbrev  0x0000000000000a61       0x81 build/blink.c.o
+ .debug_abbrev  0x0000000000000ae2      0x154 build/blink/tpl_app_config.c.o
+ .debug_abbrev  0x0000000000000c36       0x62 build/blink/tpl_dispatch_table.c.o
+ .debug_abbrev  0x0000000000000c98       0x14 build/blink/tpl_invoque.S.o
+ .debug_abbrev  0x0000000000000cac       0x14 build/blink/tpl_primary_irq.S.o
+ .debug_abbrev  0x0000000000000cc0       0x81 build/blink/tpl_vectors.c.o
+ .debug_abbrev  0x0000000000000d41      0x199 build/machines/cortex/tpl_machine_cortex.c.o
+ .debug_abbrev  0x0000000000000eda       0x14 build/machines/cortex/tpl_system_call.S.o
+ .debug_abbrev  0x0000000000000eee       0x14 build/machines/cortex/tpl_ctx_switch.S.o
+ .debug_abbrev  0x0000000000000f02       0x14 build/machines/cortex/tpl_startup.S.o
+
+.debug_aranges  0x0000000000000000      0x448
+ .debug_aranges
+                0x0000000000000000       0xd8 build/os/tpl_os_kernel.c.o
+ .debug_aranges
+                0x00000000000000d8       0x40 build/os/tpl_os_timeobj_kernel.c.o
+ .debug_aranges
+                0x0000000000000118       0x28 build/os/tpl_os_action.c.o
+ .debug_aranges
+                0x0000000000000140       0x30 build/os/tpl_os_os_kernel.c.o
+ .debug_aranges
+                0x0000000000000170       0x20 build/os/tpl_os_os.c.o
+ .debug_aranges
+                0x0000000000000190       0x68 build/os/tpl_os_interrupt_kernel.c.o
+ .debug_aranges
+                0x00000000000001f8       0x48 build/os/tpl_os_task_kernel.c.o
+ .debug_aranges
+                0x0000000000000240       0x30 build/os/tpl_os_resource_kernel.c.o
+ .debug_aranges
+                0x0000000000000270       0x48 build/os/tpl_os_alarm_kernel.c.o
+ .debug_aranges
+                0x00000000000002b8       0x28 build/blink.c.o
+ .debug_aranges
+                0x00000000000002e0       0x28 build/blink/tpl_app_config.c.o
+ .debug_aranges
+                0x0000000000000308       0x18 build/blink/tpl_dispatch_table.c.o
+ .debug_aranges
+                0x0000000000000320       0x20 build/blink/tpl_invoque.S.o
+ .debug_aranges
+                0x0000000000000340       0x20 build/blink/tpl_primary_irq.S.o
+ .debug_aranges
+                0x0000000000000360       0x18 build/blink/tpl_vectors.c.o
+ .debug_aranges
+                0x0000000000000378       0x70 build/machines/cortex/tpl_machine_cortex.c.o
+ .debug_aranges
+                0x00000000000003e8       0x20 build/machines/cortex/tpl_system_call.S.o
+ .debug_aranges
+                0x0000000000000408       0x20 build/machines/cortex/tpl_ctx_switch.S.o
+ .debug_aranges
+                0x0000000000000428       0x20 build/machines/cortex/tpl_startup.S.o
+
+.debug_ranges   0x0000000000000000      0x2d0
+ .debug_ranges  0x0000000000000000       0xe0 build/os/tpl_os_kernel.c.o
+ .debug_ranges  0x00000000000000e0       0x30 build/os/tpl_os_timeobj_kernel.c.o
+ .debug_ranges  0x0000000000000110       0x18 build/os/tpl_os_action.c.o
+ .debug_ranges  0x0000000000000128       0x20 build/os/tpl_os_os_kernel.c.o
+ .debug_ranges  0x0000000000000148       0x10 build/os/tpl_os_os.c.o
+ .debug_ranges  0x0000000000000158       0x58 build/os/tpl_os_interrupt_kernel.c.o
+ .debug_ranges  0x00000000000001b0       0x38 build/os/tpl_os_task_kernel.c.o
+ .debug_ranges  0x00000000000001e8       0x20 build/os/tpl_os_resource_kernel.c.o
+ .debug_ranges  0x0000000000000208       0x38 build/os/tpl_os_alarm_kernel.c.o
+ .debug_ranges  0x0000000000000240       0x18 build/blink.c.o
+ .debug_ranges  0x0000000000000258       0x18 build/blink/tpl_app_config.c.o
+ .debug_ranges  0x0000000000000270       0x60 build/machines/cortex/tpl_machine_cortex.c.o
+
+.debug_line     0x0000000000000000     0x179c
+ .debug_line    0x0000000000000000      0x327 build/os/tpl_os_kernel.c.o
+ .debug_line    0x0000000000000327      0x195 build/os/tpl_os_timeobj_kernel.c.o
+ .debug_line    0x00000000000004bc       0xf4 build/os/tpl_os_action.c.o
+ .debug_line    0x00000000000005b0       0xd9 build/os/tpl_os_os_kernel.c.o
+ .debug_line    0x0000000000000689       0xb8 build/os/tpl_os_os.c.o
+ .debug_line    0x0000000000000741      0x187 build/os/tpl_os_interrupt_kernel.c.o
+ .debug_line    0x00000000000008c8      0x20f build/os/tpl_os_task_kernel.c.o
+ .debug_line    0x0000000000000ad7      0x1cd build/os/tpl_os_resource_kernel.c.o
+ .debug_line    0x0000000000000ca4      0x23a build/os/tpl_os_alarm_kernel.c.o
+ .debug_line    0x0000000000000ede       0xb2 build/blink.c.o
+ .debug_line    0x0000000000000f90      0x1b1 build/blink/tpl_app_config.c.o
+ .debug_line    0x0000000000001141       0x68 build/blink/tpl_dispatch_table.c.o
+ .debug_line    0x00000000000011a9      0x181 build/blink/tpl_invoque.S.o
+ .debug_line    0x000000000000132a       0x95 build/blink/tpl_primary_irq.S.o
+ .debug_line    0x00000000000013bf       0x99 build/blink/tpl_vectors.c.o
+ .debug_line    0x0000000000001458      0x18e build/machines/cortex/tpl_machine_cortex.c.o
+ .debug_line    0x00000000000015e6       0xc8 build/machines/cortex/tpl_system_call.S.o
+ .debug_line    0x00000000000016ae       0x8a build/machines/cortex/tpl_ctx_switch.S.o
+ .debug_line    0x0000000000001738       0x64 build/machines/cortex/tpl_startup.S.o
+
+.debug_str      0x0000000000000000     0x1335
+ .debug_str     0x0000000000000000      0x7fb build/os/tpl_os_kernel.c.o
+                                        0x8ef (size before relaxing)
+ .debug_str     0x00000000000007fb      0x100 build/os/tpl_os_timeobj_kernel.c.o
+                                        0x3b7 (size before relaxing)
+ .debug_str     0x00000000000008fb       0xfd build/os/tpl_os_action.c.o
+                                        0x2e5 (size before relaxing)
+ .debug_str     0x00000000000009f8       0x83 build/os/tpl_os_os_kernel.c.o
+                                        0x274 (size before relaxing)
+ .debug_str     0x0000000000000a7b       0x35 build/os/tpl_os_os.c.o
+                                        0x1eb (size before relaxing)
+ .debug_str     0x0000000000000ab0      0x1d0 build/os/tpl_os_interrupt_kernel.c.o
+                                        0x5d6 (size before relaxing)
+ .debug_str     0x0000000000000c80       0xbe build/os/tpl_os_task_kernel.c.o
+                                        0x504 (size before relaxing)
+ .debug_str     0x0000000000000d3e       0xd9 build/os/tpl_os_resource_kernel.c.o
+                                        0x545 (size before relaxing)
+ .debug_str     0x0000000000000e17      0x16c build/os/tpl_os_alarm_kernel.c.o
+                                        0x49f (size before relaxing)
+ .debug_str     0x0000000000000f83       0x2d build/blink.c.o
+                                        0x1de (size before relaxing)
+ .debug_str     0x0000000000000fb0      0x1ad build/blink/tpl_app_config.c.o
+                                        0x869 (size before relaxing)
+ .debug_str     0x000000000000115d       0x3e build/blink/tpl_dispatch_table.c.o
+                                        0x1d4 (size before relaxing)
+ .debug_str     0x000000000000119b       0x3a build/blink/tpl_vectors.c.o
+                                        0x1d0 (size before relaxing)
+ .debug_str     0x00000000000011d5      0x160 build/machines/cortex/tpl_machine_cortex.c.o
+                                        0x4a7 (size before relaxing)
+
+.comment        0x0000000000000000       0x6e
+ .comment       0x0000000000000000       0x6e build/os/tpl_os_kernel.c.o
+                                         0x6f (size before relaxing)
+ .comment       0x000000000000006e       0x6f build/os/tpl_os_timeobj_kernel.c.o
+ .comment       0x000000000000006e       0x6f build/os/tpl_os_action.c.o
+ .comment       0x000000000000006e       0x6f build/os/tpl_os_os_kernel.c.o
+ .comment       0x000000000000006e       0x6f build/os/tpl_os_os.c.o
+ .comment       0x000000000000006e       0x6f build/os/tpl_os_interrupt_kernel.c.o
+ .comment       0x000000000000006e       0x6f build/os/tpl_os_task_kernel.c.o
+ .comment       0x000000000000006e       0x6f build/os/tpl_os_resource_kernel.c.o
+ .comment       0x000000000000006e       0x6f build/os/tpl_os_alarm_kernel.c.o
+ .comment       0x000000000000006e       0x6f build/blink.c.o
+ .comment       0x000000000000006e       0x6f build/blink/tpl_app_config.c.o
+ .comment       0x000000000000006e       0x6f build/blink/tpl_dispatch_table.c.o
+ .comment       0x000000000000006e       0x6f build/blink/tpl_vectors.c.o
+ .comment       0x000000000000006e       0x6f build/machines/cortex/tpl_machine_cortex.c.o
+
+.debug_frame    0x0000000000000000      0xac8
+ .debug_frame   0x0000000000000000      0x360 build/os/tpl_os_kernel.c.o
+ .debug_frame   0x0000000000000360       0xcc build/os/tpl_os_timeobj_kernel.c.o
+ .debug_frame   0x000000000000042c       0x58 build/os/tpl_os_action.c.o
+ .debug_frame   0x0000000000000484       0x7c build/os/tpl_os_os_kernel.c.o
+ .debug_frame   0x0000000000000500       0x34 build/os/tpl_os_os.c.o
+ .debug_frame   0x0000000000000534      0x14c build/os/tpl_os_interrupt_kernel.c.o
+ .debug_frame   0x0000000000000680       0xe8 build/os/tpl_os_task_kernel.c.o
+ .debug_frame   0x0000000000000768       0x80 build/os/tpl_os_resource_kernel.c.o
+ .debug_frame   0x00000000000007e8       0xe8 build/os/tpl_os_alarm_kernel.c.o
+ .debug_frame   0x00000000000008d0       0x48 build/blink.c.o
+ .debug_frame   0x0000000000000918       0x48 build/blink/tpl_app_config.c.o
+ .debug_frame   0x0000000000000960      0x168 build/machines/cortex/tpl_machine_cortex.c.o
