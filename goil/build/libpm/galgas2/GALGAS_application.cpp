@@ -25,6 +25,7 @@
 #include "command_line_interface/C_UIntCommandLineOption.h"
 #include "command_line_interface/C_StringCommandLineOption.h"
 #include "command_line_interface/F_Analyze_CLI_Options.h"
+#include "galgas2/F_verbose_output.h"
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
@@ -68,6 +69,12 @@ void GALGAS_application::description (C_String & ioString,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
+GALGAS_bool GALGAS_application::constructor_verboseOutput (UNUSED_LOCATION_ARGS) {
+  return GALGAS_bool (verboseOutput ()) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
 GALGAS__32_stringlist GALGAS_application::constructor_boolOptionNameList (LOCATION_ARGS) {
   GALGAS__32_stringlist result = GALGAS__32_stringlist::constructor_emptyList (THERE) ;
   TC_UniqueArray <C_String> array ;
@@ -80,9 +87,9 @@ GALGAS__32_stringlist GALGAS_application::constructor_boolOptionNameList (LOCATI
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_char GALGAS_application::constructor_boolOptionInvocationLetter (const GALGAS_string & inDomainName,
-                                                                        const GALGAS_string & inIdentifier
-                                                                        COMMA_UNUSED_LOCATION_ARGS) {
+GALGAS_char GALGAS_application::constructor_boolOptionInvocationCharacter (const GALGAS_string & inDomainName,
+                                                                           const GALGAS_string & inIdentifier
+                                                                           COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_char result ;
   if (inDomainName.isValid () && inIdentifier.isValid ()) {
     const utf32 c = C_BoolCommandLineOption::getBoolOptionInvocationLetter (inDomainName.stringValue (), inIdentifier.stringValue ()) ;
@@ -131,9 +138,9 @@ GALGAS__32_stringlist GALGAS_application::constructor_uintOptionNameList (LOCATI
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_char GALGAS_application::constructor_uintOptionInvocationLetter (const GALGAS_string & inDomainName,
-                                                                        const GALGAS_string & inIdentifier
-                                                                        COMMA_UNUSED_LOCATION_ARGS) {
+GALGAS_char GALGAS_application::constructor_uintOptionInvocationCharacter (const GALGAS_string & inDomainName,
+                                                                           const GALGAS_string & inIdentifier
+                                                                           COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_char result ;
   if (inDomainName.isValid () && inIdentifier.isValid ()) {
     const utf32 c = C_UIntCommandLineOption::getUIntOptionInvocationLetter (inDomainName.stringValue (), inIdentifier.stringValue ()) ;
@@ -182,9 +189,9 @@ GALGAS__32_stringlist GALGAS_application::constructor_stringOptionNameList (LOCA
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_char GALGAS_application::constructor_stringOptionInvocationLetter (const GALGAS_string & inDomainName,
-                                                                          const GALGAS_string & inIdentifier
-                                                                          COMMA_UNUSED_LOCATION_ARGS) {
+GALGAS_char GALGAS_application::constructor_stringOptionInvocationCharacter (const GALGAS_string & inDomainName,
+                                                                             const GALGAS_string & inIdentifier
+                                                                             COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_char result ;
   if (inDomainName.isValid () && inIdentifier.isValid ()) {
     const utf32 c = C_StringCommandLineOption::getStringOptionInvocationLetter (inDomainName.stringValue (), inIdentifier.stringValue ()) ;

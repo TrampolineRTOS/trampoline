@@ -33,7 +33,15 @@
 #include <unistd.h>
 #include <errno.h>
 
-#ifdef __MINGW32__
+//---------------------------------------------------------------------------------------------------------------------*
+
+#ifndef COMPILE_FOR_WINDOWS
+  #error COMPILE_FOR_WINDOWS is undefined
+#endif
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+#if COMPILE_FOR_WINDOWS == 1
   #include <sys/stat.h>
 #endif
 
@@ -50,7 +58,7 @@
 //---------------------------------------------------------------------------------------------------------------------*
 
 //--- On Unix: do nothing
-#ifdef UNIX_TOOL
+#if COMPILE_FOR_WINDOWS == 0
   C_String C_FileManager::unixPathWithNativePath (const C_String & inFilePath) {
     return inFilePath ;
   }
@@ -59,7 +67,7 @@
 //---------------------------------------------------------------------------------------------------------------------*
 
 //--- On Windows: translate
-#ifdef COMPILE_FOR_WIN32
+#if COMPILE_FOR_WINDOWS == 1
   C_String C_FileManager::unixPathWithNativePath (const C_String & inFilePath) {
     C_String result ;
     const int32_t pathLength = inFilePath.length () ;
@@ -98,7 +106,7 @@
 //---------------------------------------------------------------------------------------------------------------------*
 
 //--- On Unix: do nothing
-#ifdef UNIX_TOOL
+#if COMPILE_FOR_WINDOWS == 0
   C_String C_FileManager::nativePathWithUnixPath (const C_String & inFilePath) {
     return inFilePath ;
   }
@@ -107,7 +115,7 @@
 //---------------------------------------------------------------------------------------------------------------------*
 
 //--- On Windows: convert
-#ifdef COMPILE_FOR_WIN32
+#if COMPILE_FOR_WINDOWS == 1
   C_String C_FileManager::nativePathWithUnixPath (const C_String & inFilePath) {
     C_String winPath ;
       const int32_t fileLength = inFilePath.length () ;
@@ -650,7 +658,7 @@ bool C_FileManager::writeStringToExecutableFile (const C_String & inString,
   bool success = file.isOpened () ;
   if (success) {
     success = file.close () ;
-    #ifndef COMPILE_FOR_WIN32
+    #if COMPILE_FOR_WINDOWS == 0
       struct stat fileStat ;
       ::stat (inFilePath.cString (HERE), & fileStat) ;
       // printf ("FILE MODE 0x%X\n", fileStat.st_mode) ;
@@ -689,7 +697,7 @@ bool C_FileManager::writeBinaryDataToExecutableFile (const C_Data & inBinaryData
 //--- Close file
   if (success) {
     success = binaryFile.close () ;
-    #ifndef COMPILE_FOR_WIN32
+    #if COMPILE_FOR_WINDOWS == 0
       struct stat fileStat ;
       ::stat (inFilePath.cString (HERE), & fileStat) ;
       // printf ("FILE MODE 0x%X\n", fileStat.st_mode) ;
@@ -710,7 +718,7 @@ bool C_FileManager::writeBinaryDataToExecutableFile (const C_Data & inBinaryData
 
 bool C_FileManager::makeFileExecutable (const C_String & inFilePath) {
   const bool result = fileExistsAtPath (inFilePath) ;
-  #ifndef COMPILE_FOR_WIN32
+  #if COMPILE_FOR_WINDOWS == 0
     if (result) {
       struct stat fileStat ;
       ::stat (inFilePath.cString (HERE), & fileStat) ;
@@ -746,7 +754,7 @@ bool C_FileManager::directoryExists (const C_String & inDirectoryPath) {
 
 C_String C_FileManager::currentDirectory (void) {
   char * cwd = getcwd (NULL, 0) ;
-  #ifdef COMPILE_FOR_WIN32
+  #if COMPILE_FOR_WINDOWS == 1
     const int32_t fileLength = (int32_t) strlen (cwd) ;
     int32_t firstChar = 0 ;
     if ((fileLength > 3)
@@ -779,7 +787,7 @@ bool C_FileManager::makeDirectoryIfDoesNotExist (const C_String & inDirectoryPat
     if (ok) {
       const C_String nativePath = nativePathWithUnixPath (inDirectoryPath) ;
     //--- Create directory (mkdir returns 0 if creation is ok)
-      #ifdef COMPILE_FOR_WIN32
+      #if COMPILE_FOR_WINDOWS == 1
         const int result = ::mkdir (nativePath.cString (HERE)) ;
       #else
         const int result = ::mkdir (nativePath.cString (HERE), 0770) ;
@@ -883,7 +891,7 @@ C_String C_FileManager::relativePathFromPath (const C_String & inPath,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifdef COMPILE_FOR_WIN32
+#if COMPILE_FOR_WINDOWS == 1
   bool C_FileManager::makeSymbolicLinkWithPath (const C_String & /* inPath */,
                                                 const C_String & /* inLinkPath */) {
     return true ; // Symbolic links are not supported on Windows
@@ -905,7 +913,7 @@ C_String C_FileManager::relativePathFromPath (const C_String & inPath,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifdef COMPILE_FOR_WIN32
+#if COMPILE_FOR_WINDOWS == 1
   bool C_FileManager::isSymbolicLink (const C_String & /* inLinkPath */) {
     return false ; // Symbolic links are not supported on Windows
   }
@@ -913,7 +921,7 @@ C_String C_FileManager::relativePathFromPath (const C_String & inPath,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifndef COMPILE_FOR_WIN32
+#if COMPILE_FOR_WINDOWS == 0
   bool C_FileManager::isSymbolicLink (const C_String & inLinkPath) {
     char buffer [8] ; // Any value
     return readlink (inLinkPath.cString (HERE), buffer, 8) >= 0 ;
@@ -922,7 +930,7 @@ C_String C_FileManager::relativePathFromPath (const C_String & inPath,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifdef COMPILE_FOR_WIN32
+#if COMPILE_FOR_WINDOWS == 1
   C_String C_FileManager::stringWithSymbolicLinkContents (const C_String & /* inLinkPath */,
                                                           bool & outOk) {
     outOk = false ; // Symbolic links are not supported on Windows
@@ -932,7 +940,7 @@ C_String C_FileManager::relativePathFromPath (const C_String & inPath,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifndef COMPILE_FOR_WIN32
+#if COMPILE_FOR_WINDOWS == 0
   C_String C_FileManager::stringWithSymbolicLinkContents (const C_String & inLinkPath,
                                                           bool & outOk) {
     C_String result ;

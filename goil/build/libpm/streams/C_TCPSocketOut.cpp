@@ -23,10 +23,15 @@
 #include "streams/C_TCPSocketOut.h"
 #include "strings/unicode_character_cpp.h"
 #include "strings/C_String.h"
+#include "utilities/M_machine.h"
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifdef COMPILE_FOR_WIN32
+#ifndef COMPILE_FOR_WINDOWS
+  #error COMPILE_FOR_WINDOWS is not defined
+#endif
+
+#if COMPILE_FOR_WINDOWS == 1
   #include <winsock2.h>
   #include <ws2tcpip.h>
   #include <stdio.h>

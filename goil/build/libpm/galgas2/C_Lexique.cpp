@@ -32,6 +32,7 @@
 #include "galgas2/C_galgas_CLI_Options.h"
 #include "galgas2/cIndexingDictionary.h"
 #include "files/C_FileManager.h"
+#include "galgas2/F_verbose_output.h"
 
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -170,7 +171,7 @@ mLatexNextCharacterToEnterIndex (0) {
   C_SourceTextInString * sourceTextPtr = NULL ;    
   macroMyNew (sourceTextPtr, C_SourceTextInString (inSourceString,
                                                    inStringForError,
-                                                   gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue
+                                                   verboseOutput ()
                                                    COMMA_HERE)) ;
   resetAndLoadSourceFromText (sourceTextPtr) ;
   mTokenStartLocation.resetWithSourceText (sourceTextPtr) ;

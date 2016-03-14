@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2006, ..., 2014 Pierre Molinaro.                                                                     *
+//  Copyright (C) 2006, ..., 2015 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -39,19 +39,10 @@ C_BoolCommandLineOption gOption_galgas_5F_builtin_5F_options_outputConcreteSynta
 //---------------------------------------------------------------------------------------------------------------------*
 
 C_BoolCommandLineOption gOption_galgas_5F_builtin_5F_options_trace ("galgas_builtin_options",
-                                         "trace",
-                                         0,
-                                         "trace",
-                                         "Outputs a trace file") ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-C_BoolCommandLineOption
-gOption_galgas_5F_builtin_5F_options_verbose_5F_output ("galgas_builtin_options",
-                                                    "verbose_output",
-                                                    'v',
-                                                    "verbose",
-                                                    "Verbose Output") ;
+                                                                    "trace",
+                                                                    0,
+                                                                    "trace",
+                                                                    "Outputs a trace file") ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -66,29 +57,29 @@ gOption_galgas_5F_builtin_5F_options_log_5F_file_5F_read ("galgas_cli_options",
 
 C_BoolCommandLineOption
 gOption_galgas_5F_builtin_5F_options_do_5F_not_5F_generate_5F_any_5F_file ("galgas_cli_options",
-                                                                       "do_not_generate_any_file",
-                                                                       '\0',
-                                                                       "no-file-generation",
-                                                                       "Do not generate any file") ;
+                                                                           "do_not_generate_any_file",
+                                                                           '\0',
+                                                                           "no-file-generation",
+                                                                           "Do not generate any file") ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 C_BoolCommandLineOption
 gOption_galgas_5F_builtin_5F_options_treat_5F_warnings_5F_as_5F_error ("galgas_cli_options",
-                                                                   "treat_warnings_as_error",
-                                                                   '\0',
-                                                                   "Werror",
-                                                                   "Treat warnings as errors") ;
+                                                                       "treat_warnings_as_error",
+                                                                       '\0',
+                                                                       "Werror",
+                                                                       "Treat warnings as errors") ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 C_UIntCommandLineOption
 gOption_galgas_5F_builtin_5F_options_max_5F_errors ("galgas_cli_options",
-                                                "max_errors",
-                                                '\0',
-                                                "max-errors",
-                                                "Stop after the given number of errors has been reached",
-                                                100) ;
+                                                    "max_errors",
+                                                    '\0',
+                                                    "max-errors",
+                                                    "Stop after the given number of errors has been reached",
+                                                    100) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 

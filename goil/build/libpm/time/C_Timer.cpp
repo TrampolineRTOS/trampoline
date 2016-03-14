@@ -28,7 +28,7 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifdef LIBPM_USES_TIMEVAL_STRUCT
+#if COMPILE_FOR_WINDOWS == 0
   static timeval gTime ;
   static timeval now (void) {
     gettimeofday (& gTime, NULL) ;
@@ -53,7 +53,7 @@ mRunning (true) {
 
 void C_Timer::stopTimer (void) {
   if (mRunning) {
-    #ifdef LIBPM_USES_TIMEVAL_STRUCT
+    #if COMPILE_FOR_WINDOWS == 0
       gettimeofday (& mEnd, NULL) ;
     #else
       mEnd = ::clock () ;
@@ -65,7 +65,7 @@ void C_Timer::stopTimer (void) {
 //---------------------------------------------------------------------------------------------------------------------*
 
 void C_Timer::startTimer (void) {
-  #ifdef LIBPM_USES_TIMEVAL_STRUCT
+  #if COMPILE_FOR_WINDOWS == 0
     gettimeofday (& mStart, NULL) ;
   #else
     mStart = ::clock () ;
@@ -77,7 +77,7 @@ void C_Timer::startTimer (void) {
 //---------------------------------------------------------------------------------------------------------------------*
 
 uint32_t C_Timer::msFromStart (void) const {
-  #ifdef LIBPM_USES_TIMEVAL_STRUCT
+  #if COMPILE_FOR_WINDOWS == 0
     timeval t ;
     if (mRunning) {
       timeval now ;
@@ -123,7 +123,7 @@ C_String C_Timer::timeString (void) const {
 
 AC_OutputStream & operator << (AC_OutputStream & inStream,
                                const C_Timer & inTimer) {
-  #ifdef LIBPM_USES_TIMEVAL_STRUCT
+  #if COMPILE_FOR_WINDOWS == 0
     timeval duration ;
     if (inTimer.mRunning) {
       timeval now ;

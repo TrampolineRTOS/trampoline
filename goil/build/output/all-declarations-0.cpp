@@ -260,7 +260,7 @@ class cCollectionElement_TtypeList : public cCollectionElement {
   public : virtual cCollectionElement * copy (void) ;
 
 //--- Description
- public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
+  public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -465,18 +465,6 @@ void GALGAS_TtypeList::method_last (GALGAS_Ttype & outOperand0,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_TtypeList GALGAS_TtypeList::operator_concat (const GALGAS_TtypeList & inOperand
-                                                    COMMA_UNUSED_LOCATION_ARGS) const {
-  GALGAS_TtypeList result ;
-  if (isValid () && inOperand.isValid ()) {
-    result = *this ;
-    result.appendList (inOperand) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
 GALGAS_TtypeList GALGAS_TtypeList::add_operation (const GALGAS_TtypeList & inOperand,
                                                   C_Compiler * /* inCompiler */
                                                   COMMA_UNUSED_LOCATION_ARGS) const {
@@ -510,8 +498,19 @@ GALGAS_TtypeList GALGAS_TtypeList::getter_subListFromIndex (const GALGAS_uint & 
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void GALGAS_TtypeList::dotAssign_operation (const GALGAS_TtypeList inOperand
-                                            COMMA_UNUSED_LOCATION_ARGS) {
+GALGAS_TtypeList GALGAS_TtypeList::getter_subListToIndex (const GALGAS_uint & inIndex,
+                                                          C_Compiler * inCompiler
+                                                          COMMA_LOCATION_ARGS) const {
+  GALGAS_TtypeList result = GALGAS_TtypeList::constructor_emptyList (THERE) ;
+  subListToIndex (result, inIndex, inCompiler COMMA_THERE) ;
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_TtypeList::plusAssign_operation (const GALGAS_TtypeList inOperand,
+                                             C_Compiler * /* inCompiler */
+                                             COMMA_UNUSED_LOCATION_ARGS) {
   appendList (inOperand) ;
 }
 
@@ -953,7 +952,7 @@ class cCollectionElement_TfieldMapList : public cCollectionElement {
   public : virtual cCollectionElement * copy (void) ;
 
 //--- Description
- public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
+  public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -1158,18 +1157,6 @@ void GALGAS_TfieldMapList::method_last (GALGAS_TfieldMap & outOperand0,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_TfieldMapList GALGAS_TfieldMapList::operator_concat (const GALGAS_TfieldMapList & inOperand
-                                                            COMMA_UNUSED_LOCATION_ARGS) const {
-  GALGAS_TfieldMapList result ;
-  if (isValid () && inOperand.isValid ()) {
-    result = *this ;
-    result.appendList (inOperand) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
 GALGAS_TfieldMapList GALGAS_TfieldMapList::add_operation (const GALGAS_TfieldMapList & inOperand,
                                                           C_Compiler * /* inCompiler */
                                                           COMMA_UNUSED_LOCATION_ARGS) const {
@@ -1203,8 +1190,19 @@ GALGAS_TfieldMapList GALGAS_TfieldMapList::getter_subListFromIndex (const GALGAS
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void GALGAS_TfieldMapList::dotAssign_operation (const GALGAS_TfieldMapList inOperand
-                                                COMMA_UNUSED_LOCATION_ARGS) {
+GALGAS_TfieldMapList GALGAS_TfieldMapList::getter_subListToIndex (const GALGAS_uint & inIndex,
+                                                                  C_Compiler * inCompiler
+                                                                  COMMA_LOCATION_ARGS) const {
+  GALGAS_TfieldMapList result = GALGAS_TfieldMapList::constructor_emptyList (THERE) ;
+  subListToIndex (result, inIndex, inCompiler COMMA_THERE) ;
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_TfieldMapList::plusAssign_operation (const GALGAS_TfieldMapList inOperand,
+                                                 C_Compiler * /* inCompiler */
+                                                 COMMA_UNUSED_LOCATION_ARGS) {
   appendList (inOperand) ;
 }
 
@@ -1334,7 +1332,7 @@ class cCollectionElement_TexpressionList : public cCollectionElement {
   public : virtual cCollectionElement * copy (void) ;
 
 //--- Description
- public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
+  public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -1564,18 +1562,6 @@ void GALGAS_TexpressionList::method_last (GALGAS_Tvalue & outOperand0,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_TexpressionList GALGAS_TexpressionList::operator_concat (const GALGAS_TexpressionList & inOperand
-                                                                COMMA_UNUSED_LOCATION_ARGS) const {
-  GALGAS_TexpressionList result ;
-  if (isValid () && inOperand.isValid ()) {
-    result = *this ;
-    result.appendList (inOperand) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
 GALGAS_TexpressionList GALGAS_TexpressionList::add_operation (const GALGAS_TexpressionList & inOperand,
                                                               C_Compiler * /* inCompiler */
                                                               COMMA_UNUSED_LOCATION_ARGS) const {
@@ -1609,8 +1595,19 @@ GALGAS_TexpressionList GALGAS_TexpressionList::getter_subListFromIndex (const GA
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void GALGAS_TexpressionList::dotAssign_operation (const GALGAS_TexpressionList inOperand
-                                                  COMMA_UNUSED_LOCATION_ARGS) {
+GALGAS_TexpressionList GALGAS_TexpressionList::getter_subListToIndex (const GALGAS_uint & inIndex,
+                                                                      C_Compiler * inCompiler
+                                                                      COMMA_LOCATION_ARGS) const {
+  GALGAS_TexpressionList result = GALGAS_TexpressionList::constructor_emptyList (THERE) ;
+  subListToIndex (result, inIndex, inCompiler COMMA_THERE) ;
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_TexpressionList::plusAssign_operation (const GALGAS_TexpressionList inOperand,
+                                                   C_Compiler * /* inCompiler */
+                                                   COMMA_UNUSED_LOCATION_ARGS) {
   appendList (inOperand) ;
 }
 
@@ -1749,7 +1746,7 @@ class cCollectionElement_TenumationList : public cCollectionElement {
   public : virtual cCollectionElement * copy (void) ;
 
 //--- Description
- public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
+  public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -1979,18 +1976,6 @@ void GALGAS_TenumationList::method_last (GALGAS_Tvalue & outOperand0,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_TenumationList GALGAS_TenumationList::operator_concat (const GALGAS_TenumationList & inOperand
-                                                              COMMA_UNUSED_LOCATION_ARGS) const {
-  GALGAS_TenumationList result ;
-  if (isValid () && inOperand.isValid ()) {
-    result = *this ;
-    result.appendList (inOperand) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
 GALGAS_TenumationList GALGAS_TenumationList::add_operation (const GALGAS_TenumationList & inOperand,
                                                             C_Compiler * /* inCompiler */
                                                             COMMA_UNUSED_LOCATION_ARGS) const {
@@ -2024,8 +2009,19 @@ GALGAS_TenumationList GALGAS_TenumationList::getter_subListFromIndex (const GALG
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void GALGAS_TenumationList::dotAssign_operation (const GALGAS_TenumationList inOperand
-                                                 COMMA_UNUSED_LOCATION_ARGS) {
+GALGAS_TenumationList GALGAS_TenumationList::getter_subListToIndex (const GALGAS_uint & inIndex,
+                                                                    C_Compiler * inCompiler
+                                                                    COMMA_LOCATION_ARGS) const {
+  GALGAS_TenumationList result = GALGAS_TenumationList::constructor_emptyList (THERE) ;
+  subListToIndex (result, inIndex, inCompiler COMMA_THERE) ;
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_TenumationList::plusAssign_operation (const GALGAS_TenumationList inOperand,
+                                                  C_Compiler * /* inCompiler */
+                                                  COMMA_UNUSED_LOCATION_ARGS) {
   appendList (inOperand) ;
 }
 
@@ -2165,7 +2161,7 @@ class cCollectionElement_TvarPath : public cCollectionElement {
   public : virtual cCollectionElement * copy (void) ;
 
 //--- Description
- public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
+  public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -2420,18 +2416,6 @@ void GALGAS_TvarPath::method_last (GALGAS_lstring & outOperand0,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_TvarPath GALGAS_TvarPath::operator_concat (const GALGAS_TvarPath & inOperand
-                                                  COMMA_UNUSED_LOCATION_ARGS) const {
-  GALGAS_TvarPath result ;
-  if (isValid () && inOperand.isValid ()) {
-    result = *this ;
-    result.appendList (inOperand) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
 GALGAS_TvarPath GALGAS_TvarPath::add_operation (const GALGAS_TvarPath & inOperand,
                                                 C_Compiler * /* inCompiler */
                                                 COMMA_UNUSED_LOCATION_ARGS) const {
@@ -2465,8 +2449,19 @@ GALGAS_TvarPath GALGAS_TvarPath::getter_subListFromIndex (const GALGAS_uint & in
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void GALGAS_TvarPath::dotAssign_operation (const GALGAS_TvarPath inOperand
-                                           COMMA_UNUSED_LOCATION_ARGS) {
+GALGAS_TvarPath GALGAS_TvarPath::getter_subListToIndex (const GALGAS_uint & inIndex,
+                                                        C_Compiler * inCompiler
+                                                        COMMA_LOCATION_ARGS) const {
+  GALGAS_TvarPath result = GALGAS_TvarPath::constructor_emptyList (THERE) ;
+  subListToIndex (result, inIndex, inCompiler COMMA_THERE) ;
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_TvarPath::plusAssign_operation (const GALGAS_TvarPath inOperand,
+                                            C_Compiler * /* inCompiler */
+                                            COMMA_UNUSED_LOCATION_ARGS) {
   appendList (inOperand) ;
 }
 
@@ -2627,10 +2622,10 @@ mLexicalAttribute_tokenString () {
 //---------------------------------------------------------------------------------------------------------------------*
 
 C_Lexique_template_5F_scanner::C_Lexique_template_5F_scanner (C_Compiler * inCallerCompiler,
-                const C_String & inDependencyFileExtension,
-                const C_String & inDependencyFilePath,
-                const C_String & inSourceFileName
-                COMMA_LOCATION_ARGS) :
+                                                              const C_String & inDependencyFileExtension,
+                                                              const C_String & inDependencyFilePath,
+                                                              const C_String & inSourceFileName
+                                                              COMMA_LOCATION_ARGS) :
 C_Lexique (inCallerCompiler, inDependencyFileExtension, inDependencyFilePath, inSourceFileName COMMA_THERE),
 mMatchedTemplateDelimiterIndex (-1) {
 }
@@ -2638,9 +2633,9 @@ mMatchedTemplateDelimiterIndex (-1) {
 //---------------------------------------------------------------------------------------------------------------------*
 
 C_Lexique_template_5F_scanner::C_Lexique_template_5F_scanner (C_Compiler * inCallerCompiler,
-                const C_String & inSourceString,
-                const C_String & inStringForError
-                COMMA_LOCATION_ARGS) :
+                                                              const C_String & inSourceString,
+                                                              const C_String & inStringForError
+                                                              COMMA_LOCATION_ARGS) :
 C_Lexique (inCallerCompiler, inSourceString, inStringForError COMMA_THERE),
 mMatchedTemplateDelimiterIndex (-1) {
 }
@@ -7526,7 +7521,7 @@ class cCollectionElement_sortingKeyList : public cCollectionElement {
   public : virtual cCollectionElement * copy (void) ;
 
 //--- Description
- public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
+  public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -7756,18 +7751,6 @@ void GALGAS_sortingKeyList::method_last (GALGAS_lstring & outOperand0,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_sortingKeyList GALGAS_sortingKeyList::operator_concat (const GALGAS_sortingKeyList & inOperand
-                                                              COMMA_UNUSED_LOCATION_ARGS) const {
-  GALGAS_sortingKeyList result ;
-  if (isValid () && inOperand.isValid ()) {
-    result = *this ;
-    result.appendList (inOperand) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
 GALGAS_sortingKeyList GALGAS_sortingKeyList::add_operation (const GALGAS_sortingKeyList & inOperand,
                                                             C_Compiler * /* inCompiler */
                                                             COMMA_UNUSED_LOCATION_ARGS) const {
@@ -7801,8 +7784,19 @@ GALGAS_sortingKeyList GALGAS_sortingKeyList::getter_subListFromIndex (const GALG
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void GALGAS_sortingKeyList::dotAssign_operation (const GALGAS_sortingKeyList inOperand
-                                                 COMMA_UNUSED_LOCATION_ARGS) {
+GALGAS_sortingKeyList GALGAS_sortingKeyList::getter_subListToIndex (const GALGAS_uint & inIndex,
+                                                                    C_Compiler * inCompiler
+                                                                    COMMA_LOCATION_ARGS) const {
+  GALGAS_sortingKeyList result = GALGAS_sortingKeyList::constructor_emptyList (THERE) ;
+  subListToIndex (result, inIndex, inCompiler COMMA_THERE) ;
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_sortingKeyList::plusAssign_operation (const GALGAS_sortingKeyList inOperand,
+                                                  C_Compiler * /* inCompiler */
+                                                  COMMA_UNUSED_LOCATION_ARGS) {
   appendList (inOperand) ;
 }
 
@@ -7941,26 +7935,26 @@ void cParser_template_5F_parser::rule_template_5F_parser_template_5F_instruction
   case GALGAS_Ttype::kEnum_stringType:
   case GALGAS_Ttype::kEnum_enumType:
     {
-      ioArgument_ioResultingString.dotAssign_operation (var_expression.getter_mStringValue (SOURCE_FILE ("template_parser.galgas", 109))  COMMA_SOURCE_FILE ("template_parser.galgas", 109)) ;
+      ioArgument_ioResultingString.plusAssign_operation(var_expression.getter_mStringValue (SOURCE_FILE ("template_parser.galgas", 109)), inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 109)) ;
     }
     break ;
   case GALGAS_Ttype::kEnum_intType:
     {
-      ioArgument_ioResultingString.dotAssign_operation (var_expression.getter_mInt_36__34_Value (SOURCE_FILE ("template_parser.galgas", 111)).getter_string (SOURCE_FILE ("template_parser.galgas", 111))  COMMA_SOURCE_FILE ("template_parser.galgas", 111)) ;
+      ioArgument_ioResultingString.plusAssign_operation(var_expression.getter_mInt_36__34_Value (SOURCE_FILE ("template_parser.galgas", 111)).getter_string (SOURCE_FILE ("template_parser.galgas", 111)), inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 111)) ;
     }
     break ;
   case GALGAS_Ttype::kEnum_floatType:
     {
-      ioArgument_ioResultingString.dotAssign_operation (var_expression.getter_mFloatValue (SOURCE_FILE ("template_parser.galgas", 113)).getter_string (SOURCE_FILE ("template_parser.galgas", 113))  COMMA_SOURCE_FILE ("template_parser.galgas", 113)) ;
+      ioArgument_ioResultingString.plusAssign_operation(var_expression.getter_mFloatValue (SOURCE_FILE ("template_parser.galgas", 113)).getter_string (SOURCE_FILE ("template_parser.galgas", 113)), inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 113)) ;
     }
     break ;
   case GALGAS_Ttype::kEnum_boolType:
     {
       const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, var_expression.getter_mInt_36__34_Value (SOURCE_FILE ("template_parser.galgas", 115)).objectCompare (GALGAS_sint_36__34_ ((int64_t) 0LL))).boolEnum () ;
       if (kBoolTrue == test_0) {
-        ioArgument_ioResultingString.dotAssign_operation (GALGAS_string ("false")  COMMA_SOURCE_FILE ("template_parser.galgas", 116)) ;
+        ioArgument_ioResultingString.plusAssign_operation(GALGAS_string ("false"), inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 116)) ;
       }else if (kBoolFalse == test_0) {
-        ioArgument_ioResultingString.dotAssign_operation (GALGAS_string ("true")  COMMA_SOURCE_FILE ("template_parser.galgas", 118)) ;
+        ioArgument_ioResultingString.plusAssign_operation(GALGAS_string ("true"), inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 118)) ;
       }
     }
     break ;
@@ -8329,7 +8323,7 @@ void cParser_template_5F_parser::rule_template_5F_parser_template_5F_instruction
         var_idx.decrement_operation (inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 318)) ;
         const enumGalgasBool test_0 = var_searchEndOfLine.boolEnum () ;
         if (kBoolTrue == test_0) {
-          var_value.dotAssign_operation (GALGAS_string (" ")  COMMA_SOURCE_FILE ("template_parser.galgas", 320)) ;
+          var_value.plusAssign_operation(GALGAS_string (" "), inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 320)) ;
         }
       }
     }
@@ -8696,14 +8690,14 @@ void cParser_template_5F_parser::rule_template_5F_parser_template_5F_instruction
         "  The version of Trampoline does not correspond to the version of goil\n").add_operation (GALGAS_string ("    Version of Trampoline: "), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 598)).add_operation (var_requiredVersion, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 599)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 599)).add_operation (GALGAS_string ("    Version of goil      : "), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 599)).add_operation (GALGAS_application::constructor_projectVersionString (SOURCE_FILE ("template_parser.galgas", 600)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 600))  COMMA_SOURCE_FILE ("template_parser.galgas", 597)) ;
     }
   }else if (kBoolFalse == test_0) {
-    ioArgument_ioResultingString.dotAssign_operation (GALGAS_string::constructor_retrieveAndResetTemplateString (inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 603))  COMMA_SOURCE_FILE ("template_parser.galgas", 603)) ;
+    ioArgument_ioResultingString.plusAssign_operation(GALGAS_string::constructor_retrieveAndResetTemplateString (inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 603)), inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 603)) ;
   }
   bool repeatFlag_2 = true ;
   while (repeatFlag_2) {
     switch (select_template_5F_parser_12 (inCompiler)) {
     case 2: {
       nt_template_5F_instruction_ (constinArgument_inPrefix, constinArgument_inPath, constinArgument_inTemplateDirectory, ioArgument_ioTemplateVariableMap, ioArgument_ioResultingString, var_value, var_type, inCompiler) ;
-      ioArgument_ioResultingString.dotAssign_operation (GALGAS_string::constructor_retrieveAndResetTemplateString (inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 615))  COMMA_SOURCE_FILE ("template_parser.galgas", 615)) ;
+      ioArgument_ioResultingString.plusAssign_operation(GALGAS_string::constructor_retrieveAndResetTemplateString (inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 615)), inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 615)) ;
     } break ;
     default:
       repeatFlag_2 = false ;
@@ -9903,7 +9897,7 @@ void cParser_template_5F_parser::rule_template_5F_parser_template_5F_instruction
       GALGAS_uint var_tabColumn = var_enumeratedValue.getter_mInt_36__34_Value (SOURCE_FILE ("template_parser.galgas", 1379)).getter_uint (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1379)) ;
       const enumGalgasBool test_2 = GALGAS_bool (kIsStrictSup, var_tabColumn.objectCompare (var_currentColumn)).boolEnum () ;
       if (kBoolTrue == test_2) {
-        ioArgument_ioResultingString.dotAssign_operation (GALGAS_string::constructor_stringWithSequenceOfCharacters (GALGAS_char (TO_UNICODE (32)), var_tabColumn.substract_operation (var_currentColumn, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1383)).substract_operation (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1383))  COMMA_SOURCE_FILE ("template_parser.galgas", 1381))  COMMA_SOURCE_FILE ("template_parser.galgas", 1381)) ;
+        ioArgument_ioResultingString.plusAssign_operation(GALGAS_string::constructor_stringWithSequenceOfCharacters (GALGAS_char (TO_UNICODE (32)), var_tabColumn.substract_operation (var_currentColumn, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1383)).substract_operation (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1383))  COMMA_SOURCE_FILE ("template_parser.galgas", 1381)), inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1381)) ;
       }
     }
     outArgument_returnedValue = function_valueWithVoid (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1388)) ;
@@ -11886,19 +11880,19 @@ mLexicalAttribute_number () {
 //---------------------------------------------------------------------------------------------------------------------*
 
 C_Lexique_goil_5F_lexique::C_Lexique_goil_5F_lexique (C_Compiler * inCallerCompiler,
-                const C_String & inDependencyFileExtension,
-                const C_String & inDependencyFilePath,
-                const C_String & inSourceFileName
-                COMMA_LOCATION_ARGS) :
+                                                      const C_String & inDependencyFileExtension,
+                                                      const C_String & inDependencyFilePath,
+                                                      const C_String & inSourceFileName
+                                                      COMMA_LOCATION_ARGS) :
 C_Lexique (inCallerCompiler, inDependencyFileExtension, inDependencyFilePath, inSourceFileName COMMA_THERE) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 C_Lexique_goil_5F_lexique::C_Lexique_goil_5F_lexique (C_Compiler * inCallerCompiler,
-                const C_String & inSourceString,
-                const C_String & inStringForError
-                COMMA_LOCATION_ARGS) :
+                                                      const C_String & inSourceString,
+                                                      const C_String & inStringForError
+                                                      COMMA_LOCATION_ARGS) :
 C_Lexique (inCallerCompiler, inSourceString, inStringForError COMMA_THERE) {
 }
 
@@ -11939,6 +11933,35 @@ static const utf32 gLexicalMessage_goil_5F_lexique_decimalNumberTooLarge [] = {
   TO_UNICODE ('r'),
   TO_UNICODE ('g'),
   TO_UNICODE ('e'),
+  TO_UNICODE (0)
+} ;
+
+static const utf32 gLexicalMessage_goil_5F_lexique_illegalEscape [] = {
+  TO_UNICODE ('I'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('g'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('l'),
+  TO_UNICODE (' '),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('s'),
+  TO_UNICODE ('c'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('p'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('d'),
+  TO_UNICODE (' '),
+  TO_UNICODE ('c'),
+  TO_UNICODE ('h'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('r'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('c'),
+  TO_UNICODE ('t'),
+  TO_UNICODE ('e'),
+  TO_UNICODE ('r'),
   TO_UNICODE (0)
 } ;
 
@@ -13757,7 +13780,19 @@ bool C_Lexique_goil_5F_lexique::parseLexicalToken (void) {
       }else if (testForInputUTF32CharRange (TO_UNICODE (1), TO_UNICODE (' '))) {
       }else if (testForInputUTF32Char (TO_UNICODE ('\"'))) {
         do {
-          if (testForInputUTF32CharRange (TO_UNICODE (' '), TO_UNICODE ('!')) || testForInputUTF32CharRange (TO_UNICODE ('#'), TO_UNICODE (65533))) {
+          if (testForInputUTF32Char (TO_UNICODE ('\\'))) {
+            if (testForInputUTF32Char (TO_UNICODE ('\"'))) {
+              ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_a_5F_string, TO_UNICODE ('\"')) ;
+            }else if (testForInputUTF32Char (TO_UNICODE ('\\'))) {
+              ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_a_5F_string, TO_UNICODE ('\\')) ;
+            }else if (testForInputUTF32Char (TO_UNICODE ('n'))) {
+              ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_a_5F_string, TO_UNICODE ('\n')) ;
+            }else if (testForInputUTF32Char (TO_UNICODE ('r'))) {
+              ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_a_5F_string, TO_UNICODE ('\r')) ;
+            }else{
+              lexicalError (gLexicalMessage_goil_5F_lexique_illegalEscape COMMA_LINE_AND_SOURCE_FILE) ;
+            }
+          }else if (testForInputUTF32CharRange (TO_UNICODE (' '), TO_UNICODE ('!')) || testForInputUTF32CharRange (TO_UNICODE ('#'), TO_UNICODE (65533))) {
             ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_a_5F_string, previousChar ()) ;
           }else{
             mLoop = false ;
@@ -14381,7 +14416,7 @@ class cCollectionElement_uint_33__32_List : public cCollectionElement {
   public : virtual cCollectionElement * copy (void) ;
 
 //--- Description
- public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
+  public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -14611,18 +14646,6 @@ void GALGAS_uint_33__32_List::method_last (GALGAS_location & outOperand0,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_uint_33__32_List GALGAS_uint_33__32_List::operator_concat (const GALGAS_uint_33__32_List & inOperand
-                                                                  COMMA_UNUSED_LOCATION_ARGS) const {
-  GALGAS_uint_33__32_List result ;
-  if (isValid () && inOperand.isValid ()) {
-    result = *this ;
-    result.appendList (inOperand) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
 GALGAS_uint_33__32_List GALGAS_uint_33__32_List::add_operation (const GALGAS_uint_33__32_List & inOperand,
                                                                 C_Compiler * /* inCompiler */
                                                                 COMMA_UNUSED_LOCATION_ARGS) const {
@@ -14656,8 +14679,19 @@ GALGAS_uint_33__32_List GALGAS_uint_33__32_List::getter_subListFromIndex (const 
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void GALGAS_uint_33__32_List::dotAssign_operation (const GALGAS_uint_33__32_List inOperand
-                                                   COMMA_UNUSED_LOCATION_ARGS) {
+GALGAS_uint_33__32_List GALGAS_uint_33__32_List::getter_subListToIndex (const GALGAS_uint & inIndex,
+                                                                        C_Compiler * inCompiler
+                                                                        COMMA_LOCATION_ARGS) const {
+  GALGAS_uint_33__32_List result = GALGAS_uint_33__32_List::constructor_emptyList (THERE) ;
+  subListToIndex (result, inIndex, inCompiler COMMA_THERE) ;
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_uint_33__32_List::plusAssign_operation (const GALGAS_uint_33__32_List inOperand,
+                                                    C_Compiler * /* inCompiler */
+                                                    COMMA_UNUSED_LOCATION_ARGS) {
   appendList (inOperand) ;
 }
 
@@ -14796,7 +14830,7 @@ class cCollectionElement_uint_36__34_List : public cCollectionElement {
   public : virtual cCollectionElement * copy (void) ;
 
 //--- Description
- public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
+  public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -15026,18 +15060,6 @@ void GALGAS_uint_36__34_List::method_last (GALGAS_location & outOperand0,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_uint_36__34_List GALGAS_uint_36__34_List::operator_concat (const GALGAS_uint_36__34_List & inOperand
-                                                                  COMMA_UNUSED_LOCATION_ARGS) const {
-  GALGAS_uint_36__34_List result ;
-  if (isValid () && inOperand.isValid ()) {
-    result = *this ;
-    result.appendList (inOperand) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
 GALGAS_uint_36__34_List GALGAS_uint_36__34_List::add_operation (const GALGAS_uint_36__34_List & inOperand,
                                                                 C_Compiler * /* inCompiler */
                                                                 COMMA_UNUSED_LOCATION_ARGS) const {
@@ -15071,8 +15093,19 @@ GALGAS_uint_36__34_List GALGAS_uint_36__34_List::getter_subListFromIndex (const 
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void GALGAS_uint_36__34_List::dotAssign_operation (const GALGAS_uint_36__34_List inOperand
-                                                   COMMA_UNUSED_LOCATION_ARGS) {
+GALGAS_uint_36__34_List GALGAS_uint_36__34_List::getter_subListToIndex (const GALGAS_uint & inIndex,
+                                                                        C_Compiler * inCompiler
+                                                                        COMMA_LOCATION_ARGS) const {
+  GALGAS_uint_36__34_List result = GALGAS_uint_36__34_List::constructor_emptyList (THERE) ;
+  subListToIndex (result, inIndex, inCompiler COMMA_THERE) ;
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_uint_36__34_List::plusAssign_operation (const GALGAS_uint_36__34_List inOperand,
+                                                    C_Compiler * /* inCompiler */
+                                                    COMMA_UNUSED_LOCATION_ARGS) {
   appendList (inOperand) ;
 }
 
@@ -15211,7 +15244,7 @@ class cCollectionElement_sint_33__32_List : public cCollectionElement {
   public : virtual cCollectionElement * copy (void) ;
 
 //--- Description
- public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
+  public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -15441,18 +15474,6 @@ void GALGAS_sint_33__32_List::method_last (GALGAS_location & outOperand0,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_sint_33__32_List GALGAS_sint_33__32_List::operator_concat (const GALGAS_sint_33__32_List & inOperand
-                                                                  COMMA_UNUSED_LOCATION_ARGS) const {
-  GALGAS_sint_33__32_List result ;
-  if (isValid () && inOperand.isValid ()) {
-    result = *this ;
-    result.appendList (inOperand) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
 GALGAS_sint_33__32_List GALGAS_sint_33__32_List::add_operation (const GALGAS_sint_33__32_List & inOperand,
                                                                 C_Compiler * /* inCompiler */
                                                                 COMMA_UNUSED_LOCATION_ARGS) const {
@@ -15486,8 +15507,19 @@ GALGAS_sint_33__32_List GALGAS_sint_33__32_List::getter_subListFromIndex (const 
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void GALGAS_sint_33__32_List::dotAssign_operation (const GALGAS_sint_33__32_List inOperand
-                                                   COMMA_UNUSED_LOCATION_ARGS) {
+GALGAS_sint_33__32_List GALGAS_sint_33__32_List::getter_subListToIndex (const GALGAS_uint & inIndex,
+                                                                        C_Compiler * inCompiler
+                                                                        COMMA_LOCATION_ARGS) const {
+  GALGAS_sint_33__32_List result = GALGAS_sint_33__32_List::constructor_emptyList (THERE) ;
+  subListToIndex (result, inIndex, inCompiler COMMA_THERE) ;
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_sint_33__32_List::plusAssign_operation (const GALGAS_sint_33__32_List inOperand,
+                                                    C_Compiler * /* inCompiler */
+                                                    COMMA_UNUSED_LOCATION_ARGS) {
   appendList (inOperand) ;
 }
 
@@ -15626,7 +15658,7 @@ class cCollectionElement_sint_36__34_List : public cCollectionElement {
   public : virtual cCollectionElement * copy (void) ;
 
 //--- Description
- public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
+  public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -15856,18 +15888,6 @@ void GALGAS_sint_36__34_List::method_last (GALGAS_location & outOperand0,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_sint_36__34_List GALGAS_sint_36__34_List::operator_concat (const GALGAS_sint_36__34_List & inOperand
-                                                                  COMMA_UNUSED_LOCATION_ARGS) const {
-  GALGAS_sint_36__34_List result ;
-  if (isValid () && inOperand.isValid ()) {
-    result = *this ;
-    result.appendList (inOperand) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
 GALGAS_sint_36__34_List GALGAS_sint_36__34_List::add_operation (const GALGAS_sint_36__34_List & inOperand,
                                                                 C_Compiler * /* inCompiler */
                                                                 COMMA_UNUSED_LOCATION_ARGS) const {
@@ -15901,8 +15921,19 @@ GALGAS_sint_36__34_List GALGAS_sint_36__34_List::getter_subListFromIndex (const 
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void GALGAS_sint_36__34_List::dotAssign_operation (const GALGAS_sint_36__34_List inOperand
-                                                   COMMA_UNUSED_LOCATION_ARGS) {
+GALGAS_sint_36__34_List GALGAS_sint_36__34_List::getter_subListToIndex (const GALGAS_uint & inIndex,
+                                                                        C_Compiler * inCompiler
+                                                                        COMMA_LOCATION_ARGS) const {
+  GALGAS_sint_36__34_List result = GALGAS_sint_36__34_List::constructor_emptyList (THERE) ;
+  subListToIndex (result, inIndex, inCompiler COMMA_THERE) ;
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_sint_36__34_List::plusAssign_operation (const GALGAS_sint_36__34_List inOperand,
+                                                    C_Compiler * /* inCompiler */
+                                                    COMMA_UNUSED_LOCATION_ARGS) {
   appendList (inOperand) ;
 }
 
@@ -16041,7 +16072,7 @@ class cCollectionElement_floatList : public cCollectionElement {
   public : virtual cCollectionElement * copy (void) ;
 
 //--- Description
- public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
+  public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -16271,18 +16302,6 @@ void GALGAS_floatList::method_last (GALGAS_location & outOperand0,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-GALGAS_floatList GALGAS_floatList::operator_concat (const GALGAS_floatList & inOperand
-                                                    COMMA_UNUSED_LOCATION_ARGS) const {
-  GALGAS_floatList result ;
-  if (isValid () && inOperand.isValid ()) {
-    result = *this ;
-    result.appendList (inOperand) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
 GALGAS_floatList GALGAS_floatList::add_operation (const GALGAS_floatList & inOperand,
                                                   C_Compiler * /* inCompiler */
                                                   COMMA_UNUSED_LOCATION_ARGS) const {
@@ -16316,8 +16335,19 @@ GALGAS_floatList GALGAS_floatList::getter_subListFromIndex (const GALGAS_uint & 
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void GALGAS_floatList::dotAssign_operation (const GALGAS_floatList inOperand
-                                            COMMA_UNUSED_LOCATION_ARGS) {
+GALGAS_floatList GALGAS_floatList::getter_subListToIndex (const GALGAS_uint & inIndex,
+                                                          C_Compiler * inCompiler
+                                                          COMMA_LOCATION_ARGS) const {
+  GALGAS_floatList result = GALGAS_floatList::constructor_emptyList (THERE) ;
+  subListToIndex (result, inIndex, inCompiler COMMA_THERE) ;
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_floatList::plusAssign_operation (const GALGAS_floatList inOperand,
+                                             C_Compiler * /* inCompiler */
+                                             COMMA_UNUSED_LOCATION_ARGS) {
   appendList (inOperand) ;
 }
 
@@ -16427,421 +16457,6 @@ GALGAS_floatList GALGAS_floatList::extractObject (const GALGAS_object & inObject
       result = *p ;
     }else{
       inCompiler->castError ("floatList", p->dynamicTypeDescriptor () COMMA_THERE) ;
-    }  
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                       Class for element of '@numberList' list                                       *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cCollectionElement_numberList : public cCollectionElement {
-  public : GALGAS_numberList_2D_element mObject ;
-
-//--- Constructor
-  public : cCollectionElement_numberList (const GALGAS_location & in_location,
-                                          const GALGAS_object_5F_t & in_value
-                                          COMMA_LOCATION_ARGS) ;
-
-//--- Virtual method for comparing elements
-  public : virtual typeComparisonResult compare (const cCollectionElement * inOperand) const ;
-
-//--- Virtual method that checks that all attributes are valid
-  public : virtual bool isValid (void) const ;
-
-//--- Virtual method that returns a copy of current object
-  public : virtual cCollectionElement * copy (void) ;
-
-//--- Description
- public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-cCollectionElement_numberList::cCollectionElement_numberList (const GALGAS_location & in_location,
-                                                              const GALGAS_object_5F_t & in_value
-                                                              COMMA_LOCATION_ARGS) :
-cCollectionElement (THERE),
-mObject (in_location, in_value) {
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-bool cCollectionElement_numberList::isValid (void) const {
-  return mObject.isValid () ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-cCollectionElement * cCollectionElement_numberList::copy (void) {
-  cCollectionElement * result = NULL ;
-  macroMyNew (result, cCollectionElement_numberList (mObject.mAttribute_location, mObject.mAttribute_value COMMA_HERE)) ;
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void cCollectionElement_numberList::description (C_String & ioString, const int32_t inIndentation) const {
-  ioString << "\n" ;
-  ioString.writeStringMultiple ("| ", inIndentation) ;
-  ioString << "location" ":" ;
-  mObject.mAttribute_location.description (ioString, inIndentation) ;
-  ioString << "\n" ;
-  ioString.writeStringMultiple ("| ", inIndentation) ;
-  ioString << "value" ":" ;
-  mObject.mAttribute_value.description (ioString, inIndentation) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-typeComparisonResult cCollectionElement_numberList::compare (const cCollectionElement * inOperand) const {
-  cCollectionElement_numberList * operand = (cCollectionElement_numberList *) inOperand ;
-  macroValidSharedObject (operand, cCollectionElement_numberList) ;
-  return mObject.objectCompare (operand->mObject) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_numberList::GALGAS_numberList (void) :
-AC_GALGAS_list () {
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_numberList::GALGAS_numberList (cSharedList * inSharedListPtr) :
-AC_GALGAS_list (inSharedListPtr) {
-  if (NULL == inSharedListPtr) {
-    createNewEmptyList (HERE) ;
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_numberList GALGAS_numberList::constructor_emptyList (LOCATION_ARGS) {
-  GALGAS_numberList result ;
-  result.createNewEmptyList (THERE) ;
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_numberList GALGAS_numberList::constructor_listWithValue (const GALGAS_location & inOperand0,
-                                                                const GALGAS_object_5F_t & inOperand1
-                                                                COMMA_LOCATION_ARGS) {
-  GALGAS_numberList result ;
-  if (inOperand0.isValid () && inOperand1.isValid ()) {
-    result.createNewEmptyList (THERE) ;
-    capCollectionElement attributes ;
-    GALGAS_numberList::makeAttributesFromObjects (attributes, inOperand0, inOperand1 COMMA_THERE) ;
-    result.addObject (attributes) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void GALGAS_numberList::makeAttributesFromObjects (capCollectionElement & outAttributes,
-                                                   const GALGAS_location & in_location,
-                                                   const GALGAS_object_5F_t & in_value
-                                                   COMMA_LOCATION_ARGS) {
-  cCollectionElement_numberList * p = NULL ;
-  macroMyNew (p, cCollectionElement_numberList (in_location,
-                                                in_value COMMA_THERE)) ;
-  outAttributes.setPointer (p) ;
-  macroDetachSharedObject (p) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void GALGAS_numberList::addAssign_operation (const GALGAS_location & inOperand0,
-                                             const GALGAS_object_5F_t & inOperand1
-                                             COMMA_LOCATION_ARGS) {
-  if (isValid () && inOperand0.isValid () && inOperand1.isValid ()) {
-    cCollectionElement * p = NULL ;
-    macroMyNew (p, cCollectionElement_numberList (inOperand0, inOperand1 COMMA_THERE)) ;
-    capCollectionElement attributes ;
-    attributes.setPointer (p) ;
-    macroDetachSharedObject (p) ;
-    addObject (attributes) ;
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void GALGAS_numberList::modifier_insertAtIndex (const GALGAS_location inOperand0,
-                                                const GALGAS_object_5F_t inOperand1,
-                                                const GALGAS_uint inInsertionIndex,
-                                                C_Compiler * inCompiler
-                                                COMMA_LOCATION_ARGS) {
-  if (isValid () && inInsertionIndex.isValid () && inOperand0.isValid () && inOperand1.isValid ()) {
-    cCollectionElement * p = NULL ;
-    macroMyNew (p, cCollectionElement_numberList (inOperand0, inOperand1 COMMA_THERE)) ;
-    capCollectionElement attributes ;
-    attributes.setPointer (p) ;
-    macroDetachSharedObject (p) ;
-    addObjectAtIndex (attributes, inInsertionIndex.uintValue (), inCompiler COMMA_THERE) ;
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void GALGAS_numberList::modifier_removeAtIndex (GALGAS_location & outOperand0,
-                                                GALGAS_object_5F_t & outOperand1,
-                                                const GALGAS_uint inRemoveIndex,
-                                                C_Compiler * inCompiler
-                                                COMMA_LOCATION_ARGS) {
-  if (isValid () && inRemoveIndex.isValid ()) {
-    capCollectionElement attributes ;
-    removeObjectAtIndex (attributes, inRemoveIndex.uintValue (), inCompiler COMMA_THERE) ;
-    cCollectionElement_numberList * p = (cCollectionElement_numberList *) attributes.ptr () ;
-    if (NULL == p) {
-      outOperand0.drop () ;
-      outOperand1.drop () ;
-    }else{
-      macroValidSharedObject (p, cCollectionElement_numberList) ;
-      outOperand0 = p->mObject.mAttribute_location ;
-      outOperand1 = p->mObject.mAttribute_value ;
-    }
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void GALGAS_numberList::modifier_popFirst (GALGAS_location & outOperand0,
-                                           GALGAS_object_5F_t & outOperand1,
-                                           C_Compiler * inCompiler
-                                           COMMA_LOCATION_ARGS) {
-  capCollectionElement attributes ;
-  removeFirstObject (attributes, inCompiler COMMA_THERE) ;
-  cCollectionElement_numberList * p = (cCollectionElement_numberList *) attributes.ptr () ;
-  if (NULL == p) {
-    outOperand0.drop () ;
-    outOperand1.drop () ;
-  }else{
-    macroValidSharedObject (p, cCollectionElement_numberList) ;
-    outOperand0 = p->mObject.mAttribute_location ;
-    outOperand1 = p->mObject.mAttribute_value ;
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void GALGAS_numberList::modifier_popLast (GALGAS_location & outOperand0,
-                                          GALGAS_object_5F_t & outOperand1,
-                                          C_Compiler * inCompiler
-                                          COMMA_LOCATION_ARGS) {
-  capCollectionElement attributes ;
-  removeLastObject (attributes, inCompiler COMMA_THERE) ;
-  cCollectionElement_numberList * p = (cCollectionElement_numberList *) attributes.ptr () ;
-  if (NULL == p) {
-    outOperand0.drop () ;
-    outOperand1.drop () ;
-  }else{
-    macroValidSharedObject (p, cCollectionElement_numberList) ;
-    outOperand0 = p->mObject.mAttribute_location ;
-    outOperand1 = p->mObject.mAttribute_value ;
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void GALGAS_numberList::method_first (GALGAS_location & outOperand0,
-                                      GALGAS_object_5F_t & outOperand1,
-                                      C_Compiler * inCompiler
-                                      COMMA_LOCATION_ARGS) const {
-  capCollectionElement attributes ;
-  readFirst (attributes, inCompiler COMMA_THERE) ;
-  cCollectionElement_numberList * p = (cCollectionElement_numberList *) attributes.ptr () ;
-  if (NULL == p) {
-    outOperand0.drop () ;
-    outOperand1.drop () ;
-  }else{
-    macroValidSharedObject (p, cCollectionElement_numberList) ;
-    outOperand0 = p->mObject.mAttribute_location ;
-    outOperand1 = p->mObject.mAttribute_value ;
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void GALGAS_numberList::method_last (GALGAS_location & outOperand0,
-                                     GALGAS_object_5F_t & outOperand1,
-                                     C_Compiler * inCompiler
-                                     COMMA_LOCATION_ARGS) const {
-  capCollectionElement attributes ;
-  readLast (attributes, inCompiler COMMA_THERE) ;
-  cCollectionElement_numberList * p = (cCollectionElement_numberList *) attributes.ptr () ;
-  if (NULL == p) {
-    outOperand0.drop () ;
-    outOperand1.drop () ;
-  }else{
-    macroValidSharedObject (p, cCollectionElement_numberList) ;
-    outOperand0 = p->mObject.mAttribute_location ;
-    outOperand1 = p->mObject.mAttribute_value ;
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_numberList GALGAS_numberList::operator_concat (const GALGAS_numberList & inOperand
-                                                      COMMA_UNUSED_LOCATION_ARGS) const {
-  GALGAS_numberList result ;
-  if (isValid () && inOperand.isValid ()) {
-    result = *this ;
-    result.appendList (inOperand) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_numberList GALGAS_numberList::add_operation (const GALGAS_numberList & inOperand,
-                                                    C_Compiler * /* inCompiler */
-                                                    COMMA_UNUSED_LOCATION_ARGS) const {
-  GALGAS_numberList result ;
-  if (isValid () && inOperand.isValid ()) {
-    result = *this ;
-    result.appendList (inOperand) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_numberList GALGAS_numberList::getter_subListWithRange (const GALGAS_range & inRange,
-                                                              C_Compiler * inCompiler
-                                                              COMMA_LOCATION_ARGS) const {
-  GALGAS_numberList result = GALGAS_numberList::constructor_emptyList (THERE) ;
-  subListWithRange (result, inRange, inCompiler COMMA_THERE) ;
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_numberList GALGAS_numberList::getter_subListFromIndex (const GALGAS_uint & inIndex,
-                                                              C_Compiler * inCompiler
-                                                              COMMA_LOCATION_ARGS) const {
-  GALGAS_numberList result = GALGAS_numberList::constructor_emptyList (THERE) ;
-  subListFromIndex (result, inIndex, inCompiler COMMA_THERE) ;
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void GALGAS_numberList::dotAssign_operation (const GALGAS_numberList inOperand
-                                             COMMA_UNUSED_LOCATION_ARGS) {
-  appendList (inOperand) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_location GALGAS_numberList::getter_locationAtIndex (const GALGAS_uint & inIndex,
-                                                           C_Compiler * inCompiler
-                                                           COMMA_LOCATION_ARGS) const {
-  capCollectionElement attributes = readObjectAtIndex (inIndex, inCompiler COMMA_THERE) ;
-  cCollectionElement_numberList * p = (cCollectionElement_numberList *) attributes.ptr () ;
-  GALGAS_location result ;
-  if (NULL != p) {
-    macroValidSharedObject (p, cCollectionElement_numberList) ;
-    result = p->mObject.mAttribute_location ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_object_5F_t GALGAS_numberList::getter_valueAtIndex (const GALGAS_uint & inIndex,
-                                                           C_Compiler * inCompiler
-                                                           COMMA_LOCATION_ARGS) const {
-  capCollectionElement attributes = readObjectAtIndex (inIndex, inCompiler COMMA_THERE) ;
-  cCollectionElement_numberList * p = (cCollectionElement_numberList *) attributes.ptr () ;
-  GALGAS_object_5F_t result ;
-  if (NULL != p) {
-    macroValidSharedObject (p, cCollectionElement_numberList) ;
-    result = p->mObject.mAttribute_value ;
-  }
-  return result ;
-}
-
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-cEnumerator_numberList::cEnumerator_numberList (const GALGAS_numberList & inEnumeratedObject,
-                                                const typeEnumerationOrder inOrder) :
-cGenericAbstractEnumerator () {
-  inEnumeratedObject.populateEnumerationArray (mEnumerationArray, inOrder) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_numberList_2D_element cEnumerator_numberList::current (LOCATION_ARGS) const {
-  const cCollectionElement_numberList * p = (const cCollectionElement_numberList *) currentObjectPtr (THERE) ;
-  macroValidSharedObject (p, cCollectionElement_numberList) ;
-  return p->mObject ;
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_location cEnumerator_numberList::current_location (LOCATION_ARGS) const {
-  const cCollectionElement_numberList * p = (const cCollectionElement_numberList *) currentObjectPtr (THERE) ;
-  macroValidSharedObject (p, cCollectionElement_numberList) ;
-  return p->mObject.mAttribute_location ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_object_5F_t cEnumerator_numberList::current_value (LOCATION_ARGS) const {
-  const cCollectionElement_numberList * p = (const cCollectionElement_numberList *) currentObjectPtr (THERE) ;
-  macroValidSharedObject (p, cCollectionElement_numberList) ;
-  return p->mObject.mAttribute_value ;
-}
-
-
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                                  @numberList type                                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-const C_galgas_type_descriptor
-kTypeDescriptor_GALGAS_numberList ("numberList",
-                                   NULL) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-const C_galgas_type_descriptor * GALGAS_numberList::staticTypeDescriptor (void) const {
-  return & kTypeDescriptor_GALGAS_numberList ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-AC_GALGAS_root * GALGAS_numberList::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
-  if (isValid ()) {
-    macroMyNew (result, GALGAS_numberList (*this)) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_numberList GALGAS_numberList::extractObject (const GALGAS_object & inObject,
-                                                    C_Compiler * inCompiler
-                                                    COMMA_LOCATION_ARGS) {
-  GALGAS_numberList result ;
-  const GALGAS_numberList * p = (const GALGAS_numberList *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_numberList *> (p)) {
-      result = *p ;
-    }else{
-      inCompiler->castError ("numberList", p->dynamicTypeDescriptor () COMMA_THERE) ;
     }  
   }
   return result ;

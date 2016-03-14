@@ -54,7 +54,7 @@ class AC_GALGAS_list : public AC_GALGAS_root {
 
 //--- Default constructor
   public : AC_GALGAS_list (void) ;
-  
+
 //--- Constructor used by list map
   public : AC_GALGAS_list (cSharedList * inSharedListPtr) ;
 
@@ -97,14 +97,14 @@ class AC_GALGAS_list : public AC_GALGAS_root {
 
 //--- Internal methods for handling list
   protected : VIRTUAL_IN_DEBUG void addObject (const capCollectionElement & inElementToAdd) ;
-  
+
   protected : VIRTUAL_IN_DEBUG void addObjectAtIndex (const capCollectionElement & inElementToAdd,
                                                       const uint32_t inInsertionIndex,
                                                       C_Compiler * inCompiler
                                                       COMMA_LOCATION_ARGS) ;
-  
+
   private : VIRTUAL_IN_DEBUG void insulateList (LOCATION_ARGS) ;
-  
+
   protected : VIRTUAL_IN_DEBUG void removeObjectAtIndex (capCollectionElement & outAttributes,
                                                          const uint32_t inRemoveIndex,
                                                          C_Compiler * inCompiler
@@ -137,6 +137,11 @@ class AC_GALGAS_list : public AC_GALGAS_root {
                                                       const GALGAS_uint & inIndex,
                                                       C_Compiler * inCompiler
                                                       COMMA_LOCATION_ARGS) const ;
+
+  protected : VIRTUAL_IN_DEBUG void subListToIndex (AC_GALGAS_list & outList,
+                                                    const GALGAS_uint & inIndex,
+                                                    C_Compiler * inCompiler
+                                                    COMMA_LOCATION_ARGS) const ;
 
   protected : VIRTUAL_IN_DEBUG capCollectionElement readObjectAtIndex (const GALGAS_uint & inIndex,
                                                                        C_Compiler * inCompiler

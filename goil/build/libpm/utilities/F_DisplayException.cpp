@@ -26,20 +26,17 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifdef COMPILE_FOR_WIN32
-  #include <windows.h>
-  #include <stdio.h>
-#endif
-
-#ifdef UNIX_TOOL
-  #include <stdio.h>
+#ifndef COMPILE_FOR_WINDOWS
+  #error COMPILE_FOR_WINDOWS is undefined
 #endif
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifndef MACHINE_IS_DEFINED
-  #error "Undefined machine"
+#if COMPILE_FOR_WINDOWS == 1
+  #include <windows.h>
 #endif
+
+#include <stdio.h>
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
@@ -47,7 +44,7 @@
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifdef COMPILE_FOR_WIN32
+#if COMPILE_FOR_WINDOWS == 1
   void F_default_display_exception (const ::std:: exception & inException) {
     ::MessageBox ((HWND__ *) NULL,
                   inException.what (),
@@ -62,7 +59,7 @@
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifdef UNIX_TOOL
+#if COMPILE_FOR_WINDOWS == 0
   void F_default_display_exception (const ::std:: exception & inException) {
     co.flush () ;
     ce << "\n*** Exception: " << inException.what () << " ***\n" ;
@@ -75,7 +72,7 @@
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifdef COMPILE_FOR_WIN32
+#if COMPILE_FOR_WINDOWS == 1
   void F_default_display_unknown_exception (void) {
     ::MessageBox ((HWND__ *) NULL,
                   "An unknown C++ exception has been raised.",
@@ -90,7 +87,7 @@
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifdef UNIX_TOOL
+#if COMPILE_FOR_WINDOWS == 0
   void F_default_display_unknown_exception (void) {
     ::fflush (stdout) ;
     ::fprintf (stderr, "\n*** Unknown exception ***\n") ;

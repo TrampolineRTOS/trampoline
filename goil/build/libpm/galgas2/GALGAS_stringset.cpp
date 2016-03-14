@@ -801,8 +801,9 @@ GALGAS_stringset GALGAS_stringset::operator_or (const GALGAS_stringset & inOpera
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void GALGAS_stringset::dotAssign_operation (const GALGAS_stringset inOperand2
-                                            COMMA_LOCATION_ARGS) {
+void GALGAS_stringset::plusAssign_operation (const GALGAS_stringset inOperand2,
+                                             C_Compiler *
+                                             COMMA_LOCATION_ARGS) {
   if (isValid () && inOperand2.isValid ()) {
     #ifndef DO_NOT_GENERATE_CHECKINGS
       checkStringset (HERE) ;
