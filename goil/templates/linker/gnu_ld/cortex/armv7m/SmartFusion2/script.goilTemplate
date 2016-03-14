@@ -2,7 +2,7 @@
 /*                                                                            */
 /*                                   Link script                              */
 /*                                                                            */
-/*                                   stm32f407                                */
+/*                       m2sxxx in eNVM (mirror mode)                         */
 /*                                                                            */
 /* <INIT_POLICY>                                                              */
 /* - NO_INIT :          used for variables that are never cleared and never   */
@@ -25,14 +25,6 @@
 /*----------------------------------------------------------------------------*/
 
 ENTRY(tpl_reset_handler)
-
-/* Highest address of the user mode stack */
-_estack = 0x20020000;    /* end of 128K RAM on AHB bus*/
-
-/* Generate a link error if heap and stack don't fit into RAM */
-_Min_Heap_Size = 0;      /* required amount of heap  */
-_Min_Stack_Size = 0x400; /* required amount of stack */
-
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -44,6 +36,16 @@ _Min_Stack_Size = 0x400; /* required amount of stack */
 %
 template memory_map
 %
+
+PROVIDE (__main_stack_start = RAM_START_ADDRESS + RAM_SIZE);
+PROVIDE (_estack = __main_stack_start);
+/*PROVIDE (__mirrored_nvm = 1); */  /* Indicate to startup code that NVM is mirrored to VMA address and no text copy is required. */
+/*PROVIDE (__smartfusion2_memory_remap = 0); */
+
+/* Generate a link error if heap and stack don't fit into RAM */
+_Min_Heap_Size = 0;      /* required amount of heap  */
+_Min_Stack_Size = 0x400; /* required amount of stack */
+
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -58,11 +60,8 @@ SECTIONS {
     . = ALIGN(4);
     KEEP(*(.isr_vector)) /* Startup code */
     . = ALIGN(4);
-  } >VECTOR
+  } >romMirror AT>rom
 }
-
-/*----------------------------------------------------------------------------*/
-
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*                                    Code                                    */
@@ -75,6 +74,7 @@ SECTIONS {
  */
 SECTIONS {
   . = ALIGN(4);
+
   /* --- code of OS --- */
   ostext : {
     *(.SC_handler)
@@ -82,13 +82,13 @@ SECTIONS {
     *(.osCode)
     *(.osApiCode)  /* API functions */
     *(.appCommonCode)
-  } >FLASH
+  } >romMirror AT>rom
   . = ALIGN(4);
   /* --- const of OS --- */
   osconst : {
     *(.osConst)
     *(.osApiConst) /* API constants */
-  } >FLASH
+  } >romMirror AT>rom
 }
 
 /*
@@ -114,7 +114,7 @@ foreach isr in ISRS1 do
 %
 end foreach
 %
-  } >FLASH
+  } >romMirror AT>rom
   . = ALIGN(4);
   appconst : {
   /* --- Sections for application const --- */
@@ -130,7 +130,7 @@ foreach app in APPLICATIONS do
  end for
 end foreach
 %
-  } >FLASH
+  } >romMirror AT>rom
 }
 
 /*
@@ -152,7 +152,7 @@ end foreach
     . = ALIGN(4);
     __SEG_STOP_APP_CODE_CONST_RGN = . - 1;
     __PROGCONST_SECTION_STOP = . - 1;
-  } >FLASH
+  } >romMirror AT>rom
 }
 
   /* remaining .text (ie no section given) */
@@ -172,16 +172,16 @@ SECTIONS {
     . = ALIGN(4);
     _etext = .;        /* define a global symbols at end of code */
     _exit = .;
-  } >FLASH
+  } >romMirror AT>rom
 }
 
 SECTIONS {
-   .ARM.extab   : { *(.ARM.extab* .gnu.linkonce.armextab.*) } >FLASH
+   .ARM.extab   : { *(.ARM.extab* .gnu.linkonce.armextab.*) } >romMirror AT>rom
     .ARM : {
     __exidx_start = .;
       *(.ARM.exidx*)
       __exidx_end = .;
-    } >FLASH
+    } >romMirror AT>rom
 }
 
 SECTIONS {
@@ -190,7 +190,7 @@ SECTIONS {
     PROVIDE_HIDDEN (__preinit_array_start = .);
     KEEP (*(.preinit_array*))
     PROVIDE_HIDDEN (__preinit_array_end = .);
-  } >FLASH
+  } >romMirror AT>rom
 }
 
 SECTIONS {
@@ -200,7 +200,7 @@ SECTIONS {
     KEEP (*(SORT(.init_array.*)))
     KEEP (*(.init_array*))
     PROVIDE_HIDDEN (__init_array_end = .);
-  } >FLASH
+  } >romMirror AT>rom
 }
 
 SECTIONS {
@@ -210,7 +210,7 @@ SECTIONS {
     KEEP (*(.fini_array*))
     KEEP (*(SORT(.fini_array.*)))
     PROVIDE_HIDDEN (__fini_array_end = .);
-  } >FLASH
+  } >romMirror AT>rom
 }  
 
   /* used by the startup to initialize data */
@@ -251,7 +251,7 @@ end foreach
 %
     . = ALIGN(4);
     _edata = .;        /* define a global symbol at data end */
-  } >RAM
+  } >ram
 }
 
   /*
@@ -281,7 +281,7 @@ foreach proc in PROCESSES do
      __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 64 ? 64 : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
      __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 32 ? 32 : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
      __SEG_ALIGN_% !proc::KIND %_% !proc::NAME %_VAR_RGN = __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
-  } >RAM
+  } >ram
 %
 end foreach
 %}
@@ -309,7 +309,7 @@ foreach proc in PROCESSES do %
     __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_STACK_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_STACK_RGN) < 64 ? 64 : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN;
     __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_STACK_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_STACK_RGN) < 32 ? 32 : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN;
     __SEG_ALIGN_% !proc::KIND %_% !proc::NAME %_STACK_RGN = __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN;
-  } >RAM
+  } >ram
 %
 end foreach
 %
@@ -351,7 +351,7 @@ foreach app in APPLICATIONS do
 %
 end foreach
 % 
-  } >RAM
+  } >ram
 }
 
 /*----------------------------------------------------------------------------*/
@@ -381,7 +381,7 @@ SECTIONS {
     . = ALIGN(4);
     _ebss = .;         /* define a global symbol at bss end */
     __bss_end__ = _ebss;
-  } >RAM
+  } >ram
 }
 
 /*----------------------------------------------------------------------------*/
@@ -401,7 +401,7 @@ SECTIONS {
     . = . + _Min_Heap_Size;
     . = . + _Min_Stack_Size;
     . = ALIGN(4);
-  } >RAM
+  } >ram
 }
 
 %

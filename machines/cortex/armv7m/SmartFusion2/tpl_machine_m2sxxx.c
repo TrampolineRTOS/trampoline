@@ -1,5 +1,5 @@
 /**
- * @file tpl_machine_samd.c
+ * @file tpl_machine_m2sxxx.c
  *
  * @section copyright Copyright
  *
@@ -18,9 +18,11 @@
  *
  */
 
+#include <stdint.h>
 #include "tpl_compiler.h"
 #include "tpl_os_std_types.h"
-#include "tpl_machine.h"
+#include "system_m2sxxx.h"
+#include "m2sxxx.h"
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
