@@ -39,8 +39,8 @@ template memory_map
 
 PROVIDE (__main_stack_start = RAM_START_ADDRESS + RAM_SIZE);
 PROVIDE (_estack = __main_stack_start);
-/*PROVIDE (__mirrored_nvm = 1); */  /* Indicate to startup code that NVM is mirrored to VMA address and no text copy is required. */
-/*PROVIDE (__smartfusion2_memory_remap = 0); */
+PROVIDE (__mirrored_nvm = 1); /* Indicate to startup code that NVM is mirrored to VMA address and no text copy is required. */
+PROVIDE (__smartfusion2_memory_remap = 0); /* required by debugger. */
 
 /* Generate a link error if heap and stack don't fit into RAM */
 _Min_Heap_Size = 0;      /* required amount of heap  */
