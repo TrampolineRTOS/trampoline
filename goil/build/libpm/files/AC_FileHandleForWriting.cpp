@@ -28,7 +28,13 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifndef COMPILE_FOR_WIN32
+#ifndef COMPILE_FOR_WINDOWS
+  #error COMPILE_FOR_WINDOWS is undefined
+#endif
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+#if COMPILE_FOR_WINDOWS == 0
   static uint32_t g_SIGTERM_balance_count = 0 ;
 #endif
 
@@ -37,7 +43,7 @@
 AC_FileHandleForWriting::AC_FileHandleForWriting (const C_String & inFilePath,
                                                   const char * inMode) :
 AC_FileHandle (inFilePath, inMode) {
-  #ifndef COMPILE_FOR_WIN32
+  #if COMPILE_FOR_WINDOWS == 0
     if (0 == g_SIGTERM_balance_count) {
       sigset_t s ;
       sigemptyset (& s) ;
@@ -56,7 +62,7 @@ AC_FileHandleForWriting::~ AC_FileHandleForWriting (void) {
     mFilePtr = NULL ;
   }
 //---
-  #ifndef COMPILE_FOR_WIN32
+  #if COMPILE_FOR_WINDOWS == 0
     g_SIGTERM_balance_count -- ;
     if (0 == g_SIGTERM_balance_count) {
       sigset_t s ;

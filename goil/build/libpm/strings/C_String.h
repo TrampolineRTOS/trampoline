@@ -41,13 +41,13 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifndef MACHINE_IS_DEFINED
-  #error "Undefined machine"
+#ifndef COMPILE_FOR_WINDOWS
+  #error COMPILE_FOR_WINDOWS is undefined
 #endif
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifdef UNIX_TOOL
+#if COMPILE_FOR_WINDOWS == 0
   #include <sys/types.h>
   #include <sys/stat.h>
 #endif

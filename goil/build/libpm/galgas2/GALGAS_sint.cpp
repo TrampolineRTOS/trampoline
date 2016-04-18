@@ -202,6 +202,80 @@ void GALGAS_sint::decrement_operation (C_Compiler * inCompiler
 
 //---------------------------------------------------------------------------------------------------------------------*
 
+void GALGAS_sint::plusAssign_operation (const GALGAS_sint inOperand,
+                                        C_Compiler * inCompiler
+                                        COMMA_LOCATION_ARGS) {
+  if (isValid () && inOperand.isValid ()) {
+    const int32_t r = mSIntValue + inOperand.mSIntValue ;
+    const bool signA = mSIntValue >= 0 ;
+    const bool signB = inOperand.mSIntValue >= 0 ;
+    const bool signR = r >= 0 ;
+    const bool ovf = (signA == signB) && (signA != signR) ;
+    if (ovf) {
+      inCompiler->onTheFlyRunTimeError ("@sint += operation overflow" COMMA_THERE) ;
+      mIsValid = false ;
+    }else{
+      mSIntValue = r ;
+    }
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_sint::minusAssign_operation (const GALGAS_sint inOperand,
+                                         C_Compiler * inCompiler
+                                         COMMA_LOCATION_ARGS) {
+  if (isValid () && inOperand.isValid ()) {
+    const int32_t r = mSIntValue - inOperand.mSIntValue ;
+    const bool ovf = (mSIntValue >= inOperand.mSIntValue) != (r >= 0) ;
+    if (ovf) {
+      inCompiler->onTheFlyRunTimeError ("@sint -= operation overflow" COMMA_THERE) ;
+      mIsValid = false ;
+    }else{
+      mSIntValue = r ;
+    }
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_sint::mulAssign_operation (const GALGAS_sint inOperand,
+                                       C_Compiler * inCompiler
+                                       COMMA_LOCATION_ARGS) {
+  if (isValid () && inOperand.isValid ()) {
+    const int32_t r = mSIntValue * inOperand.mSIntValue ;
+    bool ovf = false ;
+    if (inOperand.mSIntValue == -1) {
+      ovf = mSIntValue == INT32_MIN ;
+    }else if (inOperand.mSIntValue != 0) {
+      ovf = (r / inOperand.mSIntValue) != mSIntValue ;
+    }
+    if (ovf) {
+      inCompiler->onTheFlyRunTimeError ("@sint *= operation overflow" COMMA_THERE) ;
+      mIsValid = false ;
+    }else{
+      mSIntValue = r ;
+    }
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_sint::divAssign_operation (const GALGAS_sint inOperand,
+                                       C_Compiler * inCompiler
+                                       COMMA_LOCATION_ARGS) {
+  if (isValid () && inOperand.isValid ()) {
+    if (inOperand.mSIntValue == 0) {
+      inCompiler->onTheFlyRunTimeError ("@sint /= divide by zero" COMMA_THERE) ;
+      mIsValid = false ;
+    }else{
+      mSIntValue /= inOperand.mSIntValue ;
+    }
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
 GALGAS_sint GALGAS_sint::add_operation_no_ovf (const GALGAS_sint & inOperand) const {
   GALGAS_sint result ;
   if (isValid () && inOperand.isValid ()) {

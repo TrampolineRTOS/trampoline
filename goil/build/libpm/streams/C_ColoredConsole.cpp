@@ -26,7 +26,15 @@
 
 #include <stdio.h>
 
-#ifdef COMPILE_FOR_WIN32
+//---------------------------------------------------------------------------------------------------------------------*
+
+#ifndef COMPILE_FOR_WINDOWS
+  #error COMPILE_FOR_WINDOWS is undefined
+#endif
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+#if COMPILE_FOR_WINDOWS == 1
   #include <windows.h>
 #endif
 
@@ -58,7 +66,7 @@ bool C_ColoredConsole::usesTextAttributes (void) {
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifndef COMPILE_FOR_WIN32
+#if COMPILE_FOR_WINDOWS == 0
   void C_ColoredConsole::setForeColor (const consoleForeColorEnum inForeColor) {
     if (gTextAttributesAreUsed) {
       switch (inForeColor) {
@@ -77,7 +85,7 @@ bool C_ColoredConsole::usesTextAttributes (void) {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifdef COMPILE_FOR_WIN32
+#if COMPILE_FOR_WINDOWS == 1
   void C_ColoredConsole::setForeColor (const consoleForeColorEnum /* inForeColor */) {
     /* HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
       switch (inForeColor) {
@@ -95,7 +103,7 @@ bool C_ColoredConsole::usesTextAttributes (void) {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifndef COMPILE_FOR_WIN32
+#if COMPILE_FOR_WINDOWS == 0
   void C_ColoredConsole::setBackgroundColor (const consoleBackgroundColorEnum inBackgroundColor) {
     if (gTextAttributesAreUsed) {
       switch (inBackgroundColor) {
@@ -114,14 +122,14 @@ bool C_ColoredConsole::usesTextAttributes (void) {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifdef COMPILE_FOR_WIN32
+#if COMPILE_FOR_WINDOWS == 1
   void C_ColoredConsole::setBackgroundColor (const consoleBackgroundColorEnum /* inBackgroundColor */) {
   }
 #endif
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifndef COMPILE_FOR_WIN32
+#if COMPILE_FOR_WINDOWS == 0
   void C_ColoredConsole::setTextAttribute (const consoleTextAttributeEnum inTextAttribute) {
     if (gTextAttributesAreUsed) {
       switch (inTextAttribute) {
@@ -137,7 +145,7 @@ bool C_ColoredConsole::usesTextAttributes (void) {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifdef COMPILE_FOR_WIN32
+#if COMPILE_FOR_WINDOWS == 1
   void C_ColoredConsole::setTextAttribute (const consoleTextAttributeEnum /* inTextAttribute */) {
   }
 #endif

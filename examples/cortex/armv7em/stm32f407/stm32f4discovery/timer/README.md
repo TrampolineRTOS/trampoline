@@ -1,10 +1,9 @@
 # timer example
 
 This application deals with alarms and ISR2.
-Task `blink` trigered by alarm `blink_alarm`.
 
 alarm `blink_alarm` runs at start and activates task `blink` every 100ms
-Task `blink` programs timer TIM2 to triger an interrupt after 30ms
+Task `blink` programs timer TIM2 to trigger an interrupt after 30ms
 ISR2 `isr_timer` is connected to TIM2_IRQ.
 
 Leds are toggled by the following resources:

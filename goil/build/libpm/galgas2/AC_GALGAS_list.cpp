@@ -57,11 +57,16 @@ class cSharedList : public C_SharedObject {
                                      const GALGAS_range & inRange,
                                      C_Compiler * inCompiler
                                      COMMA_LOCATION_ARGS) const ;
- 
+
   protected : void subListFromIndex (cSharedList * & ioSharedList,
                                      const GALGAS_uint & inIndex,
                                      C_Compiler * inCompiler
                                      COMMA_LOCATION_ARGS) const ;
+
+  protected : void subListToIndex (cSharedList * & ioSharedList,
+                                   const GALGAS_uint & inIndex,
+                                   C_Compiler * inCompiler
+                                   COMMA_LOCATION_ARGS) const ;
 
   protected : void prependAttributeArray (const capCollectionElement & inAttributeArray) ;
 
@@ -383,6 +388,36 @@ void cSharedList::subListFromIndex (cSharedList * & ioSharedList,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
+void cSharedList::subListToIndex (cSharedList * & ioSharedList,
+                                  const GALGAS_uint & inIndex,
+                                  C_Compiler * inCompiler
+                                  COMMA_LOCATION_ARGS) const {
+  bool ok = true ;
+  if (inIndex.isValid ()) {
+    const uint32_t idx = inIndex.uintValue () ;
+    if (idx >= mObjectArray.count ()) {
+      C_String s ;
+      s << "Cannot get a sub list from index "
+        << cStringWithUnsigned (idx)
+        << " with a list of length "
+        << cStringWithUnsigned (mObjectArray.count ()) ;
+      inCompiler->onTheFlyRunTimeError (s COMMA_THERE) ;
+      ok = false ;
+    }else{
+      const uint32_t length = idx + 1;
+      ioSharedList->mObjectArray.setCapacity (length) ;
+      for (uint32_t i=0 ; i<length ; i++) {
+        ioSharedList->mObjectArray.addObject (mObjectArray.objectAtIndex (i COMMA_HERE)) ;
+      }
+    }
+  }
+  if (! ok) {
+    macroDetachSharedObject (ioSharedList) ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
 void cSharedList::prependAttributeArray (const capCollectionElement & inAttributeArray) {
   macroUniqueSharedObject (this) ;
   setCapacity (mObjectArray.count () + 1) ;
@@ -645,6 +680,19 @@ void AC_GALGAS_list::subListFromIndex (AC_GALGAS_list & outList,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
+void AC_GALGAS_list::subListToIndex (AC_GALGAS_list & outList,
+                                     const GALGAS_uint & inIndex,
+                                     C_Compiler * inCompiler
+                                     COMMA_LOCATION_ARGS) const {
+  if (isValid ()) {
+    mSharedList->subListToIndex (outList.mSharedList, inIndex, inCompiler COMMA_THERE) ;
+  }else{
+    outList.drop () ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
 void AC_GALGAS_list::appendList (const AC_GALGAS_list & inList) {
   if (NULL != mSharedList) {
     insulateList (HERE) ;
@@ -776,7 +824,7 @@ class cSharedListMapRoot : public C_SharedObject {
 
 //--- Destructor
   public : virtual ~ cSharedListMapRoot (void) ;
-  
+
 //--- No copy
   private : cSharedListMapRoot (const cSharedListMapRoot &) ;
   private : cSharedListMapRoot & operator = (const cSharedListMapRoot &) ;
@@ -1115,7 +1163,7 @@ static void rotateRight (cListMapNode * & ioRootPtr) {
   cListMapNode * b = ioRootPtr->mInfPtr ;
   ioRootPtr->mInfPtr = b->mSupPtr ;
   b->mSupPtr = ioRootPtr ;
- 
+
   if (b->mBalance > 0) {
     ioRootPtr->mBalance += -b->mBalance - 1 ;
   }else{

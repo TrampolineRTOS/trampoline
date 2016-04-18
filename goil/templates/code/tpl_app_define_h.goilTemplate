@@ -153,9 +153,14 @@ end if
 #define ALARM_COUNT            % ![ALARMS length] %
 
 /*-----------------------------------------------------------------------------
- * Number of regular resources (standard and linked) plus RES_SCHEDULER
+ * Number of regular resources (standard and linked) plus RES_SCHEDULER if used 
  */
-#define RESOURCE_COUNT         % ![REGULARRESOURCES length] + 1%
+#define RESOURCE_COUNT         % 
+let rez_count := [REGULARRESOURCES length]
+if OS::USERESSCHEDULER then 
+  let rez_count := rez_count + 1
+end if
+!rez_count % 
 
 /*-----------------------------------------------------------------------------
  * Number of events

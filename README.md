@@ -5,7 +5,9 @@ Its API is aligned with OSEK/VDX OS and AUTOSAR OS 4.1 standards.
 
 5 platforms are supported by now :
 
-* cortex: ARM Cortex-M (M0+ and M4 for now) instruction set
+* cortex
+  * Cortex-M (M0+ and M4 for now) instruction set
+  * Cortex-A (A7) instruction set. !!! This port is under heavy development and will be available soon. !!!
 * ppc: PowerPC 32bits instruction set
 * posix: virtual platform for POSIX systems (tested on Linux and OS X)
 * avr: AVR 8 bits microcontrollers
@@ -31,6 +33,8 @@ Some examples have been added (check examples):
   * **blink**. Blinks a LED using an alarm and a task. 
   * **readButton**. The example polls the button to start an alarm that activates a task to blink a LED
   * **readButton_isr**. Same but the button triggers an ISR.
+* Cortex A7 with bcm2836 - Raspberry Pi 2 : `cortex/armv7/bcm2836/raspberrypi2`.
+  * **blink**. Available soon
 * avr: 3 examples for Arduino Uno (ATMega328p chip) and Arduino Mega (ATMega2560 chip)
   * **blink**. Blinks a LED using an alarm and a task. 
   * **serial**. improve 'blink': use the standard Arduino serial API.
@@ -42,13 +46,13 @@ More examples are coming.
 
 ## Precompiled binaries of goil, the OIL compiler
 
-Updated to version 2.1.26
+Updated to version 2.1.27
 
-* Mac OS X: [goil-mac-os-x.zip](https://dl.dropboxusercontent.com/u/67740546/goil/goil-mac-os-x.zip)
-* Mac OS X Cocoa Application with editor: [CocoaGoil.app.zip](https://dl.dropboxusercontent.com/u/67740546/goil/CocoaGoil.app.zip) (version 2.1.24)
-* Linux 32 bits: [goil-linux-32.zip](https://dl.dropboxusercontent.com/u/67740546/goil/goil-linux-32.zip)
-* Linux 64 bits: [goil-linux-64.zip](https://dl.dropboxusercontent.com/u/67740546/goil/goil-linux-64.zip)
-* Windows: [goil-windows.zip](https://dl.dropboxusercontent.com/u/67740546/goil/goil-windows.zip)
+* Mac OS X: [goil-mac-os-x.zip](http://trampoline.rts-software.org/bin/goil-mac-os-x.zip)
+* Mac OS X Cocoa Application with editor: [CocoaGoil.app.zip](http://trampoline.rts-software.org/bin/CocoaGoil.app.zip) (version 2.1.24)
+* Linux 32 bits: [goil-linux-32.zip](http://trampoline.rts-software.org/bin/goil-linux-32.zip)
+* Linux 64 bits: [goil-linux-64.zip](http://trampoline.rts-software.org/bin/goil-linux-64.zip)
+* Windows: [goil-windows.zip](http://trampoline.rts-software.org/bin/goil-windows.zip)
 
 ## Useful links
 

@@ -1210,10 +1210,13 @@ FUNC(void, OS_CODE) tpl_call_terminate_task_service(void)
      * service call OR by signal_handler.
      */
   }
+
+#if RESOURCE_COUNT > 0
   /* release resources if held */
   if ((TPL_KERN_REF(kern).running->resources) != NULL){
       tpl_release_all_resources((tpl_proc_id)TPL_KERN_REF(kern).running_id);
   }
+#endif
 
   /* error hook */
   PROCESS_ERROR(E_OS_MISSINGEND);
@@ -1249,11 +1252,14 @@ FUNC(void, OS_CODE) tpl_call_terminate_isr2_service(void)
      */
     result = E_OS_DISABLEDINT;
   }
+
+#if RESOURCE_COUNT > 0
   /* release resources if held */
   if( (TPL_KERN_REF(kern).running->resources) != NULL ){
     tpl_release_all_resources((tpl_proc_id)TPL_KERN_REF(kern).running_id);
     result = E_OS_RESOURCE;
   }
+#endif
 
   PROCESS_ERROR(result);  /* store terminateISR service id before hook ?*/
 

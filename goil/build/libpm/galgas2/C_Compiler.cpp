@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2009, ..., 2014 Pierre Molinaro.                                                                     *
+//  Copyright (C) 2009, ..., 2015 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -28,6 +28,7 @@
 #include "galgas2/C_galgas_CLI_Options.h"
 #include "galgas2/predefined-types.h"
 #include "utilities/MF_MemoryControl.h"
+#include "galgas2/F_verbose_output.h"
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
@@ -535,7 +536,7 @@ void C_Compiler::generateFileFromPathes (const C_String & inStartPath,
                                          const C_String & inFileName,
                                          const C_String & inContents) {
 //--- Verbose option ?
-  const bool verboseOptionOn = gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ;
+  const bool verboseOptionOn = verboseOutput () ;
 //--- Start path : by default, use source file directory
   const C_String startPath = (inStartPath.length () == 0)
    ? sourceFilePath ().stringByDeletingLastPathComponent ()
@@ -637,7 +638,7 @@ void C_Compiler::generateFileWithPatternFromPathes (
   const bool inMakeExecutable
 ) {
 //--- Verbose option ?
-  const bool verboseOptionOn = gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ;
+  const bool verboseOptionOn = verboseOutput () ;
 //--- User zones
   const C_String kSTART_OF_USER_ZONE_1 = C_String (inLineCommentPrefix) + START_OF_USER_ZONE_1 ;
   const C_String kEND_OF_USER_ZONE_1   = C_String (inLineCommentPrefix) + END_OF_USER_ZONE_1 ;
@@ -675,7 +676,7 @@ void C_Compiler::generateFileWithPatternFromPathes (
       }
       f.close () ;
       if (inMakeExecutable) {
-        #ifndef COMPILE_FOR_WIN32
+        #if COMPILE_FOR_WINDOWS == 0
           struct stat fileStat ;
           ::stat (fileName.cString (HERE), & fileStat) ;
             // printf ("FILE MODE 0x%X\n", fileStat.st_mode) ;
@@ -737,7 +738,7 @@ void C_Compiler::generateFileWithPatternFromPathes (
       }
       f.close () ;
       if (inMakeExecutable) {
-        #ifndef COMPILE_FOR_WIN32
+        #if COMPILE_FOR_WINDOWS == 0
           struct stat fileStat ;
           ::stat (fullPathName.cString (HERE), & fileStat) ;
             // printf ("FILE MODE 0x%X\n", fileStat.st_mode) ;

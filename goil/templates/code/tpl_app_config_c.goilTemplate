@@ -290,6 +290,12 @@ foreach resource in REGULARRESOURCES
   do
     template resource_descriptor
 end foreach
+
+#------------------------------------------------------------------------------
+# resources table.
+# generate only if at least one resource exists
+#
+if [REGULARRESOURCES length] > 0 | OS::USERESSCHEDULER then
 %
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -303,15 +309,22 @@ foreach resource in REGULARRESOURCES
   between
     %,
   % 
-  after %,%
 end foreach
+
+if OS::USERESSCHEDULER then
+  if [REGULARRESOURCES length] > 0 then %,% end if
 %
-  &res_sched_rez_desc  
+  &res_sched_rez_desc%
+end if
+%  
 };
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
 %
+end if
+#------------------------------------------------------------------------------
+
 foreach resource in INTERNALRESOURCES
   before
 %
