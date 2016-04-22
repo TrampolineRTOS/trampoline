@@ -5,6 +5,10 @@ void __attribute__((weak)) tpl_continue_reset_handler(void);
 // The CMSIS system initialisation routine.
 extern void SystemInit(void);
 
+//required by the debugger on softConsole IDE (smartFusion2)
+extern int __smartfusion2_memory_remap;
+extern int __mirrored_nvm;
+
 // Initialise the data section
 inline void data_init(unsigned int* from, unsigned int* section_begin, unsigned int* section_end);
 
@@ -105,8 +109,9 @@ inline void __libc_fini_array(void)
   //_fini();
 }
 
-// This is the place where Cortex-M core will go after asm preamble of reset.
-void __attribute__ ((section(".after_vectors"))) tpl_continue_reset_handler2(void)
+// This is the place where Cortex-M core will go immediately after reset.
+//void __attribute__ ((section(".after_vectors"))) 
+void tpl_continue_reset_handler(void)
 {
   /*
    * Initialize the stacks and mode
@@ -154,3 +159,10 @@ void __attribute__((section(".after_vectors"))) system_init()
 // is executed before all other initialisations.
 void* __attribute__((section(".preinit_array_sysinit")))
 p_system_init = (void*) system_init; // pointer to the above function
+
+//mandatory function called by CMSIS
+void mscc_post_hw_cfg_init() {
+	//dummy code so that the 2 required symbol are available.
+	volatile int tmp = __mirrored_nvm;
+	tmp = __smartfusion2_memory_remap;
+}

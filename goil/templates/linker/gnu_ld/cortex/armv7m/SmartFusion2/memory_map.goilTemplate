@@ -1,6 +1,11 @@
 /* Specify the memory areas for SmartFusion M2S050 */
 MEMORY
 {
+    /* WARNING: The words "SOFTCONSOLE", "FLASH", and "USE", the colon ":", and
+    *          the name of the type of flash memory are all in a specific order.
+    *          Please do not modify that comment line, in order to ensure
+    *          debugging of your application will use the flash memory correctly.
+    */
     /* SOFTCONSOLE FLASH USE: microsemi-smartfusion2-envm */
     rom (rx)  : ORIGIN = 0x60000000, LENGTH = 256k    
     /* SmartFusion2 internal eNVM mirrored to 0x00000000 */

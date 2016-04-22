@@ -113,7 +113,6 @@ CPU SmartFusion2 {
     CFILE = "handlers_m2sxxx.c";
     CFILE = "tpl_machine_m2sxxx.c";
     CFILE = "startup_m2sxxx.c";
-    CFILE = "startup_m2sxxx.S";
   };
 
   PLATFORM_FILES sf2_hal {
