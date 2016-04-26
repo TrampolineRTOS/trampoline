@@ -363,7 +363,9 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(
            * release the resources, both external
            * and internal, that could be held
            */
+#if RESOURCE_COUNT > 0
           tpl_release_all_resources(proc_id);
+#endif
           tpl_release_internal_resource(proc_id);
           /* reset the task descriptor */
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
