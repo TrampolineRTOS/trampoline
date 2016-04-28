@@ -1,4 +1,4 @@
-blink
+blinkAndFPGA
 build
 *_exe.elf
 *.bin

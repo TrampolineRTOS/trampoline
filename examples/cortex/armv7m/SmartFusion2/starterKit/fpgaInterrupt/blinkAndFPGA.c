@@ -24,7 +24,7 @@ ISR(isr_fpga)
 }
 
 //TODO: automatic implementation...
-FUNC(void, OS_CODE) FabricIrq0_IRQ_ClearFlag(P2CONST(void, OS_APPL_DATA, AUTOMATIC))
+void FabricIrq0_IRQ_ClearFlag()
 {
 		NVIC_ClearPendingIRQ(FabricIrq0_IRQn);	
 }
