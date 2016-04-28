@@ -60,7 +60,8 @@ loop ENTRY from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
           foreach objList in objForIRQ do
             if KEY == int::NAME then
               # We have found the list of interrupts to call
-              %extern FUNC(void, OS_CODE) % !KEY %_Handler(P2CONST(void, OS_APPL_DATA, AUTOMATIC));
+              let irqName := INTERRUPTMAP[KEY]::VECTOR_TYPE_S::NAME
+              %extern FUNC(void, OS_CODE) % !irqName%(P2CONST(void, OS_APPL_DATA, AUTOMATIC));
 %
             end if
           end foreach

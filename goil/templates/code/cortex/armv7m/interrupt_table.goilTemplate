@@ -75,8 +75,9 @@ end foreach
 
 foreach objList in objForIRQ do
   let objList_KEY := KEY
+  let irqName := INTERRUPTMAP[objList_KEY]::VECTOR_TYPE_S::NAME
 %
-FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
+FUNC(void, OS_CODE) % !irqName %(void)
 {
 %
   let indexISR2 := 0

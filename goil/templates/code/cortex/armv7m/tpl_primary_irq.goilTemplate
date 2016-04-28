@@ -252,7 +252,7 @@ foreach irq in irqStageList
   do
     let handlerSource := irq::handlerSource
     let handlerName := irq::handlerName
-    let handlerIRQ := handlerSource."_Handler"
+    let handlerIRQ := INTERRUPTMAP[irq::handlerSource]::VECTOR_TYPE_S::NAME
     if not irq::generatePrimaryIrq then
 %
  /******************************************************************************
