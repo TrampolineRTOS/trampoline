@@ -115,6 +115,12 @@
 #define TAIL_FOR_PRIO_ARG(a_tail_for_prio) \
   , a_tail_for_prio
 
+/*
+ * GET_LOCK_CNT_FOR_CORE expands to the corresponding array in multicore.
+ * It is used to retrieve all lock counters (e.g. tpl_locking_depth)
+ */
+#define GET_LOCK_CNT_FOR_CORE(a_lock_cnt, a_core_id)  a_lock_cnt[a_core_id]
+
 #else
 /*
  * Monocore macros
@@ -150,6 +156,12 @@
 #define TAIL_FOR_PRIO(a_tail_for_prio)  tpl_tail_for_prio
 #define TAIL_FOR_PRIO_ARG_DECL(a_tail_for_prio)
 #define TAIL_FOR_PRIO_ARG(a_tail_for_prio)
+
+/*
+ * GET_LOCK_CNT_FOR_CORE expands to the corresponding array in multicore.
+ * It is used to retrieve all lock counters (e.g. tpl_locking_depth)
+ */
+#define GET_LOCK_CNT_FOR_CORE(a_lock_cnt, a_core_id)  a_lock_cnt
 #endif
 
 /**

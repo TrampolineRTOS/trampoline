@@ -55,11 +55,19 @@
  * the following variableѕ should not be initialized at definition,
  * or Memmap section is not the right one
  */
+#if NUMBER_OF_CORES > 1
+volatile VAR(uint32, OS_VAR) tpl_locking_depth[NUMBER_OF_CORES];
+VAR(tpl_bool, OS_VAR) tpl_user_task_lock[NUMBER_OF_CORES];
+VAR(uint32, OS_VAR) tpl_cpt_user_task_lock_All[NUMBER_OF_CORES];
+VAR(uint32, OS_VAR) tpl_cpt_user_task_lock_OS[NUMBER_OF_CORES];
+VAR(uint32, OS_VAR) tpl_cpt_os_task_lock[NUMBER_OF_CORES];
+#else
 volatile VAR(uint32, OS_VAR) tpl_locking_depth = 0;
 VAR(tpl_bool, OS_VAR) tpl_user_task_lock = FALSE;
 VAR(uint32, OS_VAR) tpl_cpt_user_task_lock_All = 0;
 VAR(uint32, OS_VAR) tpl_cpt_user_task_lock_OS = 0;
 VAR(uint32, OS_VAR) tpl_cpt_os_task_lock = 0;
+#endif
 
 #if ISR_COUNT > 0
 STATIC VAR(sint32, OS_VAR) tpl_it_nesting =  0;
@@ -72,11 +80,12 @@ STATIC VAR(sint32, OS_VAR) tpl_it_nesting =  0;
 #include "tpl_memmap.h"
 FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void)
 {
+    GET_CURRENT_CORE_ID(core_id)
     VAR(tpl_bool, AUTOMATIC) result;
 
-    if ((TRUE == tpl_user_task_lock) ||
-        (tpl_cpt_user_task_lock_OS > 0) ||
-        (tpl_cpt_user_task_lock_All > 0))
+    if ((TRUE == GET_LOCK_CNT_FOR_CORE(tpl_user_task_lock,core_id)) ||
+        (GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_OS,core_id) > 0) ||
+        (GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_All,core_id) > 0))
     {
         result = TRUE;
     }
@@ -90,12 +99,14 @@ FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void)
 
 FUNC(void, OS_CODE) tpl_reset_interrupt_lock_status(void)
 {
-	tpl_user_task_lock = FALSE;
+    GET_CURRENT_CORE_ID(core_id)
 
-	tpl_cpt_user_task_lock_All = 0;
-	tpl_cpt_user_task_lock_OS = 0;
+	GET_LOCK_CNT_FOR_CORE(tpl_user_task_lock,core_id) = FALSE;
 
-	tpl_locking_depth = tpl_cpt_os_task_lock;
+	GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_All,core_id) = 0;
+	GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_OS,core_id) = 0;
+
+	GET_LOCK_CNT_FOR_CORE(tpl_locking_depth,core_id) = GET_LOCK_CNT_FOR_CORE(tpl_cpt_os_task_lock,core_id);
 }
 
 /**
@@ -103,11 +114,13 @@ FUNC(void, OS_CODE) tpl_reset_interrupt_lock_status(void)
  */
 FUNC(void, OS_CODE) tpl_suspend_all_interrupts_service(void)
 {
+    GET_CURRENT_CORE_ID(core_id)
+
   tpl_disable_interrupts();
 
-  tpl_locking_depth++;
+  GET_LOCK_CNT_FOR_CORE(tpl_locking_depth,core_id)++;
 
-  tpl_cpt_user_task_lock_All++;
+  GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_All,core_id)++;
 
 }
 
@@ -116,17 +129,18 @@ FUNC(void, OS_CODE) tpl_suspend_all_interrupts_service(void)
  */
 FUNC(void, OS_CODE) tpl_resume_all_interrupts_service(void)
 {
+    GET_CURRENT_CORE_ID(core_id)
   #if defined(__unix__) || defined(__APPLE__)
-	assert( tpl_locking_depth >= 0 );
+	assert( GET_LOCK_CNT_FOR_CORE(tpl_locking_depth,core_id) >= 0 );
   #endif
 
-	if( tpl_cpt_user_task_lock_All != 0 )
+	if( GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_All,core_id) != 0 )
 	{
-		tpl_locking_depth--;
+		GET_LOCK_CNT_FOR_CORE(tpl_locking_depth,core_id)--;
 
-		tpl_cpt_user_task_lock_All--;
+		GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_All,core_id)--;
 
-		if( tpl_locking_depth == 0)
+		if( GET_LOCK_CNT_FOR_CORE(tpl_locking_depth,core_id) == 0)
 		{
 			tpl_enable_interrupts();
 		}
@@ -139,12 +153,14 @@ FUNC(void, OS_CODE) tpl_resume_all_interrupts_service(void)
  */
 FUNC(void, OS_CODE) tpl_disable_all_interrupts_service(void)
 {
-  if ((0 == tpl_cpt_user_task_lock_All) &&
-      (0 == tpl_cpt_user_task_lock_OS))
+    GET_CURRENT_CORE_ID(core_id)
+
+  if ((0 == GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_All,core_id)) &&
+      (0 == GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_OS,core_id)))
   {
 	  tpl_disable_interrupts();
 
-	  tpl_user_task_lock = TRUE;
+	  GET_LOCK_CNT_FOR_CORE(tpl_user_task_lock,core_id) = TRUE;
   }
 }
 
@@ -153,9 +169,11 @@ FUNC(void, OS_CODE) tpl_disable_all_interrupts_service(void)
  */
 FUNC(void, OS_CODE) tpl_enable_all_interrupts_service(void)
 {
-	if (tpl_user_task_lock != FALSE)
+    GET_CURRENT_CORE_ID(core_id)
+
+	if (GET_LOCK_CNT_FOR_CORE(tpl_user_task_lock,core_id) != FALSE)
 	{
-		tpl_user_task_lock = FALSE;
+		GET_LOCK_CNT_FOR_CORE(tpl_user_task_lock,core_id) = FALSE;
 
 		tpl_enable_interrupts();
 	}
@@ -166,11 +184,13 @@ FUNC(void, OS_CODE) tpl_enable_all_interrupts_service(void)
  */
 FUNC(void, OS_CODE) tpl_suspend_os_interrupts_service(void)
 {
+  GET_CURRENT_CORE_ID(core_id)
+
   tpl_disable_interrupts();
 
-  tpl_locking_depth++;
+  GET_LOCK_CNT_FOR_CORE(tpl_locking_depth,core_id)++;
 
-  tpl_cpt_user_task_lock_OS++;
+  GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_OS,core_id)++;
 
 }
 
@@ -179,17 +199,18 @@ FUNC(void, OS_CODE) tpl_suspend_os_interrupts_service(void)
  */
 FUNC(void, OS_CODE) tpl_resume_os_interrupts_service(void)
 {
+  GET_CURRENT_CORE_ID(core_id)
   #if defined(__unix__) || defined(__APPLE__)
-	assert(tpl_locking_depth >= 0);
+	assert(GET_LOCK_CNT_FOR_CORE(tpl_locking_depth,core_id) >= 0);
   #endif
 
-	if (tpl_cpt_user_task_lock_OS != 0)
+	if (GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_OS,core_id) != 0)
 	{
-		tpl_locking_depth--;
+		GET_LOCK_CNT_FOR_CORE(tpl_locking_depth,core_id)--;
 
-		tpl_cpt_user_task_lock_OS--;
+		GET_LOCK_CNT_FOR_CORE(tpl_cpt_user_task_lock_OS,core_id)--;
 
-		if (0 == tpl_locking_depth)
+		if (0 == GET_LOCK_CNT_FOR_CORE(tpl_locking_depth,core_id))
 		{
 			tpl_enable_interrupts();
 		}
@@ -225,11 +246,11 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void)
   /* terminate the running ISR */
   tpl_terminate();
   /* start the highest priority process */
-  tpl_start();
+  tpl_start(CORE_ID_OR_NOTHING(core_id));
   /* process switching should occur */
   TPL_KERN(core_id).need_switch = NEED_SWITCH;
 
-  LOCAL_SWITCH_CONTEXT_NOSAVE(a_core_id)
+  LOCAL_SWITCH_CONTEXT_NOSAVE(core_id)
 
   IF_NO_EXTENDED_ERROR_END()
 #endif
@@ -314,9 +335,11 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(
   CONST(uint16, AUTOMATIC) isr_id)
 {
   P2CONST(tpl_isr_static, AUTOMATIC, OS_APPL_DATA) isr;
+  GET_CURRENT_CORE_ID(core_id)
 
 #if WITH_STACK_MONITORING == YES
-    tpl_check_stack((tpl_proc_id)tpl_kern.running_id);
+    GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
+    tpl_check_stack((tpl_proc_id)TPL_KERN_REF(kern).running_id);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
 
   /*
@@ -359,8 +382,8 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(
 
     if (tpl_it_nesting == 0)
     {
-      tpl_schedule_from_running();
-      LOCAL_SWITCH_CONTEXT(a_core_id)
+      tpl_schedule_from_running(CORE_ID_OR_NOTHING(core_id));
+      LOCAL_SWITCH_CONTEXT(core_id)
     }
 #if WITH_OS_EXTENDED == YES
   }
