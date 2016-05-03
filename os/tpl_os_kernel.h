@@ -366,8 +366,8 @@ extern VAR(tpl_internal_resource, OS_VAR) INTERNAL_RES_SCHEDULER;
 
 #define REMOTE_SWITCH_CONTEXT()
 
-#define SWITCH_CONTEXT(a_core_id) LOCAL_SWITCH_CONTEXT(a_core_id)
-#define SWITCH_CONTEXT_NOSAVE(a_core_id) LOCAL_SWITCH_CONTEXT_NOSAVE(a_core_id)
+#define SWITCH_CONTEXT(a_core_id)        LOCAL_SWITCH_CONTEXT(0)
+#define SWITCH_CONTEXT_NOSAVE(a_core_id) LOCAL_SWITCH_CONTEXT_NOSAVE(0)
 
 #else
 /* NUMBER_OF_CORES > 1, Multicore definitions */
