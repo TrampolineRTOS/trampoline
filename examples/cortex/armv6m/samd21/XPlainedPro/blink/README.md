@@ -40,10 +40,8 @@ The `goil` compiler generates the `make.py` [python build script](https://github
 The `blink_exe` should be generated. Then flash the board:
 
 ```
-openocd -f board/atmel_samd21_xplained_pro.cfg -c "program blink_exe verify reset exit"
+./make.py flash
 ```
-
-Note: There is no `make.py flash` at this date, because goil cannot escape the `"` (ticket #20).
 
 ## Clean
 

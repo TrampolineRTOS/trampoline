@@ -57,13 +57,13 @@ CPU samd21 {
     CFILE = "eic.c";
 };
     
-//  POSTCOMMAND burn {
-//    COMMAND flash {
-//      MESSAGE = "Flashing";
-//      COMMAND = "openocd";
-//      INPUT = TARGET { EXT = ""; };
-//      PREOPTION = "-f board/atmel_samd21_xplained_pro.cfg -c \"program";
-//      POSTOPTION = "verify reset exit\"";
-//    };
-//  };
+  POSTCOMMAND flash {
+    COMMAND flash {
+      MESSAGE = "Flashing";
+      COMMAND = "openocd";
+      INPUT = TARGET { EXT = ""; };
+      PREOPTION = "-f board/atmel_samd21_xplained_pro.cfg -c \\\"program";
+      POSTOPTION = " verify reset exit\\\"";
+    };
+  };
 };
