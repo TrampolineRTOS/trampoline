@@ -654,6 +654,52 @@ CPU api {
           "STARTED_CORE_NON_AUTOSAR: The core is started in non AUTOSAR.";
     } : "GetCoreStatus allows to get the status of a processing core.";
   };
+
+  /*
+   * AUTOSAR OS Spinlock
+   */
+  APICONFIG spinlock {
+    ID_PREFIX = OS;
+    FILE = "tpl_as_spinlock_kernel";
+    FILE = "tpl_as_spinlock";
+    HEADER = "tpl_as_spinlock_kernel";
+    HEADER = "tpl_as_spinlock";
+    DIRECTORY = "autosar";
+    SYSCALL GetSpinlock {
+      KERNEL = tpl_get_spinlock_service;
+      RETURN_TYPE = StatusType
+        : "E_OK:                        no error"
+          "E_OS_ID:                     SpinLockId is not valid (EXTENDED status only)\n"
+          "E_OS_INTERFERENCE_DEADLOCK:  tries to occupy spinlock while the lock is already taken     on the same core\n"
+          "E_OS_NESTING_DEADLOCK:       tries to occupy a spinlock while a different spinlock has     already been taken and could result in a deadlock\n"
+          "E_OS_ACCESS:                 spinlock cannot be accessed by this task\n";
+      ARGUMENT SpinlockId { KIND = CONST; TYPE = SpinlockIdType; }
+        : "identifier of the spinlock to be taken";
+    } : "Gets a Spinlock";
+    SYSCALL ReleaseSpinlock {
+      KERNEL = tpl_release_spinlock_service;
+      RETURN_TYPE = StatusType
+        : "E_OK:                        no error"
+          "E_OS_ID:                     SpinLockId is not valid (EXTENDED status only)\n"
+          "E_OS_STATE:                  the spinlock is not occupied by this task\n"
+          "E_OS_NOFUNC:                 attempt to release a spinlock while another spinlock must     be released before\n"
+          "E_OS_ACCESS:                 spinlock cannot be accessed by this task\n";
+      ARGUMENT SpinlockId { KIND = CONST; TYPE = SpinlockIdType; }
+        : "identifier of the spinlock to be taken";
+    } : "Release a Spinlock";
+    SYSCALL TryToGetSpinlock {
+      KERNEL = tpl_try_to_get_spinlock_service;
+      RETURN_TYPE = StatusType
+        : "E_OK:                        no error"
+          "E_OS_ID:                     SpinLockId is not valid (EXTENDED status only)\n"
+          "E_OS_INTERFERENCE_DEADLOCK:  tries to occupy spinlock while the lock is already taken     on the same core\n"
+          "E_OS_NESTING_DEADLOCK:       tries to occupy a spinlock while a different spinlock has     already been taken and could result in a deadlock\n"
+          "E_OS_ACCESS:                 spinlock cannot be accessed by this task\n";
+      ARGUMENT SpinlockId { KIND = CONST; TYPE = SpinlockIdType; }
+        : "identifier of the spinlock to be taken";
+      ARGUMENT Success { KIND = CONSTP2VAR; TYPE = TryToGetSpinlockType; };
+    } : "Test availability of a Spinlock";
+  };
 };
 
 

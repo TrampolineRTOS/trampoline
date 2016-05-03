@@ -65,7 +65,13 @@ if AUTOSAR then
 #include "tpl_as_trusted_fct.h"
 #include "tpl_as_trusted_fct_kernel.h"
 #include "tpl_as_application.h"
-%
+  %
+  if exists SPINLOCK  & (OS::NUMBER_OF_CORES > 1) then
+  %
+#include "tpl_as_spinlock.h"
+#include "tpl_as_spinlock_kernel.h"
+  %
+  end if
 end if
 
 if OS::TIMINGPROTECTION then

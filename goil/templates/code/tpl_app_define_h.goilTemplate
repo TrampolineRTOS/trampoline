@@ -38,7 +38,10 @@
  */
 #define TARGET_ARCH                      "% !ARCH %"
 #define TARGET_CHIP                      "% !CHIP %"
-#define TARGET_BOARD                     "% !BOARD %"
+#define TARGET_BOARD                     "% !BOARD %"%
+if exists SPINLOCK then%
+#define SPINLOCK_COUNT                   % ![SPINLOCK length]
+end if%
 #define NUMBER_OF_CORES                  % !exists OS::NUMBER_OF_CORES default (1) %
 #define WITH_OS_EXTENDED                 % !yesNo(OS::STATUS == "EXTENDED") %
 #define WITH_STARTUP_HOOK                % !yesNo(OS::STARTUPHOOK) %

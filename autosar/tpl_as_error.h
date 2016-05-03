@@ -1095,6 +1095,106 @@
     }
 #endif
 
+/**
+ * @def CHECK_SPINLOCK_ID_ERROR
+ *
+ * This macro checks for out of range spinlock_id error. It
+ * is used in os services which uses spinlock_id as parameter.
+ *
+ * @param spinlock_id #SpinlockIdType (so called spinlock_id) to check
+ * @param result error code variable to set (StatusType)
+ *
+ * @note this checking is disabled if WITH_OS_EXTENDED == NO
+ * @note the error code is set only if there was no previous error
+ */
+
+/* No extended error checking (WITH_OS_EXTENDED == NO)  */
+#if (WITH_OS_EXTENDED == NO)
+    /* Does not check the isr_id in this case */
+#   define CHECK_SPINLOCK_ID_ERROR(spinlock_id,result)
+#endif
+
+/* No SPINLOCK and extended error checking (WITH_OS_EXTENDED == YES)   */
+#if (SPINLOCK_COUNT == 0) && (WITH_OS_EXTENDED == YES)
+    /* E_OS_ID is returned in this case  */
+#   define CHECK_SPINLOCK_ID_ERROR(spinlock_id,result)    \
+    if (result == (tpl_status)E_OK)                       \
+    {                                                     \
+        result = (tpl_status)E_OS_ID;                     \
+    }
+#endif
+
+/* Any SPINLOCK and extended error checking (WITH_OS_EXTENDED == YES)  */
+#if (SPINLOCK_COUNT > 0) && (WITH_OS_EXTENDED == YES)
+    /* E_OK or E_OS_ID   */
+#   define CHECK_SPINLOCK_ID_ERROR(spinlock_id,result)              \
+    if  ((result == (tpl_status)E_OK) &&                            \
+        (((spinlock_id) >= (tpl_isr_id)(SPINLOCK_COUNT)) )          \
+    {                                                               \
+        result = (tpl_status)E_OS_ID;                               \
+    }
+#endif
+
+/**
+ * @def CHECK_SPINLOCK_NESTING_ORDER_ERROR
+ *
+ * This macro checks is a spinlock is taken is the right nesting order
+ *
+ * @param spinlock_id #SpinlockIdType (so called spinlock_id) to check
+ * @param result error code variable to set (StatusType)
+ *
+ * @note this checking is disabled if WITH_OS_EXTENDED == NO
+ * @note the error code is set only if there was no previous error
+ */
+
+/* No extended error checking (WITH_OS_EXTENDED == NO)  */
+#if (WITH_OS_EXTENDED == NO)
+    /* Does not check the isr_id in this case */
+#   define CHECK_SPINLOCK_NESTING_ORDER_ERROR(spinlock_id,result)
+#endif
+
+/* Any SPINLOCK and extended error checking (WITH_OS_EXTENDED == YES)  */
+#if (SPINLOCK_COUNT > 0) && (WITH_OS_EXTENDED == YES)
+    /* E_OK or E_OS_ID   */
+#   define CHECK_SPINLOCK_NESTING_ORDER_ERROR(spinlock_id,result) \
+    if  ((result == (tpl_status)E_OK) &&                          \
+        ( spinlock_id >= tpl_last_taken_spinlock )                \
+    {                                                             \
+        result = (tpl_status)E_OS_NESTING_DEADLOCK;               \
+    }
+#endif
+
+
+/**
+ * @def CHECK_SPINLOCK_UNNESTING_ORDER_ERROR
+ *
+ * This macro checks is a spinlock is released is the right nesting order
+ *
+ * @param spinlock_id #SpinlockIdType (so called spinlock_id) to check
+ * @param result error code variable to set (StatusType)
+ *
+ * @note this checking is disabled if WITH_OS_EXTENDED == NO
+ * @note the error code is set only if there was no previous error
+ */
+
+/* No extended error checking (WITH_OS_EXTENDED == NO)  */
+#if (WITH_OS_EXTENDED == NO)
+    /* Does not check the isr_id in this case */
+#   define CHECK_SPINLOCK_UNNESTING_ORDER_ERROR(spinlock_id,result)
+#endif
+
+/* Any SPINLOCK and extended error checking (WITH_OS_EXTENDED == YES)  */
+#if (SPINLOCK_COUNT > 0) && (WITH_OS_EXTENDED == YES)
+    /* E_OK or E_OS_ID   */
+#   define CHECK_SPINLOCK_UNNESTING_ORDER_ERROR(spinlock_id,result) \
+    if  ((result == (tpl_status)E_OK) &&                            \
+        ( spinlock_id <= tpl_last_taken_spinlock )                  \
+    {                                                               \
+        result = (tpl_status)E_OS_NOFUNC;                           \
+    }
+#endif
+
+
 /* TPL_AS_ERROR_H */
 #endif
 

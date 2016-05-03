@@ -983,6 +983,21 @@ tpl_service.parameters.id.ioc_id = (iocid);
 #endif
 
 /**
+ * @def STORE_SPINLOCK_ID
+ *
+ * Stores a spinlock identifier into service error variable
+ *
+ * @param spinlock_id type is #tpl_spinlock_id
+ *
+ */
+#if (WITH_ERROR_HOOK == YES) && (WITH_USEPARAMETERACCESS == YES) && (WITH_SPINLOCK == YES)
+#   define STORE_SPINLOCK_ID(spinlockid)   \
+tpl_service.parameters.id.spinlock_id = (spinlockid);
+#else
+#   define STORE_SPINLOCK_ID(spinlockid)
+#endif
+
+/**
  * @def PROCESS_ERROR
  *
  * This maccro generates the code to call the error hook, when

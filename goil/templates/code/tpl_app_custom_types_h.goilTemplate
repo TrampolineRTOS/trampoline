@@ -212,18 +212,6 @@ if [ioc_reordered length] != 0 then
 end if
 %
 
-/**
- * All these types are not yet used but must be defined in order to be used by other modules
- */
-typedef uint8 SpinlockIdType;
-#define INVALID_SPINLOCK 0
-
-typedef enum
-{
-  TRYTOGETSPINLOCK_SUCCESS,
-  TRYTOGETSPINLOCK_NOSUCCESS
-} TryToGetSpinlockType;
-
 #endif /* WITH_AUTOSAR */
 
 #endif /* TPL_APP_CUSTOM_TYPES_H */
