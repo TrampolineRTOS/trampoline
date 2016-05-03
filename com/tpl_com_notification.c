@@ -57,7 +57,7 @@ FUNC(void, OS_CODE) tpl_notify_receiving_mos(
 #endif
   if (TPL_KERN(core_id).need_schedule)
   {
-    tpl_schedule_from_running();
+    tpl_schedule_from_running(CORE_ID_OR_NOTHING(a_core_id));
 #if WITH_SYSTEM_CALL == NO
     if (TPL_KERN(core_id).need_switch != NO_NEED_SWITCH)
     {

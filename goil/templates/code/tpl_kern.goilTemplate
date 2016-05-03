@@ -64,7 +64,7 @@ CONSTP2VAR(tpl_kern_state, OS_CONST, OS_VAR) tpl_kern[% ! OS::NUMBER_OF_CORES %]
     between %, 
 %
     after %
-}
+};
 %
   end loop
 end if

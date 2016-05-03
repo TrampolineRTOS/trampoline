@@ -89,7 +89,7 @@ FUNC(void, OS_CODE) tpl_call_protection_hook(VAR(tpl_status, AUTOMATIC) error)
         /* terminate the running task */
         tpl_terminate();
         /* start the highest priority task */
-        tpl_start();
+        tpl_start(CORE_ID_OR_NOTHING(core_id));
         /* task switching should occur */
         tpl_kern.need_switch = NEED_SWITCH;
         

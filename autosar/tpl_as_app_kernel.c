@@ -415,7 +415,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(
         }
       }
 
-    LOCAL_SWITCH_CONTEXT_NOSAVE(a_core_id)
+    LOCAL_SWITCH_CONTEXT_NOSAVE(core_id)
 
     }
     else

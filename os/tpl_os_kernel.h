@@ -488,13 +488,14 @@ extern VAR(tpl_rank_count, OS_VAR) tpl_tail_for_prio[];
  *
  * Index in this array correspond to the #TaskType of the task.
  * The size of these tables are static and known at compile time
- * The last element of these arrays is the idle task descriptor.
+ * The last elements of these arrays are the idle task descriptor
+ * (one Idle task per core).
  */
 extern CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)
-  tpl_stat_proc_table[TASK_COUNT+ISR_COUNT+1];
+  tpl_stat_proc_table[TASK_COUNT+ISR_COUNT+NUMBER_OF_CORES];
 
 extern CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)
-  tpl_dyn_proc_table[TASK_COUNT+ISR_COUNT+1];
+  tpl_dyn_proc_table[TASK_COUNT+ISR_COUNT+NUMBER_OF_CORES];
 
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"

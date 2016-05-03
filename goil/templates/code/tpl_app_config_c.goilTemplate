@@ -420,7 +420,7 @@ if OS::NUMBER_OF_CORES == 1 then
 %  &IDLE_TASK_task_stat_desc%
 else
   loop core from 0 to OS::NUMBER_OF_CORES - 1 do
-    %  IDLE_TASK_% ! core %_task_stat_desc%
+    %  &IDLE_TASK_% ! core %_task_stat_desc%
   between %,
 %
   end loop
@@ -439,7 +439,7 @@ if OS::NUMBER_OF_CORES == 1 then
 %  &IDLE_TASK_task_desc%
 else
   loop core from 0 to OS::NUMBER_OF_CORES - 1 do
-    %  IDLE_TASK_% ! core %_task_desc%
+    %  &IDLE_TASK_% ! core %_task_desc%
   between %,
 %
   end loop
