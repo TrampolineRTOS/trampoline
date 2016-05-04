@@ -169,11 +169,12 @@ IMPLEMENTATION trampoline_common {
       TRUE {
         ENUM [
           elxr   { STRING SCRIPT = "script.ld"; },
+          cosmic_ld   { STRING SCRIPT = "script.lkf"; },
           gnu_ld { STRING SCRIPT = "script.ld"; },
           mwld   { STRING SCRIPT = "script.mcf"; }
         ] LINKER;
-        ENUM [gcc, ghs, mwc] COMPILER;
-        ENUM [gnu_as] ASSEMBLER;
+        ENUM [gcc, ghs, mwc, cosmic] COMPILER;
+        ENUM [gnu_as, cosmic_as] ASSEMBLER;
         BOOLEAN MEMORY_PROTECTION = FALSE;
       },
       FALSE

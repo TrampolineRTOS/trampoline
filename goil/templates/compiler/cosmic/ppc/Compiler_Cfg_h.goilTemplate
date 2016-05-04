@@ -1,0 +1,480 @@
+/**
+ * @file % !FILENAME %
+ *
+ * @section desc File description
+ *
+ * Compiler abstraction for all AUTOSAR Modules
+ *
+ * @section copyright Copyright
+ *
+ * Trampoline OS
+ *
+ * Trampoline is copyright (c) IRCCyN 2005-2007
+ * Trampoline is protected by the French intellectual property law.
+ *
+ * This software is distributed under the Lesser GNU Public Licence
+ *
+ * @section infos File informations
+ *
+ * $Date$
+ * $Rev$
+ * $Author$
+ * $URL$
+ */
+#ifndef COMPILER_CFG_H
+#define COMPILER_CFG_H
+
+/*****************************************************************************/
+/* DEFINITION OF MACROS                                                      */
+/*****************************************************************************/
+
+/*****************************************************************************/
+/* Communication stack global definitions                                    */
+/*****************************************************************************/
+#define AUTOSAR_COMSTACKDATA                          AUTOMATIC
+
+/*****************************************************************************/
+/* ComM                                                                      */
+/*****************************************************************************/
+#define COMM_CODE                                     AUTOMATIC
+#define COMM_VAR_NOINIT                               AUTOMATIC
+#define COMM_VAR_POWER_ON_INIT                        AUTOMATIC
+#define COMM_VAR_FAST                                 AUTOMATIC
+#define COMM_VAR                                      AUTOMATIC
+#define COMM_CONST                                    AUTOMATIC
+#define COMM_APPL_DATA                                AUTOMATIC
+#define COMM_APPL_CONST                               AUTOMATIC
+#define COMM_APPL_CODE                                AUTOMATIC
+
+/*****************************************************************************/
+/* NM                                                                        */
+/*****************************************************************************/
+#define NM_CODE                                       AUTOMATIC
+#define NM_VAR_NOINIT                                 AUTOMATIC
+#define NM_VAR_POWER_ON_INIT                          AUTOMATIC
+#define NM_VAR_FAST                                   AUTOMATIC
+#define NM_VAR                                        AUTOMATIC
+#define NM_CONST                                      AUTOMATIC
+#define NM_APPL_DATA                                  AUTOMATIC
+#define NM_APPL_CONST                                 AUTOMATIC
+#define NM_APPL_CODE                                  AUTOMATIC
+
+/*****************************************************************************/
+/* CNM                                                                       */
+/*****************************************************************************/
+#define CNM_CODE                                      AUTOMATIC
+#define CNM_VAR_NOINIT                                AUTOMATIC
+#define CNM_VAR_POWER_ON_INIT                         AUTOMATIC
+#define CNM_VAR_FAST                                  AUTOMATIC
+#define CNM_VAR                                       AUTOMATIC
+#define CNM_CONST                                     AUTOMATIC
+#define CNM_APPL_DATA                                 AUTOMATIC
+#define CNM_APPL_CONST                                AUTOMATIC
+#define CNM_APPL_CODE                                 AUTOMATIC
+
+/*****************************************************************************/
+/* FRNM                                                                      */
+/*****************************************************************************/
+#define FRNM_CODE                                     AUTOMATIC
+#define FRNM_VAR_NOINIT                               AUTOMATIC
+#define FRNM_VAR_POWER_ON_INIT                        AUTOMATIC
+#define FRNM_VAR_FAST                                 AUTOMATIC
+#define FRNM_VAR                                      AUTOMATIC
+#define FRNM_CONST                                    AUTOMATIC
+#define FRNM_APPL_DATA                                AUTOMATIC
+#define FRNM_APPL_CONST                               AUTOMATIC
+#define FRNM_APPL_CODE                                AUTOMATIC
+
+/*****************************************************************************/
+/* CAN NM                                                                    */
+/*****************************************************************************/
+#define CANNM_CODE                                    AUTOMATIC
+#define CANNM_VAR_NOINIT                              AUTOMATIC
+#define CANNM_VAR_POWER_ON_INIT                       AUTOMATIC
+#define CANNM_VAR_FAST                                AUTOMATIC
+#define CANNM_VAR                                     AUTOMATIC
+#define CANNM_CONST                                   AUTOMATIC
+#define CANNM_APPL_DATA                               AUTOMATIC
+#define CANNM_APPL_CONST                              AUTOMATIC
+#define CANNM_APPL_CODE                               AUTOMATIC
+
+/*****************************************************************************/
+/* COM                                                                       */
+/*****************************************************************************/
+#define COM_CODE                                      AUTOMATIC
+#define COM_VAR_NOINIT                                AUTOMATIC
+#define COM_VAR_POWER_ON_INIT                         AUTOMATIC
+#define COM_VAR_FAST                                  AUTOMATIC
+#define COM_VAR                                       AUTOMATIC
+#define COM_CONST                                     AUTOMATIC
+#define COM_APPL_DATA                                 AUTOMATIC
+#define COM_APPL_CONST                                AUTOMATIC
+#define COM_APPL_CODE                                 AUTOMATIC
+
+/*****************************************************************************/
+/* PDU Router                                                                */
+/*****************************************************************************/
+#define PDUR_CODE                                     AUTOMATIC
+#define PDUR_VAR_NOINIT                               AUTOMATIC
+#define PDUR_VAR_POWER_ON_INIT                        AUTOMATIC
+#define PDUR_VAR_FAST                                 AUTOMATIC
+#define PDUR_VAR                                      AUTOMATIC
+#define PDUR_CONST                                    AUTOMATIC
+#define PDUR_APPL_DATA                                AUTOMATIC
+#define PDUR_APPL_CONST                               AUTOMATIC
+#define PDUR_APPL_CODE                                AUTOMATIC
+
+/*****************************************************************************/
+/* CANIF                                                                     */
+/*****************************************************************************/
+#define CANIF_CODE                                    AUTOMATIC
+#define CANIF_VAR_NOINIT                              AUTOMATIC
+#define CANIF_VAR_POWER_ON_INIT                       AUTOMATIC
+#define CANIF_VAR_FAST                                AUTOMATIC
+#define CANIF_VAR                                     AUTOMATIC
+#define CANIF_CONST                                   AUTOMATIC
+#define CANIF_APPL_DATA                               AUTOMATIC
+#define CANIF_APPL_CONST                              AUTOMATIC
+#define CANIF_APPL_CODE                               AUTOMATIC
+
+/*****************************************************************************/
+/* CAN                                                                       */
+/*****************************************************************************/
+#define CAN_CODE                                      AUTOMATIC
+#define CAN_VAR_NOINIT                                AUTOMATIC
+#define CAN_VAR_POWER_ON_INIT                         AUTOMATIC
+#define CAN_VAR_FAST                                  AUTOMATIC
+#define CAN_VAR                                       AUTOMATIC
+#define CAN_CONST                                     AUTOMATIC
+#define CAN_APPL_DATA                                 AUTOMATIC
+#define CAN_APPL_CONST                                AUTOMATIC
+#define CAN_APPL_CODE                                 AUTOMATIC
+
+/*****************************************************************************/
+/* CRC                                                                       */
+/*****************************************************************************/
+#define CRC_CODE                                      AUTOMATIC
+#define CRC_VAR_NOINIT                                AUTOMATIC
+#define CRC_VAR_POWER_ON_INIT                         AUTOMATIC
+#define CRC_VAR_FAST                                  AUTOMATIC
+#define CRC_VAR                                       AUTOMATIC
+#define CRC_CONST                                     AUTOMATIC
+#define CRC_APPL_DATA                                 AUTOMATIC
+#define CRC_APPL_CONST                                AUTOMATIC
+#define CRC_APPL_CODE                                 AUTOMATIC
+
+/*****************************************************************************/
+/* RTE                                                                       */
+/*****************************************************************************/
+#define RTE_CODE                                      AUTOMATIC
+#define RTE_VAR_NOINIT                                AUTOMATIC
+#define RTE_VAR_POWER_ON_INIT                         AUTOMATIC
+#define RTE_VAR_FAST                                  AUTOMATIC
+#define RTE_VAR                                       AUTOMATIC
+#define RTE_CONST                                     AUTOMATIC
+#define RTE_APPL_DATA                                 AUTOMATIC
+#define RTE_APPL_CONST                                AUTOMATIC
+#define RTE_APPL_CODE                                 AUTOMATIC
+
+/*****************************************************************************/
+/* NvM                                                                       */
+/*****************************************************************************/
+#define NVM_CODE                                      AUTOMATIC
+#define NVM_VAR_NOINIT                                AUTOMATIC
+#define NVM_VAR_POWER_ON_INIT                         AUTOMATIC
+#define NVM_VAR_FAST                                  AUTOMATIC
+#define NVM_VAR                                       AUTOMATIC
+#define NVM_CONST                                     AUTOMATIC
+#define NVM_APPL_DATA                                 AUTOMATIC
+#define NVM_APPL_CONST                                AUTOMATIC
+#define NVM_APPL_CODE                                 AUTOMATIC
+
+/*****************************************************************************/
+/* MemIf                                                                     */
+/*****************************************************************************/
+#define MEMIF_CODE                                    AUTOMATIC
+#define MEMIF_VAR_NOINIT                              AUTOMATIC
+#define MEMIF_VAR_POWER_ON_INIT                       AUTOMATIC
+#define MEMIF_VAR_FAST                                AUTOMATIC
+#define MEMIF_VAR                                     AUTOMATIC
+#define MEMIF_CONST                                   AUTOMATIC
+#define MEMIF_APPL_DATA                               AUTOMATIC
+#define MEMIF_APPL_CONST                              AUTOMATIC
+#define MEMIF_APPL_CODE                               AUTOMATIC
+
+/******************************************************************************/
+/* FEE                                                                        */
+/******************************************************************************/
+#define FEE_CODE                                      AUTOMATIC
+#define FEE_VAR_NOINIT                                AUTOMATIC
+#define FEE_VAR_POWER_ON_INIT                         AUTOMATIC
+#define FEE_VAR_FAST                                  AUTOMATIC
+#define FEE_VAR                                       AUTOMATIC
+#define FEE_CONST                                     AUTOMATIC
+#define FEE_APPL_DATA                                 AUTOMATIC
+#define FEE_APPL_CONST                                AUTOMATIC
+#define FEE_APPL_CODE                                 AUTOMATIC
+
+/*****************************************************************************/
+/* Ea                                                                        */
+/*****************************************************************************/
+#define EA_CODE                                       AUTOMATIC
+#define EA_VAR_NOINIT                                 AUTOMATIC
+#define EA_VAR_POWER_ON_INIT                          AUTOMATIC
+#define EA_VAR_FAST                                   AUTOMATIC
+#define EA_VAR                                        AUTOMATIC
+#define EA_CONST                                      AUTOMATIC
+#define EA_APPL_DATA                                  AUTOMATIC
+#define EA_APPL_CONST                                 AUTOMATIC
+#define EA_APPL_CODE                                  AUTOMATIC
+
+/*****************************************************************************/
+/* SPI                                                                       */
+/*****************************************************************************/
+#define SPI_CODE                                      AUTOMATIC
+#define SPI_VAR_NOINIT                                AUTOMATIC
+#define SPI_VAR_POWER_ON_INIT                         AUTOMATIC
+#define SPI_VAR_FAST                                  AUTOMATIC
+#define SPI_VAR                                       AUTOMATIC
+#define SPI_CONST                                     AUTOMATIC
+#define SPI_APPL_DATA                                 AUTOMATIC
+#define SPI_APPL_CONST                                AUTOMATIC
+#define SPI_APPL_CODE                                 AUTOMATIC
+
+/*****************************************************************************/
+/* GPT                                                                       */
+/*****************************************************************************/
+#define GPT_CODE                                      AUTOMATIC
+#define GPT_VAR_NOINIT                                AUTOMATIC
+#define GPT_VAR_POWER_ON_INIT                         AUTOMATIC
+#define GPT_VAR_FAST                                  AUTOMATIC
+#define GPT_VAR                                       AUTOMATIC
+#define GPT_CONST                                     AUTOMATIC
+#define GPT_APPL_DATA                                 AUTOMATIC
+#define GPT_APPL_CONST                                AUTOMATIC
+#define GPT_APPL_CODE                                 AUTOMATIC
+
+/*****************************************************************************/
+/* ECUM                                                                      */
+/*****************************************************************************/
+#define ECUM_CODE                                     AUTOMATIC
+#define ECUM_VAR_NOINIT                               AUTOMATIC
+#define ECUM_VAR_POWER_ON_INIT                        AUTOMATIC
+#define ECUM_VAR_FAST                                 AUTOMATIC
+#define ECUM_VAR                                      AUTOMATIC
+#define ECUM_CONST                                    AUTOMATIC
+#define ECUM_APPL_DATA                                AUTOMATIC
+#define ECUM_APPL_CONST                               AUTOMATIC
+#define ECUM_APPL_CODE                                AUTOMATIC
+
+/*****************************************************************************/
+/* SchM                                                                      */
+/*****************************************************************************/
+#define SCHM_CODE                                     AUTOMATIC
+#define SCHM_VAR_NOINIT                               AUTOMATIC
+#define SCHM_VAR_POWER_ON_INIT                        AUTOMATIC
+#define SCHM_VAR_FAST                                 AUTOMATIC
+#define SCHM_VAR                                      AUTOMATIC
+#define SCHM_CONST                                    AUTOMATIC
+#define SCHM_APPL_DATA                                AUTOMATIC
+#define SCHM_APPL_CONST                               AUTOMATIC
+#define SCHM_APPL_CODE                                AUTOMATIC
+
+/*****************************************************************************/
+/* OS                                                                        */
+/*****************************************************************************/
+#define OS_CODE                                       AUTOMATIC
+#define OS_VAR_NOINIT                                 AUTOMATIC
+#define OS_VAR_POWER_ON_INIT                          AUTOMATIC
+#define OS_VAR_FAST                                   AUTOMATIC
+#define OS_VAR                                        AUTOMATIC
+#define OS_CONST                                      AUTOMATIC
+#define OS_APPL_DATA                                  AUTOMATIC
+#define OS_APPL_CONST                                 AUTOMATIC
+#define OS_APPL_CODE                                  AUTOMATIC
+
+/*****************************************************************************/
+/* MCU                                                                       */
+/*****************************************************************************/
+#define MCU_CODE                                      AUTOMATIC
+#define MCU_VAR_NOINIT                                AUTOMATIC
+#define MCU_VAR_POWER_ON_INIT                         AUTOMATIC
+#define MCU_VAR_FAST                                  AUTOMATIC
+#define MCU_VAR                                       AUTOMATIC
+#define MCU_CONST                                     AUTOMATIC
+#define MCU_APPL_DATA                                 AUTOMATIC
+#define MCU_APPL_CONST                                AUTOMATIC
+#define MCU_APPL_CODE                                 AUTOMATIC
+
+/*****************************************************************************/
+/* CAN TP                                                                    */
+/*****************************************************************************/
+#define CANTP_CODE                                    AUTOMATIC
+#define CANTP_VAR_NOINIT                              AUTOMATIC
+#define CANTP_VAR_POWER_ON_INIT                       AUTOMATIC
+#define CANTP_VAR_FAST                                AUTOMATIC
+#define CANTP_VAR                                     AUTOMATIC
+#define CANTP_CONST                                   AUTOMATIC
+#define CANTP_APPL_DATA                               AUTOMATIC
+#define CANTP_APPL_CONST                              AUTOMATIC
+#define CANTP_APPL_CODE                               AUTOMATIC
+
+/*****************************************************************************/
+/* FRIF                                                                      */
+/*****************************************************************************/
+#define FRIF_CODE                                     AUTOMATIC
+#define FRIF_VAR_NOINIT                               AUTOMATIC
+#define FRIF_VAR_POWER_ON_INIT                        AUTOMATIC
+#define FRIF_VAR_FAST                                 AUTOMATIC
+#define FRIF_VAR                                      AUTOMATIC
+#define FRIF_CONST                                    AUTOMATIC
+#define FRIF_APPL_DATA                                AUTOMATIC
+#define FRIF_APPL_CONST                               AUTOMATIC
+#define FRIF_APPL_CODE                                AUTOMATIC
+
+/******************************************************************************/
+/* FRTP                                                                       */
+/******************************************************************************/
+#define FRTP_CODE                                     AUTOMATIC
+#define FRTP_VAR_NOINIT                               AUTOMATIC
+#define FRTP_VAR_POWER_ON_INIT                        AUTOMATIC
+#define FRTP_VAR_FAST                                 AUTOMATIC
+#define FRTP_VAR                                      AUTOMATIC
+#define FRTP_CONST                                    AUTOMATIC
+#define FRTP_APPL_DATA                                AUTOMATIC
+#define FRTP_APPL_CONST                               AUTOMATIC
+#define FRTP_APPL_CODE                                AUTOMATIC
+
+/*****************************************************************************/
+/* FR                                                                        */
+/*****************************************************************************/
+#define FR_CODE                                       AUTOMATIC
+#define FR_VAR_NOINIT                                 AUTOMATIC
+#define FR_VAR_POWER_ON_INIT                          AUTOMATIC
+#define FR_VAR_FAST                                   AUTOMATIC
+#define FR_VAR                                        AUTOMATIC
+#define FR_CONST                                      AUTOMATIC
+#define FR_APPL_DATA                                  AUTOMATIC
+#define FR_APPL_CONST                                 AUTOMATIC
+#define FR_APPL_CODE                                  AUTOMATIC
+
+/*****************************************************************************/
+/* FRTRCV                                                                    */
+/*****************************************************************************/
+#define FRTRCV_CODE                                   AUTOMATIC
+#define FRTRCV_VAR_NOINIT                             AUTOMATIC
+#define FRTRCV_VAR_POWER_ON_INIT                      AUTOMATIC
+#define FRTRCV_VAR_FAST                               AUTOMATIC
+#define FRTRCV_VAR                                    AUTOMATIC
+#define FRTRCV_CONST                                  AUTOMATIC
+#define FRTRCV_APPL_DATA                              AUTOMATIC
+#define FRTRCV_APPL_CONST                             AUTOMATIC
+#define FRTRCV_APPL_CODE                              AUTOMATIC
+
+/*****************************************************************************/
+/* LINIF                                                                     */
+/*****************************************************************************/
+#define LINIF_CODE                                    AUTOMATIC
+#define LINIF_VAR_NOINIT                              AUTOMATIC
+#define LINIF_VAR_POWER_ON_INIT                       AUTOMATIC
+#define LINIF_VAR_FAST                                AUTOMATIC
+#define LINIF_VAR                                     AUTOMATIC
+#define LINIF_CONST                                   AUTOMATIC
+#define LINIF_APPL_DATA                               AUTOMATIC
+#define LINIF_APPL_CONST                              AUTOMATIC
+#define LINIF_APPL_CODE                               AUTOMATIC
+
+/*****************************************************************************/
+/* LINTP                                                                     */
+/*****************************************************************************/
+#define LINTP_CODE                                    AUTOMATIC
+#define LINTP_VAR_NOINIT                              AUTOMATIC
+#define LINTP_VAR_POWER_ON_INIT                       AUTOMATIC
+#define LINTP_VAR_FAST                                AUTOMATIC
+#define LINTP_VAR                                     AUTOMATIC
+#define LINTP_CONST                                   AUTOMATIC
+#define LINTP_APPL_DATA                               AUTOMATIC
+#define LINTP_APPL_CONST                              AUTOMATIC
+#define LINTP_APPL_CODE                               AUTOMATIC
+
+/*****************************************************************************/
+/* WDGM                                                                      */
+/*****************************************************************************/
+#define WDGM_CODE                                     AUTOMATIC
+#define WDGM_VAR_NOINIT                               AUTOMATIC
+#define WDGM_VAR_POWER_ON_INIT                        AUTOMATIC
+#define WDGM_VAR_FAST                                 AUTOMATIC
+#define WDGM_VAR                                      AUTOMATIC
+#define WDGM_CONST                                    AUTOMATIC
+#define WDGM_APPL_DATA                                AUTOMATIC
+#define WDGM_APPL_CONST                               AUTOMATIC
+#define WDGM_APPL_CODE                                AUTOMATIC
+
+/*****************************************************************************/
+/* WdgIf                                                                     */
+/*****************************************************************************/
+#define WDGIF_CODE                                    AUTOMATIC
+#define WDGIF_VAR_NOINIT                              AUTOMATIC
+#define WDGIF_VAR_POWER_ON_INIT                       AUTOMATIC
+#define WDGIF_VAR_FAST                                AUTOMATIC
+#define WDGIF_VAR                                     AUTOMATIC
+#define WDGIF_CONST                                   AUTOMATIC
+#define WDGIF_APPL_DATA                               AUTOMATIC
+#define WDGIF_APPL_CONST                              AUTOMATIC
+#define WDGIF_APPL_CODE                               AUTOMATIC
+
+/*****************************************************************************/
+/* IO Hardware Abstraction                                                   */
+/*****************************************************************************/
+#define IOHWAB_CODE                                   AUTOMATIC
+#define IOHWAB_VAR_NOINIT                             AUTOMATIC
+#define IOHWAB_VAR_POWER_ON_INIT                      AUTOMATIC
+#define IOHWAB_VAR_FAST                               AUTOMATIC
+#define IOHWAB_VAR                                    AUTOMATIC
+#define IOHWAB_CONST                                  AUTOMATIC
+#define IOHWAB_APPL_DATA                              AUTOMATIC
+#define IOHWAB_APPL_CONST                             AUTOMATIC
+#define IOHWAB_APPL_CODE                              AUTOMATIC
+
+/*****************************************************************************/
+/* PORT                                                                      */
+/*****************************************************************************/
+#define PORT_CODE                                     AUTOMATIC
+#define PORT_VAR_NOINIT                               AUTOMATIC
+#define PORT_VAR_POWER_ON_INIT                        AUTOMATIC
+#define PORT_VAR_FAST                                 AUTOMATIC
+#define PORT_VAR                                      AUTOMATIC
+#define PORT_CONST                                    AUTOMATIC
+#define PORT_APPL_DATA                                AUTOMATIC
+#define PORT_APPL_CONST                               AUTOMATIC
+#define PORT_APPL_CODE                                AUTOMATIC
+
+/*****************************************************************************/
+/* DIO                                                                       */
+/*****************************************************************************/
+#define DIO_CODE                                      AUTOMATIC
+#define DIO_VAR_NOINIT                                AUTOMATIC
+#define DIO_VAR_POWER_ON_INIT                         AUTOMATIC
+#define DIO_VAR_FAST                                  AUTOMATIC
+#define DIO_VAR                                       AUTOMATIC
+#define DIO_CONST                                     AUTOMATIC
+#define DIO_APPL_DATA                                 AUTOMATIC
+#define DIO_APPL_CONST                                AUTOMATIC
+#define DIO_APPL_CODE                                 AUTOMATIC
+
+/*****************************************************************************/
+/* PWM Driver                                                                */
+/*****************************************************************************/
+#define PWM_CODE                                      AUTOMATIC
+#define PWM_VAR_NOINIT                                AUTOMATIC
+#define PWM_VAR_POWER_ON_INIT                         AUTOMATIC
+#define PWM_VAR_FAST                                  AUTOMATIC
+#define PWM_VAR                                       AUTOMATIC
+#define PWM_CONST                                     AUTOMATIC
+#define PWM_APPL_DATA                                 AUTOMATIC
+#define PWM_APPL_CONST                                AUTOMATIC
+#define PWM_APPL_CODE                                 AUTOMATIC
+
+
+#endif /* COMPILER_CFG_H */
+
