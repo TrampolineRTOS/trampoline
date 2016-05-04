@@ -31,14 +31,17 @@
 
 #include "tpl_os_custom_types.h"
 #include "tpl_os_kernel_stack.h"
+#include "tpl_registers.h"
 
-#define OS_AR_RELEASE_MAJOR_VERSION     4
-#define OS_AR_RELEASE_MINOR_VERSION     0
-#define OS_AR_RELEASE_REVISION_VERSION  2
+//#define OS_AR_RELEASE_MAJOR_VERSION     4
+//#define OS_AR_RELEASE_MINOR_VERSION     0
+//#define OS_AR_RELEASE_REVISION_VERSION  2
 
-#define OS_SW_MAJOR_VERSION  0
-#define OS_SW_MINOR_VERSION  4
+#define OS_SW_MAJOR_VERSION  1
+#define OS_SW_MINOR_VERSION  0
 #define OS_SW_PATCH_VERSION  0
+
+#define IDLE_STACK_SIZE 200
 
 typedef uint32 tpl_stack_word;
 typedef uint32 tpl_stack_size;
@@ -169,14 +172,19 @@ extern FUNC(uint16, OS_CODE) tpl_get_core_id(void);
 
 #define tpl_restore_cpu_priority() tpl_ack_irq()
 
-#define OS_START_SEC_VAR_32
+#define OS_START_SEC_VAR_32BIT
 #include "tpl_memmap.h"
 
 extern VAR(uint32, OS_VAR) tpl_current_date[NUMBER_OF_CORES];
 
-#define OS_STOP_SEC_VAR_32
+#define OS_STOP_SEC_VAR_32BIT
 #include "tpl_memmap.h"
 
+#if WITH_MULTICORE == YES
+#define GET_CURRENT_DATE(core_id)   tpl_current_date[core_id]
+#else
+#define GET_CURRENT_DATE(core_id)   tpl_current_date[0]
+#endif
 
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"

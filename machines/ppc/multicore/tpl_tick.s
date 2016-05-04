@@ -27,76 +27,79 @@
  */
 
 #include "tpl_assembler.h"
+#include "tpl_registers_asm.h"
 #include "tpl_app_define.h"
 #include "tpl_os_definitions.h"
 #include "tpl_os_kernel_stack.h"
 #include "tpl_os_process_stack.h"
 
-TPL_EXTERN  tpl_current_date
-TPL_EXTERN  tpl_tick_init_value
-TPL_EXTERN  tpl_call_counter_tick
-TPL_EXTERN  tpl_enter_kernel
-TPL_EXTERN  tpl_leave_kernel
-TPL_EXTERN  tpl_kern
-TPL_EXTERN  tpl_need_switch
-TPL_EXTERN  tpl_save_context
-TPL_EXTERN  tpl_load_context
-TPL_EXTERN  tpl_kernel_mp
-TPL_EXTERN  tpl_user_mp
-TPL_EXTERN  tpl_set_process_mp
-TPL_EXTERN  tpl_run_elected
+TPL_EXTERN(tpl_current_date)
+TPL_EXTERN(tpl_tick_init_value)
+TPL_EXTERN(tpl_call_counter_tick)
+TPL_EXTERN(tpl_enter_kernel)
+TPL_EXTERN(tpl_leave_kernel)
+TPL_EXTERN(tpl_kern)
+TPL_EXTERN(tpl_need_switch)
+TPL_EXTERN(tpl_save_context)
+TPL_EXTERN(tpl_load_context)
+TPL_EXTERN(tpl_kernel_mp)
+TPL_EXTERN(tpl_user_mp)
+TPL_EXTERN(tpl_set_process_mp)
+TPL_EXTERN(tpl_run_elected)
 
 
 #if (TPL_TICK_TIMER == TPL_DECREMENTER)
 
-/****************************************************************************/ 
-  .global tpl_init_dec
-  .text
-  .section .osCode CODE_ACCESS_RIGHT
+/****************************************************************************/
+TPL_GLOBAL(tpl_init_dec)
+#define OS_START_SEC_CODE
+#include "AsMemMap.h"
 
 /**
  *
  */
-tpl_init_dec:
+TPL_GLOBAL_REF(tpl_init_dec):
 
   e_li      r11,0
-  mttbu     r11
-  mttbl     r11
+  mtspr     spr_TBU, r11
+  mtspr     spr_TBL, r11
 
   /* load dec and decar register with value correcponding to tick period */
-  e_lis     r11,TPL_HIG(tpl_tick_init_value)
-  e_or2i    r11,TPL_LOW(tpl_tick_init_value)
+  e_lis     r11,TPL_HIG(TPL_EXTERN_REF(tpl_tick_init_value))
+  e_add16i  r11,TPL_LOW(TPL_EXTERN_REF(tpl_tick_init_value))
   e_lwz     r11,0(r11)
-  mtdec     r11
-  mtdecar   r11
+  mtspr     spr_DEC, r11
+  mtspr     spr_DECAR, r11
 
   /* tcr register : set DIE and ARE bits, enable dec and auto reload */
   e_lis     r11,0x0440
-  mttcr     r11
+  mtspr     spr_TCR, r11
 
   /* hid0 register : set TBEN register */
   e_li      r11,0x4000
-  mthid0    r11
+  mtspr     spr_HID0, r11
 
   se_blr
 
-  FUNCTION(tpl_init_dec)
-  .type tpl_init_dec,@function
-  .size tpl_init_dec,$-tpl_init_dec
+  FUNCTION(TPL_GLOBAL_REF(tpl_init_dec))
+TPL_TYPE(TPL_GLOBAL_REF(tpl_init_dec),@function)
+TPL_SIZE(TPL_GLOBAL_REF(tpl_init_dec),$-TPL_GLOBAL_REF(tpl_init_dec))
 
-/****************************************************************************/ 
-  .section  .dec_vector  CODE_ACCESS_RIGHT
+/****************************************************************************/
+#define OS_STOP_SEC_CODE
+#include "AsMemMap.h"
+TPL_SECTION(dec_vector, CODE_ACCESS_RIGHT)
 tpl_dec_vector:
 
   e_b         tpl_dec_handler
 
   FUNCTION(tpl_dec_vector)
-  .type tpl_dec_vector,@function
-  .size tpl_dec_vector,$-tpl_dec_vector
+TPL_TYPE(tpl_dec_vector,@function)
+TPL_SIZE(tpl_dec_vector,$-tpl_dec_vector)
 
 
-/****************************************************************************/ 
-  .section  .dec_handler CODE_ACCESS_RIGHT
+/****************************************************************************/
+TPL_SECTION(dec_handler, CODE_ACCESS_RIGHT)
 
 tpl_dec_handler:
 
@@ -110,21 +113,21 @@ tpl_dec_handler:
   e_stw       r11,PS_CR(r1)
   e_stw       r0,PS_R0(r1)
 
-  e_bl        tpl_enter_kernel
+  e_bl        TPL_EXTERN_REF(tpl_enter_kernel)
 
   /*
    * Save r3 in the kernel stack. It is from here it will be get to be saved
    * in the context of the interrupted process
    */
   e_stw     r3,KS_RETURN_CODE(r1)
-  
-  
+
+
   se_mtar     r11,r5
   se_mtar     r12,r6
   mfspr       r6,spr_PIR        /* get the core number, *4 to have the index in table of uint32 */
   e_slwi      r6,r6,2
-  e_lis       r5,TPL_HIG(tpl_current_date)
-  e_or2i      r5,TPL_LOW(tpl_current_date)
+  e_lis       r5,TPL_HIG(TPL_EXTERN_REF(tpl_current_date))
+  e_add16i    r5,TPL_LOW(TPL_EXTERN_REF(tpl_current_date))
   se_add      r5,r6
   e_lwz       r6,0(r5)
   e_addi      r6,r6,1
@@ -132,15 +135,17 @@ tpl_dec_handler:
 
   mfspr       r6,spr_PIR        /* get the core number, *4 to have the index in table of uint32 */
   e_slwi      r6,r6,2
-  e_lis       r5,TPL_HIG(tpl_kern)
-  e_or2i      r5,TPL_LOW(tpl_kern)
+  e_lis       r5,TPL_HIG(TPL_EXTERN_REF(tpl_kern))
+  e_add16i    r5,TPL_LOW(TPL_EXTERN_REF(tpl_kern))
   se_add      r5,r6
+#if WITH_MULTICORE
   e_lwz       r5,0(r5)
+#endif
   e_stw       r5,KS_KERN_PTR(r1)            /* save the ptr for future use  */
 
   se_mfar   r5,r11
   se_mfar   r6,r12
-  
+
   /*
    * as we are coming from an exception and calling a C function,
    * we have to save all volatile registers,
@@ -163,7 +168,7 @@ tpl_dec_handler:
   se_subi     r1,8
 
   /* call the counter_tick function */
-  e_bl        tpl_call_counter_tick
+  e_bl        TPL_EXTERN_REF(tpl_call_counter_tick)
 
   /*
    * restore all volatile registers
@@ -203,7 +208,7 @@ tpl_dec_handler:
    * Check if context of the task/isr that just lost the CPU needs
    * to be saved. No save is needed for a TerminateTask or ChainTask
    */
-  e_lbz       r12,24(r11) 
+  e_lbz       r12,24(r11)
   e_andi.     r12,r12,NEED_SAVE
   se_beq      no_save
 
@@ -211,7 +216,7 @@ tpl_dec_handler:
    * get the context pointer of the task that just lost the CPU
    */
   e_lwz       r3,0(r11)                     /* get s_running                    */
-  e_bl        tpl_save_context
+  e_bl        TPL_EXTERN_REF(tpl_save_context)
 
 
 no_save:
@@ -222,27 +227,27 @@ no_save:
    */
   e_lwz       r11,KS_KERN_PTR(r1)
   e_lwz       r3,16(r11)    /* get the id of the process which get the cpu  */
-  e_bl        tpl_set_process_mp        /* set the memory protection scheme */
+  e_bl        TPL_EXTERN_REF(tpl_set_process_mp)        /* set the memory protection scheme */
 #endif
 
 
   se_li     r3,0          /* set save parameter to 0 */
   /* get tpl_kern[].need_switch, and pass it as parameter of tpl_run_elected */
   e_lwz     r11,KS_KERN_PTR(r1)
-  e_lbz     r12,24(r11) 
+  e_lbz     r12,24(r11)
   e_andi.   r12,r12,NEED_SAVE
   e_beq     call_tpl_run_elected
   se_li     r3,1          /* set save parameter to 1 */
-call_tpl_run_elected:  
-  e_bl      tpl_run_elected
-  
-  
+call_tpl_run_elected:
+  e_bl      TPL_EXTERN_REF(tpl_run_elected)
+
+
   e_lwz       r11,KS_KERN_PTR(r1)
   e_lwz       r3,0(r11)                     /* get s_running                */
-  e_bl        tpl_load_context
+  e_bl        TPL_EXTERN_REF(tpl_load_context)
 
-  
-  
+
+
   /*
    * r3 is restored (ie get back the return code)
    */
@@ -250,23 +255,23 @@ call_tpl_run_elected:
 
   /* TODO */
 no_context_switch:
-  
+
   /*
-   * Reset the tpl_need_switch variable to NO_NEED_SWITCH 
+   * Reset the tpl_need_switch variable to NO_NEED_SWITCH
    */
   e_lwz     r11,KS_KERN_PTR(r1)
   e_li      r12,NO_NEED_SWITCH
   e_stb     r12,24(r11)
-  
+
   /*
    * does the stuff to leave the kernel
    */
 
     /* clear DIS bit in TSR SPR */
   e_lis       r11,0x0800
-  mtspr       336,r11
+  mtspr       spr_TSR,r11
 
-  e_bl        tpl_leave_kernel
+  e_bl        TPL_EXTERN_REF(tpl_leave_kernel)
 
   e_lwz       r0,PS_R0(r1)
   e_lwz       r11,PS_CR(r1)
@@ -282,14 +287,14 @@ no_context_switch:
   se_rfi
 
   FUNCTION(tpl_dec_handler)
-  .type tpl_dec_handler,@function
-  .size tpl_dec_handler,$-tpl_dec_handler
+TPL_TYPE(tpl_dec_handler,@function)
+TPL_SIZE(tpl_dec_handler,$-tpl_dec_handler)
 
 
 #else
 
 
-  .section  .dec_vector  CODE_ACCESS_RIGHT
+TPL_SECTION(dec_vector, CODE_ACCESS_RIGHT)
 tpl_dec_vector:
 /* ------------ VLE ---------------------------------------------------------*/
 #if (WITH_VLE == YES)
@@ -299,8 +304,8 @@ tpl_dec_vector:
   b           tpl_dec_vector
 #endif
   FUNCTION(tpl_dec_vector)
-  .type tpl_dec_vector,@function
-  .size tpl_dec_vector,$-tpl_dec_vector
+TPL_TYPE(tpl_dec_vector,@function)
+TPL_SIZE(tpl_dec_vector,$-tpl_dec_vector)
 
 
 #endif

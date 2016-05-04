@@ -13,11 +13,8 @@ IMPLEMENTATION ppc_interrupt {
   };
   /* Add the USEFLOAT attribute */
   TASK [] {
+    UINT32 STACKSIZE;
     BOOLEAN USEFLOAT;
-  };
-  /* Add the SOURCE (interrupt source) attribute */
-  COUNTER [] {
-    INTERRUPT_TYPE SOURCE;
   };
   /* An interrupt source, the ID is the interrupt ID given by the INTC */
   INTERRUPT [] { 

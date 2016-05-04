@@ -31,26 +31,26 @@
 #include "tpl_os_definitions.h"
 #include "tpl_as_definitions.h"
 #include "tpl_app_define.h"
-#include "tpl_registers.h"
+#include "tpl_registers_asm.h"
 
-TPL_EXTERN  tpl_enter_kernel
-TPL_EXTERN  tpl_leave_kernel
-TPL_EXTERN  tpl_save_context
-TPL_EXTERN  tpl_load_context
-TPL_EXTERN  tpl_call_protection_hook
-TPL_EXTERN  tpl_set_process_mp
-TPL_EXTERN  tpl_kern
+TPL_EXTERN(tpl_enter_kernel)
+TPL_EXTERN(tpl_leave_kernel)
+TPL_EXTERN(tpl_save_context)
+TPL_EXTERN(tpl_load_context)
+TPL_EXTERN(tpl_call_protection_hook)
+TPL_EXTERN(tpl_set_process_mp)
+TPL_EXTERN(tpl_kern)
 
-  .text
-  .section .osCode CODE_ACCESS_RIGHT
+#define OS_START_SEC_CODE
+#include "AsMemMap.h"
 
 /**
  * tpl_protection_hook_wrapper is called when an exception
  * related to protection (like memory protection for instance)
  * is encountered
  */
-  .global tpl_protection_hook_wrapper
-tpl_protection_hook_wrapper:
+TPL_GLOBAL(tpl_protection_hook_wrapper)
+TPL_GLOBAL_REF(tpl_protection_hook_wrapper):
 /* Without Memory Protection, the wrapper falls directly in infinite loop*/
 #if (WITH_MEMORY_PROTECTION == NO)
 machine_check_error:
@@ -90,7 +90,7 @@ machine_check_error:
 
   /*  Load the address of the MPU base register */
   e_lis     r12,TPL_HIG(MPUBase)
-  e_or2i    r12,TPL_LOW(MPUBase)
+  e_add16i  r12,TPL_LOW(MPUBase)
   e_lwz     r11,MPU_CESR(r12)
 
   /* and MPU_CESR with SPERR field mask*/
@@ -102,7 +102,7 @@ machine_check_error:
   /*
    * Does the stuff to enter in kernel
    */
-  e_bl      tpl_enter_kernel
+  e_bl      TPL_EXTERN_REF(tpl_enter_kernel)
 
   /*
    * Save r3 in the kernel stack. It is from here it will be get to be saved
@@ -113,8 +113,8 @@ machine_check_error:
   /*
    * Save the context of the running process.
    */
-  e_lis     r11,TPL_HIG(tpl_kern)
-  e_or2i    r11,TPL_LOW(tpl_kern)
+  e_lis     r11,TPL_HIG(TPL_EXTERN_REF(tpl_kern))
+  e_add16i  r11,TPL_LOW(TPL_EXTERN_REF(tpl_kern))
   e_stw     r11,KS_KERN_PTR(r1) /* save the ptr for future use  */
   /*
    * Reset the tpl_need_switch variable to NO_NEED_SWITCH before
@@ -129,13 +129,13 @@ machine_check_error:
    * The pointer to the context is in r3
    */
   e_lwz     r3,4(r11)           /* get the context pointer      */
-  e_bl      tpl_save_context
+  e_bl      TPL_EXTERN_REF(tpl_save_context)
 
   /*
    * call tpl_call_protection_hook with E_OS_PROTECTION_MEMORY as parameter
    */
   e_li      r3,E_OS_PROTECTION_MEMORY
-  e_bl      tpl_call_protection_hook
+  e_bl      TPL_EXTERN_REF(tpl_call_protection_hook)
 
   /*
    * test tpl_need_switch to see if a rescheduling occured
@@ -155,7 +155,7 @@ machine_check_error:
 #if WITH_MEMORY_PROTECTION == YES
   e_lwz     r11,KS_KERN_PTR(r1)
   e_lwz     r3,16(r11)    /* get the id of the process which get the cpu  */
-  e_bl      tpl_set_process_mp        /* set the memory protection scheme */
+  e_bl      TPL_EXTERN_REF(tpl_set_process_mp)        /* set the memory protection scheme */
 #endif
 
 no_context_switch:
@@ -166,7 +166,7 @@ no_context_switch:
    */
   e_lwz     r11,KS_KERN_PTR(r1)
   e_lwz     r3,4(r11)                         /* get s_running            */
-  e_bl      tpl_load_context
+  e_bl      TPL_EXTERN_REF(tpl_load_context)
 
   /*
    * Get back registers that was saved in the system stack
@@ -176,7 +176,7 @@ no_context_switch:
   /*
    * does the stuff to leave the kernel
    */
-  e_bl      tpl_leave_kernel
+  e_bl      TPL_EXTERN_REF(tpl_leave_kernel)
 
   /*  restore the registers befor returning                           */
   e_lwz     r0,16(r1)
@@ -221,7 +221,7 @@ machine_check_error:
   /*
    * Does the stuff to enter in kernel
    */
-  bl    tpl_enter_kernel
+  bl    TPL_EXTERN_REF(tpl_enter_kernel)
 
   /*
    * Save r3 in the kernel stack. It is from here it will be get to be saved
@@ -232,8 +232,8 @@ machine_check_error:
   /*
    * Save the context of the running process.
    */
-  lis   r11,TPL_HIG(tpl_kern)
-  ori   r11,r11,TPL_LOW(tpl_kern)
+  lis   r11,TPL_HIG(TPL_EXTERN_REF(tpl_kern))
+  ori   r11,r11,TPL_LOW(TPL_EXTERN_REF(tpl_kern))
   stw   r11,KS_KERN_PTR(r1) /* save the ptr for future use  */
   /*
    * Reset the tpl_need_switch variable to NO_NEED_SWITCH before
@@ -248,13 +248,13 @@ machine_check_error:
    * The pointer to the context is in r3
    */
   lwz   r3,4(r11)           /* get the context pointer      */
-  bl    tpl_save_context
+  bl    TPL_EXTERN_REF(tpl_save_context)
 
   /*
    * call tpl_call_protection_hook with E_OS_PROTECTION_MEMORY as parameter
    */
   li    r3,E_OS_PROTECTION_MEMORY
-  bl    tpl_call_protection_hook
+  bl    TPL_EXTERN_REF(tpl_call_protection_hook)
 
   /*
    * test tpl_need_switch to see if a rescheduling occured
@@ -274,7 +274,7 @@ machine_check_error:
 #if WITH_MEMORY_PROTECTION == YES
   lwz   r11,KS_KERN_PTR(r1)
   lwz   r3,16(r11)    /* get the id of the process which get the cpu  */
-  bl    tpl_set_process_mp        /* set the memory protection scheme */
+  bl    TPL_EXTERN_REF(tpl_set_process_mp)        /* set the memory protection scheme */
 #endif
 
 no_context_switch:
@@ -285,7 +285,7 @@ no_context_switch:
    */
   lwz   r11,KS_KERN_PTR(r1)
   lwz   r3,4(r11)                         /* get s_running            */
-  bl    tpl_load_context
+  bl    TPL_EXTERN_REF(tpl_load_context)
 
   /*
    * Get back registers that was saved in the system stack
@@ -295,7 +295,7 @@ no_context_switch:
   /*
    * does the stuff to leave the kernel
    */
-  bl    tpl_leave_kernel
+  bl    TPL_EXTERN_REF(tpl_leave_kernel)
 
   /*  restore the registers befor returning                           */
   lwz   r0,16(r1)
@@ -316,7 +316,10 @@ machine_check_error:
   blr
 #endif
 #endif /* WITH_MEMORY_PROTECTION */
-  FUNCTION(tpl_protection_hook_wrapper)
-  .type tpl_protection_hook_wrapper,@function
-  .size tpl_protection_hook_wrapper,$-tpl_protection_hook_wrapper
+  FUNCTION(TPL_GLOBAL_REF(tpl_protection_hook_wrapper))
+TPL_TYPE(TPL_GLOBAL_REF(tpl_protection_hook_wrapper),@function)
+TPL_SIZE(TPL_GLOBAL_REF(tpl_protection_hook_wrapper),$-TPL_GLOBAL_REF(tpl_protection_hook_wrapper))
+
+#define OS_STOP_SEC_CODE
+#include "AsMemMap.h"
 

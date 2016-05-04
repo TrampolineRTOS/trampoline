@@ -30,7 +30,10 @@
 #include "tpl_app_define.h"
 #include "tpl_os_kernel_stack.h"
 #include "tpl_assembler.h"
-#include "tpl_registers.h"
+#include "tpl_registers_asm.h"
+
+//TODO : It seems the MPU is replicated for each processing unit.
+//       Thus some modifications can occur in this file.
 
 
 /*
@@ -84,26 +87,24 @@
 
 #if WITH_MEMORY_PROTECTION == YES
 
-TPL_EXTERN tpl_mp_table
-TPL_EXTERN tpl_kern
-TPL_EXTERN tpl_reentrancy_counter
+TPL_EXTERN(tpl_mp_table)
+TPL_EXTERN(tpl_kern)
+TPL_EXTERN(tpl_reentrancy_counter)
 
-TPL_EXTERN  __PROGCONST_SECTION_START
-TPL_EXTERN  __PROGCONST_SECTION_STOP
-TPL_EXTERN  __SEG_START_API_CODE_RGN
-TPL_EXTERN  __SEG_END_API_CODE_RGN
-TPL_EXTERN  __SEG_START_API_CONST_RGN
-TPL_EXTERN  __SEG_END_API_CONST_RGN
+TPL_EXTERN(__PROGCONST_SECTION_START)
+TPL_EXTERN(__PROGCONST_SECTION_STOP)
+TPL_EXTERN(__SEG_START_API_CODE_RGN)
+TPL_EXTERN(__SEG_END_API_CODE_RGN)
+TPL_EXTERN(__SEG_START_API_CONST_RGN)
+TPL_EXTERN(__SEG_END_API_CONST_RGN)
 
+TPL_GLOBAL(tpl_kernel_mp)
+TPL_GLOBAL(tpl_user_mp)
+TPL_GLOBAL(tpl_set_process_mp)
+TPL_GLOBAL(tpl_init_mp)
 
-
-  .global tpl_kernel_mp
-  .global tpl_user_mp
-  .global tpl_set_process_mp
-  .global tpl_init_mp
-
-  .text
-  .section .osCode CODE_ACCESS_RIGHT
+#define OS_START_SEC_CODE
+#include "AsMemMap.h"
 
 /**
  * tpl_init_mp programs the MP descriptor 0-3 to allow
@@ -116,12 +117,12 @@ TPL_EXTERN  __SEG_END_API_CONST_RGN
  * - Descriptor 6: stack of a process. So the access is RW
  * - Descriptor 7: data of an OS Application. So the access is RW
  */
-tpl_init_mp:
+TPL_GLOBAL_REF(tpl_init_mp):
 /* ------------ VLE ---------------------------------------------------------*/
 #if (WITH_VLE == YES)
 
-  e_lis   r12,TPL_HIG(MPUBase)
-  e_or2i  r12,TPL_LOW(MPUBase)
+  e_lis     r12,TPL_HIG(MPUBase)
+  e_add16i  r12,TPL_LOW(MPUBase)
 
   /*
    * Descriptor 0 is used for no access for user to the whole
@@ -134,8 +135,8 @@ tpl_init_mp:
   /*
    * Load the noall access right in r11
    */
-  e_lis   r11,TPL_HIG(noall_rgn_access)
-  e_or2i  r11,TPL_LOW(noall_rgn_access)
+  e_lis     r11,TPL_HIG(noall_rgn_access)
+  e_add16i  r11,TPL_LOW(noall_rgn_access)
   /*
    * Store it in the access register or region 0
    */
@@ -153,17 +154,17 @@ tpl_init_mp:
    * Descriptor 1 is used for execution access for user and supervisor
    * on API code section
    */
-  e_lis   r11,TPL_HIG(__SEG_START_API_CODE_RGN)
-  e_or2i  r11,TPL_LOW(__SEG_START_API_CODE_RGN)
-  e_stw   r11,MPU_RGD1_start(r12)
-  e_lis   r11,TPL_HIG(__SEG_END_API_CODE_RGN)
-  e_or2i  r11,TPL_LOW(__SEG_END_API_CODE_RGN)
-  e_stw   r11,MPU_RGD1_end(r12)
+  e_lis     r11,TPL_HIG(TPL_EXTERN_REF(__SEG_START_API_CODE_RGN))
+  e_add16i  r11,TPL_LOW(TPL_EXTERN_REF(__SEG_START_API_CODE_RGN))
+  e_stw     r11,MPU_RGD1_start(r12)
+  e_lis     r11,TPL_HIG(TPL_EXTERN_REF(__SEG_END_API_CODE_RGN))
+  e_add16i  r11,TPL_LOW(TPL_EXTERN_REF(__SEG_END_API_CODE_RGN))
+  e_stw     r11,MPU_RGD1_end(r12)
   /*
    * Load the noall access right in r11
    */
-  e_lis   r11,TPL_HIG(exe_rgn_access)
-  e_or2i  r11,TPL_LOW(exe_rgn_access)
+  e_lis     r11,TPL_HIG(exe_rgn_access)
+  e_add16i  r11,TPL_LOW(exe_rgn_access)
   /*
    * Store it in the access register or region 0
    */
@@ -181,17 +182,17 @@ tpl_init_mp:
    * Descriptor 2 is used for read access for user and supervisor
    * on API const section
    */
-  e_lis   r11,TPL_HIG(__SEG_START_API_CONST_RGN)
-  e_or2i  r11,TPL_LOW(__SEG_START_API_CONST_RGN)
-  e_stw   r11,MPU_RGD2_start(r12)
-  e_lis   r11,TPL_HIG(__SEG_END_API_CONST_RGN)
-  e_or2i  r11,TPL_LOW(__SEG_END_API_CONST_RGN)
-  e_stw   r11,MPU_RGD2_end(r12)
+  e_lis     r11,TPL_HIG(TPL_EXTERN_REF(__SEG_START_API_CONST_RGN))
+  e_add16i  r11,TPL_LOW(TPL_EXTERN_REF(__SEG_START_API_CONST_RGN))
+  e_stw     r11,MPU_RGD2_start(r12)
+  e_lis     r11,TPL_HIG(TPL_EXTERN_REF(__SEG_END_API_CONST_RGN))
+  e_add16i  r11,TPL_LOW(TPL_EXTERN_REF(__SEG_END_API_CONST_RGN))
+  e_stw     r11,MPU_RGD2_end(r12)
   /*
    * Load the noall access right in r11
    */
-  e_lis   r11,TPL_HIG(const_rgn_access)
-  e_or2i  r11,TPL_LOW(const_rgn_access)
+  e_lis     r11,TPL_HIG(const_rgn_access)
+  e_add16i  r11,TPL_LOW(const_rgn_access)
   /*
    * Store it in the access register or region 0
    */
@@ -248,11 +249,11 @@ tpl_init_mp:
    * Descriptor 1 is used for execution access for user and supervisor
    * on API code section
    */
-  lis   r11,TPL_HIG(__SEG_START_API_CODE_RGN)
-  ori   r11,r11,TPL_LOW(__SEG_START_API_CODE_RGN)
+  lis   r11,TPL_HIG(TPL_EXTERN_REF(__SEG_START_API_CODE_RGN))
+  ori   r11,r11,TPL_LOW(TPL_EXTERN_REF(__SEG_START_API_CODE_RGN))
   stw   r11,MPU_RGD1_start(r12)
-  lis   r11,TPL_HIG(__SEG_END_API_CODE_RGN)
-  ori   r11,r11,TPL_LOW(__SEG_END_API_CODE_RGN)
+  lis   r11,TPL_HIG(TPL_EXTERN_REF(__SEG_END_API_CODE_RGN))
+  ori   r11,r11,TPL_LOW(TPL_EXTERN_REF(__SEG_END_API_CODE_RGN))
   stw   r11,MPU_RGD1_end(r12)
 
   /*
@@ -277,11 +278,11 @@ tpl_init_mp:
    * Descriptor 2 is used for read access for user and supervisor
    * on API const section
    */
-  lis   r11,TPL_HIG(__SEG_START_API_CONST_RGN)
-  ori   r11,r11,TPL_LOW(__SEG_START_API_CONST_RGN)
+  lis   r11,TPL_HIG(TPL_EXTERN_REF(__SEG_START_API_CONST_RGN))
+  ori   r11,r11,TPL_LOW(TPL_EXTERN_REF(__SEG_START_API_CONST_RGN))
   stw   r11,MPU_RGD2_start(r12)
-  lis   r11,TPL_HIG(__SEG_END_API_CONST_RGN)
-  ori   r11,r11,TPL_LOW(__SEG_END_API_CONST_RGN)
+  lis   r11,TPL_HIG(TPL_EXTERN_REF(__SEG_END_API_CONST_RGN))
+  ori   r11,r11,TPL_LOW(TPL_EXTERN_REF(__SEG_END_API_CONST_RGN))
   stw   r11,MPU_RGD2_end(r12)
 
   /*
@@ -306,9 +307,9 @@ tpl_init_mp:
   blr
 
 #endif
-  FUNCTION(tpl_init_mp)
-  .type tpl_init_mp,@function
-  .size tpl_init_mp,$-tpl_init_mp
+  FUNCTION(TPL_GLOBAL_REF(tpl_init_mp))
+TPL_TYPE(TPL_GLOBAL_REF(tpl_init_mp),@function)
+TPL_SIZE(TPL_GLOBAL_REF(tpl_init_mp),$-TPL_GLOBAL_REF(tpl_init_mp))
 
 /**
  * Disable memory protection. This function is called when
@@ -319,19 +320,19 @@ tpl_init_mp:
  *
  * Uses r11 and r12
  */
-tpl_kernel_mp:
+TPL_GLOBAL_REF(tpl_kernel_mp):
 /* ------------ VLE ---------------------------------------------------------*/
 #if (WITH_VLE == YES)
   /*
    * Load the kernel mode value
    */
-  e_lis   r11,TPL_HIG(kernel_mode)
-  e_or2i  r11,TPL_LOW(kernel_mode)
+  e_lis     r11,TPL_HIG(kernel_mode)
+  e_add16i  r11,TPL_LOW(kernel_mode)
   /*
    * Load the address of the control register
    */
-  e_lis   r12,TPL_HIG(MPUBase)
-  e_or2i  r12,TPL_LOW(MPUBase)
+  e_lis     r12,TPL_HIG(MPUBase)
+  e_add16i  r12,TPL_LOW(MPUBase)
   /*
    * Disable memory protection
    */
@@ -363,11 +364,11 @@ tpl_kernel_mp:
   blr
 
 #endif
-  FUNCTION(tpl_kernel_mp)
-  .type tpl_kernel_mp,@function
-  .size tpl_kernel_mp,$-tpl_kernel_mp
-  
-  
+  FUNCTION(TPL_GLOBAL_REF(tpl_kernel_mp))
+TPL_TYPE(TPL_GLOBAL_REF(tpl_kernel_mp),@function)
+TPL_SIZE(TPL_GLOBAL_REF(tpl_kernel_mp),$-TPL_GLOBAL_REF(tpl_kernel_mp))
+
+
 /**
  * Enable memory protection. This function is called when
  * returning to user mode (typically at the end of the it
@@ -382,7 +383,7 @@ tpl_kernel_mp:
  *
  * Uses r11 only
  */
-tpl_user_mp:
+TPL_GLOBAL_REF(tpl_user_mp):
 /* ------------ VLE ---------------------------------------------------------*/
 #if (WITH_VLE == YES)
   /*
@@ -390,33 +391,92 @@ tpl_user_mp:
    * Do not switch to user memory protection
    * if the reentrancy counter is greater than 0
    */
-  e_lis     r11,TPL_HIG(tpl_reentrancy_counter)
-  e_or2i    r11,TPL_LOW(tpl_reentrancy_counter)
-  e_lwz     r12,0(r11)    /*  get the value of the counter */
-  e_cmp16i  r12,0
+  se_mtar   r11,r5
+  se_mtar   r12,r6
+  mfspr     r6,spr_PIR
+  e_slwi    r6,r6,2
+  e_lis     r5,TPL_HIG(TPL_EXTERN_REF(tpl_reentrancy_counter))
+  e_add16i  r5,TPL_LOW(TPL_EXTERN_REF(tpl_reentrancy_counter))
+  se_add    r5,r6
+  e_lwz     r6,0(r5)   /*  get the value of the counter */
+  e_cmp16i  r6,0
+  se_mfar   r5,r11
+  se_mfar   r6,r12
   se_bne    trusted_proc  /* returns if not zero */
 
   /*
    * get the running process dynamic descriptor
    * pointer from the kernel stack.
    */
-  e_lis     r11,TPL_HIG(tpl_kern)
-  e_or2i    r11,TPL_LOW(tpl_kern)
-  e_lwz     r12,12(r11)
-  /* Get the trusted counter */
-  e_lwz     r11,4(r12)
-  e_cmp16i  r11,0
+  se_mtar   r11,r5
+  se_mtar   r12,r6
+
+  mfspr     r6,spr_PIR
+  se_slwi   r6,2                          /* get core number, and multiply by 4, to get the index of table tpl_kern[] */
+  e_lis     r5,TPL_HIG(TPL_EXTERN_REF(tpl_kern))
+  e_add16i  r5,TPL_LOW(TPL_EXTERN_REF(tpl_kern))
+  se_add    r5,r6
+  e_lwz     r6,0(r5)                     /* get core's tpl_kern specific address */
+  e_lwz     r5,12(r6)                    /* get elected proc structure address */
+  e_lwz     r6,4(r5)                    /* get the trusted counter */
+  e_cmp16i  r6,0
+
+  se_mfar   r5,r11
+  se_mfar   r6,r12
   se_bgt    trusted_proc
+
+  /*
+   *  Load the user mode value
+   */
+  se_mtar   r11,r5
+  se_mtar   r12,r6
+  e_lis     r5,TPL_HIG(user_mode)
+  e_add16i  r5,TPL_LOW(user_mode)
+  /*
+   * Load the address of the control register
+   */
+  e_lis     r12,TPL_HIG(MPUBase) //TODO? : MPU is replicated for each proc. Thus something has to change here
+  e_add16i  r12,TPL_LOW(MPUBase)
+  /*
+   * Enable memory protection
+   */
+  e_stw     r11,MPU_CESR(r12)
+  /*
+   * That's all
+   */
+
+//  /* PREVIOUS version
+//   * First check the reentrancy counter
+//   * Do not switch to user memory protection
+//   * if the reentrancy counter is greater than 0
+//   */
+//  e_lis     r11,TPL_HIG(TPL_EXTERN_REF(tpl_reentrancy_counter))
+//  e_or2i    r11,TPL_LOW(TPL_EXTERN_REF(tpl_reentrancy_counter))
+//  e_lwz     r12,0(r11)    /*  get the value of the counter */ //TODO? : + 4 * CORE_ID (check tpl_dispatch.s)
+//  e_cmp16i  r12,0
+//  se_bne    trusted_proc  /* returns if not zero */
+
+//  /*
+//   * get the running process dynamic descriptor
+//   * pointer from the kernel stack.
+//   */
+//  e_lis     r11,TPL_HIG(TPL_EXTERN_REF(tpl_kern))
+//  e_or2i    r11,TPL_LOW(TPL_EXTERN_REF(tpl_kern)) //TODO? : Same, is tpl_kern structure shared between every cores ?
+//  e_lwz     r12,12(r11)
+//  /* Get the trusted counter */
+//  e_lwz     r11,4(r12)
+//  e_cmp16i  r11,0
+//  se_bgt    trusted_proc
   /*
    *  Load the user mode value
    */
   e_lis     r11,TPL_HIG(user_mode)
-  e_or2i    r11,TPL_LOW(user_mode)
+  e_add16i  r11,TPL_LOW(user_mode)
   /*
    * Load the address of the control register
    */
-  e_lis     r12,TPL_HIG(MPUBase)
-  e_or2i    r12,TPL_LOW(MPUBase)
+  e_lis     r12,TPL_HIG(MPUBase) //TODO? : MPU is replicated for each proc. Thus something has to change here
+  e_add16i  r12,TPL_LOW(MPUBase)
   /*
    * Enable memory protection
    */
@@ -434,8 +494,8 @@ trusted_proc:
    * Do not switch to user memory protection
    * if the reentrancy counter is greater than 0
    */
-  lis   r11,TPL_HIG(tpl_reentrancy_counter)
-  ori   r11,r11,TPL_LOW(tpl_reentrancy_counter)
+  lis   r11,TPL_HIG(TPL_EXTERN_REF(tpl_reentrancy_counter))
+  ori   r11,r11,TPL_LOW(TPL_EXTERN_REF(tpl_reentrancy_counter)) //TODO? : + 4 * CORE_ID (check tpl_dispatch.s)
   lwz   r12,0(r11)    /*  get the value of the counter */
   cmpwi r12,0
   bnelr /* returns if not zero */
@@ -444,8 +504,8 @@ trusted_proc:
    * get the running process dynamic descriptor
    * pointer from the kernel stack.
    */
-  lis   r11,TPL_HIG(tpl_kern)
-  ori   r11,r11,TPL_LOW(tpl_kern)
+  lis   r11,TPL_HIG(TPL_EXTERN_REF(tpl_kern))
+  ori   r11,r11,TPL_LOW(TPL_EXTERN_REF(tpl_kern)) //TODO? Same
   lwz   r12,12(r11)
 
 #if WITH_OSAPPLICATION == YES
@@ -476,25 +536,43 @@ trusted_proc:
     blr
 
 #endif
-  FUNCTION(tpl_user_mp)
-  .type tpl_user_mp,@function
-  .size tpl_user_mp,$-tpl_user_mp
-  
-  
+  FUNCTION(TPL_GLOBAL_REF(tpl_user_mp))
+TPL_TYPE(TPL_GLOBAL_REF(tpl_user_mp),@function)
+TPL_SIZE(TPL_GLOBAL_REF(tpl_user_mp),$-TPL_GLOBAL_REF(tpl_user_mp))
+
+
 /**
  * Set the memory protection for a process
  *
  * @param   r3    the id of the process
+ * * *
+ * * *
+ * * *
+ * * *
+ * * *
+ * * *
+ * * * FIXME : no init regions doesn't exists in the current structure
+ * * *
+ * * * struct TPL_MEM_PROT_DESC {
+ * * *     VAR(tpl_mem_region, TYPEDEF) proc_var;    /* region of private data
+ * * *     VAR(tpl_mem_region, TYPEDEF) proc_stack;  /* region of stack
+ * * * #if WITH_AUTOSAR == YES
+ * * *     VAR(tpl_mem_region, TYPEDEF) osap_var;    /* region of OS App data
+ * * * #endif
+ * * * };
+ * * *
+ * * *
+ * * *
  */
-tpl_set_process_mp:
+TPL_GLOBAL_REF(tpl_set_process_mp):
 /* ------------ VLE ---------------------------------------------------------*/
 #if (WITH_VLE == YES)
   /*  Load the address of the control register            */
   e_lis     r12,TPL_HIG(MPUBase)
-  e_or2i    r12,TPL_LOW(MPUBase)
+  e_add16i  r12,TPL_LOW(MPUBase)
   /* get the tpl_mp_table pointer                         */
-  e_lis     r11,TPL_HIG(tpl_mp_table)
-  e_or2i    r11,TPL_LOW(tpl_mp_table)
+  e_lis     r11,TPL_HIG(TPL_EXTERN_REF(tpl_mp_table))
+  e_add16i  r11,TPL_LOW(TPL_EXTERN_REF(tpl_mp_table))
   /* tranform the id to an offset                         */
   e_slwi    r3,r3,2
   /* get the pointer to the mp descriptor                 */
@@ -523,7 +601,7 @@ tpl_set_process_mp:
   e_stw     r3,MPU_RGD5_end(r12)
   /* set the access rights                                */
   e_lis     r3,TPL_HIG(var_rgn_access)
-  e_or2i    r3,TPL_LOW(var_rgn_access)
+  e_add16i  r3,TPL_LOW(var_rgn_access)
   e_stw     r3,MPU_RGD5_access(r12)
   /* validate the descriptor                              */
   e_li      r3,1
@@ -542,31 +620,11 @@ tpl_set_process_mp:
   e_stw     r3,MPU_RGD6_end(r12)
   /* set the access rights                                */
   e_lis     r3,TPL_HIG(stack_rgn_access)
-  e_or2i    r3,TPL_LOW(stack_rgn_access)
+  e_add16i  r3,TPL_LOW(stack_rgn_access)
   e_stw     r3,MPU_RGD6_access(r12)
   /* validate the descriptor                              */
   e_li      r3,1
   e_stw     r3,MPU_RGD6_pid(r12)
-
-  /*
-   * Configuration for the private var no init access of the process
-   */
-
-  /* get the start address of private data no init region         */
-  e_lwz     r3,16(r11)
-  /* set the start address                                */
-  e_stw     r3,MPU_RGD8_start(r12)
-  /* get the end address                                  */
-  e_lwz     r3,20(r11)
-  /* set the end address                                  */
-  e_stw     r3,MPU_RGD8_end(r12)
-  /* set the access rights                                */
-  e_lis     r3,TPL_HIG(var_rgn_access)
-  e_or2i    r3,TPL_LOW(var_rgn_access)
-  e_stw     r3,MPU_RGD8_access(r12)
-  /* validate the descriptor                              */
-  e_li      r3,1
-  e_stw     r3,MPU_RGD8_pid(r12)
 
 #if WITH_OSAPPLICATION == YES
   /*
@@ -574,102 +632,145 @@ tpl_set_process_mp:
    */
 
   /* get the start address of OS Application data region  */
-  e_lwz     r3,24(r11)
+  e_lwz     r3,16(r11)
   /* set the start address                                */
   e_stw     r3,MPU_RGD7_start(r12)
   /* get the end address                                  */
-  e_lwz     r3,28(r11)
+  e_lwz     r3,20(r11)
   /* set the end address                                  */
   e_stw     r3,MPU_RGD7_end(r12)
   /* set the access rights                                */
   e_lis     r3,TPL_HIG(var_rgn_access)
-  e_or2i    r3,TPL_LOW(var_rgn_access)
+  e_add16i  r3,TPL_LOW(var_rgn_access)
   e_stw     r3,MPU_RGD7_access(r12)
   /* validate the descriptor                              */
   e_li      r3,1
   e_stw     r3,MPU_RGD7_pid(r12)
-
-  /*
-   * Configuration for the private var no init access of the OS Application
-   */
-
-  /* get the start address of OS Application data no init region  */
-  e_lwz     r3,32(r11)
-  /* set the start address                                */
-  e_stw     r3,MPU_RGD9_start(r12)
-  /* get the end address                                  */
-  e_lwz     r3,36(r11)
-  /* set the end address                                  */
-  e_stw     r3,MPU_RGD9_end(r12)
-  /* set the access rights                                */
-  e_lis     r3,TPL_HIG(var_rgn_access)
-  e_or2i    r3,TPL_LOW(var_rgn_access)
-  e_stw     r3,MPU_RGD9_access(r12)
-  /* validate the descriptor                              */
-  e_li      r3,1
-  e_stw     r3,MPU_RGD9_pid(r12)
-
-  /*
-   * Configuration for the private code access of the OS Application
-   */
-
-  /* get the start address of OS Application code region  */
-  e_lwz     r3,40(r11)
-  /* set the start address                                */
-  e_stw     r3,MPU_RGD3_start(r12)
-  /* get the end address                                  */
-  e_lwz     r3,44(r11)
-  /* set the end address                                  */
-  e_stw     r3,MPU_RGD3_end(r12)
-  /* set the access rights                                */
-  e_lis     r3,TPL_HIG(exe_rgn_access)
-  e_or2i    r3,TPL_LOW(exe_rgn_access)
-  e_stw     r3,MPU_RGD3_access(r12)
-  /* validate the descriptor                              */
-  e_li      r3,1
-  e_stw     r3,MPU_RGD3_pid(r12)
-
-  /*
-   * Configuration for the private const access of the OS Application
-   */
-
-  /* get the start address of OS Application const region  */
-  e_lwz     r3,48(r11)
-  /* set the start address                                */
-  e_stw     r3,MPU_RGD4_start(r12)
-  /* get the end address                                  */
-  e_lwz     r3,52(r11)
-  /* set the end address                                  */
-  e_stw     r3,MPU_RGD4_end(r12)
-  /* set the access rights                                */
-  e_lis     r3,TPL_HIG(const_rgn_access)
-  e_or2i    r3,TPL_LOW(const_rgn_access)
-  e_stw     r3,MPU_RGD4_access(r12)
-  /* validate the descriptor                              */
-  e_li      r3,1
-  e_stw     r3,MPU_RGD4_pid(r12)
-
-  /*
-   * Configuration for the private const access of the OS Application
-   */
-
-  /* get the start address of OS Application config data region  */
-  e_lwz     r3,56(r11)
-  /* set the start address                                */
-  e_stw     r3,MPU_RGD10_start(r12)
-  /* get the end address                                  */
-  e_lwz     r3,60(r11)
-  /* set the end address                                  */
-  e_stw     r3,MPU_RGD10_end(r12)
-  /* set the access rights                                */
-  e_lis     r3,TPL_HIG(const_rgn_access)
-  e_or2i    r3,TPL_LOW(const_rgn_access)
-  e_stw     r3,MPU_RGD10_access(r12)
-  /* validate the descriptor                              */
-  e_li      r3,1
-  e_stw     r3,MPU_RGD10_pid(r12)
-
 #endif
+
+//  /*
+//   * FIXME : This doesn't exists
+//   * Configuration for the private var no init access of the process
+//   */
+//
+//  /* get the start address of private data no init region         */
+//  e_lwz     r3,16(r11)
+//  /* set the start address                                */
+//  e_stw     r3,MPU_RGD8_start(r12)
+//  /* get the end address                                  */
+//  e_lwz     r3,20(r11)
+//  /* set the end address                                  */
+//  e_stw     r3,MPU_RGD8_end(r12)
+//  /* set the access rights                                */
+//  e_lis     r3,TPL_HIG(var_rgn_access)
+//  e_or2i    r3,TPL_LOW(var_rgn_access)
+//  e_stw     r3,MPU_RGD8_access(r12)
+//  /* validate the descriptor                              */
+//  e_li      r3,1
+//  e_stw     r3,MPU_RGD8_pid(r12)
+//
+//#if WITH_OSAPPLICATION == YES
+//  /*
+//   * Configuration for the private var access of the OS Application
+//   */
+//
+//  /* get the start address of OS Application data region  */
+//  e_lwz     r3,24(r11)
+//  /* set the start address                                */
+//  e_stw     r3,MPU_RGD7_start(r12)
+//  /* get the end address                                  */
+//  e_lwz     r3,28(r11)
+//  /* set the end address                                  */
+//  e_stw     r3,MPU_RGD7_end(r12)
+//  /* set the access rights                                */
+//  e_lis     r3,TPL_HIG(var_rgn_access)
+//  e_or2i    r3,TPL_LOW(var_rgn_access)
+//  e_stw     r3,MPU_RGD7_access(r12)
+//  /* validate the descriptor                              */
+//  e_li      r3,1
+//  e_stw     r3,MPU_RGD7_pid(r12)
+//
+//  /*
+//   * Configuration for the private var no init access of the OS Application
+//   */
+//
+//  /* get the start address of OS Application data no init region  */
+//  e_lwz     r3,32(r11)
+//  /* set the start address                                */
+//  e_stw     r3,MPU_RGD9_start(r12)
+//  /* get the end address                                  */
+//  e_lwz     r3,36(r11)
+//  /* set the end address                                  */
+//  e_stw     r3,MPU_RGD9_end(r12)
+//  /* set the access rights                                */
+//  e_lis     r3,TPL_HIG(var_rgn_access)
+//  e_or2i    r3,TPL_LOW(var_rgn_access)
+//  e_stw     r3,MPU_RGD9_access(r12)
+//  /* validate the descriptor                              */
+//  e_li      r3,1
+//  e_stw     r3,MPU_RGD9_pid(r12)
+//
+//  /*
+//   * Configuration for the private code access of the OS Application
+//   */
+//
+//  /* get the start address of OS Application code region  */
+//  e_lwz     r3,40(r11)
+//  /* set the start address                                */
+//  e_stw     r3,MPU_RGD3_start(r12)
+//  /* get the end address                                  */
+//  e_lwz     r3,44(r11)
+//  /* set the end address                                  */
+//  e_stw     r3,MPU_RGD3_end(r12)
+//  /* set the access rights                                */
+//  e_lis     r3,TPL_HIG(exe_rgn_access)
+//  e_or2i    r3,TPL_LOW(exe_rgn_access)
+//  e_stw     r3,MPU_RGD3_access(r12)
+//  /* validate the descriptor                              */
+//  e_li      r3,1
+//  e_stw     r3,MPU_RGD3_pid(r12)
+//
+//  /*
+//   * Configuration for the private const access of the OS Application
+//   */
+//
+//  /* get the start address of OS Application const region  */
+//  e_lwz     r3,48(r11)
+//  /* set the start address                                */
+//  e_stw     r3,MPU_RGD4_start(r12)
+//  /* get the end address                                  */
+//  e_lwz     r3,52(r11)
+//  /* set the end address                                  */
+//  e_stw     r3,MPU_RGD4_end(r12)
+//  /* set the access rights                                */
+//  e_lis     r3,TPL_HIG(const_rgn_access)
+//  e_or2i    r3,TPL_LOW(const_rgn_access)
+//  e_stw     r3,MPU_RGD4_access(r12)
+//  /* validate the descriptor                              */
+//  e_li      r3,1
+//  e_stw     r3,MPU_RGD4_pid(r12)
+//
+//  /*
+//   * Configuration for the private const access of the OS Application
+//   */
+//
+//  /* get the start address of OS Application config data region  */
+//  e_lwz     r3,56(r11)
+//  /* set the start address                                */
+//  e_stw     r3,MPU_RGD10_start(r12)
+//  /* get the end address                                  */
+//  e_lwz     r3,60(r11)
+//  /* set the end address                                  */
+//  e_stw     r3,MPU_RGD10_end(r12)
+//  /* set the access rights                                */
+//  e_lis     r3,TPL_HIG(const_rgn_access)
+//  e_or2i    r3,TPL_LOW(const_rgn_access)
+//  e_stw     r3,MPU_RGD10_access(r12)
+//  /* validate the descriptor                              */
+//  e_li      r3,1
+//  e_stw     r3,MPU_RGD10_pid(r12)
+//
+//#endif
 
 finished:
   se_blr
@@ -680,8 +781,8 @@ finished:
   lis   r12,TPL_HIG(MPUBase)
   ori   r12,r12,TPL_LOW(MPUBase)
   /* get the tpl_mp_table pointer                         */
-  lis     r11,TPL_HIG(tpl_mp_table)
-  ori     r11,r11,TPL_LOW(tpl_mp_table)
+  lis     r11,TPL_HIG(TPL_EXTERN_REF(tpl_mp_table))
+  ori     r11,r11,TPL_LOW(TPL_EXTERN_REF(tpl_mp_table))
   /* tranform the id to an offset                         */
   slwi    r3,r3,2
   /* get the pointer to the mp descriptor                 */
@@ -860,10 +961,12 @@ finished:
   blr
 
 #endif
-  FUNCTION(tpl_set_process_mp)
-  .type tpl_set_process_mp,@function
-  .size tpl_set_process_mp,$-tpl_set_process_mp
-  
+  FUNCTION(TPL_GLOBAL_REF(tpl_set_process_mp))
+TPL_TYPE(TPL_GLOBAL_REF(tpl_set_process_mp),@function)
+TPL_SIZE(TPL_GLOBAL_REF(tpl_set_process_mp),$-TPL_GLOBAL_REF(tpl_set_process_mp))
+
+#define OS_STOP_SEC_CODE
+#include "AsMemMap.h"
 
 #endif
 

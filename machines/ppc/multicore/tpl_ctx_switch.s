@@ -30,8 +30,8 @@
 #include "tpl_assembler.h"
 #include "tpl_app_define.h"
 
-  .global tpl_save_context
-  .global tpl_load_context
+TPL_GLOBAL(tpl_save_context)
+TPL_GLOBAL(tpl_load_context)
 
 #define INT_CONTEXT 0
 #define FP_CONTEXT  4
@@ -113,15 +113,15 @@
 #define FPR31   248
 #define FPSCR   256
 
-  .text
-  .section .osCode CODE_ACCESS_RIGHT
+#define OS_START_SEC_CODE
+#include "AsMemMap.h"
 /**
  * tpl_save_context saves the context in the context passed in r3
  * this function is called from tpl_sc_handler and we are running
  * on the kernel stack so the actual value of some registers to save
  * are saved on the kernel stack.
  */
-tpl_save_context:
+TPL_GLOBAL_REF(tpl_save_context):
 /* ------------ VLE ---------------------------------------------------------*/
 #if (WITH_VLE == YES)
     e_lwz     r11,INT_CONTEXT(r3)
@@ -225,9 +225,9 @@ tpl_save_context:
 
     blr   /* returns */
 #endif
-  FUNCTION(tpl_save_context)
-  .type tpl_save_context,@function
-  .size tpl_save_context,$-tpl_save_context
+  FUNCTION(TPL_GLOBAL_REF(tpl_save_context))
+TPL_TYPE(TPL_GLOBAL_REF(tpl_save_context),@function)
+TPL_SIZE(TPL_GLOBAL_REF(tpl_save_context),$-TPL_GLOBAL_REF(tpl_save_context))
 
 /**
  * tpl_load_context loads a context from a tpl_context
@@ -236,7 +236,7 @@ tpl_save_context:
  *
  * @param   r3 contains the pointer to the context pointers
  */
-tpl_load_context:
+TPL_GLOBAL_REF(tpl_load_context):
 /* ------------ VLE ---------------------------------------------------------*/
 #if (WITH_VLE == YES)
 
@@ -253,7 +253,7 @@ tpl_load_context:
 
 /*  setup the registers */
     e_lwz     r0,SRR0(r11)    /* load SRR0 and SRR1                         */
-    se_stw    r0,KS_SRR0(1)
+    se_stw    r0,KS_SRR0(r1)
     e_lwz     r0,SRR1(r11)
     se_stw    r0,KS_SRR1(r1)
 
@@ -307,7 +307,7 @@ tpl_load_context:
 
 /*  setup the registers */
     lwz     r0,SRR0(r11)    /* load SRR0 and SRR1                         */
-    stw     r0,KS_SRR0(1)
+    stw     r0,KS_SRR0(r1)
     lwz     r0,SRR1(r11)
     stw     r0,KS_SRR1(r1)
 
@@ -346,6 +346,10 @@ tpl_load_context:
 
     blr   /* returns */
 #endif
-  FUNCTION(tpl_load_context)
-  .type tpl_load_context,@function
-  .size tpl_load_context,$-tpl_load_context
+  FUNCTION(TPL_GLOBAL_REF(tpl_load_context))
+TPL_TYPE(TPL_GLOBAL_REF(tpl_load_context),@function)
+TPL_SIZE(TPL_GLOBAL_REF(tpl_load_context),$-TPL_GLOBAL_REF(tpl_load_context))
+
+#define OS_STOP_SEC_CODE
+#include "AsMemMap.h"
+

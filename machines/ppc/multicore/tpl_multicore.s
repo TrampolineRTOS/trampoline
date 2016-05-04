@@ -26,13 +26,15 @@
 
 
 #include "tpl_assembler.h"
+#include "tpl_registers_asm.h"
 #include "tpl_app_define.h"
 
+#if NUMBER_OF_CORES > 1
 
-  .text
-  .section  .osCode CODE_ACCESS_RIGHT
-  .global tpl_get_core_id
-tpl_get_core_id:
+#define OS_START_SEC_CODE
+#include "AsMemMap.h"
+TPL_GLOBAL(tpl_get_core_id)
+TPL_GLOBAL_REF(tpl_get_core_id):
 /* ------------ VLE ---------------------------------------------------------*/
 #if (WITH_VLE == YES)
   mfspr r3,spr_PIR
@@ -42,8 +44,11 @@ tpl_get_core_id:
   mfspr r3,spr_PIR
   blr
 #endif
-  FUNCTION(tpl_get_core_id)
-  .type tpl_get_core_id,@function
-  .size tpl_get_core_id,$-tpl_get_core_id
+  FUNCTION(TPL_GLOBAL_REF(tpl_get_core_id))
+TPL_TYPE(TPL_GLOBAL_REF(tpl_get_core_id),@function)
+TPL_SIZE(TPL_GLOBAL_REF(tpl_get_core_id),$-TPL_GLOBAL_REF(tpl_get_core_id))
+#define OS_STOP_SEC_CODE
+#include "AsMemMap.h"
 
+#endif // if NUMBER_OF_CORES > 1
 

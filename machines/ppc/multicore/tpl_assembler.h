@@ -34,37 +34,82 @@
  * supported, whe define some macro that correspond to keywords that are
  * not portable
  */
-#ifdef __MWERKS__
-  #define TPL_HIG(sym)  sym@h
+#if defined (__MWERKS__)
+  #define TPL_HIG(sym)  sym@ha
   #define TPL_LOW(sym)  sym@l
-  #define TPL_EXTERN    .extern
+  #define TPL_EXTERN(var)    .extern var
+  #define TPL_GLOBAL(var)    .global var
+  #define TPL_EXTERN_REF(var) var
+  #define TPL_GLOBAL_REF(var) var
+  #define TPL_ALIGN(byte)     .align byte
+  #define TPL_SPACE(bytes)    .space bytes
+  #define TPL_LONG(expr)    .long expr
+  #define TPL_FILL(bytes)   .fill bytes
+  #define TPL_EQU(sym,val)  .equ sym, val
+  #define TPL_TYPE(sym,val) .type sym,val
+  #define TPL_SIZE(sym,val) .size sym,val
+  #define TPL_MACRO         .macro
+  #define TPL_END_MACRO     .endm
+  #define TPL_MACRO_ARG(sym)    sym
+  #define TPL_SECTION(name, rights) .section .name rights
+  #define TPL_TEXT_SECTION          .text
+  #define TPL_DATA_SECTION          .data
   #define CODE_ACCESS_RIGHT ,text_vle
   #define VAR_ACCESS_RIGHT
   #define FUNCTION(name)  .function "##name", ##name, $-##name
   #define TYPE(name)      .type ##name,@function
   #define SIZE(name)      .size ##name,$-##name
-#else
-#ifdef __ghs_asm
+#elif defined (__ghs_asm)
   #define TPL_HIG(sym)  %hi(sym)
   #define TPL_LOW(sym)  %lo(sym)
-  #define TPL_EXTERN    .extern
+  #define TPL_EXTERN(var)    .extern var
+  #define TPL_GLOBAL(var)    .global var
+  #define TPL_EXTERN_REF(var) var
+  #define TPL_GLOBAL_REF(var) var
+  #define TPL_ALIGN(byte)     .align byte
+  #define TPL_SPACE(bytes)    .space bytes
+  #define TPL_LONG(expr)    .long expr
+  #define TPL_FILL(bytes)   .fill bytes
+  #define TPL_EQU(sym,val)  .equ sym, val
+  #define TPL_TYPE(sym,val) .type sym,val
+  #define TPL_SIZE(sym,val) .size sym,val
+  #define TPL_MACRO         .macro
+  #define TPL_END_MACRO     .endm
+  #define TPL_MACRO_ARG(sym)    sym
+  #define TPL_SECTION(name, rights) .section .name rights
+  #define TPL_TEXT_SECTION          .text
+  #define TPL_DATA_SECTION          .data
   #define CODE_ACCESS_RIGHT ,"ax"
   #define VAR_ACCESS_RIGHT ,"aw"
   #define FUNCTION(name)  .function "##name", ##name, $-##name
   #define TYPE(name)      .type ##name,@function
   #define SIZE(name)      .size ##name,$-##name
-#else
-#ifdef __DIABDATA__
-  #define TPL_HIG(sym)  sym@h
+#elif defined(__DIABDATA__)
+  #define TPL_HIG(sym)  sym@ha
   #define TPL_LOW(sym)  sym@l
   #define TPL_EXTERN    .extern
+  #define TPL_GLOBAL(var)    .global var
+  #define TPL_EXTERN_REF(var) var
+  #define TPL_GLOBAL_REF(var) var
+  #define TPL_ALIGN(byte)     .align byte
+  #define TPL_SPACE(bytes)    .space bytes
+  #define TPL_LONG(expr)    .long expr
+  #define TPL_FILL(bytes)   .fill bytes
+  #define TPL_EQU(sym,val)  .equ sym, val
+  #define TPL_TYPE(sym,val) .type sym,val
+  #define TPL_SIZE(sym,val) .size sym,val
+  #define TPL_MACRO         .macro
+  #define TPL_END_MACRO     .endm
+  #define TPL_MACRO_ARG(sym)    sym
+  #define TPL_SECTION(name, rights) .section .name rights
+  #define TPL_TEXT_SECTION          .text
+  #define TPL_DATA_SECTION          .data
   #define CODE_ACCESS_RIGHT
   #define VAR_ACCESS_RIGHT
   #define FUNCTION(name)
   #define TYPE(name)      .type ##name,@function
   #define SIZE(name)      .size ##name,$-##name
-#else
-#ifdef __GNUC__
+#elif defined (__GNUC__)
   #define r0 0
   #define r1 1
   #define r2 2
@@ -97,33 +142,58 @@
   #define r29 29
   #define r30 30
   #define r31 31
-  #define TPL_HIG(sym)  sym@h
+  #define TPL_HIG(sym)  sym@ha
   #define TPL_LOW(sym)  sym@l
-  #define TPL_EXTERN    .extern
+  #define TPL_EXTERN(var)    .extern var
+  #define TPL_GLOBAL(var)    .global var
+  #define TPL_EXTERN_REF(var) var
+  #define TPL_GLOBAL_REF(var) var
+  #define TPL_ALIGN(byte)     .align byte
+  #define TPL_SPACE(bytes)    .space bytes
+  #define TPL_LONG(expr)    .long expr
+  #define TPL_FILL(bytes)   .fill bytes
+  #define TPL_EQU(sym,val)  .equ sym, val
+  #define TPL_TYPE(sym,val)         .type sym,val
+  #define TPL_SIZE(sym,val)         .size sym,val
+  #define TPL_MACRO         .macro
+  #define TPL_END_MACRO     .endm
+  #define TPL_MACRO_ARG(sym)    sym
+  #define TPL_SECTION(name, rights) .section .name rights
+  #define TPL_TEXT_SECTION          .text
+  #define TPL_DATA_SECTION          .data
   #define CODE_ACCESS_RIGHT ,"ax"
   #define VAR_ACCESS_RIGHT ,"aw"
   #define FUNCTION(name)
   #define TYPE(name)
   #define SIZE(name)
-  #else
-#error "Unknown compiler"
+#elif defined (__CSMC__)
+  #define TPL_HIG(sym)  sym@ha
+  #define TPL_LOW(sym)  sym@l
+  #define TPL_EXTERN(var)    xref _ ## var
+  #define TPL_GLOBAL(var)    xdef _ ## var
+  #define TPL_EXTERN_REF(var) _ ## var
+  #define TPL_GLOBAL_REF(var) _ ## var
+  #define TPL_ALIGN(byte)     align byte
+  #define TPL_SPACE(bytes)    dcb.b bytes,0 //Initializes bytes with value 0
+  #define TPL_LONG(expr)      dc.b  expr
+  #define TPL_FILL(bytes)     dcb.b bytes,0
+  #define TPL_EQU(sym,val)    sym : equ val
+  #define TPL_TYPE(sym,val)
+  #define TPL_SIZE(sym,val)
+  #define TPL_MACRO         macro
+  #define TPL_END_MACRO     endm
+  #define TPL_MACRO_ARG(sym)    \ ## sym
+  #define TPL_SECTION(name, rights) .name: section rights
+  #define TPL_TEXT_SECTION          switch .text
+  #define TPL_DATA_SECTION          switch .data
+  #define CODE_ACCESS_RIGHT .text
+  #define VAR_ACCESS_RIGHT  .data
+  #define FUNCTION(name)
+  #define TYPE(name)
+  #define SIZE(name)
+#else
+  #error "Unknown compiler"
 #endif
-#endif
-#endif
-#endif
-
-/*
- * register number for special purpose registers
- */
-#define spr_SRR0    26
-#define spr_SRR1    27
-#define spr_PIR     286
-
-/*
- * External interrupt bit mask in MSR
- */
-#define EE_BIT_1  0x8000
-#define RI_BIT_1  0x0002
 
 #endif /*  TPL_ASSEMBLER_H  */
 

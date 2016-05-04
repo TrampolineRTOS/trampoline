@@ -51,6 +51,9 @@ extern FUNC(void, OS_CODE) tpl_start_pit(
 extern FUNC(void, OS_CODE) tpl_stop_pit(
   VAR(uint8, AUTOMATIC) pit);
 
+extern FUNC(tpl_bool, OS_CODE)  tpl_call_counter_tick();
+
+
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
 extern FUNC(void, OS_CODE) tpl_watchdog_handler(void);
 #endif

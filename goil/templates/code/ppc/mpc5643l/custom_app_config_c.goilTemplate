@@ -1,0 +1,138 @@
+// FIXME : Static informations
+
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+/* f=120000000 Hz , tick=0.001 s */
+VAR(uint32, OS_VAR) tpl_tick_init_value = 119999;
+
+VAR(uint32, OS_VAR) tpl_os_it_level_buff = 0;
+VAR(uint32, OS_VAR) tpl_os_it_level = 3;
+VAR(uint32, OS_VAR) tpl_counter_it_level_buff = 0;
+VAR(uint32, OS_VAR) tpl_counter_it_level = 3;
+
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+/*=============================================================================
+ * Target dependant configuration structs
+ */
+
+/***** Interrupt Controller base address table *****/
+%
+loop core from 0 to OS::NUMBER_OF_CORES - 1
+before
+%
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+CONSTP2VAR(uint32, OS_CONST, OS_VAR) tpl_intc[% !OS::NUMBER_OF_CORES %] =
+{
+%
+    do      %   (uint32*)TPL_INTC% !core %_Base%
+    between %,
+%
+    after   %
+};
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+%
+end loop
+%
+
+/***** Memory Protection Unit base address table *****/
+%
+if USEMEMORYPROTECTION then
+  loop core from 0 to OS::NUMBER_OF_CORES - 1
+  before
+%
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+CONSTP2VAR(uint32, OS_CONST, OS_VAR) tpl_mpu[% !OS::NUMBER_OF_CORES %] =
+{
+%
+    do      %   (uint32*)TPL_MPU% !core %_Base%
+    between %,
+%
+    after   %
+};
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+%
+  end loop
+end if
+%
+
+/***** Semaphore base address table *****/
+%
+if OS::NUMBER_OF_CORES > 1 then
+  loop core from 0 to OS::NUMBER_OF_CORES - 1
+  before
+%
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+CONSTP2VAR(uint32, OS_CONST, OS_VAR) tpl_sem[% !OS::NUMBER_OF_CORES %] =
+{
+%
+    do      %   (uint32*)TPL_SEMA4% !core %_Base%
+    between %,
+%
+    after   %
+};
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+%
+  end loop
+end if
+%
+
+%
+############ SPINLOCK : Done only in multicore and with spinlocks defined
+if exists SPINLOCK & (OS::NUMBER_OF_CORES > 1) then
+  foreach spinlock in SPINLOCK
+    before
+%
+/*=============================================================================
+* Declaration of Spinlock IDs
+*/
+#include "tpl_as_spinlock.h"
+#include "tpl_as_spinlock_kernel.h"
+%
+    do
+%
+/* Spinlock % !spinlock::NAME % identifier */
+#define % !spinlock::NAME %_id % !INDEX %
+CONST(SpinlockIdType, AUTOMATIC) % !spinlock::NAME % = % !spinlock::NAME %_id;
+%
+  end foreach
+%
+
+/*=============================================================================
+* Declaration of Spinlock table
+*/
+
+%
+  let spinlock_length := [SPINLOCK length]
+  loop core from 0 to spinlock_length - 1
+  before
+%
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+VAR(tpl_lock, OS_VAR) tpl_spinlock_table[% !spinlock_length %] =
+{
+%
+      do      %   UNLOCKED_LOCK%
+      between %,
+%
+      after   %
+};
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+%
+  end loop
+end if
+

@@ -41,6 +41,7 @@
 #include "tpl_os_kernel_stack.h"
 #include "tpl_registers.h"
 
+extern P2FUNC(void, OS_CODE, CallTerminateTask);
 
 /*
  * External interrupt bit mask in MSR
@@ -50,34 +51,37 @@
 
 
 
-#define OS_START_SEC_VAR_32
+#define OS_START_SEC_VAR_32BIT
 #include "tpl_memmap.h"
 extern VAR(uint32, OS_VAR) tpl_tick_init_value;
-#define OS_STOP_SEC_VAR_32
+#define OS_STOP_SEC_VAR_32BIT
 #include "tpl_memmap.h"
 
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 extern CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)
-  tpl_stat_proc_table[TASK_COUNT+ISR_COUNT+1];
+  tpl_stat_proc_table[TASK_COUNT+ISR_COUNT+NUMBER_OF_CORES];
+
+extern CONSTP2VAR(uint32, OS_CONST, OS_VAR) tpl_intc[NUMBER_OF_CORES];
+
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
-#define OS_START_SEC_VAR_32
+#define OS_START_SEC_VAR_32BIT
 #include "tpl_memmap.h"
 VAR(uint32, OS_VAR) tpl_msr_start_value;
 VAR(uint32, OS_VAR) tpl_register_r2;
 VAR(uint32, OS_VAR) tpl_register_r13;
 VAR(tpl_stack_word, OS_VAR)   tpl_kernel_stack[NUMBER_OF_CORES][KERNEL_STACK_SIZE/sizeof(tpl_stack_word)];
 P2VAR(tpl_stack_word, OS_VAR, OS_VAR) tpl_kernel_stack_bottom[NUMBER_OF_CORES];
-#define OS_STOP_SEC_VAR_32
+#define OS_STOP_SEC_VAR_32BIT
 #include "tpl_memmap.h"
 
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 extern FUNC(void, OS_CODE) tpl_init_regs(void);
-extern FUNC(void, OS_CODE) tpl_init_interrupts(void);
+extern FUNC(void, OS_CODE) tpl_init_ivpr(void);
 extern FUNC(void, OS_CODE) tpl_init_isr_prio(void);
 #if WITH_MEMORY_PROTECTION == YES
 extern FUNC(void, OS_CODE) tpl_init_mp(void);
@@ -93,15 +97,33 @@ extern FUNC(void, OS_CODE) tpl_init_dec(void);
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
+FUNC(void, OS_CODE) tpl_init_interrupts(void)
+{
+  VAR(uint8, AUTOMATIC) core;
 
-FUNC(void, OS_CODE) Os_Init(void)
+  for(core=0; core<NUMBER_OF_CORES; core++)
+  {
+    *((volatile uint32*)((uint32)tpl_intc[core] + TPL_INTC_CPR_PRC0)) = 0;
+    tpl_current_date[core] = 0;
+  }
+
+  tpl_init_ivpr();
+}
+
+FUNC(void, OS_CODE) tpl_init_kernel_stack(void)
 {
   uint8 core;
-  
+
   for(core=0; core<NUMBER_OF_CORES; core++)
   {
     tpl_kernel_stack_bottom[core] = &(tpl_kernel_stack[core][KERNEL_STACK_SIZE/sizeof(tpl_stack_word) - 1]);
   }
+}
+
+
+FUNC(void, OS_CODE) Os_Init(void)
+{
+  tpl_init_kernel_stack();
   tpl_init_interrupts();
 }
 
@@ -197,26 +219,58 @@ FUNC(void, OS_CODE) tpl_sleep(void)
     while (1);
 }
 
+FUNC(void, OS_CODE) idle_function(void)
+{
+    /* MISRA RULE 14.3, 14.8 VIOLATION: infinite loop of idle task */
+    while (1);
+}
 
 
 FUNC(void, OS_CODE) tpl_init_core(void)
 {
-  
+
   tpl_init_regs();
+#if (TPL_TICK_TIMER == TPL_DECREMENTER)
   tpl_init_dec();
-  
+#endif
+
 }
 
+FUNC(void, OS_CODE) tpl_init_mode_entry_module(void)
+{
+  // MC_ME CONFIG
+  /* PC1 Mode behaviour : Peripheral active in RUN0-3 modes   */
+  ME.RUNPC[ME_PC1_CONFIGURATION] = ME_RUNPC_RUN0
+                                 | ME_RUNPC_RUN1
+                                 | ME_RUNPC_RUN2
+                                 | ME_RUNPC_RUN3;
+
+#if ((TPL_TICK_TIMER != TPL_DECREMENTER) || (WITH_AUTOSAR_TIMING_PROTECTION==YES))
+  /* Set PIT to PC1 mode  */
+  ME.PCTL[ME_PCTL_PIT] = ME_PC1_CONFIGURATION;
+#endif
+
+  /* Enable RUN0 Mode     */
+  ME.MCTL = ME_MCTL_TGT_RUN0 | ME_MCTL_KEY1;
+  ME.MCTL = ME_MCTL_TGT_RUN0 | ME_MCTL_KEY2;
+
+  /* Loop and wait until mode has changed  */
+  while (!(ME.IS & ME_IS_IMTC));
+  /* Ack mode change                       */
+  ME.IS = ME_IS_IMTC;
+}
+
+FUNC(void, OS_CODE) tpl_rgm_clear(void)
+{
+  // RGM Clear safe mode status
+  while(RGM.FES || RGM.DES) {
+      RGM.FES = (uint16) 0xFFFF;
+      RGM.DES = (uint16) 0xFFFF;
+  }
+}
 
 FUNC(void, OS_CODE) tpl_init_machine(void)
 {
-  VAR(uint8, AUTOMATIC) core;
-  
-  for(core=0; core<NUMBER_OF_CORES; core++)
-  {
-    tpl_current_date[core] = 0;
-    *(uint32*)(tpl_intc[core] + TPL_INTC_CPR_PRC0) = 0;
-  }
 
   /* these 3 variables are init right after
      in assemby but this init avoid a wrong
@@ -225,7 +279,11 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
   tpl_register_r13 = 0;
   tpl_msr_start_value = 0;
 
+  tpl_init_kernel_stack();
 
+  tpl_init_mode_entry_module();
+
+  tpl_rgm_clear();
 
 #if WITH_ORTI == YES
   tpl_fill_stack_pattern();

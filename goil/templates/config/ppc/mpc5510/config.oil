@@ -1,3 +1,9 @@
+IMPLEMENTATION ppc_interrupt {
+  /* Add the SOURCE (interrupt source) attribute */
+  COUNTER [] {
+    INTERRUPT_TYPE SOURCE;
+  };
+}
 /*
  * Interrupt sources for MPC551°
  */

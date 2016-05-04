@@ -31,33 +31,38 @@
 #include "tpl_os.h"
 #include "tpl_app_define.h"
 #include "tpl_timers.h"
-#include "tpl_orti.h"
+#if WITH_ORTI == YES
+# include "tpl_orti.h"
+#endif
+#if WITH_MULTICORE == YES
+# include "tpl_os_multicore_macros.h"
+# include "tpl_as_spinlock_kernel.h"
+#endif
+#include "tpl_app_custom_types.h"
 #include "tpl_registers.h"
-#include "tpl_os_multicore_macros.h"
-#include "tpl_as_spinlock_kernel.h"
 
 /*****************************************************************************/
 /* VERSION CHECKING                                                          */
 /*****************************************************************************/
-#define OS_C_FILE_MAJOR_VERSION 0
-#define OS_C_FILE_MINOR_VERSION 4
+#define OS_C_FILE_MAJOR_VERSION 1
+#define OS_C_FILE_MINOR_VERSION 0
 
 #if ((OS_SW_MAJOR_VERSION != OS_C_FILE_MAJOR_VERSION)   \
      || (OS_SW_MINOR_VERSION != OS_C_FILE_MINOR_VERSION))
 #error "Os.h et Os.c files do not have the same version"
 #endif
 
-#if ((OS_SW_MAJOR_VERSION != OS_CFG_H_FILE_MAJOR_VERSION)       \
-     || (OS_SW_MINOR_VERSION != OS_CFG_H_FILE_MINOR_VERSION))
-#error "Os.h et Os_Cfg.h files do not have the same version"
-#endif
+//#if ((OS_SW_MAJOR_VERSION != OS_CFG_H_FILE_MAJOR_VERSION)       \
+//     || (OS_SW_MINOR_VERSION != OS_CFG_H_FILE_MINOR_VERSION))
+//#error "Os.h et Os_Cfg.h files do not have the same version"
+//#endif
 
 /* Autosar version check between Os.h and configuration files */
-#if ((OS_AR_RELEASE_MAJOR_VERSION != OS_CFG_H_FILE_AR_RELEASE_MAJOR_VERSION) \
-     || (OS_AR_RELEASE_MINOR_VERSION != OS_CFG_H_FILE_AR_RELEASE_MINOR_VERSION) \
-     || (OS_AR_RELEASE_REVISION_VERSION != OS_CFG_H_FILE_AR_RELEASE_REVISION_VERSION))
-#error "Os.h and Os_Cfg.h files do not have the same AUTOSAR release version"
-#endif
+//#if ((OS_AR_RELEASE_MAJOR_VERSION != OS_CFG_H_FILE_AR_RELEASE_MAJOR_VERSION) \
+//     || (OS_AR_RELEASE_MINOR_VERSION != OS_CFG_H_FILE_AR_RELEASE_MINOR_VERSION) \
+//     || (OS_AR_RELEASE_REVISION_VERSION != OS_CFG_H_FILE_AR_RELEASE_REVISION_VERSION))
+//#error "Os.h and Os_Cfg.h files do not have the same AUTOSAR release version"
+//#endif
 
 
 #define TPL_CORE_0_SW_ISR_SET   TPL_INTC_SET_6
@@ -67,7 +72,7 @@
 
 
 
-#define OS_START_SEC_VAR_32
+#define OS_START_SEC_VAR_32BIT
 #include "tpl_memmap.h"
 
 VAR(uint32, OS_VAR)   tpl_current_date[NUMBER_OF_CORES];
@@ -80,18 +85,18 @@ extern volatile VAR(uint32, OS_VAR) tpl_locking_depth;
 extern VAR(uint32, OS_VAR) tpl_cpt_os_task_lock;
 #endif
 
-#define OS_STOP_SEC_VAR_32
+#define OS_STOP_SEC_VAR_32BIT
 #include "tpl_memmap.h"
 
 
 #if WITH_MULTICORE == YES
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
-STATIC CONSTP2VAR(uint8, OS_CONST, AUTOMATIC) tpl_gate = SEMA4_BASE+SEMA4_GATES;
+// XXX : Test if ok, if not modify SEMA4BASE with tpl_sem[core_id]
+STATIC CONSTP2VAR(uint8, OS_CONST, AUTOMATIC) tpl_gate = (uint8*) (SEMA4_BASE+SEMA4_GATES);
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 #endif
-
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -99,16 +104,16 @@ STATIC CONSTP2VAR(uint8, OS_CONST, AUTOMATIC) tpl_gate = SEMA4_BASE+SEMA4_GATES;
 #if WITH_MULTICORE == YES
 STATIC FUNC(void, OS_CODE) tpl_get_spin_lock(
   VAR(uint32, AUTOMATIC) lock);
-  
+
 STATIC FUNC(void, OS_CODE) tpl_release_spin_lock(
   VAR(uint32, AUTOMATIC) lock);
 #endif
 
-  
+
 FUNC(void, OS_CODE) tpl_get_task_lock(void)
 {
   GET_CURRENT_CORE_ID(core_id)
-  
+
   if (0 == GET_LOCK_CNT_FOR_CORE(tpl_locking_depth,core_id) )
   {
     tpl_disable_interrupts();
@@ -124,7 +129,7 @@ FUNC(void, OS_CODE) tpl_get_task_lock(void)
 FUNC(void, OS_CODE) tpl_release_task_lock(void)
 {
   GET_CURRENT_CORE_ID(core_id)
-  
+
   if( GET_LOCK_CNT_FOR_CORE(tpl_cpt_os_task_lock,core_id) != 0 )
   {
     GET_LOCK_CNT_FOR_CORE(tpl_locking_depth,core_id)--;
@@ -141,7 +146,7 @@ FUNC(void, OS_CODE) tpl_release_task_lock(void)
 FUNC(void, OS_CODE) tpl_get_task_lock_with_sc(void)
 {
   GET_CURRENT_CORE_ID(core_id)
-  
+
   GET_LOCK_CNT_FOR_CORE(tpl_locking_depth,core_id)++;
   GET_LOCK_CNT_FOR_CORE(tpl_cpt_os_task_lock,core_id)++;
 }
@@ -150,7 +155,7 @@ FUNC(void, OS_CODE) tpl_get_task_lock_with_sc(void)
 FUNC(void, OS_CODE) tpl_release_task_lock_with_sc(void)
 {
   GET_CURRENT_CORE_ID(core_id)
-  
+
   if( GET_LOCK_CNT_FOR_CORE(tpl_cpt_os_task_lock,core_id) != 0 )
   {
     GET_LOCK_CNT_FOR_CORE(tpl_locking_depth,core_id)--;
@@ -194,7 +199,10 @@ FUNC(tpl_bool, OS_CODE) tpl_check_stack_pointer(
     return ret;
 }
 
-
+// FIXME : The file os/tpl_machine_interface.h must be updated with
+//         using stack as an argument instead of proc_id, as it is
+//         written in autosar/tpl_as_stack_monitor.c
+#if 0
 /**
  * tpl_check_stack_footprint checks the footprint at the bottom of
  * the stack has not been erased, meaning there was a stack overflow
@@ -222,7 +230,31 @@ FUNC(tpl_bool, OS_CODE) tpl_check_stack_footprint(
 
     return ret;
 }
+#endif
+
+FUNC(uint8, OS_CODE) tpl_check_stack_footprint(
+  CONST(tpl_proc_id, AUTOMATIC) proc_id)
+{
+    CONSTP2CONST(tpl_stack, AUTOMATIC, OS_APPL_DATA) stack =
+         &(tpl_stat_proc_table[proc_id]->stack);
+
+    VAR(tpl_bool, AUTOMATIC) ret;
+
+
+    if( TPL_FULL_STACK_PATTERN == (*(uint32 *)(stack->stack_zone)) )
+    {
+        ret = 1;
+    }
+    else
+    {
+        ret = 0;
+    }
+
+    return ret;
+}
+
 #endif /* WITH_STACK_MONITORING */
+
 
 
 #if WITH_ORTI == YES
@@ -331,7 +363,9 @@ FUNC(void, OS_CODE) tpl_cancel_watchdog(void)
  */
 FUNC(tpl_time, OS_CODE) tpl_get_local_current_date(void)
 {
-  return tpl_current_date;
+  GET_CURRENT_CORE_ID(core_id)
+
+  return GET_CURRENT_DATE(core_id);
 }
 
 #endif
@@ -348,15 +382,15 @@ FUNC(tpl_time, OS_CODE) tpl_get_local_current_date(void)
 FUNC(void, OS_CODE) tpl_start_core(
   CONST(CoreIdType, AUTOMATIC) core_id)
 {
-  
+
   if(core_id!=OS_CORE_ID_MASTER)
   {
     /* write slave core start adresse */
-    *(uint32 *)(SSCM_BASE+DPM_BOOT) = (uint32)tpl_slave_core_startup | 0x02UL;
-    
+    *(uint32 *)(SSCM_BASE+SSCM_DPM_BOOT) = (uint32)tpl_slave_core_startup | 0x02UL;
+
     /* write key and inverted key to start the core */
-    *(uint32 *)(SSCM_BASE+DPM_BOOT_KEY) = TPL_BOOT_KEY_1;
-    *(uint32 *)(SSCM_BASE+DPM_BOOT_KEY) = TPL_BOOT_KEY_2;
+    *(uint32 *)(SSCM_BASE+SSCM_DPM_BOOT_KEY) = TPL_BOOT_KEY_1;
+    *(uint32 *)(SSCM_BASE+SSCM_DPM_BOOT_KEY) = TPL_BOOT_KEY_2;
   }
 }
 
@@ -369,7 +403,7 @@ FUNC(void, OS_CODE) tpl_start_core(
 FUNC(void, OS_CODE) tpl_send_intercore_it(
   CONST(CoreIdType, AUTOMATIC) core_id)
 {
-  
+
   /* set software interrupt flag on the given core */
   if(core_id==0)
   {
@@ -379,7 +413,7 @@ FUNC(void, OS_CODE) tpl_send_intercore_it(
   {
     *(uint32*)((uint8*)tpl_intc[core_id] + (uint8)TPL_INTC_SSCIR47) = TPL_CORE_1_SW_ISR_SET;
   }
-  
+
 }
 
 
@@ -392,7 +426,7 @@ FUNC(void, OS_CODE) tpl_send_intercore_it(
 FUNC(boolean, OS_CODE) tpl_receive_intercore_it(void)
 {
   GET_CURRENT_CORE_ID(core_id)
-    
+
   /* clear interrupt flag */
   if(core_id==0)
   {
@@ -404,7 +438,7 @@ FUNC(boolean, OS_CODE) tpl_receive_intercore_it(void)
   }
 
   TPL_KERN(core_id).need_switch = NEED_SWITCH | NEED_SAVE;
-  
+
   /* return true to restore cpu priority */
   return TRUE;
 }
@@ -413,15 +447,15 @@ FUNC(boolean, OS_CODE) tpl_receive_intercore_it(void)
 /**
  * @internal
  *
- * 
- */ 
+ *
+ */
 FUNC(void, OS_CODE) tpl_get_lock(
   CONSTP2VAR(tpl_lock, AUTOMATIC, OS_VAR) lock)
 {
   volatile VAR(tpl_lock, AUTOMATIC) tmp_lock;
-  
-  
-  do 
+
+
+  do
   {
     tpl_get_spin_lock(TPL_GATE_LOCK);
     tmp_lock=*lock;
@@ -431,38 +465,38 @@ FUNC(void, OS_CODE) tpl_get_lock(
     }
     tpl_release_spin_lock(TPL_GATE_LOCK);
   } while(tmp_lock!=UNLOCKED_LOCK);
-  
+
 }
- 
- 
+
+
 /**
  * @internal
  *
- * 
- */ 
+ *
+ */
 FUNC(void, OS_CODE) tpl_release_lock(
   CONSTP2VAR(tpl_lock, AUTOMATIC, OS_VAR) lock)
 {
-  
+
   tpl_get_spin_lock(TPL_GATE_LOCK);
   *lock = UNLOCKED_LOCK;
   tpl_release_spin_lock(TPL_GATE_LOCK);
-  
+
 }
 
 
 /**
  * @internal
  *
- * 
- */ 
+ *
+ */
 FUNC(void, OS_CODE) tpl_try_to_get_lock(
   CONSTP2VAR(tpl_lock, AUTOMATIC, OS_VAR) lock,
   P2VAR(tpl_try_to_get_spinlock_type, AUTOMATIC, OS_VAR) success)
 {
   volatile VAR(tpl_lock, AUTOMATIC) tmp_lock;
-  
-  
+
+
     tpl_get_spin_lock(TPL_GATE_LOCK);
     if(*lock==UNLOCKED_LOCK)
     {
@@ -476,14 +510,14 @@ FUNC(void, OS_CODE) tpl_try_to_get_lock(
     tpl_release_spin_lock(TPL_GATE_LOCK);
 
 
-  
+
 }
 
 
 /**
  * @internal
  *
- * 
+ *
  */
 STATIC FUNC(void, OS_CODE) tpl_get_spin_lock(
   VAR(uint32, AUTOMATIC) lock)
@@ -501,29 +535,29 @@ STATIC FUNC(void, OS_CODE) tpl_get_spin_lock(
   {
     core_lock=TPL_GATE_CPU1_LOCK;
   }
-  
+
   /* wait until the lock is free */
   do
   {
-    current_value = tpl_gate[lock]; 
+    current_value = tpl_gate[lock];
   } while(TPL_GATE_UNLOCK != current_value);
-  
+
   /* try to get the lock, until we have it */
   do
   {
     tpl_gate[lock] = core_lock;
-    current_value = tpl_gate[lock]; 
+    current_value = tpl_gate[lock];
   } while(current_value != core_lock);
-  
-  
+
+
 }
- 
+
 
 /**
  * @internal
  *
- * 
- */ 
+ *
+ */
 STATIC FUNC(void, OS_CODE) tpl_release_spin_lock(
   VAR(uint32, AUTOMATIC) lock)
 {
@@ -540,15 +574,15 @@ STATIC FUNC(void, OS_CODE) tpl_release_spin_lock(
   {
     core_lock=TPL_GATE_CPU1_LOCK;
   }
-  
+
   /* check we actually have the lock */
-  current_value = tpl_gate[lock]; 
+  current_value = tpl_gate[lock];
   if(current_value==core_lock)
   {
     /* release the lock */
     tpl_gate[lock] = TPL_GATE_UNLOCK;
   }
-  
+
 }
 #endif
 

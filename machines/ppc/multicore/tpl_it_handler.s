@@ -31,37 +31,38 @@
 #include "tpl_os_kernel_stack.h"
 #include "tpl_os_process_stack.h"
 #include "tpl_assembler.h"
+#include "tpl_registers_asm.h"
 #include "tpl_app_define.h"
 
-TPL_EXTERN  tpl_kern
-TPL_EXTERN  tpl_it_table
+TPL_EXTERN(tpl_kern)
+TPL_EXTERN(tpl_it_table)
 
-TPL_EXTERN  tpl_save_context
-TPL_EXTERN  tpl_load_context
-TPL_EXTERN  tpl_kernel_mp
-TPL_EXTERN  tpl_user_mp
-TPL_EXTERN  tpl_set_process_mp
-TPL_EXTERN  tpl_enter_kernel
-TPL_EXTERN  tpl_leave_kernel
-TPL_EXTERN  tpl_it_id
-TPL_EXTERN  tpl_ack_irq
-TPL_EXTERN  tpl_run_elected
+TPL_EXTERN(tpl_save_context)
+TPL_EXTERN(tpl_load_context)
+TPL_EXTERN(tpl_kernel_mp)
+TPL_EXTERN(tpl_user_mp)
+TPL_EXTERN(tpl_set_process_mp)
+TPL_EXTERN(tpl_enter_kernel)
+TPL_EXTERN(tpl_leave_kernel)
+TPL_EXTERN(tpl_it_id)
+TPL_EXTERN(tpl_ack_irq)
+TPL_EXTERN(tpl_run_elected)
 
 /****************************************************************************/
-  .text
-  .section  .EI_vector CODE_ACCESS_RIGHT
-  .global tpl_it_vector
-tpl_it_vector:
-  e_b   tpl_it_handler
+TPL_TEXT_SECTION
+TPL_SECTION(EI_vector, CODE_ACCESS_RIGHT)
+TPL_GLOBAL(tpl_it_vector)
+TPL_GLOBAL_REF(tpl_it_vector):
+  e_b   TPL_GLOBAL_REF(tpl_it_handler)
 
-  FUNCTION(tpl_it_vector)
-  .type tpl_it_vector,@function
-  .size tpl_it_vector,$-tpl_it_vector
+  FUNCTION(TPL_GLOBAL_REF(tpl_it_vector))
+TPL_TYPE(TPL_GLOBAL_REF(tpl_it_vector),@function)
+TPL_SIZE(TPL_GLOBAL_REF(tpl_it_vector),$-TPL_GLOBAL_REF(tpl_it_vector))
 
-  
+
 /****************************************************************************/
-  .section  .EI_handler CODE_ACCESS_RIGHT
-  .global tpl_it_handler
+TPL_SECTION(EI_handler, CODE_ACCESS_RIGHT)
+TPL_GLOBAL(tpl_it_handler)
 
 /*
  * tpl_it_handler should be called directly from the external interrupt
@@ -74,7 +75,7 @@ tpl_it_vector:
  * process (which might be different since tpl_central_interrupt_handler may
  * do a rescheduling).
  */
-tpl_it_handler:
+TPL_GLOBAL_REF(tpl_it_handler):
 
   /*
    * When entering tpl_it_handler, we are on a process stack. Since
@@ -106,9 +107,9 @@ tpl_it_handler:
   /*
    * Does the stuff to enter in kernel
    */
-  e_bl      tpl_enter_kernel
+  e_bl      TPL_EXTERN_REF(tpl_enter_kernel)
 
-  
+
   /*
    * Save the context of the running process.
    */
@@ -116,10 +117,12 @@ tpl_it_handler:
   se_mtar   r12,r6
   mfspr     r6,spr_PIR        /* get the core number, *4 to have the index in table of uint32 */
   e_slwi    r6,r6,2
-  e_lis     r5,TPL_HIG(tpl_kern)
-  e_or2i    r5,TPL_LOW(tpl_kern)
+  e_lis     r5,TPL_HIG(TPL_EXTERN_REF(tpl_kern))
+  e_add16i  r5,TPL_LOW(TPL_EXTERN_REF(tpl_kern))
   se_add    r5,r6
+#if WITH_MULTICORE
   e_lwz     r5,0(r5)
+#endif
   e_stw     r5,KS_KERN_PTR(r1) /* save the ptr for future use  */
 
   se_mfar   r5,r11
@@ -143,20 +146,20 @@ tpl_it_handler:
   e_stw       r10,32(r1)
   e_stw       r11,36(r1)
   e_stw       r12,40(r1)
-  
+
 
   /*
    * Get the id of the interrupt
    * (it is returned in r3)
    */
-  e_bl      tpl_it_id
+  e_bl      TPL_EXTERN_REF(tpl_it_id)
 
   /*
    * Get a pointer to the it table
    * This table is generated an can be found in tpl_app_config.c file
    */
-  e_lis     r11,TPL_HIG(tpl_it_table)
-  e_or2i    r11,TPL_LOW(tpl_it_table)
+  e_lis     r11,TPL_HIG(TPL_EXTERN_REF(tpl_it_table))
+  e_add16i  r11,TPL_LOW(TPL_EXTERN_REF(tpl_it_table))
   /*
    * convert the it id to an offset. Each entry of the tpl_it_vector
    * uses 2 x 4 bytes words on a 32 bits PowerPC. The first word
@@ -168,8 +171,8 @@ tpl_it_handler:
   e_addi    r12,r12,4
   mtlr      r0
   lwzx      r3,r11,r12
-  
-  
+
+
 
 
   se_subi     r1,8
@@ -187,7 +190,7 @@ tpl_it_handler:
   e_cmp16i  r3,0
   e_beq     no_prio_restore
 
-  e_bl      tpl_ack_irq
+  e_bl      TPL_EXTERN_REF(tpl_ack_irq)
 
 no_prio_restore:
 
@@ -206,7 +209,7 @@ no_prio_restore:
   e_lwz       r3,4(r1)
   e_lwz       r0,0(r1)
   e_addi      r1,r1,44
-  
+
   /*
    * test tpl_need_switch to see if a rescheduling occured
    */
@@ -219,7 +222,7 @@ no_prio_restore:
    * Check if context of the task/isr that just lost the CPU needs
    * to be saved. No save is needed for a TerminateTask or ChainTask
    */
-  e_lbz     r12,24(r11) 
+  e_lbz     r12,24(r11)
   e_andi.   r12,r12,NEED_SAVE
   se_beq    no_save
 
@@ -227,55 +230,55 @@ no_prio_restore:
    * get the context pointer of the task that just lost the CPU
    */
   e_lwz       r3,0(r11)                     /* get s_running                    */
-  e_bl        tpl_save_context
-  
+  e_bl        TPL_EXTERN_REF(tpl_save_context)
 
-  
+
+
 no_save:
-  
+
 #if WITH_MEMORY_PROTECTION == YES
   e_lwz       r11,KS_KERN_PTR(r1)
   e_lwz     r3,16(r11)    /* get the id of the process which get the cpu  */
-  e_bl      tpl_set_process_mp        /* set the memory protection scheme */
+  e_bl      TPL_EXTERN_REF(tpl_set_process_mp)        /* set the memory protection scheme */
 #endif
 
 
   se_li     r3,0          /* set save parameter to 0 */
   /* get tpl_kern[].need_switch, and pass it as parameter of tpl_run_elected */
   e_lwz     r11,KS_KERN_PTR(r1)
-  e_lbz     r12,24(r11) 
+  e_lbz     r12,24(r11)
   e_andi.   r12,r12,NEED_SAVE
   e_beq     call_tpl_run_elected
   se_li     r3,1          /* set save parameter to 1 */
-call_tpl_run_elected:  
-  e_bl      tpl_run_elected
+call_tpl_run_elected:
+  e_bl      TPL_EXTERN_REF(tpl_run_elected)
 
-  
+
   e_lwz       r11,KS_KERN_PTR(r1)
   e_lwz       r3,0(r11)                     /* get s_running                */
-  e_bl        tpl_load_context
+  e_bl        TPL_EXTERN_REF(tpl_load_context)
 
- 
-  
+
+
   /*
    * r3 is restored (ie get back the return code)
    */
   e_lwz       r3,KS_RETURN_CODE(r1)
-  
+
 no_context_switch:
 
   /*
-   * Reset the tpl_need_switch variable to NO_NEED_SWITCH 
+   * Reset the tpl_need_switch variable to NO_NEED_SWITCH
    */
   e_lwz     r11,KS_KERN_PTR(r1)
   e_li      r12,NO_NEED_SWITCH
   e_stb     r12,24(r11)
-  
+
 
   /*
    * does the stuff to leave the kernel
    */
-  e_bl      tpl_leave_kernel
+  e_bl      TPL_EXTERN_REF(tpl_leave_kernel)
 
   /*  restore the registers befor returning                           */
 
@@ -292,6 +295,6 @@ no_context_switch:
   se_isync
   se_rfi
 
-  FUNCTION(tpl_it_handler)
-  .type tpl_it_handler,@function
-  .size tpl_it_handler,$-tpl_it_handler
+  FUNCTION(TPL_GLOBAL_REF(tpl_it_handler))
+TPL_TYPE(TPL_GLOBAL_REF(tpl_it_handler),@function)
+TPL_SIZE(TPL_GLOBAL_REF(tpl_it_handler),$-TPL_GLOBAL_REF(tpl_it_handler))

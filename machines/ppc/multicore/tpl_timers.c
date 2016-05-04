@@ -39,25 +39,25 @@
 /*****************************************************************************/
 /* VERSION CHECKING                                                          */
 /*****************************************************************************/
-#define OS_C_FILE_MAJOR_VERSION 0
-#define OS_C_FILE_MINOR_VERSION 4
+#define OS_C_FILE_MAJOR_VERSION 1
+#define OS_C_FILE_MINOR_VERSION 0
 
 #if ((OS_SW_MAJOR_VERSION != OS_C_FILE_MAJOR_VERSION)   \
      || (OS_SW_MINOR_VERSION != OS_C_FILE_MINOR_VERSION))
 #error "Os.h et Os.c files do not have the same version"
 #endif
 
-#if ((OS_SW_MAJOR_VERSION != OS_CFG_H_FILE_MAJOR_VERSION)       \
-     || (OS_SW_MINOR_VERSION != OS_CFG_H_FILE_MINOR_VERSION))
-#error "Os.h et Os_Cfg.h files do not have the same version"
-#endif
+//#if ((OS_SW_MAJOR_VERSION != OS_CFG_H_FILE_MAJOR_VERSION)       \
+//     || (OS_SW_MINOR_VERSION != OS_CFG_H_FILE_MINOR_VERSION))
+//#error "Os.h et Os_Cfg.h files do not have the same version"
+//#endif
 
 /* Autosar version check between Os.h and configuration files */
-#if ((OS_AR_RELEASE_MAJOR_VERSION != OS_CFG_H_FILE_AR_RELEASE_MAJOR_VERSION) \
-     || (OS_AR_RELEASE_MINOR_VERSION != OS_CFG_H_FILE_AR_RELEASE_MINOR_VERSION) \
-     || (OS_AR_RELEASE_REVISION_VERSION != OS_CFG_H_FILE_AR_RELEASE_REVISION_VERSION))
-#error "Os.h and Os_Cfg.h files do not have the same AUTOSAR release version"
-#endif
+//#if ((OS_AR_RELEASE_MAJOR_VERSION != OS_CFG_H_FILE_AR_RELEASE_MAJOR_VERSION) \
+//     || (OS_AR_RELEASE_MINOR_VERSION != OS_CFG_H_FILE_AR_RELEASE_MINOR_VERSION) \
+//     || (OS_AR_RELEASE_REVISION_VERSION != OS_CFG_H_FILE_AR_RELEASE_REVISION_VERSION))
+//#error "Os.h and Os_Cfg.h files do not have the same AUTOSAR release version"
+//#endif
 
 
 #define PIT_MCR_FRZ     ((uint32)0x1<<0U)
@@ -70,11 +70,11 @@
  * it would be very inefficient to use a function here, and this part
  * of code has to be kept the fastest possible
  */
-#define PIT_MCR         ((volatile uint32*)(PIT_BASE_ADDR + PIT_MCR_ADDR))
-#define PIT_LDVAL(pit)  ((volatile uint32*)(PIT_BASE_ADDR + PIT_LDVAL_ADDR + ((pit)<<4)))
-#define PIT_CVAL(pit)   ((volatile uint32*)(PIT_BASE_ADDR + PIT_CVAL_ADDR + ((pit)<<4)))
-#define PIT_TCTRL(pit)  ((volatile uint32*)(PIT_BASE_ADDR + PIT_TCTRL_ADDR + ((pit)<<4)))
-#define PIT_TFLG(pit)   ((volatile uint32*)(PIT_BASE_ADDR + PIT_TFLG_ADDR + ((pit)<<4)))
+#define PIT_MCR         ((uint32*)(PIT_BASE_ADDR + PIT_MCR_ADDR))
+#define PIT_LDVAL(pit)  ((uint32*)(PIT_BASE_ADDR + PIT_LDVAL_ADDR + (((uint32)pit)<<4)))
+#define PIT_CVAL(pit)   ((uint32*)(PIT_BASE_ADDR + PIT_CVAL_ADDR + (((uint32)pit)<<4)))
+#define PIT_TCTRL(pit)  ((uint32*)(PIT_BASE_ADDR + PIT_TCTRL_ADDR + (((uint32)pit)<<4)))
+#define PIT_TFLG(pit)   ((uint32*)(PIT_BASE_ADDR + PIT_TFLG_ADDR + (((uint32)pit)<<4)))
 
 
 
@@ -166,8 +166,10 @@ FUNC(void, OS_CODE) tpl_watchdog_handler(void)
  */
 FUNC(void, OS_CODE) tpl_tick_handler(void)
 {
+  GET_CURRENT_CORE_ID(core_id)
+
   /* increment current date */
-  tpl_current_date++;
+  GET_CURRENT_DATE(core_id) = GET_CURRENT_DATE(core_id) + 1;
 
   /* clear interrupt flag */
   *PIT_TFLG(TPL_TICK_TIMER) = PIT_TFLG_TIF;

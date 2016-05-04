@@ -1,0 +1,120 @@
+IMPLEMENTATION mpc5643l {
+
+  /* Add the source and the handler of the counter */
+  COUNTER [] {
+    ENUM [
+        pit_ch0,
+        pit_ch1,
+        pit_ch2,
+        pit_ch3,
+        no_pit
+    ] SOURCE = no_pit;
+    ENUM [
+        tick,
+        watchdog
+    ] HANDLER = tick;
+  };
+
+  /* TODO : Use Vle
+   *          VLE's source code must be separated in another directory.
+   *          The chosen code must then be picked from the right directory
+   *          following this flag state.
+   */
+  OS [] {
+    BOOLEAN USEVLE;
+    BOOLEAN USEFLOAT = FALSE;
+    BOOLEAN WITH_AUTO HASFLOAT = TRUE;
+  };
+
+  TASK [] {
+    UINT32 WITH_AUTO ID;
+  };
+  ISR [] {
+    UINT32 WITH_AUTO ID;
+  };
+
+};
+
+/*
+ * Interrupt sources for MPC551°
+ */
+CPU mpc5643l_interrupt {
+  INTERRUPT_COUNT nb_it {
+    IT_TABLE_SIZE = 256;
+  };
+
+  INTERRUPT IRQ0    { ID = 0; };
+  INTERRUPT IRQ1    { ID = 1; };
+  INTERRUPT IRQ2    { ID = 2; };
+  INTERRUPT IRQ3    { ID = 3; };
+  INTERRUPT IRQ4    { ID = 4; };
+  INTERRUPT IRQ5    { ID = 5; }; // Intercore Reserved
+  INTERRUPT IRQ6    { ID = 6; }; // Intercore Reserved
+  INTERRUPT IRQ7    { ID = 7; };
+
+  INTERRUPT pit_ch0 { ID = 59; };
+  INTERRUPT pit_ch1 { ID = 60; };
+  INTERRUPT pit_ch2 { ID = 61; };
+  INTERRUPT pit_ch3 { ID = 127; };
+
+  INTERRUPT no_pit { ID = 999; };
+
+  COUNTER SystemCounter {
+    HANDLER = tick;
+  };
+
+//======= Old Version : TODO performance tests with the new one
+//  PLATFORM_FILES ppc {
+//    PATH = "ppc";
+//    CFILE = "tpl_call_trusted_fct.S";
+//    CFILE = "tpl_ctx_switch.S";
+//    CFILE = "tpl_dispatch.S";
+//    CFILE = "tpl_init.S";
+//    CFILE = "tpl_it_handler.S";
+//    CFILE = "tpl_os_it.S";
+//    CFILE = "tpl_start.S";
+//    CFILE = "tpl_init_term.c";
+//    CFILE = "tpl_protection.S";
+//
+//  };
+//  PLATFORM_FILES mpc5643l {
+//    PATH = "ppc/multicore_mpc5643l/mpc5643l";
+//  };
+//  PLATFORM_FILES others {
+//    PATH = "ppc/multicore_mpc5643l";
+//  };
+//========
+
+  PLATFORM_FILES ppc {
+    PATH = "ppc/multicore";
+    CFILE = "tpl_machine_ppc.c";
+    CFILE = "tpl_init_term.c";
+    CFILE = "tpl_timers.c";
+    CFILE = "tpl_call_trusted_fct.s";
+    CFILE = "tpl_ctx_switch.s";
+    CFILE = "tpl_dispatch.s";
+    CFILE = "tpl_exceptions.s";
+    CFILE = "tpl_init.s";
+    CFILE = "tpl_it_handler.s";
+    CFILE = "tpl_it_management.s";
+    CFILE = "tpl_memory_protection.s";          // If memory_protection
+    CFILE = "tpl_os_it.s";
+    CFILE = "tpl_protection.s";
+    CFILE = "tpl_tick.s";
+  };
+
+  PLATFORM_FILES mpc5643l {
+    PATH = "ppc/mpc5643l";
+    CFILE = "tpl_slave_core_startup.s";
+    CFILE = "tpl_boot_init.s";
+    CFILE = "tpl_led.c";                        // debug
+  };
+
+  PLATFORM_FILES mpc5643l_cosmic {
+    PATH = "ppc/mpc5643l/cosmic";
+    CFILE = "crtsiz4.s";
+    CFILE = "Bam.c";
+  };
+
+};
+

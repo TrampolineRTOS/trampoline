@@ -1,0 +1,31 @@
+%
+if OS::USEVLE then
+
+let api_func::FUNC_NAME := exists api_func::ACTUAL default ( api_func::NAME )
+%
+  TPL_GLOBAL(% !api_func::FUNC_NAME %)
+TPL_GLOBAL_REF(% !api_func::FUNC_NAME %):
+  e_li   r0,% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME %  /* load the service id in r0 */
+  se_sc                            /* system call               */
+  se_blr                           /* returns                   */
+
+  TPL_TYPE(TPL_GLOBAL_REF(% !api_func::FUNC_NAME %),@function)
+  TPL_SIZE(TPL_GLOBAL_REF(% !api_func::FUNC_NAME %),$-TPL_GLOBAL_REF(% !api_func::FUNC_NAME %))
+
+%
+else
+
+let api_func::FUNC_NAME := exists api_func::ACTUAL default ( api_func::NAME )
+%
+  TPL_GLOBAL(% !api_func::FUNC_NAME %)
+TPL_GLOBAL_REF(% !api_func::FUNC_NAME %):
+  li   r0,% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME %  /* load the service id in r0 */
+  sc                            /* system call               */
+  blr                           /* returns                   */
+
+  TPL_TYPE(TPL_GLOBAL_REF(% !api_func::FUNC_NAME %),@function)
+  TPL_SIZE(TPL_GLOBAL_REF(% !api_func::FUNC_NAME %),$-TPL_GLOBAL_REF(% !api_func::FUNC_NAME %))
+
+%
+end if
+

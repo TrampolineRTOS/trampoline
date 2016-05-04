@@ -26,6 +26,8 @@
  * $URL$
  */
 
+#if TRUSTED_FCT_COUNT > 0
+
 #include "tpl_os_kernel_stack.h"
 #include "tpl_os_process_stack.h"
 #include "tpl_assembler.h"
@@ -33,18 +35,18 @@
 #include "tpl_app_define.h"
 
 
-TPL_EXTERN  ExitTrustedFunction
-TPL_EXTERN  tpl_trusted_fct_table
+TPL_EXTERN(ExitTrustedFunction)
+TPL_EXTERN(tpl_trusted_fct_table)
 
-  .global tpl_call_trusted_function_service
-  .global tpl_exit_trusted_function_service
+TPL_GLOBAL(tpl_call_trusted_function_service)
+TPL_GLOBAL(tpl_exit_trusted_function_service)
 
-  .text
-  .section .osCode CODE_ACCESS_RIGHT
+#define OS_START_SEC_CODE
+#include "AsMemMap.h"
 
-tpl_call_trusted_function_service:
-/* ------------ VLE ---------------------------------------------------------*/
+TPL_GLOBAL_REF(tpl_call_trusted_function_service):
 #if (WITH_VLE == YES)
+/* ------------ VLE ---------------------------------------------------------*/
   /*
    * Check the function index is within the allowed range
    */
@@ -61,7 +63,7 @@ tpl_call_trusted_function_service:
   mr        r11,r3
   e_cmp16i  r4,0
   e_lis     r3,0
-  e_or2i    r3,OS_E_PARAM_POINTER
+  e_or2i    r3,E_OS_ILLEGAL_ADDRESS
   e_beq     invalid_trusted_fct_params
   mr        r3,r11
 
@@ -86,8 +88,8 @@ tpl_call_trusted_function_service:
   /*
    * store ExitTrustedFunction as the return address
    */
-  e_lis     r12,TPL_HIG(ExitTrustedFunction)
-  e_or2i    r12,TPL_LOW(ExitTrustedFunction)
+  e_lis     r12,TPL_HIG(TPL_EXTERN_REF(ExitTrustedFunction))
+  e_add16i  r12,TPL_LOW(TPL_EXTERN_REF(ExitTrustedFunction))
   e_stw     r12,PS_LR(r11)
   /*
    * Update the stack pointer
@@ -107,8 +109,8 @@ tpl_call_trusted_function_service:
    * the fonction pointer is put in the return location and
    * a pointer to ExitTrustedFunction() service is put in the saved lr
    */
-  e_lis     r11,TPL_HIG(tpl_trusted_fct_table)
-  e_or2i    r11,TPL_LOW(tpl_trusted_fct_table)
+  e_lis     r11,TPL_HIG(TPL_EXTERN_REF(tpl_trusted_fct_table))
+  e_add16i  r11,TPL_LOW(TPL_EXTERN_REF(tpl_trusted_fct_table))
   e_slwi    r0,r3,2
   lwzx      r12,r11,r0
   e_stw     r12,KS_SRR0(r1)
@@ -117,8 +119,8 @@ tpl_call_trusted_function_service:
    */
 invalid_trusted_fct_params:
   se_blr
-/* ------------ NO VLE ------------------------------------------------------*/
 #else
+/* ------------ NO VLE ------------------------------------------------------*/
   /*
    * Check the function index is within the allowed range
    */
@@ -133,7 +135,7 @@ invalid_trusted_fct_params:
    */
   mr    r11,r3
   cmpw  r4,0
-  ori   r3,r0,OS_E_PARAM_POINTER
+  ori   r3,r0,E_OS_ILLEGAL_ADDRESS
   beq   invalid_trusted_fct_params
   mr    r3,r11
 
@@ -158,8 +160,8 @@ invalid_trusted_fct_params:
   /*
    * store ExitTrustedFunction as the return address
    */
-  lis   r12,TPL_HIG(ExitTrustedFunction)
-  ori   r12,r12,TPL_LOW(ExitTrustedFunction)
+  lis   r12,TPL_HIG(TPL_EXTERN_REF(ExitTrustedFunction))
+  ori   r12,r12,TPL_LOW(TPL_EXTERN_REF(ExitTrustedFunction))
   stw   r12,PS_LR(r11)
   /*
    * Update the stack pointer
@@ -179,8 +181,8 @@ invalid_trusted_fct_params:
    * the fonction pointer is put in the return location and
    * a pointer to ExitTrustedFunction() service is put in the saved lr
    */
-  lis   r11,TPL_HIG(tpl_trusted_fct_table)
-  ori   r11,r11,TPL_LOW(tpl_trusted_fct_table)
+  lis   r11,TPL_HIG(TPL_EXTERN_REF(tpl_trusted_fct_table))
+  ori   r11,r11,TPL_LOW(TPL_EXTERN_REF(tpl_trusted_fct_table))
   slwi  r0,r3,2
   lwzx  r12,r11,r0
   stw   r12,KS_SRR0(r1)
@@ -190,13 +192,13 @@ invalid_trusted_fct_params:
 invalid_trusted_fct_params:
   blr
 #endif
-  FUNCTION(tpl_call_trusted_function_service)
-  .type tpl_call_trusted_function_service,@function
-  .size tpl_call_trusted_function_service,$-tpl_call_trusted_function_service
+  FUNCTION(TPL_GLOBAL_REF(tpl_call_trusted_function_service))
+TPL_TYPE(TPL_GLOBAL_REF(tpl_call_trusted_function_service),@function)
+TPL_SIZE(TPL_GLOBAL_REF(tpl_call_trusted_function_service),$-TPL_GLOBAL_REF(tpl_call_trusted_function_service))
 
-tpl_exit_trusted_function_service:
-/* ------------ VLE ---------------------------------------------------------*/
+TPL_GLOBAL_REF(tpl_exit_trusted_function_service):
 #if (WITH_VLE == YES)
+/* ------------ VLE ---------------------------------------------------------*/
   /*
    * Decrement the trusted counter of the process
    */
@@ -246,8 +248,8 @@ cracker_in_action:
    * that's all
    */
   se_blr
-/* ------------ NO VLE ------------------------------------------------------*/
 #else
+/* ------------ NO VLE ------------------------------------------------------*/
   /*
    * Decrement the trusted counter of the process
    */
@@ -298,6 +300,12 @@ cracker_in_action:
    */
   blr
 #endif
-  FUNCTION(tpl_exit_trusted_function_service)
-  .type tpl_exit_trusted_function_service,@function
-  .size tpl_exit_trusted_function_service,$-tpl_exit_trusted_function_service
+  FUNCTION(TPL_GLOBAL_REF(tpl_exit_trusted_function_service))
+TPL_TYPE(TPL_GLOBAL_REF(tpl_exit_trusted_function_service),@function)
+TPL_SIZE(TPL_GLOBAL_REF(tpl_exit_trusted_function_service),$-TPL_GLOBAL_REF(tpl_exit_trusted_function_service))
+
+#define OS_STOP_SEC_CODE
+#include "AsMemMap.h"
+
+#endif // End if TRUSTED_FCT_COUNT > 0
+

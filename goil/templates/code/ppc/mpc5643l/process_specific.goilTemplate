@@ -1,0 +1,38 @@
+%
+if not exists proc::STACKSIZE then
+  error proc::NAME : "STACKSIZE attribute not defined for ".proc::KIND." ".proc::NAME
+else
+%/*
+ * % !proc::KIND % % !proc::NAME % stack
+ */
+#define APP_% !proc::KIND %_% !proc::NAME %_START_SEC_STACK
+#include "tpl_memmap.h"
+VAR(tpl_stack_word, OS_APPL_DATA) % !proc::NAME %_stack_zone[% !proc::STACKSIZE %/sizeof(tpl_stack_word)];
+#define APP_% !proc::KIND %_% !proc::NAME %_STOP_SEC_STACK
+#include "tpl_memmap.h"
+
+#define % !proc::NAME %_STACK {% !proc::NAME %_stack_zone, % !proc::STACKSIZE %}
+
+/*
+ * % !proc::KIND % % !proc::NAME % context
+ */
+#define OS_START_SEC_VAR_NOINIT_32BIT
+#include "tpl_memmap.h"
+VAR(ppc_integer_context, OS_VAR) % !proc::NAME %_int_context;%
+if not (exists OS::HASFLOAT default (false)) & exists proc::USEFLOAT default (false) then
+  error proc::USEFLOAT : "The ".TARGET." does not support floating point"
+end if
+if exists OS::HASFLOAT default (false) & exists proc::USEFLOAT default (false) then
+  if USEFLOAT then %
+VAR(ppc_float_context, OS_VAR) % !proc::NAME %_fp_context;
+#define % !proc::NAME %_CONTEXT { &% !proc::NAME %_int_context, &% !proc::NAME %_fp_context }%
+  else %
+#define % !proc::NAME %_CONTEXT { &% !proc::NAME %_int_context, NULL }%
+  end if
+else %
+#define % !proc::NAME %_CONTEXT { &% !proc::NAME %_int_context }%
+end if %
+#define OS_STOP_SEC_VAR_NOINIT_32BIT
+#include "tpl_memmap.h"
+%end if
+

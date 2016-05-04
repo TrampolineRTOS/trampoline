@@ -1,0 +1,111 @@
+/*-----------------------------------------------------------------------------
+ * Interrupt specific structures
+ */
+
+#include "tpl_timers.h"
+%
+
+###### First we check all used interrupt sources exist
+let IT_SOURCES := mapof INTERRUPT by NAME
+foreach counter in HARDWARECOUNTERS do
+  if not exists IT_SOURCES[counter::SOURCE] then
+    error counter::SOURCE : "Interrupt source ".counter::SOURCE." does not exist"
+  end if
+end foreach
+foreach isr in ISRS2 do
+  if not exists IT_SOURCES[isr::SOURCE] then
+    error isr::SOURCE : "Interrupt source ".isr::SOURCE." does not exist"
+  end if
+end foreach
+
+###### Watchdog checking
+let watchdog_source := ""
+
+foreach counter in COUNTER do
+  if counter::HANDLER == "watchdog" then
+    let watchdog_source := counter::SOURCE
+  end if
+end foreach
+
+## Warning if watchdog is disabled
+if watchdog_source == "no_pit" then
+    warning here : "WATCHDOG : No pit channel selected for the watchdog (given SOURCE = " .watchdog_source. "). Watchdog disabled."
+elsif watchdog_source != "" & not OS::TIMINGPROTECTION then
+    warning here : "WATCHDOG : OS::TIMINGPROTECTION set to false. Watchdog disabled."
+end if
+
+###### Print interrupt table
+loop ENTRY from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
+  before
+%
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+CONST(tpl_it_vector_entry, OS_CONST) tpl_it_table[% !INTERRUPT_COUNT::IT_TABLE_SIZE %] = {
+%
+  do
+    let entryFound := false
+
+    foreach interrupt in INTERRUPT do
+      if ENTRY == interrupt::ID then
+
+        ########## Intercore Interrupt Checking (Multicore only)
+        if OS::NUMBER_OF_CORES > 1 then
+          foreach int_interrupt in INTERCORE_INTERRUPT do
+            if int_interrupt::SOURCE == interrupt::NAME & not entryFound then
+              %  { (tpl_it_handler)tpl_receive_intercore_it,(void *)% !ENTRY %}%
+              let entryFound := true
+            end if
+          end foreach
+        end if
+
+        ########## Counter Interrupt Checking
+        foreach counter in HARDWARECOUNTERS do
+          if counter::SOURCE == interrupt::NAME & not entryFound then
+            if counter::SOURCE == "no_pit"
+             | (counter::HANDLER == "watchdog" & not OS::TIMINGPROTECTION) then
+              %  { (tpl_it_handler)tpl_null_it, (void *)% !ENTRY % }%
+              let entryFound := true
+            elsif counter::HANDLER == "watchdog" then
+              %  { (tpl_it_handler)tpl_watchdog_handler, (void *)NULL }%
+              let entryFound := true
+            else
+              %  { (tpl_it_handler)tpl_tick_handler, (void *)NULL }%
+              let entryFound := true
+            end if
+          end if
+        end foreach
+
+        ########## ISR1 Interrupt Checking
+        foreach isr in ISRS1 do
+          if isr::SOURCE == interrupt::NAME & not entryFound then
+            %  { (tpl_it_handler)tpl_central_interrupt_handler, (void*)% !([TASKS length] + INDEX) % }%
+            let entryFound := true
+          end if
+        end foreach
+
+        ########## ISR2 Interrupt Checking
+        foreach isr in ISRS2 do
+          if isr::SOURCE == interrupt::NAME & not entryFound then
+            %  { (tpl_it_handler)tpl_central_interrupt_handler_2, (void*)% !([TASKS length] + INDEX) % }%
+            let entryFound := true
+          end if
+        end foreach
+
+      end if
+    end foreach
+    if not entryFound then
+      %  { (tpl_it_handler)tpl_null_it, (void *)(% !ENTRY % + 1) }%
+    end if
+  between %,    // Vector % !ENTRY %
+%
+    after
+%
+};
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+%
+end loop
+
+
+template if exists tpl_external_interrupts_c
+

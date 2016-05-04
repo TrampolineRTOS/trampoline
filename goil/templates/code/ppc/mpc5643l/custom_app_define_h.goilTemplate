@@ -1,0 +1,87 @@
+/*=============================================================================
+ * Target specific definitions
+ */
+
+/*-----------------------------------------------------------------------------
+ *  Timer channel possible values
+ */
+
+#define TPL_PIT_0       0
+#define TPL_PIT_1       1
+#define TPL_PIT_2       2
+#define TPL_PIT_3       3
+#define TPL_DECREMENTER 4
+#define TPL_NO_TIMER    5
+
+%
+let channel_map := emptymap
+let channel_map["pit_ch0"] := "TPL_PIT_0"
+let channel_map["pit_ch1"] := "TPL_PIT_1"
+let channel_map["pit_ch2"] := "TPL_PIT_2"
+let channel_map["pit_ch3"] := "TPL_PIT_3"
+%
+
+/*-----------------------------------------------------------------------------
+ * Chosen timers
+ */
+%
+let tick_timer  := ""
+let wdg_timer   := ""
+foreach counter in COUNTER do
+  if counter::NAME == "SystemCounter" then
+    if counter::SOURCE == "no_pit" then
+      let tick_timer := "TPL_DECREMENTER"
+    else
+      let tick_timer := channel_map[counter::SOURCE]
+    end if
+  end if
+
+  if counter::HANDLER == "watchdog" then
+    if counter::SOURCE == "no_pit" then
+      let wdg_timer := "TPL_NO_TIMER"
+    else
+      let wdg_timer := channel_map[counter::SOURCE]
+    end if
+  end if
+end foreach
+
+if wdg_timer == "" then
+  let wdg_timer := "TPL_NO_TIMER"
+end if
+
+if tick_timer == "" then
+  let tick_timer := "TPL_DECREMENTER"
+end if
+
+%
+
+#define TPL_TICK_TIMER  % !tick_timer %
+#define TPL_WDG_TIMER   % !wdg_timer %
+#define TPL_PIT_RATIO 120000 // FIXME : Must be chosen in goil template
+
+/*-----------------------------------------------------------------------------
+ * Enable multicore
+ */
+/* TODO : With multicore
+ *          Multicore source must be separated in another directory.
+ *          The chosen code must then be picked from the right directory
+ *          following this flag state.
+ */
+#define WITH_MULTICORE     % !yesNo(OS::NUMBER_OF_CORES > 1) %
+
+/*-----------------------------------------------------------------------------
+ * Use VLE Assembly
+ */
+
+/* TODO : Use Vle
+ *          VLE's source code must be separated in another directory.
+ *          The chosen code must then be picked from the right directory
+ *          following this flag state.
+ */
+#define WITH_VLE     % !yesNo(OS::USEVLE) %
+
+/*-----------------------------------------------------------------------------
+ * Use FLOAT instructions
+ */
+#define WITH_FLOAT     % !yesNo(OS::USEFLOAT) %
+

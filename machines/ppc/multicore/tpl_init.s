@@ -30,30 +30,30 @@
 #include "tpl_assembler.h"
 #include "tpl_app_define.h"
 
-TPL_EXTERN tpl_register_r2
-TPL_EXTERN tpl_register_r13
-TPL_EXTERN tpl_msr_start_value
+TPL_EXTERN(tpl_register_r2)
+TPL_EXTERN(tpl_register_r13)
+TPL_EXTERN(tpl_msr_start_value)
 
-  .text
-  .global tpl_init_regs
-  .global tpl_shutdown
+TPL_GLOBAL(tpl_init_regs)
+TPL_GLOBAL(tpl_shutdown)
 
-  .section .osCode CODE_ACCESS_RIGHT
+#define OS_START_SEC_CODE
+#include "AsMemMap.h"
 
-tpl_init_regs:
+TPL_GLOBAL_REF(tpl_init_regs):
 /* ------------ VLE ---------------------------------------------------------*/
 #if (WITH_VLE == YES)
   se_subi   r1,4   /* space on the stack */
   e_stw     r3,0(r1)  /* save the working register  */
-  e_lis     r3,TPL_HIG(tpl_register_r2)       /*  save the start value of RTOC  */
-  e_or2i    r3,TPL_LOW(tpl_register_r2)
+  e_lis     r3,TPL_HIG(TPL_EXTERN_REF(tpl_register_r2))       /*  save the start value of RTOC  */
+  e_add16i  r3,TPL_LOW(TPL_EXTERN_REF(tpl_register_r2))
   e_stw     r2,0(r3)
-  e_lis     r3,TPL_HIG(tpl_register_r13)      /*  save the start value of r13   */
-  e_or2i    r3,TPL_LOW(tpl_register_r13)
+  e_lis     r3,TPL_HIG(TPL_EXTERN_REF(tpl_register_r13))      /*  save the start value of r13   */
+  e_add16i  r3,TPL_LOW(TPL_EXTERN_REF(tpl_register_r13))
   e_stw     r13,0(r3)
   mfmsr     r0
-  e_lis     r3,TPL_HIG(tpl_msr_start_value)   /*  save the start value of msr   */
-  e_or2i    r3,TPL_LOW(tpl_msr_start_value)
+  e_lis     r3,TPL_HIG(TPL_EXTERN_REF(tpl_msr_start_value))   /*  save the start value of msr   */
+  e_add16i  r3,TPL_LOW(TPL_EXTERN_REF(tpl_msr_start_value))
   e_stw     r0,0(r3)
   e_lwz     r3,0(r1)  /*  get back the working register */
   se_addi   r1,4   /*  release space on the stack    */
@@ -62,25 +62,25 @@ tpl_init_regs:
 #else
   subi  r1,r1,4   /* space on the stack */
   stw   r3,0(r1)  /* save the working register  */
-  lis   r3,TPL_HIG(tpl_register_r2)       /*  save the start value of RTOC  */
-  ori   r3,r3,TPL_LOW(tpl_register_r2)
+  lis   r3,TPL_HIG(TPL_EXTERN_REF(tpl_register_r2))       /*  save the start value of RTOC  */
+  ori   r3,TPL_LOW(TPL_EXTERN_REF(tpl_register_r2))
   stw   r2,0(r3)
-  lis   r3,TPL_HIG(tpl_register_r13)      /*  save the start value of r13   */
-  ori   r3,r3,TPL_LOW(tpl_register_r13)
+  lis   r3,TPL_HIG(TPL_EXTERN_REF(tpl_register_r13))      /*  save the start value of r13   */
+  ori   r3,TPL_LOW(TPL_EXTERN_REF(tpl_register_r13))
   stw   r13,0(r3)
   mfmsr r0
-  lis   r3,TPL_HIG(tpl_msr_start_value)   /*  save the start value of msr   */
-  ori   r3,r3,TPL_LOW(tpl_msr_start_value)
+  lis   r3,TPL_HIG(TPL_EXTERN_REF(tpl_msr_start_value))   /*  save the start value of msr   */
+  ori   r3,TPL_LOW(TPL_EXTERN_REF(tpl_msr_start_value))
   stw   r0,0(r3)
   lwz   r3,0(r1)  /*  get back the working register */
   addi  r1,r1,4   /*  release space on the stack    */
   blr
 #endif
-  FUNCTION(tpl_init_regs)
-  .type tpl_init_regs,@function
-  .size tpl_init_regs,$-tpl_init_regs
+  FUNCTION(TPL_GLOBAL_REF(tpl_init_regs))
+TPL_TYPE(TPL_GLOBAL_REF(tpl_init_regs),@function)
+TPL_SIZE(TPL_GLOBAL_REF(tpl_init_regs),$-TPL_GLOBAL_REF(tpl_init_regs))
 
-tpl_shutdown:
+TPL_GLOBAL_REF(tpl_shutdown):
 /* ------------ VLE ---------------------------------------------------------*/
 #if (WITH_VLE == YES)
   mfmsr     r5  /* disable the external interrupts */
@@ -102,6 +102,9 @@ infinite_loop:
 infinite_loop:
   b     infinite_loop
 #endif
-  FUNCTION(tpl_shutdown)
-  .type tpl_shutdown,@function
-  .size tpl_shutdown,$-tpl_shutdown
+  FUNCTION(TPL_GLOBAL_REF(tpl_shutdown))
+TPL_TYPE(TPL_GLOBAL_REF(tpl_shutdown),@function)
+TPL_SIZE(TPL_GLOBAL_REF(tpl_shutdown),$-TPL_GLOBAL_REF(tpl_shutdown))
+#define OS_STOP_SEC_CODE
+#include "AsMemMap.h"
+
