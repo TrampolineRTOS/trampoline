@@ -1,0 +1,42 @@
+/*
+ * PPC build options for gcc (PSIM simulator)
+ */
+CPU buildOptions {
+  BUILDOPTIONS defaultBuildOptionsForPPCPSIM {
+    /*
+     * Common flags for C and C++ compiling
+     */
+    COMMONFLAGS = "-g";                          // Produce debugging information
+    COMMONFLAGS = "-Wall -pedantic";             // All warnings on
+    COMMONFLAGS = "-Wmissing-field-initializers"; // Struct initialized with incorrect number of fiels
+    COMMONFLAGS = "-mpowerpc";                    // Compile for PowerPC
+    COMMONFLAGS = "-static";      
+    COMMONFLAGS = "-fno-omit-frame-pointer";
+    COMMONFLAGS = "-U__unix__";
+    COMMONFLAGS = "-std=c99";
+    COMMONFLAGS = "-nostartfiles";                // Default startfiles (crt0.c) are not used
+    COMMONFLAGS = "-fno-exceptions";              // No exceptions managed
+    COMMONFLAGS = "-nostdlib";                    // Do not used implicitely the standard libraries to link
+    COMMONFLAGS = "-ffunction-sections";          // Each function is put in its own section. Required to deleted unused code
+    COMMONFLAGS = "-fdata-sections";              // Each data is put in its own section. Required to deleted unused data
+    
+    /*
+     * C++ compiler flags
+     */
+    CPPFLAGS = "-fno-rtti";                       // No information for runtime (run time type information) - reduce exe size
+    CPPFLAGS = "-felide-constructors";            // Optimization to omit creating temporary object when used to initialize another object
+    CPPFLAGS = "-fno-threadsafe-statics";         // No thread safe init of local static variables - reduce code size
+    CPPFLAGS = "-fno-use-cxa-get-exception-ptr";  // Don't use the __cxa_get_exception_ptr runtime routine (no exception anyway)
+    CPPFLAGS = "-fno-enforce-eh-specs";           // Don't generate code to check for violation of exception specifications at runtime (no exception anyway)
+    
+    /*
+     * Assembler flags
+     */
+    ASFLAGS = "-mfloat-abi=soft";                 // Floating point numbers are computed in software
+    
+    LDFLAGS = "--fatal-warnings";                 // A warning is an error
+    LDFLAGS = "--warn-common";                    // Warn when a common symbol is combined with another common symbol
+    LDFLAGS = "--no-undefined";                   // Report unresolved symbol references
+    LDFLAGS = "--gc-sections";                    // Remove unused sections. Works with -ffunction-sections and -fdata-sections, see above
+  };
+};

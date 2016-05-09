@@ -1,0 +1,8 @@
+/*
+ * Interrupt sources for the PowerPC PSIM simulator...
+ */
+
+
+ENUM [
+  it_timer_1
+] SOURCE;

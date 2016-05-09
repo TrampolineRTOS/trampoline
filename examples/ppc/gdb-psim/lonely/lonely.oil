@@ -1,0 +1,55 @@
+//export PATH=$PATH:/usr/local/powerpc/bin/
+//first generate Makefile with:
+//goil --generate-makefile --target=ppc/psim --templates=../../../goil/templates/ -i  lonely.oil
+OIL_VERSION = "2.5" : "test" ;
+
+IMPLEMENTATION trampoline {
+    TASK {
+        UINT32 STACKSIZE = 500 ;
+        UINT32 PRIORITY = 1 ;
+    } ;
+    ISR {
+        UINT32 STACKSIZE = 500 ;
+    } ;
+};
+
+CPU test {
+
+    OS config {
+        STATUS = EXTENDED;
+        ERRORHOOK = FALSE;
+        PRETASKHOOK = TRUE;
+        BUILD = TRUE {
+          TRAMPOLINE_BASE_PATH = "../../../..";
+          APP_SRC   = "lonely.c";
+          APP_NAME  = "lonely_exe";
+	      LDFLAGS   = "-Map=lonely.map";
+          COMPILER  = "powerpc-elf-gcc";
+          ASSEMBLER = "powerpc-elf-as";
+          LINKER    = "powerpc-elf-ld";
+	      SYSTEM    = PYTHON;
+        };
+        SYSTEM_CALL = TRUE;
+        MEMMAP = TRUE {
+          COMPILER = gcc;
+          LINKER = gnu_ld { SCRIPT = "script.ld"; };
+          ASSEMBLER = gnu_as;
+          MEMORY_PROTECTION = FALSE;
+        };
+    } ;
+
+    APPMODE std {
+    };
+
+    TASK iamsolonely {
+        PRIORITY = 5;
+        AUTOSTART = TRUE { APPMODE = std; };
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+        USEFLOAT = FALSE;
+    };
+    
+//    COUNTER SystemCounter {
+//        SOURCE = it_timer_1;
+//    };
+};

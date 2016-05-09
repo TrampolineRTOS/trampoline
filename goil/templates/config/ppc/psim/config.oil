@@ -1,0 +1,49 @@
+#includeifexists <buildOptions.oil>
+
+IMPLEMENTATION psim {
+
+  /* Add the source and the handler of the counter */
+  COUNTER [] {
+    ENUM [
+      it_timer_1
+    ] SOURCE = it_timer_1;
+  };
+};
+
+/*
+ * Interrupt sources of the board
+ */
+
+CPU psim {
+
+  //dummy interrupt source.
+  INTERRUPT_COUNT nb_it {
+    IT_TABLE_SIZE = 1;
+  };
+  INTERRUPT it_timer_1 { ID = 0; };
+
+  GENERATED_FILES psim_files {
+//    CFILE = "tpl_primary_irq.S";
+//    CFILE = "tpl_vectors.c";
+//    CFILE = "tpl_external_interrupts.c";
+  };
+  
+  PLATFORM_FILES machine_psim {
+   PATH = "ppc/psim";
+   CFILE = "tpl_it_management.S";
+  };
+  
+  PLATFORM_FILES machine_ppc {
+    PATH = "ppc";
+    CFILE = "tpl_start.S";
+    CFILE = "tpl_os_it.S";
+    CFILE = "tpl_dispatch.S";
+    CFILE = "tpl_it_handler.S";
+    CFILE = "tpl_ctx_switch.S";
+    CFILE = "tpl_init.S";
+    CFILE = "tpl_init_term.c";
+  };
+
+  
+};
+

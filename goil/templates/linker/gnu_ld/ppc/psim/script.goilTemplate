@@ -23,8 +23,8 @@ MEMORY
 
 SECTIONS
 {
-  .vector_external_interrupt : { *(.EI_vector) } > external_interrupt
-  .vector_system_call :        { *(.SC_vector) } > system_call
+  .vector_external_interrupt : { KEEP(*(.EI_vector)) } > external_interrupt
+  .vector_system_call :        { KEEP(*(.SC_vector)) } > system_call
 
 
   /*
@@ -79,9 +79,9 @@ SECTIONS
    . = ALIGN(4);
     *(.osApiCode)   /* API functions    */
     /* Sections for code of tasks and ISR */%
-foreach PROCESSES do
+foreach proc in PROCESSES do
 %
-    *(.% !PROCESSKIND %_% !NAME %Code)
+    *(.% !proc::KIND %_% !proc::NAME %Code)
 %
 end foreach
 %
@@ -91,10 +91,10 @@ end foreach
   appconst : {
      /* Sections for application const */  
 %
-foreach OSAPPLICATIONS do
+foreach app in APPLICATIONS do
  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
   for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
-%      *(.OS_APP_% !NAME %_SEC% !SECTION_KIND !DATA_SIZE %)
+%      *(.OS_APP_% !app::NAME %_SEC% !SECTION_KIND !DATA_SIZE %)
 %
   end for
  end for
@@ -107,10 +107,10 @@ end foreach
   procconst : {
     /* Sections for const of tasks and ISR */
 %
-foreach PROCESSES do
+foreach proc in PROCESSES do
  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
   for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
-%      *(.% !PROCESSKIND %_% !NAME %_SEC% !SECTION_KIND !DATA_SIZE %)
+%      *(.% !proc::KIND %_% !proc::NAME %_SEC% !SECTION_KIND !DATA_SIZE %)
 %
   end for
  end for
@@ -132,18 +132,18 @@ end foreach
    * private data of processes
    */
 %
-foreach PROCESSES do
-%  .% !PROCESSKIND %_% !NAME %_SEC_VAR ALIGN(4) : {
-    __SEG_START_% !PROCESSKIND %_% !NAME %_VAR_RGN = .;
-/* Initialized variables section of % !PROCESSKIND % % !NAME % */
+foreach proc in PROCESSES do
+%  .% !proc::KIND %_% !proc::NAME %_SEC_VAR ALIGN(4) : {
+    __SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN = .;
+/* Initialized variables section of % !proc::KIND % % !proc::NAME % */
 %
   for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
     for SECTION_KIND in "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" do
-%    *(.% !PROCESSKIND %_% !NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
+%    *(.% !proc::KIND %_% !proc::NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
 %
     end for
   end for
-%    __SEG_END_% !PROCESSKIND %_% !NAME %_VAR_RGN = ALIGN(4) - 1;
+%    __SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN = ALIGN(4) - 1;
   } > ram
 %
 end foreach
@@ -153,12 +153,12 @@ end foreach
    * stack of processes
    */
 %
-foreach PROCESSES do %
-  /* Section of stack of % !PROCESSKIND % % !NAME %  */
-  .% !PROCESSKIND %_% !NAME %_SEC_STACK ALIGN(4) : {
-    __SEG_START_% !PROCESSKIND %_% !NAME %_STACK_RGN = .;
-    *(.% !PROCESSKIND %_% !NAME %Stack)
-    __SEG_END_% !PROCESSKIND %_% !NAME %_STACK_RGN = ALIGN(4) - 1;
+foreach proc in PROCESSES do %
+  /* Section of stack of % !proc::KIND % % !proc::NAME %  */
+  .% !proc::KIND %_% !proc::NAME %_SEC_STACK ALIGN(4) : {
+    __SEG_START_% !proc::KIND %_% !proc::NAME %_STACK_RGN = .;
+    *(.% !proc::KIND %_% !proc::NAME %Stack)
+    __SEG_END_% !proc::KIND %_% !proc::NAME %_STACK_RGN = ALIGN(4) - 1;
   } > ram
 %
 end foreach
@@ -168,17 +168,17 @@ end foreach
    */
    appvars : {
 %
-foreach OSAPPLICATIONS do
-%    __SEG_START_OS_APP_% !NAME %_VAR_RGN = .;
-/* Initialized variables section of OS_APP % !NAME % */
+foreach app in APPLICATIONS do
+%    __SEG_START_OS_APP_% !app::NAME %_VAR_RGN = .;
+/* Initialized variables section of OS_APP % !app::NAME % */
 %
   for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
     for SECTION_KIND in "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" do
-%    *(.OS_APP_% !NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
+%    *(.OS_APP_% !app::NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
 %
     end for
   end for
-%    __SEG_END_OS_APP_% !NAME %_VAR_RGN = ALIGN(16) - 1;
+%    __SEG_END_OS_APP_% !app::NAME %_VAR_RGN = ALIGN(16) - 1;
 %
 end foreach
 % 

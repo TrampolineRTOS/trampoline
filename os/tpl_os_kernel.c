@@ -278,7 +278,7 @@ FUNC(void, OS_CODE) tpl_bubble_up(
  * tpl_bubble_down bubbles the entry at index place down in the heap
  *
  * @param  heap   the heap on which the operation is done
- * @param  index  the place of the item to bubble up
+ * @param  index  the place of the item to bubble down
  *
  */
 FUNC(void, OS_CODE) tpl_bubble_down(
