@@ -15,7 +15,7 @@ You should have:
 
 ## Build
 
-Configure the application with: 
+Configure the application with:
 
 ```
 goil --target=ppc/psim --templates=../../../../goil/templates/ lonely.oil 
@@ -29,10 +29,10 @@ The `goil` compiler generates the `make.py` [python build script](https://github
 
 The `lonely_exe` should be generated. 
 
-Then flash the board:
+Then run the powerPC application directly with gdb. The `.gdbinit` script provided just load the binary.
 
 ```
-./make.py flash
+powerpc-elf-gdb
 ```
 
 ## Clean
