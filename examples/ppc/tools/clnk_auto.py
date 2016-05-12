@@ -8,14 +8,14 @@ import subprocess
 
 LINK_COMMAND = "wine " + os.environ["COSMIC_PATH"] + "/clnk.exe"
 LINK_FLAGS   = (
-                " -m mapping "
-                " -p"
-                " -u15"
+                " -m mapping "           # Generate mapping file
+                " -p"                    # Print physical @ in mapping file
+                " -u15"                  # Print unused symbols
                )
 
 ELF_COMMAND  = "wine " + os.environ["COSMIC_PATH"] + "/cvdwarf.exe"
 ELF_FLAGS   = (
-                " -e _tpl_master_core_startup"
+                " -e _tpl_master_core_startup"   # Start address
                )
 
 

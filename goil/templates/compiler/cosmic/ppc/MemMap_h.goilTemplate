@@ -41,14 +41,14 @@ let data_size_hash := emptymap
 let data_size_hash["32BIT"]             := "32"
 let data_size_hash["16BIT"]             := "16"
 let data_size_hash["8BIT"]              := "08"
-let data_size_hash["32BITS"]            := "32"  # Alias 
+let data_size_hash["32BITS"]            := "32"  # Alias
 let data_size_hash["16BITS"]            := "16"  # Alias
 let data_size_hash["8BITS"]             := "08"  # Alias
 let data_size_hash["32"]                := "32"  # Alias
 let data_size_hash["16"]                := "16"  # Alias
 let data_size_hash["8"]                 := "08"  # Alias
-let data_size_hash["BOOLEAN"]           := "BO"  
-let data_size_hash["UNSPECIFIED"]       := "UN"  
+let data_size_hash["BOOLEAN"]           := "BO"
+let data_size_hash["UNSPECIFIED"]       := "UN"
 %
 
 /*=============================================================================
@@ -216,7 +216,7 @@ end for
 /*=============================================================================
  * Application objects (Tasks and ISRs) Memory mapping
  */
-% 
+%
 foreach app in APPLICATIONS do
     let pragma_app_name := [("000" . [INDEX string]) rightSubString: 3]
 %
@@ -237,7 +237,11 @@ foreach app in APPLICATIONS do
     #error "Starting a new OS_APP % !app::NAME % data section while a section is already started"
   #else
     #undef MEMMAP_ERROR
-    #pragma section [osApV% !pragma_app_name !pragma_section_kind !pragma_data_size %]
+    #pragma section [osApV% !pragma_app_name !section_kind_hash["_NOINIT_"] !pragma_data_size %]
+%
+      if SECTION_KIND != "_NOINIT_" then%
+    #pragma section {osApV% !pragma_app_name !pragma_section_kind !pragma_data_size %}%
+      end if%
     #define CURRENT_LINKER_DATA_SECTION
   #endif
 #endif
@@ -360,7 +364,11 @@ foreach proc in PROCESSES do
     #error "Starting a new % !proc::KIND % % !proc::NAME % data section while a section is already started"
   #else
     #undef MEMMAP_ERROR
-    #pragma section [Var% !pragma_proc_kind !pragma_proc_name !pragma_section_kind !pragma_data_size %]
+    #pragma section [Var% !pragma_proc_kind !pragma_proc_name !section_kind_hash["_NOINIT_"] !pragma_data_size %]
+%
+      if SECTION_KIND != "_NOINIT_" then%
+    #pragma section {Var% !pragma_proc_kind !pragma_proc_name !pragma_section_kind !pragma_data_size %}%
+      end if%
     #define CURRENT_LINKER_DATA_SECTION
   #endif
 #endif
@@ -458,7 +466,11 @@ foreach isr in ISRS1 do
     #error "Starting a new ISR % !isr::NAME % data section while a section is already started"
   #else
     #undef MEMMAP_ERROR
-    #pragma section [IrVr% !pragma_isr_name !pragma_section_kind !pragma_data_size %]
+    #pragma section [IrVr% !pragma_isr_name !section_kind_hash["_NOINIT_"] !pragma_data_size %]
+%
+      if SECTION_KIND != "_NOINIT_" then%
+    #pragma section {IrVr% !pragma_isr_name !pragma_section_kind !pragma_data_size %}%
+      end if%
     #define CURRENT_LINKER_DATA_SECTION
   #endif
 #endif
@@ -589,7 +601,11 @@ loop core from 0 to OS::NUMBER_OF_CORES - 1 do
     #error "Starting a new % !proc::KIND % % !proc::NAME % data section while a section is already started"
   #else
     #undef MEMMAP_ERROR
-    #pragma section [Var% !pragma_proc_kind !pragma_proc_name !pragma_section_kind !pragma_data_size %]
+    #pragma section [Var% !pragma_proc_kind !pragma_proc_name !section_kind_hash["_NOINIT_"] !pragma_data_size %]
+%
+      if SECTION_KIND != "_NOINIT_" then%
+    #pragma section {Var% !pragma_proc_kind !pragma_proc_name !pragma_section_kind !pragma_data_size %}%
+      end if%
     #define CURRENT_LINKER_DATA_SECTION
   #endif
 #endif

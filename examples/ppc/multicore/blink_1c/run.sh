@@ -14,18 +14,22 @@ print_help() {
     echo "Possible Arguments :"
     echo "  -h  print_help"
     echo "  -c  : Clean"
+    echo "  -g  : Generate files using goil"
     echo "  -m  : Make"
     echo "  -a  : Do everything"
 }
 
+generate=0
 build=0
 clean=0
 
-while getopts "cmah" OPT; do
+while getopts "cmagh" OPT; do
   case "$OPT" in
     c) clean=1;;
+    g) generate=1;;
     m) build=1;;
     a) build=1;
+       generate=1;
        clean=1;;
     h) print_help;
        exit;;
@@ -41,13 +45,17 @@ if [ $clean -eq 1 ]; then
     rm -rf ./blink ./build ./make.py ./build.py ./blink_exe ./blink_exe.elf ./mapping
 fi
 
+if [ $generate -eq 1 ]; then
+    echo "Generating files"
+    goil --target=ppc/mpc5643l blink.oil
+fi
+
 if [ $build -eq 1 ]; then
     echo "Building"
-    goil --target=ppc/mpc5643l blink.oil
     ./make.py
 fi
 
-if [ $clean -eq 0 ] && [ $build -eq 0 ] ; then
+if [ $clean -eq 0 ] && [ $build -eq 0 ] && [ $generate -eq 0 ] ; then
     print_help
 fi
 

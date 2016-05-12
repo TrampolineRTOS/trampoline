@@ -1,7 +1,7 @@
 /**
- * @file multicore_s1/multicore_s1.c
+ * @file multicore/blink_1c/blink.c
  *
- * @section desc File description *
+ * @section desc File description
  * @section copyright Copyright
  *
  * Trampoline Test Suite
@@ -34,7 +34,15 @@
 #include "Os.h"
 #include "tpl_os.h"
 
-DeclareAlarm(alarm_t1_app1);
+#define APP_Task_t1_app1_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+    uint32 led_state = 1;
+#define APP_Task_t1_app1_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+#define APP_Task_t1_app1_START_SEC_CODE
+#include "tpl_memmap.h"
+
 DeclareTask(t1_app1);
 
 int main(void)
@@ -48,10 +56,13 @@ int main(void)
 
 TASK(t1_app1)
 {
-    static uint32 led_state = 1;
-    setLed(1, led_state);
+    setLed(2, led_state);
     led_state = led_state ? 0 : 1;
     TerminateTask();
 }
 
-/* End of file ioc_s1/ioc_s1.c */
+#define APP_Task_t1_app1_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+/* End of file blink.c */
+

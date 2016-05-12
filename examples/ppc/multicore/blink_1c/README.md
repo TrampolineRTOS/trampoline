@@ -1,7 +1,8 @@
 #Trampoline examples for PowerPC target
 
 This is a simple blink example, tested and working for MPC5643L target using
-Cosmic Software compiler. An alarm wakes up a task which will control the led.
+Cosmic Software compiler. An alarm wakes up a task which will turn on/off the
+led.
 
 ##Compile example
 To compile the example, you will need to install the VLE evaluation tools Cosmic

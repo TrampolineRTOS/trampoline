@@ -96,7 +96,7 @@ let data_size_hash["UNSPECIFIED"]       := "UN"
 # * 0x4000_0000 | ---------------------------------------------------- *
 # *             |                                                      *
 # * 64 KB (DPM) | SRAM1                                                *
-# * 128KB (LSM) | --> Data & Bss                                       *
+# * 128KB (LSM) | --> Initialized Data, Bss, Stacks                    *
 # *             |                                                      *
 # * 0x5000_0000 | ---------------------------------------------------- *
 # *             |                                                      *
@@ -105,7 +105,9 @@ let data_size_hash["UNSPECIFIED"]       := "UN"
 # *             |                                                      *
 # \********************************************************************/
 
-############ ADDRESS DEFINITION ###########
+#=============================================================================#
+#                           BASE ADDRESS DEFINITION                           #
+#=============================================================================#
 
 ## FLASH
 +def bam_base=0x00000000
@@ -113,10 +115,10 @@ let data_size_hash["UNSPECIFIED"]       := "UN"
 
 +def ivor_offset_base=0x00010000
 +def application_base=0x00010200
-+def application_size=0x00EF0000
++def application_size=0x00EEFE00
 
 ## STATIC RAM
-+def sram_base=0x40000000
++def sram_base=0x40000000 # Data, bss, task stacks
 +def sram_size=0x00009E00
 +def heap_base=0x40009E00
 +def heap_size=0x00000100
@@ -131,14 +133,21 @@ let data_size_hash["UNSPECIFIED"]       := "UN"
 +def sram2_base=0x50000000
 +def sram2_size=0x00010000
 
-############################# FLASH MEMORY SEGMENTS ############################
+#=============================================================================#
+#                           FLASH MEMORY SEGMENTS                             #
+#=============================================================================#
 
 
-########### SYSTEM RESET
+#===========================================
+#             SYSTEM RESET
 
 +seg .rchw -b bam_base -m bam_size -n rchw
 
-########### CONSTANTS
+#===========================================
+#             CONSTANTS
+
+
+# /* OS constants */
 
 +seg osconst -a rchw -n osconst -r2
 +grp osconst=.osConst
@@ -146,10 +155,7 @@ let data_size_hash["UNSPECIFIED"]       := "UN"
 +grp osconst=.osApiConst
 +def ___SEG_END_API_CONST_RGN=@osconst
 
-
-#  /* Sections for application const */
-
-###### APPCONST
+# /* Application constants */
 
 +seg appconst -a osconst -n appconst -r2
 %
@@ -159,7 +165,9 @@ foreach app in APPLICATIONS do
   for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
    let pragma_section_kind := section_kind_hash[SECTION_KIND]
    let pragma_data_size := data_size_hash[DATA_SIZE]
-   let section_name := ".osApC" . pragma_app_name . pragma_section_kind . pragma_data_size
+   let section_name := ".osApC" . pragma_app_name
+                                . pragma_section_kind
+                                . pragma_data_size
 %
      +grp appconst=% !section_name %
 %
@@ -168,9 +176,7 @@ foreach app in APPLICATIONS do
 end foreach
 %
 
-#  /* Sections for const of tasks and ISR */
-
-###### PROCCONST
+# /* Tasks and ISR constants */
 
 +seg procconst -a appconst -n procconst -r2
 +def __PROGCONST_SECTION_STOP=pstart(procconst)
@@ -184,8 +190,10 @@ for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
   foreach proc in PROCESSES do
     let pragma_proc_kind := [proc::KIND leftSubString: 2]
     let pragma_proc_name := [("000" . [INDEX string]) rightSubString: 3]
-    let section_name := ".Cst" . pragma_proc_kind . pragma_proc_name . pragma_section_kind . pragma_data_size
-
+    let section_name := ".Cst" . pragma_proc_kind
+                               . pragma_proc_name
+                               . pragma_section_kind
+                               . pragma_data_size
 %
     +grp procconst=% !section_name %
 %
@@ -204,8 +212,10 @@ for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
       let proc::NAME := "IDLE_TASK_".[core string]
       let pragma_proc_name := "Id".[[core string] rightSubString: 1]
     end if
-    let section_name := ".Cst" . pragma_proc_kind . pragma_proc_name . pragma_section_kind . pragma_data_size
-
+    let section_name := ".Cst" . pragma_proc_kind
+                               . pragma_proc_name
+                               . pragma_section_kind
+                               . pragma_data_size
 %
     +grp procconst=% !section_name %
 %
@@ -215,8 +225,9 @@ for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
 %
   foreach isr in ISRS1 do
     let pragma_isr_name := [("000" . [INDEX string]) rightSubString: 3]
-    let section_name := ".IrCs" . pragma_isr_name . pragma_section_kind . pragma_data_size
-
+    let section_name := ".IrCs" . pragma_isr_name
+                                . pragma_section_kind
+                                . pragma_data_size
 %
     +grp procconst=% !section_name %
 %
@@ -225,12 +236,13 @@ for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
 end for
 %
 
+# /* Other (garbage) constants */
+
 +seg const_garbage -a procconst -n const_garbage
 +grp const_garbage=.sconst
 
-############# APPLICATION BASE
-
-##### IVOR
+#===========================================
+#             IVORS
 
 +seg .exCritInput   -b ivor_offset_base+0x0     -n .exCritInput   -r4 # IVOR0
 +seg .exMchineChck  -b ivor_offset_base+0x10    -n .exMchineChck  -r4 # IVOR1
@@ -241,27 +253,31 @@ end for
 +seg .exProgram     -b ivor_offset_base+0x60    -n .exProgram     -r4 # IVOR6
 +seg .exFltPntUnvl  -b ivor_offset_base+0x70    -n .exFltPntUnvl  -r4 # IVOR7
 +seg .SC_vector     -b ivor_offset_base+0x80    -n .SC_vector     -r4 # IVOR8
-+seg .rsrvIVOR9     -b ivor_offset_base+0x90    -n .rsrvIVOR9     -r4 # IVOR9 AP unvavailable (unused in MPC5643L)
+# IVOR9 AP unvavailable (unused in MPC5643L)
++seg .rsrvIVOR9     -b ivor_offset_base+0x90    -n .rsrvIVOR9     -r4
 +seg .dec_vector    -b ivor_offset_base+0xa0    -n .dec_vector    -r4 # IVOR10
 +seg .fxdIntrvlTim  -b ivor_offset_base+0xb0    -n .fxdIntrvlTim  -r4 # IVOR11
 +seg .watchdogTim   -b ivor_offset_base+0xc0    -n .watchdogTim   -r4 # IVOR12
 +seg .dataTlbError  -b ivor_offset_base+0xd0    -n .dataTlbError  -r4 # IVOR13
 +seg .instTlbError  -b ivor_offset_base+0xe0    -n .instTlbError  -r4 # IVOR14
 +seg .sdebug        -b ivor_offset_base+0xf0    -n .sdebug        -r4 # IVOR15
-+seg .rsrvIVOR32    -b ivor_offset_base+0x100   -n .rsrvIVOR32    -r4 # IVOR32 SPE unavailable
-+seg .rsrvIVOR33    -b ivor_offset_base+0x110   -n .rsrvIVOR33    -r4 # IVOR33 SPE data exception
-+seg .rsrvIVOR34    -b ivor_offset_base+0x120   -n .rsrvIVOR34    -r4 # IVOR34 SPE round exception
+# IVOR32 SPE unavailable
++seg .rsrvIVOR32    -b ivor_offset_base+0x100   -n .rsrvIVOR32    -r4
+# IVOR33 SPE data exception
++seg .rsrvIVOR33    -b ivor_offset_base+0x110   -n .rsrvIVOR33    -r4
+# IVOR34 SPE round exception
++seg .rsrvIVOR34    -b ivor_offset_base+0x120   -n .rsrvIVOR34    -r4
 
+#===========================================
+#             CODE
 
-##### CODE
+# /* Other (garbage) codes
+#  * We're putting these segments first because they can (should) not contain
+#  * anything and initialized data relocation, located after text segments,
+#  * require that the last text section is not empty
+#  */
 
-#  /*
-#   * remaining .text (ie no section given)
-#   */
-
-###### TEXT_GARBAGE
-
-+seg text_garbage  -b application_base -m application_size       -n text_garbage     -r2
++seg text_garbage  -b application_base -m application_size -n text_garbage  -r2
 +grp text_garbage=.text
 +grp text_garbage=.vtext
 +grp text_garbage=.ctors
@@ -269,12 +285,7 @@ end for
 +grp text_garbage=.init
 +grp text_garbage=.fini
 
-
-#  /*
-#   * code and consts of the processes of the applications
-#   */
-
-##### APPTEXT
+#  /* Application text section */
 
 +seg apptext -a text_garbage -n apptext -r2
 +grp apptext=.rodata
@@ -282,15 +293,14 @@ end for
 +grp apptext=.osApiCode
 +def ___SEG_END_API_CODE_RGN=@apptext
 
-
-
-#  /* Sections for code of tasks and ISR */
+#  /* Tasks and ISR text section */
 
 %
 foreach proc in PROCESSES do
     let pragma_proc_kind := [proc::KIND leftSubString: 2]
     let pragma_proc_name := [("000" . [INDEX string]) rightSubString: 3]
-    let section_name := ".Cde" . pragma_proc_kind . pragma_proc_name
+    let section_name := ".Cde" . pragma_proc_kind
+                               . pragma_proc_name
 %
      +grp apptext=% !section_name %
 %
@@ -309,7 +319,8 @@ loop core from 0 to OS::NUMBER_OF_CORES - 1 do
     let proc::NAME := "IDLE_TASK_".[core string]
     let pragma_proc_name := "Id".[[core string] rightSubString: 1]
   end if
-  let section_name := ".Cde" . pragma_proc_kind . pragma_proc_name
+  let section_name := ".Cde" . pragma_proc_kind
+                             . pragma_proc_name
 %
      +grp apptext=% !section_name %
 %
@@ -326,9 +337,12 @@ foreach isr in ISRS1 do
 end foreach
 %
 
+# /*
+#  * Operating system (Trampoline) text section.
+#  * Copy of initialized datas are located after this section (-it option).
+#  */
 
-
-+seg ostext     -a apptext   -n ostext    -r4 -it
++seg ostext     -a apptext   -n ostext    -r4   -it
 +grp ostext=.SC_handler
 +grp ostext=.EI_handler
 +grp ostext=.dec_handler
@@ -337,58 +351,23 @@ end foreach
 +grp ostext=.startup
 
 
+#=============================================================================#
+#                                RAM SEGMENTS                                 #
+#=============================================================================#
 
+#===========================================
+#             Initialized Data
 
+#  /* Initialized datas segments are marked with the -id option */
 
-
-+def __sram=0x40000000                       # start address of bss
-+def __eram=0x40000FFF             # ram end address
-+def __memory=pend(relocatable)                        # symbol used by library
-+def __vle__=0                                  # VLE code start address
-+def __sdata=0x40000000
-+def __sbss=pstart(bss_data)            # start address of bss
-
-
-#+def _start=pstart(.startup)
-
-############################### RAM SEGMENTS ##############################
-
-# /*
-#  * code and consts of the operating system (Trampoline).
-#  * this section is not accessible from an untrusted process
-#  */
-
-###### OSTEXT
-
-#  /*
-#   * vars of the operating system (Trampoline)
-#   */
-
-###### OSVARS
+#   /* Operating system (Trampoline) Initialized datas */
 
 +seg osvars     -b sram_base   -n osvars  -r2    -id
 +grp osvars=.osVar
 
-+seg data_garbage   -a osvars  -n data_garbage -r2 -id
-+grp data_garbage=.data
-+grp data_garbage=.sdata
-+grp data_garbage=.sdata2
-+grp data_garbage=.got
-+grp data_garbage=.got1
-+grp data_garbage=.got2
-+grp data_garbage=.fixup
-+grp data_garbage=.gcc_except_table
-+grp data_garbage=.eh_frame
-+grp data_garbage=.jcr
+#   /* Applications Initialized datas */
 
-
-# /*
-#  * os application data
-#  */
-
-###### APPVARS
-
-+seg appvars -a data_garbage -n appvars -r2 -id
++seg appvars -a osvars -n appvars -r2 -id
 
 %
 foreach app in APPLICATIONS do
@@ -397,17 +376,14 @@ foreach app in APPLICATIONS do
 # /* Initialized variables section of OS_APP % !app::NAME % */
   +def ___SEG_START_OS_APP_% !app::NAME %_VAR_RGN=@appvars
 %
-  let first_section := ""
   let section_name := ""
   for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
-    for SECTION_KIND in "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" do
+    for SECTION_KIND in "_POWER_ON_INIT_","_FAST_","_" do
      let pragma_section_kind := section_kind_hash[SECTION_KIND]
      let pragma_data_size := data_size_hash[DATA_SIZE]
-     let section_name     := ".osApV" . pragma_app_name . pragma_section_kind . pragma_data_size
-
-      if first_section == "" then
-        let first_section := section_name
-      end if
+     let section_name     := ".osApV" . pragma_app_name
+                                      . pragma_section_kind
+                                      . pragma_data_size
 %
     +grp appvars=% !section_name %
 %
@@ -419,42 +395,29 @@ foreach app in APPLICATIONS do
 end foreach
 %
 
-# /*
-#  * bss data
-#  */
-
-###### BSS_DATA
-
-#+seg bss_data   -a data_garbage -n bss_data  -r2
-+seg bss_data   -a appvars -n bss_data  -r2
-+grp bss_data=.osVarNoInit
-+grp bss_data=.bss
-+grp bss_data=.sbss
-
-# /*
-#  * private data of processes
-#  */
-
-###### PRIVATE DATA OF PROCESSES
+#   /* Tasks Initialized datas */
 
 %
-let segment_name  := "bss_data"
+let segment_name  := "appvars"
 foreach proc in PROCESSES do
   let pragma_proc_kind := [proc::KIND leftSubString: 2]
   let pragma_proc_name := [("000" . [INDEX string]) rightSubString: 3]
   let previous_segment_name := segment_name
-  let segment_name     := ".Var" . pragma_proc_kind . pragma_proc_name
+  let segment_name     := ".Var" . pragma_proc_kind
+                                 . pragma_proc_name
 %
 # /* Initialized variables section of % !proc::KIND % % !proc::NAME % */
-  +seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r2
+  +seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r2 -id
 
 %
   for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
-    for SECTION_KIND in "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" do
+    for SECTION_KIND in "_POWER_ON_INIT_","_FAST_","_" do
       let pragma_section_kind := section_kind_hash[SECTION_KIND]
       let pragma_data_size := data_size_hash[DATA_SIZE]
-      let section_name := ".Var" . pragma_proc_kind . pragma_proc_name . pragma_section_kind . pragma_data_size
-
+      let section_name := ".Var" . pragma_proc_kind
+                                 . pragma_proc_name
+                                 . pragma_section_kind
+                                 . pragma_data_size
 %
       +grp % !segment_name %=% !section_name %
 %
@@ -480,17 +443,20 @@ loop core from 0 to OS::NUMBER_OF_CORES - 1 do
     let pragma_proc_name := "Id".[[core string] rightSubString: 1]
   end if
   let previous_segment_name := segment_name
-  let segment_name     := ".Var" . pragma_proc_kind . pragma_proc_name
+  let segment_name     := ".Var" . pragma_proc_kind
+                                 . pragma_proc_name
 %
 # /* Initialized variables section of % !proc::KIND % % !proc::NAME % */
-  +seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r2
+  +seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r2 -id
 %
   for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
-    for SECTION_KIND in "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" do
+    for SECTION_KIND in "_POWER_ON_INIT_","_FAST_","_" do
       let pragma_section_kind := section_kind_hash[SECTION_KIND]
       let pragma_data_size := data_size_hash[DATA_SIZE]
-      let section_name := ".Var" . pragma_proc_kind . pragma_proc_name . pragma_section_kind . pragma_data_size
-
+      let section_name := ".Var" . pragma_proc_kind
+                                 . pragma_proc_name
+                                 . pragma_section_kind
+                                 . pragma_data_size
 %
       +grp % !segment_name %=% !section_name %
 %
@@ -503,16 +469,138 @@ loop core from 0 to OS::NUMBER_OF_CORES - 1 do
 end loop
 %
 
-#  /*
-#   * stack of processes
-#   */
+#   /* Remaining (garbage) Initialized datas */
+
++seg data_garbage   -a % !segment_name %  -n data_garbage -r2 -id
++grp data_garbage=.data
++grp data_garbage=.sdata
++grp data_garbage=.sdata2
++grp data_garbage=.got
++grp data_garbage=.got1
++grp data_garbage=.got2
++grp data_garbage=.fixup
++grp data_garbage=.gcc_except_table
++grp data_garbage=.eh_frame
++grp data_garbage=.jcr
+
+#===========================================
+#             Uninitialized Data
+
+#   /* Operating system (Trampoline) Unitialized datas */
+
++seg osvarnoinit     -a data_garbage   -n osvarnoinit  -r2
++grp osvarnoinit=.osVarNoInit
+
+#   /* Applications Unitialized datas */
+
++seg appvarnoinit -a osvarnoinit -n appvarnoinit -r2
 
 %
+foreach app in APPLICATIONS do
+  let pragma_app_name := [("000" . [INDEX string]) rightSubString: 3]
+  let section_name := ""
+  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+    let pragma_section_kind := section_kind_hash["_NOINIT_"]
+    let pragma_data_size := data_size_hash[DATA_SIZE]
+    let section_name     := ".osApV" . pragma_app_name
+                                     . pragma_section_kind
+                                     . pragma_data_size
+%
+    +grp appvarnoinit=% !section_name %
+%
+  end for
+end foreach
+%
+
+#   /* Tasks Unitialized datas */
+
+%
+let segment_name  := "appvarnoinit"
 foreach proc in PROCESSES do
   let pragma_proc_kind := [proc::KIND leftSubString: 2]
   let pragma_proc_name := [("000" . [INDEX string]) rightSubString: 3]
   let previous_segment_name := segment_name
-  let segment_name     := ".Stk" . pragma_proc_kind . pragma_proc_name
+  let segment_name     := ".VarNI" . pragma_proc_kind
+                                   . pragma_proc_name
+%
+# /* Unitialized variables section of % !proc::KIND % % !proc::NAME % */
+  +seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r2
+
+%
+  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+    let pragma_section_kind := section_kind_hash["_NOINIT_"]
+    let pragma_data_size := data_size_hash[DATA_SIZE]
+    let section_name := ".Var" . pragma_proc_kind
+                               . pragma_proc_name
+                               . pragma_section_kind
+                               . pragma_data_size
+%
+      +grp % !segment_name %=% !section_name %
+%
+  end for
+%
+#  +def ___SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pstart(% !segment_name %)
+#  +def ___SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pend(% !segment_name %)
+%
+end foreach
+%
+
+%
+loop core from 0 to OS::NUMBER_OF_CORES - 1 do
+  let proc::KIND := "Task"
+  let pragma_proc_kind := "T"
+  let pragma_proc_name := ""
+  if OS::NUMBER_OF_CORES == 1 then
+    let proc::NAME := "IDLE_TASK"
+    let pragma_proc_name := "Idl"
+  else
+    let proc::NAME := "IDLE_TASK_".[core string]
+    let pragma_proc_name := "Id".[[core string] rightSubString: 1]
+  end if
+  let previous_segment_name := segment_name
+  let segment_name     := ".VarNI" . pragma_proc_kind
+                                   . pragma_proc_name
+%
+# /* Unitialized variables section of % !proc::KIND % % !proc::NAME % */
+  +seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r2
+%
+  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+    let pragma_section_kind := section_kind_hash["_NOINIT_"]
+    let pragma_data_size := data_size_hash[DATA_SIZE]
+    let section_name := ".Var" . pragma_proc_kind
+                               . pragma_proc_name
+                               . pragma_section_kind
+                               . pragma_data_size
+%
+      +grp % !segment_name %=% !section_name %
+%
+  end for
+%
+#  +def ___SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pstart(% !segment_name %)
+#  +def ___SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pend(% !segment_name %)
+%
+end loop
+%
+
+#   /* Remaining (garbage) Unitialized datas */
+
++seg bss_garbage   -a % !segment_name % -n bss_garbage  -r2
++grp bss_garbage=.bss
++grp bss_garbage=.sbss
+
+#===========================================
+#             Stacks
+
+# /* Tasks stacks */
+
+%
+let segment_name := "bss_garbage"
+foreach proc in PROCESSES do
+  let pragma_proc_kind := [proc::KIND leftSubString: 2]
+  let pragma_proc_name := [("000" . [INDEX string]) rightSubString: 3]
+  let previous_segment_name := segment_name
+  let segment_name     := ".Stk" . pragma_proc_kind
+                                 . pragma_proc_name
 %
 # /* Section of stack of % !proc::KIND % % !proc::NAME %  */
   +seg % !segment_name %  -a % !previous_segment_name % -n % !segment_name % -r2
@@ -536,7 +624,8 @@ loop core from 0 to OS::NUMBER_OF_CORES - 1 do
     let pragma_proc_name := "Id".[[core string] rightSubString: 1]
   end if
   let previous_segment_name := segment_name
-  let segment_name     := ".Stk" . pragma_proc_kind . pragma_proc_name
+  let segment_name     := ".Stk" . pragma_proc_kind
+                                 . pragma_proc_name
 %
 # /* Section of stack of % !proc::KIND % % !proc::NAME %  */
   +seg % !segment_name %  -a % !previous_segment_name % -n % !segment_name % -r2
@@ -547,17 +636,17 @@ loop core from 0 to OS::NUMBER_OF_CORES - 1 do
 end loop
 %
 
-###### COMMENT
+#===========================================
+#             Garbage
 
-+seg comment   -a % !segment_name %              -n comment -r2
++seg comment   -a % !segment_name % -n comment -r2
 +grp comment=.comment
-
-###### RELOCATABLE
 
 +seg relocatable -a comment -n relocatable -r2
 +grp relocatable=.rela.*
 
-###### COMPILER ADDRESS DESIGNATIONS
+#===========================================
+#             Definitions
 
 +def __stack_addr=stack_pend
 +def __stack_end=stack_base
@@ -595,19 +684,14 @@ end loop
 
 +def L2SRAM_LOCATION=sram_base
 
-#+def __SDA_BASE_=pstart(.sdata)
-#+def __SDA2_BASE_=pstart(.sdata2)
-+def __SDA_BASE_=pend(apptext)                         # data pointer value
-+def __SDA2_BASE_=pend(apptext)                         # data pointer value
++def __sram=0x40000000
++def __eram=0x4000FFFF                       # ram end address
++def __sdata=pstart(osvars)
++def __sbss=pstart(osvarnoinit)                 # start address of bss
 
+#===========================================
+#             Include files
 
-
-
-
-
-
-
-
-########### INCLUDE FILES #########
 @*
+
 

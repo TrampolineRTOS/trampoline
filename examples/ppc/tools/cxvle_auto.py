@@ -9,30 +9,33 @@ import subprocess
 
 C_COMMAND = "wine " + os.environ["COSMIC_PATH"] + "/cxvle.exe"
 print (C_COMMAND)
-C_CONST_FLAGS = (" -l"          # Create .lst files usefull for debug
-                 " +debug"
-#                 " +modv"
-                 " +warn"
-                 " +rev"
-                 " -p -ku"
-                 " -v"
+C_CONST_FLAGS = (
+                 " -l"          # Creates .lst files usefull for debug
+                 " +debug"      # debug flags
+                 " +warn"       # enable warnings
+                 " -p -ku"      # keep unused static
+                 " -v"          # verbose
                  " -no"         # FIXME : Optimizer disabled
-                 " -ep"         # Enable preprocessor during asm compilation
+#                 " +rev"        # bitfields MSB to LSB
+#                 " -ep"         # Enable preprocessor during asm compilation
                 )
 
 ASM_PREPROCESS_CMD = "wine " + os.environ["COSMIC_PATH"] + "/cpvle.exe"
-ASM_PREPROCESS_FLAGS = (" -i ~/mybin/wine/cosmic/HPPC"
-                        " -u"
-                        " -m0x3030"
-                        " -hmodv.h"
-                        " -rb -x -ecq"
-                        " -l"
-                        " -d'__VERS__=\"V4.3.6\"'"
+ASM_PREPROCESS_FLAGS = (
+                        " -x"                   # debug flags
+                        " -e"                   # preprocess only
+                        " -l"                   # Output line info
+#                        " -u"                   # plain char is unsigned
+#                        " -m0x3030"             # variables @far
+#                        " -rb"                  # bitfields MSB to LSB
                        )
-ASM_REMOVE_COMMENTS = "cpp -P"      # FIXME : Ugly
+# FIXME : we're using cpp to remove C comments type from asm files because the
+#         cosmic preprocess cpvle doesn't support that.
+ASM_REMOVE_COMMENTS = "cpp -P"
 ASM_ASSEMBLER_CMD   = "wine " + os.environ["COSMIC_PATH"] + "/cavle.exe"
-ASM_ASSEMBLER_FLAGS = (" -l"
-                       " -x"
+ASM_ASSEMBLER_FLAGS = (
+                       " -l"                    # Output line info
+                       " -x"                    # Debug flags
                       )
 
 ########################### COMPILING FUNCTIONS ###########################
