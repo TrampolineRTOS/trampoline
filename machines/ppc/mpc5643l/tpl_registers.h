@@ -32,254 +32,15 @@
 
 #include "tpl_os_std_types.h"
 
-/* FIXME Clean this */
 /*=============================================================================
- * Register number for special purpose registers
- */
-#define spr_IVPR   63
-#define spr_IVOR0  400
-#define spr_IVOR1  401
-#define spr_IVOR2  402
-#define spr_IVOR3  403
-#define spr_IVOR4  404
-#define spr_IVOR5  405
-#define spr_IVOR6  406
-#define spr_IVOR7  407
-#define spr_IVOR8  408
-#define spr_IVOR10  410
-#define spr_IVOR11  411
-#define spr_IVOR12  412
-#define spr_IVOR13  413
-#define spr_IVOR14  414
-#define spr_IVOR15  415
-#define spr_IVOR32  528
-#define spr_IVOR33  529
-#define spr_IVOR34  530
-#define spr_SRR0    26
-#define spr_SRR1    27
-#define spr_PIR     286
-#define spr_TBU     284
-#define spr_TBL     285
-#define spr_DEC     22
-#define spr_DECAR     54
-#define spr_TSR     336
-#define spr_TCR     340
-#define spr_HID0    1008
-#define spr_MAS0    624
-#define spr_MAS1    625
-#define spr_MAS2    626
-#define spr_MAS3    627
-
-/*
  * External interrupt bit mask in MSR
  */
 #define EE_BIT_1  0x8000
 #define RI_BIT_1  0x0002
 
-
-
-
-/*=============================================================================
- * MPU registers
- */
-/* Base address of the MPU */
-
-#define MPUBase 0xFFF10000
-#define TPL_MPU0_Base   MPUBase
-#define TPL_MPU1_Base   0x8FF10000
-
-
-/* MPU control/error status register */
-#define MPU_CESR  0x00
-#define MPU_CESR_SPERR_MASK 0xE0000000
-
-/* MPU error address register, slave port 0 */
-#define MPU_EAR0  0x10
-
-/* MPU error detail register, slave port 0 */
-#define MPU_EDR0  0x14
-
-/* MPU error address register, slave port 1 */
-#define MPU_EAR1  0x18
-
-/* MPU error detail register, slave port 1 */
-#define MPU_EDR1  0x1C
-
-/* MPU error address register, slave port 2 */
-#define MPU_EAR2  0x20
-
-/* MPU error detail register, slave port 2 */
-#define MPU_EDR2  0x24
-
-/*
- * MPU Region descriptor 0
- */
-#define MPU_RGD0_start  0x400
-#define MPU_RGD0_end    0x404
-#define MPU_RGD0_access 0x408
-#define MPU_RGD0_pid    0x40C
-/*
- * MPU Region descriptor 1
- */
-#define MPU_RGD1_start  0x410
-#define MPU_RGD1_end    0x414
-#define MPU_RGD1_access 0x418
-#define MPU_RGD1_pid    0x41C
-/*
- * MPU Region descriptor 2
- */
-#define MPU_RGD2_start  0x420
-#define MPU_RGD2_end    0x424
-#define MPU_RGD2_access 0x428
-#define MPU_RGD2_pid    0x42C
-/*
- * MPU Region descriptor 3
- */
-#define MPU_RGD3_start  0x430
-#define MPU_RGD3_end    0x434
-#define MPU_RGD3_access 0x438
-#define MPU_RGD3_pid    0x43C
-
-/*
- * MPU Region descriptor 4
- */
-#define MPU_RGD4_start  0x440
-#define MPU_RGD4_end    0x444
-#define MPU_RGD4_access 0x448
-#define MPU_RGD4_pid    0x44C
-
-/*
- * MPU Region descriptor 5
- */
-#define MPU_RGD5_start  0x450
-#define MPU_RGD5_end    0x454
-#define MPU_RGD5_access 0x458
-#define MPU_RGD5_pid    0x45C
-
-/*
- * MPU Region descriptor 6
- */
-#define MPU_RGD6_start  0x460
-#define MPU_RGD6_end    0x464
-#define MPU_RGD6_access 0x468
-#define MPU_RGD6_pid    0x46C
-
-/*
- * MPU Region descriptor 7
- */
-#define MPU_RGD7_start  0x470
-#define MPU_RGD7_end    0x474
-#define MPU_RGD7_access 0x478
-#define MPU_RGD7_pid    0x47C
-
-/*
- * MPU Region descriptor 8
- */
-#define MPU_RGD8_start  0x480
-#define MPU_RGD8_end    0x484
-#define MPU_RGD8_access 0x488
-#define MPU_RGD8_pid    0x48C
-
-/*
- * MPU Region descriptor 9
- */
-#define MPU_RGD9_start  0x490
-#define MPU_RGD9_end    0x494
-#define MPU_RGD9_access 0x498
-#define MPU_RGD9_pid    0x49C
-
-/*
- * MPU Region descriptor 10
- */
-#define MPU_RGD10_start  0x4A0
-#define MPU_RGD10_end    0x4A4
-#define MPU_RGD10_access 0x4A8
-#define MPU_RGD10_pid    0x4AC
-
-
-
-/*=============================================================================
- * Interrupts registers
- */
-/* Base address of the INTC */
-#define TPL_INTC_Base         0xFFF48000
-#define TPL_INTC0_Base        TPL_INTC_Base
-#define TPL_INTC1_Base        0x8FF48000
-
-
-/*
- * INTC current priority register
- */
-#define TPL_INTC_CPR_PRC0    0x08
-#define TPL_INTC_CPR_PRC1    0x0C
-
-
-/*
- * INTC interrupt acknowledge register
- */
-#define TPL_INTC_IACKR_PRC0  0x10
-#define TPL_INTC_IACKR_PRC1  0x14
-
-
-/*
- * INTC end of interrupt register
- */
-#define TPL_INTC_EOIR_PRC0   0x18
-#define TPL_INTC_EOIR_PRC1   0x1C
-
-
-/*
- * INTC priority select register
- */
-#define TPL_INTC_PSR         0x40
-
-
-/*
- * INTC software set/clear interrupt request register
- */
-#define TPL_INTC_SSCIR03     0x20
-#define TPL_INTC_SSCIR47     0x24
-
-
-#define TPL_INTC_SET_7       (0x1<<1)
-#define TPL_INTC_CLR_7       (0x1<<0)
-#define TPL_INTC_SET_6       (0x1<<9)
-#define TPL_INTC_CLR_6       (0x1<<8)
-#define TPL_INTC_SET_5       (0x1<<17)
-#define TPL_INTC_CLR_5       (0x1<<16)
-#define TPL_INTC_SET_4       (0x1<<25)
-#define TPL_INTC_CLR_4       (0x1<<24)
-#define TPL_INTC_SET_3       (0x1<<1)
-#define TPL_INTC_CLR_3       (0x1<<0)
-#define TPL_INTC_SET_2       (0x1<<9)
-#define TPL_INTC_CLR_2       (0x1<<8)
-#define TPL_INTC_SET_1       (0x1<<17)
-#define TPL_INTC_CLR_1       (0x1<<16)
-#define TPL_INTC_SET_0       (0x1<<25)
-#define TPL_INTC_CLR_0       (0x1<<24)
-
-
-
-/*=============================================================================
- * PIT registers
- */
-#define PIT_BASE_ADDR   0xC3FF0000
-#define PIT_MCR_ADDR    0x0000
-#define PIT_LDVAL_ADDR  0x0100
-#define PIT_CVAL_ADDR   0x0104
-#define PIT_TCTRL_ADDR  0x0108
-#define PIT_TFLG_ADDR   0x010C
-
-
 /*=============================================================================
  * SEMA4 registers
  */
-/* Base address of the SEMA4 */
-#define SEMA4_BASE      0xFFF24000
-#define TPL_SEMA40_Base SEMA4_BASE
-#define TPL_SEMA41_Base 0x8FF24000
-
-#define SEMA4_GATES     0x0000
 
 #define TPL_GATE_KERNEL 0
 #define TPL_GATE_LOCK   1
@@ -289,18 +50,131 @@
 #define TPL_GATE_CPU1_LOCK 0x2
 #define TPL_GATE_UNLOCK    0x0
 
+struct _tpl_sema4 {
+	uint8 GATE[16];
+	uint32 reserved_1[12];
+	uint32 CP0INE;
+	uint32 reserved_2[1];
+	uint32 CP1INE;
+	uint32 reserved_3[13];
+	uint32 CP0NTF;
+	uint32 reserved_4;
+	uint32 CP1NTF;
+	uint32 reserved_5[29];
+	uint32 RSTGT;
+	uint32 RSTNTF;
+	};
+
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+extern CONSTP2VAR(uint32, OS_CONST, OS_VAR) tpl_sem[NUMBER_OF_CORES];
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+/* Base address of the SEMA4, these are stored in tpl_sem[] array defined in
+ * tpl_app_config.c indexed by the core id
+ */
+#define SEMA4_BASE      0xFFF24000
+#define TPL_SEMA40_Base SEMA4_BASE
+#define TPL_SEMA41_Base 0x8FF24000
+
+/* Simplify accesses to the structure. i=core_id */
+#define TPL_SEMA4(i)           (*(volatile struct _tpl_sema4 *) tpl_sem[i])
+
+/*=============================================================================
+ * Interrupts registers
+ */
+
+#define INTC_SSCIR_CORE0_SW_ISR    TPL_INTERCORE_IT_0
+#define INTC_SSCIR_CORE1_SW_ISR    TPL_INTERCORE_IT_1
+#define INTC_SSCIR_SET       (uint8)(0x1 << 1)
+#define INTC_SSCIR_CLR       (uint8)(0x1 << 0)
+
+struct _tpl_intc {
+    uint32 BCR;             /* Block Configuration Register             0x00 */
+    uint32 reserved_1;      /*                                          0x04 */
+    uint32 CPR;             /* Current Priority Register                0x08 */
+    uint32 reserved_2;      /*                                          0x0C */
+    uint32 IACKR;           /* Interrupt Acknowledge Register           0x10 */
+    uint32 reserved_3;      /*                                          0x14 */
+    uint32 EOIR;            /* End Of Interrupt Register                0x18 */
+    uint32 reserved_4;      /*                                          0x1C */
+    uint8  SSCIR[8];        /* Software Set/Clear Interrupt Register    0x20 */
+    uint32 reserved_5[6];   /*                                          0x28 */
+    uint8  PSR[256];        /* Priority Select Register                 0x40 */
+};
+
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+extern CONSTP2VAR(uint32, OS_CONST, OS_VAR) tpl_intc[NUMBER_OF_CORES];
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+/* Base address of the INTC, these are stored in tpl_intc[] array defined in
+ * tpl_app_config.c indexed by the core id
+ */
+#define TPL_INTC_Base         0xFFF48000
+#define TPL_INTC0_Base        TPL_INTC_Base
+#define TPL_INTC1_Base        0x8FF48000
+
+/* Simplify accesses to the structure. i=core_id */
+#define TPL_INTC(i)           (*(volatile struct _tpl_intc *) tpl_intc[i])
+
+/*=============================================================================
+ * PIT registers
+ */
+#define PIT_MCR_FRZ     ((uint32)0x1<<0U)
+#define PIT_MCR_MDIS    ((uint32)0x1<<1U)
+#define PIT_CR_TEN      ((uint32)0x1<<0U)
+#define PIT_CR_TIE      ((uint32)0x1<<1U)
+#define PIT_FR_TIF      ((uint32)0x1<<0U)
+
+/* Simplify accesses to the channels registers */
+#define PIT_LVR(chan)   TPL_PIT.CHANNEL[chan].LVR
+#define PIT_CVR(chan)   TPL_PIT.CHANNEL[chan].CVR
+#define PIT_CR(chan)    TPL_PIT.CHANNEL[chan].CR
+#define PIT_FR(chan)    TPL_PIT.CHANNEL[chan].FR
+
+struct _tpl_timer_channel {
+    uint32 LVR;                 /* Load Value Register                 0x0   */
+    uint32 CVR;                 /* Current Value Register              0x4   */
+    uint32 CR;                  /* Control Register                    0x8   */
+    uint32 FR;                  /* Flag Register                       0xC   */
+};
+
+struct _tpl_pit {
+    uint32 MCR;                 /* Module Control Register     0x000 - 0x004 */
+    uint32 reserved_1[63];      /*                             0x004 - 0x100 */
+    struct _tpl_timer_channel CHANNEL[4];   /* Pit Channels    0x100 - 0x140 */
+};
+
+#define TPL_PIT (*(volatile struct _tpl_pit *) 0xC3FF0000)
+
 /*=============================================================================
  * SSCM registers
  */
-#define SSCM_BASE       0xC3FD8000
-#define SSCM_GPIO_ADDR  0x0600
-#define SSCM_PCR_ADDR   0x040
-#define SSCM_DPM_BOOT        0x18
-#define SSCM_DPM_BOOT_KEY    0x1C
+#define SSCM_DPMBOOT_VLE    0x1UL << 1
+#define SSCM_DPMKEY_KEY1    (uint16) 0x5AF0
+#define SSCM_DPMKEY_KEY2    (uint16) ~SSCM_DPMKEY_KEY1
 
-#define TPL_BOOT_KEY_1  0x5AF0
-#define TPL_BOOT_KEY_2  0xA50F
-/* END FIXME */
+struct _tpl_sscm {
+    uint16 STATUS;          /* System Status                           0x00  */
+    uint16 MEMCONFIG;       /* System Memory and ID                    0x02  */
+    uint16 reserved_1;      /*                                         0x04  */
+    uint16 ERROR;           /* Error Configuration                     0x06  */
+    uint16 DEBUGPORT;       /* Debug Status Port                       0x08  */
+    uint16 reserved_2;      /*                                         0x0A  */
+    uint32 PWCRH;           /* Password Comparison Register High       0x0C  */
+    uint32 PWCRL;           /* Password Comparison Register Low        0x10  */
+    uint32 reserved_3;      /*                                         0x14  */
+    uint32 DPMBOOT;         /* DPM Boot Register                       0x18  */
+    uint32 DPMKEY;          /* DPM Boot Key Register                   0x1C  */
+    uint32 UOSR;            /* User Option Status Register             0x20  */
+    uint32 CR;              /* Control Register                        0x24  */
+    };
+
+#define TPL_SSCM (*(volatile struct _tpl_sscm *) 0xC3FD8000UL)
+
 
 /*=============================================================================
  * MC_ME : Mode Entry Module
@@ -320,8 +194,8 @@
 #define ME_MCTL_TGT_RUN3    (((uint32) 7) << ME_MCTL_TGT_OFFSET)
 #define ME_MCTL_TGT_HALT    (((uint32) 8) << ME_MCTL_TGT_OFFSET)
 #define ME_MCTL_TGT_STOP    (((uint32) 10) << ME_MCTL_TGT_OFFSET)
-#define ME_MCTL_KEY1        0x5AF0
-#define ME_MCTL_KEY2        0xA50F
+#define ME_MCTL_KEY1        (uint16) 0x5AF0
+#define ME_MCTL_KEY2        (uint16) ~ME_MCTL_KEY1
 #define ME_PCTL_PIT         92
 #define ME_PCTL_
 #define ME_PC0_CONFIGURATION 0
@@ -334,51 +208,51 @@
 #define ME_PC7_CONFIGURATION 7
 #define ME_IS_IMTC      0x1     /* Mode transition complete interrupt */
 
-struct __me__ {
-	uint32 GS;			/* Global Status */
-	uint32 MCTL;			/* Mode Control */
-	uint32 ME;			/* Mode Enable Register */
-	uint32 IS;			/* Interrupt Status Register */
-	uint32 IM;			/* Interrupt Mask Register */
-	uint32 IMTS;			/* Invalid Mode Transition Status Reg */
-	uint32 DMTS;			/* Debug Mode Transition Status Reg */
-	uint32 reserved_0;
-	uint32 RESET;			/* Reset Mode Configuration Register */
-	uint32 TEST;			/* Test Mode Configuration Register */
-	uint32 SAFE;			/* Safe Mode Configuration Register */
-	uint32 DRUN;			/* DRUN Mode Configuration Register */
-	uint32 RUN[4];		/* RUN Mode Configuration Reg 0-4 */
-	uint32 HALT0;			/* HALT0 Mode Configuration Register */
-	uint32 reserved_1;
-	uint32 STOP0;			/* STOP0 Mode Configuration Register */
-	uint32 reserved_2[5];
-	uint32 PS[3];			/* Peripheral Status Register 0-3 */
-	uint32 reserved_3[5];
-	uint32 RUNPC[8];		/* Peripheral Configuration Reg 0-7 */
-	uint32 LPPC[8];		/* Low Power Periph Config Reg 0-7 */
-	uint8  PCTL[93];		/* Peripheral Control Register */
-	};
+struct _tpl_me {
+    uint32 GS;              /* Global Status                            0x00 */
+    uint32 MCTL;            /* Mode Control                             0x04 */
+    uint32 ME;              /* Mode Enable                              0x08 */
+    uint32 IS;              /* Interrupt Status                         0x0C */
+    uint32 IM;              /* Interrupt Mask                           0x10 */
+    uint32 IMTS;            /* Invalid Mode Transition Status           0x14 */
+    uint32 DMTS;            /* Debug Mode Transition Status             0x18 */
+    uint32 reserved_0;      /*                                          0x1C */
+    uint32 RESET_MC;        /* Reset Mode Configuration                 0x20 */
+    uint32 TEST_MC;         /* Test Mode Configuration                  0x24 */
+    uint32 SAFE_MC;         /* Safe Mode Configuration                  0x28 */
+    uint32 DRUN_MC;         /* DRUN Mode Configuration                  0x2C */
+    uint32 RUN_MC[4];       /* RUN Mode Configuration                   0x30 */
+    uint32 HALT0_MC;        /* HALT0 Mode Configuration                 0x40 */
+    uint32 reserved_1;      /*                                          0x44 */
+    uint32 STOP0_MC;        /* STOP0 Mode Configuration                 0x48 */
+    uint32 reserved_2[5];   /*                                          0x4C */
+    uint32 PS[3];           /* Peripheral Status                        0x60 */
+    uint32 reserved_3[5];   /*                                          0x6C */
+    uint32 RUN_PC[8];       /* Run Peripheral Configuration             0x80 */
+    uint32 LP_PC[8];        /* Low-Power Peripheral Configuration       0xA0 */
+    uint8  PCTL[92];        /* Peripheral Control                       0xC0 */
+    };
 
-#define ME (*(volatile struct __me__ *) 0xC3FDC000UL)
+#define TPL_ME (*(volatile struct _tpl_me *) 0xC3FDC000UL)
 
 /*=============================================================================
  * RGM : Reset Generation Module
  */
 
-struct __rgm__ {
-	uint16 FES;			/* Functional Event Status */
-	uint16 DES;			/* Destructive Event Status */
-	uint16 FERD;			/* Functional Event Reset Disable */
-	uint16 DERD;			/* Destructive Event Reset Disable */
-	uint16 reserved_0[4];
-	uint16 FEAR;			/* Functional Event Alternate Req */
-	uint16 reserved_1[3];
-	uint16 FESS;			/* Functional Event Short Sequence */
-	uint16 reserved_2;
-	uint16 FBRE;			/* Functional Bidirect Reset Enable */
-	};
+struct _tpl_rgm {
+    uint16 FES;             /* Functional Event Status                  0x00 */
+    uint16 DES;             /* Destructive Event Status                 0x02 */
+    uint16 FERD;            /* Functional Event Reset Disable           0x04 */
+    uint16 DERD;            /* Destructive Event Reset Disable          0x06 */
+    uint16 reserved_0[4];   /*                                          0x08 */
+    uint16 FEAR;            /* Functional Event Alternate Request       0x10 */
+    uint16 reserved_1[3];   /*                                          0x12 */
+    uint16 FESS;            /* Functional Event Short Sequence          0x18 */
+    uint16 reserved_2;      /*                                          0x1A */
+    uint16 FBRE;            /* Functional Bidirectional Reset Enable    0x1C */
+    };
 
-#define RGM (*(volatile struct __rgm__ *) 0xC3FE4000UL)
+#define TPL_RGM (*(volatile struct _tpl_rgm *) 0xC3FE4000UL)
 
 #endif
 

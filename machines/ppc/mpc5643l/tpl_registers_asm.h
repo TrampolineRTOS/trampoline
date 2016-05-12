@@ -73,9 +73,6 @@
 #define EE_BIT_1  0x8000
 #define RI_BIT_1  0x0002
 
-
-
-
 /*=============================================================================
  * MPU registers
  */
@@ -254,49 +251,6 @@
 #define TPL_INTC_CLR_1       (0x1<<16)
 #define TPL_INTC_SET_0       (0x1<<25)
 #define TPL_INTC_CLR_0       (0x1<<24)
-
-
-
-/*=============================================================================
- * PIT registers
- */
-#define PIT_BASE_ADDR   0xC3FF0000
-#define PIT_MCR_ADDR    0x0000
-#define PIT_LDVAL_ADDR  0x0100
-#define PIT_CVAL_ADDR   0x0104
-#define PIT_TCTRL_ADDR  0x0108
-#define PIT_TFLG_ADDR   0x010C
-
-
-/*=============================================================================
- * SEMA4 registers
- */
-/* Base address of the SEMA4 */
-#define SEMA4_BASE      0xFFF24000
-#define TPL_SEMA40_Base SEMA4_BASE
-#define TPL_SEMA41_Base 0x8FF24000
-
-#define SEMA4_GATES     0x0000
-
-#define TPL_GATE_KERNEL 0
-#define TPL_GATE_LOCK   1
-#define TPL_GATE_SPIN   2
-
-#define TPL_GATE_CPU0_LOCK 0x1
-#define TPL_GATE_CPU1_LOCK 0x2
-#define TPL_GATE_UNLOCK    0x0
-
-/*=============================================================================
- * SSCM registers
- */
-#define SSCM_BASE       0xC3FD8000
-#define SSCM_GPIO_ADDR  0x0600
-#define SSCM_PCR_ADDR   0x040
-#define SSCM_DPM_BOOT        0x18
-#define SSCM_DPM_BOOT_KEY    0x1C
-
-#define TPL_BOOT_KEY_1  0x5AF0
-#define TPL_BOOT_KEY_2  0xA50F
 
 #endif
 

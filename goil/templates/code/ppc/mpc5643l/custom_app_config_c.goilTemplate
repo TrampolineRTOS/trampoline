@@ -4,7 +4,7 @@
 #include "tpl_memmap.h"
 
 /* f=120000000 Hz , tick=0.001 s */
-VAR(uint32, OS_VAR) tpl_tick_init_value = 119999;
+VAR(uint32, OS_VAR) tpl_tick_init_value = TPL_PIT_RATIO;
 
 VAR(uint32, OS_VAR) tpl_os_it_level_buff = 0;
 VAR(uint32, OS_VAR) tpl_os_it_level = 3;

@@ -77,6 +77,10 @@
 
 VAR(uint32, OS_VAR)   tpl_current_date[NUMBER_OF_CORES];
 
+#if NUMBER_OF_CORES > 1
+extern FUNC(void, OS_CODE) tpl_slave_core_startup();
+#endif
+
 #if WITH_MULTICORE == YES
 extern volatile VAR(uint32, OS_VAR) tpl_locking_depth[NUMBER_OF_CORES];
 extern VAR(uint32, OS_VAR) tpl_cpt_os_task_lock[NUMBER_OF_CORES];
@@ -87,16 +91,6 @@ extern VAR(uint32, OS_VAR) tpl_cpt_os_task_lock;
 
 #define OS_STOP_SEC_VAR_32BIT
 #include "tpl_memmap.h"
-
-
-#if WITH_MULTICORE == YES
-#define OS_START_SEC_CONST_UNSPECIFIED
-#include "tpl_memmap.h"
-// XXX : Test if ok, if not modify SEMA4BASE with tpl_sem[core_id]
-STATIC CONSTP2VAR(uint8, OS_CONST, AUTOMATIC) tpl_gate = (uint8*) (SEMA4_BASE+SEMA4_GATES);
-#define OS_STOP_SEC_CONST_UNSPECIFIED
-#include "tpl_memmap.h"
-#endif
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -371,7 +365,6 @@ FUNC(tpl_time, OS_CODE) tpl_get_local_current_date(void)
 #endif
 
 
-
 #if WITH_MULTICORE == YES
 
 /**
@@ -383,17 +376,16 @@ FUNC(void, OS_CODE) tpl_start_core(
   CONST(CoreIdType, AUTOMATIC) core_id)
 {
 
-  if(core_id!=OS_CORE_ID_MASTER)
+  if(core_id!=0)
   {
     /* write slave core start adresse */
-    *(uint32 *)(SSCM_BASE+SSCM_DPM_BOOT) = (uint32)tpl_slave_core_startup | 0x02UL;
+    TPL_SSCM.DPMBOOT = (uint32)tpl_slave_core_startup | SSCM_DPMBOOT_VLE;
 
     /* write key and inverted key to start the core */
-    *(uint32 *)(SSCM_BASE+SSCM_DPM_BOOT_KEY) = TPL_BOOT_KEY_1;
-    *(uint32 *)(SSCM_BASE+SSCM_DPM_BOOT_KEY) = TPL_BOOT_KEY_2;
+    TPL_SSCM.DPMKEY = SSCM_DPMKEY_KEY1;
+    TPL_SSCM.DPMKEY = SSCM_DPMKEY_KEY2;
   }
 }
-
 
 /**
  * @internal
@@ -407,11 +399,11 @@ FUNC(void, OS_CODE) tpl_send_intercore_it(
   /* set software interrupt flag on the given core */
   if(core_id==0)
   {
-    *(uint32*)((uint8*)tpl_intc[core_id] + (uint8)TPL_INTC_SSCIR47) = TPL_CORE_0_SW_ISR_SET;
+    TPL_INTC(core_id).SSCIR[INTC_SSCIR_CORE0_SW_ISR] = INTC_SSCIR_SET;
   }
   else
   {
-    *(uint32*)((uint8*)tpl_intc[core_id] + (uint8)TPL_INTC_SSCIR47) = TPL_CORE_1_SW_ISR_SET;
+    TPL_INTC(core_id).SSCIR[INTC_SSCIR_CORE1_SW_ISR] = INTC_SSCIR_SET;
   }
 
 }
@@ -430,11 +422,11 @@ FUNC(boolean, OS_CODE) tpl_receive_intercore_it(void)
   /* clear interrupt flag */
   if(core_id==0)
   {
-    *(uint32*)((uint8*)tpl_intc[core_id] + (uint8)TPL_INTC_SSCIR47) = TPL_CORE_0_SW_ISR_CLR;
+    TPL_INTC(core_id).SSCIR[INTC_SSCIR_CORE0_SW_ISR] = INTC_SSCIR_CLR;
   }
   else
   {
-    *(uint32*)((uint8*)tpl_intc[core_id] + (uint8)TPL_INTC_SSCIR47) = TPL_CORE_1_SW_ISR_CLR;
+    TPL_INTC(core_id).SSCIR[INTC_SSCIR_CORE1_SW_ISR] = INTC_SSCIR_CLR;
   }
 
   TPL_KERN(core_id).need_switch = NEED_SWITCH | NEED_SAVE;
@@ -539,14 +531,14 @@ STATIC FUNC(void, OS_CODE) tpl_get_spin_lock(
   /* wait until the lock is free */
   do
   {
-    current_value = tpl_gate[lock];
+    current_value = TPL_SEMA4(0).GATE[lock];
   } while(TPL_GATE_UNLOCK != current_value);
 
   /* try to get the lock, until we have it */
   do
   {
-    tpl_gate[lock] = core_lock;
-    current_value = tpl_gate[lock];
+    TPL_SEMA4(0).GATE[lock] = core_lock;
+    current_value = TPL_SEMA4(0).GATE[lock];
   } while(current_value != core_lock);
 
 
@@ -576,11 +568,11 @@ STATIC FUNC(void, OS_CODE) tpl_release_spin_lock(
   }
 
   /* check we actually have the lock */
-  current_value = tpl_gate[lock];
+  current_value = TPL_SEMA4(0).GATE[lock];
   if(current_value==core_lock)
   {
     /* release the lock */
-    tpl_gate[lock] = TPL_GATE_UNLOCK;
+    TPL_SEMA4(0).GATE[lock] = TPL_GATE_UNLOCK;
   }
 
 }

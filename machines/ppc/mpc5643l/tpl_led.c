@@ -1,4 +1,7 @@
 #include "tpl_os_std_types.h"
+#include "Compiler.h"
+
+#define LED_COUNT  4
 
 /*
  * LED0 => GPIO52
@@ -6,7 +9,16 @@
  * LED2 => GPIO54
  * LED3 => GPIO55
  */
-#define LED_COUNT  4
+#define LED1    52
+#define LED2    53
+#define LED3    54
+#define LED4    55
+
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+STATIC CONST(uint8, OS_CONST) led_tab[LED_COUNT] = {LED1, LED2, LED3, LED4};
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -44,13 +56,6 @@ struct __siu__ {
     };
 
 #define SIU (* (volatile struct __siu__*) 0xC3F90000UL)
-
-#define LED1    52
-#define LED2    53
-#define LED3    54
-#define LED4    55
-
-uint8 led_tab[LED_COUNT] = {LED1, LED2, LED3, LED4};
 
 void initLed()
 {

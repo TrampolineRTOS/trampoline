@@ -43,6 +43,8 @@ CPU mpc5643l_interrupt {
     IT_TABLE_SIZE = 256;
   };
 
+  /* Software interrupts */
+
   INTERRUPT IRQ0    { ID = 0; };
   INTERRUPT IRQ1    { ID = 1; };
   INTERRUPT IRQ2    { ID = 2; };
@@ -51,6 +53,8 @@ CPU mpc5643l_interrupt {
   INTERRUPT IRQ5    { ID = 5; }; // Intercore Reserved
   INTERRUPT IRQ6    { ID = 6; }; // Intercore Reserved
   INTERRUPT IRQ7    { ID = 7; };
+
+  /* Hardware interrupts */
 
   INTERRUPT pit_ch0 { ID = 59; };
   INTERRUPT pit_ch1 { ID = 60; };
@@ -105,7 +109,6 @@ CPU mpc5643l_interrupt {
 
   PLATFORM_FILES mpc5643l {
     PATH = "ppc/mpc5643l";
-    CFILE = "tpl_slave_core_startup.s";
     CFILE = "tpl_boot_init.s";
     CFILE = "tpl_led.c";                        // debug
   };

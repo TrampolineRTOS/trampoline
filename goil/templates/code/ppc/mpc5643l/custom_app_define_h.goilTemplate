@@ -85,3 +85,17 @@ end if
  */
 #define WITH_FLOAT     % !yesNo(OS::USEFLOAT) %
 
+/*-----------------------------------------------------------------------------
+ * Intercore IT
+ */
+%
+let irqs := mapof INTERRUPT by NAME
+
+if exists INTERCORE_INTERRUPT then
+  foreach it in INTERCORE_INTERRUPT do
+%#define TPL_INTERCORE_IT_% !INDEX %   % !irqs[it::SOURCE]::ID%
+%
+  end foreach
+end if
+%
+

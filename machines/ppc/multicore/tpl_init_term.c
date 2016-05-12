@@ -43,14 +43,6 @@
 
 extern P2FUNC(void, OS_CODE, CallTerminateTask);
 
-/*
- * External interrupt bit mask in MSR
- */
-#define EE_BIT_1  0x8000
-#define RI_BIT_1  0x0002
-
-
-
 #define OS_START_SEC_VAR_32BIT
 #include "tpl_memmap.h"
 extern VAR(uint32, OS_VAR) tpl_tick_init_value;
@@ -61,8 +53,6 @@ extern VAR(uint32, OS_VAR) tpl_tick_init_value;
 #include "tpl_memmap.h"
 extern CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)
   tpl_stat_proc_table[TASK_COUNT+ISR_COUNT+NUMBER_OF_CORES];
-
-extern CONSTP2VAR(uint32, OS_CONST, OS_VAR) tpl_intc[NUMBER_OF_CORES];
 
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -94,6 +84,28 @@ extern FUNC(void, OS_CODE) tpl_init_dec(void);
 
 #define USER_MODE 0x4000
 
+#define APP_Task_IDLE_TASK_START_SEC_CODE
+#include "tpl_memmap.h"
+
+/**
+ * TODO: document this
+ */
+FUNC(void, OS_CODE) tpl_sleep(void)
+{
+    /* MISRA RULE 14.3, 14.8 VIOLATION: infinite loop of idle task */
+    while (1);
+}
+
+FUNC(void, OS_CODE) idle_function(void)
+{
+    /* MISRA RULE 14.3, 14.8 VIOLATION: infinite loop of idle task */
+    while (1);
+}
+
+#define APP_Task_IDLE_TASK_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
@@ -103,7 +115,7 @@ FUNC(void, OS_CODE) tpl_init_interrupts(void)
 
   for(core=0; core<NUMBER_OF_CORES; core++)
   {
-    *((volatile uint32*)((uint32)tpl_intc[core] + TPL_INTC_CPR_PRC0)) = 0;
+    TPL_INTC(core).CPR = 0;
     tpl_current_date[core] = 0;
   }
 
@@ -209,23 +221,6 @@ FUNC(void, OS_CODE) tpl_init_context(
   stack_addr++;
 }
 
-
-/**
- * TODO: document this
- */
-FUNC(void, OS_CODE) tpl_sleep(void)
-{
-    /* MISRA RULE 14.3, 14.8 VIOLATION: infinite loop of idle task */
-    while (1);
-}
-
-FUNC(void, OS_CODE) idle_function(void)
-{
-    /* MISRA RULE 14.3, 14.8 VIOLATION: infinite loop of idle task */
-    while (1);
-}
-
-
 FUNC(void, OS_CODE) tpl_init_core(void)
 {
 
@@ -240,32 +235,32 @@ FUNC(void, OS_CODE) tpl_init_mode_entry_module(void)
 {
   // MC_ME CONFIG
   /* PC1 Mode behaviour : Peripheral active in RUN0-3 modes   */
-  ME.RUNPC[ME_PC1_CONFIGURATION] = ME_RUNPC_RUN0
-                                 | ME_RUNPC_RUN1
-                                 | ME_RUNPC_RUN2
-                                 | ME_RUNPC_RUN3;
+  TPL_ME.RUN_PC[ME_PC1_CONFIGURATION] = ME_RUNPC_RUN0
+                                      | ME_RUNPC_RUN1
+                                      | ME_RUNPC_RUN2
+                                      | ME_RUNPC_RUN3;
 
 #if ((TPL_TICK_TIMER != TPL_DECREMENTER) || (WITH_AUTOSAR_TIMING_PROTECTION==YES))
   /* Set PIT to PC1 mode  */
-  ME.PCTL[ME_PCTL_PIT] = ME_PC1_CONFIGURATION;
+  TPL_ME.PCTL[ME_PCTL_PIT] = ME_PC1_CONFIGURATION;
 #endif
 
   /* Enable RUN0 Mode     */
-  ME.MCTL = ME_MCTL_TGT_RUN0 | ME_MCTL_KEY1;
-  ME.MCTL = ME_MCTL_TGT_RUN0 | ME_MCTL_KEY2;
+  TPL_ME.MCTL = ME_MCTL_TGT_RUN0 | ME_MCTL_KEY1;
+  TPL_ME.MCTL = ME_MCTL_TGT_RUN0 | ME_MCTL_KEY2;
 
   /* Loop and wait until mode has changed  */
-  while (!(ME.IS & ME_IS_IMTC));
+  while (!(TPL_ME.IS & ME_IS_IMTC));
   /* Ack mode change                       */
-  ME.IS = ME_IS_IMTC;
+  TPL_ME.IS = ME_IS_IMTC;
 }
 
 FUNC(void, OS_CODE) tpl_rgm_clear(void)
 {
   // RGM Clear safe mode status
-  while(RGM.FES || RGM.DES) {
-      RGM.FES = (uint16) 0xFFFF;
-      RGM.DES = (uint16) 0xFFFF;
+  while(TPL_RGM.FES || TPL_RGM.DES) {
+      TPL_RGM.FES = (uint16) 0xFFFF;
+      TPL_RGM.DES = (uint16) 0xFFFF;
   }
 }
 
@@ -278,6 +273,10 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
   tpl_register_r2 = 0;
   tpl_register_r13 = 0;
   tpl_msr_start_value = 0;
+
+#if NUMBER_OF_CORES > 1
+  tpl_start_core(1);
+#endif
 
   tpl_init_kernel_stack();
 
