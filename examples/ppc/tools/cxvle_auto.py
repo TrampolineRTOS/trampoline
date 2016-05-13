@@ -4,11 +4,9 @@ import argparse
 import os
 import subprocess
 
-
 ################################# GLOBALS #################################
 
-C_COMMAND = "wine " + os.environ["COSMIC_PATH"] + "/cxvle.exe"
-print (C_COMMAND)
+C_COMMAND = os.getenv("COSMIC_CXPPC", "cxppc")
 C_CONST_FLAGS = (
                  " -l"          # Creates .lst files usefull for debug
                  " +debug"      # debug flags
@@ -16,11 +14,12 @@ C_CONST_FLAGS = (
                  " -p -ku"      # keep unused static
                  " -v"          # verbose
                  " -no"         # FIXME : Optimizer disabled
+                 " +modv"       # VLE Mode
 #                 " +rev"        # bitfields MSB to LSB
 #                 " -ep"         # Enable preprocessor during asm compilation
                 )
 
-ASM_PREPROCESS_CMD = "wine " + os.environ["COSMIC_PATH"] + "/cpvle.exe"
+ASM_PREPROCESS_CMD = os.getenv("COSMIC_CPPPC", "cpppc")
 ASM_PREPROCESS_FLAGS = (
                         " -x"                   # debug flags
                         " -e"                   # preprocess only
@@ -30,9 +29,9 @@ ASM_PREPROCESS_FLAGS = (
 #                        " -rb"                  # bitfields MSB to LSB
                        )
 # FIXME : we're using cpp to remove C comments type from asm files because the
-#         cosmic preprocess cpvle doesn't support that.
+#         cosmic preprocess cpvle doesn't support these comments format.
 ASM_REMOVE_COMMENTS = "cpp -P"
-ASM_ASSEMBLER_CMD   = "wine " + os.environ["COSMIC_PATH"] + "/cavle.exe"
+ASM_ASSEMBLER_CMD   = os.getenv("COSMIC_CAPPC", "cappc")
 ASM_ASSEMBLER_FLAGS = (
                        " -l"                    # Output line info
                        " -x"                    # Debug flags
