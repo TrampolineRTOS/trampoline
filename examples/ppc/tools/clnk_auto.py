@@ -6,14 +6,14 @@ import subprocess
 
 ################################# GLOBALS #################################
 
-LINK_COMMAND = "wine " + os.environ["COSMIC_PATH"] + "/clnk.exe"
+LINK_COMMAND = os.getenv("COSMIC_CLNK", "clnk")
 LINK_FLAGS   = (
                 " -m mapping "           # Generate mapping file
                 " -p"                    # Print physical @ in mapping file
                 " -u15"                  # Print unused symbols
                )
 
-ELF_COMMAND  = "wine " + os.environ["COSMIC_PATH"] + "/cvdwarf.exe"
+ELF_COMMAND  = os.getenv("COSMIC_CVDWARF", "cvdwarf")
 ELF_FLAGS   = (
                 " -e _tpl_master_core_startup"   # Start address
                )
