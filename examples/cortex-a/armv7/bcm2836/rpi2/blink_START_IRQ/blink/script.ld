@@ -1,0 +1,45 @@
+
+ENTRY (_start)
+
+MEMORY
+{
+  RAM     (rwx) : ORIGIN = 0x00008000, LENGTH = 512K
+}
+
+SECTIONS
+{
+  .startup_code :
+  {
+    *(.startup_code)
+  } > RAM
+  .text :
+  {
+    *(.text*)
+  } > RAM
+  __bss_start = .;
+  .bss :
+  {
+    . = ALIGN(0x8);
+    __bss_start = .;
+    bss = .;
+    *(.bss)
+    . = 0x50000;
+    stacks = .;
+    . = . + 512; /* Size of FIQ stack */
+    __SP_fiq_ = .;
+    . = . +1024; /* Size of IRQ stack */
+    __SP_irq_ = .;
+    . = . + 512; /* Size of MON stack */
+    __SP_mon_ = .;
+    . = . + 512; /* Size of UND stack */
+    __SP_und_ = .;
+    . = . + 512; /* Size of ABT stack */
+    __SP_abt_ = .;
+    . = . + 512; /* Size of SVC stack */
+    __SP_svc_ = .;
+    . = . + 512; /* Size of HYP stack */
+    __SP_hyp_ = .;
+    . = . + 1024; /* Size of USR and SYS stack */
+    __SP_usr_ = .;
+  } > RAM
+}

@@ -1,0 +1,104 @@
+OIL_VERSION = "2.5";
+
+IMPLEMENTATION trampoline {
+    TASK {
+        UINT32 STACKSIZE = 500 ;
+        UINT32 PRIORITY = 1 ;
+    } ;
+    ISR {
+        UINT32 STACKSIZE = 500 ;
+    } ;
+
+};
+
+CPU lonely {
+  OS config {
+    STATUS = EXTENDED;
+    ERRORHOOK = FALSE;
+    PRETASKHOOK = FALSE;
+    POSTTASKHOOK = FALSE;
+    SYSTEM_CALL = TRUE;
+    BUILD = TRUE {
+      TRAMPOLINE_BASE_PATH = "../../../../../..";
+      APP_SRC = "lonely.c";
+      APP_NAME = "lonely_exe";
+      CFLAGS  = "-O0";
+      CFLAGS = "-I../../../machines/cortex-a/armv7/bcm2836/rpi2/drivers";
+      LDFLAGS = "-L/Users/DavidGarriou/Tools/gcc/gcc-arm-none-eabi/lib/gcc/arm-none-eabi/4.9.3 -lgcc";
+      LDFLAGS = "-L/Users/DavidGarriou/Tools/gcc/gcc-arm-none-eabi/arm-none-eabi/lib -lc";
+      COMPILER = "arm-none-eabi-gcc";
+      ASSEMBLER = "arm-none-eabi-as";
+      LINKER = "arm-none-eabi-ld";
+      COPIER = "arm-none-eabi-objcopy";
+      SYSTEM = PYTHON;
+    };
+    MEMMAP = TRUE {
+      COMPILER = gcc;
+      LINKER = gnu_ld { SCRIPT = "script.ld"; };
+      ASSEMBLER = gnu_as;
+      MEMORY_PROTECTION = FALSE;
+    };
+  };
+
+  APPMODE std { };
+
+  TASK task1 {
+    PRIORITY = 1;
+    AUTOSTART = TRUE { APPMODE = std; };
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    RESOURCE = lcd_resource;
+  };
+
+  TASK task2 {
+    PRIORITY = 2;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    RESOURCE = lcd_resource;
+  };
+
+  TASK task3 {
+    PRIORITY = 3;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    RESOURCE = lcd_resource;
+  };
+
+  ISR isr_button1 {
+    CATEGORY = 2;
+    PRIORITY = 1;
+    SOURCE = button014;
+    RESOURCE = lcd_resource;
+  };
+
+  ISR isr_button2 {
+    CATEGORY = 2;
+    PRIORITY = 1;
+    SOURCE = button016;
+    RESOURCE = lcd_resource;
+  };
+
+  COUNTER SystemCounter {
+    MAXALLOWEDVALUE = 2000;
+    TICKSPERBASE = 10;
+    MINCYCLE = 1;
+  };
+
+  ALARM Alarm1{
+    COUNTER = SystemCounter;
+    ACTION = ACTIVATETASK {
+      TASK = task2;
+    };
+    AUTOSTART = TRUE {
+      ALARMTIME = 50;
+      CYCLETIME = 50; //each 1s.
+      APPMODE = std;
+    };
+  };
+
+  RESOURCE lcd_resource {
+    RESOURCEPROPERTY = STANDARD;
+  };
+};
