@@ -1,0 +1,28 @@
+* text=auto
+
+*.c             text eol=lf
+*.cpp           text eol=lf
+*.h             text eol=lf
+*.s             text eol=lf
+*.S             text eol=lf
+*.ld            text eol=lf
+*.lds           text eol=lf
+*.asm           text eol=lf
+*.goilTemplate  text eol=lf
+*.oil           text eol=lf
+*.galgas        text eol=lf
+*.galgasProject text eol=lf
+
+*.a     binary
+*.bmp   binary
+*.elf   binary
+*.gif   binary
+*.icns  binary
+*.idx   binary
+*.lib   binary
+*.pack  binary
+*.pdf   binary
+*.png   binary
+*.tiff  binary
+*.xcuserstate  binary
+
