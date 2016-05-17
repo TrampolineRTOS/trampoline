@@ -43,14 +43,21 @@ void tpl_arm_subarch_irq_handler ()
   /* get interrupt id
    *
    * __CLZ counts the leading zero's in a value
+   * ! BEWARE !
+   * Following switch case is not finalized.
+   * It shall be correct for interrupts raised from:
+   * - ARM Timer
+   * - Pending register 1
+   * - Pending register 2
+   * It must be completed for other intterupts sources.
    */
   leading_zeros = (uint32)31 - (uint32)__CLZ(readFromReg(IRQ_BASIC));
   switch (leading_zeros) {
     case 8:
-      isr_id_dec = (uint32)__CLZ(readFromReg(IRQ_PEND1));
+      isr_id_dec = (uint32)31 - (uint32)__CLZ(readFromReg(IRQ_PEND1));
     break;
     case 9:
-      isr_id_dec = (uint32)__CLZ(readFromReg(IRQ_PEND2));
+      isr_id_dec = (uint32)31 - (uint32)__CLZ(readFromReg(IRQ_PEND2));
     break;
     default:
       isr_id_dec = leading_zeros;
