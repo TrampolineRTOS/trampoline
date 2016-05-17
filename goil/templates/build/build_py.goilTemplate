@@ -51,7 +51,7 @@ end if
 #---
 #--- Compiling a Trampoline application is done in 2 stages
 #--- 1 - From the OIL file, a set of files is generated as long as
-#---     build options. Among these files are the build.py and make.py 
+#---     build options. Among these files are the build.py and make.py
 #---     files. make.py contains compilation rules when the OIL file
 #---     and the included OIL files are modified. make.py is only
 #---     written once when the goil command is typed.
@@ -151,13 +151,13 @@ cppflags += ["-I","% !MACHINESPATH . "/" . library::PATH %"]%
 end foreach
 %
 if with_ioc:
-  cflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/ioc"] 
-  cppflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/ioc"] 
-cflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/os"] 
-cflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/debug"] 
+  cflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/ioc"]
+  cppflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/ioc"]
+cflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/os"]
+cflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/debug"]
 cflags += ["-I", "% !PROJECT %"]
-cppflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/os"] 
-cppflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/debug"] 
+cppflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/os"]
+cppflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/debug"]
 cppflags += ["-I", "% !PROJECT %"]%
 foreach optionSet in exists BUILDOPTIONS default (emptylist) do
   foreach flags in exists optionSet::LDFLAGS default (emptylist) do
@@ -381,7 +381,7 @@ end foreach
 objectList = []
 
 for sourceFile in cSourceList:
-  source = sourceFile.src() 
+  source = sourceFile.src()
   object = sourceFile.obj("build")
   depObject = sourceFile.dep("build")
   objectList.append(object)
@@ -397,7 +397,7 @@ for sourceFile in cSourceList:
   make.addRule(rule)
 
 for sourceFile in cppSourceList:
-  source = sourceFile.src() 
+  source = sourceFile.src()
   object = sourceFile.obj("build")
   depObject = sourceFile.dep("build")
   objectList.append(object)
@@ -413,7 +413,7 @@ for sourceFile in cppSourceList:
   make.addRule(rule)
 
 for sourceFile in sSourceList:
-  source = sourceFile.src() 
+  source = sourceFile.src()
   object = sourceFile.obj("build")
   objectList.append(object)
   rule = makefile.Rule([object], "Assembling " + source)
@@ -437,13 +437,20 @@ let target := OS::BUILD_S::APP_NAME
 if exists postgoals["all"] then
   let inFile := target
   foreach command in postgoals["all"]::COMMAND do
+    if command::INPUT == "ORIGINAL_TARGET" then
+     let inFile := OS::BUILD_S::APP_NAME
+    end if
     let command::SUBGOAL := exists command::SUBGOAL default(false)
     if command::SUBGOAL then%
 if askedGoal == "% !command::SUBGOAL_S::NAME %":%
     else%
-if True:% 
+if True:%
     end if
-    let outFile := inFile . exists command::OUTPUT default("")
+#    if inFile == "ORIGINAL_TARGET" then
+#      let outFile := OS::BUILD_S::APP_NAME
+#    else
+     let outFile := inFile . exists command::OUTPUT default("")
+#    end if
     if    command::TYPE == "COPIER" then %
   postCommand = makefile.PostCommand("Generating binary % !outFile % from % !inFile %")
   postCommand.mCommand.append("% !OS::BUILD_S::COPIER %")%
@@ -505,7 +512,7 @@ foreach pc in exists POSTCOMMAND default (emptylist)
 #----------------------------------------------------------------------
 #--- post commands
 #----------------------------------------------------------------------
-if make.errorCount() == 0:%    
+if make.errorCount() == 0:%
   do%
   if askedGoal == "% !pc::NAME %" :%
   foreach cmd in pc::COMMAND do
@@ -536,4 +543,3 @@ end foreach%
 #----------------------------------------------------------------------
 #-- End of build.py
 #----------------------------------------------------------------------
-

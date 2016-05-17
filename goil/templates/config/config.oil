@@ -24,7 +24,7 @@
  */
 
 IMPLEMENTATION trampoline_common {
-  
+
   KERNEL [] {
     STRING PATH;
     STRING FILE[];
@@ -51,7 +51,7 @@ IMPLEMENTATION trampoline_common {
       STRING VALUE;
     } CONST[];
   };
-  
+
   /*===========================================================================
    * Variant of the standard libraries
    */
@@ -68,7 +68,7 @@ IMPLEMENTATION trampoline_common {
     STRING CPPFILE[];
     STRING ASFILE[];
   };
-  
+
   /*===========================================================================
    * Libraries to add to the build system
    */
@@ -89,7 +89,7 @@ IMPLEMENTATION trampoline_common {
     STRING CFILE[];
     STRING ASFILE[];
   };
-  
+
   /*===========================================================================
    * Additional GOAL definition
    */
@@ -102,7 +102,7 @@ IMPLEMENTATION trampoline_common {
     STRING COMMAND;
     STRING ARGUMENT[];
   };
-  
+
   /*===========================================================================
    * Postbuild command definition.
    * The name of a post-build command is the GOAL.
@@ -118,6 +118,7 @@ IMPLEMENTATION trampoline_common {
       ] TYPE;
       ENUM [
         TARGET,
+        ORIGINAL_TARGET,
         INTERMEDIATE { STRING SOURCE; }
       ] INPUT;
       STRING WITH_AUTO OUTPUT;
@@ -125,7 +126,7 @@ IMPLEMENTATION trampoline_common {
       STRING POSTOPTION[];
     } COMMAND[];
   };
-  
+
   POSTCOMMAND [] {
     STRUCT {
       STRING MESSAGE;
@@ -138,7 +139,7 @@ IMPLEMENTATION trampoline_common {
       STRING POSTOPTION[];
     } COMMAND[];
   };
-  
+
   BUILDOPTIONS [] {
     STRING CFLAGS[];
     STRING CPPFLAGS[];
@@ -146,7 +147,7 @@ IMPLEMENTATION trampoline_common {
     STRING ASFLAGS[];
     STRING LDFLAGS[];
   };
-  
+
   OS {
     /* Standard OIL attributes */
     ENUM [STANDARD, EXTENDED] STATUS;
@@ -218,9 +219,9 @@ IMPLEMENTATION trampoline_common {
     ] TRACE = FALSE;
     /* used to add additional init code for a board. */
     BOOLEAN INITBOARD = FALSE;
-    IDENTIFIER KERNEL_MODULE []; 
+    IDENTIFIER KERNEL_MODULE [];
   };
-  
+
   APPMODE [] {
     BOOLEAN DEFAULT = FALSE;
   };
@@ -237,7 +238,7 @@ IMPLEMENTATION trampoline_common {
     RESOURCE_TYPE RESOURCE[];
     MESSAGE_TYPE MESSAGE[];
   };
-  
+
   ISR [] {
     UINT32 [1, 2] CATEGORY;
     UINT32 PRIORITY; /* Trampoline extra */
@@ -264,7 +265,7 @@ IMPLEMENTATION trampoline_common {
       FALSE
     ] AUTOSTART;
   };
-  
+
   EVENT [] {
     UINT64 WITH_AUTO MASK;
   };
@@ -387,11 +388,11 @@ IMPLEMENTATION trampoline_common {
       }
     ] NOTIFICATIONERROR = NONE;
   };
-  
+
   NETWORKMESSAGE [] {
     IPDU_TYPE IPDU;
     ENUM [
-      STATIC {  
+      STATIC {
         UINT32 SIZEINBITS;
         ENUM [ LITTLEENDIAN, BIGENDIAN ] BITORDERING;
         UINT32 BITPOSITION;
@@ -404,7 +405,7 @@ IMPLEMENTATION trampoline_common {
           RECEIVE
         ] DIRECTION;
       },
-      DYNAMIC {        
+      DYNAMIC {
         UINT32 MAXIMUMSIZEINBITS;
         ENUM [ LITTLEENDIAN, BIGENDIAN ] BITORDERING;
         UINT32 BITPOSITION;
@@ -430,7 +431,7 @@ IMPLEMENTATION trampoline_common {
     ENUM [ COMSTANDARD, COMEXTENDED ] COMSTATUS = COMSTANDARD;
     STRING USE [];
   };
-  
+
   IPDU [] {
     UINT32 SIZEINBITS;
     ENUM [

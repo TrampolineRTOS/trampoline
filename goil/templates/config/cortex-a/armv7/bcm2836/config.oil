@@ -63,10 +63,23 @@ CPU bcm2836 {
   POSTBUILD all {
     COMMAND buildhex {
       TYPE = COPIER;
-      INPUT = TARGET;
+      INPUT = ORIGINAL_TARGET;
       OUTPUT = ".hex";
       PREOPTION = "-O ihex";
     };
+    COMMAND buildbin {
+      TYPE = COPIER;
+      INPUT = ORIGINAL_TARGET;
+      OUTPUT = ".bin";
+      PREOPTION = "-O binary";
+    };
   };
-
+  POSTCOMMAND img {
+    COMMAND makekernel {
+      COMMAND = "cp";
+      INPUT = TARGET { EXT = ".bin"; };
+      PREOPTION = "";
+      POSTOPTION = "kernel7.img";
+    };
+  };
 };
