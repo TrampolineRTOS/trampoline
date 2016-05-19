@@ -214,25 +214,15 @@
  *
  *****************************************************************************/
 
-// #define ARM_TIMER_LOD       (PERIPH_BASE + 0x0000B400)
-// #define ARM_TIMER_VAL       (PERIPH_BASE + 0x0000B404)
-// #define ARM_TIMER_CTL       (PERIPH_BASE + 0x0000B408)
-// #define ARM_TIMER_CLI       (PERIPH_BASE + 0x0000B40C)
-// #define ARM_TIMER_RIS       (PERIPH_BASE + 0x0000B410)
-// #define ARM_TIMER_MIS       (PERIPH_BASE + 0x0000B414)
-// #define ARM_TIMER_RLD       (PERIPH_BASE + 0x0000B418)
-// #define ARM_TIMER_DIV       (PERIPH_BASE + 0x0000B41C)
-// #define ARM_TIMER_CNT       (PERIPH_BASE + 0x0000B420)
-
-#define ARM_TIMER_LOD 0x3F00B400
-#define ARM_TIMER_VAL 0x3F00B404
-#define ARM_TIMER_CTL 0x3F00B408
-#define ARM_TIMER_CLI 0x3F00B40C
-#define ARM_TIMER_RIS 0x3F00B410
-#define ARM_TIMER_MIS 0x3F00B414
-#define ARM_TIMER_RLD 0x3F00B418
-#define ARM_TIMER_DIV 0x3F00B41C
-#define ARM_TIMER_CNT 0x3F00B420
+#define ARM_TIMER_LOD       (PERIPH_BASE + 0x0000B400)
+#define ARM_TIMER_VAL       (PERIPH_BASE + 0x0000B404)
+#define ARM_TIMER_CTL       (PERIPH_BASE + 0x0000B408)
+#define ARM_TIMER_CLI       (PERIPH_BASE + 0x0000B40C)
+#define ARM_TIMER_RIS       (PERIPH_BASE + 0x0000B410)
+#define ARM_TIMER_MIS       (PERIPH_BASE + 0x0000B414)
+#define ARM_TIMER_RLD       (PERIPH_BASE + 0x0000B418)
+#define ARM_TIMER_DIV       (PERIPH_BASE + 0x0000B41C)
+#define ARM_TIMER_CNT       (PERIPH_BASE + 0x0000B420)
 
 /*****************************************************************************
  *                          System Timer
@@ -273,7 +263,7 @@
 #define IRQ_ENABLE_BASIC  (PERIPH_BASE + 0x0000B218)
 #define IRQ_DISABLE1      (PERIPH_BASE + 0x0000B21C)
 #define IRQ_DISABLE2      (PERIPH_BASE + 0x0000B220)
-#define IRQ_DISABLE_BASIC (PERIPH_BASE + 0x0000B220)
+#define IRQ_DISABLE_BASIC (PERIPH_BASE + 0x0000B224)
 
 #define SPI_IRQ           BIT(22)
 

@@ -76,6 +76,8 @@ FUNC (void, OS_CODE) tpl_init_machine_generic (void)
 #if WITH_MEMORY_PROTECTION == YES
   tpl_init_mp();
 #endif
+  tpl_set_systick_timer();
+  // tpl_init_external_interrupts();
 }
 
 /*

@@ -47,6 +47,12 @@ extern struct ARM_CONTEXT idle_task_context;
  */
 #define IDLE_STACK_SIZE  300
 
+/*
+ * Configuration of systick timer (can be a generic timer if systick is not available
+ * on the target) for alarms and schedule tables.
+ */
+FUNC(void, OS_CODE) tpl_set_systick_timer();
+
 #endif /* TPL_MACHINE_H */
 
 /* End of file tpl_machine.h */

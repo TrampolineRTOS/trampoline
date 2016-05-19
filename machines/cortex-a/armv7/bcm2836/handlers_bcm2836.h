@@ -23,48 +23,16 @@
  * $URL$
  */
 
-#include "handlers_bcm2836.h"
+#include "tpl_os.h"
+#include "tpl_os_interrupt_kernel.h"
+#include "bcm2836.h"
+#include "emblib.h"
 
-extern void tpl_primary_syscall_handler(void);
 /******************************************************************************
  * Exception handlers.
  ******************************************************************************/
 
-FUNC(void, OS_CODE) c_undefined_handler(void) {
-  while(1);
-}
-
-FUNC(void, OS_CODE) c_prefetch_handler(void) {
-  while(1);
-}
-
-FUNC(void, OS_CODE) c_data_handler(void) {
-  while(1);
-}
-
-FUNC(void, OS_CODE)  c_reserved_handler(void) {
-  while(1);
-}
-
-FUNC(void, OS_CODE) c_fiq_handler(void) {
-  while(1);
-}
-
-FUNC(void, OS_CODE) c_irq_handler(void) {
-	while(1);
-}
-
-FUNC(void, OS_CODE) c_svc_handler(void) {
-	while(1);
-}
-
-FUNC(void, OS_CODE) c_hang_handler(void) {
-  while(1);
-}
-
 /******************************************************************************
  * IRQ acknowledge functions.
  ******************************************************************************/
-FUNC(void, OS_CODE) ARM_TIMER_ClearFlag(void) {
-	writeToReg(ARM_TIMER_CLI,0);
-}
+FUNC(void, OS_CODE) ARM_TIMER_ClearFlag(void);
