@@ -20,11 +20,16 @@ SECTIONS
   .bss :
   {
     . = ALIGN(0x8);
-    __bss_start = .;
+    __bss_start__ = .;
     bss = .;
     *(.bss)
+    __bss_end__ = .;
+  } > RAM
+  .stacks :
+  {
     . = 0x50000;
-    stacks = .;
+    . = ALIGN(0x8);
+    __stacks_start = .;
     . = . + 512; /* Size of FIQ stack */
     __SP_fiq_ = .;
     . = . +1024; /* Size of IRQ stack */
@@ -41,5 +46,6 @@ SECTIONS
     __SP_hyp_ = .;
     . = . + 1024; /* Size of USR and SYS stack */
     __SP_usr_ = .;
+    __stacks_end = .;
   } > RAM
 }

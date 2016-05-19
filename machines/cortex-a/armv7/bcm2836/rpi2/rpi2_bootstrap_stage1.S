@@ -42,17 +42,28 @@ _start:
   mrc p15, #0, r0, cr12, cr0, #0
   str r0, [r3]
 
-  //Continue execution at the StartupHandler
+  /*
+   * Continue execution at the StartupHandler.
+   */
   b startup
 
- StartupBootMode:
-   .long 0x0
- StartupBootVectors:
-   .long 0x0
- @.LARMTagsAddress:
- @  .long ARMTagsAddress
- @.LARMMachineType:
- @  .long ARMMachineType
+  /*
+   * Holds the CPU startup mode
+   */
+StartupBootMode:
+  .long 0x0
+  /*
+   * Holds the Vector Base Address on startup.
+   */
+StartupBootVectors:
+  .long 0x0
+  /*
+   * Holds the Vector Base Address on startup.
+   */
+/*.LARMTagsAddress:
+  .long ARMTagsAddress
+.LARMMachineType:
+  .long ARMMachineType*/
   @Test initial mode whether HYP or SUP
 
   @Initialize the micro according to the detected initial mode
