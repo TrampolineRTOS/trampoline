@@ -15,7 +15,7 @@ LOCAL_TRAMPOLINE="$HOME/trampoline/trampoline"
 # Path to the remote trampoline directory (Ex: /home/bob/trampoline)
 REMOTE_TRAMPOLINE="trampoline"
 # Path to the remote example directory (Ex: /home/bob/trampoline/examples/arch/blink)
-REMOTE_EXAMPLE_DIR="$REMOTE_TRAMPOLINE/examples/ppc/multicore/blink_1c"
+REMOTE_EXAMPLE_DIR="$REMOTE_TRAMPOLINE/examples/ppc/multicore/blink_2c"
 # Rsync excluded directories (when copying trampoline)
 RSYNC_EXCLUDE="--exclude .git
                --exclude documentation
@@ -23,7 +23,7 @@ RSYNC_EXCLUDE="--exclude .git
                --exclude goil"
 
 # Goil arch target (Ex: ppc/mpc5643l)
-GOIL_TARGET="ppc/mpc5643l"
+GOIL_TARGET="ppc/mpc5643l/multicore"
 # Goil source (Ex: ./blink.oil)
 GOIL_SOURCE="./blink.oil"
 # Goil output (deleted on clean only)
