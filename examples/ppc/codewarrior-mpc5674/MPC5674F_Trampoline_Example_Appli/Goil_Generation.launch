@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.ui.externaltools.ProgramLaunchConfigurationType">
+<mapAttribute key="org.eclipse.debug.core.environmentVariables">
+<mapEntry key="PROJDIRPATH" value="${project_loc:/${project_name}}"/>
+</mapAttribute>
+<booleanAttribute key="org.eclipse.debug.ui.ATTR_REDIRECT_TO_SERVER_SOCKET" value="false"/>
+<booleanAttribute key="org.eclipse.debug.ui.ATTR_REDIRECT_TO_SOCKET" value="false"/>
+<stringAttribute key="org.eclipse.debug.ui.ATTR_REDIRECT_TO_SOCKET_HOST" value=""/>
+<stringAttribute key="org.eclipse.debug.ui.ATTR_REDIRECT_TO_SOCKET_PORT" value=""/>
+<listAttribute key="org.eclipse.debug.ui.favoriteGroups">
+<listEntry value="org.eclipse.ui.externaltools.launchGroup"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.ui.externaltools.ATTR_LAUNCH_CONFIGURATION_BUILD_SCOPE" value="${none}"/>
+<stringAttribute key="org.eclipse.ui.externaltools.ATTR_LOCATION" value="C:\MinGW\msys\1.0\bin\bash.exe"/>
+<stringAttribute key="org.eclipse.ui.externaltools.ATTR_TOOL_ARGUMENTS" value="-x &#13;&#10;${workspace_loc:/${project_name}/Goil_Files_Generation/bin/run_goil.sh}"/>
+<stringAttribute key="org.eclipse.ui.externaltools.ATTR_WORKING_DIRECTORY" value="${workspace_loc:/${project_name}/Goil_Files_Generation}"/>
+</launchConfiguration>

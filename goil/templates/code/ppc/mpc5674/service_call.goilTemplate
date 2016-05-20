@@ -1,0 +1,19 @@
+% 
+
+let api_func::FUNC_NAME := exists api_func::ACTUAL default ( api_func::NAME )
+%
+  .global % !api_func::FUNC_NAME %
+% !api_func::FUNC_NAME %:
+  e_li   r0,% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME %  /* load the service id in r0 */
+  /* If HW mode is used, change INTC priority so that we allow only ISR1 pre-emption during service execution */ 
+#if(INTC_HW_MODE == YES)
+  e_lis   r11,TPL_HIG(INTC_CPR)
+  e_or2i  r11,TPL_LOW(INTC_CPR)
+  e_li    r12,KERNEL_PRIORITY
+  e_stw   r12,0(r11)
+#endif 
+  se_sc                            /* system call               */
+  se_blr                           /* returns                   */
+  .type % !api_func::FUNC_NAME %,@function
+  .size % !api_func::FUNC_NAME %,$-% !api_func::FUNC_NAME %
+

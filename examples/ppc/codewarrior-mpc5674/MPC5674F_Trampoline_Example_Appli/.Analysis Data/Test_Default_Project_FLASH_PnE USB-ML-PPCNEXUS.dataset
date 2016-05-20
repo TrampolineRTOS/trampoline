@@ -1,0 +1,45 @@
+1 20 
+<TraceDataSetImpl>
+ 3 id: 4 13 
+<traceCfgM>
+ 1 0 26 
+<TraceConfigurationImpl>
+ 1 1 266 default 1 1 4294967295 1 52 Test_Default_Project_FLASH_PnE USB-ML-PPCNEXUS_0.elf 0 27 
+</TraceConfigurationImpl>
+ 14 
+</traceCfgM>
+ 13 
+<traceSrcM>
+ 3 1 19 
+<TraceSourceImpl>
+ 17 5 HCS08 6 20 
+</TraceSourceImpl>
+ 2 19 
+<TraceSourceImpl>
+ 1 3 MCU 6 20 
+</TraceSourceImpl>
+ 4294967295 19 
+<TraceSourceImpl>
+ 4294967295 7 Unknown 8 20 
+</TraceSourceImpl>
+ 14 
+</traceSrcM>
+ 10 
+<swCtxM>
+ 1 4294967295 28 
+<TraceSoftwareContextImpl>
+ 4294967295 0  0 4294967295 29 
+</TraceSoftwareContextImpl>
+ 11 
+</swCtxM>
+ 10 
+<hwCtxM>
+ 1 4294967295 28 
+<TraceHardwareContextImpl>
+ 4294967295 0  0 29 
+</TraceHardwareContextImpl>
+ 11 
+</hwCtxM>
+ 21 
+</TraceDataSetImpl>
+

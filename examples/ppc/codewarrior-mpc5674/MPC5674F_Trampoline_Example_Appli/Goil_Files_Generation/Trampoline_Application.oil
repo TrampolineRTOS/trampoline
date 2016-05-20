@@ -1,0 +1,88 @@
+OIL_VERSION = "2.5" : "test" ;
+
+IMPLEMENTATION trampoline {
+    TASK {
+        UINT32 STACKSIZE = 500 ;
+        UINT32 PRIORITY = 1 ;
+    } ;
+    ISR {
+        UINT32 STACKSIZE = 500 ;
+    } ;
+};
+
+CPU test {
+
+    OS config {
+        STATUS = EXTENDED;
+        ERRORHOOK = FALSE;
+        PRETASKHOOK = FALSE;
+		VLE = TRUE;
+        SYSTEM_CALL = TRUE;
+        MEMMAP = FALSE;
+    };
+
+    APPMODE std {
+    };
+
+    TASK iamsolonely {
+        PRIORITY = 5;
+        AUTOSTART = TRUE { APPMODE = std; };
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+        USEFLOAT = FALSE;
+    };
+    
+    TASK solonelyfriend {
+        PRIORITY = 5;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+        USEFLOAT = FALSE;
+    };
+    
+    TASK gogo {
+	    PRIORITY = 6;
+		AUTOSTART = FALSE;
+		ACTIVATION = 1;
+		SCHEDULE = FULL;
+		USEFLOAT = FALSE;
+    };
+    
+    ISR	isr1_sw_it_0 {
+	    CATEGORY = 1;
+	    PRIORITY = 4;
+	    SOURCE = SW_IT_0;
+	    USEFLOAT = FALSE;
+    };
+    
+    ISR	isr1_pit_2 {
+	    CATEGORY = 1;
+	    PRIORITY = 3;
+	    SOURCE = PIT_2;
+	    USEFLOAT = FALSE;
+    };
+    
+    ISR	isr_sw_it7 {
+	    CATEGORY = 2;
+	    PRIORITY = 1;
+	    SOURCE = SW_IT_7;
+	    USEFLOAT = FALSE;
+    };
+ 
+    ALARM rungogo {
+      AUTOSTART = TRUE {
+      APPMODE = std;
+      ALARMTIME = 1;
+      CYCLETIME = 1;
+    };
+    ACTION = ACTIVATETASK {
+      TASK = gogo;
+    };
+    COUNTER = SystemCounter;
+	};
+	
+	COUNTER SystemCounter {
+	  SOURCE = PIT_0;
+	};
+  
+};

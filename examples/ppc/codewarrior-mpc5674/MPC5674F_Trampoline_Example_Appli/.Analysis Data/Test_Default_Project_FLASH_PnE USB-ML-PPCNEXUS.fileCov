@@ -1,0 +1,17 @@
+**1
+Z:/mohamed.sassi/git/trampoline-for-mpc-f/MPC5674F_Trampoline_TwirteeAppli/.Analysis Data/Test_Default_Project_FLASH_PnE USB-ML-PPCNEXUS_0.elf
+
+**Lines
+
+"File": "Name"(width 200, sort string); "Number of Lines"(width 80, sort int); "Lines Executed"(width 60, sort int); "Coverage %"(width 70, sort float)
+**Data
+
+*0
+"File": "vc.c"; "146"; "126"; "86.30"
+"File": "tpl_os_interrupt_kernel.c"; "465"; "103"; "22.15"
+"File": "tpl_os_kernel.c"; "1902"; "919"; "48.32"
+"File": "tpl_os_task_kernel.c"; "483"; "884"; "183.02"
+"File": "tpl_app_config.c"; "1034"; "126"; "12.19"
+"File": "tpl_dispatch.S"; "736"; "345"; "46.88"
+"File": "tpl_init_term.c"; "529"; "63"; "11.91"
+

@@ -1,0 +1,2 @@
+#define VLE_IS_ON 1 
+#define ROM_VERSION 1

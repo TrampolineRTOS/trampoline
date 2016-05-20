@@ -1,0 +1,12 @@
+**1
+Z:/mohamed.sassi/git/trampoline-for-mpc-f/MPC5674F_Trampoline_TwirteeAppli/.Analysis Data/Test_Default_Project_FLASH_PnE USB-ML-PPCNEXUS_0.elf
+
+**Lines
+
+"Call Pair": "Caller ID"(width 70, sort, int); "Caller Name"(width 200, sort, string); "Call Site"(width 70, sort, int); "Callee ID"(width 70, sort, int); "Callee Name"(width 200, sort, string); "Number of calls"(width 80, sort, int); "Source File Path"(width 2056, sort, string); "Line Number"(width 60, sort, int); "%% Total calls of parent"(width 60, sort, float); "%% Total times it was called"(width 60, sort, float); "Max Call Stack"(width 10, sort, string); "Max Size Stack"(width 10, sort, string); "Inclusive Time"(width 70, sort, float)
+**Data
+
+*0
+"Call Pair": "0"; "<START>"; "0"; "2"; "tpl_sc_handler"; "1"; ""; "0"; "100.00"; "100.00"; "true"; "true"; "0"
+"Call Pair": "2"; "tpl_sc_handler"; "196986"; "3"; "DummyFn1_0x303ec"; "8"; "Z:\mohamed.sassi\git\trampoline-for-mpc-f\MPC5674F_Trampoline_TwirteeAppli\Trampoline_PPC_Sources\tpl_dispatch.S"; "106"; "100.00"; "100.00"; "true"; "true"; "0"
+

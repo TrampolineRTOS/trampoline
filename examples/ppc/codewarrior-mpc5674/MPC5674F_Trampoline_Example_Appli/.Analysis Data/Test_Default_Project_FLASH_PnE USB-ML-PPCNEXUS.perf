@@ -1,0 +1,19 @@
+**1
+Z:/mohamed.sassi/git/trampoline-for-mpc-f/MPC5674F_Trampoline_TwirteeAppli/.Analysis Data/Test_Default_Project_FLASH_PnE USB-ML-PPCNEXUS_0.elf
+
+**Lines
+
+"Function": "Function Name"(width 200, sort, string); "Num Calls"(width 80, sort, int); "Inclusive"(width 60, sort, float); "Min Inclusive"(width 60, sort, float); "Max Inclusive"(width 70, sort, float); "Avg Inclusive"(width 70, sort, float); "Percent Inclusive"(width 60, sort, float); "Exclusive"(width 60, sort, float); "Min Exclusive"(width 60, sort, float); "Max Exclusive"(width 70, sort, float); "Avg Exclusive"(width 70, sort, float); "Percent Exclusive"(width 60, sort, float); "Percent Total Calls"(width 70, sort, float); "Code Size"(width 70, sort, int)
+"Call Pair": "Caller"(width 200, sort, string); "Callee"(width 200, sort, string); "Num Calls"(width 80, sort, int); "Inclusive"(width 60, sort, float); "Min Inclusive"(width 60, sort, float); "Max Inclusive"(width 70, sort, float); "Avg Inclusive"(width 70, sort, float); "Percent Callee"(width 60, sort, float); "Percent Caller"(width 60, sort, float); "Call Site"(width 60, sort, int)
+**Data
+
+*0
+"Function": "DummyFn1_0x303ec"(link 25839); "8"; "0"; "0"; "0"; "0"; "0.00"; "0"; "0"; "0"; "0"; "0.00"; "88.89"; "114"
+"Function": "tpl_sc_handler"(link 2147483665); "1"; "0"; "0"; "0"; "0"; "0.00"; "0"; "0"; "0"; "0"; "0.00"; "11.11"; "218"
+
+*25839
+"Call Pair": "tpl_sc_handler"; "DummyFn1_0x303ec"; "8"; "0"; "0"; "0"; "0"; "0.00"; "0.00"; "0x3017a"
+
+*2147483665
+"Call Pair": "tpl_sc_handler"; "DummyFn1_0x303ec"; "8"; "0"; "0"; "0"; "0"; "0.00"; "0.00"; "0x3017a"
+

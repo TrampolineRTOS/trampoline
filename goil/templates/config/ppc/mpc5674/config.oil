@@ -1,0 +1,18 @@
+/*
+ * Interrupt sources for MPC5674
+ */
+CPU mpc5674_interrupt {
+  INTERRUPT_COUNT nb_it {
+    IT_TABLE_SIZE = 350;
+  };
+  INTERRUPT SW_IT_0 { ID = 0; };
+  INTERRUPT SW_IT_1 { ID = 1; };
+  INTERRUPT SW_IT_7 { ID = 7; };
+  INTERRUPT EQADC_RFIFO1 { ID = 110; };
+  INTERRUPT CAN_B_RX_FIFO { ID = 288; };
+  INTERRUPT CAN_B_MB8 { ID = 291; };
+  INTERRUPT CAN_B_MB69 { ID = 300; };
+  INTERRUPT PIT_0 { ID = 301; };
+  INTERRUPT PIT_2 { ID = 303; };
+  INTERRUPT eDMA_A_CHANNEL1 { ID = 12; };
+};

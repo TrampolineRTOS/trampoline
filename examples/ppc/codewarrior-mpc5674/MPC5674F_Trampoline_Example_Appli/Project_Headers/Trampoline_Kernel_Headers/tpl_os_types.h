@@ -1,0 +1,101 @@
+/**
+ * @file tpl_os_types.h
+ *
+ * @section descr File description
+ *
+ * Trampoline general types definitions. This file is included
+ * by the communication library
+ *
+ * @section copyright Copyright
+ *
+ * Trampoline OS
+ *
+ * Trampoline is copyright (c) IRCCyN 2005+
+ * Copyright ESEO for function and data structures documentation
+ * Trampoline is protected by the French intellectual property law.
+ *
+ * This software is distributed under the Lesser GNU Public Licence
+ *
+ * @section infos File informations
+ *
+ * $Date: 2009-02-18 07:14:39 -0600 (mer. 18 févr. 2009) $
+ * $Rev: 577 $
+ * $Author: jlb $
+ * $URL: https://trampoline.rts-software.org/svn/trunk/os/tpl_os_types.h $
+ */
+
+#ifndef TPL_OS_TYPES_H
+#define TPL_OS_TYPES_H
+
+#include "tpl_os_internal_types.h"
+
+/**
+ * @typedef StatusType
+ *
+ * Status information for many services. Values names are usually prefixed by
+ * E_OS_*. Each API service provides more informations about error codes.
+ *
+ * See paragraph 13.1, page 48 of OSEK/VDX 2.2.2 spec
+ */
+#ifndef STATUSTYPE_DEFINED
+#define STATUSTYPE_DEFINED
+typedef tpl_status      StatusType;
+#endif
+
+/**
+ * @typedef TaskStateType
+ *
+ * identifies the state of a task
+ *
+ * see paragraph 13.2.1, page 49 of OSEK/VDX 2.2.2 spec
+ */
+typedef tpl_proc_state  TaskStateType;
+
+/**
+ * @typedef TaskStateRefType
+ *
+ * References a #TaskStateType
+ *
+ * see paragraph 13.2.1, page 49 of OSEK/VDX 2.2.2 spec
+ */
+typedef P2VAR(tpl_proc_state, TYPEDEF, OS_APPL_DATA)  TaskStateRefType;
+
+/**
+ * @typedef TaskType
+ *
+ * A task's identifier.
+ *
+ * see paragraph 13.2.1, page 49 of OSEK/VDX 2.2.2 spec
+ */
+typedef tpl_task_id     TaskType;
+
+/**
+ * @typedef TaskRefType
+ *
+ * References a #TaskType
+ *
+ * see paragraph 13.2.1, page 49 of OSEK/VDX 2.2.2 spec
+ */
+typedef P2VAR(tpl_task_id, TYPEDEF, OS_APPL_DATA) TaskRefType;
+
+/**
+ * @typedef TickType
+ *
+ * Represents a count value in ticks
+ *
+ * see paragraph 13.6.1 page 62 of OSEK/VDX 2.2.2 spec
+ */
+typedef tpl_tick            TickType;
+
+/**
+ * @typedef TickRefType
+ *
+ * References a #TickType
+ *
+ * see paragraph 13.6.1 page 62 of OSEK/VDX 2.2.2 spec
+ */
+typedef P2VAR(tpl_tick, TYPEDEF, OS_APPL_DATA)  TickRefType;
+
+#endif /* TPL_OS_TYPES_H */
+
+/* End of file tpl_os_types.h */

@@ -1,0 +1,3 @@
+#define VLE_IS_ON 1 
+/* define to enable external bus support */
+#define CALL_USR_INIT
