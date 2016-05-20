@@ -48,6 +48,12 @@ TPL_EXTERN(tpl_it_id)
 TPL_EXTERN(tpl_ack_irq)
 TPL_EXTERN(tpl_run_elected)
 
+#if (WITH_VLE == YES)
+TPL_VLE_ON
+#else
+TPL_VLE_OFF
+#endif
+
 /****************************************************************************/
 TPL_TEXT_SECTION
 TPL_SECTION(EI_vector, CODE_ACCESS_RIGHT)
@@ -120,7 +126,7 @@ TPL_GLOBAL_REF(tpl_it_handler):
   e_lis     r5,TPL_HIG(TPL_EXTERN_REF(tpl_kern))
   e_add16i  r5,TPL_LOW(TPL_EXTERN_REF(tpl_kern))
   se_add    r5,r6
-#if WITH_MULTICORE
+#if WITH_MULTICORE == YES
   e_lwz     r5,0(r5)
 #endif
   e_stw     r5,KS_KERN_PTR(r1) /* save the ptr for future use  */

@@ -41,6 +41,12 @@ TPL_EXTERN(tpl_trusted_fct_table)
 TPL_GLOBAL(tpl_call_trusted_function_service)
 TPL_GLOBAL(tpl_exit_trusted_function_service)
 
+#if (WITH_VLE == YES)
+TPL_VLE_ON
+#else
+TPL_VLE_OFF
+#endif
+
 #define OS_START_SEC_CODE
 #include "AsMemMap.h"
 

@@ -143,6 +143,12 @@ if OS::NUMBER_OF_CORES > 1 then
       end foreach
     end if
   end foreach
+
+  if counters["SystemCounter"]::SOURCE != "no_pit" then
+  %
+    TPL_INTC(1).PSR[% !sources[counters["SystemCounter"]::SOURCE]::ID %] = intc_psr_val; // SystemCounter
+  %
+  end if
 end if
 %
 }

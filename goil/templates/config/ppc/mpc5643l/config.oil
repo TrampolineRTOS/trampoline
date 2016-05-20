@@ -109,14 +109,10 @@ CPU mpc5643l_interrupt {
 
   PLATFORM_FILES mpc5643l {
     PATH = "ppc/mpc5643l";
-    CFILE = "tpl_boot_init.s";
-    CFILE = "tpl_led.c";                        // debug
-  };
-
-  PLATFORM_FILES mpc5643l_cosmic {
-    PATH = "ppc/mpc5643l/cosmic";
-    CFILE = "crtsiz4.s";
+    CFILE = "tpl_boot.s";
+    CFILE = "tpl_boot_utils.c";
     CFILE = "Bam.c";
+    CFILE = "tpl_led.c";                        // debug
   };
 
 };

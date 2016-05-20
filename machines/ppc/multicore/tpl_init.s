@@ -37,6 +37,12 @@ TPL_EXTERN(tpl_msr_start_value)
 TPL_GLOBAL(tpl_init_regs)
 TPL_GLOBAL(tpl_shutdown)
 
+#if (WITH_VLE == YES)
+TPL_VLE_ON
+#else
+TPL_VLE_OFF
+#endif
+
 #define OS_START_SEC_CODE
 #include "AsMemMap.h"
 

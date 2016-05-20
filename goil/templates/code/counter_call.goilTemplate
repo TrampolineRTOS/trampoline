@@ -16,7 +16,7 @@ if OS::NUMBER_OF_CORES == 1 then
   if (tpl_kern.need_schedule)
   {
     tpl_schedule_from_running();
-    LOCAL_SWITCH_CONTEXT()
+    LOCAL_SWITCH_CONTEXT(0)
   }
 %
 else
@@ -26,7 +26,7 @@ else
   tpl_dispatch_context_switch();
   if (TPL_KERN(core_id).need_switch != NO_NEED_SWITCH)
   {
-    LOCAL_SWITCH_CONTEXT()
+    LOCAL_SWITCH_CONTEXT(core_id)
   }
 %
 end if

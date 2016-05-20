@@ -52,6 +52,12 @@ TPL_EXTERN(_IVOR34_OFFSET)
 
 TPL_EXTERN(tpl_intc)
 
+#if (WITH_VLE == YES)
+TPL_VLE_ON
+#else
+TPL_VLE_OFF
+#endif
+
 
 /****************************************************************************/
 #define OS_START_SEC_CODE

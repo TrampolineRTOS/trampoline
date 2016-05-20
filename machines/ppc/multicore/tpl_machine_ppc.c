@@ -64,20 +64,12 @@
 //#error "Os.h and Os_Cfg.h files do not have the same AUTOSAR release version"
 //#endif
 
-
-#define TPL_CORE_0_SW_ISR_SET   TPL_INTC_SET_6
-#define TPL_CORE_0_SW_ISR_CLR   TPL_INTC_CLR_6
-#define TPL_CORE_1_SW_ISR_SET   TPL_INTC_SET_7
-#define TPL_CORE_1_SW_ISR_CLR   TPL_INTC_CLR_7
-
-
-
 #define OS_START_SEC_VAR_32BIT
 #include "tpl_memmap.h"
 
 VAR(uint32, OS_VAR)   tpl_current_date[NUMBER_OF_CORES];
 
-#if NUMBER_OF_CORES > 1
+#if WITH_MULTICORE == YES
 extern FUNC(void, OS_CODE) tpl_slave_core_startup();
 #endif
 
@@ -531,14 +523,14 @@ STATIC FUNC(void, OS_CODE) tpl_get_spin_lock(
   /* wait until the lock is free */
   do
   {
-    current_value = TPL_SEMA4(0).GATE[lock];
+    current_value = TPL_SEMA4(core_id).GATE[lock];
   } while(TPL_GATE_UNLOCK != current_value);
 
   /* try to get the lock, until we have it */
   do
   {
-    TPL_SEMA4(0).GATE[lock] = core_lock;
-    current_value = TPL_SEMA4(0).GATE[lock];
+    TPL_SEMA4(core_id).GATE[lock] = core_lock;
+    current_value = TPL_SEMA4(core_id).GATE[lock];
   } while(current_value != core_lock);
 
 
@@ -568,11 +560,11 @@ STATIC FUNC(void, OS_CODE) tpl_release_spin_lock(
   }
 
   /* check we actually have the lock */
-  current_value = TPL_SEMA4(0).GATE[lock];
+  current_value = TPL_SEMA4(core_id).GATE[lock];
   if(current_value==core_lock)
   {
     /* release the lock */
-    TPL_SEMA4(0).GATE[lock] = TPL_GATE_UNLOCK;
+    TPL_SEMA4(core_id).GATE[lock] = TPL_GATE_UNLOCK;
   }
 
 }

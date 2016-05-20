@@ -33,6 +33,12 @@
 TPL_GLOBAL(tpl_save_context)
 TPL_GLOBAL(tpl_load_context)
 
+#if (WITH_VLE == YES)
+TPL_VLE_ON
+#else
+TPL_VLE_OFF
+#endif
+
 #define INT_CONTEXT 0
 #define FP_CONTEXT  4
 

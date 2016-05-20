@@ -45,6 +45,12 @@ TPL_GLOBAL(tpl_disable_interrupts)
 TPL_GLOBAL(tpl_enable_os_interrupts)
 TPL_GLOBAL(tpl_disable_os_interrupts)
 
+#if (WITH_VLE == YES)
+TPL_VLE_ON
+#else
+TPL_VLE_OFF
+#endif
+
 #define OS_START_SEC_CODE
 #include "AsMemMap.h"
 

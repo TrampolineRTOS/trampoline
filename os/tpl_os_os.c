@@ -58,6 +58,7 @@ FUNC(void, OS_CODE) StartOS(
 #endif
 #if NUMBER_OF_CORES > 1
     }
+    tpl_init_core();
 #endif
   }
   tpl_start_os(mode);

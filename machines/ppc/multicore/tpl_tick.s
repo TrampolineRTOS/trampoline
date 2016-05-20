@@ -47,6 +47,11 @@ TPL_EXTERN(tpl_user_mp)
 TPL_EXTERN(tpl_set_process_mp)
 TPL_EXTERN(tpl_run_elected)
 
+#if (WITH_VLE == YES)
+TPL_VLE_ON
+#else
+TPL_VLE_OFF
+#endif
 
 #if (TPL_TICK_TIMER == TPL_DECREMENTER)
 
@@ -138,7 +143,7 @@ tpl_dec_handler:
   e_lis       r5,TPL_HIG(TPL_EXTERN_REF(tpl_kern))
   e_add16i    r5,TPL_LOW(TPL_EXTERN_REF(tpl_kern))
   se_add      r5,r6
-#if WITH_MULTICORE
+#if WITH_MULTICORE == YES
   e_lwz       r5,0(r5)
 #endif
   e_stw       r5,KS_KERN_PTR(r1)            /* save the ptr for future use  */

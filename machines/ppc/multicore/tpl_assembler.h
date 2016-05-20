@@ -35,6 +35,8 @@
  * not portable
  */
 #if defined (__MWERKS__)
+  #define TPL_VLE_ON
+  #define TPL_VLE_OFF
   #define TPL_HIG(sym)  sym@ha
   #define TPL_LOW(sym)  sym@l
   #define TPL_EXTERN(var)    .extern var
@@ -60,6 +62,8 @@
   #define TYPE(name)      .type ##name,@function
   #define SIZE(name)      .size ##name,$-##name
 #elif defined (__ghs_asm)
+  #define TPL_VLE_ON    .vle
+  #define TPL_VLE_OFF
   #define TPL_HIG(sym)  %hi(sym)
   #define TPL_LOW(sym)  %lo(sym)
   #define TPL_EXTERN(var)    .extern var
@@ -85,6 +89,8 @@
   #define TYPE(name)      .type ##name,@function
   #define SIZE(name)      .size ##name,$-##name
 #elif defined(__DIABDATA__)
+  #define TPL_VLE_ON
+  #define TPL_VLE_OFF
   #define TPL_HIG(sym)  sym@ha
   #define TPL_LOW(sym)  sym@l
   #define TPL_EXTERN    .extern
@@ -142,6 +148,8 @@
   #define r29 29
   #define r30 30
   #define r31 31
+  #define TPL_VLE_ON
+  #define TPL_VLE_OFF
   #define TPL_HIG(sym)  sym@ha
   #define TPL_LOW(sym)  sym@l
   #define TPL_EXTERN(var)    .extern var
@@ -167,6 +175,8 @@
   #define TYPE(name)
   #define SIZE(name)
 #elif defined (__CSMC__)
+  #define TPL_VLE_ON    vle on
+  #define TPL_VLE_OFF   vle off
   #define TPL_HIG(sym)  sym@ha
   #define TPL_LOW(sym)  sym@l
   #define TPL_EXTERN(var)    xref _ ## var

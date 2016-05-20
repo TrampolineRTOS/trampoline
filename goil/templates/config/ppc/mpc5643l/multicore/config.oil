@@ -45,10 +45,5 @@ CPU mpc5643l_interrupt {
     PATH = "ppc/multicore";
     CFILE = "tpl_multicore.s";
   };
-
-  PLATFORM_FILES mpc5643l_multicore {
-    PATH = "ppc/mpc5643l";
-    CFILE = "tpl_slave_core_startup.s";
-  };
 };
 

@@ -41,6 +41,12 @@
 #define TPL_EXCEPTION_DATA_TLB_ERROR        13
 #define TPL_EXCEPTION_INSTRUCTION_TLB_ERROR 14
 
+#if (WITH_VLE == YES)
+TPL_VLE_ON
+#else
+TPL_VLE_OFF
+#endif
+
 #define OS_START_SEC_CODE
 #include "AsMemMap.h"
 #if (WITH_EXCEPTION_HOOK == YES)

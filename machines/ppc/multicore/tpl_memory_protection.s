@@ -103,6 +103,12 @@ TPL_GLOBAL(tpl_user_mp)
 TPL_GLOBAL(tpl_set_process_mp)
 TPL_GLOBAL(tpl_init_mp)
 
+#if (WITH_VLE == YES)
+TPL_VLE_ON
+#else
+TPL_VLE_OFF
+#endif
+
 #define OS_START_SEC_CODE
 #include "AsMemMap.h"
 

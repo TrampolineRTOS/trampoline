@@ -149,7 +149,7 @@ let data_size_hash["UNSPECIFIED"]       := "UN"
 
 # /* OS constants */
 
-+seg osconst -a rchw -n osconst -r2
++seg osconst -a rchw -n osconst -r4
 +grp osconst=.osConst
 +def ___SEG_START_API_CONST_RGN=@osconst
 +grp osconst=.osApiConst
@@ -157,7 +157,7 @@ let data_size_hash["UNSPECIFIED"]       := "UN"
 
 # /* Application constants */
 
-+seg appconst -a osconst -n appconst -r2
++seg appconst -a osconst -n appconst -r4
 %
 foreach app in APPLICATIONS do
  let pragma_app_name := [("000" . [INDEX string]) rightSubString: 3]
@@ -178,7 +178,7 @@ end foreach
 
 # /* Tasks and ISR constants */
 
-+seg procconst -a appconst -n procconst -r2
++seg procconst -a appconst -n procconst -r4
 +def __PROGCONST_SECTION_STOP=pstart(procconst)
 
 %
@@ -244,29 +244,29 @@ end for
 #===========================================
 #             IVORS
 
-+seg .exCritInput   -b ivor_offset_base+0x0     -n .exCritInput   -r4 # IVOR0
-+seg .exMchineChck  -b ivor_offset_base+0x10    -n .exMchineChck  -r4 # IVOR1
-+seg .exDatStorage  -b ivor_offset_base+0x20    -n .exDatStorage  -r4 # IVOR2
-+seg .exInstStrage  -b ivor_offset_base+0x30    -n .exInstStrage  -r4 # IVOR3
-+seg .EI_vector     -b ivor_offset_base+0x40    -n .EI_vector     -r4 # IVOR4
-+seg .exAlignment   -b ivor_offset_base+0x50    -n .exAlignment   -r4 # IVOR5
-+seg .exProgram     -b ivor_offset_base+0x60    -n .exProgram     -r4 # IVOR6
-+seg .exFltPntUnvl  -b ivor_offset_base+0x70    -n .exFltPntUnvl  -r4 # IVOR7
-+seg .SC_vector     -b ivor_offset_base+0x80    -n .SC_vector     -r4 # IVOR8
++seg .exCritInput   -b ivor_offset_base+0x0     -n .exCritInput   # IVOR0
++seg .exMchineChck  -b ivor_offset_base+0x10    -n .exMchineChck  # IVOR1
++seg .exDatStorage  -b ivor_offset_base+0x20    -n .exDatStorage  # IVOR2
++seg .exInstStrage  -b ivor_offset_base+0x30    -n .exInstStrage  # IVOR3
++seg .EI_vector     -b ivor_offset_base+0x40    -n .EI_vector     # IVOR4
++seg .exAlignment   -b ivor_offset_base+0x50    -n .exAlignment   # IVOR5
++seg .exProgram     -b ivor_offset_base+0x60    -n .exProgram     # IVOR6
++seg .exFltPntUnvl  -b ivor_offset_base+0x70    -n .exFltPntUnvl  # IVOR7
++seg .SC_vector     -b ivor_offset_base+0x80    -n .SC_vector     # IVOR8
 # IVOR9 AP unvavailable (unused in MPC5643L)
-+seg .rsrvIVOR9     -b ivor_offset_base+0x90    -n .rsrvIVOR9     -r4
-+seg .dec_vector    -b ivor_offset_base+0xa0    -n .dec_vector    -r4 # IVOR10
-+seg .fxdIntrvlTim  -b ivor_offset_base+0xb0    -n .fxdIntrvlTim  -r4 # IVOR11
-+seg .watchdogTim   -b ivor_offset_base+0xc0    -n .watchdogTim   -r4 # IVOR12
-+seg .dataTlbError  -b ivor_offset_base+0xd0    -n .dataTlbError  -r4 # IVOR13
-+seg .instTlbError  -b ivor_offset_base+0xe0    -n .instTlbError  -r4 # IVOR14
-+seg .sdebug        -b ivor_offset_base+0xf0    -n .sdebug        -r4 # IVOR15
++seg .rsrvIVOR9     -b ivor_offset_base+0x90    -n .rsrvIVOR9
++seg .dec_vector    -b ivor_offset_base+0xa0    -n .dec_vector    # IVOR10
++seg .fxdIntrvlTim  -b ivor_offset_base+0xb0    -n .fxdIntrvlTim  # IVOR11
++seg .watchdogTim   -b ivor_offset_base+0xc0    -n .watchdogTim   # IVOR12
++seg .dataTlbError  -b ivor_offset_base+0xd0    -n .dataTlbError  # IVOR13
++seg .instTlbError  -b ivor_offset_base+0xe0    -n .instTlbError  # IVOR14
++seg .sdebug        -b ivor_offset_base+0xf0    -n .sdebug        # IVOR15
 # IVOR32 SPE unavailable
-+seg .rsrvIVOR32    -b ivor_offset_base+0x100   -n .rsrvIVOR32    -r4
++seg .rsrvIVOR32    -b ivor_offset_base+0x100   -n .rsrvIVOR32
 # IVOR33 SPE data exception
-+seg .rsrvIVOR33    -b ivor_offset_base+0x110   -n .rsrvIVOR33    -r4
++seg .rsrvIVOR33    -b ivor_offset_base+0x110   -n .rsrvIVOR33
 # IVOR34 SPE round exception
-+seg .rsrvIVOR34    -b ivor_offset_base+0x120   -n .rsrvIVOR34    -r4
++seg .rsrvIVOR34    -b ivor_offset_base+0x120   -n .rsrvIVOR34
 
 #===========================================
 #             CODE
@@ -277,7 +277,7 @@ end for
 #  * require that the last text section is not empty
 #  */
 
-+seg text_garbage  -b application_base -m application_size -n text_garbage  -r2
++seg text_garbage  -b application_base -m application_size -n text_garbage
 +grp text_garbage=.text
 +grp text_garbage=.vtext
 +grp text_garbage=.ctors
@@ -287,7 +287,7 @@ end for
 
 #  /* Application text section */
 
-+seg apptext -a text_garbage -n apptext -r2
++seg apptext -a text_garbage -n apptext -r4
 +grp apptext=.rodata
 +def ___SEG_START_API_CODE_RGN=@apptext
 +grp apptext=.osApiCode
@@ -362,12 +362,12 @@ end foreach
 
 #   /* Operating system (Trampoline) Initialized datas */
 
-+seg osvars     -b sram_base   -n osvars  -r2    -id
++seg osvars -b sram_base -n osvars -id
 +grp osvars=.osVar
 
 #   /* Applications Initialized datas */
 
-+seg appvars -a osvars -n appvars -r2 -id
++seg appvars -a osvars -n appvars -r4 -id
 
 %
 foreach app in APPLICATIONS do
@@ -407,7 +407,7 @@ foreach proc in PROCESSES do
                                  . pragma_proc_name
 %
 # /* Initialized variables section of % !proc::KIND % % !proc::NAME % */
-  +seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r2 -id
+  +seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r4 -id
 
 %
   for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
@@ -447,7 +447,7 @@ loop core from 0 to OS::NUMBER_OF_CORES - 1 do
                                  . pragma_proc_name
 %
 # /* Initialized variables section of % !proc::KIND % % !proc::NAME % */
-  +seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r2 -id
+  +seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r4 -id
 %
   for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
     for SECTION_KIND in "_POWER_ON_INIT_","_FAST_","_" do
@@ -471,7 +471,7 @@ end loop
 
 #   /* Remaining (garbage) Initialized datas */
 
-+seg data_garbage   -a % !segment_name %  -n data_garbage -r2 -id
++seg data_garbage   -a % !segment_name %  -n data_garbage -r4 -id
 +grp data_garbage=.data
 +grp data_garbage=.sdata
 +grp data_garbage=.sdata2
@@ -488,12 +488,12 @@ end loop
 
 #   /* Operating system (Trampoline) Unitialized datas */
 
-+seg osvarnoinit     -a data_garbage   -n osvarnoinit  -r2
++seg osvarnoinit     -a data_garbage   -n osvarnoinit  -r4
 +grp osvarnoinit=.osVarNoInit
 
 #   /* Applications Unitialized datas */
 
-+seg appvarnoinit -a osvarnoinit -n appvarnoinit -r2
++seg appvarnoinit -a osvarnoinit -n appvarnoinit -r4
 
 %
 foreach app in APPLICATIONS do
@@ -524,7 +524,7 @@ foreach proc in PROCESSES do
                                    . pragma_proc_name
 %
 # /* Unitialized variables section of % !proc::KIND % % !proc::NAME % */
-  +seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r2
+  +seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r4
 
 %
   for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
@@ -562,7 +562,7 @@ loop core from 0 to OS::NUMBER_OF_CORES - 1 do
                                    . pragma_proc_name
 %
 # /* Unitialized variables section of % !proc::KIND % % !proc::NAME % */
-  +seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r2
+  +seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r4
 %
   for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
     let pragma_section_kind := section_kind_hash["_NOINIT_"]
@@ -584,7 +584,7 @@ end loop
 
 #   /* Remaining (garbage) Unitialized datas */
 
-+seg bss_garbage   -a % !segment_name % -n bss_garbage  -r2
++seg bss_garbage   -a % !segment_name % -n bss_garbage  -r4
 +grp bss_garbage=.bss
 +grp bss_garbage=.sbss
 
@@ -603,7 +603,7 @@ foreach proc in PROCESSES do
                                  . pragma_proc_name
 %
 # /* Section of stack of % !proc::KIND % % !proc::NAME %  */
-  +seg % !segment_name %  -a % !previous_segment_name % -n % !segment_name % -r2
+  +seg % !segment_name %  -a % !previous_segment_name % -n % !segment_name % -r4
 
   +def ___SEG_START_% !proc::KIND %_% !proc::NAME %_STACK_RGN=pstart(% !segment_name %)
   +def ___SEG_END_% !proc::KIND %_% !proc::NAME %_STACK_RGN=pend(% !segment_name %)
@@ -628,7 +628,7 @@ loop core from 0 to OS::NUMBER_OF_CORES - 1 do
                                  . pragma_proc_name
 %
 # /* Section of stack of % !proc::KIND % % !proc::NAME %  */
-  +seg % !segment_name %  -a % !previous_segment_name % -n % !segment_name % -r2
+  +seg % !segment_name %  -a % !previous_segment_name % -n % !segment_name % -r4
 
   +def ___SEG_START_% !proc::KIND %_% !proc::NAME %_STACK_RGN=pstart(% !segment_name %)
   +def ___SEG_END_% !proc::KIND %_% !proc::NAME %_STACK_RGN=pend(% !segment_name %)
@@ -639,10 +639,10 @@ end loop
 #===========================================
 #             Garbage
 
-+seg comment   -a % !segment_name % -n comment -r2
++seg comment   -a % !segment_name % -n comment -r4
 +grp comment=.comment
 
-+seg relocatable -a comment -n relocatable -r2
++seg relocatable -a comment -n relocatable -r4
 +grp relocatable=.rela.*
 
 #===========================================
@@ -654,8 +654,8 @@ end loop
 +def __stack_addr_p1=stack_p1_pend
 +def __stack_end_p1=stack_p1_base
 
-+def _heap_addr=heap_base
-+def _heap_end=heap_pend
++def __heap_addr=heap_base
++def __heap_end=heap_pend
 +def __SP_INIT=stack_pend
 +def __SP_END=stack_base
 +def __HEAP_START=heap_base
@@ -682,12 +682,11 @@ end loop
 +def __IVOR33_OFFSET=pstart(.rsrvIVOR33)
 +def __IVOR34_OFFSET=pstart(.rsrvIVOR34)
 
-+def L2SRAM_LOCATION=sram_base
-
-+def __sram=0x40000000
-+def __eram=0x4000FFFF                       # ram end address
++def __sram_start=sram_base
++def __sram_end=pend(relocatable)
 +def __sdata=pstart(osvars)
-+def __sbss=pstart(osvarnoinit)                 # start address of bss
++def __bss_start=pstart(osvarnoinit)
++def __bss_end=pend(bss_garbage)
 
 #===========================================
 #             Include files

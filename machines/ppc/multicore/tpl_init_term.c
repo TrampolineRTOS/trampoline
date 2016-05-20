@@ -84,8 +84,9 @@ extern FUNC(void, OS_CODE) tpl_init_dec(void);
 
 #define USER_MODE 0x4000
 
-#define APP_Task_IDLE_TASK_START_SEC_CODE
-#include "tpl_memmap.h"
+//FIXME : 1 Idle task per core => Should be generated
+//#define APP_Task_IDLE_TASK_START_SEC_CODE
+//#include "tpl_memmap.h"
 
 /**
  * TODO: document this
@@ -102,8 +103,8 @@ FUNC(void, OS_CODE) idle_function(void)
     while (1);
 }
 
-#define APP_Task_IDLE_TASK_STOP_SEC_CODE
-#include "tpl_memmap.h"
+//#define APP_Task_IDLE_TASK_STOP_SEC_CODE
+//#include "tpl_memmap.h"
 
 
 #define OS_START_SEC_CODE
@@ -119,7 +120,7 @@ FUNC(void, OS_CODE) tpl_init_interrupts(void)
     tpl_current_date[core] = 0;
   }
 
-  tpl_init_ivpr();
+    tpl_init_ivpr();
 }
 
 FUNC(void, OS_CODE) tpl_init_kernel_stack(void)
@@ -273,10 +274,6 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
   tpl_register_r2 = 0;
   tpl_register_r13 = 0;
   tpl_msr_start_value = 0;
-
-#if NUMBER_OF_CORES > 1
-  tpl_start_core(1);
-#endif
 
   tpl_init_kernel_stack();
 

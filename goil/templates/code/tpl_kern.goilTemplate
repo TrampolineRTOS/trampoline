@@ -43,6 +43,7 @@ VAR(tpl_kern_state, OS_VAR) tpl_kern_% !core_id % =
   &IDLE_TASK_% !core_id %_task_stat_desc, /* current task tu run is idle task    */
   NULL,                                   /* no previous task dynamic descriptor */
   &IDLE_TASK_% !core_id %_task_desc,      /* current task tu run is idle task    */
+  INVALID_PROC_ID,                        /* no running task so no ID            */
   INVALID_PROC_ID,                        /* idle task has no ID                 */
   NO_NEED_SWITCH,                         /* no context switch needed at start   */
   FALSE,                                  /* no schedule needed at start         */
@@ -50,7 +51,6 @@ VAR(tpl_kern_state, OS_VAR) tpl_kern_% !core_id % =
   1,                                      /* at early system startup, we run in  */
                                           /*  kernel mode, so in trusted mode    */
 #endif /* WITH_MEMORY_PROTECTION */
-  0                                       /* priority of idle task is 0          */
 };
 %
   end loop

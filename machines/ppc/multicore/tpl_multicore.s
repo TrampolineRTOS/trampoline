@@ -29,7 +29,13 @@
 #include "tpl_registers_asm.h"
 #include "tpl_app_define.h"
 
-#if NUMBER_OF_CORES > 1
+#if (WITH_VLE == YES)
+TPL_VLE_ON
+#else
+TPL_VLE_OFF
+#endif
+
+#if WITH_MULTICORE == YES
 
 #define OS_START_SEC_CODE
 #include "AsMemMap.h"
@@ -50,5 +56,5 @@ TPL_SIZE(TPL_GLOBAL_REF(tpl_get_core_id),$-TPL_GLOBAL_REF(tpl_get_core_id))
 #define OS_STOP_SEC_CODE
 #include "AsMemMap.h"
 
-#endif // if NUMBER_OF_CORES > 1
+#endif // if WITH_MULTICORE == YES
 
