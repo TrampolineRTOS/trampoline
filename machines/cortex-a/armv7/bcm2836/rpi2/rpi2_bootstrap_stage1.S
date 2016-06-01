@@ -123,6 +123,8 @@ setupStacks:
   @msr SP_hyp, r0
   ldr r0, =__SP_usr_top_
   msr SP_usr, r0
+
+  bx lr
 setupStacks_end:
 
 @----------------------------------------------------------------
@@ -150,6 +152,7 @@ startupSwitchMode:
 startupSwitchMode_noSwitch:
   @Set the CPSR (C fields)
   msr cpsr_c, r0
+
   @Return to startup
   bx lr
 startupSwitchMode_end:
@@ -209,7 +212,7 @@ switchToSysMode:
   @register to the address of the vector table base above.
   mov r0, #0x00001000 @#RPI2_VECTOR_TABLE_BASE
   mcr p15, #0, r0, cr12, cr0, #0
-
+  @Return to startup
   bx lr
 switchToSysMode_end:
 
@@ -217,6 +220,8 @@ switchToSysMode_end:
 switchToUserMode:
   cpsid if
   cps #0x1F @#ARM_MODE_USR
+  @Return to caller
+  bx lr
 switchToUserMode_end:
 
 
@@ -290,9 +295,10 @@ ARMv7InvalidateTLB_LUniprocessor:
   @Invalidate entire TLB (Unlocked/Unified)
   mov r12, #0
   mcr p15, #0, r12, cr8, cr7, #0
-
   @Perform a data synchronization barrier
   dsb
+  @Return to caller
+  bx lr
 ARMv7InvalidateTLB_end:
 
 @----------------------------------------------------------------
@@ -357,6 +363,8 @@ ARMv7InvalidateDataCache_LDone:
  mcr	p15, #2, r0, cr0, cr0, #0	     @select cache level
  dsb
  isb
+ @Return to caller
+ bx lr
 ARMv7InvalidateDataCache_end:
 
 @----------------------------------------------------------------
