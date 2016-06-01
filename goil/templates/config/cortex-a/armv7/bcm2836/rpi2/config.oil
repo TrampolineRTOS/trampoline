@@ -19,6 +19,7 @@ CPU rpi2 {
   PLATFORM_FILES rpi2_drivers {
     PATH = "cortex-a/armv7/bcm2836/rpi2/drivers";
     CFILE = "rpi2_uart.c";
+    CFILE = "rpi2_timer.c";
   };
 
 };

@@ -213,30 +213,31 @@
  *                          ARM Timer
  *
  *****************************************************************************/
-
-#define ARM_TIMER_LOD       (PERIPH_BASE + 0x0000B400)
-#define ARM_TIMER_VAL       (PERIPH_BASE + 0x0000B404)
-#define ARM_TIMER_CTL       (PERIPH_BASE + 0x0000B408)
-#define ARM_TIMER_CLI       (PERIPH_BASE + 0x0000B40C)
-#define ARM_TIMER_RIS       (PERIPH_BASE + 0x0000B410)
-#define ARM_TIMER_MIS       (PERIPH_BASE + 0x0000B414)
-#define ARM_TIMER_RLD       (PERIPH_BASE + 0x0000B418)
-#define ARM_TIMER_DIV       (PERIPH_BASE + 0x0000B41C)
-#define ARM_TIMER_CNT       (PERIPH_BASE + 0x0000B420)
+#define ARM_TIMER_BASE      (PERIPH_BASE + 0x0000B400)
+#define ARM_TIMER_LOD       (ARM_TIMER_BASE + 0x00000000)
+#define ARM_TIMER_VAL       (ARM_TIMER_BASE + 0x00000004)
+#define ARM_TIMER_CTL       (ARM_TIMER_BASE + 0x00000008)
+#define ARM_TIMER_CLI       (ARM_TIMER_BASE + 0x0000000C)
+#define ARM_TIMER_RIS       (ARM_TIMER_BASE + 0x00000010)
+#define ARM_TIMER_MIS       (ARM_TIMER_BASE + 0x00000014)
+#define ARM_TIMER_RLD       (ARM_TIMER_BASE + 0x00000018)
+#define ARM_TIMER_DIV       (ARM_TIMER_BASE + 0x0000001C)
+#define ARM_TIMER_CNT       (ARM_TIMER_BASE + 0x00000020)
 
 /*****************************************************************************
  *                          System Timer
  *
  *****************************************************************************/
+#define SYSTIMER_BASE       (PERIPH_BASE + 0x00003000)
 
-#define SYSTIMER_CS         (PERIPH_BASE + 0x00003000)
-#define SYSTIMER_CLO        (PERIPH_BASE + 0x00003004)
-#define SYSTIMER_CHI        (PERIPH_BASE + 0x00003008)
+#define SYSTIMER_CS         (SYSTIMER_BASE + 0x00000000)
+#define SYSTIMER_CLO        (SYSTIMER_BASE + 0x00000004)
+#define SYSTIMER_CHI        (SYSTIMER_BASE + 0x00000008)
 
-#define SYSTIMER_CMP0       (PERIPH_BASE + 0x0000300C)
-#define SYSTIMER_CMP1       (PERIPH_BASE + 0x00003010)
-#define SYSTIMER_CMP2       (PERIPH_BASE + 0x00003014)
-#define SYSTIMER_CMP3       (PERIPH_BASE + 0x00003018)
+#define SYSTIMER_CMP0       (SYSTIMER_BASE + 0x0000000C)
+#define SYSTIMER_CMP1       (SYSTIMER_BASE + 0x00000010)
+#define SYSTIMER_CMP2       (SYSTIMER_BASE + 0x00000014)
+#define SYSTIMER_CMP3       (SYSTIMER_BASE + 0x00000018)
 
 #define SYSTIMER_CS_MATCH0  0x01
 #define SYSTIMER_CS_MATCH1  0x02

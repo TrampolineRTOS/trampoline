@@ -66,5 +66,10 @@ FUNC(void, OS_CODE) c_hang_handler(void) {
  * IRQ acknowledge functions.
  ******************************************************************************/
 FUNC(void, OS_CODE) ARM_TIMER_ClearFlag(void) {
-	writeToReg(ARM_TIMER_CLI,0);
+	/* Clear the ARM Timer interrupt - it's the only interrupt we have
+	 * enabled, so we want don't have to work out which interrupt source
+	 * caused us to interrupt
+	 */
+	RPI_GetArmTimer()->IRQClear = 1;
+	// writeToReg(ARM_TIMER_CLI,0);
 }

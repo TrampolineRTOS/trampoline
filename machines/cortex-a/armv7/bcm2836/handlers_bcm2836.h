@@ -27,6 +27,7 @@
 #include "tpl_os_interrupt_kernel.h"
 #include "bcm2836.h"
 #include "emblib.h"
+#include "rpi2_timer.h"
 
 /******************************************************************************
  * Exception handlers.

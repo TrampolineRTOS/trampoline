@@ -41,9 +41,14 @@
  */
 .global tpl_primary_syscall_handler
 tpl_primary_syscall_handler:
-  push {r0-r12, lr}
-  bl trace_1
-  pop {r0-r12, lr}
+  @push {r0-r12, lr}
+  @bl trace_1
+  @pop {r0-r12, lr}
+  @push {r0-r12, lr}
+  @mov r0, sp
+  @bl trace_val
+  @pop {r0-r12, lr}
+
    /**********************
     * KERNEL ENTER STAGE *
     **********************
@@ -112,6 +117,15 @@ skip_kernel_enter:
     cmp r3, #SYSCALL_COUNT
     bhs invalid_service_id
 
+    @push {r0-r12, lr}
+    @bl trace_4
+    @pop {r0-r12, lr}
+
+    @push {r0-r12, lr}
+    @mov r0, r3
+    @bl trace_val
+    @pop {r0-r12, lr}
+
     /* get the appropriate system call address into R3 */
     ldr r1, =tpl_dispatch_table
     ldr r3, [r1, r3, LSL #2]
@@ -148,6 +162,14 @@ skip_kernel_enter:
     * CONTEXT SWITCHING STAGE *
     ***************************/
 context_switch_swi:
+@push {r0-r12, lr}
+@bl trace_2
+@pop {r0-r12, lr}
+@push {r0-r12, lr}
+@mov r0, sp
+@bl trace_val
+@pop {r0-r12, lr}
+
     /* load the tpl_kern base address */
     ldr r1, =tpl_kern
 
@@ -162,6 +184,13 @@ context_switch_swi:
      * SAVES OLD CONTEXT
      */
 save_context_swi:
+@push {r0-r12, lr}
+@bl trace_3
+@pop {r0-r12, lr}
+@push {r0-r12, lr}
+@mov r0, sp
+@bl trace_val
+@pop {r0-r12, lr}
 
     /* get the context block address */
     ldr r2, [r1, #TPL_KERN_OFFSET_S_RUNNING] /* get the address of the context bloc */
@@ -187,12 +216,27 @@ save_context_swi:
 
     /* only executed if context saving step has not been done */
 skip_save_context_swi:
+  @push {r0-r12, lr}
+  @bl trace_4
+  @pop {r0-r12, lr}
+  @push {r0-r12, lr}
+  @mov r0, sp
+  @bl trace_val
+  @pop {r0-r12, lr}
+
     add sp, sp, #(5 * 4) /* discards kernel enter stack frame */
 
     /*
      * LOADS NEW CONTEXT
      */
 load_context_swi:
+  @push {r0-r12, lr}
+  @bl trace_5
+  @pop {r0-r12, lr}
+  @push {r0-r12, lr}
+  @mov r0, sp
+  @bl trace_val
+  @pop {r0-r12, lr}
 
 call_tpl_run_elected:
 	/* First call tpl_run_elected with the value of tpl_kern.need_switch
@@ -233,6 +277,14 @@ call_tpl_run_elected:
 flush_pipeline:
     ldr lr, [lr, #(15 * 4)]
 
+    @push {r0-r12, lr}
+    @bl trace_6
+    @pop {r0-r12, lr}
+    @push {r0-r12, lr}
+    @mov r0, sp
+    @bl trace_val
+    @pop {r0-r12, lr}
+
     movs pc, lr
 #else
     ldmia lr, {r0-r15}^
@@ -243,7 +295,13 @@ flush_pipeline:
      ********************************************/
 invalid_service_id:  /* currently, if invalid service id is specified, we do nothing */
 swi_no_context_switch_exit:
-
+  @push {r0-r12, lr}
+  @bl trace_7
+  @pop {r0-r12, lr}
+  @push {r0-r12, lr}
+  @mov r0, sp
+  @bl trace_val
+  @pop {r0-r12, lr}
   /* manage reentrance of kernel */
     ldr r3, =nested_kernel_entrance_counter
     ldr r2, [r3]
@@ -265,6 +323,14 @@ swi_skip_kernel_exit:
     ldmfd sp!, {r3}
     msr spsr, r3
     ldmfd sp!, {r0-r2,lr}
+
+    @push {r0-r12, lr}
+    @bl trace_3
+    @pop {r0-r12, lr}
+    @push {r0-r12, lr}
+    @mov r0, sp
+    @bl trace_val
+    @pop {r0-r12, lr}
 
     movs pc, lr
 

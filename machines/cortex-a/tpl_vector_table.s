@@ -34,7 +34,7 @@ vectors:
   ldr pc,vectors_undefined_address
 vectors_reset_address:      .word reset_handler
 vectors_undefined_address:  .word undefined_handler
-vectors_svc_address:        .word svc_handler
+vectors_svc_address:        .word tpl_primary_syscall_handler
 vectors_prefetch_address:   .word prefetch_handler
 vectors_data_address:       .word data_handler
 vectors_reserved_address:   .word reserved_handler

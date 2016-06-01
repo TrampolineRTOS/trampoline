@@ -38,17 +38,13 @@ extern void enable_irq ( void );
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-void tpl_init_machine()
+FUNC(void, OS_CODE) tpl_init_machine(void)
 {
     tpl_init_machine_generic ();
     enable_irq();
-
-    uart_write_string((const unsigned char*)"ISR = ");
-    hexstring(GETISR());
-
 }
 
-void tpl_shutdown ()
+FUNC(void, OS_CODE) tpl_shutdown(void)
 {
     /* FIXME: this is does not conform to AUTOSAR OS specifications,
      * should return to main with initial context */

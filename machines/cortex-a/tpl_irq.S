@@ -42,7 +42,13 @@ tpl_primary_irq_handler:
   @push {r0-r12, lr}
   @bl trace_context
   @pop {r0-r12, lr}
+  @push {r0-r12, lr}
+  @mov r0, sp
+  @bl trace_val
+  @pop {r0-r12, lr}
 
+@test:
+@  b test
     /**********************
      * KERNEL ENTER STAGE *
      **********************
@@ -184,16 +190,30 @@ call_tpl_run_elected:
     msr spsr, r0
 
     /* finish load and get back to running task */
-@#if !defined NO_OKI_PIPELINE_BUG
-@    ldmia lr, {r0-r14}^
-@    b flush_pipeline
-@flush_pipeline:
-@    ldr lr, [lr, #(15 * 4)]
-@
-@    movs pc, lr
-@#else
+#if !defined NO_OKI_PIPELINE_BUG
+    ldmia lr, {r0-r14}^
+    b flush_pipeline
+flush_pipeline:
+    ldr lr, [lr, #(15 * 4)]
+
+    @push {r0-r12, lr}
+    @bl trace_2
+    @pop {r0-r12, lr}
+    @push {r0-r12, lr}
+    @bl trace_stack_irq
+    @pop {r0-r12, lr}
+
+    movs pc, lr
+#else
     ldmia lr, {r0-r15}^
-@#endif /* defined NO_OKI_PIPELINE_BUG */
+
+    @push {r0-r12, lr}
+    @bl trace_3
+    @pop {r0-r12, lr}
+    @push {r0-r12, lr}
+    @bl trace_stack_irq
+    @pop {r0-r12, lr}
+#endif /* defined NO_OKI_PIPELINE_BUG */
 
     /********************************************
      * KERNEL EXIT WITHOUT CONTEXT SWITCH STAGE *

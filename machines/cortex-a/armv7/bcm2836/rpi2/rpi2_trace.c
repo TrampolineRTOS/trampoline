@@ -19,66 +19,54 @@ extern unsigned int GETSP(void);
 extern unsigned int GETLR(void);
 extern unsigned int GETPC(void);
 
+extern unsigned int __SP_irq_top_;
+
 void trace_1(void) {
-  // uart_write_string((const unsigned char*)"__TRACE__1__");
+  uart_write_string((const unsigned char*)"__TRACE__1__");
 }
 
 void trace_2(void) {
-  // uart_write_string((const unsigned char*)"__TRACE__2__");
+  uart_write_string((const unsigned char*)"__TRACE__2__");
 }
 
 void trace_3(void) {
-  // uart_write_string((const unsigned char*)"__TRACE__3__");
-  // uart_write_string((const unsigned char*)" : tpl_action_activate_task");
+  uart_write_string((const unsigned char*)"__TRACE__3__");
 }
 
 void trace_4(const unsigned char* str) {
-  // uart_write_string((const unsigned char*)"__TRACE__4__");
-  // uart_write_string((const unsigned char*)" : tpl_activate_task : ");
-  // uart_write_string((const unsigned char*)str);
+  uart_write_string((const unsigned char*)"__TRACE__4__");
 }
 
 void trace_5(void) {
-  // uart_write_string((const unsigned char*)"__TRACE__5__");
-  // uart_write_string((const unsigned char*)" : tpl_put_new_proc");
+  uart_write_string((const unsigned char*)"__TRACE__5__");
 }
 
 void trace_6(void) {
-  // uart_write_string((const unsigned char*)"__TRACE__6__");
-  // uart_write_string((const unsigned char*)" : tpl_schedule_from_running");
+  uart_write_string((const unsigned char*)"__TRACE__6__");
 }
 
 void trace_7(void) {
-  // uart_write_string((const unsigned char*)"__TRACE__7__");
-  // uart_write_string((const unsigned char*)" : tpl_preempt");
-}
-
-void trace_7_1(void) {
-  // uart_write_string((const unsigned char*)"__TRACE__7_1__");
-  // uart_write_string((const unsigned char*)" : tpl_preempt : preempt");
+  uart_write_string((const unsigned char*)"__TRACE__7__");
 }
 
 void trace_8(void) {
-  // uart_write_string((const unsigned char*)"__TRACE__8__");
-  // uart_write_string((const unsigned char*)" : tpl_start");
-}
-
-void trace_8_1(uint32 num) {
-  // uart_write_string((const unsigned char*)"tpl_start : elected_id : ");
-  // hexstring(num);
+  uart_write_string((const unsigned char*)"__TRACE__8__");
 }
 
 void trace_9(void) {
-  // uart_write_string((const unsigned char*)"__TRACE__9__");
-  // uart_write_string((const unsigned char*)" : tpl_start : new proc");
+  uart_write_string((const unsigned char*)"__TRACE__9__");
 }
 
 void trace_10(void) {
-  // uart_write_string((const unsigned char*)"__TRACE__10__");
-  // uart_write_string((const unsigned char*)" : tpl_init_context");
+  uart_write_string((const unsigned char*)"__TRACE__10__");
 }
 
 void trace_regs(void) {
+  const unsigned char * regs_name[16] = {
+    "r0", "r1", "r2", "r3",
+    "r4", "r5", "r6", "r7",
+    "r8", "r9", "r10", "r11",
+    "r12", "sp", "lr", "pc"};
   uint32 regs[16];
   uint32* ptr;
   uint8 index;
@@ -101,7 +89,19 @@ void trace_regs(void) {
   __asm volatile ("mov %0, pc" : "=r" (ptr) );
   uart_write_string((const unsigned char*)"__TRACE__REGS______________________________");
 
-  for (index = 0; index <= 7; index++) {
+  for (index = 0; index <= 3; index++) {
+    uart_write_strings(regs_name[index]);
+    uart_write_strings((const unsigned char*)" | ");
+    hexstrings(regs[index]);
+    if (index < 3) {
+      uart_write_strings((const unsigned char*)" | ");
+    }
+  }
+  uart_write_char((unsigned char)0x0D);
+  uart_write_char((unsigned char)0x0A);
+  for (index = 4; index <= 7; index++) {
+    uart_write_strings(regs_name[index]);
+    uart_write_strings((const unsigned char*)" | ");
     hexstrings(regs[index]);
     if (index < 7) {
       uart_write_strings((const unsigned char*)" | ");
@@ -109,7 +109,19 @@ void trace_regs(void) {
   }
   uart_write_char((unsigned char)0x0D);
   uart_write_char((unsigned char)0x0A);
-  for (index = 8; index <= 15; index++) {
+  for (index = 8; index <= 11; index++) {
+    uart_write_strings(regs_name[index]);
+    uart_write_strings((const unsigned char*)" | ");
+    hexstrings(regs[index]);
+    if (index < 11) {
+      uart_write_strings((const unsigned char*)" | ");
+    }
+  }
+  uart_write_char((unsigned char)0x0D);
+  uart_write_char((unsigned char)0x0A);
+  for (index = 12; index <= 15; index++) {
+    uart_write_strings(regs_name[index]);
+    uart_write_strings((const unsigned char*)" | ");
     hexstrings(regs[index]);
     if (index < 15) {
       uart_write_strings((const unsigned char*)" | ");
@@ -121,22 +133,47 @@ void trace_regs(void) {
   uart_write_string((const unsigned char*)"___________________________________________");
 }
 
-void trace_context(void) {
+void trace_context(tpl_proc_id proc_id) {
+  struct ARM_CONTEXT *core_context;
+  const tpl_proc_static *the_proc;
+
+  the_proc = tpl_stat_proc_table[proc_id];
+  core_context = the_proc->context;
+
   uart_write_string((const unsigned char*)"__TRACE__CONTEXT___________________________");
-  uart_write_string((const unsigned char*)"");
+  uart_write_strings((const unsigned char*)"pc  : ");
+  hexstring(core_context->r[armreg_pc]);
+  uart_write_strings((const unsigned char*)"sp  : ");
+  hexstring(core_context->r[armreg_sp]);
+  uart_write_strings((const unsigned char*)"psr : ");
+  hexstring(core_context->psr);
+  uart_write_strings((const unsigned char*)"lr  : ");
+  hexstring(core_context->r[armreg_lr]);
   uart_write_string((const unsigned char*)"___________________________________________");
+}
+
+void trace_context_idle(void) {
+  trace_context(IDLE_TASK_ID);
+}
+
+void trace_context_blink(void) {
+  trace_context(0);
 }
 
 void trace_idle(void) {
   uart_write_string((const unsigned char*)"Tache IDLE");
 }
 
-void trace_in(void) {
-  uart_write_string((const unsigned char*)"]================== IN ==================[");
+void trace_in(const unsigned char* fun) {
+  uart_write_strings((const unsigned char*)"]================== ");
+  uart_write_strings(fun);
+  uart_write_string((const unsigned char*)"IN ==================[");
 }
 
-void trace_out(void) {
-  uart_write_string((const unsigned char*)"]================== OUT =================[");
+void trace_out(const unsigned char* fun) {
+  uart_write_strings((const unsigned char*)"]================== ");
+  uart_write_strings(fun);
+  uart_write_string((const unsigned char*)"OUT =================[");
 }
 
 void trace_it(uint32 zeros, uint32 numit) {
@@ -150,4 +187,64 @@ void trace_a_reg(const unsigned char* reg, uint32 value) {
   uart_write_strings(reg);
   uart_write_strings((const unsigned char*)" -> ");
   hexstring(value);
+}
+
+void trace_var(const unsigned char* var, uint32 value) {
+  uart_write_strings(var);
+  uart_write_strings((const unsigned char*)" -> ");
+  hexstring(value);
+}
+
+void trace(const unsigned char* s, uint32 n) {
+  uart_write_strings((const unsigned char*)s);
+  uart_write_strings((const unsigned char*)" - ");
+  hexstring(n);
+}
+
+void trace_irq_in(void) {
+  trace_in((const unsigned char*)"IRQ ");
+}
+
+void trace_irq_out(void) {
+  trace_out((const unsigned char*)"IRQ ");
+}
+
+void trace_svc_in(void) {
+  trace_in((const unsigned char*)"SVC ");
+}
+
+void trace_svc_out(void) {
+  trace_out((const unsigned char*)"SVC ");
+}
+
+void trace_val(uint32 val) {
+  uart_write_strings((const unsigned char*)"_ ");
+  hexstrings(val);
+  uart_write_string((const unsigned char*)" _");
+}
+
+void trace_stack_irq(void) {
+  uint32 index;
+  uint32 baseAddr;
+  uint32* ptr;
+  uint32* sp_irq_value;
+  uint32* sp_value;
+  baseAddr = (uint32)&__SP_irq_top_;
+  ptr = &baseAddr;
+
+  __asm volatile ("mrs %0, SP_irq" : "=r" (sp_irq_value));
+  __asm volatile ("mov %0, sp" : "=r" (sp_value));
+
+  uart_write_strings((const unsigned char*)"SP_irq :");
+  hexstrings(*sp_irq_value);
+  uart_write_strings((const unsigned char*)" | ");
+  uart_write_strings((const unsigned char*)"SP :");
+  hexstring(*sp_value);
+
+  for (index = 0; index < 40; index++) {
+    uart_write_strings((const unsigned char*)"&");
+    hexstrings(baseAddr - (4 * index));
+    uart_write_strings((const unsigned char*)" -> ");
+    hexstring(*ptr++);
+  }
 }

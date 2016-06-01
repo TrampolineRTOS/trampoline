@@ -85,10 +85,18 @@ FUNC (void, OS_CODE) tpl_init_machine_generic (void)
  */
 void idle_function(void)
 {
+  uint32 valSpInitiale;
+  uint32 valSp;
+
+  __asm volatile ("mov %0, sp" : "=r" (valSpInitiale) );
   trace_idle();
+  trace_a_reg((const unsigned char*)"sp",valSpInitiale);
 
   while(1) {
-
+    __asm volatile ("mov %0, sp" : "=r" (valSp) );
+    if (valSp != valSpInitiale) {
+      trace_a_reg((const unsigned char*)"sp",valSp);
+    }
   };
 }
 
@@ -168,6 +176,9 @@ FUNC(void, OS_CODE) tpl_init_context(
   the_proc = tpl_stat_proc_table[proc_id];
   core_context = the_proc->context;
 
+  // trace_var((const unsigned char*)"proc_id", (uint32)proc_id);
+  // trace_var((const unsigned char*)"the_proc->stack.stack_zone", (uint32)the_proc->stack.stack_zone);
+  // trace_var((const unsigned char*)"the_proc->stack.stack_size", (uint32)the_proc->stack.stack_size);
   /* setup entry point */
   core_context->r[armreg_pc] = (uint32)(the_proc->entry);
   /* setup initial stack pointer */
@@ -187,7 +198,7 @@ FUNC(void, OS_CODE) tpl_init_context(
                                 (uint32)(CallTerminateISR2) :
                                 (uint32)(CallTerminateTask); /*  lr  */
 
-  // trace_10();
+  // trace_var((const unsigned char*)"core_context->r[armreg_sp]", core_context->r[armreg_sp]);
   /* TODO: initialize stack footprint */
 }
 

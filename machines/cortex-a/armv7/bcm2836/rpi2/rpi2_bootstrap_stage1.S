@@ -75,8 +75,7 @@ _start_end:
 startup:
   bl startupSwitchMode
 
-  ldr r0, =__SP_svc_
-  msr SP_svc, r0
+  bl setupStacks
 
   bl startupSecureMode
   @Invalidate all Caches before starting the boot process
@@ -85,7 +84,6 @@ startup:
   bl ARMv7InvalidateTLB
   @Change to SYS mode and ensure all interrupts are disabled
   @so the ARM processor is in a known state.
-  bl setupStacks
   bl switchToSysMode
   @Disable interrupts and switch to SYS mode
   cpsid if, #0x1F @#ARM_MODE_SYS
@@ -97,7 +95,7 @@ startup:
   stmia r0!, {r2-r9}
   ldmia r1!, {r2-r9}
   stmia r0!, {r2-r9}
-  @Set the Vector Base Address register in the System Control
+  @Set the Vector Base Addresvc_handlerss register in the System Control
   @register to the address of the vector table base above.
   mov r0, #0x00001000 @#RPI2_VECTOR_TABLE_BASE
   mcr p15, #0, r0, cr12, cr0, #0
@@ -110,7 +108,7 @@ startup_end:
 setupStacks:
   @ldr r0, =__SP_fiq_
   @msr SP_fiq, r0
-  ldr r0, =__SP_irq_
+  ldr r0, =__SP_irq_top_
   msr SP_irq, r0
   @ldr r0, =__SP_mon_
   @msr SP_mon, r0
@@ -119,11 +117,11 @@ setupStacks:
   @ldr r0, =__SP_abt_
   @msr SP_abt, r0
   @ La pile pour le mode Superviseur est positionnée avant
-  ldr r0, =__SP_svc_
+  ldr r0, =__SP_svc_top_
   msr SP_svc, r0
   @ldr r0, =__SP_hyp_
   @msr SP_hyp, r0
-  ldr r0, =__SP_usr_
+  ldr r0, =__SP_usr_top_
   msr SP_usr, r0
 setupStacks_end:
 
@@ -434,151 +432,3 @@ enable_irq:
   msr cpsr_c,r0
   bx lr
 enable_irq_end:
-
-@----------------------------------------------------------------
-@.global irq_handler
-@irq_handler:
-@  push {r0-r12, lr}
-@  bl c_irq_handler
-@  pop {r0-r12, lr}
-@  @
-@  @push {r0-r12, lr}
-@  @bl trace_2
-@  @pop {r0-r12, lr}
-@
-@  push {r0-r12, lr}
-@  bl tpl_arm_subarch_irq_handler
-@  pop {r0-r12, lr}
-@
-@  subs pc,lr,#4
-@irq_handler_end:
-
-.global svc_handler
-svc_handler:
-  @srsdb #0x1F! @#ARM_MODE_SYS!
-  @cps #0x1F @#ARM_MODE_SYS
-  @@Save all of the general registers (R0 to R12) and the SYS mode link register (LR)
-  push {r0-r12, lr}
-  @cps #0x13 @#ARM_MODE_SVC
-  @
-  @@Get the current CPU
-  @@Read the Multiprocessor Affinity (MPIDR) register from the system control coprocessor CP15
-  @@mrc p15, #0, r4, cr0, cr0, #5;
-  @@Mask off the CPUID value
-  @@and r4, #3 @#ARMV7_CP15_C0_MPID_CPUID_MASK
-  @@Multiply by 4 to get the offset into the array
-  @@lsl r6, r4, #2
-  @
-  @@Get the SWI thread id
-  @@ldr r5, .LSWI_THREAD_HANDLE
-  @@ldr r5, [r5]
-  @@ldr r5, [r5, r6]
-  @
-  @bl c_svc_handler
-  bl tpl_primary_syscall_handler
-  @cps #0x13 @#ARM_MODE_SYS
-  pop {r0-r12, lr}
-  @rfeia sp!
-  subs pc,lr,#0
-svc_handler_end:
-
-
-.global GETR0
-GETR0:
-  mov r0, r0
-  bx lr
-.global GETR1
-GETR1:
-  mov r0, r1
-  bx lr
-.global GETR2
-GETR2:
-  mov r0, r2
-  bx lr
-.global GETR3
-GETR3:
-  mov r0, r3
-  bx lr
-.global GETR4
-GETR4:
-  mov r0, r4
-  bx lr
-.global GETR5
-GETR5:
-  mov r0, r5
-  bx lr
-.global GETR6
-GETR6:
-  mov r0, r6
-  bx lr
-.global GETR7
-GETR7:
-  mov r0, r7
-  bx lr
-.global GETR8
-GETR8:
-  mov r0, r8
-  bx lr
-.global GETR9
-GETR9:
-  mov r0, r9
-  bx lr
-.global GETR10
-GETR10:
-  mov r0, r10
-  bx lr
-.global GETR11
-GETR11:
-  mov r0, r11
-  bx lr
-.global GETR12
-GETR12:
-  mov r0, r12
-  bx lr
-.global GETSP
-GETSP:
-  mov r0,sp
-  bx lr
-.global GETLR
-GETLR:
-  mov r0, lr
-  bx lr
-.global GETPC
-GETPC:
-  mov r0, pc
-  bx lr
-
-.global GETSP_usr
-GETSP_usr:
-  mrs r0,SP_usr
-  bx lr
-
-.global GETSP_irq
-GETSP_irq:
-  mrs r0,SP_irq
-  bx lr
-
-.global GETSPIRQ
-GETSPIRQ:
-  mrs r0, SP_irq
-  bx lr
-
-.global GETSPSVC
-GETSPSVC:
-  mrs r0, SP_svc
-  bx lr
-
-.global GETCPSR
-GETCPSR:
-  mrs r0,cpsr
-  bx lr
-
-.global GETISR
-GETISR:
-  mrc p15, 0, r0, c12, c1, 0
-  bx lr
-
-.global GETVBAR
-GETVBAR:
-  mrc p15, 0, r0, c12, c0, 0 ;@ get vbar
-  bx lr

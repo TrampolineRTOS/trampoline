@@ -27,25 +27,27 @@ SECTIONS
   } > RAM
   .stacks :
   {
-    . = 0x50000;
     . = ALIGN(0x8);
     __stacks_start = .;
     . = . + 512; /* Size of FIQ stack */
     __SP_fiq_ = .;
+    __SP_irq_bot_ = .;
     . = . +1024; /* Size of IRQ stack */
-    __SP_irq_ = .;
+    __SP_irq_top_ = .;
     . = . + 512; /* Size of MON stack */
     __SP_mon_ = .;
     . = . + 512; /* Size of UND stack */
     __SP_und_ = .;
     . = . + 512; /* Size of ABT stack */
     __SP_abt_ = .;
+    __SP_svc_bot_ = .;
     . = . + 512; /* Size of SVC stack */
-    __SP_svc_ = .;
+    __SP_svc_top_ = .;
     . = . + 512; /* Size of HYP stack */
     __SP_hyp_ = .;
+    __SP_usr_bot_ = .;
     . = . + 1024; /* Size of USR and SYS stack */
-    __SP_usr_ = .;
+    __SP_usr_top_ = .;
     __stacks_end = .;
   } > RAM
 }
