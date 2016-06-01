@@ -15,6 +15,14 @@ Its API is aligned with OSEK/VDX OS and AUTOSAR OS 4.1 standards.
 
 And we welcome external contributors to extend this list.
 
+Trampoline runs on the following boards :
+* ST Discovery   - https://www.element14.com/community/docs/DOC-48699/l/discovery-kit-for-stm32-f4-series-with-stm32f407vg-mcu
+* Teensy         - https://www.pjrc.com/store/teensy.html
+* Raspberry Pi 2 - https://www.raspberrypi.org/products/raspberry-pi-2-model-b
+* Arduino Uno    - https://www.arduino.cc/en/Main/ArduinoBoardUno
+* Arduino Mega   - https://www.arduino.cc/en/Main/ArduinoBoardMega2560
+* LPC-L2294-1MB  - https://www.olimex.com/Products/ARM/NXP/LPC-L2294-1MB/
+
 Some examples have been added (check examples):
 
 * Cortex M4 with µC stm32f407: `cortex/armv7em/stm32f407/stf32f4discovery`
