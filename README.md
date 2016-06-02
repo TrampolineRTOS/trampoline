@@ -23,7 +23,7 @@ Trampoline runs on the following plateforms :
 | Atmel ATMega2560             | 8-bit AVR          | 1     | Arduino Mega                      |
 | Atmel SAM D21                | Cortex-M0+         | 1     | XPlainedPro                       |
 | Broadcom BCM2836             | Cortex-A7          | 4     | Raspberry Pi 2 Model B            |
-| NXP LPC2294                  | ARM7TDMI           | 1     | Olimex LPC-L2294-1MB              |
+| NXP LPC2294                  | ARM7               | 1     | Olimex LPC-L2294-1MB              |
 | NXP / Freescale MK20DX256    | Cortex-M4          | 1     | Teensy31                          |
 | NXP / Freescale MPC564xL     | Power Architecture | 2     | XPC56XX EVB + XPC56XL MINI-MODULE |
 | STMicroelectronics STM32F4xx | Cortex-M4          | 1     | STM32F4DISCOVERY                  |
