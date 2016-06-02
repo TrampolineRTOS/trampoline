@@ -15,13 +15,18 @@ Its API is aligned with OSEK/VDX OS and AUTOSAR OS 4.1 standards.
 
 And we welcome external contributors to extend this list.
 
-Trampoline runs on the following boards :
-* ST Discovery   - https://www.element14.com/community/docs/DOC-48699/l/discovery-kit-for-stm32-f4-series-with-stm32f407vg-mcu
-* Teensy         - https://www.pjrc.com/store/teensy.html
-* Raspberry Pi 2 - https://www.raspberrypi.org/products/raspberry-pi-2-model-b
-* Arduino Uno    - https://www.arduino.cc/en/Main/ArduinoBoardUno
-* Arduino Mega   - https://www.arduino.cc/en/Main/ArduinoBoardMega2560
-* LPC-L2294-1MB  - https://www.olimex.com/Products/ARM/NXP/LPC-L2294-1MB/
+Trampoline runs on the following plateforms :
+
+| MCU                          | Architecture       | Cores | Evaluation Board                  |
+|------------------------------|--------------------|:-----:|-----------------------------------|
+| Atmel ATMega328p             | 8-bit AVR          | 1     | Arduino Uno                       |
+| Atmel ATMega2560             | 8-bit AVR          | 1     | Arduino Mega                      |
+| Atmel SAM D21                | Cortex-M0+         | 1     | XPlainedPro                       |
+| Broadcom BCM2836             | Cortex-A7          | 4     | Raspberry Pi 2 Model B            |
+| NXP LPC2294                  | ARM7               | 1     | Olimex LPC-L2294-1MB              |
+| NXP / Freescale MK20DX256    | Cortex-M4          | 1     | Teensy31                          |
+| NXP / Freescale MPC564xL     | Power Architecture | 2     | XPC56XX EVB + XPC56XL MINI-MODULE |
+| STMicroelectronics STM32F4xx | Cortex-M4          | 1     | STM32F4DISCOVERY                  |
 
 Some examples have been added (check examples):
 
@@ -42,7 +47,7 @@ Some examples have been added (check examples):
   * **readButton**. The example polls the button to start an alarm that activates a task to blink a LED
   * **readButton_isr**. Same but the button triggers an ISR.
 * Cortex A7 with bcm2836 - Raspberry Pi 2 : `cortex-a/armv7/bcm2836/rpi2`.
-  * **blink**. A first runable blink example is available. We need a bootloader and and a console. This stuff will be soon available as well.
+  * **blink**. A first runable blink example is available. We need a bootloader and and a console. This stuff will be soon available as well. Single core for the moment.
 * avr: 3 examples for Arduino Uno (ATMega328p chip) and Arduino Mega (ATMega2560 chip)
   * **blink**. Blinks a LED using an alarm and a task. 
   * **serial**. improve 'blink': use the standard Arduino serial API.

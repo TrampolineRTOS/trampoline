@@ -3,6 +3,8 @@
 
 #include "tpl_os.h"
 #include "tpl_os_kernel.h"
+#include "bcm2836.h"
+#include "emblib.h"
 #include "rpi2_uart.h"
 
 void trace_1(void);
@@ -31,5 +33,7 @@ void trace_svc_in(void);
 void trace_svc_out(void);
 void trace_val(uint32);
 void trace_stack_irq(void);
+void trace_stacks(void);
+void trace_pinout(void);
 
 #endif /* _RPI2_TRACE_H_ */

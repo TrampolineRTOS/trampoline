@@ -19,7 +19,12 @@ extern unsigned int GETSP(void);
 extern unsigned int GETLR(void);
 extern unsigned int GETPC(void);
 
+extern unsigned int __SP_irq_bot_ ;
 extern unsigned int __SP_irq_top_;
+extern unsigned int __SP_svc_bot_;
+extern unsigned int __SP_svc_top_;
+extern unsigned int __SP_usr_bot_;
+extern unsigned int __SP_usr_top_;
 
 void trace_1(void) {
   uart_write_string((const unsigned char*)"__TRACE__1__");
@@ -246,5 +251,66 @@ void trace_stack_irq(void) {
     hexstrings(baseAddr - (4 * index));
     uart_write_strings((const unsigned char*)" -> ");
     hexstring(*ptr++);
+  }
+}
+
+void trace_stacks(void) {
+  uint32 sp_irq_value;
+  uint32 sp_svc_value;
+  uint32 sp_usr_value;
+
+  __asm volatile ("mrs %0, SP_irq" : "=r" (sp_irq_value));
+  __asm volatile ("mrs %0, SP_svc" : "=r" (sp_svc_value));
+  __asm volatile ("mov %0, sp" : "=r" (sp_usr_value));
+
+  uart_write_string((const unsigned char*)"SP_irq : ");
+  hexstrings((uint32)&__SP_irq_bot_);
+  uart_write_strings((const unsigned char*)" | ");
+  hexstrings(sp_irq_value);
+  uart_write_strings((const unsigned char*)" | ");
+  hexstrings((uint32)&__SP_irq_top_);
+  if ( (sp_irq_value < (uint32)&__SP_irq_bot_) || (sp_irq_value > (uint32)&__SP_irq_top_) ) {
+    uart_write_string((const unsigned char*)"!!!");
+  } else {
+    uart_write_char((unsigned char)0x0D);
+    uart_write_char((unsigned char)0x0A);
+  }
+
+  uart_write_string((const unsigned char*)"SP_svc : ");
+  hexstrings((uint32)&__SP_svc_bot_);
+  uart_write_strings((const unsigned char*)" | ");
+  hexstrings(sp_svc_value);
+  uart_write_strings((const unsigned char*)" | ");
+  hexstrings((uint32)&__SP_svc_top_);
+  if ( (sp_svc_value < (uint32)&__SP_svc_bot_) || (sp_svc_value > (uint32)&__SP_svc_top_) ) {
+    uart_write_string((const unsigned char*)"!!!");
+  } else {
+    uart_write_char((unsigned char)0x0D);
+    uart_write_char((unsigned char)0x0A);
+  }
+
+  uart_write_string((const unsigned char*)"SP_usr : ");
+  hexstrings((uint32)&__SP_usr_bot_);
+  uart_write_strings((const unsigned char*)" | ");
+  hexstrings(sp_usr_value);
+  uart_write_strings((const unsigned char*)" | ");
+  hexstrings((uint32)&__SP_usr_top_);
+  if ( (sp_usr_value < (uint32)&__SP_usr_bot_) || (sp_usr_value > (uint32)&__SP_usr_top_) ) {
+    uart_write_string((const unsigned char*)"!!!");
+  } else {
+    uart_write_char((unsigned char)0x0D);
+    uart_write_char((unsigned char)0x0A);
+  }
+}
+
+void trace_pinout(void) {
+  static uint8 etat = 0;
+
+  if (etat == 0) {
+    etat = 1;
+    writeToReg(GPSET0,1<<21);
+  } else {
+    etat = 0;
+    writeToReg(GPCLR0,1<<21);
   }
 }

@@ -80,8 +80,14 @@ startup:
   bl startupSecureMode
   @Invalidate all Caches before starting the boot process
   bl ARMv7InvalidateCache
+  bl ARMv7InvalidateL1DataCache
+  bl ARMv7CleanAndInvalidateDataCache
+
   @Invalidate the TLB before starting the boot process
   bl ARMv7InvalidateTLB
+  bl ARMv7InvalidateDataTLB
+  bl ARMv7InvalidateInstructionTLB
+
   @Change to SYS mode and ensure all interrupts are disabled
   @so the ARM processor is in a known state.
   bl switchToSysMode
@@ -123,6 +129,8 @@ setupStacks:
   @msr SP_hyp, r0
   ldr r0, =__SP_usr_top_
   msr SP_usr, r0
+
+  bx lr
 setupStacks_end:
 
 @----------------------------------------------------------------
@@ -150,6 +158,7 @@ startupSwitchMode:
 startupSwitchMode_noSwitch:
   @Set the CPSR (C fields)
   msr cpsr_c, r0
+
   @Return to startup
   bx lr
 startupSwitchMode_end:
@@ -209,7 +218,7 @@ switchToSysMode:
   @register to the address of the vector table base above.
   mov r0, #0x00001000 @#RPI2_VECTOR_TABLE_BASE
   mcr p15, #0, r0, cr12, cr0, #0
-
+  @Return to startup
   bx lr
 switchToSysMode_end:
 
@@ -217,6 +226,8 @@ switchToSysMode_end:
 switchToUserMode:
   cpsid if
   cps #0x1F @#ARM_MODE_USR
+  @Return to caller
+  bx lr
 switchToUserMode_end:
 
 
@@ -290,9 +301,10 @@ ARMv7InvalidateTLB_LUniprocessor:
   @Invalidate entire TLB (Unlocked/Unified)
   mov r12, #0
   mcr p15, #0, r12, cr8, cr7, #0
-
   @Perform a data synchronization barrier
   dsb
+  @Return to caller
+  bx lr
 ARMv7InvalidateTLB_end:
 
 @----------------------------------------------------------------
@@ -357,7 +369,142 @@ ARMv7InvalidateDataCache_LDone:
  mcr	p15, #2, r0, cr0, cr0, #0	     @select cache level
  dsb
  isb
+ @Return to caller
+ bx lr
 ARMv7InvalidateDataCache_end:
+
+@----------------------------------------------------------------
+@ Perform an invalidate entire L1 data cache operation
+@ See page B3-127 of the ARMv7 Architecture Reference Manual
+ARMv7InvalidateL1DataCache:
+  mrc	p15, #1, r0, cr0, cr0, #1	     //read CLIDR
+  and	r0, r0, #0x7		             //check L1
+  bxeq	lr			                     //return if no L1 cache
+  mov	r3, #0			                 //start with L1
+
+  mcr	p15, #2, r3, cr0, cr0, #0	     //select cache level
+  isb
+  mrc	p15, #1, r0, cr0, cr0, #0	     //read CCSIDR
+
+  ubfx	ip, r0, #0, #3		             //get linesize from CCSIDR
+  add	ip, ip, #4		                 //apply bias
+  ubfx	r2, r0, #13, #15	             //get numsets - 1 from CCSIDR
+  lsl	r2, r2, ip		                 //shift to set position
+  orr	r3, r3, r2		                 //merge set into way/set/level
+  mov	r1, #1
+  lsl	r1, r1, ip		                 //r1 = set decr
+
+  ubfx	ip, r0, #3, #10		             //get numways - 1 from [to be discarded] CCSIDR
+  clz	r2, ip			                 //number of bits to MSB of way
+  lsl	ip, ip, r2		                 //shift by that into way position
+  mov	r0, #1
+  lsl	r2, r0, r2		                 //r2 now contains the way decr
+  mov	r0, r3 			                 //get sets/level (no way yet)
+  orr	r3, r3, ip		                 //merge way into way/set/level
+  bfc	r0, #0, #4		                 //clear low 4 bits (level) to get numset - 1
+  sub	r2, r2, r0		                 //subtract from way decr
+
+//r3 = ways/sets/level, r2 = way decr, r1 = set decr, r0 and ip are free
+ARMv7InvalidateL1DataCache_LLoop:
+  mcr	p15, #0, r3, cr7, cr6, #2	     //invalidate line
+  cmp	r3, #15			                 //are we done with this level (way/set == 0)
+  bls	ARMv7InvalidateL1DataCache_LDone		                     //yes, we've finished
+  ubfx	r0, r3, #4, #18		             //extract set bits
+  cmp	r0, #0			                 //compare
+  subne	r3, r3, r1		                 //non-zero?, decrement set #
+  subeq	r3, r3, r2		                 //zero?, decrement way # and restore set count
+  b	ARMv7InvalidateL1DataCache_LLoop
+
+ARMv7InvalidateL1DataCache_LDone:
+  dsb
+  mov	r0, #0			                 //default back to cache level 0
+  mcr	p15, #2, r0, cr0, cr0, #0	     //select cache level
+  dsb
+  isb
+
+  bx lr
+ARMv7InvalidateL1DataCache_end:
+
+ARMv7CleanAndInvalidateDataCache:
+  mrc	p15, #1, r0, cr0, cr0, #1	     //read CLIDR
+  tst	r0, #0x07000000
+  bxeq	lr
+  mov	r3, #0			                 //start with L1
+
+ARMv7CleanAndInvalidateDataCache_LStart:
+  add	r2, r3, r3, lsr #1	             //r2 = level * 3 / 2
+  mov	r1, r0, lsr r2		             //r1 = cache type
+  tst	r1, #6			                 //is it unified or data?
+  beq	ARMv7CleanAndInvalidateDataCache_LNext	                         //nope, skip level
+
+  mcr	p15, #2, r3, cr0, cr0, #0	     //select cache level
+  isb
+  mrc	p15, #1, r0, cr0, cr0, #0	     //read CCSIDR
+
+  ubfx	ip, r0, #0, #3		             //get linesize from CCSIDR
+  add	ip, ip, #4		                 //apply bias
+  ubfx	r2, r0, #13, #15	             //get numsets - 1 from CCSIDR
+  lsl	r2, r2, ip		                 //shift to set position
+  orr	r3, r3, r2		                 //merge set into way/set/level
+  mov	r1, #1
+  lsl	r1, r1, ip		                 //r1 = set decr
+
+  ubfx	ip, r0, #3, #10		             //get numways - 1 from [to be discarded] CCSIDR
+  clz	r2, ip			                 //number of bits to MSB of way
+  lsl	ip, ip, r2		                 //shift by that into way position
+  mov	r0, #1
+  lsl	r2, r0, r2		                 //r2 now contains the way decr
+  mov	r0, r3 			                 //get sets/level (no way yet)
+  orr	r3, r3, ip		                 //merge way into way/set/level
+  bfc	r0, #0, #4		                 //clear low 4 bits (level) to get numset - 1
+  sub	r2, r2, r0		                 //subtract from way decr
+
+//r3 = ways/sets/level, r2 = way decr, r1 = set decr, r0 and ip are free
+ARMv7CleanAndInvalidateDataCache_LLoop:
+  mcr	p15, #0, r3, cr7, cr14, #2	     //clean and invalidate line
+  cmp	r3, #15			                 //are we done with this level (way/set == 0)
+  bls	ARMv7CleanAndInvalidateDataCache_LNext	                         //yes, go to next level
+  ubfx	r0, r3, #4, #18		             //extract set bits
+  cmp	r0, #0			                 //compare
+  subne	r3, r3, r1		                 //non-zero?, decrement set #
+  subeq	r3, r3, r2		                 //zero?, decrement way # and restore set count
+  b ARMv7CleanAndInvalidateDataCache_LLoop
+
+ARMv7CleanAndInvalidateDataCache_LNext:
+  dsb
+  mrc	p15, #1, r0, cr0, cr0, #1	     //read CLIDR
+  ubfx	ip, r0, #24, #3		             //narrow to LoC
+  add	r3, r3, #2		                 //go to next level
+  cmp	r3, ip, lsl #1		             //compare
+  blt	ARMv7CleanAndInvalidateDataCache_LStart		                     //not done, next level (r0 == CLIDR)
+
+.LDone:
+  mov	r0, #0			                 //default back to cache level 0
+  mcr	p15, #2, r0, cr0, cr0, #0	     //select cache level
+  dsb
+  isb
+  bx lr
+ARMv7CleanAndInvalidateDataCache_end:
+
+ARMv7InvalidateDataTLB:
+  //Invalidate data TLB (Unlocked/Data)
+  mov r12, #0
+  mcr p15, #0, r12, cr8, cr6, #0
+
+  //Perform a data synchronization barrier
+  dsb
+  bx lr
+ARMv7InvalidateDataTLB_end:
+
+ARMv7InvalidateInstructionTLB:
+  //Invalidate instruction TLB (Unlocked/Instruction)
+  mov r12, #0
+  mcr p15, #0, r12, cr8, cr5, #0
+
+  //Perform a data synchronization barrier
+  dsb
+  bx lr
+ARMv7InvalidateInstructionTLB_end:
 
 @----------------------------------------------------------------
 .global reset_handler
