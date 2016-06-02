@@ -17,7 +17,7 @@ Build:
 ./make.py
 ```
 
-Build the kernel7.img for the sdcard:
+Build the ```kernel7.img``` for the sdcard:
 ```
 ./make.py img
 ```
