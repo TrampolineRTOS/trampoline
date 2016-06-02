@@ -302,3 +302,15 @@ void trace_stacks(void) {
     uart_write_char((unsigned char)0x0A);
   }
 }
+
+void trace_pinout(void) {
+  static uint8 etat = 0;
+
+  if (etat == 0) {
+    etat = 1;
+    writeToReg(GPSET0,1<<21);
+  } else {
+    etat = 0;
+    writeToReg(GPCLR0,1<<21);
+  }
+}

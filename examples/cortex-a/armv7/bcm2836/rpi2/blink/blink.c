@@ -65,15 +65,6 @@ FUNC(int, OS_APPL_CODE) main(void)
 TASK(blink)
 {
   static uint32 compte = 0;
-  static uint8 etat = 0;
-
-  if (etat == 0) {
-    etat = 1;
-    writeToReg(GPSET0,1<<21);
-  } else {
-    etat = 0;
-    writeToReg(GPCLR0,1<<21);
-  }
 
   compte++;
   uart_write_strings((const unsigned char*)"Tache BLINK : ");
