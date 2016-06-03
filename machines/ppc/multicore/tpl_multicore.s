@@ -38,7 +38,7 @@ TPL_VLE_OFF
 #if WITH_MULTICORE == YES
 
 #define OS_START_SEC_CODE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 TPL_GLOBAL(tpl_get_core_id)
 TPL_GLOBAL_REF(tpl_get_core_id):
 /* ------------ VLE ---------------------------------------------------------*/
@@ -54,7 +54,7 @@ TPL_GLOBAL_REF(tpl_get_core_id):
 TPL_TYPE(TPL_GLOBAL_REF(tpl_get_core_id),@function)
 TPL_SIZE(TPL_GLOBAL_REF(tpl_get_core_id),$-TPL_GLOBAL_REF(tpl_get_core_id))
 #define OS_STOP_SEC_CODE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 
 #endif // if WITH_MULTICORE == YES
 

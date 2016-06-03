@@ -44,7 +44,7 @@ TPL_VLE_OFF
 #endif
 
 #define OS_START_SEC_CODE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 
 TPL_GLOBAL_REF(tpl_init_regs):
 /* ------------ VLE ---------------------------------------------------------*/
@@ -112,5 +112,5 @@ infinite_loop:
 TPL_TYPE(TPL_GLOBAL_REF(tpl_shutdown),@function)
 TPL_SIZE(TPL_GLOBAL_REF(tpl_shutdown),$-TPL_GLOBAL_REF(tpl_shutdown))
 #define OS_STOP_SEC_CODE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 

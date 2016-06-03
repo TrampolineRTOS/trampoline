@@ -48,7 +48,7 @@ TPL_VLE_OFF
 #endif
 
 #define OS_START_SEC_CODE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 #if (WITH_EXCEPTION_HOOK == YES)
 tpl_exception_mngt:
   /* prolog, save all volatile registers, r3 has already been saved */
@@ -215,9 +215,9 @@ TPL_EXTERN(ExceptionHook)
 TPL_EXTERN(tpl_protection_hook_wrapper)
 
 #define OS_STOP_SEC_CODE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 #define OS_START_SEC_EXCRITICALINPUT
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 TPL_GLOBAL(tpl_critical_input)
 TPL_GLOBAL_REF(tpl_critical_input):
 /* ------------ VLE ---------------------------------------------------------*/
@@ -232,14 +232,14 @@ TPL_GLOBAL_REF(tpl_critical_input):
 TPL_TYPE(TPL_GLOBAL_REF(tpl_critical_input),@function)
 TPL_SIZE(TPL_GLOBAL_REF(tpl_critical_input),$-TPL_GLOBAL_REF(tpl_critical_input))
 #define OS_STOP_SEC_EXCRITICALINPUT
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 
 
 
 
 
 #define OS_START_SEC_EXMACHINECHECK
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 TPL_GLOBAL(tpl_machine_check)
 TPL_GLOBAL_REF(tpl_machine_check):
 /* ------------ VLE ---------------------------------------------------------*/
@@ -254,14 +254,14 @@ TPL_GLOBAL_REF(tpl_machine_check):
 TPL_TYPE(TPL_GLOBAL_REF(tpl_machine_check),@function)
 TPL_SIZE(TPL_GLOBAL_REF(tpl_machine_check),$-TPL_GLOBAL_REF(tpl_machine_check))
 #define OS_STOP_SEC_EXMACHINECHECK
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 
 
 
 
 
 #define OS_START_SEC_EXDATASTORAGE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 /*
  * tpl_data_storage and tpl_instruction_storage exception handler
  * are called when a memory protection exception occurs
@@ -280,14 +280,14 @@ TPL_GLOBAL_REF(tpl_data_storage):
 TPL_TYPE(TPL_GLOBAL_REF(tpl_data_storage),@function)
 TPL_SIZE(TPL_GLOBAL_REF(tpl_data_storage),$-TPL_GLOBAL_REF(tpl_data_storage))
 #define OS_STOP_SEC_EXDATASTORAGE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 
 
 
 
 
 #define OS_START_SEC_EXINSTRUCTIONSTORAGE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 TPL_GLOBAL(tpl_instruction_storage)
 TPL_GLOBAL_REF(tpl_instruction_storage):
 /* ------------ VLE ---------------------------------------------------------*/
@@ -302,14 +302,14 @@ TPL_GLOBAL_REF(tpl_instruction_storage):
 TPL_TYPE(TPL_GLOBAL_REF(tpl_instruction_storage),@function)
 TPL_SIZE(TPL_GLOBAL_REF(tpl_instruction_storage),$-TPL_GLOBAL_REF(tpl_instruction_storage))
 #define OS_STOP_SEC_EXINSTRUCTIONSTORAGE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 
 
 
 
 
 #define OS_START_SEC_EXALIGNMENT
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 TPL_GLOBAL(tpl_alignment)
 TPL_GLOBAL_REF(tpl_alignment):
 /* ------------ VLE ---------------------------------------------------------*/
@@ -324,14 +324,14 @@ TPL_GLOBAL_REF(tpl_alignment):
 TPL_TYPE(TPL_GLOBAL_REF(tpl_alignment),@function)
 TPL_SIZE(TPL_GLOBAL_REF(tpl_alignment),$-TPL_GLOBAL_REF(tpl_alignment))
 #define OS_STOP_SEC_EXALIGNMENT
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 
 
 
 
 
 #define OS_START_SEC_EXPROGRAM
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 TPL_GLOBAL(tpl_program)
 TPL_GLOBAL_REF(tpl_program):
 /* ------------ VLE ---------------------------------------------------------*/
@@ -346,14 +346,14 @@ TPL_GLOBAL_REF(tpl_program):
 TPL_TYPE(TPL_GLOBAL_REF(tpl_program),@function)
 TPL_SIZE(TPL_GLOBAL_REF(tpl_program),$-TPL_GLOBAL_REF(tpl_program))
 #define OS_STOP_SEC_EXPROGRAM
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 
 
 
 
 
 #define OS_START_SEC_EXFLOATINGPOINTUNAVAILABLE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 TPL_GLOBAL(tpl_floating_point_unavailable)
 TPL_GLOBAL_REF(tpl_floating_point_unavailable):
 /* ------------ VLE ---------------------------------------------------------*/
@@ -368,14 +368,14 @@ TPL_GLOBAL_REF(tpl_floating_point_unavailable):
 TPL_TYPE(TPL_GLOBAL_REF(tpl_floating_point_unavailable),@function)
 TPL_SIZE(TPL_GLOBAL_REF(tpl_floating_point_unavailable),$-TPL_GLOBAL_REF(tpl_floating_point_unavailable))
 #define OS_STOP_SEC_EXFLOATINGPOINTUNAVAILABLE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 
 
 
 
 
 #define OS_START_SEC_EXFIXEDINTERVALTIMER
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 TPL_GLOBAL(tpl_fi_timer)
 TPL_GLOBAL_REF(tpl_fi_timer):
 /* ------------ VLE ---------------------------------------------------------*/
@@ -390,14 +390,14 @@ TPL_GLOBAL_REF(tpl_fi_timer):
 TPL_TYPE(TPL_GLOBAL_REF(tpl_fi_timer),@function)
 TPL_SIZE(TPL_GLOBAL_REF(tpl_fi_timer),$-TPL_GLOBAL_REF(tpl_fi_timer))
 #define OS_STOP_SEC_EXFIXEDINTERVALTIMER
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 
 
 
 
 
 #define OS_START_SEC_EXWATCHDOGTIMER
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 TPL_GLOBAL(tpl_wdg_timer)
 TPL_GLOBAL_REF(tpl_wdg_timer):
 /* ------------ VLE ---------------------------------------------------------*/
@@ -412,12 +412,12 @@ TPL_GLOBAL_REF(tpl_wdg_timer):
 TPL_TYPE(TPL_GLOBAL_REF(tpl_wdg_timer),@function)
 TPL_SIZE(TPL_GLOBAL_REF(tpl_wdg_timer),$-TPL_GLOBAL_REF(tpl_wdg_timer))
 #define OS_STOP_SEC_EXWATCHDOGTIMER
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 
 
 
 #define OS_START_SEC_EXDATATLBERROR
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 TPL_GLOBAL(tpl_data_tlb)
 TPL_GLOBAL_REF(tpl_data_tlb):
 /* ------------ VLE ---------------------------------------------------------*/
@@ -432,13 +432,13 @@ TPL_GLOBAL_REF(tpl_data_tlb):
 TPL_TYPE(TPL_GLOBAL_REF(tpl_data_tlb),@function)
 TPL_SIZE(TPL_GLOBAL_REF(tpl_data_tlb),$-TPL_GLOBAL_REF(tpl_data_tlb))
 #define OS_STOP_SEC_EXDATATLBERROR
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 
 
 
 
 #define OS_START_SEC_EXINSTRUCTIONTLBERROR
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 TPL_GLOBAL(tpl_inst_tlb)
 TPL_GLOBAL_REF(tpl_inst_tlb):
 /* ------------ VLE ---------------------------------------------------------*/
@@ -453,7 +453,7 @@ TPL_GLOBAL_REF(tpl_inst_tlb):
 TPL_TYPE(TPL_GLOBAL_REF(tpl_inst_tlb),@function)
 TPL_SIZE(TPL_GLOBAL_REF(tpl_inst_tlb),$-TPL_GLOBAL_REF(tpl_inst_tlb))
 #define OS_STOP_SEC_EXINSTRUCTIONTLBERROR
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 
 
 

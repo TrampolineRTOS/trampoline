@@ -50,9 +50,9 @@ CPU mpc5643l_interrupt {
   INTERRUPT IRQ2    { ID = 2; };
   INTERRUPT IRQ3    { ID = 3; };
   INTERRUPT IRQ4    { ID = 4; };
-  INTERRUPT IRQ5    { ID = 5; }; // Intercore Reserved
-  INTERRUPT IRQ6    { ID = 6; }; // Intercore Reserved
-  INTERRUPT IRQ7    { ID = 7; };
+  INTERRUPT IRQ5    { ID = 5; };
+  INTERRUPT IRQ6    { ID = 6; }; // Intercore Reserved in multicore
+  INTERRUPT IRQ7    { ID = 7; }; // Intercore Reserved in multicore
 
   /* Hardware interrupts */
 
