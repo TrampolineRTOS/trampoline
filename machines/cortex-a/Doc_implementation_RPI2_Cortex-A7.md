@@ -211,6 +211,29 @@ On taking an exception, the processor changes mode unless it is already in the m
 
 Moreover some mode have more banked registers (FIQ mode), see A2.3 ARM core registers, [ARM Architecture Reference Manual ARMv7-A and ARMv7-R edition Issue C] [ArcRefMan].
 
+<h4 id=""> Coprocessor </h4>
+
+The ARM architecture supports coprocessors:
+
+*   cp15
+*   cp14
+*   cp10 and cp11
+*   cp8, cp9, cp12, cp13
+
+<h5 id=""> Coprocessor cp15 </h5>
+
+Read a CP15 register into an ARM register
+
+```MRC p15, Op1, Rt, CRn, CRm, Op2```
+
+Write a CP15 register from an ARM register
+
+```MCR p15, Op1, Rt, CRn, CRm, Op2```
+
+Organization of CP15 registers described in [ARM Architecture Reference Manual ARMv7-A and ARMv7-R edition Issue C, $B3.17] [ArcRefMan]
+
+They are ordered by {CRn, opc1, CRm, opc2}
+
 <h4 id=""> Boot sequence </h4>
 
 The Cortex-A7 starts in Supervisor mode in the Secure state [Technical Reference Manual, §3.4.1] [TecRefMan]. 
