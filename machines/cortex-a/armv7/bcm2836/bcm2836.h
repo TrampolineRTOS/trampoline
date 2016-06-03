@@ -213,16 +213,16 @@
  *                          ARM Timer
  *
  *****************************************************************************/
-#define ARM_TIMER_BASE      (PERIPH_BASE + 0x0000B400)
-#define ARM_TIMER_LOD       (ARM_TIMER_BASE + 0x00000000)
-#define ARM_TIMER_VAL       (ARM_TIMER_BASE + 0x00000004)
-#define ARM_TIMER_CTL       (ARM_TIMER_BASE + 0x00000008)
-#define ARM_TIMER_CLI       (ARM_TIMER_BASE + 0x0000000C)
-#define ARM_TIMER_RIS       (ARM_TIMER_BASE + 0x00000010)
-#define ARM_TIMER_MIS       (ARM_TIMER_BASE + 0x00000014)
-#define ARM_TIMER_RLD       (ARM_TIMER_BASE + 0x00000018)
-#define ARM_TIMER_DIV       (ARM_TIMER_BASE + 0x0000001C)
-#define ARM_TIMER_CNT       (ARM_TIMER_BASE + 0x00000020)
+#define ARM_TIMER_BASE (PERIPH_BASE + 0x0000B400)
+#define ARM_TIMER_LOD  (ARM_TIMER_BASE + 0x00000000)
+#define ARM_TIMER_VAL  (ARM_TIMER_BASE + 0x00000004)
+#define ARM_TIMER_CTL  (ARM_TIMER_BASE + 0x00000008)
+#define ARM_TIMER_CLI  (ARM_TIMER_BASE + 0x0000000C)
+#define ARM_TIMER_RIS  (ARM_TIMER_BASE + 0x00000010)
+#define ARM_TIMER_MIS  (ARM_TIMER_BASE + 0x00000014)
+#define ARM_TIMER_RLD  (ARM_TIMER_BASE + 0x00000018)
+#define ARM_TIMER_DIV  (ARM_TIMER_BASE + 0x0000001C)
+#define ARM_TIMER_CNT  (ARM_TIMER_BASE + 0x00000020)
 
 /*****************************************************************************
  *                          System Timer
@@ -407,5 +407,107 @@ typedef struct bscdevice_t bscdevice_t;
 #define PM_RSTC_WRCFG_SET        0x00000030
 #define PM_RSTC_WRCFG_FULL_RESET 0x00000020
 #define PM_RSTC_RESET            0x00000102
+
+/*****************************************************************************
+ *                          Mailboxes
+ *
+ *****************************************************************************/
+#define CONTROL_BASE        0x40000000
+/* Timers interrupt control registers */
+#define CORE0_TIMER_IRQCNTL (CONTROL_BASE + 0x00000040)
+#define CORE1_TIMER_IRQCNTL (CONTROL_BASE + 0x00000044)
+#define CORE2_TIMER_IRQCNTL (CONTROL_BASE + 0x00000048)
+#define CORE3_TIMER_IRQCNTL (CONTROL_BASE + 0x0000004C)
+
+/* Where to route timer interrupt to, IRQ/FIQ
+ * Setting both the IRQ and FIQ bit gives an FIQ
+ */
+#define TIMER0_IRQ          0x01
+#define TIMER1_IRQ          0x02
+#define TIMER2_IRQ          0x04
+#define TIMER3_IRQ          0x08
+#define TIMER0_FIQ          0x10
+#define TIMER1_FIQ          0x20
+#define TIMER2_FIQ          0x40
+#define TIMER3_FIQ          0x80
+
+/* Mailbox interrupt control registers */
+#define CORE0_MBOX_IRQCNTL  (CONTROL_BASE + 0x00000050)
+#define CORE1_MBOX_IRQCNTL  (CONTROL_BASE + 0x00000054)
+#define CORE2_MBOX_IRQCNTL  (CONTROL_BASE + 0x00000058)
+#define CORE3_MBOX_IRQCNTL  (CONTROL_BASE + 0x0000005C)
+
+/* Where to route mailbox interrupt to, IRQ/FIQ
+ * Setting both the IRQ and FIQ bit gives an FIQ
+ */
+#define MBOX0_IRQ           0x01
+#define MBOX1_IRQ           0x02
+#define MBOX2_IRQ           0x04
+#define MBOX3_IRQ           0x08
+#define MBOX0_FIQ           0x10
+#define MBOX1_FIQ           0x20
+#define MBOX2_FIQ           0x40
+#define MBOX3_FIQ           0x80
+
+/* IRQ & FIQ source registers */
+#define CORE0_IRQ_SOURCE    (CONTROL_BASE + 0x00000060)
+#define CORE1_IRQ_SOURCE    (CONTROL_BASE + 0x00000064)
+#define CORE2_IRQ_SOURCE    (CONTROL_BASE + 0x00000068)
+#define CORE3_IRQ_SOURCE    (CONTROL_BASE + 0x0000006C)
+#define CORE0_FIQ_SOURCE    (CONTROL_BASE + 0x00000070)
+#define CORE1_FIQ_SOURCE    (CONTROL_BASE + 0x00000074)
+#define CORE2_FIQ_SOURCE    (CONTROL_BASE + 0x00000078)
+#define CORE3_FIQ_SOURCE    (CONTROL_BASE + 0x0000007C)
+
+/* Interrupt source bits
+ * IRQ and FIQ are the same
+ * GPU bits can be set for one core only
+ */
+#define INT_SRC_TIMER0      0x00000001
+#define INT_SRC_TIMER1      0x00000002
+#define INT_SRC_TIMER2      0x00000004
+#define INT_SRC_TIMER3      0x00000008
+#define INT_SRC_MBOX0       0x00000010
+#define INT_SRC_MBOX1       0x00000020
+#define INT_SRC_MBOX2       0x00000040
+#define INT_SRC_MBOX3       0x00000080
+#define INT_SRC_GPU         0x00000100
+#define INT_SRC_PMU         0x00000200
+
+/* Mailbox write-set registers (Write only) */
+#define CORE0_MBOX0_SET     (CONTROL_BASE + 0x00000080)
+#define CORE0_MBOX1_SET     (CONTROL_BASE + 0x00000084)
+#define CORE0_MBOX2_SET     (CONTROL_BASE + 0x00000088)
+#define CORE0_MBOX3_SET     (CONTROL_BASE + 0x0000008C)
+#define CORE1_MBOX0_SET     (CONTROL_BASE + 0x00000090)
+#define CORE1_MBOX1_SET     (CONTROL_BASE + 0x00000094)
+#define CORE1_MBOX2_SET     (CONTROL_BASE + 0x00000098)
+#define CORE1_MBOX3_SET     (CONTROL_BASE + 0x0000009C)
+#define CORE2_MBOX0_SET     (CONTROL_BASE + 0x000000A0)
+#define CORE2_MBOX1_SET     (CONTROL_BASE + 0x000000A4)
+#define CORE2_MBOX2_SET     (CONTROL_BASE + 0x000000A8)
+#define CORE2_MBOX3_SET     (CONTROL_BASE + 0x000000AC)
+#define CORE3_MBOX0_SET     (CONTROL_BASE + 0x000000B0)
+#define CORE3_MBOX1_SET     (CONTROL_BASE + 0x000000B4)
+#define CORE3_MBOX2_SET     (CONTROL_BASE + 0x000000B8)
+#define CORE3_MBOX3_SET     (CONTROL_BASE + 0x000000BC)
+
+/* Mailbox write-clear registers (Read & Write) */
+#define CORE0_MBOX0_RDCLR   (CONTROL_BASE + 0x000000C0)
+#define CORE0_MBOX1_RDCLR   (CONTROL_BASE + 0x000000C4)
+#define CORE0_MBOX2_RDCLR   (CONTROL_BASE + 0x000000C8)
+#define CORE0_MBOX3_RDCLR   (CONTROL_BASE + 0x000000CC)
+#define CORE1_MBOX0_RDCLR   (CONTROL_BASE + 0x000000D0)
+#define CORE1_MBOX1_RDCLR   (CONTROL_BASE + 0x000000D4)
+#define CORE1_MBOX2_RDCLR   (CONTROL_BASE + 0x000000D8)
+#define CORE1_MBOX3_RDCLR   (CONTROL_BASE + 0x000000DC)
+#define CORE2_MBOX0_RDCLR   (CONTROL_BASE + 0x000000E0)
+#define CORE2_MBOX1_RDCLR   (CONTROL_BASE + 0x000000E4)
+#define CORE2_MBOX2_RDCLR   (CONTROL_BASE + 0x000000E8)
+#define CORE2_MBOX3_RDCLR   (CONTROL_BASE + 0x000000EC)
+#define CORE3_MBOX0_RDCLR   (CONTROL_BASE + 0x000000F0)
+#define CORE3_MBOX1_RDCLR   (CONTROL_BASE + 0x000000F4)
+#define CORE3_MBOX2_RDCLR   (CONTROL_BASE + 0x000000F8)
+#define CORE3_MBOX3_RDCLR   (CONTROL_BASE + 0x000000FC)
 
 #endif /* _BCM2836_H_ */
