@@ -62,7 +62,7 @@ TPL_VLE_OFF
  * hook routines
  */
 #define OS_START_SEC_VAR
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 
 TPL_ALIGN(4)
 TPL_GLOBAL_REF(tpl_reentrancy_counter): TPL_FILL((NUMBER_OF_CORES*4))
@@ -70,10 +70,10 @@ TPL_TYPE(TPL_GLOBAL_REF(tpl_reentrancy_counter),@object)
 TPL_SIZE(TPL_GLOBAL_REF(tpl_reentrancy_counter),(NUMBER_OF_CORES*4))
 
 #define OS_STOP_SEC_VAR
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 
 #define OS_START_SEC_CODE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 
 /****************************************************************************/
 /**
@@ -222,7 +222,7 @@ TPL_SIZE(TPL_GLOBAL_REF(tpl_leave_kernel),$-TPL_GLOBAL_REF(tpl_leave_kernel))
 #if WITH_SYSTEM_CALL == YES
 
 #define OS_STOP_SEC_CODE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 
 /****************************************************************************/
 TPL_TEXT_SECTION
@@ -303,12 +303,14 @@ TPL_GLOBAL_REF(tpl_sc_handler):
   se_mtar   r11,r5
   se_mtar   r12,r6
 
+#if WITH_MULTICORE == YES
   mfspr     r6,spr_PIR
   se_slwi   r6,2                          /* get core number, and multiply by 4, to get the index of table tpl_kern[] */
+#endif
   e_lis     r5,TPL_HIG(TPL_EXTERN_REF(tpl_kern))
-  e_add16i   r5,TPL_LOW(TPL_EXTERN_REF(tpl_kern))
-  se_add    r5,r6
+  e_add16i  r5,TPL_LOW(TPL_EXTERN_REF(tpl_kern))
 #if WITH_MULTICORE == YES
+  se_add    r5,r6
   e_lwz     r5,0(r5)
 #endif
   e_stw     r5,KS_KERN_PTR(r1)            /* save the ptr for future use  */

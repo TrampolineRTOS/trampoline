@@ -4,36 +4,114 @@
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
+
+%
+if OS::NUMBER_OF_CORES == 1 then
+%
 FUNC(tpl_bool, OS_CODE) tpl_call_counter_tick()
 {
-  GET_CURRENT_CORE_ID(core_id)
 %
 foreach counter in HARDWARECOUNTERS do
 %  tpl_counter_tick(&% !counter::NAME %_counter_desc);
 %
 end foreach
-if OS::NUMBER_OF_CORES == 1 then
 %
   if (tpl_kern.need_schedule)
   {
     tpl_schedule_from_running();
     LOCAL_SWITCH_CONTEXT(0)
   }
+  return TRUE;
+}
 %
 else
+%VAR(tpl_lock, OS_VAR) tpl_call_counter_lock = UNLOCKED_LOCK;%
+
+  let counter_map   := mapof COUNTER by NAME
+  let interrupt_map := mapof INTERRUPT by NAME
+
+  # Get used counter source for each core
+  loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+    let used_interrupts := emptymap
+    foreach application in APPLICATION do
+      if application::CORE == core_id then
+        foreach counter_name in application::COUNTER do
+          let counter := counter_map[counter_name::VALUE]
+          let interrupt := interrupt_map[counter::SOURCE]
+          let used_interrupts[counter::SOURCE] := interrupt
+        end foreach
+      end if
+    end foreach
+
+    # Create the function for each used interrupt in this core
+    foreach interrupt in used_interrupts do
+%
+FUNC(tpl_bool, OS_CODE) tpl_call_counter_tick_% !interrupt::NAME %_% !core_id %(void)
+{
+  tpl_get_lock(&tpl_call_counter_lock);
+%
+    # Call tpl_counter tick for each counter using this interrupt in this core
+    foreach application in APPLICATION do
+      if application::CORE == core_id then
+        foreach counter_name in application::COUNTER do
+          let counter := counter_map[counter_name::VALUE]
+          if counter::SOURCE == interrupt::NAME then%
+  tpl_counter_tick(&% !counter::NAME %_counter_desc);%
+          end if
+        end foreach
+      end if
+    end foreach
 %
   tpl_multi_schedule();
   tpl_dispatch_context_switch();
-  if (TPL_KERN(core_id).need_switch != NO_NEED_SWITCH)
+  if (TPL_KERN(% !core_id %).need_switch != NO_NEED_SWITCH)
   {
-    LOCAL_SWITCH_CONTEXT(core_id)
+    LOCAL_SWITCH_CONTEXT(% !core_id %)
   }
-%
-end if
-%
+
+  tpl_release_lock(&tpl_call_counter_lock);
   return TRUE;
 }
+%
+    end foreach
+  end loop
+
+  let counter_map   := mapof COUNTER by NAME
+  let interrupt_map := mapof INTERRUPT by NAME
+
+  let channel_map := emptymap
+  let channel_map["pit_ch0"] := "TPL_PIT_0"
+  let channel_map["pit_ch1"] := "TPL_PIT_1"
+  let channel_map["pit_ch2"] := "TPL_PIT_2"
+  let channel_map["pit_ch3"] := "TPL_PIT_3"
+
+  loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+    let used_interrupts := emptymap
+    foreach application in APPLICATION do
+      if application::CORE == core_id then
+        foreach counter_name in application::COUNTER do
+          let counter := counter_map[counter_name::VALUE]
+          let interrupt := interrupt_map[counter::SOURCE]
+          let used_interrupts[counter::SOURCE] := interrupt
+        end foreach
+      end if
+    end foreach
+
+    foreach interrupt in used_interrupts do
+%FUNC(void, OS_CODE) tpl_tick_handler_% !interrupt::NAME%_% !core_id %(void)
+{
+  /* Clear interrupt flag */
+  PIT_FR(% !channel_map[interrupt::NAME] %) = PIT_FR_TIF;
+  tpl_call_counter_tick_% !interrupt::NAME %_% !core_id %();
+}
+%
+    end foreach
+  end loop
+end if
+%
+
+
+
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
-

@@ -49,10 +49,11 @@ TPL_VLE_OFF
 #endif
 
 #define OS_START_SEC_CODE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 
-#=============================================================================
-# Master core boot
+/* ============================================================================
+ * Master core boot
+ */
 
 TPL_GLOBAL(tpl_master_core_startup)
 TPL_GLOBAL_REF(tpl_master_core_startup) :
@@ -120,8 +121,9 @@ tpl_master_core_startup_loop:
 #if WITH_MULTICORE == YES
 TPL_EXTERN(_stack_addr_p1)
 
-#=============================================================================
-# Slave core boot
+/* =============================================================================
+ *  Slave core boot
+ */
 
 TPL_GLOBAL(tpl_slave_core_startup)
 TPL_GLOBAL_REF(tpl_slave_core_startup):
@@ -174,8 +176,9 @@ tpl_slave_core_startup_loop:
   se_b      tpl_slave_core_startup_loop
 #endif
 
-#=============================================================================
-# Utils
+/* =============================================================================
+ *  Utils
+ */
 
 TPL_GLOBAL(tpl_init_mmu)
 TPL_GLOBAL_REF(tpl_init_mmu):
@@ -532,6 +535,6 @@ TPL_GLOBAL_REF(tpl_reset_registers):
     se_blr
 
 #define OS_STOP_SEC_CODE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 
 

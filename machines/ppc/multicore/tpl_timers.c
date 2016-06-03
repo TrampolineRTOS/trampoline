@@ -139,7 +139,9 @@ FUNC(void, OS_CODE) tpl_watchdog_handler(void)
 #endif
 
 
-#if TPL_TICK_TIMER != TPL_DECREMENTER
+#if (TPL_TICK_TIMER != TPL_DECREMENTER) && (WITH_MULTICORE == NO)
+/* In multicore, this function is generated */
+
 /**
  * tpl_watchdog_handler handler function for tick called by pit interrupt
  *

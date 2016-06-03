@@ -52,7 +52,7 @@ TPL_VLE_OFF
 #endif
 
 #define OS_START_SEC_CODE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 
 /**
  * Enable interrupts. On the PowerPC, the interrupt bit is located
@@ -280,5 +280,5 @@ TPL_TYPE(TPL_GLOBAL_REF(tpl_disable_os_interrupts),@function)
 TPL_SIZE(TPL_GLOBAL_REF(tpl_disable_os_interrupts),$-TPL_GLOBAL_REF(tpl_disable_os_interrupts))
 
 #define OS_STOP_SEC_CODE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 

@@ -48,7 +48,7 @@ TPL_VLE_OFF
 #endif
 
 #define OS_START_SEC_CODE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 
 TPL_GLOBAL_REF(tpl_call_trusted_function_service):
 #if (WITH_VLE == YES)
@@ -311,7 +311,7 @@ TPL_TYPE(TPL_GLOBAL_REF(tpl_exit_trusted_function_service),@function)
 TPL_SIZE(TPL_GLOBAL_REF(tpl_exit_trusted_function_service),$-TPL_GLOBAL_REF(tpl_exit_trusted_function_service))
 
 #define OS_STOP_SEC_CODE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 
 #endif // End if TRUSTED_FCT_COUNT > 0
 

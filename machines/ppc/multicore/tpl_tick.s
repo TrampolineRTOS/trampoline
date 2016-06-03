@@ -58,7 +58,7 @@ TPL_VLE_OFF
 /****************************************************************************/
 TPL_GLOBAL(tpl_init_dec)
 #define OS_START_SEC_CODE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 
 /**
  *
@@ -92,7 +92,7 @@ TPL_SIZE(TPL_GLOBAL_REF(tpl_init_dec),$-TPL_GLOBAL_REF(tpl_init_dec))
 
 /****************************************************************************/
 #define OS_STOP_SEC_CODE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 TPL_SECTION(dec_vector, CODE_ACCESS_RIGHT)
 tpl_dec_vector:
 
@@ -138,12 +138,14 @@ tpl_dec_handler:
   e_addi      r6,r6,1
   e_stw       r6,0(r5)
 
+#if WITH_MULTICORE == YES
   mfspr       r6,spr_PIR        /* get the core number, *4 to have the index in table of uint32 */
   e_slwi      r6,r6,2
+#endif
   e_lis       r5,TPL_HIG(TPL_EXTERN_REF(tpl_kern))
   e_add16i    r5,TPL_LOW(TPL_EXTERN_REF(tpl_kern))
-  se_add      r5,r6
 #if WITH_MULTICORE == YES
+  se_add      r5,r6
   e_lwz       r5,0(r5)
 #endif
   e_stw       r5,KS_KERN_PTR(r1)            /* save the ptr for future use  */
