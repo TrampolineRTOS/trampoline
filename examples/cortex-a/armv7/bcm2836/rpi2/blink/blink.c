@@ -16,8 +16,7 @@ extern unsigned int __SP_usr_top_;
 
 #define APP_Task_blink_START_SEC_CODE
 #include "tpl_memmap.h"
-FUNC(int, OS_APPL_CODE) main(void)
-{
+FUNC(int, OS_APPL_CODE) main(void) {
   unsigned int ra;
 
   uart_init();
@@ -44,14 +43,18 @@ FUNC(int, OS_APPL_CODE) main(void)
   writeToReg(GPCLR0,1<<21);
 
   /* Setup the system timer interrupt
-   * Timer frequency = Clk/256 * 0x400
+   * Timer frequency = Clk/250 * 1000
+   * PreDivider = 249
+   * timer_clock = apb_clock / (PreDivider + 1) = 250MHz / (249 + 1) = 1MHz
+   * Load value is 1000 so that the ARM timer raises an IRQ every 1ms
+   * 
    */
-  RPI_GetArmTimer()->Load = 5;
+  RPI_GetArmTimer()->Load = 1000;
   /* Setup the ARM Timer */
   RPI_GetArmTimer()->Control = ARM_TIMER_CTRL_23BIT
                              | ARM_TIMER_CTRL_ENABLE
                              | ARM_TIMER_CTRL_INT_ENABLE
-                             | ARM_TIMER_CTRL_PRESCALE_256;
+                             | ARM_TIMER_CTRL_PRESCALE_1;
   RPI_GetArmTimer()->PreDivider = 0x000000F9;
 
   writeToReg(IRQ_ENABLE_BASIC,1);
@@ -62,8 +65,7 @@ FUNC(int, OS_APPL_CODE) main(void)
   return 0;
 }
 
-TASK(blink)
-{
+TASK(blink) {
   static uint32 compte = 0;
 
   compte++;
