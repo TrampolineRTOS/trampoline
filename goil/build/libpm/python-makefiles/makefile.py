@@ -14,8 +14,17 @@
 #        changed subprocess.Popen to subprocess.call in runCommand
 #        added command tool checking using 'find_executable' function
 #        added optional argument to Make class initializer to log command utility tool path
+# 2.3: april 16th, 2016
+#        added advance percentage
+# 3.0: may 30th, 2016
+#        compatibility with Python 3:
+#             print xyz ---> print (xyz)
+#             change isinstance function arguments ---> function argumentIsString
+#             subprocess.call: add "universal_newlines=True" argument
+#             added test (job.mReturnCode != None) lines 727 and 739
 #
 #——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+# http://www.diveintopython3.net/porting-code-to-python-3-with-2to3.html
 
 import subprocess, sys, os, copy
 import urllib, shutil, subprocess
@@ -75,6 +84,16 @@ def processorCount () :
   else:
     coreCount = 1
   return coreCount
+
+#——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+#   argumentIsString                                                                                                   *
+#——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
+
+def argumentIsString (argument) :
+  if sys.version_info < (3,0):
+    return isinstance (argument, types.StringTypes)
+  else:
+    return type (argument) is str
 
 #——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 #   FOR PRINTING IN COLOR                                                                                              *
@@ -160,12 +179,12 @@ def BOLD_RED () :
 def runHiddenCommand (cmd, logUtilityTool=False) :
   executable = find_executable (cmd [0])
   if executable == None:
-    print BOLD_RED () + "*** Cannot find '" + cmd[0] + "' executable ***" + ENDC ()
+    print (BOLD_RED () + "*** Cannot find '" + cmd[0] + "' executable ***" + ENDC ())
     sys.exit (1)
   if logUtilityTool:
-    print "Utility tool is '" + executable + "'"
+    print ("Utility tool is '" + executable + "'")
   result = ""
-  childProcess = subprocess.Popen (cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+  childProcess = subprocess.Popen (cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
   while True:
     line = childProcess.stdout.readline ()
     if line != "":
@@ -182,7 +201,7 @@ def runHiddenCommand (cmd, logUtilityTool=False) :
 
 def runCommand (cmd, title, showCommand, logUtilityTool) :
   if title != "":
-    print BOLD_BLUE () + title + ENDC ()
+    print (BOLD_BLUE () + title + ENDC ())
   if (title == "") or showCommand :
     cmdAsString = ""
     for s in cmd:
@@ -190,13 +209,13 @@ def runCommand (cmd, title, showCommand, logUtilityTool) :
         cmdAsString += '"' + s + '" '
       else:
         cmdAsString += s + ' '
-    print cmdAsString
+    print (cmdAsString)
   executable = find_executable (cmd [0])
   if executable == None:
-    print BOLD_RED () + "*** Cannot find '" + cmd[0] + "' executable ***" + ENDC ()
+    print (BOLD_RED () + "*** Cannot find '" + cmd[0] + "' executable ***" + ENDC ())
     sys.exit (1)
   if logUtilityTool:
-    print "Utility tool is '" + executable + "'"
+    print ("Utility tool is '" + executable + "'")
   returncode = subprocess.call (cmd)
   if returncode != 0 :
     sys.exit (returncode)
@@ -208,13 +227,13 @@ def runCommand (cmd, title, showCommand, logUtilityTool) :
 def runInThread (job, displayLock, terminationSemaphore):
   executable = find_executable (job.mCommand [0])
   if executable == None:
-    print BOLD_RED () + "*** Cannot find '" + job.mCommand[0] + "' executable ***" + ENDC ()
+    print (BOLD_RED () + "*** Cannot find '" + job.mCommand[0] + "' executable ***" + ENDC ())
     job.mReturnCode = 1
     terminationSemaphore.release ()
   else:
     if job.mLogUtilityTool :
-      print "Utility tool is '" + executable + "'"
-    childProcess = subprocess.Popen (job.mCommand, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+      print ("Utility tool is '" + executable + "'")
+    childProcess = subprocess.Popen (job.mCommand, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
     while True:
       line = childProcess.stdout.readline ()
       if line != "":
@@ -234,7 +253,7 @@ def runInThread (job, displayLock, terminationSemaphore):
 
 def modificationDateForFile (dateCacheDictionary, file):
   absFilePath = os.path.abspath (file)
-  if dateCacheDictionary.has_key (absFilePath) :
+  if absFilePath in dateCacheDictionary :
     return dateCacheDictionary [absFilePath]
   elif not os.path.exists (absFilePath):
     date = sys.float_info.max # Very far in future
@@ -291,10 +310,10 @@ class Job:
 
   #····················································································································*
 
-  def run (self, displayLock, terminationSemaphore, showCommand):
+  def run (self, displayLock, terminationSemaphore, showCommand, progressString):
     displayLock.acquire ()
     if self.mTitle != "":
-      print BOLD_BLUE () + self.mTitle + ENDC ()
+      print (progressString + BOLD_BLUE () + self.mTitle + ENDC ())
     if (self.mTitle == "") or showCommand :
       cmdAsString = ""
       for s in self.mCommand:
@@ -302,7 +321,7 @@ class Job:
           cmdAsString += '"' + s + '" '
         else:
           cmdAsString += s + ' '
-      print cmdAsString
+      print (progressString + cmdAsString)
     displayLock.release ()
     thread = threading.Thread (target=runInThread, args=(self, displayLock, terminationSemaphore))
     thread.start()
@@ -313,7 +332,7 @@ class Job:
     postCommand = self.mPostCommands [0]
     self.mCommand = postCommand.mCommand
     displayLock.acquire ()
-    print BOLD_BLUE () + postCommand.mTitle + ENDC ()
+    print (BOLD_BLUE () + postCommand.mTitle + ENDC ())
     if showCommand:
       cmdAsString = ""
       for s in self.mCommand:
@@ -321,7 +340,7 @@ class Job:
           cmdAsString += '"' + s + '" '
         else:
           cmdAsString += s + ' '
-      print cmdAsString
+      print (cmdAsString)
     displayLock.release ()
     thread = threading.Thread (target=runInThread, args=(self, displayLock, terminationSemaphore))
     thread.start()
@@ -345,18 +364,20 @@ class Rule:
   #····················································································································*
 
   def __init__ (self, targets, title = ""):
-    if not isinstance (targets, types.ListType):
-      print BOLD_RED () + "*** Rule type instanciation: first argument 'targets' is not a list ***" + ENDC ()
+    # print ("Rule '" + title + "'")
+    if not type (targets) is list:
+      print (BOLD_RED () + "*** Rule type instanciation: first argument 'targets' is not a list ***" + ENDC ())
       traceback.print_stack ()
       sys.exit (1)
     else:
       for aTarget in targets:
-        if not isinstance (aTarget, types.StringTypes):
-          print BOLD_RED () + "*** Rule type instanciation: an element of first argument 'targets' is not a string ***" + ENDC ()
+        # print ("  Target '" + aTarget + "'")
+        if not argumentIsString (aTarget):
+          print (BOLD_RED () + "*** Rule type instanciation: an element of first argument 'targets' is not a string ***" + ENDC ())
           traceback.print_stack ()
           sys.exit (1)
-    if not isinstance (title, types.StringTypes):
-      print BOLD_RED () + "*** Rule type instanciation: second argument 'title' is not a string ***" + ENDC ()
+    if not argumentIsString (title):
+      print (BOLD_RED () + "*** Rule type instanciation: second argument 'title' is not a string ***" + ENDC ())
       traceback.print_stack ()
       sys.exit (1)
     self.mTargets = copy.deepcopy (targets)
@@ -388,8 +409,8 @@ class Rule:
   #····················································································································*
 
   def enterSecondaryDependanceFile (self, secondaryDependanceFile, make):
-    if not isinstance (secondaryDependanceFile, types.StringTypes):
-      print BOLD_RED () + "*** Rule.enterSecondaryDependanceFile: 'secondaryDependanceFile' argument is not a string ***" + ENDC ()
+    if not argumentIsString (secondaryDependanceFile):
+      print (BOLD_RED () + "*** Rule.enterSecondaryDependanceFile: 'secondaryDependanceFile' argument is not a string ***" + ENDC ())
       traceback.print_stack ()
       sys.exit (1)
     if make.mSelectedGoal != "clean":
@@ -406,15 +427,15 @@ class Rule:
         for s in liste:
           components = s.split (':')
           target = components [0].replace ("\x01", " ")
-          #print "------- Optional dependency rules for target '" + target + "'"
-          #print "Secondary target '" + target + "'"
+          #print ("------- Optional dependency rules for target '" + target + "'")
+          #print ("Secondary target '" + target + "'")
           for src in components [1].split ():
             secondarySource = src.replace ("\x01", " ")
-            #print "  '" + secondarySource + "'"
+            #print ("  '" + secondarySource + "'")
             modifDate = modificationDateForFile (make.mModificationDateDictionary, secondarySource)
             if self.mSecondaryMostRecentModificationDate < modifDate :
               self.mSecondaryMostRecentModificationDate = modifDate
-              #print BOLD_BLUE () + str (modifDate) + ENDC ()
+              #print (BOLD_BLUE () + str (modifDate) + ENDC ())
     
 #——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 #   class Make                                                                                                         *
@@ -431,12 +452,13 @@ class Make:
   mMacTextEditor = ""
   mSimulateClean = False
   mLogUtilityTool = True
+  mShowProgressString = True
 
   #····················································································································*
 
   def __init__ (self, goal, logUtilityTool=False):
-    if not isinstance (goal, types.StringTypes):
-      print BOLD_RED () + "*** Make instanciation: 'goal' argument is not a string ***" + ENDC ()
+    if not argumentIsString (goal):
+      print (BOLD_RED () + "*** Make instanciation: 'goal' argument is not a string ***" + ENDC ())
       traceback.print_stack ()
       sys.exit (1)
     self.mRuleList = []
@@ -451,9 +473,14 @@ class Make:
 
   #····················································································································*
 
+  def doNotShowProgressString (self) :
+     self.mShowProgressString = False
+
+  #····················································································································*
+
   def addRule (self, rule):
     if not isinstance (rule, Rule):
-      print BOLD_RED () + "*** Make.addRule: 'rule' argument is not an instance of Rule type ***" + ENDC ()
+      print (BOLD_RED () + "*** Make.addRule: 'rule' argument is not an instance of Rule type ***" + ENDC ())
       traceback.print_stack ()
       sys.exit (1)
     self.mRuleList.append (copy.deepcopy (rule))
@@ -461,20 +488,20 @@ class Make:
   #····················································································································*
 
   def printRules (self):
-    print BOLD_BLUE () + "--- Print " + str (len (self.mRuleList)) + " rule" + ("s" if len (self.mRuleList) > 1 else "") + " ---" + ENDC ()
+    print (BOLD_BLUE () + "--- Print " + str (len (self.mRuleList)) + " rule" + ("s" if len (self.mRuleList) > 1 else "") + " ---" + ENDC ())
     for rule in self.mRuleList:
       message = ""
       for s in rule.mTargets:
         message += " \"" + s + "\""
-      print BOLD_GREEN () + "Target:" + message +  ENDC ()
+      print (BOLD_GREEN () + "Target:" + message +  ENDC ())
       for dep in rule.mDependences:
-        print "  Dependence: \"" + dep + "\""
+        print ("  Dependence: \"" + dep + "\"")
       s = "  Command: "
       for cmd in rule.mCommand:
         s += " \"" + cmd + "\""
-      print s
-      print "  Title: \"" + rule.mTitle + "\""
-      print "  Delete target on error: " + ("yes" if rule.mDeleteTargetOnError else "no")
+      print (s)
+      print ("  Title: \"" + rule.mTitle + "\"")
+      print ("  Delete target on error: " + ("yes" if rule.mDeleteTargetOnError else "no"))
       cleanOp = "none"
       if rule.mCleanOperation == 1:
         cleanOp = "delete target file(s)"
@@ -487,17 +514,17 @@ class Make:
         cleanOp = "delete target directory:"
         for s in dirSet:
           cleanOp += " \"" + s + "\""
-      print "  Clean operation: " + cleanOp
+      print ("  Clean operation: " + cleanOp)
       index = 0
       for postCommand in rule.mPostCommands:
          index = index + 1
          s = "  Post command " + str (index) + ": "
          for cmd in postCommand.mCommand:
            s += " \"" + cmd + "\""
-         print s
-         print "    Title: \"" + postCommand.mTitle + "\""
+         print (s)
+         print ("    Title: \"" + postCommand.mTitle + "\"")
         
-    print BOLD_BLUE () + "--- End of print rule ---" + ENDC ()
+    print (BOLD_BLUE () + "--- End of print rule ---" + ENDC ())
 
   #····················································································································*
 
@@ -545,7 +572,7 @@ class Make:
               looping = True
               if not os.path.exists (os.path.abspath (dep)):
                 self.mErrorCount = self.mErrorCount + 1
-                print BOLD_RED () + "Check rules error: '" + dep + "' does not exist, and there is no rule for building it." + ENDC ()
+                print (BOLD_RED () + "Check rules error: '" + dep + "' does not exist, and there is no rule for building it." + ENDC ())
               depIdx = depIdx - 1
               aRule.mDependences.pop (depIdx)
         #--- Rule with no dependances
@@ -563,14 +590,14 @@ class Make:
     #--- Error if rules remain
       if len (ruleList) > 0:
         self.mErrorCount = self.mErrorCount + 1
-        print BOLD_RED () + "Check rules error; circulary dependances between:" + ENDC ()
+        print (BOLD_RED () + "Check rules error; circulary dependances between:" + ENDC ())
         for aRule in ruleList:
           targetList = ""
           for target in aRule.mTargets:
             targetList += " '" + aRule.mTarget + "'"
-          print BOLD_RED () + "  - " + targetList + ", depends from:" + ENDC ()
+          print (BOLD_RED () + "  - " + targetList + ", depends from:" + ENDC ())
           for dep in aRule.mDependences:
-            print BOLD_RED () + "      '" + dep + "'" + ENDC ()
+            print (BOLD_RED () + "      '" + dep + "'" + ENDC ())
 
   #····················································································································*
 
@@ -602,11 +629,11 @@ class Make:
     if matchCount == 0:
       absTarget = os.path.abspath (target)
       if not os.path.exists (absTarget):
-        print BOLD_RED () + "No rule for making '" + target + "'" + ENDC ()
+        print (BOLD_RED () + "No rule for making '" + target + "'" + ENDC ())
         self.mErrorCount = self.mErrorCount + 1
       return False # Error or target exists, and no rule for building it
     elif matchCount > 1:
-      print BOLD_RED () + str (matchCount) + " rules for making '" + target + "'" + ENDC ()
+      print (BOLD_RED () + str (matchCount) + " rules for making '" + target + "'" + ENDC ())
       self.mErrorCount = self.mErrorCount + 1
       return False # Error
   #--- Target file does not exist, and 'rule' variable indicates how build it
@@ -657,7 +684,7 @@ class Make:
   def runJobs (self, maxConcurrentJobs, showCommand):
     if self.mErrorCount == 0:
       if len (self.mJobList) == 0:
-        print BOLD_BLUE () + "Nothing to make." + ENDC ()
+        print (BOLD_BLUE () + "Nothing to make." + ENDC ())
       else:
       #--- Sort jobs following their priorities
         self.mJobList = sorted (self.mJobList, key=operator.attrgetter("mPriority"), reverse=True)
@@ -669,6 +696,8 @@ class Make:
         displayLock = threading.Lock ()
         loop = True
         returnCode = 0
+        totalJobCount = float (len (self.mJobList))
+        launchedJobCount = 0.0
         while loop:
         #--- Launch jobs in parallel
           for job in self.mJobList:
@@ -685,8 +714,14 @@ class Make:
                       job.mLogUtilityTool
                     )
                     displayLock.release ()
+                #--- Progress string
+                launchedJobCount += 1.0
+                if self.mShowProgressString:
+                  progressString = "[{0:3d}%] ".format (int (100.0 * launchedJobCount / totalJobCount))
+                else:
+                  progressString = ""
                 #--- Run job
-                job.run (displayLock, terminationSemaphore, showCommand)
+                job.run (displayLock, terminationSemaphore, showCommand, progressString)
                 jobCount = jobCount + 1
                 job.mState = 1 # Means is running
               elif job.mState == 2: # Waiting for executing post command
@@ -695,26 +730,26 @@ class Make:
                 jobCount = jobCount + 1
                 job.mState = 3 # Means post command is running
         #--- Wait for a job termination
-          #print "wait " + str (jobCount) + " " + str (len (self.mJobList))
+          #print ("wait " + str (jobCount) + " " + str (len (self.mJobList)))
           terminationSemaphore.acquire ()
         #--- Checks for terminated jobs
           index = 0
           while index < len (self.mJobList):
             job = self.mJobList [index]
             index = index + 1
-            if (job.mState == 1) and (job.mReturnCode == 0) : # Terminated without error
+            if (job.mState == 1) and (job.mReturnCode != None) and (job.mReturnCode == 0) : # Terminated without error
               jobCount = jobCount - 1
               for aTarget in job.mTargets:
                 if not os.path.exists (os.path.abspath (aTarget)): # Warning: target does not exist
                   displayLock.acquire ()
-                  print MAGENTA () + BOLD () + "Warning: target \"" + aTarget + "\" was not created by rule execution." + ENDC ()
+                  print (MAGENTA () + BOLD () + "Warning: target \"" + aTarget + "\" was not created by rule execution." + ENDC ())
                   displayLock.release ()
               if len (job.mPostCommands) > 0:
                 job.mState = 2 # Ready to execute next post command
               else:
                 job.mState = 4 # Completed
                 index = index - 1 # For removing job from list
-            elif (job.mState == 1) and (job.mReturnCode > 0) : # terminated with error : exit
+            elif (job.mState == 1) and (job.mReturnCode != None) and (job.mReturnCode > 0) : # terminated with error : exit
               jobCount = jobCount - 1
               job.mState = 4 # Means Terminated
               index = index - 1 # For removing job from list
@@ -742,7 +777,7 @@ class Make:
               index = index - 1
               self.mJobList.pop (index) # Remove terminated job
               #displayLock.acquire ()
-              #print "Completed '" + job.mTitle + "'"
+              #print ("Completed '" + job.mTitle + "'")
               #--- Remove dependences from this job
               idx = 0
               while idx < len (self.mJobList):
@@ -751,14 +786,14 @@ class Make:
                 for aTarget in job.mTargets:
                   while aJob.mRequiredFiles.count (aTarget) > 0 :
                     aJob.mRequiredFiles.remove (aTarget)
-                  #print "  Removed from '" + aJob.mTitle + "': " + str (len (aJob.mRequiredFiles))
+                  #print ("  Removed from '" + aJob.mTitle + "': " + str (len (aJob.mRequiredFiles)))
               #displayLock.release ()
               #--- Signal error ?
               if (job.mReturnCode > 0) and (returnCode == 0):
                 self.mErrorCount = self.mErrorCount + 1
-                print BOLD_RED () + "Return code: " + str (job.mReturnCode) + ENDC ()
+                print (BOLD_RED () + "Return code: " + str (job.mReturnCode) + ENDC ())
                 if (returnCode == 0) and (jobCount > 0) :
-                  print "Wait for job termination..."
+                  print ("Wait for job termination...")
                 returnCode = job.mReturnCode
           loop = (len (self.mJobList) > 0) if (returnCode == 0) else (jobCount > 0)
 
@@ -773,10 +808,10 @@ class Make:
         matchCount = matchCount + 1
         result = sourcePath
     if matchCount == 0:
-      print BOLD_RED () + "Cannot find '" + file + "'" + ENDC ()
+      print (BOLD_RED () + "Cannot find '" + file + "'" + ENDC ())
       self.mErrorCount = self.mErrorCount + 1
     elif matchCount > 1:
-      print BOLD_RED () + str (matchCount) + " source files for making '" + file + "'" + ENDC ()
+      print (BOLD_RED () + str (matchCount) + " source files for making '" + file + "'" + ENDC ())
       self.mErrorCount = self.mErrorCount + 1
       result = ""
     return result
@@ -784,55 +819,55 @@ class Make:
   #····················································································································*
 
   def addGoal (self, goal, targetList, message):
-    if not isinstance (goal, types.StringTypes):
-      print BOLD_RED () + "*** Make.addGoal: 'goal' first argument is not a string ***" + ENDC ()
+    if not argumentIsString (goal):
+      print (BOLD_RED () + "*** Make.addGoal: 'goal' first argument is not a string ***" + ENDC ())
       traceback.print_stack ()
       sys.exit (1)
-    if not isinstance (targetList, types.ListType):
-      print BOLD_RED () + "*** Make.addGoal: 'targetList' second argument is not a list ***" + ENDC ()
+    if not type (targetList) is list:
+      print (BOLD_RED () + "*** Make.addGoal: 'targetList' second argument is not a list ***" + ENDC ())
       traceback.print_stack ()
       sys.exit (1)
     else:
       for aTarget in targetList:
-        if not isinstance (aTarget, types.StringTypes):
-          print BOLD_RED () + "*** Make.addGoal: an element of 'targetList' second argument 'targets' is not a string ***" + ENDC ()
+        if not argumentIsString (aTarget):
+          print (BOLD_RED () + "*** Make.addGoal: an element of 'targetList' second argument 'targets' is not a string ***" + ENDC ())
           traceback.print_stack ()
           sys.exit (1)
-    if not isinstance (message, types.StringTypes):
-      print BOLD_RED () + "*** Make.addGoal: 'message' third argument is not a string ***" + ENDC ()
+    if not argumentIsString (message):
+      print (BOLD_RED () + "*** Make.addGoal: 'message' third argument is not a string ***" + ENDC ())
       traceback.print_stack ()
       sys.exit (1)
-    if self.mGoals.has_key (goal) or (goal == "clean") :
+    if (goal in self.mGoals) or (goal == "clean") :
       self.enterError ("The '" + goal + "' goal is already defined")
     else:
       self.mGoals [goal] = (targetList, message)
-    #print '%s' % ', '.join(map(str, self.mGoals))
+    #print ('%s' % ', '.join(map(str, self.mGoals)))
 
   #····················································································································*
 
   def printGoals (self):
-    print BOLD_BLUE () + "--- Print " + str (len (self.mGoals)) + " goal" + ("s" if len (self.mGoals) > 1 else "") + " ---" + ENDC ()
+    print (BOLD_BLUE () + "--- Print " + str (len (self.mGoals)) + " goal" + ("s" if len (self.mGoals) > 1 else "") + " ---" + ENDC ())
     for goalKey in self.mGoals.keys ():
-      print BOLD_GREEN () + "Goal: \"" + goalKey + "\"" + ENDC ()
+      print (BOLD_GREEN () + "Goal: \"" + goalKey + "\"" + ENDC ())
       (targetList, message) = self.mGoals [goalKey]
       for target in targetList:
-        print "  Target: \"" + target + "\""
-      print "  Message: \"" + message + "\""
+        print ("  Target: \"" + target + "\"")
+      print ("  Message: \"" + message + "\"")
         
-    print BOLD_BLUE () + "--- End of print goals ---" + ENDC ()
+    print (BOLD_BLUE () + "--- End of print goals ---" + ENDC ())
 
   #····················································································································*
 
   def runGoal (self, maxConcurrentJobs, showCommand):
-    if not isinstance (maxConcurrentJobs, types.IntType):
-      print BOLD_RED () + "*** Make.runGoal: 'maxConcurrentJobs' first argument is not an integer ***" + ENDC ()
+    if not isinstance (maxConcurrentJobs, int):
+      print (BOLD_RED () + "*** Make.runGoal: 'maxConcurrentJobs' first argument is not an integer ***" + ENDC ())
       traceback.print_stack ()
       sys.exit (1)
-    if not isinstance (showCommand, types.BooleanType):
-      print BOLD_RED () + "*** Make.runGoal: 'showCommand' second argument is not a boolean ***" + ENDC ()
+    if not isinstance (showCommand, bool):
+      print (BOLD_RED () + "*** Make.runGoal: 'showCommand' second argument is not a boolean ***" + ENDC ())
       traceback.print_stack ()
       sys.exit (1)
-    if self.mGoals.has_key (self.mSelectedGoal) :
+    if self.mSelectedGoal in self.mGoals :
       (targetList, message) = self.mGoals [self.mSelectedGoal]
       for target in targetList:
         self.makeJob (target)
@@ -859,13 +894,13 @@ class Make:
       for dir in directoriesToRemoveSet:
         if os.path.exists (os.path.abspath (dir)):
           if self.mSimulateClean:
-            print MAGENTA () + BOLD () + "Simulated clean command: " + ENDC () + "rm -fr '" + dir + "'"
+            print (MAGENTA () + BOLD () + "Simulated clean command: " + ENDC () + "rm -fr '" + dir + "'")
           else:
             runCommand (["rm", "-fr", dir], "Removing \"" + dir + "\"", showCommand, self.mLogUtilityTool)
       for file in filesToRemoveList:
         if os.path.exists (os.path.abspath (file)):
           if self.mSimulateClean:
-            print MAGENTA () + BOLD () + "Simulated clean command: " + ENDC () + "rm -f '" + file + "'"
+            print (MAGENTA () + BOLD () + "Simulated clean command: " + ENDC () + "rm -f '" + file + "'")
           else:
             runCommand (["rm", "-f", file], "Deleting \"" + file + "\"", showCommand, self.mLogUtilityTool)
     else:
@@ -873,7 +908,7 @@ class Make:
       for key in self.mGoals:
         (targetList, message) = self.mGoals [key]
         errorMessage += "\n  '" + key + "': " + message
-      print BOLD_RED () + errorMessage + ENDC ()
+      print (BOLD_RED () + errorMessage + ENDC ())
       self.mErrorCount = self.mErrorCount + 1
 
   #····················································································································*
@@ -884,26 +919,26 @@ class Make:
   #····················································································································*
 
   def enterError (self, message):
-    print BOLD_RED () + message + ENDC ()
+    print (BOLD_RED () + message + ENDC ())
     self.mErrorCount = self.mErrorCount + 1
 
   #····················································································································*
 
   def printErrorCountAndExitOnError (self):
     if self.mErrorCount == 1:
-      print BOLD_RED () + "1 error." + ENDC ()
+      print (BOLD_RED () + "1 error." + ENDC ())
       sys.exit (1)
     elif self.mErrorCount > 1:
-      print BOLD_RED () + str (self.mErrorCount) + " errors." + ENDC ()
+      print (BOLD_RED () + str (self.mErrorCount) + " errors." + ENDC ())
       sys.exit (1)
 
   #····················································································································*
 
   def printErrorCount (self):
     if self.mErrorCount == 1:
-      print BOLD_RED () + "1 error." + ENDC ()
+      print (BOLD_RED () + "1 error." + ENDC ())
     elif self.mErrorCount > 1:
-      print BOLD_RED () + str (self.mErrorCount) + " errors." + ENDC ()
+      print (BOLD_RED () + str (self.mErrorCount) + " errors." + ENDC ())
 
   #····················································································································*
 

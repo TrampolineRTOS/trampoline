@@ -85,18 +85,8 @@ FUNC (void, OS_CODE) tpl_init_machine_generic (void)
  */
 void idle_function(void)
 {
-  uint32 valSpInitiale;
-  uint32 valSp;
-
-  __asm volatile ("mov %0, sp" : "=r" (valSpInitiale) );
-  trace_idle();
-  trace_a_reg((const unsigned char*)"sp",valSpInitiale);
 
   while(1) {
-    __asm volatile ("mov %0, sp" : "=r" (valSp) );
-    if (valSp != valSpInitiale) {
-      trace_a_reg((const unsigned char*)"sp",valSp);
-    }
   };
 }
 

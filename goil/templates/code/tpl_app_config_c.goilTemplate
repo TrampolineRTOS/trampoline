@@ -705,8 +705,26 @@ VAR(tpl_app_dyn, OS_VAR) tpl_app_dyn_table[APP_COUNT];
 #include "tpl_memmap.h"
 
 %
+    if OS::NUMBER_OF_CORES > 1 then
+      foreach app in APPLICATIONS
+        before %
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+VAR(tpl_core_id, OS_VAR) tpl_core_id_for_app[APP_COUNT] =
+{
+%do
+%  %!app::CORE
+        between %,
+%
+        after%
+};
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+%
+      end foreach
+    end if
   end if
-  
+
   foreach tf in TRUSTEDFUNCTIONS
     before
 %

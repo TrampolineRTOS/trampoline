@@ -32,7 +32,7 @@ CPU arm_interrupt {
     SOURCE = ARM_TIMER;
   };
 
-  PLATFORM_FILES arm {
+  PLATFORM_FILES cortex_a {
     PATH = "cortex-a";
     CFILE = "tpl_irq.S";
     CFILE = "tpl_system_call.S";
