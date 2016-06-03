@@ -62,6 +62,15 @@ end if
 #----------------------------------------------------------------------
 import sys, os, subprocess, string, distutils.spawn
 
+#--- Add some function for Python3 support
+
+if sys.version_info[0] >=3 :
+    def bytesdecode(obj) :
+        return obj.decode(sys.stdout.encoding)
+else :
+    def bytesdecode(obj) :
+        return obj
+
 #--- Add the location of makefile.py to the import path
 sys.path.append("% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/make")
 
@@ -208,7 +217,7 @@ if "gcc" in compiler:
     libcPath = compilerToolChainPath + '/' + compilerPrefix + '/lib%
       if stdlibVariant != "" then %/% !stdlibVariant end if%'
     #--- Build the libgcc path
-    libgccPath = compilerToolChainPath + '/lib/gcc/' + compilerPrefix + '/' + compilerVersion%
+    libgccPath = compilerToolChainPath + '/lib/gcc/' + compilerPrefix + '/' + bytesdecode(compilerVersion)%
       if stdlibVariant != "" then % + '/% !stdlibVariant %'% end if %
     #--- Add both to linker flags
     ldflags += ['-L' + libcPath, '-lc']
