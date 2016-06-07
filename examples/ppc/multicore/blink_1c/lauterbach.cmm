@@ -1,0 +1,151 @@
+;
+;  Trampoline Test Suite
+;
+;  Trampoline Test Suite is copyright (c) IRCCyN 2005-2007
+;  Trampoline Test Suite is protected by the French intellectual property law.
+;
+;  This program is free software; you can redistribute it and/or
+;  modify it under the terms of the GNU General Public License
+;  as published by the Free Software Foundation; version 2
+;  of the License.
+;
+;  This program is distributed in the hope that it will be useful,
+;  but WITHOUT ANY WARRANTY; without even the implied warranty of
+;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;  GNU General Public License for more details.
+;
+;  You should have received a copy of the GNU General Public License
+;  along with this program; if not, write to the Free Software
+;  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+;
+
+;set title
+TITLE "Monocore blink with MPC5643L"
+
+;set some constants
+&appPath="~~~~"                      ; Script directory
+&exePath="&appPath/blink_exe.elf"    ; Path to the executable
+&srcDir="~~~~"                       ; Location of the .o files
+
+;==============================================================================
+;       FLASH MEMORY PROGRAMMING
+
+DIALOG.YESNO "Program flash memory now?"
+LOCAL &progflash
+ENTRY &progflash
+
+
+IF &progflash
+(
+  ;prepare flash programming
+  DO ~~/demo/powerpc/flash/mpc5xxx.cmm PREPAREONLY
+
+  ;activate flash programming (unused sectors are erased)
+  FLASH.ReProgram ALL /Erase
+
+  ;load file
+  DATA.LOAD.ELF "&exePath" E:0x0--0xEFFFFF
+
+  ;commit data to Flash
+  FLASH.ReProgram off
+)
+
+;==============================================================================
+;       SIMULATOR CONFIG
+
+;debugger setup
+SYnch.RESet
+SYStem.RESet
+Break.Delete
+SYStem.BdmClock 4.MHz
+
+;detect processor
+SYStem.CPU MPC5643L
+SYStem.Option.WATCHDOG OFF
+
+;setup for SMP debugging
+SYStem.CONFIG.CORE 1. 1.
+CORE.ASSIGN 1 2
+
+;trace configuration
+IF POWERNEXUS()
+(
+;set port mode to MDO4 (12 MDO pins only supported by 257 MAPBGA package)
+  NEXUS.PortSize MDO4
+  Trace.METHOD Analyzer
+  Trace.AutoArm ON
+)
+ELSE IF SIMULATOR()
+(
+  SYStem.Option.DisMode VLE ; configure instruction set simulator for VLE
+)
+
+IF !SIMULATOR()
+(
+  ;enable real time memory access via NEXUS block
+  SYStem.MemAccess NEXUS
+)
+
+;halt on reset
+SYStem.Up
+
+IF POWERNEXUS()
+(
+  Trace.Init
+)
+
+;check if processor runs in DPM
+&nSSCM_STATUS_ADDR=0xC3FD8000
+&nSSCM_STATUS_LSM=0x8000
+&nSSCM_STATUS_VAL=Data.Word(ANC:&nSSCM_STATUS_ADDR)
+IF (&nSSCM_STATUS_VAL&&nSSCM_STATUS_LSM)==&nSSCM_STATUS_LSM
+(
+  PRINT %ERROR "Processor configured to LSM. Demo aborted"
+  ENDDO
+)
+
+;setup MMU for the loading of the application in RAM
+MMU.Set TLB1 0x1 0xC0000400 0x40000028 0x4000003F
+
+;clear internal SRAM
+Data.Set EA:0x40000000--0x4000FFFF %Quad 0x0
+
+;load application
+Data.LOAD.ELF "&exePath" 0x40000000--0x4000FFFF /WORD /SOURCEPATH "&srcDir/"
+
+;Reset the MMU entry
+MMU.Set TLB1 0x1 0x0 0x0 0x0
+
+;set debug mode to HLL debugging
+Mode.Hll
+
+;;stop core 1 on activation
+;Core.Select 1
+;break;
+;Core.Select 0
+
+;;open some windows and arrange
+;WinCLEAR
+;WinPOS 0.57143 0.46154 80. 28. 13. 1. W000
+;WinTABS 10. 10. 25. 62.
+;List.auto
+
+;WinPOS 85.429 0.53846 77. 20. 0. 0. W004
+;Register.view
+
+;WinPOS 1.0 43.462 80. 12. 5. 0. W003
+;Frame /Locals /Caller
+
+;IF POWERNEXUS()||SIMULATOR()
+;(
+;  WinPOS 85.429 24.615 80. 31. 6. 1. W004
+;  WinTABS 32.
+;  Trace.List
+;)
+
+;;Usefull things to debug
+;Tronchip.set IRPT ON          ; Break on interrupt entry
+;Tronchip.set RET  ON          ; Break on return from interrupt
+
+ENDDO
+

@@ -36,23 +36,22 @@
 
 #define APP_Task_t1_app1_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
-    uint32 led_state1 = 1;
+VAR(uint32, AUTOMATIC) led_state1 = 0;
 #define APP_Task_t1_app1_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
 #define APP_Task_t1_app2_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
-    uint32 led_state2 = 0;
+VAR(uint32, AUTOMATIC) led_state2 = 0;
 #define APP_Task_t1_app2_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
-
 
 DeclareTask(t1_app1);
 DeclareTask(t1_app2);
 
-#define OS_START_SEC_CODE
+#define APP_COMMON_START_SEC_CODE
 #include "tpl_memmap.h"
-int main(void)
+FUNC(int, OS_APPL_CODE) main(void)
 {
 #if NUMBER_OF_CORES > 1
     int core_id = tpl_get_core_id();
@@ -77,7 +76,7 @@ int main(void)
     StartOS(OSDEFAULTAPPMODE);
     return 0;
 }
-#define OS_STOP_SEC_CODE
+#define APP_COMMON_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
 #define APP_Task_t1_app1_START_SEC_CODE

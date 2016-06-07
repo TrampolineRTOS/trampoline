@@ -12,6 +12,9 @@
 *.oil           text eol=lf
 *.galgas        text eol=lf
 *.galgasProject text eol=lf
+*.sh            text eol=lf
+*.t32           text eol=lf
+*.cmm           text eol=lf
 
 *.a     binary
 *.bmp   binary

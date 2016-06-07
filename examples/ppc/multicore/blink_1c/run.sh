@@ -34,7 +34,7 @@ BUILD_OUTPUT="./build ./blink_exe ./blink_exe.elf ./mapping"
 print_help() {
     echo "Usage : $0 [ARG]"
     echo "Possible Arguments :"
-    echo "  -h  print_help"
+    echo "  -h  : print_help"
     echo "  -c  : Clean"
     echo "  -g  : Generate files using goil"
     echo "  -m  : Make"
@@ -62,7 +62,7 @@ remote_compile() {
     rsync -avz --delete $LOCAL_TRAMPOLINE/ $RSYNC_EXCLUDE $SSH_SERVER:$REMOTE_TRAMPOLINE
     echo "Cross-Compiling on remote server"
     ssh $SSH_SERVER "cd $REMOTE_EXAMPLE_DIR;
-                        ./build.py;"
+                     ./build.py;"
     echo "Retrieve output files"
     scp -r $SSH_SERVER:$REMOTE_EXAMPLE_DIR/{${BUILD_OUTPUT// /,}} .
 }

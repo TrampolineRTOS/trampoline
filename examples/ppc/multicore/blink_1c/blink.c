@@ -36,16 +36,15 @@
 
 #define APP_Task_t1_app1_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
-    uint32 led_state = 1;
+VAR(uint32, AUTOMATIC) led_state = 1;
 #define APP_Task_t1_app1_STOP_SEC_VAR_UNSPECIFIED
-#include "tpl_memmap.h"
-
-#define APP_Task_t1_app1_START_SEC_CODE
 #include "tpl_memmap.h"
 
 DeclareTask(t1_app1);
 
-int main(void)
+#define APP_COMMON_START_SEC_CODE
+#include "tpl_memmap.h"
+FUNC(int, OS_APPL_CODE) main(void)
 {
     initLed();
     setLed(0, 1);
@@ -53,6 +52,11 @@ int main(void)
     StartOS(OSDEFAULTAPPMODE);
     return 0;
 }
+#define APP_COMMON_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+#define APP_Task_t1_app1_START_SEC_CODE
+#include "tpl_memmap.h"
 
 TASK(t1_app1)
 {
