@@ -53,7 +53,7 @@ see https://www.gnu.org/licenses/.  */
   vinf=               a3 ^2 #  A(inf)^2
 */
 
-#if TUNE_PROGRAM_BUILD
+#ifdef TUNE_PROGRAM_BUILD
 #define MAYBE_sqr_basecase 1
 #define MAYBE_sqr_toom2   1
 #define MAYBE_sqr_toom4   1
@@ -126,7 +126,7 @@ mpn_toom4_sqr (mp_ptr pp,
   TOOM4_SQR_REC (vm2, amx, n + 1, tp);	/* vm2,  2n+1 limbs */
 
   /* Compute apx = 8 a0 + 4 a1 + 2 a2 + a3 = (((2*a0 + a1) * 2 + a2) * 2 + a3 */
-#if HAVE_NATIVE_mpn_addlsh1_n
+#ifdef HAVE_NATIVE_mpn_addlsh1_n
   cy = mpn_addlsh1_n (apx, a1, a0, n);
   cy = 2*cy + mpn_addlsh1_n (apx, a2, apx, n);
   if (s < n)

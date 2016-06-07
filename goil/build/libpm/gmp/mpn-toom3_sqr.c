@@ -53,7 +53,7 @@ see https://www.gnu.org/licenses/.  */
   vinf=          a2 ^2 # A(inf)^2
 */
 
-#if TUNE_PROGRAM_BUILD || WANT_FAT_BINARY
+#if defined (TUNE_PROGRAM_BUILD) || defined (WANT_FAT_BINARY)
 #define MAYBE_sqr_basecase 1
 #define MAYBE_sqr_toom3   1
 #else
@@ -104,7 +104,7 @@ mpn_toom3_sqr (mp_ptr pp,
 
   /* Compute as1 and asm1.  */
   cy = mpn_add (gp, a0, n, a2, s);
-#if HAVE_NATIVE_mpn_add_n_sub_n
+#ifdef HAVE_NATIVE_mpn_add_n_sub_n
   if (cy == 0 && mpn_cmp (gp, a1, n) < 0)
     {
       cy = mpn_add_n_sub_n (as1, asm1, a1, gp, n);
@@ -133,14 +133,14 @@ mpn_toom3_sqr (mp_ptr pp,
 #endif
 
   /* Compute as2.  */
-#if HAVE_NATIVE_mpn_rsblsh1_n
+#ifdef HAVE_NATIVE_mpn_rsblsh1_n
   cy = mpn_add_n (as2, a2, as1, s);
   if (s != n)
     cy = mpn_add_1 (as2 + s, as1 + s, n - s, cy);
   cy += as1[n];
   cy = 2 * cy + mpn_rsblsh1_n (as2, a0, as2, n);
 #else
-#if HAVE_NATIVE_mpn_addlsh1_n
+#ifdef HAVE_NATIVE_mpn_addlsh1_n
   cy  = mpn_addlsh1_n (as2, a1, a2, s);
   if (s != n)
     cy = mpn_add_1 (as2 + s, a1 + s, n - s, cy);

@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //  AC_GALGAS_graph : Base class for GALGAS graph                                                                      *
 //                                                                                                                     *
@@ -18,18 +18,18 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef AC_GALGAS_GRAPH_CLASS_DEFINED
 #define AC_GALGAS_GRAPH_CLASS_DEFINED
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "galgas2/AC_GALGAS_root.h"
 #include "galgas2/typeComparisonResult.h"
 #include "galgas2/cCollectionElement.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_uint ;
 class GALGAS_string ;
@@ -42,11 +42,11 @@ class capCollectionElement ;
 class cSharedGraph ;
 class GALGAS__32_stringlist ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //  A C _ G A L G A S _ g r a p h                                                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 class AC_GALGAS_graph : public AC_GALGAS_root {
 //--- Private Data member
@@ -88,15 +88,15 @@ class AC_GALGAS_graph : public AC_GALGAS_root {
   public : VIRTUAL_IN_DEBUG GALGAS_stringlist getter_undefinedNodeKeyList (LOCATION_ARGS) const ;
 
 //--------------------------------- Modifiers
-  public : VIRTUAL_IN_DEBUG void modifier_addEdge (const GALGAS_lstring & inSourceNodeKey,
+  public : VIRTUAL_IN_DEBUG void setter_addEdge (const GALGAS_lstring & inSourceNodeKey,
                                                    const GALGAS_lstring & inTargetNodeKey
                                                    COMMA_LOCATION_ARGS) ;
 
-  public : VIRTUAL_IN_DEBUG void modifier_removeEdgesToNode (const GALGAS_string & inNodeName,
+  public : VIRTUAL_IN_DEBUG void setter_removeEdgesToNode (const GALGAS_string & inNodeName,
                                                              C_Compiler * inCompiler
                                                              COMMA_LOCATION_ARGS) ;
 
-  public : VIRTUAL_IN_DEBUG void modifier_removeEdgesToDominators (LOCATION_ARGS) ;
+  public : VIRTUAL_IN_DEBUG void setter_removeEdgesToDominators (LOCATION_ARGS) ;
 
 //--------------------------------- Comparison
   public : typeComparisonResult objectCompare (const AC_GALGAS_graph & inOperand) const ;
@@ -126,7 +126,7 @@ class AC_GALGAS_graph : public AC_GALGAS_root {
                                                      C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) ;
 
-  public : VIRTUAL_IN_DEBUG void modifier_noteNode (const GALGAS_lstring & inKey
+  public : VIRTUAL_IN_DEBUG void setter_noteNode (const GALGAS_lstring & inKey
                                                     COMMA_LOCATION_ARGS) ;
 
   public : VIRTUAL_IN_DEBUG GALGAS_lstringlist getter_undefinedNodeReferenceList (LOCATION_ARGS) const ;
@@ -164,6 +164,6 @@ class AC_GALGAS_graph : public AC_GALGAS_root {
   friend class cSharedGraph ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #endif

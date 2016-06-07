@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //  AC_GALGAS_uniqueMap : Base class for GALGAS map                                                                    *
 //                                                                                                                     *
@@ -18,18 +18,18 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef UNIQUE_MAP_BASE_CLASS_DEFINED
 #define UNIQUE_MAP_BASE_CLASS_DEFINED
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "galgas2/AC_GALGAS_root.h"
 #include "galgas2/typeComparisonResult.h"
 #include "collections/TC_UniqueArray.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 class cSharedUniqueMapRoot ;
 class cMapElement ;
@@ -51,11 +51,11 @@ class capCollectionElementArray ;
 class cUniqueMapNode ;
 class cSharedProxy ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                    Data structures for map automaton                                                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef enum {
   kMapAutomatonNoIssue,
@@ -63,14 +63,14 @@ typedef enum {
   kMapAutomatonIssueError
 } mapAutomatonIssueEnum ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef struct {
   const mapAutomatonIssueEnum mIssue ;
   const char * mIssueMessage ;
 } cMapAutomatonFinalIssue ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef struct {
   const uint32_t mTargetStateIndex ;
@@ -78,7 +78,7 @@ typedef struct {
   const char * mIssueMessage ;
 } cMapAutomatonTransition ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef struct {
   const uint32_t mFirstStateIndex ;
@@ -88,7 +88,7 @@ typedef struct {
   const char * mIssueMessage ;
 }cBranchOverrideTransformationDescriptor ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef struct {
   const uint32_t mFirstCandidateStateIndex ;
@@ -98,18 +98,18 @@ typedef struct {
   const char * mIssueMessage ;
 }cBranchOverrideCompatibilityDescriptor ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 typedef struct {
   uint32_t mInitialStateIndex ;
   uint32_t mResultingStateIndex ;
 }cOverrideStateDescriptor ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //     M A P    P R O X Y                                                                                              *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 class AC_GALGAS_uniqueMapProxy : public AC_GALGAS_root {
   private : typedef enum {kNotValid, kIsNull, kIsRegular} enumMapProxyState ;
@@ -184,18 +184,18 @@ class AC_GALGAS_uniqueMapProxy : public AC_GALGAS_root {
 
 //--------------------------------- Comparison
   public : typeComparisonResult objectCompare (const AC_GALGAS_uniqueMapProxy & inOperand) const ;
-
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //     M A P                                                                                                           *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 class AC_GALGAS_uniqueMap : public AC_GALGAS_root {
 //--------------------------------- Constructor
-  protected : AC_GALGAS_uniqueMap (void) ;
+  protected : AC_GALGAS_uniqueMap (const mapAutomatonIssueEnum inShadowBehaviour,
+                                   const C_String & inShadowMessage) ;
 
 //--------------------------------- Virtual destructor
   public : virtual ~ AC_GALGAS_uniqueMap (void) ;
@@ -217,7 +217,7 @@ class AC_GALGAS_uniqueMap : public AC_GALGAS_root {
   protected : VIRTUAL_IN_DEBUG void makeNewEmptyMap (LOCATION_ARGS) ;
 
 //--------------------------------- 'enterEdge' modifier declaration
-  public : VIRTUAL_IN_DEBUG void modifier_enterEdge (const GALGAS_lstring & inSource,
+  public : VIRTUAL_IN_DEBUG void setter_enterEdge (const GALGAS_lstring & inSource,
                                                      const GALGAS_lstring & inTarget
                                                      COMMA_LOCATION_ARGS) ;
 
@@ -228,13 +228,12 @@ class AC_GALGAS_uniqueMap : public AC_GALGAS_root {
                                                          COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Insert
-  protected : VIRTUAL_IN_DEBUG void performInsert (capCollectionElement & inAttributes,
-                                                   C_Compiler * inCompiler,
-                                                   const uint32_t inInitialState,
-                                                   const char * inInitialStateName,
-                                                   const char * inInsertErrorMessage,
-                                                   const char * inShadowErrorMessage
-                                                   COMMA_LOCATION_ARGS) ;
+  protected : VIRTUAL_IN_DEBUG void insertInSharedMap (capCollectionElement & inAttributes,
+                                                       C_Compiler * inCompiler,
+                                                       const uint32_t inInitialState,
+                                                       const char * inInitialStateName,
+                                                       const char * inInsertErrorMessage
+                                                       COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Search for 'with' read only instruction
   public : VIRTUAL_IN_DEBUG const cCollectionElement * readAccessForWithInstruction (const GALGAS_string & inKey) const ;
@@ -331,12 +330,12 @@ class AC_GALGAS_uniqueMap : public AC_GALGAS_root {
                                                COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Close override for block
-  public : VIRTUAL_IN_DEBUG void modifier_closeOverride (const GALGAS_location & inErrorLocation,
+  public : VIRTUAL_IN_DEBUG void setter_closeOverride (const GALGAS_location & inErrorLocation,
                                                          C_Compiler * inCompiler
                                                          COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Branch Handling
-  public : VIRTUAL_IN_DEBUG void modifier_openBranch (C_Compiler * inCompiler
+  public : VIRTUAL_IN_DEBUG void setter_openBranch (C_Compiler * inCompiler
                                                        COMMA_LOCATION_ARGS) ;
 
   public : VIRTUAL_IN_DEBUG void closeBranch (const GALGAS_location & inErrorLocation,
@@ -350,10 +349,14 @@ class AC_GALGAS_uniqueMap : public AC_GALGAS_root {
 //--------------------------------- Attributes
   private : cSharedUniqueMapRoot * mSharedMap ;
   
-//--------------------------------- Attributes
+//--------------------------------- Handle shadow
+  protected : mapAutomatonIssueEnum mShadowBehaviour ;
+  protected : C_String mShadowMessage ;
+
+//--------------------------------- Friend
   friend class AC_GALGAS_uniqueMapProxy ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #endif

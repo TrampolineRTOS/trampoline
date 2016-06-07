@@ -44,12 +44,15 @@ see https://www.gnu.org/licenses/.  */
 /*--- Modified by PM */
 #include <limits.h>
 #include <stdint.h>
+
 #ifndef INT64_MAX
   #error "Undefined INT64_MAX"
 #endif
+
 #ifndef INT32_MAX
   #error "Undefined INT32_MAX"
 #endif
+
 #ifdef _WIN32
   #define GMP_LIMB_BITS 32
   #define GMP_LIMB_BYTES 4
@@ -60,18 +63,24 @@ see https://www.gnu.org/licenses/.  */
   #elif LLONG_MAX == INT64_MAX
     #define GMP_LIMB_BITS 64
     #define GMP_LIMB_BYTES 8
+    #define _LONG_LONG_LIMB
   #else
     #error "LLONG_MAX is != 32 and != 64"
   #endif
 #endif
+
 #define NO_ASM
 #define __GMP_WITHIN_GMP
 #define HAVE_CONFIG_H
+
 /*--- End modified by PM */
+
 #define GMP_NAIL_BITS 0
+
 /*--- Deleted by PM */
 /* #endif */
 /*--- End deleted by PM */
+
 #define GMP_NUMB_BITS     (GMP_LIMB_BITS - GMP_NAIL_BITS)
 #define GMP_NUMB_MASK     ((~ __GMP_CAST (mp_limb_t, 0)) >> GMP_NAIL_BITS)
 #define GMP_NUMB_MAX      GMP_NUMB_MASK
@@ -1798,7 +1807,7 @@ mpz_get_ui (mpz_srcptr __gmp_z) __GMP_NOTHROW
      "__GMP_ULONG_MAX < GMP_NUMB_MASK".  */
 #if GMP_NAIL_BITS == 0 || defined (_LONG_LONG_LIMB)
   /* limb==long and no nails, or limb==longlong, one limb is enough */
-  return (__gmp_n != 0 ? __gmp_l : 0);
+  return (unsigned long) ((__gmp_n != 0) ? __gmp_l : 0);
 #else
   /* limb==long and nails, need two limbs when available */
   __gmp_n = __GMP_ABS (__gmp_n);

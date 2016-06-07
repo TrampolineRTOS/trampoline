@@ -56,7 +56,7 @@ see https://www.gnu.org/licenses/.  */
   vinf=               a3 *          b2      #  A(inf)*B(inf)
 */
 
-#if TUNE_PROGRAM_BUILD
+#ifdef TUNE_PROGRAM_BUILD
 #define MAYBE_mul_basecase 1
 #define MAYBE_mul_toom22   1
 #define MAYBE_mul_toom44   1
@@ -168,7 +168,7 @@ mpn_toom44_mul (mp_ptr pp,
   TOOM44_MUL_N_REC (vm2, amx, bmx, n + 1, tp);	/* vm2,  2n+1 limbs */
 
   /* Compute apx = 8 a0 + 4 a1 + 2 a2 + a3 = (((2*a0 + a1) * 2 + a2) * 2 + a3 */
-#if HAVE_NATIVE_mpn_addlsh1_n
+#ifdef HAVE_NATIVE_mpn_addlsh1_n
   cy = mpn_addlsh1_n (apx, a1, a0, n);
   cy = 2*cy + mpn_addlsh1_n (apx, a2, apx, n);
   if (s < n)
@@ -190,7 +190,7 @@ mpn_toom44_mul (mp_ptr pp,
 #endif
 
   /* Compute bpx = 8 b0 + 4 b1 + 2 b2 + b3 = (((2*b0 + b1) * 2 + b2) * 2 + b3 */
-#if HAVE_NATIVE_mpn_addlsh1_n
+#ifdef HAVE_NATIVE_mpn_addlsh1_n
   cy = mpn_addlsh1_n (bpx, b1, b0, n);
   cy = 2*cy + mpn_addlsh1_n (bpx, b2, bpx, n);
   if (t < n)

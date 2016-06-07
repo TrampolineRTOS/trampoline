@@ -90,7 +90,7 @@ static void mpn_mul_fft_decompose (mp_ptr, mp_ptr *, mp_size_t, mp_size_t, mp_sr
 
 /*****************************************************************************/
 
-#if TUNE_PROGRAM_BUILD || (defined (MUL_FFT_TABLE3) && defined (SQR_FFT_TABLE3))
+#if defined (TUNE_PROGRAM_BUILD) || (defined (MUL_FFT_TABLE3) && defined (SQR_FFT_TABLE3))
 
 #ifndef FFT_TABLE3_SIZE		/* When tuning this is defined in gmp-impl.h */
 #if defined (MUL_FFT_TABLE3_SIZE) && defined (SQR_FFT_TABLE3_SIZE)
@@ -364,7 +364,7 @@ mpn_fft_fft (mp_ptr *Ap, mp_size_t K, int **ll,
   if (K == 2)
     {
       mp_limb_t cy;
-#if HAVE_NATIVE_mpn_add_n_sub_n
+#ifdef HAVE_NATIVE_mpn_add_n_sub_n
       cy = mpn_add_n_sub_n (Ap[0], Ap[inc], Ap[0], Ap[inc], n + 1) & 1;
 #else
       MPN_COPY (tp, Ap[0], n + 1);
@@ -552,7 +552,7 @@ mpn_fft_fftinv (mp_ptr *Ap, mp_size_t K, mp_size_t omega, mp_size_t n, mp_ptr tp
   if (K == 2)
     {
       mp_limb_t cy;
-#if HAVE_NATIVE_mpn_add_n_sub_n
+#ifdef HAVE_NATIVE_mpn_add_n_sub_n
       cy = mpn_add_n_sub_n (Ap[0], Ap[1], Ap[0], Ap[1], n + 1) & 1;
 #else
       MPN_COPY (tp, Ap[0], n + 1);
@@ -908,7 +908,7 @@ mpn_mul_fft (mp_ptr op, mp_size_t pl,
   return h;
 }
 
-#if WANT_OLD_FFT_FULL
+#ifdef WANT_OLD_FFT_FULL
 /* multiply {n, nl} by {m, ml}, and put the result in {op, nl+ml} */
 void
 mpn_mul_fft_full (mp_ptr op,

@@ -204,7 +204,7 @@ mpn_tdiv_qr (mp_ptr qp, mp_ptr rp, mp_size_t qxn,
 	    mp_size_t qn;
 	    mp_ptr n2p, d2p;
 	    mp_ptr tp;
-	    mp_limb_t cy;
+	    mp_limb_t ccy;
 	    mp_size_t in, rn;
 	    mp_limb_t quotient_too_large;
 	    unsigned int cnt;
@@ -234,10 +234,10 @@ mpn_tdiv_qr (mp_ptr qp, mp_ptr rp, mp_size_t qxn,
 		d2p[0] |= dp[in - 1] >> (GMP_NUMB_BITS - cnt);
 
 		n2p = TMP_ALLOC_LIMBS (2 * (size_t) (qn + 1)); // (size_t) added by PM
-		cy = mpn_lshift (n2p, np + nn - 2 * qn, 2 * qn, cnt);
+		ccy = mpn_lshift (n2p, np + nn - 2 * qn, 2 * qn, cnt);
 		if (adjust)
 		  {
-		    n2p[2 * qn] = cy;
+		    n2p[2 * qn] = ccy;
 		    n2p++;
 		  }
 		else
@@ -370,12 +370,12 @@ mpn_tdiv_qr (mp_ptr qp, mp_ptr rp, mp_size_t qxn,
 	    else
 	      mpn_mul (tp, dp, in, qp, qn);
 
-	    cy = mpn_sub (n2p, n2p, rn, tp + in, qn);
+	    ccy = mpn_sub (n2p, n2p, rn, tp + in, qn);
 	    MPN_COPY (rp + in, n2p, dn - in);
-	    quotient_too_large |= cy;
-	    cy = mpn_sub_n (rp, np, tp, in);
-	    cy = mpn_sub_1 (rp + in, rp + in, rn, cy);
-	    quotient_too_large |= cy;
+	    quotient_too_large |= ccy;
+	    ccy = mpn_sub_n (rp, np, tp, in);
+	    ccy = mpn_sub_1 (rp + in, rp + in, rn, ccy);
+	    quotient_too_large |= ccy;
 	  foo:
 	    if (quotient_too_large)
 	      {

@@ -122,7 +122,7 @@ mpn_toom43_mul (mp_ptr pp,
     cy = mpn_add_1 (b0b2 + t, b0 + t, n - t, cy);
   b0b2[n] = cy;
 
-#if HAVE_NATIVE_mpn_add_n_sub_n
+#ifdef HAVE_NATIVE_mpn_add_n_sub_n
   if (mpn_cmp (b0b2, b1d, n+1) < 0)
     {
       mpn_add_n_sub_n (bs2, bsm2, b1d, b0b2, n+1);
@@ -150,7 +150,7 @@ mpn_toom43_mul (mp_ptr pp,
 
   /* Compute bs1 and bsm1.  */
   bsm1[n] = mpn_add (bsm1, b0, n, b2, t);
-#if HAVE_NATIVE_mpn_add_n_sub_n
+#ifdef HAVE_NATIVE_mpn_add_n_sub_n
   if (bsm1[n] == 0 && mpn_cmp (bsm1, b1, n) < 0)
     {
       cy = mpn_add_n_sub_n (bs1, bsm1, b1, bsm1, n);

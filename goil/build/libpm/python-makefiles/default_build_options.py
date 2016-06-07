@@ -18,7 +18,7 @@ def allCompilerOptions (platformOptions):
 #--- Options added for GALGAS 1.9.0
   result.append ("-ansi")
   result.append ("-W")
-#  result.append ("-Wshadow")
+  result.append ("-Wshadow")
 #  result.append ("-Wcast-qual")
   result.append ("-Wwrite-strings")
   result.append ("-ffunction-sections")

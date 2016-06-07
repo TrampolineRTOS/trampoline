@@ -135,7 +135,7 @@ mpz_and (mpz_ptr res, mpz_srcptr op1, mpz_srcptr op2)
     }
 
   {
-#if ANDNEW
+#ifdef ANDNEW
     mp_size_t op2_lim;
     mp_size_t count;
 

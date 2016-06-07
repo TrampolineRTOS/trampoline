@@ -138,7 +138,7 @@ mpn_mul (mp_ptr prodp,
       /* Unless un is very large, or else if have an applicable mpn_mul_N,
 	 perform basecase multiply directly.  */
       if (un <= MUL_BASECASE_MAX_UN
-#if HAVE_NATIVE_mpn_mul_2
+#ifdef HAVE_NATIVE_mpn_mul_2
 	  || vn <= 2
 #else
 	  || vn == 1

@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //  Generic String Command Line Interface Option                                                                       *
 //                                                                                                                     *
@@ -18,22 +18,22 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include <string.h>
 #include <stdio.h>
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "command_line_interface/C_StringListCommandLineOption.h"
 #include "utilities/C_PrologueEpilogue.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static C_StringListCommandLineOption * gFirstStringListOption ;
 static C_StringListCommandLineOption * gLastStringListOption ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_StringListCommandLineOption::C_StringListCommandLineOption (const char * inDomainName,
                                                               const char * inIdentifier,
@@ -51,7 +51,7 @@ mValue () {
   gLastStringListOption = this ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_StringListCommandLineOption::setStringListOptionForCommandChar (const char * inCommandString,
                                                                        bool & outFound,
@@ -71,7 +71,7 @@ void C_StringListCommandLineOption::setStringListOptionForCommandChar (const cha
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_StringListCommandLineOption::setStringListOptionForCommandString (const char * inCommandString,
                                                                          bool & outFound,
@@ -105,7 +105,7 @@ void C_StringListCommandLineOption::setStringListOptionForCommandString (const c
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_StringListCommandLineOption::printUsageOfStringOptions (void) {
   C_StringListCommandLineOption * p = gFirstStringListOption ;
@@ -122,7 +122,7 @@ void C_StringListCommandLineOption::printUsageOfStringOptions (void) {
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_StringListCommandLineOption::printStringOptions (const uint32_t inDisplayLength) {
   C_StringListCommandLineOption * p = gFirstStringListOption ;
@@ -157,7 +157,7 @@ void C_StringListCommandLineOption::printStringOptions (const uint32_t inDisplay
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_StringListCommandLineOption::releaseStrings (void) {
   C_StringListCommandLineOption * p = gFirstStringListOption ;
@@ -167,11 +167,11 @@ void C_StringListCommandLineOption::releaseStrings (void) {
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gReleaseStringList (NULL, C_StringListCommandLineOption::releaseStrings) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_StringListCommandLineOption::getStringOptionNameList (TC_UniqueArray <C_String> & outArray) {
   C_StringListCommandLineOption * p = gFirstStringListOption ;
@@ -182,7 +182,7 @@ void C_StringListCommandLineOption::getStringOptionNameList (TC_UniqueArray <C_S
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 utf32 C_StringListCommandLineOption::getStringOptionInvocationLetter (const C_String & inDomainName,
                                                                       const C_String & inIdentifier) {
@@ -197,7 +197,7 @@ utf32 C_StringListCommandLineOption::getStringOptionInvocationLetter (const C_St
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_String C_StringListCommandLineOption::getStringOptionInvocationString (const C_String & inDomainName,
                                                                          const C_String & inIdentifier) {
@@ -212,7 +212,7 @@ C_String C_StringListCommandLineOption::getStringOptionInvocationString (const C
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_String C_StringListCommandLineOption::getStringOptionCommentString (const C_String & inDomainName,
                                                                       const C_String & inIdentifier) {
@@ -227,4 +227,4 @@ C_String C_StringListCommandLineOption::getStringOptionCommentString (const C_St
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------

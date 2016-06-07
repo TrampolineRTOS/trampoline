@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //  GALGAS_bigint                                                                                                      *
 //                                                                                                                     *
@@ -18,18 +18,18 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "galgas2/predefined-types.h"
 #include "galgas2/C_Compiler.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Native constructors
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bigint::GALGAS_bigint (void) :
 AC_GALGAS_root (),
@@ -37,7 +37,7 @@ mIsValid (false),
 mValue (0) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bigint::GALGAS_bigint (const C_BigInt & inValue) :
 AC_GALGAS_root (),
@@ -45,7 +45,7 @@ mIsValid (true),
 mValue (inValue) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static bool gOk ;
 
@@ -58,25 +58,25 @@ mValue (inDecimalString, 10, gOk) {
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bigint::~GALGAS_bigint (void) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark GALGAS internals
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_bigint::drop (void) {
   mIsValid = false ;
   mValue.setToZero () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_bigint::description (C_String & ioString,
                                  const int32_t /* inIndentation */) const {
@@ -89,7 +89,7 @@ void GALGAS_bigint::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult GALGAS_bigint::objectCompare (const GALGAS_bigint & inOperand) const {
   typeComparisonResult result = kOperandNotValid ;
@@ -106,13 +106,13 @@ typeComparisonResult GALGAS_bigint::objectCompare (const GALGAS_bigint & inOpera
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark GALGAS constructors
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bigint GALGAS_bigint::constructor_zero (UNUSED_LOCATION_ARGS) {
   GALGAS_bigint result ;
@@ -120,13 +120,13 @@ GALGAS_bigint GALGAS_bigint::constructor_zero (UNUSED_LOCATION_ARGS) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Testing value representation
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uint GALGAS_bigint::getter_bitCountForSignedRepresentation (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
@@ -136,7 +136,7 @@ GALGAS_uint GALGAS_bigint::getter_bitCountForSignedRepresentation (UNUSED_LOCATI
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uint GALGAS_bigint::getter_bitCountForUnsignedRepresentation (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
@@ -146,7 +146,7 @@ GALGAS_uint GALGAS_bigint::getter_bitCountForUnsignedRepresentation (UNUSED_LOCA
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bool GALGAS_bigint::getter_fitsInUInt (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
@@ -156,7 +156,7 @@ GALGAS_bool GALGAS_bigint::getter_fitsInUInt (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bool GALGAS_bigint::getter_fitsInSInt (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
@@ -166,7 +166,7 @@ GALGAS_bool GALGAS_bigint::getter_fitsInSInt (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bool GALGAS_bigint::getter_fitsInUInt_36__34_ (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
@@ -176,7 +176,7 @@ GALGAS_bool GALGAS_bigint::getter_fitsInUInt_36__34_ (UNUSED_LOCATION_ARGS) cons
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bool GALGAS_bigint::getter_fitsInSInt_36__34_ (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
@@ -186,7 +186,7 @@ GALGAS_bool GALGAS_bigint::getter_fitsInSInt_36__34_ (UNUSED_LOCATION_ARGS) cons
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bool GALGAS_bigint::getter_isZero (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
@@ -196,7 +196,7 @@ GALGAS_bool GALGAS_bigint::getter_isZero (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_sint GALGAS_bigint::getter_sign (UNUSED_LOCATION_ARGS) const {
   GALGAS_sint result ;
@@ -206,7 +206,7 @@ GALGAS_sint GALGAS_bigint::getter_sign (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uintlist GALGAS_bigint::getter_extract_38_ForUnsignedRepresentation (UNUSED_LOCATION_ARGS) const {
   GALGAS_uintlist result ;
@@ -221,7 +221,7 @@ GALGAS_uintlist GALGAS_bigint::getter_extract_38_ForUnsignedRepresentation (UNUS
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uintlist GALGAS_bigint::getter_extract_38_ForSignedRepresentation (UNUSED_LOCATION_ARGS) const {
   GALGAS_uintlist result ;
@@ -236,7 +236,7 @@ GALGAS_uintlist GALGAS_bigint::getter_extract_38_ForSignedRepresentation (UNUSED
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uintlist GALGAS_bigint::getter_extract_33__32_ForUnsignedRepresentation (UNUSED_LOCATION_ARGS) const {
   GALGAS_uintlist result ;
@@ -260,7 +260,7 @@ GALGAS_uintlist GALGAS_bigint::getter_extract_33__32_ForUnsignedRepresentation (
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uintlist GALGAS_bigint::getter_extract_33__32_ForSignedRepresentation (UNUSED_LOCATION_ARGS) const {
   GALGAS_uintlist result ;
@@ -284,7 +284,7 @@ GALGAS_uintlist GALGAS_bigint::getter_extract_33__32_ForSignedRepresentation (UN
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uint_36__34_list GALGAS_bigint::getter_extract_36__34_ForUnsignedRepresentation (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint_36__34_list result ;
@@ -306,7 +306,7 @@ GALGAS_uint_36__34_list GALGAS_bigint::getter_extract_36__34_ForUnsignedRepresen
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uint_36__34_list GALGAS_bigint::getter_extract_36__34_ForSignedRepresentation (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint_36__34_list result ;
@@ -328,13 +328,13 @@ GALGAS_uint_36__34_list GALGAS_bigint::getter_extract_36__34_ForSignedRepresenta
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Convert to string
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_string GALGAS_bigint::getter_string (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
@@ -344,7 +344,7 @@ GALGAS_string GALGAS_bigint::getter_string (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_string GALGAS_bigint::getter_spacedString (const GALGAS_uint & inSeparation COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
@@ -354,7 +354,7 @@ GALGAS_string GALGAS_bigint::getter_spacedString (const GALGAS_uint & inSeparati
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_string GALGAS_bigint::getter_hexString (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
@@ -364,7 +364,7 @@ GALGAS_string GALGAS_bigint::getter_hexString (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_string GALGAS_bigint::getter_xString (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
@@ -374,13 +374,13 @@ GALGAS_string GALGAS_bigint::getter_xString (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Incrementation, decrementation
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_bigint::increment_operation (C_Compiler * /* inCompiler */
                                          COMMA_UNUSED_LOCATION_ARGS) {
@@ -389,7 +389,7 @@ void GALGAS_bigint::increment_operation (C_Compiler * /* inCompiler */
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_bigint::decrement_operation (C_Compiler * /* inCompiler */
                                          COMMA_UNUSED_LOCATION_ARGS) {
@@ -398,13 +398,13 @@ void GALGAS_bigint::decrement_operation (C_Compiler * /* inCompiler */
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Bit manipulation
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bool GALGAS_bigint::getter_bitAtIndex (const GALGAS_uint & inBitIndex
                                               COMMA_UNUSED_LOCATION_ARGS) const {
@@ -415,18 +415,18 @@ GALGAS_bool GALGAS_bigint::getter_bitAtIndex (const GALGAS_uint & inBitIndex
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-void GALGAS_bigint::modifier_complementBitAtIndex (const GALGAS_uint inBitIndex
+void GALGAS_bigint::setter_complementBitAtIndex (const GALGAS_uint inBitIndex
                                                    COMMA_UNUSED_LOCATION_ARGS) {
   if (isValid () && inBitIndex.isValid ()) {
     mValue.complementBitAtIndex (inBitIndex.uintValue ()) ;
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-void GALGAS_bigint::modifier_setBitAtIndex (const GALGAS_bool inBitValue,
+void GALGAS_bigint::setter_setBitAtIndex (const GALGAS_bool inBitValue,
                                             const GALGAS_uint inBitIndex
                                             COMMA_UNUSED_LOCATION_ARGS) {
   if (isValid () && inBitValue.isValid () && inBitIndex.isValid ()) {
@@ -434,13 +434,13 @@ void GALGAS_bigint::modifier_setBitAtIndex (const GALGAS_bool inBitValue,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Value access
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bigint GALGAS_bigint::getter_abs (UNUSED_LOCATION_ARGS) const {
   GALGAS_bigint result ;
@@ -450,7 +450,7 @@ GALGAS_bigint GALGAS_bigint::getter_abs (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uint GALGAS_bigint::getter_uint (C_Compiler * inCompiler
                                         COMMA_LOCATION_ARGS) const {
@@ -465,7 +465,7 @@ GALGAS_uint GALGAS_bigint::getter_uint (C_Compiler * inCompiler
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_sint GALGAS_bigint::getter_sint (C_Compiler * inCompiler
                                         COMMA_LOCATION_ARGS) const {
@@ -480,7 +480,7 @@ GALGAS_sint GALGAS_bigint::getter_sint (C_Compiler * inCompiler
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uint_36__34_ GALGAS_bigint::getter_uint_36__34_ (C_Compiler * inCompiler
                                                         COMMA_LOCATION_ARGS) const {
@@ -495,7 +495,7 @@ GALGAS_uint_36__34_ GALGAS_bigint::getter_uint_36__34_ (C_Compiler * inCompiler
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_sint_36__34_ GALGAS_bigint::getter_sint_36__34_ (C_Compiler * inCompiler
                                                         COMMA_LOCATION_ARGS) const {
@@ -510,13 +510,13 @@ GALGAS_sint_36__34_ GALGAS_bigint::getter_sint_36__34_ (C_Compiler * inCompiler
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Arithmetics
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bigint GALGAS_bigint::operator_unary_minus (C_Compiler * /* inCompiler */ COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_bigint result ;
@@ -526,7 +526,7 @@ GALGAS_bigint GALGAS_bigint::operator_unary_minus (C_Compiler * /* inCompiler */
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bigint GALGAS_bigint::add_operation (const GALGAS_bigint & inOperand,
                                             C_Compiler * /* inCompiler */
@@ -538,7 +538,7 @@ GALGAS_bigint GALGAS_bigint::add_operation (const GALGAS_bigint & inOperand,
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bigint GALGAS_bigint::substract_operation (const GALGAS_bigint & inOperand,
                                                   C_Compiler * /* inCompiler */
@@ -550,7 +550,7 @@ GALGAS_bigint GALGAS_bigint::substract_operation (const GALGAS_bigint & inOperan
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bigint GALGAS_bigint::multiply_operation (const GALGAS_bigint & inOperand,
                                                  C_Compiler * /* inCompiler */
@@ -562,7 +562,7 @@ GALGAS_bigint GALGAS_bigint::multiply_operation (const GALGAS_bigint & inOperand
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bigint GALGAS_bigint::divide_operation (const GALGAS_bigint & inOperand,
                                                C_Compiler * inCompiler
@@ -578,7 +578,7 @@ GALGAS_bigint GALGAS_bigint::divide_operation (const GALGAS_bigint & inOperand,
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bigint GALGAS_bigint::modulo_operation (const GALGAS_bigint & inOperand2,
                                                C_Compiler * inCompiler
@@ -594,7 +594,7 @@ GALGAS_bigint GALGAS_bigint::modulo_operation (const GALGAS_bigint & inOperand2,
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_bigint::method_ceilDivideBy (GALGAS_bigint inDivisor,
                                          GALGAS_bigint & outQuotient,
@@ -616,7 +616,7 @@ void GALGAS_bigint::method_ceilDivideBy (GALGAS_bigint inDivisor,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_bigint::method_divideBy (GALGAS_bigint inDivisor,
                                      GALGAS_bigint & outQuotient,
@@ -638,7 +638,7 @@ void GALGAS_bigint::method_divideBy (GALGAS_bigint inDivisor,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_bigint::method_floorDivideBy (GALGAS_bigint inDivisor,
                                           GALGAS_bigint & outQuotient,
@@ -660,13 +660,13 @@ void GALGAS_bigint::method_floorDivideBy (GALGAS_bigint inDivisor,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Logical
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bigint GALGAS_bigint::operator_and (const GALGAS_bigint & inOperand
                                            COMMA_UNUSED_LOCATION_ARGS) const {
@@ -677,7 +677,7 @@ GALGAS_bigint GALGAS_bigint::operator_and (const GALGAS_bigint & inOperand
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bigint GALGAS_bigint::operator_or (const GALGAS_bigint & inOperand
                                           COMMA_UNUSED_LOCATION_ARGS) const {
@@ -688,7 +688,7 @@ GALGAS_bigint GALGAS_bigint::operator_or (const GALGAS_bigint & inOperand
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bigint GALGAS_bigint::operator_xor (const GALGAS_bigint & inOperand
                                            COMMA_UNUSED_LOCATION_ARGS) const {
@@ -699,7 +699,7 @@ GALGAS_bigint GALGAS_bigint::operator_xor (const GALGAS_bigint & inOperand
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bigint GALGAS_bigint::operator_tilde (UNUSED_LOCATION_ARGS) const {
   GALGAS_bigint result ;
@@ -709,13 +709,13 @@ GALGAS_bigint GALGAS_bigint::operator_tilde (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Shift
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bigint GALGAS_bigint::left_shift_operation (const GALGAS_uint inShiftOperand
                                                    COMMA_UNUSED_LOCATION_ARGS) const {
@@ -727,7 +727,7 @@ GALGAS_bigint GALGAS_bigint::left_shift_operation (const GALGAS_uint inShiftOper
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bigint GALGAS_bigint::right_shift_operation (const GALGAS_uint inShiftOperand
                                                     COMMA_UNUSED_LOCATION_ARGS) const {
@@ -738,5 +738,5 @@ GALGAS_bigint GALGAS_bigint::right_shift_operation (const GALGAS_uint inShiftOpe
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 

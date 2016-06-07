@@ -64,7 +64,7 @@ mpn_mul_basecase (mp_ptr rp,
      availability, limbs).  This result can be stored, not added, to rp.  We
      also avoid a loop for zeroing this way.  */
 
-#if HAVE_NATIVE_mpn_mul_2
+#ifdef HAVE_NATIVE_mpn_mul_2
   if (vn >= 2)
     {
       rp[un + 1] = mpn_mul_2 (rp, up, un, vp);
@@ -86,7 +86,7 @@ mpn_mul_basecase (mp_ptr rp,
 #define MAX_LEFT MP_SIZE_T_MAX	/* Used to simplify loops into if statements */
 
 
-#if HAVE_NATIVE_mpn_addmul_6
+#ifdef HAVE_NATIVE_mpn_addmul_6
   while (vn >= 6)
     {
       rp[un + 6 - 1] = mpn_addmul_6 (rp, up, un, vp);
@@ -100,7 +100,7 @@ mpn_mul_basecase (mp_ptr rp,
 #define MAX_LEFT (6 - 1)
 #endif
 
-#if HAVE_NATIVE_mpn_addmul_5
+#ifdef HAVE_NATIVE_mpn_addmul_5
   while (vn >= 5)
     {
       rp[un + 5 - 1] = mpn_addmul_5 (rp, up, un, vp);
@@ -114,7 +114,7 @@ mpn_mul_basecase (mp_ptr rp,
 #define MAX_LEFT (5 - 1)
 #endif
 
-#if HAVE_NATIVE_mpn_addmul_4
+#ifdef HAVE_NATIVE_mpn_addmul_4
   while (vn >= 4)
     {
       rp[un + 4 - 1] = mpn_addmul_4 (rp, up, un, vp);
@@ -128,7 +128,7 @@ mpn_mul_basecase (mp_ptr rp,
 #define MAX_LEFT (4 - 1)
 #endif
 
-#if HAVE_NATIVE_mpn_addmul_3
+#ifdef HAVE_NATIVE_mpn_addmul_3
   while (vn >= 3)
     {
       rp[un + 3 - 1] = mpn_addmul_3 (rp, up, un, vp);
@@ -142,7 +142,7 @@ mpn_mul_basecase (mp_ptr rp,
 #define MAX_LEFT (3 - 1)
 #endif
 
-#if HAVE_NATIVE_mpn_addmul_2
+#ifdef HAVE_NATIVE_mpn_addmul_2
   while (vn >= 2)
     {
       rp[un + 2 - 1] = mpn_addmul_2 (rp, up, un, vp);

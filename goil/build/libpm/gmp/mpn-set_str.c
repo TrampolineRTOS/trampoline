@@ -321,7 +321,7 @@ mpn_bc_set_str (mp_ptr rp, const unsigned char *str, size_t str_len, int base)
 	}
       else
 	{
-#if HAVE_NATIVE_mpn_mul_1c
+#ifdef HAVE_NATIVE_mpn_mul_1c
 	  cy_limb = mpn_mul_1c (rp, rp, size, big_base, res_digit);
 #else
 	  cy_limb = mpn_mul_1 (rp, rp, size, big_base);
@@ -362,7 +362,7 @@ mpn_bc_set_str (mp_ptr rp, const unsigned char *str, size_t str_len, int base)
     }
   else
     {
-#if HAVE_NATIVE_mpn_mul_1c
+#ifdef HAVE_NATIVE_mpn_mul_1c
       cy_limb = mpn_mul_1c (rp, rp, size, big_base, res_digit);
 #else
       cy_limb = mpn_mul_1 (rp, rp, size, big_base);

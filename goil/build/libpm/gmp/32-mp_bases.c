@@ -4,7 +4,6 @@
 #include "gmp-impl.h"
 
 #if GMP_NUMB_BITS == 32
-
 const struct bases mp_bases[257] =
 {
   /*   0 */ { 0, 0, 0, 0, 0 },

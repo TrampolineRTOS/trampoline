@@ -40,7 +40,7 @@ mpz_set_ui (mpz_ptr dest, unsigned long int val)
   PTR (dest)[0] = val & GMP_NUMB_MASK;
   size = val != 0;
 
-#if BITS_PER_ULONG > GMP_NUMB_BITS  /* avoid warnings about shift amount */
+#if defined(SIZEOF_UNSIGNED_LONG) && (BITS_PER_ULONG > GMP_NUMB_BITS)  /* avoid warnings about shift amount */
   if (val > GMP_NUMB_MAX)
     {
       MPZ_REALLOC (dest, 2);

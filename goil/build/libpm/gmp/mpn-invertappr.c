@@ -52,7 +52,7 @@ see https://www.gnu.org/licenses/.  */
    parts, the use of log_2 (or counting the bits) underestimate the maximum
    number of iterations.  */
 
-#if TUNE_PROGRAM_BUILD
+#ifdef TUNE_PROGRAM_BUILD
 #define NPOWS \
  ((sizeof(mp_size_t) > 6 ? 48 : 8*sizeof(mp_size_t)))
 #define MAYBE_dcpi1_divappr   1

@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //  Generic Boolean Command Line Interface Option                                                                      *
 //                                                                                                                     *
@@ -18,22 +18,22 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include <string.h>
 #include <stdio.h>
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "command_line_interface/C_BoolCommandLineOption.h"
 #include "strings/C_String.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static C_BoolCommandLineOption * gFirstBoolCommand ;
 static C_BoolCommandLineOption * gLastBoolCommand ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_BoolCommandLineOption::C_BoolCommandLineOption (const char * inDomainName,
                                                   const char * inIdentifier,
@@ -53,7 +53,7 @@ mVisibleInGalgas (inVisibleInGalgas) {
   gLastBoolCommand = this ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_BoolCommandLineOption::setBoolOptionForCommandChar (const char inCommandChar,
                                                            bool & outFound) {
@@ -68,7 +68,7 @@ void C_BoolCommandLineOption::setBoolOptionForCommandChar (const char inCommandC
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_BoolCommandLineOption::setBoolOptionForCommandString (const char * inCommandString,
                                                              bool & outFound,
@@ -87,7 +87,7 @@ void C_BoolCommandLineOption::setBoolOptionForCommandString (const char * inComm
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_BoolCommandLineOption::printUsageOfBoolOptions (void) {
   C_BoolCommandLineOption * p = gFirstBoolCommand ;
@@ -104,7 +104,7 @@ void C_BoolCommandLineOption::printUsageOfBoolOptions (void) {
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_BoolCommandLineOption::printBoolOptions (const uint32_t inDisplayLength) {
   C_BoolCommandLineOption * p = gFirstBoolCommand ;
@@ -140,7 +140,7 @@ void C_BoolCommandLineOption::printBoolOptions (const uint32_t inDisplayLength) 
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_BoolCommandLineOption::getBoolOptionNameList (TC_UniqueArray <C_String> & outArray) {
   C_BoolCommandLineOption * p = gFirstBoolCommand ;
@@ -153,7 +153,7 @@ void C_BoolCommandLineOption::getBoolOptionNameList (TC_UniqueArray <C_String> &
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 utf32 C_BoolCommandLineOption::getBoolOptionInvocationLetter (const C_String & inDomainName,
                                                               const C_String & inIdentifier) {
@@ -168,7 +168,7 @@ utf32 C_BoolCommandLineOption::getBoolOptionInvocationLetter (const C_String & i
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_String C_BoolCommandLineOption::getBoolOptionInvocationString (const C_String & inDomainName,
                                                                  const C_String & inIdentifier) {
@@ -183,7 +183,7 @@ C_String C_BoolCommandLineOption::getBoolOptionInvocationString (const C_String 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_String C_BoolCommandLineOption::getBoolOptionCommentString (const C_String & inDomainName,
                                                               const C_String & inIdentifier) {
@@ -198,4 +198,4 @@ C_String C_BoolCommandLineOption::getBoolOptionCommentString (const C_String & i
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------

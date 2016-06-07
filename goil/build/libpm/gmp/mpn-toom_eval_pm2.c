@@ -40,14 +40,14 @@ see https://www.gnu.org/licenses/.  */
 
 /* DO_addlsh2(d,a,b,n,cy) computes cy,{d,n} <- {a,n} + 4*(cy,{b,n}), it
    can be used as DO_addlsh2(d,a,d,n,d[n]), for accumulation on {d,n+1}. */
-#if HAVE_NATIVE_mpn_addlsh2_n
+#ifdef HAVE_NATIVE_mpn_addlsh2_n
 #define DO_addlsh2(d, a, b, n, cy)	\
 do {					\
   (cy) <<= 2;				\
   (cy) += mpn_addlsh2_n(d, a, b, n);	\
 } while (0)
 #else
-#if HAVE_NATIVE_mpn_addlsh_n
+#ifdef HAVE_NATIVE_mpn_addlsh_n
 #define DO_addlsh2(d, a, b, n, cy)	\
 do {					\
   (cy) <<= 2;				\
@@ -107,7 +107,7 @@ mpn_toom_eval_pm2 (mp_ptr xp2, mp_ptr xm2, unsigned k,
 
   neg = (mpn_cmp (xp2, tp, n + 1) < 0) ? ~0 : 0;
 
-#if HAVE_NATIVE_mpn_add_n_sub_n
+#ifdef HAVE_NATIVE_mpn_add_n_sub_n
   if (neg)
     mpn_add_n_sub_n (xp2, xm2, tp, xp2, n + 1);
   else

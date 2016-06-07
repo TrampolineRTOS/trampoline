@@ -3,26 +3,26 @@
 #include "galgas2/C_galgas_CLI_Options.h"
 #include "utilities/C_PrologueEpilogue.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "all-declarations-2.h"
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "utilities/MF_MemoryControl.h"
 #include "galgas2/C_galgas_CLI_Options.h"
 
 #include "files/C_FileManager.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                   L L ( 1 )    P R O D U C T I O N    R U L E S                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                   L L ( 1 )    P R O D U C T I O N    R U L E S                                      
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 #define TERMINAL(t)     ((t)+1)
 #define NONTERMINAL(nt) ((-nt)-1)
@@ -641,11 +641,11 @@ static const int16_t gProductions_goil_implementation_level_include [] = {
 , END_PRODUCTION
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                          P R O D U C T I O N    N A M E S                                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                          P R O D U C T I O N    N A M E S                                            
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static const cProductionNameDescriptor gProductionNames_goil_implementation_level_include [159] = {
  {"<implementation_definition>", "implementation_parser", 0}, // at index 0
@@ -809,11 +809,11 @@ static const cProductionNameDescriptor gProductionNames_goil_implementation_leve
  {"<>", "", 448} // at index 158
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 L L ( 1 )    P R O D U C T I O N    I N D E X E S                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                 L L ( 1 )    P R O D U C T I O N    I N D E X E S                                    
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static const int16_t gProductionIndexes_goil_implementation_level_include [159] = {
 0, // index 0 : <implementation_definition>, in file 'implementation_parser.ggs', line 55
@@ -977,11 +977,11 @@ static const int16_t gProductionIndexes_goil_implementation_level_include [159] 
 448 // index 158 : <>, in file '.ggs', line 0
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                           L L ( 1 )    F I R S T    P R O D U C T I O N    I N D E X E S                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                           L L ( 1 )    F I R S T    P R O D U C T I O N    I N D E X E S                             
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static const int16_t gFirstProductionIndexes_goil_implementation_level_include [87] = {
 0, // at 0 : <implementation_definition>
@@ -1072,11 +1072,11 @@ static const int16_t gFirstProductionIndexes_goil_implementation_level_include [
 158, // at 85 : <>
 0} ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    L L ( 1 )    D E C I S I O N    T A B L E S                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                    L L ( 1 )    D E C I S I O N    T A B L E S                                       
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static const int16_t gDecision_goil_implementation_level_include [] = {
 // At index 0 : <implementation_definition> only one production, no choice
@@ -1376,11 +1376,11 @@ C_Lexique_goil_5F_lexique::kToken__3A_, C_Lexique_goil_5F_lexique::kToken__3D_, 
   -1,
 0} ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            L L ( 1 )    D E C I S I O N    T A B L E S    I N D E X E S                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            L L ( 1 )    D E C I S I O N    T A B L E S    I N D E X E S                              
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static const int16_t gDecisionIndexes_goil_implementation_level_include [87] = {
 0, // at 0 : <implementation_definition>
@@ -1471,11 +1471,11 @@ static const int16_t gDecisionIndexes_goil_implementation_level_include [87] = {
 381, // at 85 : <>
 0} ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                              'implementation_definition' non terminal implementation                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                              'implementation_definition' non terminal implementation                                 
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_implementation_5F_definition_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_implementation_5F_definition_i0_parse(inLexique) ;
@@ -1486,11 +1486,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_implementation_5F_d
   rule_implementation_5F_parser_implementation_5F_definition_i0_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        'start' non terminal implementation                                          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                        'start' non terminal implementation                                           
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_start_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_start_i0_parse(inLexique) ;
@@ -1500,11 +1500,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_start_ (C_Lexique_g
   rule_goil_5F_syntax_start_i0_(inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                         'file' non terminal implementation                                          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                         'file' non terminal implementation                                           
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_file_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_file_i1_parse(inLexique) ;
@@ -1518,11 +1518,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_file_ (GALGAS_imple
   rule_goil_5F_syntax_file_i1_(parameter_1, parameter_2, parameter_3, parameter_4, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                         'sign' non terminal implementation                                          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                         'sign' non terminal implementation                                           
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_sign_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_sign_i2_parse(inLexique) ;
@@ -1533,11 +1533,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_sign_ (GALGAS_bool 
   rule_goil_5F_syntax_sign_i2_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     'description' non terminal implementation                                       *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                     'description' non terminal implementation                                        
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_description_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_description_i3_parse(inLexique) ;
@@ -1548,11 +1548,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_description_ (GALGA
   rule_goil_5F_syntax_description_i3_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     'OIL_version' non terminal implementation                                       *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                     'OIL_version' non terminal implementation                                        
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_OIL_5F_version_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_OIL_5F_version_i4_parse(inLexique) ;
@@ -1564,11 +1564,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_OIL_5F_version_ (GA
   rule_goil_5F_syntax_OIL_5F_version_i4_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                'application_definition' non terminal implementation                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                'application_definition' non terminal implementation                                  
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_application_5F_definition_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_application_5F_definition_i5_parse(inLexique) ;
@@ -1582,11 +1582,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_application_5F_defi
   rule_goil_5F_syntax_application_5F_definition_i5_(parameter_1, parameter_2, parameter_3, parameter_4, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                'object_definition_list' non terminal implementation                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                'object_definition_list' non terminal implementation                                  
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_object_5F_definition_5F_list_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_object_5F_definition_5F_list_i6_parse(inLexique) ;
@@ -1600,11 +1600,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_object_5F_definitio
   rule_goil_5F_syntax_object_5F_definition_5F_list_i6_(parameter_1, parameter_2, parameter_3, parameter_4, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                       'boolean' non terminal implementation                                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                       'boolean' non terminal implementation                                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_boolean_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_boolean_i7_parse(inLexique) ;
@@ -1615,11 +1615,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_boolean_ (GALGAS_lb
   rule_goil_5F_syntax_boolean_i7_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 'oil_declaration_list' non terminal implementation                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                 'oil_declaration_list' non terminal implementation                                   
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_oil_5F_declaration_5F_list_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_oil_5F_declaration_5F_list_i8_parse(inLexique) ;
@@ -1631,11 +1631,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_oil_5F_declaration_
   rule_goil_5F_syntax_oil_5F_declaration_5F_list_i8_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                   'oil_declaration' non terminal implementation                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                   'oil_declaration' non terminal implementation                                      
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_oil_5F_declaration_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_oil_5F_declaration_i9_parse(inLexique) ;
@@ -1647,11 +1647,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_oil_5F_declaration_
   rule_goil_5F_syntax_oil_5F_declaration_i9_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  'include_file_level' non terminal implementation                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                  'include_file_level' non terminal implementation                                    
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_include_5F_file_5F_level_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_include_5F_file_5F_level_i10_parse(inLexique) ;
@@ -1665,11 +1665,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_include_5F_file_5F_
   rule_goil_5F_syntax_include_5F_file_5F_level_i10_(parameter_1, parameter_2, parameter_3, parameter_4, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  'include_cpu_level' non terminal implementation                                    *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                  'include_cpu_level' non terminal implementation                                     
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_include_5F_cpu_5F_level_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_include_5F_cpu_5F_level_i11_parse(inLexique) ;
@@ -1683,11 +1683,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_include_5F_cpu_5F_l
   rule_goil_5F_syntax_include_5F_cpu_5F_level_i11_(parameter_1, parameter_2, parameter_3, parameter_4, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 'include_object_level' non terminal implementation                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                 'include_object_level' non terminal implementation                                   
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_include_5F_object_5F_level_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_include_5F_object_5F_level_i12_parse(inLexique) ;
@@ -1699,11 +1699,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_include_5F_object_5
   rule_goil_5F_syntax_include_5F_object_5F_level_i12_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                              'implementation_object_list' non terminal implementation                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                              'implementation_object_list' non terminal implementation                                
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_implementation_5F_object_5F_list_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_implementation_5F_object_5F_list_i1_parse(inLexique) ;
@@ -1739,11 +1739,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::performOnlySyntaxAnaly
   macroDetachSharedObject (scanner) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        Grammar start symbol implementation                                          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                        Grammar start symbol implementation                                           
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::_performSourceFileParsing_ (C_Compiler * inCompiler,
                                 GALGAS_lstring inFilePath,
@@ -1781,7 +1781,7 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::_performSourceFilePars
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::_performSourceStringParsing_ (C_Compiler * inCompiler,
                                 GALGAS_string inSourceString,
@@ -1803,11 +1803,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::_performSourceStringPa
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                             'include_implementation_level' non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                             'include_implementation_level' non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_include_5F_implementation_5F_level_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_include_5F_implementation_5F_level_i2_parse(inLexique) ;
@@ -1818,11 +1818,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_include_5F_implemen
   rule_implementation_5F_parser_include_5F_implementation_5F_level_i2_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  'include_type_level' non terminal implementation                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                  'include_type_level' non terminal implementation                                    
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_include_5F_type_5F_level_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_include_5F_type_5F_level_i3_parse(inLexique) ;
@@ -1833,11 +1833,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_include_5F_type_5F_
   rule_implementation_5F_parser_include_5F_type_5F_level_i3_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                'implementation_objects' non terminal implementation                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                'implementation_objects' non terminal implementation                                  
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_implementation_5F_objects_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_implementation_5F_objects_i4_parse(inLexique) ;
@@ -1848,11 +1848,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_implementation_5F_o
   rule_implementation_5F_parser_implementation_5F_objects_i4_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 'implementation_list' non terminal implementation                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                 'implementation_list' non terminal implementation                                    
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_implementation_5F_list_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_implementation_5F_list_i5_parse(inLexique) ;
@@ -1863,11 +1863,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_implementation_5F_l
   rule_implementation_5F_parser_implementation_5F_list_i5_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 'implementation_type' non terminal implementation                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                 'implementation_type' non terminal implementation                                    
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_implementation_5F_type_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_implementation_5F_type_i6_parse(inLexique) ;
@@ -1879,11 +1879,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_implementation_5F_t
   rule_implementation_5F_parser_implementation_5F_type_i6_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    'struct_options' non terminal implementation                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                    'struct_options' non terminal implementation                                      
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_struct_5F_options_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_struct_5F_options_i7_parse(inLexique) ;
@@ -1895,11 +1895,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_struct_5F_options_ 
   rule_implementation_5F_parser_struct_5F_options_i7_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    'objref_option' non terminal implementation                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                    'objref_option' non terminal implementation                                       
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_objref_5F_option_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_objref_5F_option_i8_parse(inLexique) ;
@@ -1912,11 +1912,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_objref_5F_option_ (
   rule_implementation_5F_parser_objref_5F_option_i8_(parameter_1, parameter_2, parameter_3, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    'string_options' non terminal implementation                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                    'string_options' non terminal implementation                                      
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_string_5F_options_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_string_5F_options_i9_parse(inLexique) ;
@@ -1928,11 +1928,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_string_5F_options_ 
   rule_implementation_5F_parser_string_5F_options_i9_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                   'boolean_options' non terminal implementation                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                   'boolean_options' non terminal implementation                                      
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_boolean_5F_options_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_boolean_5F_options_i10_parse(inLexique) ;
@@ -1944,11 +1944,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_boolean_5F_options_
   rule_implementation_5F_parser_boolean_5F_options_i10_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                      'enum_item' non terminal implementation                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                      'enum_item' non terminal implementation                                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_enum_5F_item_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_enum_5F_item_i11_parse(inLexique) ;
@@ -1959,11 +1959,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_enum_5F_item_ (GALG
   rule_implementation_5F_parser_enum_5F_item_i11_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     'enum_options' non terminal implementation                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                     'enum_options' non terminal implementation                                       
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_enum_5F_options_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_enum_5F_options_i12_parse(inLexique) ;
@@ -1975,11 +1975,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_enum_5F_options_ (G
   rule_implementation_5F_parser_enum_5F_options_i12_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    'number_options' non terminal implementation                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                    'number_options' non terminal implementation                                      
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_number_5F_options_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_number_5F_options_i13_parse(inLexique) ;
@@ -1992,11 +1992,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_number_5F_options_ 
   rule_implementation_5F_parser_number_5F_options_i13_(parameter_1, parameter_2, parameter_3, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     'type_options' non terminal implementation                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                     'type_options' non terminal implementation                                       
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_type_5F_options_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_type_5F_options_i14_parse(inLexique) ;
@@ -2009,11 +2009,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_type_5F_options_ (G
   rule_implementation_5F_parser_type_5F_options_i14_(parameter_1, parameter_2, parameter_3, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                      'with_auto' non terminal implementation                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                      'with_auto' non terminal implementation                                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_with_5F_auto_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_with_5F_auto_i15_parse(inLexique) ;
@@ -2024,11 +2024,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_with_5F_auto_ (GALG
   rule_implementation_5F_parser_with_5F_auto_i15_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     'int_or_float' non terminal implementation                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                     'int_or_float' non terminal implementation                                       
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_int_5F_or_5F_float_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_int_5F_or_5F_float_i16_parse(inLexique) ;
@@ -2040,11 +2040,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_int_5F_or_5F_float_
   rule_implementation_5F_parser_int_5F_or_5F_float_i16_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     'set_followup' non terminal implementation                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                     'set_followup' non terminal implementation                                       
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_set_5F_followup_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_set_5F_followup_i17_parse(inLexique) ;
@@ -2056,11 +2056,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_set_5F_followup_ (G
   rule_implementation_5F_parser_set_5F_followup_i17_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    'range_content' non terminal implementation                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                    'range_content' non terminal implementation                                       
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_range_5F_content_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_range_5F_content_i18_parse(inLexique) ;
@@ -2072,11 +2072,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_range_5F_content_ (
   rule_implementation_5F_parser_range_5F_content_i18_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        'range' non terminal implementation                                          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                        'range' non terminal implementation                                           
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_range_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_range_i19_parse(inLexique) ;
@@ -2088,11 +2088,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_range_ (GALGAS_attr
   rule_implementation_5F_parser_range_i19_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                       'multiple' non terminal implementation                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                       'multiple' non terminal implementation                                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_multiple_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_multiple_i20_parse(inLexique) ;
@@ -2103,11 +2103,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_multiple_ (GALGAS_b
   rule_implementation_5F_parser_multiple_i20_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               'identifier_or_attribute' non terminal implementation                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                               'identifier_or_attribute' non terminal implementation                                  
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_identifier_5F_or_5F_attribute_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_identifier_5F_or_5F_attribute_i21_parse(inLexique) ;
@@ -2118,11 +2118,11 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_identifier_5F_or_5F
   rule_implementation_5F_parser_identifier_5F_or_5F_attribute_i21_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               'identifier_or_enum_value' non terminal implementation                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                               'identifier_or_enum_value' non terminal implementation                                 
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_identifier_5F_or_5F_enum_5F_value_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_identifier_5F_or_5F_enum_5F_value_i22_parse(inLexique) ;
@@ -2133,513 +2133,513 @@ void cGrammar_goil_5F_implementation_5F_level_5F_include::nt_identifier_5F_or_5F
   rule_implementation_5F_parser_identifier_5F_or_5F_enum_5F_value_i22_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_0' added non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_0' added non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_goil_5F_syntax_0 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_1' added non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_1' added non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_goil_5F_syntax_1 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_2' added non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_2' added non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_goil_5F_syntax_2 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_3' added non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_3' added non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_goil_5F_syntax_3 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_4' added non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_4' added non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_goil_5F_syntax_4 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_5' added non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_5' added non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_goil_5F_syntax_5 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_6' added non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_6' added non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_goil_5F_syntax_6 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_7' added non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_7' added non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_goil_5F_syntax_7 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_8' added non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_8' added non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_goil_5F_syntax_8 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_9' added non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_9' added non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_goil_5F_syntax_9 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_10' added non terminal implementation                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_10' added non terminal implementation                              
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_goil_5F_syntax_10 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_11' added non terminal implementation                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_11' added non terminal implementation                              
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_goil_5F_syntax_11 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_12' added non terminal implementation                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_12' added non terminal implementation                              
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_goil_5F_syntax_12 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_13' added non terminal implementation                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_13' added non terminal implementation                              
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_goil_5F_syntax_13 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_14' added non terminal implementation                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_14' added non terminal implementation                              
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_goil_5F_syntax_14 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_15' added non terminal implementation                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_15' added non terminal implementation                              
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_goil_5F_syntax_15 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_16' added non terminal implementation                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_16' added non terminal implementation                              
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_goil_5F_syntax_16 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_17' added non terminal implementation                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_17' added non terminal implementation                              
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_goil_5F_syntax_17 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_0' added non terminal implementation                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_0' added non terminal implementation                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_implementation_5F_parser_0 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_1' added non terminal implementation                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_1' added non terminal implementation                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_implementation_5F_parser_1 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_2' added non terminal implementation                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_2' added non terminal implementation                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_implementation_5F_parser_2 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_3' added non terminal implementation                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_3' added non terminal implementation                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_implementation_5F_parser_3 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_4' added non terminal implementation                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_4' added non terminal implementation                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_implementation_5F_parser_4 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_5' added non terminal implementation                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_5' added non terminal implementation                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_implementation_5F_parser_5 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_6' added non terminal implementation                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_6' added non terminal implementation                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_implementation_5F_parser_6 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_7' added non terminal implementation                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_7' added non terminal implementation                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_implementation_5F_parser_7 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_8' added non terminal implementation                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_8' added non terminal implementation                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_implementation_5F_parser_8 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_9' added non terminal implementation                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_9' added non terminal implementation                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_implementation_5F_parser_9 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_10' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_10' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_implementation_5F_parser_10 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_11' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_11' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_implementation_5F_parser_11 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_12' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_12' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_implementation_5F_parser_12 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_13' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_13' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_implementation_5F_parser_13 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_14' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_14' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_implementation_5F_parser_14 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_15' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_15' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_implementation_5F_parser_15 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_16' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_16' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_implementation_5F_parser_16 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_17' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_17' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_implementation_5F_parser_17 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_18' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_18' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_implementation_5F_parser_18 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_19' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_19' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_implementation_5F_parser_19 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_20' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_20' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_implementation_5F_parser_20 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_21' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_21' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_implementation_5F_parser_21 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_22' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_22' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_implementation_5F_parser_22 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_23' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_23' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_implementation_5F_parser_23 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_24' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_24' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_implementation_5F_parser_24 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_25' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_25' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_implementation_5F_parser_25 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_26' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_26' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_implementation_5F_parser_26 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_27' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_27' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_implementation_5F_parser_27 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_28' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_28' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_implementation_5F_parser_28 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_29' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_29' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_implementation_5F_parser_29 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_30' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_30' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_implementation_5F_level_5F_include::select_implementation_5F_parser_30 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "utilities/MF_MemoryControl.h"
 #include "galgas2/C_galgas_CLI_Options.h"
 
 #include "files/C_FileManager.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                   L L ( 1 )    P R O D U C T I O N    R U L E S                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                   L L ( 1 )    P R O D U C T I O N    R U L E S                                      
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 #define TERMINAL(t)     ((t)+1)
 #define NONTERMINAL(nt) ((-nt)-1)
@@ -3258,11 +3258,11 @@ static const int16_t gProductions_goil_type_level_include [] = {
 , END_PRODUCTION
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                          P R O D U C T I O N    N A M E S                                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                          P R O D U C T I O N    N A M E S                                            
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static const cProductionNameDescriptor gProductionNames_goil_type_level_include [159] = {
  {"<implementation_definition>", "implementation_parser", 0}, // at index 0
@@ -3426,11 +3426,11 @@ static const cProductionNameDescriptor gProductionNames_goil_type_level_include 
  {"<>", "", 448} // at index 158
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 L L ( 1 )    P R O D U C T I O N    I N D E X E S                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                 L L ( 1 )    P R O D U C T I O N    I N D E X E S                                    
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static const int16_t gProductionIndexes_goil_type_level_include [159] = {
 0, // index 0 : <implementation_definition>, in file 'implementation_parser.ggs', line 55
@@ -3594,11 +3594,11 @@ static const int16_t gProductionIndexes_goil_type_level_include [159] = {
 448 // index 158 : <>, in file '.ggs', line 0
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                           L L ( 1 )    F I R S T    P R O D U C T I O N    I N D E X E S                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                           L L ( 1 )    F I R S T    P R O D U C T I O N    I N D E X E S                             
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static const int16_t gFirstProductionIndexes_goil_type_level_include [87] = {
 0, // at 0 : <implementation_definition>
@@ -3689,11 +3689,11 @@ static const int16_t gFirstProductionIndexes_goil_type_level_include [87] = {
 158, // at 85 : <>
 0} ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    L L ( 1 )    D E C I S I O N    T A B L E S                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                    L L ( 1 )    D E C I S I O N    T A B L E S                                       
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static const int16_t gDecision_goil_type_level_include [] = {
 // At index 0 : <implementation_definition> only one production, no choice
@@ -3993,11 +3993,11 @@ C_Lexique_goil_5F_lexique::kToken__3A_, C_Lexique_goil_5F_lexique::kToken__3D_, 
   -1,
 0} ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            L L ( 1 )    D E C I S I O N    T A B L E S    I N D E X E S                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            L L ( 1 )    D E C I S I O N    T A B L E S    I N D E X E S                              
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static const int16_t gDecisionIndexes_goil_type_level_include [87] = {
 0, // at 0 : <implementation_definition>
@@ -4088,11 +4088,11 @@ static const int16_t gDecisionIndexes_goil_type_level_include [87] = {
 381, // at 85 : <>
 0} ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                              'implementation_definition' non terminal implementation                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                              'implementation_definition' non terminal implementation                                 
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_implementation_5F_definition_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_implementation_5F_definition_i0_parse(inLexique) ;
@@ -4103,11 +4103,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_implementation_5F_definition_
   rule_implementation_5F_parser_implementation_5F_definition_i0_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        'start' non terminal implementation                                          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                        'start' non terminal implementation                                           
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_start_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_start_i0_parse(inLexique) ;
@@ -4117,11 +4117,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_start_ (C_Lexique_goil_5F_lex
   rule_goil_5F_syntax_start_i0_(inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                         'file' non terminal implementation                                          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                         'file' non terminal implementation                                           
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_file_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_file_i1_parse(inLexique) ;
@@ -4135,11 +4135,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_file_ (GALGAS_implementation 
   rule_goil_5F_syntax_file_i1_(parameter_1, parameter_2, parameter_3, parameter_4, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                         'sign' non terminal implementation                                          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                         'sign' non terminal implementation                                           
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_sign_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_sign_i2_parse(inLexique) ;
@@ -4150,11 +4150,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_sign_ (GALGAS_bool & paramete
   rule_goil_5F_syntax_sign_i2_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     'description' non terminal implementation                                       *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                     'description' non terminal implementation                                        
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_description_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_description_i3_parse(inLexique) ;
@@ -4165,11 +4165,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_description_ (GALGAS_lstring 
   rule_goil_5F_syntax_description_i3_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     'OIL_version' non terminal implementation                                       *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                     'OIL_version' non terminal implementation                                        
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_OIL_5F_version_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_OIL_5F_version_i4_parse(inLexique) ;
@@ -4181,11 +4181,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_OIL_5F_version_ (GALGAS_lstri
   rule_goil_5F_syntax_OIL_5F_version_i4_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                'application_definition' non terminal implementation                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                'application_definition' non terminal implementation                                  
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_application_5F_definition_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_application_5F_definition_i5_parse(inLexique) ;
@@ -4199,11 +4199,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_application_5F_definition_ (c
   rule_goil_5F_syntax_application_5F_definition_i5_(parameter_1, parameter_2, parameter_3, parameter_4, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                'object_definition_list' non terminal implementation                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                'object_definition_list' non terminal implementation                                  
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_object_5F_definition_5F_list_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_object_5F_definition_5F_list_i6_parse(inLexique) ;
@@ -4217,11 +4217,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_object_5F_definition_5F_list_
   rule_goil_5F_syntax_object_5F_definition_5F_list_i6_(parameter_1, parameter_2, parameter_3, parameter_4, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                       'boolean' non terminal implementation                                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                       'boolean' non terminal implementation                                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_boolean_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_boolean_i7_parse(inLexique) ;
@@ -4232,11 +4232,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_boolean_ (GALGAS_lbool & para
   rule_goil_5F_syntax_boolean_i7_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 'oil_declaration_list' non terminal implementation                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                 'oil_declaration_list' non terminal implementation                                   
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_oil_5F_declaration_5F_list_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_oil_5F_declaration_5F_list_i8_parse(inLexique) ;
@@ -4248,11 +4248,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_oil_5F_declaration_5F_list_ (
   rule_goil_5F_syntax_oil_5F_declaration_5F_list_i8_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                   'oil_declaration' non terminal implementation                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                   'oil_declaration' non terminal implementation                                      
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_oil_5F_declaration_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_oil_5F_declaration_i9_parse(inLexique) ;
@@ -4264,11 +4264,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_oil_5F_declaration_ (const GA
   rule_goil_5F_syntax_oil_5F_declaration_i9_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  'include_file_level' non terminal implementation                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                  'include_file_level' non terminal implementation                                    
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_include_5F_file_5F_level_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_include_5F_file_5F_level_i10_parse(inLexique) ;
@@ -4282,11 +4282,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_include_5F_file_5F_level_ (GA
   rule_goil_5F_syntax_include_5F_file_5F_level_i10_(parameter_1, parameter_2, parameter_3, parameter_4, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  'include_cpu_level' non terminal implementation                                    *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                  'include_cpu_level' non terminal implementation                                     
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_include_5F_cpu_5F_level_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_include_5F_cpu_5F_level_i11_parse(inLexique) ;
@@ -4300,11 +4300,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_include_5F_cpu_5F_level_ (con
   rule_goil_5F_syntax_include_5F_cpu_5F_level_i11_(parameter_1, parameter_2, parameter_3, parameter_4, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 'include_object_level' non terminal implementation                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                 'include_object_level' non terminal implementation                                   
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_include_5F_object_5F_level_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_include_5F_object_5F_level_i12_parse(inLexique) ;
@@ -4316,11 +4316,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_include_5F_object_5F_level_ (
   rule_goil_5F_syntax_include_5F_object_5F_level_i12_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                              'implementation_object_list' non terminal implementation                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                              'implementation_object_list' non terminal implementation                                
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_implementation_5F_object_5F_list_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_implementation_5F_object_5F_list_i1_parse(inLexique) ;
@@ -4331,11 +4331,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_implementation_5F_object_5F_l
   rule_implementation_5F_parser_implementation_5F_object_5F_list_i1_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                             'include_implementation_level' non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                             'include_implementation_level' non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_include_5F_implementation_5F_level_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_include_5F_implementation_5F_level_i2_parse(inLexique) ;
@@ -4346,11 +4346,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_include_5F_implementation_5F_
   rule_implementation_5F_parser_include_5F_implementation_5F_level_i2_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  'include_type_level' non terminal implementation                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                  'include_type_level' non terminal implementation                                    
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_include_5F_type_5F_level_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_include_5F_type_5F_level_i3_parse(inLexique) ;
@@ -4361,11 +4361,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_include_5F_type_5F_level_ (GA
   rule_implementation_5F_parser_include_5F_type_5F_level_i3_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                'implementation_objects' non terminal implementation                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                'implementation_objects' non terminal implementation                                  
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_implementation_5F_objects_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_implementation_5F_objects_i4_parse(inLexique) ;
@@ -4376,11 +4376,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_implementation_5F_objects_ (G
   rule_implementation_5F_parser_implementation_5F_objects_i4_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 'implementation_list' non terminal implementation                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                 'implementation_list' non terminal implementation                                    
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_implementation_5F_list_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_implementation_5F_list_i5_parse(inLexique) ;
@@ -4416,11 +4416,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::performOnlySyntaxAnalysis (C_Com
   macroDetachSharedObject (scanner) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        Grammar start symbol implementation                                          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                        Grammar start symbol implementation                                           
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::_performSourceFileParsing_ (C_Compiler * inCompiler,
                                 GALGAS_lstring inFilePath,
@@ -4458,7 +4458,7 @@ void cGrammar_goil_5F_type_5F_level_5F_include::_performSourceFileParsing_ (C_Co
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::_performSourceStringParsing_ (C_Compiler * inCompiler,
                                 GALGAS_string inSourceString,
@@ -4480,11 +4480,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::_performSourceStringParsing_ (C_
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 'implementation_type' non terminal implementation                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                 'implementation_type' non terminal implementation                                    
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_implementation_5F_type_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_implementation_5F_type_i6_parse(inLexique) ;
@@ -4496,11 +4496,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_implementation_5F_type_ (GALG
   rule_implementation_5F_parser_implementation_5F_type_i6_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    'struct_options' non terminal implementation                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                    'struct_options' non terminal implementation                                      
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_struct_5F_options_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_struct_5F_options_i7_parse(inLexique) ;
@@ -4512,11 +4512,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_struct_5F_options_ (GALGAS_ls
   rule_implementation_5F_parser_struct_5F_options_i7_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    'objref_option' non terminal implementation                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                    'objref_option' non terminal implementation                                       
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_objref_5F_option_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_objref_5F_option_i8_parse(inLexique) ;
@@ -4529,11 +4529,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_objref_5F_option_ (GALGAS_lst
   rule_implementation_5F_parser_objref_5F_option_i8_(parameter_1, parameter_2, parameter_3, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    'string_options' non terminal implementation                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                    'string_options' non terminal implementation                                      
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_string_5F_options_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_string_5F_options_i9_parse(inLexique) ;
@@ -4545,11 +4545,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_string_5F_options_ (GALGAS_ls
   rule_implementation_5F_parser_string_5F_options_i9_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                   'boolean_options' non terminal implementation                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                   'boolean_options' non terminal implementation                                      
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_boolean_5F_options_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_boolean_5F_options_i10_parse(inLexique) ;
@@ -4561,11 +4561,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_boolean_5F_options_ (GALGAS_l
   rule_implementation_5F_parser_boolean_5F_options_i10_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                      'enum_item' non terminal implementation                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                      'enum_item' non terminal implementation                                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_enum_5F_item_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_enum_5F_item_i11_parse(inLexique) ;
@@ -4576,11 +4576,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_enum_5F_item_ (GALGAS_enumVal
   rule_implementation_5F_parser_enum_5F_item_i11_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     'enum_options' non terminal implementation                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                     'enum_options' non terminal implementation                                       
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_enum_5F_options_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_enum_5F_options_i12_parse(inLexique) ;
@@ -4592,11 +4592,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_enum_5F_options_ (GALGAS_lstr
   rule_implementation_5F_parser_enum_5F_options_i12_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    'number_options' non terminal implementation                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                    'number_options' non terminal implementation                                      
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_number_5F_options_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_number_5F_options_i13_parse(inLexique) ;
@@ -4609,11 +4609,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_number_5F_options_ (GALGAS_ls
   rule_implementation_5F_parser_number_5F_options_i13_(parameter_1, parameter_2, parameter_3, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     'type_options' non terminal implementation                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                     'type_options' non terminal implementation                                       
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_type_5F_options_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_type_5F_options_i14_parse(inLexique) ;
@@ -4626,11 +4626,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_type_5F_options_ (GALGAS_lstr
   rule_implementation_5F_parser_type_5F_options_i14_(parameter_1, parameter_2, parameter_3, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                      'with_auto' non terminal implementation                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                      'with_auto' non terminal implementation                                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_with_5F_auto_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_with_5F_auto_i15_parse(inLexique) ;
@@ -4641,11 +4641,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_with_5F_auto_ (GALGAS_bool & 
   rule_implementation_5F_parser_with_5F_auto_i15_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     'int_or_float' non terminal implementation                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                     'int_or_float' non terminal implementation                                       
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_int_5F_or_5F_float_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_int_5F_or_5F_float_i16_parse(inLexique) ;
@@ -4657,11 +4657,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_int_5F_or_5F_float_ (GALGAS_o
   rule_implementation_5F_parser_int_5F_or_5F_float_i16_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     'set_followup' non terminal implementation                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                     'set_followup' non terminal implementation                                       
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_set_5F_followup_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_set_5F_followup_i17_parse(inLexique) ;
@@ -4673,11 +4673,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_set_5F_followup_ (GALGAS_numb
   rule_implementation_5F_parser_set_5F_followup_i17_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    'range_content' non terminal implementation                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                    'range_content' non terminal implementation                                       
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_range_5F_content_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_range_5F_content_i18_parse(inLexique) ;
@@ -4689,11 +4689,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_range_5F_content_ (GALGAS_att
   rule_implementation_5F_parser_range_5F_content_i18_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        'range' non terminal implementation                                          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                        'range' non terminal implementation                                           
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_range_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_range_i19_parse(inLexique) ;
@@ -4705,11 +4705,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_range_ (GALGAS_attributeRange
   rule_implementation_5F_parser_range_i19_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                       'multiple' non terminal implementation                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                       'multiple' non terminal implementation                                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_multiple_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_multiple_i20_parse(inLexique) ;
@@ -4720,11 +4720,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_multiple_ (GALGAS_bool & para
   rule_implementation_5F_parser_multiple_i20_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               'identifier_or_attribute' non terminal implementation                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                               'identifier_or_attribute' non terminal implementation                                  
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_identifier_5F_or_5F_attribute_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_identifier_5F_or_5F_attribute_i21_parse(inLexique) ;
@@ -4735,11 +4735,11 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_identifier_5F_or_5F_attribute
   rule_implementation_5F_parser_identifier_5F_or_5F_attribute_i21_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               'identifier_or_enum_value' non terminal implementation                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                               'identifier_or_enum_value' non terminal implementation                                 
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_type_5F_level_5F_include::nt_identifier_5F_or_5F_enum_5F_value_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_identifier_5F_or_5F_enum_5F_value_i22_parse(inLexique) ;
@@ -4750,513 +4750,513 @@ void cGrammar_goil_5F_type_5F_level_5F_include::nt_identifier_5F_or_5F_enum_5F_v
   rule_implementation_5F_parser_identifier_5F_or_5F_enum_5F_value_i22_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_0' added non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_0' added non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_goil_5F_syntax_0 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_1' added non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_1' added non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_goil_5F_syntax_1 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_2' added non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_2' added non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_goil_5F_syntax_2 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_3' added non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_3' added non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_goil_5F_syntax_3 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_4' added non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_4' added non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_goil_5F_syntax_4 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_5' added non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_5' added non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_goil_5F_syntax_5 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_6' added non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_6' added non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_goil_5F_syntax_6 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_7' added non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_7' added non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_goil_5F_syntax_7 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_8' added non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_8' added non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_goil_5F_syntax_8 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_9' added non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_9' added non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_goil_5F_syntax_9 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_10' added non terminal implementation                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_10' added non terminal implementation                              
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_goil_5F_syntax_10 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_11' added non terminal implementation                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_11' added non terminal implementation                              
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_goil_5F_syntax_11 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_12' added non terminal implementation                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_12' added non terminal implementation                              
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_goil_5F_syntax_12 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_13' added non terminal implementation                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_13' added non terminal implementation                              
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_goil_5F_syntax_13 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_14' added non terminal implementation                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_14' added non terminal implementation                              
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_goil_5F_syntax_14 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_15' added non terminal implementation                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_15' added non terminal implementation                              
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_goil_5F_syntax_15 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_16' added non terminal implementation                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_16' added non terminal implementation                              
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_goil_5F_syntax_16 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_17' added non terminal implementation                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_17' added non terminal implementation                              
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_goil_5F_syntax_17 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_0' added non terminal implementation                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_0' added non terminal implementation                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_implementation_5F_parser_0 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_1' added non terminal implementation                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_1' added non terminal implementation                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_implementation_5F_parser_1 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_2' added non terminal implementation                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_2' added non terminal implementation                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_implementation_5F_parser_2 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_3' added non terminal implementation                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_3' added non terminal implementation                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_implementation_5F_parser_3 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_4' added non terminal implementation                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_4' added non terminal implementation                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_implementation_5F_parser_4 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_5' added non terminal implementation                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_5' added non terminal implementation                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_implementation_5F_parser_5 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_6' added non terminal implementation                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_6' added non terminal implementation                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_implementation_5F_parser_6 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_7' added non terminal implementation                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_7' added non terminal implementation                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_implementation_5F_parser_7 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_8' added non terminal implementation                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_8' added non terminal implementation                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_implementation_5F_parser_8 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_9' added non terminal implementation                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_9' added non terminal implementation                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_implementation_5F_parser_9 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_10' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_10' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_implementation_5F_parser_10 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_11' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_11' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_implementation_5F_parser_11 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_12' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_12' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_implementation_5F_parser_12 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_13' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_13' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_implementation_5F_parser_13 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_14' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_14' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_implementation_5F_parser_14 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_15' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_15' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_implementation_5F_parser_15 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_16' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_16' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_implementation_5F_parser_16 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_17' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_17' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_implementation_5F_parser_17 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_18' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_18' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_implementation_5F_parser_18 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_19' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_19' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_implementation_5F_parser_19 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_20' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_20' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_implementation_5F_parser_20 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_21' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_21' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_implementation_5F_parser_21 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_22' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_22' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_implementation_5F_parser_22 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_23' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_23' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_implementation_5F_parser_23 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_24' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_24' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_implementation_5F_parser_24 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_25' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_25' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_implementation_5F_parser_25 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_26' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_26' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_implementation_5F_parser_26 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_27' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_27' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_implementation_5F_parser_27 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_28' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_28' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_implementation_5F_parser_28 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_29' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_29' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_implementation_5F_parser_29 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_30' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_30' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_type_5F_level_5F_include::select_implementation_5F_parser_30 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "utilities/MF_MemoryControl.h"
 #include "galgas2/C_galgas_CLI_Options.h"
 
 #include "files/C_FileManager.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                   L L ( 1 )    P R O D U C T I O N    R U L E S                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                   L L ( 1 )    P R O D U C T I O N    R U L E S                                      
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 #define TERMINAL(t)     ((t)+1)
 #define NONTERMINAL(nt) ((-nt)-1)
@@ -5326,11 +5326,11 @@ static const int16_t gProductions_options_grammar [] = {
 , END_PRODUCTION
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                          P R O D U C T I O N    N A M E S                                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                          P R O D U C T I O N    N A M E S                                            
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static const cProductionNameDescriptor gProductionNames_options_grammar [17] = {
  {"<option_parser_start>", "options_parser", 0}, // at index 0
@@ -5352,11 +5352,11 @@ static const cProductionNameDescriptor gProductionNames_options_grammar [17] = {
  {"<>", "", 41} // at index 16
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 L L ( 1 )    P R O D U C T I O N    I N D E X E S                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                 L L ( 1 )    P R O D U C T I O N    I N D E X E S                                    
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static const int16_t gProductionIndexes_options_grammar [17] = {
 0, // index 0 : <option_parser_start>, in file 'options_parser.ggs', line 29
@@ -5378,11 +5378,11 @@ static const int16_t gProductionIndexes_options_grammar [17] = {
 41 // index 16 : <>, in file '.ggs', line 0
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                           L L ( 1 )    F I R S T    P R O D U C T I O N    I N D E X E S                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                           L L ( 1 )    F I R S T    P R O D U C T I O N    I N D E X E S                             
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static const int16_t gFirstProductionIndexes_options_grammar [10] = {
 0, // at 0 : <option_parser_start>
@@ -5396,11 +5396,11 @@ static const int16_t gFirstProductionIndexes_options_grammar [10] = {
 16, // at 8 : <>
 0} ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    L L ( 1 )    D E C I S I O N    T A B L E S                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                    L L ( 1 )    D E C I S I O N    T A B L E S                                       
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static const int16_t gDecision_options_grammar [] = {
 // At index 0 : <option_parser_start> only one production, no choice
@@ -5437,11 +5437,11 @@ C_Lexique_options_5F_scanner::kToken__2C_, -1, // Choice 2
   -1,
 0} ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            L L ( 1 )    D E C I S I O N    T A B L E S    I N D E X E S                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            L L ( 1 )    D E C I S I O N    T A B L E S    I N D E X E S                              
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static const int16_t gDecisionIndexes_options_grammar [10] = {
 0, // at 0 : <option_parser_start>
@@ -5455,11 +5455,11 @@ static const int16_t gDecisionIndexes_options_grammar [10] = {
 38, // at 8 : <>
 0} ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 'option_parser_start' non terminal implementation                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                 'option_parser_start' non terminal implementation                                    
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_options_5F_grammar::nt_option_5F_parser_5F_start_parse (C_Lexique_options_5F_scanner * inLexique) {
   rule_options_5F_parser_option_5F_parser_5F_start_i0_parse(inLexique) ;
@@ -5495,11 +5495,11 @@ void cGrammar_options_5F_grammar::performOnlySyntaxAnalysis (C_Compiler * inComp
   macroDetachSharedObject (scanner) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        Grammar start symbol implementation                                          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                        Grammar start symbol implementation                                           
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_options_5F_grammar::_performSourceFileParsing_ (C_Compiler * inCompiler,
                                 GALGAS_lstring inFilePath,
@@ -5537,7 +5537,7 @@ void cGrammar_options_5F_grammar::_performSourceFileParsing_ (C_Compiler * inCom
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_options_5F_grammar::_performSourceStringParsing_ (C_Compiler * inCompiler,
                                 GALGAS_string inSourceString,
@@ -5559,11 +5559,11 @@ void cGrammar_options_5F_grammar::_performSourceStringParsing_ (C_Compiler * inC
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     'option_item' non terminal implementation                                       *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                     'option_item' non terminal implementation                                        
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_options_5F_grammar::nt_option_5F_item_parse (C_Lexique_options_5F_scanner * inLexique) {
   rule_options_5F_parser_option_5F_item_i1_parse(inLexique) ;
@@ -5574,11 +5574,11 @@ void cGrammar_options_5F_grammar::nt_option_5F_item_ (GALGAS_TfieldMap & paramet
   rule_options_5F_parser_option_5F_item_i1_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     'option_value' non terminal implementation                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                     'option_value' non terminal implementation                                       
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_options_5F_grammar::nt_option_5F_value_parse (C_Lexique_options_5F_scanner * inLexique) {
   switch (inLexique->nextProductionIndex ()) {
@@ -5626,11 +5626,11 @@ void cGrammar_options_5F_grammar::nt_option_5F_value_ (GALGAS_Ttype & parameter_
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  'list_option_value' non terminal implementation                                    *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                  'list_option_value' non terminal implementation                                     
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_options_5F_grammar::nt_list_5F_option_5F_value_parse (C_Lexique_options_5F_scanner * inLexique) {
   rule_options_5F_parser_list_5F_option_5F_value_i7_parse(inLexique) ;
@@ -5642,63 +5642,63 @@ void cGrammar_options_5F_grammar::nt_list_5F_option_5F_value_ (GALGAS_Ttype & pa
   rule_options_5F_parser_list_5F_option_5F_value_i7_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                           'select_options_5F_parser_0' added non terminal implementation                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                           'select_options_5F_parser_0' added non terminal implementation                             
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_options_5F_grammar::select_options_5F_parser_0 (C_Lexique_options_5F_scanner * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                           'select_options_5F_parser_1' added non terminal implementation                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                           'select_options_5F_parser_1' added non terminal implementation                             
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_options_5F_grammar::select_options_5F_parser_1 (C_Lexique_options_5F_scanner * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                           'select_options_5F_parser_2' added non terminal implementation                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                           'select_options_5F_parser_2' added non terminal implementation                             
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_options_5F_grammar::select_options_5F_parser_2 (C_Lexique_options_5F_scanner * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                           'select_options_5F_parser_3' added non terminal implementation                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                           'select_options_5F_parser_3' added non terminal implementation                             
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_options_5F_grammar::select_options_5F_parser_3 (C_Lexique_options_5F_scanner * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "utilities/MF_MemoryControl.h"
 #include "galgas2/C_galgas_CLI_Options.h"
 
 #include "files/C_FileManager.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                   L L ( 1 )    P R O D U C T I O N    R U L E S                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                   L L ( 1 )    P R O D U C T I O N    R U L E S                                      
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 #define TERMINAL(t)     ((t)+1)
 #define NONTERMINAL(nt) ((-nt)-1)
@@ -6317,11 +6317,11 @@ static const int16_t gProductions_goil_grammar [] = {
 , END_PRODUCTION
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                          P R O D U C T I O N    N A M E S                                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                          P R O D U C T I O N    N A M E S                                            
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static const cProductionNameDescriptor gProductionNames_goil_grammar [159] = {
  {"<implementation_definition>", "implementation_parser", 0}, // at index 0
@@ -6485,11 +6485,11 @@ static const cProductionNameDescriptor gProductionNames_goil_grammar [159] = {
  {"<>", "", 448} // at index 158
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 L L ( 1 )    P R O D U C T I O N    I N D E X E S                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                 L L ( 1 )    P R O D U C T I O N    I N D E X E S                                    
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static const int16_t gProductionIndexes_goil_grammar [159] = {
 0, // index 0 : <implementation_definition>, in file 'implementation_parser.ggs', line 55
@@ -6653,11 +6653,11 @@ static const int16_t gProductionIndexes_goil_grammar [159] = {
 448 // index 158 : <>, in file '.ggs', line 0
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                           L L ( 1 )    F I R S T    P R O D U C T I O N    I N D E X E S                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                           L L ( 1 )    F I R S T    P R O D U C T I O N    I N D E X E S                             
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static const int16_t gFirstProductionIndexes_goil_grammar [87] = {
 0, // at 0 : <implementation_definition>
@@ -6748,11 +6748,11 @@ static const int16_t gFirstProductionIndexes_goil_grammar [87] = {
 158, // at 85 : <>
 0} ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    L L ( 1 )    D E C I S I O N    T A B L E S                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                    L L ( 1 )    D E C I S I O N    T A B L E S                                       
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static const int16_t gDecision_goil_grammar [] = {
 // At index 0 : <implementation_definition> only one production, no choice
@@ -7052,11 +7052,11 @@ C_Lexique_goil_5F_lexique::kToken__3A_, C_Lexique_goil_5F_lexique::kToken__3D_, 
   -1,
 0} ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            L L ( 1 )    D E C I S I O N    T A B L E S    I N D E X E S                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            L L ( 1 )    D E C I S I O N    T A B L E S    I N D E X E S                              
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 static const int16_t gDecisionIndexes_goil_grammar [87] = {
 0, // at 0 : <implementation_definition>
@@ -7147,11 +7147,11 @@ static const int16_t gDecisionIndexes_goil_grammar [87] = {
 381, // at 85 : <>
 0} ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                              'implementation_definition' non terminal implementation                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                              'implementation_definition' non terminal implementation                                 
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_implementation_5F_definition_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_implementation_5F_definition_i0_parse(inLexique) ;
@@ -7162,11 +7162,11 @@ void cGrammar_goil_5F_grammar::nt_implementation_5F_definition_ (GALGAS_implemen
   rule_implementation_5F_parser_implementation_5F_definition_i0_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        'start' non terminal implementation                                          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                        'start' non terminal implementation                                           
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_start_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_start_i0_parse(inLexique) ;
@@ -7201,11 +7201,11 @@ void cGrammar_goil_5F_grammar::performOnlySyntaxAnalysis (C_Compiler * inCompile
   macroDetachSharedObject (scanner) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        Grammar start symbol implementation                                          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                        Grammar start symbol implementation                                           
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::_performSourceFileParsing_ (C_Compiler * inCompiler,
                                 GALGAS_lstring inFilePath
@@ -7242,7 +7242,7 @@ void cGrammar_goil_5F_grammar::_performSourceFileParsing_ (C_Compiler * inCompil
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::_performSourceStringParsing_ (C_Compiler * inCompiler,
                                 GALGAS_string inSourceString,
@@ -7263,11 +7263,11 @@ void cGrammar_goil_5F_grammar::_performSourceStringParsing_ (C_Compiler * inComp
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                         'file' non terminal implementation                                          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                         'file' non terminal implementation                                           
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_file_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_file_i1_parse(inLexique) ;
@@ -7281,11 +7281,11 @@ void cGrammar_goil_5F_grammar::nt_file_ (GALGAS_implementation & parameter_1,
   rule_goil_5F_syntax_file_i1_(parameter_1, parameter_2, parameter_3, parameter_4, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                         'sign' non terminal implementation                                          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                         'sign' non terminal implementation                                           
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_sign_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_sign_i2_parse(inLexique) ;
@@ -7296,11 +7296,11 @@ void cGrammar_goil_5F_grammar::nt_sign_ (GALGAS_bool & parameter_1,
   rule_goil_5F_syntax_sign_i2_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     'description' non terminal implementation                                       *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                     'description' non terminal implementation                                        
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_description_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_description_i3_parse(inLexique) ;
@@ -7311,11 +7311,11 @@ void cGrammar_goil_5F_grammar::nt_description_ (GALGAS_lstring & parameter_1,
   rule_goil_5F_syntax_description_i3_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     'OIL_version' non terminal implementation                                       *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                     'OIL_version' non terminal implementation                                        
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_OIL_5F_version_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_OIL_5F_version_i4_parse(inLexique) ;
@@ -7327,11 +7327,11 @@ void cGrammar_goil_5F_grammar::nt_OIL_5F_version_ (GALGAS_lstring & parameter_1,
   rule_goil_5F_syntax_OIL_5F_version_i4_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                'application_definition' non terminal implementation                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                'application_definition' non terminal implementation                                  
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_application_5F_definition_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_application_5F_definition_i5_parse(inLexique) ;
@@ -7345,11 +7345,11 @@ void cGrammar_goil_5F_grammar::nt_application_5F_definition_ (const GALGAS_imple
   rule_goil_5F_syntax_application_5F_definition_i5_(parameter_1, parameter_2, parameter_3, parameter_4, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                'object_definition_list' non terminal implementation                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                'object_definition_list' non terminal implementation                                  
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_object_5F_definition_5F_list_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_object_5F_definition_5F_list_i6_parse(inLexique) ;
@@ -7363,11 +7363,11 @@ void cGrammar_goil_5F_grammar::nt_object_5F_definition_5F_list_ (const GALGAS_im
   rule_goil_5F_syntax_object_5F_definition_5F_list_i6_(parameter_1, parameter_2, parameter_3, parameter_4, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                       'boolean' non terminal implementation                                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                       'boolean' non terminal implementation                                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_boolean_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_boolean_i7_parse(inLexique) ;
@@ -7378,11 +7378,11 @@ void cGrammar_goil_5F_grammar::nt_boolean_ (GALGAS_lbool & parameter_1,
   rule_goil_5F_syntax_boolean_i7_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 'oil_declaration_list' non terminal implementation                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                 'oil_declaration_list' non terminal implementation                                   
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_oil_5F_declaration_5F_list_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_oil_5F_declaration_5F_list_i8_parse(inLexique) ;
@@ -7394,11 +7394,11 @@ void cGrammar_goil_5F_grammar::nt_oil_5F_declaration_5F_list_ (const GALGAS_impl
   rule_goil_5F_syntax_oil_5F_declaration_5F_list_i8_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                   'oil_declaration' non terminal implementation                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                   'oil_declaration' non terminal implementation                                      
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_oil_5F_declaration_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_oil_5F_declaration_i9_parse(inLexique) ;
@@ -7410,11 +7410,11 @@ void cGrammar_goil_5F_grammar::nt_oil_5F_declaration_ (const GALGAS_implementati
   rule_goil_5F_syntax_oil_5F_declaration_i9_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  'include_file_level' non terminal implementation                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                  'include_file_level' non terminal implementation                                    
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_include_5F_file_5F_level_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_include_5F_file_5F_level_i10_parse(inLexique) ;
@@ -7428,11 +7428,11 @@ void cGrammar_goil_5F_grammar::nt_include_5F_file_5F_level_ (GALGAS_implementati
   rule_goil_5F_syntax_include_5F_file_5F_level_i10_(parameter_1, parameter_2, parameter_3, parameter_4, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  'include_cpu_level' non terminal implementation                                    *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                  'include_cpu_level' non terminal implementation                                     
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_include_5F_cpu_5F_level_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_include_5F_cpu_5F_level_i11_parse(inLexique) ;
@@ -7446,11 +7446,11 @@ void cGrammar_goil_5F_grammar::nt_include_5F_cpu_5F_level_ (const GALGAS_impleme
   rule_goil_5F_syntax_include_5F_cpu_5F_level_i11_(parameter_1, parameter_2, parameter_3, parameter_4, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 'include_object_level' non terminal implementation                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                 'include_object_level' non terminal implementation                                   
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_include_5F_object_5F_level_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_goil_5F_syntax_include_5F_object_5F_level_i12_parse(inLexique) ;
@@ -7462,11 +7462,11 @@ void cGrammar_goil_5F_grammar::nt_include_5F_object_5F_level_ (const GALGAS_impl
   rule_goil_5F_syntax_include_5F_object_5F_level_i12_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                              'implementation_object_list' non terminal implementation                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                              'implementation_object_list' non terminal implementation                                
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_implementation_5F_object_5F_list_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_implementation_5F_object_5F_list_i1_parse(inLexique) ;
@@ -7477,11 +7477,11 @@ void cGrammar_goil_5F_grammar::nt_implementation_5F_object_5F_list_ (GALGAS_impl
   rule_implementation_5F_parser_implementation_5F_object_5F_list_i1_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                             'include_implementation_level' non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                             'include_implementation_level' non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_include_5F_implementation_5F_level_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_include_5F_implementation_5F_level_i2_parse(inLexique) ;
@@ -7492,11 +7492,11 @@ void cGrammar_goil_5F_grammar::nt_include_5F_implementation_5F_level_ (GALGAS_im
   rule_implementation_5F_parser_include_5F_implementation_5F_level_i2_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  'include_type_level' non terminal implementation                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                  'include_type_level' non terminal implementation                                    
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_include_5F_type_5F_level_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_include_5F_type_5F_level_i3_parse(inLexique) ;
@@ -7507,11 +7507,11 @@ void cGrammar_goil_5F_grammar::nt_include_5F_type_5F_level_ (GALGAS_implementati
   rule_implementation_5F_parser_include_5F_type_5F_level_i3_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                'implementation_objects' non terminal implementation                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                'implementation_objects' non terminal implementation                                  
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_implementation_5F_objects_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_implementation_5F_objects_i4_parse(inLexique) ;
@@ -7522,11 +7522,11 @@ void cGrammar_goil_5F_grammar::nt_implementation_5F_objects_ (GALGAS_implementat
   rule_implementation_5F_parser_implementation_5F_objects_i4_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 'implementation_list' non terminal implementation                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                 'implementation_list' non terminal implementation                                    
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_implementation_5F_list_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_implementation_5F_list_i5_parse(inLexique) ;
@@ -7537,11 +7537,11 @@ void cGrammar_goil_5F_grammar::nt_implementation_5F_list_ (GALGAS_implementation
   rule_implementation_5F_parser_implementation_5F_list_i5_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 'implementation_type' non terminal implementation                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                 'implementation_type' non terminal implementation                                    
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_implementation_5F_type_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_implementation_5F_type_i6_parse(inLexique) ;
@@ -7553,11 +7553,11 @@ void cGrammar_goil_5F_grammar::nt_implementation_5F_type_ (GALGAS_lstring & para
   rule_implementation_5F_parser_implementation_5F_type_i6_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    'struct_options' non terminal implementation                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                    'struct_options' non terminal implementation                                      
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_struct_5F_options_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_struct_5F_options_i7_parse(inLexique) ;
@@ -7569,11 +7569,11 @@ void cGrammar_goil_5F_grammar::nt_struct_5F_options_ (GALGAS_lstring & parameter
   rule_implementation_5F_parser_struct_5F_options_i7_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    'objref_option' non terminal implementation                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                    'objref_option' non terminal implementation                                       
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_objref_5F_option_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_objref_5F_option_i8_parse(inLexique) ;
@@ -7586,11 +7586,11 @@ void cGrammar_goil_5F_grammar::nt_objref_5F_option_ (GALGAS_lstring & parameter_
   rule_implementation_5F_parser_objref_5F_option_i8_(parameter_1, parameter_2, parameter_3, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    'string_options' non terminal implementation                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                    'string_options' non terminal implementation                                      
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_string_5F_options_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_string_5F_options_i9_parse(inLexique) ;
@@ -7602,11 +7602,11 @@ void cGrammar_goil_5F_grammar::nt_string_5F_options_ (GALGAS_lstring & parameter
   rule_implementation_5F_parser_string_5F_options_i9_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                   'boolean_options' non terminal implementation                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                   'boolean_options' non terminal implementation                                      
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_boolean_5F_options_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_boolean_5F_options_i10_parse(inLexique) ;
@@ -7618,11 +7618,11 @@ void cGrammar_goil_5F_grammar::nt_boolean_5F_options_ (GALGAS_lstring & paramete
   rule_implementation_5F_parser_boolean_5F_options_i10_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                      'enum_item' non terminal implementation                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                      'enum_item' non terminal implementation                                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_enum_5F_item_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_enum_5F_item_i11_parse(inLexique) ;
@@ -7633,11 +7633,11 @@ void cGrammar_goil_5F_grammar::nt_enum_5F_item_ (GALGAS_enumValues & parameter_1
   rule_implementation_5F_parser_enum_5F_item_i11_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     'enum_options' non terminal implementation                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                     'enum_options' non terminal implementation                                       
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_enum_5F_options_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_enum_5F_options_i12_parse(inLexique) ;
@@ -7649,11 +7649,11 @@ void cGrammar_goil_5F_grammar::nt_enum_5F_options_ (GALGAS_lstring & parameter_1
   rule_implementation_5F_parser_enum_5F_options_i12_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    'number_options' non terminal implementation                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                    'number_options' non terminal implementation                                      
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_number_5F_options_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_number_5F_options_i13_parse(inLexique) ;
@@ -7666,11 +7666,11 @@ void cGrammar_goil_5F_grammar::nt_number_5F_options_ (GALGAS_lstring & parameter
   rule_implementation_5F_parser_number_5F_options_i13_(parameter_1, parameter_2, parameter_3, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     'type_options' non terminal implementation                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                     'type_options' non terminal implementation                                       
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_type_5F_options_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_type_5F_options_i14_parse(inLexique) ;
@@ -7683,11 +7683,11 @@ void cGrammar_goil_5F_grammar::nt_type_5F_options_ (GALGAS_lstring & parameter_1
   rule_implementation_5F_parser_type_5F_options_i14_(parameter_1, parameter_2, parameter_3, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                      'with_auto' non terminal implementation                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                      'with_auto' non terminal implementation                                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_with_5F_auto_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_with_5F_auto_i15_parse(inLexique) ;
@@ -7698,11 +7698,11 @@ void cGrammar_goil_5F_grammar::nt_with_5F_auto_ (GALGAS_bool & parameter_1,
   rule_implementation_5F_parser_with_5F_auto_i15_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     'int_or_float' non terminal implementation                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                     'int_or_float' non terminal implementation                                       
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_int_5F_or_5F_float_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_int_5F_or_5F_float_i16_parse(inLexique) ;
@@ -7714,11 +7714,11 @@ void cGrammar_goil_5F_grammar::nt_int_5F_or_5F_float_ (GALGAS_object_5F_t & para
   rule_implementation_5F_parser_int_5F_or_5F_float_i16_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     'set_followup' non terminal implementation                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                     'set_followup' non terminal implementation                                       
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_set_5F_followup_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_set_5F_followup_i17_parse(inLexique) ;
@@ -7730,11 +7730,11 @@ void cGrammar_goil_5F_grammar::nt_set_5F_followup_ (GALGAS_numberList & paramete
   rule_implementation_5F_parser_set_5F_followup_i17_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    'range_content' non terminal implementation                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                    'range_content' non terminal implementation                                       
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_range_5F_content_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_range_5F_content_i18_parse(inLexique) ;
@@ -7746,11 +7746,11 @@ void cGrammar_goil_5F_grammar::nt_range_5F_content_ (GALGAS_attributeRange & par
   rule_implementation_5F_parser_range_5F_content_i18_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        'range' non terminal implementation                                          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                        'range' non terminal implementation                                           
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_range_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_range_i19_parse(inLexique) ;
@@ -7762,11 +7762,11 @@ void cGrammar_goil_5F_grammar::nt_range_ (GALGAS_attributeRange & parameter_1,
   rule_implementation_5F_parser_range_i19_(parameter_1, parameter_2, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                       'multiple' non terminal implementation                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                                       'multiple' non terminal implementation                                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_multiple_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_multiple_i20_parse(inLexique) ;
@@ -7777,11 +7777,11 @@ void cGrammar_goil_5F_grammar::nt_multiple_ (GALGAS_bool & parameter_1,
   rule_implementation_5F_parser_multiple_i20_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               'identifier_or_attribute' non terminal implementation                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                               'identifier_or_attribute' non terminal implementation                                  
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_identifier_5F_or_5F_attribute_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_identifier_5F_or_5F_attribute_i21_parse(inLexique) ;
@@ -7792,11 +7792,11 @@ void cGrammar_goil_5F_grammar::nt_identifier_5F_or_5F_attribute_ (GALGAS_lstring
   rule_implementation_5F_parser_identifier_5F_or_5F_attribute_i21_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               'identifier_or_enum_value' non terminal implementation                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                               'identifier_or_enum_value' non terminal implementation                                 
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 void cGrammar_goil_5F_grammar::nt_identifier_5F_or_5F_enum_5F_value_parse (C_Lexique_goil_5F_lexique * inLexique) {
   rule_implementation_5F_parser_identifier_5F_or_5F_enum_5F_value_i22_parse(inLexique) ;
@@ -7807,503 +7807,503 @@ void cGrammar_goil_5F_grammar::nt_identifier_5F_or_5F_enum_5F_value_ (GALGAS_lst
   rule_implementation_5F_parser_identifier_5F_or_5F_enum_5F_value_i22_(parameter_1, inLexique) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_0' added non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_0' added non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_goil_5F_syntax_0 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_1' added non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_1' added non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_goil_5F_syntax_1 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_2' added non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_2' added non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_goil_5F_syntax_2 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_3' added non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_3' added non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_goil_5F_syntax_3 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_4' added non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_4' added non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_goil_5F_syntax_4 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_5' added non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_5' added non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_goil_5F_syntax_5 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_6' added non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_6' added non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_goil_5F_syntax_6 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_7' added non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_7' added non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_goil_5F_syntax_7 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_8' added non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_8' added non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_goil_5F_syntax_8 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_9' added non terminal implementation                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_9' added non terminal implementation                               
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_goil_5F_syntax_9 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_10' added non terminal implementation                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_10' added non terminal implementation                              
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_goil_5F_syntax_10 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_11' added non terminal implementation                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_11' added non terminal implementation                              
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_goil_5F_syntax_11 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_12' added non terminal implementation                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_12' added non terminal implementation                              
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_goil_5F_syntax_12 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_13' added non terminal implementation                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_13' added non terminal implementation                              
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_goil_5F_syntax_13 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_14' added non terminal implementation                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_14' added non terminal implementation                              
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_goil_5F_syntax_14 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_15' added non terminal implementation                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_15' added non terminal implementation                              
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_goil_5F_syntax_15 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_16' added non terminal implementation                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_16' added non terminal implementation                              
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_goil_5F_syntax_16 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            'select_goil_5F_syntax_17' added non terminal implementation                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                            'select_goil_5F_syntax_17' added non terminal implementation                              
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_goil_5F_syntax_17 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_0' added non terminal implementation                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_0' added non terminal implementation                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_implementation_5F_parser_0 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_1' added non terminal implementation                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_1' added non terminal implementation                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_implementation_5F_parser_1 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_2' added non terminal implementation                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_2' added non terminal implementation                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_implementation_5F_parser_2 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_3' added non terminal implementation                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_3' added non terminal implementation                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_implementation_5F_parser_3 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_4' added non terminal implementation                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_4' added non terminal implementation                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_implementation_5F_parser_4 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_5' added non terminal implementation                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_5' added non terminal implementation                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_implementation_5F_parser_5 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_6' added non terminal implementation                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_6' added non terminal implementation                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_implementation_5F_parser_6 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_7' added non terminal implementation                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_7' added non terminal implementation                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_implementation_5F_parser_7 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_8' added non terminal implementation                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_8' added non terminal implementation                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_implementation_5F_parser_8 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_9' added non terminal implementation                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_9' added non terminal implementation                          
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_implementation_5F_parser_9 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_10' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_10' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_implementation_5F_parser_10 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_11' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_11' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_implementation_5F_parser_11 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_12' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_12' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_implementation_5F_parser_12 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_13' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_13' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_implementation_5F_parser_13 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_14' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_14' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_implementation_5F_parser_14 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_15' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_15' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_implementation_5F_parser_15 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_16' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_16' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_implementation_5F_parser_16 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_17' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_17' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_implementation_5F_parser_17 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_18' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_18' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_implementation_5F_parser_18 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_19' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_19' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_implementation_5F_parser_19 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_20' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_20' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_implementation_5F_parser_20 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_21' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_21' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_implementation_5F_parser_21 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_22' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_22' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_implementation_5F_parser_22 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_23' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_23' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_implementation_5F_parser_23 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_24' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_24' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_implementation_5F_parser_24 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_25' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_25' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_implementation_5F_parser_25 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_26' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_26' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_implementation_5F_parser_26 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_27' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_27' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_implementation_5F_parser_27 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_28' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_28' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_implementation_5F_parser_28 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_29' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_29' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_implementation_5F_parser_29 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       'select_implementation_5F_parser_30' added non terminal implementation                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      
+//                       'select_implementation_5F_parser_30' added non terminal implementation                         
+//                                                                                                                      
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t cGrammar_goil_5F_grammar::select_implementation_5F_parser_30 (C_Lexique_goil_5F_lexique * inLexique) {
   return inLexique->nextProductionIndex () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                              Function 'dummyFunction'                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_Tfunction function_dummyFunction (C_Compiler * inCompiler
                                          COMMA_UNUSED_LOCATION_ARGS) {
@@ -8314,15 +8314,15 @@ GALGAS_Tfunction function_dummyFunction (C_Compiler * inCompiler
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_dummyFunction [1] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_dummyFunction (C_Compiler * inCompiler,
                                                               const cObjectArray & /* inEffectiveParameterArray */,
@@ -8331,7 +8331,7 @@ static GALGAS_object functionWithGenericHeader_dummyFunction (C_Compiler * inCom
   return function_dummyFunction (inCompiler COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_dummyFunction ("dummyFunction",
                                                                functionWithGenericHeader_dummyFunction,
@@ -8339,11 +8339,11 @@ C_galgas_function_descriptor functionDescriptor_dummyFunction ("dummyFunction",
                                                                0,
                                                                functionArgs_dummyFunction) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                              Function 'valueWithBool'                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_Tvalue function_valueWithBool (const GALGAS_bool & constinArgument_inValue,
                                       const GALGAS_lstring & constinArgument_description,
@@ -8356,9 +8356,9 @@ GALGAS_Tvalue function_valueWithBool (const GALGAS_bool & constinArgument_inValu
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_valueWithBool [3] = {
   & kTypeDescriptor_GALGAS_bool,
@@ -8366,7 +8366,7 @@ static const C_galgas_type_descriptor * functionArgs_valueWithBool [3] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_valueWithBool (C_Compiler * inCompiler,
                                                               const cObjectArray & inEffectiveParameterArray,
@@ -8384,7 +8384,7 @@ static GALGAS_object functionWithGenericHeader_valueWithBool (C_Compiler * inCom
                                  COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_valueWithBool ("valueWithBool",
                                                                functionWithGenericHeader_valueWithBool,
@@ -8392,11 +8392,11 @@ C_galgas_function_descriptor functionDescriptor_valueWithBool ("valueWithBool",
                                                                2,
                                                                functionArgs_valueWithBool) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                            Function 'valueWithUnsigned'                                             *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_Tvalue function_valueWithUnsigned (const GALGAS_uint_36__34_ & constinArgument_inValue,
                                           const GALGAS_lstring & constinArgument_description,
@@ -8409,9 +8409,9 @@ GALGAS_Tvalue function_valueWithUnsigned (const GALGAS_uint_36__34_ & constinArg
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_valueWithUnsigned [3] = {
   & kTypeDescriptor_GALGAS_uint_36__34_,
@@ -8419,7 +8419,7 @@ static const C_galgas_type_descriptor * functionArgs_valueWithUnsigned [3] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_valueWithUnsigned (C_Compiler * inCompiler,
                                                                   const cObjectArray & inEffectiveParameterArray,
@@ -8437,7 +8437,7 @@ static GALGAS_object functionWithGenericHeader_valueWithUnsigned (C_Compiler * i
                                      COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_valueWithUnsigned ("valueWithUnsigned",
                                                                    functionWithGenericHeader_valueWithUnsigned,
@@ -8445,11 +8445,11 @@ C_galgas_function_descriptor functionDescriptor_valueWithUnsigned ("valueWithUns
                                                                    2,
                                                                    functionArgs_valueWithUnsigned) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                             Function 'valueWithSigned'                                              *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_Tvalue function_valueWithSigned (const GALGAS_sint_36__34_ & constinArgument_inValue,
                                         const GALGAS_lstring & constinArgument_description,
@@ -8462,9 +8462,9 @@ GALGAS_Tvalue function_valueWithSigned (const GALGAS_sint_36__34_ & constinArgum
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_valueWithSigned [3] = {
   & kTypeDescriptor_GALGAS_sint_36__34_,
@@ -8472,7 +8472,7 @@ static const C_galgas_type_descriptor * functionArgs_valueWithSigned [3] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_valueWithSigned (C_Compiler * inCompiler,
                                                                 const cObjectArray & inEffectiveParameterArray,
@@ -8490,7 +8490,7 @@ static GALGAS_object functionWithGenericHeader_valueWithSigned (C_Compiler * inC
                                    COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_valueWithSigned ("valueWithSigned",
                                                                  functionWithGenericHeader_valueWithSigned,
@@ -8498,11 +8498,11 @@ C_galgas_function_descriptor functionDescriptor_valueWithSigned ("valueWithSigne
                                                                  2,
                                                                  functionArgs_valueWithSigned) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                              Function 'valueWithFloat'                                              *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_Tvalue function_valueWithFloat (const GALGAS_double & constinArgument_inValue,
                                        const GALGAS_lstring & constinArgument_description,
@@ -8515,9 +8515,9 @@ GALGAS_Tvalue function_valueWithFloat (const GALGAS_double & constinArgument_inV
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_valueWithFloat [3] = {
   & kTypeDescriptor_GALGAS_double,
@@ -8525,7 +8525,7 @@ static const C_galgas_type_descriptor * functionArgs_valueWithFloat [3] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_valueWithFloat (C_Compiler * inCompiler,
                                                                const cObjectArray & inEffectiveParameterArray,
@@ -8543,7 +8543,7 @@ static GALGAS_object functionWithGenericHeader_valueWithFloat (C_Compiler * inCo
                                   COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_valueWithFloat ("valueWithFloat",
                                                                 functionWithGenericHeader_valueWithFloat,
@@ -8551,11 +8551,11 @@ C_galgas_function_descriptor functionDescriptor_valueWithFloat ("valueWithFloat"
                                                                 2,
                                                                 functionArgs_valueWithFloat) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                             Function 'valueWithString'                                              *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_Tvalue function_valueWithString (const GALGAS_string & constinArgument_inValue,
                                         const GALGAS_lstring & constinArgument_description,
@@ -8568,9 +8568,9 @@ GALGAS_Tvalue function_valueWithString (const GALGAS_string & constinArgument_in
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_valueWithString [3] = {
   & kTypeDescriptor_GALGAS_string,
@@ -8578,7 +8578,7 @@ static const C_galgas_type_descriptor * functionArgs_valueWithString [3] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_valueWithString (C_Compiler * inCompiler,
                                                                 const cObjectArray & inEffectiveParameterArray,
@@ -8596,7 +8596,7 @@ static GALGAS_object functionWithGenericHeader_valueWithString (C_Compiler * inC
                                    COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_valueWithString ("valueWithString",
                                                                  functionWithGenericHeader_valueWithString,
@@ -8604,11 +8604,11 @@ C_galgas_function_descriptor functionDescriptor_valueWithString ("valueWithStrin
                                                                  2,
                                                                  functionArgs_valueWithString) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                             Function 'valueWithStruct'                                              *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_Tvalue function_valueWithStruct (const GALGAS_TfieldMap & constinArgument_inValue,
                                         const GALGAS_lstring & constinArgument_description,
@@ -8621,9 +8621,9 @@ GALGAS_Tvalue function_valueWithStruct (const GALGAS_TfieldMap & constinArgument
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_valueWithStruct [3] = {
   & kTypeDescriptor_GALGAS_TfieldMap,
@@ -8631,7 +8631,7 @@ static const C_galgas_type_descriptor * functionArgs_valueWithStruct [3] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_valueWithStruct (C_Compiler * inCompiler,
                                                                 const cObjectArray & inEffectiveParameterArray,
@@ -8649,7 +8649,7 @@ static GALGAS_object functionWithGenericHeader_valueWithStruct (C_Compiler * inC
                                    COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_valueWithStruct ("valueWithStruct",
                                                                  functionWithGenericHeader_valueWithStruct,
@@ -8657,11 +8657,11 @@ C_galgas_function_descriptor functionDescriptor_valueWithStruct ("valueWithStruc
                                                                  2,
                                                                  functionArgs_valueWithStruct) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                               Function 'valueWithMap'                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_Tvalue function_valueWithMap (const GALGAS_TfieldMap & constinArgument_inValue,
                                      const GALGAS_lstring & constinArgument_description,
@@ -8674,9 +8674,9 @@ GALGAS_Tvalue function_valueWithMap (const GALGAS_TfieldMap & constinArgument_in
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_valueWithMap [3] = {
   & kTypeDescriptor_GALGAS_TfieldMap,
@@ -8684,7 +8684,7 @@ static const C_galgas_type_descriptor * functionArgs_valueWithMap [3] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_valueWithMap (C_Compiler * inCompiler,
                                                              const cObjectArray & inEffectiveParameterArray,
@@ -8702,7 +8702,7 @@ static GALGAS_object functionWithGenericHeader_valueWithMap (C_Compiler * inComp
                                 COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_valueWithMap ("valueWithMap",
                                                               functionWithGenericHeader_valueWithMap,
@@ -8710,11 +8710,11 @@ C_galgas_function_descriptor functionDescriptor_valueWithMap ("valueWithMap",
                                                               2,
                                                               functionArgs_valueWithMap) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                              Function 'valueWithList'                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_Tvalue function_valueWithList (const GALGAS_TfieldMapList & constinArgument_inValue,
                                       const GALGAS_lstring & constinArgument_description,
@@ -8727,9 +8727,9 @@ GALGAS_Tvalue function_valueWithList (const GALGAS_TfieldMapList & constinArgume
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_valueWithList [3] = {
   & kTypeDescriptor_GALGAS_TfieldMapList,
@@ -8737,7 +8737,7 @@ static const C_galgas_type_descriptor * functionArgs_valueWithList [3] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_valueWithList (C_Compiler * inCompiler,
                                                               const cObjectArray & inEffectiveParameterArray,
@@ -8755,7 +8755,7 @@ static GALGAS_object functionWithGenericHeader_valueWithList (C_Compiler * inCom
                                  COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_valueWithList ("valueWithList",
                                                                functionWithGenericHeader_valueWithList,
@@ -8763,11 +8763,11 @@ C_galgas_function_descriptor functionDescriptor_valueWithList ("valueWithList",
                                                                2,
                                                                functionArgs_valueWithList) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                              Function 'valueWithVoid'                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_Tvalue function_valueWithVoid (C_Compiler * inCompiler
                                       COMMA_UNUSED_LOCATION_ARGS) {
@@ -8778,15 +8778,15 @@ GALGAS_Tvalue function_valueWithVoid (C_Compiler * inCompiler
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_valueWithVoid [1] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_valueWithVoid (C_Compiler * inCompiler,
                                                               const cObjectArray & /* inEffectiveParameterArray */,
@@ -8795,7 +8795,7 @@ static GALGAS_object functionWithGenericHeader_valueWithVoid (C_Compiler * inCom
   return function_valueWithVoid (inCompiler COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_valueWithVoid ("valueWithVoid",
                                                                functionWithGenericHeader_valueWithVoid,
@@ -8803,11 +8803,11 @@ C_galgas_function_descriptor functionDescriptor_valueWithVoid ("valueWithVoid",
                                                                0,
                                                                functionArgs_valueWithVoid) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                               Routine 'addBoolValue'                                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_addBoolValue (GALGAS_TfieldMap & ioArgument_ioTemplateVariableMap,
                            const GALGAS_lstring constinArgument_inVariableName,
@@ -8816,16 +8816,16 @@ void routine_addBoolValue (GALGAS_TfieldMap & ioArgument_ioTemplateVariableMap,
                            C_Compiler * inCompiler
                            COMMA_UNUSED_LOCATION_ARGS) {
   {
-  ioArgument_ioTemplateVariableMap.modifier_insertKey (constinArgument_inVariableName, GALGAS_Ttype::constructor_boolType (SOURCE_FILE ("template_semantics.galgas", 267)), function_valueWithBool (constinArgument_inValue, constinArgument_description, inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 268)), inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 265)) ;
+  ioArgument_ioTemplateVariableMap.setter_insertKey (constinArgument_inVariableName, GALGAS_Ttype::constructor_boolType (SOURCE_FILE ("template_semantics.galgas", 267)), function_valueWithBool (constinArgument_inValue, constinArgument_description, inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 268)), inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 265)) ;
   }
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                             Routine 'addUnsignedValue'                                              *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_addUnsignedValue (GALGAS_TfieldMap & ioArgument_ioTemplateVariableMap,
                                const GALGAS_lstring constinArgument_inVariableName,
@@ -8834,16 +8834,16 @@ void routine_addUnsignedValue (GALGAS_TfieldMap & ioArgument_ioTemplateVariableM
                                C_Compiler * inCompiler
                                COMMA_UNUSED_LOCATION_ARGS) {
   {
-  ioArgument_ioTemplateVariableMap.modifier_insertKey (constinArgument_inVariableName, GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_semantics.galgas", 281)), function_valueWithUnsigned (constinArgument_inValue, constinArgument_description, inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 282)), inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 279)) ;
+  ioArgument_ioTemplateVariableMap.setter_insertKey (constinArgument_inVariableName, GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_semantics.galgas", 281)), function_valueWithUnsigned (constinArgument_inValue, constinArgument_description, inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 282)), inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 279)) ;
   }
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                              Routine 'addSignedValue'                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_addSignedValue (GALGAS_TfieldMap & ioArgument_ioTemplateVariableMap,
                              const GALGAS_lstring constinArgument_inVariableName,
@@ -8852,16 +8852,16 @@ void routine_addSignedValue (GALGAS_TfieldMap & ioArgument_ioTemplateVariableMap
                              C_Compiler * inCompiler
                              COMMA_UNUSED_LOCATION_ARGS) {
   {
-  ioArgument_ioTemplateVariableMap.modifier_insertKey (constinArgument_inVariableName, GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_semantics.galgas", 296)), function_valueWithSigned (constinArgument_inValue, constinArgument_description, inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 297)), inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 294)) ;
+  ioArgument_ioTemplateVariableMap.setter_insertKey (constinArgument_inVariableName, GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_semantics.galgas", 296)), function_valueWithSigned (constinArgument_inValue, constinArgument_description, inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 297)), inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 294)) ;
   }
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                               Routine 'addFloatValue'                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_addFloatValue (GALGAS_TfieldMap & ioArgument_ioTemplateVariableMap,
                             const GALGAS_lstring constinArgument_inVariableName,
@@ -8870,16 +8870,16 @@ void routine_addFloatValue (GALGAS_TfieldMap & ioArgument_ioTemplateVariableMap,
                             C_Compiler * inCompiler
                             COMMA_UNUSED_LOCATION_ARGS) {
   {
-  ioArgument_ioTemplateVariableMap.modifier_insertKey (constinArgument_inVariableName, GALGAS_Ttype::constructor_floatType (SOURCE_FILE ("template_semantics.galgas", 311)), function_valueWithFloat (constinArgument_inValue, constinArgument_description, inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 312)), inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 309)) ;
+  ioArgument_ioTemplateVariableMap.setter_insertKey (constinArgument_inVariableName, GALGAS_Ttype::constructor_floatType (SOURCE_FILE ("template_semantics.galgas", 311)), function_valueWithFloat (constinArgument_inValue, constinArgument_description, inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 312)), inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 309)) ;
   }
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                             Routine 'addLUnsignedValue'                                             *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_addLUnsignedValue (GALGAS_TfieldMap & ioArgument_ioTemplateVariableMap,
                                 const GALGAS_string constinArgument_inVariableName,
@@ -8893,11 +8893,11 @@ void routine_addLUnsignedValue (GALGAS_TfieldMap & ioArgument_ioTemplateVariable
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                              Routine 'addStringValue'                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_addStringValue (GALGAS_TfieldMap & ioArgument_ioTemplateVariableMap,
                              const GALGAS_lstring constinArgument_inVariableName,
@@ -8906,16 +8906,16 @@ void routine_addStringValue (GALGAS_TfieldMap & ioArgument_ioTemplateVariableMap
                              C_Compiler * inCompiler
                              COMMA_UNUSED_LOCATION_ARGS) {
   {
-  ioArgument_ioTemplateVariableMap.modifier_insertKey (constinArgument_inVariableName, GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_semantics.galgas", 336)), function_valueWithString (constinArgument_inValue, constinArgument_description, inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 337)), inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 334)) ;
+  ioArgument_ioTemplateVariableMap.setter_insertKey (constinArgument_inVariableName, GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_semantics.galgas", 336)), function_valueWithString (constinArgument_inValue, constinArgument_description, inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 337)), inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 334)) ;
   }
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                              Routine 'addLStringValue'                                              *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_addLStringValue (GALGAS_TfieldMap & ioArgument_ioTemplateVariableMap,
                               const GALGAS_string constinArgument_inVariableName,
@@ -8929,11 +8929,11 @@ void routine_addLStringValue (GALGAS_TfieldMap & ioArgument_ioTemplateVariableMa
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                               Routine 'addListValue'                                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_addListValue (GALGAS_TfieldMap & ioArgument_ioTemplateVariableMap,
                            const GALGAS_lstring constinArgument_inVariableName,
@@ -8942,16 +8942,16 @@ void routine_addListValue (GALGAS_TfieldMap & ioArgument_ioTemplateVariableMap,
                            C_Compiler * inCompiler
                            COMMA_UNUSED_LOCATION_ARGS) {
   {
-  ioArgument_ioTemplateVariableMap.modifier_insertKey (constinArgument_inVariableName, GALGAS_Ttype::constructor_listType (SOURCE_FILE ("template_semantics.galgas", 361)), GALGAS_Tvalue::constructor_new (GALGAS_sint_36__34_ ((int64_t) 0LL), GALGAS_double (0), GALGAS_string::makeEmptyString (), constinArgument_inValue, GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_semantics.galgas", 362)), function_dummyFunction (inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 362)), constinArgument_description  COMMA_SOURCE_FILE ("template_semantics.galgas", 362)), inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 359)) ;
+  ioArgument_ioTemplateVariableMap.setter_insertKey (constinArgument_inVariableName, GALGAS_Ttype::constructor_listType (SOURCE_FILE ("template_semantics.galgas", 361)), GALGAS_Tvalue::constructor_new (GALGAS_sint_36__34_ ((int64_t) 0LL), GALGAS_double (0), GALGAS_string::makeEmptyString (), constinArgument_inValue, GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_semantics.galgas", 362)), function_dummyFunction (inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 362)), constinArgument_description  COMMA_SOURCE_FILE ("template_semantics.galgas", 362)), inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 359)) ;
   }
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                              Routine 'addStructValue'                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_addStructValue (GALGAS_TfieldMap & ioArgument_ioTemplateVariableMap,
                              const GALGAS_lstring constinArgument_inVariableName,
@@ -8960,16 +8960,16 @@ void routine_addStructValue (GALGAS_TfieldMap & ioArgument_ioTemplateVariableMap
                              C_Compiler * inCompiler
                              COMMA_UNUSED_LOCATION_ARGS) {
   {
-  ioArgument_ioTemplateVariableMap.modifier_insertKey (constinArgument_inVariableName, GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_semantics.galgas", 376)), GALGAS_Tvalue::constructor_new (GALGAS_sint_36__34_ ((int64_t) 0LL), GALGAS_double (0), GALGAS_string::makeEmptyString (), GALGAS_TfieldMapList::constructor_emptyList (SOURCE_FILE ("template_semantics.galgas", 377)), constinArgument_inValue, function_dummyFunction (inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 377)), constinArgument_description  COMMA_SOURCE_FILE ("template_semantics.galgas", 377)), inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 374)) ;
+  ioArgument_ioTemplateVariableMap.setter_insertKey (constinArgument_inVariableName, GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_semantics.galgas", 376)), GALGAS_Tvalue::constructor_new (GALGAS_sint_36__34_ ((int64_t) 0LL), GALGAS_double (0), GALGAS_string::makeEmptyString (), GALGAS_TfieldMapList::constructor_emptyList (SOURCE_FILE ("template_semantics.galgas", 377)), constinArgument_inValue, function_dummyFunction (inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 377)), constinArgument_description  COMMA_SOURCE_FILE ("template_semantics.galgas", 377)), inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 374)) ;
   }
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                               Routine 'addEnumValue'                                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_addEnumValue (GALGAS_TfieldMap & ioArgument_ioTemplateVariableMap,
                            const GALGAS_lstring constinArgument_inVariableName,
@@ -8978,16 +8978,16 @@ void routine_addEnumValue (GALGAS_TfieldMap & ioArgument_ioTemplateVariableMap,
                            C_Compiler * inCompiler
                            COMMA_UNUSED_LOCATION_ARGS) {
   {
-  ioArgument_ioTemplateVariableMap.modifier_insertKey (constinArgument_inVariableName, GALGAS_Ttype::constructor_enumType (SOURCE_FILE ("template_semantics.galgas", 390)), function_valueWithString (constinArgument_inValue, constinArgument_description, inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 391)), inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 388)) ;
+  ioArgument_ioTemplateVariableMap.setter_insertKey (constinArgument_inVariableName, GALGAS_Ttype::constructor_enumType (SOURCE_FILE ("template_semantics.galgas", 390)), function_valueWithString (constinArgument_inValue, constinArgument_description, inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 391)), inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 388)) ;
   }
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                                 Routine 'printPath'                                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_printPath (const GALGAS_TvarPath constinArgument_path,
                         C_Compiler * inCompiler
@@ -9011,11 +9011,11 @@ void routine_printPath (const GALGAS_TvarPath constinArgument_path,
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                                Routine 'searchField'                                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_searchField (GALGAS_TvarPath inArgument_variable,
                           const GALGAS_TfieldMap constinArgument_inTemplateFieldMap,
@@ -9027,36 +9027,36 @@ void routine_searchField (GALGAS_TvarPath inArgument_variable,
   outArgument_variableType.drop () ; // Release 'out' argument
   outArgument_variableValue.drop () ; // Release 'out' argument
   outArgument_variableLocation.drop () ; // Release 'out' argument
-  GALGAS_lstring var_field ;
-  GALGAS_lstring var_key ;
-  GALGAS_lsint var_idx ;
+  GALGAS_lstring var_field_10595 ;
+  GALGAS_lstring var_key_10610 ;
+  GALGAS_lsint var_idx_10623 ;
   outArgument_variableLocation = GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_semantics.galgas", 431)) ;
   {
-  inArgument_variable.modifier_popFirst (var_field, var_key, var_idx, inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 432)) ;
+  inArgument_variable.setter_popFirst (var_field_10595, var_key_10610, var_idx_10623, inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 432)) ;
   }
-  constinArgument_inTemplateFieldMap.method_searchKey (var_field, outArgument_variableType, outArgument_variableValue, inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 433)) ;
-  const enumGalgasBool test_0 = constinArgument_inTemplateFieldMap.getter_hasKey (var_field.getter_string (SOURCE_FILE ("template_semantics.galgas", 434)) COMMA_SOURCE_FILE ("template_semantics.galgas", 434)).boolEnum () ;
+  constinArgument_inTemplateFieldMap.method_searchKey (var_field_10595, outArgument_variableType, outArgument_variableValue, inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 433)) ;
+  const enumGalgasBool test_0 = constinArgument_inTemplateFieldMap.getter_hasKey (var_field_10595.getter_string (SOURCE_FILE ("template_semantics.galgas", 434)) COMMA_SOURCE_FILE ("template_semantics.galgas", 434)).boolEnum () ;
   if (kBoolTrue == test_0) {
-    outArgument_variableLocation = constinArgument_inTemplateFieldMap.getter_locationForKey (var_field.getter_string (SOURCE_FILE ("template_semantics.galgas", 435)), inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 435)) ;
+    outArgument_variableLocation = constinArgument_inTemplateFieldMap.getter_locationForKey (var_field_10595.getter_string (SOURCE_FILE ("template_semantics.galgas", 435)), inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 435)) ;
   }
-  const enumGalgasBool test_1 = GALGAS_bool (kIsNotEqual, var_key.getter_string (SOURCE_FILE ("template_semantics.galgas", 437)).objectCompare (GALGAS_string::makeEmptyString ())).operator_and (GALGAS_bool (kIsEqual, outArgument_variableType.objectCompare (GALGAS_Ttype::constructor_mapType (SOURCE_FILE ("template_semantics.galgas", 437)))) COMMA_SOURCE_FILE ("template_semantics.galgas", 437)).boolEnum () ;
+  const enumGalgasBool test_1 = GALGAS_bool (kIsNotEqual, var_key_10610.getter_string (SOURCE_FILE ("template_semantics.galgas", 437)).objectCompare (GALGAS_string::makeEmptyString ())).operator_and (GALGAS_bool (kIsEqual, outArgument_variableType.objectCompare (GALGAS_Ttype::constructor_mapType (SOURCE_FILE ("template_semantics.galgas", 437)))) COMMA_SOURCE_FILE ("template_semantics.galgas", 437)).boolEnum () ;
   if (kBoolTrue == test_1) {
-    GALGAS_TfieldMap var_mapMap = outArgument_variableValue.getter_mStructValue (SOURCE_FILE ("template_semantics.galgas", 438)) ;
-    var_mapMap.method_searchKey (var_key, outArgument_variableType, outArgument_variableValue, inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 439)) ;
-    const enumGalgasBool test_2 = var_mapMap.getter_hasKey (var_key.getter_string (SOURCE_FILE ("template_semantics.galgas", 440)) COMMA_SOURCE_FILE ("template_semantics.galgas", 440)).boolEnum () ;
+    GALGAS_TfieldMap var_mapMap_10989 = outArgument_variableValue.getter_mStructValue (SOURCE_FILE ("template_semantics.galgas", 438)) ;
+    var_mapMap_10989.method_searchKey (var_key_10610, outArgument_variableType, outArgument_variableValue, inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 439)) ;
+    const enumGalgasBool test_2 = var_mapMap_10989.getter_hasKey (var_key_10610.getter_string (SOURCE_FILE ("template_semantics.galgas", 440)) COMMA_SOURCE_FILE ("template_semantics.galgas", 440)).boolEnum () ;
     if (kBoolTrue == test_2) {
-      outArgument_variableLocation = var_mapMap.getter_locationForKey (var_key.getter_string (SOURCE_FILE ("template_semantics.galgas", 441)), inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 441)) ;
+      outArgument_variableLocation = var_mapMap_10989.getter_locationForKey (var_key_10610.getter_string (SOURCE_FILE ("template_semantics.galgas", 441)), inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 441)) ;
     }
   }else if (kBoolFalse == test_1) {
-    const enumGalgasBool test_3 = GALGAS_bool (kIsNotEqual, var_idx.getter_sint (SOURCE_FILE ("template_semantics.galgas", 443)).objectCompare (GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 443)))).operator_and (GALGAS_bool (kIsEqual, outArgument_variableType.objectCompare (GALGAS_Ttype::constructor_listType (SOURCE_FILE ("template_semantics.galgas", 443)))) COMMA_SOURCE_FILE ("template_semantics.galgas", 443)).boolEnum () ;
+    const enumGalgasBool test_3 = GALGAS_bool (kIsNotEqual, var_idx_10623.getter_sint (SOURCE_FILE ("template_semantics.galgas", 443)).objectCompare (GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 443)))).operator_and (GALGAS_bool (kIsEqual, outArgument_variableType.objectCompare (GALGAS_Ttype::constructor_listType (SOURCE_FILE ("template_semantics.galgas", 443)))) COMMA_SOURCE_FILE ("template_semantics.galgas", 443)).boolEnum () ;
     if (kBoolTrue == test_3) {
-      GALGAS_TfieldMapList var_mapList = outArgument_variableValue.getter_mMapListValue (SOURCE_FILE ("template_semantics.galgas", 444)) ;
-      const enumGalgasBool test_4 = GALGAS_bool (kIsStrictInf, var_idx.mAttribute_sint.getter_uint (inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 445)).objectCompare (var_mapList.getter_length (SOURCE_FILE ("template_semantics.galgas", 445)))).boolEnum () ;
+      GALGAS_TfieldMapList var_mapList_11283 = outArgument_variableValue.getter_mMapListValue (SOURCE_FILE ("template_semantics.galgas", 444)) ;
+      const enumGalgasBool test_4 = GALGAS_bool (kIsStrictInf, var_idx_10623.mAttribute_sint.getter_uint (inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 445)).objectCompare (var_mapList_11283.getter_length (SOURCE_FILE ("template_semantics.galgas", 445)))).boolEnum () ;
       if (kBoolTrue == test_4) {
-        outArgument_variableValue.mAttribute_mStructValue = var_mapList.getter_mMapAtIndex (var_idx.mAttribute_sint.getter_uint (inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 446)), inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 446)) ;
+        outArgument_variableValue.mAttribute_mStructValue = var_mapList_11283.getter_mMapAtIndex (var_idx_10623.mAttribute_sint.getter_uint (inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 446)), inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 446)) ;
         outArgument_variableType = GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_semantics.galgas", 447)) ;
       }else if (kBoolFalse == test_4) {
-        inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_semantics.galgas", 449)), GALGAS_string ("index: ").add_operation (var_idx.getter_sint (SOURCE_FILE ("template_semantics.galgas", 449)).getter_string (SOURCE_FILE ("template_semantics.galgas", 449)), inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 449)).add_operation (GALGAS_string (" >= length:"), inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 449)).add_operation (var_mapList.getter_length (SOURCE_FILE ("template_semantics.galgas", 449)).getter_string (SOURCE_FILE ("template_semantics.galgas", 449)), inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 449))  COMMA_SOURCE_FILE ("template_semantics.galgas", 449)) ;
+        inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_semantics.galgas", 449)), GALGAS_string ("index: ").add_operation (var_idx_10623.getter_sint (SOURCE_FILE ("template_semantics.galgas", 449)).getter_string (SOURCE_FILE ("template_semantics.galgas", 449)), inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 449)).add_operation (GALGAS_string (" >= length:"), inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 449)).add_operation (var_mapList_11283.getter_length (SOURCE_FILE ("template_semantics.galgas", 449)).getter_string (SOURCE_FILE ("template_semantics.galgas", 449)), inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 449))  COMMA_SOURCE_FILE ("template_semantics.galgas", 449)) ;
         outArgument_variableValue.drop () ; // Release error dropped variable
         outArgument_variableType.drop () ; // Release error dropped variable
       }
@@ -9071,7 +9071,7 @@ void routine_searchField (GALGAS_TvarPath inArgument_variable,
       }
     }else if (kBoolFalse == test_6) {
       outArgument_variableLocation = GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("template_semantics.galgas", 456)) ;
-      GALGAS_location location_7 (var_field.getter_location (HERE)) ; // Implicit use of 'location' getter
+      GALGAS_location location_7 (var_field_10595.getter_location (HERE)) ; // Implicit use of 'location' getter
       inCompiler->emitSemanticError (location_7, GALGAS_string ("struct variable expected")  COMMA_SOURCE_FILE ("template_semantics.galgas", 457)) ;
       outArgument_variableValue.drop () ; // Release error dropped variable
     }
@@ -9079,11 +9079,11 @@ void routine_searchField (GALGAS_TvarPath inArgument_variable,
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                            Routine 'searchFieldIfExists'                                            *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_searchFieldIfExists (GALGAS_TvarPath inArgument_variable,
                                   const GALGAS_TfieldMap constinArgument_inTemplateFieldMap,
@@ -9095,47 +9095,47 @@ void routine_searchFieldIfExists (GALGAS_TvarPath inArgument_variable,
   outArgument_variableType.drop () ; // Release 'out' argument
   outArgument_variableValue.drop () ; // Release 'out' argument
   outArgument_found.drop () ; // Release 'out' argument
-  GALGAS_lstring var_field ;
-  GALGAS_lstring var_key ;
-  GALGAS_lsint var_idx ;
+  GALGAS_lstring var_field_12162 ;
+  GALGAS_lstring var_key_12177 ;
+  GALGAS_lsint var_idx_12190 ;
   {
-  inArgument_variable.modifier_popFirst (var_field, var_key, var_idx, inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 473)) ;
+  inArgument_variable.setter_popFirst (var_field_12162, var_key_12177, var_idx_12190, inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 473)) ;
   }
-  const enumGalgasBool test_0 = constinArgument_inTemplateFieldMap.getter_hasKey (var_field.getter_string (SOURCE_FILE ("template_semantics.galgas", 475)) COMMA_SOURCE_FILE ("template_semantics.galgas", 475)).boolEnum () ;
+  const enumGalgasBool test_0 = constinArgument_inTemplateFieldMap.getter_hasKey (var_field_12162.getter_string (SOURCE_FILE ("template_semantics.galgas", 475)) COMMA_SOURCE_FILE ("template_semantics.galgas", 475)).boolEnum () ;
   if (kBoolTrue == test_0) {
-    constinArgument_inTemplateFieldMap.method_searchKey (var_field, outArgument_variableType, outArgument_variableValue, inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 476)) ;
-    const enumGalgasBool test_1 = GALGAS_bool (kIsNotEqual, var_key.getter_string (SOURCE_FILE ("template_semantics.galgas", 477)).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+    constinArgument_inTemplateFieldMap.method_searchKey (var_field_12162, outArgument_variableType, outArgument_variableValue, inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 476)) ;
+    const enumGalgasBool test_1 = GALGAS_bool (kIsNotEqual, var_key_12177.getter_string (SOURCE_FILE ("template_semantics.galgas", 477)).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
     if (kBoolTrue == test_1) {
       const enumGalgasBool test_2 = GALGAS_bool (kIsEqual, outArgument_variableType.objectCompare (GALGAS_Ttype::constructor_mapType (SOURCE_FILE ("template_semantics.galgas", 478)))).boolEnum () ;
       if (kBoolTrue == test_2) {
-        const enumGalgasBool test_3 = outArgument_variableValue.getter_mStructValue (SOURCE_FILE ("template_semantics.galgas", 479)).getter_hasKey (var_key.getter_string (SOURCE_FILE ("template_semantics.galgas", 479)) COMMA_SOURCE_FILE ("template_semantics.galgas", 479)).boolEnum () ;
+        const enumGalgasBool test_3 = outArgument_variableValue.getter_mStructValue (SOURCE_FILE ("template_semantics.galgas", 479)).getter_hasKey (var_key_12177.getter_string (SOURCE_FILE ("template_semantics.galgas", 479)) COMMA_SOURCE_FILE ("template_semantics.galgas", 479)).boolEnum () ;
         if (kBoolTrue == test_3) {
-          outArgument_variableValue.getter_mStructValue (SOURCE_FILE ("template_semantics.galgas", 480)).method_searchKey (var_key, outArgument_variableType, outArgument_variableValue, inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 480)) ;
+          outArgument_variableValue.getter_mStructValue (SOURCE_FILE ("template_semantics.galgas", 480)).method_searchKey (var_key_12177, outArgument_variableType, outArgument_variableValue, inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 480)) ;
           outArgument_found = GALGAS_bool (true) ;
         }else if (kBoolFalse == test_3) {
           outArgument_found = GALGAS_bool (false) ;
         }
       }else if (kBoolFalse == test_2) {
-        GALGAS_location location_4 (var_key.getter_location (HERE)) ; // Implicit use of 'location' getter
+        GALGAS_location location_4 (var_key_12177.getter_location (HERE)) ; // Implicit use of 'location' getter
         inCompiler->emitSemanticError (location_4, GALGAS_string ("a key is only used in a map")  COMMA_SOURCE_FILE ("template_semantics.galgas", 486)) ;
         outArgument_found.drop () ; // Release error dropped variable
       }
     }else if (kBoolFalse == test_1) {
-      const enumGalgasBool test_5 = GALGAS_bool (kIsNotEqual, var_idx.getter_sint (SOURCE_FILE ("template_semantics.galgas", 488)).objectCompare (GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 488)))).boolEnum () ;
+      const enumGalgasBool test_5 = GALGAS_bool (kIsNotEqual, var_idx_12190.getter_sint (SOURCE_FILE ("template_semantics.galgas", 488)).objectCompare (GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 488)))).boolEnum () ;
       if (kBoolTrue == test_5) {
         const enumGalgasBool test_6 = GALGAS_bool (kIsEqual, outArgument_variableType.objectCompare (GALGAS_Ttype::constructor_listType (SOURCE_FILE ("template_semantics.galgas", 489)))).boolEnum () ;
         if (kBoolTrue == test_6) {
-          const enumGalgasBool test_7 = GALGAS_bool (kIsStrictInf, var_idx.mAttribute_sint.getter_uint (inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 490)).objectCompare (outArgument_variableValue.getter_mMapListValue (SOURCE_FILE ("template_semantics.galgas", 490)).getter_length (SOURCE_FILE ("template_semantics.galgas", 490)))).boolEnum () ;
+          const enumGalgasBool test_7 = GALGAS_bool (kIsStrictInf, var_idx_12190.mAttribute_sint.getter_uint (inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 490)).objectCompare (outArgument_variableValue.getter_mMapListValue (SOURCE_FILE ("template_semantics.galgas", 490)).getter_length (SOURCE_FILE ("template_semantics.galgas", 490)))).boolEnum () ;
           if (kBoolTrue == test_7) {
-            GALGAS_TfieldMapList var_mapList = outArgument_variableValue.getter_mMapListValue (SOURCE_FILE ("template_semantics.galgas", 491)) ;
-            outArgument_variableValue.mAttribute_mStructValue = var_mapList.getter_mMapAtIndex (var_idx.mAttribute_sint.getter_uint (inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 492)), inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 492)) ;
+            GALGAS_TfieldMapList var_mapList_12920 = outArgument_variableValue.getter_mMapListValue (SOURCE_FILE ("template_semantics.galgas", 491)) ;
+            outArgument_variableValue.mAttribute_mStructValue = var_mapList_12920.getter_mMapAtIndex (var_idx_12190.mAttribute_sint.getter_uint (inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 492)), inCompiler COMMA_SOURCE_FILE ("template_semantics.galgas", 492)) ;
             outArgument_variableType = GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_semantics.galgas", 493)) ;
             outArgument_found = GALGAS_bool (true) ;
           }else if (kBoolFalse == test_7) {
             outArgument_found = GALGAS_bool (false) ;
           }
         }else if (kBoolFalse == test_6) {
-          GALGAS_location location_8 (var_idx.getter_location (HERE)) ; // Implicit use of 'location' getter
+          GALGAS_location location_8 (var_idx_12190.getter_location (HERE)) ; // Implicit use of 'location' getter
           inCompiler->emitSemanticError (location_8, GALGAS_string ("an index is only used in a list")  COMMA_SOURCE_FILE ("template_semantics.galgas", 499)) ;
           outArgument_found.drop () ; // Release error dropped variable
         }
@@ -9162,11 +9162,11 @@ void routine_searchFieldIfExists (GALGAS_TvarPath inArgument_variable,
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                        Routine 'matchAndOperatorForTemplate'                                        *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_matchAndOperatorForTemplate (const GALGAS_Ttype constinArgument_inLeftExpressionType,
                                           const GALGAS_Ttype constinArgument_inRightExpressionType,
@@ -9187,11 +9187,11 @@ void routine_matchAndOperatorForTemplate (const GALGAS_Ttype constinArgument_inL
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                        Routine 'matchOrOperatorForTemplate'                                         *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_matchOrOperatorForTemplate (const GALGAS_Ttype constinArgument_inLeftExpressionType,
                                          const GALGAS_Ttype constinArgument_inRightExpressionType,
@@ -9212,11 +9212,11 @@ void routine_matchOrOperatorForTemplate (const GALGAS_Ttype constinArgument_inLe
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                        Routine 'matchXorOperatorForTemplate'                                        *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_matchXorOperatorForTemplate (const GALGAS_Ttype constinArgument_inLeftExpressionType,
                                           const GALGAS_Ttype constinArgument_inRightExpressionType,
@@ -9237,11 +9237,11 @@ void routine_matchXorOperatorForTemplate (const GALGAS_Ttype constinArgument_inL
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                        Routine 'checkNotOperatorForTemplate'                                        *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_checkNotOperatorForTemplate (const GALGAS_Ttype constinArgument_inOperandType,
                                           GALGAS_Ttype & outArgument_outResultType,
@@ -9256,11 +9256,11 @@ void routine_checkNotOperatorForTemplate (const GALGAS_Ttype constinArgument_inO
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                   Routine 'checkBitComplementOperatorForTemplate'                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_checkBitComplementOperatorForTemplate (const GALGAS_Ttype constinArgument_inOperandType,
                                                     GALGAS_Ttype & outArgument_outResultType,
@@ -9275,11 +9275,11 @@ void routine_checkBitComplementOperatorForTemplate (const GALGAS_Ttype constinAr
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                     Routine 'comparison_types_checkForTemplate'                                     *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_comparison_5F_types_5F_checkForTemplate (const GALGAS_Ttype constinArgument_inLeftExpressionType,
                                                       const GALGAS_Ttype constinArgument_inRightExpressionType,
@@ -9297,11 +9297,11 @@ void routine_comparison_5F_types_5F_checkForTemplate (const GALGAS_Ttype constin
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                Routine 'magnitude_comparison_types_checkForTemplate'                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_magnitude_5F_comparison_5F_types_5F_checkForTemplate (const GALGAS_Ttype constinArgument_inLeftExpressionType,
                                                                    const GALGAS_Ttype constinArgument_inRightExpressionType,
@@ -9318,11 +9318,11 @@ void routine_magnitude_5F_comparison_5F_types_5F_checkForTemplate (const GALGAS_
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                     Routine 'left_shift_types_checkForTemplate'                                     *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_left_5F_shift_5F_types_5F_checkForTemplate (const GALGAS_Ttype constinArgument_inLeftExpressionType,
                                                          const GALGAS_Ttype constinArgument_inRightExpressionType,
@@ -9341,11 +9341,11 @@ void routine_left_5F_shift_5F_types_5F_checkForTemplate (const GALGAS_Ttype cons
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                    Routine 'right_shift_types_checkForTemplate'                                     *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_right_5F_shift_5F_types_5F_checkForTemplate (const GALGAS_Ttype constinArgument_inLeftExpressionType,
                                                           const GALGAS_Ttype constinArgument_inRightExpressionType,
@@ -9364,11 +9364,11 @@ void routine_right_5F_shift_5F_types_5F_checkForTemplate (const GALGAS_Ttype con
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                      Routine 'addition_types_checkForTemplate'                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_addition_5F_types_5F_checkForTemplate (const GALGAS_Ttype constinArgument_inLeftExpressionType,
                                                     const GALGAS_Ttype constinArgument_inRightExpressionType,
@@ -9387,11 +9387,11 @@ void routine_addition_5F_types_5F_checkForTemplate (const GALGAS_Ttype constinAr
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                   Routine 'concatenation_types_checkForTemplate'                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_concatenation_5F_types_5F_checkForTemplate (const GALGAS_Ttype constinArgument_inLeftExpressionType,
                                                          const GALGAS_Ttype constinArgument_inRightExpressionType,
@@ -9412,11 +9412,11 @@ void routine_concatenation_5F_types_5F_checkForTemplate (const GALGAS_Ttype cons
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                    Routine 'substraction_types_checkForTemplate'                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_substraction_5F_types_5F_checkForTemplate (const GALGAS_Ttype constinArgument_inLeftExpressionType,
                                                         const GALGAS_Ttype constinArgument_inRightExpressionType,
@@ -9435,11 +9435,11 @@ void routine_substraction_5F_types_5F_checkForTemplate (const GALGAS_Ttype const
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                      Routine 'multiply_types_checkForTemplate'                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_multiply_5F_types_5F_checkForTemplate (const GALGAS_Ttype constinArgument_inLeftExpressionType,
                                                     const GALGAS_Ttype constinArgument_inRightExpressionType,
@@ -9458,11 +9458,11 @@ void routine_multiply_5F_types_5F_checkForTemplate (const GALGAS_Ttype constinAr
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                       Routine 'divide_types_checkForTemplate'                                       *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_divide_5F_types_5F_checkForTemplate (const GALGAS_Ttype constinArgument_inLeftExpressionType,
                                                   const GALGAS_Ttype constinArgument_inRightExpressionType,
@@ -9481,11 +9481,11 @@ void routine_divide_5F_types_5F_checkForTemplate (const GALGAS_Ttype constinArgu
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                       Routine 'modulo_types_checkForTemplate'                                       *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_modulo_5F_types_5F_checkForTemplate (const GALGAS_Ttype constinArgument_inLeftExpressionType,
                                                   const GALGAS_Ttype constinArgument_inRightExpressionType,
@@ -9504,11 +9504,11 @@ void routine_modulo_5F_types_5F_checkForTemplate (const GALGAS_Ttype constinArgu
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                          Function 'argumentListSignature'                                           *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_string function_argumentListSignature (const GALGAS_TexpressionList & constinArgument_inParameterTypeList,
                                               C_Compiler * inCompiler
@@ -9541,16 +9541,16 @@ GALGAS_string function_argumentListSignature (const GALGAS_TexpressionList & con
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_argumentListSignature [2] = {
   & kTypeDescriptor_GALGAS_TexpressionList,
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_argumentListSignature (C_Compiler * inCompiler,
                                                                       const cObjectArray & inEffectiveParameterArray,
@@ -9564,7 +9564,7 @@ static GALGAS_object functionWithGenericHeader_argumentListSignature (C_Compiler
                                          COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_argumentListSignature ("argumentListSignature",
                                                                        functionWithGenericHeader_argumentListSignature,
@@ -9572,11 +9572,11 @@ C_galgas_function_descriptor functionDescriptor_argumentListSignature ("argument
                                                                        1,
                                                                        functionArgs_argumentListSignature) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                       Routine 'checkInvocationHasNoArgument'                                        *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_checkInvocationHasNoArgument (const GALGAS_Ttype constinArgument_inType,
                                            const GALGAS_lstring constinArgument_inMethodName,
@@ -9591,11 +9591,11 @@ void routine_checkInvocationHasNoArgument (const GALGAS_Ttype constinArgument_in
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                        Routine 'checkInvocationHasArguments'                                        *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_checkInvocationHasArguments (const GALGAS_Ttype constinArgument_inType,
                                           const GALGAS_lstring constinArgument_inMethodName,
@@ -9604,10 +9604,10 @@ void routine_checkInvocationHasArguments (const GALGAS_Ttype constinArgument_inT
                                           const GALGAS_uint constinArgument_argsNumber,
                                           C_Compiler * inCompiler
                                           COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_Ttype var_parameterType ;
+  GALGAS_Ttype var_parameterType_55218 ;
   GALGAS_Tvalue joker_55249 ; // Joker input parameter
-  constinArgument_inParameterTypeList.method_first (joker_55249, var_parameterType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1635)) ;
-  const enumGalgasBool test_0 = GALGAS_bool (kIsNotEqual, constinArgument_inParameterTypeList.getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1636)).objectCompare (constinArgument_argsNumber)).operator_or (GALGAS_bool (kIsNotEqual, var_parameterType.objectCompare (constinArgument_inExpectedType)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1636)).boolEnum () ;
+  constinArgument_inParameterTypeList.method_first (joker_55249, var_parameterType_55218, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1635)) ;
+  const enumGalgasBool test_0 = GALGAS_bool (kIsNotEqual, constinArgument_inParameterTypeList.getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1636)).objectCompare (constinArgument_argsNumber)).operator_or (GALGAS_bool (kIsNotEqual, var_parameterType_55218.objectCompare (constinArgument_inExpectedType)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1636)).boolEnum () ;
   if (kBoolTrue == test_0) {
     GALGAS_location location_1 (constinArgument_inMethodName.getter_location (HERE)) ; // Implicit use of 'location' getter
     inCompiler->emitSemanticError (location_1, GALGAS_string ("calling '").add_operation (constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1637)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1637)).add_operation (GALGAS_string ("' on a "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1637)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1638)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1637)).add_operation (GALGAS_string (" type requires "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1638)).add_operation (constinArgument_argsNumber.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1638)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1638)).add_operation (GALGAS_string (" unsigned argument(s); "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1638)).add_operation (function_argumentListSignature (constinArgument_inParameterTypeList, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1639)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1638))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1637)) ;
@@ -9615,11 +9615,11 @@ void routine_checkInvocationHasArguments (const GALGAS_Ttype constinArgument_inT
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                         Routine 'templateMethodInvocation'                                          *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_templateMethodInvocation (const GALGAS_Ttype constinArgument_inType,
                                        const GALGAS_Tvalue constinArgument_inValue,
@@ -9715,20 +9715,20 @@ void routine_templateMethodInvocation (const GALGAS_Ttype constinArgument_inType
               routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1694)) ;
               }
               outArgument_outResultType = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1695)) ;
-              GALGAS_sint_36__34_ var_value = constinArgument_inValue.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1696)) ;
-              GALGAS_uint var_numberOfBytes = GALGAS_uint ((uint32_t) 1U) ;
+              GALGAS_sint_36__34_ var_value_58291 = constinArgument_inValue.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1696)) ;
+              GALGAS_uint var_numberOfBytes_58388 = GALGAS_uint ((uint32_t) 1U) ;
               const enumGalgasBool test_12 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1699)).objectCompare (GALGAS_string ("signedNumberOfBytes"))).boolEnum () ;
               if (kBoolTrue == test_12) {
-                var_value = var_value.multiply_operation (GALGAS_uint ((uint32_t) 2U).getter_sint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1700)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1700)) ;
+                var_value_58291 = var_value_58291.multiply_operation (GALGAS_uint ((uint32_t) 2U).getter_sint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1700)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1700)) ;
               }
-              GALGAS_uint var_count = GALGAS_uint ((uint32_t) 0U) ;
+              GALGAS_uint var_count_58515 = GALGAS_uint ((uint32_t) 0U) ;
               if (GALGAS_uint ((uint32_t) 4U).isValid ()) {
                 uint32_t variant_58532 = GALGAS_uint ((uint32_t) 4U).uintValue () ;
                 bool loop_58532 = true ;
                 while (loop_58532) {
-                  loop_58532 = GALGAS_bool (kIsStrictInf, var_count.objectCompare (GALGAS_uint ((uint32_t) 4U))).isValid () ;
+                  loop_58532 = GALGAS_bool (kIsStrictInf, var_count_58515.objectCompare (GALGAS_uint ((uint32_t) 4U))).isValid () ;
                   if (loop_58532) {
-                    loop_58532 = GALGAS_bool (kIsStrictInf, var_count.objectCompare (GALGAS_uint ((uint32_t) 4U))).boolValue () ;
+                    loop_58532 = GALGAS_bool (kIsStrictInf, var_count_58515.objectCompare (GALGAS_uint ((uint32_t) 4U))).boolValue () ;
                   }
                   if (loop_58532 && (0 == variant_58532)) {
                     loop_58532 = false ;
@@ -9736,16 +9736,16 @@ void routine_templateMethodInvocation (const GALGAS_Ttype constinArgument_inType
                   }
                   if (loop_58532) {
                     variant_58532 -- ;
-                    GALGAS_sint_36__34_ var_maxValue = GALGAS_sint_36__34_ ((int64_t) 1LL).left_shift_operation (var_numberOfBytes.multiply_operation (GALGAS_uint ((uint32_t) 8U), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1705)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1705)).substract_operation (GALGAS_sint_36__34_ ((int64_t) 1LL), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1705)) ;
-                    const enumGalgasBool test_13 = GALGAS_bool (kIsStrictInf, var_maxValue.objectCompare (var_value)).boolEnum () ;
+                    GALGAS_sint_36__34_ var_maxValue_58590 = GALGAS_sint_36__34_ ((int64_t) 1LL).left_shift_operation (var_numberOfBytes_58388.multiply_operation (GALGAS_uint ((uint32_t) 8U), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1705)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1705)).substract_operation (GALGAS_sint_36__34_ ((int64_t) 1LL), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1705)) ;
+                    const enumGalgasBool test_13 = GALGAS_bool (kIsStrictInf, var_maxValue_58590.objectCompare (var_value_58291)).boolEnum () ;
                     if (kBoolTrue == test_13) {
-                      var_numberOfBytes = var_numberOfBytes.multiply_operation (GALGAS_uint ((uint32_t) 2U), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1707)) ;
+                      var_numberOfBytes_58388 = var_numberOfBytes_58388.multiply_operation (GALGAS_uint ((uint32_t) 2U), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1707)) ;
                     }
-                    var_count.increment_operation (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1709)) ;
+                    var_count_58515.increment_operation (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1709)) ;
                   }
                 }
               }
-              outArgument_outResultValue = function_valueWithUnsigned (var_numberOfBytes.getter_uint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1711)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1711)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1711)) ;
+              outArgument_outResultValue = function_valueWithUnsigned (var_numberOfBytes_58388.getter_uint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1711)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1711)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1711)) ;
             }else if (kBoolFalse == test_11) {
               const enumGalgasBool test_14 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1712)).objectCompare (GALGAS_string ("numberOfBits"))).operator_or (GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1712)).objectCompare (GALGAS_string ("signedNumberOfBits"))) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1712)).boolEnum () ;
               if (kBoolTrue == test_14) {
@@ -9753,19 +9753,19 @@ void routine_templateMethodInvocation (const GALGAS_Ttype constinArgument_inType
                 routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1713)) ;
                 }
                 outArgument_outResultType = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1714)) ;
-                GALGAS_sint_36__34_ var_value = constinArgument_inValue.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1715)) ;
+                GALGAS_sint_36__34_ var_value_59087 = constinArgument_inValue.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1715)) ;
                 const enumGalgasBool test_15 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1716)).objectCompare (GALGAS_string ("signedNumberOfBits"))).boolEnum () ;
                 if (kBoolTrue == test_15) {
-                  var_value = var_value.multiply_operation (GALGAS_uint ((uint32_t) 2U).getter_sint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1717)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1717)) ;
+                  var_value_59087 = var_value_59087.multiply_operation (GALGAS_uint ((uint32_t) 2U).getter_sint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1717)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1717)) ;
                 }
-                GALGAS_sint_36__34_ var_numberOfBits = GALGAS_sint_36__34_ ((int64_t) 0LL) ;
+                GALGAS_sint_36__34_ var_numberOfBits_59286 = GALGAS_sint_36__34_ ((int64_t) 0LL) ;
                 if (GALGAS_uint ((uint32_t) 64U).isValid ()) {
                   uint32_t variant_59305 = GALGAS_uint ((uint32_t) 64U).uintValue () ;
                   bool loop_59305 = true ;
                   while (loop_59305) {
-                    loop_59305 = GALGAS_bool (kIsNotEqual, var_value.objectCompare (GALGAS_sint_36__34_ ((int64_t) 0LL))).isValid () ;
+                    loop_59305 = GALGAS_bool (kIsNotEqual, var_value_59087.objectCompare (GALGAS_sint_36__34_ ((int64_t) 0LL))).isValid () ;
                     if (loop_59305) {
-                      loop_59305 = GALGAS_bool (kIsNotEqual, var_value.objectCompare (GALGAS_sint_36__34_ ((int64_t) 0LL))).boolValue () ;
+                      loop_59305 = GALGAS_bool (kIsNotEqual, var_value_59087.objectCompare (GALGAS_sint_36__34_ ((int64_t) 0LL))).boolValue () ;
                     }
                     if (loop_59305 && (0 == variant_59305)) {
                       loop_59305 = false ;
@@ -9773,12 +9773,12 @@ void routine_templateMethodInvocation (const GALGAS_Ttype constinArgument_inType
                     }
                     if (loop_59305) {
                       variant_59305 -- ;
-                      var_numberOfBits.increment_operation (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1723)) ;
-                      var_value = var_value.right_shift_operation (GALGAS_uint ((uint32_t) 1U) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1724)) ;
+                      var_numberOfBits_59286.increment_operation (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1723)) ;
+                      var_value_59087 = var_value_59087.right_shift_operation (GALGAS_uint ((uint32_t) 1U) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1724)) ;
                     }
                   }
                 }
-                outArgument_outResultValue = function_valueWithSigned (var_numberOfBits, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1726)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1726)) ;
+                outArgument_outResultValue = function_valueWithSigned (var_numberOfBits_59286, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1726)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1726)) ;
               }else if (kBoolFalse == test_14) {
                 GALGAS_location location_16 (constinArgument_inMethodName.getter_location (HERE)) ; // Implicit use of 'location' getter
                 inCompiler->emitSemanticError (location_16, GALGAS_string ("the ").add_operation (constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1728)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1728)).add_operation (GALGAS_string (" template method is not defined for "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1728)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1728)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1728))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1728)) ;
@@ -9861,32 +9861,32 @@ void routine_templateMethodInvocation (const GALGAS_Ttype constinArgument_inType
                           {
                           routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1764)), GALGAS_uint ((uint32_t) 1U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1764)) ;
                           }
-                          GALGAS_Tvalue var_parameter ;
+                          GALGAS_Tvalue var_parameter_62197 ;
                           GALGAS_Ttype joker_62245 ; // Joker input parameter
-                          inArgument_inParameterTypeList.method_first (var_parameter, joker_62245, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1766)) ;
+                          inArgument_inParameterTypeList.method_first (var_parameter_62197, joker_62245, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1766)) ;
                           outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1767)) ;
-                          outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1768)).getter_leftSubString (var_parameter.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1768)).getter_uint (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1768)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1768)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1768)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1768)) ;
+                          outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1768)).getter_leftSubString (var_parameter_62197.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1768)).getter_uint (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1768)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1768)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1768)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1768)) ;
                         }else if (kBoolFalse == test_25) {
                           const enumGalgasBool test_26 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1769)).objectCompare (GALGAS_string ("rightSubString"))).boolEnum () ;
                           if (kBoolTrue == test_26) {
                             {
                             routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1770)), GALGAS_uint ((uint32_t) 1U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1770)) ;
                             }
-                            GALGAS_Tvalue var_parameter ;
+                            GALGAS_Tvalue var_parameter_62608 ;
                             GALGAS_Ttype joker_62656 ; // Joker input parameter
-                            inArgument_inParameterTypeList.method_first (var_parameter, joker_62656, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1772)) ;
+                            inArgument_inParameterTypeList.method_first (var_parameter_62608, joker_62656, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1772)) ;
                             outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1773)) ;
-                            outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1774)).getter_rightSubString (var_parameter.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1774)).getter_uint (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1774)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1774)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1774)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1774)) ;
+                            outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1774)).getter_rightSubString (var_parameter_62608.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1774)).getter_uint (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1774)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1774)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1774)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1774)) ;
                           }else if (kBoolFalse == test_26) {
                             const enumGalgasBool test_27 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1775)).objectCompare (GALGAS_string ("subString"))).boolEnum () ;
                             if (kBoolTrue == test_27) {
                               {
                               routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1776)), GALGAS_uint ((uint32_t) 2U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1776)) ;
                               }
-                              GALGAS_Tvalue var_start = inArgument_inParameterTypeList.getter_mValueAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1777)) ;
-                              GALGAS_Tvalue var_length = inArgument_inParameterTypeList.getter_mValueAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1778)) ;
+                              GALGAS_Tvalue var_start_63011 = inArgument_inParameterTypeList.getter_mValueAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1777)) ;
+                              GALGAS_Tvalue var_length_63075 = inArgument_inParameterTypeList.getter_mValueAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1778)) ;
                               outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1781)) ;
-                              outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1782)).getter_subString (var_start.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1782)).getter_uint (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1782)), var_length.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1782)).getter_uint (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1782)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1782)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1782)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1782)) ;
+                              outArgument_outResultValue = function_valueWithString (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1782)).getter_subString (var_start_63011.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1782)).getter_uint (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1782)), var_length_63075.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1782)).getter_uint (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1782)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1782)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1782)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1782)) ;
                             }else if (kBoolFalse == test_27) {
                               const enumGalgasBool test_28 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1783)).objectCompare (GALGAS_string ("reversedString"))).boolEnum () ;
                               if (kBoolTrue == test_28) {
@@ -9901,22 +9901,22 @@ void routine_templateMethodInvocation (const GALGAS_Ttype constinArgument_inType
                                   {
                                   routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1788)), GALGAS_uint ((uint32_t) 1U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1788)) ;
                                   }
-                                  GALGAS_Tvalue var_separator ;
+                                  GALGAS_Tvalue var_separator_63840 ;
                                   GALGAS_Ttype joker_63888 ; // Joker input parameter
-                                  inArgument_inParameterTypeList.method_first (var_separator, joker_63888, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1790)) ;
-                                  GALGAS_stringlist var_stringlist = constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1791)).getter_componentsSeparatedByString (var_separator.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1791)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1791)) ;
-                                  GALGAS_TfieldMapList var_result = GALGAS_TfieldMapList::constructor_emptyList (SOURCE_FILE ("template_expression_parser.galgas", 1792)) ;
-                                  cEnumerator_stringlist enumerator_64079 (var_stringlist, kEnumeration_up) ;
+                                  inArgument_inParameterTypeList.method_first (var_separator_63840, joker_63888, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1790)) ;
+                                  GALGAS_stringlist var_stringlist_63921 = constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1791)).getter_componentsSeparatedByString (var_separator_63840.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1791)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1791)) ;
+                                  GALGAS_TfieldMapList var_result_64021 = GALGAS_TfieldMapList::constructor_emptyList (SOURCE_FILE ("template_expression_parser.galgas", 1792)) ;
+                                  cEnumerator_stringlist enumerator_64079 (var_stringlist_63921, kEnumeration_up) ;
                                   while (enumerator_64079.hasCurrentObject ()) {
-                                    GALGAS_TfieldMap var_item = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_expression_parser.galgas", 1794)) ;
+                                    GALGAS_TfieldMap var_item_64101 = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_expression_parser.galgas", 1794)) ;
                                     {
-                                    routine_addStringValue (var_item, function_lstringWith (GALGAS_string ("VALUE"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1795)), enumerator_64079.current_mValue (HERE), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1795)), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1795)) ;
+                                    routine_addStringValue (var_item_64101, function_lstringWith (GALGAS_string ("VALUE"), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1795)), enumerator_64079.current_mValue (HERE), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1795)), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1795)) ;
                                     }
-                                    var_result.addAssign_operation (var_item  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1796)) ;
+                                    var_result_64021.addAssign_operation (var_item_64101  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1796)) ;
                                     enumerator_64079.gotoNextObject () ;
                                   }
                                   outArgument_outResultType = GALGAS_Ttype::constructor_listType (SOURCE_FILE ("template_expression_parser.galgas", 1798)) ;
-                                  outArgument_outResultValue = function_valueWithList (var_result, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1799)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1799)) ;
+                                  outArgument_outResultValue = function_valueWithList (var_result_64021, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1799)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1799)) ;
                                 }else if (kBoolFalse == test_29) {
                                   const enumGalgasBool test_30 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1800)).objectCompare (GALGAS_string ("interpretEscape"))).boolEnum () ;
                                   if (kBoolTrue == test_30) {
@@ -9931,76 +9931,76 @@ void routine_templateMethodInvocation (const GALGAS_Ttype constinArgument_inType
                                       {
                                       routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1806)), GALGAS_uint ((uint32_t) 1U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1806)) ;
                                       }
-                                      GALGAS_Tvalue var_separator ;
+                                      GALGAS_Tvalue var_separator_64891 ;
                                       GALGAS_Ttype joker_64939 ; // Joker input parameter
-                                      inArgument_inParameterTypeList.method_first (var_separator, joker_64939, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1808)) ;
+                                      inArgument_inParameterTypeList.method_first (var_separator_64891, joker_64939, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1808)) ;
                                       outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1809)) ;
-                                      outArgument_outResultValue = function_valueWithString (var_separator.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1810)).add_operation (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1810)).getter_stringByReplacingStringByString (GALGAS_string ("\n"), GALGAS_string ("\n").add_operation (var_separator.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1810)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1810)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1810)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1810)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1810)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1810)) ;
+                                      outArgument_outResultValue = function_valueWithString (var_separator_64891.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1810)).add_operation (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1810)).getter_stringByReplacingStringByString (GALGAS_string ("\n"), GALGAS_string ("\n").add_operation (var_separator_64891.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1810)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1810)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1810)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1810)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1810)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1810)) ;
                                     }else if (kBoolFalse == test_31) {
                                       const enumGalgasBool test_32 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1811)).objectCompare (GALGAS_string ("wrap"))).boolEnum () ;
                                       if (kBoolTrue == test_32) {
                                         {
                                         routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_expression_parser.galgas", 1812)), GALGAS_uint ((uint32_t) 2U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1812)) ;
                                         }
-                                        GALGAS_Tvalue var_width ;
+                                        GALGAS_Tvalue var_width_65441 ;
                                         {
                                         GALGAS_Ttype joker_65490 ; // Joker input parameter
-                                        inArgument_inParameterTypeList.modifier_popFirst (var_width, joker_65490, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1815)) ;
+                                        inArgument_inParameterTypeList.setter_popFirst (var_width_65441, joker_65490, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1815)) ;
                                         }
-                                        GALGAS_Tvalue var_shift ;
+                                        GALGAS_Tvalue var_shift_65514 ;
                                         {
                                         GALGAS_Ttype joker_65563 ; // Joker input parameter
-                                        inArgument_inParameterTypeList.modifier_popFirst (var_shift, joker_65563, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1817)) ;
+                                        inArgument_inParameterTypeList.setter_popFirst (var_shift_65514, joker_65563, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1817)) ;
                                         }
-                                        GALGAS_string var_stringshift = GALGAS_string::constructor_stringWithSequenceOfCharacters (GALGAS_char (TO_UNICODE (32)), var_shift.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1818)).getter_uint (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1818))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1818)) ;
-                                        GALGAS_string var_result = constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1819)) ;
-                                        GALGAS_stringlist var_paragraph = var_result.getter_componentsSeparatedByString (GALGAS_string ("\n") COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1828)) ;
-                                        GALGAS_stringlist var_resultParagraph = GALGAS_stringlist::constructor_emptyList (SOURCE_FILE ("template_expression_parser.galgas", 1829)) ;
-                                        cEnumerator_stringlist enumerator_66228 (var_paragraph, kEnumeration_up) ;
+                                        GALGAS_string var_stringshift_65593 = GALGAS_string::constructor_stringWithSequenceOfCharacters (GALGAS_char (TO_UNICODE (32)), var_shift_65514.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1818)).getter_uint (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1818))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1818)) ;
+                                        GALGAS_string var_result_65694 = constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1819)) ;
+                                        GALGAS_stringlist var_paragraph_66095 = var_result_65694.getter_componentsSeparatedByString (GALGAS_string ("\n") COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1828)) ;
+                                        GALGAS_stringlist var_resultParagraph_66168 = GALGAS_stringlist::constructor_emptyList (SOURCE_FILE ("template_expression_parser.galgas", 1829)) ;
+                                        cEnumerator_stringlist enumerator_66228 (var_paragraph_66095, kEnumeration_up) ;
                                         while (enumerator_66228.hasCurrentObject ()) {
-                                          GALGAS_stringlist var_parts = enumerator_66228.current_mValue (HERE).getter_componentsSeparatedByString (GALGAS_string (" ") COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1831)) ;
-                                          GALGAS_sint_36__34_ var_linewidth = GALGAS_sint_36__34_ ((int64_t) 0LL) ;
-                                          var_result = GALGAS_string::makeEmptyString () ;
-                                          cEnumerator_stringlist enumerator_66397 (var_parts, kEnumeration_up) ;
+                                          GALGAS_stringlist var_parts_66259 = enumerator_66228.current_mValue (HERE).getter_componentsSeparatedByString (GALGAS_string (" ") COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1831)) ;
+                                          GALGAS_sint_36__34_ var_linewidth_66336 = GALGAS_sint_36__34_ ((int64_t) 0LL) ;
+                                          var_result_65694 = GALGAS_string::makeEmptyString () ;
+                                          cEnumerator_stringlist enumerator_66397 (var_parts_66259, kEnumeration_up) ;
                                           while (enumerator_66397.hasCurrentObject ()) {
                                             const enumGalgasBool test_33 = GALGAS_bool (kIsNotEqual, enumerator_66397.current_mValue (HERE).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
                                             if (kBoolTrue == test_33) {
-                                              const enumGalgasBool test_34 = GALGAS_bool (kIsStrictSup, var_linewidth.add_operation (enumerator_66397.current_mValue (HERE).getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1836)).getter_sint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1836)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1836)).objectCompare (var_width.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1836)))).boolEnum () ;
+                                              const enumGalgasBool test_34 = GALGAS_bool (kIsStrictSup, var_linewidth_66336.add_operation (enumerator_66397.current_mValue (HERE).getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1836)).getter_sint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1836)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1836)).objectCompare (var_width_65441.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1836)))).boolEnum () ;
                                               if (kBoolTrue == test_34) {
-                                                var_result.plusAssign_operation(GALGAS_string ("\n").add_operation (var_stringshift, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1837)), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1837)) ;
-                                                var_linewidth = var_shift.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1838)) ;
+                                                var_result_65694.plusAssign_operation(GALGAS_string ("\n").add_operation (var_stringshift_65593, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1837)), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1837)) ;
+                                                var_linewidth_66336 = var_shift_65514.getter_mInt_36__34_Value (SOURCE_FILE ("template_expression_parser.galgas", 1838)) ;
                                               }
-                                              var_linewidth = var_linewidth.add_operation (enumerator_66397.current_mValue (HERE).getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1840)).getter_sint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1840)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1840)).add_operation (GALGAS_sint_36__34_ ((int64_t) 1LL), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1840)) ;
-                                              var_result.plusAssign_operation(enumerator_66397.current_mValue (HERE).add_operation (GALGAS_string (" "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1841)), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1841)) ;
+                                              var_linewidth_66336 = var_linewidth_66336.add_operation (enumerator_66397.current_mValue (HERE).getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1840)).getter_sint_36__34_ (SOURCE_FILE ("template_expression_parser.galgas", 1840)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1840)).add_operation (GALGAS_sint_36__34_ ((int64_t) 1LL), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1840)) ;
+                                              var_result_65694.plusAssign_operation(enumerator_66397.current_mValue (HERE).add_operation (GALGAS_string (" "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1841)), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1841)) ;
                                             }
                                             enumerator_66397.gotoNextObject () ;
                                           }
-                                          var_resultParagraph.addAssign_operation (var_result  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1844)) ;
+                                          var_resultParagraph_66168.addAssign_operation (var_result_65694  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1844)) ;
                                           enumerator_66228.gotoNextObject () ;
                                         }
                                         outArgument_outResultType = GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1846)) ;
-                                        outArgument_outResultValue = function_valueWithString (GALGAS_string::constructor_componentsJoinedByString (var_resultParagraph, GALGAS_string ("\n")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1847)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1847)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1847)) ;
+                                        outArgument_outResultValue = function_valueWithString (GALGAS_string::constructor_componentsJoinedByString (var_resultParagraph_66168, GALGAS_string ("\n")  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1847)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1847)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1847)) ;
                                       }else if (kBoolFalse == test_32) {
                                         const enumGalgasBool test_35 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1848)).objectCompare (GALGAS_string ("substringExists"))).boolEnum () ;
                                         if (kBoolTrue == test_35) {
                                           {
                                           routine_checkInvocationHasArguments (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, GALGAS_Ttype::constructor_stringType (SOURCE_FILE ("template_expression_parser.galgas", 1849)), GALGAS_uint ((uint32_t) 1U), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1849)) ;
                                           }
-                                          GALGAS_Tvalue var_subString ;
+                                          GALGAS_Tvalue var_subString_67203 ;
                                           {
                                           GALGAS_Ttype joker_67205 ; // Joker input parameter
-                                          inArgument_inParameterTypeList.modifier_popFirst (var_subString, joker_67205, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1850)) ;
+                                          inArgument_inParameterTypeList.setter_popFirst (var_subString_67203, joker_67205, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1850)) ;
                                           }
-                                          GALGAS_uint var_start = GALGAS_uint ((uint32_t) 0U) ;
-                                          GALGAS_uint var_stop = constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1852)).getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1852)).substract_operation (var_subString.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1852)).getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1852)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1852)) ;
-                                          GALGAS_bool var_exists = GALGAS_bool (false) ;
+                                          GALGAS_uint var_start_67227 = GALGAS_uint ((uint32_t) 0U) ;
+                                          GALGAS_uint var_stop_67250 = constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1852)).getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1852)).substract_operation (var_subString_67203.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1852)).getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1852)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1852)) ;
+                                          GALGAS_bool var_exists_67341 = GALGAS_bool (false) ;
                                           if (constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1854)).getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1854)).isValid ()) {
                                             uint32_t variant_67363 = constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1854)).getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1854)).uintValue () ;
                                             bool loop_67363 = true ;
                                             while (loop_67363) {
-                                              loop_67363 = GALGAS_bool (kIsInfOrEqual, var_start.objectCompare (var_stop)).isValid () ;
+                                              loop_67363 = GALGAS_bool (kIsInfOrEqual, var_start_67227.objectCompare (var_stop_67250)).isValid () ;
                                               if (loop_67363) {
-                                                loop_67363 = GALGAS_bool (kIsInfOrEqual, var_start.objectCompare (var_stop)).boolValue () ;
+                                                loop_67363 = GALGAS_bool (kIsInfOrEqual, var_start_67227.objectCompare (var_stop_67250)).boolValue () ;
                                               }
                                               if (loop_67363 && (0 == variant_67363)) {
                                                 loop_67363 = false ;
@@ -10008,16 +10008,16 @@ void routine_templateMethodInvocation (const GALGAS_Ttype constinArgument_inType
                                               }
                                               if (loop_67363) {
                                                 variant_67363 -- ;
-                                                const enumGalgasBool test_36 = GALGAS_bool (kIsEqual, constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1856)).getter_subString (var_start, var_subString.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1856)).getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1856)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1856)).objectCompare (var_subString.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1856)))).boolEnum () ;
+                                                const enumGalgasBool test_36 = GALGAS_bool (kIsEqual, constinArgument_inValue.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1856)).getter_subString (var_start_67227, var_subString_67203.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1856)).getter_length (SOURCE_FILE ("template_expression_parser.galgas", 1856)) COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1856)).objectCompare (var_subString_67203.getter_mStringValue (SOURCE_FILE ("template_expression_parser.galgas", 1856)))).boolEnum () ;
                                                 if (kBoolTrue == test_36) {
-                                                  var_exists = GALGAS_bool (true) ;
+                                                  var_exists_67341 = GALGAS_bool (true) ;
                                                 }
-                                                var_start.increment_operation (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1859)) ;
+                                                var_start_67227.increment_operation (inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1859)) ;
                                               }
                                             }
                                           }
                                           outArgument_outResultType = GALGAS_Ttype::constructor_boolType (SOURCE_FILE ("template_expression_parser.galgas", 1861)) ;
-                                          outArgument_outResultValue = function_valueWithBool (var_exists, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1862)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1862)) ;
+                                          outArgument_outResultValue = function_valueWithBool (var_exists_67341, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1862)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1862)) ;
                                         }else if (kBoolFalse == test_35) {
                                           GALGAS_location location_37 (constinArgument_inMethodName.getter_location (HERE)) ; // Implicit use of 'location' getter
                                           inCompiler->emitSemanticError (location_37, GALGAS_string ("the ").add_operation (constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1864)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1864)).add_operation (GALGAS_string (" template method is not defined for "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1864)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1864)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1864))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1864)) ;
@@ -10066,9 +10066,9 @@ void routine_templateMethodInvocation (const GALGAS_Ttype constinArgument_inType
             routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1874)) ;
             }
             outArgument_outResultType = GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_expression_parser.galgas", 1875)) ;
-            GALGAS_TfieldMap var_firstElement ;
-            constinArgument_inValue.getter_mMapListValue (SOURCE_FILE ("template_expression_parser.galgas", 1877)).method_first (var_firstElement, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1877)) ;
-            outArgument_outResultValue = function_valueWithStruct (var_firstElement, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1878)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1878)) ;
+            GALGAS_TfieldMap var_firstElement_68582 ;
+            constinArgument_inValue.getter_mMapListValue (SOURCE_FILE ("template_expression_parser.galgas", 1877)).method_first (var_firstElement_68582, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1877)) ;
+            outArgument_outResultValue = function_valueWithStruct (var_firstElement_68582, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1878)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1878)) ;
           }else if (kBoolFalse == test_40) {
             const enumGalgasBool test_41 = GALGAS_bool (kIsEqual, constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1879)).objectCompare (GALGAS_string ("last"))).boolEnum () ;
             if (kBoolTrue == test_41) {
@@ -10076,9 +10076,9 @@ void routine_templateMethodInvocation (const GALGAS_Ttype constinArgument_inType
               routine_checkInvocationHasNoArgument (constinArgument_inType, constinArgument_inMethodName, inArgument_inParameterTypeList, inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1880)) ;
               }
               outArgument_outResultType = GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_expression_parser.galgas", 1881)) ;
-              GALGAS_TfieldMap var_lastElement ;
-              constinArgument_inValue.getter_mMapListValue (SOURCE_FILE ("template_expression_parser.galgas", 1883)).method_last (var_lastElement, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1883)) ;
-              outArgument_outResultValue = function_valueWithStruct (var_lastElement, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1884)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1884)) ;
+              GALGAS_TfieldMap var_lastElement_68915 ;
+              constinArgument_inValue.getter_mMapListValue (SOURCE_FILE ("template_expression_parser.galgas", 1883)).method_last (var_lastElement_68915, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1883)) ;
+              outArgument_outResultValue = function_valueWithStruct (var_lastElement_68915, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1884)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1884)) ;
             }else if (kBoolFalse == test_41) {
               GALGAS_location location_42 (constinArgument_inMethodName.getter_location (HERE)) ; // Implicit use of 'location' getter
               inCompiler->emitSemanticError (location_42, GALGAS_string ("the ").add_operation (constinArgument_inMethodName.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1886)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1886)).add_operation (GALGAS_string (" template method is not defined for "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1886)).add_operation (extensionGetter_messageGoilTemplateType (constinArgument_inType, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1886)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1886))  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1886)) ;
@@ -10128,11 +10128,11 @@ void routine_templateMethodInvocation (const GALGAS_Ttype constinArgument_inType
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                                 Routine 'typeError'                                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_typeError (const GALGAS_lstring constinArgument_inFunctionName,
                         const GALGAS_type constinArgument_inActualType,
@@ -10140,33 +10140,33 @@ void routine_typeError (const GALGAS_lstring constinArgument_inFunctionName,
                         const GALGAS_uint constinArgument_inParameterIndex,
                         C_Compiler * inCompiler
                         COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_string var_m = GALGAS_string ("the function requires the parameter ").add_operation (constinArgument_inParameterIndex.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1917)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1917)).add_operation (GALGAS_string (" to be "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1917)).add_operation (constinArgument_inExpectedTypeName, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1918)).add_operation (GALGAS_string ("; its type is "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1918)) ;
+  GALGAS_string var_m_70739 = GALGAS_string ("the function requires the parameter ").add_operation (constinArgument_inParameterIndex.getter_string (SOURCE_FILE ("template_expression_parser.galgas", 1917)), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1917)).add_operation (GALGAS_string (" to be "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1917)).add_operation (constinArgument_inExpectedTypeName, inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1918)).add_operation (GALGAS_string ("; its type is "), inCompiler COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1918)) ;
   const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, constinArgument_inActualType.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_bool))).boolEnum () ;
   if (kBoolTrue == test_0) {
-    var_m.plusAssign_operation(GALGAS_string ("boolean"), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1920)) ;
+    var_m_70739.plusAssign_operation(GALGAS_string ("boolean"), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1920)) ;
   }else if (kBoolFalse == test_0) {
     const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, constinArgument_inActualType.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_uint_36__34_))).boolEnum () ;
     if (kBoolTrue == test_1) {
-      var_m.plusAssign_operation(GALGAS_string ("unsigned"), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1922)) ;
+      var_m_70739.plusAssign_operation(GALGAS_string ("unsigned"), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1922)) ;
     }else if (kBoolFalse == test_1) {
       const enumGalgasBool test_2 = GALGAS_bool (kIsEqual, constinArgument_inActualType.objectCompare (GALGAS_type (& kTypeDescriptor_GALGAS_string))).boolEnum () ;
       if (kBoolTrue == test_2) {
-        var_m.plusAssign_operation(GALGAS_string ("string"), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1924)) ;
+        var_m_70739.plusAssign_operation(GALGAS_string ("string"), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1924)) ;
       }else if (kBoolFalse == test_2) {
-        var_m.plusAssign_operation(GALGAS_string ("a not allowed type"), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1926)) ;
+        var_m_70739.plusAssign_operation(GALGAS_string ("a not allowed type"), inCompiler  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1926)) ;
       }
     }
   }
   GALGAS_location location_3 (constinArgument_inFunctionName.getter_location (HERE)) ; // Implicit use of 'location' getter
-  inCompiler->emitSemanticError (location_3, var_m  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1928)) ;
+  inCompiler->emitSemanticError (location_3, var_m_70739  COMMA_SOURCE_FILE ("template_expression_parser.galgas", 1928)) ;
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                             Routine 'setVariableInPath'                                             *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_setVariableInPath (GALGAS_TvarPath inArgument_path,
                                 GALGAS_TfieldMap & ioArgument_ioFieldMap,
@@ -10174,222 +10174,222 @@ void routine_setVariableInPath (GALGAS_TvarPath inArgument_path,
                                 const GALGAS_Tvalue constinArgument_enumeratedValue,
                                 C_Compiler * inCompiler
                                 COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_lstring var_varName ;
-  GALGAS_lstring var_key ;
-  GALGAS_lsint var_idx ;
+  GALGAS_lstring var_varName_41508 ;
+  GALGAS_lstring var_key_41523 ;
+  GALGAS_lsint var_idx_41536 ;
   {
-  inArgument_path.modifier_popFirst (var_varName, var_key, var_idx, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1514)) ;
+  inArgument_path.setter_popFirst (var_varName_41508, var_key_41523, var_idx_41536, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1514)) ;
   }
-  const enumGalgasBool test_0 = ioArgument_ioFieldMap.getter_hasKey (var_varName.getter_string (SOURCE_FILE ("template_parser.galgas", 1516)) COMMA_SOURCE_FILE ("template_parser.galgas", 1516)).boolEnum () ;
+  const enumGalgasBool test_0 = ioArgument_ioFieldMap.getter_hasKey (var_varName_41508.getter_string (SOURCE_FILE ("template_parser.galgas", 1516)) COMMA_SOURCE_FILE ("template_parser.galgas", 1516)).boolEnum () ;
   if (kBoolTrue == test_0) {
-    GALGAS_Ttype var_fieldType ;
-    GALGAS_Tvalue var_fieldValue ;
-    ioArgument_ioFieldMap.method_searchKey (var_varName, var_fieldType, var_fieldValue, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1519)) ;
-    const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, var_fieldType.objectCompare (GALGAS_Ttype::constructor_mapType (SOURCE_FILE ("template_parser.galgas", 1520)))).boolEnum () ;
+    GALGAS_Ttype var_fieldType_41647 ;
+    GALGAS_Tvalue var_fieldValue_41670 ;
+    ioArgument_ioFieldMap.method_searchKey (var_varName_41508, var_fieldType_41647, var_fieldValue_41670, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1519)) ;
+    const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, var_fieldType_41647.objectCompare (GALGAS_Ttype::constructor_mapType (SOURCE_FILE ("template_parser.galgas", 1520)))).boolEnum () ;
     if (kBoolTrue == test_1) {
-      const enumGalgasBool test_2 = GALGAS_bool (kIsNotEqual, var_key.getter_string (SOURCE_FILE ("template_parser.galgas", 1522)).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+      const enumGalgasBool test_2 = GALGAS_bool (kIsNotEqual, var_key_41523.getter_string (SOURCE_FILE ("template_parser.galgas", 1522)).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
       if (kBoolTrue == test_2) {
-        GALGAS_TfieldMap var_items = var_fieldValue.getter_mStructValue (SOURCE_FILE ("template_parser.galgas", 1524)) ;
-        const enumGalgasBool test_3 = var_items.getter_hasKey (var_key.getter_string (SOURCE_FILE ("template_parser.galgas", 1525)) COMMA_SOURCE_FILE ("template_parser.galgas", 1525)).boolEnum () ;
+        GALGAS_TfieldMap var_items_41913 = var_fieldValue_41670.getter_mStructValue (SOURCE_FILE ("template_parser.galgas", 1524)) ;
+        const enumGalgasBool test_3 = var_items_41913.getter_hasKey (var_key_41523.getter_string (SOURCE_FILE ("template_parser.galgas", 1525)) COMMA_SOURCE_FILE ("template_parser.galgas", 1525)).boolEnum () ;
         if (kBoolTrue == test_3) {
           const enumGalgasBool test_4 = GALGAS_bool (kIsEqual, inArgument_path.getter_length (SOURCE_FILE ("template_parser.galgas", 1526)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
           if (kBoolTrue == test_4) {
             {
-            var_items.modifier_setMTypeForKey (constinArgument_expressionType, var_key.getter_string (SOURCE_FILE ("template_parser.galgas", 1527)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1527)) ;
+            var_items_41913.setter_setMTypeForKey (constinArgument_expressionType, var_key_41523.getter_string (SOURCE_FILE ("template_parser.galgas", 1527)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1527)) ;
             }
             {
-            var_items.modifier_setMValueForKey (constinArgument_enumeratedValue, var_key.getter_string (SOURCE_FILE ("template_parser.galgas", 1528)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1528)) ;
+            var_items_41913.setter_setMValueForKey (constinArgument_enumeratedValue, var_key_41523.getter_string (SOURCE_FILE ("template_parser.galgas", 1528)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1528)) ;
             }
           }else if (kBoolFalse == test_4) {
-            GALGAS_Ttype var_itemType ;
-            GALGAS_Tvalue var_itemValue ;
-            var_items.method_searchKey (var_key, var_itemType, var_itemValue, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1532)) ;
-            GALGAS_TfieldMap var_nextFieldMap = var_itemValue.getter_mStructValue (SOURCE_FILE ("template_parser.galgas", 1533)) ;
+            GALGAS_Ttype var_itemType_42202 ;
+            GALGAS_Tvalue var_itemValue_42232 ;
+            var_items_41913.method_searchKey (var_key_41523, var_itemType_42202, var_itemValue_42232, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1532)) ;
+            GALGAS_TfieldMap var_nextFieldMap_42324 = var_itemValue_42232.getter_mStructValue (SOURCE_FILE ("template_parser.galgas", 1533)) ;
             {
-            routine_setVariableInPath (inArgument_path, var_nextFieldMap, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1534)) ;
+            routine_setVariableInPath (inArgument_path, var_nextFieldMap_42324, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1534)) ;
             }
-            var_itemValue.mAttribute_mStructValue = var_nextFieldMap ;
-            var_itemType = GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1536)) ;
+            var_itemValue_42232.mAttribute_mStructValue = var_nextFieldMap_42324 ;
+            var_itemType_42202 = GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1536)) ;
             {
-            var_items.modifier_setMTypeForKey (var_itemType, var_key.getter_string (SOURCE_FILE ("template_parser.galgas", 1537)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1537)) ;
+            var_items_41913.setter_setMTypeForKey (var_itemType_42202, var_key_41523.getter_string (SOURCE_FILE ("template_parser.galgas", 1537)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1537)) ;
             }
             {
-            var_items.modifier_setMValueForKey (var_itemValue, var_key.getter_string (SOURCE_FILE ("template_parser.galgas", 1538)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1538)) ;
+            var_items_41913.setter_setMValueForKey (var_itemValue_42232, var_key_41523.getter_string (SOURCE_FILE ("template_parser.galgas", 1538)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1538)) ;
             }
           }
         }else if (kBoolFalse == test_3) {
           const enumGalgasBool test_5 = GALGAS_bool (kIsEqual, inArgument_path.getter_length (SOURCE_FILE ("template_parser.galgas", 1541)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
           if (kBoolTrue == test_5) {
             {
-            var_items.modifier_insertKey (var_key, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1542)) ;
+            var_items_41913.setter_insertKey (var_key_41523, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1542)) ;
             }
           }else if (kBoolFalse == test_5) {
-            GALGAS_TfieldMap var_nextFieldMap = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1544)) ;
+            GALGAS_TfieldMap var_nextFieldMap_42832 = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1544)) ;
             {
-            routine_setVariableInPath (inArgument_path, var_nextFieldMap, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1545)) ;
+            routine_setVariableInPath (inArgument_path, var_nextFieldMap_42832, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1545)) ;
             }
             {
-            var_items.modifier_insertKey (var_key, GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1546)), function_valueWithStruct (var_nextFieldMap, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1546)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1546)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1546)) ;
+            var_items_41913.setter_insertKey (var_key_41523, GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1546)), function_valueWithStruct (var_nextFieldMap_42832, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1546)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1546)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1546)) ;
             }
           }
         }
-        var_fieldValue.mAttribute_mStructValue = var_items ;
+        var_fieldValue_41670.mAttribute_mStructValue = var_items_41913 ;
         {
-        ioArgument_ioFieldMap.modifier_setMTypeForKey (var_fieldType, var_varName.getter_string (SOURCE_FILE ("template_parser.galgas", 1550)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1550)) ;
+        ioArgument_ioFieldMap.setter_setMTypeForKey (var_fieldType_41647, var_varName_41508.getter_string (SOURCE_FILE ("template_parser.galgas", 1550)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1550)) ;
         }
         {
-        ioArgument_ioFieldMap.modifier_setMValueForKey (var_fieldValue, var_varName.getter_string (SOURCE_FILE ("template_parser.galgas", 1551)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1551)) ;
+        ioArgument_ioFieldMap.setter_setMValueForKey (var_fieldValue_41670, var_varName_41508.getter_string (SOURCE_FILE ("template_parser.galgas", 1551)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1551)) ;
         }
       }else if (kBoolFalse == test_2) {
         const enumGalgasBool test_6 = GALGAS_bool (kIsEqual, inArgument_path.getter_length (SOURCE_FILE ("template_parser.galgas", 1553)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
         if (kBoolTrue == test_6) {
           {
-          ioArgument_ioFieldMap.modifier_setMTypeForKey (constinArgument_expressionType, var_varName.getter_string (SOURCE_FILE ("template_parser.galgas", 1555)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1555)) ;
+          ioArgument_ioFieldMap.setter_setMTypeForKey (constinArgument_expressionType, var_varName_41508.getter_string (SOURCE_FILE ("template_parser.galgas", 1555)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1555)) ;
           }
           {
-          ioArgument_ioFieldMap.modifier_setMValueForKey (constinArgument_enumeratedValue, var_varName.getter_string (SOURCE_FILE ("template_parser.galgas", 1556)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1556)) ;
+          ioArgument_ioFieldMap.setter_setMValueForKey (constinArgument_enumeratedValue, var_varName_41508.getter_string (SOURCE_FILE ("template_parser.galgas", 1556)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1556)) ;
           }
         }else if (kBoolFalse == test_6) {
-          GALGAS_TfieldMap var_nextFieldMap = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1559)) ;
+          GALGAS_TfieldMap var_nextFieldMap_43589 = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1559)) ;
           {
-          routine_setVariableInPath (inArgument_path, var_nextFieldMap, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1560)) ;
+          routine_setVariableInPath (inArgument_path, var_nextFieldMap_43589, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1560)) ;
           }
           {
-          ioArgument_ioFieldMap.modifier_setMTypeForKey (GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1561)), var_varName.getter_string (SOURCE_FILE ("template_parser.galgas", 1561)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1561)) ;
+          ioArgument_ioFieldMap.setter_setMTypeForKey (GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1561)), var_varName_41508.getter_string (SOURCE_FILE ("template_parser.galgas", 1561)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1561)) ;
           }
           {
-          ioArgument_ioFieldMap.modifier_setMValueForKey (function_valueWithStruct (var_nextFieldMap, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1562)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1562)), var_varName.getter_string (SOURCE_FILE ("template_parser.galgas", 1562)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1562)) ;
+          ioArgument_ioFieldMap.setter_setMValueForKey (function_valueWithStruct (var_nextFieldMap_43589, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1562)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1562)), var_varName_41508.getter_string (SOURCE_FILE ("template_parser.galgas", 1562)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1562)) ;
           }
         }
       }
     }else if (kBoolFalse == test_1) {
-      const enumGalgasBool test_7 = GALGAS_bool (kIsEqual, var_fieldType.objectCompare (GALGAS_Ttype::constructor_listType (SOURCE_FILE ("template_parser.galgas", 1565)))).boolEnum () ;
+      const enumGalgasBool test_7 = GALGAS_bool (kIsEqual, var_fieldType_41647.objectCompare (GALGAS_Ttype::constructor_listType (SOURCE_FILE ("template_parser.galgas", 1565)))).boolEnum () ;
       if (kBoolTrue == test_7) {
-        const enumGalgasBool test_8 = GALGAS_bool (kIsNotEqual, var_idx.getter_sint (SOURCE_FILE ("template_parser.galgas", 1567)).objectCompare (GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1567)))).boolEnum () ;
+        const enumGalgasBool test_8 = GALGAS_bool (kIsNotEqual, var_idx_41536.getter_sint (SOURCE_FILE ("template_parser.galgas", 1567)).objectCompare (GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1567)))).boolEnum () ;
         if (kBoolTrue == test_8) {
           const enumGalgasBool test_9 = GALGAS_bool (kIsEqual, inArgument_path.getter_length (SOURCE_FILE ("template_parser.galgas", 1568)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
           if (kBoolTrue == test_9) {
             const enumGalgasBool test_10 = GALGAS_bool (kIsEqual, constinArgument_expressionType.objectCompare (GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1569)))).boolEnum () ;
             if (kBoolTrue == test_10) {
-              GALGAS_TfieldMapList var_theList = var_fieldValue.getter_mMapListValue (SOURCE_FILE ("template_parser.galgas", 1571)) ;
+              GALGAS_TfieldMapList var_theList_44202 = var_fieldValue_41670.getter_mMapListValue (SOURCE_FILE ("template_parser.galgas", 1571)) ;
               {
-              var_theList.modifier_setMMapAtIndex (constinArgument_enumeratedValue.getter_mStructValue (SOURCE_FILE ("template_parser.galgas", 1572)), var_idx.mAttribute_sint.getter_uint (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1572)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1572)) ;
+              var_theList_44202.setter_setMMapAtIndex (constinArgument_enumeratedValue.getter_mStructValue (SOURCE_FILE ("template_parser.galgas", 1572)), var_idx_41536.mAttribute_sint.getter_uint (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1572)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1572)) ;
               }
-              var_fieldValue.mAttribute_mMapListValue = var_theList ;
+              var_fieldValue_41670.mAttribute_mMapListValue = var_theList_44202 ;
             }else if (kBoolFalse == test_10) {
-              GALGAS_location location_11 (var_varName.getter_location (HERE)) ; // Implicit use of 'location' getter
+              GALGAS_location location_11 (var_varName_41508.getter_location (HERE)) ; // Implicit use of 'location' getter
               inCompiler->emitSemanticError (location_11, GALGAS_string ("struct expression expected")  COMMA_SOURCE_FILE ("template_parser.galgas", 1576)) ;
             }
           }else if (kBoolFalse == test_9) {
-            GALGAS_TfieldMapList var_theList = var_fieldValue.getter_mMapListValue (SOURCE_FILE ("template_parser.galgas", 1580)) ;
-            GALGAS_TfieldMap var_nextFieldMap = var_theList.getter_mMapAtIndex (var_idx.mAttribute_sint.getter_uint (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1581)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1581)) ;
+            GALGAS_TfieldMapList var_theList_44626 = var_fieldValue_41670.getter_mMapListValue (SOURCE_FILE ("template_parser.galgas", 1580)) ;
+            GALGAS_TfieldMap var_nextFieldMap_44689 = var_theList_44626.getter_mMapAtIndex (var_idx_41536.mAttribute_sint.getter_uint (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1581)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1581)) ;
             {
-            routine_setVariableInPath (inArgument_path, var_nextFieldMap, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1582)) ;
+            routine_setVariableInPath (inArgument_path, var_nextFieldMap_44689, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1582)) ;
             }
             {
-            var_theList.modifier_setMMapAtIndex (var_nextFieldMap, var_idx.mAttribute_sint.getter_uint (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1583)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1583)) ;
+            var_theList_44626.setter_setMMapAtIndex (var_nextFieldMap_44689, var_idx_41536.mAttribute_sint.getter_uint (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1583)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1583)) ;
             }
-            var_fieldValue.mAttribute_mMapListValue = var_theList ;
+            var_fieldValue_41670.mAttribute_mMapListValue = var_theList_44626 ;
           }
           {
-          ioArgument_ioFieldMap.modifier_setMTypeForKey (var_fieldType, var_varName.getter_string (SOURCE_FILE ("template_parser.galgas", 1586)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1586)) ;
+          ioArgument_ioFieldMap.setter_setMTypeForKey (var_fieldType_41647, var_varName_41508.getter_string (SOURCE_FILE ("template_parser.galgas", 1586)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1586)) ;
           }
           {
-          ioArgument_ioFieldMap.modifier_setMValueForKey (var_fieldValue, var_varName.getter_string (SOURCE_FILE ("template_parser.galgas", 1587)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1587)) ;
+          ioArgument_ioFieldMap.setter_setMValueForKey (var_fieldValue_41670, var_varName_41508.getter_string (SOURCE_FILE ("template_parser.galgas", 1587)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1587)) ;
           }
         }else if (kBoolFalse == test_8) {
           const enumGalgasBool test_12 = GALGAS_bool (kIsEqual, inArgument_path.getter_length (SOURCE_FILE ("template_parser.galgas", 1590)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
           if (kBoolTrue == test_12) {
             {
-            ioArgument_ioFieldMap.modifier_setMTypeForKey (constinArgument_expressionType, var_varName.getter_string (SOURCE_FILE ("template_parser.galgas", 1592)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1592)) ;
+            ioArgument_ioFieldMap.setter_setMTypeForKey (constinArgument_expressionType, var_varName_41508.getter_string (SOURCE_FILE ("template_parser.galgas", 1592)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1592)) ;
             }
             {
-            ioArgument_ioFieldMap.modifier_setMValueForKey (constinArgument_enumeratedValue, var_varName.getter_string (SOURCE_FILE ("template_parser.galgas", 1593)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1593)) ;
+            ioArgument_ioFieldMap.setter_setMValueForKey (constinArgument_enumeratedValue, var_varName_41508.getter_string (SOURCE_FILE ("template_parser.galgas", 1593)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1593)) ;
             }
           }else if (kBoolFalse == test_12) {
-            GALGAS_TfieldMap var_nextFieldMap = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1596)) ;
+            GALGAS_TfieldMap var_nextFieldMap_45389 = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1596)) ;
             {
-            routine_setVariableInPath (inArgument_path, var_nextFieldMap, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1597)) ;
+            routine_setVariableInPath (inArgument_path, var_nextFieldMap_45389, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1597)) ;
             }
             {
-            ioArgument_ioFieldMap.modifier_setMTypeForKey (GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1598)), var_varName.getter_string (SOURCE_FILE ("template_parser.galgas", 1598)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1598)) ;
+            ioArgument_ioFieldMap.setter_setMTypeForKey (GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1598)), var_varName_41508.getter_string (SOURCE_FILE ("template_parser.galgas", 1598)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1598)) ;
             }
             {
-            ioArgument_ioFieldMap.modifier_setMValueForKey (function_valueWithStruct (var_nextFieldMap, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1599)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1599)), var_varName.getter_string (SOURCE_FILE ("template_parser.galgas", 1599)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1599)) ;
+            ioArgument_ioFieldMap.setter_setMValueForKey (function_valueWithStruct (var_nextFieldMap_45389, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1599)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1599)), var_varName_41508.getter_string (SOURCE_FILE ("template_parser.galgas", 1599)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1599)) ;
             }
           }
         }
       }else if (kBoolFalse == test_7) {
-        const enumGalgasBool test_13 = GALGAS_bool (kIsEqual, var_fieldType.objectCompare (GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1602)))).boolEnum () ;
+        const enumGalgasBool test_13 = GALGAS_bool (kIsEqual, var_fieldType_41647.objectCompare (GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1602)))).boolEnum () ;
         if (kBoolTrue == test_13) {
           const enumGalgasBool test_14 = GALGAS_bool (kIsEqual, inArgument_path.getter_length (SOURCE_FILE ("template_parser.galgas", 1603)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
           if (kBoolTrue == test_14) {
             {
-            ioArgument_ioFieldMap.modifier_setMTypeForKey (constinArgument_expressionType, var_varName.getter_string (SOURCE_FILE ("template_parser.galgas", 1605)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1605)) ;
+            ioArgument_ioFieldMap.setter_setMTypeForKey (constinArgument_expressionType, var_varName_41508.getter_string (SOURCE_FILE ("template_parser.galgas", 1605)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1605)) ;
             }
             {
-            ioArgument_ioFieldMap.modifier_setMValueForKey (constinArgument_enumeratedValue, var_varName.getter_string (SOURCE_FILE ("template_parser.galgas", 1606)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1606)) ;
+            ioArgument_ioFieldMap.setter_setMValueForKey (constinArgument_enumeratedValue, var_varName_41508.getter_string (SOURCE_FILE ("template_parser.galgas", 1606)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1606)) ;
             }
           }else if (kBoolFalse == test_14) {
-            GALGAS_TfieldMap var_nextFieldMap = var_fieldValue.getter_mStructValue (SOURCE_FILE ("template_parser.galgas", 1609)) ;
+            GALGAS_TfieldMap var_nextFieldMap_46059 = var_fieldValue_41670.getter_mStructValue (SOURCE_FILE ("template_parser.galgas", 1609)) ;
             {
-            routine_setVariableInPath (inArgument_path, var_nextFieldMap, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1610)) ;
+            routine_setVariableInPath (inArgument_path, var_nextFieldMap_46059, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1610)) ;
             }
-            var_fieldValue.mAttribute_mStructValue = var_nextFieldMap ;
+            var_fieldValue_41670.mAttribute_mStructValue = var_nextFieldMap_46059 ;
             {
-            ioArgument_ioFieldMap.modifier_setMValueForKey (var_fieldValue, var_varName.getter_string (SOURCE_FILE ("template_parser.galgas", 1613)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1613)) ;
+            ioArgument_ioFieldMap.setter_setMValueForKey (var_fieldValue_41670, var_varName_41508.getter_string (SOURCE_FILE ("template_parser.galgas", 1613)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1613)) ;
             }
           }
         }else if (kBoolFalse == test_13) {
-          const enumGalgasBool test_15 = GALGAS_bool (kIsEqual, var_key.getter_string (SOURCE_FILE ("template_parser.galgas", 1616)).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+          const enumGalgasBool test_15 = GALGAS_bool (kIsEqual, var_key_41523.getter_string (SOURCE_FILE ("template_parser.galgas", 1616)).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
           if (kBoolTrue == test_15) {
-            const enumGalgasBool test_16 = GALGAS_bool (kIsEqual, var_idx.getter_sint (SOURCE_FILE ("template_parser.galgas", 1617)).objectCompare (GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1617)))).boolEnum () ;
+            const enumGalgasBool test_16 = GALGAS_bool (kIsEqual, var_idx_41536.getter_sint (SOURCE_FILE ("template_parser.galgas", 1617)).objectCompare (GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1617)))).boolEnum () ;
             if (kBoolTrue == test_16) {
               const enumGalgasBool test_17 = GALGAS_bool (kIsEqual, inArgument_path.getter_length (SOURCE_FILE ("template_parser.galgas", 1618)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
               if (kBoolTrue == test_17) {
                 {
-                ioArgument_ioFieldMap.modifier_setMTypeForKey (constinArgument_expressionType, var_varName.getter_string (SOURCE_FILE ("template_parser.galgas", 1620)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1620)) ;
+                ioArgument_ioFieldMap.setter_setMTypeForKey (constinArgument_expressionType, var_varName_41508.getter_string (SOURCE_FILE ("template_parser.galgas", 1620)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1620)) ;
                 }
                 {
-                ioArgument_ioFieldMap.modifier_setMValueForKey (constinArgument_enumeratedValue, var_varName.getter_string (SOURCE_FILE ("template_parser.galgas", 1621)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1621)) ;
+                ioArgument_ioFieldMap.setter_setMValueForKey (constinArgument_enumeratedValue, var_varName_41508.getter_string (SOURCE_FILE ("template_parser.galgas", 1621)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1621)) ;
                 }
               }else if (kBoolFalse == test_17) {
-                GALGAS_TfieldMap var_nextFieldMap = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1623)) ;
+                GALGAS_TfieldMap var_nextFieldMap_46682 = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1623)) ;
                 {
-                routine_setVariableInPath (inArgument_path, var_nextFieldMap, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1624)) ;
+                routine_setVariableInPath (inArgument_path, var_nextFieldMap_46682, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1624)) ;
                 }
                 {
-                ioArgument_ioFieldMap.modifier_setMTypeForKey (GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1625)), var_varName.getter_string (SOURCE_FILE ("template_parser.galgas", 1625)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1625)) ;
+                ioArgument_ioFieldMap.setter_setMTypeForKey (GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1625)), var_varName_41508.getter_string (SOURCE_FILE ("template_parser.galgas", 1625)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1625)) ;
                 }
                 {
-                ioArgument_ioFieldMap.modifier_setMValueForKey (function_valueWithStruct (var_nextFieldMap, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1626)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1626)), var_varName.getter_string (SOURCE_FILE ("template_parser.galgas", 1626)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1626)) ;
+                ioArgument_ioFieldMap.setter_setMValueForKey (function_valueWithStruct (var_nextFieldMap_46682, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1626)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1626)), var_varName_41508.getter_string (SOURCE_FILE ("template_parser.galgas", 1626)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1626)) ;
                 }
               }
             }else if (kBoolFalse == test_16) {
-              GALGAS_location location_18 (var_varName.getter_location (HERE)) ; // Implicit use of 'location' getter
+              GALGAS_location location_18 (var_varName_41508.getter_location (HERE)) ; // Implicit use of 'location' getter
               inCompiler->emitSemanticError (location_18, GALGAS_string ("A list must exist before setting one of its item")  COMMA_SOURCE_FILE ("template_parser.galgas", 1630)) ;
             }
           }else if (kBoolFalse == test_15) {
-            GALGAS_TfieldMap var_newMap = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1634)) ;
+            GALGAS_TfieldMap var_newMap_47228 = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1634)) ;
             const enumGalgasBool test_19 = GALGAS_bool (kIsEqual, inArgument_path.getter_length (SOURCE_FILE ("template_parser.galgas", 1635)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
             if (kBoolTrue == test_19) {
               {
-              var_newMap.modifier_insertKey (var_key, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1636)) ;
+              var_newMap_47228.setter_insertKey (var_key_41523, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1636)) ;
               }
             }else if (kBoolFalse == test_19) {
-              GALGAS_TfieldMap var_nextFieldMap = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1638)) ;
+              GALGAS_TfieldMap var_nextFieldMap_47395 = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1638)) ;
               {
-              routine_setVariableInPath (inArgument_path, var_nextFieldMap, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1639)) ;
+              routine_setVariableInPath (inArgument_path, var_nextFieldMap_47395, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1639)) ;
               }
               {
-              var_newMap.modifier_insertKey (var_key, GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1640)), function_valueWithStruct (var_nextFieldMap, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1640)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1640)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1640)) ;
+              var_newMap_47228.setter_insertKey (var_key_41523, GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1640)), function_valueWithStruct (var_nextFieldMap_47395, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1640)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1640)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1640)) ;
               }
             }
             {
-            ioArgument_ioFieldMap.modifier_setMTypeForKey (GALGAS_Ttype::constructor_mapType (SOURCE_FILE ("template_parser.galgas", 1642)), var_varName.getter_string (SOURCE_FILE ("template_parser.galgas", 1642)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1642)) ;
+            ioArgument_ioFieldMap.setter_setMTypeForKey (GALGAS_Ttype::constructor_mapType (SOURCE_FILE ("template_parser.galgas", 1642)), var_varName_41508.getter_string (SOURCE_FILE ("template_parser.galgas", 1642)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1642)) ;
             }
             {
-            ioArgument_ioFieldMap.modifier_setMValueForKey (function_valueWithMap (var_newMap, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1643)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1643)), var_varName.getter_string (SOURCE_FILE ("template_parser.galgas", 1643)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1643)) ;
+            ioArgument_ioFieldMap.setter_setMValueForKey (function_valueWithMap (var_newMap_47228, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1643)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1643)), var_varName_41508.getter_string (SOURCE_FILE ("template_parser.galgas", 1643)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1643)) ;
             }
           }
         }
@@ -10398,53 +10398,53 @@ void routine_setVariableInPath (GALGAS_TvarPath inArgument_path,
   }else if (kBoolFalse == test_0) {
     const enumGalgasBool test_20 = GALGAS_bool (kIsEqual, inArgument_path.getter_length (SOURCE_FILE ("template_parser.galgas", 1648)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
     if (kBoolTrue == test_20) {
-      const enumGalgasBool test_21 = GALGAS_bool (kIsEqual, var_key.getter_string (SOURCE_FILE ("template_parser.galgas", 1649)).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+      const enumGalgasBool test_21 = GALGAS_bool (kIsEqual, var_key_41523.getter_string (SOURCE_FILE ("template_parser.galgas", 1649)).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
       if (kBoolTrue == test_21) {
-        const enumGalgasBool test_22 = GALGAS_bool (kIsEqual, var_idx.getter_sint (SOURCE_FILE ("template_parser.galgas", 1650)).objectCompare (GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1650)))).boolEnum () ;
+        const enumGalgasBool test_22 = GALGAS_bool (kIsEqual, var_idx_41536.getter_sint (SOURCE_FILE ("template_parser.galgas", 1650)).objectCompare (GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1650)))).boolEnum () ;
         if (kBoolTrue == test_22) {
           {
-          ioArgument_ioFieldMap.modifier_insertKey (var_varName, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1651)) ;
+          ioArgument_ioFieldMap.setter_insertKey (var_varName_41508, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1651)) ;
           }
         }else if (kBoolFalse == test_22) {
-          GALGAS_location location_23 (var_varName.getter_location (HERE)) ; // Implicit use of 'location' getter
+          GALGAS_location location_23 (var_varName_41508.getter_location (HERE)) ; // Implicit use of 'location' getter
           inCompiler->emitSemanticError (location_23, GALGAS_string ("A list must exist before setting one of its item")  COMMA_SOURCE_FILE ("template_parser.galgas", 1654)) ;
         }
       }else if (kBoolFalse == test_21) {
-        GALGAS_TfieldMap var_newMap = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1657)) ;
+        GALGAS_TfieldMap var_newMap_48232 = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1657)) ;
         {
-        var_newMap.modifier_insertKey (var_key, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1658)) ;
+        var_newMap_48232.setter_insertKey (var_key_41523, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1658)) ;
         }
         {
-        ioArgument_ioFieldMap.modifier_insertKey (var_varName, GALGAS_Ttype::constructor_mapType (SOURCE_FILE ("template_parser.galgas", 1659)), function_valueWithMap (var_newMap, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1659)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1659)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1659)) ;
+        ioArgument_ioFieldMap.setter_insertKey (var_varName_41508, GALGAS_Ttype::constructor_mapType (SOURCE_FILE ("template_parser.galgas", 1659)), function_valueWithMap (var_newMap_48232, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1659)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1659)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1659)) ;
         }
       }
     }else if (kBoolFalse == test_20) {
-      const enumGalgasBool test_24 = GALGAS_bool (kIsEqual, var_key.getter_string (SOURCE_FILE ("template_parser.galgas", 1662)).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+      const enumGalgasBool test_24 = GALGAS_bool (kIsEqual, var_key_41523.getter_string (SOURCE_FILE ("template_parser.galgas", 1662)).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
       if (kBoolTrue == test_24) {
-        const enumGalgasBool test_25 = GALGAS_bool (kIsEqual, var_idx.getter_sint (SOURCE_FILE ("template_parser.galgas", 1663)).objectCompare (GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1663)))).boolEnum () ;
+        const enumGalgasBool test_25 = GALGAS_bool (kIsEqual, var_idx_41536.getter_sint (SOURCE_FILE ("template_parser.galgas", 1663)).objectCompare (GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1663)))).boolEnum () ;
         if (kBoolTrue == test_25) {
-          GALGAS_TfieldMap var_nextFieldMap = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1664)) ;
+          GALGAS_TfieldMap var_nextFieldMap_48533 = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1664)) ;
           {
-          routine_setVariableInPath (inArgument_path, var_nextFieldMap, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1665)) ;
+          routine_setVariableInPath (inArgument_path, var_nextFieldMap_48533, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1665)) ;
           }
           {
-          ioArgument_ioFieldMap.modifier_insertKey (var_varName, GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1666)), function_valueWithStruct (var_nextFieldMap, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1666)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1666)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1666)) ;
+          ioArgument_ioFieldMap.setter_insertKey (var_varName_41508, GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1666)), function_valueWithStruct (var_nextFieldMap_48533, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1666)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1666)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1666)) ;
           }
         }else if (kBoolFalse == test_25) {
-          GALGAS_location location_26 (var_varName.getter_location (HERE)) ; // Implicit use of 'location' getter
+          GALGAS_location location_26 (var_varName_41508.getter_location (HERE)) ; // Implicit use of 'location' getter
           inCompiler->emitSemanticError (location_26, GALGAS_string ("A list must exist before setting one of its item")  COMMA_SOURCE_FILE ("template_parser.galgas", 1669)) ;
         }
       }else if (kBoolFalse == test_24) {
-        GALGAS_TfieldMap var_newMap = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1672)) ;
-        GALGAS_TfieldMap var_nextFieldMap = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1673)) ;
+        GALGAS_TfieldMap var_newMap_48963 = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1672)) ;
+        GALGAS_TfieldMap var_nextFieldMap_49011 = GALGAS_TfieldMap::constructor_emptyMap (SOURCE_FILE ("template_parser.galgas", 1673)) ;
         {
-        routine_setVariableInPath (inArgument_path, var_nextFieldMap, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1674)) ;
+        routine_setVariableInPath (inArgument_path, var_nextFieldMap_49011, constinArgument_expressionType, constinArgument_enumeratedValue, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1674)) ;
         }
         {
-        var_newMap.modifier_insertKey (var_key, GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1675)), function_valueWithStruct (var_nextFieldMap, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1675)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1675)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1675)) ;
+        var_newMap_48963.setter_insertKey (var_key_41523, GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1675)), function_valueWithStruct (var_nextFieldMap_49011, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1675)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1675)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1675)) ;
         }
         {
-        ioArgument_ioFieldMap.modifier_insertKey (var_varName, GALGAS_Ttype::constructor_mapType (SOURCE_FILE ("template_parser.galgas", 1676)), function_valueWithMap (var_newMap, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1676)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1676)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1676)) ;
+        ioArgument_ioFieldMap.setter_insertKey (var_varName_41508, GALGAS_Ttype::constructor_mapType (SOURCE_FILE ("template_parser.galgas", 1676)), function_valueWithMap (var_newMap_48963, function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1676)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1676)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1676)) ;
         }
       }
     }
@@ -10452,11 +10452,11 @@ void routine_setVariableInPath (GALGAS_TvarPath inArgument_path,
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                               Routine 'printVariable'                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_printVariable (GALGAS_uint inArgument_indent,
                             const GALGAS_Ttype constinArgument_variableType,
@@ -10464,7 +10464,7 @@ void routine_printVariable (GALGAS_uint inArgument_indent,
                             C_Compiler * inCompiler
                             COMMA_UNUSED_LOCATION_ARGS) {
   inArgument_indent = inArgument_indent.add_operation (GALGAS_uint ((uint32_t) 4U), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1687)) ;
-  GALGAS_string var_offset = GALGAS_string::constructor_stringWithSequenceOfCharacters (GALGAS_char (TO_UNICODE (32)), inArgument_indent  COMMA_SOURCE_FILE ("template_parser.galgas", 1688)) ;
+  GALGAS_string var_offset_49554 = GALGAS_string::constructor_stringWithSequenceOfCharacters (GALGAS_char (TO_UNICODE (32)), inArgument_indent  COMMA_SOURCE_FILE ("template_parser.galgas", 1688)) ;
   switch (constinArgument_variableType.enumValue ()) {
   case GALGAS_Ttype::kNotBuilt:
     break ;
@@ -10472,30 +10472,30 @@ void routine_printVariable (GALGAS_uint inArgument_indent,
     {
       const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, constinArgument_variableValue.getter_mInt_36__34_Value (SOURCE_FILE ("template_parser.galgas", 1691)).objectCompare (GALGAS_sint_36__34_ ((int64_t) 1LL))).boolEnum () ;
       if (kBoolTrue == test_0) {
-        inCompiler->printMessage (var_offset.add_operation (GALGAS_string ("true\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1692))  COMMA_SOURCE_FILE ("template_parser.galgas", 1692)) ;
+        inCompiler->printMessage (var_offset_49554.add_operation (GALGAS_string ("true\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1692))  COMMA_SOURCE_FILE ("template_parser.galgas", 1692)) ;
       }else if (kBoolFalse == test_0) {
-        inCompiler->printMessage (var_offset.add_operation (GALGAS_string ("false\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1694))  COMMA_SOURCE_FILE ("template_parser.galgas", 1694)) ;
+        inCompiler->printMessage (var_offset_49554.add_operation (GALGAS_string ("false\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1694))  COMMA_SOURCE_FILE ("template_parser.galgas", 1694)) ;
       }
     }
     break ;
   case GALGAS_Ttype::kEnum_intType:
     {
-      inCompiler->printMessage (var_offset.add_operation (constinArgument_variableValue.getter_mInt_36__34_Value (SOURCE_FILE ("template_parser.galgas", 1697)).getter_string (SOURCE_FILE ("template_parser.galgas", 1697)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1697)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1697))  COMMA_SOURCE_FILE ("template_parser.galgas", 1697)) ;
+      inCompiler->printMessage (var_offset_49554.add_operation (constinArgument_variableValue.getter_mInt_36__34_Value (SOURCE_FILE ("template_parser.galgas", 1697)).getter_string (SOURCE_FILE ("template_parser.galgas", 1697)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1697)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1697))  COMMA_SOURCE_FILE ("template_parser.galgas", 1697)) ;
     }
     break ;
   case GALGAS_Ttype::kEnum_floatType:
     {
-      inCompiler->printMessage (var_offset.add_operation (constinArgument_variableValue.getter_mFloatValue (SOURCE_FILE ("template_parser.galgas", 1699)).getter_string (SOURCE_FILE ("template_parser.galgas", 1699)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1699)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1699))  COMMA_SOURCE_FILE ("template_parser.galgas", 1699)) ;
+      inCompiler->printMessage (var_offset_49554.add_operation (constinArgument_variableValue.getter_mFloatValue (SOURCE_FILE ("template_parser.galgas", 1699)).getter_string (SOURCE_FILE ("template_parser.galgas", 1699)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1699)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1699))  COMMA_SOURCE_FILE ("template_parser.galgas", 1699)) ;
     }
     break ;
   case GALGAS_Ttype::kEnum_stringType:
     {
-      inCompiler->printMessage (var_offset.add_operation (GALGAS_string ("\""), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1701)).add_operation (constinArgument_variableValue.getter_mStringValue (SOURCE_FILE ("template_parser.galgas", 1701)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1701)).add_operation (GALGAS_string ("\"\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1701))  COMMA_SOURCE_FILE ("template_parser.galgas", 1701)) ;
+      inCompiler->printMessage (var_offset_49554.add_operation (GALGAS_string ("\""), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1701)).add_operation (constinArgument_variableValue.getter_mStringValue (SOURCE_FILE ("template_parser.galgas", 1701)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1701)).add_operation (GALGAS_string ("\"\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1701))  COMMA_SOURCE_FILE ("template_parser.galgas", 1701)) ;
     }
     break ;
   case GALGAS_Ttype::kEnum_enumType:
     {
-      inCompiler->printMessage (var_offset.add_operation (constinArgument_variableValue.getter_mStringValue (SOURCE_FILE ("template_parser.galgas", 1703)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1703)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1703))  COMMA_SOURCE_FILE ("template_parser.galgas", 1703)) ;
+      inCompiler->printMessage (var_offset_49554.add_operation (constinArgument_variableValue.getter_mStringValue (SOURCE_FILE ("template_parser.galgas", 1703)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1703)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1703))  COMMA_SOURCE_FILE ("template_parser.galgas", 1703)) ;
     }
     break ;
   case GALGAS_Ttype::kEnum_listType:
@@ -10503,7 +10503,7 @@ void routine_printVariable (GALGAS_uint inArgument_indent,
       cEnumerator_TfieldMapList enumerator_50125 (constinArgument_variableValue.getter_mMapListValue (SOURCE_FILE ("template_parser.galgas", 1705)), kEnumeration_up) ;
       GALGAS_uint index_50088 ((uint32_t) 0) ;
       while (enumerator_50125.hasCurrentObject ()) {
-        inCompiler->printMessage (var_offset.add_operation (GALGAS_string ("item at "), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1706)).add_operation (index_50088.getter_string (SOURCE_FILE ("template_parser.galgas", 1706)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1706)).add_operation (GALGAS_string (":\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1706))  COMMA_SOURCE_FILE ("template_parser.galgas", 1706)) ;
+        inCompiler->printMessage (var_offset_49554.add_operation (GALGAS_string ("item at "), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1706)).add_operation (index_50088.getter_string (SOURCE_FILE ("template_parser.galgas", 1706)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1706)).add_operation (GALGAS_string (":\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1706))  COMMA_SOURCE_FILE ("template_parser.galgas", 1706)) ;
         {
         routine_printVariable (inArgument_indent, GALGAS_Ttype::constructor_structType (SOURCE_FILE ("template_parser.galgas", 1707)), GALGAS_Tvalue::constructor_new (GALGAS_sint_36__34_ ((int64_t) 0LL), GALGAS_double (0), GALGAS_string::makeEmptyString (), GALGAS_TfieldMapList::constructor_emptyList (SOURCE_FILE ("template_parser.galgas", 1707)), enumerator_50125.current_mMap (HERE), function_dummyFunction (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1707)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1707))  COMMA_SOURCE_FILE ("template_parser.galgas", 1707)), inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1707)) ;
         }
@@ -10516,7 +10516,7 @@ void routine_printVariable (GALGAS_uint inArgument_indent,
     {
       cEnumerator_TfieldMap enumerator_50391 (constinArgument_variableValue.getter_mStructValue (SOURCE_FILE ("template_parser.galgas", 1710)), kEnumeration_up) ;
       while (enumerator_50391.hasCurrentObject ()) {
-        inCompiler->printMessage (var_offset.add_operation (enumerator_50391.current_lkey (HERE).getter_string (SOURCE_FILE ("template_parser.galgas", 1711)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1711)).add_operation (GALGAS_string (":\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1711))  COMMA_SOURCE_FILE ("template_parser.galgas", 1711)) ;
+        inCompiler->printMessage (var_offset_49554.add_operation (enumerator_50391.current_lkey (HERE).getter_string (SOURCE_FILE ("template_parser.galgas", 1711)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1711)).add_operation (GALGAS_string (":\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1711))  COMMA_SOURCE_FILE ("template_parser.galgas", 1711)) ;
         {
         routine_printVariable (inArgument_indent, enumerator_50391.current_mType (HERE), enumerator_50391.current_mValue (HERE), inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1712)) ;
         }
@@ -10528,7 +10528,7 @@ void routine_printVariable (GALGAS_uint inArgument_indent,
     {
       cEnumerator_TfieldMap enumerator_50543 (constinArgument_variableValue.getter_mStructValue (SOURCE_FILE ("template_parser.galgas", 1715)), kEnumeration_up) ;
       while (enumerator_50543.hasCurrentObject ()) {
-        inCompiler->printMessage (var_offset.add_operation (enumerator_50543.current_lkey (HERE).getter_string (SOURCE_FILE ("template_parser.galgas", 1716)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1716)).add_operation (GALGAS_string (":\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1716))  COMMA_SOURCE_FILE ("template_parser.galgas", 1716)) ;
+        inCompiler->printMessage (var_offset_49554.add_operation (enumerator_50543.current_lkey (HERE).getter_string (SOURCE_FILE ("template_parser.galgas", 1716)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1716)).add_operation (GALGAS_string (":\n"), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1716))  COMMA_SOURCE_FILE ("template_parser.galgas", 1716)) ;
         {
         routine_printVariable (inArgument_indent, enumerator_50543.current_mType (HERE), enumerator_50543.current_mValue (HERE), inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1717)) ;
         }
@@ -10545,11 +10545,11 @@ void routine_printVariable (GALGAS_uint inArgument_indent,
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                              Function 'structCompare'                                               *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_sint function_structCompare (const GALGAS_TfieldMap & constinArgument_s_31_,
                                     const GALGAS_TfieldMap & constinArgument_s_32_,
@@ -10559,32 +10559,32 @@ GALGAS_sint function_structCompare (const GALGAS_TfieldMap & constinArgument_s_3
   GALGAS_sint result_result ; // Returned variable
   const enumGalgasBool test_0 = GALGAS_bool (kIsStrictSup, inArgument_fieldList.getter_length (SOURCE_FILE ("template_parser.galgas", 1735)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
   if (kBoolTrue == test_0) {
-    GALGAS_lstring var_field ;
-    GALGAS_lsint var_order ;
+    GALGAS_lstring var_field_50977 ;
+    GALGAS_lsint var_order_50994 ;
     {
-    inArgument_fieldList.modifier_popFirst (var_field, var_order, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1738)) ;
+    inArgument_fieldList.setter_popFirst (var_field_50977, var_order_50994, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1738)) ;
     }
-    GALGAS_Ttype var_s_31_Type ;
-    GALGAS_Tvalue var_s_31_Value ;
-    constinArgument_s_31_.method_searchKey (var_field, var_s_31_Type, var_s_31_Value, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1741)) ;
-    GALGAS_Ttype var_s_32_Type ;
-    GALGAS_Tvalue var_s_32_Value ;
-    constinArgument_s_32_.method_searchKey (var_field, var_s_32_Type, var_s_32_Value, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1744)) ;
-    const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, var_s_31_Type.objectCompare (var_s_32_Type)).operator_and (GALGAS_bool (kIsEqual, var_s_31_Type.objectCompare (GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_parser.galgas", 1745)))) COMMA_SOURCE_FILE ("template_parser.galgas", 1745)).boolEnum () ;
+    GALGAS_Ttype var_s_31_Type_51053 ;
+    GALGAS_Tvalue var_s_31_Value_51073 ;
+    constinArgument_s_31_.method_searchKey (var_field_50977, var_s_31_Type_51053, var_s_31_Value_51073, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1741)) ;
+    GALGAS_Ttype var_s_32_Type_51134 ;
+    GALGAS_Tvalue var_s_32_Value_51154 ;
+    constinArgument_s_32_.method_searchKey (var_field_50977, var_s_32_Type_51134, var_s_32_Value_51154, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1744)) ;
+    const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, var_s_31_Type_51053.objectCompare (var_s_32_Type_51134)).operator_and (GALGAS_bool (kIsEqual, var_s_31_Type_51053.objectCompare (GALGAS_Ttype::constructor_intType (SOURCE_FILE ("template_parser.galgas", 1745)))) COMMA_SOURCE_FILE ("template_parser.galgas", 1745)).boolEnum () ;
     if (kBoolTrue == test_1) {
-      const enumGalgasBool test_2 = GALGAS_bool (kIsStrictInf, var_s_31_Value.getter_mInt_36__34_Value (SOURCE_FILE ("template_parser.galgas", 1747)).objectCompare (var_s_32_Value.getter_mInt_36__34_Value (SOURCE_FILE ("template_parser.galgas", 1747)))).boolEnum () ;
+      const enumGalgasBool test_2 = GALGAS_bool (kIsStrictInf, var_s_31_Value_51073.getter_mInt_36__34_Value (SOURCE_FILE ("template_parser.galgas", 1747)).objectCompare (var_s_32_Value_51154.getter_mInt_36__34_Value (SOURCE_FILE ("template_parser.galgas", 1747)))).boolEnum () ;
       if (kBoolTrue == test_2) {
-        result_result = GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1749)).multiply_operation (var_order.getter_sint (SOURCE_FILE ("template_parser.galgas", 1749)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1749)) ;
+        result_result = GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1749)).multiply_operation (var_order_50994.getter_sint (SOURCE_FILE ("template_parser.galgas", 1749)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1749)) ;
       }else if (kBoolFalse == test_2) {
-        const enumGalgasBool test_3 = GALGAS_bool (kIsStrictSup, var_s_31_Value.getter_mInt_36__34_Value (SOURCE_FILE ("template_parser.galgas", 1751)).objectCompare (var_s_32_Value.getter_mInt_36__34_Value (SOURCE_FILE ("template_parser.galgas", 1751)))).boolEnum () ;
+        const enumGalgasBool test_3 = GALGAS_bool (kIsStrictSup, var_s_31_Value_51073.getter_mInt_36__34_Value (SOURCE_FILE ("template_parser.galgas", 1751)).objectCompare (var_s_32_Value_51154.getter_mInt_36__34_Value (SOURCE_FILE ("template_parser.galgas", 1751)))).boolEnum () ;
         if (kBoolTrue == test_3) {
-          result_result = GALGAS_sint ((int32_t) 1L).multiply_operation (var_order.getter_sint (SOURCE_FILE ("template_parser.galgas", 1753)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1753)) ;
+          result_result = GALGAS_sint ((int32_t) 1L).multiply_operation (var_order_50994.getter_sint (SOURCE_FILE ("template_parser.galgas", 1753)), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1753)) ;
         }else if (kBoolFalse == test_3) {
           result_result = function_structCompare (constinArgument_s_31_, constinArgument_s_32_, inArgument_fieldList, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1756)) ;
         }
       }
     }else if (kBoolFalse == test_1) {
-      GALGAS_location location_4 (var_field.getter_location (HERE)) ; // Implicit use of 'location' getter
+      GALGAS_location location_4 (var_field_50977.getter_location (HERE)) ; // Implicit use of 'location' getter
       inCompiler->emitSemanticError (location_4, GALGAS_string ("unsigned sort key required")  COMMA_SOURCE_FILE ("template_parser.galgas", 1760)) ;
       result_result.drop () ; // Release error dropped variable
     }
@@ -10596,9 +10596,9 @@ GALGAS_sint function_structCompare (const GALGAS_TfieldMap & constinArgument_s_3
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_structCompare [4] = {
   & kTypeDescriptor_GALGAS_TfieldMap,
@@ -10607,7 +10607,7 @@ static const C_galgas_type_descriptor * functionArgs_structCompare [4] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_structCompare (C_Compiler * inCompiler,
                                                               const cObjectArray & inEffectiveParameterArray,
@@ -10629,7 +10629,7 @@ static GALGAS_object functionWithGenericHeader_structCompare (C_Compiler * inCom
                                  COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_structCompare ("structCompare",
                                                                functionWithGenericHeader_structCompare,
@@ -10637,32 +10637,32 @@ C_galgas_function_descriptor functionDescriptor_structCompare ("structCompare",
                                                                3,
                                                                functionArgs_structCompare) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                                   Routine 'swap'                                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_swap (GALGAS_TfieldMapList & ioArgument_t,
                    const GALGAS_uint constinArgument_index_31_,
                    const GALGAS_uint constinArgument_index_32_,
                    C_Compiler * inCompiler
                    COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_TfieldMap var_temp = ioArgument_t.getter_mMapAtIndex (constinArgument_index_31_, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1772)) ;
+  GALGAS_TfieldMap var_temp_51923 = ioArgument_t.getter_mMapAtIndex (constinArgument_index_31_, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1772)) ;
   {
-  ioArgument_t.modifier_setMMapAtIndex (ioArgument_t.getter_mMapAtIndex (constinArgument_index_32_, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1773)), constinArgument_index_31_, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1773)) ;
+  ioArgument_t.setter_setMMapAtIndex (ioArgument_t.getter_mMapAtIndex (constinArgument_index_32_, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1773)), constinArgument_index_31_, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1773)) ;
   }
   {
-  ioArgument_t.modifier_setMMapAtIndex (var_temp, constinArgument_index_32_, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1774)) ;
+  ioArgument_t.setter_setMMapAtIndex (var_temp_51923, constinArgument_index_32_, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1774)) ;
   }
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                                 Routine 'partition'                                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_partition (GALGAS_TfieldMapList & ioArgument_t,
                         GALGAS_uint inArgument_min,
@@ -10671,19 +10671,19 @@ void routine_partition (GALGAS_TfieldMapList & ioArgument_t,
                         GALGAS_uint & ioArgument_pivotIndex,
                         C_Compiler * inCompiler
                         COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_TfieldMap var_pivot = ioArgument_t.getter_mMapAtIndex (ioArgument_pivotIndex, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1783)) ;
+  GALGAS_TfieldMap var_pivot_52183 = ioArgument_t.getter_mMapAtIndex (ioArgument_pivotIndex, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1783)) ;
   {
   routine_swap (ioArgument_t, ioArgument_pivotIndex, inArgument_max, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1784)) ;
   }
-  GALGAS_uint var_storeIndex = inArgument_min ;
-  GALGAS_uint var_i = inArgument_min ;
+  GALGAS_uint var_storeIndex_52263 = inArgument_min ;
+  GALGAS_uint var_i_52279 = inArgument_min ;
   if (inArgument_max.substract_operation (inArgument_min, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1787)).isValid ()) {
     uint32_t variant_52292 = inArgument_max.substract_operation (inArgument_min, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1787)).uintValue () ;
     bool loop_52292 = true ;
     while (loop_52292) {
-      loop_52292 = GALGAS_bool (kIsStrictInf, var_i.objectCompare (inArgument_max)).isValid () ;
+      loop_52292 = GALGAS_bool (kIsStrictInf, var_i_52279.objectCompare (inArgument_max)).isValid () ;
       if (loop_52292) {
-        loop_52292 = GALGAS_bool (kIsStrictInf, var_i.objectCompare (inArgument_max)).boolValue () ;
+        loop_52292 = GALGAS_bool (kIsStrictInf, var_i_52279.objectCompare (inArgument_max)).boolValue () ;
       }
       if (loop_52292 && (0 == variant_52292)) {
         loop_52292 = false ;
@@ -10691,29 +10691,29 @@ void routine_partition (GALGAS_TfieldMapList & ioArgument_t,
       }
       if (loop_52292) {
         variant_52292 -- ;
-        const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, function_structCompare (ioArgument_t.getter_mMapAtIndex (var_i, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1789)), var_pivot, constinArgument_fieldList, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1789)).objectCompare (GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1789)))).boolEnum () ;
+        const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, function_structCompare (ioArgument_t.getter_mMapAtIndex (var_i_52279, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1789)), var_pivot_52183, constinArgument_fieldList, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1789)).objectCompare (GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1789)))).boolEnum () ;
         if (kBoolTrue == test_0) {
           {
-          routine_swap (ioArgument_t, var_i, var_storeIndex, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1790)) ;
+          routine_swap (ioArgument_t, var_i_52279, var_storeIndex_52263, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1790)) ;
           }
-          var_storeIndex.increment_operation (inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1791)) ;
+          var_storeIndex_52263.increment_operation (inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1791)) ;
         }
-        var_i.increment_operation (inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1793)) ;
+        var_i_52279.increment_operation (inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1793)) ;
       }
     }
   }
   {
-  routine_swap (ioArgument_t, var_storeIndex, inArgument_max, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1795)) ;
+  routine_swap (ioArgument_t, var_storeIndex_52263, inArgument_max, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1795)) ;
   }
-  ioArgument_pivotIndex = var_storeIndex ;
+  ioArgument_pivotIndex = var_storeIndex_52263 ;
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                                 Routine 'quickSort'                                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void routine_quickSort (GALGAS_TfieldMapList & ioArgument_t,
                         const GALGAS_uint constinArgument_min,
@@ -10723,25 +10723,25 @@ void routine_quickSort (GALGAS_TfieldMapList & ioArgument_t,
                         COMMA_UNUSED_LOCATION_ARGS) {
   const enumGalgasBool test_0 = GALGAS_bool (kIsStrictInf, constinArgument_min.objectCompare (constinArgument_max)).boolEnum () ;
   if (kBoolTrue == test_0) {
-    GALGAS_uint var_pivotIndex = constinArgument_max.add_operation (constinArgument_min, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1806)).divide_operation (GALGAS_uint ((uint32_t) 2U), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1806)) ;
+    GALGAS_uint var_pivotIndex_52720 = constinArgument_max.add_operation (constinArgument_min, inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1806)).divide_operation (GALGAS_uint ((uint32_t) 2U), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1806)) ;
     {
-    routine_partition (ioArgument_t, constinArgument_min, constinArgument_max, constinArgument_fieldList, var_pivotIndex, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1808)) ;
+    routine_partition (ioArgument_t, constinArgument_min, constinArgument_max, constinArgument_fieldList, var_pivotIndex_52720, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1808)) ;
     }
     {
-    routine_quickSort (ioArgument_t, constinArgument_min, var_pivotIndex, constinArgument_fieldList, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1809)) ;
+    routine_quickSort (ioArgument_t, constinArgument_min, var_pivotIndex_52720, constinArgument_fieldList, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1809)) ;
     }
     {
-    routine_quickSort (ioArgument_t, var_pivotIndex.add_operation (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1810)), constinArgument_max, constinArgument_fieldList, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1810)) ;
+    routine_quickSort (ioArgument_t, var_pivotIndex_52720.add_operation (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("template_parser.galgas", 1810)), constinArgument_max, constinArgument_fieldList, inCompiler  COMMA_SOURCE_FILE ("template_parser.galgas", 1810)) ;
     }
   }
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                          Once function 'allowedFunctions'                                           *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_stringset onceFunction_allowedFunctions (C_Compiler * /* inCompiler */
                                                        COMMA_UNUSED_LOCATION_ARGS) {
@@ -10757,14 +10757,14 @@ static GALGAS_stringset onceFunction_allowedFunctions (C_Compiler * /* inCompile
 
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //  Function implementation                                                                                            *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static bool gOnceFunctionResultAvailable_allowedFunctions = false ;
 static GALGAS_stringset gOnceFunctionResult_allowedFunctions ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_stringset function_allowedFunctions (class C_Compiler * inCompiler
               COMMA_LOCATION_ARGS) {
@@ -10775,26 +10775,26 @@ GALGAS_stringset function_allowedFunctions (class C_Compiler * inCompiler
   return gOnceFunctionResult_allowedFunctions ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static void releaseOnceFunctionResult_allowedFunctions (void) {
   gOnceFunctionResult_allowedFunctions.drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_PrologueEpilogue gEpilogueForOnceFunction_allowedFunctions (NULL,
                                                               releaseOnceFunctionResult_allowedFunctions) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_allowedFunctions [1] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_allowedFunctions (C_Compiler * inCompiler,
                                                                  const cObjectArray & /* inEffectiveParameterArray */,
@@ -10803,7 +10803,7 @@ static GALGAS_object functionWithGenericHeader_allowedFunctions (C_Compiler * in
   return function_allowedFunctions (inCompiler COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_allowedFunctions ("allowedFunctions",
                                                                   functionWithGenericHeader_allowedFunctions,
@@ -10811,55 +10811,55 @@ C_galgas_function_descriptor functionDescriptor_allowedFunctions ("allowedFuncti
                                                                   0,
                                                                   functionArgs_allowedFunctions) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                                Function 'fullPrefix'                                                *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_string function_fullPrefix (const GALGAS_TfieldMap & constinArgument_vars,
                                    const GALGAS_lstring & constinArgument_prefix,
                                    C_Compiler * inCompiler
                                    COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_string result_full ; // Returned variable
-  GALGAS_string var_stringPrefix = constinArgument_prefix.getter_string (SOURCE_FILE ("template_invocation.galgas", 40)) ;
-  const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, var_stringPrefix.objectCompare (GALGAS_string ("compiler"))).boolEnum () ;
+  GALGAS_string var_stringPrefix_1038 = constinArgument_prefix.getter_string (SOURCE_FILE ("template_invocation.galgas", 40)) ;
+  const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, var_stringPrefix_1038.objectCompare (GALGAS_string ("compiler"))).boolEnum () ;
   if (kBoolTrue == test_0) {
-    GALGAS_Ttype var_type ;
-    GALGAS_Tvalue var_value ;
-    constinArgument_vars.method_searchKey (function_lstringWith (GALGAS_string ("COMPILER"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 44)), var_type, var_value, inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 44)) ;
-    var_stringPrefix.plusAssign_operation(GALGAS_string ("/").add_operation (var_value.getter_mStringValue (SOURCE_FILE ("template_invocation.galgas", 45)), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 45)), inCompiler  COMMA_SOURCE_FILE ("template_invocation.galgas", 45)) ;
+    GALGAS_Ttype var_type_1109 ;
+    GALGAS_Tvalue var_value_1127 ;
+    constinArgument_vars.method_searchKey (function_lstringWith (GALGAS_string ("COMPILER"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 44)), var_type_1109, var_value_1127, inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 44)) ;
+    var_stringPrefix_1038.plusAssign_operation(GALGAS_string ("/").add_operation (var_value_1127.getter_mStringValue (SOURCE_FILE ("template_invocation.galgas", 45)), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 45)), inCompiler  COMMA_SOURCE_FILE ("template_invocation.galgas", 45)) ;
   }else if (kBoolFalse == test_0) {
-    const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, var_stringPrefix.objectCompare (GALGAS_string ("linker"))).boolEnum () ;
+    const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, var_stringPrefix_1038.objectCompare (GALGAS_string ("linker"))).boolEnum () ;
     if (kBoolTrue == test_1) {
-      GALGAS_Ttype var_type ;
-      GALGAS_Tvalue var_value ;
-      constinArgument_vars.method_searchKey (function_lstringWith (GALGAS_string ("LINKER"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 49)), var_type, var_value, inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 49)) ;
-      var_stringPrefix.plusAssign_operation(GALGAS_string ("/").add_operation (var_value.getter_mStringValue (SOURCE_FILE ("template_invocation.galgas", 50)), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 50)), inCompiler  COMMA_SOURCE_FILE ("template_invocation.galgas", 50)) ;
+      GALGAS_Ttype var_type_1288 ;
+      GALGAS_Tvalue var_value_1306 ;
+      constinArgument_vars.method_searchKey (function_lstringWith (GALGAS_string ("LINKER"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 49)), var_type_1288, var_value_1306, inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 49)) ;
+      var_stringPrefix_1038.plusAssign_operation(GALGAS_string ("/").add_operation (var_value_1306.getter_mStringValue (SOURCE_FILE ("template_invocation.galgas", 50)), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 50)), inCompiler  COMMA_SOURCE_FILE ("template_invocation.galgas", 50)) ;
     }else if (kBoolFalse == test_1) {
-      const enumGalgasBool test_2 = GALGAS_bool (kIsEqual, var_stringPrefix.objectCompare (GALGAS_string ("assembler"))).boolEnum () ;
+      const enumGalgasBool test_2 = GALGAS_bool (kIsEqual, var_stringPrefix_1038.objectCompare (GALGAS_string ("assembler"))).boolEnum () ;
       if (kBoolTrue == test_2) {
-        GALGAS_Ttype var_type ;
-        GALGAS_Tvalue var_value ;
-        constinArgument_vars.method_searchKey (function_lstringWith (GALGAS_string ("ASSEMBLER"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 54)), var_type, var_value, inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 54)) ;
-        var_stringPrefix.plusAssign_operation(GALGAS_string ("/").add_operation (var_value.getter_mStringValue (SOURCE_FILE ("template_invocation.galgas", 55)), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 55)), inCompiler  COMMA_SOURCE_FILE ("template_invocation.galgas", 55)) ;
+        GALGAS_Ttype var_type_1468 ;
+        GALGAS_Tvalue var_value_1486 ;
+        constinArgument_vars.method_searchKey (function_lstringWith (GALGAS_string ("ASSEMBLER"), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 54)), var_type_1468, var_value_1486, inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 54)) ;
+        var_stringPrefix_1038.plusAssign_operation(GALGAS_string ("/").add_operation (var_value_1486.getter_mStringValue (SOURCE_FILE ("template_invocation.galgas", 55)), inCompiler COMMA_SOURCE_FILE ("template_invocation.galgas", 55)), inCompiler  COMMA_SOURCE_FILE ("template_invocation.galgas", 55)) ;
       }else if (kBoolFalse == test_2) {
-        const enumGalgasBool test_3 = GALGAS_bool (kIsEqual, var_stringPrefix.objectCompare (GALGAS_string ("ROOT"))).boolEnum () ;
+        const enumGalgasBool test_3 = GALGAS_bool (kIsEqual, var_stringPrefix_1038.objectCompare (GALGAS_string ("ROOT"))).boolEnum () ;
         if (kBoolTrue == test_3) {
-          var_stringPrefix = GALGAS_string::makeEmptyString () ;
+          var_stringPrefix_1038 = GALGAS_string::makeEmptyString () ;
         }
       }
     }
   }
-  result_full = var_stringPrefix ;
+  result_full = var_stringPrefix_1038 ;
 //---
   return result_full ;
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_fullPrefix [3] = {
   & kTypeDescriptor_GALGAS_TfieldMap,
@@ -10867,7 +10867,7 @@ static const C_galgas_type_descriptor * functionArgs_fullPrefix [3] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_fullPrefix (C_Compiler * inCompiler,
                                                            const cObjectArray & inEffectiveParameterArray,
@@ -10885,7 +10885,7 @@ static GALGAS_object functionWithGenericHeader_fullPrefix (C_Compiler * inCompil
                               COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_fullPrefix ("fullPrefix",
                                                             functionWithGenericHeader_fullPrefix,
@@ -10893,11 +10893,11 @@ C_galgas_function_descriptor functionDescriptor_fullPrefix ("fullPrefix",
                                                             2,
                                                             functionArgs_fullPrefix) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                           Function 'displayTypeAndValue'                                            *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_string function_displayTypeAndValue (const GALGAS_Ttype & constinArgument_inType,
                                             const GALGAS_Tvalue & constinArgument_inValue,
@@ -11033,9 +11033,9 @@ GALGAS_string function_displayTypeAndValue (const GALGAS_Ttype & constinArgument
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //  Function introspection                                                                                             *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static const C_galgas_type_descriptor * functionArgs_displayTypeAndValue [3] = {
   & kTypeDescriptor_GALGAS_Ttype,
@@ -11043,7 +11043,7 @@ static const C_galgas_type_descriptor * functionArgs_displayTypeAndValue [3] = {
   NULL
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static GALGAS_object functionWithGenericHeader_displayTypeAndValue (C_Compiler * inCompiler,
                                                                     const cObjectArray & inEffectiveParameterArray,
@@ -11061,7 +11061,7 @@ static GALGAS_object functionWithGenericHeader_displayTypeAndValue (C_Compiler *
                                        COMMA_THERE).getter_object (THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_galgas_function_descriptor functionDescriptor_displayTypeAndValue ("displayTypeAndValue",
                                                                      functionWithGenericHeader_displayTypeAndValue,

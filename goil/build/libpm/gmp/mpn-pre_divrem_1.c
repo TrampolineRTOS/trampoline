@@ -71,7 +71,7 @@ mpn_preinv_divrem_1 (mp_ptr qp, mp_size_t xsize,
   ASSERT (xsize >= 0);
   ASSERT (size >= 1);
   ASSERT (d_unnorm != 0);
-#if WANT_ASSERT
+#ifdef WANT_ASSERT
   {
     int        want_shift;
     mp_limb_t  want_dinv;

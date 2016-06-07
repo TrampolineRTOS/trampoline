@@ -94,7 +94,7 @@ mpn_dcpi1_div_qr (mp_ptr qp,
 		  gmp_pi1_t *dinv)
 {
   mp_size_t qn;
-  mp_limb_t qh, cy;
+  mp_limb_t qh, ccy;
   mp_ptr tp;
   TMP_DECL;
 
@@ -144,8 +144,8 @@ mpn_dcpi1_div_qr (mp_ptr qp,
 	  if (UNLIKELY (n2 == d1) && n1 == d0)
 	    {
 	      q = GMP_NUMB_MASK;
-	      cy = mpn_submul_1 (np - dn, dp - dn, dn, q);
-	      ASSERT (cy == n2);
+	      ccy = mpn_submul_1 (np - dn, dp - dn, dn, q);
+	      ASSERT (ccy == n2);
 	    }
 	  else
 	    {
@@ -193,14 +193,14 @@ mpn_dcpi1_div_qr (mp_ptr qp,
 	      else
 		mpn_mul (tp, dp - dn, dn - qn, qp, qn);
 
-	      cy = mpn_sub_n (np - dn, np - dn, tp, dn);
+	      ccy = mpn_sub_n (np - dn, np - dn, tp, dn);
 	      if (qh != 0)
-		cy += mpn_sub_n (np - dn + qn, np - dn + qn, dp - dn, dn - qn);
+		ccy += mpn_sub_n (np - dn + qn, np - dn + qn, dp - dn, dn - qn);
 
-	      while (cy != 0)
+	      while (ccy != 0)
 		{
 		  qh -= mpn_sub_1 (qp, qp, qn, 1);
-		  cy -= mpn_add_n (np - dn, np - dn, dp - dn, dn);
+		  ccy -= mpn_add_n (np - dn, np - dn, dp - dn, dn);
 		}
 	    }
 	}
@@ -232,14 +232,14 @@ mpn_dcpi1_div_qr (mp_ptr qp,
 	  else
 	    mpn_mul (tp, dp - dn, dn - qn, qp, qn);
 
-	  cy = mpn_sub_n (np - dn, np - dn, tp, dn);
+	  ccy = mpn_sub_n (np - dn, np - dn, tp, dn);
 	  if (qh != 0)
-	    cy += mpn_sub_n (np - dn + qn, np - dn + qn, dp - dn, dn - qn);
+	    ccy += mpn_sub_n (np - dn + qn, np - dn + qn, dp - dn, dn - qn);
 
-	  while (cy != 0)
+	  while (ccy != 0)
 	    {
 	      qh -= mpn_sub_1 (qp, qp, qn, 1);
-	      cy -= mpn_add_n (np - dn, np - dn, dp - dn, dn);
+	      ccy -= mpn_add_n (np - dn, np - dn, dp - dn, dn);
 	    }
 	}
     }

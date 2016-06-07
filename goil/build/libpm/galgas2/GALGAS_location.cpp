@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //  'GALGAS_location'                                                                                                  *
 //                                                                                                                     *
@@ -18,12 +18,12 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "galgas2/predefined-types.h"
 #include "galgas2/C_Compiler.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_location::GALGAS_location (void) :
 AC_GALGAS_root (),
@@ -33,7 +33,7 @@ mSourceText (NULL),
 mIsValid (false) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_location::GALGAS_location (const C_LocationInSource & inStartLocationInSource,
                                   const C_LocationInSource & inEndLocationInSource,
@@ -46,13 +46,13 @@ mIsValid (true) {
   macroAssignSharedObject (mSourceText, inSourceText) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_location::~GALGAS_location (void) {
   macroDetachSharedObject (mSourceText) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_location::GALGAS_location (const GALGAS_location & inSource) :
 AC_GALGAS_root (),
@@ -63,7 +63,7 @@ mIsValid (inSource.mIsValid) {
   macroAssignSharedObject (mSourceText, inSource.mSourceText) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_location & GALGAS_location::operator = (const GALGAS_location & inSource) {
   mStartLocationInSource = inSource.mStartLocationInSource ;
@@ -73,14 +73,14 @@ GALGAS_location & GALGAS_location::operator = (const GALGAS_location & inSource)
   return * this ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_location::drop (void) {
   macroDetachSharedObject (mSourceText) ;
   mIsValid = false ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_location GALGAS_location::constructor_nowhere (UNUSED_LOCATION_ARGS) {
   GALGAS_location result ;
@@ -88,20 +88,20 @@ GALGAS_location GALGAS_location::constructor_nowhere (UNUSED_LOCATION_ARGS) {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_location GALGAS_location::constructor_here (C_Compiler * inCompiler
                                                    COMMA_UNUSED_LOCATION_ARGS) {
   return inCompiler->here () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool GALGAS_location::isValidAndNotNowhere (void) const {
   return mIsValid && (NULL != mSourceText) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_bool GALGAS_location::getter_isNowhere (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
@@ -111,7 +111,7 @@ GALGAS_bool GALGAS_location::getter_isNowhere (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult GALGAS_location::objectCompare (const GALGAS_location & inOperand) const {
   typeComparisonResult result = kOperandNotValid ;
@@ -140,7 +140,7 @@ typeComparisonResult GALGAS_location::objectCompare (const GALGAS_location & inO
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void GALGAS_location::description (C_String & ioString,
                                    const int32_t /* inIndentation */) const {
@@ -159,7 +159,7 @@ void GALGAS_location::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_string GALGAS_location::getter_locationString (C_Compiler * inCompiler
                                                       COMMA_LOCATION_ARGS) const {
@@ -179,7 +179,7 @@ GALGAS_string GALGAS_location::getter_locationString (C_Compiler * inCompiler
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_string GALGAS_location::getter_file (C_Compiler * inCompiler
                                             COMMA_LOCATION_ARGS) const {
@@ -194,7 +194,7 @@ GALGAS_string GALGAS_location::getter_file (C_Compiler * inCompiler
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uint GALGAS_location::getter_locationIndex (C_Compiler * inCompiler
                                                    COMMA_LOCATION_ARGS) const {
@@ -209,7 +209,7 @@ GALGAS_uint GALGAS_location::getter_locationIndex (C_Compiler * inCompiler
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uint GALGAS_location::getter_column (C_Compiler * inCompiler
                                             COMMA_LOCATION_ARGS) const {
@@ -224,7 +224,7 @@ GALGAS_uint GALGAS_location::getter_column (C_Compiler * inCompiler
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_uint GALGAS_location::getter_line (C_Compiler * inCompiler
                                           COMMA_LOCATION_ARGS) const {
@@ -239,5 +239,5 @@ GALGAS_uint GALGAS_location::getter_line (C_Compiler * inCompiler
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 

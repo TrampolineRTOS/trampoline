@@ -21,8 +21,10 @@ CPU only_one_periodic_task {
     STATUS = EXTENDED;
     BUILD = TRUE {
       APP_SRC = "periodic.c";
+      APP_SRC = "\"";
       TRAMPOLINE_BASE_PATH = "../../..";
       APP_NAME = "periodic_exe";
+      LINKER = "gcc";
     };
   };
   

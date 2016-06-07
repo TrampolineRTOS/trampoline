@@ -58,7 +58,7 @@ see https://www.gnu.org/licenses/.  */
 #define mpn_divexact_by45(dst,src,size) \
   (63 & 19 * mpn_bdiv_dbm1 (dst, src, size, __GMP_CAST (mp_limb_t, GMP_NUMB_MASK / 45)))
 #else
-#if HAVE_NATIVE_mpn_pi1_bdiv_q_1
+#ifdef HAVE_NATIVE_mpn_pi1_bdiv_q_1
 #define mpn_divexact_by45(dst,src,size) mpn_pi1_bdiv_q_1(dst,src,size,45,BINVERT_45,0)
 #else
 #define mpn_divexact_by45(dst,src,size) mpn_divexact_1(dst,src,size,45)
@@ -66,19 +66,19 @@ see https://www.gnu.org/licenses/.  */
 #endif
 #endif
 
-#if HAVE_NATIVE_mpn_sublsh2_n_ip1
+#ifdef HAVE_NATIVE_mpn_sublsh2_n_ip1
 #define DO_mpn_sublsh2_n(dst,src,n,ws) mpn_sublsh2_n_ip1(dst,src,n)
 #else
 #define DO_mpn_sublsh2_n(dst,src,n,ws) DO_mpn_sublsh_n(dst,src,n,2,ws)
 #endif
 
-#if HAVE_NATIVE_mpn_sublsh_n
+#ifdef HAVE_NATIVE_mpn_sublsh_n
 #define DO_mpn_sublsh_n(dst,src,n,s,ws) mpn_sublsh_n (dst,dst,src,n,s)
 #else
 static mp_limb_t
 DO_mpn_sublsh_n (mp_ptr dst, mp_srcptr src, mp_size_t n, unsigned int s, mp_ptr ws)
 {
-#if USE_MUL_1 && 0
+#if defined (USE_MUL_1) && 0
   return mpn_submul_1(dst,src,n,CNST_LIMB(1) <<(s));
 #else
   mp_limb_t __cy;
@@ -89,7 +89,7 @@ DO_mpn_sublsh_n (mp_ptr dst, mp_srcptr src, mp_size_t n, unsigned int s, mp_ptr 
 #endif
 
 
-#if HAVE_NATIVE_mpn_subrsh
+#ifdef HAVE_NATIVE_mpn_subrsh
 #define DO_mpn_subrsh(dst,nd,src,ns,s,ws) mpn_subrsh (dst,nd,src,ns,s)
 #else
 /* This is not a correct definition, it assumes no carry */

@@ -1892,7 +1892,7 @@ extern UWtype __MPN(udiv_qrnnd) (UWtype *, UWtype, UWtype, UWtype);
 #define mpn_umul_ppmm  __MPN(umul_ppmm)
 extern UWtype mpn_umul_ppmm (UWtype *, UWtype, UWtype);
 
-#if ! defined (umul_ppmm) && HAVE_NATIVE_mpn_umul_ppmm  \
+#if ! defined (umul_ppmm) && defined (HAVE_NATIVE_mpn_umul_ppmm)  \
   && ! defined (LONGLONG_STANDALONE)
 #define umul_ppmm(wh, wl, u, v)						\
   do {									\
@@ -1905,7 +1905,7 @@ extern UWtype mpn_umul_ppmm (UWtype *, UWtype, UWtype);
 #define mpn_umul_ppmm_r  __MPN(umul_ppmm_r)
 extern UWtype mpn_umul_ppmm_r (UWtype, UWtype, UWtype *);
 
-#if ! defined (umul_ppmm) && HAVE_NATIVE_mpn_umul_ppmm_r	\
+#if ! defined (umul_ppmm) && defined (HAVE_NATIVE_mpn_umul_ppmm_r)	\
   && ! defined (LONGLONG_STANDALONE)
 #define umul_ppmm(wh, wl, u, v)						\
   do {									\
@@ -1918,7 +1918,7 @@ extern UWtype mpn_umul_ppmm_r (UWtype, UWtype, UWtype *);
 #define mpn_udiv_qrnnd  __MPN(udiv_qrnnd)
 extern UWtype mpn_udiv_qrnnd (UWtype *, UWtype, UWtype, UWtype);
 
-#if ! defined (udiv_qrnnd) && HAVE_NATIVE_mpn_udiv_qrnnd	\
+#if ! defined (udiv_qrnnd) && defined (HAVE_NATIVE_mpn_udiv_qrnnd)	\
   && ! defined (LONGLONG_STANDALONE)
 #define udiv_qrnnd(q, r, n1, n0, d)					\
   do {									\
@@ -1932,7 +1932,7 @@ extern UWtype mpn_udiv_qrnnd (UWtype *, UWtype, UWtype, UWtype);
 #define mpn_udiv_qrnnd_r  __MPN(udiv_qrnnd_r)
 extern UWtype mpn_udiv_qrnnd_r (UWtype, UWtype, UWtype, UWtype *);
 
-#if ! defined (udiv_qrnnd) && HAVE_NATIVE_mpn_udiv_qrnnd_r	\
+#if ! defined (udiv_qrnnd) && defined (HAVE_NATIVE_mpn_udiv_qrnnd_r)	\
   && ! defined (LONGLONG_STANDALONE)
 #define udiv_qrnnd(q, r, n1, n0, d)					\
   do {									\
@@ -2118,7 +2118,7 @@ __GMP_DECLSPEC UWtype __MPN(udiv_w_sdiv) (UWtype *, UWtype, UWtype, UWtype);
 #endif
 
 /* clz_tab needed by mpn/x86/pentium/mod_1.asm in a fat binary */
-#if HAVE_HOST_CPU_FAMILY_x86 && WANT_FAT_BINARY
+#if defined (HAVE_HOST_CPU_FAMILY_x86) && WANT_FAT_BINARY
 #define COUNT_LEADING_ZEROS_NEED_CLZ_TAB
 #endif
 

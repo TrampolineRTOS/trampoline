@@ -108,7 +108,7 @@ mpn_toom42_mul (mp_ptr pp,
   vm1_neg = mpn_toom_eval_dgr3_pm1 (as1, asm1, ap, n, s, a0_a2) & 1;
 
   /* Compute as2.  */
-#if HAVE_NATIVE_mpn_addlsh1_n
+#ifdef HAVE_NATIVE_mpn_addlsh1_n
   cy  = mpn_addlsh1_n (as2, a2, a3, s);
   if (s != n)
     cy = mpn_add_1 (as2 + s, a2 + s, n - s, cy);
@@ -129,7 +129,7 @@ mpn_toom42_mul (mp_ptr pp,
   /* Compute bs1 and bsm1.  */
   if (t == n)
     {
-#if HAVE_NATIVE_mpn_add_n_sub_n
+#ifdef HAVE_NATIVE_mpn_add_n_sub_n
       if (mpn_cmp (b0, b1, n) < 0)
 	{
 	  cy = mpn_add_n_sub_n (bs1, bsm1, b1, b0, n);
@@ -210,7 +210,7 @@ mpn_toom42_mul (mp_ptr pp,
     }
   else if (as1[n] == 2)
     {
-#if HAVE_NATIVE_mpn_addlsh1_n
+#ifdef HAVE_NATIVE_mpn_addlsh1_n
       cy = 2 * bs1[n] + mpn_addlsh1_n (v1 + n, v1 + n, bs1, n);
 #else
       cy = 2 * bs1[n] + mpn_addmul_1 (v1 + n, bs1, n, CNST_LIMB(2));
