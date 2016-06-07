@@ -76,7 +76,7 @@ extern FUNC(void, OS_CODE) tpl_init_isr_prio(void);
 #if WITH_MEMORY_PROTECTION == YES
 extern FUNC(void, OS_CODE) tpl_init_mp(void);
 #endif
-#if (TPL_TICK_TIMER == TPL_DECREMENTER)
+#if (TPL_USE_DECREMENTER == YES)
 extern FUNC(void, OS_CODE) tpl_init_dec(void);
 #endif
 #define OS_STOP_SEC_CODE
@@ -226,7 +226,7 @@ FUNC(void, OS_CODE) tpl_init_core(void)
 {
 
   tpl_init_regs();
-#if (TPL_TICK_TIMER == TPL_DECREMENTER)
+#if (TPL_USE_DECREMENTER == YES)
   tpl_init_dec();
 #endif
 
@@ -241,7 +241,7 @@ FUNC(void, OS_CODE) tpl_init_mode_entry_module(void)
                                       | ME_RUNPC_RUN2
                                       | ME_RUNPC_RUN3;
 
-#if ((TPL_TICK_TIMER != TPL_DECREMENTER) || (WITH_AUTOSAR_TIMING_PROTECTION==YES))
+#if (TPL_PIT_CHAN_COUNT > 0)
   /* Set PIT to PC1 mode  */
   TPL_ME.PCTL[ME_PCTL_PIT] = ME_PC1_CONFIGURATION;
 #endif
@@ -300,15 +300,17 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
   tpl_ioc_init_unqueued();
 #endif
 
-#if ((TPL_TICK_TIMER != TPL_DECREMENTER) || (WITH_AUTOSAR_TIMING_PROTECTION==YES))
+#if (TPL_PIT_CHAN_COUNT > 0)
   tpl_init_pit();
 #endif
 
-#if ( (TPL_TICK_TIMER == TPL_DECREMENTER) && (WITH_MULTICORE==NO))
+#if ((TPL_USE_DECREMENTER == YES) && (WITH_MULTICORE==NO))
+  /* In multicore, the decrementer is initialized in tpl_init_core (as there is
+   * one decrementer per core)
+   */
   tpl_init_dec();
-#else
-  tpl_load_pit(TPL_TICK_TIMER, tpl_tick_init_value);
 #endif
+  tpl_load_pits();
 
 }
 

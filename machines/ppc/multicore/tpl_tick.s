@@ -34,8 +34,7 @@
 #include "tpl_os_process_stack.h"
 
 TPL_EXTERN(tpl_current_date)
-TPL_EXTERN(tpl_tick_init_value)
-TPL_EXTERN(tpl_call_counter_tick)
+TPL_EXTERN(tpl_dec_init_value)
 TPL_EXTERN(tpl_enter_kernel)
 TPL_EXTERN(tpl_leave_kernel)
 TPL_EXTERN(tpl_kern)
@@ -53,7 +52,8 @@ TPL_VLE_ON
 TPL_VLE_OFF
 #endif
 
-#if (TPL_TICK_TIMER == TPL_DECREMENTER)
+#if (TPL_USE_DECREMENTER == YES)
+TPL_EXTERN(tpl_call_counter_tick_no_pit)
 
 /****************************************************************************/
 TPL_GLOBAL(tpl_init_dec)
@@ -70,8 +70,8 @@ TPL_GLOBAL_REF(tpl_init_dec):
   mtspr     spr_TBL, r11
 
   /* load dec and decar register with value correcponding to tick period */
-  e_lis     r11,TPL_HIG(TPL_EXTERN_REF(tpl_tick_init_value))
-  e_add16i  r11,TPL_LOW(TPL_EXTERN_REF(tpl_tick_init_value))
+  e_lis     r11,TPL_HIG(TPL_EXTERN_REF(tpl_dec_init_value))
+  e_add16i  r11,TPL_LOW(TPL_EXTERN_REF(tpl_dec_init_value))
   e_lwz     r11,0(r11)
   mtspr     spr_DEC, r11
   mtspr     spr_DECAR, r11
@@ -175,7 +175,7 @@ tpl_dec_handler:
   se_subi     r1,8
 
   /* call the counter_tick function */
-  e_bl        TPL_EXTERN_REF(tpl_call_counter_tick)
+  e_bl        TPL_EXTERN_REF(tpl_call_counter_tick_no_pit)
 
   /*
    * restore all volatile registers

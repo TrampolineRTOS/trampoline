@@ -3,6 +3,9 @@
  */
 
 #include "tpl_timers.h"
+
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 %
 
 ###### First we check all used interrupt sources exist
@@ -36,23 +39,54 @@ end if
 
 
 
-if OS::NUMBER_OF_CORES == 1 then
-###### Print interrupt table
-loop ENTRY from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
-  before
+let counter_map   := mapof COUNTER by NAME
+loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+
+  ###### Get used counters and isrs
+  let used_counters := emptymap
+  foreach application in APPLICATION do
+    if application::CORE == core_id then
+      ### Used counters
+      foreach counter_name in application::COUNTER do
+        let counter := counter_map[counter_name::VALUE]
+        let used_counters[counter::NAME] := counter
+      end foreach
+
+      ### Used ISR
+    end if
+  end foreach
+
+  if OS::NUMBER_OF_CORES == 1 then
 %
-#define OS_START_SEC_CONST_UNSPECIFIED
-#include "tpl_memmap.h"
 CONST(tpl_it_vector_entry, OS_CONST) tpl_it_table[% !INTERRUPT_COUNT::IT_TABLE_SIZE %] = {
 %
+  else # In multicore, we have one interrupt table for each core
+%
+CONST(tpl_it_vector_entry, OS_CONST) tpl_it_table_%!core_id%[% !INTERRUPT_COUNT::IT_TABLE_SIZE %] = {
+%
+  end if
+
+  loop ENTRY from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
   do
     let entryFound := false
 
     foreach interrupt in INTERRUPT do
       if ENTRY == interrupt::ID then
 
+        if exists INTERCORE_INTERRUPT & OS::NUMBER_OF_CORES > 1 then
+          ########## Intercore Interrupt Checking (Multicore only)
+          foreach int_interrupt in INTERCORE_INTERRUPT do
+            if int_interrupt::CORE == core_id
+               & int_interrupt::SOURCE == interrupt::NAME
+               & not entryFound then
+              %  { (tpl_it_handler)tpl_receive_intercore_it,(void *)% !ENTRY %}%
+              let entryFound := true
+            end if
+          end foreach
+        end if
+
         ########## Counter Interrupt Checking
-        foreach counter in HARDWARECOUNTERS do
+        foreach counter in used_counters do
           if counter::SOURCE == interrupt::NAME & not entryFound then
             if counter::SOURCE == "no_pit"
              | (counter::HANDLER == "watchdog" & not OS::TIMINGPROTECTION) then
@@ -61,8 +95,11 @@ CONST(tpl_it_vector_entry, OS_CONST) tpl_it_table[% !INTERRUPT_COUNT::IT_TABLE_S
             elsif counter::HANDLER == "watchdog" then
               %  { (tpl_it_handler)tpl_watchdog_handler, (void *)NULL }%
               let entryFound := true
-            else
-              %  { (tpl_it_handler)tpl_tick_handler, (void *)NULL }%
+            elsif OS::NUMBER_OF_CORES > 1 then
+              %  { (tpl_it_handler)tpl_tick_handler_% !interrupt::NAME %_%!core_id%, (void *)NULL }%
+              let entryFound := true
+            else # Monocore
+              %  { (tpl_it_handler)tpl_tick_handler_% !interrupt::NAME %, (void *)NULL }%
               let entryFound := true
             end if
           end if
@@ -86,107 +123,21 @@ CONST(tpl_it_vector_entry, OS_CONST) tpl_it_table[% !INTERRUPT_COUNT::IT_TABLE_S
 
       end if
     end foreach
+
+
     if not entryFound then
-      %  { (tpl_it_handler)tpl_null_it, (void *)(% !ENTRY % + 1) }%
+    %  { (tpl_it_handler)tpl_null_it, (void *)NULL }%
     end if
   between %,    // Vector % !ENTRY %
 %
-    after
-%
-};
-#define OS_STOP_SEC_CONST_UNSPECIFIED
-#include "tpl_memmap.h"
-%
-end loop
-
-else
-  let counter_map   := mapof COUNTER by NAME
-
-####### In multicore, we have one interrupt table for each core
-  loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
-
-    ###### Get used counters and isrs
-    let used_counters := emptymap
-    foreach application in APPLICATION do
-      if application::CORE == core_id then
-        ### Used counters
-        foreach counter_name in application::COUNTER do
-          let counter := counter_map[counter_name::VALUE]
-          let used_counters[counter::NAME] := counter
-        end foreach
-
-        ### Used ISR
-      end if
-    end foreach
-%
-CONST(tpl_it_vector_entry, OS_CONST) tpl_it_table_%!core_id%[% !INTERRUPT_COUNT::IT_TABLE_SIZE %] = {
-%
-    loop ENTRY from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
-    do
-      let entryFound := false
-
-      foreach interrupt in INTERRUPT do
-        if ENTRY == interrupt::ID then
-
-          ########## Intercore Interrupt Checking (Multicore only)
-          foreach int_interrupt in INTERCORE_INTERRUPT do
-            if int_interrupt::CORE == core_id
-               & int_interrupt::SOURCE == interrupt::NAME
-               & not entryFound then
-              %  { (tpl_it_handler)tpl_receive_intercore_it,(void *)% !ENTRY %}%
-              let entryFound := true
-            end if
-          end foreach
-
-          ########## Counter Interrupt Checking
-          foreach counter in used_counters do
-            if counter::SOURCE == interrupt::NAME & not entryFound then
-              if counter::SOURCE == "no_pit"
-               | (counter::HANDLER == "watchdog" & not OS::TIMINGPROTECTION) then
-                %  { (tpl_it_handler)tpl_null_it, (void *)% !ENTRY % }%
-                let entryFound := true
-              elsif counter::HANDLER == "watchdog" then
-                %  { (tpl_it_handler)tpl_watchdog_handler, (void *)NULL }%
-                let entryFound := true
-              else
-                %  { (tpl_it_handler)tpl_tick_handler_% !interrupt::NAME %_%!core_id%, (void *)NULL }%
-                let entryFound := true
-              end if
-            end if
-          end foreach
-
-          ########## ISR1 Interrupt Checking
-          foreach isr in ISRS1 do
-            if isr::SOURCE == interrupt::NAME & not entryFound then
-              %  { (tpl_it_handler)tpl_central_interrupt_handler, (void*)% !([TASKS length] + INDEX) % }%
-              let entryFound := true
-            end if
-          end foreach
-
-          ########## ISR2 Interrupt Checking
-          foreach isr in ISRS2 do
-            if isr::SOURCE == interrupt::NAME & not entryFound then
-              %  { (tpl_it_handler)tpl_central_interrupt_handler_2, (void*)% !([TASKS length] + INDEX) % }%
-              let entryFound := true
-            end if
-          end foreach
-
-        end if
-      end foreach
-
-
-      if not entryFound then
-      %  { (tpl_it_handler)tpl_null_it, (void *)NULL }%
-      end if
-    between %,    // Vector % !ENTRY %
-%
-    end loop
+  end loop
 %
   };
 %
-  end loop
-%
+end loop
 
+if OS::NUMBER_OF_CORES > 1 then
+%
 CONSTP2CONST(tpl_it_vector_entry, OS_CONST, OS_CONST) tpl_it_table[% !OS::NUMBER_OF_CORES %] = {
 %
   loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
@@ -198,6 +149,11 @@ CONSTP2CONST(tpl_it_vector_entry, OS_CONST, OS_CONST) tpl_it_table[% !OS::NUMBER
 };
 %
 end if
+%
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+%
 
 template if exists tpl_external_interrupts_c
 

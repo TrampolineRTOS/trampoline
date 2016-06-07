@@ -71,6 +71,7 @@ FUNC(void, OS_CODE) tpl_init_pit(void)
 }
 
 
+#if 0 /* We're using the generated function tpl_load_pits for now */
 /**
  * tpl_load_pit loads the given pit channel with a value and starts the channel
  *
@@ -89,6 +90,7 @@ FUNC(void, OS_CODE) tpl_load_pit(
   /* start the channel and enable interrupt */
   PIT_CR(chan) = PIT_CR_TEN | PIT_CR_TIE;
 }
+#endif
 
 
 /**
@@ -134,30 +136,6 @@ FUNC(void, OS_CODE) tpl_watchdog_handler(void)
 
   /* call timing protection expiration function */
   tpl_watchdog_expiration();
-
-}
-#endif
-
-
-#if (TPL_TICK_TIMER != TPL_DECREMENTER) && (WITH_MULTICORE == NO)
-/* In multicore, this function is generated */
-
-/**
- * tpl_watchdog_handler handler function for tick called by pit interrupt
- *
- */
-FUNC(void, OS_CODE) tpl_tick_handler(void)
-{
-  GET_CURRENT_CORE_ID(core_id)
-
-  /* increment current date */
-  GET_CURRENT_DATE(core_id) = GET_CURRENT_DATE(core_id) + 1;
-
-  /* clear interrupt flag */
-  PIT_FR(TPL_TICK_TIMER) = PIT_FR_TIF;
-
-  /* call counter tick, which will increment counters, and potentially raise alarms and schedule tables expiry points */
-  tpl_call_counter_tick();
 
 }
 #endif

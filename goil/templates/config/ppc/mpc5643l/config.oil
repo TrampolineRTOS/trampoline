@@ -13,6 +13,7 @@ IMPLEMENTATION mpc5643l {
         tick,
         watchdog
     ] HANDLER = tick;
+    UINT32 FREQUENCY = 120000; /* Default : 120000000Hz = 1ms */
   };
 
   /* TODO : Use Vle
@@ -62,10 +63,6 @@ CPU mpc5643l_interrupt {
   INTERRUPT pit_ch3 { ID = 127; };
 
   INTERRUPT no_pit { ID = 999; };
-
-  COUNTER SystemCounter {
-    HANDLER = tick;
-  };
 
 //======= Old Version : TODO performance tests with the new one
 //  PLATFORM_FILES ppc {

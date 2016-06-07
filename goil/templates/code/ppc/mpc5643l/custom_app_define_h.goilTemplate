@@ -19,45 +19,50 @@ let channel_map["pit_ch0"] := "TPL_PIT_0"
 let channel_map["pit_ch1"] := "TPL_PIT_1"
 let channel_map["pit_ch2"] := "TPL_PIT_2"
 let channel_map["pit_ch3"] := "TPL_PIT_3"
+let channel_map["no_pit"]  := "TPL_DECREMENTER"
 %
 
 /*-----------------------------------------------------------------------------
  * Chosen timers
  */
-%
-let tick_timer  := ""
-let wdg_timer   := ""
-foreach counter in COUNTER do
-  if counter::NAME == "SystemCounter" then
-    if counter::SOURCE == "no_pit" then
-      let tick_timer := "TPL_DECREMENTER"
-    else
-      let tick_timer := channel_map[counter::SOURCE]
-    end if
-  end if
 
-  if counter::HANDLER == "watchdog" then
-    if counter::SOURCE == "no_pit" then
-      let wdg_timer := "TPL_NO_TIMER"
-    else
-      let wdg_timer := channel_map[counter::SOURCE]
-    end if
-  end if
+%
+# Count only counters used in applications
+let used_counters := emptymap
+foreach app in APPLICATION do
+  foreach app_counter in app::COUNTER do
+    foreach counter in COUNTER do
+      if app_counter::VALUE == counter::NAME then
+        let used_counters[counter::SOURCE] := counter
+      end if
+    end foreach
+  end foreach
 end foreach
 
-if wdg_timer == "" then
-  let wdg_timer := "TPL_NO_TIMER"
-end if
-
-if tick_timer == "" then
-  let tick_timer := "TPL_DECREMENTER"
-end if
-
+let number_of_pit_used := 0
+let watchdog_frequency := 0
+let watchdog_channel    := ""
+foreach counter in used_counters do
+  if counter::SOURCE != "no_pit" then
+    let number_of_pit_used := number_of_pit_used + 1
+  end if
+  if counter::HANDLER == "watchdog" then
+    let watchdog_frequency := counter::FREQUENCY
+    let watchdog_channel   := channel_map[counter::SOURCE]
+  end if
+end foreach
 %
 
-#define TPL_TICK_TIMER  % !tick_timer %
-#define TPL_WDG_TIMER   % !wdg_timer %
-#define TPL_PIT_RATIO 120000 // FIXME : Must be chosen in goil template
+#define TPL_USE_DECREMENTER     % !yesNo(exists used_counters["no_pit"]) %
+#define TPL_PIT_CHAN_COUNT      % !number_of_pit_used %
+%if watchdog_channel != "" then
+%#define TPL_WATCHDOG_RATIO     %!watchdog_frequency%
+#define TPL_WDG_TIMER          %!watchdog_channel
+else
+%#define TPL_WATCHDOG_RATIO     0
+#define TPL_WDG_TIMER           TPL_NO_TIMER
+%end if
+%
 
 /*-----------------------------------------------------------------------------
  * Enable multicore
