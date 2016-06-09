@@ -8,6 +8,10 @@
 #include "tpl_memmap.h"
 %
 
+###############################################################################
+#   Checks
+#
+
 ###### First we check all used interrupt sources exist
 let IT_SOURCES := mapof INTERRUPT by NAME
 foreach counter in HARDWARECOUNTERS do
@@ -30,14 +34,67 @@ foreach counter in COUNTER do
   end if
 end foreach
 
-## Warning if watchdog is disabled
+# Warning if watchdog is disabled
 if watchdog_source == "no_pit" then
     warning here : "WATCHDOG : No pit channel selected for the watchdog (given SOURCE = " .watchdog_source. "). Watchdog disabled."
 elsif watchdog_source != "" & not OS::TIMINGPROTECTION then
     warning here : "WATCHDOG : OS::TIMINGPROTECTION set to false. Watchdog disabled."
 end if
 
+###############################################################################
+#   handlers declaration
+#
 
+# Watchdog
+if OS::TIMINGPROTECTION then
+%extern FUNC(void, OS_CODE) tpl_watchdog_handler(void);
+%
+end if
+
+# ISR
+foreach isr in ISRS do
+%FUNC(void, OS_CODE) tpl_isr_handler_% !isr::NAME %(void);
+%
+end foreach
+
+# Intercore IT
+foreach interrupt in INTERCORE_INTERRUPT do
+%FUNC(boolean, OS_CODE) tpl_intercore_handler_% !interrupt::NAME %(void);
+%
+end foreach
+
+# Tick
+let counter_map   := mapof COUNTER by NAME
+let interrupt_map := mapof INTERRUPT by NAME
+
+loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+  let used_interrupts := emptymap
+  foreach application in APPLICATION do
+    if application::CORE == core_id then
+      foreach counter_name in application::COUNTER do
+        let counter := counter_map[counter_name::VALUE]
+        if counter::SOURCE != "no_pit" then
+          let interrupt := interrupt_map[counter::SOURCE]
+          let used_interrupts[counter::SOURCE] := interrupt
+        end if
+      end foreach
+    end if
+  end foreach
+
+  foreach interrupt in used_interrupts do
+    if OS::NUMBER_OF_CORES > 1 then
+%FUNC(void, OS_CODE) tpl_tick_handler_% !interrupt::NAME%_% !core_id %(void);
+%
+    else
+%FUNC(void, OS_CODE) tpl_tick_handler_% !interrupt::NAME%(void);
+%
+    end if
+  end foreach
+end loop
+
+###############################################################################
+#   tpl_it_table
+#
 
 let counter_map   := mapof COUNTER by NAME
 loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
@@ -79,7 +136,7 @@ CONST(tpl_it_vector_entry, OS_CONST) tpl_it_table_%!core_id%[% !INTERRUPT_COUNT:
             if int_interrupt::CORE == core_id
                & int_interrupt::SOURCE == interrupt::NAME
                & not entryFound then
-              %  { (tpl_it_handler)tpl_receive_intercore_it,(void *)% !ENTRY %}%
+              %  { (tpl_it_handler)tpl_intercore_handler_% !int_interrupt::NAME %,(void *)NULL}%
               let entryFound := true
             end if
           end foreach
@@ -105,20 +162,20 @@ CONST(tpl_it_vector_entry, OS_CONST) tpl_it_table_%!core_id%[% !INTERRUPT_COUNT:
           end if
         end foreach
 
-        ########## ISR1 Interrupt Checking
-        foreach isr in ISRS1 do
-          if isr::SOURCE == interrupt::NAME & not entryFound then
-            %  { (tpl_it_handler)tpl_central_interrupt_handler, (void*)% !([TASKS length] + INDEX) % }%
-            let entryFound := true
-          end if
-        end foreach
-
-        ########## ISR2 Interrupt Checking
-        foreach isr in ISRS2 do
-          if isr::SOURCE == interrupt::NAME & not entryFound then
-            %  { (tpl_it_handler)tpl_central_interrupt_handler_2, (void*)% !([TASKS length] + INDEX) % }%
-            let entryFound := true
-          end if
+        ########## ISR Interrupt Checking
+        foreach isr in ISRS do
+          foreach application in APPLICATION do
+            if application::CORE == core_id then
+              foreach app_isr in application::ISR do
+                if app_isr::VALUE == isr::NAME
+                 & isr::SOURCE == interrupt::NAME
+                 & not entryFound then
+%  { (tpl_it_handler)tpl_isr_handler_%!isr::NAME%, (void*)NULL }%
+                  let entryFound := true
+                end if
+              end foreach
+            end if
+          end foreach
         end foreach
 
       end if
@@ -135,6 +192,10 @@ CONST(tpl_it_vector_entry, OS_CONST) tpl_it_table_%!core_id%[% !INTERRUPT_COUNT:
   };
 %
 end loop
+
+###############################################################################
+#   tpl_it_table pointer (multicore only)
+#
 
 if OS::NUMBER_OF_CORES > 1 then
 %

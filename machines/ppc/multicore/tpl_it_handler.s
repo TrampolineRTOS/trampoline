@@ -187,7 +187,7 @@ TPL_GLOBAL_REF(tpl_it_handler):
    */
   e_slwi    r6,r3,3
   lwzx      r0,r5,r6
-  e_addi    r5,r6,4
+  e_addi    r6,r6,4
   mtlr      r0
   lwzx      r3,r5,r6
 

@@ -34,10 +34,6 @@
 #include "tpl_registers_asm.h"
 
 
-TPL_EXTERN(tpl_counter_it_level_buff)
-TPL_EXTERN(tpl_counter_it_level)
-TPL_EXTERN(tpl_os_it_level_buff)
-TPL_EXTERN(tpl_os_it_level)
 TPL_EXTERN(tpl_kernel_stack_bottom)
 
 TPL_GLOBAL(tpl_enable_interrupts)
@@ -160,11 +156,11 @@ TPL_GLOBAL_REF(tpl_disable_interrupts):
   se_blr
 #endif
 /* ------------ NO VLE ------------------------------------------------------*/
-#else
+#else TODO
   lis   r11,TPL_HIG(TPL_INTC_CPR_PRC0)           /* load TPL_INTC_CPR_PRC0 ptr     */
   ori   r11,TPL_LOW(TPL_INTC_CPR_PRC0)
-  lis   r11,TPL_HIG(TPL_EXTERN_REF(tpl_counter_it_level))    /* get priority value to load */
-  ori   r11,TPL_LOW(TPL_EXTERN_REF(tpl_counter_it_level))
+#  lis   r11,TPL_HIG(TPL_EXTERN_REF(tpl_counter_it_level))    /* get priority value to load */
+#  ori   r11,TPL_LOW(TPL_EXTERN_REF(tpl_counter_it_level))
   lwz   r12,0(r12)
   stw   r12,0(r11)                           /* set new priority value     */
   blr

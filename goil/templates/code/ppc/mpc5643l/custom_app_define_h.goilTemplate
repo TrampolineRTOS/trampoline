@@ -10,8 +10,6 @@
 #define TPL_PIT_1       1
 #define TPL_PIT_2       2
 #define TPL_PIT_3       3
-#define TPL_DECREMENTER 4
-#define TPL_NO_TIMER    5
 
 %
 let channel_map := emptymap
@@ -19,7 +17,6 @@ let channel_map["pit_ch0"] := "TPL_PIT_0"
 let channel_map["pit_ch1"] := "TPL_PIT_1"
 let channel_map["pit_ch2"] := "TPL_PIT_2"
 let channel_map["pit_ch3"] := "TPL_PIT_3"
-let channel_map["no_pit"]  := "TPL_DECREMENTER"
 %
 
 /*-----------------------------------------------------------------------------
@@ -46,7 +43,7 @@ foreach counter in used_counters do
   if counter::SOURCE != "no_pit" then
     let number_of_pit_used := number_of_pit_used + 1
   end if
-  if counter::HANDLER == "watchdog" then
+  if counter::HANDLER == "watchdog" & counter::SOURCE != "no_pit" then
     let watchdog_frequency := counter::FREQUENCY
     let watchdog_channel   := channel_map[counter::SOURCE]
   end if
@@ -56,10 +53,10 @@ end foreach
 #define TPL_USE_DECREMENTER     % !yesNo(exists used_counters["no_pit"]) %
 #define TPL_PIT_CHAN_COUNT      % !number_of_pit_used %
 %if watchdog_channel != "" then
-%#define TPL_WATCHDOG_RATIO     %!watchdog_frequency%
-#define TPL_WDG_TIMER          %!watchdog_channel
+%#define TPL_WATCHDOG_RATIO      %!watchdog_frequency%
+#define TPL_WDG_TIMER           %!watchdog_channel
 else
-%#define TPL_WATCHDOG_RATIO     0
+%#define TPL_WATCHDOG_RATIO      0
 #define TPL_WDG_TIMER           TPL_NO_TIMER
 %end if
 %
