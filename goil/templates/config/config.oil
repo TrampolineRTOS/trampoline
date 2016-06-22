@@ -200,7 +200,8 @@ IMPLEMENTATION trampoline_common {
         LIBRARY_TYPE LIBRARY[];
         ENUM [
           MAKE,
-          PYTHON { BOOLEAN GUESSLIBPATH; }
+          PYTHON { BOOLEAN GUESSLIBPATH; },
+          ATMELSTUDIO
         ] SYSTEM = MAKE;
       },
       FALSE

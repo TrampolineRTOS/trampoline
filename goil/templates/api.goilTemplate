@@ -103,6 +103,18 @@ if OS::BUILD then
     write to executable "make.py":
       template if exists make_py in build
     end write
+  elsif OS::BUILD_S::SYSTEM == "ATMELSTUDIO" then
+  #  write to "aStudio_".PROJECT."/".PROJECT.".componentinfo.xml":
+  #    template if exists atmelComponentInfo_xml in build
+  #  end write
+    write to "aStudio_".PROJECT."/".PROJECT.".cproj":
+      template if exists atmelStudioProjectBlink in build
+    end write
+    write to PROJECT.".atsln":
+      template if exists make_py in build
+    end write
+
+    
   end if
 end if
 
