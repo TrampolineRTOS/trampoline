@@ -1,3 +1,10 @@
+%
+#------------------------------------------------------------------------------*
+# build an empty list when the list does not exist. This simplify
+# further processing because existence test is not necessary
+
+let INTERCORE_INTERRUPT := exists INTERCORE_INTERRUPT default (emptylist)
+%
 #include "tpl_os_kernel.h"          /* tpl_schedule */
 #include "tpl_os_timeobj_kernel.h"  /* tpl_counter_tick */
 #include "tpl_machine_interface.h"  /* tpl_switch_context_from_it */
@@ -7,43 +14,63 @@
 
 %
 ###############################################################################
-#   tpl_call_counter_tick
+#   tpl_call_counter_tick -- Monocore
 #
+# One function per interrupt channel used. Each function must call
+# tpl_counter_tick for each hardware counter that uses this interrupt channel.
+#
+
 if OS::NUMBER_OF_CORES == 1 then
   let counter_map   := mapof COUNTER by NAME
   let interrupt_map := mapof INTERRUPT by NAME
 
   let used_interrupts := emptymap
   foreach application in APPLICATION do
-    foreach counter_name in application::COUNTER do
+    foreach counter_name in exists application::COUNTER default(emptylist) do
       let counter := counter_map[counter_name::VALUE]
-      let interrupt := interrupt_map[counter::SOURCE]
-      let used_interrupts[counter::SOURCE] := interrupt
+      if counter::TYPE == "HARDWARE" then
+        let interrupt := interrupt_map[counter::SOURCE]
+        let used_interrupts[counter::SOURCE] := interrupt
+      end if
     end foreach
   end foreach
 
   # Create the function for each used interrupt in this core
   foreach interrupt in used_interrupts do
 %
-FUNC(tpl_bool, OS_CODE) tpl_call_counter_tick_% !interrupt::NAME %(void)
+FUNC(void, OS_CODE) tpl_call_counter_tick_% !interrupt::NAME %(void)
 {
 %
-  foreach counter in HARDWARECOUNTERS do
+    foreach counter in HARDWARECOUNTERS do
+      if counter::SOURCE == interrupt::NAME then
 %  tpl_counter_tick(&% !counter::NAME %_counter_desc);
 %
-  end foreach
+      end if
+    end foreach
 %
   if (tpl_kern.need_schedule)
   {
     tpl_schedule_from_running();
     LOCAL_SWITCH_CONTEXT(0)
   }
-  return TRUE;
 }
 %
   end foreach
 else
-%VAR(tpl_lock, OS_VAR) tpl_call_counter_lock = UNLOCKED_LOCK;%
+
+###############################################################################
+#   tpl_call_counter_tick -- Multicore
+#
+# Same but each core must have a separate function. A core must not call
+# tpl_counter_tick for an hardwarecounter that belongs to another core. However
+# one core can (and must sometimes) modify the Alarm of another core, so the
+# execution of this function must be atomic (kernel locked).
+#
+
+foreach intercore_interrupt in INTERCORE_INTERRUPT do
+%FUNC(tpl_bool, OS_CODE) tpl_intercore_handler_% !intercore_interrupt::NAME %(void);
+%
+end foreach
 
   let counter_map   := mapof COUNTER by NAME
   let interrupt_map := mapof INTERRUPT by NAME
@@ -53,10 +80,12 @@ else
     let used_interrupts := emptymap
     foreach application in APPLICATION do
       if application::CORE == core_id then
-        foreach counter_name in application::COUNTER do
+        foreach counter_name in exists application::COUNTER default(emptylist) do
           let counter := counter_map[counter_name::VALUE]
-          let interrupt := interrupt_map[counter::SOURCE]
-          let used_interrupts[counter::SOURCE] := interrupt
+          if counter::TYPE == "HARDWARE" then
+            let interrupt := interrupt_map[counter::SOURCE]
+            let used_interrupts[counter::SOURCE] := interrupt
+          end if
         end foreach
       end if
     end foreach
@@ -64,31 +93,44 @@ else
     # Create the function for each used interrupt in this core
     foreach interrupt in used_interrupts do
 %
-FUNC(tpl_bool, OS_CODE) tpl_call_counter_tick_% !interrupt::NAME %_% !core_id %(void)
+FUNC(void, OS_CODE) tpl_call_counter_tick_% !interrupt::NAME %_% !core_id %(void)
 {
-  tpl_get_lock(&tpl_call_counter_lock);
 %
     # Call tpl_counter tick for each counter using this interrupt in this core
     foreach application in APPLICATION do
       if application::CORE == core_id then
-        foreach counter_name in application::COUNTER do
+        foreach counter_name in exists application::COUNTER default(emptylist) do
           let counter := counter_map[counter_name::VALUE]
-          if counter::SOURCE == interrupt::NAME then%
+          if counter::SOURCE == interrupt::NAME
+           & counter::TYPE == "HARDWARE" then%
   tpl_counter_tick(&% !counter::NAME %_counter_desc);%
           end if
         end foreach
       end if
     end foreach
 %
+
   tpl_multi_schedule();
   tpl_dispatch_context_switch();
-  if (TPL_KERN(% !core_id %).need_switch != NO_NEED_SWITCH)
+  if (TPL_KERN(% !core_id %).need_switch & NEED_SWITCH)
   {
     LOCAL_SWITCH_CONTEXT(% !core_id %)
   }
-
-  tpl_release_lock(&tpl_call_counter_lock);
-  return TRUE;
+  /* At this step, this core has already done a scheduling if needed, so
+   * let's ack any pending intercore it to avoid doing another scheduling
+   * after returning from the interrupt.
+   * FIXME : The check for a pending interrupt should be wrapped, so we
+   * could use this file as a generic counter call file
+   */
+%   foreach intercore_interrupt in INTERCORE_INTERRUPT do
+      if intercore_interrupt::CORE == core_id then%
+  if (TPL_INTC(% !core_id %).SSCIR[% !interrupt_map[intercore_interrupt::SOURCE]::ID %]) {
+    tpl_intercore_handler_% !intercore_interrupt::NAME %();
+  }
+%
+      end if
+    end foreach
+%
 }
 %
     end foreach

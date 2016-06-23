@@ -3,7 +3,7 @@
 
 %
 let used_counters := emptymap
-foreach counter in COUNTER do
+foreach counter in HARDWARECOUNTERS do
   let used_counters[counter::SOURCE] := counter
 end foreach
 
