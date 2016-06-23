@@ -31,7 +31,6 @@
 #include "tpl_os_process_stack.h"
 #include "tpl_assembler.h"
 #include "tpl_registers_asm.h"
-#include "tpl_app_define.h"
 
 TPL_EXTERN(tpl_kern)
 TPL_EXTERN(tpl_need_switch)

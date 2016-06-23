@@ -52,9 +52,7 @@ end foreach
 
 %
 };
-
 %
-
 # In multicore, we retrieve in this table if a service should lock the kernel
 # or not
 if OS::NUMBER_OF_CORES > 1 then%
@@ -74,11 +72,8 @@ foreach api_sec in APIUSED do
 % after   %     /* % !api_func_name % */%
 end foreach
 %
-};
-%end if%
-
-
-
+};%
+end if%
 
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"

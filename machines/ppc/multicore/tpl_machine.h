@@ -182,8 +182,12 @@ extern VAR(uint32, OS_VAR) tpl_current_date[NUMBER_OF_CORES];
 
 #if WITH_MULTICORE == YES
 #define GET_CURRENT_DATE(core_id)   tpl_current_date[core_id]
+#define GET_KERNEL_STACK(core_id)   tpl_kernel_stack[core_id]
+#define GET_KERNEL_STACK_BOTTOM(core_id)   tpl_kernel_stack_bottom[core_id]
 #else
 #define GET_CURRENT_DATE(core_id)   tpl_current_date[0]
+#define GET_KERNEL_STACK(core_id)   tpl_kernel_stack[0]
+#define GET_KERNEL_STACK_BOTTOM(core_id)   tpl_kernel_stack_bottom[0]
 #endif
 
 #define OS_START_SEC_CONST_UNSPECIFIED
