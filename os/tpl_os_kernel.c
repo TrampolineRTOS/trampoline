@@ -738,6 +738,7 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
 #endif
   }
 
+  TPL_KERN_REF(kern).need_schedule = FALSE;
   DOW_DO(print_kern("after tpl_start"));
 }
 
