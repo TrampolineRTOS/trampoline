@@ -62,6 +62,13 @@ extern void systick_low_priority_C(void);
 extern void udp_isr_C(void);
 extern void i2c_timer_isr_C(void);
 
+/* TODO : This function is called after an ISR2 has been terminated. It should
+ *        restore the hardware's cpu priority if it has been increased before
+ *        the execution of the ISR2 (see ppc/multicore/tpl_machine.h for an
+ *        example).
+ */
+#define tpl_restore_cpu_priority()
+
 #endif /* TPL_MACHINE_H */
 
 /* End of file tpl_machine.h */

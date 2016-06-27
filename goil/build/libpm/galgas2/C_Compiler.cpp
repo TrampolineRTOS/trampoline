@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //  'C_Compiler' : the compiler base class ;                                                                           *
 //                                                                                                                     *
@@ -18,7 +18,7 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "command_line_interface/F_Analyze_CLI_Options.h"
 #include "files/C_TextFileWrite.h"
@@ -30,53 +30,38 @@
 #include "utilities/MF_MemoryControl.h"
 #include "galgas2/F_verbose_output.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //        Syntax error message for 'end of source':                                                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-const utf32 C_Compiler::kEndOfSourceLexicalErrorMessage [] = {
-  TO_UNICODE ('e'),
-  TO_UNICODE ('n'),
-  TO_UNICODE ('d'),
-  TO_UNICODE (' '),
-  TO_UNICODE ('o'),
-  TO_UNICODE ('f'),
-  TO_UNICODE (' '),
-  TO_UNICODE ('s'),
-  TO_UNICODE ('o'),
-  TO_UNICODE ('u'),
-  TO_UNICODE ('r'),
-  TO_UNICODE ('c'),
-  TO_UNICODE ('e'),
-  TO_UNICODE (0)
-} ;
+const char * C_Compiler::kEndOfSourceLexicalErrorMessage = "end of source" ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool C_Compiler::performGeneration (void) {
   return (! gOption_galgas_5F_builtin_5F_options_do_5F_not_5F_generate_5F_any_5F_file.mValue)
       && (executionMode () == kExecutionModeNormal) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool C_Compiler::performLogFileRead (void) {
   return gOption_galgas_5F_builtin_5F_options_log_5F_file_5F_read.mValue ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark ========= Constructor and destructor
+  #pragma mark Constructor and destructor
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //        Constructor and destructor                                                                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_Compiler::C_Compiler (C_Compiler * inCallerCompiler,
                         const C_String & /* inDependencyFileExtension */,
@@ -96,14 +81,14 @@ mCheckedVariableList () {
   macroAssignSharedObject (mCallerCompiler, inCallerCompiler) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_Compiler::~C_Compiler (void) {
   macroDetachSharedObject (mSourceTextPtr) ;
   macroDetachSharedObject (mCallerCompiler) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_String C_Compiler::sourceFilePath (void) const {
   return (mSourceTextPtr == NULL)
@@ -112,13 +97,13 @@ C_String C_Compiler::sourceFilePath (void) const {
   ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark ========= Sent String Management
+  #pragma mark Sent String Management
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_string C_Compiler::sentString (void) const {
   GALGAS_string result ;
@@ -128,13 +113,13 @@ GALGAS_string C_Compiler::sentString (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark ========= Template String Management
+  #pragma mark Template String Management
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_string C_Compiler::retrieveAndResetTemplateString (void) {
   const C_String s = mTemplateString ;
@@ -143,19 +128,19 @@ GALGAS_string C_Compiler::retrieveAndResetTemplateString (void) {
   return GALGAS_string (s) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::resetTemplateString (void) {
   mTemplateString.setLengthToZero () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark ========= Scanner configuration
+  #pragma mark Scanner configuration
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::resetAndLoadSourceFromText (C_SourceTextInString * & ioSourceTextPtr) {
   macroAssignSharedObject (mSourceTextPtr, ioSourceTextPtr) ;
@@ -163,13 +148,13 @@ void C_Compiler::resetAndLoadSourceFromText (C_SourceTextInString * & ioSourceTe
   mCurrentLocation.resetWithSourceText (mSourceTextPtr) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark ========= On the fly semantic error Message
+  #pragma mark On the fly semantic error Message
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::onTheFlySemanticError (const C_String & inErrorMessage
                                         COMMA_LOCATION_ARGS) {
@@ -179,13 +164,13 @@ void C_Compiler::onTheFlySemanticError (const C_String & inErrorMessage
                        COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark ========= On the fly semantic Warning Message
+  #pragma mark On the fly semantic Warning Message
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::onTheFlySemanticWarning (const C_String & inWarningMessage
                                           COMMA_LOCATION_ARGS) {
@@ -195,13 +180,13 @@ void C_Compiler::onTheFlySemanticWarning (const C_String & inWarningMessage
                          COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark ========= Print Message
+  #pragma mark Print Message
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::printMessage (const GALGAS_string & inMessage
                                COMMA_LOCATION_ARGS) {
@@ -210,7 +195,7 @@ void C_Compiler::printMessage (const GALGAS_string & inMessage
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::printMessage (const C_String & inMessage
                                COMMA_LOCATION_ARGS) {
@@ -219,13 +204,13 @@ void C_Compiler::printMessage (const C_String & inMessage
   ggs_printMessage (s COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark ========= Log File Read
+  #pragma mark Log File Read
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::logFileRead (const C_String & inFilePath) {
   if (performLogFileRead ()) {
@@ -233,25 +218,25 @@ void C_Compiler::logFileRead (const C_String & inFilePath) {
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark ========= Loop variant run time error
+  #pragma mark Loop variant run time error
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::loopRunTimeVariantError (LOCATION_ARGS) {
   onTheFlyRunTimeError ("loop variant run-time error" COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark ========= Cast error
+  #pragma mark Cast error
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::castError (const C_String & inTargetTypeName,
                             const C_galgas_type_descriptor * inObjectDynamicTypeDescriptor
@@ -261,13 +246,13 @@ void C_Compiler::castError (const C_String & inTargetTypeName,
   onTheFlyRunTimeError (m COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark ========= GALGAS 2 Error
+  #pragma mark GALGAS 2 Error
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::semanticErrorAtLocation (const GALGAS_location & inErrorLocation,
                                           const C_String & inErrorMessage
@@ -284,7 +269,7 @@ void C_Compiler::semanticErrorAtLocation (const GALGAS_location & inErrorLocatio
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::emitSemanticError (const GALGAS_location & inErrorLocation,
                                     const GALGAS_string & inErrorMessage
@@ -302,7 +287,7 @@ void C_Compiler::emitSemanticError (const GALGAS_location & inErrorLocation,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::semanticErrorWith_K_message (const GALGAS_lstring & inKey,
                                               TC_UniqueArray <C_String> & ioNearestKeyArray,
@@ -343,7 +328,7 @@ void C_Compiler::semanticErrorWith_K_message (const GALGAS_lstring & inKey,
   semanticErrorAtLocation (key_location, message COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::semanticErrorWith_K_L_message (const GALGAS_lstring & inKey,
                                                 const char * in_K_L_ErrorMessage,
@@ -375,13 +360,45 @@ void C_Compiler::semanticErrorWith_K_L_message (const GALGAS_lstring & inKey,
   semanticErrorAtLocation (key_location, message COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+
+void C_Compiler::semanticWarningWith_K_L_message (const GALGAS_lstring & inKey,
+                                                  const char * in_K_L_ErrorMessage,
+                                                  const GALGAS_location & inExistingKeyLocation
+                                                  COMMA_LOCATION_ARGS) {
+  const C_String key = inKey.mAttribute_string.stringValue () ;
+//--- Build error message
+  C_String message ;
+  bool perCentFound = false ;
+  const C_String searchErrorMessage (in_K_L_ErrorMessage) ;
+  const int32_t errorMessageLength = searchErrorMessage.length () ;
+  for (int32_t i=0 ; i<errorMessageLength ; i++) {
+    const utf32 c = searchErrorMessage (i COMMA_HERE) ;
+    if (perCentFound) {
+      if (UNICODE_VALUE (c) == 'K') {
+        message << key ;
+      }else if (UNICODE_VALUE (c) == 'L') {
+        message << inExistingKeyLocation.getter_locationString (this COMMA_THERE) ; // §§
+      }
+      perCentFound = false ;
+    }else if (UNICODE_VALUE (c) == '%') {
+      perCentFound = true ;
+    }else{
+      message.appendUnicodeCharacter (c COMMA_HERE) ;
+    }
+  }
+//--- Emit error message
+  const GALGAS_location key_location = inKey.mAttribute_location ;
+  semanticWarningAtLocation (key_location, message COMMA_THERE) ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark ========= GALGAS 2 Warnings
+  #pragma mark GALGAS 2 Warnings
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::semanticWarningAtLocation (const GALGAS_location & inWarningLocation,
                                             const C_String & inWarningMessage
@@ -398,7 +415,7 @@ void C_Compiler::semanticWarningAtLocation (const GALGAS_location & inWarningLoc
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::emitSemanticWarning (const GALGAS_location & inWarningLocation,
                                       const GALGAS_string & inWarningMessage
@@ -416,97 +433,50 @@ void C_Compiler::emitSemanticWarning (const GALGAS_location & inWarningLocation,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark ========= Run Time Error
+  #pragma mark Run Time Error
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::onTheFlyRunTimeError (const C_String & inRunTimeErrorMessage
                                        COMMA_LOCATION_ARGS) {
   signalRunTimeError (inRunTimeErrorMessage COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark ========= here
+  #pragma mark here
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 GALGAS_location C_Compiler::here (void) const {
   return GALGAS_location (mStartLocationForHere, mEndLocationForHere, mSourceTextPtr) ;
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//   T R A C E                                                                                                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-static C_TextFileWrite * gTraceFile = NULL ;
-static uint32_t gTraceIndex ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enableTraceWithPath (const C_String & inFilePath) {
-  gTraceIndex = 0 ;
-  const C_String path = inFilePath + ".trace.txt" ;
-  macroMyNew (gTraceFile, C_TextFileWrite (path)) ;
-  if (! gTraceFile->isOpened ()) {
-    printf ("**** Error: cannot create trace file at path: '%s'.\n", path.cString (HERE)) ;
-    macroMyDelete (gTraceFile) ;
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-bool traceIsEnabled (void) {
-  return NULL != gTraceFile ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void appendTrace (const char * inType,
-                  const bool inIsBuilt,
-                  const C_String & inStringValue) {
-  if (NULL != gTraceFile) {
-    gTraceIndex ++ ;
-    (*gTraceFile) << cStringWithUnsigned (gTraceIndex)
-                  << ":@" << inType
-                  << " [" << (inIsBuilt ? "built" : "not built")
-                  << ", " << inStringValue << "]\n" ;
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void closeTrace (void) {
-  macroMyDelete (gTraceFile) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark ========= Check And Generate File
+  #pragma mark Check And Generate File
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //   C H E C K    A N D    G E N E R A T E   F I L E                                                                   *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 static const char * START_OF_USER_ZONE_1 =  "--- START OF USER ZONE 1\n" ;
 static const char * END_OF_USER_ZONE_1   =  "--- END OF USER ZONE 1\n" ;
 static const char * START_OF_USER_ZONE_2 =  "--- START OF USER ZONE 2\n" ;
 static const char * END_OF_USER_ZONE_2   =  "--- END OF USER ZONE 2\n" ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::generateFile (const C_String & inLineCommentPrefix,
                                const TC_UniqueArray <C_String> & inDirectoriesToExclude,
@@ -529,7 +499,7 @@ void C_Compiler::generateFile (const C_String & inLineCommentPrefix,
                           inMakeExecutable) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::generateFileFromPathes (const C_String & inStartPath,
                                          const TC_UniqueArray <C_String> & inDirectoriesToExclude,
@@ -590,7 +560,7 @@ void C_Compiler::generateFileFromPathes (const C_String & inStartPath,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::enterPragma (const GALGAS_lstring & inPragmaName,
                               const GALGAS_lstring & inPragmaArgument
@@ -610,20 +580,20 @@ void C_Compiler::enterPragma (const GALGAS_lstring & inPragmaName,
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 int32_t C_Compiler::checkedVariableListEntryCount (void) const {
   return mCheckedVariableList.count () ;
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_String C_Compiler::checkedVariableAtIndex (const int32_t inIndex COMMA_LOCATION_ARGS) const {
   return mCheckedVariableList (inIndex COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Compiler::generateFileWithPatternFromPathes (
   const C_String & inStartPath,
@@ -752,4 +722,4 @@ void C_Compiler::generateFileWithPatternFromPathes (
 }
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------

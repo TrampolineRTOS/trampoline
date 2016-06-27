@@ -34,16 +34,21 @@
 #define TPL_TIMERS_H
 
 
-#define TPL_PIT_VALUE(value) ((uint32)(TPL_PIT_RATIO*value))
+#define TPL_PIT_VALUE(value) ((uint32)(TPL_WATCHDOG_RATIO*value))
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
 extern FUNC(void, OS_CODE) tpl_init_pit(void);
 
+#if 0
 extern FUNC(void, OS_CODE) tpl_load_pit(
   VAR(uint8, AUTOMATIC) pit,
   VAR(uint32, AUTOMATIC) ticks);
+#endif
+
+/* Generated in goil */
+extern FUNC(void, OS_CODE) tpl_load_pits(void);
 
 extern FUNC(void, OS_CODE) tpl_start_pit(
   VAR(uint8, AUTOMATIC) pit);
@@ -56,10 +61,6 @@ extern FUNC(tpl_bool, OS_CODE)  tpl_call_counter_tick();
 
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
 extern FUNC(void, OS_CODE) tpl_watchdog_handler(void);
-#endif
-
-#if TPL_TICK_TIMER != TPL_DECREMENTER
-extern FUNC(void, OS_CODE) tpl_tick_handler(void);
 #endif
 
 #define OS_STOP_SEC_CODE

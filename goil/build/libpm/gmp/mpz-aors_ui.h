@@ -63,7 +63,7 @@ FUNCTION (mpz_ptr w, mpz_srcptr u, unsigned long int vval)
   mp_size_t usize, wsize;
   mp_size_t abs_usize;
 
-#if BITS_PER_ULONG > GMP_NUMB_BITS  /* avoid warnings about shift amount */
+#if defined (SIZEOF_UNSIGNED_LONG) && (BITS_PER_ULONG > GMP_NUMB_BITS)  /* avoid warnings about shift amount */
   if (vval > GMP_NUMB_MAX)
     {
       mpz_t v;

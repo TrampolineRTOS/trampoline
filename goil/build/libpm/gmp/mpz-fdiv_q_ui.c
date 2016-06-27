@@ -54,7 +54,7 @@ mpz_fdiv_q_ui (mpz_ptr quot, mpz_srcptr dividend, unsigned long int divisor)
   qp = MPZ_REALLOC (quot, nn);
   np = PTR(dividend);
 
-#if BITS_PER_ULONG > GMP_NUMB_BITS  /* avoid warnings about shift amount */
+#if defined(SIZEOF_UNSIGNED_LONG) && (BITS_PER_ULONG > GMP_NUMB_BITS)  /* avoid warnings about shift amount */
   if (divisor > GMP_NUMB_MAX)
     {
       mp_limb_t dp[2], rp[2];

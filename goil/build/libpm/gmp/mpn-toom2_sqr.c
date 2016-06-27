@@ -49,7 +49,7 @@ see https://www.gnu.org/licenses/.  */
   vinf=      a1 ^2  # A(inf)^2
 */
 
-#if TUNE_PROGRAM_BUILD || WANT_FAT_BINARY
+#if defined (TUNE_PROGRAM_BUILD) || defined (WANT_FAT_BINARY)
 #define MAYBE_sqr_toom2   1
 #else
 #define MAYBE_sqr_toom2							\

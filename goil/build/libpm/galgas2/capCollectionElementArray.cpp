@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //  capCollectionElementArray                                                                                          *
 //                                                                                                                     *
@@ -18,14 +18,14 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "galgas2/capCollectionElementArray.h"
 #include "utilities/MF_MemoryControl.h"
 #include "strings/C_String.h"
 #include "galgas2/C_Compiler.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 capCollectionElementArray::capCollectionElementArray (void) :
 mArray (NULL),
@@ -33,7 +33,7 @@ mCapacity (0),
 mCount (0) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 capCollectionElementArray::capCollectionElementArray (const uint32_t inCapacity) :
 mArray (NULL),
@@ -42,7 +42,7 @@ mCount (0) {
   setCapacity (inCapacity) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 capCollectionElementArray::capCollectionElementArray (const capCollectionElementArray & inSource) :
 mArray (NULL),
@@ -54,7 +54,7 @@ mCount (0) {
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 capCollectionElementArray & capCollectionElementArray::operator = (const capCollectionElementArray & inSource) {
   removeAllObjects () ;
@@ -65,13 +65,13 @@ capCollectionElementArray & capCollectionElementArray::operator = (const capColl
   return *this ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 capCollectionElementArray::~capCollectionElementArray (void) {
   macroMyDeleteArray (mArray) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void capCollectionElementArray::setCapacity (const uint32_t inNewCapacity) {
   if (inNewCapacity > mCapacity) {
@@ -91,7 +91,7 @@ void capCollectionElementArray::setCapacity (const uint32_t inNewCapacity) {
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void capCollectionElementArray::addObject (const capCollectionElement & inObject) {
   MF_Assert (mCount < mCapacity, "mCount (%lld) >= mCapacity (%lld)", mCount, mCapacity) ;
@@ -99,7 +99,7 @@ void capCollectionElementArray::addObject (const capCollectionElement & inObject
   mCount ++ ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void capCollectionElementArray::addObjectAtIndex (const capCollectionElement & inObject,
                                                   const uint32_t inInsertionIndex,
@@ -119,7 +119,7 @@ void capCollectionElementArray::addObjectAtIndex (const capCollectionElement & i
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void capCollectionElementArray::replaceObjectAtIndex (const capCollectionElement & inObject,
                                                       const uint32_t inIndex
@@ -128,7 +128,7 @@ void capCollectionElementArray::replaceObjectAtIndex (const capCollectionElement
   mArray [inIndex] = inObject ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS 
   capCollectionElement capCollectionElementArray::objectAtIndex (const uint32_t inIndex
@@ -138,7 +138,7 @@ void capCollectionElementArray::replaceObjectAtIndex (const capCollectionElement
   }
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 cCollectionElement * capCollectionElementArray::pointerAtIndex (const uint32_t inIndex
                                                                 COMMA_LOCATION_ARGS) {
@@ -147,7 +147,7 @@ cCollectionElement * capCollectionElementArray::pointerAtIndex (const uint32_t i
   return mArray [inIndex].ptr () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 const cCollectionElement * capCollectionElementArray::pointerAtIndexForReadAccess (const uint32_t inIndex
                                                                                    COMMA_LOCATION_ARGS) const {
@@ -155,7 +155,7 @@ const cCollectionElement * capCollectionElementArray::pointerAtIndexForReadAcces
   return mArray [inIndex].ptr () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void capCollectionElementArray::removeObjectAtIndex (const uint32_t inIndex) {
   MF_Assert (mCount > inIndex, "mCount (%ld) <= inIndex (%lld)", mCount, inIndex) ;
@@ -166,7 +166,7 @@ void capCollectionElementArray::removeObjectAtIndex (const uint32_t inIndex) {
   mArray [mCount].drop () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void capCollectionElementArray::predendObject (const capCollectionElement & inObject) {
   MF_Assert (mCount < mCapacity, "mCount (%lld) >= mCapacity (%lld)", mCount, mCapacity) ;
@@ -177,7 +177,7 @@ void capCollectionElementArray::predendObject (const capCollectionElement & inOb
   mCount ++ ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void capCollectionElementArray::removeAllObjects (void) {
   for (uint32_t i=0 ; i<mCount ; i++) {
@@ -186,7 +186,7 @@ void capCollectionElementArray::removeAllObjects (void) {
   mCount = 0 ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 typeComparisonResult capCollectionElementArray::compareCollectionElementArray (const capCollectionElementArray & inOperand) const {
   typeComparisonResult result = kOperandEqual ;
@@ -202,4 +202,4 @@ typeComparisonResult capCollectionElementArray::compareCollectionElementArray (c
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------

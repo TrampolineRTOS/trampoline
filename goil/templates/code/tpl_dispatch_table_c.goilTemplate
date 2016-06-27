@@ -52,6 +52,29 @@ end foreach
 
 %
 };
+%
+# In multicore, we retrieve in this table if a service should lock the kernel
+# or not
+if OS::NUMBER_OF_CORES > 1 then%
+/* Lists services that should lock the kernel */
+CONST(tpl_bool, OS_CONST) tpl_service_lock_kernel[SYSCALL_COUNT] = {
+%
+let api_func_name := ""
+foreach api_sec in APIUSED do
+  foreach api_func in api_sec::SYSCALL do
+    let api_func_name := api_func::NAME
+    let lock_kernel := exists api_func::LOCK_KERNEL default (true)
+%    (tpl_bool) % !TRUEFALSE(lock_kernel) %%
+  between %,    /* % !api_func_name % */
+%
+  end foreach
+  between %,    /* % !api_func_name % */
+% after   %     /* % !api_func_name % */%
+end foreach
+%
+};%
+end if%
+
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 

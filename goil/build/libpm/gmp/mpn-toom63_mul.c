@@ -156,7 +156,7 @@ mpn_toom63_mul (mp_ptr pp,
   sign = mpn_toom_eval_pm1 (v2, v0, 5, ap, n, s,    pp);
   /* Compute bs1 and bsm1. Code taken from toom33 */
   cy = mpn_add (ws, b0, n, b2, t);
-#if HAVE_NATIVE_mpn_add_n_sub_n
+#ifdef HAVE_NATIVE_mpn_add_n_sub_n
   if (cy == 0 && mpn_cmp (ws, b1, n) < 0)
     {
       cy = mpn_add_n_sub_n (v3, v1, b1, ws, n);

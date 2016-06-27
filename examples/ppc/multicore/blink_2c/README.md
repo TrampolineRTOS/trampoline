@@ -1,9 +1,11 @@
 #Trampoline examples for PowerPC target
 
-This is a simple blink example, tested and working for MPC5643L target using
-Cosmic Software compiler. An alarm wakes up a task which will turn on/off the
-led. One task is executed per core, controlling two different leds at the same
-time.
+This is a dualcore blink example, tested and working for MPC5643L target using
+Cosmic Software compiler.
+
+This example uses two synchronized cores, with one task and one alarm per core.
+When an alarm is triggered, the core to whose it belongs activates the task of
+the other core and ask for a context switch through an intercore interruption.
 
 ##How to build the example
 To compile the example, one can use the bash script "run.sh" in this directory.
@@ -27,4 +29,29 @@ you're compiling using Cosmic software CXVLE Evaluation tools through wine),
 one can set the environment variables COSMIC_CXPPC, COSMIC_CAPPC, COSMIC_CPPPC,
 COSMIC_CLNK and COSMIC_CVDWARF to use these commands instead (so something like
 'export COSMIC_CXPPC="wine ~/path/to/cosmic/tools/cxvle.exe"').
+
+##Execute the program through T32 (Lauterbach)
+
+SH $  : Command in shell
+T32 & : Command in T32
+
+First export Lauterbach's required environment variables :
+
+SH $ export T32SYS=$HOME/Lauterbach/files        # T32 path to files directory
+SH $ export T32TMP=/tmp                          # T32 tmp directory
+SH $ export T32ID=T32                            # T32 ID
+SH $ export PATH=$PATH:$T32SYS/bin/pc_linux64    # Path to the executables
+
+You can put the exports in the ~/.bashrc files to avoid repeating this
+operation for each new shell.
+
+Launch T32 for powerpc :
+SH $ t32mppc-qt &
+
+In T32, launch the lauterbach script :
+T32 $ do lauterbach.cmm
+You can also launch the script using the menu "File->Run Script"
+
+Then run the program :
+T32 $ go
 

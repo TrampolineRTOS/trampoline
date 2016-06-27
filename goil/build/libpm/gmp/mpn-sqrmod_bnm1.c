@@ -218,7 +218,7 @@ mpn_sqrmod_bnm1 (mp_ptr rp, mp_size_t rn, mp_srcptr ap, mp_size_t an, mp_ptr tp)
 	 both input are ZERO.
       */
 
-#if HAVE_NATIVE_mpn_rsh1add_n || HAVE_NATIVE_mpn_rsh1add_nc
+#if defined (HAVE_NATIVE_mpn_rsh1add_n) || defined (HAVE_NATIVE_mpn_rsh1add_nc)
 #if HAVE_NATIVE_mpn_rsh1add_nc
       cy = mpn_rsh1add_nc(rp, rp, xp, n, xp[n]); /* B^n = 1 */
       hi = cy << (GMP_NUMB_BITS - 1);
@@ -239,7 +239,7 @@ mpn_sqrmod_bnm1 (mp_ptr rp, mp_size_t rn, mp_srcptr ap, mp_size_t an, mp_ptr tp)
       rp[n-1] ^= hi;
 #endif
 #else /* ! HAVE_NATIVE_mpn_rsh1add_n */
-#if HAVE_NATIVE_mpn_add_nc
+#ifdef HAVE_NATIVE_mpn_add_nc
       cy = mpn_add_nc(rp, rp, xp, n, xp[n]);
 #else /* ! _nc */
       cy = xp[n] + mpn_add_n(rp, rp, xp, n); /* xp[n] == 1 implies {xp,n} == ZERO */

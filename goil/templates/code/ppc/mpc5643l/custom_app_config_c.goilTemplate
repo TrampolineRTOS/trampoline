@@ -1,15 +1,16 @@
-// FIXME : Static informations
-
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
-/* f=120000000 Hz , tick=0.001 s */
-VAR(uint32, OS_VAR) tpl_tick_init_value = TPL_PIT_RATIO;
+%
+let used_counters := emptymap
+foreach counter in HARDWARECOUNTERS do
+  let used_counters[counter::SOURCE] := counter
+end foreach
 
-VAR(uint32, OS_VAR) tpl_os_it_level_buff = 0;
-VAR(uint32, OS_VAR) tpl_os_it_level = 3;
-VAR(uint32, OS_VAR) tpl_counter_it_level_buff = 0;
-VAR(uint32, OS_VAR) tpl_counter_it_level = 3;
+if exists used_counters["no_pit"] then
+%VAR(uint32, OS_VAR) tpl_dec_init_value = % !used_counters["no_pit"]::FREQUENCY %;%
+end if
+%
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -89,7 +90,6 @@ end if
 %
 
 %
-############ SPINLOCK : Done only in multicore and with spinlocks defined
 if exists SPINLOCK & (OS::NUMBER_OF_CORES > 1) then
   foreach spinlock in SPINLOCK
     before

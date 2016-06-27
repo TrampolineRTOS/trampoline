@@ -39,6 +39,13 @@ typedef struct ARM_CONTEXT *tpl_context;
 
 extern struct ARM_CONTEXT idle_task_context;
 
+/* TODO : This function is called after an ISR2 has been terminated. It should
+ *        restore the hardware's cpu priority if it has been increased before
+ *        the execution of the ISR2 (see ppc/multicore/tpl_machine.h for an
+ *        example).
+ */
+#define tpl_restore_cpu_priority()
+
 #endif /* TPL_MACHINE_H */
 
 /* End of file tpl_machine.h */

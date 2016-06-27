@@ -23,6 +23,7 @@ CPU only_one_periodic_task {
       APP_SRC = "periodic.c";
       TRAMPOLINE_BASE_PATH = "../../..";
       APP_NAME = "periodic_exe";
+      LINKER = "gcc";
     };
   };
   

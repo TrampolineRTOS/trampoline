@@ -48,7 +48,7 @@ TPL_VLE_OFF
 #endif
 
 #define OS_START_SEC_CODE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 
 /**
  * tpl_protection_hook_wrapper is called when an exception
@@ -119,6 +119,7 @@ machine_check_error:
   /*
    * Save the context of the running process.
    */
+/* XXX : Multicore ?*/
   e_lis     r11,TPL_HIG(TPL_EXTERN_REF(tpl_kern))
   e_add16i  r11,TPL_LOW(TPL_EXTERN_REF(tpl_kern))
   e_stw     r11,KS_KERN_PTR(r1) /* save the ptr for future use  */
@@ -327,5 +328,5 @@ TPL_TYPE(TPL_GLOBAL_REF(tpl_protection_hook_wrapper),@function)
 TPL_SIZE(TPL_GLOBAL_REF(tpl_protection_hook_wrapper),$-TPL_GLOBAL_REF(tpl_protection_hook_wrapper))
 
 #define OS_STOP_SEC_CODE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 

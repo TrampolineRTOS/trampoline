@@ -58,6 +58,8 @@ static CONST(tpl_generic_id, AUTOMATIC) tpl_obj_count_table[6] = {
 #include "tpl_memmap.h"
 
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
 /**
  *  Get the application ID to which the current process belongs to
  *
@@ -603,5 +605,8 @@ FUNC(void, OS_CODE) tpl_osapp_shutdown_hooks(void)
 #  endif /* WITH_MEMORY_PROTECTION == NO */
 #endif /* APP_COUNT > 0 */
 #endif
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
 
 /*  End of file tpl_as_app_kernel.c  */

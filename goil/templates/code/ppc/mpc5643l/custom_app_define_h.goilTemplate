@@ -1,4 +1,11 @@
-/*=============================================================================
+%
+#------------------------------------------------------------------------------*
+# build an empty list when the list does not exist. This simplify
+# further processing because existence test is not necessary
+
+let INTERCORE_INTERRUPT := exists INTERCORE_INTERRUPT default (emptylist)
+
+%/*=============================================================================
  * Target specific definitions
  */
 
@@ -10,8 +17,6 @@
 #define TPL_PIT_1       1
 #define TPL_PIT_2       2
 #define TPL_PIT_3       3
-#define TPL_DECREMENTER 4
-#define TPL_NO_TIMER    5
 
 %
 let channel_map := emptymap
@@ -24,40 +29,44 @@ let channel_map["pit_ch3"] := "TPL_PIT_3"
 /*-----------------------------------------------------------------------------
  * Chosen timers
  */
-%
-let tick_timer  := ""
-let wdg_timer   := ""
-foreach counter in COUNTER do
-  if counter::NAME == "SystemCounter" then
-    if counter::SOURCE == "no_pit" then
-      let tick_timer := "TPL_DECREMENTER"
-    else
-      let tick_timer := channel_map[counter::SOURCE]
-    end if
-  end if
 
-  if counter::HANDLER == "watchdog" then
-    if counter::SOURCE == "no_pit" then
-      let wdg_timer := "TPL_NO_TIMER"
-    else
-      let wdg_timer := channel_map[counter::SOURCE]
-    end if
-  end if
+%
+# Count only counters used in applications
+let used_counters := emptymap
+foreach app in APPLICATION do
+  foreach app_counter in exists app::COUNTER default(emptylist) do
+    foreach counter in HARDWARECOUNTERS do
+      if app_counter::VALUE == counter::NAME then
+        let used_counters[counter::SOURCE] := counter
+      end if
+    end foreach
+  end foreach
 end foreach
 
-if wdg_timer == "" then
-  let wdg_timer := "TPL_NO_TIMER"
-end if
-
-if tick_timer == "" then
-  let tick_timer := "TPL_DECREMENTER"
-end if
-
+let number_of_pit_used := 0
+let watchdog_frequency := 0
+let watchdog_channel    := ""
+foreach counter in used_counters do
+  if counter::SOURCE != "no_pit" then
+    let number_of_pit_used := number_of_pit_used + 1
+  end if
+  if counter::HANDLER == "watchdog" & counter::SOURCE != "no_pit" then
+    let watchdog_frequency := counter::FREQUENCY
+    let watchdog_channel   := channel_map[counter::SOURCE]
+  end if
+end foreach
 %
 
-#define TPL_TICK_TIMER  % !tick_timer %
-#define TPL_WDG_TIMER   % !wdg_timer %
-#define TPL_PIT_RATIO 120000 // FIXME : Must be chosen in goil template
+#define TPL_USE_DECREMENTER     % !yesNo(exists used_counters["no_pit"]) %
+#define TPL_USE_PIT             % !yesNo(number_of_pit_used > 0) %
+%if watchdog_channel != "" then
+%#define TPL_WATCHDOG_RATIO      %!watchdog_frequency%
+#define TPL_WDG_TIMER           %!watchdog_channel
+else
+%#define TPL_WATCHDOG_RATIO      0
+#define TPL_WDG_TIMER           TPL_NO_TIMER
+%end if
+%
 
 /*-----------------------------------------------------------------------------
  * Enable multicore
@@ -91,11 +100,9 @@ end if
 %
 let irqs := mapof INTERRUPT by NAME
 
-if exists INTERCORE_INTERRUPT then
-  foreach it in INTERCORE_INTERRUPT do
+foreach it in INTERCORE_INTERRUPT do
 %#define TPL_INTERCORE_IT_% !INDEX %   % !irqs[it::SOURCE]::ID%
 %
-  end foreach
-end if
+end foreach
 %
 

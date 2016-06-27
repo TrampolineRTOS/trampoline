@@ -1,19 +1,19 @@
 #ifndef all_2D_declarations_2D__34__ENTITIES_DEFINED
 #define all_2D_declarations_2D__34__ENTITIES_DEFINED
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "galgas2/predefined-types.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "all-declarations-3.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                        @void_5F_uint_36__34__5F_class class                                         *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_void_5F_uint_36__34__5F_class : public GALGAS_uint_36__34__5F_class {
 //--- Constructor
@@ -60,15 +60,15 @@ class GALGAS_void_5F_uint_36__34__5F_class : public GALGAS_uint_36__34__5F_class
 } ; // End of GALGAS_void_5F_uint_36__34__5F_class class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_void_5F_uint_36__34__5F_class ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                     Pointer class for @void_uint64_class class                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 class cPtr_void_5F_uint_36__34__5F_class : public cPtr_uint_36__34__5F_class {
 //--- Attributes
@@ -93,11 +93,11 @@ class cPtr_void_5F_uint_36__34__5F_class : public cPtr_uint_36__34__5F_class {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                                  @oil_5F_obj class                                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_oil_5F_obj : public AC_GALGAS_class {
 //--- Constructor
@@ -137,15 +137,15 @@ class GALGAS_oil_5F_obj : public AC_GALGAS_class {
 } ; // End of GALGAS_oil_5F_obj class
 
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_oil_5F_obj ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                                          Pointer class for @oil_obj class                                           *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 class cPtr_oil_5F_obj : public acPtr_class {
 //--- Attributes
@@ -167,389 +167,389 @@ class cPtr_oil_5F_obj : public acPtr_class {
 
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
-//                              Category getter '@enumValues mergeWithEnum' (as function)                              *
+//                             Extension getter '@enumValues mergeWithEnum' (as function)                              *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_enumValues extensionGetter_mergeWithEnum (const class GALGAS_enumValues & inObject,
                                                        const class GALGAS_enumValues & constinArgument0,
                                                        class C_Compiler * inCompiler
                                                        COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
-//          Category getter '@implementationObjectMap mergeImplementationObjectAttributesWith' (as function)           *
+//          Extension getter '@implementationObjectMap mergeImplementationObjectAttributesWith' (as function)          *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_implementationObjectMap extensionGetter_mergeImplementationObjectAttributesWith (const class GALGAS_implementationObjectMap & inObject,
                                                                                               const class GALGAS_implementationObjectMap & constinArgument0,
                                                                                               class C_Compiler * inCompiler
                                                                                               COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
-//                                      Category getter '@implementation hasLKey'                                      *
+//                                     Extension getter '@implementation hasLKey'                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-typedef class GALGAS_bool (*categoryGetterSignature_implementation_hasLKey) (const class cPtr_implementation * inObject,
-                                                                             const class GALGAS_lstring & constinArgument0,
-                                                                             C_Compiler * inCompiler
-                                                                             COMMA_LOCATION_ARGS) ;
+typedef class GALGAS_bool (*enterExtensionGetter_implementation_hasLKey) (const class cPtr_implementation * inObject,
+                                                                          const class GALGAS_lstring & constinArgument0,
+                                                                          C_Compiler * inCompiler
+                                                                          COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-void enterCategoryGetter_hasLKey (const int32_t inClassIndex,
-                                  categoryGetterSignature_implementation_hasLKey inGetter) ;
+void enterExtensionGetter_hasLKey (const int32_t inClassIndex,
+                                   enterExtensionGetter_implementation_hasLKey inGetter) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-class GALGAS_bool callCategoryGetter_hasLKey (const cPtr_implementation * inObject,
-                                              const GALGAS_lstring & constin_key,
-                                              class C_Compiler * inCompiler
-                                              COMMA_LOCATION_ARGS) ;
+class GALGAS_bool callExtensionGetter_hasLKey (const cPtr_implementation * inObject,
+                                               const GALGAS_lstring & constin_key,
+                                               class C_Compiler * inCompiler
+                                               COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
-//                                 Category method '@implementation checkTypeForKind'                                  *
+//                                 Extension method '@implementation checkTypeForKind'                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-typedef void (*categoryMethodSignature_implementation_checkTypeForKind) (const class cPtr_implementation * inObject,
-                                                                         const class GALGAS_string constinArgument0,
-                                                                         const class GALGAS_string constinArgument1,
-                                                                         const class GALGAS_dataType constinArgument2,
-                                                                         class C_Compiler * inCompiler
-                                                                         COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterCategoryMethod_checkTypeForKind (const int32_t inClassIndex,
-                                           categoryMethodSignature_implementation_checkTypeForKind inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callCategoryMethod_checkTypeForKind (const class cPtr_implementation * inObject,
-                                          const GALGAS_string constin_objKind,
-                                          const GALGAS_string constin_attributeName,
-                                          const GALGAS_dataType constin_expectedType,
-                                          C_Compiler * inCompiler
-                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 Category method '@impType checkAttributeReferences'                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*categoryMethodSignature_impType_checkAttributeReferences) (const class cPtr_impType * inObject,
-                                                                          const class GALGAS_implementation constinArgument0,
+typedef void (*extensionMethodSignature_implementation_checkTypeForKind) (const class cPtr_implementation * inObject,
+                                                                          const class GALGAS_string constinArgument0,
+                                                                          const class GALGAS_string constinArgument1,
+                                                                          const class GALGAS_dataType constinArgument2,
                                                                           class C_Compiler * inCompiler
                                                                           COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-void enterCategoryMethod_checkAttributeReferences (const int32_t inClassIndex,
-                                                   categoryMethodSignature_impType_checkAttributeReferences inMethod) ;
+void enterExtensionMethod_checkTypeForKind (const int32_t inClassIndex,
+                                            extensionMethodSignature_implementation_checkTypeForKind inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-void callCategoryMethod_checkAttributeReferences (const class cPtr_impType * inObject,
-                                                  const GALGAS_implementation constin_imp,
-                                                  C_Compiler * inCompiler
-                                                  COMMA_LOCATION_ARGS) ;
+void callExtensionMethod_checkTypeForKind (const class cPtr_implementation * inObject,
+                                           const GALGAS_string constin_objKind,
+                                           const GALGAS_string constin_attributeName,
+                                           const GALGAS_dataType constin_expectedType,
+                                           C_Compiler * inCompiler
+                                           COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
-//                                  Abstract category getter '@impType mergeWithType'                                  *
+//                                Extension method '@impType checkAttributeReferences'                                 *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-typedef class GALGAS_impType (*categoryGetterSignature_impType_mergeWithType) (const class cPtr_impType * inObject,
-                                                                               class GALGAS_impType inArgument0,
-                                                                               class C_Compiler * inCompiler
-                                                                               COMMA_LOCATION_ARGS) ;
+typedef void (*extensionMethodSignature_impType_checkAttributeReferences) (const class cPtr_impType * inObject,
+                                                                           const class GALGAS_implementation constinArgument0,
+                                                                           class C_Compiler * inCompiler
+                                                                           COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-void enterCategoryGetter_mergeWithType (const int32_t inClassIndex,
-                                        categoryGetterSignature_impType_mergeWithType inMethod) ;
+void enterExtensionMethod_checkAttributeReferences (const int32_t inClassIndex,
+                                                    extensionMethodSignature_impType_checkAttributeReferences inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-class GALGAS_impType callCategoryGetter_mergeWithType (const class cPtr_impType * inObject,
-                                                       GALGAS_impType in_typeToMerge,
-                                                       C_Compiler * inCompiler
-                                                       COMMA_LOCATION_ARGS) ;
+void callExtensionMethod_checkAttributeReferences (const class cPtr_impType * inObject,
+                                                   const GALGAS_implementation constin_imp,
+                                                   C_Compiler * inCompiler
+                                                   COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
-//                                    Category getter '@objectAttributes fieldMap'                                     *
+//                                 Abstract extension getter '@impType mergeWithType'                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-typedef class GALGAS_TfieldMap (*categoryGetterSignature_objectAttributes_fieldMap) (const class cPtr_objectAttributes * inObject,
-                                                                                     C_Compiler * inCompiler
-                                                                                     COMMA_LOCATION_ARGS) ;
+typedef class GALGAS_impType (*enterExtensionGetter_impType_mergeWithType) (const class cPtr_impType * inObject,
+                                                                            class GALGAS_impType inArgument0,
+                                                                            class C_Compiler * inCompiler
+                                                                            COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-void enterCategoryGetter_fieldMap (const int32_t inClassIndex,
-                                   categoryGetterSignature_objectAttributes_fieldMap inGetter) ;
+void enterExtensionGetter_mergeWithType (const int32_t inClassIndex,
+                                         enterExtensionGetter_impType_mergeWithType inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-class GALGAS_TfieldMap callCategoryGetter_fieldMap (const cPtr_objectAttributes * inObject,
-                                                    class C_Compiler * inCompiler
-                                                    COMMA_LOCATION_ARGS) ;
+class GALGAS_impType callExtensionGetter_mergeWithType (const class cPtr_impType * inObject,
+                                                        GALGAS_impType in_typeToMerge,
+                                                        C_Compiler * inCompiler
+                                                        COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
-//                                           Category method '@object_t set'                                           *
+//                                    Extension getter '@objectAttributes fieldMap'                                    *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-typedef void (*categoryMethodSignature_object_5F_t_set) (const class cPtr_object_5F_t * inObject,
-                                                         const class GALGAS_lstring constinArgument0,
-                                                         class GALGAS_TfieldMap & ioArgument1,
-                                                         class C_Compiler * inCompiler
-                                                         COMMA_LOCATION_ARGS) ;
+typedef class GALGAS_TfieldMap (*enterExtensionGetter_objectAttributes_fieldMap) (const class cPtr_objectAttributes * inObject,
+                                                                                  C_Compiler * inCompiler
+                                                                                  COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-void enterCategoryMethod_set (const int32_t inClassIndex,
-                              categoryMethodSignature_object_5F_t_set inMethod) ;
+void enterExtensionGetter_fieldMap (const int32_t inClassIndex,
+                                    enterExtensionGetter_objectAttributes_fieldMap inGetter) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-void callCategoryMethod_set (const class cPtr_object_5F_t * inObject,
-                             const GALGAS_lstring constin_name,
-                             GALGAS_TfieldMap & io_result,
-                             C_Compiler * inCompiler
-                             COMMA_LOCATION_ARGS) ;
+class GALGAS_TfieldMap callExtensionGetter_fieldMap (const cPtr_objectAttributes * inObject,
+                                                     class C_Compiler * inCompiler
+                                                     COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
-//                                  Category getter '@string trimLeft' (as function)                                   *
+//                                          Extension method '@object_t set'                                           *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+
+typedef void (*extensionMethodSignature_object_5F_t_set) (const class cPtr_object_5F_t * inObject,
+                                                          const class GALGAS_lstring constinArgument0,
+                                                          class GALGAS_TfieldMap & ioArgument1,
+                                                          class C_Compiler * inCompiler
+                                                          COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void enterExtensionMethod_set (const int32_t inClassIndex,
+                               extensionMethodSignature_object_5F_t_set inMethod) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void callExtensionMethod_set (const class cPtr_object_5F_t * inObject,
+                              const GALGAS_lstring constin_name,
+                              GALGAS_TfieldMap & io_result,
+                              C_Compiler * inCompiler
+                              COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                     *
+//                                  Extension getter '@string trimLeft' (as function)                                  *
+//                                                                                                                     *
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_string extensionGetter_trimLeft (const class GALGAS_string & inObject,
                                               class C_Compiler * inCompiler
                                               COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
-//                                  Category getter '@string trimRight' (as function)                                  *
+//                                 Extension getter '@string trimRight' (as function)                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_string extensionGetter_trimRight (const class GALGAS_string & inObject,
                                                class C_Compiler * inCompiler
                                                COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
-//                              Category method '@implementationObject verifyApplication'                              *
+//                             Extension method '@implementationObject verifyApplication'                              *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-typedef void (*categoryMethodSignature_implementationObject_verifyApplication) (const class cPtr_implementationObject * inObject,
-                                                                                const class GALGAS_objectKind constinArgument0,
-                                                                                class C_Compiler * inCompiler
-                                                                                COMMA_LOCATION_ARGS) ;
+typedef void (*extensionMethodSignature_implementationObject_verifyApplication) (const class cPtr_implementationObject * inObject,
+                                                                                 const class GALGAS_objectKind constinArgument0,
+                                                                                 class C_Compiler * inCompiler
+                                                                                 COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-void enterCategoryMethod_verifyApplication (const int32_t inClassIndex,
-                                            categoryMethodSignature_implementationObject_verifyApplication inMethod) ;
+void enterExtensionMethod_verifyApplication (const int32_t inClassIndex,
+                                             extensionMethodSignature_implementationObject_verifyApplication inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-void callCategoryMethod_verifyApplication (const class cPtr_implementationObject * inObject,
-                                           const GALGAS_objectKind constin_objectsOfKind,
-                                           C_Compiler * inCompiler
-                                           COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                              Category method '@objectAttributes verifyCrossReferences'                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*categoryMethodSignature_objectAttributes_verifyCrossReferences) (const class cPtr_objectAttributes * inObject,
-                                                                                const class GALGAS_objectsMap constinArgument0,
-                                                                                const class GALGAS_implementationObjectMap constinArgument1,
-                                                                                class C_Compiler * inCompiler
-                                                                                COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterCategoryMethod_verifyCrossReferences (const int32_t inClassIndex,
-                                                categoryMethodSignature_objectAttributes_verifyCrossReferences inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callCategoryMethod_verifyCrossReferences (const class cPtr_objectAttributes * inObject,
-                                               const GALGAS_objectsMap constin_allObjects,
-                                               const GALGAS_implementationObjectMap constin_attributes,
-                                               C_Compiler * inCompiler
-                                               COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  Category method '@object_t verifyCrossReferences'                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*categoryMethodSignature_object_5F_t_verifyCrossReferences) (const class cPtr_object_5F_t * inObject,
-                                                                           const class GALGAS_objectsMap constinArgument0,
-                                                                           const class GALGAS_impType constinArgument1,
-                                                                           class C_Compiler * inCompiler
-                                                                           COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterCategoryMethod_verifyCrossReferences (const int32_t inClassIndex,
-                                                categoryMethodSignature_object_5F_t_verifyCrossReferences inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callCategoryMethod_verifyCrossReferences (const class cPtr_object_5F_t * inObject,
-                                               const GALGAS_objectsMap constin_allObjects,
-                                               const GALGAS_impType constin_type,
-                                               C_Compiler * inCompiler
-                                               COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                          Category getter '@applicationDefinition applicationWithDefaults'                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_applicationDefinition (*categoryGetterSignature_applicationDefinition_applicationWithDefaults) (const class cPtr_applicationDefinition * inObject,
-                                                                                                                     const class GALGAS_implementation & constinArgument0,
-                                                                                                                     C_Compiler * inCompiler
-                                                                                                                     COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterCategoryGetter_applicationWithDefaults (const int32_t inClassIndex,
-                                                  categoryGetterSignature_applicationDefinition_applicationWithDefaults inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_applicationDefinition callCategoryGetter_applicationWithDefaults (const cPtr_applicationDefinition * inObject,
-                                                                               const GALGAS_implementation & constin_imp,
-                                                                               class C_Compiler * inCompiler
-                                                                               COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    Category method '@impType verifyApplication'                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*categoryMethodSignature_impType_verifyApplication) (const class cPtr_impType * inObject,
-                                                                   const class GALGAS_objectAttributes constinArgument0,
-                                                                   class C_Compiler * inCompiler
-                                                                   COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterCategoryMethod_verifyApplication (const int32_t inClassIndex,
-                                            categoryMethodSignature_impType_verifyApplication inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callCategoryMethod_verifyApplication (const class cPtr_impType * inObject,
-                                           const GALGAS_objectAttributes constin_attrs,
-                                           C_Compiler * inCompiler
-                                           COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    Category method '@impType verifyMultipleType'                                    *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*categoryMethodSignature_impType_verifyMultipleType) (const class cPtr_impType * inObject,
-                                                                    const class GALGAS_object_5F_t constinArgument0,
-                                                                    class C_Compiler * inCompiler
-                                                                    COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterCategoryMethod_verifyMultipleType (const int32_t inClassIndex,
-                                             categoryMethodSignature_impType_verifyMultipleType inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callCategoryMethod_verifyMultipleType (const class cPtr_impType * inObject,
-                                            const GALGAS_object_5F_t constin_attr,
+void callExtensionMethod_verifyApplication (const class cPtr_implementationObject * inObject,
+                                            const GALGAS_objectKind constin_objectsOfKind,
                                             C_Compiler * inCompiler
                                             COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
-//                                        Category method '@impType verifyType'                                        *
+//                             Extension method '@objectAttributes verifyCrossReferences'                              *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-typedef void (*categoryMethodSignature_impType_verifyType) (const class cPtr_impType * inObject,
-                                                            const class GALGAS_object_5F_t constinArgument0,
-                                                            class C_Compiler * inCompiler
-                                                            COMMA_LOCATION_ARGS) ;
+typedef void (*extensionMethodSignature_objectAttributes_verifyCrossReferences) (const class cPtr_objectAttributes * inObject,
+                                                                                 const class GALGAS_objectsMap constinArgument0,
+                                                                                 const class GALGAS_implementationObjectMap constinArgument1,
+                                                                                 class C_Compiler * inCompiler
+                                                                                 COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-void enterCategoryMethod_verifyType (const int32_t inClassIndex,
-                                     categoryMethodSignature_impType_verifyType inMethod) ;
+void enterExtensionMethod_verifyCrossReferences (const int32_t inClassIndex,
+                                                 extensionMethodSignature_objectAttributes_verifyCrossReferences inMethod) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-void callCategoryMethod_verifyType (const class cPtr_impType * inObject,
-                                    const GALGAS_object_5F_t constin_attr,
-                                    C_Compiler * inCompiler
-                                    COMMA_LOCATION_ARGS) ;
+void callExtensionMethod_verifyCrossReferences (const class cPtr_objectAttributes * inObject,
+                                                const GALGAS_objectsMap constin_allObjects,
+                                                const GALGAS_implementationObjectMap constin_attributes,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
-//                                 Category method '@objectsMap verifyCrossReferences'                                 *
+//                                 Extension method '@object_t verifyCrossReferences'                                  *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-void categoryMethod_verifyCrossReferences (const class GALGAS_objectsMap inObject,
-                                           const class GALGAS_implementation constin_imp,
-                                           class C_Compiler * inCompiler
-                                           COMMA_LOCATION_ARGS) ;
+typedef void (*extensionMethodSignature_object_5F_t_verifyCrossReferences) (const class cPtr_object_5F_t * inObject,
+                                                                            const class GALGAS_objectsMap constinArgument0,
+                                                                            const class GALGAS_impType constinArgument1,
+                                                                            class C_Compiler * inCompiler
+                                                                            COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
+
+void enterExtensionMethod_verifyCrossReferences (const int32_t inClassIndex,
+                                                 extensionMethodSignature_object_5F_t_verifyCrossReferences inMethod) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void callExtensionMethod_verifyCrossReferences (const class cPtr_object_5F_t * inObject,
+                                                const GALGAS_objectsMap constin_allObjects,
+                                                const GALGAS_impType constin_type,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
-//                                 Category method '@objectKind verifyCrossReferences'                                 *
+//                          Extension getter '@applicationDefinition applicationWithDefaults'                          *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-typedef void (*categoryMethodSignature_objectKind_verifyCrossReferences) (const class cPtr_objectKind * inObject,
-                                                                          const class GALGAS_objectsMap constinArgument0,
-                                                                          const class GALGAS_implementationObject constinArgument1,
-                                                                          class C_Compiler * inCompiler
-                                                                          COMMA_LOCATION_ARGS) ;
+typedef class GALGAS_applicationDefinition (*enterExtensionGetter_applicationDefinition_applicationWithDefaults) (const class cPtr_applicationDefinition * inObject,
+                                                                                                                  const class GALGAS_implementation & constinArgument0,
+                                                                                                                  C_Compiler * inCompiler
+                                                                                                                  COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-void enterCategoryMethod_verifyCrossReferences (const int32_t inClassIndex,
-                                                categoryMethodSignature_objectKind_verifyCrossReferences inMethod) ;
+void enterExtensionGetter_applicationWithDefaults (const int32_t inClassIndex,
+                                                   enterExtensionGetter_applicationDefinition_applicationWithDefaults inGetter) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
-void callCategoryMethod_verifyCrossReferences (const class cPtr_objectKind * inObject,
-                                               const GALGAS_objectsMap constin_allObjects,
-                                               const GALGAS_implementationObject constin_obj,
-                                               C_Compiler * inCompiler
-                                               COMMA_LOCATION_ARGS) ;
+class GALGAS_applicationDefinition callExtensionGetter_applicationWithDefaults (const cPtr_applicationDefinition * inObject,
+                                                                                const GALGAS_implementation & constin_imp,
+                                                                                class C_Compiler * inCompiler
+                                                                                COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                     *
+//                                    Extension method '@impType verifyApplication'                                    *
+//                                                                                                                     *
+//----------------------------------------------------------------------------------------------------------------------
+
+typedef void (*extensionMethodSignature_impType_verifyApplication) (const class cPtr_impType * inObject,
+                                                                    const class GALGAS_objectAttributes constinArgument0,
+                                                                    class C_Compiler * inCompiler
+                                                                    COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void enterExtensionMethod_verifyApplication (const int32_t inClassIndex,
+                                             extensionMethodSignature_impType_verifyApplication inMethod) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void callExtensionMethod_verifyApplication (const class cPtr_impType * inObject,
+                                            const GALGAS_objectAttributes constin_attrs,
+                                            C_Compiler * inCompiler
+                                            COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                     *
+//                                   Extension method '@impType verifyMultipleType'                                    *
+//                                                                                                                     *
+//----------------------------------------------------------------------------------------------------------------------
+
+typedef void (*extensionMethodSignature_impType_verifyMultipleType) (const class cPtr_impType * inObject,
+                                                                     const class GALGAS_object_5F_t constinArgument0,
+                                                                     class C_Compiler * inCompiler
+                                                                     COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void enterExtensionMethod_verifyMultipleType (const int32_t inClassIndex,
+                                              extensionMethodSignature_impType_verifyMultipleType inMethod) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void callExtensionMethod_verifyMultipleType (const class cPtr_impType * inObject,
+                                             const GALGAS_object_5F_t constin_attr,
+                                             C_Compiler * inCompiler
+                                             COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                     *
+//                                       Extension method '@impType verifyType'                                        *
+//                                                                                                                     *
+//----------------------------------------------------------------------------------------------------------------------
+
+typedef void (*extensionMethodSignature_impType_verifyType) (const class cPtr_impType * inObject,
+                                                             const class GALGAS_object_5F_t constinArgument0,
+                                                             class C_Compiler * inCompiler
+                                                             COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void enterExtensionMethod_verifyType (const int32_t inClassIndex,
+                                      extensionMethodSignature_impType_verifyType inMethod) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void callExtensionMethod_verifyType (const class cPtr_impType * inObject,
+                                     const GALGAS_object_5F_t constin_attr,
+                                     C_Compiler * inCompiler
+                                     COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                     *
+//                                Extension method '@objectsMap verifyCrossReferences'                                 *
+//                                                                                                                     *
+//----------------------------------------------------------------------------------------------------------------------
+
+void extensionMethod_verifyCrossReferences (const class GALGAS_objectsMap inObject,
+                                            const class GALGAS_implementation constin_imp,
+                                            class C_Compiler * inCompiler
+                                            COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                     *
+//                                Extension method '@objectKind verifyCrossReferences'                                 *
+//                                                                                                                     *
+//----------------------------------------------------------------------------------------------------------------------
+
+typedef void (*extensionMethodSignature_objectKind_verifyCrossReferences) (const class cPtr_objectKind * inObject,
+                                                                           const class GALGAS_objectsMap constinArgument0,
+                                                                           const class GALGAS_implementationObject constinArgument1,
+                                                                           class C_Compiler * inCompiler
+                                                                           COMMA_LOCATION_ARGS) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void enterExtensionMethod_verifyCrossReferences (const int32_t inClassIndex,
+                                                 extensionMethodSignature_objectKind_verifyCrossReferences inMethod) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void callExtensionMethod_verifyCrossReferences (const class cPtr_objectKind * inObject,
+                                                const GALGAS_objectsMap constin_allObjects,
+                                                const GALGAS_implementationObject constin_obj,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
 
 #endif

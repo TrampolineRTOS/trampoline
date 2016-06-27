@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //  'C_Compiler' : the compiler base class ;                                                                           *
 //                                                                                                                     *
@@ -18,12 +18,12 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef GALGAS_COMPILER_CLASS_DEFINED
 #define GALGAS_COMPILER_CLASS_DEFINED
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "collections/TC_UniqueArray.h"
 #include "strings/C_String.h"
@@ -31,11 +31,11 @@
 #include "galgas2/C_LocationInSource.h"
 #include "galgas2/C_SourceTextInString.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include <exception>
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #define ACCEPT_TERMINAL(t) t
@@ -45,18 +45,18 @@
   #define FORMAL_ARG_ACCEPT_TERMINAL
 #endif
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_location ;
 class GALGAS_string ;
 class GALGAS_lstring ;
 class C_galgas_type_descriptor ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //                 Compiler class                                                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 class C_Compiler : public C_SharedObject {
 //--- Constructor and destructor
@@ -104,7 +104,7 @@ class C_Compiler : public C_SharedObject {
   public : C_String sourceFilePath (void) const ;
 
 //--- Syntax error message for 'end of source':
-  protected : static const utf32 kEndOfSourceLexicalErrorMessage [] ;
+  protected : static const char * kEndOfSourceLexicalErrorMessage ;
 
 //--- Location in source
   public : inline C_LocationInSource currentLocationInSource (void) const {
@@ -171,6 +171,12 @@ class C_Compiler : public C_SharedObject {
                                                const GALGAS_location & inExistingKeyLocation
                                                COMMA_LOCATION_ARGS) ;
 
+//--- Emit an warning message with an error message that contains %K and %L espace sequences
+  public : void semanticWarningWith_K_L_message (const GALGAS_lstring & inKey,
+                                                 const char * in_K_L_ErrorMessage,
+                                                 const GALGAS_location & inExistingKeyLocation
+                                                 COMMA_LOCATION_ARGS) ;
+
 //--- Cast error
   public : void castError (const C_String & inTargetTypeName,
                            const C_galgas_type_descriptor * inObjectDynamicTypeDescriptor
@@ -220,28 +226,6 @@ class C_Compiler : public C_SharedObject {
                                         const C_String & inContents) ;
 } ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//   T R A C E                                                                                                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enableTraceWithPath (const C_String & inSourceFilePath) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-bool traceIsEnabled (void) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void appendTrace (const char * inType,
-                  const bool inIsBuilt,
-                  const C_String & inStringValue) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void closeTrace (void) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #endif

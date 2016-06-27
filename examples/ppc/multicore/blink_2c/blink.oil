@@ -63,14 +63,14 @@ CPU blink {
 
   APPLICATION application1 {
     TASK = t1_app1;
-    COUNTER = SystemCounter;
+    COUNTER = Core0_counter0;
     ALARM = alarm_t1_app1;
     CORE = 0;
   };
 
   APPLICATION application2 {
     TASK = t1_app2;
-    COUNTER = SystemCounter;
+    COUNTER = Core1_counter0;
     ALARM = alarm_t1_app2;
     CORE = 1;
   };
@@ -78,12 +78,20 @@ CPU blink {
   /* ==========================================================================
    *    COUNTER
    */
-
-  COUNTER SystemCounter {
+  COUNTER Core0_counter0 {
     TICKSPERBASE = 1;
     MAXALLOWEDVALUE = 65535;
     MINCYCLE = 1;
     SOURCE = pit_ch0; /* We have to use the pit to synch the cores */
+    HANDLER = tick;
+  };
+
+  COUNTER Core1_counter0 {
+    TICKSPERBASE = 1;
+    MAXALLOWEDVALUE = 65535;
+    MINCYCLE = 1;
+    SOURCE = pit_ch0; /* We use the same pit channel so both alarms are synched */
+    HANDLER = tick;
   };
 
   /* ==========================================================================
@@ -91,22 +99,22 @@ CPU blink {
    */
 
   ALARM alarm_t1_app1 {
-    COUNTER = SystemCounter;
-    ACTION = ACTIVATETASK { TASK = t1_app1;};
+    COUNTER = Core0_counter0;
+    ACTION = ACTIVATETASK { TASK = t1_app2;};
     AUTOSTART = TRUE {
       APPMODE = OsAppMode;
-      ALARMTIME = 300;
+      ALARMTIME = 200;
       CYCLETIME = 100;
     };
   };
 
   ALARM alarm_t1_app2 {
-    COUNTER = SystemCounter;
-    ACTION = ACTIVATETASK { TASK = t1_app2;};
+    COUNTER = Core1_counter0;
+    ACTION = ACTIVATETASK { TASK = t1_app1;};
     AUTOSTART = TRUE {
       APPMODE = OsAppMode;
-      ALARMTIME = 300;
-      CYCLETIME = 100;
+      ALARMTIME = 200;
+      CYCLETIME = 200;
     };
   };
 

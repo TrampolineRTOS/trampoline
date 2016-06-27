@@ -88,6 +88,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_base_service(
     CONST(tpl_alarm_id, AUTOMATIC)                  alarm_id,
     P2VAR(tpl_alarm_base, AUTOMATIC, OS_APPL_DATA)  info)
 {
+  GET_CURRENT_CORE_ID(core_id)
   VAR(tpl_status, AUTOMATIC) result = E_OK;
 
 #if ALARM_COUNT > 0
@@ -106,7 +107,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_base_service(
   CHECK_ALARM_ID_ERROR(alarm_id, result)
 
 	/* check access right */
-	CHECK_ACCESS_RIGHTS_ALARM_ID(alarm_id, result)
+	CHECK_ACCESS_RIGHTS_ALARM_ID(core_id, alarm_id, result)
 
   /* check info is in an authorized memory region */
   CHECK_DATA_LOCATION(info, result);
@@ -132,6 +133,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
   CONST(tpl_alarm_id, AUTOMATIC)              alarm_id,
   P2VAR(tpl_tick, AUTOMATIC, OS_APPL_DATA)    tick)
 {
+  GET_CURRENT_CORE_ID(core_id)
   VAR(tpl_status, AUTOMATIC) result = E_OK;
 
 #if ALARM_COUNT > 0
@@ -150,7 +152,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
   CHECK_ALARM_ID_ERROR(alarm_id,result)
 
   /* check access right */
-  CHECK_ACCESS_RIGHTS_ALARM_ID(alarm_id,result)
+  CHECK_ACCESS_RIGHTS_ALARM_ID(core_id, alarm_id,result)
 
   /* check tick is in an authorized memory region */
   CHECK_DATA_LOCATION(tick, result);
@@ -190,6 +192,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
   CONST(tpl_tick, AUTOMATIC)      increment,
   CONST(tpl_tick, AUTOMATIC)      cycle)
 {
+  GET_CURRENT_CORE_ID(core_id)
   VAR(tpl_status, AUTOMATIC) result = E_OK;
 
 #if ALARM_COUNT > 0
@@ -211,7 +214,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
   CHECK_ALARM_ID_ERROR(alarm_id,result)
 
 	/* check access right */
-  CHECK_ACCESS_RIGHTS_ALARM_ID(alarm_id,result)
+  CHECK_ACCESS_RIGHTS_ALARM_ID(core_id, alarm_id,result)
 
   CHECK_ALARM_INCREMENT_ERROR(alarm_id,increment,result)
   CHECK_ALARM_MIN_CYCLE_ERROR(alarm_id,cycle,result)
@@ -260,6 +263,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
   CONST(tpl_tick, AUTOMATIC)      start,
   CONST(tpl_tick, AUTOMATIC)      cycle)
 {
+  GET_CURRENT_CORE_ID(core_id)
   VAR(tpl_status, AUTOMATIC) result = E_OK;
 
 #if ALARM_COUNT > 0
@@ -279,7 +283,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
   CHECK_ALARM_ID_ERROR(alarm_id,result)
 
 	/* check access right */
-  CHECK_ACCESS_RIGHTS_ALARM_ID(alarm_id,result)
+  CHECK_ACCESS_RIGHTS_ALARM_ID(core_id, alarm_id,result)
 
   CHECK_ALARM_INCREMENT_ERROR(alarm_id,start,result)
   CHECK_ALARM_MIN_CYCLE_ERROR(alarm_id,cycle,result)
@@ -320,6 +324,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
 FUNC(tpl_status, OS_CODE) tpl_cancel_alarm_service(
   CONST(tpl_alarm_id, AUTOMATIC) alarm_id)
 {
+  GET_CURRENT_CORE_ID(core_id)
   VAR(tpl_status, AUTOMATIC) result = E_OK;
 
 #if ALARM_COUNT > 0
@@ -337,7 +342,7 @@ FUNC(tpl_status, OS_CODE) tpl_cancel_alarm_service(
   CHECK_ALARM_ID_ERROR(alarm_id,result)
 
 	/* check access right */
-	CHECK_ACCESS_RIGHTS_ALARM_ID(alarm_id,result)
+	CHECK_ACCESS_RIGHTS_ALARM_ID(core_id, alarm_id,result)
 
 #if ALARM_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)

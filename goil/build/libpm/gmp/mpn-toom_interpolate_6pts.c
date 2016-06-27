@@ -115,7 +115,7 @@ mpn_toom_interpolate_6pts (mp_ptr pp, mp_size_t n, enum toom6_flags flags,
   mpn_rshift (w1, w1, 2 * n + 1, 1);
 
   /* W1 =(W1 - W2)>>1 */
-#if HAVE_NATIVE_mpn_rsh1sub_n
+#ifdef HAVE_NATIVE_mpn_rsh1sub_n
   mpn_rsh1sub_n (w1, w1, w2, 2 * n + 1);
 #else
   mpn_sub_n (w1, w1, w2, 2 * n + 1);
@@ -125,7 +125,7 @@ mpn_toom_interpolate_6pts (mp_ptr pp, mp_size_t n, enum toom6_flags flags,
   /* W4 =(W3 - W4)>>1 */
   if (flags & toom6_vm1_neg)
     {
-#if HAVE_NATIVE_mpn_rsh1add_n
+#ifdef HAVE_NATIVE_mpn_rsh1add_n
       mpn_rsh1add_n (w4, w3, w4, 2 * n + 1);
 #else
       mpn_add_n (w4, w3, w4, 2 * n + 1);
@@ -134,7 +134,7 @@ mpn_toom_interpolate_6pts (mp_ptr pp, mp_size_t n, enum toom6_flags flags,
     }
   else
     {
-#if HAVE_NATIVE_mpn_rsh1sub_n
+#ifdef HAVE_NATIVE_mpn_rsh1sub_n
       mpn_rsh1sub_n (w4, w3, w4, 2 * n + 1);
 #else
       mpn_sub_n (w4, w3, w4, 2 * n + 1);
@@ -178,7 +178,7 @@ mpn_toom_interpolate_6pts (mp_ptr pp, mp_size_t n, enum toom6_flags flags,
   MPN_INCR_U (pp + 3 * n + 1, n, cy);
 
   /* W2 -= W0<<2 */
-#if HAVE_NATIVE_mpn_sublsh_n || HAVE_NATIVE_mpn_sublsh2_n_ip1
+#if defined (HAVE_NATIVE_mpn_sublsh_n) || defined (HAVE_NATIVE_mpn_sublsh2_n_ip1)
 #if HAVE_NATIVE_mpn_sublsh2_n_ip1
   cy = mpn_sublsh2_n_ip1 (w2, w0, w0n);
 #else

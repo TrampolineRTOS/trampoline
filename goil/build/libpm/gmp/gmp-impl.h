@@ -929,14 +929,14 @@ __GMP_DECLSPEC mp_limb_t mpn_addlsh2_n (mp_ptr, mp_srcptr, mp_srcptr, mp_size_t)
 #endif
 #define mpn_addlsh2_nc __MPN(addlsh2_nc)
 __GMP_DECLSPEC mp_limb_t mpn_addlsh2_nc (mp_ptr, mp_srcptr, mp_srcptr, mp_size_t, mp_limb_t);
-#if HAVE_NATIVE_mpn_addlsh2_n && ! HAVE_NATIVE_mpn_addlsh2_n_ip1
+#if defined (HAVE_NATIVE_mpn_addlsh2_n) && ! HAVE_NATIVE_mpn_addlsh2_n_ip1
 #define mpn_addlsh2_n_ip1(dst,src,n) mpn_addlsh2_n(dst,dst,src,n)
 #define HAVE_NATIVE_mpn_addlsh2_n_ip1 1
 #else
 #define mpn_addlsh2_n_ip1 __MPN(addlsh2_n_ip1)
 __GMP_DECLSPEC mp_limb_t mpn_addlsh2_n_ip1 (mp_ptr, mp_srcptr, mp_size_t);
 #endif
-#if HAVE_NATIVE_mpn_addlsh2_nc && ! HAVE_NATIVE_mpn_addlsh2_nc_ip1
+#if defined (HAVE_NATIVE_mpn_addlsh2_nc) && ! HAVE_NATIVE_mpn_addlsh2_nc_ip1
 #define mpn_addlsh2_nc_ip1(dst,src,n,c) mpn_addlsh2_nc(dst,dst,src,n,c)
 #define HAVE_NATIVE_mpn_addlsh2_nc_ip1 1
 #else
@@ -950,14 +950,14 @@ __GMP_DECLSPEC mp_limb_t mpn_addlsh2_nc_ip1 (mp_ptr, mp_srcptr, mp_size_t, mp_li
 __GMP_DECLSPEC mp_limb_t mpn_addlsh_n (mp_ptr, mp_srcptr, mp_srcptr, mp_size_t, unsigned int);
 #define mpn_addlsh_nc __MPN(addlsh_nc)
 __GMP_DECLSPEC mp_limb_t mpn_addlsh_nc (mp_ptr, mp_srcptr, mp_srcptr, mp_size_t, unsigned int, mp_limb_t);
-#if HAVE_NATIVE_mpn_addlsh_n && ! HAVE_NATIVE_mpn_addlsh_n_ip1
+#if defined (HAVE_NATIVE_mpn_addlsh_n) && ! HAVE_NATIVE_mpn_addlsh_n_ip1
 #define mpn_addlsh_n_ip1(dst,src,n,s) mpn_addlsh_n(dst,dst,src,n,s)
 #define HAVE_NATIVE_mpn_addlsh_n_ip1 1
 #else
 #define mpn_addlsh_n_ip1 __MPN(addlsh_n_ip1)
   __GMP_DECLSPEC mp_limb_t mpn_addlsh_n_ip1 (mp_ptr, mp_srcptr, mp_size_t, unsigned int);
 #endif
-#if HAVE_NATIVE_mpn_addlsh_nc && ! HAVE_NATIVE_mpn_addlsh_nc_ip1
+#if defined (HAVE_NATIVE_mpn_addlsh_nc) && ! HAVE_NATIVE_mpn_addlsh_nc_ip1
 #define mpn_addlsh_nc_ip1(dst,src,n,s,c) mpn_addlsh_nc(dst,dst,src,n,s,c)
 #define HAVE_NATIVE_mpn_addlsh_nc_ip1 1
 #else
@@ -973,14 +973,14 @@ __GMP_DECLSPEC mp_limb_t mpn_sublsh1_n (mp_ptr, mp_srcptr, mp_srcptr, mp_size_t)
 #endif
 #define mpn_sublsh1_nc __MPN(sublsh1_nc)
 __GMP_DECLSPEC mp_limb_t mpn_sublsh1_nc (mp_ptr, mp_srcptr, mp_srcptr, mp_size_t, mp_limb_t);
-#if HAVE_NATIVE_mpn_sublsh1_n && ! HAVE_NATIVE_mpn_sublsh1_n_ip1
+#if defined (HAVE_NATIVE_mpn_sublsh1_n) && ! HAVE_NATIVE_mpn_sublsh1_n_ip1
 #define mpn_sublsh1_n_ip1(dst,src,n) mpn_sublsh1_n(dst,dst,src,n)
 #define HAVE_NATIVE_mpn_sublsh1_n_ip1 1
 #else
 #define mpn_sublsh1_n_ip1 __MPN(sublsh1_n_ip1)
 __GMP_DECLSPEC mp_limb_t mpn_sublsh1_n_ip1 (mp_ptr, mp_srcptr, mp_size_t);
 #endif
-#if HAVE_NATIVE_mpn_sublsh1_nc && ! HAVE_NATIVE_mpn_sublsh1_nc_ip1
+#if defined (HAVE_NATIVE_mpn_sublsh1_nc) && ! HAVE_NATIVE_mpn_sublsh1_nc_ip1
 #define mpn_sublsh1_nc_ip1(dst,src,n,c) mpn_sublsh1_nc(dst,dst,src,n,c)
 #define HAVE_NATIVE_mpn_sublsh1_nc_ip1 1
 #else
@@ -1001,14 +1001,14 @@ __GMP_DECLSPEC mp_limb_signed_t mpn_rsblsh1_nc (mp_ptr, mp_srcptr, mp_srcptr, mp
 __GMP_DECLSPEC mp_limb_t mpn_sublsh2_n (mp_ptr, mp_srcptr, mp_srcptr, mp_size_t);
 #define mpn_sublsh2_nc __MPN(sublsh2_nc)
 __GMP_DECLSPEC mp_limb_t mpn_sublsh2_nc (mp_ptr, mp_srcptr, mp_srcptr, mp_size_t, mp_limb_t);
-#if HAVE_NATIVE_mpn_sublsh2_n && ! HAVE_NATIVE_mpn_sublsh2_n_ip1
+#if defined (HAVE_NATIVE_mpn_sublsh2_n) && ! HAVE_NATIVE_mpn_sublsh2_n_ip1
 #define mpn_sublsh2_n_ip1(dst,src,n) mpn_sublsh2_n(dst,dst,src,n)
 #define HAVE_NATIVE_mpn_sublsh2_n_ip1 1
 #else
 #define mpn_sublsh2_n_ip1 __MPN(sublsh2_n_ip1)
 __GMP_DECLSPEC mp_limb_t mpn_sublsh2_n_ip1 (mp_ptr, mp_srcptr, mp_size_t);
 #endif
-#if HAVE_NATIVE_mpn_sublsh2_nc && ! HAVE_NATIVE_mpn_sublsh2_nc_ip1
+#if defined (HAVE_NATIVE_mpn_sublsh2_nc) && ! HAVE_NATIVE_mpn_sublsh2_nc_ip1
 #define mpn_sublsh2_nc_ip1(dst,src,n,c) mpn_sublsh2_nc(dst,dst,src,n,c)
 #define HAVE_NATIVE_mpn_sublsh2_nc_ip1 1
 #else
@@ -1020,14 +1020,14 @@ __GMP_DECLSPEC mp_limb_t mpn_sublsh2_nc_ip1 (mp_ptr, mp_srcptr, mp_size_t, mp_li
    returns the carry out (0, ..., 2^k). Use _ip1 when a=c. */
 #define mpn_sublsh_n __MPN(sublsh_n)
 __GMP_DECLSPEC mp_limb_t mpn_sublsh_n (mp_ptr, mp_srcptr, mp_srcptr, mp_size_t, unsigned int);
-#if HAVE_NATIVE_mpn_sublsh_n && ! HAVE_NATIVE_mpn_sublsh_n_ip1
+#if defined (HAVE_NATIVE_mpn_sublsh_n) && ! HAVE_NATIVE_mpn_sublsh_n_ip1
 #define mpn_sublsh_n_ip1(dst,src,n,s) mpn_sublsh_n(dst,dst,src,n,s)
 #define HAVE_NATIVE_mpn_sublsh_n_ip1 1
 #else
 #define mpn_sublsh_n_ip1 __MPN(sublsh_n_ip1)
 __GMP_DECLSPEC mp_limb_t mpn_sublsh_n_ip1 (mp_ptr, mp_srcptr, mp_size_t, unsigned int);
 #endif
-#if HAVE_NATIVE_mpn_sublsh_nc && ! HAVE_NATIVE_mpn_sublsh_nc_ip1
+#if defined (HAVE_NATIVE_mpn_sublsh_nc) && ! HAVE_NATIVE_mpn_sublsh_nc_ip1
 #define mpn_sublsh_nc_ip1(dst,src,n,s,c) mpn_sublsh_nc(dst,dst,src,n,s,c)
 #define HAVE_NATIVE_mpn_sublsh_nc_ip1 1
 #else
@@ -1623,37 +1623,37 @@ __GMP_DECLSPEC void mpn_sec_pi1_div_r (mp_ptr, mp_size_t, mp_srcptr, mp_size_t, 
    and say these macros represent native functions, but leave a trace by using
    the value 2 rather than 1.  */
 
-#if HAVE_NATIVE_mpn_addlsh_n && ! HAVE_NATIVE_mpn_addlsh1_n
+#if defined (HAVE_NATIVE_mpn_addlsh_n) && ! HAVE_NATIVE_mpn_addlsh1_n
 #undef mpn_addlsh1_n
 #define mpn_addlsh1_n(a,b,c,d) mpn_addlsh_n(a,b,c,d,1)
 #define HAVE_NATIVE_mpn_addlsh1_n 2
 #endif
 
-#if HAVE_NATIVE_mpn_addlsh_n && ! HAVE_NATIVE_mpn_addlsh2_n
+#if defined (HAVE_NATIVE_mpn_addlsh_n) && ! HAVE_NATIVE_mpn_addlsh2_n
 #undef mpn_addlsh2_n
 #define mpn_addlsh2_n(a,b,c,d) mpn_addlsh_n(a,b,c,d,2)
 #define HAVE_NATIVE_mpn_addlsh2_n 2
 #endif
 
-#if HAVE_NATIVE_mpn_sublsh_n && ! HAVE_NATIVE_mpn_sublsh1_n
+#if defined (HAVE_NATIVE_mpn_sublsh_n) && ! HAVE_NATIVE_mpn_sublsh1_n
 #undef mpn_sublsh1_n
 #define mpn_sublsh1_n(a,b,c,d) mpn_sublsh_n(a,b,c,d,1)
 #define HAVE_NATIVE_mpn_sublsh1_n 2
 #endif
 
-#if HAVE_NATIVE_mpn_sublsh_n && ! HAVE_NATIVE_mpn_sublsh2_n
+#if defined (HAVE_NATIVE_mpn_sublsh_n) && ! HAVE_NATIVE_mpn_sublsh2_n
 #undef mpn_sublsh2_n
 #define mpn_sublsh2_n(a,b,c,d) mpn_sublsh_n(a,b,c,d,2)
 #define HAVE_NATIVE_mpn_sublsh2_n 2
 #endif
 
-#if HAVE_NATIVE_mpn_rsblsh_n && ! HAVE_NATIVE_mpn_rsblsh1_n
+#if defined (HAVE_NATIVE_mpn_rsblsh_n) && ! HAVE_NATIVE_mpn_rsblsh1_n
 #undef mpn_rsblsh1_n
 #define mpn_rsblsh1_n(a,b,c,d) mpn_rsblsh_n(a,b,c,d,1)
 #define HAVE_NATIVE_mpn_rsblsh1_n 2
 #endif
 
-#if HAVE_NATIVE_mpn_rsblsh_n && ! HAVE_NATIVE_mpn_rsblsh2_n
+#if defined (HAVE_NATIVE_mpn_rsblsh_n) && ! HAVE_NATIVE_mpn_rsblsh2_n
 #undef mpn_rsblsh2_n
 #define mpn_rsblsh2_n(a,b,c,d) mpn_rsblsh_n(a,b,c,d,2)
 #define HAVE_NATIVE_mpn_rsblsh2_n 2
@@ -1761,7 +1761,7 @@ __GMP_DECLSPEC int mpn_bsqrtinv (mp_ptr, mp_srcptr, mp_bitcnt_t, mp_ptr);
 __GMP_DECLSPEC void mpn_copyi (mp_ptr, mp_srcptr, mp_size_t);
 #endif
 
-#if ! defined (MPN_COPY_INCR) && HAVE_NATIVE_mpn_copyi
+#if ! defined (MPN_COPY_INCR) && defined (HAVE_NATIVE_mpn_copyi)
 #define MPN_COPY_INCR(dst, src, size)					\
   do {									\
     ASSERT ((size) >= 0);						\
@@ -1814,7 +1814,7 @@ __GMP_DECLSPEC void mpn_copyi (mp_ptr, mp_srcptr, mp_size_t);
 __GMP_DECLSPEC void mpn_copyd (mp_ptr, mp_srcptr, mp_size_t);
 #endif
 
-#if ! defined (MPN_COPY_DECR) && HAVE_NATIVE_mpn_copyd
+#if ! defined (MPN_COPY_DECR) && defined (HAVE_NATIVE_mpn_copyd)
 #define MPN_COPY_DECR(dst, src, size)					\
   do {									\
     ASSERT ((size) >= 0);						\
@@ -1898,7 +1898,7 @@ __GMP_DECLSPEC void mpn_copyd (mp_ptr, mp_srcptr, mp_size_t);
    trouble than it's worth to do the same, though perhaps a call to memset
    would be good when on a GNU system.  */
 
-#if HAVE_HOST_CPU_FAMILY_power || HAVE_HOST_CPU_FAMILY_powerpc
+#if defined (HAVE_HOST_CPU_FAMILY_power) || defined (HAVE_HOST_CPU_FAMILY_powerpc)
 #define MPN_ZERO(dst, n)						\
   do {									\
     ASSERT ((n) >= 0);							\
@@ -1995,7 +1995,7 @@ __GMP_DECLSPEC void mpn_copyd (mp_ptr, mp_srcptr, mp_size_t);
     __x->_mp_d = TMP_ALLOC_LIMBS (NLIMBS);				\
   } while (0)
 
-#if WANT_ASSERT
+#ifdef WANT_ASSERT
 static inline void *
 _mpz_newalloc (mpz_ptr z, mp_size_t n)
 {
@@ -2249,7 +2249,7 @@ __GMP_DECLSPEC mp_limb_t gmp_primesieve (mp_ptr, mp_limb_t);
 #define MUL_TO_MULMOD_BNM1_FOR_2NXN_THRESHOLD  (INV_MULMOD_BNM1_THRESHOLD/2)
 #endif
 
-#if HAVE_NATIVE_mpn_addmul_2 || HAVE_NATIVE_mpn_redc_2
+#if defined (HAVE_NATIVE_mpn_addmul_2) || defined (HAVE_NATIVE_mpn_redc_2)
 
 #ifndef REDC_1_TO_REDC_2_THRESHOLD
 #define REDC_1_TO_REDC_2_THRESHOLD       15
@@ -2410,7 +2410,7 @@ struct fft_table_nk
 __GMP_DECLSPEC void __gmp_assert_header (const char *, int);
 __GMP_DECLSPEC void __gmp_assert_fail (const char *, int, const char *) ATTRIBUTE_NORETURN;
 
-#if HAVE_STRINGIZE
+#ifdef HAVE_STRINGIZE
 #define ASSERT_FAIL(expr)  __gmp_assert_fail (ASSERT_FILE, ASSERT_LINE, #expr)
 #else
 #define ASSERT_FAIL(expr)  __gmp_assert_fail (ASSERT_FILE, ASSERT_LINE, "expr")
@@ -2422,7 +2422,7 @@ __GMP_DECLSPEC void __gmp_assert_fail (const char *, int, const char *) ATTRIBUT
       ASSERT_FAIL (expr);						\
   } while (0)
 
-#if WANT_ASSERT
+#ifdef WANT_ASSERT
 #define ASSERT(expr)   ASSERT_ALWAYS (expr)
 #else
 #define ASSERT(expr)   do {} while (0)
@@ -2435,7 +2435,7 @@ __GMP_DECLSPEC void __gmp_assert_fail (const char *, int, const char *) ATTRIBUT
    routines like mpn_add_n() where the return value represents a carry or
    whatever that should or shouldn't occur in some context.  For example,
    ASSERT_NOCARRY (mpn_add_n (rp, s1p, s2p, size)); */
-#if WANT_ASSERT
+#ifdef WANT_ASSERT
 #define ASSERT_CARRY(expr)     ASSERT_ALWAYS ((expr) != 0)
 #define ASSERT_NOCARRY(expr)   ASSERT_ALWAYS ((expr) == 0)
 #else
@@ -2446,7 +2446,7 @@ __GMP_DECLSPEC void __gmp_assert_fail (const char *, int, const char *) ATTRIBUT
 
 /* ASSERT_CODE includes code when assertion checking is wanted.  This is the
    same as writing "#if WANT_ASSERT", but more compact.  */
-#if WANT_ASSERT
+#ifdef WANT_ASSERT
 #define ASSERT_CODE(expr)  expr
 #else
 #define ASSERT_CODE(expr)
@@ -2456,7 +2456,7 @@ __GMP_DECLSPEC void __gmp_assert_fail (const char *, int, const char *) ATTRIBUT
 /* Test that an mpq_t is in fully canonical form.  This can be used as
    protection on routines like mpq_equal which give wrong results on
    non-canonical inputs.  */
-#if WANT_ASSERT
+#ifdef WANT_ASSERT
 #define ASSERT_MPQ_CANONICAL(q)						\
   do {									\
     ASSERT (q->_mp_den._mp_size > 0);					\
@@ -2495,7 +2495,7 @@ __GMP_DECLSPEC void __gmp_assert_fail (const char *, int, const char *) ATTRIBUT
 	  ASSERT_ALWAYS_LIMB ((ptr)[__i]);				\
       }									\
   } while (0)
-#if WANT_ASSERT
+#ifdef WANT_ASSERT
 #define ASSERT_LIMB(limb)       ASSERT_ALWAYS_LIMB (limb)
 #define ASSERT_MPN(ptr, size)   ASSERT_ALWAYS_MPN (ptr, size)
 #else
@@ -2506,7 +2506,7 @@ __GMP_DECLSPEC void __gmp_assert_fail (const char *, int, const char *) ATTRIBUT
 
 /* Assert that an mpn region {ptr,size} is zero, or non-zero.
    size==0 is allowed, and in that case {ptr,size} considered to be zero.  */
-#if WANT_ASSERT
+#ifdef WANT_ASSERT
 #define ASSERT_MPN_ZERO_P(ptr,size)					\
   do {									\
     mp_size_t  __i;							\
@@ -2533,7 +2533,7 @@ __GMP_DECLSPEC void __gmp_assert_fail (const char *, int, const char *) ATTRIBUT
 #endif
 
 
-#if ! HAVE_NATIVE_mpn_com
+#ifndef HAVE_NATIVE_mpn_com
 #undef mpn_com
 #define mpn_com(d,s,n)							\
   do {									\
@@ -2570,49 +2570,49 @@ __GMP_DECLSPEC void __gmp_assert_fail (const char *, int, const char *) ATTRIBUT
   } while (0)
 
 
-#if ! HAVE_NATIVE_mpn_and_n
+#ifndef HAVE_NATIVE_mpn_and_n
 #undef mpn_and_n
 #define mpn_and_n(rp, up, vp, n) \
   MPN_LOGOPS_N_INLINE (rp, up, vp, n, __a & __b)
 #endif
 
-#if ! HAVE_NATIVE_mpn_andn_n
+#ifndef HAVE_NATIVE_mpn_andn_n
 #undef mpn_andn_n
 #define mpn_andn_n(rp, up, vp, n) \
   MPN_LOGOPS_N_INLINE (rp, up, vp, n, __a & ~__b)
 #endif
 
-#if ! HAVE_NATIVE_mpn_nand_n
+#ifndef HAVE_NATIVE_mpn_nand_n
 #undef mpn_nand_n
 #define mpn_nand_n(rp, up, vp, n) \
   MPN_LOGOPS_N_INLINE (rp, up, vp, n, ~(__a & __b) & GMP_NUMB_MASK)
 #endif
 
-#if ! HAVE_NATIVE_mpn_ior_n
+#ifndef HAVE_NATIVE_mpn_ior_n
 #undef mpn_ior_n
 #define mpn_ior_n(rp, up, vp, n) \
   MPN_LOGOPS_N_INLINE (rp, up, vp, n, __a | __b)
 #endif
 
-#if ! HAVE_NATIVE_mpn_iorn_n
+#ifndef HAVE_NATIVE_mpn_iorn_n
 #undef mpn_iorn_n
 #define mpn_iorn_n(rp, up, vp, n) \
   MPN_LOGOPS_N_INLINE (rp, up, vp, n, (__a | ~__b) & GMP_NUMB_MASK)
 #endif
 
-#if ! HAVE_NATIVE_mpn_nior_n
+#ifndef HAVE_NATIVE_mpn_nior_n
 #undef mpn_nior_n
 #define mpn_nior_n(rp, up, vp, n) \
   MPN_LOGOPS_N_INLINE (rp, up, vp, n, ~(__a | __b) & GMP_NUMB_MASK)
 #endif
 
-#if ! HAVE_NATIVE_mpn_xor_n
+#ifndef HAVE_NATIVE_mpn_xor_n
 #undef mpn_xor_n
 #define mpn_xor_n(rp, up, vp, n) \
   MPN_LOGOPS_N_INLINE (rp, up, vp, n, __a ^ __b)
 #endif
 
-#if ! HAVE_NATIVE_mpn_xnor_n
+#ifndef HAVE_NATIVE_mpn_xnor_n
 #undef mpn_xnor_n
 #define mpn_xnor_n(rp, up, vp, n) \
   MPN_LOGOPS_N_INLINE (rp, up, vp, n, ~(__a ^ __b) & GMP_NUMB_MASK)
@@ -2842,7 +2842,7 @@ __GMP_DECLSPEC mp_bitcnt_t mpn_remove (mp_ptr, mp_size_t *, mp_ptr, mp_size_t, m
 #endif
 
 #ifndef MPN_INCR_U
-#if WANT_ASSERT
+#ifdef WANT_ASSERT
 #define MPN_INCR_U(ptr, size, n)					\
   do {									\
     ASSERT ((size) >= 1);						\
@@ -2854,7 +2854,7 @@ __GMP_DECLSPEC mp_bitcnt_t mpn_remove (mp_ptr, mp_size_t *, mp_ptr, mp_size_t, m
 #endif
 
 #ifndef MPN_DECR_U
-#if WANT_ASSERT
+#ifdef WANT_ASSERT
 #define MPN_DECR_U(ptr, size, n)					\
   do {									\
     ASSERT ((size) >= 1);						\
@@ -2973,7 +2973,7 @@ __GMP_DECLSPEC extern const struct bases mp_bases[257];
 /* MPN_SET_UI sets an mpn (ptr, cnt) to given ui.  MPZ_FAKE_UI creates fake
    mpz_t from ui.  The zp argument must have room for LIMBS_PER_ULONG limbs
    in both cases (LIMBS_PER_ULONG is also defined here.) */
-#if BITS_PER_ULONG <= GMP_NUMB_BITS /* need one limb per ulong */
+#if defined (SIZEOF_UNSIGNED_LONG) && (BITS_PER_ULONG <= GMP_NUMB_BITS) /* need one limb per ulong */
 
 #define LIMBS_PER_ULONG 1
 #define MPN_SET_UI(zp, zn, u)						\
@@ -3002,7 +3002,7 @@ __GMP_DECLSPEC extern const struct bases mp_bases[257];
 #endif
 
 
-#if HAVE_HOST_CPU_FAMILY_x86
+#ifdef HAVE_HOST_CPU_FAMILY_x86
 #define TARGET_REGISTER_STARVED 1
 #else
 #define TARGET_REGISTER_STARVED 0
@@ -3031,7 +3031,7 @@ __GMP_DECLSPEC extern const struct bases mp_bases[257];
 /* Use a library function for invert_limb, if available. */
 #define  mpn_invert_limb __MPN(invert_limb)
 __GMP_DECLSPEC mp_limb_t mpn_invert_limb (mp_limb_t) ATTRIBUTE_CONST;
-#if ! defined (invert_limb) && HAVE_NATIVE_mpn_invert_limb
+#if ! defined (invert_limb) && defined (HAVE_NATIVE_mpn_invert_limb)
 #define invert_limb(invxl,xl)						\
   do {									\
     (invxl) = mpn_invert_limb (xl);					\
@@ -3260,7 +3260,7 @@ __GMP_DECLSPEC void    mpn_divexact_1 (mp_ptr, mp_srcptr, mp_size_t, mp_limb_t);
 __GMP_DECLSPEC mp_limb_t mpn_modexact_1c_odd (mp_srcptr, mp_size_t, mp_limb_t, mp_limb_t) __GMP_ATTRIBUTE_PURE;
 #endif
 
-#if HAVE_NATIVE_mpn_modexact_1_odd
+#ifdef HAVE_NATIVE_mpn_modexact_1_odd
 #define   mpn_modexact_1_odd  __MPN(modexact_1_odd)
 __GMP_DECLSPEC mp_limb_t mpn_modexact_1_odd (mp_srcptr, mp_size_t, mp_limb_t) __GMP_ATTRIBUTE_PURE;
 #else
@@ -3737,7 +3737,7 @@ __GMP_DECLSPEC extern const unsigned char  binvert_limb_table[128];
 
 
 /* Define stuff for longlong.h.  */
-#if HAVE_ATTRIBUTE_MODE
+#ifdef HAVE_ATTRIBUTE_MODE
 typedef unsigned int UQItype	__attribute__ ((mode (QI)));
 typedef		 int SItype	__attribute__ ((mode (SI)));
 typedef unsigned int USItype	__attribute__ ((mode (SI)));
@@ -3747,7 +3747,7 @@ typedef unsigned int UDItype	__attribute__ ((mode (DI)));
 typedef unsigned char UQItype;
 typedef		 long SItype;
 typedef unsigned long USItype;
-#if HAVE_LONG_LONG
+#ifdef HAVE_LONG_LONG
 typedef	long long int DItype;
 typedef unsigned long long int UDItype;
 #else /* Assume `long' gives us a wide enough type.  Needed for hppa2.0w.  */
@@ -3772,7 +3772,7 @@ typedef unsigned int UHWtype;
    float endianness, this is true everywhere we know of and it'd be a fairly
    strange system that did anything else.  */
 
-#if HAVE_DOUBLE_IEEE_LITTLE_SWAPPED
+#ifdef HAVE_DOUBLE_IEEE_LITTLE_SWAPPED
 #define _GMP_IEEE_FLOATS 1
 union ieee_double_extract
 {
@@ -3787,7 +3787,7 @@ union ieee_double_extract
 };
 #endif
 
-#if HAVE_DOUBLE_IEEE_LITTLE_ENDIAN
+#ifdef HAVE_DOUBLE_IEEE_LITTLE_ENDIAN
 #define _GMP_IEEE_FLOATS 1
 union ieee_double_extract
 {
@@ -3802,7 +3802,7 @@ union ieee_double_extract
 };
 #endif
 
-#if HAVE_DOUBLE_IEEE_BIG_ENDIAN
+#ifdef HAVE_DOUBLE_IEEE_BIG_ENDIAN
 #define _GMP_IEEE_FLOATS 1
 union ieee_double_extract
 {
@@ -3817,7 +3817,7 @@ union ieee_double_extract
 };
 #endif
 
-#if HAVE_DOUBLE_VAX_D
+#ifdef HAVE_DOUBLE_VAX_D
 union double_extract
 {
   struct
@@ -3850,7 +3850,7 @@ __GMP_DECLSPEC double mpn_get_d (mp_srcptr, mp_size_t, mp_size_t, long) __GMP_AT
    a_inf if x is an infinity.  Both are considered unlikely values, for
    branch prediction.  */
 
-#if _GMP_IEEE_FLOATS
+#ifdef _GMP_IEEE_FLOATS
 #define DOUBLE_NAN_INF_ACTION(x, a_nan, a_inf)				\
   do {									\
     union ieee_double_extract  u;					\
@@ -3865,7 +3865,7 @@ __GMP_DECLSPEC double mpn_get_d (mp_srcptr, mp_size_t, mp_size_t, long) __GMP_AT
   } while (0)
 #endif
 
-#if HAVE_DOUBLE_VAX_D || HAVE_DOUBLE_VAX_G || HAVE_DOUBLE_CRAY_CFP
+#if defined (HAVE_DOUBLE_VAX_D) || defined (HAVE_DOUBLE_VAX_G) || defined (HAVE_DOUBLE_CRAY_CFP)
 /* no nans or infs in these formats */
 #define DOUBLE_NAN_INF_ACTION(x, a_nan, a_inf)  \
   do { } while (0)
@@ -3903,7 +3903,7 @@ __GMP_DECLSPEC double mpn_get_d (mp_srcptr, mp_size_t, mp_size_t, long) __GMP_AT
    output.  gcc 3.4 warns about this, though in fact it and past versions
    seem to put the operand through memory as hoped.  */
 
-#if (HAVE_HOST_CPU_FAMILY_m68k || HAVE_HOST_CPU_FAMILY_x86      \
+#if (defined (HAVE_HOST_CPU_FAMILY_m68k) || defined (HAVE_HOST_CPU_FAMILY_x86)      \
      || defined (__amd64__))
 #define FORCE_DOUBLE(d) \
   do { volatile double __gmp_force = (d); (d) = __gmp_force; } while (0)
@@ -4411,15 +4411,15 @@ __GMP_DECLSPEC extern mp_size_t __gmp_default_fp_limb_precision;
    faster, apparently. */
 
 /* DECIMAL_POINT seems to need _GNU_SOURCE defined to get it from glibc. */
-#if HAVE_NL_LANGINFO && defined (DECIMAL_POINT)
+#if defined (HAVE_NL_LANGINFO) && defined (DECIMAL_POINT)
 #define GMP_DECIMAL_POINT  (nl_langinfo (DECIMAL_POINT))
 #endif
 /* RADIXCHAR is deprecated, still in unix98 or some such. */
-#if HAVE_NL_LANGINFO && defined (RADIXCHAR) && ! defined (GMP_DECIMAL_POINT)
+#if defined (HAVE_NL_LANGINFO) && defined (RADIXCHAR) && ! defined (GMP_DECIMAL_POINT)
 #define GMP_DECIMAL_POINT  (nl_langinfo (RADIXCHAR))
 #endif
 /* localeconv is slower since it returns all locale stuff */
-#if HAVE_LOCALECONV && ! defined (GMP_DECIMAL_POINT)
+#if defined (HAVE_LOCALECONV) && ! defined (GMP_DECIMAL_POINT)
 #define GMP_DECIMAL_POINT  (localeconv()->decimal_point)
 #endif
 #if ! defined (GMP_DECIMAL_POINT)
@@ -4455,7 +4455,7 @@ struct doprnt_params_t {
   int         width;         /* width field */
 };
 
-#if _GMP_H_HAVE_VA_LIST
+#ifdef _GMP_H_HAVE_VA_LIST
 
 typedef int (*doprnt_format_t) (void *, const char *, va_list);
 typedef int (*doprnt_memory_t) (void *, const char *, size_t);
@@ -4584,7 +4584,7 @@ struct gmp_doscan_funs_t {
 extern const struct gmp_doscan_funs_t  __gmp_fscanf_funs;
 extern const struct gmp_doscan_funs_t  __gmp_sscanf_funs;
 
-#if _GMP_H_HAVE_VA_LIST
+#ifdef _GMP_H_HAVE_VA_LIST
 __GMP_DECLSPEC int __gmp_doscan (const struct gmp_doscan_funs_t *, void *, const char *, va_list);
 #endif
 
@@ -4637,7 +4637,7 @@ __GMP_DECLSPEC int __gmp_doscan (const struct gmp_doscan_funs_t *, void *, const
    difference to the gmp code, since hopefully we arrange calls so there's
    no great need for the compiler to move things around.  */
 
-#if WANT_FAT_BINARY && (HAVE_HOST_CPU_FAMILY_x86 || HAVE_HOST_CPU_FAMILY_x86_64)
+#if defined (WANT_FAT_BINARY) && (defined (HAVE_HOST_CPU_FAMILY_x86) || defined (HAVE_HOST_CPU_FAMILY_x86_64))
 /* NOTE: The function pointers in this struct are also in CPUVEC_FUNCS_LIST
    in mpn/x86/x86-defs.m4 and mpn/x86_64/x86_64-defs.m4.  Be sure to update
    those when changing here.  */
@@ -4698,7 +4698,7 @@ __GMP_DECLSPEC void __gmpn_cpuvec_init (void);
    __gmpn_cpuvec.field)
 
 
-#if HAVE_NATIVE_mpn_add_nc
+#ifdef HAVE_NATIVE_mpn_add_nc
 #define mpn_add_nc __MPN(add_nc)
 __GMP_DECLSPEC mp_limb_t mpn_add_nc (mp_ptr, mp_srcptr, mp_srcptr, mp_size_t, mp_limb_t);
 #else
@@ -4713,7 +4713,7 @@ mpn_add_nc (mp_ptr rp, mp_srcptr up, mp_srcptr vp, mp_size_t n, mp_limb_t ci)
 }
 #endif
 
-#if HAVE_NATIVE_mpn_sub_nc
+#ifdef HAVE_NATIVE_mpn_sub_nc
 #define mpn_sub_nc __MPN(sub_nc)
 __GMP_DECLSPEC mp_limb_t mpn_sub_nc (mp_ptr, mp_srcptr, mp_srcptr, mp_size_t, mp_limb_t);
 #else
@@ -4738,7 +4738,7 @@ mpn_zero_p (mp_srcptr ap, mp_size_t n)
   return 1;
 }
 
-#if TUNE_PROGRAM_BUILD
+#ifdef TUNE_PROGRAM_BUILD
 /* Some extras wanted when recompiling some .c files for use by the tune
    program.  Not part of a normal build.
 
@@ -4803,7 +4803,7 @@ extern mp_size_t			mul_fft_modf_threshold;
 
 /* A native mpn_sqr_basecase is not tuned and SQR_BASECASE_THRESHOLD should
    remain as zero (always use it). */
-#if ! HAVE_NATIVE_mpn_sqr_basecase
+#ifndef HAVE_NATIVE_mpn_sqr_basecase
 #undef	SQR_BASECASE_THRESHOLD
 #define SQR_BASECASE_THRESHOLD		sqr_basecase_threshold
 extern mp_size_t			sqr_basecase_threshold;
@@ -5008,7 +5008,7 @@ extern mp_size_t			mod_1_2_to_mod_1_4_threshold;
 #define PREINV_MOD_1_TO_MOD_1_THRESHOLD	preinv_mod_1_to_mod_1_threshold
 extern mp_size_t			preinv_mod_1_to_mod_1_threshold;
 
-#if ! UDIV_PREINV_ALWAYS
+#ifndef UDIV_PREINV_ALWAYS
 #undef	DIVREM_2_THRESHOLD
 #define DIVREM_2_THRESHOLD		divrem_2_threshold
 extern mp_size_t			divrem_2_threshold;

@@ -52,7 +52,7 @@ see https://www.gnu.org/licenses/.  */
   vinf=      a1 *     b1   # A(inf)*B(inf)
 */
 
-#if TUNE_PROGRAM_BUILD || WANT_FAT_BINARY
+#if defined (TUNE_PROGRAM_BUILD) || defined (WANT_FAT_BINARY)
 #define MAYBE_mul_toom22   1
 #else
 #define MAYBE_mul_toom22						\

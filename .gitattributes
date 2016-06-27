@@ -1,5 +1,7 @@
+# Auto detect text files not listed here for normalization
 * text=auto
 
+# Files that must be normalized to lf format
 *.c             text eol=lf
 *.cpp           text eol=lf
 *.h             text eol=lf
@@ -12,7 +14,18 @@
 *.oil           text eol=lf
 *.galgas        text eol=lf
 *.galgasProject text eol=lf
+*.sh            text eol=lf
+*.t32           text eol=lf
+*.cmm           text eol=lf
+*.md            text eol=lf
+*.txt           text eol=lf
+*.properties    text eol=lf
+*.html          text eol=lf
 
+# Files that must be normalized to crlf format
+*.bat           text eol=crlf
+
+# Files that must stay untouched
 *.a     binary
 *.bmp   binary
 *.elf   binary
@@ -24,5 +37,7 @@
 *.pdf   binary
 *.png   binary
 *.tiff  binary
+*.hex   binary
+*.rtf   binary
 *.xcuserstate  binary
 

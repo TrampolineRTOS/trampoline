@@ -62,7 +62,7 @@ see https://www.gnu.org/licenses/.  */
 #endif
 
 #ifndef mpn_divexact_by9
-#if HAVE_NATIVE_mpn_pi1_bdiv_q_1
+#ifdef HAVE_NATIVE_mpn_pi1_bdiv_q_1
 #define mpn_divexact_by9(dst,src,size) mpn_pi1_bdiv_q_1(dst,src,size,9,BINVERT_9,0)
 #else
 #define mpn_divexact_by9(dst,src,size) mpn_divexact_1(dst,src,size,9)
@@ -255,7 +255,7 @@ mpn_toom_interpolate_7pts (mp_ptr rp, mp_size_t n, enum toom7_flags flags,
   else
     {
       ASSERT_NOCARRY (mpn_add_n (rp + 6*n, rp + 6*n, w5 + n, w6n));
-#if WANT_ASSERT
+#ifdef WANT_ASSERT
       {
 	mp_size_t i;
 	for (i = w6n; i <= n; i++)

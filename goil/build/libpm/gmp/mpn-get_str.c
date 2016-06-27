@@ -118,12 +118,12 @@ see https://www.gnu.org/licenses/.  */
    Elsewhere "/" and "%" are either separate instructions, or separate
    libgcc calls (which unfortunately gcc as of version 3.0 doesn't combine).
    A multiply and subtract should be faster than a "%" in those cases.  */
-#if HAVE_HOST_CPU_FAMILY_x86            \
-  || HAVE_HOST_CPU_m68020               \
-  || HAVE_HOST_CPU_m68030               \
-  || HAVE_HOST_CPU_m68040               \
-  || HAVE_HOST_CPU_m68060               \
-  || HAVE_HOST_CPU_m68360 /* CPU32 */
+#if defined (HAVE_HOST_CPU_FAMILY_x86)            \
+  || defined (HAVE_HOST_CPU_m68020)               \
+  || defined (HAVE_HOST_CPU_m68030)               \
+  || defined (HAVE_HOST_CPU_m68040)               \
+  || defined (HAVE_HOST_CPU_m68060)               \
+  || defined (HAVE_HOST_CPU_m68360) /* CPU32 */
 #define udiv_qrnd_unnorm(q,r,n,d)       \
   do {                                  \
     mp_limb_t  __q = (n) / (d);         \
@@ -157,13 +157,13 @@ mpn_sb_get_str (unsigned char *str, size_t len,
   /* Allocate memory for largest possible string, given that we only get here
      for operands with un < GET_STR_PRECOMPUTE_THRESHOLD and that the smallest
      base is 3.  7/11 is an approximation to 1/log2(3).  */
-#if TUNE_PROGRAM_BUILD
+#ifdef TUNE_PROGRAM_BUILD
 #define BUF_ALLOC (GET_STR_THRESHOLD_LIMIT * GMP_LIMB_BITS * 7 / 11)
 #else
 #define BUF_ALLOC (GET_STR_PRECOMPUTE_THRESHOLD * GMP_LIMB_BITS * 7 / 11)
 #endif
   unsigned char buf[BUF_ALLOC];
-#if TUNE_PROGRAM_BUILD
+#ifdef TUNE_PROGRAM_BUILD
   mp_limb_t rp[GET_STR_THRESHOLD_LIMIT];
 #else
   mp_limb_t rp[GET_STR_PRECOMPUTE_THRESHOLD];
@@ -188,7 +188,7 @@ mpn_sb_get_str (unsigned char *str, size_t len,
 	  un -= rp[un] == 0;
 	  frac = (rp[0] + 1) << GMP_NAIL_BITS;
 	  s -= MP_BASES_CHARS_PER_LIMB_10;
-#if HAVE_HOST_CPU_FAMILY_x86
+#ifdef HAVE_HOST_CPU_FAMILY_x86
 	  /* The code below turns out to be a bit slower for x86 using gcc.
 	     Use plain code.  */
 	  i = MP_BASES_CHARS_PER_LIMB_10;

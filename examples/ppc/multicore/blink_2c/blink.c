@@ -36,48 +36,53 @@
 
 #define APP_Task_t1_app1_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
-    uint32 led_state1 = 1;
+VAR(uint32, AUTOMATIC) led_state1 = 0;
 #define APP_Task_t1_app1_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
 #define APP_Task_t1_app2_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
-    uint32 led_state2 = 0;
+VAR(uint32, AUTOMATIC) led_state2 = 0;
 #define APP_Task_t1_app2_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
-
 
 DeclareTask(t1_app1);
 DeclareTask(t1_app2);
 
-#define OS_START_SEC_CODE
+#define APP_COMMON_START_SEC_CODE
 #include "tpl_memmap.h"
-int main(void)
+FUNC(int, OS_APPL_CODE) main(void)
 {
 #if NUMBER_OF_CORES > 1
-    int core_id = tpl_get_core_id();
-    StatusType rv1;
+    StatusType rv;
 
-    Os_Init();
-    if (core_id == OS_CORE_ID_MASTER)
-    {
+    switch(GetCoreID()){
+      case OS_CORE_ID_MASTER :
         initLed();
         setLed(0, led_state1);
-        StartCore(OS_CORE_ID_1, &rv1);
-    } else {
-        /* Core 1 : leds are already initialized by the core 0 at this step */
+        /* Wakeup core 1 */
+        StartCore(OS_CORE_ID_1, &rv);
+        if(rv == E_OK)
+          StartOS(OSDEFAULTAPPMODE);
+        break;
+      case OS_CORE_ID_1 :
+        /* Core 1 : leds were already initialized by the core 0 at this step */
         setLed(1, led_state2);
+        StartOS(OSDEFAULTAPPMODE);
+        break;
+      default :
+        /* Should not happen */
+        break;
     }
 #else
     initLed();
     setLed(0, led_state1);
+    StartOS(OSDEFAULTAPPMODE);
 #endif
 
-    /* Core 0 will start the core 1 in StartOS */
-    StartOS(OSDEFAULTAPPMODE);
     return 0;
 }
-#define OS_STOP_SEC_CODE
+#define APP_COMMON_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
 #define APP_Task_t1_app1_START_SEC_CODE

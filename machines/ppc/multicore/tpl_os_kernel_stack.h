@@ -51,13 +51,14 @@
  */
 
 #define KERNEL_STACK_SIZE 2000
-#define KS_FOOTPRINT      28
+#define KS_FOOTPRINT      32
 
 #define KS_SP             8
 #define KS_SRR0           12
 #define KS_SRR1           16
 #define KS_RETURN_CODE    20
 #define KS_KERN_PTR       24
+#define KS_LR             28
 
 /* TPL_OS_KERNEL_STACK_H */
 #endif

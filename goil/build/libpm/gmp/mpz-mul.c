@@ -66,7 +66,7 @@ mpz_mul (mpz_ptr w, mpz_srcptr u, mpz_srcptr v)
       return;
     }
 
-#if HAVE_NATIVE_mpn_mul_2
+#ifdef HAVE_NATIVE_mpn_mul_2
   if (vsize <= 2)
     {
       wp = MPZ_REALLOC (w, usize+vsize);

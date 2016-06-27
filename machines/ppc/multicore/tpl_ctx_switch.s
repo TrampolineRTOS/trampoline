@@ -120,7 +120,7 @@ TPL_VLE_OFF
 #define FPSCR   256
 
 #define OS_START_SEC_CODE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 /**
  * tpl_save_context saves the context in the context passed in r3
  * this function is called from tpl_sc_handler and we are running
@@ -357,5 +357,5 @@ TPL_TYPE(TPL_GLOBAL_REF(tpl_load_context),@function)
 TPL_SIZE(TPL_GLOBAL_REF(tpl_load_context),$-TPL_GLOBAL_REF(tpl_load_context))
 
 #define OS_STOP_SEC_CODE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 

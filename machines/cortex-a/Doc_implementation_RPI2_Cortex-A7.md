@@ -163,11 +163,19 @@ This is the only non-secure PL2 mode. See Virtualization Extensions.
 **SCR**
 
 The SCR defines the configuration of the current security state. It specifies:
-*   The security state of the processor, Secure or Non-secure.
+
+*   The security state of the processor, Secure or Non-secure.
 *   What mode the processor branches to, if an IRQ, FIQ or external abort occurs.
-*   Whether the CPSR.F and CPSR.A bits can be modified when SCR.NS = 1.The SCR is:*   A read/write register.
+*   Whether the CPSR.F and CPSR.A bits can be modified when SCR.NS = 1.
+
+The SCR is:
+
+*   A read/write register.
 *   A Restricted access register that exists only in the Secure state
-*   Only accessible in Secure PL1 modes.Available in all configurations.See the register summary in Table 4-3 on page 4-5.
+*   Only accessible in Secure PL1 modes.
+
+Available in all configurations.
+See the register summary in Table 4-3 on page 4-5.
 
 
 Have a look to [ARM Architecture Reference Manual ARMv7-A and ARMv7-R edition

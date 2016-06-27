@@ -38,13 +38,13 @@ see https://www.gnu.org/licenses/.  */
 #include "gmp.h"
 #include "gmp-impl.h"
 
-#if HAVE_NATIVE_mpn_addlsh_n
+#ifdef HAVE_NATIVE_mpn_addlsh_n
 #define DO_mpn_addlsh_n(dst,src,n,s,ws) mpn_addlsh_n(dst,dst,src,n,s)
 #else
 static mp_limb_t
 DO_mpn_addlsh_n(mp_ptr dst, mp_srcptr src, mp_size_t n, unsigned int s, mp_ptr ws)
 {
-#if USE_MUL_1 && 0
+#if defined (USE_MUL_1) && 0
   return mpn_addmul_1(dst,src,n,CNST_LIMB(1) <<(s));
 #else
   mp_limb_t __cy;
@@ -84,7 +84,7 @@ mpn_toom_eval_pm2rexp (mp_ptr rp, mp_ptr rm,
 
   neg = (mpn_cmp (rp, ws, n + 1) < 0) ? ~0 : 0;
 
-#if HAVE_NATIVE_mpn_add_n_sub_n
+#ifdef HAVE_NATIVE_mpn_add_n_sub_n
   if (neg)
     mpn_add_n_sub_n (rp, rm, ws, rp, n + 1);
   else

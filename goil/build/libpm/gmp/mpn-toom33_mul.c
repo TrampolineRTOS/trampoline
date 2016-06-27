@@ -55,7 +55,7 @@ see https://www.gnu.org/licenses/.  */
   vinf=          a2 *         b2  # A(inf)*B(inf)
 */
 
-#if TUNE_PROGRAM_BUILD || WANT_FAT_BINARY
+#if defined (TUNE_PROGRAM_BUILD) || defined (WANT_FAT_BINARY)
 #define MAYBE_mul_basecase 1
 #define MAYBE_mul_toom33   1
 #else
@@ -129,7 +129,7 @@ mpn_toom33_mul (mp_ptr pp,
 
   /* Compute as1 and asm1.  */
   cy = mpn_add (gp, a0, n, a2, s);
-#if HAVE_NATIVE_mpn_add_n_sub_n
+#ifdef HAVE_NATIVE_mpn_add_n_sub_n
   if (cy == 0 && mpn_cmp (gp, a1, n) < 0)
     {
       cy = mpn_add_n_sub_n (as1, asm1, a1, gp, n);
@@ -160,14 +160,14 @@ mpn_toom33_mul (mp_ptr pp,
 #endif
 
   /* Compute as2.  */
-#if HAVE_NATIVE_mpn_rsblsh1_n
+#ifdef HAVE_NATIVE_mpn_rsblsh1_n
   cy = mpn_add_n (as2, a2, as1, s);
   if (s != n)
     cy = mpn_add_1 (as2 + s, as1 + s, n - s, cy);
   cy += as1[n];
   cy = 2 * cy + mpn_rsblsh1_n (as2, a0, as2, n);
 #else
-#if HAVE_NATIVE_mpn_addlsh1_n
+#ifdef HAVE_NATIVE_mpn_addlsh1_n
   cy  = mpn_addlsh1_n (as2, a1, a2, s);
   if (s != n)
     cy = mpn_add_1 (as2 + s, a1 + s, n - s, cy);
@@ -185,7 +185,7 @@ mpn_toom33_mul (mp_ptr pp,
 
   /* Compute bs1 and bsm1.  */
   cy = mpn_add (gp, b0, n, b2, t);
-#if HAVE_NATIVE_mpn_add_n_sub_n
+#ifdef HAVE_NATIVE_mpn_add_n_sub_n
   if (cy == 0 && mpn_cmp (gp, b1, n) < 0)
     {
       cy = mpn_add_n_sub_n (bs1, bsm1, b1, gp, n);
@@ -216,14 +216,14 @@ mpn_toom33_mul (mp_ptr pp,
 #endif
 
   /* Compute bs2.  */
-#if HAVE_NATIVE_mpn_rsblsh1_n
+#ifdef HAVE_NATIVE_mpn_rsblsh1_n
   cy = mpn_add_n (bs2, b2, bs1, t);
   if (t != n)
     cy = mpn_add_1 (bs2 + t, bs1 + t, n - t, cy);
   cy += bs1[n];
   cy = 2 * cy + mpn_rsblsh1_n (bs2, b0, bs2, n);
 #else
-#if HAVE_NATIVE_mpn_addlsh1_n
+#ifdef HAVE_NATIVE_mpn_addlsh1_n
   cy  = mpn_addlsh1_n (bs2, b1, b2, t);
   if (t != n)
     cy = mpn_add_1 (bs2 + t, b1 + t, n - t, cy);

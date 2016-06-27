@@ -34,10 +34,6 @@
 #include "tpl_registers_asm.h"
 
 
-TPL_EXTERN(tpl_counter_it_level_buff)
-TPL_EXTERN(tpl_counter_it_level)
-TPL_EXTERN(tpl_os_it_level_buff)
-TPL_EXTERN(tpl_os_it_level)
 TPL_EXTERN(tpl_kernel_stack_bottom)
 
 TPL_GLOBAL(tpl_enable_interrupts)
@@ -52,7 +48,7 @@ TPL_VLE_OFF
 #endif
 
 #define OS_START_SEC_CODE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 
 /**
  * Enable interrupts. On the PowerPC, the interrupt bit is located
@@ -72,8 +68,12 @@ TPL_GLOBAL_REF(tpl_enable_interrupts):
   se_stw    r5,4(r1)                  /* save r5  */
   se_stw    r6,0(r1)                  /* save r6  */
 
+  mfspr     r5,spr_PIR
+  e_slwi    r5,r5,2
   e_lis     r11,TPL_HIG(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* get the kernel   */
   e_add16i  r11,TPL_LOW(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* stack bottom ptr */
+  se_add    r11,r5
+  e_lwz     r11,0(r11)
 
   se_mfar   r5,r11
   se_subi   r5,KS_FOOTPRINT       /* switch r5/r11 to use vle instructions  */
@@ -127,8 +127,12 @@ TPL_GLOBAL_REF(tpl_disable_interrupts):
   se_stw    r5,4(r1)            /* save r5  */
   se_stw    r6,0(r1)            /* save r6  */
 
+  mfspr     r5,spr_PIR
+  e_slwi    r5,r5,2
   e_lis     r11,TPL_HIG(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* get the kernel   */
   e_add16i  r11,TPL_LOW(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* stack bottom ptr */
+  se_add    r11,r5
+  e_lwz     r11,0(r11)
 
   se_mfar   r5,r11
   se_subi   r5,KS_FOOTPRINT  /* switch r5/r11 to use vle instructions  */
@@ -160,11 +164,11 @@ TPL_GLOBAL_REF(tpl_disable_interrupts):
   se_blr
 #endif
 /* ------------ NO VLE ------------------------------------------------------*/
-#else
+#else TODO
   lis   r11,TPL_HIG(TPL_INTC_CPR_PRC0)           /* load TPL_INTC_CPR_PRC0 ptr     */
   ori   r11,TPL_LOW(TPL_INTC_CPR_PRC0)
-  lis   r11,TPL_HIG(TPL_EXTERN_REF(tpl_counter_it_level))    /* get priority value to load */
-  ori   r11,TPL_LOW(TPL_EXTERN_REF(tpl_counter_it_level))
+#  lis   r11,TPL_HIG(TPL_EXTERN_REF(tpl_counter_it_level))    /* get priority value to load */
+#  ori   r11,TPL_LOW(TPL_EXTERN_REF(tpl_counter_it_level))
   lwz   r12,0(r12)
   stw   r12,0(r11)                           /* set new priority value     */
   blr
@@ -185,8 +189,12 @@ TPL_GLOBAL_REF(tpl_enable_os_interrupts):
   se_stw    r5,4(r1)                  /* save r5  */
   se_stw    r6,0(r1)                  /* save r6  */
 
+  mfspr     r5,spr_PIR
+  e_slwi    r5,r5,2
   e_lis     r11,TPL_HIG(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* get the kernel   */
   e_add16i  r11,TPL_LOW(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* stack bottom ptr */
+  se_add    r11,r5
+  e_lwz     r11,0(r11)
 
   se_mfar   r5,r11
   se_subi   r5,KS_FOOTPRINT       /* switch r5/r11 to use vle instructions  */
@@ -233,8 +241,12 @@ TPL_GLOBAL_REF(tpl_disable_os_interrupts):
   se_stw    r5,4(r1)            /* save r5  */
   se_stw    r6,0(r1)            /* save r6  */
 
+  mfspr     r5,spr_PIR
+  e_slwi    r5,r5,2
   e_lis     r11,TPL_HIG(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* get the kernel   */
   e_add16i  r11,TPL_LOW(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* stack bottom ptr */
+  se_add    r11,r5
+  e_lwz     r11,0(r11)
 
   se_mfar   r5,r11
   se_subi   r5,KS_FOOTPRINT  /* switch r5/r11 to use vle instructions  */
@@ -280,5 +292,5 @@ TPL_TYPE(TPL_GLOBAL_REF(tpl_disable_os_interrupts),@function)
 TPL_SIZE(TPL_GLOBAL_REF(tpl_disable_os_interrupts),$-TPL_GLOBAL_REF(tpl_disable_os_interrupts))
 
 #define OS_STOP_SEC_CODE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 

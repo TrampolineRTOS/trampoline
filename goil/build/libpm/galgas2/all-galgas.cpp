@@ -18,6 +18,7 @@
 #include "cGenericAbstractEnumerator.cpp"
 #include "cEnumerator_range.cpp"
 #include "cIndexingDictionary.cpp"
+#include "cLexiqueIntrospection.cpp"
 
 #include "AC_GALGAS_root.cpp"
 #include "AC_GALGAS_list.cpp"

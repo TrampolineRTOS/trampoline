@@ -40,13 +40,13 @@ see https://www.gnu.org/licenses/.  */
 
 
 
-#if HAVE_NATIVE_mpn_sublsh_n
+#ifdef HAVE_NATIVE_mpn_sublsh_n
 #define DO_mpn_sublsh_n(dst,src,n,s,ws) mpn_sublsh_n(dst,dst,src,n,s)
 #else
 static mp_limb_t
 DO_mpn_sublsh_n(mp_ptr dst, mp_srcptr src, mp_size_t n, unsigned int s, mp_ptr ws)
 {
-#if USE_MUL_1 && 0
+#if defined(USE_MUL_1) && 0
   return mpn_submul_1(dst,src,n,CNST_LIMB(1) <<(s));
 #else
   mp_limb_t __cy;
@@ -56,7 +56,7 @@ DO_mpn_sublsh_n(mp_ptr dst, mp_srcptr src, mp_size_t n, unsigned int s, mp_ptr w
 }
 #endif
 
-#if HAVE_NATIVE_mpn_addlsh_n
+#ifdef HAVE_NATIVE_mpn_addlsh_n
 #define DO_mpn_addlsh_n(dst,src,n,s,ws) mpn_addlsh_n(dst,dst,src,n,s)
 #else
 /* static mp_limb_t
@@ -72,7 +72,7 @@ DO_mpn_addlsh_n(mp_ptr dst, mp_srcptr src, mp_size_t n, unsigned int s, mp_ptr w
 }*/
 #endif
 
-#if HAVE_NATIVE_mpn_subrsh
+#ifdef HAVE_NATIVE_mpn_subrsh
 #define DO_mpn_subrsh(dst,nd,src,ns,s,ws) mpn_subrsh(dst,nd,src,ns,s)
 #else
 /* FIXME: This is not a correct definition, it assumes no carry */
@@ -143,7 +143,7 @@ do {									\
 #endif
 
 #ifndef mpn_divexact_by9x4
-#if HAVE_NATIVE_mpn_pi1_bdiv_q_1
+#ifdef HAVE_NATIVE_mpn_pi1_bdiv_q_1
 #define mpn_divexact_by9x4(dst,src,size) mpn_pi1_bdiv_q_1(dst,src,size,CNST_LIMB(9),BINVERT_9,2)
 #else
 #define mpn_divexact_by9x4(dst,src,size) mpn_divexact_1(dst,src,size,CNST_LIMB(9)<<2)
@@ -151,7 +151,7 @@ do {									\
 #endif
 
 #ifndef mpn_divexact_by42525
-#if HAVE_NATIVE_mpn_pi1_bdiv_q_1 && defined(BINVERT_42525)
+#if defined(HAVE_NATIVE_mpn_pi1_bdiv_q_1) && defined(BINVERT_42525)
 #define mpn_divexact_by42525(dst,src,size) mpn_pi1_bdiv_q_1(dst,src,size,CNST_LIMB(42525),BINVERT_42525,0)
 #else
 #define mpn_divexact_by42525(dst,src,size) mpn_divexact_1(dst,src,size,CNST_LIMB(42525))
@@ -159,7 +159,7 @@ do {									\
 #endif
 
 #ifndef mpn_divexact_by2835x4
-#if HAVE_NATIVE_mpn_pi1_bdiv_q_1 && defined(BINVERT_2835)
+#if defined(HAVE_NATIVE_mpn_pi1_bdiv_q_1) && defined(BINVERT_2835)
 #define mpn_divexact_by2835x4(dst,src,size) mpn_pi1_bdiv_q_1(dst,src,size,CNST_LIMB(2835),BINVERT_2835,2)
 #else
 #define mpn_divexact_by2835x4(dst,src,size) mpn_divexact_1(dst,src,size,CNST_LIMB(2835)<<2)
@@ -225,7 +225,7 @@ mpn_toom_interpolate_12pts (mp_ptr pp, mp_ptr r1, mp_ptr r3, mp_ptr r5,
   r4[n3] -= DO_mpn_sublsh_n (r4 + n, pp, 2 * n, 20, wsi);
   DO_mpn_subrsh(r1 + n, 2 * n + 1, pp, 2 * n, 4, wsi);
 
-#if HAVE_NATIVE_mpn_add_n_sub_n
+#ifdef HAVE_NATIVE_mpn_add_n_sub_n
   mpn_add_n_sub_n (r1, r4, r4, r1, n3p1);
 #else
   ASSERT_NOCARRY(mpn_add_n (wsi, r1, r4, n3p1));
@@ -236,7 +236,7 @@ mpn_toom_interpolate_12pts (mp_ptr pp, mp_ptr r1, mp_ptr r3, mp_ptr r5,
   r5[n3] -= DO_mpn_sublsh_n (r5 + n, pp, 2 * n, 10, wsi);
   DO_mpn_subrsh(r2 + n, 2 * n + 1, pp, 2 * n, 2, wsi);
 
-#if HAVE_NATIVE_mpn_add_n_sub_n
+#ifdef HAVE_NATIVE_mpn_add_n_sub_n
   mpn_add_n_sub_n (r2, r5, r5, r2, n3p1);
 #else
   mpn_sub_n (wsi, r5, r2, n3p1); /* can be negative */
@@ -315,7 +315,7 @@ mpn_toom_interpolate_12pts (mp_ptr pp, mp_ptr r1, mp_ptr r3, mp_ptr r5,
 
   cy = mpn_add_n (pp + n, pp + n, r5, n);
   cy = mpn_add_1 (pp + 2 * n, r5 + n, n, cy);
-#if HAVE_NATIVE_mpn_add_nc
+#ifdef HAVE_NATIVE_mpn_add_nc
   cy = r5[n3] + mpn_add_nc(pp + n3, pp + n3, r5 + 2 * n, n, cy);
 #else
   MPN_INCR_U (r5 + 2 * n, n + 1, cy);
@@ -325,7 +325,7 @@ mpn_toom_interpolate_12pts (mp_ptr pp, mp_ptr r1, mp_ptr r3, mp_ptr r5,
 
   pp[2 * n3]+= mpn_add_n (pp + 5 * n, pp + 5 * n, r3, n);
   cy = mpn_add_1 (pp + 2 * n3, r3 + n, n, pp[2 * n3]);
-#if HAVE_NATIVE_mpn_add_nc
+#ifdef HAVE_NATIVE_mpn_add_nc
   cy = r3[n3] + mpn_add_nc(pp + 7 * n, pp + 7 * n, r3 + 2 * n, n, cy);
 #else
   MPN_INCR_U (r3 + 2 * n, n + 1, cy);
@@ -336,7 +336,7 @@ mpn_toom_interpolate_12pts (mp_ptr pp, mp_ptr r1, mp_ptr r3, mp_ptr r5,
   pp[10*n]+=mpn_add_n (pp + 9 * n, pp + 9 * n, r1, n);
   if (half) {
     cy = mpn_add_1 (pp + 10 * n, r1 + n, n, pp[10 * n]);
-#if HAVE_NATIVE_mpn_add_nc
+#ifdef HAVE_NATIVE_mpn_add_nc
     if (LIKELY (spt > n)) {
       cy = r1[n3] + mpn_add_nc(pp + 11 * n, pp + 11 * n, r1 + 2 * n, n, cy);
       MPN_INCR_U (pp + 4 * n3, spt - n, cy);

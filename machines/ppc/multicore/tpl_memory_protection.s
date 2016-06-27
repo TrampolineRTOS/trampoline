@@ -110,7 +110,7 @@ TPL_VLE_OFF
 #endif
 
 #define OS_START_SEC_CODE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 
 /**
  * tpl_init_mp programs the MP descriptor 0-3 to allow
@@ -417,12 +417,16 @@ TPL_GLOBAL_REF(tpl_user_mp):
   se_mtar   r11,r5
   se_mtar   r12,r6
 
+#if WITH_MULTICORE == YES
   mfspr     r6,spr_PIR
   se_slwi   r6,2                          /* get core number, and multiply by 4, to get the index of table tpl_kern[] */
+#endif
   e_lis     r5,TPL_HIG(TPL_EXTERN_REF(tpl_kern))
   e_add16i  r5,TPL_LOW(TPL_EXTERN_REF(tpl_kern))
+#if WITH_MULTICORE == YES
   se_add    r5,r6
   e_lwz     r6,0(r5)                     /* get core's tpl_kern specific address */
+#endif
   e_lwz     r5,12(r6)                    /* get elected proc structure address */
   e_lwz     r6,4(r5)                    /* get the trusted counter */
   e_cmp16i  r6,0
@@ -972,7 +976,7 @@ TPL_TYPE(TPL_GLOBAL_REF(tpl_set_process_mp),@function)
 TPL_SIZE(TPL_GLOBAL_REF(tpl_set_process_mp),$-TPL_GLOBAL_REF(tpl_set_process_mp))
 
 #define OS_STOP_SEC_CODE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 
 #endif
 

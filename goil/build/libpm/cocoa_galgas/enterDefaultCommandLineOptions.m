@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
@@ -16,12 +16,12 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #import "enterDefaultCommandLineOptions.h"
 #import "OC_GGS_CommandLineOption.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void enterDefaultCommandLineOptions (NSMutableArray * ioBoolOptionArray,
                                      NSMutableArray * ioUIntOptionArray,
@@ -46,28 +46,6 @@ void enterDefaultCommandLineOptions (NSMutableArray * ioBoolOptionArray,
     defaultValue:@""
   ] ;
   [ioBoolOptionArray addObject:option] ;
-  
-
-//  option = [[OC_GGS_CommandLineOption alloc]
-//    initWithDomainName:@"galgas_cli_options"
-//    identifier:@"quiet_output"
-//    commandChar:'q'
-//    commandString:@"quiet"
-//    comment:@"Quiet output"
-//    defaultValue:@""
-//  ] ;
-//  [ioBoolOptionArray addObject:option] ;
-  
-
-//  option = [[OC_GGS_CommandLineOption alloc]
-//    initWithDomainName:@"galgas_cli_options"
-//    identifier:@"verbose_output"
-//    commandChar:'v'
-//    commandString:@"verbose"
-//    comment:@"Verbose output"
-//    defaultValue:@""
-//  ] ;
-//  [ioBoolOptionArray addObject:option] ;
   
 
   option = [[OC_GGS_CommandLineOption alloc]
@@ -116,17 +94,6 @@ void enterDefaultCommandLineOptions (NSMutableArray * ioBoolOptionArray,
 
   option = [[OC_GGS_CommandLineOption alloc]
     initWithDomainName:@"galgas_cli_options"
-    identifier:@"trace"
-    commandChar:'\0'
-    commandString:@"trace"
-    comment:@"Outputs a trace file"
-    defaultValue:@""
-  ] ;
-  [ioBoolOptionArray addObject:option] ;
-  
-
-  option = [[OC_GGS_CommandLineOption alloc]
-    initWithDomainName:@"galgas_cli_options"
     identifier:@"max_errors"
     commandChar:'\0'
     commandString:@"max-errors"
@@ -156,7 +123,17 @@ void enterDefaultCommandLineOptions (NSMutableArray * ioBoolOptionArray,
     defaultValue:@""
   ] ;
   [ioStringOptionArray addObject:option] ;
+  
+
+  option = [[OC_GGS_CommandLineOption alloc]
+    initWithDomainName:@"galgas_cli_options"
+    identifier:@"outputKeywordList"
+    commandChar:'\0'
+    commandString:@"output-keyword-list-file"
+    comment:@"Output a Latex file containing keyword list"
+    defaultValue:@""
+  ] ;
+  [ioStringOptionArray addObject:option] ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
-
+//----------------------------------------------------------------------------------------------------------------------

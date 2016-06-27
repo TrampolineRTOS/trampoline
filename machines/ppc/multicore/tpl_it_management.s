@@ -61,7 +61,7 @@ TPL_VLE_OFF
 
 /****************************************************************************/
 #define OS_START_SEC_CODE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 TPL_GLOBAL(tpl_it_id)
 TPL_GLOBAL_REF(tpl_it_id):
 
@@ -267,5 +267,5 @@ TPL_SIZE(TPL_GLOBAL_REF(tpl_set_cpu_prio),$-TPL_GLOBAL_REF(tpl_set_cpu_prio))
 
 
 #define OS_STOP_SEC_CODE
-#include "AsMemMap.h"
+#include "tpl_as_memmap.h"
 

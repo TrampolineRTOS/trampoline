@@ -5,19 +5,19 @@
 //  Created by Pierre Molinaro on 22/05/14.
 //  Copyright (c) 2014 IRCCyN. All rights reserved.
 //
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 #include "bdd/C_Relation.h"
 #include "utilities/C_SharedObject.h"
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_Relation::C_Relation (void) :
 mConfiguration (),
 mBDD () {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_Relation::C_Relation (const C_RelationConfiguration & inConfiguration,
                         const C_BDD inBDD) :
@@ -25,43 +25,43 @@ mConfiguration (inConfiguration),
 mBDD (inBDD) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_Relation::C_Relation (const C_RelationConfiguration & inConfiguration,
-                        const bool isFull) :
+                        const bool inIsFull) :
 mConfiguration (inConfiguration),
 mBDD () {
-  if (isFull) {
+  if (inIsFull) {
     mBDD.setToTrue () ;
   }
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_Relation::C_Relation (const C_String & inVariableName,
                         const C_RelationSingleType & inVariableType,
-                        const bool isFull) :
+                        const bool inIsFull) :
 mConfiguration (),
 mBDD () {
-  if (isFull) {
+  if (inIsFull) {
     mBDD.setToTrue () ;
   }
   mConfiguration.addVariable (inVariableName, inVariableType) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_Relation::~C_Relation (void) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_Relation::C_Relation (const C_Relation & inSource) :
 mConfiguration (inSource.mConfiguration),
 mBDD (inSource.mBDD) {
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_Relation & C_Relation::operator = (const C_Relation & inSource) {
   if (this != & inSource) {
@@ -71,44 +71,44 @@ C_Relation & C_Relation::operator = (const C_Relation & inSource) {
   return *this ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Relation::addVariable (const C_String & inVariableName,
                               const C_RelationSingleType & inType) {
   mConfiguration.addVariable (inVariableName, inType) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Relation::appendConfiguration (const C_RelationConfiguration & inConfiguration) {
   mConfiguration.appendConfiguration (inConfiguration) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_RelationConfiguration C_Relation::configuration (void) const {
   return mConfiguration ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_BDD C_Relation::bdd (void) const {
   return mBDD ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Relation::setToEmpty (void) {
   mBDD.setToFalse () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Relation::setToFull (void) {
   mBDD.setToTrue () ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_Relation::C_Relation (const C_RelationConfiguration & inConfiguration,
                         const int32_t inVariableIndex,
@@ -123,21 +123,21 @@ mBDD () {
                                  inConstant) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Relation::andWith (const C_Relation & inRelation COMMA_LOCATION_ARGS) {
   mConfiguration.checkIdenticalTo (inRelation.mConfiguration COMMA_THERE) ;
   mBDD &= inRelation.mBDD ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Relation::orWith (const C_Relation & inRelation COMMA_LOCATION_ARGS) {
   mConfiguration.checkIdenticalTo (inRelation.mConfiguration COMMA_THERE) ;
   mBDD |= inRelation.mBDD ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_Relation C_Relation::andOp (const C_Relation & inRelation COMMA_LOCATION_ARGS) const {
   C_Relation result = *this ;
@@ -145,7 +145,7 @@ C_Relation C_Relation::andOp (const C_Relation & inRelation COMMA_LOCATION_ARGS)
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_Relation C_Relation::orOp (const C_Relation & inRelation COMMA_LOCATION_ARGS) const {
   C_Relation result = *this ;
@@ -153,7 +153,7 @@ C_Relation C_Relation::orOp (const C_Relation & inRelation COMMA_LOCATION_ARGS) 
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_Relation C_Relation::operator ~ (void) const {
   C_Relation result = *this ;
@@ -161,7 +161,7 @@ C_Relation C_Relation::operator ~ (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_Relation C_Relation::accessibleStatesFrom (const C_Relation & inStartStates,
                                              int32_t * outIterationCount
@@ -180,7 +180,7 @@ C_Relation C_Relation::accessibleStatesFrom (const C_Relation & inStartStates,
   ) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_Relation C_Relation::transitiveClosure (int32_t * outIterationCount) const {
   return C_Relation (
@@ -189,7 +189,7 @@ C_Relation C_Relation::transitiveClosure (int32_t * outIterationCount) const {
   ) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool C_Relation::containsValue (const int32_t inVariableIndex,
                                 const uint64_t inValue
@@ -199,21 +199,21 @@ bool C_Relation::containsValue (const int32_t inVariableIndex,
                                mConfiguration.bddBitCountForVariable (inVariableIndex COMMA_THERE)) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Relation::getValueArray (TC_UniqueArray <uint64_t> & outArray) const {
   mBDD.buildValue64Array (outArray, mConfiguration.bitCount ()) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 uint64_t C_Relation::value64Count (void) const {
   return mBDD.valueCount64 (mConfiguration.bitCount ()) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 //   getArray                                                                  *
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 void C_Relation::getArray (TC_UniqueArray <TC_UniqueArray <uint64_t> > & outArray
                            COMMA_LOCATION_ARGS) const {
@@ -231,7 +231,7 @@ void C_Relation::getArray (TC_UniqueArray <TC_UniqueArray <uint64_t> > & outArra
                   bitCount1) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_Relation C_Relation::relationByDeletingLastVariable (LOCATION_ARGS) const {
   C_Relation result = *this ;
@@ -242,7 +242,7 @@ C_Relation C_Relation::relationByDeletingLastVariable (LOCATION_ARGS) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_Relation C_Relation::swap021 (LOCATION_ARGS) const {
   MF_AssertThere (variableCount () == 3,
@@ -253,12 +253,12 @@ C_Relation C_Relation::swap021 (LOCATION_ARGS) const {
   const uint32_t bitCount0 = mConfiguration.bddBitCountForVariable (0 COMMA_THERE) ;
   const uint32_t bitCount1 = mConfiguration.bddBitCountForVariable (1 COMMA_THERE) ;
   const uint32_t bitCount2 = mConfiguration.bddBitCountForVariable (2 COMMA_THERE) ;
-  const C_BDD bdd = mBDD.swap021 (bitCount0, bitCount1, bitCount2) ;
-  const C_RelationConfiguration configuration = mConfiguration.swap021 (THERE) ;
-  return C_Relation (configuration, bdd) ;
+  const C_BDD result = mBDD.swap021 (bitCount0, bitCount1, bitCount2) ;
+  const C_RelationConfiguration config = mConfiguration.swap021 (THERE) ;
+  return C_Relation (config, result) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_Relation C_Relation::swap102 (LOCATION_ARGS) const {
   MF_AssertThere (variableCount () == 3,
@@ -269,12 +269,12 @@ C_Relation C_Relation::swap102 (LOCATION_ARGS) const {
   const uint32_t bitCount0 = mConfiguration.bddBitCountForVariable (0 COMMA_THERE) ;
   const uint32_t bitCount1 = mConfiguration.bddBitCountForVariable (1 COMMA_THERE) ;
   const uint32_t bitCount2 = mConfiguration.bddBitCountForVariable (2 COMMA_THERE) ;
-  const C_BDD bdd = mBDD.swap102 (bitCount0, bitCount1, bitCount2) ;
-  const C_RelationConfiguration configuration = mConfiguration.swap102 (THERE) ;
-  return C_Relation (configuration, bdd) ;
+  const C_BDD result = mBDD.swap102 (bitCount0, bitCount1, bitCount2) ;
+  const C_RelationConfiguration config = mConfiguration.swap102 (THERE) ;
+  return C_Relation (config, result) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_Relation C_Relation::swap120 (LOCATION_ARGS) const {
   MF_AssertThere (variableCount () == 3,
@@ -285,12 +285,12 @@ C_Relation C_Relation::swap120 (LOCATION_ARGS) const {
   const uint32_t bitCount0 = mConfiguration.bddBitCountForVariable (0 COMMA_THERE) ;
   const uint32_t bitCount1 = mConfiguration.bddBitCountForVariable (1 COMMA_THERE) ;
   const uint32_t bitCount2 = mConfiguration.bddBitCountForVariable (2 COMMA_THERE) ;
-  const C_BDD bdd = mBDD.swap120 (bitCount0, bitCount1, bitCount2) ;
-  const C_RelationConfiguration configuration = mConfiguration.swap120 (THERE) ;
-  return C_Relation (configuration, bdd) ;
+  const C_BDD result = mBDD.swap120 (bitCount0, bitCount1, bitCount2) ;
+  const C_RelationConfiguration config = mConfiguration.swap120 (THERE) ;
+  return C_Relation (config, result) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_Relation C_Relation::swap201 (LOCATION_ARGS) const {
   MF_AssertThere (variableCount () == 3,
@@ -301,12 +301,12 @@ C_Relation C_Relation::swap201 (LOCATION_ARGS) const {
   const uint32_t bitCount0 = mConfiguration.bddBitCountForVariable (0 COMMA_THERE) ;
   const uint32_t bitCount1 = mConfiguration.bddBitCountForVariable (1 COMMA_THERE) ;
   const uint32_t bitCount2 = mConfiguration.bddBitCountForVariable (2 COMMA_THERE) ;
-  const C_BDD bdd = mBDD.swap201 (bitCount0, bitCount1, bitCount2) ;
-  const C_RelationConfiguration configuration = mConfiguration.swap201 (THERE) ;
-  return C_Relation (configuration, bdd) ;
+  const C_BDD result = mBDD.swap201 (bitCount0, bitCount1, bitCount2) ;
+  const C_RelationConfiguration config = mConfiguration.swap201 (THERE) ;
+  return C_Relation (config, result) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_Relation C_Relation::swap210 (LOCATION_ARGS) const {
   MF_AssertThere (variableCount () == 3,
@@ -317,37 +317,37 @@ C_Relation C_Relation::swap210 (LOCATION_ARGS) const {
   const uint32_t bitCount0 = mConfiguration.bddBitCountForVariable (0 COMMA_THERE) ;
   const uint32_t bitCount1 = mConfiguration.bddBitCountForVariable (1 COMMA_THERE) ;
   const uint32_t bitCount2 = mConfiguration.bddBitCountForVariable (2 COMMA_THERE) ;
-  const C_BDD bdd = mBDD.swap210 (bitCount0, bitCount1, bitCount2) ;
-  const C_RelationConfiguration configuration = mConfiguration.swap210 (THERE) ;
-  return C_Relation (configuration, bdd) ;
+  const C_BDD result = mBDD.swap210 (bitCount0, bitCount1, bitCount2) ;
+  const C_RelationConfiguration config = mConfiguration.swap210 (THERE) ;
+  return C_Relation (config, result) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_Relation C_Relation::exitsOnVariable (const int32_t inVariableIndex
                                         COMMA_LOCATION_ARGS) const {
   C_Relation result = *this ;
   const uint32_t bitIndex = mConfiguration.bddStartBitIndexForVariable (inVariableIndex COMMA_THERE) ;
-  const uint32_t bitCount = mConfiguration.bddBitCountForVariable (inVariableIndex COMMA_THERE) ;
-  result.mBDD = result.mBDD.existsOnBitRange (bitIndex, bitCount) ;
+  const uint32_t bit_count = mConfiguration.bddBitCountForVariable (inVariableIndex COMMA_THERE) ;
+  result.mBDD = result.mBDD.existsOnBitRange (bitIndex, bit_count) ;
   return result ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool C_Relation::operator == (const C_Relation & inRelation) const {
   mConfiguration.checkIdenticalTo (inRelation.mConfiguration COMMA_HERE) ;
   return mBDD == inRelation.mBDD ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 bool C_Relation::operator != (const C_Relation & inRelation) const {
   mConfiguration.checkIdenticalTo (inRelation.mConfiguration COMMA_HERE) ;
   return mBDD != inRelation.mBDD ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------
 
 C_Relation C_Relation::transposedRelation (LOCATION_ARGS) const {
   MF_AssertThere (variableCount () == 2,
@@ -378,4 +378,4 @@ C_Relation C_Relation::transposedRelation (LOCATION_ARGS) const {
   return C_Relation (config, r) ;
 }
 
-//---------------------------------------------------------------------------------------------------------------------*
+//----------------------------------------------------------------------------------------------------------------------

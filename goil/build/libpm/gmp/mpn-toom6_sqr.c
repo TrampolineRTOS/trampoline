@@ -44,7 +44,7 @@ see https://www.gnu.org/licenses/.  */
 #endif
 
 
-#if TUNE_PROGRAM_BUILD
+#ifdef TUNE_PROGRAM_BUILD
 #define MAYBE_sqr_basecase 1
 #define MAYBE_sqr_above_basecase   1
 #define MAYBE_sqr_toom2   1

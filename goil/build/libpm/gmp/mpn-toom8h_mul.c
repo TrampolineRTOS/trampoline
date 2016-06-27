@@ -52,7 +52,7 @@ see https://www.gnu.org/licenses/.  */
 #endif
 
 
-#if TUNE_PROGRAM_BUILD
+#ifdef TUNE_PROGRAM_BUILD
 #define MAYBE_mul_basecase 1
 #define MAYBE_mul_toom22   1
 #define MAYBE_mul_toom33   1

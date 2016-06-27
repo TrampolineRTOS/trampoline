@@ -3,6 +3,7 @@ IMPLEMENTATION mpc5643l_multicore {
   /* Add intercore interrupts */
   INTERCORE_INTERRUPT [] {
     INTERRUPT_TYPE SOURCE;
+    UINT32 CORE;
   };
 
   /* Add spinlock */
@@ -28,8 +29,8 @@ CPU mpc5643l_interrupt {
 
   /* Intercore interrupts */
 
-  INTERCORE_INTERRUPT intercore_it1 { SOURCE = IRQ6; };
-  INTERCORE_INTERRUPT intercore_it2 { SOURCE = IRQ7; };
+  INTERCORE_INTERRUPT intercore_it1 { SOURCE = IRQ7; CORE = 0;};
+  INTERCORE_INTERRUPT intercore_it2 { SOURCE = IRQ7; CORE = 1;};
 
   /* Add spinlock library */
 

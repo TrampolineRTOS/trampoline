@@ -46,7 +46,7 @@ mpn_toom_eval_pm2exp (mp_ptr xp2, mp_ptr xm2, unsigned k,
 {
   unsigned i;
   int neg;
-#if HAVE_NATIVE_mpn_addlsh_n
+#ifdef HAVE_NATIVE_mpn_addlsh_n
   mp_limb_t cy;
 #endif
 
@@ -59,7 +59,7 @@ mpn_toom_eval_pm2exp (mp_ptr xp2, mp_ptr xm2, unsigned k,
   /* The degree k is also the number of full-size coefficients, so
    * that last coefficient, of size hn, starts at xp + k*n. */
 
-#if HAVE_NATIVE_mpn_addlsh_n
+#ifdef HAVE_NATIVE_mpn_addlsh_n
   xp2[n] = mpn_addlsh_n (xp2, xp, xp + 2*n, n, 2*shift);
   for (i = 4; i < k; i += 2)
     xp2[n] += mpn_addlsh_n (xp2, xp2, xp + i*n, n, i*shift);
@@ -104,7 +104,7 @@ mpn_toom_eval_pm2exp (mp_ptr xp2, mp_ptr xm2, unsigned k,
 
   neg = (mpn_cmp (xp2, tp, n + 1) < 0) ? ~0 : 0;
 
-#if HAVE_NATIVE_mpn_add_n_sub_n
+#ifdef HAVE_NATIVE_mpn_add_n_sub_n
   if (neg)
     mpn_add_n_sub_n (xp2, xm2, tp, xp2, n + 1);
   else

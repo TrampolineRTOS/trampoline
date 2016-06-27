@@ -115,7 +115,7 @@ mpn_toom53_mul (mp_ptr pp,
 
   /* Compute ash = 16 a0 + 8 a1 + 4 a2 + 2 a3 + a4
      = 2*(2*(2*(2*a0 + a1) + a2) + a3) + a4  */
-#if HAVE_NATIVE_mpn_addlsh1_n
+#ifdef HAVE_NATIVE_mpn_addlsh1_n
   cy = mpn_addlsh1_n (ash, a1, a0, n);
   cy = 2*cy + mpn_addlsh1_n (ash, a2, ash, n);
   cy = 2*cy + mpn_addlsh1_n (ash, a3, ash, n);
@@ -141,7 +141,7 @@ mpn_toom53_mul (mp_ptr pp,
 
   /* Compute bs1 and bsm1.  */
   bs1[n] = mpn_add (bs1, b0, n, b2, t);		/* b0 + b2 */
-#if HAVE_NATIVE_mpn_add_n_sub_n
+#ifdef HAVE_NATIVE_mpn_add_n_sub_n
   if (bs1[n] == 0 && mpn_cmp (bs1, b1, n) < 0)
     {
       bs1[n] = mpn_add_n_sub_n (bs1, bsm1, b1, bs1, n) >> 1;
@@ -169,7 +169,7 @@ mpn_toom53_mul (mp_ptr pp,
 #endif
 
   /* Compute bs2 and bsm2. */
-#if HAVE_NATIVE_mpn_addlsh_n || HAVE_NATIVE_mpn_addlsh2_n
+#if defined (HAVE_NATIVE_mpn_addlsh_n) || defined (HAVE_NATIVE_mpn_addlsh2_n)
 #if HAVE_NATIVE_mpn_addlsh2_n
   cy = mpn_addlsh2_n (bs2, b0, b2, t);
 #else /* HAVE_NATIVE_mpn_addlsh_n */
@@ -186,7 +186,7 @@ mpn_toom53_mul (mp_ptr pp,
 
   gp[n] = mpn_lshift (gp, b1, n, 1);
 
-#if HAVE_NATIVE_mpn_add_n_sub_n
+#ifdef HAVE_NATIVE_mpn_add_n_sub_n
   if (mpn_cmp (bs2, gp, n+1) < 0)
     {
       ASSERT_NOCARRY (mpn_add_n_sub_n (bs2, bsm2, gp, bs2, n+1));
@@ -210,7 +210,7 @@ mpn_toom53_mul (mp_ptr pp,
 #endif
 
   /* Compute bsh = 4 b0 + 2 b1 + b2 = 2*(2*b0 + b1)+b2.  */
-#if HAVE_NATIVE_mpn_addlsh1_n
+#ifdef HAVE_NATIVE_mpn_addlsh1_n
   cy = mpn_addlsh1_n (bsh, b1, b0, n);
   if (t < n)
     {

@@ -345,6 +345,7 @@ FUNC(void, OS_CODE) tpl_cancel_watchdog(void)
  *
  * @return the current date
  *
+ * FIXME : Only works when using the decrementer
  *
  */
 FUNC(tpl_time, OS_CODE) tpl_get_local_current_date(void)
@@ -371,7 +372,11 @@ FUNC(void, OS_CODE) tpl_start_core(
   if(core_id!=0)
   {
     /* write slave core start adresse */
+#if WITH_VLE == YES
     TPL_SSCM.DPMBOOT = (uint32)tpl_slave_core_startup | SSCM_DPMBOOT_VLE;
+#else
+    TPL_SSCM.DPMBOOT = (uint32)tpl_slave_core_startup;
+#endif
 
     /* write key and inverted key to start the core */
     TPL_SSCM.DPMKEY = SSCM_DPMKEY_KEY1;
@@ -382,51 +387,25 @@ FUNC(void, OS_CODE) tpl_start_core(
 /**
  * @internal
  *
- * This function sends an interrupt on the other core
+ * This function sends an interrupt to the other core to force a context switch
+ * Note : kernel MUST be locked when this function is called
  */
 FUNC(void, OS_CODE) tpl_send_intercore_it(
-  CONST(CoreIdType, AUTOMATIC) core_id)
+  CONST(CoreIdType, AUTOMATIC) to_core_id)
 {
+  /* force context switch */
+  TPL_KERN(to_core_id).need_switch = NEED_SWITCH | NEED_SAVE;
 
   /* set software interrupt flag on the given core */
-  if(core_id==0)
+  if(to_core_id == 0)
   {
-    TPL_INTC(core_id).SSCIR[INTC_SSCIR_CORE0_SW_ISR] = INTC_SSCIR_SET;
+    TPL_INTC(0).SSCIR[INTC_SSCIR_CORE0_SW_ISR] = INTC_SSCIR_SET;
   }
   else
   {
-    TPL_INTC(core_id).SSCIR[INTC_SSCIR_CORE1_SW_ISR] = INTC_SSCIR_SET;
+    TPL_INTC(1).SSCIR[INTC_SSCIR_CORE1_SW_ISR] = INTC_SSCIR_SET;
   }
-
 }
-
-
-/**
- * @internal
- *
- * This function execute an interrupt send by another core
- * It is used to force context switch on a given core
- */
-FUNC(boolean, OS_CODE) tpl_receive_intercore_it(void)
-{
-  GET_CURRENT_CORE_ID(core_id)
-
-  /* clear interrupt flag */
-  if(core_id==0)
-  {
-    TPL_INTC(core_id).SSCIR[INTC_SSCIR_CORE0_SW_ISR] = INTC_SSCIR_CLR;
-  }
-  else
-  {
-    TPL_INTC(core_id).SSCIR[INTC_SSCIR_CORE1_SW_ISR] = INTC_SSCIR_CLR;
-  }
-
-  TPL_KERN(core_id).need_switch = NEED_SWITCH | NEED_SAVE;
-
-  /* return true to restore cpu priority */
-  return TRUE;
-}
-
 
 /**
  * @internal
@@ -437,7 +416,6 @@ FUNC(void, OS_CODE) tpl_get_lock(
   CONSTP2VAR(tpl_lock, AUTOMATIC, OS_VAR) lock)
 {
   volatile VAR(tpl_lock, AUTOMATIC) tmp_lock;
-
 
   do
   {
@@ -523,14 +501,14 @@ STATIC FUNC(void, OS_CODE) tpl_get_spin_lock(
   /* wait until the lock is free */
   do
   {
-    current_value = TPL_SEMA4(core_id).GATE[lock];
+    current_value = TPL_SEMA4(0).GATE[lock];
   } while(TPL_GATE_UNLOCK != current_value);
 
   /* try to get the lock, until we have it */
   do
   {
-    TPL_SEMA4(core_id).GATE[lock] = core_lock;
-    current_value = TPL_SEMA4(core_id).GATE[lock];
+    TPL_SEMA4(0).GATE[lock] = core_lock;
+    current_value = TPL_SEMA4(0).GATE[lock];
   } while(current_value != core_lock);
 
 
@@ -560,11 +538,11 @@ STATIC FUNC(void, OS_CODE) tpl_release_spin_lock(
   }
 
   /* check we actually have the lock */
-  current_value = TPL_SEMA4(core_id).GATE[lock];
+  current_value = TPL_SEMA4(0).GATE[lock];
   if(current_value==core_lock)
   {
     /* release the lock */
-    TPL_SEMA4(core_id).GATE[lock] = TPL_GATE_UNLOCK;
+    TPL_SEMA4(0).GATE[lock] = TPL_GATE_UNLOCK;
   }
 
 }

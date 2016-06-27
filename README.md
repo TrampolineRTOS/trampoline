@@ -54,6 +54,9 @@ Some examples have been added (check examples):
   * **extInterrupt**. improve 'serial': add 2 ISRs to change the alarm period.
 * arm: 1 example for Olimex lpc2294 board
   * **lonely**. Blinks a led, 3 tasks, ISR category 1 or 2, counts interrupts from the push button.
+* ppc: 2 examples for MPC5643L
+  * **blink_1c**. Blinks a LED using an alarm and a task.
+  * **blink_2c**. Blinks two leds using two synchronized cores with one task and one alarm per core.
 
 More examples are coming.
 
