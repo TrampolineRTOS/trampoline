@@ -294,7 +294,7 @@ class Job:
   mOutputLines = []
   mOpenSourceOnError = False # Do not try to open source file on error
   mLogUtilityTool = False
-  
+
   #····················································································································*
 
   def __init__ (self, targets, requiredFiles, command, postCommands, priority, title, openSourceOnError, logUtilityTool):
@@ -332,7 +332,7 @@ class Job:
     postCommand = self.mPostCommands [0]
     self.mCommand = postCommand.mCommand
     displayLock.acquire ()
-    print (BOLD_BLUE () + postCommand.mTitle + ENDC ())
+    print (BOLD_BLUE () + "       " + postCommand.mTitle + ENDC ())
     if showCommand:
       cmdAsString = ""
       for s in self.mCommand:
@@ -360,7 +360,7 @@ class Rule:
   mDeleteTargetOnError = False # No operation on error
   mCleanOperation = 0 # No operation on clean
   mOpenSourceOnError = False # Do not try to open source file on error
-  
+
   #····················································································································*
 
   def __init__ (self, targets, title = ""):
@@ -395,17 +395,17 @@ class Rule:
         self.mTitle += " " + s
     else:
       self.mTitle = copy.deepcopy (title)
-  
+
   #····················································································································*
 
   def deleteTargetFileOnClean (self):
     self.mCleanOperation = 1
-  
+
   #····················································································································*
 
   def deleteTargetDirectoryOnClean (self):
     self.mCleanOperation = 2
-  
+
   #····················································································································*
 
   def enterSecondaryDependanceFile (self, secondaryDependanceFile, make):
@@ -436,7 +436,7 @@ class Rule:
             if self.mSecondaryMostRecentModificationDate < modifDate :
               self.mSecondaryMostRecentModificationDate = modifDate
               #print (BOLD_BLUE () + str (modifDate) + ENDC ())
-    
+
 #——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
 #   class Make                                                                                                         *
 #——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*
@@ -523,7 +523,7 @@ class Make:
            s += " \"" + cmd + "\""
          print (s)
          print ("    Title: \"" + postCommand.mTitle + "\"")
-        
+
     print (BOLD_BLUE () + "--- End of print rule ---" + ENDC ())
 
   #····················································································································*
@@ -708,11 +708,8 @@ class Make:
                   absTargetDirectory = os.path.dirname (os.path.abspath (aTarget))
                   if not os.path.exists (absTargetDirectory):
                     displayLock.acquire ()
-                    runCommand (
-                      ["mkdir", "-p", os.path.dirname (aTarget)], "Making \"" + os.path.dirname (aTarget) + "\" directory",
-                      showCommand,
-                      job.mLogUtilityTool
-                    )
+                    print (BOLD_BLUE () + "Making \"" + os.path.dirname (aTarget) + "\" directory" + ENDC())
+                    os.makedirs (os.path.dirname (aTarget))
                     displayLock.release ()
                 #--- Progress string
                 launchedJobCount += 1.0
@@ -853,7 +850,7 @@ class Make:
       for target in targetList:
         print ("  Target: \"" + target + "\"")
       print ("  Message: \"" + message + "\"")
-        
+
     print (BOLD_BLUE () + "--- End of print goals ---" + ENDC ())
 
   #····················································································································*
@@ -876,7 +873,8 @@ class Make:
         for rule in self.mRuleList:
           for aTarget in rule.mTargets:
             if rule.mDeleteTargetOnError and os.path.exists (os.path.abspath (aTarget)):
-              runCommand (["rm", aTarget], "Delete \"" + aTarget + "\" on error", showCommand, self.mLogUtilityTool)
+              print (BOLD_BLUE () + "Delete \"" + aTarget + "\" on error" + ENDC())
+              os.remove(aTarget)
     elif self.mSelectedGoal == "clean" :
       filesToRemoveList = []
       directoriesToRemoveSet = set ()
@@ -894,15 +892,17 @@ class Make:
       for dir in directoriesToRemoveSet:
         if os.path.exists (os.path.abspath (dir)):
           if self.mSimulateClean:
-            print (MAGENTA () + BOLD () + "Simulated clean command: " + ENDC () + "rm -fr '" + dir + "'")
+            print (MAGENTA () + BOLD () + "Simulated clean command: " + ENDC () + "os.remove '" + dir + "'")
           else:
-            runCommand (["rm", "-fr", dir], "Removing \"" + dir + "\"", showCommand, self.mLogUtilityTool)
+            print (BOLD_BLUE () + "Removing \"" + dir + "\"" + ENDC())
+            shutil.rmtree(dir)
       for file in filesToRemoveList:
         if os.path.exists (os.path.abspath (file)):
           if self.mSimulateClean:
             print (MAGENTA () + BOLD () + "Simulated clean command: " + ENDC () + "rm -f '" + file + "'")
           else:
-            runCommand (["rm", "-f", file], "Deleting \"" + file + "\"", showCommand, self.mLogUtilityTool)
+            print (BOLD_BLUE () + "Deleting \"" + file + "\"" + ENDC())
+            os.remove(file)
     else:
       errorMessage = "The '" + self.mSelectedGoal + "' goal is not defined; defined goals:"
       for key in self.mGoals:
