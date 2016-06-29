@@ -752,6 +752,12 @@ The following readers are available for integer variables:
  {hexString}&
   {string}&
   {this reader returns an hexadecimal string representation of the integer value.}\\
+ {bitAtIndex}&
+  {boolean}&
+  {this reader takes one {\em int} argument. It returns true if the bit at the index passed as argument is set and false if it is not set. For instance {\tt let a := 3 let b := [a bitAtIndex: 0]} set {\tt b} to true because bit 0 of {\tt a} is 1}\\
+ {setBitAtIndex}&
+  {integer}&
+  {this reader takes two arguments. The first one, the value, is a {\em boolean} and the second one, the index, an {\em int}. it returns the integer value with the bit at the index passed as second argument set at the value passed as the first argument. For instance {\tt let b := [1 setBitAtIndex: true, 4]} set {\tt b} to 17}\\
 \end{longtable}
 
 \subsection{list readers}
