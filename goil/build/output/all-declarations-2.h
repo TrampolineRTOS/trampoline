@@ -741,15 +741,4 @@ void routine_partition (class GALGAS_TfieldMapList & ioArgument0,
 class GALGAS_stringset function_allowedFunctions (class C_Compiler * inCompiler
                                                   COMMA_LOCATION_ARGS) ;
 
-//----------------------------------------------------------------------------------------------------------------------
-//                                                                                                                     *
-//                                           Function 'displayTypeAndValue'                                            *
-//                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
-
-class GALGAS_string function_displayTypeAndValue (const class GALGAS_Ttype & constinArgument0,
-                                                  const class GALGAS_Tvalue & constinArgument1,
-                                                  class C_Compiler * inCompiler
-                                                  COMMA_LOCATION_ARGS) ;
-
 #endif

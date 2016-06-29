@@ -1686,6 +1686,22 @@ proc templateMethodInvocation
         checkInvocationHasNoArgument ( !inType !inMethodName !inParameterTypeList)
         outResultType = @Ttype. stringType
         outResultValue = valueWithString (![[inValue mBigIntValue] string] !emptyLString())
+      elsif [inMethodName string] == "setBitAtIndex" then
+        checkInvocationHasArguments(!inType !inMethodName !inParameterTypeList !@Ttype.boolType !2)
+        [!?inParameterTypeList popFirst ?@Tvalue value ?@Ttype valueType]
+        if valueType != @Ttype.boolType then error @location.here : "bool expected" end
+        [!?inParameterTypeList popFirst ?@Tvalue index ?@Ttype indexType]
+        if indexType != @Ttype.intType then error @location.here : "int expected" end
+        outResultType = @Ttype.intType
+        @bigint inInt = [inValue mBigIntValue]
+        [!?inInt setBitAtIndex !if [value mBigIntValue] == 1_G then true else false end ![[index mBigIntValue] uint]]
+        outResultValue = valueWithSigned(!inInt  !emptyLString())        
+      elsif [inMethodName string] == "bitAtIndex" then
+        checkInvocationHasArguments(!inType !inMethodName !inParameterTypeList !@Ttype.intType !1)
+        [!?inParameterTypeList popFirst ?@Tvalue index ?@Ttype indexType]
+        if indexType != @Ttype.intType then error @location.here : "int expected" end
+        outResultType = @Ttype.boolType
+        outResultValue = valueWithBool(![[inValue mBigIntValue] bitAtIndex ![[index mBigIntValue] uint]] !emptyLString())        
       elsif [inMethodName string] == "hexString" then
         checkInvocationHasNoArgument ( !inType !inMethodName !inParameterTypeList)
         outResultType = @Ttype. stringType

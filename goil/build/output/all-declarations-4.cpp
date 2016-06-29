@@ -12,6 +12,160 @@
 //   Object comparison                                                                                                 *
 //----------------------------------------------------------------------------------------------------------------------
 
+typeComparisonResult cPtr_void_5F_uint_33__32__5F_class::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
+  typeComparisonResult result = kOperandEqual ;
+  const cPtr_void_5F_uint_33__32__5F_class * p = (const cPtr_void_5F_uint_33__32__5F_class *) inOperandPtr ;
+  macroValidSharedObject (p, cPtr_void_5F_uint_33__32__5F_class) ;
+  if (kOperandEqual == result) {
+    result = mAttribute_oil_5F_desc.objectCompare (p->mAttribute_oil_5F_desc) ;
+  }
+  if (kOperandEqual == result) {
+    result = mAttribute_location.objectCompare (p->mAttribute_location) ;
+  }
+  if (kOperandEqual == result) {
+    result = mAttribute_value.objectCompare (p->mAttribute_value) ;
+  }
+  return result ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+
+typeComparisonResult GALGAS_void_5F_uint_33__32__5F_class::objectCompare (const GALGAS_void_5F_uint_33__32__5F_class & inOperand) const {
+  typeComparisonResult result = kOperandNotValid ;
+  if (isValid () && inOperand.isValid ()) {
+    const int32_t mySlot = mObjectPtr->classDescriptor ()->mSlotID ;
+    const int32_t operandSlot = inOperand.mObjectPtr->classDescriptor ()->mSlotID ;
+    if (mySlot < operandSlot) {
+      result = kFirstOperandLowerThanSecond ;
+    }else if (mySlot > operandSlot) {
+      result = kFirstOperandGreaterThanSecond ;
+    }else{
+      result = mObjectPtr->dynamicObjectCompare (inOperand.mObjectPtr) ;
+    }
+  }
+  return result ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_void_5F_uint_33__32__5F_class::GALGAS_void_5F_uint_33__32__5F_class (void) :
+GALGAS_uint_33__32__5F_class () {
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_void_5F_uint_33__32__5F_class GALGAS_void_5F_uint_33__32__5F_class::constructor_default (LOCATION_ARGS) {
+  return GALGAS_void_5F_uint_33__32__5F_class::constructor_new (GALGAS_lstring::constructor_default (HERE),
+                                                                GALGAS_location::constructor_nowhere (HERE),
+                                                                GALGAS_uint::constructor_default (HERE)
+                                                                COMMA_THERE) ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_void_5F_uint_33__32__5F_class::GALGAS_void_5F_uint_33__32__5F_class (const cPtr_void_5F_uint_33__32__5F_class * inSourcePtr) :
+GALGAS_uint_33__32__5F_class (inSourcePtr) {
+  macroNullOrValidSharedObject (inSourcePtr, cPtr_void_5F_uint_33__32__5F_class) ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_void_5F_uint_33__32__5F_class GALGAS_void_5F_uint_33__32__5F_class::constructor_new (const GALGAS_lstring & inAttribute_oil_5F_desc,
+                                                                                            const GALGAS_location & inAttribute_location,
+                                                                                            const GALGAS_uint & inAttribute_value
+                                                                                            COMMA_LOCATION_ARGS) {
+  GALGAS_void_5F_uint_33__32__5F_class result ;
+  if (inAttribute_oil_5F_desc.isValid () && inAttribute_location.isValid () && inAttribute_value.isValid ()) {
+    macroMyNew (result.mObjectPtr, cPtr_void_5F_uint_33__32__5F_class (inAttribute_oil_5F_desc, inAttribute_location, inAttribute_value COMMA_THERE)) ;
+  }
+  return result ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//                                     Pointer class for @void_uint32_class class                                      *
+//----------------------------------------------------------------------------------------------------------------------
+
+cPtr_void_5F_uint_33__32__5F_class::cPtr_void_5F_uint_33__32__5F_class (const GALGAS_lstring & in_oil_5F_desc,
+                                                                        const GALGAS_location & in_location,
+                                                                        const GALGAS_uint & in_value
+                                                                        COMMA_LOCATION_ARGS) :
+cPtr_uint_33__32__5F_class (in_oil_5F_desc, in_location, in_value COMMA_THERE) {
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+const C_galgas_type_descriptor * cPtr_void_5F_uint_33__32__5F_class::classDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_void_5F_uint_33__32__5F_class ;
+}
+
+void cPtr_void_5F_uint_33__32__5F_class::description (C_String & ioString,
+                                                      const int32_t inIndentation) const {
+  ioString << "[@void_uint32_class:" ;
+  mAttribute_oil_5F_desc.description (ioString, inIndentation+1) ;
+  ioString << ", " ;
+  mAttribute_location.description (ioString, inIndentation+1) ;
+  ioString << ", " ;
+  mAttribute_value.description (ioString, inIndentation+1) ;
+  ioString << "]" ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+acPtr_class * cPtr_void_5F_uint_33__32__5F_class::duplicate (LOCATION_ARGS) const {
+  acPtr_class * ptr = NULL ;
+  macroMyNew (ptr, cPtr_void_5F_uint_33__32__5F_class (mAttribute_oil_5F_desc, mAttribute_location, mAttribute_value COMMA_THERE)) ;
+  return ptr ;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//                                                                                                                     *
+//                                               @void_uint32_class type                                               *
+//                                                                                                                     *
+//----------------------------------------------------------------------------------------------------------------------
+
+const C_galgas_type_descriptor
+kTypeDescriptor_GALGAS_void_5F_uint_33__32__5F_class ("void_uint32_class",
+                                                      & kTypeDescriptor_GALGAS_uint_33__32__5F_class) ;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+const C_galgas_type_descriptor * GALGAS_void_5F_uint_33__32__5F_class::staticTypeDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_void_5F_uint_33__32__5F_class ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+AC_GALGAS_root * GALGAS_void_5F_uint_33__32__5F_class::clonedObject (void) const {
+  AC_GALGAS_root * result = NULL ;
+  if (isValid ()) {
+    macroMyNew (result, GALGAS_void_5F_uint_33__32__5F_class (*this)) ;
+  }
+  return result ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+GALGAS_void_5F_uint_33__32__5F_class GALGAS_void_5F_uint_33__32__5F_class::extractObject (const GALGAS_object & inObject,
+                                                                                          C_Compiler * inCompiler
+                                                                                          COMMA_LOCATION_ARGS) {
+  GALGAS_void_5F_uint_33__32__5F_class result ;
+  const GALGAS_void_5F_uint_33__32__5F_class * p = (const GALGAS_void_5F_uint_33__32__5F_class *) inObject.embeddedObject () ;
+  if (NULL != p) {
+    if (NULL != dynamic_cast <const GALGAS_void_5F_uint_33__32__5F_class *> (p)) {
+      result = *p ;
+    }else{
+      inCompiler->castError ("void_uint32_class", p->dynamicTypeDescriptor () COMMA_THERE) ;
+    }  
+  }
+  return result ;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//   Object comparison                                                                                                 *
+//----------------------------------------------------------------------------------------------------------------------
+
 typeComparisonResult cPtr_uint_36__34__5F_class::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
   typeComparisonResult result = kOperandEqual ;
   const cPtr_uint_36__34__5F_class * p = (const cPtr_uint_36__34__5F_class *) inOperandPtr ;
@@ -627,7 +781,7 @@ static const char * kSourceFileHelpMessages [] = {
 //----------------------------------------------------------------------------------------------------------------------
 
 const char * projectVersionString (void) {
-  return "2.1.28" ;
+  return "2.1.29" ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
