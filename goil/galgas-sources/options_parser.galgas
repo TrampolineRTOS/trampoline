@@ -75,7 +75,7 @@ rule <option_value>
 {
   $uint_number$ ?let @luint64 num
   type = @Ttype.intType
-  value = valueWithSigned(![[num uint64] sint64] !emptyLString())
+  value = valueWithSigned(![[num uint64] bigint] !emptyLString())
 }
 
 rule <option_value>
@@ -95,7 +95,7 @@ rule <option_value>
   select
     $uint_number$ ?let @luint64 num
     type = @Ttype.intType
-    value = valueWithSigned(!-[[num uint64] sint64] !emptyLString())
+    value = valueWithSigned(!-[[num uint64] bigint] !emptyLString())
   or
     $float_number$ ?let @ldouble num
     type = @Ttype.floatType

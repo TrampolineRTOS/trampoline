@@ -563,7 +563,7 @@ void routine_addBoolValue (class GALGAS_TfieldMap & ioArgument0,
 
 void routine_addSignedValue (class GALGAS_TfieldMap & ioArgument0,
                              const class GALGAS_lstring constinArgument1,
-                             const class GALGAS_sint_36__34_ constinArgument2,
+                             const class GALGAS_bigint constinArgument2,
                              const class GALGAS_lstring constinArgument3,
                              class C_Compiler * inCompiler
                              COMMA_LOCATION_ARGS) ;
@@ -739,17 +739,6 @@ void routine_partition (class GALGAS_TfieldMapList & ioArgument0,
 //----------------------------------------------------------------------------------------------------------------------
 
 class GALGAS_stringset function_allowedFunctions (class C_Compiler * inCompiler
-                                                  COMMA_LOCATION_ARGS) ;
-
-//----------------------------------------------------------------------------------------------------------------------
-//                                                                                                                     *
-//                                           Function 'displayTypeAndValue'                                            *
-//                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
-
-class GALGAS_string function_displayTypeAndValue (const class GALGAS_Ttype & constinArgument0,
-                                                  const class GALGAS_Tvalue & constinArgument1,
-                                                  class C_Compiler * inCompiler
                                                   COMMA_LOCATION_ARGS) ;
 
 #endif
