@@ -563,7 +563,7 @@ void routine_addBoolValue (class GALGAS_TfieldMap & ioArgument0,
 
 void routine_addSignedValue (class GALGAS_TfieldMap & ioArgument0,
                              const class GALGAS_lstring constinArgument1,
-                             const class GALGAS_sint_36__34_ constinArgument2,
+                             const class GALGAS_bigint constinArgument2,
                              const class GALGAS_lstring constinArgument3,
                              class C_Compiler * inCompiler
                              COMMA_LOCATION_ARGS) ;

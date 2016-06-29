@@ -72,9 +72,9 @@ func displayTypeAndValue
   -> @string outResult {
   switch inType
   case boolType :
-    outResult = "bool: " + if [inValue mInt64Value] == 1LS then "yes" else "no" end
+    outResult = "bool: " + if [inValue mBigIntValue] == 1_G then "yes" else "no" end
   case intType :
-    outResult = "unsigned: " + [[inValue mInt64Value] string]
+    outResult = "unsigned: " + [[inValue mBigIntValue] string]
   case floatType :
     outResult = "float: " + [[inValue mFloatValue] string]
   case stringType :
@@ -87,9 +87,9 @@ func displayTypeAndValue
         outResult += "'" + lkey + "' "
         switch mType
         case boolType :
-          outResult += "bool: " + if [mValue mInt64Value] == 1LS then "yes" else "no" end
+          outResult += "bool: " + if [mValue mBigIntValue] == 1_G then "yes" else "no" end
         case intType :
-          outResult += "unsigned: " + [[mValue mInt64Value] string]
+          outResult += "unsigned: " + [[mValue mBigIntValue] string]
         case floatType :
           outResult += "float: " + [[mValue mFloatValue] string]
         case stringType :
