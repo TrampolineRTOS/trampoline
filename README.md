@@ -62,10 +62,10 @@ More examples are coming.
 
 ## Precompiled binaries of goil, the OIL compiler
 
-Updated to version 2.1.27
+Updated to version 2.1.29
 
 * Mac OS X: [goil-mac-os-x.zip](http://trampoline.rts-software.org/bin/goil-mac-os-x.zip)
-* Mac OS X Cocoa Application with editor: [CocoaGoil.app.zip](http://trampoline.rts-software.org/bin/CocoaGoil.app.zip) (version 2.1.24)
+* Mac OS X Cocoa Application with editor: [CocoaGoil.app.zip](http://trampoline.rts-software.org/bin/CocoaGoil.app.zip)
 * Linux 32 bits: [goil-linux-32.zip](http://trampoline.rts-software.org/bin/goil-linux-32.zip)
 * Linux 64 bits: [goil-linux-64.zip](http://trampoline.rts-software.org/bin/goil-linux-64.zip)
 * Windows: [goil-windows.zip](http://trampoline.rts-software.org/bin/goil-windows.zip)
