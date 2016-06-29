@@ -1423,6 +1423,3 @@ template if exists custom_code in code
 write to PROJECT."/stm_structure.c":
   template stm_structure_c in code
 end write
-
-let a := [0 + 1 setBitAtIndex: true, 2]
-println a
