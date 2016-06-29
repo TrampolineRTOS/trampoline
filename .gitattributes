@@ -7,6 +7,8 @@
 *.h             text eol=lf
 *.s             text eol=lf
 *.S             text eol=lf
+*.py            text eol=lf
+*.tex           text eol=lf
 *.ld            text eol=lf
 *.lds           text eol=lf
 *.asm           text eol=lf
