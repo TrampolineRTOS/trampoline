@@ -28,6 +28,8 @@
 #include "tpl_os_error.h"
 #include "tpl_os_internal_types.h"
 #include "tpl_os_definitions.h"
+#include "tpl_os_multicore_macros.h"
+#include "tpl_os_kernel.h"
 
 #if WITH_ERROR_HOOK == YES
 
@@ -55,7 +57,8 @@ VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 FUNC(void, OS_CODE) tpl_call_error_hook(
     CONST(tpl_status, AUTOMATIC) error)
 {
-
+    GET_CURRENT_CORE_ID(core_id)
+    GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 /**
  * This flag is used to avoid error hook call recursion
  */
@@ -64,12 +67,12 @@ FUNC(void, OS_CODE) tpl_call_error_hook(
     if (!in_error_hook)
     {
 #if WITH_MEMORY_PROTECTION == YES
-        tpl_kern.running_trusted = 1;
+        TPL_KERN_REF(kern).running_trusted = 1;
 #endif /* WITH_MEMORY_PROTECTION == YES */
         in_error_hook = TRUE;
         ErrorHook(error);
 #if WITH_MEMORY_PROTECTION == YES
-        tpl_kern.running_trusted = 0;
+        TPL_KERN_REF(kern).running_trusted = 0;
 #endif /* WITH_MEMORY_PROTECTION == YES */
         in_error_hook = FALSE;
     }

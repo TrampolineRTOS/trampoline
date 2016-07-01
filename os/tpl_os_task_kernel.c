@@ -294,7 +294,7 @@ FUNC(StatusType, OS_CODE) tpl_get_task_id_service(
   STORE_TASK_ID_REF(task_id)
 
   /* check state is in an authorized memory region */
-  CHECK_DATA_LOCATION(task_id, result);
+  CHECK_DATA_LOCATION(core_id, task_id, result);
 
   /*  get the task id from the task descriptor. If the id is less
    *  than TASK_COUNT-1.
@@ -344,7 +344,7 @@ FUNC(StatusType, OS_CODE) tpl_get_task_state_service(
   CHECK_ACCESS_RIGHTS_TASK_ID(core_id, task_id, result)
 
   /* check state is in an authorized memory region */
-  CHECK_DATA_LOCATION(state, result);
+  CHECK_DATA_LOCATION(core_id, state, result);
 
 #if TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)

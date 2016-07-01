@@ -116,7 +116,7 @@ FUNC(tpl_status, OS_CODE) tpl_clear_event_service(
   /*  ClearEvent cannot be called from ISR level  */
   CHECK_TASK_CALL_LEVEL_ERROR(core_id,result)
   /*  checks the calling task is an extended one  */
-  CHECK_NOT_EXTENDED_RUNNING_ERROR(result)
+  CHECK_NOT_EXTENDED_RUNNING_ERROR(core_id, result)
 
 #if EXTENDED_TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
@@ -163,7 +163,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_event_service(
   CHECK_SUSPENDED_TASK_ERROR(task_id,result)
 
   /* check event is in an authorized memory region */
-  CHECK_DATA_LOCATION(event, result);
+  CHECK_DATA_LOCATION(core_id, event, result);
 
 #if EXTENDED_TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
@@ -204,8 +204,8 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
   /*  WaitEvent cannot be called from ISR level  */
   CHECK_TASK_CALL_LEVEL_ERROR(core_id,result)
   /*  checks the calling task is an extended one  */
-  CHECK_NOT_EXTENDED_RUNNING_ERROR(result)
-  /*  checks the task does not occupied resource(s)   */
+  CHECK_NOT_EXTENDED_RUNNING_ERROR(core_id, result)
+  /*  checks the task does not occupy resource(s)   */
   CHECK_RUNNING_OWNS_REZ_ERROR(core_id, result)
 
 #if EXTENDED_TASK_COUNT > 0

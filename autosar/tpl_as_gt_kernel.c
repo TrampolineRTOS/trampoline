@@ -148,6 +148,7 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_synchron_service(
   VAR(tpl_schedtable_id, AUTOMATIC)   sched_table_id)
 {
   VAR(tpl_status, AUTOMATIC) result = E_OK;
+  GET_CURRENT_CORE_ID(core_id)
 
 #if SCHEDTABLE_COUNT > 0
   P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) st;
@@ -164,7 +165,7 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_synchron_service(
   CHECK_SCHEDTABLE_ID_ERROR(sched_table_id,result)
 	
 	/* check access right */
-	CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(sched_table_id,result)
+	CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(core_id,sched_table_id,result)
 
 	CHECK_SCHEDTABLE_SYNC_STRATEGY_DIFF_ERROR(sched_table_id, SCHEDTABLE_EXPLICIT_SYNC, result)
 
@@ -208,6 +209,7 @@ FUNC(tpl_status, OS_CODE) tpl_sync_schedule_table_service(
 )
 {
   VAR(tpl_status, AUTOMATIC)  result = E_OK;
+  GET_CURRENT_CORE_ID(core_id)
 
 #if SCHEDTABLE_COUNT > 0
   P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) st;
@@ -226,7 +228,7 @@ FUNC(tpl_status, OS_CODE) tpl_sync_schedule_table_service(
   CHECK_SCHEDTABLE_ID_ERROR(sched_table_id, result)
 	
 	/* check access right */
-  CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(sched_table_id,result)
+  CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(core_id,sched_table_id,result)
 	
   CHECK_SCHEDTABLE_VALUE(sched_table_id, value, result)
 
@@ -269,6 +271,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_schedule_table_async_service(
 )
 {
   VAR(tpl_status, AUTOMATIC)  result = E_OK;
+  GET_CURRENT_CORE_ID(core_id)
 
 #if SCHEDTABLE_COUNT > 0
   P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) st;
@@ -287,7 +290,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_schedule_table_async_service(
   CHECK_SCHEDTABLE_ID_ERROR(sched_table_id, result)
 	
 	/* check access right */
-  CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(sched_table_id,result)
+  CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(core_id,sched_table_id,result)
 
   CHECK_SCHEDTABLE_SYNC_STRATEGY_DIFF_ERROR(sched_table_id, SCHEDTABLE_EXPLICIT_SYNC, result)
 
