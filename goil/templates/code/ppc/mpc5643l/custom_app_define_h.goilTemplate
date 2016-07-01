@@ -71,11 +71,6 @@ else
 /*-----------------------------------------------------------------------------
  * Enable multicore
  */
-/* TODO : With multicore
- *          Multicore source must be separated in another directory.
- *          The chosen code must then be picked from the right directory
- *          following this flag state.
- */
 #define WITH_MULTICORE     % !yesNo(OS::NUMBER_OF_CORES > 1) %
 
 /*-----------------------------------------------------------------------------

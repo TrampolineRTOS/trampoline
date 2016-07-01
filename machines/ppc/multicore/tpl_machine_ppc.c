@@ -36,7 +36,6 @@
 #endif
 #if WITH_MULTICORE == YES
 # include "tpl_os_multicore_macros.h"
-# include "tpl_as_spinlock_kernel.h"
 #endif
 #include "tpl_app_custom_types.h"
 #include "tpl_registers.h"
