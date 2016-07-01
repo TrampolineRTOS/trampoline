@@ -245,6 +245,8 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void)
 
   /* terminate the running ISR */
   tpl_terminate();
+  /* hardware dependant, the cpu priority is decreased */
+  tpl_restore_cpu_priority();
   /* start the highest priority process */
   tpl_start(CORE_ID_OR_NOTHING(core_id));
   /* process switching should occur */

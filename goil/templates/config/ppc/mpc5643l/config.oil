@@ -34,6 +34,15 @@ IMPLEMENTATION mpc5643l {
     UINT32 WITH_AUTO ID;
   };
 
+  /* For the MPC5643L, Software interrupts must be cleared in the SSCIR as
+   * well.
+   */
+  INTERRUPT [] {
+    ENUM [
+        SOFTWARE,
+        HARDWARE
+    ] TYPE = HARDWARE;
+  };
 };
 
 /*
@@ -46,14 +55,14 @@ CPU mpc5643l_interrupt {
 
   /* Software interrupts */
 
-  INTERRUPT IRQ0    { ID = 0; };
-  INTERRUPT IRQ1    { ID = 1; };
-  INTERRUPT IRQ2    { ID = 2; };
-  INTERRUPT IRQ3    { ID = 3; };
-  INTERRUPT IRQ4    { ID = 4; };
-  INTERRUPT IRQ5    { ID = 5; };
-  INTERRUPT IRQ6    { ID = 6; };
-  INTERRUPT IRQ7    { ID = 7; }; // Intercore Reserved in multicore
+  INTERRUPT IRQ0    { ID = 0; TYPE = SOFTWARE; };
+  INTERRUPT IRQ1    { ID = 1; TYPE = SOFTWARE; };
+  INTERRUPT IRQ2    { ID = 2; TYPE = SOFTWARE; };
+  INTERRUPT IRQ3    { ID = 3; TYPE = SOFTWARE; };
+  INTERRUPT IRQ4    { ID = 4; TYPE = SOFTWARE; };
+  INTERRUPT IRQ5    { ID = 5; TYPE = SOFTWARE; };
+  INTERRUPT IRQ6    { ID = 6; TYPE = SOFTWARE; };
+  INTERRUPT IRQ7    { ID = 7; TYPE = SOFTWARE; }; // Intercore Reserved in multicore
 
   /* Hardware interrupts */
 

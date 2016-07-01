@@ -28,7 +28,7 @@ enum {template_scanner_1_,
   template_scanner_1_identifier,
   template_scanner_1_functionContent,
   template_scanner_1_literal_5F_double,
-  template_scanner_1_signed_5F_literal_5F_integer_36__34_,
+  template_scanner_1_signed_5F_literal_5F_integer_5F_bigint,
   template_scanner_1__2E_,
   template_scanner_1__2E__3D_,
   template_scanner_1__2E__2E__2E_,
@@ -138,7 +138,7 @@ enum {template_scanner_1_,
   @private double mLexicalAttribute_floatValue ;
   @private NSMutableString * mLexicalAttribute_functionContent ;
   @private NSMutableString * mLexicalAttribute_identifierString ;
-  @private SInt64 mLexicalAttribute_sint64value ;
+  @private NSMutableString * mLexicalAttribute_intValue ;
   @private NSMutableString * mLexicalAttribute_tokenString ;
 
 }

@@ -387,11 +387,15 @@ FUNC(void, OS_CODE) tpl_start_core(
 /**
  * @internal
  *
- * This function sends an interrupt on the other core
+ * This function sends an interrupt to the other core to force a context switch
+ * Note : kernel MUST be locked when this function is called
  */
 FUNC(void, OS_CODE) tpl_send_intercore_it(
   CONST(CoreIdType, AUTOMATIC) to_core_id)
 {
+  /* force context switch */
+  TPL_KERN(to_core_id).need_switch = NEED_SWITCH | NEED_SAVE;
+
   /* set software interrupt flag on the given core */
   if(to_core_id == 0)
   {
@@ -401,38 +405,7 @@ FUNC(void, OS_CODE) tpl_send_intercore_it(
   {
     TPL_INTC(1).SSCIR[INTC_SSCIR_CORE1_SW_ISR] = INTC_SSCIR_SET;
   }
-
 }
-
-
-/**
- * @internal
- *
- * This function execute an interrupt send by another core
- * It is used to force context switch on a given core
- */
-// TODO Remove core_id check and generate those functions
-
-FUNC(boolean, OS_CODE) tpl_receive_intercore_it(void)
-{
-  GET_CURRENT_CORE_ID(core_id)
-
-  /* clear interrupt flag */
-  if(core_id == 0)
-  {
-    TPL_INTC(0).SSCIR[INTC_SSCIR_CORE0_SW_ISR] = INTC_SSCIR_CLR;
-  }
-  else
-  {
-    TPL_INTC(1).SSCIR[INTC_SSCIR_CORE1_SW_ISR] = INTC_SSCIR_CLR;
-  }
-
-  TPL_KERN(core_id).need_switch = NEED_SWITCH | NEED_SAVE;
-
-  /* return true to restore cpu priority */
-  return TRUE;
-}
-
 
 /**
  * @internal
@@ -443,7 +416,6 @@ FUNC(void, OS_CODE) tpl_get_lock(
   CONSTP2VAR(tpl_lock, AUTOMATIC, OS_VAR) lock)
 {
   volatile VAR(tpl_lock, AUTOMATIC) tmp_lock;
-
 
   do
   {

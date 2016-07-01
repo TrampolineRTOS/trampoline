@@ -157,4 +157,11 @@ extern VAR(uint8, OS_VAR) tpl_keep_prio[15];
 typedef P2FUNC(void, OS_CODE, INTfunc)(void);
 extern INTfunc InterruptVectortable[];
 
+/* TODO : This function is called after an ISR2 has been terminated. It should
+ *        restore the hardware's cpu priority if it has been increased before
+ *        the execution of the ISR2 (see ppc/multicore/tpl_machine.h for an
+ *        example).
+ */
+#define tpl_restore_cpu_priority()
+
 #endif /* TPL_MACHINE_PPC_H */

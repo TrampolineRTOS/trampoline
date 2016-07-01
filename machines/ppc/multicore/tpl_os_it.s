@@ -68,8 +68,12 @@ TPL_GLOBAL_REF(tpl_enable_interrupts):
   se_stw    r5,4(r1)                  /* save r5  */
   se_stw    r6,0(r1)                  /* save r6  */
 
+  mfspr     r5,spr_PIR
+  e_slwi    r5,r5,2
   e_lis     r11,TPL_HIG(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* get the kernel   */
   e_add16i  r11,TPL_LOW(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* stack bottom ptr */
+  se_add    r11,r5
+  e_lwz     r11,0(r11)
 
   se_mfar   r5,r11
   se_subi   r5,KS_FOOTPRINT       /* switch r5/r11 to use vle instructions  */
@@ -123,8 +127,12 @@ TPL_GLOBAL_REF(tpl_disable_interrupts):
   se_stw    r5,4(r1)            /* save r5  */
   se_stw    r6,0(r1)            /* save r6  */
 
+  mfspr     r5,spr_PIR
+  e_slwi    r5,r5,2
   e_lis     r11,TPL_HIG(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* get the kernel   */
   e_add16i  r11,TPL_LOW(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* stack bottom ptr */
+  se_add    r11,r5
+  e_lwz     r11,0(r11)
 
   se_mfar   r5,r11
   se_subi   r5,KS_FOOTPRINT  /* switch r5/r11 to use vle instructions  */
@@ -181,8 +189,12 @@ TPL_GLOBAL_REF(tpl_enable_os_interrupts):
   se_stw    r5,4(r1)                  /* save r5  */
   se_stw    r6,0(r1)                  /* save r6  */
 
+  mfspr     r5,spr_PIR
+  e_slwi    r5,r5,2
   e_lis     r11,TPL_HIG(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* get the kernel   */
   e_add16i  r11,TPL_LOW(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* stack bottom ptr */
+  se_add    r11,r5
+  e_lwz     r11,0(r11)
 
   se_mfar   r5,r11
   se_subi   r5,KS_FOOTPRINT       /* switch r5/r11 to use vle instructions  */
@@ -229,8 +241,12 @@ TPL_GLOBAL_REF(tpl_disable_os_interrupts):
   se_stw    r5,4(r1)            /* save r5  */
   se_stw    r6,0(r1)            /* save r6  */
 
+  mfspr     r5,spr_PIR
+  e_slwi    r5,r5,2
   e_lis     r11,TPL_HIG(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* get the kernel   */
   e_add16i  r11,TPL_LOW(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* stack bottom ptr */
+  se_add    r11,r5
+  e_lwz     r11,0(r11)
 
   se_mfar   r5,r11
   se_subi   r5,KS_FOOTPRINT  /* switch r5/r11 to use vle instructions  */

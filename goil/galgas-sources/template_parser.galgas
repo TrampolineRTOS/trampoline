@@ -108,11 +108,11 @@ rule <template_instruction>
   case stringType, enumType:
     ioResultingString += [expression mStringValue]
   case intType:
-    ioResultingString += [[expression mInt64Value] string]
+    ioResultingString += [[expression mBigIntValue] string]
   case floatType:
     ioResultingString += [[expression mFloatValue] string]
   case boolType:
-    if [expression mInt64Value] == 0LS then
+    if [expression mBigIntValue] == 0_G then
       ioResultingString += "false"
     else
       ioResultingString += "true"
@@ -356,7 +356,7 @@ rule <template_instruction>
   [!?ioTemplateVariableMap insertKey
     !fctName
     !@Ttype. functionType
-    !@Tvalue. new { !0LS !0.0 !"" !@TfieldMapList. emptyList !@TfieldMap. emptyMap !fct !emptyLString()}
+    !@Tvalue. new { !0_G !0.0 !"" !@TfieldMapList. emptyList !@TfieldMap. emptyMap !fct !emptyLString()}
   ]
   returnedValue = valueWithVoid()   
   returnedType = @Ttype. unconstructedType
@@ -521,7 +521,7 @@ rule <template_instruction>
       if expressionType != @Ttype. boolType then
         error @location.here:"the operand of the 'not' operator should be boolean"
       end
-      currentCondition = [expression mInt64Value] == 1LS
+      currentCondition = [expression mBigIntValue] == 1_G
       $then$
       parse
       with currentCondition :
@@ -718,12 +718,12 @@ rule <template_instruction>
     else
       let @TfieldMap fieldMap = [[enumeratedValue mMapListValue] mMapAtIndex !idx]
       itemType = @Ttype. structType
-      itemValue = @Tvalue. new { !0LS !0.0 !"" !@TfieldMapList. emptyList !fieldMap !dummyFunction() !emptyLString()}
+      itemValue = @Tvalue. new { !0_G !0.0 !"" !@TfieldMapList. emptyList !fieldMap !dummyFunction() !emptyLString()}
     end
     @lstring varName = @lstring. new { !foreachPrefix + [variableName string] ![variableName location]}
     [!?templateVariableMap insertKey !varName !itemType !itemValue]
 
-    addUnsignedValue ( !?templateVariableMap !@lstring. new { !foreachPrefix+"INDEX" !@location.here} ![idx uint64] !emptyLString())
+    addUnsignedValue ( !?templateVariableMap !@lstring. new { !foreachPrefix+"INDEX" !@location.here} ![idx bigint] !emptyLString())
 
     <template_instruction_list>
       !inPrefix
@@ -834,7 +834,7 @@ rule <template_instruction>
 #    if [templateVariableMap hasKey !"INDEX"] then
 #      [!?templateVariableMap removeKey ![@lstring new !"INDEX" !here] ?* ?*];
 #    end if;
-    addUnsignedValue ( !?templateVariableMap !@lstring. new { !"INDEX" !@location.here} ![idx uint64] !emptyLString())
+    addUnsignedValue ( !?templateVariableMap !@lstring. new { !"INDEX" !@location.here} ![idx bigint] !emptyLString())
       
     <template_instruction_list>
       !inPrefix
@@ -916,7 +916,7 @@ rule <template_instruction>
   or
     $before$
     parse
-    with [endValue mInt64Value] >= [startValue mInt64Value] :
+    with [endValue mBigIntValue] >= [startValue mBigIntValue] :
       <template_instruction_list>
         !inPrefix
         !inPath
@@ -932,8 +932,8 @@ rule <template_instruction>
   end
 #--- Do block
   $do$
-  @uint start = [[startValue mInt64Value] uint]
-  @uint stop = [[endValue mInt64Value] uint]
+  @uint start = [[startValue mBigIntValue] uint]
+  @uint stop = [[endValue mBigIntValue] uint]
   @uint idx = start
 #  log start;
 #  log stop;
@@ -950,7 +950,7 @@ rule <template_instruction>
 #    if [templateVariableMap hasKey ![variableName string]] then
 #      [!?templateVariableMap removeKey !variableName ?* ?*];
 #    end if;
-    addUnsignedValue ( !?templateVariableMap !variableName ![idx uint64] !emptyLString())
+    addUnsignedValue ( !?templateVariableMap !variableName ![idx bigint] !emptyLString())
 
     <template_instruction_list>
       !inPrefix
@@ -1048,7 +1048,7 @@ rule <template_instruction>
     if conditionType != @Ttype. boolType then
       error @location.here:"repeat loop continue condition should be a boolean"
     else      
-      continueLoop = [conditionValue mInt64Value] != 0LS
+      continueLoop = [conditionValue mBigIntValue] != 0_G
     end
   end
   @string s = @string. retrieveAndResetTemplateString # Value not used
@@ -1259,13 +1259,13 @@ rule <template_instruction>
     
   switch expressionType
   case boolType:
-    if [enumeratedValue mInt64Value] == 1LS then
+    if [enumeratedValue mBigIntValue] == 1_G then
       message "true"
     else
       message "false"
     end
   case intType:
-    message [[enumeratedValue mInt64Value] string]
+    message [[enumeratedValue mBigIntValue] string]
   case floatType: 
     message [[enumeratedValue mFloatValue] string]
   case stringType:
@@ -1339,7 +1339,7 @@ rule <template_instruction>
     @TfieldMapList variable = [variableValue mMapListValue]
     if [variable length] > 0 then
       quickSort ( !?variable !0 ![variable length]-1 !keys)
-      variableValue = @Tvalue. new { !0LS !0.0 !"" !variable !@TfieldMap. emptyMap !dummyFunction() !emptyLString()}
+      variableValue = @Tvalue. new { !0_G !0.0 !"" !variable !@TfieldMap. emptyMap !dummyFunction() !emptyLString()}
       #log variable;
       [!?ioTemplateVariableMap setMTypeForKey !variableType ![variableName string]]
       [!?ioTemplateVariableMap setMValueForKey !variableValue ![variableName string]]
@@ -1375,8 +1375,8 @@ rule <template_instruction>
       returnedValue, returnedType
   else
     @uint currentColumn = [ioResultingString currentColumn]
-    if [enumeratedValue mInt64Value] >= 0LS then
-      @uint tabColumn = [[enumeratedValue mInt64Value] uint]
+    if [enumeratedValue mBigIntValue] >= 0_G then
+      @uint tabColumn = [[enumeratedValue mBigIntValue] uint]
       if tabColumn > currentColumn then
         ioResultingString += @string.stringWithSequenceOfCharacters{
           !' '
@@ -1411,7 +1411,7 @@ rule <variable>
     case stringType:
       key = @lstring. new { ![keyValue mStringValue] !@location.here}
     case intType:
-      idx = @lsint. new { ![[keyValue mInt64Value] sint] !@location.here}
+      idx = @lsint. new { ![[keyValue mBigIntValue] sint] !@location.here}
     case boolType, floatType, listType, mapType, structType, enumType, unconstructedType, functionType:
       error @location.here: "map key must be a string, list index must be an unsigned integer"
     end
@@ -1432,7 +1432,7 @@ rule <variable>
       case stringType:
         key = @lstring. new { ![keyValue mStringValue] !@location.here}
       case intType:
-        idx = @lsint. new { ![[keyValue mInt64Value] sint] !@location.here}
+        idx = @lsint. new { ![[keyValue mBigIntValue] sint] !@location.here}
       case boolType, floatType, listType, mapType, structType, enumType, unconstructedType, functionType:
         error @location.here: "map key must be a string, list index must be an unsigned integer"
       end
@@ -1688,13 +1688,13 @@ proc printVariable
   @string offset = @string. stringWithSequenceOfCharacters { !' ' !indent}
   switch variableType
   case boolType:
-    if [variableValue mInt64Value] == 1LS then
+    if [variableValue mBigIntValue] == 1_G then
       message offset+"true\n"
     else
       message offset+"false\n"
     end
   case intType:
-    message offset+[variableValue mInt64Value]+"\n"
+    message offset+[variableValue mBigIntValue]+"\n"
   case floatType:
     message offset+[variableValue mFloatValue]+"\n"
   case stringType:
@@ -1704,7 +1704,7 @@ proc printVariable
   case listType:
     for () in  [variableValue mMapListValue] do(idx)
       message offset+"item at "+idx+":\n"
-      printVariable ( !indent !@Ttype. structType !@Tvalue. new { !0LS !0.0 !"" !@TfieldMapList. emptyList !mMap !dummyFunction() !emptyLString()})
+      printVariable ( !indent !@Ttype. structType !@Tvalue. new { !0_G !0.0 !"" !@TfieldMapList. emptyList !mMap !dummyFunction() !emptyLString()})
     end
   case mapType:
     for () in  [variableValue mStructValue] do
@@ -1744,11 +1744,11 @@ func structCompare
     [s2 searchKey !field ?s2Type ?s2Value]
     if s1Type == s2Type & s1Type == @Ttype. intType then
 #      message "Compare ".s1Value." and ".s2Value." ";
-      if [s1Value mInt64Value] < [s2Value mInt64Value] then
+      if [s1Value mBigIntValue] < [s2Value mBigIntValue] then
 #        message "<\n";
         result = -1s * [order sint]
       else
-        if [s1Value mInt64Value] > [s2Value mInt64Value] then
+        if [s1Value mBigIntValue] > [s2Value mBigIntValue] then
 #          message ">\n";
           result = 1s  * [order sint]
         else

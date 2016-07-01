@@ -1643,22 +1643,22 @@ tpl_service.parameters.id.spinlock_id = (spinlockid);
  */
 
 #if (WITH_OS_EXTENDED == NO) || (WITH_OSAPPLICATION == NO) || (ALARM_COUNT == 0)
-# define CHECK_ACCESS_RIGHTS_ALARM_ID(obj_id,result)
+# define CHECK_ACCESS_RIGHTS_ALARM_ID(a_core_id,obj_id,result)
 #elif (APP_COUNT == 0)
-# define CHECK_ACCESS_RIGHTS_ALARM_ID(obj_id,result)  \
+# define CHECK_ACCESS_RIGHTS_ALARM_ID(a_core_id,obj_id,result)  \
   if (result == (tpl_status)E_OK)                     \
   {                                                   \
     result = E_OS_ACCESS;                             \
   }
 #else
-# define CHECK_ACCESS_RIGHTS_ALARM_ID(obj_id,result)        \
+# define CHECK_ACCESS_RIGHTS_ALARM_ID(a_core_id,obj_id,result)        \
 	if (result == (tpl_status)E_OK)                           \
 	{                                                         \
 		CONST(uint8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7); \
 		CONST(uint8, AUTOMATIC) byte_idx = obj_id >> 2;            \
 		extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT];	\
         CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =   \
-            tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];  \
+            tpl_app_table[tpl_stat_proc_table[TPL_KERN(a_core_id).running_id]->app_id];  \
 		if ( (((app_access->access_vec[OBJECT_ALARM][byte_idx]) &                 \
 			(1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )                  \
 		{                                                                         \

@@ -32,8 +32,6 @@ In addition, some code or link scripts may be specific to the {\em chip} or the 
 
 The \programopt{t} or \longprogramopt{target} option of goil selects the target by using a {\tt {\em arch}/{\em chip}/{\em board}} path. Goil will look at the code, compiler and linker templates in the corresponding paths. Goil looks for a template at the deeper path first and goes up until it find it or gives an error when it does not find it. This way, a generic {\em chip} level template may be overridden by a more specific {\em board} level template for instance.
 
-If you use the \programopt{g} or \longprogramopt{generate-makefile} option, goil generates a Makefile that includes the Makefiles that exist along the path.
-
 The link script templates (linker) and the memory mapping templates (compiler) are used only if a project is built using memory mapping. \oilattr{MEMMAP} is a boolean attribute of the OS object in the OIL file. \oilattr{COMPILER} and \oilattr{LINKER} are sub-attributes of \oilattr{MEMMAP} when it is \oilval{TRUE}. For instance, a \oilattr{MEMMAP} using gcc and gnu ld would described like that:
 
 \begin{lstlisting}[language=OIL]
@@ -100,6 +98,7 @@ This code is called \cfunction{tpl_sc_handler} and performs the following steps:
 \item switche to kernel stack if needed
 \item call the service \label{item:caltheservice}
 \item perform a context switch if needed and programs the MPU.
+\item call kernel function \cfunction{tpl_run_elected}
 \item switche back to the process stack if needed
 \item enable memory protection
 \item restore registers saved at step \ref{item:savereg}
@@ -119,11 +118,13 @@ The way the PowerPC port manages the system call is explained in details in sect
 
 \subsection{Interrupt management}
 
-External interrupt handling should follow the same steps as service call. Of course, step  \ref{item:caltheservice} is a little bit different: instead of using a service id, the interrupt handler uses the interrupt source number. Usually the interrupt source number is got by reading a register of the interrupt controller.
+External interrupt handling should follow the same steps as service call when the ISR interacts with the kernel, activate a task or set an event and leads to a rescheduling. Of course, step  \ref{item:caltheservice} is a little bit different: instead of using a service id, the interrupt handler uses the interrupt source number. Usually the interrupt source number is got by reading a register of the interrupt controller.
 
 goil provides a dispatch table for interrupts. This table is filled according to the \oilattr{SOURCE} attribute of counters and ISR category 2. This attribute must be set to a symbolic name that is found in the \file{target.cfg} (located in \file{goil/templates/config/{\em arch}/{\em chip}/{\em board}} path). Each entry in the \file{target.cfg} file lists the correspondance between the interrupt source number and the symbolic name.
 
 So at step   \ref{item:caltheservice}, the interrupt handler uses the interrupt source number as an index in the \var{tpl_it_table}, get the corresponding interrupt handling function pointer and calls the function.
+
+If interrupts are fully vectorized, i.e. each interrupt source has its own interrupt vector, goil should generate the code for each vector. See how it is done in \file{cortex/armv7em} port.
 
 \section{Target specific structures}
 
@@ -205,18 +206,17 @@ Since service API functions perform a system call, they are to be written in ass
 For instance the ppc {\em arch} has the following template:
 
 \begin{lstlisting}[language=goilTemplate]
-  .global % !REAL %
-% !REAL %:
-  subi r1,r1,4                  /* make room in stack        */
-  stw  r0,0(r1)                 /* save r0 on stack          */
-  li   r0,OSServiceId_% !API %  /* load the service id in r0 */
-  sc                            /* system call               */
-  lwz  r0,0(r1)                 /* get back r0               */
-  addi r1,r1,4                  /* free the stack            */
-  blr                           /* returns                   */
+let api_func::FUNC_NAME := exists api_func::ACTUAL default ( api_func::NAME )
+%
+  .global % !api_func::FUNC_NAME %
+% !api_func::FUNC_NAME %:
+  /* load the service id in r0 */
+  li   r0,% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME %
+  sc    /* system call               */
+  blr   /* returns                   */
   
-  .type % !REAL %,@function
-  .size % !REAL %,$-% !REAL %
+  .type % !api_func::FUNC_NAME %,@function
+  .size % !api_func::FUNC_NAME %,$-% !api_func::FUNC_NAME %
 
 \end{lstlisting}
 
@@ -227,13 +227,13 @@ For \api{ActivateTask}, the template execution produces the following code:
 \begin{lstlisting}[language=C]
   .global ActivateTask
 ActivateTask:
-  subi r1,r1,4                  /* make room in stack        */
-  stw  r0,0(r1)                 /* save r0 on stack          */
-  li   r0,OSServiceId_ActivateTask  /* load the service id in r0 */
-  sc                            /* system call               */
-  lwz  r0,0(r1)                 /* get back r0               */
-  addi r1,r1,4                  /* free the stack            */
-  blr                           /* returns                   */
+  /* load the service id in r0 */
+  li   r0,OSServiceId_ActivateTask
+  sc    /* system call               */
+  blr   /* returns                   */
+  
+  .type ActivateTask,@function
+  .size ActivateTask,$-ActivateTask
 \end{lstlisting}
 
 \section{Structures initialization templates}

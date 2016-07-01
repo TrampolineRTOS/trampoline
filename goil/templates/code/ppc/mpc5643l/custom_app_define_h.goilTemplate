@@ -1,4 +1,11 @@
-/*=============================================================================
+%
+#------------------------------------------------------------------------------*
+# build an empty list when the list does not exist. This simplify
+# further processing because existence test is not necessary
+
+let INTERCORE_INTERRUPT := exists INTERCORE_INTERRUPT default (emptylist)
+
+%/*=============================================================================
  * Target specific definitions
  */
 
@@ -27,8 +34,8 @@ let channel_map["pit_ch3"] := "TPL_PIT_3"
 # Count only counters used in applications
 let used_counters := emptymap
 foreach app in APPLICATION do
-  foreach app_counter in app::COUNTER do
-    foreach counter in COUNTER do
+  foreach app_counter in exists app::COUNTER default(emptylist) do
+    foreach counter in HARDWARECOUNTERS do
       if app_counter::VALUE == counter::NAME then
         let used_counters[counter::SOURCE] := counter
       end if
@@ -51,7 +58,7 @@ end foreach
 %
 
 #define TPL_USE_DECREMENTER     % !yesNo(exists used_counters["no_pit"]) %
-#define TPL_PIT_CHAN_COUNT      % !number_of_pit_used %
+#define TPL_USE_PIT             % !yesNo(number_of_pit_used > 0) %
 %if watchdog_channel != "" then
 %#define TPL_WATCHDOG_RATIO      %!watchdog_frequency%
 #define TPL_WDG_TIMER           %!watchdog_channel
@@ -93,11 +100,9 @@ else
 %
 let irqs := mapof INTERRUPT by NAME
 
-if exists INTERCORE_INTERRUPT then
-  foreach it in INTERCORE_INTERRUPT do
+foreach it in INTERCORE_INTERRUPT do
 %#define TPL_INTERCORE_IT_% !INDEX %   % !irqs[it::SOURCE]::ID%
 %
-  end foreach
-end if
+end foreach
 %
 

@@ -1,3 +1,10 @@
+%
+#------------------------------------------------------------------------------*
+# build an empty list when the list does not exist. This simplify
+# further processing because existence test is not necessary
+
+let INTERCORE_INTERRUPT := exists INTERCORE_INTERRUPT default (emptylist)
+%
 /*-----------------------------------------------------------------------------
  * Interrupt specific structures
  */
@@ -19,8 +26,13 @@ foreach counter in HARDWARECOUNTERS do
     error counter::SOURCE : "Interrupt source ".counter::SOURCE." does not exist"
   end if
 end foreach
-foreach isr in ISRS2 do
+foreach isr in ISRS do
   if not exists IT_SOURCES[isr::SOURCE] then
+    error isr::SOURCE : "Interrupt source ".isr::SOURCE." does not exist"
+  end if
+end foreach
+foreach intercore_it in INTERCORE_INTERRUPT do
+  if not exists IT_SOURCES[intercore_it::SOURCE] then
     error isr::SOURCE : "Interrupt source ".isr::SOURCE." does not exist"
   end if
 end foreach
@@ -28,7 +40,7 @@ end foreach
 ###### Watchdog checking
 let watchdog_source := ""
 
-foreach counter in COUNTER do
+foreach counter in HARDWARECOUNTERS do
   if counter::HANDLER == "watchdog" then
     let watchdog_source := counter::SOURCE
   end if
@@ -41,25 +53,50 @@ elsif watchdog_source != "" & not OS::TIMINGPROTECTION then
     warning here : "WATCHDOG : OS::TIMINGPROTECTION set to false. Watchdog disabled."
 end if
 
+###### Check ISRS are not using a wrong source
+foreach isr in ISRS do
+  if isr::SOURCE == "no_pit"
+   | isr::SOURCE == "pit_ch0"
+   | isr::SOURCE == "pit_ch1"
+   | isr::SOURCE == "pit_ch2"
+   | isr::SOURCE == "pit_ch3" then
+    error here : "ISR " .isr::NAME. " : The uses of an hardware timer for an ISR is forbidden."
+  end if
+end foreach
+
+###### Check there is not two interrupts with the same ID
+let sorted_interrupt := INTERRUPT
+sort sorted_interrupt by ID <
+
+let previous_id := ""
+let previous_it
+foreach interrupt in sorted_interrupt do
+  if [interrupt::ID string] == previous_id & previous_id != "" then
+    error here : "interrupt " . interrupt::NAME . " and " . previous_it::NAME . " have the same ID (" . [interrupt::ID string] . ")"
+  end if
+  let previous_id := [interrupt::ID string]
+  let previous_it := interrupt
+end foreach
+
 ###############################################################################
 #   handlers declaration
 #
 
 # Watchdog
 if OS::TIMINGPROTECTION then
-%extern FUNC(void, OS_CODE) tpl_watchdog_handler(void);
+%extern FUNC(tpl_bool, OS_CODE) tpl_watchdog_handler(void);
 %
 end if
 
 # ISR
 foreach isr in ISRS do
-%FUNC(void, OS_CODE) tpl_isr_handler_% !isr::NAME %(void);
+%FUNC(tpl_bool, OS_CODE) tpl_isr_handler_% !isr::NAME %(void);
 %
 end foreach
 
 # Intercore IT
 foreach interrupt in INTERCORE_INTERRUPT do
-%FUNC(boolean, OS_CODE) tpl_intercore_handler_% !interrupt::NAME %(void);
+%FUNC(tpl_bool, OS_CODE) tpl_intercore_handler_% !interrupt::NAME %(void);
 %
 end foreach
 
@@ -71,9 +108,9 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
   let used_interrupts := emptymap
   foreach application in APPLICATION do
     if application::CORE == core_id then
-      foreach counter_name in application::COUNTER do
+      foreach counter_name in exists application::COUNTER default (emptylist) do
         let counter := counter_map[counter_name::VALUE]
-        if counter::SOURCE != "no_pit" then
+        if counter::SOURCE != "no_pit" & counter::TYPE == "HARDWARE" then
           let interrupt := interrupt_map[counter::SOURCE]
           let used_interrupts[counter::SOURCE] := interrupt
         end if
@@ -83,10 +120,10 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
 
   foreach interrupt in used_interrupts do
     if OS::NUMBER_OF_CORES > 1 then
-%FUNC(void, OS_CODE) tpl_tick_handler_% !interrupt::NAME%_% !core_id %(void);
+%FUNC(tpl_bool, OS_CODE) tpl_tick_handler_% !interrupt::NAME%_% !core_id %(void);
 %
     else
-%FUNC(void, OS_CODE) tpl_tick_handler_% !interrupt::NAME%(void);
+%FUNC(tpl_bool, OS_CODE) tpl_tick_handler_% !interrupt::NAME%(void);
 %
     end if
   end foreach
@@ -104,12 +141,11 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
   foreach application in APPLICATION do
     if application::CORE == core_id then
       ### Used counters
-      foreach counter_name in application::COUNTER do
+      foreach counter_name in exists application::COUNTER default (emptylist) do
         let counter := counter_map[counter_name::VALUE]
         let used_counters[counter::NAME] := counter
       end foreach
 
-      ### Used ISR
     end if
   end foreach
 
@@ -130,21 +166,21 @@ CONST(tpl_it_vector_entry, OS_CONST) tpl_it_table_%!core_id%[% !INTERRUPT_COUNT:
     foreach interrupt in INTERRUPT do
       if ENTRY == interrupt::ID then
 
-        if exists INTERCORE_INTERRUPT & OS::NUMBER_OF_CORES > 1 then
-          ########## Intercore Interrupt Checking (Multicore only)
-          foreach int_interrupt in INTERCORE_INTERRUPT do
-            if int_interrupt::CORE == core_id
-               & int_interrupt::SOURCE == interrupt::NAME
-               & not entryFound then
+        ########## Intercore Interrupt Checking (Multicore only)
+        foreach int_interrupt in INTERCORE_INTERRUPT do
+          if int_interrupt::CORE == core_id
+             & int_interrupt::SOURCE == interrupt::NAME
+             & not entryFound then
               %  { (tpl_it_handler)tpl_intercore_handler_% !int_interrupt::NAME %,(void *)NULL}%
-              let entryFound := true
-            end if
-          end foreach
-        end if
+            let entryFound := true
+          end if
+        end foreach
 
         ########## Counter Interrupt Checking
         foreach counter in used_counters do
-          if counter::SOURCE == interrupt::NAME & not entryFound then
+          if counter::SOURCE == interrupt::NAME
+           & counter::TYPE == "HARDWARE"
+           & not entryFound then
             if counter::SOURCE == "no_pit"
              | (counter::HANDLER == "watchdog" & not OS::TIMINGPROTECTION) then
               %  { (tpl_it_handler)tpl_null_it, (void *)% !ENTRY % }%
@@ -166,7 +202,7 @@ CONST(tpl_it_vector_entry, OS_CONST) tpl_it_table_%!core_id%[% !INTERRUPT_COUNT:
         foreach isr in ISRS do
           foreach application in APPLICATION do
             if application::CORE == core_id then
-              foreach app_isr in application::ISR do
+              foreach app_isr in exists application::ISR default (emptylist) do
                 if app_isr::VALUE == isr::NAME
                  & isr::SOURCE == interrupt::NAME
                  & not entryFound then

@@ -7376,7 +7376,7 @@ void cParser_options_5F_parser::rule_options_5F_parser_option_5F_value_i4_ (GALG
   GALGAS_luint_36__34_ var_num_1537 = inCompiler->synthetizedAttribute_integerNumber () ;
   inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_options_5F_scanner::kToken_uint_5F_number) COMMA_SOURCE_FILE ("options_parser.galgas", 76)) ;
   outArgument_type = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("options_parser.galgas", 77)) ;
-  outArgument_value = function_valueWithSigned (var_num_1537.getter_uint_36__34_ (SOURCE_FILE ("options_parser.galgas", 78)).getter_sint_36__34_ (inCompiler COMMA_SOURCE_FILE ("options_parser.galgas", 78)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("options_parser.galgas", 78)), inCompiler COMMA_SOURCE_FILE ("options_parser.galgas", 78)) ;
+  outArgument_value = function_valueWithSigned (var_num_1537.getter_uint_36__34_ (SOURCE_FILE ("options_parser.galgas", 78)).getter_bigint (SOURCE_FILE ("options_parser.galgas", 78)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("options_parser.galgas", 78)), inCompiler COMMA_SOURCE_FILE ("options_parser.galgas", 78)) ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -7419,7 +7419,7 @@ void cParser_options_5F_parser::rule_options_5F_parser_option_5F_value_i6_ (GALG
     GALGAS_luint_36__34_ var_num_1911 = inCompiler->synthetizedAttribute_integerNumber () ;
     inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_options_5F_scanner::kToken_uint_5F_number) COMMA_SOURCE_FILE ("options_parser.galgas", 96)) ;
     outArgument_type = GALGAS_Ttype::constructor_intType (SOURCE_FILE ("options_parser.galgas", 97)) ;
-    outArgument_value = function_valueWithSigned (var_num_1911.getter_uint_36__34_ (SOURCE_FILE ("options_parser.galgas", 98)).getter_sint_36__34_ (inCompiler COMMA_SOURCE_FILE ("options_parser.galgas", 98)).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("options_parser.galgas", 98)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("options_parser.galgas", 98)), inCompiler COMMA_SOURCE_FILE ("options_parser.galgas", 98)) ;
+    outArgument_value = function_valueWithSigned (var_num_1911.getter_uint_36__34_ (SOURCE_FILE ("options_parser.galgas", 98)).getter_bigint (SOURCE_FILE ("options_parser.galgas", 98)).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("options_parser.galgas", 98)), function_emptyLString (inCompiler COMMA_SOURCE_FILE ("options_parser.galgas", 98)), inCompiler COMMA_SOURCE_FILE ("options_parser.galgas", 98)) ;
   } break ;
   case 2: {
     GALGAS_ldouble var_num_2048 = inCompiler->synthetizedAttribute_floatNumber () ;
@@ -7728,7 +7728,7 @@ static const int16_t gProductions_template_grammar [] = {
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_no) // $no$
 , END_PRODUCTION
 // At index 167 : <factor>, in file 'template_expression_parser.ggs', line 750
-, TERMINAL (C_Lexique_template_5F_scanner::kToken_signed_5F_literal_5F_integer_36__34_) // $signed_literal_integer64$
+, TERMINAL (C_Lexique_template_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint) // $signed_literal_integer_bigint$
 , END_PRODUCTION
 // At index 169 : <factor>, in file 'template_expression_parser.ggs', line 769
 , TERMINAL (C_Lexique_template_5F_scanner::kToken_string) // $string$
@@ -8614,7 +8614,7 @@ C_Lexique_template_5F_scanner::kToken__2D_, -1, // Choice 4
 C_Lexique_template_5F_scanner::kToken__2B_, -1, // Choice 5
 C_Lexique_template_5F_scanner::kToken_yes, -1, // Choice 6
 C_Lexique_template_5F_scanner::kToken_no, -1, // Choice 7
-C_Lexique_template_5F_scanner::kToken_signed_5F_literal_5F_integer_36__34_, -1, // Choice 8
+C_Lexique_template_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint, -1, // Choice 8
 C_Lexique_template_5F_scanner::kToken_string, -1, // Choice 9
 C_Lexique_template_5F_scanner::kToken__5B_, -1, // Choice 10
 C_Lexique_template_5F_scanner::kToken_identifier, -1, // Choice 11
@@ -8633,7 +8633,7 @@ C_Lexique_template_5F_scanner::kToken_list, -1, // Choice 20
 //---- Added non terminal symbols from 'select' and 'repeat' instructions
 // At index 94 : <select_template_5F_parser_0>
 C_Lexique_template_5F_scanner::kToken_executable, -1, // Choice 1
-C_Lexique_template_5F_scanner::kToken_identifier, C_Lexique_template_5F_scanner::kToken_exists, C_Lexique_template_5F_scanner::kToken__28_, C_Lexique_template_5F_scanner::kToken__5B_, C_Lexique_template_5F_scanner::kToken__2B_, C_Lexique_template_5F_scanner::kToken__2D_, C_Lexique_template_5F_scanner::kToken_not, C_Lexique_template_5F_scanner::kToken__7E_, C_Lexique_template_5F_scanner::kToken_yes, C_Lexique_template_5F_scanner::kToken_no, C_Lexique_template_5F_scanner::kToken_signed_5F_literal_5F_integer_36__34_, C_Lexique_template_5F_scanner::kToken_string, C_Lexique_template_5F_scanner::kToken_typeof, C_Lexique_template_5F_scanner::kToken_true, C_Lexique_template_5F_scanner::kToken_false, C_Lexique_template_5F_scanner::kToken__40_, C_Lexique_template_5F_scanner::kToken_emptylist, C_Lexique_template_5F_scanner::kToken_emptymap, C_Lexique_template_5F_scanner::kToken_mapof, C_Lexique_template_5F_scanner::kToken_listof, C_Lexique_template_5F_scanner::kToken_list, -1, // Choice 2
+C_Lexique_template_5F_scanner::kToken_identifier, C_Lexique_template_5F_scanner::kToken_exists, C_Lexique_template_5F_scanner::kToken__28_, C_Lexique_template_5F_scanner::kToken__5B_, C_Lexique_template_5F_scanner::kToken__2B_, C_Lexique_template_5F_scanner::kToken__2D_, C_Lexique_template_5F_scanner::kToken_not, C_Lexique_template_5F_scanner::kToken__7E_, C_Lexique_template_5F_scanner::kToken_yes, C_Lexique_template_5F_scanner::kToken_no, C_Lexique_template_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint, C_Lexique_template_5F_scanner::kToken_string, C_Lexique_template_5F_scanner::kToken_typeof, C_Lexique_template_5F_scanner::kToken_true, C_Lexique_template_5F_scanner::kToken_false, C_Lexique_template_5F_scanner::kToken__40_, C_Lexique_template_5F_scanner::kToken_emptylist, C_Lexique_template_5F_scanner::kToken_emptymap, C_Lexique_template_5F_scanner::kToken_mapof, C_Lexique_template_5F_scanner::kToken_listof, C_Lexique_template_5F_scanner::kToken_list, -1, // Choice 2
   -1,
 // At index 119 : <select_template_5F_parser_1>
 C_Lexique_template_5F_scanner::kToken_identifier, -1, // Choice 1
@@ -8664,7 +8664,7 @@ C_Lexique_template_5F_scanner::kToken__29_, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__2C_, -1, // Choice 2
   -1,
 // At index 237 : <select_template_5F_parser_8>
-C_Lexique_template_5F_scanner::kToken_identifier, C_Lexique_template_5F_scanner::kToken_exists, C_Lexique_template_5F_scanner::kToken__28_, C_Lexique_template_5F_scanner::kToken__5B_, C_Lexique_template_5F_scanner::kToken__2B_, C_Lexique_template_5F_scanner::kToken__2D_, C_Lexique_template_5F_scanner::kToken_not, C_Lexique_template_5F_scanner::kToken__7E_, C_Lexique_template_5F_scanner::kToken_yes, C_Lexique_template_5F_scanner::kToken_no, C_Lexique_template_5F_scanner::kToken_signed_5F_literal_5F_integer_36__34_, C_Lexique_template_5F_scanner::kToken_string, C_Lexique_template_5F_scanner::kToken_typeof, C_Lexique_template_5F_scanner::kToken_true, C_Lexique_template_5F_scanner::kToken_false, C_Lexique_template_5F_scanner::kToken__40_, C_Lexique_template_5F_scanner::kToken_emptylist, C_Lexique_template_5F_scanner::kToken_emptymap, C_Lexique_template_5F_scanner::kToken_mapof, C_Lexique_template_5F_scanner::kToken_listof, C_Lexique_template_5F_scanner::kToken_list, -1, // Choice 1
+C_Lexique_template_5F_scanner::kToken_identifier, C_Lexique_template_5F_scanner::kToken_exists, C_Lexique_template_5F_scanner::kToken__28_, C_Lexique_template_5F_scanner::kToken__5B_, C_Lexique_template_5F_scanner::kToken__2B_, C_Lexique_template_5F_scanner::kToken__2D_, C_Lexique_template_5F_scanner::kToken_not, C_Lexique_template_5F_scanner::kToken__7E_, C_Lexique_template_5F_scanner::kToken_yes, C_Lexique_template_5F_scanner::kToken_no, C_Lexique_template_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint, C_Lexique_template_5F_scanner::kToken_string, C_Lexique_template_5F_scanner::kToken_typeof, C_Lexique_template_5F_scanner::kToken_true, C_Lexique_template_5F_scanner::kToken_false, C_Lexique_template_5F_scanner::kToken__40_, C_Lexique_template_5F_scanner::kToken_emptylist, C_Lexique_template_5F_scanner::kToken_emptymap, C_Lexique_template_5F_scanner::kToken_mapof, C_Lexique_template_5F_scanner::kToken_listof, C_Lexique_template_5F_scanner::kToken_list, -1, // Choice 1
 C_Lexique_template_5F_scanner::kToken__29_, -1, // Choice 2
   -1,
 // At index 262 : <select_template_5F_parser_9>

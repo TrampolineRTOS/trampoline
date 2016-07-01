@@ -127,7 +127,7 @@ FUNC(void, OS_CODE) tpl_stop_pit(
  * tpl_watchdog_handler handler function for timing protection called by pit interrupt
  *
  */
-FUNC(void, OS_CODE) tpl_watchdog_handler(void)
+FUNC(tpl_bool, OS_CODE) tpl_watchdog_handler(void)
 {
   /* stops the channel and disable interrupts */
   PIT_CR(TPL_WDG_TIMER) = (PIT_CR(TPL_WDG_TIMER)) & ~(PIT_CR_TEN | PIT_CR_TIE);
@@ -137,6 +137,8 @@ FUNC(void, OS_CODE) tpl_watchdog_handler(void)
   /* call timing protection expiration function */
   tpl_watchdog_expiration();
 
+  /* restore CPU priority */
+  return TRUE;
 }
 #endif
 

@@ -23,18 +23,32 @@
  * $Author$
  * $URL$
  */
+%
+#------------------------------------------------------------------------------*
+# build an empty list when the list does not exist. This simplify
+# further processing because existence test is not necessary
 
+let INTERCORE_INTERRUPT := exists INTERCORE_INTERRUPT default (emptylist)
+%
 /*=============================================================================
  * External interrupts configuration structures
  */
-
+% let IRQ_MAX_PRIO := 15%
+/*-----------------------------------------------------------------------------
+ *  IRQ priorities : - Ticks/WDT (highest priority) : % !IRQ_MAX_PRIO %
+ *                   - Intercore                    : % !IRQ_MAX_PRIO - 1 %
+ *                   - ISRS                         : [1, % !IRQ_MAX_PRIO - 2 %]
+ *                   - Unused                       : 0
+ */
+#define IRQ_MAX_PRIO   % !IRQ_MAX_PRIO %
+#define IRQ_UNUSED     0
 %
 ###############################################################################
 #   tpl_init_isr_prio
 #
 
-let sources := mapof INTERRUPT by NAME
-let isrs := mapof ISRS by NAME
+let interrupt_map := mapof INTERRUPT by NAME
+let isr_map := mapof ISRS by NAME
 %
 #include "tpl_registers.h"
 
@@ -44,8 +58,6 @@ let isrs := mapof ISRS by NAME
 FUNC(void, OS_CODE) tpl_init_isr_prio(void)
 {
   VAR(uint16, AUTOMATIC) isr_index;
-  VAR(uint8, AUTOMATIC) intc_psr_val = 0;
-
 %
 loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
 %
@@ -53,65 +65,77 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
    *    CORE %!core_id%
    */
   /* Reset priorities */
-  for(isr_index = 0; isr_index < % ![ISRS length]%; isr_index++)
+  for(isr_index = 0; isr_index < % !INTERRUPT_COUNT::IT_TABLE_SIZE%; isr_index++)
   {
     TPL_INTC(%!core_id%).PSR[isr_index] = 0;
   }
 
   /* ISR Priorities */
 %
-  foreach app in APPLICATIONS do
-    if app::CORE == core_id then
-      foreach isr in app::ISR do
-        let isr := isrs[isr::VALUE]
-%
-  /* Isr % !isr::NAME % */
-  intc_psr_val = % !isr::PRIORITY %;
-  // #if !(MPC5668G || MPC5643L || MPC5646C)
-  // intc_psr_val = (uint8)(intc_psr_val | (0x1 << 6));
-  // #end if
-
-  TPL_INTC(%!core_id%).PSR[% !sources[isr::SOURCE]::ID %] = intc_psr_val;
-%
+# Get the maximum priority of used IRQs
+let max_irq_prio := emptymap
+foreach app in APPLICATION do
+  if app::CORE == core_id then
+    foreach isr_app in exists app::ISR default (emptylist) do
+      let isr := isr_map[isr_app::VALUE]
+      if exists max_irq_prio[isr::SOURCE] then
+        if max_irq_prio[isr::SOURCE]::PRIORITY < isr::PRIORITY then
+          let max_irq_prio[isr::SOURCE] := isr
+        end if
+      else
+        let max_irq_prio[isr::SOURCE] := isr
+      end if
     end foreach
   end if
 end foreach
 
-%
-  /* Counters have the maximum priority (0xF) */
-  intc_psr_val = 0xF;
-  // #if !(MPC5668G || MPC5643L)
-  // intc_psr_val = (uint8)(intc_psr_val | (0x1 << 6));
-  // #end if
+# Sort them by priority
+let sorted_isrs := emptylist
+foreach isr in max_irq_prio do
+  let sorted_isrs += isr
+end foreach
+sort sorted_isrs by PRIORITY <
 
+# Print them by order
+foreach isr in sorted_isrs do
+  let interrupt := interrupt_map[isr::SOURCE]
+  let prio := INDEX + 1
+  if prio > (IRQ_MAX_PRIO - 2) then
+    let prio := IRQ_MAX_PRIO
+  end if
+%  TPL_INTC(%!core_id%).PSR[% !interrupt::ID %] = % !prio %; /* % !isr::SOURCE % */
+%
+end foreach
+%
+  /* Tick Counters have the maximum priority */
 %
   let counter_map   := mapof COUNTER by NAME
-  let interrupt_map := mapof INTERRUPT by NAME
 
   foreach application in APPLICATION do
     if application::CORE == core_id then
-      foreach counter_name in application::COUNTER do
+      foreach counter_name in exists application::COUNTER default (emptylist) do
         let counter := counter_map[counter_name::VALUE]
-        if counter::SOURCE != "no_pit" then
+        if counter::SOURCE != "no_pit" & counter::TYPE == "HARDWARE" then
           let interrupt := interrupt_map[counter::SOURCE]
-%  TPL_INTC(%!core_id%).PSR[% !interrupt::ID %] = intc_psr_val;
+%  TPL_INTC(%!core_id%).PSR[% !interrupt::ID %] = % !IRQ_MAX_PRIO %; /* % !counter::NAME % */
 %
         end if
       end foreach
     end if
   end foreach
 
-  if exists INTERCORE_INTERRUPT then
 %
-  /* Intercore interrupts */
+  /* Intercore interrupts
+   * Tick handlers do the rescheduling and ack intercores if needed, so we're
+   * giving a lower priority to intercore interrupts.
+   */
 %
-    foreach intercore_it in INTERCORE_INTERRUPT do
-      if intercore_it::CORE == core_id then
-    %  TPL_INTC(%!core_id%).PSR[% !sources[intercore_it::SOURCE]::ID %] = intc_psr_val;
+  foreach intercore_it in INTERCORE_INTERRUPT do
+    if intercore_it::CORE == core_id then
+    %  TPL_INTC(%!core_id%).PSR[% !interrupt_map[intercore_it::SOURCE]::ID %] = % !IRQ_MAX_PRIO - 1%; /* % !intercore_it::NAME % */
 %
-      end if
-    end foreach
-  end if
+    end if
+  end foreach
 end loop
 %
 }
@@ -127,17 +151,21 @@ let channel_map["pit_ch1"] := "TPL_PIT_1"
 let channel_map["pit_ch2"] := "TPL_PIT_2"
 let channel_map["pit_ch3"] := "TPL_PIT_3"
 
-# Get a list of used counters (with no duplicates)
-let used_counters := emptymap
-foreach counter in COUNTER do
+# Get a list of used pit channels (with no duplicates)
+let used_pit_channels := emptymap
+foreach counter in HARDWARECOUNTERS do
   # By the way, check if there is an error input for the frequencies
-  if exists used_counters[counter::SOURCE] then
-    if used_counters[counter::SOURCE]::FREQUENCY != counter::FREQUENCY then
+  if exists used_pit_channels[counter::SOURCE] then
+    if used_pit_channels[counter::SOURCE]::FREQUENCY != counter::FREQUENCY then
       error counter::FREQUENCY : "Two different frequencies for the same counter."
     end if
   end if
-  let used_counters[counter::SOURCE] := counter
+  if counter::SOURCE != "no_pit" then
+    let used_pit_channels[counter::SOURCE] := counter
+  end if
 end foreach
+
+if [used_pit_channels length] > 0 then
 %
 
 /**
@@ -147,20 +175,19 @@ end foreach
 FUNC(void, OS_CODE) tpl_load_pits(void)
 {
 %
-foreach counter in used_counters do
-  if counter::SOURCE != "no_pit" then
-    let channel := channel_map[counter::SOURCE]
+foreach counter in used_pit_channels do
+  let channel := channel_map[counter::SOURCE]
 %  /* Counter % !counter::SOURCE % */
   PIT_LVR(% !channel %) = % !counter::FREQUENCY %;
   PIT_FR(% !channel %) = PIT_FR_TIF;
   PIT_CR(% !channel %) = PIT_CR_TEN | PIT_CR_TIE;
 
 %
-  end if
 end foreach
 %
 }
 %
+end if
 
 ###############################################################################
 #   tpl_tick_handler
@@ -179,9 +206,9 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
   let used_interrupts := emptymap
   foreach application in APPLICATION do
     if application::CORE == core_id then
-      foreach counter_name in application::COUNTER do
+      foreach counter_name in exists application::COUNTER default (emptylist) do
         let counter := counter_map[counter_name::VALUE]
-        if counter::SOURCE != "no_pit" then
+        if counter::SOURCE != "no_pit" & counter::TYPE == "HARDWARE" then
           let interrupt := interrupt_map[counter::SOURCE]
           let used_interrupts[counter::SOURCE] := interrupt
         end if
@@ -191,7 +218,7 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
 
   foreach interrupt in used_interrupts do
     if OS::NUMBER_OF_CORES > 1 then
-%FUNC(void, OS_CODE) tpl_tick_handler_% !interrupt::NAME%_% !core_id %(void)
+%FUNC(tpl_bool, OS_CODE) tpl_tick_handler_% !interrupt::NAME%_% !core_id %(void)
 {
   /* FIXME : This date counter works only if there is one hardware counter per
    *         core.
@@ -200,10 +227,13 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
   /* Clear interrupt flag */
   PIT_FR(% !channel_map[interrupt::NAME] %) = PIT_FR_TIF;
   tpl_call_counter_tick_% !interrupt::NAME %_% !core_id %();
+
+  /* return true to restore cpu priority */
+  return TRUE;
 }
 %
     else
-%FUNC(void, OS_CODE) tpl_tick_handler_% !interrupt::NAME%(void)
+%FUNC(tpl_bool, OS_CODE) tpl_tick_handler_% !interrupt::NAME%(void)
 {
   /* FIXME : This date counter works only if there is one hardware counter per
    *         core.
@@ -212,6 +242,9 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
   /* Clear interrupt flag */
   PIT_FR(% !channel_map[interrupt::NAME] %) = PIT_FR_TIF;
   tpl_call_counter_tick_% !interrupt::NAME %();
+
+  /* return true to restore cpu priority */
+  return TRUE;
 }
 %
     end if
@@ -232,26 +265,38 @@ end foreach
 
 foreach isr in ISRS do
 %
-FUNC(void, OS_CODE) tpl_isr_handler_% !isr::NAME %(void) {
-  /* Ack the interruption */
+FUNC(tpl_bool, OS_CODE) tpl_isr_handler_% !isr::NAME %(void) {%
+
+# We need to clear the SSCIR Flag in case of a software interruption.
+  if interrupt_map[isr::SOURCE]::TYPE == "SOFTWARE" then%
+  /* Ack the software interruption */
 %
-  foreach application in APPLICATION do
-    foreach app_isr in application::ISR do
-      if app_isr::VALUE == isr::NAME then
-%  TPL_INTC(% !application::CORE %).SSCIR[% !interrupt_map[isr::SOURCE]::ID %] = INTC_SSCIR_CLR;
-%
-      end if
+    let isr_core := 0
+    foreach application in APPLICATION do
+      foreach app_isr in exists application::ISR default (emptylist) do
+        if app_isr::VALUE == isr::NAME then
+          let isr_core := application::CORE
+        end if
+      end foreach
     end foreach
-  end foreach
+
+%  TPL_INTC(% !isr_core %).SSCIR[% !interrupt_map[isr::SOURCE]::ID %] = INTC_SSCIR_CLR;
 %
-%
-  if isr::CATEGORY == 2 then
-%  /* Call central interrupt handler */
+  end if
+
+  if isr::CATEGORY == 2 then%
+  /* Call central interrupt handler */
   tpl_central_interrupt_handler_2((void*)% !isr::NAME %_id);
+
+  /* Do not restore CPU priority until the ISR2 has finished its execution */
+  return FALSE;
 %
-  elsif isr::CATEGORY == 1 then
-%  /* Call the ISR function directly */
+  elsif isr::CATEGORY == 1 then%
+  /* Call the ISR function directly */
   %!isr::NAME %_function();
+
+  /* return true to restore cpu priority */
+  return TRUE;
 %
   end if
 %
@@ -262,31 +307,26 @@ end foreach
 ###############################################################################
 #   tpl_intercore_handler
 #
-if exists INTERCORE_INTERRUPT then
-  let interrupt_map := mapof INTERRUPT by NAME
+let interrupt_map := mapof INTERRUPT by NAME
 
-  foreach interrupt in INTERCORE_INTERRUPT do
+foreach interrupt in INTERCORE_INTERRUPT do
 %
 /**
  * @internal
  *
- * This function execute an interrupt send by another core
+ * This function execute an interrupt sent by another core
  * It is used to force context switch on a given core
  */
-FUNC(boolean, OS_CODE) tpl_intercore_handler_% !interrupt::NAME %(void)
+FUNC(tpl_bool, OS_CODE) tpl_intercore_handler_% !interrupt::NAME %(void)
 {
   /* clear interrupt flag */
   TPL_INTC(% !interrupt::CORE %).SSCIR[% !interrupt_map[interrupt::SOURCE]::ID %] = INTC_SSCIR_CLR;
-
-  /* force context switch */
-  TPL_KERN(% !interrupt::CORE %).need_switch = NEED_SWITCH | NEED_SAVE;
 
   /* return true to restore cpu priority */
   return TRUE;
 }
 %
-  end foreach
-end if
+end foreach
 %
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
