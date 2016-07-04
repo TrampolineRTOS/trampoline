@@ -1328,7 +1328,13 @@ repeat
     let USEDLIB[lib::NAME] := lib
   end foreach
 while added
-end repeat  
+end repeat
+
+#------------------------------------------------------------------------------*
+# Check the user oil configuration before generating the files
+#
+
+template if exists root_check in check
 
 #------------------------------------------------------------------------------*
 #
