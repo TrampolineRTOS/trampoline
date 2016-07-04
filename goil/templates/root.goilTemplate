@@ -1161,7 +1161,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
         let vector := vector . computeVector(app, rez, owned_resources)
       end if
     end foreach
-    let vector := vector . "10" # add the RES_SCHEDULER
+    let vector := vector . "01" # add the RES_SCHEDULER
     let app::RESOURCEACCESSVECTOR := vector
     let size := computeBinaryVectorSize(vector)
     let app::RESOURCEACCESSNUM := size
