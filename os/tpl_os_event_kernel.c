@@ -34,6 +34,9 @@
 #if WITH_AUTOSAR == YES
 #include "tpl_as_isr_kernel.h"
 #include "tpl_as_protec_hook.h"
+#if SPINLOCK_COUNT > 0
+#  include "tpl_as_spinlock_kernel.h"
+#endif
 #endif
 
 #if WITH_MEMORY_PROTECTION == YES
@@ -207,6 +210,8 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
   CHECK_NOT_EXTENDED_RUNNING_ERROR(core_id, result)
   /*  checks the task does not occupy resource(s)   */
   CHECK_RUNNING_OWNS_REZ_ERROR(core_id, result)
+  /*  checks the task does not occupy spinlock(s)   */
+  CHECK_SCHEDULE_WHILE_OCCUPED_SPINLOCK(core_id, result)
 
 #if EXTENDED_TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)

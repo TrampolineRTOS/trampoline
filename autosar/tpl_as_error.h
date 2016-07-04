@@ -1095,6 +1095,8 @@
     }
 #endif
 
+
+
 /**
  * @def CHECK_SPINLOCK_ID_ERROR
  *
@@ -1129,7 +1131,7 @@
     /* E_OK or E_OS_ID   */
 #   define CHECK_SPINLOCK_ID_ERROR(spinlock_id,result)              \
     if  ((result == (tpl_status)E_OK) &&                            \
-        (((spinlock_id) >= (tpl_isr_id)(SPINLOCK_COUNT)) )          \
+         ((spinlock_id) >= (tpl_lock)(SPINLOCK_COUNT)))             \
     {                                                               \
         result = (tpl_status)E_OS_ID;                               \
     }
@@ -1150,26 +1152,26 @@
 /* No extended error checking (WITH_OS_EXTENDED == NO)  */
 #if (WITH_OS_EXTENDED == NO)
     /* Does not check the isr_id in this case */
-#   define CHECK_SPINLOCK_NESTING_ORDER_ERROR(spinlock_id,result)
+#   define CHECK_SPINLOCK_NESTING_ORDER_ERROR(core_id,spinlock_id,result)
 #endif
 
 /* Any SPINLOCK and extended error checking (WITH_OS_EXTENDED == YES)  */
 #if (SPINLOCK_COUNT > 0) && (WITH_OS_EXTENDED == YES)
-    /* E_OK or E_OS_ID   */
-#   define CHECK_SPINLOCK_NESTING_ORDER_ERROR(spinlock_id,result) \
-    if  ((result == (tpl_status)E_OK) &&                          \
-        ( spinlock_id >= tpl_last_taken_spinlock )                \
-    {                                                             \
-        result = (tpl_status)E_OS_NESTING_DEADLOCK;               \
-    }
+# define CHECK_SPINLOCK_NESTING_ORDER_ERROR(core_id, spinlock_id, result)      \
+  if ((result == (tpl_status)E_OK)                                             \
+   && (HAS_SPINLOCK(core_id))                                                  \
+   && (!SPINLOCK_IS_SUCCESSOR(GET_LAST_TAKEN_SPINLOCK(core_id), spinlock_id))) \
+  {                                                                            \
+    result = (tpl_status)E_OS_NESTING_DEADLOCK;                                \
+  }
 #endif
-
 
 /**
  * @def CHECK_SPINLOCK_UNNESTING_ORDER_ERROR
  *
  * This macro checks is a spinlock is released is the right nesting order
  *
+ * @param core_id
  * @param spinlock_id #SpinlockIdType (so called spinlock_id) to check
  * @param result error code variable to set (StatusType)
  *
@@ -1180,20 +1182,92 @@
 /* No extended error checking (WITH_OS_EXTENDED == NO)  */
 #if (WITH_OS_EXTENDED == NO)
     /* Does not check the isr_id in this case */
-#   define CHECK_SPINLOCK_UNNESTING_ORDER_ERROR(spinlock_id,result)
+#   define CHECK_SPINLOCK_UNNESTING_ORDER_ERROR(core_id,spinlock_id,result)
 #endif
 
 /* Any SPINLOCK and extended error checking (WITH_OS_EXTENDED == YES)  */
 #if (SPINLOCK_COUNT > 0) && (WITH_OS_EXTENDED == YES)
     /* E_OK or E_OS_ID   */
-#   define CHECK_SPINLOCK_UNNESTING_ORDER_ERROR(spinlock_id,result) \
-    if  ((result == (tpl_status)E_OK) &&                            \
-        ( spinlock_id <= tpl_last_taken_spinlock )                  \
-    {                                                               \
-        result = (tpl_status)E_OS_NOFUNC;                           \
+#   define CHECK_SPINLOCK_UNNESTING_ORDER_ERROR(core_id,spinlock_id,result) \
+    if  (   (result == (tpl_status)E_OK)                                    \
+         && (  (!HAS_SPINLOCK(core_id))                                     \
+            || (GET_LAST_TAKEN_SPINLOCK(core_id) != spinlock_id)))          \
+    {                                                                       \
+        result = (tpl_status)E_OS_NOFUNC;                                   \
     }
 #endif
 
+/**
+ * @def CHECK_SPINLOCK_INTERFERENCE_DEADLOCK
+ *
+ * This macro checks if the spinlock is already occupied by a TASK/ISR2 on the
+ * same core
+ *
+ * @param core_id
+ * @param spinlock_id #SpinlockIdType (so called spinlock_id) to check
+ * @param result error code variable to set (StatusType)
+ *
+ * @note this checking is disabled if WITH_OS_EXTENDED == NO
+ * @note the error code is set only if there was no previous error
+ */
+
+/* No extended error checking (WITH_OS_EXTENDED == NO)  */
+#if (WITH_OS_EXTENDED == NO)
+    /* Does not check the isr_id in this case */
+#   define CHECK_SPINLOCK_INTERFERENCE_DEADLOCK_ERROR(core_id,spinlock_id,result)
+#endif
+
+/* Any SPINLOCK and extended error checking (WITH_OS_EXTENDED == YES)  */
+#if (SPINLOCK_COUNT > 0) && (WITH_OS_EXTENDED == YES)
+    /* E_OK or E_OS_ID   */
+#   define CHECK_SPINLOCK_INTERFERENCE_DEADLOCK_ERROR(core_id,spinlock_id,result) \
+    if  (result == (tpl_status)E_OK)                                        \
+    {                                                                       \
+        VAR(uint32, AUTOMATIC) temp;                                        \
+        for(temp = 0; temp < GET_TAKEN_SPINLOCK_COUNTER(core_id); temp++){  \
+          if(GET_TAKEN_SPINLOCK(core_id, temp) == spinlock_id) {            \
+            result = (tpl_status)E_OS_INTERFERENCE_DEADLOCK;                \
+            break;                                                          \
+          }                                                                 \
+        }                                                                   \
+    }
+#endif
+
+/**
+ * @def CHECK_SPINLOCK_NOT_TAKEN_ERROR
+ *
+ * This macro checks if the spinlock is not occupied by the calling TASK
+ *
+ * @param core_id
+ * @param spinlock_id #SpinlockIdType (so called spinlock_id) to check
+ * @param result error code variable to set (StatusType)
+ *
+ * @note this checking is disabled if WITH_OS_EXTENDED == NO
+ * @note the error code is set only if there was no previous error
+ */
+
+/* No extended error checking (WITH_OS_EXTENDED == NO)  */
+#if (WITH_OS_EXTENDED == NO)
+    /* Does not check the isr_id in this case */
+#   define CHECK_SPINLOCK_NOT_TAKEN_ERROR(core_id,spinlock_id,result)
+#endif
+
+/* Any SPINLOCK and extended error checking (WITH_OS_EXTENDED == YES)  */
+#if (SPINLOCK_COUNT > 0) && (WITH_OS_EXTENDED == YES)
+    /* E_OK or E_OS_ID   */
+#   define CHECK_SPINLOCK_NOT_TAKEN_ERROR(core_id,spinlock_id,result) \
+    if  (result == (tpl_status)E_OK)                                        \
+    {                                                                       \
+        VAR(uint32, AUTOMATIC) temp;                                        \
+        result = (tpl_status)E_OS_STATE;                                    \
+        for(temp = 0; temp < GET_TAKEN_SPINLOCK_COUNTER(core_id); temp++){  \
+          if(GET_TAKEN_SPINLOCK(core_id, temp) == spinlock_id) {            \
+            result = (tpl_status) E_OK;                                     \
+            break;                                                          \
+          }                                                                 \
+        }                                                                   \
+    }
+#endif
 
 /* TPL_AS_ERROR_H */
 #endif

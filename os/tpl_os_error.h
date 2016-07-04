@@ -1800,6 +1800,49 @@ tpl_service.parameters.id.spinlock_id = (spinlockid);
   }
 #endif
 
+/**
+ * @def CHECK_ACCESS_RIGHTS_SPINLOCK_ID
+ *
+ * This macro checks if running task is allowed to access to
+ * the spinlock identifier in parameter
+ *
+ * This macro is a little different than the service call CheckObjectAccess.
+ * (bit_shift+1) because the first bit (bit_shift) is set if the object
+ * belongs to the OS application and we want to know if the actual
+ * task has access right to the application, which is indicates by
+ * the second bit (bit_shift+1).
+ *
+ * @param obj_id #ObjectID to check
+ * @param result error code variable to set (StatusType)
+ *
+ * @note error code is not set if it does not equal E_OK
+ * @note checking is disable when WITH_OS_EXTENDED == NO
+ */
+
+#if (WITH_OS_EXTENDED == NO) || (WITH_OSAPPLICATION == NO)
+# define CHECK_ACCESS_RIGHTS_SPINLOCK_ID(a_core_id, obj_id,result)
+#elif (APP_COUNT == 0)
+# define CHECK_ACCESS_RIGHTS_SPINLOCK_ID(a_core_id, obj_id,result) \
+  if (result == (tpl_status)E_OK)                              \
+  {                                                            \
+    result = E_OS_ACCESS;                                      \
+  }
+#else
+# define CHECK_ACCESS_RIGHTS_SPINLOCK_ID(a_core_id, obj_id,result) \
+	if (result == (tpl_status)E_OK)                              \
+	{                                                            \
+    CONST(uint8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7); \
+    CONST(uint8, AUTOMATIC) byte_idx = obj_id >> 2;            \
+    extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT]; \
+    CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access = \
+      tpl_app_table[tpl_stat_proc_table[TPL_KERN(a_core_id).running_id]->app_id];  \
+    if ( (((app_access->access_vec[OBJECT_SPINLOCK][byte_idx]) &            \
+      (1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )            \
+    {                                                                   \
+      result = E_OS_ACCESS;                                             \
+    }                                                                   \
+  }
+#endif
 
 /**
  * @def LOCATION_WITHIN
@@ -2060,6 +2103,22 @@ if (( (((app_access->access_vec[OBJECT_IOC][byte_idx]) &              \
 #endif
 
 #endif /* WITH_IOC == YES */
+
+/**
+ * CHECK_SCHEDULE_WHILE_OCCUPED_SPINLOCK
+ *
+ * This macro checks if the calling TASK is attempting a scheduling while
+ * having an occupied lock
+ */
+#if (WITH_OS_EXTENDED == YES) && (WITH_AUTOSAR == YES) && (SPINLOCK_COUNT > 0)
+#   define CHECK_SCHEDULE_WHILE_OCCUPED_SPINLOCK(a_core_id, a_result) \
+      if (((a_result) == E_OK) && (HAS_SPINLOCK(a_core_id)))          \
+      {                                                               \
+        result = E_OS_SPINLOCK;                                       \
+      }
+#else
+#   define CHECK_SCHEDULE_WHILE_OCCUPED_SPINLOCK(a_core_id, a_result)
+#endif
 
 /**
  * CHECK_CORE_ID_ERROR

@@ -33,6 +33,11 @@ if app::ALARMACCESSNUM > 0 then
 CONST(uint8, OS_CONST) % !app::NAME %_alarms_access[% !app::ALARMACCESSNUM %] = { % !join(app::ALARMACCESSITEMS) % };
 %
 end if
+if app::SPINLOCKACCESSNUM > 0 then
+%/* % !app::SPINLOCKACCESSVECTOR % */
+CONST(uint8, OS_CONST) % !app::NAME %_spinlocks_access[% !app::SPINLOCKACCESSNUM %] = { % !join(app::SPINLOCKACCESSITEMS) % };
+%
+end if
 if app::RESOURCEACCESSNUM > 0 then
 %/* % !app::RESOURCEACCESSVECTOR % */
 CONST(uint8, OS_CONST) % !app::NAME %_rezs_access[% !app::RESOURCEACCESSNUM %] = { % !join(app::RESOURCEACCESSITEMS) % };
@@ -104,7 +109,8 @@ CONST(tpl_app_access, OS_CONST) % !app::NAME %_app_access = {
     % if app::RESOURCEACCESSNUM > 0 then !app::NAME %_rezs_access% else %NULL% end if %,
     % if app::SCHEDULETABLEACCESSNUM > 0 then !app::NAME %_sts_access% else %NULL% end if %,
     % if app::COUNTERACCESSNUM > 0 then !app::NAME %_cnts_access% else %NULL% end if %,
-    % if app::IOCACCESSNUM > 0 then !app::NAME %_iocs_access% else %NULL% end if %
+    % if app::IOCACCESSNUM > 0 then !app::NAME %_iocs_access% else %NULL% end if %,
+    % if app::SPINLOCKACCESSNUM > 0 then !app::NAME %_spinlocks_access% else %NULL% end if %
   },
   % if [app::PROCESS length] > 0 then !app::NAME %_proc_own% else %NULL% end if %,
   % if [app::ALARM length] > 0 then !app::NAME %_alarm_own% else %NULL% end if %,

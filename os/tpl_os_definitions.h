@@ -269,6 +269,31 @@
  */
 #define E_OS_PROTECTION_EXCEPTION 25
 
+/**
+ * @def E_OS_INTERFERENCE_DEADLOCK
+ *
+ * In extended status: A TASK tries to occupy the spinlock while the lock is
+ * already occupied by a TASK on the same core. This would cause a deadlock
+ */
+#define E_OS_INTERFERENCE_DEADLOCK  26
+
+/**
+ * @def E_OS_NESTING_DEADLOCK
+ *
+ * In extended status: A TASK tries to occupy a spinlock while a TASK on the
+ * same core is holding a different spinlock in a way that may cause a deadlock
+ */
+#define E_OS_NESTING_DEADLOCK     27
+
+/**
+ * @def E_OS_SPINLOCK
+ *
+ * [SWS_Os_00612] [SWS_Os_00622] [SWS_Os_00624]
+ * In extended status: TerminateTask, ChainTask, WaitEvent, Schedule is called
+ * while the calling TASK holds a spinlock.
+ */
+#define E_OS_SPINLOCK             28
+
 /************************************
  * Public states of a task or ISR2  *
  ************************************/

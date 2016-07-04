@@ -6,17 +6,6 @@ IMPLEMENTATION mpc5643l_multicore {
     UINT32 CORE;
   };
 
-  /* Add spinlock */
-  SPINLOCK [] {
-    APPLICATION_TYPE ACCESSING_APPLICATION;
-    BOOLEAN [
-      TRUE {
-        SPINLOCK_TYPE SOURCE;
-      },
-      FALSE
-    ] SUCCESSOR = FALSE;
-  };
-
 };
 
 /*
@@ -31,16 +20,6 @@ CPU mpc5643l_interrupt {
 
   INTERCORE_INTERRUPT intercore_it1 { SOURCE = IRQ7; CORE = 0;};
   INTERCORE_INTERRUPT intercore_it2 { SOURCE = IRQ7; CORE = 1;};
-
-  /* Add spinlock library */
-
-  LIBRARY spinlock {
-    PATH = "../autosar";
-    CHEADER = "tpl_as_spinlock.h";
-    CHEADER = "tpl_as_spinlock_kernel.h";
-    CFILE = "tpl_as_spinlock.c";
-    CFILE = "tpl_as_spinlock_kernel.c";
-  };
 
   PLATFORM_FILES ppc_multicore {
     PATH = "ppc/multicore";
