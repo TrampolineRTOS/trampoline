@@ -11,8 +11,8 @@ foreach counter in HARDWARECOUNTERS do
   let used_counters[counter::SOURCE] := counter
 end foreach
 
-if exists used_counters["no_pit"] then
-%VAR(uint32, OS_VAR) tpl_dec_init_value = % !used_counters["no_pit"]::FREQUENCY %;%
+if exists used_counters["decrementer"] then
+%VAR(uint32, OS_VAR) tpl_dec_init_value = % !used_counters["decrementer"]::FREQUENCY %;%
 end if
 %
 

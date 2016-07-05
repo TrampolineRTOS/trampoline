@@ -8,6 +8,10 @@ IMPLEMENTATION psim {
       it_timer_1
     ] SOURCE = it_timer_1;
   };
+
+  OS [] {
+    BOOLEAN HASFLOAT = FALSE;
+  };
 };
 
 /*

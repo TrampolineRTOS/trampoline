@@ -1,0 +1,62 @@
+%
+# @file custom_isr_check.goilTemplate
+#
+# @section desc File description
+#
+# Custom checking for MPC5643L - ISRS
+#
+# @section copyright Copyright
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN
+# Trampoline is protected by the French intellectual property law.
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# @section infos File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+# -----------------------------------------------------------------------------
+# ERROR
+# ISRS must not use a timer as a source
+#
+
+foreach isr in ISRS do
+  if isr::SOURCE == "decrementer"
+   | isr::SOURCE == "pit_ch0"
+   | isr::SOURCE == "pit_ch1"
+   | isr::SOURCE == "pit_ch2"
+   | isr::SOURCE == "pit_ch3" then
+    error isr::SOURCE : "An ISR can not have an hardware timer as a source."
+  end if
+end foreach
+
+# -----------------------------------------------------------------------------
+# ERROR
+# USEFLOAT but chip has no float
+#
+
+foreach isr in ISRS do
+  if isr::USEFLOAT & not OS::HASFLOAT then
+    error isr::USEFLOAT : "The ".TARGET." does not support floating point"
+  end if
+end foreach
+
+# -----------------------------------------------------------------------------
+# ERROR
+# STACKSIZE not defined
+#
+
+foreach isr in ISRS do
+  if not exists isr::STACKSIZE then
+    error isr::NAME : "STACKSIZE must be defined."
+  end if
+end foreach
+%
+

@@ -85,8 +85,8 @@ extern CONSTP2VAR(uint32, OS_CONST, OS_VAR) tpl_sem[NUMBER_OF_CORES];
  * Interrupts registers
  */
 
-#define INTC_SSCIR_CORE0_SW_ISR    TPL_INTERCORE_IT_0
-#define INTC_SSCIR_CORE1_SW_ISR    TPL_INTERCORE_IT_1
+#define INTC_SSCIR_CORE0_SW_ISR    TPL_INTERCORE_IT_CORE0_0
+#define INTC_SSCIR_CORE1_SW_ISR    TPL_INTERCORE_IT_CORE1_0
 #define INTC_SSCIR_SET       (uint8)(0x1 << 1)
 #define INTC_SSCIR_CLR       (uint8)(0x1 << 0)
 

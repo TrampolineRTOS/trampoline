@@ -18,8 +18,8 @@ CPU mpc5643l_interrupt {
 
   /* Intercore interrupts */
 
-  INTERCORE_INTERRUPT intercore_it1 { SOURCE = IRQ7; CORE = 0;};
-  INTERCORE_INTERRUPT intercore_it2 { SOURCE = IRQ7; CORE = 1;};
+  INTERCORE_INTERRUPT intercore_it_c0_0 { SOURCE = IRQ7; CORE = 0;};
+  INTERCORE_INTERRUPT intercore_it_c1_0 { SOURCE = IRQ7; CORE = 1;};
 
   PLATFORM_FILES ppc_multicore {
     PATH = "ppc/multicore";

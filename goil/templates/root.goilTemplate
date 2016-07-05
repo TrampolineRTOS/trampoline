@@ -1331,7 +1331,7 @@ while added
 end repeat
 
 #------------------------------------------------------------------------------*
-# Check the user oil configuration before generating the files
+# Check the user oil configuration before generating files
 #
 
 template if exists root_check in check
