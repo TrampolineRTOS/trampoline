@@ -1,0 +1,181 @@
+OIL_VERSION = "4.0";
+
+IMPLEMENTATION trampoline {
+
+    /* This fix the default STACKSIZE of tasks */
+    TASK {
+        UINT32 STACKSIZE = 800 ;
+    } ;
+
+    /* This fix the default STACKSIZE of ISRs */
+    ISR {
+        UINT32 STACKSIZE = 800 ;
+    } ;
+
+};
+
+CPU spinlock {
+
+  APPMODE OsAppMode {};
+
+  /* ==========================================================================
+   *    OS
+   */
+
+  OS os {
+    NUMBER_OF_CORES = 2;
+    SCALABILITYCLASS = AUTO;
+    MEMMAP = TRUE {
+      COMPILER  = cosmic;
+      LINKER    = cosmic_ld { SCRIPT = "script.lkf"; };
+      ASSEMBLER = cosmic_as;
+      MEMORY_PROTECTION = FALSE;
+    };
+    BUILD = TRUE {
+      TRAMPOLINE_BASE_PATH = "../../../..";
+      APP_SRC   = "spinlock.c";
+      APP_NAME  = "spinlock_exe";
+      COMPILER  = "../../tools/cxvle_auto.py";
+      ASSEMBLER = "../../tools/cxvle_auto.py";
+      LINKER    = "../../tools/clnk_auto.py";
+      COPIER    = "undefcop";
+      SYSTEM    = PYTHON;
+    };
+    STACKMONITORING = FALSE;
+    STATUS          = STANDARD;
+    USEVLE          = TRUE;
+    USEGETSERVICEID = FALSE;
+    USEPARAMETERACCESS = FALSE;
+    USERESSCHEDULER = TRUE;
+    ERRORHOOK       = FALSE;
+    POSTTASKHOOK    = FALSE;
+    PRETASKHOOK     = FALSE;
+    PROTECTIONHOOK  = FALSE;
+    SHUTDOWNHOOK    = FALSE;
+    STARTUPHOOK     = FALSE;
+    SYSTEM_CALL     = TRUE;
+  };
+
+  /* ==========================================================================
+   *    APPLICATION
+   */
+
+  APPLICATION application1 {
+    TASK = producer;
+    COUNTER = Core0_counter0;
+    ALARM = alarm_producer;
+    CORE = 0;
+  };
+
+  APPLICATION application2 {
+    TASK = consumer_1;
+    TASK = consumer_2;
+    COUNTER = Core1_counter0;
+    ALARM = alarm_consumer_1;
+    ALARM = alarm_consumer_2;
+    CORE = 1;
+  };
+
+  /* ==========================================================================
+   *    COUNTER
+   */
+  COUNTER Core0_counter0 {
+    TICKSPERBASE = 1;
+    MAXALLOWEDVALUE = 65535;
+    MINCYCLE = 1;
+    SOURCE = pit_ch0; /* We have to use the pit to synch the cores */
+    HANDLER = tick;
+  };
+
+  COUNTER Core1_counter0 {
+    TICKSPERBASE = 1;
+    MAXALLOWEDVALUE = 65535;
+    MINCYCLE = 1;
+    SOURCE = pit_ch0; /* We use the same pit channel so both alarms are synched */
+    HANDLER = tick;
+  };
+
+  /* ==========================================================================
+   *    ALARM
+   */
+
+  ALARM alarm_producer {
+    COUNTER = Core0_counter0;
+    ACTION = ACTIVATETASK { TASK = producer;};
+    AUTOSTART = TRUE {
+      APPMODE = OsAppMode;
+      ALARMTIME = 100;
+      CYCLETIME = 100;
+    };
+  };
+
+  ALARM alarm_consumer_1 {
+    COUNTER = Core0_counter0;
+    ACTION = ACTIVATETASK { TASK = consumer_1;};
+    AUTOSTART = TRUE {
+      APPMODE = OsAppMode;
+      ALARMTIME = 600;
+      CYCLETIME = 600;
+    };
+  };
+
+  ALARM alarm_consumer_2 {
+    COUNTER = Core1_counter0;
+    ACTION = ACTIVATETASK { TASK = consumer_2;};
+    AUTOSTART = TRUE {
+      APPMODE = OsAppMode;
+      ALARMTIME = 1000;
+      CYCLETIME = 1000;
+    };
+  };
+
+  /* ==========================================================================
+   *    TASK
+   */
+
+  TASK producer {
+    ACTIVATION = 1;
+    PRIORITY = 5;
+    SCHEDULE = FULL;
+    ACCESSING_APPLICATION = application1;
+    AUTOSTART = FALSE;
+    USEFLOAT = FALSE;
+  };
+
+  TASK consumer_1 {
+    ACTIVATION = 1;
+    PRIORITY = 5;
+    SCHEDULE = FULL;
+    ACCESSING_APPLICATION = application1;
+    AUTOSTART = FALSE;
+    USEFLOAT = FALSE;
+  };
+
+  TASK consumer_2 {
+    ACTIVATION = 1;
+    PRIORITY = 5;
+    SCHEDULE = FULL;
+    ACCESSING_APPLICATION = application2;
+    AUTOSTART = FALSE;
+    USEFLOAT = FALSE;
+  };
+
+  /* ==========================================================================
+   *    SPINLOCK
+   */
+
+  SPINLOCK spin0 {
+    ACCESSING_APPLICATION = application1;
+    ACCESSING_APPLICATION = application2;
+    SUCCESSOR = spin1;
+    LOCKMETHOD = LOCK_ALL_INTERRUPTS;
+  };
+
+  SPINLOCK spin1 {
+    ACCESSING_APPLICATION = application1;
+    ACCESSING_APPLICATION = application2;
+    LOCKMETHOD = LOCK_ALL_INTERRUPTS;
+  };
+
+};
+
