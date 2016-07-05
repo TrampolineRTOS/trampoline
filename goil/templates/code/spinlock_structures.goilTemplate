@@ -79,7 +79,6 @@ end if%
 %
 end foreach
 
-if OS::STATUS == "EXTENDED" then
 %
 /*-----------------------------------------------------------------------------
  * Spinlock core relative structures and definitions
@@ -93,7 +92,6 @@ VAR(tpl_spinlock_id, OS_VAR) tpl_taken_spinlock_counter[NUMBER_OF_CORES] = {0};
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 %
-end if
 
 foreach spinlock in SPINLOCK
   before
