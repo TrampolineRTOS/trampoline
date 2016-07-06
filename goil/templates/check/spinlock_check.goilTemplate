@@ -92,28 +92,8 @@ end if
 let application_map := mapof APPLICATION by NAME
 
 foreach spinlock in SPINLOCK do
-  if spinlock::LOCKMETHOD == "LOCK_WITH_RES_SCHEDULER" then
-    let accessing_applications := emptylist
-
-    # Accessing applications
-    foreach application in exists spinlock::ACCESSING_APPLICATION default (emptylist) do
-      let accessing_applications += application_map[application::VALUE]
-    end foreach
-
-    # Applications having this lock
-    foreach application in APPLICATION do
-      foreach app_spinlock in exists application::SPINLOCK default (emptylist) do
-        if app_spinlock::VALUE == spinlock::NAME then
-          let accessing_applications += application
-        end if
-      end foreach
-    end foreach
-
-    # Check if the spinlock belongs to at least one application
-    if [accessing_applications length] == 0 then
-      warning spinlock::NAME : "A Spinlock must belong to an application."
-
-    end if
+  if not exists spinlock::ACCESSING_APPLICATION then
+    error spinlock::NAME : "A Spinlock must belong to at least one application."
   end if
 end foreach
 

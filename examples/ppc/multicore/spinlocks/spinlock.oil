@@ -62,17 +62,17 @@ CPU spinlock {
 
   APPLICATION application1 {
     TASK = producer;
+    TASK = consumer_2;
     COUNTER = Core0_counter0;
     ALARM = alarm_producer;
+    ALARM = alarm_consumer_2;
     CORE = 0;
   };
 
   APPLICATION application2 {
     TASK = consumer_1;
-    TASK = consumer_2;
     COUNTER = Core1_counter0;
     ALARM = alarm_consumer_1;
-    ALARM = alarm_consumer_2;
     CORE = 1;
   };
 
@@ -110,7 +110,7 @@ CPU spinlock {
   };
 
   ALARM alarm_consumer_1 {
-    COUNTER = Core0_counter0;
+    COUNTER = Core1_counter0;
     ACTION = ACTIVATETASK { TASK = consumer_1;};
     AUTOSTART = TRUE {
       APPMODE = OsAppMode;
@@ -120,7 +120,7 @@ CPU spinlock {
   };
 
   ALARM alarm_consumer_2 {
-    COUNTER = Core1_counter0;
+    COUNTER = Core0_counter0;
     ACTION = ACTIVATETASK { TASK = consumer_2;};
     AUTOSTART = TRUE {
       APPMODE = OsAppMode;
@@ -168,13 +168,16 @@ CPU spinlock {
     ACCESSING_APPLICATION = application1;
     ACCESSING_APPLICATION = application2;
     SUCCESSOR = spin1;
-    LOCKMETHOD = LOCK_ALL_INTERRUPTS;
+    LOCKMETHOD = LOCK_NOTHING;
   };
 
   SPINLOCK spin1 {
     ACCESSING_APPLICATION = application1;
     ACCESSING_APPLICATION = application2;
-    LOCKMETHOD = LOCK_ALL_INTERRUPTS;
+    LOCKMETHOD = LOCK_ALL_INTERRUPTS; /* spin1 is used by two tasks in the same
+                                       * core. So we need to prevent scheduling
+                                       * while the lock is taken.
+                                       */
   };
 
 };

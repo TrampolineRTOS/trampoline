@@ -52,7 +52,6 @@ IMPLEMENTATION autosar4 {
 
   APPLICATION [] {
     IOC_TYPE IOC [];
-    SPINLOCK_TYPE SPINLOCK [];
     UINT32 CORE = 0;
   };
 

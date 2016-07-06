@@ -1155,7 +1155,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
     let app::ALARMACCESSITEMS := computeBinaryVector(vector, size)
 
     # vectors for SPINLOCK access
-    let owned_spinlocks := emptymap #mapof app::SPINLOCK by VALUE
+    let owned_spinlocks := emptymap
     let vector := ""
     foreach spinlock in SPINLOCK do
       let vector := vector . computeVector(app, spinlock, owned_spinlocks)
