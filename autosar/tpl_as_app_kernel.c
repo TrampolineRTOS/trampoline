@@ -223,10 +223,9 @@ FUNC(uint8, OS_CODE) tpl_check_object_access_service(
     /*  Get the access vector of the corresponding application  */
       CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =
         tpl_app_table[app_id];
-      CONST(uint8, AUTOMATIC) bit_shift = (uint8)((obj_id << 1) & 0x7);
-      CONST(uint8, AUTOMATIC) byte_idx = (uint8)(obj_id >> 2);
-      result = (uint8)(((app_access->access_vec[obj_type][byte_idx]) &
-         (1 << (bit_shift + 1))) >> (bit_shift + 1));
+      CONST(uint8, AUTOMATIC) bit_shift = (uint8)(obj_id & 0x7);
+      CONST(uint8, AUTOMATIC) byte_idx = (uint8)(obj_id >> 3);
+      result = (uint8)(((app_access->access_vec[obj_type][byte_idx]) >> bit_shift) & 0x1);
     }
 #endif
 
@@ -399,8 +398,8 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(
          */
         TPL_KERN_REF(a_tpl_kern).running->activate_count--;
         tpl_terminate();
-        tpl_start(CORE_ID_OR_NOTHING(core_id));
         TPL_KERN_REF(a_tpl_kern).need_switch = NEED_SWITCH;
+        tpl_start(CORE_ID_OR_NOTHING(core_id));
       }
       else if (restart_id != INVALID_TASK)
       {

@@ -128,11 +128,10 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
 
     /* terminate the running task */
     tpl_terminate();
+    /* task switching should occur */
+    TPL_KERN(core_id).need_switch = NEED_SWITCH;
     /* start the highest priority process */
     tpl_start(CORE_ID_OR_NOTHING(core_id));
-    /* task switching should occur */
-
-    TPL_KERN(core_id).need_switch = NEED_SWITCH;
 
     SWITCH_CONTEXT_NOSAVE(CORE_ID_OR_NOTHING(core_id))
 
@@ -210,10 +209,10 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
 
       /* terminate the running task */
       tpl_terminate();
-      /* start the highest priority task */
-      tpl_start(CORE_ID_OR_NOTHING(core_id));
       /* task switching should occur */
       TPL_KERN(core_id).need_switch = NEED_SWITCH;
+      /* start the highest priority task */
+      tpl_start(CORE_ID_OR_NOTHING(core_id));
       /* local switch context because the task terminates */
       SWITCH_CONTEXT_NOSAVE(CORE_ID_OR_NOTHING(core_id))
     }

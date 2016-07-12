@@ -771,8 +771,8 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(CORE_ID_OR_VOID(core_id))
     /* Preempts the RUNNING task */
     tpl_preempt(CORE_ID_OR_NOTHING(core_id));
     /* Starts the highest priority READY task */
-    tpl_start(CORE_ID_OR_NOTHING(core_id));
     need_switch = NEED_SWITCH | NEED_SAVE;
+    tpl_start(CORE_ID_OR_NOTHING(core_id));
   }
 
   TPL_KERN_REF(kern).need_switch = need_switch;
@@ -889,10 +889,10 @@ FUNC(void, OS_CODE) tpl_block(void)
   /* The internal resource is released. */
   tpl_release_internal_resource((tpl_proc_id)TPL_KERN_REF(kern).running_id);
 
-  /* Start the highest priority task */
-  tpl_start(CORE_ID_OR_NOTHING(core_id));
   /* Task switching should occur */
   TPL_KERN_REF(kern).need_switch = NEED_SWITCH | NEED_SAVE;
+  /* Start the highest priority task */
+  tpl_start(CORE_ID_OR_NOTHING(core_id));
   LOCAL_SWITCH_CONTEXT(core_id)
 }
 
@@ -905,8 +905,8 @@ FUNC(void, OS_CODE) tpl_start_scheduling(CORE_ID_OR_VOID(core_id))
 {
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
-  tpl_start(CORE_ID_OR_NOTHING(core_id));
   TPL_KERN_REF(kern).need_switch = NEED_SWITCH;
+  tpl_start(CORE_ID_OR_NOTHING(core_id));
 }
 
 /**
