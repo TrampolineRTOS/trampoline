@@ -1,3 +1,12 @@
+CPU avr {
+
+  PLATFORM_FILES avr_machine {
+    PATH = "avr";
+    CFILE = "tpl_machine.c";
+    ASFILE = "avr_switch_context.s";
+    ASFILE = "tpl_dispatch.S";
+  };
+};
 /*
  * This configuration file adds a SOURCE attribute to ISR and COUNTER
  */

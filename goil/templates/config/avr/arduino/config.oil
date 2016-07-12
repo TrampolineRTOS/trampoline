@@ -1,3 +1,39 @@
+CPU avrArduino {
+
+  PLATFORM_FILES avr_arduino_machine {
+    PATH = "avr/arduino";
+    CPPFILE = "main.cpp";
+  };
+
+  PLATFORM_FILES arduinoBase {
+    PATH = "avr/arduino/hardware/variants/standard";
+    CPPFILE = "main.cpp";
+  };
+
+  BUILDOPTIONS buildOptionsForArduino {
+    CFLAGS = "-lm"; //math lib requied
+    ASFLAGS = "-x assembler-with-cpp";
+  };
+  
+  PLATFORM_FILES arduinoBaseSerial {
+    CPPFILE = "HardwareSerial0.cpp";
+    CPPFILE = "HardwareSerial.cpp";
+    CPPFILE = "HID.cpp";
+    CPPFILE = "IPAddress.cpp";
+    CPPFILE = "new.cpp";
+    CPPFILE = "Print.cpp";
+    CPPFILE = "Stream.cpp";
+    CPPFILE = "Tone.cpp";
+    CPPFILE = "USBCore.cpp";
+    CPPFILE = "WMath.cpp";
+    CPPFILE = "WString.cpp";
+    CPPFILE = "wiring_digital.c";
+    CPPFILE = "wiring.c";
+    CPPFILE = "abi.cpp";
+    CPPFILE = "hooks.c";
+
+};
+
 /*
  * This configuration file adds a SOURCE attribute to ISR and COUNTER
  * It also define a new object type: INTERRUPT
@@ -50,5 +86,14 @@ CPU arduino {
     MAXALLOWEDVALUE = 65535;
     MINCYCLE = 1;
     SOURCE = "TIMER0_OVF_vect";
+  };
+
+  POSTCOMMAND flash {
+    COMMAND flash {
+      MESSAGE = "Flashing";
+      COMMAND = "avrdude";
+      INPUT = TARGET { EXT = ""; };
+      PREOPTION = "-c arduino -p m328p -P/dev/ttyUSB0 -U flash:w:";
+    };
   };
 }; 
