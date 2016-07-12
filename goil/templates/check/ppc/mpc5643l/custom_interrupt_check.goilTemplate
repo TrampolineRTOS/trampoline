@@ -1,0 +1,45 @@
+%
+# @file custom_interrupt_check.goilTemplate
+#
+# @section desc File description
+#
+# Custom checking for MPC5643L - Interrupts
+#
+# @section copyright Copyright
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN
+# Trampoline is protected by the French intellectual property law.
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# @section infos File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+# -----------------------------------------------------------------------------
+# ERROR
+# Two interrupts cannot have the same ID
+#
+let sorted_interrupt := INTERRUPT
+sort sorted_interrupt by ID <
+
+let previous_id := ""
+let previous_it
+foreach interrupt in sorted_interrupt do
+  if [interrupt::ID string] == previous_id & previous_id != "" then
+    error interrupt::ID : "Interrupts " . interrupt::NAME . " and "
+                        . previous_it::NAME . " have the same ID ("
+                        . [interrupt::ID string] . ")"
+  end if
+  let previous_id := [interrupt::ID string]
+  let previous_it := interrupt
+end foreach
+
+%
+

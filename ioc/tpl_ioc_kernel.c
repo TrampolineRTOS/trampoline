@@ -57,7 +57,8 @@ FUNC(Std_ReturnType, OS_CODE) tpl_ioc_send_queued_service(
   VAR(tpl_status, AUTOMATIC)                      result = E_OK;
   VAR(Std_ReturnType, AUTOMATIC)                  ioc_result=IOC_E_OK;
   VAR(tpl_ioc_size, AUTOMATIC)                    message;
-	
+  GET_CURRENT_CORE_ID(core_id)
+
   /*  lock the task system  */
   LOCK_KERNEL()
 
@@ -71,7 +72,7 @@ FUNC(Std_ReturnType, OS_CODE) tpl_ioc_send_queued_service(
   CHECK_IOC_ID_ERROR(ioc_id, result)
 
 	/* check access right */
-  CHECK_ACCESS_WRITE_IOC_ID(ioc_id, result)
+  CHECK_ACCESS_WRITE_IOC_ID(core_id, ioc_id, result)
 	
 #if IOC_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
@@ -149,6 +150,7 @@ FUNC(Std_ReturnType, OS_CODE) tpl_ioc_receive_queued_service(
   VAR(tpl_status, AUTOMATIC)                      result = E_OK;
   VAR(Std_ReturnType, AUTOMATIC)                  ioc_result=IOC_E_OK;
   VAR(tpl_ioc_size, AUTOMATIC)                    message;
+  GET_CURRENT_CORE_ID(core_id)
 
   /*  lock the task system  */
   LOCK_KERNEL()
@@ -163,7 +165,7 @@ FUNC(Std_ReturnType, OS_CODE) tpl_ioc_receive_queued_service(
   CHECK_IOC_ID_ERROR(ioc_id, result)
 
   /* check access right */
-  CHECK_ACCESS_READ_IOC_ID(ioc_id, result)
+  CHECK_ACCESS_READ_IOC_ID(core_id, ioc_id, result)
 
 #if IOC_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
@@ -246,6 +248,7 @@ FUNC(StatusType, OS_CODE) tpl_ioc_empty_queue_service(
   VAR(tpl_status, AUTOMATIC)                      result = E_OK;
   VAR(Std_ReturnType, AUTOMATIC)                  ioc_result=IOC_E_OK;
   VAR(tpl_ioc_size, AUTOMATIC)                    message;
+  GET_CURRENT_CORE_ID(core_id)
 
 
   /*  lock the task system  */
@@ -261,7 +264,7 @@ FUNC(StatusType, OS_CODE) tpl_ioc_empty_queue_service(
   CHECK_IOC_ID_ERROR(ioc_id, result)
 
   /* check access right */
-  CHECK_ACCESS_WRITE_IOC_ID(ioc_id, result)
+  CHECK_ACCESS_WRITE_IOC_ID(core_id, ioc_id, result)
 
 
 #if IOC_COUNT > 0
@@ -321,6 +324,7 @@ FUNC(Std_ReturnType, OS_CODE) tpl_ioc_send_unqueued_service(
   VAR(tpl_status, AUTOMATIC)                        result = E_OK;
   VAR(Std_ReturnType, AUTOMATIC)                    ioc_result=IOC_E_OK;
   VAR(tpl_ioc_size, AUTOMATIC)                      message;
+  GET_CURRENT_CORE_ID(core_id)
 
   /*  lock the task system  */
   LOCK_KERNEL()
@@ -335,7 +339,7 @@ FUNC(Std_ReturnType, OS_CODE) tpl_ioc_send_unqueued_service(
   CHECK_IOC_ID_ERROR(ioc_id, result)
 
   /* check access right */
-  CHECK_ACCESS_WRITE_IOC_ID(ioc_id, result)
+  CHECK_ACCESS_WRITE_IOC_ID(core_id, ioc_id, result)
 
 
 #if IOC_COUNT > 0
@@ -401,7 +405,7 @@ FUNC(StatusType, OS_CODE) tpl_ioc_receive_unqueued_service(
   VAR(tpl_status, AUTOMATIC)                        result = E_OK;
   VAR(Std_ReturnType, AUTOMATIC)                    ioc_result=IOC_E_OK;
   VAR(tpl_ioc_size, AUTOMATIC)                      message;
-
+  GET_CURRENT_CORE_ID(core_id)
 
   /*  lock the task system  */
   LOCK_KERNEL()
@@ -416,7 +420,7 @@ FUNC(StatusType, OS_CODE) tpl_ioc_receive_unqueued_service(
   CHECK_IOC_ID_ERROR(ioc_id, result)
 
   /* check access right */
-  CHECK_ACCESS_READ_IOC_ID(ioc_id, result)
+  CHECK_ACCESS_READ_IOC_ID(core_id, ioc_id, result)
 
 #if IOC_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)

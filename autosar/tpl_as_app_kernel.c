@@ -226,7 +226,7 @@ FUNC(uint8, OS_CODE) tpl_check_object_access_service(
       CONST(uint8, AUTOMATIC) bit_shift = (uint8)((obj_id << 1) & 0x7);
       CONST(uint8, AUTOMATIC) byte_idx = (uint8)(obj_id >> 2);
       result = (uint8)(((app_access->access_vec[obj_type][byte_idx]) &
-         (1 << bit_shift)) >> bit_shift);
+         (1 << (bit_shift + 1))) >> (bit_shift + 1));
     }
 #endif
 

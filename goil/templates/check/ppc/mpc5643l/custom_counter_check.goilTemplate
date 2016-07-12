@@ -1,0 +1,140 @@
+%
+# @file custom_counter_check.goilTemplate
+#
+# @section desc File description
+#
+# Custom checking for MPC5643L - Counters
+#
+# @section copyright Copyright
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN
+# Trampoline is protected by the French intellectual property law.
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# @section infos File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+# -----------------------------------------------------------------------------
+# ERROR
+# All hardware counters must have a source
+#
+foreach counter in HARDWARECOUNTERS do
+  if not exists counter::SOURCE then
+    error counter::NAME : "All hardware counters must have a source."
+  end if
+end foreach
+
+# -----------------------------------------------------------------------------
+# ERROR
+# Check the counter's source does exist
+#
+let interrupt_map := mapof INTERRUPT by NAME
+foreach counter in HARDWARECOUNTERS do
+  if not exists interrupt_map[counter::SOURCE] then
+    error counter::NAME : "interrupt source " . counter::SOURCE . " does not "
+                        . "exists."
+  end if
+end foreach
+
+# -----------------------------------------------------------------------------
+# ERROR
+# Watchdog must be an hardware counter
+#
+foreach counter in SOFTWARECOUNTERS do
+  if counter::HANDLER == "watchdog" then
+    error counter::TYPE : "Watchdog must be an hardwarecounter. Please set the"
+                        . " type to HARDWARECOUNTER."
+  end if
+end foreach
+
+# -----------------------------------------------------------------------------
+# ERROR
+# Maximum one watchdog
+#
+let found_watchdog := false
+foreach counter in HARDWARECOUNTERS do
+  if counter::HANDLER == "watchdog" then
+    if found_watchdog then
+      error counter::NAME : "Only one watchdog can be defined."
+    end if
+    let found_watchdog := true
+  end if
+end foreach
+
+# -----------------------------------------------------------------------------
+# ERROR
+# The watchdog must use a pit channel
+#
+
+foreach counter in HARDWARECOUNTERS do
+  if counter::HANDLER == "watchdog"
+    & counter::SOURCE != "pit_ch0"
+    & counter::SOURCE != "pit_ch1"
+    & counter::SOURCE != "pit_ch2"
+    & counter::SOURCE != "pit_ch3" then
+    error counter::NAME : "Watchdog must use a pit channel. Possible values : "
+                        . "pit_ch0, pit_ch1, pit_ch2, pit_ch3"
+  end if
+end foreach
+
+# -----------------------------------------------------------------------------
+# ERROR
+# If the watchdog is enabled, OS::TIMINGPROTECTION should be too
+#
+
+let watchdog_enabled := false
+foreach counter in HARDWARECOUNTERS do
+  if counter::HANDLER == "watchdog" then
+    let watchdog_enabled := true
+  end if
+end foreach
+
+if OS::TIMINGPROTECTION & not watchdog_enabled then
+  error here : "TIMINGPROTECTION enabled without a watchdog"
+end if
+
+if watchdog_enabled & not OS::TIMINGPROTECTION then
+  error here : "Watchdog but TIMINGPROTECTION disabled"
+end if
+
+# -----------------------------------------------------------------------------
+# ERROR
+# Two hardware counters that uses the same channel must have the same frequency
+#
+
+let pit_channel_list := emptymap
+foreach counter in HARDWARECOUNTERS do
+  if exists pit_channel_list[counter::SOURCE] then
+    if pit_channel_list[counter::SOURCE]::FREQUENCY != counter::FREQUENCY then
+      error counter::FREQUENCY : "Counters " . counter::NAME . " and "
+                               . pit_channel_list[counter::SOURCE]::NAME
+                               . " have different frequencies and the same "
+                               . "interrupt source " . counter::SOURCE
+    end if
+  else
+    let pit_channel_list[counter::SOURCE] := counter
+  end if
+end foreach
+
+# -----------------------------------------------------------------------------
+# WARNING
+# Decrementer not implemented in multicore
+#
+
+if OS::NUMBER_OF_CORES > 1 then
+  foreach counter in HARDWARECOUNTERS do
+    if counter::SOURCE == "decrementer" then
+      warning counter::SOURCE : "Decrementer, used by " . counter::NAME . ", "
+                              . " is not tested in multicore."
+    end if
+  end foreach
+end if
+

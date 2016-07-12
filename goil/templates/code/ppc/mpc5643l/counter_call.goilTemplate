@@ -112,13 +112,10 @@ FUNC(void, OS_CODE) tpl_call_counter_tick_% !interrupt::NAME %_% !core_id %(void
 
   tpl_multi_schedule();
   tpl_dispatch_context_switch();
-  if (TPL_KERN(% !core_id %).need_switch & NEED_SWITCH)
-  {
-    LOCAL_SWITCH_CONTEXT(% !core_id %)
-  }
+  LOCAL_SWITCH_CONTEXT(% !core_id %)
+
   /* At this step, this core has already done a scheduling if needed, so
-   * let's ack any pending intercore it to avoid doing another scheduling
-   * after returning from the interrupt.
+   * let's ack any pending intercore it.
    * FIXME : The check for a pending interrupt should be wrapped, so we
    * could use this file as a generic counter call file
    */

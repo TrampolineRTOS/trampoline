@@ -75,11 +75,18 @@
 #define OBJECT_IOC            5
 
 /**
+ * @def OBJECT_SPINLOCK
+ *
+ * Identifier of an spinlock object
+ */
+#define OBJECT_SPINLOCK       6
+
+/**
  * @def OBJECT_KIND_COUNT
  *
  * number of object kind
  */
-#define OBJECT_TYPE_COUNT     6
+#define OBJECT_TYPE_COUNT     7
 
 /**
  *  @def  ACCESS_READ

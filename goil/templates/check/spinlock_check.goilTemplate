@@ -1,0 +1,101 @@
+%
+# @file spinlock_check.goilTemplate
+#
+# @section desc File description
+#
+# Spinlock Checks template file for goil
+#
+# @section copyright Copyright
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN
+# Trampoline is protected by the French intellectual property law.
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# @section infos File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+# -----------------------------------------------------------------------------
+# ERROR
+# Check that we're using spinlocks in multicore
+#
+
+if OS::NUMBER_OF_CORES < 2 then
+  error here : "Spinlocks cannot be defined in multicore"
+end if
+
+# -----------------------------------------------------------------------------
+# ERROR
+# Check for cycles in the declaration of spinlocks
+#
+
+let map_spinlock := mapof SPINLOCK by NAME
+
+foreach spinlock in SPINLOCK do
+  let found_spinlock := emptymap
+  let color_spinlock := emptymap
+  let found_spinlock[spinlock::NAME] := spinlock
+#  println "########## " . spinlock::NAME . " ##########"
+
+  repeat
+    let found_new := false
+    foreach new_spinlock in found_spinlock do
+      if not exists color_spinlock[new_spinlock::NAME] then
+#        println "=== " . new_spinlock::NAME . " ==="
+        let color_spinlock[new_spinlock::NAME] := true
+
+        foreach son in exists new_spinlock::SUCCESSOR default (emptylist) do
+          if son::VALUE == spinlock::NAME then
+            error spinlock::NAME : "Spinlock " . son::VALUE . " found in a cycle !"
+          end if
+          let found_spinlock[son::VALUE] := map_spinlock[son::VALUE]
+          let found_new := true
+#          println "> " . son::VALUE . ""
+        end foreach
+      end if
+    end foreach
+  while found_new
+  end repeat
+
+end foreach
+
+# -----------------------------------------------------------------------------
+# ERROR
+# If a lock has the method LOCK_WITH_RES_SCHEDULER, make sure RESSCHEDULER is
+# enabled
+#
+
+let method_with_res_scheduler := false
+foreach spinlock in SPINLOCK do
+  if spinlock::LOCKMETHOD == "LOCK_WITH_RES_SCHEDULER" then
+    let method_with_res_scheduler := true
+  end if
+end foreach
+
+if method_with_res_scheduler & (not OS::USERESSCHEDULER) then
+  error here : "Spinlock with LOCK_WITH_RES_SCHEDULER method but "
+             . "OS::USERESSCHEDULER is not set"
+end if
+
+# -----------------------------------------------------------------------------
+# WARNING
+# Check if the spinlock belongs to at least one application
+#
+
+let application_map := mapof APPLICATION by NAME
+
+foreach spinlock in SPINLOCK do
+  if not exists spinlock::ACCESSING_APPLICATION then
+    error spinlock::NAME : "A Spinlock must belong to at least one application."
+  end if
+end foreach
+
+%
+

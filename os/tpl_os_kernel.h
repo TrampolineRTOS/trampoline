@@ -371,11 +371,11 @@ extern VAR(tpl_internal_resource, OS_VAR) INTERNAL_RES_SCHEDULER;
 
 #else
 /* NUMBER_OF_CORES > 1, Multicore definitions */
-#define REMOTE_SWITCH_CONTEXT(a_core_id)                 \
-  if (TPL_KERN(a_core_id).need_switch != NO_NEED_SWITCH) \
-  {                                                      \
-    TPL_KERN(a_core_id).need_switch = NO_NEED_SWITCH;    \
-    tpl_send_intercore_it(a_core_id);                    \
+#define REMOTE_SWITCH_CONTEXT(a_core_id)                          \
+  if (TPL_KERN(a_core_id).need_switch != NO_NEED_SWITCH)          \
+  {                                                               \
+    /* need_switch flag will be resetted by the remote core */    \
+    tpl_send_intercore_it(a_core_id);                             \
   }
 
 #if WITH_SYSTEM_CALL == NO

@@ -36,7 +36,6 @@
 #endif
 #if WITH_MULTICORE == YES
 # include "tpl_os_multicore_macros.h"
-# include "tpl_as_spinlock_kernel.h"
 #endif
 #include "tpl_app_custom_types.h"
 #include "tpl_registers.h"
@@ -393,9 +392,6 @@ FUNC(void, OS_CODE) tpl_start_core(
 FUNC(void, OS_CODE) tpl_send_intercore_it(
   CONST(CoreIdType, AUTOMATIC) to_core_id)
 {
-  /* force context switch */
-  TPL_KERN(to_core_id).need_switch = NEED_SWITCH | NEED_SAVE;
-
   /* set software interrupt flag on the given core */
   if(to_core_id == 0)
   {

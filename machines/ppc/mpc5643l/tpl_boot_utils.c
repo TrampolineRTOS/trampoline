@@ -33,7 +33,7 @@
 #include "tpl_os_std_types.h"
 #include "tpl_os.h"
 
-#define OS_START_SEC_CODE
+#define OS_START_SEC_BOOT
 #include "tpl_memmap.h"
 
 FUNC(void, OS_CODE) tpl_clear_bss(uint32* bss_start, uint32* bss_end)
@@ -96,6 +96,6 @@ FUNC(void, OS_CODE) tpl_copy_init_data(csmic_idata_desc* desc){
 
 #endif
 
-#define OS_STOP_SEC_CODE
+#define OS_STOP_SEC_BOOT
 #include "tpl_memmap.h"
 

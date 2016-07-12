@@ -2,17 +2,11 @@ IMPLEMENTATION mpc5643l {
 
   /* Add the source and the handler of the counter */
   COUNTER [] {
-    ENUM [
-        pit_ch0,
-        pit_ch1,
-        pit_ch2,
-        pit_ch3,
-        no_pit
-    ] SOURCE = no_pit;
+    IDENTIFIER WITH_AUTO SOURCE = decrementer; /* FIXME : No default value */
     ENUM [
         tick,
         watchdog
-    ] HANDLER = tick;
+    ] HANDLER = tick; /* FIXME : No default value. */
     UINT32 FREQUENCY = 120000; /* Default : 120000000Hz = 1ms */
   };
 
@@ -23,8 +17,7 @@ IMPLEMENTATION mpc5643l {
    */
   OS [] {
     BOOLEAN USEVLE;
-    BOOLEAN USEFLOAT = FALSE;
-    BOOLEAN WITH_AUTO HASFLOAT = TRUE;
+    BOOLEAN HASFLOAT = TRUE;
   };
 
   TASK [] {
@@ -64,14 +57,14 @@ CPU mpc5643l_interrupt {
   INTERRUPT IRQ6    { ID = 6; TYPE = SOFTWARE; };
   INTERRUPT IRQ7    { ID = 7; TYPE = SOFTWARE; }; // Intercore Reserved in multicore
 
-  /* Hardware interrupts */
+  /* Hardware timer interrupts */
 
   INTERRUPT pit_ch0 { ID = 59; };
   INTERRUPT pit_ch1 { ID = 60; };
   INTERRUPT pit_ch2 { ID = 61; };
   INTERRUPT pit_ch3 { ID = 127; };
 
-  INTERRUPT no_pit { ID = 999; };
+  INTERRUPT decrementer { ID = 999;}; /* FIXME : The decrementer has no ID */
 
 //======= Old Version : TODO performance tests with the new one
 //  PLATFORM_FILES ppc {

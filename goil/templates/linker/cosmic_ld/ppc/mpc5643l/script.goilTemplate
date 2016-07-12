@@ -114,8 +114,10 @@ let data_size_hash["UNSPECIFIED"]       := "UN"
 +def bam_size=0x00010000
 
 +def ivor_offset_base=0x00010000
-+def application_base=0x00010200
-+def application_size=0x00EEFE00
++def boot_base=0x00010200
++def boot_size=0x00000Dff
++def application_base=0x00011000
++def application_size=0x00EEF000
 
 ## STATIC RAM
 +def sram_base=0x40000000 # Data, bss, task stacks
@@ -271,13 +273,22 @@ end for
 #===========================================
 #             CODE
 
+# /* Boot code section
+#  * The BAM's MMU initialization configures a 4KB page size to hold the boot
+#  * function label. As the application base begins
+#  * at address 0x10200, the configured page will hold an address range of
+#  * 0x10000 to 0x10fff. So the osBoot section must not exceed a size of 3.5kb
+#  */
++seg osboot -b boot_base -m boot_size -n osboot
++grp osboot=.osBoot
+
 # /* Other (garbage) codes
 #  * We're putting these segments first because they can (should) not contain
 #  * anything and initialized data relocation, located after text segments,
 #  * require that the last text section is not empty
 #  */
 
-+seg text_garbage  -b application_base -m application_size -n text_garbage
++seg text_garbage -b application_base -m application_size -n text_garbage
 +grp text_garbage=.text
 +grp text_garbage=.vtext
 +grp text_garbage=.ctors
