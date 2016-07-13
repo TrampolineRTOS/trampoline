@@ -370,11 +370,6 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(
 #endif
           tpl_release_internal_resource(proc_id);
           /* reset the task descriptor */
-#if WITH_AUTOSAR_TIMING_PROTECTION == YES
-          tpl_stop_budget_monitor(proc_id);
-          tpl_stop_all_resource_monitor(proc_id);
-          tpl_dyn_proc_table[proc_id]->activation_allowed = TRUE;
-#endif
           tpl_dyn_proc_table[proc_id]->state = SUSPENDED;
           tpl_dyn_proc_table[proc_id]->activate_count = 0;
           tpl_dyn_proc_table[proc_id]->priority =
