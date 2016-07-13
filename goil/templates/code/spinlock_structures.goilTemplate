@@ -1,0 +1,119 @@
+/*=============================================================================
+ * Declaration of Spinlocks relative structures and defines
+ */
+%
+
+# Compute Spinlock ids
+let spinlock_id  := emptymap
+foreach spinlock in SPINLOCK do
+  let spinlock_id[spinlock::NAME] := INDEX
+end foreach
+let spinlock_map := mapof SPINLOCK by NAME
+
+foreach spinlock in SPINLOCK do%
+/*-----------------------------------------------------------------------------
+ * Spinlock % !spinlock::NAME % descriptor
+ */%
+
+  if OS::STATUS == "EXTENDED" then
+      let color_spinlock := emptymap
+      let successors := emptylist
+      let successors += spinlock
+      # Get the list of successors
+      repeat
+        let found_new := false
+        foreach successor in successors do
+          if not exists color_spinlock[successor::NAME] then
+            let color_spinlock[successor::NAME] := true
+
+            foreach son in exists successor::SUCCESSOR default (emptylist) do
+              let successors += spinlock_map[son::VALUE]
+              let found_new := true
+            end foreach
+          end if
+        end foreach
+      while found_new
+      end repeat
+
+      # successor_bitfield is a bigint, so we can store as many bits as
+      # spinlocks we have
+      let successor_bitfield := 0
+      foreach successor in successors do
+        if successor::NAME != spinlock::NAME then
+          let successor_bitfield := successor_bitfield + (1 << spinlock_id[successor::NAME])
+        end if
+      end foreach
+
+%
+#define OS_START_SEC_CONST_8BIT
+#include "tpl_memmap.h"
+CONST(tpl_spinlock_successor_bitfield, OS_CONST) % !spinlock::NAME %_successors_bitfield[] = {
+%
+      let successor_array_size := ([SPINLOCK length] - 1) / 8
+      loop index from 0 to successor_array_size  do
+        let value := successor_bitfield >> (8 * index)
+        let value := value & 255
+%  % !value %%
+      between %,
+%
+      end loop
+%
+};
+#define OS_STOP_SEC_CONST_8BIT
+#include "tpl_memmap.h"
+%
+  end if
+
+%
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+VAR(tpl_spinlock, OS_VAR) % !spinlock::NAME %_spinlock_desc = {
+    /* lock state  */   UNLOCKED_LOCK,
+    /* lock method */   % !spinlock::LOCKMETHOD %,%
+if OS::STATUS == "EXTENDED" then%
+    /* successors  */   % !spinlock::NAME %_successors_bitfield%
+end if%
+};
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+%
+end foreach
+
+%
+/*-----------------------------------------------------------------------------
+ * Spinlock core relative structures and definitions
+ */
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+/* LIFO of taken spinlocks. One LIFO per core. */
+VAR(tpl_spinlock_id, OS_VAR) tpl_taken_spinlocks[NUMBER_OF_CORES][SPINLOCK_COUNT];
+/* Index of the current spinlock in the LIFO */
+VAR(tpl_spinlock_id, OS_VAR) tpl_taken_spinlock_counter[NUMBER_OF_CORES] = {0};
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+%
+
+foreach spinlock in SPINLOCK
+  before
+%
+/*-----------------------------------------------------------------------------
+ * Spinlock descriptor table
+ */
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+CONSTP2VAR(tpl_spinlock, OS_CONST, OS_VAR)
+tpl_spinlock_table[SPINLOCK_COUNT] = {
+%
+  do
+      %  &% !spinlock::NAME %_spinlock_desc%
+  between
+      %,
+%
+  after %
+};
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+%
+end foreach
+
+%

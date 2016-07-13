@@ -16,69 +16,6 @@ let INTERCORE_INTERRUPT := exists INTERCORE_INTERRUPT default (emptylist)
 %
 
 ###############################################################################
-#   Checks
-#
-
-###### First we check all used interrupt sources exist
-let IT_SOURCES := mapof INTERRUPT by NAME
-foreach counter in HARDWARECOUNTERS do
-  if not exists IT_SOURCES[counter::SOURCE] then
-    error counter::SOURCE : "Interrupt source ".counter::SOURCE." does not exist"
-  end if
-end foreach
-foreach isr in ISRS do
-  if not exists IT_SOURCES[isr::SOURCE] then
-    error isr::SOURCE : "Interrupt source ".isr::SOURCE." does not exist"
-  end if
-end foreach
-foreach intercore_it in INTERCORE_INTERRUPT do
-  if not exists IT_SOURCES[intercore_it::SOURCE] then
-    error isr::SOURCE : "Interrupt source ".isr::SOURCE." does not exist"
-  end if
-end foreach
-
-###### Watchdog checking
-let watchdog_source := ""
-
-foreach counter in HARDWARECOUNTERS do
-  if counter::HANDLER == "watchdog" then
-    let watchdog_source := counter::SOURCE
-  end if
-end foreach
-
-# Warning if watchdog is disabled
-if watchdog_source == "no_pit" then
-    warning here : "WATCHDOG : No pit channel selected for the watchdog (given SOURCE = " .watchdog_source. "). Watchdog disabled."
-elsif watchdog_source != "" & not OS::TIMINGPROTECTION then
-    warning here : "WATCHDOG : OS::TIMINGPROTECTION set to false. Watchdog disabled."
-end if
-
-###### Check ISRS are not using a wrong source
-foreach isr in ISRS do
-  if isr::SOURCE == "no_pit"
-   | isr::SOURCE == "pit_ch0"
-   | isr::SOURCE == "pit_ch1"
-   | isr::SOURCE == "pit_ch2"
-   | isr::SOURCE == "pit_ch3" then
-    error here : "ISR " .isr::NAME. " : The uses of an hardware timer for an ISR is forbidden."
-  end if
-end foreach
-
-###### Check there is not two interrupts with the same ID
-let sorted_interrupt := INTERRUPT
-sort sorted_interrupt by ID <
-
-let previous_id := ""
-let previous_it
-foreach interrupt in sorted_interrupt do
-  if [interrupt::ID string] == previous_id & previous_id != "" then
-    error here : "interrupt " . interrupt::NAME . " and " . previous_it::NAME . " have the same ID (" . [interrupt::ID string] . ")"
-  end if
-  let previous_id := [interrupt::ID string]
-  let previous_it := interrupt
-end foreach
-
-###############################################################################
 #   handlers declaration
 #
 
@@ -110,7 +47,8 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
     if application::CORE == core_id then
       foreach counter_name in exists application::COUNTER default (emptylist) do
         let counter := counter_map[counter_name::VALUE]
-        if counter::SOURCE != "no_pit" & counter::TYPE == "HARDWARE" then
+        if counter::SOURCE != "decrementer"
+         & counter::TYPE == "HARDWARE" then
           let interrupt := interrupt_map[counter::SOURCE]
           let used_interrupts[counter::SOURCE] := interrupt
         end if
@@ -181,11 +119,7 @@ CONST(tpl_it_vector_entry, OS_CONST) tpl_it_table_%!core_id%[% !INTERRUPT_COUNT:
           if counter::SOURCE == interrupt::NAME
            & counter::TYPE == "HARDWARE"
            & not entryFound then
-            if counter::SOURCE == "no_pit"
-             | (counter::HANDLER == "watchdog" & not OS::TIMINGPROTECTION) then
-              %  { (tpl_it_handler)tpl_null_it, (void *)% !ENTRY % }%
-              let entryFound := true
-            elsif counter::HANDLER == "watchdog" then
+            if counter::HANDLER == "watchdog" then
               %  { (tpl_it_handler)tpl_watchdog_handler, (void *)NULL }%
               let entryFound := true
             elsif OS::NUMBER_OF_CORES > 1 then

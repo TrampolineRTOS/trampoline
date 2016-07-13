@@ -50,7 +50,7 @@ TPL_VLE_ON
 TPL_VLE_OFF
 #endif
 
-#define OS_START_SEC_CODE
+#define OS_START_SEC_BOOT
 #include "tpl_as_memmap.h"
 
 /* ============================================================================
@@ -59,27 +59,6 @@ TPL_VLE_OFF
 
 TPL_GLOBAL(tpl_master_core_startup)
 TPL_GLOBAL_REF(tpl_master_core_startup) :
-    /* First, we initialise the TLB to have access to the whole flash code */
-
-    //# MMU Entry First 1MB FLASH    //# MAS0 : ESEL=1
-    //# MAS1 : TSIZ=1MB
-    //# MAS2 : EPN=0x000000000, W=0, I=0, M=0, G=0, E=big
-    //# MAS3 : RPN=0x000000000, PERMIS=all
-    e_lis     r3, 0x1000
-    mtspr     spr_MAS0,    r3
-    e_lis     r4, 0xC000
-    e_or2i    r4, 0x0500
-    mtspr     spr_MAS1,    r4
-    e_lis     r5, 0x0000
-    e_or2i    r5, 0x0020
-    mtspr     spr_MAS2,    r5
-    e_lis     r6, 0x0000
-    e_or2i    r6, 0x003f
-    mtspr     spr_MAS3,    r6
-    msync
-    tlbwe
-    se_isync
-
     /* Set MSR */
     mfmsr   r5
     e_lis   r6,0x0200
@@ -87,7 +66,7 @@ TPL_GLOBAL_REF(tpl_master_core_startup) :
     mtmsr   r5
     isync
 
-    /* Continue the initialization of the MMU */
+    /* Initialization of the MMU */
     e_bl      TPL_EXTERN_REF(tpl_init_mmu)
 
     /* Clear registers */
@@ -135,7 +114,7 @@ TPL_EXTERN(_stack_addr_p1)
 /* =============================================================================
  *  Slave core boot
  */
-
+ALIGN(4) /* Must be aligned to at least 4bytes */
 TPL_GLOBAL(tpl_slave_core_startup)
 TPL_GLOBAL_REF(tpl_slave_core_startup):
     /* First, we initialise the TLB to have access to the whole flash code */
@@ -556,7 +535,7 @@ TPL_GLOBAL_REF(tpl_reset_registers):
 
     se_blr
 
-#define OS_STOP_SEC_CODE
+#define OS_STOP_SEC_BOOT
 #include "tpl_as_memmap.h"
 
 

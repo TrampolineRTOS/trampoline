@@ -1,0 +1,77 @@
+%
+# @file custom_intercoreInterrupt_check.goilTemplate
+#
+# @section desc File description
+#
+# Custom checking for MPC5643L - Intercore Interrupts
+#
+# @section copyright Copyright
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN
+# Trampoline is protected by the French intellectual property law.
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# @section infos File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+# -----------------------------------------------------------------------------
+# ERROR
+# In multicore, we need at least one INTERCORE_IT per core
+#
+
+loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+  let found_it := false
+
+  foreach interrupt in exists INTERCORE_INTERRUPT default(emptylist) do
+    if interrupt::CORE == core_id then
+      let found_it := true
+    end if
+  end foreach
+
+  if not found_it then
+    error here : "Core " . [core_id string] . " has no intercore interrupts."
+               . " Need at lest one per core."
+  end if
+end loop
+
+# -----------------------------------------------------------------------------
+# ERROR
+# An intercore interrupt's source must be a software interrupt channel
+#
+
+let interrupt_map := mapof INTERRUPT by NAME
+foreach int_it in INTERCORE_INTERRUPT do
+  if interrupt_map[int_it::SOURCE]::TYPE != "SOFTWARE" then
+    error int_it::SOURCE : "Intercore it must use a software interrupt channel"
+  end if
+end foreach
+
+# -----------------------------------------------------------------------------
+# ERROR
+# Two intercore interrupt in the same core cannot have the same it source
+#
+
+foreach interrupt in INTERCORE_INTERRUPT do
+  foreach other_interrupt in INTERCORE_INTERRUPT do
+    if  interrupt::NAME != other_interrupt::NAME
+      & interrupt::CORE == other_interrupt::CORE
+      & interrupt::SOURCE == other_interrupt::SOURCE then
+      error here : "Intercore it " . interrupt::NAME . " and "
+                 . other_interrupt::NAME . " have the same core ("
+                 . [interrupt::CORE string] . ") and the same source ("
+                 . interrupt::SOURCE . ")"
+    end if
+
+  end foreach
+end foreach
+
+%
+

@@ -1,6 +1,6 @@
 #---------------------------------------------------------------------------*
 #
-#  @file temùplate_semantics.galgas
+#  @file template_semantics.galgas
 #
 #  @section desc File description
 #
@@ -90,7 +90,7 @@ list @TfieldMapList {
 #------------------------------------------------------------------------------*
 
 struct @Tvalue {
-  @sint64 mInt64Value
+  @bigint mBigIntValue
   @double mFloatValue
   @string mStringValue
   @TfieldMapList mMapListValue
@@ -120,7 +120,7 @@ func valueWithBool
   ?let @lstring description
   ->@Tvalue outValue {
   outValue = @Tvalue. new {
-    ![inValue sint64]
+    ![[inValue uint] bigint]
     !0.0
     !""
     !@TfieldMapList. emptyList
@@ -132,11 +132,11 @@ func valueWithBool
 #------------------------------------------------------------------------------*
 
 func valueWithUnsigned
-  ?let @uint64 inValue
+  ?let @bigint inValue
   ?let @lstring description
   ->@Tvalue outValue {
   outValue = @Tvalue. new {
-    ![inValue sint64]
+    !inValue
     !0.0
     !""
     !@TfieldMapList. emptyList
@@ -148,7 +148,7 @@ func valueWithUnsigned
 #------------------------------------------------------------------------------*
 
 func valueWithSigned
-  ?let @sint64 inValue
+  ?let @bigint inValue
   ?let @lstring description
   ->@Tvalue outValue {
   outValue = @Tvalue. new {
@@ -168,7 +168,7 @@ func valueWithFloat
   ?let @lstring description
   ->@Tvalue outValue {
   outValue = @Tvalue. new {
-    !0LS
+    !0_G
     !inValue
     !""
     !@TfieldMapList. emptyList
@@ -184,7 +184,7 @@ func valueWithString
   ?let @lstring description
   ->@Tvalue outValue {
   outValue = @Tvalue. new {
-    !0LS
+    !0_G
     !0.0
     !inValue
     !@TfieldMapList. emptyList
@@ -200,7 +200,7 @@ func valueWithStruct
   ?let @lstring description
   ->@Tvalue outValue {
   outValue = @Tvalue. new {
-    !0LS
+    !0_G
     !0.0
     !""
     !@TfieldMapList. emptyList
@@ -216,7 +216,7 @@ func valueWithMap
   ?let @lstring description
   ->@Tvalue outValue {
   outValue = @Tvalue. new {
-    !0LS
+    !0_G
     !0.0
     !""
     !@TfieldMapList. emptyList
@@ -232,7 +232,7 @@ func valueWithList
   ?let @lstring description
   ->@Tvalue outValue {
   outValue = @Tvalue. new {
-    !0LS
+    !0_G
     !0.0
     !""
     !inValue
@@ -246,7 +246,7 @@ func valueWithList
 func valueWithVoid
   ->@Tvalue outValue {
   outValue = @Tvalue. new {
-    !0LS
+    !0_G
     !0.0
     !""
     !@TfieldMapList. emptyList
@@ -274,7 +274,7 @@ proc addBoolValue
 proc addUnsignedValue
   ?!@TfieldMap ioTemplateVariableMap
   ?let @lstring inVariableName
-  ?let @uint64 inValue
+  ?let @bigint inValue
   ?let @lstring description {
   [!?ioTemplateVariableMap insertKey
     !inVariableName
@@ -289,7 +289,7 @@ proc addUnsignedValue
 proc addSignedValue
   ?!@TfieldMap ioTemplateVariableMap
   ?let @lstring inVariableName
-  ?let @sint64 inValue
+  ?let @bigint inValue
   ?let @lstring description {
   [!?ioTemplateVariableMap insertKey
     !inVariableName
@@ -321,7 +321,7 @@ proc addLUnsignedValue
   ?let @string inVariableName
   ?let @luint64 inValue
   ?let @lstring description {
-  addUnsignedValue ( !?ioTemplateVariableMap !@lstring. new { !inVariableName ![inValue location]} ![inValue uint64] !description)
+  addUnsignedValue ( !?ioTemplateVariableMap !@lstring. new { !inVariableName ![inValue location]} ![inValue bigint] !description)
 }
 
 #------------------------------------------------------------------------------*
@@ -359,7 +359,7 @@ proc addListValue
   [!?ioTemplateVariableMap insertKey
     !inVariableName
     !@Ttype. listType
-    !@Tvalue. new { !0LS !0.0 !"" !inValue !@TfieldMap. emptyMap !dummyFunction() !description}
+    !@Tvalue. new { !0_G !0.0 !"" !inValue !@TfieldMap. emptyMap !dummyFunction() !description}
     
   ]
 }
@@ -374,7 +374,7 @@ proc addStructValue
   [!?ioTemplateVariableMap insertKey
     !inVariableName
     !@Ttype. structType
-    !@Tvalue. new { !0LS !0.0 !"" !@TfieldMapList. emptyList !inValue !dummyFunction() !description}
+    !@Tvalue. new { !0_G !0.0 !"" !@TfieldMapList. emptyList !inValue !dummyFunction() !description}
   ]
 }
 

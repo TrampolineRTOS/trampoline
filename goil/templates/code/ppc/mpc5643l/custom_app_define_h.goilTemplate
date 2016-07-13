@@ -5,32 +5,17 @@
 
 let INTERCORE_INTERRUPT := exists INTERCORE_INTERRUPT default (emptylist)
 
-%/*=============================================================================
+%
+/*=============================================================================
  * Target specific definitions
  */
-
-/*-----------------------------------------------------------------------------
- *  Timer channel possible values
- */
-
-#define TPL_PIT_0       0
-#define TPL_PIT_1       1
-#define TPL_PIT_2       2
-#define TPL_PIT_3       3
-
 %
 let channel_map := emptymap
 let channel_map["pit_ch0"] := "TPL_PIT_0"
 let channel_map["pit_ch1"] := "TPL_PIT_1"
 let channel_map["pit_ch2"] := "TPL_PIT_2"
 let channel_map["pit_ch3"] := "TPL_PIT_3"
-%
 
-/*-----------------------------------------------------------------------------
- * Chosen timers
- */
-
-%
 # Count only counters used in applications
 let used_counters := emptymap
 foreach app in APPLICATION do
@@ -47,34 +32,50 @@ let number_of_pit_used := 0
 let watchdog_frequency := 0
 let watchdog_channel    := ""
 foreach counter in used_counters do
-  if counter::SOURCE != "no_pit" then
+  if counter::SOURCE == "pit_ch0"
+    | counter::SOURCE == "pit_ch1"
+    | counter::SOURCE == "pit_ch2"
+    | counter::SOURCE == "pit_ch3" then
     let number_of_pit_used := number_of_pit_used + 1
   end if
-  if counter::HANDLER == "watchdog" & counter::SOURCE != "no_pit" then
+  if counter::HANDLER == "watchdog" then
     let watchdog_frequency := counter::FREQUENCY
     let watchdog_channel   := channel_map[counter::SOURCE]
   end if
 end foreach
 %
+/*-----------------------------------------------------------------------------
+ *  Timer channel possible values
+ */
+#define TPL_PIT_0       0
+#define TPL_PIT_1       1
+#define TPL_PIT_2       2
+#define TPL_PIT_3       3
+#define TPL_NO_TIMER    4
 
-#define TPL_USE_DECREMENTER     % !yesNo(exists used_counters["no_pit"]) %
+/*-----------------------------------------------------------------------------
+ * PIT Configuration
+ */
 #define TPL_USE_PIT             % !yesNo(number_of_pit_used > 0) %
+
+/*-----------------------------------------------------------------------------
+ * Decrementer Configuration
+ */
+#define TPL_USE_DECREMENTER     % !yesNo(exists used_counters["decrementer"]) %
+
+/*-----------------------------------------------------------------------------
+ * Watchdog Configuration
+ */
 %if watchdog_channel != "" then
 %#define TPL_WATCHDOG_RATIO      %!watchdog_frequency%
 #define TPL_WDG_TIMER           %!watchdog_channel
 else
 %#define TPL_WATCHDOG_RATIO      0
-#define TPL_WDG_TIMER           TPL_NO_TIMER
-%end if
-%
+#define TPL_WDG_TIMER           TPL_NO_TIMER%
+end if%
 
 /*-----------------------------------------------------------------------------
  * Enable multicore
- */
-/* TODO : With multicore
- *          Multicore source must be separated in another directory.
- *          The chosen code must then be picked from the right directory
- *          following this flag state.
  */
 #define WITH_MULTICORE     % !yesNo(OS::NUMBER_OF_CORES > 1) %
 
@@ -87,22 +88,48 @@ else
  *          The chosen code must then be picked from the right directory
  *          following this flag state.
  */
-#define WITH_VLE     % !yesNo(OS::USEVLE) %
+#define WITH_VLE       % !yesNo(OS::USEVLE) %
 
 /*-----------------------------------------------------------------------------
  * Use FLOAT instructions
- */
-#define WITH_FLOAT     % !yesNo(OS::USEFLOAT) %
+ */%
+let use_float := false
+foreach isr in ISRS do
+  if isr::USEFLOAT then
+    let use_float := true
+  end if
+end foreach
+
+foreach task in TASKS do
+  if task::USEFLOAT then
+    let use_float := true
+  end if
+end foreach
+%
+#define WITH_FLOAT     % !yesNo(use_float) %
 
 /*-----------------------------------------------------------------------------
- * Intercore IT
+ * Intercore interrupt sources
  */
 %
 let irqs := mapof INTERRUPT by NAME
 
-foreach it in INTERCORE_INTERRUPT do
-%#define TPL_INTERCORE_IT_% !INDEX %   % !irqs[it::SOURCE]::ID%
+loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+  let it_list := emptylist
+
+  # Get a list of intercore_interrupt for each core
+  foreach it in INTERCORE_INTERRUPT do
+    if core_id == it::CORE then
+      let it_list += it
+    end if
+  end foreach
+
+  foreach it in it_list do
+%#define TPL_INTERCORE_IT_CORE% !core_id %_% !INDEX %   % !irqs[it::SOURCE]::ID%
 %
-end foreach
+  end foreach
+
+end loop
+
 %
 

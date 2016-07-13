@@ -1,0 +1,46 @@
+%
+# @file custom_task_check.goilTemplate
+#
+# @section desc File description
+#
+# Custom checking for MPC5643L - TASKS
+#
+# @section copyright Copyright
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN
+# Trampoline is protected by the French intellectual property law.
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# @section infos File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+# -----------------------------------------------------------------------------
+# ERROR
+# USEFLOAT but chip has no float
+#
+
+foreach task in TASKS do
+  if task::USEFLOAT & not OS::HASFLOAT then
+    error task::USEFLOAT : "The ".TARGET." does not support floating point"
+  end if
+end foreach
+
+# -----------------------------------------------------------------------------
+# ERROR
+# STACKSIZE not defined
+#
+
+foreach task in TASKS do
+  if not exists task::STACKSIZE then
+    error task::NAME : "STACKSIZE must be defined."
+  end if
+end foreach
+

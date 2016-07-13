@@ -64,13 +64,11 @@ if AUTOSAR then
 #include "tpl_as_app_kernel.h"
 #include "tpl_as_trusted_fct.h"
 #include "tpl_as_trusted_fct_kernel.h"
-#include "tpl_as_application.h"
-  %
-  if exists SPINLOCK  & (OS::NUMBER_OF_CORES > 1) then
-  %
+#include "tpl_as_application.h"%
+  if ([SPINLOCK length] > 0) & (OS::NUMBER_OF_CORES > 1) then%
 #include "tpl_as_spinlock.h"
 #include "tpl_as_spinlock_kernel.h"
-  %
+%
   end if
 end if
 
@@ -281,6 +279,24 @@ CONST(ApplicationType, OS_APPL_CONST) % !app::NAME % = % !app::NAME %_id;
 CONST(TrustedFunctionIndexType, AUTOMATIC) % !NAME % = % !NAME %_id;
 %
   end foreach
+
+  if (OS::NUMBER_OF_CORES > 1) then
+    foreach spinlock in SPINLOCK
+      before
+  %
+/*=============================================================================
+ * Declaration of Spinlock IDs
+ */
+%
+    do
+%
+/* Spinlock % !spinlock::NAME % identifier */
+#define % !spinlock::NAME %_id % !INDEX %
+CONST(SpinlockIdType, AUTOMATIC) % !spinlock::NAME % = % !spinlock::NAME %_id;
+%
+    end foreach
+  end if
+
 end if
 %
 #define API_STOP_SEC_CONST_UNSPECIFIED
@@ -764,6 +780,11 @@ CONST(tpl_trusted_fct, OS_APPL_CODE)
 #include "tpl_memmap.h"
 %
   end foreach
+
+  if [SPINLOCK length] > 0 then
+    template if exists spinlock_structures
+  end if
+
 end if
 
 if USEMEMORYPROTECTION then

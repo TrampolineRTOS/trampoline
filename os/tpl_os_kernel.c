@@ -771,8 +771,8 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(CORE_ID_OR_VOID(core_id))
     /* Preempts the RUNNING task */
     tpl_preempt(CORE_ID_OR_NOTHING(core_id));
     /* Starts the highest priority READY task */
-    tpl_start(CORE_ID_OR_NOTHING(core_id));
     need_switch = NEED_SWITCH | NEED_SAVE;
+    tpl_start(CORE_ID_OR_NOTHING(core_id));
   }
 
   TPL_KERN_REF(kern).need_switch = need_switch;
@@ -889,10 +889,10 @@ FUNC(void, OS_CODE) tpl_block(void)
   /* The internal resource is released. */
   tpl_release_internal_resource((tpl_proc_id)TPL_KERN_REF(kern).running_id);
 
-  /* Start the highest priority task */
-  tpl_start(CORE_ID_OR_NOTHING(core_id));
   /* Task switching should occur */
   TPL_KERN_REF(kern).need_switch = NEED_SWITCH | NEED_SAVE;
+  /* Start the highest priority task */
+  tpl_start(CORE_ID_OR_NOTHING(core_id));
   LOCAL_SWITCH_CONTEXT(core_id)
 }
 
@@ -905,8 +905,8 @@ FUNC(void, OS_CODE) tpl_start_scheduling(CORE_ID_OR_VOID(core_id))
 {
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
-  tpl_start(CORE_ID_OR_NOTHING(core_id));
   TPL_KERN_REF(kern).need_switch = NEED_SWITCH;
+  tpl_start(CORE_ID_OR_NOTHING(core_id));
 }
 
 /**
@@ -1141,7 +1141,15 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
     /*  each AUTOSTART task is activated if it belong to the  */
     if (tpl_task_app_mode[i] & app_mode_mask)
     {
-      result = tpl_activate_task(i);
+# if NUMBER_OF_CORES > 1
+      // In multicore, we must check if the task belongs to the core
+      if (tpl_stat_proc_table[i]->core_id == core_id)
+      {
+# endif
+        result = tpl_activate_task(i);
+# if NUMBER_OF_CORES > 1
+      }
+# endif
     }
   }
 #endif
@@ -1154,16 +1162,16 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
     if (tpl_alarm_app_mode[i] & app_mode_mask)
     {
       auto_time_obj = (P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA))tpl_alarm_table[i];
-#if NUMBER_OF_CORES > 1
+# if NUMBER_OF_CORES > 1
       // In multicore, we must check if the alarm belongs to the core
       if (tpl_core_id_for_app[auto_time_obj->stat_part->app_id] == core_id)
       {
-#endif
+# endif
         auto_time_obj->state = ALARM_ACTIVE;
         tpl_insert_time_obj(auto_time_obj);
-#if NUMBER_OF_CORES > 1
+# if NUMBER_OF_CORES > 1
       }
-#endif
+# endif
     }
   }
 
@@ -1177,29 +1185,37 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
     {
       auto_time_obj =
         (P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA))tpl_schedtable_table[i];
-      if (auto_time_obj->state == (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART_RELATIVE)
+# if NUMBER_OF_CORES > 1
+      // In multicore, we must check if the schedule table belongs to the core
+      if (tpl_core_id_for_app[auto_time_obj->stat_part->app_id] == core_id)
       {
-        auto_time_obj->state = SCHEDULETABLE_STOPPED;
-        result = tpl_start_schedule_table_rel_service(i, auto_time_obj->date);
-      }
-      else
-      {
-        if (auto_time_obj->state == (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART_ABSOLUTE)
+# endif
+        if (auto_time_obj->state == (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART_RELATIVE)
         {
           auto_time_obj->state = SCHEDULETABLE_STOPPED;
-          result = tpl_start_schedule_table_abs_service(i, auto_time_obj->date);
+          result = tpl_start_schedule_table_rel_service(i, auto_time_obj->date);
         }
-#if AUTOSAR_SC == 2 || AUTOSAR_SC == 4
         else
         {
-          if (auto_time_obj->state == (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART_SYNCHRON)
+          if (auto_time_obj->state == (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART_ABSOLUTE)
           {
             auto_time_obj->state = SCHEDULETABLE_STOPPED;
-            result = tpl_start_schedule_table_synchron_service(i);
+            result = tpl_start_schedule_table_abs_service(i, auto_time_obj->date);
           }
-        }
+#if AUTOSAR_SC == 2 || AUTOSAR_SC == 4
+          else
+          {
+            if (auto_time_obj->state == (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART_SYNCHRON)
+            {
+              auto_time_obj->state = SCHEDULETABLE_STOPPED;
+              result = tpl_start_schedule_table_synchron_service(i);
+            }
+          }
 #endif
+        }
+#if NUMBER_OF_CORES > 1
       }
+#endif
     }
   }
 #endif
@@ -1316,17 +1332,11 @@ FUNC(void, OS_CODE) tpl_dispatch_context_switch(void)
   VAR(int, AUTOMATIC) core;
   for (core = 0; core < caller_core; core++)
   {
-    if (tpl_kern[core]->need_switch != NO_NEED_SWITCH)
-    {
-      REMOTE_SWITCH_CONTEXT(core);
-    }
+    REMOTE_SWITCH_CONTEXT(core);
   }
   for (core = caller_core + 1; core < NUMBER_OF_CORES; core++)
   {
-    if (tpl_kern[core]->need_switch != NO_NEED_SWITCH)
-    {
-      REMOTE_SWITCH_CONTEXT(core);
-    }
+    REMOTE_SWITCH_CONTEXT(core);
   }
 }
 

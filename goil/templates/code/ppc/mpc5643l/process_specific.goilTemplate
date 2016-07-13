@@ -1,7 +1,21 @@
 %
-if not exists proc::STACKSIZE then
-  error proc::NAME : "STACKSIZE attribute not defined for ".proc::KIND." ".proc::NAME
-else
+if exists proc::STACKSIZE then
+
+  let use_float := false
+  if exists OS::HASFLOAT default (false) then
+    foreach isr in ISRS do
+      if isr::USEFLOAT then
+        let use_float := true
+      end if
+    end foreach
+
+    foreach task in TASKS do
+      if task::USEFLOAT then
+        let use_float := true
+      end if
+    end foreach
+  end if
+
 %/*
  * % !proc::KIND % % !proc::NAME % stack
  */
@@ -19,11 +33,8 @@ VAR(tpl_stack_word, OS_APPL_DATA) % !proc::NAME %_stack_zone[% !proc::STACKSIZE 
 #define OS_START_SEC_VAR_NOINIT_32BIT
 #include "tpl_memmap.h"
 VAR(ppc_integer_context, OS_VAR) % !proc::NAME %_int_context;%
-if not (exists OS::HASFLOAT default (false)) & exists proc::USEFLOAT default (false) then
-  error proc::USEFLOAT : "The ".TARGET." does not support floating point"
-end if
-if exists OS::HASFLOAT default (false) & exists proc::USEFLOAT default (false) then
-  if USEFLOAT then %
+if use_float then
+  if exists proc::USEFLOAT default(false) then %
 VAR(ppc_float_context, OS_VAR) % !proc::NAME %_fp_context;
 #define % !proc::NAME %_CONTEXT { &% !proc::NAME %_int_context, &% !proc::NAME %_fp_context }%
   else %

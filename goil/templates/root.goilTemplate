@@ -1,4 +1,4 @@
-2.1.27%
+2.1.29%
 # @file root.goilTemplate
 #
 # @section desc File description
@@ -66,6 +66,7 @@ let SCHEDULETABLE := exists SCHEDULETABLE default (emptylist)
 let IOC := exists IOC default (emptylist)
 let TRANSACTION := exists TRANSACTION default (emptylist)
 let OBJECT := exists OBJECT default (emptylist)
+let SPINLOCK := exists SPINLOCK default (emptylist)
 
 let ioc_queued_list := emptylist
 let ioc_unqueued_list := emptylist
@@ -1153,6 +1154,17 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
     let app::ALARMACCESSNUM := size
     let app::ALARMACCESSITEMS := computeBinaryVector(vector, size)
 
+    # vectors for SPINLOCK access
+    let owned_spinlocks := emptymap
+    let vector := ""
+    foreach spinlock in SPINLOCK do
+      let vector := vector . computeVector(app, spinlock, owned_spinlocks)
+    end foreach
+    let app::SPINLOCKACCESSVECTOR := vector
+    let size := computeBinaryVectorSize(vector)
+    let app::SPINLOCKACCESSNUM := size
+    let app::SPINLOCKACCESSITEMS := computeBinaryVector(vector, size)
+
     # vectors for RESOURCES access
     let owned_resources := mapof app::RESOURCE by VALUE
     let vector := ""
@@ -1161,7 +1173,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
         let vector := vector . computeVector(app, rez, owned_resources)
       end if
     end foreach
-    let vector := vector . "10" # add the RES_SCHEDULER
+    let vector := vector . "01" # add the RES_SCHEDULER
     let app::RESOURCEACCESSVECTOR := vector
     let size := computeBinaryVectorSize(vector)
     let app::RESOURCEACCESSNUM := size
@@ -1316,7 +1328,13 @@ repeat
     let USEDLIB[lib::NAME] := lib
   end foreach
 while added
-end repeat  
+end repeat
+
+#------------------------------------------------------------------------------*
+# Check the user oil configuration before generating files
+#
+
+template if exists root_check in check
 
 #------------------------------------------------------------------------------*
 #

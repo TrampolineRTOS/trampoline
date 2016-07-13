@@ -6,7 +6,7 @@ Its API is aligned with OSEK/VDX OS and AUTOSAR OS 4.1 standards.
 5 platforms are supported by now :
 
 * cortex
-  * Cortex-M (M0+ and M4 for now) instruction set
+  * Cortex-M (M0+, M3 and M4 for now) instruction set
   * Cortex-A (A7) instruction set. This port is under heavy development.
 * ppc: PowerPC 32bits instruction set
 * posix: virtual platform for POSIX systems (tested on Linux and OS X)
@@ -27,6 +27,7 @@ Trampoline runs on the following plateforms :
 | NXP / Freescale MK20DX256    | Cortex-M4          | 1     | Teensy31                          |
 | NXP / Freescale MPC564xL     | Power Architecture | 2     | XPC56XX EVB + XPC56XL MINI-MODULE |
 | STMicroelectronics STM32F4xx | Cortex-M4          | 1     | STM32F4DISCOVERY                  |
+| MicroSemi SmartFusion2       | Cortex-M3          | 1     | starterKit                        |
 
 Some examples have been added (check examples):
 
@@ -42,6 +43,9 @@ Some examples have been added (check examples):
   * **liquidCrystal**. startStopBlink extended. In addition the periodic task prints a value on a LCD.
   * **isr2onPIT**. Use the PIT channel 0 to trigger an ISR2.
   * **isr1onFTM**. Use the FTM0 to trigger an ISR1 and generate a variable width pulse.
+* Cortex M3 with µC SmartFusion2: `cortex/armv6m/samd21/XPlainedPro`.
+  * **blink**. a simple periodic example which toggles the two green leds (DS3, DS4) of the board
+  * **fpgaInterrupt** an interrupt from the FPGA fabriq toggles the green led DS4 of the board (and a periodic task blinks another Led).
 * Cortex M0+ with µC samd21: `cortex/armv6m/samd21/XPlainedPro`.
   * **blink**. Blinks a LED using an alarm and a task. 
   * **readButton**. The example polls the button to start an alarm that activates a task to blink a LED
@@ -62,10 +66,10 @@ More examples are coming.
 
 ## Precompiled binaries of goil, the OIL compiler
 
-Updated to version 2.1.27
+Updated to version 2.1.29
 
 * Mac OS X: [goil-mac-os-x.zip](http://trampoline.rts-software.org/bin/goil-mac-os-x.zip)
-* Mac OS X Cocoa Application with editor: [CocoaGoil.app.zip](http://trampoline.rts-software.org/bin/CocoaGoil.app.zip) (version 2.1.24)
+* Mac OS X Cocoa Application with editor: [CocoaGoil.app.zip](http://trampoline.rts-software.org/bin/CocoaGoil.app.zip)
 * Linux 32 bits: [goil-linux-32.zip](http://trampoline.rts-software.org/bin/goil-linux-32.zip)
 * Linux 64 bits: [goil-linux-64.zip](http://trampoline.rts-software.org/bin/goil-linux-64.zip)
 * Windows: [goil-windows.zip](http://trampoline.rts-software.org/bin/goil-windows.zip)

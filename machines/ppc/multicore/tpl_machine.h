@@ -196,5 +196,4 @@ extern CONSTP2VAR(uint32, OS_CONST, OS_VAR) tpl_intc[NUMBER_OF_CORES];
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
-
 #endif /* TPL_MACHINE_PPC_H */

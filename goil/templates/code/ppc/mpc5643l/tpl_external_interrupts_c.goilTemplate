@@ -115,7 +115,8 @@ end foreach
     if application::CORE == core_id then
       foreach counter_name in exists application::COUNTER default (emptylist) do
         let counter := counter_map[counter_name::VALUE]
-        if counter::SOURCE != "no_pit" & counter::TYPE == "HARDWARE" then
+        if counter::SOURCE != "decrementer"
+         & counter::TYPE == "HARDWARE" then
           let interrupt := interrupt_map[counter::SOURCE]
 %  TPL_INTC(%!core_id%).PSR[% !interrupt::ID %] = % !IRQ_MAX_PRIO %; /* % !counter::NAME % */
 %
@@ -154,13 +155,7 @@ let channel_map["pit_ch3"] := "TPL_PIT_3"
 # Get a list of used pit channels (with no duplicates)
 let used_pit_channels := emptymap
 foreach counter in HARDWARECOUNTERS do
-  # By the way, check if there is an error input for the frequencies
-  if exists used_pit_channels[counter::SOURCE] then
-    if used_pit_channels[counter::SOURCE]::FREQUENCY != counter::FREQUENCY then
-      error counter::FREQUENCY : "Two different frequencies for the same counter."
-    end if
-  end if
-  if counter::SOURCE != "no_pit" then
+  if counter::SOURCE != "decrementer" then
     let used_pit_channels[counter::SOURCE] := counter
   end if
 end foreach
@@ -208,7 +203,7 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
     if application::CORE == core_id then
       foreach counter_name in exists application::COUNTER default (emptylist) do
         let counter := counter_map[counter_name::VALUE]
-        if counter::SOURCE != "no_pit" & counter::TYPE == "HARDWARE" then
+        if counter::SOURCE != "decrementer" & counter::TYPE == "HARDWARE" then
           let interrupt := interrupt_map[counter::SOURCE]
           let used_interrupts[counter::SOURCE] := interrupt
         end if
