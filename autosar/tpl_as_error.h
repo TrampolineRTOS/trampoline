@@ -1131,7 +1131,7 @@
     /* E_OK or E_OS_ID   */
 #   define CHECK_SPINLOCK_ID_ERROR(spinlock_id,result)              \
     if  ((result == (tpl_status)E_OK) &&                            \
-         ((spinlock_id) >= (tpl_lock)(SPINLOCK_COUNT)))             \
+         ((spinlock_id) >= (tpl_spinlock_id)(SPINLOCK_COUNT)))             \
     {                                                               \
         result = (tpl_status)E_OS_ID;                               \
     }
@@ -1190,8 +1190,7 @@
     /* E_OK or E_OS_ID   */
 #   define CHECK_SPINLOCK_UNNESTING_ORDER_ERROR(core_id,spinlock_id,result) \
     if  (   (result == (tpl_status)E_OK)                                    \
-         && (  (!HAS_SPINLOCK(core_id))                                     \
-            || (GET_LAST_TAKEN_SPINLOCK(core_id) != spinlock_id)))          \
+         && (GET_LAST_TAKEN_SPINLOCK(core_id) != spinlock_id))              \
     {                                                                       \
         result = (tpl_status)E_OS_NOFUNC;                                   \
     }
@@ -1223,9 +1222,11 @@
 #   define CHECK_SPINLOCK_INTERFERENCE_DEADLOCK_ERROR(core_id,spinlock_id,result) \
     if  (result == (tpl_status)E_OK)                                        \
     {                                                                       \
-        VAR(uint32, AUTOMATIC) temp;                                        \
-        for(temp = 0; temp < GET_TAKEN_SPINLOCK_COUNTER(core_id); temp++){  \
-          if(GET_TAKEN_SPINLOCK(core_id, temp) == spinlock_id) {            \
+        VAR(tpl_spinlock_id, AUTOMATIC) temp;                               \
+        for(temp = 0; temp < GET_TAKEN_SPINLOCK_COUNTER(core_id); temp++)   \
+        {                                                                   \
+          if(GET_TAKEN_SPINLOCK(core_id, temp) == spinlock_id)              \
+          {                                                                 \
             result = (tpl_status)E_OS_INTERFERENCE_DEADLOCK;                \
             break;                                                          \
           }                                                                 \
@@ -1255,17 +1256,19 @@
 /* Any SPINLOCK and extended error checking (WITH_OS_EXTENDED == YES)  */
 #if (SPINLOCK_COUNT > 0) && (WITH_OS_EXTENDED == YES)
     /* E_OK or E_OS_ID   */
-#   define CHECK_SPINLOCK_NOT_TAKEN_ERROR(core_id,spinlock_id,result) \
-    if  (result == (tpl_status)E_OK)                                        \
-    {                                                                       \
-        VAR(uint32, AUTOMATIC) temp;                                        \
-        result = (tpl_status)E_OS_STATE;                                    \
-        for(temp = 0; temp < GET_TAKEN_SPINLOCK_COUNTER(core_id); temp++){  \
-          if(GET_TAKEN_SPINLOCK(core_id, temp) == spinlock_id) {            \
-            result = (tpl_status) E_OK;                                     \
-            break;                                                          \
-          }                                                                 \
-        }                                                                   \
+#   define CHECK_SPINLOCK_NOT_TAKEN_ERROR(core_id,spinlock_id,result)         \
+    if  (result == (tpl_status)E_OK)                                          \
+    {                                                                         \
+        VAR(sint32, AUTOMATIC) tmp;                                           \
+        result = (tpl_status)E_OS_STATE;                                      \
+        for(tmp = GET_TAKEN_SPINLOCK_COUNTER(core_id) - 1; tmp >= 0; tmp--)   \
+        {                                                                     \
+          if(GET_TAKEN_SPINLOCK(core_id, tmp) == spinlock_id)                 \
+          {                                                                   \
+            result = (tpl_status) E_OK;                                       \
+            break;                                                            \
+          }                                                                   \
+        }                                                                     \
     }
 #endif
 

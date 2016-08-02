@@ -124,6 +124,45 @@ foreach application in APPLICATION do
   let OS::APPLICATIONSHUTDOWNHOOK :=  OS::APPLICATIONSHUTDOWNHOOK + [application::SHUTDOWNHOOK unsigned]
 end foreach
 
+# Set a constant for the cell size of spinlocks' bitfields (currently uint8)
+let SPINLOCK_BITFIELD_CELL_SIZE := 8
+let SPINLOCK_BITFIELD_SHIFT := [SPINLOCK_BITFIELD_CELL_SIZE numberOfBits]
+
+# Search for the longest chain of spinlocks to use this count as a maximum in
+# the spinlocks LIFOs
+let map_spinlock := mapof SPINLOCK by NAME
+let max_possessed_spinlocks := 0
+foreach spinlock in SPINLOCK do
+  let color_spinlock := emptymap
+  let found_spinlock := emptymap
+  let found_spinlock[spinlock::NAME] := spinlock
+  let local_possessed_spinlocks := emptymap
+  let local_possessed_spinlocks[spinlock::NAME] := 1
+
+  repeat
+    let found_new := false
+    foreach new_spinlock in found_spinlock do
+      if not exists color_spinlock[new_spinlock::NAME] then
+        let color_spinlock[new_spinlock::NAME] := true
+
+        foreach son in exists new_spinlock::SUCCESSOR default (emptylist) do
+          let found_spinlock[son::VALUE] := map_spinlock[son::VALUE]
+          let local_possessed_spinlocks[son::VALUE] := local_possessed_spinlocks[new_spinlock::NAME] + 1
+          let found_new := true
+        end foreach
+      end if
+
+      if local_possessed_spinlocks[new_spinlock::NAME] > max_possessed_spinlocks then
+        let max_possessed_spinlocks := local_possessed_spinlocks[new_spinlock::NAME]
+      end if
+
+    end foreach
+
+  while found_new
+  end repeat
+
+end foreach
+
 #------------------------------------------------------------------------------*
 # Compute the OS::SCALABILITYCLASS
 # If this attribute does not exists, we are in OSEK

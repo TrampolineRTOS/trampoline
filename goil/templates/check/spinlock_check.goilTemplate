@@ -72,20 +72,17 @@ end foreach
 # enabled
 #
 
-let method_with_res_scheduler := false
-foreach spinlock in SPINLOCK do
-  if spinlock::LOCKMETHOD == "LOCK_WITH_RES_SCHEDULER" then
-    let method_with_res_scheduler := true
-  end if
-end foreach
-
-if method_with_res_scheduler & (not OS::USERESSCHEDULER) then
-  error here : "Spinlock with LOCK_WITH_RES_SCHEDULER method but "
-             . "OS::USERESSCHEDULER is not set"
+if not OS::USERESSCHEDULER then
+  foreach spinlock in SPINLOCK do
+    if spinlock::LOCKMETHOD == "LOCK_WITH_RES_SCHEDULER" then
+      error spinlock::LOCKMETHOD : "Spinlock with LOCK_WITH_RES_SCHEDULER"
+                                 . " method but OS::USERESSCHEDULER is not set"
+    end if
+  end foreach
 end if
 
 # -----------------------------------------------------------------------------
-# WARNING
+# ERROR
 # Check if the spinlock belongs to at least one application
 #
 

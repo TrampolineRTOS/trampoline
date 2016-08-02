@@ -40,26 +40,27 @@ foreach spinlock in SPINLOCK do%
       let successor_bitfield := 0
       foreach successor in successors do
         if successor::NAME != spinlock::NAME then
-          let successor_bitfield := successor_bitfield + (1 << spinlock_id[successor::NAME])
+          let successor_bitfield := successor_bitfield | (1 << spinlock_id[successor::NAME])
         end if
       end foreach
 
 %
-#define OS_START_SEC_CONST_8BIT
+#define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
+/* % !successor_bitfield % */
 CONST(tpl_spinlock_successor_bitfield, OS_CONST) % !spinlock::NAME %_successors_bitfield[] = {
 %
-      let successor_array_size := ([SPINLOCK length] - 1) / 8
+      let successor_array_size := ([SPINLOCK length] - 1) >> SPINLOCK_BITFIELD_SHIFT
       loop index from 0 to successor_array_size  do
-        let value := successor_bitfield >> (8 * index)
-        let value := value & 255
+        let value := successor_bitfield >> (SPINLOCK_BITFIELD_CELL_SIZE * index)
+        let value := value & ((1 << SPINLOCK_BITFIELD_CELL_SIZE) - 1)
 %  % !value %%
       between %,
 %
       end loop
 %
 };
-#define OS_STOP_SEC_CONST_8BIT
+#define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 %
   end if
@@ -86,7 +87,7 @@ end foreach
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 /* LIFO of taken spinlocks. One LIFO per core. */
-VAR(tpl_spinlock_id, OS_VAR) tpl_taken_spinlocks[NUMBER_OF_CORES][SPINLOCK_COUNT];
+VAR(tpl_spinlock_id, OS_VAR) tpl_taken_spinlocks[NUMBER_OF_CORES][MAX_POSSESSED_SPINLOCKS];
 /* Index of the current spinlock in the LIFO */
 VAR(tpl_spinlock_id, OS_VAR) tpl_taken_spinlock_counter[NUMBER_OF_CORES] = {0};
 #define OS_STOP_SEC_VAR_UNSPECIFIED

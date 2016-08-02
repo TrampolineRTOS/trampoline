@@ -37,14 +37,11 @@
  * [ECUC_Os_01038]
  * Lock method which is used when a spinlock is taken.
  */
-typedef enum {
-  LOCK_ALL_INTERRUPTS,
-  LOCK_CAT2_INTERRUPTS,
-  LOCK_WITH_RES_SCHEDULER,
-  LOCK_NOTHING
-}  tpl_lock_method;
-
-typedef uint8 tpl_spinlock_successor_bitfield;
+#define LOCK_NOTHING                0
+#define LOCK_WITH_RES_SCHEDULER     1
+#define LOCK_CAT2_INTERRUPTS        2
+#define LOCK_ALL_INTERRUPTS         3
+typedef uint8 tpl_lock_method;
 
 /**
  * @struct TPL_SPINLOCK
@@ -74,14 +71,14 @@ typedef struct TPL_SPINLOCK tpl_spinlock;
 
 #if SPINLOCK_COUNT > 0
 extern CONSTP2VAR(tpl_spinlock, OS_CONST, OS_VAR) tpl_spinlock_table[SPINLOCK_COUNT];
-extern VAR(tpl_spinlock_id, OS_VAR) tpl_taken_spinlocks[NUMBER_OF_CORES][SPINLOCK_COUNT];
+extern VAR(tpl_spinlock_id, OS_VAR) tpl_taken_spinlocks[NUMBER_OF_CORES][MAX_POSSESSED_SPINLOCKS];
 extern VAR(tpl_spinlock_id, OS_VAR) tpl_taken_spinlock_counter[NUMBER_OF_CORES];
 /*
  * SPINLOCK_IS_SUCCESSOR returns 1 if a_spinlock_id is a successor of
  * a_last_spinlock_id
  */
 #define SPINLOCK_IS_SUCCESSOR(last_spinlock_id, spinlock_id)                  \
- (((tpl_spinlock_table[last_spinlock_id]->successors[spinlock_id/(sizeof(tpl_spinlock_successor_bitfield)*8)]) >> (spinlock_id%(sizeof(tpl_spinlock_successor_bitfield)*8))) & 0x1)
+ (((tpl_spinlock_table[last_spinlock_id]->successors[spinlock_id >> SPINLOCK_SUCCESSOR_BITFIELD_SHIFT]) >> (spinlock_id & SPINLOCK_SUCCESSOR_BITFIELD_MASK)) & 0x1)
 
 /*
  * HAS_SPINLOCK returns 1 if the core core_id holds at least one spinlock
@@ -98,9 +95,9 @@ extern VAR(tpl_spinlock_id, OS_VAR) tpl_taken_spinlock_counter[NUMBER_OF_CORES];
 /*
  * SET_LAST_TAKEN_SPINLOCK add a spinlock to the core_id's spinlock list
  */
-#define SET_LAST_TAKEN_SPINLOCK(core_id, spinlock_id)   \
+#define SET_LAST_TAKEN_SPINLOCK(core_id, spinlock_id)                         \
     tpl_taken_spinlocks[core_id][tpl_taken_spinlock_counter[core_id]] = spinlock_id; \
-    tpl_taken_spinlock_counter[core_id]++;
+    tpl_taken_spinlock_counter[core_id]++;                                    \
 
 /*
  * REMOVE_LAST_TAKEN_SPINLOCK remove the last core_id's spinlock from its list
@@ -115,16 +112,6 @@ extern VAR(tpl_spinlock_id, OS_VAR) tpl_taken_spinlock_counter[NUMBER_OF_CORES];
 
 #define GET_TAKEN_SPINLOCK_COUNTER(core_id) \
     tpl_taken_spinlock_counter[core_id]
-
-//#  else /* ! WITH_OS_EXTENDED */
-//#define SPINLOCK_IS_SUCCESSOR(last_spinlock_id, spinlock_id)
-//#define HAS_SPINLOCK(core_id)
-//#define GET_LAST_TAKEN_SPINLOCK(core_id)
-//#define SET_LAST_TAKEN_SPINLOCK(core_id, spinlock_id)
-//#define REMOVE_LAST_TAKEN_SPINLOCK(core_id)
-//#define GET_TAKEN_SPINLOCK(core_id, position)
-//#define GET_TAKEN_SPINLOCK_COUNTER(core_id)
-//#  endif /* WITH_OS_EXTENDED */
 
 /**
  *  SPINLOCK_SUSPEND_INTERRUPTS calls the specific command to suspend

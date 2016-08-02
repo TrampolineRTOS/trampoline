@@ -255,6 +255,26 @@ end if
 %
 
 /*-----------------------------------------------------------------------------
+ * To fasten the SPINLOCK_IS_SUCCESSOR macro
+ */
+#define SPINLOCK_SUCCESSOR_BITFIELD_SHIFT % !SPINLOCK_BITFIELD_SHIFT %
+#define SPINLOCK_SUCCESSOR_BITFIELD_MASK  % !(SPINLOCK_BITFIELD_CELL_SIZE - 1) %
+
+/*-----------------------------------------------------------------------------
+ * Spinlocks max possessed spinlocks per core.
+ * This definition is used to maximize the size of possessed spinlocks.
+ * In OSExtended mode, as we're checking nesting spinlocks, we can set the max
+ * size of the LIFOS to the longest chain in the spinlocks graph.
+ * In OSStandard mode, we set the maximum to the number of spinlocks (a
+ * spinlock can only be taken once).
+ */%
+if OS::STATUS == "EXTENDED" then%
+#define MAX_POSSESSED_SPINLOCKS % !max_possessed_spinlocks %
+%else%
+#define MAX_POSSESSED_SPINLOCKS % ![SPINLOCK length] %
+%end if
+%
+/*-----------------------------------------------------------------------------
  * Debugging
  */
 #define WITH_DEBUG             % !yesNo(OS::DEBUG) %

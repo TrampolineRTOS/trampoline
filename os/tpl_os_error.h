@@ -105,6 +105,7 @@ union ID_PARAM_BLOCK {
 #if NUMBER_OF_CORES > 1
   VAR(tpl_core_id, TYPEDEF) core_id; /**< used by StartCore and
                                           StartNonAutosarCore   */
+  VAR(tpl_spinlock_id, TYPEDEF) spinlock_id; /**< @todo document this */
 #endif
 };
 
