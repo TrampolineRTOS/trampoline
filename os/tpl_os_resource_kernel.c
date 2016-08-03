@@ -70,28 +70,6 @@ CONST(tpl_resource_id, AUTOMATIC) INVALID_RESOURCE = (tpl_resource_id)(-1);
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
-#define OS_START_SEC_VAR_UNSPECIFIED
-#include "tpl_memmap.h"
-
-
-/**
- * The scheduler resource descriptor
- *
- * @see #RES_SCHEDULER
- */
-VAR(tpl_resource, OS_VAR) res_sched_rez_desc = {
-  RES_SCHEDULER_PRIORITY,   /*  ceiling priority                            */
-  0,                        /*  owner_prev_priority                         */
-  INVALID_PROC_ID,          /*  owner                                       */
-#if WITH_OSAPPLICATION == YES
-  INVALID_OSAPPLICATION_ID, /*  OS Application id                           */
-#endif
-  NULL                      /*  next_res                                    */
-};
-
-#define OS_STOP_SEC_VAR_UNSPECIFIED
-#include "tpl_memmap.h"
-
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
@@ -110,6 +88,7 @@ FUNC(void, OS_CODE) tpl_release_all_resources(
   P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res =
   tpl_dyn_proc_table[proc_id]->resources;
 #if WITH_TRACE == YES
+  GET_CURRENT_CORE_ID(core_id)
   VAR(tpl_resource_id, AUTOMATIC) res_id;
 #endif /* WITH_TRACE */
 
@@ -127,7 +106,7 @@ FUNC(void, OS_CODE) tpl_release_all_resources(
 	  /* find the id of the resource for the trace */
 #if WITH_TRACE == YES
 	  res_id = 0;
-	  while( tpl_resource_table[res_id] != res ){
+	  while( TPL_RESOURCE_TABLE(core_id)[res_id] != res ){
 		  res_id++;
 	  }
 	  TRACE_RES_RELEASED(res_id)
@@ -173,7 +152,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
 
   IF_NO_EXTENDED_ERROR(result)
 #if RESOURCE_COUNT > 0
-  res = tpl_resource_table[res_id];
+  res = TPL_RESOURCE_TABLE(core_id)[res_id];
 #else
   res = NULL; /* error */
 #endif
@@ -256,7 +235,7 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
 
   IF_NO_EXTENDED_ERROR(result)
   #if RESOURCE_COUNT > 0
-    res = tpl_resource_table[res_id];
+    res = TPL_RESOURCE_TABLE(core_id)[res_id];
   #else
     res = NULL; /* error */
   #endif

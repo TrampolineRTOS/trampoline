@@ -108,6 +108,7 @@ FUNC(tpl_app_id, OS_CODE) tpl_check_object_ownership_service(
 {
   VAR(tpl_app_id, AUTOMATIC) result = INVALID_OSAPPLICATION_ID;
   VAR(StatusType, AUTOMATIC) result_status = E_OK;
+  GET_CURRENT_CORE_ID(core_id)
 
   /*  lock the kernel  */
   LOCK_KERNEL()
@@ -147,7 +148,7 @@ FUNC(tpl_app_id, OS_CODE) tpl_check_object_ownership_service(
 #if RESOURCE_COUNT > 1
       if (obj_id < RESOURCE_COUNT)
       {
-      result = tpl_resource_table[obj_id]->app_id;
+      result = TPL_RESOURCE_TABLE(core_id)[obj_id]->app_id;
       }
 #endif
       break;

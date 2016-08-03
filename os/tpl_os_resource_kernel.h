@@ -71,6 +71,7 @@ struct TPL_RESOURCE {
 typedef struct TPL_RESOURCE tpl_resource;
 
 #if RESOURCE_COUNT > 0
+# if NUMBER_OF_CORES == 1
 /**
  * Array of all resources descriptors
  *
@@ -78,14 +79,20 @@ typedef struct TPL_RESOURCE tpl_resource;
  */
 extern CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA)
   tpl_resource_table[RESOURCE_COUNT];
-#endif /* RESOURCE_COUNT */
-
+#  define TPL_RESOURCE_TABLE(a_core_id) tpl_resource_table
+# else
 /**
- * The scheduler resource descriptor
+ * Array of all resources descriptors
  *
- * @see #RES_SCHEDULER
+ * In multicore, tpl_ressource_table is an array indexed by a core id
+ * containing the addresses of the core's tpl_ressource_table.
  */
-extern VAR(tpl_resource, OS_VAR) res_sched_rez_desc;
+extern CONSTP2CONST(tpl_resource*, AUTOMATIC, OS_CONST)
+  tpl_resource_table[NUMBER_OF_CORES];
+#  define TPL_RESOURCE_TABLE(a_core_id) (tpl_resource_table[a_core_id])
+# endif
+
+#endif /* RESOURCE_COUNT */
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
