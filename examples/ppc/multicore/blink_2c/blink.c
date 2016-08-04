@@ -89,7 +89,7 @@ FUNC(int, OS_APPL_CODE) main(void)
 #include "tpl_memmap.h"
 TASK(t1_app1)
 {
-    led_state1 = led_state1 ? 0 : 1;
+    led_state1 = !led_state1;
     setLed(0, led_state1);
     TerminateTask();
 }
@@ -100,7 +100,7 @@ TASK(t1_app1)
 #include "tpl_memmap.h"
 TASK(t1_app2)
 {
-    led_state2 = led_state2 ? 0 : 1;
+    led_state2 = !led_state2;
     setLed(1, led_state2);
     TerminateTask();
 }

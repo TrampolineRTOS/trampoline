@@ -67,7 +67,7 @@ struct _tpl_sema4 {
 
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
-extern CONSTP2VAR(uint32, OS_CONST, OS_VAR) tpl_sem[NUMBER_OF_CORES];
+extern CONSTP2CONST(struct _tpl_sema4, OS_CONST, OS_CONST) tpl_sem[NUMBER_OF_CORES];
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
@@ -106,7 +106,7 @@ struct _tpl_intc {
 
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
-extern CONSTP2VAR(uint32, OS_CONST, OS_VAR) tpl_intc[NUMBER_OF_CORES];
+extern CONSTP2CONST(struct _tpl_intc, OS_CONST, OS_CONST) tpl_intc[NUMBER_OF_CORES];
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
@@ -121,7 +121,7 @@ extern CONSTP2VAR(uint32, OS_CONST, OS_VAR) tpl_intc[NUMBER_OF_CORES];
 #if WITH_MULTICORE == YES
 #  define TPL_INTC(i)           (*(volatile struct _tpl_intc *) tpl_intc[i])
 #else
-#  define TPL_INTC(i)           (*(volatile struct _tpl_intc *) tpl_intc[0])
+#  define TPL_INTC(i)           (*(volatile struct _tpl_intc *) TPL_INTC_Base)
 #endif
 
 /*=============================================================================

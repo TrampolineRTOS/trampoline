@@ -110,6 +110,7 @@
  * External interrupt bit mask in MSR
  */
 #define EE_BIT_1  0x8000
+#define DE_BIT_1  0x0200
 #define RI_BIT_1  0x0002
 
 /*=============================================================================

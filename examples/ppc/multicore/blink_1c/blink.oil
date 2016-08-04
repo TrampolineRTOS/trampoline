@@ -54,6 +54,7 @@ CPU blink {
     SHUTDOWNHOOK    = FALSE;
     STARTUPHOOK     = FALSE;
     SYSTEM_CALL     = TRUE;
+    DEBUG           = TRUE;
   };
 
   /* ==========================================================================

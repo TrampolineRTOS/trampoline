@@ -83,7 +83,7 @@ TPL_GLOBAL_REF(tpl_get_kernel_lock):
   /* Try to get the lock */
 tpl_get_kernel_lock_retry :
   se_stb    r5,TPL_GATE_KERNEL(r6)
-  isync
+  se_isync
   se_lbz    r2,TPL_GATE_KERNEL(r6)
   se_cmp    r2,r5
   se_bne    tpl_get_kernel_lock_retry

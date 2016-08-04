@@ -59,12 +59,14 @@ TPL_VLE_OFF
 
 TPL_GLOBAL(tpl_master_core_startup)
 TPL_GLOBAL_REF(tpl_master_core_startup) :
-    /* Set MSR */
+#if WITH_DEBUG == YES
+    /* Set MSR's debug interrupt flag */
     mfmsr   r5
-    e_lis   r6,0x0200
+    e_lis   r6, DE_BIT_1
     se_or   r5, r6
     mtmsr   r5
-    isync
+    se_isync
+#endif
 
     /* Initialization of the MMU */
     e_bl      TPL_EXTERN_REF(tpl_init_mmu)
@@ -117,35 +119,16 @@ TPL_EXTERN(_stack_addr_p1)
 ALIGN(4) /* Must be aligned to at least 4bytes */
 TPL_GLOBAL(tpl_slave_core_startup)
 TPL_GLOBAL_REF(tpl_slave_core_startup):
-    /* First, we initialise the TLB to have access to the whole flash code */
-
-    //# MMU Entry First 1MB FLASH    //# MAS0 : ESEL=1
-    //# MAS1 : TSIZ=1MB
-    //# MAS2 : EPN=0x000000000, W=0, I=0, M=0, G=0, E=big
-    //# MAS3 : RPN=0x000000000, PERMIS=all
-    e_lis     r3, 0x1000
-    mtspr     spr_MAS0,    r3
-    e_lis     r4, 0xC000
-    e_or2i    r4, 0x0500
-    mtspr     spr_MAS1,    r4
-    e_lis     r5, 0x0000
-    e_or2i    r5, 0x0020
-    mtspr     spr_MAS2,    r5
-    e_lis     r6, 0x0000
-    e_or2i    r6, 0x003f
-    mtspr     spr_MAS3,    r6
-    msync
-    tlbwe
-    se_isync
-
-    /* Set MSR */
+#if WITH_DEBUG == YES
+    /* Set MSR's debug interrupt flag */
     mfmsr   r5
-    e_lis   r6,0x0200
+    e_lis   r6, DE_BIT_1
     se_or   r5, r6
     mtmsr   r5
-    isync
+    se_isync
+#endif
 
-    /* Continue the initialization of the MMU */
+    /* Initialization of the MMU */
     e_bl      TPL_EXTERN_REF(tpl_init_mmu)
 
     /* Clear registers */
@@ -182,10 +165,12 @@ tpl_slave_core_startup_loop:
 TPL_GLOBAL(tpl_init_mmu)
 TPL_GLOBAL_REF(tpl_init_mmu):
 
-  //# MMU Entry First 1MB FLASH    //# MAS0 : ESEL=1
-  //# MAS1 : TSIZ=1MB
-  //# MAS2 : EPN=0x000000000, W=0, I=0, M=0, G=0, E=big
-  //# MAS3 : RPN=0x000000000, PERMIS=all
+  /*
+   * MMU Entry First 1MB FLASH    //# MAS0 : ESEL=1
+   * MAS1 : TSIZ=1MB
+   * MAS2 : EPN=0x000000000, W=0, I=0, M=0, G=0, E=big
+   * MAS3 : RPN=0x000000000, PERMIS=all
+   */
 
   e_lis     r3, 0x1000
   mtspr     spr_MAS0,    r3
@@ -206,11 +191,13 @@ TPL_GLOBAL_REF(tpl_init_mmu):
   tlbwe
   se_isync
 
-  // MMU Entry Shadow Flash
-  // MAS0 : ESEL=1
-  // MAS1 : TSIZE=1MB
-  // MAS2 : EPN=0x00F00000, I=1, guarded
-  // MAS3 : RPN=0x00F00000, readonly
+  /*
+   * MMU Entry Shadow Flash
+   * MAS0 : ESEL=1
+   * MAS1 : TSIZE=1MB
+   * MAS2 : EPN=0x00F00000, I=1, guarded
+   * MAS3 : RPN=0x00F00000, readonly
+   */
   e_lis     r3, 0x1001
   mtspr     spr_MAS0,    r3
 
@@ -229,14 +216,15 @@ TPL_GLOBAL_REF(tpl_init_mmu):
   tlbwe
 
 
-  // Init MMU for DPM
+  /* Init MMU for DPM */
 
-  //# MMU Entry First 64K SRAM in DPM - No Translation
-  //# MAS0 : ESEL=2
-  //# MAS1 : TSIZ=64Kbytes
-  //# MAS2 : EPN=0x400000000, W=0, I=1, M=0, G=0, E=big
-  //# MAS3 : RPN=0x400000000, PERMIS=all
-
+  /*
+   * MMU Entry First 64K SRAM in DPM - No Translation
+   * MAS0 : ESEL=2
+   * MAS1 : TSIZ=64Kbytes
+   * MAS2 : EPN=0x400000000, W=0, I=1, M=0, G=0, E=big
+   * MAS3 : RPN=0x400000000, PERMIS=all
+   */
   e_lis     r3, 0x1002
   mtspr     spr_MAS0,    r3
 
@@ -254,12 +242,13 @@ TPL_GLOBAL_REF(tpl_init_mmu):
 
   tlbwe
 
-  //# MMU Entry Second 64K SRAM in DPM Mode
-  //# MAS0 : ESEL=3
-  //# MAS1 : TSIZ=64Kbytes
-  //# MAS2 : EPN=0x50000000, W=0, I=0, M=0, G=0, E=big
-  //# MAS3 : RPN=0x50000000, PERMIS=all
-
+  /*
+   * MMU Entry Second 64K SRAM in DPM Mode
+   * MAS0 : ESEL=3
+   * MAS1 : TSIZ=64Kbytes
+   * MAS2 : EPN=0x50000000, W=0, I=0, M=0, G=0, E=big
+   * MAS3 : RPN=0x50000000, PERMIS=all
+   */
   e_lis     r3, 0x1003
   mtspr     spr_MAS0,    r3
 
@@ -277,13 +266,14 @@ TPL_GLOBAL_REF(tpl_init_mmu):
 
   tlbwe
 
-  //# Peripheral Space in DPM mode things start at 0x8ff0_0000
-  //# will start at 0x8ff0_0000 and extend 1M
-  //# MAS0 : ESEL=4
-  //# MAS1 : TSIZ=1MB
-  //# MAS2 : EPN=0x8ff00000, W=0, I=1, M=0, G=1, E=big
-  //# MAS3 : RPN=0x8ff00000, PERMIS=all
-
+  /*
+   * Peripheral Space in DPM mode things start at 0x8ff0_0000
+   * will start at 0x8ff0_0000 and extend 1M
+   * MAS0 : ESEL=4
+   * MAS1 : TSIZ=1MB
+   * MAS2 : EPN=0x8ff00000, W=0, I=1, M=0, G=1, E=big
+   * MAS3 : RPN=0x8ff00000, PERMIS=all
+   */
   e_lis     r3, 0x1004
   mtspr     spr_MAS0,    r3
 
@@ -302,14 +292,14 @@ TPL_GLOBAL_REF(tpl_init_mmu):
   tlbwe
 
 
-
-  //# common to both LSM and DPM
-  //# MMU Entry Peripheral A
-  //# MAS0 : ESEL=5
-  //# MAS1 : TSIZ=1Mbytes
-  //# MAS2 : EPN=0xC3F00000, W=0, I=1, M=0, G=1, E=big
-  //# MAS3 : RPN=0xC3F00000, PERMIS=all
-
+  /*
+   * common to both LSM and DPM
+   * MMU Entry Peripheral A
+   * MAS0 : ESEL=5
+   * MAS1 : TSIZ=1Mbytes
+   * MAS2 : EPN=0xC3F00000, W=0, I=1, M=0, G=1, E=big
+   * MAS3 : RPN=0xC3F00000, PERMIS=all
+   */
   e_lis     r3, 0x1005
   mtspr     spr_MAS0,    r3
 
@@ -327,12 +317,13 @@ TPL_GLOBAL_REF(tpl_init_mmu):
 
   tlbwe
 
-  //# MMU Entry Peripheral B
-  //# MAS0 : ESEL=6
-  //# MAS1 : TSIZ=1Mbytes
-  //# MAS2 : EPN=0xFFE00000, W=0, I=1, M=0, G=0, E=big
-  //# MAS3 : RPN=0xFFE00000, PERMIS=all
-
+  /*
+   * MMU Entry Peripheral B
+   * MAS0 : ESEL=6
+   * MAS1 : TSIZ=1Mbytes
+   * MAS2 : EPN=0xFFE00000, W=0, I=1, M=0, G=0, E=big
+   * MAS3 : RPN=0xFFE00000, PERMIS=all
+   */
   e_lis     r3, 0x1006
   mtspr     spr_MAS0,    r3
 
@@ -350,12 +341,13 @@ TPL_GLOBAL_REF(tpl_init_mmu):
 
   tlbwe
 
-  //# MMU On-Platform 0 Peripherals
-  //# MAS0 : ESEL=7
-  //# MAS1 : TSIZ=512 Kbytes
-  //# MAS2 : EPN=0xFFF00000, W=0, I=1, M=0, G=0, E=big
-  //# MAS3 : RPN=0xFFF00000, PERMIS=all
-
+  /*
+   * MMU On-Platform 0 Peripherals
+   * MAS0 : ESEL=7
+   * MAS1 : TSIZ=512 Kbytes
+   * MAS2 : EPN=0xFFF00000, W=0, I=1, M=0, G=0, E=big
+   * MAS3 : RPN=0xFFF00000, PERMIS=all
+   */
   e_lis     r3, 0x1007
   mtspr     spr_MAS0,    r3
 
@@ -373,12 +365,13 @@ TPL_GLOBAL_REF(tpl_init_mmu):
 
   tlbwe
 
-  //# MMU  Off-Platform Peripherals 2
-  //# MAS0 : ESEL=8
-  //# MAS1 : TSIZ=64 Kbytes
-  //# MAS2 : EPN=0xFFF90000, W=0, I=1, M=0, G=0, E=big
-  //# MAS3 : RPN=0xFFF90000, PERMIS=all
-
+  /*
+   * MMU  Off-Platform Peripherals 2
+   * MAS0 : ESEL=8
+   * MAS1 : TSIZ=64 Kbytes
+   * MAS2 : EPN=0xFFF90000, W=0, I=1, M=0, G=0, E=big
+   * MAS3 : RPN=0xFFF90000, PERMIS=all
+   */
   e_lis     r3, 0x1008
   mtspr     spr_MAS0,    r3
 
@@ -396,12 +389,13 @@ TPL_GLOBAL_REF(tpl_init_mmu):
 
   tlbwe
 
-  //# MMU  Off-Platform Peripherals 2
-  //# MAS0 : ESEL=8
-  //# MAS1 : TSIZ=256 Kbytes
-  //# MAS2 : EPN=0xFFFC0000, W=0, I=1, M=0, G=0, E=big
-  //# MAS3 : RPN=0xFFFC0000, PERMIS=all
-
+  /*
+   * MMU  Off-Platform Peripherals 2
+   * MAS0 : ESEL=8
+   * MAS1 : TSIZ=256 Kbytes
+   * MAS2 : EPN=0xFFFC0000, W=0, I=1, M=0, G=0, E=big
+   * MAS3 : RPN=0xFFFC0000, PERMIS=all
+   */
   e_lis     r3, 0x1009
   mtspr     spr_MAS0,    r3
 

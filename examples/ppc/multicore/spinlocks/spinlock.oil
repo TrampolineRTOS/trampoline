@@ -42,7 +42,7 @@ CPU spinlock {
       SYSTEM    = PYTHON;
     };
     STACKMONITORING = FALSE;
-    STATUS          = STANDARD;
+    STATUS          = EXTENDED;
     USEVLE          = TRUE;
     USEGETSERVICEID = FALSE;
     USEPARAMETERACCESS = FALSE;
@@ -54,6 +54,7 @@ CPU spinlock {
     SHUTDOWNHOOK    = FALSE;
     STARTUPHOOK     = FALSE;
     SYSTEM_CALL     = TRUE;
+    DEBUG           = TRUE;
   };
 
   /* ==========================================================================
@@ -137,7 +138,6 @@ CPU spinlock {
     ACTIVATION = 1;
     PRIORITY = 5;
     SCHEDULE = FULL;
-    ACCESSING_APPLICATION = application1;
     AUTOSTART = FALSE;
     USEFLOAT = FALSE;
   };
@@ -146,7 +146,6 @@ CPU spinlock {
     ACTIVATION = 1;
     PRIORITY = 5;
     SCHEDULE = FULL;
-    ACCESSING_APPLICATION = application1;
     AUTOSTART = FALSE;
     USEFLOAT = FALSE;
   };
@@ -155,7 +154,6 @@ CPU spinlock {
     ACTIVATION = 1;
     PRIORITY = 5;
     SCHEDULE = FULL;
-    ACCESSING_APPLICATION = application2;
     AUTOSTART = FALSE;
     USEFLOAT = FALSE;
   };

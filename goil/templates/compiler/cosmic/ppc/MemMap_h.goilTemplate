@@ -688,11 +688,13 @@ end loop
 /*=============================================================================
  * Published informations
  */
-//#define MEMMAP_VENDOR_ID        48
-//#define MEMMAP_AR_MAJOR_VERSION 3
-//#define MEMMAP_AR_MINOR_VERSION 0
-//#define MEMMAP_AR_PATCH_VERSION 0
-//#define MEMMAP_SW_MAJOR_VERSION 1
-//#define MEMMAP_SW_MINOR_VERSION 0
-//#define MEMMAP_SW_PATCH_VERSION 0
+#if 0 /* TODO */
+#define MEMMAP_VENDOR_ID
+#define MEMMAP_AR_MAJOR_VERSION
+#define MEMMAP_AR_MINOR_VERSION
+#define MEMMAP_AR_PATCH_VERSION
+#define MEMMAP_SW_MAJOR_VERSION
+#define MEMMAP_SW_MINOR_VERSION
+#define MEMMAP_SW_PATCH_VERSION
+#endif
 

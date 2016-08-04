@@ -47,7 +47,7 @@ DeclareTask(t1_app1);
 FUNC(int, OS_APPL_CODE) main(void)
 {
     initLed();
-    setLed(0, 1);
+    setLed(0, led_state);
 
     StartOS(OSDEFAULTAPPMODE);
     return 0;
@@ -60,8 +60,8 @@ FUNC(int, OS_APPL_CODE) main(void)
 
 TASK(t1_app1)
 {
-    setLed(2, led_state);
-    led_state = led_state ? 0 : 1;
+    led_state = !led_state;
+    setLed(0, led_state);
     TerminateTask();
 }
 

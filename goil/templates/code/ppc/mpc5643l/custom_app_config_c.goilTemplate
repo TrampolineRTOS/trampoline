@@ -27,10 +27,10 @@ before
 %
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
-CONSTP2VAR(uint32, OS_CONST, OS_VAR) tpl_intc[% !OS::NUMBER_OF_CORES %] =
+CONSTP2CONST(struct _tpl_intc, OS_CONST, OS_CONST) tpl_intc[% !OS::NUMBER_OF_CORES %] =
 {
 %
-    do      %   (uint32*)TPL_INTC% !core %_Base%
+    do      %   (struct _tpl_intc*)TPL_INTC% !core %_Base%
     between %,
 %
     after   %
@@ -50,10 +50,10 @@ if OS::NUMBER_OF_CORES > 1 then
 %
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
-CONSTP2VAR(uint32, OS_CONST, OS_VAR) tpl_sem[% !OS::NUMBER_OF_CORES %] =
+CONSTP2CONST(struct _tpl_sema4, OS_CONST, OS_CONST) tpl_sem[% !OS::NUMBER_OF_CORES %] =
 {
 %
-    do      %   (uint32*)TPL_SEMA4% !core %_Base%
+    do      %   (struct _tpl_sema4*)TPL_SEMA4% !core %_Base%
     between %,
 %
     after   %
