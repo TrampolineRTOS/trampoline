@@ -25,10 +25,8 @@
  */
 
 #include "tpl_app_config.h"
-
-#include "tpl_os_internal_types.h"
 #include "tpl_ioc.h"
-#include "ioc_types.h"
+#include "tpl_os.h"
 
 #define API_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -43,10 +41,10 @@ foreach ioc in ioc_reordered do
  */
 %
   if ioc::SEMANTICS == "QUEUED" then
-  %extern FUNC(Std_ReturnType, OS_CODE) IocSend% if [ioc::DATATYPENAME length] > 1 then %Group% end if %_% !ioc::NAME%(
+  %extern FUNC(StatusType, OS_CODE) IocSend% if [ioc::DATATYPENAME length] > 1 then %Group% end if %_% !ioc::NAME%(
 %
   elsif ioc::SEMANTICS == "LAST_IS_BEST" then
-  %extern FUNC(Std_ReturnType, OS_CODE) IocWrite% if [ioc::DATATYPENAME length] > 1 then %Group% end if %_% !ioc::NAME%(
+  %extern FUNC(StatusType, OS_CODE) IocWrite% if [ioc::DATATYPENAME length] > 1 then %Group% end if %_% !ioc::NAME%(
 %
   end if
   let iteration1 := 0
@@ -80,10 +78,10 @@ foreach ioc in ioc_reordered do
   end if
 
   if ioc::SEMANTICS == "QUEUED" then
-  %extern FUNC(Std_ReturnType, OS_CODE) IocReceive% if [ioc::DATATYPENAME length] > 1 then %Group% end if %_% !ioc::NAME%(
+  %extern FUNC(StatusType, OS_CODE) IocReceive% if [ioc::DATATYPENAME length] > 1 then %Group% end if %_% !ioc::NAME%(
 %
   elsif ioc::SEMANTICS == "LAST_IS_BEST" then
-  %extern FUNC(Std_ReturnType, OS_CODE) IocRead% if [ioc::DATATYPENAME length] > 1 then %Group% end if %_% !ioc::NAME%(
+  %extern FUNC(StatusType, OS_CODE) IocRead% if [ioc::DATATYPENAME length] > 1 then %Group% end if %_% !ioc::NAME%(
 %
   end if
   let iteration2 := 0
@@ -99,7 +97,7 @@ foreach ioc in ioc_reordered do
 %
 
   if ioc::SEMANTICS == "QUEUED" then
-    %extern FUNC(Std_ReturnType, OS_CODE) IocEmptyQueue_% !ioc::NAME %(void);
+    %extern FUNC(StatusType, OS_CODE) IocEmptyQueue_% !ioc::NAME %(void);
 %
   end if
 
@@ -107,6 +105,7 @@ end foreach
 %
 
 #define API_STOP_SEC_CODE
-#include "tpl_memmap.h" 
+#include "tpl_memmap.h"
 
 /* End of file tpl_ioc_api_config.h */
+

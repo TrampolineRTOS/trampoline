@@ -104,7 +104,6 @@ end if
 if [ioc_reordered length] != 0 then
 %
 #include "tpl_ioc.h"
-#include "ioc_types.h"
 %
 end if
 
@@ -1071,8 +1070,7 @@ end foreach
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
-%
-%CONSTP2CONST(tpl_ioc_queued_mo, OS_CONST, OS_CONST) tpl_ioc_queued_table[% !ioc_queued_count %] =
+CONSTP2CONST(tpl_ioc_queued_mo, OS_CONST, OS_CONST) tpl_ioc_queued_table[% !ioc_queued_count %] =
 {
 %
    foreach ioc in ioc_queued_list do
@@ -1084,10 +1082,15 @@ end foreach
 %
 };
 
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 %
   end if
   if [ioc_unqueued_list length] != 0 then
-%CONSTP2CONST(tpl_ioc_unqueued_mo, OS_CONST, OS_CONST) tpl_ioc_unqueued_table[% !ioc_unqueued_count %] =
+%#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+CONSTP2CONST(tpl_ioc_unqueued_mo, OS_CONST, OS_CONST) tpl_ioc_unqueued_table[% !ioc_unqueued_count %] =
 {
 %
    foreach ioc in ioc_unqueued_list do

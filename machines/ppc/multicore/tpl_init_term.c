@@ -34,9 +34,6 @@
 #include "tpl_os_error.h"
 #include "tpl_os.h"
 #include "tpl_app_config.h"
-#if (WITH_IOC ==  YES)
-#include "tpl_ioc_kernel.h"
-#endif
 #include "tpl_timers.h"
 #include "tpl_os_kernel_stack.h"
 #include "tpl_registers.h"
@@ -258,10 +255,6 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
 
 #if WITH_MEMORY_PROTECTION == YES
   tpl_init_mp();
-#endif
-
-#if ((WITH_IOC == YES) && (IOC_UNQUEUED_COUNT > 0))
-  tpl_ioc_init_unqueued();
 #endif
 
   tpl_init_isr_prio();

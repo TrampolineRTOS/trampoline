@@ -1,14 +1,80 @@
 CPU api_ioc {
-  /* ioc services */
-  APICONFIG ioc {
-    ID_PREFIX = IOC;
-    FILE = "tpl_ioc_kernel";
-    ENTRY IOCSend      { API = IOC_Send;      KERNEL = tpl_ioc_send_queued_service;       };
-    ENTRY IOCReceive   { API = IOC_Receive;   KERNEL = tpl_ioc_receive_queued_service;    };
-    ENTRY IOCEmptyQueue      { API = IOC_EmptyQueue;      KERNEL = tpl_ioc_empty_queue_service;       };
-    ENTRY IOCSend   { API = IOC_Write;   KERNEL = tpl_ioc_send_unqueued_service;    };
-    ENTRY IOCWrite      { API = IOC_Read;      KERNEL = tpl_ioc_receive_unqueued_service;       };
-    ENTRY IOCInitUnqueued   { API = IOCW_InitUnqueued;   KERNEL = tpl_ioc_init_unqueued;    };
+  /*
+   * IOC QUEUED
+   */
+  APICONFIG ioc_queued {
+    ID_PREFIX = OS;
+    HEADER = "tpl_ioc_queued_kernel";
+    HEADER = "tpl_ioc_queue";
+    FILE = "tpl_ioc_queued_kernel";
+    FILE = "tpl_ioc_queue";
+    DIRECTORY = "ioc";
+
+    SYSCALL IOCSend {
+      KERNEL = tpl_ioc_send_queued_service;
+      LOCK_KERNEL = TRUE;
+      RETURN_TYPE = StatusType
+        : "E_OK:    No error (Standard & Extended)\n"
+          "E_OS_ID: <alarm_id> is invalid (Extended)"; /* TODO */
+      ARGUMENT ioc_id { KIND = VAR; TYPE = tpl_ioc_id; }
+        : "The identifier of the ioc" ;
+      ARGUMENT ioc_data { KIND = P2CONST; TYPE = tpl_ioc_message; }
+        : "The data of the ioc" ;
+    };
+    SYSCALL IOCReceive {
+      KERNEL = tpl_ioc_receive_queued_service;
+      LOCK_KERNEL = TRUE;
+      RETURN_TYPE = StatusType
+        : "E_OK:    No error (Standard & Extended)\n"
+          "E_OS_ID: <alarm_id> is invalid (Extended)"; /* TODO */
+      ARGUMENT ioc_id { KIND = VAR; TYPE = tpl_ioc_id; }
+        : "The identifier of the ioc" ;
+      ARGUMENT ioc_data { KIND = P2CONST; TYPE = tpl_ioc_message; }
+        : "The data of the ioc" ;
+    };
+    SYSCALL IOCEmptyQueue {
+      KERNEL = tpl_ioc_empty_queue_service;
+      LOCK_KERNEL = TRUE;
+      RETURN_TYPE = StatusType
+        : "E_OK:    No error (Standard & Extended)\n"
+          "E_OS_ID: <alarm_id> is invalid (Extended)"; /* TODO */
+      ARGUMENT ioc_id { KIND = VAR; TYPE = tpl_ioc_id; }
+        : "The identifier of the ioc" ;
+    };
+  };
+
+  /*
+   * IOC UNQUEUED
+   */
+  APICONFIG ioc_unqueued {
+    ID_PREFIX = OS;
+    HEADER = "tpl_ioc_unqueued_kernel";
+    FILE = "tpl_ioc_unqueued_kernel";
+    DIRECTORY = "ioc";
+
+    SYSCALL IOCWrite {
+      KERNEL = tpl_ioc_send_unqueued_service;
+      LOCK_KERNEL = TRUE;
+      RETURN_TYPE = StatusType
+        : "E_OK:    No error (Standard & Extended)\n"
+          "E_OS_ID: <alarm_id> is invalid (Extended)"; /* TODO */
+      ARGUMENT ioc_id { KIND = VAR; TYPE = tpl_ioc_id; }
+        : "The identifier of the ioc" ;
+      ARGUMENT ioc_data { KIND = P2CONST; TYPE = tpl_ioc_message; }
+        : "The data of the ioc" ;
+    };
+    SYSCALL IOCRead {
+      KERNEL = tpl_ioc_receive_unqueued_service;
+      LOCK_KERNEL = TRUE;
+      RETURN_TYPE = StatusType
+        : "E_OK:    No error (Standard & Extended)\n"
+          "E_OS_ID: <alarm_id> is invalid (Extended)"; /* TODO */
+      ARGUMENT ioc_id { KIND = VAR; TYPE = tpl_ioc_id; }
+        : "The identifier of the ioc" ;
+      ARGUMENT ioc_data { KIND = P2CONST; TYPE = tpl_ioc_message; }
+        : "The data of the ioc" ;
+    };
   };
 
 };
+
