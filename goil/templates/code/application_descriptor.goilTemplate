@@ -53,9 +53,14 @@ if app::COUNTERACCESSNUM > 0 then
 CONST(uint8, OS_CONST) % !app::NAME %_cnts_access[% !app::COUNTERACCESSNUM %] = { % !join(app::COUNTERACCESSITEMS) % };
 %
 end if
-if app::IOCACCESSNUM > 0 then
-%/* % !app::IOCACCESSVECTOR % */
-CONST(uint8, OS_CONST) % !app::NAME %_iocs_access[% !app::IOCACCESSNUM %] = { % !join(app::IOCACCESSITEMS) % };
+if app::IOCREADACCESSNUM > 0 then
+%/* % !app::IOCREADACCESSVECTOR % */
+CONST(uint8, OS_CONST) % !app::NAME %_iocs_read_access[% !app::IOCREADACCESSNUM %] = { % !join(app::IOCREADACCESSITEMS) % };
+%
+end if
+if app::IOCWRITEACCESSNUM > 0 then
+%/* % !app::IOCWRITEACCESSVECTOR % */
+CONST(uint8, OS_CONST) % !app::NAME %_iocs_write_access[% !app::IOCWRITEACCESSNUM %] = { % !join(app::IOCWRITEACCESSITEMS) % };
 %
 end if
 %
@@ -109,7 +114,8 @@ CONST(tpl_app_access, OS_CONST) % !app::NAME %_app_access = {
     % if app::RESOURCEACCESSNUM > 0 then !app::NAME %_rezs_access% else %NULL% end if %,
     % if app::SCHEDULETABLEACCESSNUM > 0 then !app::NAME %_sts_access% else %NULL% end if %,
     % if app::COUNTERACCESSNUM > 0 then !app::NAME %_cnts_access% else %NULL% end if %,
-    % if app::IOCACCESSNUM > 0 then !app::NAME %_iocs_access% else %NULL% end if %,
+    % if app::IOCREADACCESSNUM > 0 then !app::NAME %_iocs_read_access% else %NULL% end if %,
+    % if app::IOCWRITEACCESSNUM > 0 then !app::NAME %_iocs_write_access% else %NULL% end if %,
     % if app::SPINLOCKACCESSNUM > 0 then !app::NAME %_spinlocks_access% else %NULL% end if %
   },
   % if [app::PROCESS length] > 0 then !app::NAME %_proc_own% else %NULL% end if %,

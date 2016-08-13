@@ -25,10 +25,6 @@
  */
 
 #include "tpl_ioc_api_config.h"
-#include "tpl_app_config.h"
-
-#include "tpl_os_internal_types.h"
-#include "tpl_ioc.h"
 
 #define API_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -44,10 +40,10 @@ foreach ioc in ioc_reordered do
  */
 %
   if ioc::SEMANTICS == "QUEUED" then
-  %FUNC(Std_ReturnType, OS_CODE) IocSend% if [ioc::DATATYPENAME length] > 1 then %Group% end if %_% !ioc::NAME%(
+  %FUNC(StatusType, OS_CODE) IocSend% if [ioc::DATATYPENAME length] > 1 then %Group% end if %_% !ioc::NAME%(
 %
   elsif ioc::SEMANTICS == "LAST_IS_BEST" then
-  %FUNC(Std_ReturnType, OS_CODE) IocWrite% if [ioc::DATATYPENAME length] > 1 then %Group% end if %_% !ioc::NAME%(
+  %FUNC(StatusType, OS_CODE) IocWrite% if [ioc::DATATYPENAME length] > 1 then %Group% end if %_% !ioc::NAME%(
 %
   end if
   let iteration2 := 0
@@ -66,7 +62,7 @@ foreach ioc in ioc_reordered do
 )
 {
   VAR(tpl_ioc_message, AUTOMATIC) message[% !iteration2 %];
-  VAR(Std_ReturnType, AUTOMATIC) result;
+  VAR(StatusType, AUTOMATIC) result;
 
 %
   let iteration3 := 0
@@ -84,23 +80,23 @@ foreach ioc in ioc_reordered do
   let iteration3 := iteration3 + 1
   end foreach
   if ioc::SEMANTICS == "QUEUED" then
-    %  result = IOC_Send(% !iteration1 %, message);
+    %  result = IOCSend(% !iteration1 %, message);
 %
   else
-    %  result = IOC_Write(% !iteration1 %, message);
-%  
+    %  result = IOCWrite(% !iteration1 %, message);
+%
   end if
-%  
+%
   return result;
 }
 
 %
 
   if ioc::SEMANTICS == "QUEUED" then
-  %FUNC(Std_ReturnType, OS_CODE) IocReceive% if [ioc::DATATYPENAME length] > 1 then %Group% end if %_% !ioc::NAME%(
+  %FUNC(StatusType, OS_CODE) IocReceive% if [ioc::DATATYPENAME length] > 1 then %Group% end if %_% !ioc::NAME%(
 %
   elsif ioc::SEMANTICS == "LAST_IS_BEST" then
-  %FUNC(Std_ReturnType, OS_CODE) IocRead% if [ioc::DATATYPENAME length] > 1 then %Group% end if %_% !ioc::NAME%(
+  %FUNC(StatusType, OS_CODE) IocRead% if [ioc::DATATYPENAME length] > 1 then %Group% end if %_% !ioc::NAME%(
 %
   end if
   let iteration2 := 0
@@ -115,7 +111,7 @@ foreach ioc in ioc_reordered do
 )
 {
   VAR(tpl_ioc_message, AUTOMATIC) message[% !iteration2 %];
-  VAR(Std_ReturnType, AUTOMATIC) result;
+  VAR(StatusType, AUTOMATIC) result;
 
 %
   let iteration3 := 0
@@ -127,28 +123,28 @@ foreach ioc in ioc_reordered do
   let iteration3 := iteration3 + 1
   end foreach
   if ioc::SEMANTICS == "QUEUED" then
-    %  
-  result = IOC_Receive(% !iteration1 %, message);
+    %
+  result = IOCReceive(% !iteration1 %, message);
 %
   else
-    %  
-  result = IOC_Read(% !iteration1 %, message);
-%  
+    %
+  result = IOCRead(% !iteration1 %, message);
+%
   end if
-%  
+%
   return result;
 }%
 
   if ioc::SEMANTICS == "QUEUED" then
 %
 
-FUNC(Std_ReturnType, OS_CODE) IocEmptyQueue_% !ioc::NAME %(void)
+FUNC(StatusType, OS_CODE) IocEmptyQueue_% !ioc::NAME %(void)
 {
-  VAR(Std_ReturnType, AUTOMATIC) result;
-   
-  result = IOC_EmptyQueue(% !iteration1 %);
+  VAR(StatusType, AUTOMATIC) result;
 
-  return result; 
+  result = IOCEmptyQueue(% !iteration1 %);
+
+  return result;
 }
 %
   end if
@@ -158,6 +154,6 @@ end foreach
 %
 
 #define API_STOP_SEC_CODE
-#include "tpl_memmap.h" 
+#include "tpl_memmap.h"
 
 /* End of file tpl_ioc_api_config.c */

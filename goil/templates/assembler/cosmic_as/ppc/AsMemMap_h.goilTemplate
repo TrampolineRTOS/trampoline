@@ -395,7 +395,7 @@
     #error "Starting a .ltorg while one is already started"
   #else
     #undef MEMMAP_ERROR
-//    even
+    /* even */
     #define CURRENT_LINKER_LTORG
   #endif
 #endif

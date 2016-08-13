@@ -51,6 +51,9 @@
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
 #include "tpl_as_protec_hook.h"
 #endif
+#if ((WITH_IOC == YES) && (IOC_UNQUEUED_COUNT > 0))
+# include "tpl_ioc_unqueued_kernel.h"
+#endif
 
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -1132,6 +1135,19 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
   result = tpl_activate_task(IDLE_TASK_ID);
 #else
   result = tpl_activate_task(IDLE_TASK_0_ID + tpl_get_core_id());
+#endif
+
+  /*  Init the Ioc's unqueued buffer */
+#if ((WITH_IOC == YES) && (IOC_UNQUEUED_COUNT > 0))
+# if NUMBER_OF_CORES > 1
+  /* Only one core must do this initialization */
+  if (core_id == OS_CORE_ID_MASTER)
+  {
+# endif
+    tpl_ioc_init_unqueued();
+# if NUMBER_OF_CORES > 1
+  }
+# endif
 #endif
 
 #if TASK_COUNT > 0

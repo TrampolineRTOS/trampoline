@@ -84,8 +84,7 @@ TPL_SIZE(TPL_GLOBAL_REF(tpl_reentrancy_counter),(NUMBER_OF_CORES*4))
  * of the kernel
  * - it switches to the kernel stack if needed
  * - it saves registers on the kernel stack
- * - in multicore, it locks the kernel if the call does not come from the
- *   StartOS service by checking the register 2 (ugly)
+ * - in multicore, it locks the kernel if the syscall's KERNEL_LOCK byte is set
  */
 TPL_GLOBAL_REF(tpl_enter_kernel_sc):
 
@@ -186,8 +185,7 @@ TPL_SIZE(TPL_GLOBAL_REF(tpl_enter_kernel_sc),$-TPL_GLOBAL_REF(tpl_enter_kernel_s
  * of the kernel
  * - it switches to the kernel stack if needed
  * - it saves registers on the kernel stack
- * - in multicore, it locks the kernel if the call does not come from the
- *   StartOS service by checking the register 2 (ugly)
+ * - in multicore, it always locks the kernel
  */
 TPL_GLOBAL_REF(tpl_enter_kernel):
 

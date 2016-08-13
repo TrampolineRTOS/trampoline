@@ -23,7 +23,20 @@
 #
 
 # -----------------------------------------------------------------------------
-# In multicore, we use always use intercore_interrupts
+# ERROR
+# Maximum number of cores = 2
+#
+# TODO : Would be nice to generalize this test following a variable in the
+#        chip section
+
+if OS::NUMBER_OF_CORES > 2 then
+  error OS::NUMBER_OF_CORES : "Too many cores for the selected chip (MPC5643L)"
+                            . " Max 2 cores. "
+end if
+
+
+# -----------------------------------------------------------------------------
+# Other tests
 #
 
 if OS::NUMBER_OF_CORES > 1 then

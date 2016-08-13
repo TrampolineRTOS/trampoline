@@ -68,25 +68,32 @@
 #define OBJECT_COUNTER        4
 
 /**
- * @def OBJECT_IOC
+ * @def OBJECT_IOC_RECEIVER
  *
- * Identifier of an ioc object
+ * Identifier of an ioc receiver object
  */
-#define OBJECT_IOC            5
+#define OBJECT_IOC_RECEIVER   5
+
+/**
+ * @def OBJECT_IOC_SENDER
+ *
+ * Identifier of an ioc sender object
+ */
+#define OBJECT_IOC_SENDER     6
 
 /**
  * @def OBJECT_SPINLOCK
  *
  * Identifier of an spinlock object
  */
-#define OBJECT_SPINLOCK       6
+#define OBJECT_SPINLOCK       7
 
 /**
  * @def OBJECT_KIND_COUNT
  *
  * number of object kind
  */
-#define OBJECT_TYPE_COUNT     7
+#define OBJECT_TYPE_COUNT     8
 
 /**
  *  @def  ACCESS_READ

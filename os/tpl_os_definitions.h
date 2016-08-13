@@ -294,6 +294,24 @@
  */
 #define E_OS_SPINLOCK             28
 
+/**
+ * @def E_OS_LOSTDATA
+ *
+ * IOC
+ * This error can occur when receiving a data through the IOC. Some datas were
+ * lost due to a previous send while the queue was full.
+ */
+#define E_OS_LOST_DATA            29
+
+/**
+ * @def E_OS_NO_DATA
+ *
+ * IOC
+ * This error can occur when receiving a data through the IOC while the queue
+ * is empty.
+ */
+#define E_OS_NO_DATA              30
+
 /************************************
  * Public states of a task or ISR2  *
  ************************************/

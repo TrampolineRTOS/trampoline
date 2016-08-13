@@ -138,13 +138,25 @@ typedef uint% ![[SPINLOCK length] numberOfBytes] * 8 % tpl_spinlock_id;
 /**
  * @internal
  *
- * Type used to define is a lock has been successfuly taken or not.
+ * Type used to define if a lock has been successfuly taken or not.
+ * Possible values : TRYTOGETSPINLOCK_SUCCESS
+ *                   TRYTOGETSPINLOCK_NOSUCCESS
  */
-typedef enum
-{
-  TRYTOGETSPINLOCK_NOSUCCESS,
-  TRYTOGETSPINLOCK_SUCCESS
-} tpl_try_to_get_spinlock_type;
+typedef uint8 tpl_try_to_get_spinlock_type;
+
+#define TRYTOGETSPINLOCK_SUCCESS    1
+#define TRYTOGETSPINLOCK_NOSUCCESS  0
+
+/**
+ * @internal
+ *
+ * Type used to store the bitfield of possible successor spinlocks indexed by
+ * their ids.
+ * Its size is given by the SPINLOCK_BITFIELD_CELL_SIZE global variable
+ */%
+%
+typedef uint% !SPINLOCK_BITFIELD_CELL_SIZE % tpl_spinlock_successor_bitfield;
+
 %end if%
 /**
  * @internal

@@ -105,6 +105,7 @@ union ID_PARAM_BLOCK {
 #if NUMBER_OF_CORES > 1
   VAR(tpl_core_id, TYPEDEF) core_id; /**< used by StartCore and
                                           StartNonAutosarCore   */
+  VAR(tpl_spinlock_id, TYPEDEF) spinlock_id; /**< @todo document this */
 #endif
 };
 
@@ -1586,10 +1587,10 @@ tpl_service.parameters.id.spinlock_id = (spinlockid);
  * the task identifier in parameter
  *
  * This macro is a little different than the service call CheckObjectAccess.
- * (bit_shift+1) because the first bit (bit_shift) is set if the object
+ * bit_shift because the first bit (bit_shift) is set if the object
  * belongs to the OS application and we want to know if the actual
  * task has access right to the application, which is indicates by
- * the second bit (bit_shift+1).
+ * the second bit bit_shift.
  *
  * @param obj_id #ObjectID to check
  * @param result error code variable to set (StatusType)
@@ -1610,13 +1611,13 @@ tpl_service.parameters.id.spinlock_id = (spinlockid);
 # define CHECK_ACCESS_RIGHTS_TASK_ID(a_core_id, obj_id,result) \
 	if (result == (tpl_status)E_OK)                              \
 	{                                                            \
-    CONST(uint8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7); \
-    CONST(uint8, AUTOMATIC) byte_idx = obj_id >> 2;            \
+    CONST(uint8, AUTOMATIC) bit_shift = (obj_id & 0x7); \
+    CONST(uint8, AUTOMATIC) byte_idx = obj_id >> 3;            \
     extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT]; \
     CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access = \
       tpl_app_table[tpl_stat_proc_table[TPL_KERN(a_core_id).running_id]->app_id];  \
-    if ( (((app_access->access_vec[OBJECT_TASK][byte_idx]) &            \
-      (1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )            \
+    if ( (((app_access->access_vec[OBJECT_TASK][byte_idx]) >> bit_shift) & 0x1)\
+          == NO_ACCESS )                                                \
     {                                                                   \
       result = E_OS_ACCESS;                                             \
     }                                                                   \
@@ -1630,10 +1631,10 @@ tpl_service.parameters.id.spinlock_id = (spinlockid);
  * the alarm identifier in parameter
  *
  * This macro is a little different than the service call CheckObjectAccess.
- * (bit_shift+1) because the first bit (bit_shift) is set if th object
+ * bit_shift because the first bit (bit_shift) is set if th object
  * belongs to the OS application and we want to know if the actual
  * task has access right to the application, which is indicates by
- * the second bit (bit_shift+1).
+ * the second bit bit_shift.
  *
  * @param obj_id #ObjectID to check
  * @param result error code variable to set (StatusType)
@@ -1654,13 +1655,13 @@ tpl_service.parameters.id.spinlock_id = (spinlockid);
 # define CHECK_ACCESS_RIGHTS_ALARM_ID(a_core_id,obj_id,result)        \
 	if (result == (tpl_status)E_OK)                           \
 	{                                                         \
-		CONST(uint8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7); \
-		CONST(uint8, AUTOMATIC) byte_idx = obj_id >> 2;            \
+		CONST(uint8, AUTOMATIC) bit_shift = (obj_id & 0x7); \
+		CONST(uint8, AUTOMATIC) byte_idx = obj_id >> 3;            \
 		extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT];	\
         CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =   \
             tpl_app_table[tpl_stat_proc_table[TPL_KERN(a_core_id).running_id]->app_id];  \
-		if ( (((app_access->access_vec[OBJECT_ALARM][byte_idx]) &                 \
-			(1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )                  \
+		if ( (((app_access->access_vec[OBJECT_ALARM][byte_idx]) >> bit_shift) & 0x1) \
+                == NO_ACCESS )                  \
 		{                                                                         \
 			result = E_OS_ACCESS;                                                   \
 		}                                                                         \
@@ -1674,10 +1675,10 @@ tpl_service.parameters.id.spinlock_id = (spinlockid);
  * the resource identifier in parameter
  *
  * This macro is a little different than the service call CheckObjectAccess.
- * (bit_shift+1) because the first bit (bit_shift) is set if th object
+ * bit_shift because the first bit (bit_shift) is set if th object
  * belongs to the OS application and we want to know if the actual
  * task has access right to the application, which is indicates by
- * the second bit (bit_shift+1).
+ * the second bit bit_shift.
  *
  * @param obj_id #ObjectID to check
  * @param result error code variable to set (StatusType)
@@ -1698,14 +1699,14 @@ tpl_service.parameters.id.spinlock_id = (spinlockid);
 # define CHECK_ACCESS_RIGHTS_RESOURCE_ID(a_core_id, obj_id,result)      \
   if (result == (tpl_status)E_OK)                                       \
   {                                                                     \
-    CONST(uint8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7);          \
-    CONST(uint8, AUTOMATIC) byte_idx = obj_id >> 2;                     \
+    CONST(uint8, AUTOMATIC) bit_shift = (obj_id & 0x7);          \
+    CONST(uint8, AUTOMATIC) byte_idx = obj_id >> 3;                     \
     extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST)       \
       tpl_app_table[APP_COUNT];                                         \
     CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access = \
       tpl_app_table[tpl_stat_proc_table[TPL_KERN(a_core_id).running_id]->app_id];  \
-		if ( (((app_access->access_vec[OBJECT_RESOURCE][byte_idx]) &            \
-			   (1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )             \
+		if ( (((app_access->access_vec[OBJECT_RESOURCE][byte_idx]) >> bit_shift) & 0x1) \
+                == NO_ACCESS )             \
 		{                                                                       \
 			result = E_OS_ACCESS;                                                 \
 		}                                                                       \
@@ -1719,10 +1720,10 @@ tpl_service.parameters.id.spinlock_id = (spinlockid);
  * the counter identifier in parameter
  *
  * This macro is a little different than the service call CheckObjectAccess.
- * (bit_shift+1) because the first bit (bit_shift) is set if th object
+ * bit_shift because the first bit (bit_shift) is set if th object
  * belongs to the OS application and we want to know if the actual
  * task has access right to the application, which is indicates by
- * the second bit (bit_shift+1).
+ * the second bit bit_shift.
  *
  * @param obj_id #ObjectID to check
  * @param result error code variable to set (StatusType)
@@ -1743,13 +1744,13 @@ tpl_service.parameters.id.spinlock_id = (spinlockid);
 # define CHECK_ACCESS_RIGHTS_COUNTER_ID(a_core_id, obj_id, result)  \
 	if( result == (tpl_status)E_OK )                                  \
 	{                                                                 \
-		CONST(uint8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7);      \
-    CONST(uint8, AUTOMATIC) byte_idx = obj_id >> 2;                 \
+		CONST(uint8, AUTOMATIC) bit_shift = (obj_id & 0x7);      \
+    CONST(uint8, AUTOMATIC) byte_idx = obj_id >> 3;                 \
     extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT];	\
     CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =   \
       tpl_app_table[tpl_stat_proc_table[TPL_KERN(a_core_id).running_id]->app_id];  \
-		if ( (((app_access->access_vec[OBJECT_COUNTER][byte_idx]) &            \
-			   (1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )            \
+		if ( (((app_access->access_vec[OBJECT_COUNTER][byte_idx]) >> bit_shift) & 0x1) \
+                == NO_ACCESS )            \
 		{                                                                      \
 			result = E_OS_ACCESS;                                                \
 		}                                                                         \
@@ -1763,10 +1764,10 @@ tpl_service.parameters.id.spinlock_id = (spinlockid);
  * the schedule table identifier in parameter
  *
  * This macro is a little different than the service call CheckObjectAccess.
- * (bit_shift+1) because the first bit (bit_shift) is set if th object
+ * bit_shift because the first bit (bit_shift) is set if th object
  * belongs to the OS application and we want to know if the actual
  * task has access right to the application, which is indicates by
- * the second bit (bit_shift+1).
+ * the second bit bit_shift.
  *
  * @param obj_id #ObjectID to check
  * @param result error code variable to set (StatusType)
@@ -1787,13 +1788,13 @@ tpl_service.parameters.id.spinlock_id = (spinlockid);
 # define CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(a_core_id,obj_id,result)  \
   if( result == (tpl_status)E_OK )                            \
   {                                                           \
-    CONST(uint8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7);   \
-    CONST(uint8, AUTOMATIC) byte_idx = obj_id >> 2;              \
+    CONST(uint8, AUTOMATIC) bit_shift = (obj_id & 0x7);   \
+    CONST(uint8, AUTOMATIC) byte_idx = obj_id >> 3;              \
     extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT]; \
     CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access = \
     tpl_app_table[tpl_stat_proc_table[TPL_KERN(a_core_id).running_id]->app_id];    \
-    if ( (((app_access->access_vec[OBJECT_SCHEDULETABLE][byte_idx]) &   \
-      (1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )            \
+    if ( (((app_access->access_vec[OBJECT_SCHEDULETABLE][byte_idx]) >> bit_shift) & 0x1)\
+             == NO_ACCESS )            \
     {                                                                   \
       result = E_OS_ACCESS;                                             \
     }                                                                   \
@@ -1807,10 +1808,10 @@ tpl_service.parameters.id.spinlock_id = (spinlockid);
  * the spinlock identifier in parameter
  *
  * This macro is a little different than the service call CheckObjectAccess.
- * (bit_shift+1) because the first bit (bit_shift) is set if the object
+ * bit_shift because the first bit (bit_shift) is set if the object
  * belongs to the OS application and we want to know if the actual
  * task has access right to the application, which is indicates by
- * the second bit (bit_shift+1).
+ * the second bit bit_shift.
  *
  * @param obj_id #ObjectID to check
  * @param result error code variable to set (StatusType)
@@ -1831,13 +1832,13 @@ tpl_service.parameters.id.spinlock_id = (spinlockid);
 # define CHECK_ACCESS_RIGHTS_SPINLOCK_ID(a_core_id, obj_id,result) \
 	if (result == (tpl_status)E_OK)                              \
 	{                                                            \
-    CONST(uint8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7); \
-    CONST(uint8, AUTOMATIC) byte_idx = obj_id >> 2;            \
+    CONST(uint8, AUTOMATIC) bit_shift = (obj_id & 0x7); \
+    CONST(uint8, AUTOMATIC) byte_idx = obj_id >> 3;            \
     extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT]; \
     CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access = \
       tpl_app_table[tpl_stat_proc_table[TPL_KERN(a_core_id).running_id]->app_id];  \
-    if ( (((app_access->access_vec[OBJECT_SPINLOCK][byte_idx]) &            \
-      (1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )            \
+    if ( (((app_access->access_vec[OBJECT_SPINLOCK][byte_idx]) >> bit_shift) & 0x1) \
+            == NO_ACCESS )                                              \
     {                                                                   \
       result = E_OS_ACCESS;                                             \
     }                                                                   \
@@ -1949,81 +1950,6 @@ result = (tpl_status)E_OS_ID;                                   \
 }
 #endif
 
-
-/**
- * @def CHECK_ACCESS_WRITE_IOC_ID
- *
- * This macro checks if running task is allowed to write to
- * the ioc identifier in parameter
- *
- *
- * @param obj_id #ObjectID to check
- * @param result error code variable to set (StatusType)
- *
- * @note error code is not set if it does not equal E_OK
- * @note checking is disable when WITH_OS_EXTENDED == NO
- */
-/*#if (WITH_OS_EXTENDED == NO) || (WITH_IOC == NO)
-# define CHECK_ACCESS_WRITE_IOC_ID(obj_id,result)
-#elif (APP_COUNT == 0)
-# define CHECK_ACCESS_WRITE_IOC_ID(obj_id,result)                       \
-if (result == IOC_E_OK)                                               \
-{                                                                     \
-result = E_OS_ACCESS;                                               \
-}
-#else
-# define CHECK_ACCESS_WRITE_IOC_ID(obj_id,result)                       \
-if (result == IOC_E_OK)                                               \
-{                                                                     \
-CONST(uint8, AUTOMATIC) bit_shift = (uint8)((obj_id << 1) & 0x7);         \
-CONST(uint8, AUTOMATIC) byte_idx = (uint8)(obj_id >> 2);                  \
-CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access = \
-tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];  \
-if ( (((app_access->access_vec[OBJECT_IOC][byte_idx]) &             \
-(uint8)(3 << (bit_shift))) >> (bit_shift)) != ACCESS_WRITE )             \
-{                                                                   \
-result = E_OS_ACCESS;                                             \
-}                                                                   \
-}
-#endif*/
-
-/**
- * @def CHECK_ACCESS_READ_IOC_ID
- *
- * This macro checks if running task is allowed to read rfom
- * the ioc identifier in parameter
- *
- *
- * @param obj_id #ObjectID to check
- * @param result error code variable to set (StatusType)
- *
- * @note error code is not set if it does not equal E_OK
- * @note checking is disable when WITH_OS_EXTENDED == NO
- */
-/*#if (WITH_OS_EXTENDED == NO) || (WITH_IOC == NO)
-# define CHECK_ACCESS_READ_IOC_ID(obj_id,result)
-#elif (APP_COUNT == 0)
-# define CHECK_ACCESS_READ_IOC_ID(obj_id,result)                        \
-if (result == IOC_E_OK)                                               \
-{                                                                     \
-result = E_OS_ACCESS;                                               \
-}
-#else
-# define CHECK_ACCESS_READ_IOC_ID(obj_id,result)                        \
-if (result == IOC_E_OK)                                               \
-{                                                                     \
-CONST(uint8, AUTOMATIC) bit_shift = (uint8)((obj_id << 1) & 0x7);         \
-CONST(uint8, AUTOMATIC) byte_idx = (uint8)(obj_id >> 2);                  \
-CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access = \
-tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];  \
-if ( (((app_access->access_vec[OBJECT_IOC][byte_idx]) &             \
-(uint8)(3 << (bit_shift))) >> (bit_shift)) < ACCESS_READ )               \
-{                                                                   \
-result = E_OS_ACCESS;                                             \
-}                                                                   \
-}
-#endif*/
-
 /**
  * @def CHECK_ACCESS_WRITE_IOC_ID
  *
@@ -2047,20 +1973,19 @@ result = E_OS_ACCESS;                                               \
 }
 #else
 # define CHECK_ACCESS_WRITE_IOC_ID(a_core_id,obj_id,result)                       \
-if (result == IOC_E_OK)                                               \
-{                                                                     \
-CONST(uint8, AUTOMATIC) bit_shift = (uint8)((obj_id << 1) & 0x7);         \
-CONST(uint8, AUTOMATIC) byte_idx = (uint8)(obj_id >> 2);                  \
-CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access = \
-tpl_app_table[tpl_stat_proc_table[TPL_KERN(a_core_id).running_id]->app_id];  \
-if (( (((app_access->access_vec[OBJECT_IOC][byte_idx]) &             \
-(uint8)(3 << (bit_shift))) >> (bit_shift)) != ACCESS_WRITE ) &&     \
-( (((app_access->access_vec[OBJECT_IOC][byte_idx]) &             \
-(uint8)(3 << (bit_shift))) >> (bit_shift)) != ACCESS_FULL ))       \
-{                                                                   \
-result = E_OS_ACCESS;                                             \
-}                                                                   \
-}
+    if (result == (tpl_status)E_OK)                              \
+    {                                                            \
+    CONST(uint8, AUTOMATIC) bit_shift = (obj_id & 0x7); \
+    CONST(uint8, AUTOMATIC) byte_idx = obj_id >> 3;            \
+    extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT]; \
+    CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access = \
+      tpl_app_table[tpl_stat_proc_table[TPL_KERN(a_core_id).running_id]->app_id];  \
+    if ( (((app_access->access_vec[OBJECT_IOC_SENDER][byte_idx]) >> bit_shift) & 0x1) \
+            == NO_ACCESS )                                              \
+    {                                                                   \
+      result = E_OS_ACCESS;                                             \
+    }                                                                   \
+  }
 #endif
 
 /**
@@ -2086,20 +2011,19 @@ result = E_OS_ACCESS;                                               \
 }
 #else
 # define CHECK_ACCESS_READ_IOC_ID(a_core_id,obj_id,result)                        \
-if (result == IOC_E_OK)                                               \
-{                                                                     \
-CONST(uint8, AUTOMATIC) bit_shift = (uint8)((obj_id << 1) & 0x7);         \
-CONST(uint8, AUTOMATIC) byte_idx = (uint8)(obj_id >> 2);                  \
-CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =   \
-  tpl_app_table[tpl_stat_proc_table[TPL_KERN(a_core_id).running_id]->app_id];    \
-if (( (((app_access->access_vec[OBJECT_IOC][byte_idx]) &              \
-    (uint8)(3 << (bit_shift))) >> (bit_shift)) != ACCESS_READ ) &&    \
-    ( (((app_access->access_vec[OBJECT_IOC][byte_idx]) &              \
-    (uint8)(3 << (bit_shift))) >> (bit_shift)) != ACCESS_FULL ))      \
-{                                                                     \
-    result = E_OS_ACCESS;                                             \
-}                                                                   \
-}
+    if (result == (tpl_status)E_OK)                              \
+    {                                                            \
+    CONST(uint8, AUTOMATIC) bit_shift = (obj_id & 0x7); \
+    CONST(uint8, AUTOMATIC) byte_idx = obj_id >> 3;            \
+    extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT]; \
+    CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access = \
+      tpl_app_table[tpl_stat_proc_table[TPL_KERN(a_core_id).running_id]->app_id];  \
+    if ( (((app_access->access_vec[OBJECT_IOC_RECEIVER][byte_idx]) >> bit_shift) & 0x1) \
+            == NO_ACCESS )                                              \
+    {                                                                   \
+      result = E_OS_ACCESS;                                             \
+    }                                                                   \
+  }
 #endif
 
 #endif /* WITH_IOC == YES */

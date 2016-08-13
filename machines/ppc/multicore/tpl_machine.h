@@ -190,10 +190,4 @@ extern VAR(uint32, OS_VAR) tpl_current_date[NUMBER_OF_CORES];
 #define GET_KERNEL_STACK_BOTTOM(core_id)   tpl_kernel_stack_bottom[0]
 #endif
 
-#define OS_START_SEC_CONST_UNSPECIFIED
-#include "tpl_memmap.h"
-extern CONSTP2VAR(uint32, OS_CONST, OS_VAR) tpl_intc[NUMBER_OF_CORES];
-#define OS_STOP_SEC_CONST_UNSPECIFIED
-#include "tpl_memmap.h"
-
 #endif /* TPL_MACHINE_PPC_H */

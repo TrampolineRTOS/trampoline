@@ -155,7 +155,7 @@ CONST(tpl_it_vector_entry, OS_CONST) tpl_it_table_%!core_id%[% !INTERRUPT_COUNT:
     if not entryFound then
     %  { (tpl_it_handler)tpl_null_it, (void *)NULL }%
     end if
-  between %,    // Vector % !ENTRY %
+  between %,    /* Vector % !ENTRY % */
 %
   end loop
 %

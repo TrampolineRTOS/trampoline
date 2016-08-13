@@ -15,10 +15,7 @@
  */
 /* MISRA RULE 3.1 VIOLATION: special character is used in comments for svn integration, the code can survive to this ! */
 
-#include "tpl_os_definitions.h"
 #include "tpl_ioc_queue.h"
-#include "tpl_ioc_internal_types.h"
-
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -38,7 +35,7 @@ FUNC(tpl_ioc_buffer, OS_CODE) tpl_ioc_queue_element_for_write(
 {
   CONSTP2VAR(tpl_ioc_queue_dyn, AUTOMATIC, OS_VAR)  dq = queue->dyn_desc;
   P2VAR(tpl_ioc_data, AUTOMATIC, OS_VAR)            p=NULL;
-  CONST(u32, AUTOMATIC)                             offset = dq->index + dq->size;
+  CONST(uint32, AUTOMATIC)                          offset = dq->index + dq->size;
 
 
   /*  check the queue is not full                             */

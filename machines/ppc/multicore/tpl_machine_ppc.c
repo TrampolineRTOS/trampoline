@@ -387,7 +387,6 @@ FUNC(void, OS_CODE) tpl_start_core(
  * @internal
  *
  * This function sends an interrupt to the other core to force a context switch
- * Note : kernel MUST be locked when this function is called
  */
 FUNC(void, OS_CODE) tpl_send_intercore_it(
   CONST(CoreIdType, AUTOMATIC) to_core_id)

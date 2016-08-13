@@ -60,6 +60,14 @@ if OS::NUMBER_OF_CORES > 1 then
 
 end if
 
+# IOC
+if ioc_queued_count > 0 then
+  let APIUSED += APIMAP["ioc_queued"]
+end if
+if ioc_unqueued_count > 0 then
+  let APIUSED += APIMAP["ioc_unqueued"]
+end if
+
 if OS::SYSTEM_CALL then
   !PROJECT %/tpl_dispatch_table.c
 %

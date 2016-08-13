@@ -104,7 +104,6 @@ end if
 if [ioc_reordered length] != 0 then
 %
 #include "tpl_ioc.h"
-#include "ioc_types.h"
 %
 end if
 
@@ -313,38 +312,116 @@ foreach resource in REGULARRESOURCES
     template resource_descriptor
 end foreach
 
+if OS::USERESSCHEDULER then
+%
+/**
+ * The scheduler resource descriptor.
+ * One scheduler resource is defined per core.
+ *
+ * @see #RES_SCHEDULER
+ */
+%
+  loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+%
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"%
+    if OS::NUMBER_OF_CORES > 1 then%
+VAR(tpl_resource, OS_VAR) res_sched_core% !core_id %_rez_desc = {%
+    else %
+VAR(tpl_resource, OS_VAR) res_sched_rez_desc = {%
+    end if%
+  RES_SCHEDULER_PRIORITY,   /*  ceiling priority                            */
+  0,                        /*  owner_prev_priority                         */
+  INVALID_PROC_ID,          /*  owner                                       */
+#if WITH_OSAPPLICATION == YES
+  INVALID_OSAPPLICATION_ID, /*  OS Application id                           */
+#endif
+  NULL                      /*  next_res                                    */
+};
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+%
+  end loop
+end if
+
 #------------------------------------------------------------------------------
 # resources table.
 # generate only if at least one resource exists
 #
-if [REGULARRESOURCES length] > 0 | OS::USERESSCHEDULER then
+loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+  if [REGULARRESOURCES length] > 0 | OS::USERESSCHEDULER then
 %
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
-CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA)
+CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA)%
+    if OS::NUMBER_OF_CORES > 1 then%
+tpl_resource_table_core% !core_id %[RESOURCE_COUNT] = {%
+    else%
 tpl_resource_table[RESOURCE_COUNT] = {%
-foreach resource in REGULARRESOURCES
-  before %
+    end if
+    foreach resource in REGULARRESOURCES
+    before %
   %
-  do
-    %&% !resource::NAME %_rez_desc%
-  between
-    %,
-  % 
-end foreach
+    do
+      # Check if this core has this resource, add the resource descriptor if
+      # yes.
+      let accessing_application := false
+      foreach application in APPLICATIONS do
+        if exists application::CORE default(0) == core_id then
+          let res_map := mapof exists application::RESOURCE default(emptylist) by VALUE
+          let app_map := mapof exists resource::ACCESSING_APPLICATION default(emptylist) by VALUE
+          if (exists res_map[resource::NAME])
+           | (exists app_map[application::NAME]) then
+            let accessing_application := true
+          end if
+        end if
+      end foreach
 
-if OS::USERESSCHEDULER then
-  if [REGULARRESOURCES length] > 0 then %,% end if
-%
+      if accessing_application then
+    %&% !resource::NAME %_rez_desc%
+      else
+    %NULL%
+      end if
+    between
+    %,
+  %
+    end foreach
+
+    if OS::USERESSCHEDULER then
+      if [REGULARRESOURCES length] > 0 then %,% end if
+      if OS::NUMBER_OF_CORES > 1 then%
+  &res_sched_core% !core_id %_rez_desc%
+      else %
   &res_sched_rez_desc%
-end if
-%  
+      end if
+    end if
+%
+};
+
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+%
+  end if
+end loop
+
+if OS::NUMBER_OF_CORES > 1 then%
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+CONSTP2CONST(tpl_resource*, AUTOMATIC, OS_CONST)
+tpl_resource_table[NUMBER_OF_CORES] = {
+%
+  loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+%  tpl_resource_table_core% !core_id
+  between %,
+%
+  end loop
+%
 };
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
-
 %
 end if
+
 #------------------------------------------------------------------------------
 
 foreach resource in INTERNALRESOURCES
@@ -993,8 +1070,7 @@ end foreach
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
-%
-%CONSTP2CONST(tpl_ioc_queued_mo, OS_CONST, OS_CONST) tpl_ioc_queued_table[% !ioc_queued_count %] =
+CONSTP2CONST(tpl_ioc_queued_mo, OS_CONST, OS_CONST) tpl_ioc_queued_table[% !ioc_queued_count %] =
 {
 %
    foreach ioc in ioc_queued_list do
@@ -1006,10 +1082,15 @@ end foreach
 %
 };
 
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 %
   end if
   if [ioc_unqueued_list length] != 0 then
-%CONSTP2CONST(tpl_ioc_unqueued_mo, OS_CONST, OS_CONST) tpl_ioc_unqueued_table[% !ioc_unqueued_count %] =
+%#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+CONSTP2CONST(tpl_ioc_unqueued_mo, OS_CONST, OS_CONST) tpl_ioc_unqueued_table[% !ioc_unqueued_count %] =
 {
 %
    foreach ioc in ioc_unqueued_list do

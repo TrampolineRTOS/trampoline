@@ -125,6 +125,45 @@ foreach application in APPLICATION do
   let OS::APPLICATIONSHUTDOWNHOOK :=  OS::APPLICATIONSHUTDOWNHOOK + [application::SHUTDOWNHOOK unsigned]
 end foreach
 
+# Set a constant for the cell size of spinlocks' bitfields (currently uint8)
+let SPINLOCK_BITFIELD_CELL_SIZE := 8
+let SPINLOCK_BITFIELD_SHIFT := [SPINLOCK_BITFIELD_CELL_SIZE numberOfBits]
+
+# Search for the longest chain of spinlocks to use this count as a maximum in
+# the spinlocks LIFOs
+let map_spinlock := mapof SPINLOCK by NAME
+let max_possessed_spinlocks := 0
+foreach spinlock in SPINLOCK do
+  let color_spinlock := emptymap
+  let found_spinlock := emptymap
+  let found_spinlock[spinlock::NAME] := spinlock
+  let local_possessed_spinlocks := emptymap
+  let local_possessed_spinlocks[spinlock::NAME] := 1
+
+  repeat
+    let found_new := false
+    foreach new_spinlock in found_spinlock do
+      if not exists color_spinlock[new_spinlock::NAME] then
+        let color_spinlock[new_spinlock::NAME] := true
+
+        foreach son in exists new_spinlock::SUCCESSOR default (emptylist) do
+          let found_spinlock[son::VALUE] := map_spinlock[son::VALUE]
+          let local_possessed_spinlocks[son::VALUE] := local_possessed_spinlocks[new_spinlock::NAME] + 1
+          let found_new := true
+        end foreach
+      end if
+
+      if local_possessed_spinlocks[new_spinlock::NAME] > max_possessed_spinlocks then
+        let max_possessed_spinlocks := local_possessed_spinlocks[new_spinlock::NAME]
+      end if
+
+    end foreach
+
+  while found_new
+  end repeat
+
+end foreach
+
 #------------------------------------------------------------------------------*
 # Compute the OS::SCALABILITYCLASS
 # If this attribute does not exists, we are in OSEK
@@ -1078,9 +1117,9 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
   function computeVector (app, proc, owned_proc) {
     let vector := ""
     if exists owned_proc[proc::NAME] then
-      let vector := "11"
+      let vector := "1"
     else
-      let vector := "0"
+      let vector := ""
       let acc_app := exists proc::ACCESSING_APPLICATION default (emptylist)
       let acc_app_map := mapof (exists proc::ACCESSING_APPLICATION default (emptylist)) by VALUE
       if exists acc_app_map[app::NAME] then
@@ -1138,7 +1177,14 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
     foreach proc in PROCESSES do
       let vector := vector . computeVector(app, proc, owned_proc)
     end foreach
-    let vector := vector . "01" # for idle task
+    # for idle task
+    loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+      if exists app::CORE default(0) == core_id then
+        let vector := vector . "1"
+      else
+        let vector := vector . "0"
+      end if
+    end loop
     let app::PROCESSACCESSVECTOR := vector
     let size := computeBinaryVectorSize(vector)
     let app::PROCESSACCESSNUM := size
@@ -1174,7 +1220,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
         let vector := vector . computeVector(app, rez, owned_resources)
       end if
     end foreach
-    let vector := vector . "01" # add the RES_SCHEDULER
+    let vector := vector . "1" # add the RES_SCHEDULER
     let app::RESOURCEACCESSVECTOR := vector
     let size := computeBinaryVectorSize(vector)
     let app::RESOURCEACCESSNUM := size
@@ -1207,40 +1253,46 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
     let app::COUNTERACCESSITEMS := computeBinaryVector(vector, size)
 
     # vectors for IOC access
-    let owned_iocs := mapof app::IOC by VALUE
-    let vector := ""
+    let read_vector  := ""
+    let write_vector := ""
     foreach ioc in ioc_reordered do
-      if exists owned_iocs[ioc::NAME] then
-        let ioc_read_access := false
-        foreach receiver in ioc::RECEIVER do
-          if receiver::RCV_OSAPPLICATION == app::NAME then
-           let ioc_read_access := true
-          end if
-        end foreach
-        let ioc_write_access := false
-        foreach sender in ioc::SENDER do
-          if sender::SND_OSAPPLICATION == app::NAME then
-           let ioc_write_access := true
-          end if
-        end foreach
-        if ioc_read_access == true & ioc_write_access == false then
-          let vector := vector . "10"
-          #let vector := vector . "01"
-        elsif ioc_read_access == false & ioc_write_access == true then
-          let vector := vector . "01"
-          #let vector := vector . "11"
-        else
-          let vector := vector . "11"
-          #error here : "error configuration for ioc ". ioc::NAME
+      let ioc_read_access := false
+      foreach receiver in ioc::RECEIVER do
+        if receiver::RCV_OSAPPLICATION == app::NAME then
+         let ioc_read_access := true
         end if
+      end foreach
+      let ioc_write_access := false
+      foreach sender in ioc::SENDER do
+        if sender::SND_OSAPPLICATION == app::NAME then
+         let ioc_write_access := true
+        end if
+      end foreach
+      if ioc_read_access == true & ioc_write_access == false then
+        let read_vector  := read_vector  . "1"
+        let write_vector := write_vector . "0"
+      elsif ioc_read_access == false & ioc_write_access == true then
+        let read_vector  := read_vector  . "0"
+        let write_vector := write_vector . "1"
+      elsif ioc_read_access == false & ioc_write_access == false then
+        let read_vector  := read_vector  . "0"
+        let write_vector := write_vector . "0"
       else
-        let vector := vector . "00"
+        let read_vector  := read_vector  . "1"
+        let write_vector := write_vector . "1"
+        error here : "error configuration for ioc ". ioc::NAME
       end if
     end foreach
-    let app::IOCACCESSVECTOR := vector
-    let size := computeBinaryVectorSize(vector)
-    let app::IOCACCESSNUM := size
-    let app::IOCACCESSITEMS := computeBinaryVector(vector, size)
+
+    let app::IOCREADACCESSVECTOR := read_vector
+    let size := computeBinaryVectorSize(read_vector)
+    let app::IOCREADACCESSNUM := size
+    let app::IOCREADACCESSITEMS := computeBinaryVector(read_vector, size)
+
+    let app::IOCWRITEACCESSVECTOR := write_vector
+    let size := computeBinaryVectorSize(write_vector)
+    let app::IOCWRITEACCESSNUM := size
+    let app::IOCWRITEACCESSITEMS := computeBinaryVector(write_vector, size)
 
     let APPLICATIONS += app
   end foreach
@@ -1368,23 +1420,25 @@ write to PROJECT."/tpl_app_config.h":
   template tpl_app_config_h in code
 end write
 
-!PROJECT %/tpl_ioc_api_config.c
-%
-write to PROJECT."/tpl_ioc_api_config.c":
-  template tpl_ioc_api_config_c in code
-end write
-
-!PROJECT %/tpl_ioc_api_config.h
-%
-write to PROJECT."/tpl_ioc_api_config.h":
-  template tpl_ioc_api_config_h in code
-end write
-
 !PROJECT %/tpl_app_define.h
 %
 write to PROJECT."/tpl_app_define.h":
   template tpl_app_define_h in code
 end write
+
+if [ioc_reordered length] != 0 then
+  !PROJECT %/tpl_ioc_api_config.c
+%
+  write to PROJECT."/tpl_ioc_api_config.c":
+    template tpl_ioc_api_config_c in code
+  end write
+
+  !PROJECT %/tpl_ioc_api_config.h
+%
+  write to PROJECT."/tpl_ioc_api_config.h":
+    template tpl_ioc_api_config_h in code
+  end write
+end if
 
 if OS::MEMMAP then
   if exists OS::MEMMAP_S::COMPILER then

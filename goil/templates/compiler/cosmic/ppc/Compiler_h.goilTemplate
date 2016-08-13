@@ -63,14 +63,15 @@
 /*****************************************************************************/
 /* PUBLISHED INFORMATION                                                     */
 /*****************************************************************************/
-//#define COMPILER_VENDOR_ID        48
-//#define COMPILER_AR_MAJOR_VERSION 3
-//#define COMPILER_AR_MINOR_VERSION 0
-//#define COMPILER_AR_PATCH_VERSION 0
-//#define COMPILER_SW_MAJOR_VERSION 1
-//#define COMPILER_SW_MINOR_VERSION 1
-//#define COMPILER_SW_PATCH_VERSION 0
-
+#if 0 /* TODO */
+#define COMPILER_VENDOR_ID
+#define COMPILER_AR_MAJOR_VERSION
+#define COMPILER_AR_MINOR_VERSION
+#define COMPILER_AR_PATCH_VERSION
+#define COMPILER_SW_MAJOR_VERSION
+#define COMPILER_SW_MINOR_VERSION
+#define COMPILER_SW_PATCH_VERSION
+#endif
 
 #endif /* COMPILER_H */
 
