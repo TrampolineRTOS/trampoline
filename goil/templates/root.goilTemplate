@@ -25,6 +25,7 @@
 #------------------------------------------------------------------------------*
 # Check configuration is ok
 #
+
 if not exists OS then
   error here : "No OS object defined in your OIL files. Unable to generate a system"
 end if
