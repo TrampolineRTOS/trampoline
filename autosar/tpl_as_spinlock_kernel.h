@@ -31,6 +31,8 @@
 #include "tpl_os_timeobj_kernel.h"
 #include "tpl_os_resource.h"
 
+#if NUMBER_OF_CORES > 1
+
 /**
  * @typedef tpl_lock_method
  *
@@ -106,6 +108,9 @@ extern VAR(tpl_spinlock_id, OS_VAR) tpl_taken_spinlock_counter[NUMBER_OF_CORES];
     if(HAS_SPINLOCK(core_id)) {              \
       tpl_taken_spinlock_counter[core_id]--; \
     }
+
+#define RELEASE_ALL_SPINLOCKS(core_id) \
+    tpl_taken_spinlock_counter[core_id] = 0;
 
 #define GET_TAKEN_SPINLOCK(core_id, position)   \
     tpl_taken_spinlocks[core_id][position]
@@ -226,7 +231,8 @@ extern FUNC(tpl_status, OS_CODE) tpl_try_to_get_spinlock_service(
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
-#endif
+#endif /* NUMBER_OF_CORES > 1 */
+#endif /* SPINLOCK_COUNT > 0  */
 
 /* TPL_AS_SPINLOCK_KERNEL_H */
 #endif

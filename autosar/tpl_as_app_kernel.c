@@ -35,6 +35,9 @@
 #include "tpl_as_st_kernel.h"
 #include "tpl_as_definitions.h"
 #include "tpl_as_error.h"
+#if SPINLOCK_COUNT > 0
+#include "tpl_as_spinlock_kernel.h"
+#endif
 
 #include "tpl_os_task.h"
 DeclareTask(INVALID_TASK);
@@ -375,6 +378,15 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(
           tpl_dyn_proc_table[proc_id]->priority =
           tpl_stat_proc_table[proc_id]->base_priority;
         }
+      }
+#endif
+#if SPINLOCK_COUNT > 0
+      /*
+       * Then release all the spinlocks that has been taken by the core that
+       * has its application terminated.
+       */
+      {
+        RELEASE_ALL_SPINLOCKS(tpl_core_id_for_app[app_id]);
       }
 #endif
 

@@ -85,6 +85,9 @@ FUNC(void, OS_CODE) tpl_call_protection_hook(VAR(tpl_status, AUTOMATIC) error)
       if (proc_id != INVALID_PROC)
       {
         tpl_release_all_resources(proc_id);
+#if SPINLOCK_COUNT > 0
+        RELEASE_ALL_SPINLOCKS(core_id);
+#endif
         tpl_reset_interrupt_lock_status();
         TPL_KERN_REF(kern).running->activate_count--;
 

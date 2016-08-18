@@ -801,9 +801,9 @@ VAR(tpl_app_dyn, OS_VAR) tpl_app_dyn_table[APP_COUNT];
     if OS::NUMBER_OF_CORES > 1 then
       foreach app in APPLICATIONS
         before %
-#define OS_START_SEC_VAR_UNSPECIFIED
+#define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
-VAR(tpl_core_id, OS_VAR) tpl_core_id_for_app[APP_COUNT] =
+CONST(tpl_core_id, OS_CONST) tpl_core_id_for_app[APP_COUNT] =
 {
 %do
 %  %!app::CORE
@@ -811,7 +811,7 @@ VAR(tpl_core_id, OS_VAR) tpl_core_id_for_app[APP_COUNT] =
 %
         after%
 };
-#define OS_STOP_SEC_VAR_UNSPECIFIED
+#define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 %
       end foreach

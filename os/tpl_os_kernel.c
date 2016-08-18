@@ -132,10 +132,6 @@ extern CONST(tpl_appmode_mask, OS_CONST)
 
 #endif
 
-#if NUMBER_OF_CORES > 1
-extern VAR(tpl_core_id, OS_VAR) tpl_core_id_for_app[APP_COUNT];
-#endif
-
 /**
  * INTERNAL_RES_SCHEDULER is an internal resource with the higher task
  * priority in the application. A task is non preemptable when
@@ -1178,14 +1174,14 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
     if (tpl_alarm_app_mode[i] & app_mode_mask)
     {
       auto_time_obj = (P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA))tpl_alarm_table[i];
-# if NUMBER_OF_CORES > 1
+# if (NUMBER_OF_CORES > 1) && (WITH_OSAPPLICATION == YES)
       // In multicore, we must check if the alarm belongs to the core
       if (tpl_core_id_for_app[auto_time_obj->stat_part->app_id] == core_id)
       {
 # endif
         auto_time_obj->state = ALARM_ACTIVE;
         tpl_insert_time_obj(auto_time_obj);
-# if NUMBER_OF_CORES > 1
+# if (NUMBER_OF_CORES > 1) && (WITH_OSAPPLICATION == YES)
       }
 # endif
     }
@@ -1201,7 +1197,7 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
     {
       auto_time_obj =
         (P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA))tpl_schedtable_table[i];
-# if NUMBER_OF_CORES > 1
+# if (NUMBER_OF_CORES > 1) && (WITH_OSAPPLICATION == YES)
       // In multicore, we must check if the schedule table belongs to the core
       if (tpl_core_id_for_app[auto_time_obj->stat_part->app_id] == core_id)
       {
@@ -1229,7 +1225,7 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
           }
 #endif
         }
-#if NUMBER_OF_CORES > 1
+# if (NUMBER_OF_CORES > 1) && (WITH_OSAPPLICATION == YES)
       }
 #endif
     }

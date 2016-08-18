@@ -152,6 +152,14 @@ extern CONSTP2CONST(tpl_app_access, OS_CONST, OS_CONST) tpl_app_table[APP_COUNT]
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
+# if NUMBER_OF_CORES > 1
+# define OS_START_SEC_CONST_UNSPECIFIED
+# include "tpl_memmap.h"
+extern VAR(tpl_core_id, OS_VAR) tpl_core_id_for_app[APP_COUNT];
+# define OS_STOP_SEC_CONST_UNSPECIFIED
+# include "tpl_memmap.h"
+# endif
+
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 extern VAR(tpl_app_dyn, OS_VAR) tpl_app_dyn_table[APP_COUNT];
