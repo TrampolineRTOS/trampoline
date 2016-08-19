@@ -70,8 +70,12 @@ TPL_GLOBAL(tpl_get_kernel_lock)
 TPL_GLOBAL_REF(tpl_get_kernel_lock):
 #if (WITH_VLE == YES)
 /* ------------ VLE ---------------------------------------------------------*/
-  se_mtar   r11,r5
-  se_mtar   r12,r6
+  /* Save r2,r5,r6 */
+  se_subi   r1,12
+  se_stw    r6,8(r1)
+  se_stw    r5,4(r1)
+  se_stw    r2,0(r1)
+
   /* r6 : Get the Gates base address */
   e_lis     r6,TPL_HIG(TPL_SEMA4_BASE)
   e_add16i  r6,TPL_LOW(TPL_SEMA4_BASE)
@@ -88,8 +92,11 @@ tpl_get_kernel_lock_retry :
   se_cmp    r2,r5
   se_bne    tpl_get_kernel_lock_retry
 
-  se_mfar   r5,r11
-  se_mfar   r6,r12
+  /* Restore r2,r5,r6 */
+  se_lwz    r2,0(r1)
+  se_lwz    r5,4(r1)
+  se_lwz    r6,8(r1)
+  se_addi   r1,12
   blr
 #endif
 TPL_TYPE(TPL_GLOBAL_REF(tpl_get_kernel_lock),@function)
@@ -104,8 +111,11 @@ TPL_GLOBAL(tpl_release_kernel_lock)
 TPL_GLOBAL_REF(tpl_release_kernel_lock):
 #if (WITH_VLE == YES)
 /* ------------ VLE ---------------------------------------------------------*/
-  se_mtar   r11,r5
-  se_mtar   r12,r6
+  /* Save r5,r6 */
+  se_subi   r1,8
+  se_stw    r6,4(r1)
+  se_stw    r5,0(r1)
+
   /* r6 : Get the Gates base address */
   e_lis     r6,TPL_HIG(TPL_SEMA4_BASE)
   e_add16i  r6,TPL_LOW(TPL_SEMA4_BASE)
@@ -113,6 +123,11 @@ TPL_GLOBAL_REF(tpl_release_kernel_lock):
   /* r5 : Write 0 to unlock the gate */
   se_li     r5,0
   se_stb    r5,TPL_GATE_KERNEL(r6)
+
+  /* Restore r5,r6 */
+  se_lwz    r5,0(r1)
+  se_lwz    r6,4(r1)
+  se_addi   r1,8
   blr
 
 #endif
