@@ -43,7 +43,7 @@ Some examples have been added (check examples):
   * **liquidCrystal**. startStopBlink extended. In addition the periodic task prints a value on a LCD.
   * **isr2onPIT**. Use the PIT channel 0 to trigger an ISR2.
   * **isr1onFTM**. Use the FTM0 to trigger an ISR1 and generate a variable width pulse.
-* Cortex M3 with µC SmartFusion2: `cortex/armv6m/samd21/XPlainedPro`.
+* Cortex M3 with µC SmartFusion2: `cortex/armv7m/SmartFusion2`.
   * **blink**. a simple periodic example which toggles the two green leds (DS3, DS4) of the board
   * **fpgaInterrupt** an interrupt from the FPGA fabriq toggles the green led DS4 of the board (and a periodic task blinks another Led).
 * Cortex M0+ with µC samd21: `cortex/armv6m/samd21/XPlainedPro`.
