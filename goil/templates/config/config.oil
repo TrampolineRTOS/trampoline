@@ -459,10 +459,5 @@ IMPLEMENTATION trampoline_common {
   NM { };
 };
 
-CPU defaultObjects {
-  COUNTER SystemCounter {
-  } : "Predefined System Counter";
-};
-
 #include "kernel.oil"
 #include "api.oil"

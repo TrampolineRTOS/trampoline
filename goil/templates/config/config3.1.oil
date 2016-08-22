@@ -97,9 +97,4 @@ IMPLEMENTATION trampoline_autosar {
   };
 };
 
-CPU defaultObjects {
-  COUNTER SystemCounter {
-    TYPE = HARDWARE;
-  } : "Predefined System Counter";
-};
 /*#include "api_autosar.oil"*/

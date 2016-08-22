@@ -268,8 +268,6 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
     foreach counter in exists app::COUNTER default (emptylist) do
       let counter_map[counter::VALUE] += app::NAME
     end foreach
-    # add the SystemCounter
-    let counter_map["SystemCounter"] := emptylist
     # Gather all alarms referenced in all Applications
     foreach alarm in exists app::ALARM default (emptylist) do
       let alarm_map[alarm::VALUE] += app::NAME
@@ -383,16 +381,12 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
   
   let counter_with_app := emptylist
   foreach counter in COUNTER do
-    if counter::NAME == "SystemCounter" then
+    if not exists counter_map[counter::NAME] then
+      error counter::NAME : "COUNTER ".counter::NAME." does not belong to any Application"
+    elsif [counter_map[counter::NAME] length] > 0 then
+      let app := [counter_map[counter::NAME] first]
+      let counter::APPLICATION := app::VALUE
       let counter_with_app += counter
-    else
-      if not exists counter_map[counter::NAME] then
-        error counter::NAME : "COUNTER ".counter::NAME." does not belong to any Application"
-      elsif [counter_map[counter::NAME] length] > 0 then
-        let app := [counter_map[counter::NAME] first]
-        let counter::APPLICATION := app::VALUE
-        let counter_with_app += counter
-      end if
     end if
   end foreach
   let COUNTER := counter_with_app
@@ -1241,10 +1235,6 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
     let owned_counters := mapof app::COUNTER by VALUE
     let vector := ""
     foreach counter in COUNTERS do
-      if counter::NAME == "SystemCounter" then
-        let acc_app := emptylist
-        let counter::ACCESSING_APPLICATION += app::NAME
-      end if
       let vector := vector . computeVector(app, counter, owned_counters)
     end foreach
     let app::COUNTERACCESSVECTOR := vector
