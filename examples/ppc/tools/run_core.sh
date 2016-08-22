@@ -24,7 +24,7 @@ clean() {
 
 goil_generate() {
     echo "Generating files"
-    goil --target=$GOIL_TARGET $GOIL_SOURCE
+    $GOIL --target=$GOIL_TARGET $GOIL_SOURCE
 }
 
 local_compile() {
@@ -35,7 +35,7 @@ local_compile() {
 remote_compile() {
     echo "Syncing sources"
     rsync -avz --delete $LOCAL_TRAMPOLINE/ $RSYNC_EXCLUDE $SSH_SERVER:$REMOTE_TRAMPOLINE
-    echo "Cross-Compiling on remote server"
+    echo "Compiling on remote server"
     ssh $SSH_SERVER "cd $REMOTE_EXAMPLE_DIR;
                      $BUILD_TIMEOUT ./build.py;"
     echo "Retrieve output files"

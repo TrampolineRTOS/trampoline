@@ -19,8 +19,7 @@ The -c option cleans the directory from outputs and generated files.
 The -g option generate C files using goil.
 The -m option launch the compilation. By default, the compilation is done on a
 remote server. In that case, one should set the script variables "SSH_SERVER,
-LOCAL_TRAMPOLINE, REMOTE_TRAMPOLINE, REMOTE_EXAMPLE_DIR and RSYNC_EXCLUDE"
-according to its expectations.
+LOCAL_TRAMPOLINE, REMOTE_TRAMPOLINE" according to its expectations.
 The -l option sets the compilation as to be done locally.
 The -a option does everything (except setting the compilation as local, so one
 needs to use ./run.sh -al if its wants to do everything locally).
