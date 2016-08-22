@@ -2,11 +2,11 @@ IMPLEMENTATION mpc5643l {
 
   /* Add the source and the handler of the counter */
   COUNTER [] {
-    IDENTIFIER WITH_AUTO SOURCE = decrementer; /* FIXME : No default value */
+    IDENTIFIER SOURCE;
     ENUM [
         tick,
         watchdog
-    ] HANDLER = tick; /* FIXME : No default value. */
+    ] HANDLER;
     UINT32 FREQUENCY = 120000; /* Default : 120000000Hz = 1ms */
   };
 
@@ -66,7 +66,9 @@ CPU mpc5643l_interrupt {
 
   INTERRUPT decrementer { ID = 999;}; /* FIXME : The decrementer has no ID */
 
-//======= Old Version : TODO performance tests with the new one
+//======= Monocore Version
+//        XXX : Better use the multicore version, even in monocore.
+//
 //  PLATFORM_FILES ppc {
 //    PATH = "ppc";
 //    CFILE = "tpl_call_trusted_fct.S";
@@ -100,7 +102,7 @@ CPU mpc5643l_interrupt {
     CFILE = "tpl_init.s";
     CFILE = "tpl_it_handler.s";
     CFILE = "tpl_it_management.s";
-    CFILE = "tpl_memory_protection.s";          // If memory_protection
+    CFILE = "tpl_memory_protection.s";      /* FIXME : If memory_protection */
     CFILE = "tpl_os_it.s";
     CFILE = "tpl_protection.s";
     CFILE = "tpl_tick.s";
@@ -111,7 +113,7 @@ CPU mpc5643l_interrupt {
     CFILE = "tpl_boot.s";
     CFILE = "tpl_boot_utils.c";
     CFILE = "Bam.c";
-    CFILE = "tpl_led.c";                        // debug
+    CFILE = "tpl_led.c";        /* FIXME: Should be added in debug mode only */
   };
 
 };

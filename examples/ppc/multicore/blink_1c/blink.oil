@@ -76,6 +76,7 @@ CPU blink {
     TICKSPERBASE = 1;
     MAXALLOWEDVALUE = 65535;
     MINCYCLE = 1;
+    HANDLER = tick;
     SOURCE = pit_ch0; /* Comment this to use the decrementer instead */
   };
 
