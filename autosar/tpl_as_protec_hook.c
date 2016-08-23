@@ -50,15 +50,17 @@ FUNC(void, OS_CODE) tpl_call_protection_hook(VAR(tpl_status, AUTOMATIC) error)
 {
 
 #if WITH_PROTECTION_HOOK == YES
+  GET_CURRENT_CORE_ID(core_id)
+  GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
   VAR(ProtectionReturnType, AUTOMATIC) result;
   VAR(tpl_proc_id, AUTOMATIC) proc_id;
 
 #if WITH_MEMORY_PROTECTION == YES
-        tpl_kern.running_trusted = 1;
+  TPL_KERN_REF(kern).running_trusted = 1;
 #endif /* WITH_MEMORY_PROTECTION == YES */
   result = ProtectionHook(error);
 #if WITH_MEMORY_PROTECTION == YES
-        tpl_kern.running_trusted = 0;
+  TPL_KERN_REF(kern).running_trusted = 0;
 #endif /* WITH_MEMORY_PROTECTION == YES */
 
   /* OS506: If the ProtectionHook() is called with E_OS_PROTECTION_ARRIVAL 
@@ -79,21 +81,24 @@ FUNC(void, OS_CODE) tpl_call_protection_hook(VAR(tpl_status, AUTOMATIC) error)
        * the running OS-Application is forcibly terminated by the Operating
        * System.
        */
-      proc_id = (tpl_proc_id)tpl_kern.running_id;
+      proc_id = (tpl_proc_id)TPL_KERN_REF(kern).running_id;
       if (proc_id != INVALID_PROC)
       {
         tpl_release_all_resources(proc_id);
+#if SPINLOCK_COUNT > 0
+        RELEASE_ALL_SPINLOCKS(core_id);
+#endif
         tpl_reset_interrupt_lock_status();
-        tpl_kern.running->activate_count--;
+        TPL_KERN_REF(kern).running->activate_count--;
 
         /* terminate the running task */
         tpl_terminate();
+        /* task switching should occur */
+        TPL_KERN_REF(kern).need_switch = NEED_SWITCH;
         /* start the highest priority task */
         tpl_start(CORE_ID_OR_NOTHING(core_id));
-        /* task switching should occur */
-        tpl_kern.need_switch = NEED_SWITCH;
         
-        LOCAL_SWITCH_CONTEXT()
+        LOCAL_SWITCH_CONTEXT(core_id)
         
       }
       else
@@ -107,7 +112,7 @@ FUNC(void, OS_CODE) tpl_call_protection_hook(VAR(tpl_status, AUTOMATIC) error)
       break;
     case PRO_TERMINATEAPPL:
 #if WITH_OSAPPLICATION == YES
-      tpl_terminate_application_service(NO_RESTART);
+      tpl_terminate_application_service(TPL_KERN_REF(kern).s_running->app_id,NO_RESTART);
 #else
       /*
        * According to requirement OS244, if no OS Application
@@ -118,7 +123,7 @@ FUNC(void, OS_CODE) tpl_call_protection_hook(VAR(tpl_status, AUTOMATIC) error)
       break;
     case PRO_TERMINATEAPPL_RESTART:
 #if WITH_OSAPPLICATION == YES
-      tpl_terminate_application_service(RESTART);
+      tpl_terminate_application_service(TPL_KERN_REF(kern).s_running->app_id,RESTART);
 #else
       /*
        * According to requirement OS244, if no OS Application

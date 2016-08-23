@@ -27,7 +27,7 @@
  *
  * used for size of an ioc message in bytes
  */
-typedef u32 tpl_ioc_message_size;
+typedef uint32 tpl_ioc_message_size;
 
 
 /**
@@ -35,7 +35,7 @@ typedef u32 tpl_ioc_message_size;
  *
  * type of data managed by ioc, byte
  */
-typedef u8 tpl_ioc_data;
+typedef uint8 tpl_ioc_data;
 
 
 /**
@@ -123,9 +123,6 @@ struct TPL_IOC_MESSAGE
 
 typedef struct TPL_IOC_MESSAGE tpl_ioc_message;
 
-
-
-
-
 /*  __TPL_IOC_INTERNAL_TYPES_H__ */
 #endif
+

@@ -1,4 +1,5 @@
 #include "api_STM.oil"
+#include "api_ioc.oil"
 
 CPU api {
   /* 
@@ -724,8 +725,6 @@ CPU api {
   APICONFIG spinlock {
     ID_PREFIX = OS;
     FILE = "tpl_as_spinlock_kernel";
-    FILE = "tpl_as_spinlock";
-    HEADER = "tpl_as_spinlock_kernel";
     HEADER = "tpl_as_spinlock";
     DIRECTORY = "autosar";
     SYSCALL GetSpinlock {

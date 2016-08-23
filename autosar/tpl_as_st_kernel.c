@@ -301,6 +301,7 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_rel_service(
 )
 {
     VAR(tpl_status, AUTOMATIC) result = E_OK;
+    GET_CURRENT_CORE_ID(core_id)
 
 #if SCHEDTABLE_COUNT > 0
     P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) st;
@@ -321,7 +322,7 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_rel_service(
     CHECK_SCHEDTABLE_ID_ERROR(sched_table_id,result)
 	
 	/* check access right */
-	CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(sched_table_id,result)
+	CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(core_id,sched_table_id,result)
 	
     CHECK_SCHEDTABLE_OFFSET_VALUE(sched_table_id,offset,result)
 
@@ -385,6 +386,7 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_abs_service(
 )
 {
     VAR(tpl_status, AUTOMATIC) result = E_OK;
+    GET_CURRENT_CORE_ID(core_id)
 
 #if SCHEDTABLE_COUNT > 0
     P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) st;
@@ -405,7 +407,7 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_abs_service(
     CHECK_SCHEDTABLE_ID_ERROR(sched_table_id,result)
 	
 	/* check access right */
-	CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(sched_table_id,result)
+	CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(core_id,sched_table_id,result)
 	
     CHECK_SCHEDTABLE_TICK_VALUE(sched_table_id,tick_val,result)
 
@@ -482,6 +484,7 @@ FUNC(tpl_status, OS_CODE) tpl_stop_schedule_table_service(
   VAR(tpl_schedtable_id, AUTOMATIC)   sched_table_id)
 {
   VAR(tpl_status, AUTOMATIC) result = E_OK;
+  GET_CURRENT_CORE_ID(core_id)
 
 #if SCHEDTABLE_COUNT > 0
   P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) st;
@@ -498,7 +501,7 @@ FUNC(tpl_status, OS_CODE) tpl_stop_schedule_table_service(
   CHECK_SCHEDTABLE_ID_ERROR(sched_table_id,result)
 	
 	/* check access right */
-	CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(sched_table_id,result)
+	CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(core_id,sched_table_id,result)
 
 #if SCHEDTABLE_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
@@ -547,6 +550,7 @@ FUNC(tpl_status, OS_CODE) tpl_next_schedule_table_service(
   VAR(tpl_schedtable_id, AUTOMATIC)   next_st_id)
 {
   VAR(tpl_status, AUTOMATIC) result = E_OK;
+  GET_CURRENT_CORE_ID(core_id)
 
 #if SCHEDTABLE_COUNT > 0
   P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) current_st;
@@ -565,12 +569,12 @@ FUNC(tpl_status, OS_CODE) tpl_next_schedule_table_service(
   CHECK_SCHEDTABLE_ID_ERROR(current_st_id, result)
 	
 	/* check access right */
-	CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(current_st_id,result)
+	CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(core_id,current_st_id,result)
     
 	CHECK_SCHEDTABLE_ID_ERROR(next_st_id, result)
 	
 	/* check access right */
-	CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(next_st_id,result)
+	CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(core_id,next_st_id,result)
 	
 	CHECK_SCHEDTABLE_TO_STOPPED(next_st_id,result)
 
@@ -623,6 +627,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_schedule_table_status_service(
   P2VAR(tpl_schedtable_state, AUTOMATIC, OS_APPL_DATA)    status)
 {
   VAR(tpl_status, AUTOMATIC)  result = E_OK;
+  GET_CURRENT_CORE_ID(core_id)
 
 #if SCHEDTABLE_COUNT > 0
   P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) st;
@@ -641,10 +646,10 @@ FUNC(tpl_status, OS_CODE) tpl_get_schedule_table_status_service(
   CHECK_SCHEDTABLE_ID_ERROR(sched_table_id, result)
 	
 	/* check access right */
-	CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(sched_table_id,result)
+	CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(core_id,sched_table_id,result)
 
   /* check status is in an authorized memory region */
-  CHECK_DATA_LOCATION(status, result);
+  CHECK_DATA_LOCATION(core_id, status, result);
   
 #if SCHEDTABLE_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)

@@ -2,17 +2,11 @@ IMPLEMENTATION mpc5643l {
 
   /* Add the source and the handler of the counter */
   COUNTER [] {
-    ENUM [
-        pit_ch0,
-        pit_ch1,
-        pit_ch2,
-        pit_ch3,
-        no_pit
-    ] SOURCE = no_pit;
+    IDENTIFIER SOURCE;
     ENUM [
         tick,
         watchdog
-    ] HANDLER = tick;
+    ] HANDLER;
     UINT32 FREQUENCY = 120000; /* Default : 120000000Hz = 1ms */
   };
 
@@ -23,8 +17,7 @@ IMPLEMENTATION mpc5643l {
    */
   OS [] {
     BOOLEAN USEVLE;
-    BOOLEAN USEFLOAT = FALSE;
-    BOOLEAN WITH_AUTO HASFLOAT = TRUE;
+    BOOLEAN HASFLOAT = TRUE;
   };
 
   TASK [] {
@@ -34,6 +27,15 @@ IMPLEMENTATION mpc5643l {
     UINT32 WITH_AUTO ID;
   };
 
+  /* For the MPC5643L, Software interrupts must be cleared in the SSCIR as
+   * well.
+   */
+  INTERRUPT [] {
+    ENUM [
+        SOFTWARE,
+        HARDWARE
+    ] TYPE = HARDWARE;
+  };
 };
 
 /*
@@ -46,25 +48,27 @@ CPU mpc5643l_interrupt {
 
   /* Software interrupts */
 
-  INTERRUPT IRQ0    { ID = 0; };
-  INTERRUPT IRQ1    { ID = 1; };
-  INTERRUPT IRQ2    { ID = 2; };
-  INTERRUPT IRQ3    { ID = 3; };
-  INTERRUPT IRQ4    { ID = 4; };
-  INTERRUPT IRQ5    { ID = 5; };
-  INTERRUPT IRQ6    { ID = 6; };
-  INTERRUPT IRQ7    { ID = 7; }; // Intercore Reserved in multicore
+  INTERRUPT IRQ0    { ID = 0; TYPE = SOFTWARE; };
+  INTERRUPT IRQ1    { ID = 1; TYPE = SOFTWARE; };
+  INTERRUPT IRQ2    { ID = 2; TYPE = SOFTWARE; };
+  INTERRUPT IRQ3    { ID = 3; TYPE = SOFTWARE; };
+  INTERRUPT IRQ4    { ID = 4; TYPE = SOFTWARE; };
+  INTERRUPT IRQ5    { ID = 5; TYPE = SOFTWARE; };
+  INTERRUPT IRQ6    { ID = 6; TYPE = SOFTWARE; };
+  INTERRUPT IRQ7    { ID = 7; TYPE = SOFTWARE; }; // Intercore Reserved in multicore
 
-  /* Hardware interrupts */
+  /* Hardware timer interrupts */
 
   INTERRUPT pit_ch0 { ID = 59; };
   INTERRUPT pit_ch1 { ID = 60; };
   INTERRUPT pit_ch2 { ID = 61; };
   INTERRUPT pit_ch3 { ID = 127; };
 
-  INTERRUPT no_pit { ID = 999; };
+  INTERRUPT decrementer { ID = 999;}; /* FIXME : The decrementer has no ID */
 
-//======= Old Version : TODO performance tests with the new one
+//======= Monocore Version
+//        XXX : Better use the multicore version, even in monocore.
+//
 //  PLATFORM_FILES ppc {
 //    PATH = "ppc";
 //    CFILE = "tpl_call_trusted_fct.S";
@@ -98,7 +102,7 @@ CPU mpc5643l_interrupt {
     CFILE = "tpl_init.s";
     CFILE = "tpl_it_handler.s";
     CFILE = "tpl_it_management.s";
-    CFILE = "tpl_memory_protection.s";          // If memory_protection
+    CFILE = "tpl_memory_protection.s";      /* FIXME : If memory_protection */
     CFILE = "tpl_os_it.s";
     CFILE = "tpl_protection.s";
     CFILE = "tpl_tick.s";
@@ -109,7 +113,7 @@ CPU mpc5643l_interrupt {
     CFILE = "tpl_boot.s";
     CFILE = "tpl_boot_utils.c";
     CFILE = "Bam.c";
-    CFILE = "tpl_led.c";                        // debug
+    CFILE = "tpl_led.c";        /* FIXME: Should be added in debug mode only */
   };
 
 };

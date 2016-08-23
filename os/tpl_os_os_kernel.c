@@ -34,6 +34,9 @@
 
 #if NUMBER_OF_CORES > 1
 #include "tpl_os_multicore_kernel.h"
+# if SPINLOCK_COUNT > 0
+# include "tpl_as_spinlock_kernel.h"
+# endif
 
 #define START_OS_SYNC_LOCK_ID   0
 #endif
@@ -201,6 +204,10 @@ FUNC(void, OS_CODE) tpl_shutdown_os_service(
   CALL_OSAPPLICATION_SHUTDOWN_HOOKS()
 
   CALL_SHUTDOWN_HOOK(error)
+
+#if SPINLOCK_COUNT > 0
+  RELEASE_ALL_SPINLOCKS(core_id);
+#endif
 
   TRACE_TPL_TERMINATE()
 

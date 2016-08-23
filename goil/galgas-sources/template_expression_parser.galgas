@@ -121,7 +121,7 @@ rule <expression>
       !inVariableMap
       ?rightOperand
       ?secondOperandType
-    outValue.mInt64Value = [leftOperand mInt64Value] | [rightOperand mInt64Value]
+    outValue.mBigIntValue = [leftOperand mBigIntValue] | [rightOperand mBigIntValue]
     matchOrOperatorForTemplate (
       !firstOperandType
       !secondOperandType
@@ -140,7 +140,7 @@ rule <expression>
       !inVariableMap
       ?rightOperand
       ?secondOperandType
-    outValue.mInt64Value = [leftOperand mInt64Value] ^ [rightOperand mInt64Value]
+    outValue.mBigIntValue = [leftOperand mBigIntValue] ^ [rightOperand mBigIntValue]
     matchXorOperatorForTemplate (
       !firstOperandType
       !secondOperandType
@@ -183,7 +183,7 @@ rule <relation_term>
       !inVariableMap
       ?rightOperand
       ?secondOperandType
-    outValue.mInt64Value = [leftOperand mInt64Value] & [rightOperand mInt64Value]
+    outValue.mBigIntValue = [leftOperand mBigIntValue] & [rightOperand mBigIntValue]
     matchAndOperatorForTemplate (
       !firstOperandType
       !secondOperandType
@@ -230,9 +230,9 @@ rule <relation_factor>
     @bool result
     switch leftType
     case boolType :
-      result = [leftExpression mInt64Value] == [rightExpression mInt64Value]
+      result = [leftExpression mBigIntValue] == [rightExpression mBigIntValue]
     case intType :
-      result = [leftExpression mInt64Value] == [rightExpression mInt64Value]
+      result = [leftExpression mBigIntValue] == [rightExpression mBigIntValue]
     case floatType :
       result = [leftExpression mFloatValue] == [rightExpression mFloatValue]
     case stringType :
@@ -245,7 +245,7 @@ rule <relation_factor>
       error @location.here: "internal error, unconstructed type found" : result
     end
     outResultType = @Ttype. boolType
-    outValue. mInt64Value = if result then 1LS else 0LS end
+    outValue. mBigIntValue = if result then 1_G else 0_G end
   or
     $!=$
     @Tvalue leftExpression = outValue
@@ -263,9 +263,9 @@ rule <relation_factor>
     @bool result
     switch leftType
     case boolType :
-      result = [leftExpression mInt64Value] != [rightExpression mInt64Value]
+      result = [leftExpression mBigIntValue] != [rightExpression mBigIntValue]
     case intType :
-      result = [leftExpression mInt64Value] != [rightExpression mInt64Value]
+      result = [leftExpression mBigIntValue] != [rightExpression mBigIntValue]
     case floatType :
       result = [leftExpression mFloatValue] != [rightExpression mFloatValue]
     case stringType :
@@ -278,7 +278,7 @@ rule <relation_factor>
       error @location.here: "internal error, unconstructed type found" : result
     end
     outResultType = @Ttype. boolType
-    outValue. mInt64Value = if result then 1LS else 0LS end
+    outValue. mBigIntValue = if result then 1_G else 0_G end
   or
     $<=$
     @Tvalue leftExpression = outValue
@@ -296,9 +296,9 @@ rule <relation_factor>
     @bool result
     switch leftType
     case boolType :
-      result = [leftExpression mInt64Value] <= [rightExpression mInt64Value]
+      result = [leftExpression mBigIntValue] <= [rightExpression mBigIntValue]
     case intType :
-      result = [leftExpression mInt64Value] <= [rightExpression mInt64Value]
+      result = [leftExpression mBigIntValue] <= [rightExpression mBigIntValue]
     case floatType :
       result = [leftExpression mFloatValue] <= [rightExpression mFloatValue]
     case stringType, enumType, listType, structType, mapType :
@@ -307,7 +307,7 @@ rule <relation_factor>
       error @location.here: "internal error, unconstructed type found" : result
     end
     outResultType = @Ttype. boolType
-    outValue. mInt64Value = if result then 1LS else 0LS end
+    outValue. mBigIntValue = if result then 1_G else 0_G end
   or
     $>=$
     @Tvalue leftExpression = outValue
@@ -325,9 +325,9 @@ rule <relation_factor>
     @bool result
     switch leftType
     case boolType :
-      result = [leftExpression mInt64Value] >= [rightExpression mInt64Value]
+      result = [leftExpression mBigIntValue] >= [rightExpression mBigIntValue]
     case intType :
-      result = [leftExpression mInt64Value] >= [rightExpression mInt64Value]
+      result = [leftExpression mBigIntValue] >= [rightExpression mBigIntValue]
     case floatType :
       result = [leftExpression mFloatValue] >= [rightExpression mFloatValue]
     case stringType, enumType, listType, structType, mapType :
@@ -336,7 +336,7 @@ rule <relation_factor>
       error @location.here: "internal error, unconstructed type found" : result
     end
     outResultType = @Ttype. boolType
-    outValue. mInt64Value = if result then 1LS else 0LS end
+    outValue. mBigIntValue = if result then 1_G else 0_G end
   or
     $>$
     @Tvalue leftExpression = outValue
@@ -354,9 +354,9 @@ rule <relation_factor>
     @bool result
     switch leftType
     case boolType :
-      result = [leftExpression mInt64Value] > [rightExpression mInt64Value]
+      result = [leftExpression mBigIntValue] > [rightExpression mBigIntValue]
     case intType :
-      result = [leftExpression mInt64Value] > [rightExpression mInt64Value]
+      result = [leftExpression mBigIntValue] > [rightExpression mBigIntValue]
     case floatType :
       result = [leftExpression mFloatValue] > [rightExpression mFloatValue]
     case stringType, enumType, listType, structType, mapType :
@@ -365,7 +365,7 @@ rule <relation_factor>
       error @location.here: "internal error, unconstructed type found" : result
     end
     outResultType = @Ttype. boolType
-    outValue. mInt64Value = if result then 1LS else 0LS end
+    outValue. mBigIntValue = if result then 1_G else 0_G end
   or
     $<$
     @Tvalue leftExpression = outValue
@@ -383,9 +383,9 @@ rule <relation_factor>
     @bool result
     switch leftType
     case boolType :
-      result = [leftExpression mInt64Value] < [rightExpression mInt64Value]
+      result = [leftExpression mBigIntValue] < [rightExpression mBigIntValue]
     case intType :
-      result = [leftExpression mInt64Value] < [rightExpression mInt64Value]
+      result = [leftExpression mBigIntValue] < [rightExpression mBigIntValue]
     case floatType :
       result = [leftExpression mFloatValue] < [rightExpression mFloatValue]
     case stringType, enumType, listType, structType, mapType :
@@ -394,7 +394,7 @@ rule <relation_factor>
       error @location.here: "internal error, unconstructed type found" : result
     end
     outResultType = @Ttype. boolType
-    outValue. mInt64Value = if result then 1LS else 0LS end
+    outValue. mBigIntValue = if result then 1_G else 0_G end
   end
 }
 
@@ -433,7 +433,7 @@ rule <simple_expression>
       ?rightExpression
       ?rightType
     left_shift_types_checkForTemplate ( !leftType !rightType ?outResultType)
-    outValue. mInt64Value = [leftExpression mInt64Value] << [[rightExpression mInt64Value] uint]
+    outValue. mBigIntValue = [leftExpression mBigIntValue] << [[rightExpression mBigIntValue] uint]
   while 
     $>>$
     @Tvalue leftExpression = outValue
@@ -448,7 +448,7 @@ rule <simple_expression>
       ?rightExpression
       ?rightType
     right_shift_types_checkForTemplate ( !leftType !rightType ?outResultType)
-    outValue. mInt64Value = [leftExpression mInt64Value] >> [[rightExpression mInt64Value] uint]
+    outValue. mBigIntValue = [leftExpression mBigIntValue] >> [[rightExpression mBigIntValue] uint]
   while 
     $+$
     @Tvalue leftExpression = outValue
@@ -463,7 +463,7 @@ rule <simple_expression>
       ?rightExpression
       ?rightType
     addition_types_checkForTemplate ( !leftType !rightType ?outResultType)
-    outValue. mInt64Value = [leftExpression mInt64Value] + [rightExpression mInt64Value]
+    outValue. mBigIntValue = [leftExpression mBigIntValue] + [rightExpression mBigIntValue]
   while 
     $.$
     @Tvalue leftExpression = outValue
@@ -497,7 +497,7 @@ rule <simple_expression>
       ?rightExpression
       ?rightType
     addition_types_checkForTemplate ( !leftType !rightType ?outResultType)
-    outValue. mInt64Value = [leftExpression mInt64Value] - [rightExpression mInt64Value]
+    outValue. mBigIntValue = [leftExpression mBigIntValue] - [rightExpression mBigIntValue]
   end
 }
 
@@ -536,7 +536,7 @@ rule <term>
       ?rightExpression
       ?rightType
     multiply_types_checkForTemplate ( !leftType !rightType ?outResultType)
-    outValue. mInt64Value = [leftExpression mInt64Value] * [rightExpression mInt64Value]
+    outValue. mBigIntValue = [leftExpression mBigIntValue] * [rightExpression mBigIntValue]
   while 
     $/$
     @Tvalue leftExpression = outValue
@@ -551,7 +551,7 @@ rule <term>
       ?rightExpression
       ?rightType
     divide_types_checkForTemplate ( !leftType !rightType ?outResultType)
-    outValue. mInt64Value = [leftExpression mInt64Value] / [rightExpression mInt64Value]
+    outValue. mBigIntValue = [leftExpression mBigIntValue] / [rightExpression mBigIntValue]
   while 
     $mod$
     @Tvalue leftExpression = outValue
@@ -566,7 +566,7 @@ rule <term>
       ?rightExpression
       ?rightType
     modulo_types_checkForTemplate ( !leftType !rightType ?outResultType)
-    outValue. mInt64Value = [leftExpression mInt64Value] mod [rightExpression mInt64Value]
+    outValue. mBigIntValue = [leftExpression mBigIntValue] mod [rightExpression mBigIntValue]
 #    log leftExpression;
 #    log rightExpression;
 #    log outValue;
@@ -620,7 +620,7 @@ rule <factor>
     !inVariableMap
     ?expression
     ?operandType
-  outValue = valueWithUnsigned(!1L - [expression mInt64Value] !emptyLString())
+  outValue = valueWithUnsigned(!1_G - [expression mBigIntValue] !emptyLString())
   checkNotOperatorForTemplate ( !operandType ?outResultType)
 }
 
@@ -647,7 +647,7 @@ rule <factor>
     !inVariableMap
     ?value
     ?operandType
-  outValue = valueWithSigned(!~ [value mInt64Value] !emptyLString())
+  outValue = valueWithSigned(!~ [value mBigIntValue] !emptyLString())
   checkBitComplementOperatorForTemplate ( !operandType ?outResultType)
 }
 
@@ -674,7 +674,7 @@ rule <factor>
     !inVariableMap
     ?value
     ?operandType
-  outValue = valueWithSigned(!- [value mInt64Value] !emptyLString())
+  outValue = valueWithSigned(!- [value mBigIntValue] !emptyLString())
   checkBitComplementOperatorForTemplate ( !operandType ?outResultType)
 }
 
@@ -701,7 +701,7 @@ rule <factor>
     !inVariableMap
     ?value
     ?operandType
-  outValue = valueWithSigned(![value mInt64Value] !emptyLString())
+  outValue = valueWithSigned(![value mBigIntValue] !emptyLString())
   checkBitComplementOperatorForTemplate ( !operandType ?outResultType)
 }
 
@@ -719,7 +719,7 @@ rule <factor>
   !@Tvalue outValue
   !@Ttype outResultType {
   $yes$
-  outValue = valueWithUnsigned(!1L !emptyLString())
+  outValue = valueWithUnsigned(!1_G !emptyLString())
   outResultType = @Ttype. boolType
 }
 
@@ -737,7 +737,7 @@ rule <factor>
   !@Tvalue outValue
   !@Ttype outResultType {
   $no$
-  outValue = valueWithUnsigned(!0L !emptyLString())
+  outValue = valueWithUnsigned(!0_G !emptyLString())
   outResultType = @Ttype. boolType
 }
 
@@ -754,9 +754,9 @@ rule <factor>
   ?let @TfieldMap unused inVariableMap
   !@Tvalue outValue
   !@Ttype outResultType {
-  @lsint64 literalInt
-  $signed_literal_integer64$ ?literalInt
-  outValue = valueWithSigned(![literalInt sint64] !emptyLString())
+  @lbigint literalInt
+  $signed_literal_integer_bigint$ ?literalInt
+  outValue = valueWithSigned(![literalInt bigint] !emptyLString())
   outResultType = @Ttype. intType
 }
 
@@ -918,12 +918,12 @@ rule <factor>
             if formal_mValue != `@bool then
               typeError ( !functionOrVariableName !formal_mValue !"boolean" !idx)
             end
-            actualArgumentObjectList += ![if [actual_mValue mInt64Value] == 0LS then false else true end object]
+            actualArgumentObjectList += ![if [actual_mValue mBigIntValue] == 0_G then false else true end object]
           case intType :
             if formal_mValue != `@sint64 then
               typeError ( !functionOrVariableName !formal_mValue !"unsigned" !idx)
             end
-            actualArgumentObjectList += ![[actual_mValue mInt64Value] object]
+            actualArgumentObjectList += ![[actual_mValue mBigIntValue] object]
           case floatType :
             if formal_mValue != `@double then
               typeError ( !functionOrVariableName !formal_mValue !"float" !idx)
@@ -946,16 +946,16 @@ rule <factor>
           idx ++     
         end
         outResultType = @Ttype. intType
-        outValue = valueWithSigned(!0LS !emptyLString())
+        outValue = valueWithSigned(!0_G !emptyLString())
         if @uint. errorCount == 0 then
           let @object result = [f invoke !actualArgumentObjectList ![functionOrVariableName location]]
-          if [result objectDynamicType] == `@sint64 then
+          if [result objectDynamicType] == `@bigint then
             outResultType = @Ttype. intType
-            outValue.mInt64Value = ( result as @sint64)
+            outValue.mBigIntValue = ( result as @bigint)
             # else error functionOrVariableName);
           elsif [result objectDynamicType] == `@bool then
             outResultType = @Ttype. boolType
-            outValue.mInt64Value = [( result as @bool) sint64]
+            outValue.mBigIntValue = [( result as @bool) bigint]
             # else error functionOrVariableName) sint64];
           elsif [result objectDynamicType] == `@string then
             outResultType = @Ttype. stringType
@@ -1012,9 +1012,9 @@ rule <factor>
   or
     outResultType = @Ttype. boolType
     if varExists then
-      outValue = valueWithUnsigned(!1L !emptyLString())
+      outValue = valueWithUnsigned(!1_G !emptyLString())
     else
-      outValue = valueWithUnsigned(!0L !emptyLString())
+      outValue = valueWithUnsigned(!0_G !emptyLString())
     end
   end
 }
@@ -1048,10 +1048,10 @@ rule <factor>
   !@Ttype outResultType {
   select
     $true$
-    outValue = valueWithUnsigned(!1L !emptyLString())
+    outValue = valueWithUnsigned(!1_G !emptyLString())
   or
     $false$
-    outValue = valueWithUnsigned(!0L !emptyLString())
+    outValue = valueWithUnsigned(!0_G !emptyLString())
   end
   outResultType = @Ttype. boolType
 }
@@ -1080,7 +1080,7 @@ rule <factor>
   !@Tvalue outValue
   !@Ttype outResultType {
   $emptylist$
-  outValue = @Tvalue. new { !0LS !0.0 !"" !@TfieldMapList. emptyList !@TfieldMap. emptyMap !dummyFunction() !emptyLString()}
+  outValue = @Tvalue. new { !0_G !0.0 !"" !@TfieldMapList. emptyList !@TfieldMap. emptyMap !dummyFunction() !emptyLString()}
   outResultType = @Ttype. listType
 }
 
@@ -1094,7 +1094,7 @@ rule <factor>
   !@Tvalue outValue
   !@Ttype outResultType {
   $emptymap$
-  outValue = @Tvalue. new { !0LS !0.0 !"" !@TfieldMapList. emptyList !@TfieldMap. emptyMap !dummyFunction() !emptyLString()}
+  outValue = @Tvalue. new { !0_G !0.0 !"" !@TfieldMapList. emptyList !@TfieldMap. emptyMap !dummyFunction() !emptyLString()}
   outResultType = @Ttype. mapType
 }
 
@@ -1664,14 +1664,14 @@ proc templateMethodInvocation
         checkInvocationHasNoArgument ( !inType !inMethodName !inParameterTypeList)
         outResultType = @Ttype. stringType
         outResultValue = valueWithString (
-          ! if [inValue mInt64Value] > 0LS then "true" else "false" end
+          ! if [inValue mBigIntValue] > 0_G then "true" else "false" end
           !emptyLString()
         )
       elsif [inMethodName string] == "yesOrNo" then
         checkInvocationHasNoArgument ( !inType !inMethodName !inParameterTypeList)
         outResultType = @Ttype. stringType
         outResultValue = valueWithString (
-          ! if [inValue mInt64Value] > 0LS then "yes" else "no" end
+          ! if [inValue mBigIntValue] > 0_G then "yes" else "no" end
           !emptyLString()
         )
       elsif [inMethodName string] == "unsigned" then
@@ -1685,15 +1685,31 @@ proc templateMethodInvocation
       if [inMethodName string] == "string" then
         checkInvocationHasNoArgument ( !inType !inMethodName !inParameterTypeList)
         outResultType = @Ttype. stringType
-        outResultValue = valueWithString (![[inValue mInt64Value] string] !emptyLString())
+        outResultValue = valueWithString (![[inValue mBigIntValue] string] !emptyLString())
+      elsif [inMethodName string] == "setBitAtIndex" then
+        checkInvocationHasArguments(!inType !inMethodName !inParameterTypeList !@Ttype.boolType !2)
+        [!?inParameterTypeList popFirst ?@Tvalue value ?@Ttype valueType]
+        if valueType != @Ttype.boolType then error @location.here : "bool expected" end
+        [!?inParameterTypeList popFirst ?@Tvalue index ?@Ttype indexType]
+        if indexType != @Ttype.intType then error @location.here : "int expected" end
+        outResultType = @Ttype.intType
+        @bigint inInt = [inValue mBigIntValue]
+        [!?inInt setBitAtIndex !if [value mBigIntValue] == 1_G then true else false end ![[index mBigIntValue] uint]]
+        outResultValue = valueWithSigned(!inInt  !emptyLString())        
+      elsif [inMethodName string] == "bitAtIndex" then
+        checkInvocationHasArguments(!inType !inMethodName !inParameterTypeList !@Ttype.intType !1)
+        [!?inParameterTypeList popFirst ?@Tvalue index ?@Ttype indexType]
+        if indexType != @Ttype.intType then error @location.here : "int expected" end
+        outResultType = @Ttype.boolType
+        outResultValue = valueWithBool(![[inValue mBigIntValue] bitAtIndex ![[index mBigIntValue] uint]] !emptyLString())        
       elsif [inMethodName string] == "hexString" then
         checkInvocationHasNoArgument ( !inType !inMethodName !inParameterTypeList)
         outResultType = @Ttype. stringType
-        outResultValue = valueWithString (![[[inValue mInt64Value] uint64] hexString] !emptyLString())
+        outResultValue = valueWithString (![[[inValue mBigIntValue] uint64] hexString] !emptyLString())
       elsif [inMethodName string] == "numberOfBytes" | [inMethodName string] == "signedNumberOfBytes" then
         checkInvocationHasNoArgument ( !inType !inMethodName !inParameterTypeList)
         outResultType = @Ttype. intType
-        @sint64 value = [inValue mInt64Value]
+        @bigint value = [inValue mBigIntValue]
         # compute the number of bytes needed
         @uint numberOfBytes = 1
         if [inMethodName string] == "signedNumberOfBytes" then
@@ -1702,28 +1718,28 @@ proc templateMethodInvocation
         @uint count = 0
         loop( 4)
         while count < 4 do
-          @sint64 maxValue = (1LS << (numberOfBytes * 8)) - 1LS
+          @bigint maxValue = (1_G << (numberOfBytes * 8)) - 1_G
           if maxValue < value then
             numberOfBytes = numberOfBytes * 2
           end
           count++
         end
-        outResultValue = valueWithUnsigned (![numberOfBytes uint64] !emptyLString())
+        outResultValue = valueWithUnsigned (![numberOfBytes bigint] !emptyLString())
       elsif [inMethodName string] == "numberOfBits" | [inMethodName string] == "signedNumberOfBits" then
         checkInvocationHasNoArgument ( !inType !inMethodName !inParameterTypeList)
         outResultType = @Ttype. intType
-        @sint64 value = [inValue mInt64Value]
+        @bigint value = [inValue mBigIntValue]
         if [inMethodName string] == "signedNumberOfBits" then
           value = value * 2
         end
         # compute the number of bits needed
         @sint64 numberOfBits = 0LS
         loop( 64)
-        while value != 0LS do
+        while value != 0_G do
           numberOfBits++
           value = value >> 1
         end
-        outResultValue = valueWithSigned(!numberOfBits !emptyLString())
+        outResultValue = valueWithSigned(![numberOfBits bigint] !emptyLString())
       else
         error inMethodName: "the "+inMethodName+" template method is not defined for "+[inType messageGoilTemplateType] : outResultValue, outResultType
       end
@@ -1747,7 +1763,7 @@ proc templateMethodInvocation
       elsif [inMethodName string] == "length" then
         checkInvocationHasNoArgument ( !inType !inMethodName !inParameterTypeList)
         outResultType = @Ttype. intType
-        outResultValue = valueWithUnsigned (![[[inValue mStringValue] length] uint64] !emptyLString())
+        outResultValue = valueWithUnsigned (![[[inValue mStringValue] length] bigint] !emptyLString())
       elsif [inMethodName string] == "stringByCapitalizingFirstCharacter" then
         checkInvocationHasNoArgument ( !inType !inMethodName !inParameterTypeList)
         outResultType = @Ttype. stringType
@@ -1759,19 +1775,19 @@ proc templateMethodInvocation
       elsif [inMethodName string] == "unsigned" then
         checkInvocationHasNoArgument ( !inType !inMethodName !inParameterTypeList)
         outResultType = @Ttype. intType
-        outResultValue = valueWithUnsigned (![[[inValue mStringValue] decimalUnsignedNumber] uint64] !emptyLString())
+        outResultValue = valueWithUnsigned (![[[inValue mStringValue] decimalUnsignedNumber] bigint] !emptyLString())
       elsif [inMethodName string] == "leftSubString" then
         checkInvocationHasArguments ( !inType !inMethodName !inParameterTypeList !@Ttype. intType !1)
         @Tvalue parameter
         [inParameterTypeList first ?parameter ?*]
         outResultType = @Ttype. stringType
-        outResultValue = valueWithString (![[inValue mStringValue] leftSubString ![[parameter mInt64Value] uint]] !emptyLString())
+        outResultValue = valueWithString (![[inValue mStringValue] leftSubString ![[parameter mBigIntValue] uint]] !emptyLString())
       elsif [inMethodName string] == "rightSubString" then
         checkInvocationHasArguments ( !inType !inMethodName !inParameterTypeList !@Ttype. intType !1)
         @Tvalue parameter
         [inParameterTypeList first ?parameter ?*]
         outResultType = @Ttype. stringType
-        outResultValue = valueWithString (![[inValue mStringValue] rightSubString ![[parameter mInt64Value] uint]] !emptyLString())
+        outResultValue = valueWithString (![[inValue mStringValue] rightSubString ![[parameter mBigIntValue] uint]] !emptyLString())
       elsif [inMethodName string] == "subString" then
         checkInvocationHasArguments ( !inType !inMethodName !inParameterTypeList !@Ttype. intType !2)
         @Tvalue start = [inParameterTypeList mValueAtIndex !0]
@@ -1779,7 +1795,7 @@ proc templateMethodInvocation
   #      log start;
   #      log length;
         outResultType = @Ttype. stringType
-        outResultValue = valueWithString (![[inValue mStringValue] subString ![[start mInt64Value] uint] ![[length mInt64Value] uint]] !emptyLString())
+        outResultValue = valueWithString (![[inValue mStringValue] subString ![[start mBigIntValue] uint] ![[length mBigIntValue] uint]] !emptyLString())
       elsif [inMethodName string] == "reversedString" then
         checkInvocationHasNoArgument ( !inType !inMethodName !inParameterTypeList)
         outResultType = @Ttype. stringType
@@ -1815,7 +1831,7 @@ proc templateMethodInvocation
         [!?inParameterTypeList popFirst ?width ?*]
         @Tvalue shift
         [!?inParameterTypeList popFirst ?shift ?*]
-        @string stringshift = @string. stringWithSequenceOfCharacters { !' ' ![[shift mInt64Value] uint]}
+        @string stringshift = @string. stringWithSequenceOfCharacters { !' ' ![[shift mBigIntValue] uint]}
         @string result = [inValue mStringValue]
 #        @string result := [[inValue mStringValue] stringByReplacingStringByString !"\n" !" "];
 #        message result;
@@ -1829,13 +1845,13 @@ proc templateMethodInvocation
         var resultParagraph =@stringlist.emptyList{}
         for () para_ in  paragraph do
           @stringlist parts = [para_mValue componentsSeparatedByString !" "]
-          @sint64 linewidth = 0LS
+          @bigint linewidth = 0_G
           result = ""
           for () word_ in  parts do
             if word_mValue != "" then
-              if linewidth + [word_mValue length] > [width mInt64Value] then
+              if linewidth + [word_mValue length] > [width mBigIntValue] then
                 result += "\n" + stringshift
-                linewidth = [shift mInt64Value]
+                linewidth = [shift mBigIntValue]
               end
               linewidth = linewidth + [word_mValue length] + 1LS
               result += word_mValue + " " 
@@ -1869,7 +1885,7 @@ proc templateMethodInvocation
       if [inMethodName string] == "length" then
         checkInvocationHasNoArgument ( !inType !inMethodName !inParameterTypeList)
         outResultType = @Ttype. intType
-        outResultValue = valueWithUnsigned (![[[inValue mMapListValue] length] uint64] !emptyLString())
+        outResultValue = valueWithUnsigned (![[[inValue mMapListValue] length] bigint] !emptyLString())
       elsif [inMethodName string] == "first" then
         checkInvocationHasNoArgument ( !inType !inMethodName !inParameterTypeList)
         outResultType = @Ttype. structType
@@ -1889,7 +1905,7 @@ proc templateMethodInvocation
       if [inMethodName string] == "length" then
         checkInvocationHasNoArgument ( !inType !inMethodName !inParameterTypeList)
         outResultType = @Ttype. intType
-        outResultValue = valueWithUnsigned (![[[inValue mStructValue] count] uint64] !emptyLString())
+        outResultValue = valueWithUnsigned (![[[inValue mStructValue] count] bigint] !emptyLString())
       else
         error inMethodName: "the "+inMethodName+" template method is not defined for "+[inType messageGoilTemplateType] : outResultValue, outResultType
       end

@@ -86,10 +86,7 @@ FUNC(tpl_bool, OS_CODE) tpl_tick_% !KEY %(void)
   GET_CURRENT_CORE_ID(core_id)
   tpl_multi_schedule();
   tpl_dispatch_context_switch();
-  if (TPL_KERN(core_id).need_switch != NO_NEED_SWITCH)
-  {
-    LOCAL_SWITCH_CONTEXT()
-  }
+  LOCAL_SWITCH_CONTEXT()
 %
   end if
 %

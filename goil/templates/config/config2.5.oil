@@ -8,3 +8,9 @@ IMPLEMENTATION trampoline_osek {
   };
 
 };
+
+CPU osek_defaultObjects {
+  COUNTER SystemCounter {
+  } : "Predefined System Counter";
+};
+

@@ -32,6 +32,27 @@
  *
  * Code section
  */
+#ifdef OS_START_SEC_BOOT
+  #undef OS_START_SEC_BOOT
+  #ifdef CURRENT_LINKER_CODE_SECTION
+    #error "Starting a .osBoot while a section is already started"
+  #else
+    #undef MEMMAP_ERROR
+    .osBoot : section .text
+    #define CURRENT_LINKER_CODE_SECTION
+  #endif
+#endif
+
+#ifdef OS_STOP_SEC_BOOT
+  #undef OS_STOP_SEC_BOOT
+  #ifdef CURRENT_LINKER_CODE_SECTION
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_CODE_SECTION
+  #else
+    #error "No section .osBoot started"
+  #endif
+#endif
+
 #ifdef OS_START_SEC_CODE
   #undef OS_START_SEC_CODE
   #ifdef CURRENT_LINKER_CODE_SECTION
@@ -56,7 +77,7 @@
 #ifdef OS_START_SEC_VECTBL
   #undef OS_START_SEC_VECTBL
   #ifdef CURRENT_LINKER_CODE_SECTION
-    #error "Starting a .osCode while a section is already started"
+    #error "Starting a .vectbl while a section is already started"
   #else
     #undef MEMMAP_ERROR
     .vectbl : section .text
@@ -374,7 +395,7 @@
     #error "Starting a .ltorg while one is already started"
   #else
     #undef MEMMAP_ERROR
-//    even
+    /* even */
     #define CURRENT_LINKER_LTORG
   #endif
 #endif

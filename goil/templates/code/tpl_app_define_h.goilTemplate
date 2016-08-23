@@ -38,10 +38,7 @@
  */
 #define TARGET_ARCH                      "% !ARCH %"
 #define TARGET_CHIP                      "% !CHIP %"
-#define TARGET_BOARD                     "% !BOARD %"%
-if exists SPINLOCK then%
-#define SPINLOCK_COUNT                   % ![SPINLOCK length]
-end if%
+#define TARGET_BOARD                     "% !BOARD %"
 #define NUMBER_OF_CORES                  % !exists OS::NUMBER_OF_CORES default (1) %
 #define WITH_OS_EXTENDED                 % !yesNo(OS::STATUS == "EXTENDED") %
 #define WITH_STARTUP_HOOK                % !yesNo(OS::STARTUPHOOK) %
@@ -139,6 +136,11 @@ end if
  * Number of tasks
  */
 #define TASK_COUNT             % ![TASKS length] %
+
+/*-----------------------------------------------------------------------------
+ * Number of spinlocks
+ */
+#define SPINLOCK_COUNT         % ![SPINLOCK length] %
 
 /*-----------------------------------------------------------------------------
  * Number of extended tasks
@@ -252,6 +254,26 @@ else
 end if
 %
 
+/*-----------------------------------------------------------------------------
+ * To fasten the SPINLOCK_IS_SUCCESSOR macro
+ */
+#define SPINLOCK_SUCCESSOR_BITFIELD_SHIFT % !SPINLOCK_BITFIELD_SHIFT %
+#define SPINLOCK_SUCCESSOR_BITFIELD_MASK  % !(SPINLOCK_BITFIELD_CELL_SIZE - 1) %
+
+/*-----------------------------------------------------------------------------
+ * Spinlocks max possessed spinlocks per core.
+ * This definition is used to maximize the size of possessed spinlocks.
+ * In OSExtended mode, as we're checking nesting spinlocks, we can set the max
+ * size of the LIFOS to the longest chain in the spinlocks graph.
+ * In OSStandard mode, we set the maximum to the number of spinlocks (a
+ * spinlock can only be taken once).
+ */%
+if OS::STATUS == "EXTENDED" then%
+#define MAX_POSSESSED_SPINLOCKS % !max_possessed_spinlocks %
+%else%
+#define MAX_POSSESSED_SPINLOCKS % ![SPINLOCK length] %
+%end if
+%
 /*-----------------------------------------------------------------------------
  * Debugging
  */

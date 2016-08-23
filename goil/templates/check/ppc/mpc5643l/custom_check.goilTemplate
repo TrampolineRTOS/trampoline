@@ -1,0 +1,52 @@
+%
+# @file custom_check.goilTemplate
+#
+# @section desc File description
+#
+# Custom checking for MPC5643L
+#
+# @section copyright Copyright
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN
+# Trampoline is protected by the French intellectual property law.
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# @section infos File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+# -----------------------------------------------------------------------------
+# ERROR
+# Maximum number of cores = 2
+#
+# TODO : Would be nice to generalize this test following a variable in the
+#        chip section
+
+if OS::NUMBER_OF_CORES > 2 then
+  error OS::NUMBER_OF_CORES : "Too many cores for the selected chip (MPC5643L)"
+                            . " Max 2 cores. "
+end if
+
+
+# -----------------------------------------------------------------------------
+# Other tests
+#
+
+if OS::NUMBER_OF_CORES > 1 then
+  template custom_intercoreInterrupt_check
+end if
+
+template custom_counter_check
+template custom_isr_check
+template custom_task_check
+template custom_interrupt_check
+
+%
+

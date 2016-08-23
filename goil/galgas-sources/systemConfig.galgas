@@ -100,19 +100,19 @@ override method @multipleAttribute set ?let @lstring name ?!@TfieldMap result {
 }
 
 override method @uint32_class set ?let @lstring name ?!@TfieldMap result {
-  addUnsignedValue ( !?result !name ![value uint64] !oil_desc)
+  addUnsignedValue ( !?result !name ![value bigint] !oil_desc)
 }
 
 override method @sint32_class set ?let @lstring name ?!@TfieldMap result {
-  addSignedValue ( !?result !name ![value sint64] !oil_desc)
+  addSignedValue ( !?result !name ![value bigint] !oil_desc)
 }
 
 override method @uint64_class set ?let @lstring name ?!@TfieldMap result {
-  addUnsignedValue ( !?result !name !value !oil_desc)
+  addUnsignedValue ( !?result !name ![value bigint] !oil_desc)
 }
 
 override method @sint64_class set ?let @lstring name ?!@TfieldMap result {
-  addSignedValue ( !?result !name !value !oil_desc)
+  addSignedValue ( !?result !name ![value bigint] !oil_desc)
 }
 
 override method @float_class set ?let @lstring name ?!@TfieldMap result {

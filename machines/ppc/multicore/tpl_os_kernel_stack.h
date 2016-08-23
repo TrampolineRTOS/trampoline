@@ -48,6 +48,8 @@
  *          +---------------------------------+
  *      +24 | pointer to the tpl_kern struct  |
  *          +---------------------------------+
+ *      +28 | LR when calling tpl_enter_kernel|
+ *          +---------------------------------+
  */
 
 #define KERNEL_STACK_SIZE 2000

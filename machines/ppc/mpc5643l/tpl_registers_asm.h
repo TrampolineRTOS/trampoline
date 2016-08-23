@@ -33,16 +33,47 @@
 /*=============================================================================
  * Register number for special purpose registers
  */
-#define spr_IVPR   63
-#define spr_IVOR0  400
-#define spr_IVOR1  401
-#define spr_IVOR2  402
-#define spr_IVOR3  403
-#define spr_IVOR4  404
-#define spr_IVOR5  405
-#define spr_IVOR6  406
-#define spr_IVOR7  407
-#define spr_IVOR8  408
+/* General Registers */
+#define spr_CTR     9
+#define spr_LR      8
+#define spr_XER     1
+
+/* Debug Registers */
+#define spr_DBCNT   562
+#define spr_DVC1    318
+#define spr_DVC2    319
+
+/* Exception Handling */
+#define spr_SPRG0   272
+#define spr_SPRG1   273
+#define spr_SPRG2   274
+#define spr_SPRG3   275
+#define spr_SPRG4   276
+#define spr_SPRG5   277
+#define spr_SPRG6   278
+#define spr_SPRG7   279
+#define spr_SPRG8   604
+#define spr_SPRG9   605
+#define spr_USPRG0  256
+#define spr_SRR0    26
+#define spr_SRR1    27
+#define spr_CSRR0   58
+#define spr_CSRR1   59
+#define spr_DSRR0   574
+#define spr_DSRR1   575
+#define spr_MCSRR0  570
+#define spr_MCSRR1  571
+#define spr_IVPR    63
+#define spr_IVOR0   400
+#define spr_IVOR1   401
+#define spr_IVOR2   402
+#define spr_IVOR3   403
+#define spr_IVOR4   404
+#define spr_IVOR5   405
+#define spr_IVOR6   406
+#define spr_IVOR7   407
+#define spr_IVOR8   408
+#define spr_IVOR9   409
 #define spr_IVOR10  410
 #define spr_IVOR11  411
 #define spr_IVOR12  412
@@ -52,25 +83,34 @@
 #define spr_IVOR32  528
 #define spr_IVOR33  529
 #define spr_IVOR34  530
-#define spr_SRR0    26
-#define spr_SRR1    27
-#define spr_PIR     286
-#define spr_TBU     284
-#define spr_TBL     285
+#define spr_MCAR    573
+#define spr_DEAR    61
+
+/* Timers */
 #define spr_DEC     22
-#define spr_DECAR     54
+#define spr_DECAR   54
+#define spr_TBL     284
+#define spr_TBU     285
 #define spr_TSR     336
 #define spr_TCR     340
-#define spr_HID0    1008
+
+/* Memory Management Registers */
 #define spr_MAS0    624
 #define spr_MAS1    625
 #define spr_MAS2    626
 #define spr_MAS3    627
+#define spr_MAS4    628
+#define spr_MAS6    630
+
+/* Processor Control Registers */
+#define spr_PIR     286
+#define spr_HID0    1008
 
 /*
  * External interrupt bit mask in MSR
  */
 #define EE_BIT_1  0x8000
+#define DE_BIT_1  0x0200
 #define RI_BIT_1  0x0002
 
 /*=============================================================================
@@ -252,7 +292,13 @@
 #define TPL_INTC_SET_0       (0x1<<25)
 #define TPL_INTC_CLR_0       (0x1<<24)
 
+/*=============================================================================
+ * Sema4 registers
+ */
+
+/* We're using the Gate 0 of the sema4_0 to get the kernel lock */
+#define TPL_SEMA4_BASE  0xFFF24000
+#define TPL_GATE_KERNEL 0
+
 #endif
-
-
 

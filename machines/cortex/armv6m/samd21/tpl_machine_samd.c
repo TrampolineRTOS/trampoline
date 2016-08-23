@@ -1,10 +1,6 @@
 /**
  * @file tpl_machine_samd.c
  *
- * @section descr File description
- *
- * Trampoline processor dependant memory protection for MPC551x mpu.
- *
  * @section copyright Copyright
  *
  * Trampoline OS
@@ -20,10 +16,6 @@
  *
  * @section infos File informations
  *
- * $Date$
- * $Rev$
- * $Author$
- * $URL$
  */
 
 #include "tpl_compiler.h"

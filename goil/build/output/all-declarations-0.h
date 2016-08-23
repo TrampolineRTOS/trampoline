@@ -636,7 +636,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_Tfunction ;
 
 class GALGAS_Tvalue : public AC_GALGAS_root {
 //--------------------------------- Public data members
-  public : GALGAS_sint_36__34_ mAttribute_mInt_36__34_Value ;
+  public : GALGAS_bigint mAttribute_mBigIntValue ;
   public : GALGAS_double mAttribute_mFloatValue ;
   public : GALGAS_string mAttribute_mStringValue ;
   public : GALGAS_TfieldMapList mAttribute_mMapListValue ;
@@ -659,7 +659,7 @@ class GALGAS_Tvalue : public AC_GALGAS_root {
   public : VIRTUAL_IN_DEBUG ~ GALGAS_Tvalue (void) ;
 
 //--------------------------------- Native constructor
-  public : GALGAS_Tvalue (const GALGAS_sint_36__34_ & in_mInt_36__34_Value,
+  public : GALGAS_Tvalue (const GALGAS_bigint & in_mBigIntValue,
                           const GALGAS_double & in_mFloatValue,
                           const GALGAS_string & in_mStringValue,
                           const GALGAS_TfieldMapList & in_mMapListValue,
@@ -678,7 +678,7 @@ class GALGAS_Tvalue : public AC_GALGAS_root {
                                                COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- GALGAS constructors
-  public : static GALGAS_Tvalue constructor_new (const class GALGAS_sint_36__34_ & inOperand0,
+  public : static GALGAS_Tvalue constructor_new (const class GALGAS_bigint & inOperand0,
                                                  const class GALGAS_double & inOperand1,
                                                  const class GALGAS_string & inOperand2,
                                                  const class GALGAS_TfieldMapList & inOperand3,
@@ -699,13 +699,13 @@ class GALGAS_Tvalue : public AC_GALGAS_root {
 //--------------------------------- Class Methods
 
 //--------------------------------- Getters
+  public : VIRTUAL_IN_DEBUG class GALGAS_bigint getter_mBigIntValue (LOCATION_ARGS) const ;
+
   public : VIRTUAL_IN_DEBUG class GALGAS_lstring getter_mDescription (LOCATION_ARGS) const ;
 
   public : VIRTUAL_IN_DEBUG class GALGAS_double getter_mFloatValue (LOCATION_ARGS) const ;
 
   public : VIRTUAL_IN_DEBUG class GALGAS_Tfunction getter_mFunctionValue (LOCATION_ARGS) const ;
-
-  public : VIRTUAL_IN_DEBUG class GALGAS_sint_36__34_ getter_mInt_36__34_Value (LOCATION_ARGS) const ;
 
   public : VIRTUAL_IN_DEBUG class GALGAS_TfieldMapList getter_mMapListValue (LOCATION_ARGS) const ;
 
@@ -1565,7 +1565,7 @@ class cTokenFor_template_5F_scanner : public cToken {
   public : double mLexicalAttribute_floatValue ;
   public : C_String mLexicalAttribute_functionContent ;
   public : C_String mLexicalAttribute_identifierString ;
-  public : int64_t mLexicalAttribute_sint_36__34_value ;
+  public : C_BigInt mLexicalAttribute_intValue ;
   public : C_String mLexicalAttribute_tokenString ;
 
   public : cTokenFor_template_5F_scanner (void) ;
@@ -1610,7 +1610,7 @@ class C_Lexique_template_5F_scanner : public C_Lexique {
    kToken_identifier,
    kToken_functionContent,
    kToken_literal_5F_double,
-   kToken_signed_5F_literal_5F_integer_36__34_,
+   kToken_signed_5F_literal_5F_integer_5F_bigint,
    kToken__2E_,
    kToken__2E__3D_,
    kToken__2E__2E__2E_,
@@ -1719,7 +1719,7 @@ class C_Lexique_template_5F_scanner : public C_Lexique {
   public : GALGAS_ldouble synthetizedAttribute_floatValue (void) const ;
   public : GALGAS_lstring synthetizedAttribute_functionContent (void) const ;
   public : GALGAS_lstring synthetizedAttribute_identifierString (void) const ;
-  public : GALGAS_lsint_36__34_ synthetizedAttribute_sint_36__34_value (void) const ;
+  public : GALGAS_lbigint synthetizedAttribute_intValue (void) const ;
   public : GALGAS_lstring synthetizedAttribute_tokenString (void) const ;
 
 
@@ -1728,7 +1728,7 @@ class C_Lexique_template_5F_scanner : public C_Lexique {
   public : double attributeValue_floatValue (void) const ;
   public : C_String attributeValue_functionContent (void) const ;
   public : C_String attributeValue_identifierString (void) const ;
-  public : int64_t attributeValue_sint_36__34_value (void) const ;
+  public : C_BigInt attributeValue_intValue (void) const ;
   public : C_String attributeValue_tokenString (void) const ;
 
 
@@ -3182,7 +3182,7 @@ void routine_addLStringValue (class GALGAS_TfieldMap & ioArgument0,
 
 void routine_addUnsignedValue (class GALGAS_TfieldMap & ioArgument0,
                                const class GALGAS_lstring constinArgument1,
-                               const class GALGAS_uint_36__34_ constinArgument2,
+                               const class GALGAS_bigint constinArgument2,
                                const class GALGAS_lstring constinArgument3,
                                class C_Compiler * inCompiler
                                COMMA_LOCATION_ARGS) ;
@@ -3309,7 +3309,7 @@ class GALGAS_Tvalue function_valueWithMap (const class GALGAS_TfieldMap & consti
 //                                                                                                                     *
 //----------------------------------------------------------------------------------------------------------------------
 
-class GALGAS_Tvalue function_valueWithSigned (const class GALGAS_sint_36__34_ & constinArgument0,
+class GALGAS_Tvalue function_valueWithSigned (const class GALGAS_bigint & constinArgument0,
                                               const class GALGAS_lstring & constinArgument1,
                                               class C_Compiler * inCompiler
                                               COMMA_LOCATION_ARGS) ;
@@ -3331,7 +3331,7 @@ class GALGAS_Tvalue function_valueWithStruct (const class GALGAS_TfieldMap & con
 //                                                                                                                     *
 //----------------------------------------------------------------------------------------------------------------------
 
-class GALGAS_Tvalue function_valueWithUnsigned (const class GALGAS_uint_36__34_ & constinArgument0,
+class GALGAS_Tvalue function_valueWithUnsigned (const class GALGAS_bigint & constinArgument0,
                                                 const class GALGAS_lstring & constinArgument1,
                                                 class C_Compiler * inCompiler
                                                 COMMA_LOCATION_ARGS) ;

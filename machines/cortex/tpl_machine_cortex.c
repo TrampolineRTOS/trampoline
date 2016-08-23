@@ -70,7 +70,7 @@ FUNC (void, OS_CODE) tpl_init_machine_specific (void)
 {
   nested_kernel_entrance_counter = 0;
   tpl_set_systick_timer();
-  tpl_init_external_interrupts();
+	tpl_init_external_interrupts();
   /*
    * Switch to use PSP, unprivileged state
    */

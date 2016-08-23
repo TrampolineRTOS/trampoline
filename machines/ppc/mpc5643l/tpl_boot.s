@@ -41,6 +41,8 @@ TPL_EXTERN(tpl_reset_registers)
 TPL_EXTERN(tpl_init_mmu)
 TPL_EXTERN(tpl_copy_init_data)
 TPL_EXTERN(tpl_clear_bss)
+TPL_EXTERN(tpl_init_kernel_stack)
+TPL_EXTERN(tpl_init_interrupts)
 
 #if (WITH_VLE == YES)
 TPL_VLE_ON
@@ -48,7 +50,7 @@ TPL_VLE_ON
 TPL_VLE_OFF
 #endif
 
-#define OS_START_SEC_CODE
+#define OS_START_SEC_BOOT
 #include "tpl_as_memmap.h"
 
 /* ============================================================================
@@ -57,35 +59,16 @@ TPL_VLE_OFF
 
 TPL_GLOBAL(tpl_master_core_startup)
 TPL_GLOBAL_REF(tpl_master_core_startup) :
-    /* First, we initialise the TLB to have access to the whole flash code */
-
-    //# MMU Entry First 1MB FLASH    //# MAS0 : ESEL=1
-    //# MAS1 : TSIZ=1MB
-    //# MAS2 : EPN=0x000000000, W=0, I=0, M=0, G=0, E=big
-    //# MAS3 : RPN=0x000000000, PERMIS=all
-    e_lis     r3, 0x1000
-    mtspr     spr_MAS0,    r3
-    e_lis     r4, 0xC000
-    e_or2i    r4, 0x0500
-    mtspr     spr_MAS1,    r4
-    e_lis     r5, 0x0000
-    e_or2i    r5, 0x0020
-    mtspr     spr_MAS2,    r5
-    e_lis     r6, 0x0000
-    e_or2i    r6, 0x003f
-    mtspr     spr_MAS3,    r6
-    msync
-    tlbwe
-    se_isync
-
-    /* Set MSR */
+#if WITH_DEBUG == YES
+    /* Set MSR's debug interrupt flag */
     mfmsr   r5
-    e_lis   r6,0x0200
+    e_lis   r6, DE_BIT_1
     se_or   r5, r6
     mtmsr   r5
-    isync
+    se_isync
+#endif
 
-    /* Continue the initialization of the MMU */
+    /* Initialization of the MMU */
     e_bl      TPL_EXTERN_REF(tpl_init_mmu)
 
     /* Clear registers */
@@ -111,6 +94,15 @@ TPL_GLOBAL_REF(tpl_master_core_startup) :
     e_add16i  r3,TPL_LOW(TPL_EXTERN_REF(_idesc__))
     e_bl      TPL_EXTERN_REF(tpl_copy_init_data)
 
+   /**
+    * [SWS_Os_00625] : Some syscalls may be called before StartOS (at least
+    *                  GetCoreID and StartCore). However, we need to initialize
+    *                  the kernel stack and the ivor vector before being able
+    *                  to handle a system call
+    */
+    e_bl      TPL_EXTERN_REF(tpl_init_kernel_stack)
+    e_bl      TPL_EXTERN_REF(tpl_init_interrupts)
+
     /* Go to main */
     e_bl      TPL_EXTERN_REF(main)           ; execute main
 
@@ -118,44 +110,25 @@ tpl_master_core_startup_loop:
     se_b      tpl_master_core_startup_loop
 
 
-#if WITH_MULTICORE == YES
+#if NUMBER_OF_CORES > 1
 TPL_EXTERN(_stack_addr_p1)
 
 /* =============================================================================
  *  Slave core boot
  */
-
+ALIGN(4) /* Must be aligned to at least 4bytes */
 TPL_GLOBAL(tpl_slave_core_startup)
 TPL_GLOBAL_REF(tpl_slave_core_startup):
-    /* First, we initialise the TLB to have access to the whole flash code */
-
-    //# MMU Entry First 1MB FLASH    //# MAS0 : ESEL=1
-    //# MAS1 : TSIZ=1MB
-    //# MAS2 : EPN=0x000000000, W=0, I=0, M=0, G=0, E=big
-    //# MAS3 : RPN=0x000000000, PERMIS=all
-    e_lis     r3, 0x1000
-    mtspr     spr_MAS0,    r3
-    e_lis     r4, 0xC000
-    e_or2i    r4, 0x0500
-    mtspr     spr_MAS1,    r4
-    e_lis     r5, 0x0000
-    e_or2i    r5, 0x0020
-    mtspr     spr_MAS2,    r5
-    e_lis     r6, 0x0000
-    e_or2i    r6, 0x003f
-    mtspr     spr_MAS3,    r6
-    msync
-    tlbwe
-    se_isync
-
-    /* Set MSR */
+#if WITH_DEBUG == YES
+    /* Set MSR's debug interrupt flag */
     mfmsr   r5
-    e_lis   r6,0x0200
+    e_lis   r6, DE_BIT_1
     se_or   r5, r6
     mtmsr   r5
-    isync
+    se_isync
+#endif
 
-    /* Continue the initialization of the MMU */
+    /* Initialization of the MMU */
     e_bl      TPL_EXTERN_REF(tpl_init_mmu)
 
     /* Clear registers */
@@ -168,6 +141,15 @@ TPL_GLOBAL_REF(tpl_slave_core_startup):
     /* Set data pointer */
     e_lis     r13,TPL_HIG(TPL_EXTERN_REF(_sdata))
     e_add16i  r13,TPL_LOW(TPL_EXTERN_REF(_sdata))
+
+   /**
+    * [SWS_Os_00606] : Some syscalls may be called before StartOS (at least
+    *                  GetCoreID and StartCore). However, we need to initialize
+    *                  the kernel stack and the ivor vector before being able
+    *                  to handle a system call
+    */
+    e_bl      TPL_EXTERN_REF(tpl_init_kernel_stack)
+    e_bl      TPL_EXTERN_REF(tpl_init_interrupts)
 
     /* Go to main */
     e_bl      TPL_EXTERN_REF(main)           ; execute main
@@ -183,10 +165,12 @@ tpl_slave_core_startup_loop:
 TPL_GLOBAL(tpl_init_mmu)
 TPL_GLOBAL_REF(tpl_init_mmu):
 
-  //# MMU Entry First 1MB FLASH    //# MAS0 : ESEL=1
-  //# MAS1 : TSIZ=1MB
-  //# MAS2 : EPN=0x000000000, W=0, I=0, M=0, G=0, E=big
-  //# MAS3 : RPN=0x000000000, PERMIS=all
+  /*
+   * MMU Entry First 1MB FLASH    //# MAS0 : ESEL=1
+   * MAS1 : TSIZ=1MB
+   * MAS2 : EPN=0x000000000, W=0, I=0, M=0, G=0, E=big
+   * MAS3 : RPN=0x000000000, PERMIS=all
+   */
 
   e_lis     r3, 0x1000
   mtspr     spr_MAS0,    r3
@@ -207,11 +191,13 @@ TPL_GLOBAL_REF(tpl_init_mmu):
   tlbwe
   se_isync
 
-  // MMU Entry Shadow Flash
-  // MAS0 : ESEL=1
-  // MAS1 : TSIZE=1MB
-  // MAS2 : EPN=0x00F00000, I=1, guarded
-  // MAS3 : RPN=0x00F00000, readonly
+  /*
+   * MMU Entry Shadow Flash
+   * MAS0 : ESEL=1
+   * MAS1 : TSIZE=1MB
+   * MAS2 : EPN=0x00F00000, I=1, guarded
+   * MAS3 : RPN=0x00F00000, readonly
+   */
   e_lis     r3, 0x1001
   mtspr     spr_MAS0,    r3
 
@@ -230,14 +216,15 @@ TPL_GLOBAL_REF(tpl_init_mmu):
   tlbwe
 
 
-  // Init MMU for DPM
+  /* Init MMU for DPM */
 
-  //# MMU Entry First 64K SRAM in DPM - No Translation
-  //# MAS0 : ESEL=2
-  //# MAS1 : TSIZ=64Kbytes
-  //# MAS2 : EPN=0x400000000, W=0, I=1, M=0, G=0, E=big
-  //# MAS3 : RPN=0x400000000, PERMIS=all
-
+  /*
+   * MMU Entry First 64K SRAM in DPM - No Translation
+   * MAS0 : ESEL=2
+   * MAS1 : TSIZ=64Kbytes
+   * MAS2 : EPN=0x400000000, W=0, I=1, M=0, G=0, E=big
+   * MAS3 : RPN=0x400000000, PERMIS=all
+   */
   e_lis     r3, 0x1002
   mtspr     spr_MAS0,    r3
 
@@ -255,12 +242,13 @@ TPL_GLOBAL_REF(tpl_init_mmu):
 
   tlbwe
 
-  //# MMU Entry Second 64K SRAM in DPM Mode
-  //# MAS0 : ESEL=3
-  //# MAS1 : TSIZ=64Kbytes
-  //# MAS2 : EPN=0x50000000, W=0, I=0, M=0, G=0, E=big
-  //# MAS3 : RPN=0x50000000, PERMIS=all
-
+  /*
+   * MMU Entry Second 64K SRAM in DPM Mode
+   * MAS0 : ESEL=3
+   * MAS1 : TSIZ=64Kbytes
+   * MAS2 : EPN=0x50000000, W=0, I=0, M=0, G=0, E=big
+   * MAS3 : RPN=0x50000000, PERMIS=all
+   */
   e_lis     r3, 0x1003
   mtspr     spr_MAS0,    r3
 
@@ -278,13 +266,14 @@ TPL_GLOBAL_REF(tpl_init_mmu):
 
   tlbwe
 
-  //# Peripheral Space in DPM mode things start at 0x8ff0_0000
-  //# will start at 0x8ff0_0000 and extend 1M
-  //# MAS0 : ESEL=4
-  //# MAS1 : TSIZ=1MB
-  //# MAS2 : EPN=0x8ff00000, W=0, I=1, M=0, G=1, E=big
-  //# MAS3 : RPN=0x8ff00000, PERMIS=all
-
+  /*
+   * Peripheral Space in DPM mode things start at 0x8ff0_0000
+   * will start at 0x8ff0_0000 and extend 1M
+   * MAS0 : ESEL=4
+   * MAS1 : TSIZ=1MB
+   * MAS2 : EPN=0x8ff00000, W=0, I=1, M=0, G=1, E=big
+   * MAS3 : RPN=0x8ff00000, PERMIS=all
+   */
   e_lis     r3, 0x1004
   mtspr     spr_MAS0,    r3
 
@@ -303,14 +292,14 @@ TPL_GLOBAL_REF(tpl_init_mmu):
   tlbwe
 
 
-
-  //# common to both LSM and DPM
-  //# MMU Entry Peripheral A
-  //# MAS0 : ESEL=5
-  //# MAS1 : TSIZ=1Mbytes
-  //# MAS2 : EPN=0xC3F00000, W=0, I=1, M=0, G=1, E=big
-  //# MAS3 : RPN=0xC3F00000, PERMIS=all
-
+  /*
+   * common to both LSM and DPM
+   * MMU Entry Peripheral A
+   * MAS0 : ESEL=5
+   * MAS1 : TSIZ=1Mbytes
+   * MAS2 : EPN=0xC3F00000, W=0, I=1, M=0, G=1, E=big
+   * MAS3 : RPN=0xC3F00000, PERMIS=all
+   */
   e_lis     r3, 0x1005
   mtspr     spr_MAS0,    r3
 
@@ -328,12 +317,13 @@ TPL_GLOBAL_REF(tpl_init_mmu):
 
   tlbwe
 
-  //# MMU Entry Peripheral B
-  //# MAS0 : ESEL=6
-  //# MAS1 : TSIZ=1Mbytes
-  //# MAS2 : EPN=0xFFE00000, W=0, I=1, M=0, G=0, E=big
-  //# MAS3 : RPN=0xFFE00000, PERMIS=all
-
+  /*
+   * MMU Entry Peripheral B
+   * MAS0 : ESEL=6
+   * MAS1 : TSIZ=1Mbytes
+   * MAS2 : EPN=0xFFE00000, W=0, I=1, M=0, G=0, E=big
+   * MAS3 : RPN=0xFFE00000, PERMIS=all
+   */
   e_lis     r3, 0x1006
   mtspr     spr_MAS0,    r3
 
@@ -351,12 +341,13 @@ TPL_GLOBAL_REF(tpl_init_mmu):
 
   tlbwe
 
-  //# MMU On-Platform 0 Peripherals
-  //# MAS0 : ESEL=7
-  //# MAS1 : TSIZ=512 Kbytes
-  //# MAS2 : EPN=0xFFF00000, W=0, I=1, M=0, G=0, E=big
-  //# MAS3 : RPN=0xFFF00000, PERMIS=all
-
+  /*
+   * MMU On-Platform 0 Peripherals
+   * MAS0 : ESEL=7
+   * MAS1 : TSIZ=512 Kbytes
+   * MAS2 : EPN=0xFFF00000, W=0, I=1, M=0, G=0, E=big
+   * MAS3 : RPN=0xFFF00000, PERMIS=all
+   */
   e_lis     r3, 0x1007
   mtspr     spr_MAS0,    r3
 
@@ -374,12 +365,13 @@ TPL_GLOBAL_REF(tpl_init_mmu):
 
   tlbwe
 
-  //# MMU  Off-Platform Peripherals 2
-  //# MAS0 : ESEL=8
-  //# MAS1 : TSIZ=64 Kbytes
-  //# MAS2 : EPN=0xFFF90000, W=0, I=1, M=0, G=0, E=big
-  //# MAS3 : RPN=0xFFF90000, PERMIS=all
-
+  /*
+   * MMU  Off-Platform Peripherals 2
+   * MAS0 : ESEL=8
+   * MAS1 : TSIZ=64 Kbytes
+   * MAS2 : EPN=0xFFF90000, W=0, I=1, M=0, G=0, E=big
+   * MAS3 : RPN=0xFFF90000, PERMIS=all
+   */
   e_lis     r3, 0x1008
   mtspr     spr_MAS0,    r3
 
@@ -397,12 +389,13 @@ TPL_GLOBAL_REF(tpl_init_mmu):
 
   tlbwe
 
-  //# MMU  Off-Platform Peripherals 2
-  //# MAS0 : ESEL=8
-  //# MAS1 : TSIZ=256 Kbytes
-  //# MAS2 : EPN=0xFFFC0000, W=0, I=1, M=0, G=0, E=big
-  //# MAS3 : RPN=0xFFFC0000, PERMIS=all
-
+  /*
+   * MMU  Off-Platform Peripherals 2
+   * MAS0 : ESEL=8
+   * MAS1 : TSIZ=256 Kbytes
+   * MAS2 : EPN=0xFFFC0000, W=0, I=1, M=0, G=0, E=big
+   * MAS3 : RPN=0xFFFC0000, PERMIS=all
+   */
   e_lis     r3, 0x1009
   mtspr     spr_MAS0,    r3
 
@@ -423,118 +416,120 @@ TPL_GLOBAL_REF(tpl_init_mmu):
   se_blr
 
 
+; The following MPC5643L e200z4 core registers require software initialization
+; General Registers — CR, CTR, LR, GPR0-GPR31, ACC
+; Debug Registers — DBCNT, DVC1-DVC2
+; Exception Handling — SPRG0-SPRG7, SPRG8-SPRG9, USPRG0, SRR0-SRR1, CSRR0-CSRR1,
+; DSRR0-DSRR1, MCSRR0-MCSRR1, IVPR, IVOR0-IVOR15, IVOR32-IVOR34, MCAR, DEAR
+; Timers — DEC, DECAR, TBL, TBU
+; Memory Management Registers — MAS0-MAS4, MAS6
+
 TPL_GLOBAL(tpl_reset_registers)
 TPL_GLOBAL_REF(tpl_reset_registers):
-    e_lis r1, 0           ; Initialize the lower 32-bits of GPR1 to 0
-    evmergelo r0,r1,r1      ; Initialize the 64-bits of GPR0 to 0
-    evmergelo r1,r0,r0      ; Continue initializing the other 64-bit GPRs
-    evmergelo r2,r0,r0      ; ...
-    evmergelo r3,r0,r0
-    evmergelo r4,r0,r0
-    evmergelo r5,r0,r0
-    evmergelo r6,r0,r0
-    evmergelo r7,r0,r0
-    evmergelo r8,r0,r0
-    evmergelo r9,r0,r0
-    evmergelo r10,r0,r0
-    evmergelo r11,r0,r0
-    evmergelo r12,r0,r0
-    evmergelo r13,r0,r0
-    evmergelo r14,r0,r0
-    evmergelo r15,r0,r0
-    evmergelo r16,r0,r0
-    evmergelo r17,r0,r0
-    evmergelo r18,r0,r0
-    evmergelo r19,r0,r0
-    evmergelo r20,r0,r0
-    evmergelo r21,r0,r0
-    evmergelo r22,r0,r0
-    evmergelo r23,r0,r0
-    evmergelo r24,r0,r0
-    evmergelo r25,r0,r0
-    evmergelo r26,r0,r0
-    evmergelo r27,r0,r0
-    evmergelo r28,r0,r0
-    evmergelo r29,r0,r0
-    evmergelo r30,r0,r0
-    evmergelo r31,r0,r0     ; Initialize the 64-bit GPR31 to 0
+    /* General Registers */
+    se_andi r0,0
+    se_andi r1,0
+    se_andi r2,0
+    se_andi r3,0
+    se_andi r4,0
+    se_andi r5,0
+    se_andi r6,0
+    se_andi r7,0
+    e_and2i r8,0
+    e_and2i r9,0
+    e_and2i r10,0
+    e_and2i r11,0
+    e_and2i r12,0
+    e_and2i r13,0
+    e_and2i r14,0
+    e_and2i r15,0
+    e_and2i r16,0
+    e_and2i r17,0
+    e_and2i r18,0
+    e_and2i r19,0
+    e_and2i r20,0
+    e_and2i r21,0
+    e_and2i r22,0
+    e_and2i r23,0
+    e_and2i r24,0
+    e_and2i r25,0
+    e_and2i r26,0
+    e_and2i r27,0
+    e_and2i r28,0
+    e_and2i r29,0
+    e_and2i r30,0
+    e_and2i r31,0
 
-    mtspr   61,r31          ; DEAR
+    mtspr spr_CTR,r31
+    mtspr spr_XER,r31
 
-    mtspr   272,r31         ; SPRG0-7
-    mtspr   273,r31
-    mtspr   274,r31
-    mtspr   275,r31
-    mtspr   276,r31
-    mtspr   277,r31
-    mtspr   278,r31
-    mtspr   279,r31
+    /* Debug Registers */
+    mtspr spr_DBCNT,r31
+    mtspr spr_DVC1,r31
+    mtspr spr_DVC2,r31
 
-    mtspr   604,r31         ; SPRG8-9
-    mtspr   605,r31
+    /* Exception Handling */
+    mtspr spr_SPRG0,r31
+    mtspr spr_SPRG1,r31
+    mtspr spr_SPRG2,r31
+    mtspr spr_SPRG3,r31
+    mtspr spr_SPRG4,r31
+    mtspr spr_SPRG5,r31
+    mtspr spr_SPRG6,r31
+    mtspr spr_SPRG7,r31
+    mtspr spr_SPRG8,r31
+    mtspr spr_SPRG9,r31
+    mtspr spr_USPRG0,r31
+    mtspr spr_SRR0,r31
+    mtspr spr_SRR1,r31
+    mtspr spr_CSRR0,r31
+    mtspr spr_CSRR1,r31
+    mtspr spr_DSRR0,r31
+    mtspr spr_DSRR1,r31
+    mtspr spr_MCSRR0,r31
+    mtspr spr_MCSRR1,r31
+    mtspr spr_IVPR,r31
+    mtspr spr_IVOR0,r31
+    mtspr spr_IVOR1,r31
+    mtspr spr_IVOR2,r31
+    mtspr spr_IVOR3,r31
+    mtspr spr_IVOR4,r31
+    mtspr spr_IVOR5,r31
+    mtspr spr_IVOR6,r31
+    mtspr spr_IVOR7,r31
+    mtspr spr_IVOR8,r31
+    mtspr spr_IVOR9,r31
+    mtspr spr_IVOR10,r31
+    mtspr spr_IVOR11,r31
+    mtspr spr_IVOR12,r31
+    mtspr spr_IVOR13,r31
+    mtspr spr_IVOR14,r31
+    mtspr spr_IVOR15,r31
+    mtspr spr_IVOR32,r31
+    mtspr spr_IVOR33,r31
+    mtspr spr_IVOR34,r31
+    mtspr spr_MCAR,r31
+    mtspr spr_DEAR,r31
 
-    mtspr   256,r31         ; USPRG0
+    /* Timers */
+    mtspr spr_DEC,r31
+    mtspr spr_DECAR,r31
+    mtspr spr_TBL,r31
+    mtspr spr_TBU,r31
+    mtspr spr_TSR,r31
+    mtspr spr_TCR,r31
 
-    mtspr   26,r31          ; SRR0-1
-    mtspr   27,r31
-    mtspr   58,r31          ; CSRR0-1
-    mtspr   59,r31
-    mtspr   570,r31         ; MCSRR0-1
-    mtspr   571,r31
-    mtspr   574,r31         ; DSSRR0-1
-    mtspr   575,r31
-
-    mtspr   63,r31          ; IVPR
-    mtspr   62,r31          ; ESR
-    mtspr   340,r31         ; TCR
-    mtspr   512,r31         ; SPEFSCR
-    mtspr   1,r31           ; XER
-    mtspr   256,r31         ; USPRG0
-
-    mtspr   400,r31         ; IVOR0-15
-    mtspr   401,r31
-    mtspr   402,r31
-    mtspr   403,r31
-    mtspr   404,r31
-    mtspr   405,r31
-    mtspr   406,r31
-    mtspr   407,r31
-    mtspr   408,r31
-    mtspr   409,r31
-    mtspr   410,r31
-    mtspr   411,r31
-    mtspr   412,r31
-    mtspr   413,r31
-    mtspr   414,r31
-    mtspr   415,r31
-
-    mtspr   528,r31         ; IVOR32-35
-    mtspr   529,r31
-    mtspr   530,r31
-
-    mtspr   573,r31         ; MCAR
-
-    mtspr   284,r31         ; TBL
-    mtspr   285,r31         ; TBU
-
-    mtspr   22,r31          ; DEC
-    mtspr   54,r31          ; DECAR
-
-    mtspr   318,r31         ; DVC1
-    mtspr   319,r31         ; DVC2
-
-    mtspr   562,r31         ; DBCNT
-
-    mtspr   628,r31
-    mtspr   630,r31
-
-    mtcrf   0xFF,r31
-
-    mtspr   9,r31           ; CTR
+    /* Memory Management Registers */
+    mtspr spr_MAS0,r31
+    mtspr spr_MAS1,r31
+    mtspr spr_MAS2,r31
+    mtspr spr_MAS3,r31
+    mtspr spr_MAS4,r31
+    mtspr spr_MAS6,r31
 
     se_blr
 
-#define OS_STOP_SEC_CODE
+#define OS_STOP_SEC_BOOT
 #include "tpl_as_memmap.h"
 
 

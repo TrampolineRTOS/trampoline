@@ -3,6 +3,10 @@ IMPLEMENTATION ppc_interrupt {
   COUNTER [] {
     INTERRUPT_TYPE SOURCE;
   };
+
+  OS [] {
+    BOOLEAN HASFLOAT = FALSE;
+  };
 }
 /*
  * Interrupt sources for MPC551°

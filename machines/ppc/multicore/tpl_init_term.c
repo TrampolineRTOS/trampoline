@@ -34,12 +34,11 @@
 #include "tpl_os_error.h"
 #include "tpl_os.h"
 #include "tpl_app_config.h"
-#if (WITH_IOC ==  YES)
-#include "tpl_ioc_kernel.h"
-#endif
 #include "tpl_timers.h"
 #include "tpl_os_kernel_stack.h"
 #include "tpl_registers.h"
+
+#define USER_MODE 0x4000
 
 extern P2FUNC(void, OS_CODE, CallTerminateTask);
 
@@ -79,14 +78,7 @@ extern FUNC(void, OS_CODE) tpl_init_mp(void);
 #if (TPL_USE_DECREMENTER == YES)
 extern FUNC(void, OS_CODE) tpl_init_dec(void);
 #endif
-#define OS_STOP_SEC_CODE
-#include "tpl_memmap.h"
 
-#define USER_MODE 0x4000
-
-//FIXME : 1 Idle task per core => Should be generated
-//#define APP_Task_IDLE_TASK_START_SEC_CODE
-//#include "tpl_memmap.h"
 
 /**
  * TODO: document this
@@ -103,43 +95,22 @@ FUNC(void, OS_CODE) idle_function(void)
     while (1);
 }
 
-//#define APP_Task_IDLE_TASK_STOP_SEC_CODE
-//#include "tpl_memmap.h"
-
-
-#define OS_START_SEC_CODE
-#include "tpl_memmap.h"
 
 FUNC(void, OS_CODE) tpl_init_interrupts(void)
 {
-  VAR(uint8, AUTOMATIC) core;
+  GET_CURRENT_CORE_ID(core)
 
-  for(core=0; core<NUMBER_OF_CORES; core++)
-  {
-    TPL_INTC(core).CPR = 0;
-    tpl_current_date[core] = 0;
-  }
-
-    tpl_init_ivpr();
+  TPL_INTC(core).CPR = 0;
+  GET_CURRENT_DATE(core) = 0;
+  tpl_init_ivpr();
 }
 
 FUNC(void, OS_CODE) tpl_init_kernel_stack(void)
 {
-  uint8 core;
+  GET_CURRENT_CORE_ID(core)
 
-  for(core=0; core<NUMBER_OF_CORES; core++)
-  {
-    tpl_kernel_stack_bottom[core] = &(tpl_kernel_stack[core][KERNEL_STACK_SIZE/sizeof(tpl_stack_word) - 1]);
-  }
+  GET_KERNEL_STACK_BOTTOM(core) = &(GET_KERNEL_STACK(core)[KERNEL_STACK_SIZE/sizeof(tpl_stack_word) - 1]);
 }
-
-
-FUNC(void, OS_CODE) Os_Init(void)
-{
-  tpl_init_kernel_stack();
-  tpl_init_interrupts();
-}
-
 
 /**
  * tpl_init_context
@@ -224,7 +195,6 @@ FUNC(void, OS_CODE) tpl_init_context(
 
 FUNC(void, OS_CODE) tpl_init_core(void)
 {
-
   tpl_init_regs();
 #if (TPL_USE_DECREMENTER == YES)
   tpl_init_dec();
@@ -241,7 +211,7 @@ FUNC(void, OS_CODE) tpl_init_mode_entry_module(void)
                                       | ME_RUNPC_RUN2
                                       | ME_RUNPC_RUN3;
 
-#if (TPL_PIT_CHAN_COUNT > 0)
+#if (TPL_USE_PIT == YES)
   /* Set PIT to PC1 mode  */
   TPL_ME.PCTL[ME_PCTL_PIT] = ME_PC1_CONFIGURATION;
 #endif
@@ -275,8 +245,6 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
   tpl_register_r13 = 0;
   tpl_msr_start_value = 0;
 
-  tpl_init_kernel_stack();
-
   tpl_init_mode_entry_module();
 
   tpl_rgm_clear();
@@ -285,33 +253,23 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
   tpl_fill_stack_pattern();
 #endif
 
-#if (WITH_MULTICORE==NO)
-  tpl_init_regs();
-#endif
-  tpl_init_interrupts();
-
-  tpl_init_isr_prio();
-
 #if WITH_MEMORY_PROTECTION == YES
   tpl_init_mp();
 #endif
 
-#if ((WITH_IOC == YES) && (IOC_UNQUEUED_COUNT > 0))
-  tpl_ioc_init_unqueued();
-#endif
+  tpl_init_isr_prio();
 
-#if (TPL_PIT_CHAN_COUNT > 0)
+#if (TPL_USE_PIT == YES)
   tpl_init_pit();
-#endif
-
-#if ((TPL_USE_DECREMENTER == YES) && (WITH_MULTICORE==NO))
-  /* In multicore, the decrementer is initialized in tpl_init_core (as there is
-   * one decrementer per core)
-   */
-  tpl_init_dec();
-#endif
   tpl_load_pits();
+#endif
 
+#if (WITH_MULTICORE == NO)
+  /* In multicore, core dependant initialization is done in StartOS by
+   * all cores
+   */
+  tpl_init_core();
+#endif
 }
 
 #define OS_STOP_SEC_CODE

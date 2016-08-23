@@ -5,7 +5,7 @@
 #define API_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 %
-if counter::NAME == "SystemCounter" then
+if (counter::NAME == "SystemCounter") & (OS::SCALABILITYCLASS < 3) then
 %
 CONST(tpl_tick, OS_CONST) OSTICKSPERBASE = % !counter::TICKSPERBASE %;
 CONST(tpl_tick, OS_CONST) OSMAXALLOWEDVALUE = % !counter::MAXALLOWEDVALUE %;
@@ -40,11 +40,7 @@ end if
     /* OS Application id    */  %
 if AUTOSAR then
   if OS::SCALABILITYCLASS >= 3 then
-    if counter::NAME == "SystemCounter" then
-      %INVALID_OSAPPLICATION_ID,%
-    else
-      !counter::APPLICATION%_id,%
-    end if
+    !counter::APPLICATION%_id,%
   end if
 end if
 %

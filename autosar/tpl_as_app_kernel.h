@@ -96,12 +96,14 @@ typedef P2FUNC(void, OS_APPL_CODE, tpl_application_hook)(void);
  *  access_vec[2] is the ownership/right for resources
  *  access_vec[3] is the ownership/right for schedule tables
  *  access_vec[4] is the ownership/right for counters
- *  access_vec[5] is the ownership/right for iocs
+ *  access_vec[5] is the ownership/right for iocs receivers
+ *  access_vec[6] is the ownership/right for iocs senders
+ *  access_vec[7] is the ownership/right for spinlocks
  */
 struct TPL_APP_ACCESS {
   CONST(tpl_application_hook, TYPEDEF)                    startup_hook;
   CONST(tpl_application_hook, TYPEDEF)                    shutdown_hook;
-  CONSTP2CONST(uint8, TYPEDEF, OS_CONST)                     access_vec[6];
+  CONSTP2CONST(uint8, TYPEDEF, OS_CONST)                  access_vec[8];
   CONSTP2CONST(tpl_proc_id, TYPEDEF, OS_CONST)            procs;
   CONSTP2CONST(tpl_alarm_id, TYPEDEF, OS_CONST)           alarms;
   CONSTP2CONST(tpl_resource_id, TYPEDEF, OS_CONST)        rezs;
@@ -149,6 +151,14 @@ typedef struct TPL_APP_DYN tpl_app_dyn;
 extern CONSTP2CONST(tpl_app_access, OS_CONST, OS_CONST) tpl_app_table[APP_COUNT];
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
+
+# if NUMBER_OF_CORES > 1
+# define OS_START_SEC_CONST_UNSPECIFIED
+# include "tpl_memmap.h"
+extern VAR(tpl_core_id, OS_VAR) tpl_core_id_for_app[APP_COUNT];
+# define OS_STOP_SEC_CONST_UNSPECIFIED
+# include "tpl_memmap.h"
+# endif
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"

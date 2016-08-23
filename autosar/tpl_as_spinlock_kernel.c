@@ -31,19 +31,18 @@
 #include "tpl_os_errorhook.h"
 #include "tpl_machine_interface.h"
 #include "tpl_as_error.h"
+#include "tpl_os_error.h"
 #include "tpl_os_definitions.h"
-
-#define OS_START_SEC_VAR_UNSPECIFIED
-#include "tpl_memmap.h"
-
-VAR(tpl_spinlock_id, OS_VAR) tpl_last_taken_spinlock=0;
-
-#define OS_STOP_SEC_VAR_UNSPECIFIED
-#include "tpl_memmap.h"
-
+#include "tpl_as_definitions.h"
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
+
+/**
+ * FIXME : Ugly but we need this until the SPINLOCK_RESUME and SPINLOCK_SUSPEND
+ *         macros are corrected.
+ */
+tpl_bool tpl_spinlock_resscheduler_taken[NUMBER_OF_CORES] = {FALSE};
 
 /*
  *
@@ -57,33 +56,41 @@ FUNC(tpl_status, OS_CODE) tpl_get_spinlock_service(
 
   P2VAR(tpl_lock, AUTOMATIC, OS_VAR) lock = NULL_PTR;
 
-
-
-  /* check interrupts are not disabled by user    */
-  CHECK_INTERRUPT_LOCK(result)
-
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_GetSpinlock)
   STORE_SPINLOCK_ID(spinlock_id)
 
   /*  check a spinlock_id error                   */
   CHECK_SPINLOCK_ID_ERROR(spinlock_id, result)
-	
+
+  /*  check access rights */
+  CHECK_ACCESS_RIGHTS_SPINLOCK_ID(core_id, spinlock_id, result)
+
+  /*  check spinlock interference deadlock error  */
+  CHECK_SPINLOCK_INTERFERENCE_DEADLOCK_ERROR(core_id, spinlock_id, result)
+
   /*  check spinlock nesting order error          */
-  CHECK_SPINLOCK_NESTING_ORDER_ERROR(spinlock_id, result) 
-	
+  CHECK_SPINLOCK_NESTING_ORDER_ERROR(core_id, spinlock_id, result)
+
 
   IF_NO_EXTENDED_ERROR(result)
 
+    /* increase the tolerance level of interrupts following the spinlock's
+     * lock method */
+    SPINLOCK_SUSPEND_INTERRUPTS(core_id, spinlock_id)
+
     /*  get the lock descriptor                   */
-    lock = &(tpl_spinlock_table[spinlock_id]);
+    lock = &(tpl_spinlock_table[spinlock_id]->state);
 
     /* get the lock, this call is blocking        */
     tpl_get_lock(lock);
-   
+
+    /* get the resscheduler if the spinlock has the associated method */
+    SPINLOCK_GET_RESSCHEDULER(core_id, spinlock_id)
+
     /* store id of last taken spinlock, so we can check later the nesting order */
-    tpl_last_taken_spinlock=spinlock_id;
-    
+    SET_LAST_TAKEN_SPINLOCK(core_id, spinlock_id)
+
   IF_NO_EXTENDED_ERROR_END()
 
 
@@ -107,33 +114,37 @@ FUNC(tpl_status, OS_CODE) tpl_release_spinlock_service(
 
   P2VAR(tpl_lock, AUTOMATIC, OS_VAR) lock = NULL_PTR;
 
-
-
-  /* check interrupts are not disabled by user    */
-  CHECK_INTERRUPT_LOCK(result)
-
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_ReleaseSpinlock)
   STORE_SPINLOCK_ID(spinlock_id)
 
-  /*  check a counter_id error                    */
+  /*  check a spinlock_id error                   */
   CHECK_SPINLOCK_ID_ERROR(spinlock_id, result)
-	
+
+  /*  check access rights */
+  CHECK_ACCESS_RIGHTS_SPINLOCK_ID(core_id, spinlock_id, result)
+
+  /*  check spinlock not taken error              */
+  CHECK_SPINLOCK_NOT_TAKEN_ERROR(core_id, spinlock_id, result)
+
   /*  check spinlock nesting order error          */
-  CHECK_SPINLOCK_UNNESTING_ORDER_ERROR(spinlock_id, result) 
-	
+  CHECK_SPINLOCK_UNNESTING_ORDER_ERROR(core_id, spinlock_id, result)
+
 
   IF_NO_EXTENDED_ERROR(result)
 
     /*  get the lock descriptor                   */
-    lock = &(tpl_spinlock_table[spinlock_id]);
+    lock = &(tpl_spinlock_table[spinlock_id]->state);
 
     /* get the lock, this call is blocking        */
     tpl_release_lock(lock);
-   
+
     /* store id of last released spinlock, so we can check later the nesting order */
-    tpl_last_taken_spinlock=spinlock_id;
-    
+    REMOVE_LAST_TAKEN_SPINLOCK(core_id)
+
+    /* lower the tolerance level of interrupts. Release res_scheduler */
+    SPINLOCK_RESUME_INTERRUPTS(core_id)
+
   IF_NO_EXTENDED_ERROR_END()
 
 
@@ -157,32 +168,48 @@ FUNC(tpl_status, OS_CODE) tpl_try_to_get_spinlock_service(
 
   P2VAR(tpl_lock, AUTOMATIC, OS_VAR) lock = NULL_PTR;
 
-
-
-  /* check interrupts are not disabled by user    */
-  CHECK_INTERRUPT_LOCK(result)
-
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_TryToGetSpinlock)
   STORE_SPINLOCK_ID(spinlock_id)
 
-  /*  check a counter_id error                    */
+  /*  check a spinlock_id error                   */
   CHECK_SPINLOCK_ID_ERROR(spinlock_id, result)
-	
+
+  /*  check access rights */
+  CHECK_ACCESS_RIGHTS_SPINLOCK_ID(core_id, spinlock_id, result)
+
+  /*  check spinlock interference deadlock error  */
+  CHECK_SPINLOCK_INTERFERENCE_DEADLOCK_ERROR(core_id, spinlock_id, result)
+
   /*  check spinlock nesting order error          */
-  CHECK_SPINLOCK_NESTING_ORDER_ERROR(spinlock_id, result)   
+  CHECK_SPINLOCK_NESTING_ORDER_ERROR(core_id, spinlock_id, result)
+
 
   IF_NO_EXTENDED_ERROR(result)
 
-    /*  get the lock descriptor                   */
-    lock = &(tpl_spinlock_table[spinlock_id]);
+    /* increase the tolerance level of interrupts following the spinlock's
+     * lock method */
+    SPINLOCK_SUSPEND_INTERRUPTS(core_id, spinlock_id)
 
-    /* get the lock, this call is blocking        */
+    /*  get the lock descriptor                   */
+    lock = &(tpl_spinlock_table[spinlock_id]->state);
+
+    /* get the lock, this call is not blocking        */
     tpl_try_to_get_lock(lock, success);
-   
-    /* store id of last taken spinlock, so we can check later the nesting order */
-    tpl_last_taken_spinlock=spinlock_id;
-    
+
+    if (*success == TRYTOGETSPINLOCK_SUCCESS) {
+      /* get the resscheduler if the spinlock has the associated method */
+      SPINLOCK_GET_RESSCHEDULER(core_id, spinlock_id)
+      /* store id of last taken spinlock */
+      SET_LAST_TAKEN_SPINLOCK(core_id, spinlock_id)
+    }
+    else {
+     /* restore the tolerance level of interrupts if the lock has not been
+      * taken
+      */
+      SPINLOCK_RESUME_INTERRUPTS(core_id)
+    }
+
   IF_NO_EXTENDED_ERROR_END()
 
 

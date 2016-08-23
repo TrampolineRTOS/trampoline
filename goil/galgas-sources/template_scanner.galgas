@@ -35,7 +35,7 @@ replace "\\n" -> "\n"
 replace "\\\\" -> "\\"
 
 @string identifierString
-@sint64 sint64value
+@bigint intValue
 @string tokenString
 @string functionContent
 
@@ -133,9 +133,8 @@ rule 'a'->'z' |  'A'->'Z' {
 #------------------------------- Integer, floating Point Constant ------------------
 @double floatValue
 $literal_double$ !floatValue !tokenString  style floatCsts error message "a float number"
-$signed_literal_integer64$ ! sint64value  style integerStyle error message "a 64-bit signed decimal number"
+$signed_literal_integer_bigint$ !intValue  style integerStyle error message "a bigint decimal number"
 
-message decimalNumberTooLarge : "decimal number too large"
 message floatNumberConversionError : "invalid float number"
 message internalError : "internal error"
 
@@ -160,8 +159,8 @@ rule '-' {
       convertStringToDouble ( !tokenString !?floatValue error floatNumberConversionError)
       send $literal_double$
     default
-      convertDecimalStringIntoSInt64 ( !tokenString !?sint64value error decimalNumberTooLarge, internalError)
-      send $signed_literal_integer64$
+      convertDecimalStringIntoBigInt ( !tokenString !?intValue error internalError)
+      send $signed_literal_integer_bigint$
     end
   default
     send $-$
@@ -186,8 +185,8 @@ rule '0'->'9' {
     convertStringToDouble ( !tokenString !?floatValue error floatNumberConversionError)
     send $literal_double$
   default
-    convertDecimalStringIntoSInt64 ( !tokenString !?sint64value error decimalNumberTooLarge, internalError)
-    send $signed_literal_integer64$
+    convertDecimalStringIntoBigInt ( !tokenString !?intValue error internalError)
+    send $signed_literal_integer_bigint$
   end
 }
 

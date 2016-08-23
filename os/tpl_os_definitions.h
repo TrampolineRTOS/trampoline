@@ -269,6 +269,49 @@
  */
 #define E_OS_PROTECTION_EXCEPTION 25
 
+/**
+ * @def E_OS_INTERFERENCE_DEADLOCK
+ *
+ * In extended status: A TASK tries to occupy the spinlock while the lock is
+ * already occupied by a TASK on the same core. This would cause a deadlock
+ */
+#define E_OS_INTERFERENCE_DEADLOCK  26
+
+/**
+ * @def E_OS_NESTING_DEADLOCK
+ *
+ * In extended status: A TASK tries to occupy a spinlock while a TASK on the
+ * same core is holding a different spinlock in a way that may cause a deadlock
+ */
+#define E_OS_NESTING_DEADLOCK     27
+
+/**
+ * @def E_OS_SPINLOCK
+ *
+ * [SWS_Os_00612] [SWS_Os_00622] [SWS_Os_00624]
+ * In extended status: TerminateTask, ChainTask, WaitEvent, Schedule is called
+ * while the calling TASK holds a spinlock.
+ */
+#define E_OS_SPINLOCK             28
+
+/**
+ * @def E_OS_LOSTDATA
+ *
+ * IOC
+ * This error can occur when receiving a data through the IOC. Some datas were
+ * lost due to a previous send while the queue was full.
+ */
+#define E_OS_LOST_DATA            29
+
+/**
+ * @def E_OS_NO_DATA
+ *
+ * IOC
+ * This error can occur when receiving a data through the IOC while the queue
+ * is empty.
+ */
+#define E_OS_NO_DATA              30
+
 /************************************
  * Public states of a task or ISR2  *
  ************************************/

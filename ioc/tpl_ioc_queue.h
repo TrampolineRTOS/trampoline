@@ -18,9 +18,7 @@
 #ifndef __TPL_IOC_QUEUE_H__
 #define __TPL_IOC_QUEUE_H__
 
-#include "tpl_os_definitions.h"
-#include "tpl_app_custom_types.h"
-#include "tpl_ioc_internal_types.h"
+#include "tpl_ioc.h"
 
 
 
@@ -47,3 +45,4 @@ extern FUNC(tpl_ioc_buffer, OS_CODE) tpl_ioc_queue_element_for_read(
 #include "tpl_memmap.h"
 
 #endif
+

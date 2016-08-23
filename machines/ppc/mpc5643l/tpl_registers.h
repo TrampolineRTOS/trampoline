@@ -67,7 +67,7 @@ struct _tpl_sema4 {
 
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
-extern CONSTP2VAR(uint32, OS_CONST, OS_VAR) tpl_sem[NUMBER_OF_CORES];
+extern CONSTP2CONST(struct _tpl_sema4, OS_CONST, OS_CONST) tpl_sem[NUMBER_OF_CORES];
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
@@ -85,8 +85,8 @@ extern CONSTP2VAR(uint32, OS_CONST, OS_VAR) tpl_sem[NUMBER_OF_CORES];
  * Interrupts registers
  */
 
-#define INTC_SSCIR_CORE0_SW_ISR    TPL_INTERCORE_IT_0
-#define INTC_SSCIR_CORE1_SW_ISR    TPL_INTERCORE_IT_1
+#define INTC_SSCIR_CORE0_SW_ISR    TPL_INTERCORE_IT_CORE0_0
+#define INTC_SSCIR_CORE1_SW_ISR    TPL_INTERCORE_IT_CORE1_0
 #define INTC_SSCIR_SET       (uint8)(0x1 << 1)
 #define INTC_SSCIR_CLR       (uint8)(0x1 << 0)
 
@@ -106,7 +106,7 @@ struct _tpl_intc {
 
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
-extern CONSTP2VAR(uint32, OS_CONST, OS_VAR) tpl_intc[NUMBER_OF_CORES];
+extern CONSTP2CONST(struct _tpl_intc, OS_CONST, OS_CONST) tpl_intc[NUMBER_OF_CORES];
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
@@ -118,7 +118,11 @@ extern CONSTP2VAR(uint32, OS_CONST, OS_VAR) tpl_intc[NUMBER_OF_CORES];
 #define TPL_INTC1_Base        0x8FF48000
 
 /* Simplify accesses to the structure. i=core_id */
-#define TPL_INTC(i)           (*(volatile struct _tpl_intc *) tpl_intc[i])
+#if WITH_MULTICORE == YES
+#  define TPL_INTC(i)           (*(volatile struct _tpl_intc *) tpl_intc[i])
+#else
+#  define TPL_INTC(i)           (*(volatile struct _tpl_intc *) TPL_INTC_Base)
+#endif
 
 /*=============================================================================
  * PIT registers
@@ -253,6 +257,24 @@ struct _tpl_rgm {
     };
 
 #define TPL_RGM (*(volatile struct _tpl_rgm *) 0xC3FE4000UL)
+
+/*=============================================================================
+ * SWT : Software watchdog timer
+ */
+
+#define SWT_CR_KEY 0x00000200
+
+struct _tpl_swt {
+    uint32 CR;             /*  0x00 */
+    uint32 IR;             /*  0x04 */
+    uint32 TO;             /*  0x08 */
+    uint32 WN;             /*  0x0c */
+    uint32 SR;             /*  0x10 */
+    uint32 CO;             /*  0x14 */
+    uint32 SK;             /*  0x18 */
+    };
+
+#define TPL_SWT (*(volatile struct _tpl_swt *) 0xFFF38000UL)
 
 #endif
 

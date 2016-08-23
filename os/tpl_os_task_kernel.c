@@ -35,6 +35,9 @@
 #if WITH_AUTOSAR == YES
 #include "tpl_as_isr_kernel.h"
 #include "tpl_as_protec_hook.h"
+#if SPINLOCK_COUNT > 0
+#  include "tpl_as_spinlock_kernel.h"
+#endif
 #endif
 
 #if WITH_MEMORY_PROTECTION == YES
@@ -115,6 +118,8 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
   CHECK_TASK_CALL_LEVEL_ERROR(core_id,result)
   /* check the task does not own a resource */
   CHECK_RUNNING_OWNS_REZ_ERROR(core_id, result)
+  /*  checks the task does not occupy spinlock(s)   */
+  CHECK_SCHEDULE_WHILE_OCCUPED_SPINLOCK(core_id, result)
 
 #if TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
@@ -123,11 +128,10 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
 
     /* terminate the running task */
     tpl_terminate();
+    /* task switching should occur */
+    TPL_KERN(core_id).need_switch = NEED_SWITCH;
     /* start the highest priority process */
     tpl_start(CORE_ID_OR_NOTHING(core_id));
-    /* task switching should occur */
-
-    TPL_KERN(core_id).need_switch = NEED_SWITCH;
 
     SWITCH_CONTEXT_NOSAVE(CORE_ID_OR_NOTHING(core_id))
 
@@ -166,6 +170,8 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
   CHECK_TASK_ID_ERROR(task_id,result)
   /*  Check no resource is held by the terminating task   */
   CHECK_RUNNING_OWNS_REZ_ERROR(core_id, result)
+  /*  checks the task does not occupy spinlock(s)   */
+  CHECK_SCHEDULE_WHILE_OCCUPED_SPINLOCK(core_id, result)
 
   /* check access right */
   CHECK_ACCESS_RIGHTS_TASK_ID(core_id, task_id, result)
@@ -203,10 +209,10 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
 
       /* terminate the running task */
       tpl_terminate();
-      /* start the highest priority task */
-      tpl_start(CORE_ID_OR_NOTHING(core_id));
       /* task switching should occur */
       TPL_KERN(core_id).need_switch = NEED_SWITCH;
+      /* start the highest priority task */
+      tpl_start(CORE_ID_OR_NOTHING(core_id));
       /* local switch context because the task terminates */
       SWITCH_CONTEXT_NOSAVE(CORE_ID_OR_NOTHING(core_id))
     }
@@ -247,6 +253,8 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
   CHECK_TASK_CALL_LEVEL_ERROR(core_id,result)
   /*  Check no resource is held by the calling task   */
   CHECK_RUNNING_OWNS_REZ_ERROR(core_id, result)
+  /*  checks the task does not occupy spinlock(s)   */
+  CHECK_SCHEDULE_WHILE_OCCUPED_SPINLOCK(core_id, result)
 
 #if TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
@@ -294,7 +302,7 @@ FUNC(StatusType, OS_CODE) tpl_get_task_id_service(
   STORE_TASK_ID_REF(task_id)
 
   /* check state is in an authorized memory region */
-  CHECK_DATA_LOCATION(task_id, result);
+  CHECK_DATA_LOCATION(core_id, task_id, result);
 
   /*  get the task id from the task descriptor. If the id is less
    *  than TASK_COUNT-1.
@@ -344,7 +352,7 @@ FUNC(StatusType, OS_CODE) tpl_get_task_state_service(
   CHECK_ACCESS_RIGHTS_TASK_ID(core_id, task_id, result)
 
   /* check state is in an authorized memory region */
-  CHECK_DATA_LOCATION(state, result);
+  CHECK_DATA_LOCATION(core_id, state, result);
 
 #if TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)

@@ -53,7 +53,7 @@ TPL_VLE_OFF
 #endif
 
 #if (TPL_USE_DECREMENTER == YES)
-TPL_EXTERN(tpl_call_counter_tick_no_pit)
+TPL_EXTERN(tpl_call_counter_tick_decrementer)
 
 /****************************************************************************/
 TPL_GLOBAL(tpl_init_dec)
@@ -175,7 +175,7 @@ tpl_dec_handler:
   se_subi     r1,8
 
   /* call the counter_tick function */
-  e_bl        TPL_EXTERN_REF(tpl_call_counter_tick_no_pit)
+  e_bl        TPL_EXTERN_REF(tpl_call_counter_tick_decrementer)
 
   /*
    * restore all volatile registers

@@ -1,0 +1,20 @@
+/* Specify the memory areas for SmartFusion M2S050 */
+MEMORY
+{
+    /* WARNING: The words "SOFTCONSOLE", "FLASH", and "USE", the colon ":", and
+    *          the name of the type of flash memory are all in a specific order.
+    *          Please do not modify that comment line, in order to ensure
+    *          debugging of your application will use the flash memory correctly.
+    */
+    /* SOFTCONSOLE FLASH USE: microsemi-smartfusion2-envm */
+    rom (rx)  : ORIGIN = 0x60000000, LENGTH = 256k    
+    /* SmartFusion2 internal eNVM mirrored to 0x00000000 */
+    romMirror (rx) : ORIGIN = 0x00000000, LENGTH = 256k
+    /* SmartFusion2 internal eSRAM */
+    ram (rwx) : ORIGIN = 0x20000000, LENGTH = 64k
+}
+
+RAM_START_ADDRESS   = 0x20000000;       /* Must be the same value MEMORY region ram ORIGIN above. */
+RAM_SIZE            = 64k;              /* Must be the same value MEMORY region ram LENGTH above. */
+MAIN_STACK_SIZE     = 4k;               /* Cortex main stack size. */
+MIN_SIZE_HEAP       = 4k;               /* needs to be calculated for your application */

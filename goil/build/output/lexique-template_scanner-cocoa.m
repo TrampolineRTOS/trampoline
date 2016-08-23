@@ -37,7 +37,7 @@ static NSArray * kTemplateDefinitionArray_template_5F_scanner ;
     mLexicalAttribute_floatValue = 0.0 ;
     mLexicalAttribute_functionContent = [[NSMutableString alloc] init] ;
     mLexicalAttribute_identifierString = [[NSMutableString alloc] init] ;
-    mLexicalAttribute_sint64value = 0 ;
+    mLexicalAttribute_intValue = [[NSMutableString alloc] init] ;
     mLexicalAttribute_tokenString = [[NSMutableString alloc] init] ;
   }
   if (nil == kTemplateDefinitionArray_template_5F_scanner) {
@@ -93,7 +93,7 @@ static const BOOL kEndOfScriptInTemplateArray_template_5F_scanner [99] = {
   NO /* identifier */,
   NO /* functionContent */,
   NO /* literal_double */,
-  NO /* signed_literal_integer64 */,
+  NO /* signed_literal_integer_bigint */,
   NO /* . */,
   NO /* .= */,
   NO /* ... */,
@@ -289,7 +289,7 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
       mLexicalAttribute_floatValue = 0.0 ;
       [mLexicalAttribute_functionContent setString:@""] ;
       [mLexicalAttribute_identifierString setString:@""] ;
-      mLexicalAttribute_sint64value = 0 ;
+      [mLexicalAttribute_intValue setString:@""] ;
       [mLexicalAttribute_tokenString setString:@""] ;
       mTokenStartLocation = mCurrentLocation ;
       if (scanningOk && ([self testForInputChar:123])) {
@@ -349,8 +349,8 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
             scanner_cocoa_routine_convertStringToDouble (& scanningOk, mLexicalAttribute_tokenString, & mLexicalAttribute_floatValue) ;
             mTokenCode = template_scanner_1_literal_5F_double ;
           }else{
-            scanner_cocoa_routine_convertDecimalStringIntoSInt64 (& scanningOk, mLexicalAttribute_tokenString, & mLexicalAttribute_sint64value) ;
-            mTokenCode = template_scanner_1_signed_5F_literal_5F_integer_36__34_ ;
+            scanner_cocoa_routine_convertDecimalStringIntoBigInt (& scanningOk, mLexicalAttribute_tokenString, mLexicalAttribute_intValue) ;
+            mTokenCode = template_scanner_1_signed_5F_literal_5F_integer_5F_bigint ;
           }
         }else{
           mTokenCode = template_scanner_1__2D_ ;
@@ -380,8 +380,8 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
           scanner_cocoa_routine_convertStringToDouble (& scanningOk, mLexicalAttribute_tokenString, & mLexicalAttribute_floatValue) ;
           mTokenCode = template_scanner_1_literal_5F_double ;
         }else{
-          scanner_cocoa_routine_convertDecimalStringIntoSInt64 (& scanningOk, mLexicalAttribute_tokenString, & mLexicalAttribute_sint64value) ;
-          mTokenCode = template_scanner_1_signed_5F_literal_5F_integer_36__34_ ;
+          scanner_cocoa_routine_convertDecimalStringIntoBigInt (& scanningOk, mLexicalAttribute_tokenString, mLexicalAttribute_intValue) ;
+          mTokenCode = template_scanner_1_signed_5F_literal_5F_integer_5F_bigint ;
         }
       }else if (scanningOk && ([self testForInputChar:46])) {
         if (scanningOk && ([self testForInputFromChar:48 toChar:57])) {
@@ -570,7 +570,7 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
     0 /* template_scanner_1_identifier */,
     0 /* template_scanner_1_functionContent */,
     5 /* template_scanner_1_literal_5F_double */,
-    4 /* template_scanner_1_signed_5F_literal_5F_integer_36__34_ */,
+    4 /* template_scanner_1_signed_5F_literal_5F_integer_5F_bigint */,
     2 /* template_scanner_1__2E_ */,
     2 /* template_scanner_1__2E__3D_ */,
     2 /* template_scanner_1__2E__2E__2E_ */,
@@ -681,7 +681,7 @@ static NSInteger search_into_template_5F_scanner_goilTemplateKeyWordList (NSStri
     YES /* template_scanner_1_identifier */,
     YES /* template_scanner_1_functionContent */,
     YES /* template_scanner_1_literal_5F_double */,
-    YES /* template_scanner_1_signed_5F_literal_5F_integer_36__34_ */,
+    YES /* template_scanner_1_signed_5F_literal_5F_integer_5F_bigint */,
     YES /* template_scanner_1__2E_ */,
     YES /* template_scanner_1__2E__3D_ */,
     YES /* template_scanner_1__2E__2E__2E_ */,

@@ -54,12 +54,13 @@ FUNC(void, OS_CODE)
 FUNC(void, OS_CODE)
   print_rez(CONST(tpl_resource_id, AUTOMATIC) rez_id)
 {
+  GET_CURRENT_CORE_ID(core_id)
 #ifdef WITH_DOW /* not all ports have an stdc */
   printf("resource %d (ceiling_prio=%d, owner_prio=%d)\n",
          rez_id,
-         tpl_resource_table[rez_id]->ceiling_priority,
-         tpl_resource_table[rez_id]->owner_prev_priority);
-  printf("    owner=%d\n",tpl_resource_table[rez_id]->owner);
+         TPL_RESOURCE_TABLE(core_id)[rez_id]->ceiling_priority,
+         TPL_RESOURCE_TABLE(core_id)[rez_id]->owner_prev_priority);
+  printf("    owner=%d\n",TPL_RESOURCE_TABLE(core_id)[rez_id]->owner);
 #endif /* defined WITH_DOW */
 }
 

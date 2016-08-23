@@ -4,20 +4,20 @@
 IMPLEMENTATION ppc_interrupt {
   /* For PowerPC, a HASFLOAT attribute is set according to the actual target */
   OS {
-    BOOLEAN HASFLOAT = FALSE;
+    /* BOOLEAN HASFLOAT = FALSE; */
   };
   /* Add the SOURCE (interrupt source) attribute and the USEFLOAT attribute */
   ISR [] {
     INTERRUPT_TYPE SOURCE;
-    BOOLEAN USEFLOAT;
+    BOOLEAN USEFLOAT = FALSE;
   };
   /* Add the USEFLOAT attribute */
   TASK [] {
     UINT32 STACKSIZE;
-    BOOLEAN USEFLOAT;
+    BOOLEAN USEFLOAT = FALSE;
   };
   /* An interrupt source, the ID is the interrupt ID given by the INTC */
-  INTERRUPT [] { 
+  INTERRUPT [] {
     UINT32 ID;
   };
   /* Number of interrupt ID available */

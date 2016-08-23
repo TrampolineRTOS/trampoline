@@ -254,6 +254,14 @@
 #error "Misconfiguration of the OS. TRUSTED_FCT_COUNT should not be negative"
 #endif
 
+#ifndef SPINLOCK_COUNT
+#error "Misconfiguration of the OS. SPINLOCK_COUNT is not defined"
+#elif SPINLOCK_COUNT < 0
+#error "Misconfiguration of the OS. SPINLOCK_COUNT should not be negative"
+#elif ((SPINLOCK_COUNT > 0) && (NUMBER_OF_CORES <= 1))
+#error "Misconfiguration of the OS. SPINLOCKS can only be present in multicore"
+#endif
+
 #endif
 
 #endif /* TPL_CONFIG_CHECK_H */

@@ -44,7 +44,6 @@ CPU blink {
     STACKMONITORING = FALSE;
     STATUS          = STANDARD;
     USEVLE          = TRUE;
-    USEFLOAT        = FALSE;
     USEGETSERVICEID = FALSE;
     USEPARAMETERACCESS = FALSE;
     USERESSCHEDULER = TRUE;
@@ -55,6 +54,7 @@ CPU blink {
     SHUTDOWNHOOK    = FALSE;
     STARTUPHOOK     = FALSE;
     SYSTEM_CALL     = TRUE;
+    DEBUG           = TRUE;
   };
 
   /* ==========================================================================

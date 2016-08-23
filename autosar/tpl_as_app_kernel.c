@@ -35,6 +35,9 @@
 #include "tpl_as_st_kernel.h"
 #include "tpl_as_definitions.h"
 #include "tpl_as_error.h"
+#if SPINLOCK_COUNT > 0
+#include "tpl_as_spinlock_kernel.h"
+#endif
 
 #include "tpl_os_task.h"
 DeclareTask(INVALID_TASK);
@@ -58,6 +61,8 @@ static CONST(tpl_generic_id, AUTOMATIC) tpl_obj_count_table[6] = {
 #include "tpl_memmap.h"
 
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
 /**
  *  Get the application ID to which the current process belongs to
  *
@@ -106,6 +111,7 @@ FUNC(tpl_app_id, OS_CODE) tpl_check_object_ownership_service(
 {
   VAR(tpl_app_id, AUTOMATIC) result = INVALID_OSAPPLICATION_ID;
   VAR(StatusType, AUTOMATIC) result_status = E_OK;
+  GET_CURRENT_CORE_ID(core_id)
 
   /*  lock the kernel  */
   LOCK_KERNEL()
@@ -145,7 +151,7 @@ FUNC(tpl_app_id, OS_CODE) tpl_check_object_ownership_service(
 #if RESOURCE_COUNT > 1
       if (obj_id < RESOURCE_COUNT)
       {
-      result = tpl_resource_table[obj_id]->app_id;
+      result = TPL_RESOURCE_TABLE(core_id)[obj_id]->app_id;
       }
 #endif
       break;
@@ -221,10 +227,9 @@ FUNC(uint8, OS_CODE) tpl_check_object_access_service(
     /*  Get the access vector of the corresponding application  */
       CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =
         tpl_app_table[app_id];
-      CONST(uint8, AUTOMATIC) bit_shift = (uint8)((obj_id << 1) & 0x7);
-      CONST(uint8, AUTOMATIC) byte_idx = (uint8)(obj_id >> 2);
-      result = (uint8)(((app_access->access_vec[obj_type][byte_idx]) &
-         (1 << bit_shift)) >> bit_shift);
+      CONST(uint8, AUTOMATIC) bit_shift = (uint8)(obj_id & 0x7);
+      CONST(uint8, AUTOMATIC) byte_idx = (uint8)(obj_id >> 3);
+      result = (uint8)(((app_access->access_vec[obj_type][byte_idx]) >> bit_shift) & 0x1);
     }
 #endif
 
@@ -368,16 +373,20 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(
 #endif
           tpl_release_internal_resource(proc_id);
           /* reset the task descriptor */
-#if WITH_AUTOSAR_TIMING_PROTECTION == YES
-          tpl_stop_budget_monitor(proc_id);
-          tpl_stop_all_resource_monitor(proc_id);
-          tpl_dyn_proc_table[proc_id]->activation_allowed = TRUE;
-#endif
           tpl_dyn_proc_table[proc_id]->state = SUSPENDED;
           tpl_dyn_proc_table[proc_id]->activate_count = 0;
           tpl_dyn_proc_table[proc_id]->priority =
           tpl_stat_proc_table[proc_id]->base_priority;
         }
+      }
+#endif
+#if SPINLOCK_COUNT > 0
+      /*
+       * Then release all the spinlocks that has been taken by the core that
+       * has its application terminated.
+       */
+      {
+        RELEASE_ALL_SPINLOCKS(tpl_core_id_for_app[app_id]);
       }
 #endif
 
@@ -397,8 +406,8 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(
          */
         TPL_KERN_REF(a_tpl_kern).running->activate_count--;
         tpl_terminate();
-        tpl_start(CORE_ID_OR_NOTHING(core_id));
         TPL_KERN_REF(a_tpl_kern).need_switch = NEED_SWITCH;
+        tpl_start(CORE_ID_OR_NOTHING(core_id));
       }
       else if (restart_id != INVALID_TASK)
       {
@@ -603,5 +612,8 @@ FUNC(void, OS_CODE) tpl_osapp_shutdown_hooks(void)
 #  endif /* WITH_MEMORY_PROTECTION == NO */
 #endif /* APP_COUNT > 0 */
 #endif
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
 
 /*  End of file tpl_as_app_kernel.c  */
