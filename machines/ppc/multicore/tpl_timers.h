@@ -60,7 +60,7 @@ extern FUNC(tpl_bool, OS_CODE)  tpl_call_counter_tick();
 
 
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
-extern FUNC(void, OS_CODE) tpl_watchdog_handler(void);
+extern FUNC(tpl_bool, OS_CODE) tpl_watchdog_handler(void);
 #endif
 
 #define OS_STOP_SEC_CODE
