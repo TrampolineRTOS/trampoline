@@ -537,47 +537,47 @@ ARMv7InvalidateDataCache_end:
  *
  */
  ARMv7InvalidateL1DataCache:
-  Cop_Read_CLIDR(r0)	                       /* read CLIDR */
-  and	r0, r0, #0x7		                       /* check L1 */
-  bxeq	lr			                             /* return if no L1 cache */
-  mov	r3, #0			                           /* start with L1 */
+  Cop_Read_CLIDR(r0)	                    /* read CLIDR */
+  and	r0, r0, #0x7		            /* check L1 */
+  bxeq	lr			            /* return if no L1 cache */
+  mov	r3, #0			            /* start with L1 */
 
-  Cop_Write_CSSELR(r3)                       /* select cache level */
+  Cop_Write_CSSELR(r3)                      /* select cache level */
   isb
-  Cop_Read_CCSIDR(r0)	                       /* read CCSIDR */
+  Cop_Read_CCSIDR(r0)	                    /* read CCSIDR */
 
-  ubfx	ip, r0, #0, #3		                   /* get linesize from CCSIDR */
-  add	ip, ip, #4		                         /* apply bias */
-  ubfx	r2, r0, #13, #15	                   /* get numsets - 1 from CCSIDR */
-  lsl	r2, r2, ip		                         /* shift to set position */
-  orr	r3, r3, r2		                         /* merge set into way/set/level */
+  ubfx	ip, r0, #0, #3		            /* get linesize from CCSIDR */
+  add	ip, ip, #4		            /* apply bias */
+  ubfx	r2, r0, #13, #15	            /* get numsets - 1 from CCSIDR */
+  lsl	r2, r2, ip		            /* shift to set position */
+  orr	r3, r3, r2		            /* merge set into way/set/level */
   mov	r1, #1
-  lsl	r1, r1, ip		                         /* r1 = set decr */
+  lsl	r1, r1, ip		            /* r1 = set decr */
 
-  ubfx	ip, r0, #3, #10		                   /* get numways - 1 from [to be discarded] CCSIDR */
-  clz	r2, ip			                           /* number of bits to MSB of way */
-  lsl	ip, ip, r2		                         /* shift by that into way position */
+  ubfx	ip, r0, #3, #10		       /* get numways - 1 from [to be discarded] CCSIDR */
+  clz	r2, ip			            /* number of bits to MSB of way */
+  lsl	ip, ip, r2		            /* shift by that into way position */
   mov	r0, #1
-  lsl	r2, r0, r2		                         /* r2 now contains the way decr */
-  mov	r0, r3 			                           /* get sets/level (no way yet) */
-  orr	r3, r3, ip		                         /* merge way into way/set/level */
-  bfc	r0, #0, #4		                         /* clear low 4 bits (level) to get numset - 1 */
-  sub	r2, r2, r0		                         /* subtract from way decr */
+  lsl	r2, r0, r2		            /* r2 now contains the way decr */
+  mov	r0, r3 			            /* get sets/level (no way yet) */
+  orr	r3, r3, ip		            /* merge way into way/set/level */
+  bfc	r0, #0, #4		            /* clear low 4 bits (level) to get numset - 1 */
+  sub	r2, r2, r0		            /* subtract from way decr */
 
 /* r3 = ways/sets/level, r2 = way decr, r1 = set decr, r0 and ip are free */
 ARMv7InvalidateL1DataCache_LLoop:
-  Cop_Write_DCISW(r3)	                       /* invalidate line */
-  cmp	r3, #15			                           /* are we done with this level (way/set == 0) */
-  bls	ARMv7InvalidateL1DataCache_LDone		   /* yes, we've finished */
-  ubfx	r0, r3, #4, #18		                   /* extract set bits */
-  cmp	r0, #0			                           /* compare */
-  subne	r3, r3, r1		                       /* non-zero?, decrement set # */
-  subeq	r3, r3, r2		                       /* zero?, decrement way # and restore set count */
+  Cop_Write_DCISW(r3)	                    /* invalidate line */
+  cmp	r3, #15			          /* are we done with this level (way/set == 0) */
+  bls	ARMv7InvalidateL1DataCache_LDone    /* yes, we've finished */
+  ubfx	r0, r3, #4, #18		            /* extract set bits */
+  cmp	r0, #0			            /* compare */
+  subne	r3, r3, r1		            /* non-zero?, decrement set # */
+  subeq	r3, r3, r2		        /* zero?, decrement way # and restore set count */
   b	ARMv7InvalidateL1DataCache_LLoop
 
 ARMv7InvalidateL1DataCache_LDone:
   dsb
-  mov	r0, #0			                          /* default back to cache level 0 */
+  mov	r0, #0			            /* default back to cache level 0 */
   Cop_Write_CSSELR(r0)	                    /* select cache level */
   dsb
   isb
@@ -589,15 +589,15 @@ ARMv7CleanAndInvalidateDataCache:
   Cop_Read_CLIDR(r0)	                      /* read CLIDR */
   tst	r0, #0x07000000
   bxeq	lr
-  mov	r3, #0			                          /* start with L1 */
+  mov	r3, #0			              /* start with L1 */
 
 ARMv7CleanAndInvalidateDataCache_LStart:
-  add	r2, r3, r3, lsr #1	                  /* r2 = level * 3 / 2 */
-  mov	r1, r0, lsr r2		                    /* r1 = cache type */
-  tst	r1, #6			                          /* is it unified or data? */
+  add	r2, r3, r3, lsr #1	              /* r2 = level * 3 / 2 */
+  mov	r1, r0, lsr r2		              /* r1 = cache type */
+  tst	r1, #6			             /* is it unified or data? */
   beq	ARMv7CleanAndInvalidateDataCache_LNext /* nope, skip level */
 
-  Cop_Write_CSSELR(r3)	                    /* select cache level */
+  Cop_Write_CSSELR(r3)	                   /* select cache level */
   isb
   Cop_Read_CCSIDR(r0)	                      /* read CCSIDR */
 
@@ -609,12 +609,12 @@ ARMv7CleanAndInvalidateDataCache_LStart:
   mov	r1, #1
   lsl	r1, r1, ip		                        /* r1 = set decr */
 
-  ubfx	ip, r0, #3, #10		                  /* get numways - 1 from [to be discarded] CCSIDR */
-  clz	r2, ip			                          /* number of bits to MSB of way */
-  lsl	ip, ip, r2		                        /* shift by that into way position */
+  ubfx	ip, r0, #3, #10		       /* get numways - 1 from [to be discarded] CCSIDR */
+  clz	r2, ip			                    /* number of bits to MSB of way */
+  lsl	ip, ip, r2		                    /* shift by that into way position */
   mov	r0, #1
   lsl	r2, r0, r2		                        /* r2 now contains the way decr */
-  mov	r0, r3 			                          /* get sets/level (no way yet) */
+  mov	r0, r3 			                        /* get sets/level (no way yet) */
   orr	r3, r3, ip		                        /* merge way into way/set/level */
   bfc	r0, #0, #4		                        /* clear low 4 bits (level) to get numset - 1 */
   sub	r2, r2, r0		                        /* subtract from way decr */
@@ -622,12 +622,12 @@ ARMv7CleanAndInvalidateDataCache_LStart:
 /* r3 = ways/sets/level, r2 = way decr, r1 = set decr, r0 and ip are free */
 ARMv7CleanAndInvalidateDataCache_LLoop:
   Cop_Write_DCCISW(r3)	                     /* clean and invalidate line */
-  cmp	r3, #15			                           /* are we done with this level (way/set == 0) */
+  cmp	r3, #15			          /* are we done with this level (way/set == 0) */
   bls	ARMv7CleanAndInvalidateDataCache_LNext /* yes, go to next level */
   ubfx	r0, r3, #4, #18		                   /* extract set bits */
   cmp	r0, #0			                           /* compare */
   subne r3, r3, r1                           /* non-zero?, decrement */
-  subeq	r3, r3, r2		                       /* zero?, decrement way # and restore set count */
+  subeq	r3, r3, r2		        /* zero?, decrement way # and restore set count */
   b ARMv7CleanAndInvalidateDataCache_LLoop
 
 ARMv7CleanAndInvalidateDataCache_LNext:
@@ -638,8 +638,8 @@ ARMv7CleanAndInvalidateDataCache_LNext:
   cmp	r3, ip, lsl #1		                      /* compare */
   blt	ARMv7CleanAndInvalidateDataCache_LStart /* not done, next level (r0 == CLIDR) */
 
-.LDone:
-  mov	r0, #0			                            /* default back to cache level 0 */
+LARMv7CleanAndInvalidateDataCache_Done:
+  mov	r0, #0			                  /* default back to cache level 0 */
   Cop_Write_CSSELR(r0)	                      /* select cache level */
   dsb
   isb

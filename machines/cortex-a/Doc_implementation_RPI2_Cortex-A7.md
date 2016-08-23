@@ -173,6 +173,15 @@ The SCR defines the configuration of the current security state. It specifies:
 Have a look to [ARM Architecture Reference Manual ARMv7-A and ARMv7-R edition
 Issue C] [ArcRefMan], Figure B1-1 Modes, privilege levels, and security states.
 
+| Non-secure state                          | Secure state       |
+|------------------------------|--------------------|
+| | Non-secure PL0 |           |                    |
+
+| Atmel ATMega328p             | 8-bit AVR          | 1     | Arduino Uno                       |
+
+
+
+
 		Non-secure state				Secure state
 
 			Non-secure PL0				Secure PL0
@@ -230,7 +239,7 @@ Write a CP15 register from an ARM register
 
 ```MCR p15, Op1, Rt, CRn, CRm, Op2```
 
-Organization of CP15 registers described in [ARM Architecture Reference Manual ARMv7-A and ARMv7-R edition Issue C, $B3.17] [ArcRefMan]
+Organization of CP15 registers described in [ARM Architecture Reference Manual ARMv7-A and ARMv7-R edition Issue C, §B3.17] [ArcRefMan].
 
 They are ordered by {CRn, opc1, CRm, opc2}
 
@@ -240,7 +249,14 @@ The Cortex-A7 starts in Supervisor mode in the Secure state [Technical Reference
 
 But we'll see in paragraph [§Raspberry Pi 2] (#material_rpi2) that the Raspberry Pi 2 initializes the processor in different modes depending on the version of the firmware !
 
-<h4 id=""> Exceptions </h4>
+<h4 id=""> Exception handling </h4>
+
+Exception behaviour is explained in [ARM Architecture Reference Manual ARMv7-A and ARMv7-R edition Issue C, §B1.8.3] [ArcRefMan].
+How to determine the mode in witch an exception occurs : [ARM Architecture Reference Manual ARMv7-A and ARMv7-R edition Issue C, §B1.8.4] [ArcRefMan].
+
+<h5 id=""> Exception entry </h5>
+
+LR is saved on entry into exception, but the value depends on the exception type and whether it is taken from PL1 or PL2 mode. This summarized in table [ARM Architecture Reference Manual ARMv7-A and ARMv7-R edition Issue C, Table B1-6 Exception return address and Table B1-7 Offsets applied to Link value for exceptions taken to PL1 modes] [ArcRefMan].
 
 <h4 id=""> Interrupts </h4>
 
