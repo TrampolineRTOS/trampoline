@@ -16,3 +16,7 @@ On Mac OS X Goil can be cross-built. Go into:
 * `makefile-x86linux64-on-macosx` to cross-build for 64 bits Linux.
 
 and type `./build.py`. The build system will download the corresponding toolchain before building goil.
+
+## GTL
+
+Goil includes a template language interpreter called GTL. Check https://github.com/TrampolineRTOS/GTL
