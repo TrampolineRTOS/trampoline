@@ -117,21 +117,6 @@ let projectFolder := "aStudio_".PROJECT
         </dependencies>
       </framework-data>
     </AsfFrameworkConfig>
-    <avrtool>com.atmel.avrdbg.tool.edbg</avrtool>
-    <avrtoolserialnumber>ATML2130021800014569</avrtoolserialnumber>
-    <avrdeviceexpectedsignature>0x10010000</avrdeviceexpectedsignature>
-    <avrtoolinterface>SWD</avrtoolinterface>
-    <com_atmel_avrdbg_tool_edbg>
-      <ToolOptions>
-        <InterfaceProperties>
-          <SwdClock>2000000</SwdClock>
-        </InterfaceProperties>
-        <InterfaceName>SWD</InterfaceName>
-      </ToolOptions>
-      <ToolType>com.atmel.avrdbg.tool.edbg</ToolType>
-      <ToolNumber>ATML2130021800014569</ToolNumber>
-      <ToolName>EDBG MSD</ToolName>
-    </com_atmel_avrdbg_tool_edbg>
     <avrtoolinterfaceclock>2000000</avrtoolinterfaceclock>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -139,7 +124,7 @@ let projectFolder := "aStudio_".PROJECT
       <ArmGcc>
   <armgcc.common.outputfiles.hex>True</armgcc.common.outputfiles.hex>
   <armgcc.common.outputfiles.lss>True</armgcc.common.outputfiles.lss>
-  <armgcc.common.outputfiles.eep>True</armgcc.common.outputfiles.eep>
+  <armgcc.common.outputfiles.eep>False</armgcc.common.outputfiles.eep>
   <armgcc.common.outputfiles.bin>True</armgcc.common.outputfiles.bin>
   <armgcc.common.outputfiles.srec>False</armgcc.common.outputfiles.srec>
   <armgcc.compiler.symbols.DefSymbols>
@@ -147,12 +132,6 @@ let projectFolder := "aStudio_".PROJECT
       <Value>NDEBUG</Value>
     </ListValues>
   </armgcc.compiler.symbols.DefSymbols>
-  <armgcc.compiler.directories.IncludePaths>
-    <ListValues>
-      <Value>\%24(PackRepoDir)\atmel\SAMD21_DFP\1.0.231\samd21a\include</Value>
-      <Value>\%24(PackRepoDir)\arm\cmsis\4.2.0\CMSIS\Include\</Value>
-    </ListValues>
-  </armgcc.compiler.directories.IncludePaths>
   <armgcc.compiler.optimization.level>Optimize for size (-Os)</armgcc.compiler.optimization.level>
   <armgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>True</armgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>
   <armgcc.compiler.warnings.AllWarnings>True</armgcc.compiler.warnings.AllWarnings>
@@ -203,7 +182,7 @@ end foreach%
   <armgcc.compiler.optimization.PrepareDataForGarbageCollection>True</armgcc.compiler.optimization.PrepareDataForGarbageCollection>
   <armgcc.compiler.optimization.DebugLevel>Maximum (-g3)</armgcc.compiler.optimization.DebugLevel>
   <armgcc.compiler.warnings.AllWarnings>True</armgcc.compiler.warnings.AllWarnings>
-  <armgcc.compiler.miscellaneous.OtherFlags>-std=gnu99 -Wno-unused-but-set-variable -Wmissing-field-initializers -fno-exceptions</armgcc.compiler.miscellaneous.OtherFlags>
+  <armgcc.compiler.miscellaneous.OtherFlags>-std=gnu99 -Wno-unused-but-set-variable -Wmissing-field-initializers -fno-exceptions -mcpu=cortex-m0plus</armgcc.compiler.miscellaneous.OtherFlags>
   <armgcc.linker.general.DoNotUseStandardStartFiles>True</armgcc.linker.general.DoNotUseStandardStartFiles>
   <armgcc.linker.general.NoStartupOrDefaultLibs>True</armgcc.linker.general.NoStartupOrDefaultLibs>
   <armgcc.linker.general.AdditionalSpecs>Use syscall stubs (--specs=nosys.specs)</armgcc.linker.general.AdditionalSpecs>
@@ -269,7 +248,7 @@ foreach platform in exists PLATFORM_FILES default (emptylist) do
   end foreach
 end foreach
 
-#machine files
+#application files
 foreach file in exists OS::BUILD_S::APP_SRC default (emptylist) do
 %    <Compile Include="../%!file::VALUE%">
       <SubType>compile</SubType>
@@ -277,17 +256,16 @@ foreach file in exists OS::BUILD_S::APP_SRC default (emptylist) do
     </Compile>
 %
 end foreach%
+    <None Include="../%!PROJECT%.oil">
+      <SubType>compile</SubType>
+      <Link>%!PROJECT%.oil</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="trampoline" />
     <Folder Include="trampoline\os" />
     <Folder Include="trampoline\generated" />
     <Folder Include="trampoline\machines" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="blink.oil">
-      <SubType>compile</SubType>
-    </None>
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>
