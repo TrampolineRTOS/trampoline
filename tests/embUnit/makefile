@@ -4,15 +4,19 @@ AR = ar
 ARFLAGS = ru
 RANLIB = ranlib
 RM = rm
+CP = cp
 OUTPUT = ../lib/
 TARGET = libembUnit.a
 OBJS = AssertImpl.o RepeatedTest.o stdImpl.o TestCaller.o TestCase.o TestResult.o TestRunner.o TestSuite.o SchedulingCheck.o
 
 all: $(TARGET)
 
-$(TARGET): $(OBJS)
+$(TARGET): $(OBJS) makedestdir
 	$(AR) $(ARFLAGS) $(OUTPUT)$@ $(OBJS)
 	$(RANLIB) $(OUTPUT)$@
+
+makedestdir:
+	mkdir -p $(OUTPUT)
 
 .c.o:
 	$(CC) $(CFLAGS) $(INCLUDES) -c $<
@@ -28,6 +32,6 @@ TestSuite.o: TestSuite.h TestResult.h TestListener.h Test.h
 SchedulingCheck.o: SchedulingCheck.h TestRunner.h Test.h config.h AssertImpl.h
 
 clean:
-	-$(RM) $(OBJS) $(TARGET)
+	-$(RM) $(OBJS) $(OUTPUT)$(TARGET)
 
 .PHONY: clean all

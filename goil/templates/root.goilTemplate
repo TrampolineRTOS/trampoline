@@ -621,6 +621,10 @@ foreach obj in PRIO2 do
   end if
 end foreach
 
+if number_of_jobs_in_current_priority > MAX_JOBS_AMONG_PRIORITIES then
+  let MAX_JOBS_AMONG_PRIORITIES := number_of_jobs_in_current_priority
+end if
+
 #------------------------------------------------------------------------------*
 # for the idle task
 #
