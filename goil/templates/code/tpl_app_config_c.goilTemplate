@@ -377,6 +377,10 @@ tpl_resource_table[RESOURCE_COUNT] = {%
         end if
       end foreach
 
+      if OS::SCALABILITYCLASS <= 2 then
+        let accessing_application := true
+      end if
+
       if accessing_application then
     %&% !resource::NAME %_rez_desc%
       else
