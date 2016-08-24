@@ -3,7 +3,7 @@
 # Generate the system calls according to the configuration
 #
 let APIMAP := mapof APICONFIG by NAME
-let APIUSED := emptylist
+let APIUSED := @()
 
 let APIUSED += APIMAP["os"]
 let APIUSED += APIMAP["interrupt"]

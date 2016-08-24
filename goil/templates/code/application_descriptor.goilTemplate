@@ -1,13 +1,5 @@
 %
-
-function join(items) {
-  let result := ""
-  foreach item in items
-    do let result := result . item::VALUE
-    between let result := result . ", "
-  end foreach
-  return result
-}
+import "join"
 
 %/*-----------------------------------------------------------------------------
  * OS Application % !app::NAME %

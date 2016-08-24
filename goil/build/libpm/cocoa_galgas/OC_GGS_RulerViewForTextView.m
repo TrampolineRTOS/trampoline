@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
@@ -16,7 +16,7 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #import "OC_GGS_RulerViewForTextView.h"
 #import "OC_GGS_TextView.h"
@@ -25,15 +25,15 @@
 #import "OC_GGS_Document.h"
 #import "PMDebug.h"
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 //#define DEBUG_MESSAGES
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 @implementation OC_GGS_RulerViewForTextView
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (OC_GGS_RulerViewForTextView *) init {
   self = [super init] ;
@@ -43,26 +43,26 @@
   return self ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) FINALIZE_OR_DEALLOC {
   noteObjectDeallocation (self) ;
   macroSuperFinalize ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) setIssueArray: (NSArray *) inIssueArray {
   mIssueArray = inIssueArray.copy ;
   [self setNeedsDisplay:YES] ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 static NSUInteger imax (NSUInteger a, NSUInteger b) { return (a > b) ? a : b ; }
 static NSUInteger imin (NSUInteger a, NSUInteger b) { return (a < b) ? a : b ; }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) drawHashMarksAndLabelsInRect: (NSRect) inRect {
   #ifdef DEBUG_MESSAGES
@@ -131,8 +131,8 @@ static NSUInteger imin (NSUInteger a, NSUInteger b) { return (a < b) ? a : b ; }
       BOOL hasWarning = NO ;
       NSMutableString * allMessages = [NSMutableString new] ;
       for (PMIssueDescriptor * issue in mIssueArray) {
-        if (NSLocationInRange (issue.locationInSourceString, lineRange) && (issue.locationInSourceStringStatus == kLocationInSourceStringSolved)) {
-          [allMessages appendString:issue.issueMessage] ;
+        if (NSLocationInRange (issue.startLocationInSourceString, lineRange) && (issue.locationInSourceStringStatus == kLocationInSourceStringSolved)) {
+          [allMessages appendString:issue.fullMessage] ;
           if (issue.isError) {
             hasError = YES ;
           }else{
@@ -179,7 +179,7 @@ static NSUInteger imin (NSUInteger a, NSUInteger b) { return (a < b) ? a : b ; }
 //  NSLog (@"%f", [[NSDate date] timeIntervalSinceDate:startDate]) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) mouseDown: (NSEvent *) inMouseDownEvent {
 //--- Note: ruler view and text view are both flipped
@@ -190,7 +190,7 @@ static NSUInteger imin (NSUInteger a, NSUInteger b) { return (a < b) ? a : b ; }
   for (NSUInteger i=0 ; (i<mIssueArray.count) && ! found ; i++) {
     PMIssueDescriptor * issue = [mIssueArray objectAtIndex:i] ;
     if (issue.locationInSourceStringStatus != kLocationInSourceStringInvalid) {
-      const NSRect r = [lm lineFragmentUsedRectForGlyphAtIndex:issue.locationInSourceString effectiveRange:NULL] ;
+      const NSRect r = [lm lineFragmentUsedRectForGlyphAtIndex:issue.startLocationInSourceString effectiveRange:NULL] ;
       const NSPoint p = [self convertPoint:NSMakePoint (0.0, NSMidY (r) - 8.0) fromView:textView] ;
       const NSRect rImage = {{4.0, p.y}, {16.0, 16.0}} ;
       if (NSPointInRect (locationInView, rImage)) {
@@ -201,6 +201,6 @@ static NSUInteger imin (NSUInteger a, NSUInteger b) { return (a < b) ? a : b ; }
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 @end

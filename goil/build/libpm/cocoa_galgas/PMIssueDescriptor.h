@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
@@ -16,15 +16,16 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #import <Cocoa/Cocoa.h>
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 @class OC_GGS_RulerViewForBuildOutput ;
+@class OC_GGS_TextDisplayDescriptor ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 typedef enum {
  kLocationInSourceStringNotSolved,
@@ -32,16 +33,18 @@ typedef enum {
  kLocationInSourceStringInvalid
 } enumLocationInSourceStringStatus ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 @interface PMIssueDescriptor : NSObject {
   @private BOOL mIsError ;
-  @private NSString * mMessage ;
+  @private NSString * mFullMessage ;
   @private NSURL * mURL ;
   @private NSUInteger mLine ;
-  @private NSUInteger mColumn ;
+  @private NSUInteger mStartColumn ;
+  @private NSUInteger mEndColumn ;
   @private NSRange mRangeInOutputData ;
-  @private NSUInteger mLocationInSourceString ;
+  @private NSUInteger mStartLocationInSourceString ;
+  @private NSUInteger mEndLocationInSourceString ;
   @private enumLocationInSourceStringStatus mLocationInSourceStringStatus ;
   @private OC_GGS_RulerViewForBuildOutput * mBuildOutputRuler ;
 }
@@ -49,14 +52,15 @@ typedef enum {
 - (PMIssueDescriptor *) initWithMessage: (NSString *) inMessage
                         URL: (NSURL *) inURL
                         line: (NSInteger) inLine
-                        column: (NSInteger) inColumn
+                        startColumn: (NSInteger) inStartColumn
+                        endColumn: (NSInteger) inEndColumn
                         isError: (BOOL) inIsError
                         rangeInOutputData: (NSRange) inRangeInOutputData
                         buildOutputRuler: (OC_GGS_RulerViewForBuildOutput *) inRuler ;
 
 - (void) detach ;
 
-- (NSString *) issueMessage ;
+- (NSString *) fullMessage ;
 
 - (NSURL *) issueStandardizedURL ;
 
@@ -64,19 +68,31 @@ typedef enum {
 
 - (NSUInteger) issueLine ;
 
-- (NSUInteger) issueColumn ;
+- (NSUInteger) issueStartColumn ;
+
+- (NSUInteger) issueEndColumn ;
 
 - (NSUInteger) locationInOutputData ;
 
 - (enumLocationInSourceStringStatus) locationInSourceStringStatus ;
 
-- (NSUInteger) locationInSourceString ;
-- (void) setLocationInSourceString: (NSUInteger) inLocationInSourceString ;
+- (NSUInteger) startLocationInSourceString ;
+
+- (NSUInteger) endLocationInSourceString ;
+
+- (BOOL) intersectWithRange: (NSRange) inRange ;
+
+- (void) setStartLocationInSourceString: (NSUInteger) inStartLocationInSourceString
+         endLocation: (NSUInteger) inEndLocationInSourceString ;
 
 - (void) updateLocationForPreviousRange: (NSRange) inEditedRange
          changeInLength: (NSInteger) inChangeInLength ;
 
 - (void) scrollAndSelectErrorMessage ;
+
+- (void) storeItemsToMenu: (NSMenu *) inMenu
+         displayDescriptor: (OC_GGS_TextDisplayDescriptor *) inTextView ;
+
 @end
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*

@@ -31,7 +31,7 @@ grammar options_grammar "LL1" {
     
 #--- References to syntax components used when source file extension is .ggs
 #    Theses constructs are silently parsed when source file extension is .gGrammar
-    <option_parser_start> !@TfieldMap options
+    <option_parser_start> !@gtlData options
 
 
 }

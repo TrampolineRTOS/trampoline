@@ -78,12 +78,11 @@ func board -> @string board_name {
 #
 # targetPathList returns the target as a list of strings.
 #
-func targetPathList -> @TfieldMapList pathList {
+func targetPathList -> @list pathList {
   @stringlist components = [[option goil_options.target_platform value] componentsSeparatedByString !"/"]
-  pathList = @TfieldMapList.emptyList
+  pathList = .emptyList
   for (@string comp) in components do
-    @TfieldMap cont = @TfieldMap.emptyMap
-    addStringValue(!?cont !lstringWith(!"VALUE") !comp !emptyLString())
+    @gtlData cont = @gtlString.new { !.here !emptylstring() !comp }
     pathList += !cont
   end
 }

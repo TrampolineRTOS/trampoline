@@ -17,6 +17,9 @@ if ep::OFFSET == st::LENGTH then
   let eps[[eps length] - 1] := ep
 else
   let new_ep::OFFSET := st::LENGTH
+  if not exists new_ep::ACTION then
+    let new_ep::ACTION := @()
+  end if
   let new_ep::ACTION += finalize
   let eps += new_ep
 end if

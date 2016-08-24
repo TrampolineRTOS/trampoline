@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //  'C_Compiler' : the compiler base class ;                                                                           *
 //                                                                                                                     *
@@ -18,7 +18,7 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include "command_line_interface/F_Analyze_CLI_Options.h"
 #include "files/C_TextFileWrite.h"
@@ -26,42 +26,42 @@
 #include "galgas2/C_Compiler.h"
 #include "galgas2/C_galgas_io.h"
 #include "galgas2/C_galgas_CLI_Options.h"
-#include "galgas2/predefined-types.h"
+#include "all-predefined-types.h"
 #include "utilities/MF_MemoryControl.h"
 #include "galgas2/F_verbose_output.h"
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //        Syntax error message for 'end of source':                                                                    *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 const char * C_Compiler::kEndOfSourceLexicalErrorMessage = "end of source" ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 bool C_Compiler::performGeneration (void) {
   return (! gOption_galgas_5F_builtin_5F_options_do_5F_not_5F_generate_5F_any_5F_file.mValue)
       && (executionMode () == kExecutionModeNormal) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 bool C_Compiler::performLogFileRead (void) {
   return gOption_galgas_5F_builtin_5F_options_log_5F_file_5F_read.mValue ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Constructor and destructor
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //        Constructor and destructor                                                                                   *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_Compiler::C_Compiler (C_Compiler * inCallerCompiler,
                         const C_String & /* inDependencyFileExtension */,
@@ -77,18 +77,19 @@ mSourceTextPtr (NULL),
 mCurrentLocation (),
 mStartLocationForHere (),
 mEndLocationForHere (),
-mCheckedVariableList () {
+mStartLocationForNext (),
+mEndLocationForNext () {
   macroAssignSharedObject (mCallerCompiler, inCallerCompiler) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_Compiler::~C_Compiler (void) {
   macroDetachSharedObject (mSourceTextPtr) ;
   macroDetachSharedObject (mCallerCompiler) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_Compiler::sourceFilePath (void) const {
   return (mSourceTextPtr == NULL)
@@ -97,13 +98,13 @@ C_String C_Compiler::sourceFilePath (void) const {
   ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Sent String Management
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_string C_Compiler::sentString (void) const {
   GALGAS_string result ;
@@ -113,13 +114,13 @@ GALGAS_string C_Compiler::sentString (void) const {
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Template String Management
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_string C_Compiler::retrieveAndResetTemplateString (void) {
   const C_String s = mTemplateString ;
@@ -128,19 +129,19 @@ GALGAS_string C_Compiler::retrieveAndResetTemplateString (void) {
   return GALGAS_string (s) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::resetTemplateString (void) {
   mTemplateString.setLengthToZero () ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Scanner configuration
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::resetAndLoadSourceFromText (C_SourceTextInString * & ioSourceTextPtr) {
   macroAssignSharedObject (mSourceTextPtr, ioSourceTextPtr) ;
@@ -148,45 +149,45 @@ void C_Compiler::resetAndLoadSourceFromText (C_SourceTextInString * & ioSourceTe
   mCurrentLocation.resetWithSourceText (mSourceTextPtr) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark On the fly semantic error Message
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::onTheFlySemanticError (const C_String & inErrorMessage
                                         COMMA_LOCATION_ARGS) {
   signalSemanticError (sourceText (),
-                       mCurrentLocation,
+                       C_IssueWithFixIt (mCurrentLocation, mCurrentLocation, TC_Array <C_FixItDescription> ()),
                        inErrorMessage
                        COMMA_THERE) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark On the fly semantic Warning Message
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::onTheFlySemanticWarning (const C_String & inWarningMessage
                                           COMMA_LOCATION_ARGS) {
   signalSemanticWarning (sourceText (), 
-                         mCurrentLocation,
+                         C_IssueWithFixIt (mCurrentLocation, mCurrentLocation, TC_Array <C_FixItDescription> ()),
                          inWarningMessage
                          COMMA_THERE) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Print Message
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::printMessage (const GALGAS_string & inMessage
                                COMMA_LOCATION_ARGS) {
@@ -195,7 +196,7 @@ void C_Compiler::printMessage (const GALGAS_string & inMessage
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::printMessage (const C_String & inMessage
                                COMMA_LOCATION_ARGS) {
@@ -204,13 +205,13 @@ void C_Compiler::printMessage (const C_String & inMessage
   ggs_printMessage (s COMMA_THERE) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Log File Read
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::logFileRead (const C_String & inFilePath) {
   if (performLogFileRead ()) {
@@ -218,25 +219,25 @@ void C_Compiler::logFileRead (const C_String & inFilePath) {
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Loop variant run time error
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::loopRunTimeVariantError (LOCATION_ARGS) {
   onTheFlyRunTimeError ("loop variant run-time error" COMMA_THERE) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Cast error
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::castError (const C_String & inTargetTypeName,
                             const C_galgas_type_descriptor * inObjectDynamicTypeDescriptor
@@ -246,33 +247,35 @@ void C_Compiler::castError (const C_String & inTargetTypeName,
   onTheFlyRunTimeError (m COMMA_THERE) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark GALGAS 2 Error
+  #pragma mark GALGAS Error
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::semanticErrorAtLocation (const GALGAS_location & inErrorLocation,
-                                          const C_String & inErrorMessage
+                                          const C_String & inErrorMessage,
+                                          const TC_Array <C_FixItDescription> & inFixItArray
                                           COMMA_LOCATION_ARGS) {
   if (inErrorLocation.isValid ()) { // No error raised if not built
     if (NULL == inErrorLocation.sourceText ()) {
       onTheFlyRunTimeError (inErrorMessage COMMA_THERE) ;
     }else{
       signalSemanticError (inErrorLocation.sourceText (),
-                           inErrorLocation.startLocation (),
+                           C_IssueWithFixIt (inErrorLocation.startLocation (), inErrorLocation.endLocation (), inFixItArray),
                            inErrorMessage
                            COMMA_THERE) ;
     }
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::emitSemanticError (const GALGAS_location & inErrorLocation,
-                                    const GALGAS_string & inErrorMessage
+                                    const GALGAS_string & inErrorMessage,
+                                    const TC_Array <C_FixItDescription> & inFixItArray
                                     COMMA_LOCATION_ARGS) {
   if (inErrorLocation.isValid () && inErrorMessage.isValid ()) {
     const C_String errorMessage = inErrorMessage.stringValue () ;
@@ -280,14 +283,14 @@ void C_Compiler::emitSemanticError (const GALGAS_location & inErrorLocation,
       onTheFlyRunTimeError (errorMessage COMMA_THERE) ;
     }else{
       signalSemanticError (inErrorLocation.sourceText (),
-                           inErrorLocation.endLocation (),
+                           C_IssueWithFixIt (inErrorLocation.startLocation (), inErrorLocation.endLocation (), inFixItArray),
                            errorMessage
                            COMMA_THERE) ;
     }
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::semanticErrorWith_K_message (const GALGAS_lstring & inKey,
                                               TC_UniqueArray <C_String> & ioNearestKeyArray,
@@ -313,22 +316,16 @@ void C_Compiler::semanticErrorWith_K_message (const GALGAS_lstring & inKey,
     }
   }
 //--- Add nearest keys, if any
-  if (ioNearestKeyArray.count () > 0) {
-    message << " (do you mean '" << ioNearestKeyArray (0 COMMA_HERE) << "'" ;
-    for (int32_t i=2 ; i<ioNearestKeyArray.count () ; i++) {
-      message << ", '" << ioNearestKeyArray (i-1 COMMA_HERE) << "'" ;
-    }
-    if (ioNearestKeyArray.count () > 1) {
-      message << " or '" << ioNearestKeyArray.lastObject (HERE) << "'" ;
-    }
-    message << " ?)" ;
+  TC_Array <C_FixItDescription> fixItArray ;
+  for (int32_t i=0 ; i<ioNearestKeyArray.count () ; i++) {
+    fixItArray.addObject (C_FixItDescription (kFixItReplace, ioNearestKeyArray (i COMMA_HERE))) ;
   }
 //--- Emit error message
   const GALGAS_location key_location = inKey.mAttribute_location ;
-  semanticErrorAtLocation (key_location, message COMMA_THERE) ;
+  semanticErrorAtLocation (key_location, message, fixItArray COMMA_THERE) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::semanticErrorWith_K_L_message (const GALGAS_lstring & inKey,
                                                 const char * in_K_L_ErrorMessage,
@@ -357,10 +354,10 @@ void C_Compiler::semanticErrorWith_K_L_message (const GALGAS_lstring & inKey,
   }
 //--- Emit error message
   const GALGAS_location key_location = inKey.mAttribute_location ;
-  semanticErrorAtLocation (key_location, message COMMA_THERE) ;
+  semanticErrorAtLocation (key_location, message, TC_Array <C_FixItDescription> () COMMA_THERE) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::semanticWarningWith_K_L_message (const GALGAS_lstring & inKey,
                                                   const char * in_K_L_ErrorMessage,
@@ -392,13 +389,13 @@ void C_Compiler::semanticWarningWith_K_L_message (const GALGAS_lstring & inKey,
   semanticWarningAtLocation (key_location, message COMMA_THERE) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark GALGAS 2 Warnings
+  #pragma mark GALGAS Warnings
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::semanticWarningAtLocation (const GALGAS_location & inWarningLocation,
                                             const C_String & inWarningMessage
@@ -408,17 +405,18 @@ void C_Compiler::semanticWarningAtLocation (const GALGAS_location & inWarningLoc
       signalRunTimeWarning (inWarningMessage COMMA_THERE) ;
     }else{
       signalSemanticWarning (inWarningLocation.sourceText (),
-                                               inWarningLocation.startLocation (),
-                                               inWarningMessage
-                                               COMMA_THERE) ;
+                             C_IssueWithFixIt (inWarningLocation.startLocation (), inWarningLocation.endLocation (), TC_Array <C_FixItDescription> ()),
+                             inWarningMessage
+                             COMMA_THERE) ;
     }
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::emitSemanticWarning (const GALGAS_location & inWarningLocation,
-                                      const GALGAS_string & inWarningMessage
+                                      const GALGAS_string & inWarningMessage,
+                                      const TC_Array <C_FixItDescription> & inFixItArray
                                       COMMA_LOCATION_ARGS) {
   if (inWarningLocation.isValid () && inWarningMessage.isValid ()) {
     const C_String warningMessage = inWarningMessage.stringValue () ;
@@ -426,57 +424,64 @@ void C_Compiler::emitSemanticWarning (const GALGAS_location & inWarningLocation,
       signalRunTimeWarning (warningMessage COMMA_THERE) ;
     }else{
       signalSemanticWarning (inWarningLocation.sourceText (),
-                             inWarningLocation.endLocation (),
+                             C_IssueWithFixIt (inWarningLocation.startLocation (), inWarningLocation.endLocation (), inFixItArray),
                              warningMessage
                              COMMA_THERE) ;
     }
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Run Time Error
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::onTheFlyRunTimeError (const C_String & inRunTimeErrorMessage
                                        COMMA_LOCATION_ARGS) {
   signalRunTimeError (inRunTimeErrorMessage COMMA_THERE) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark here
+  #pragma mark here, next
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_location C_Compiler::here (void) const {
   return GALGAS_location (mStartLocationForHere, mEndLocationForHere, mSourceTextPtr) ;
 }
 
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_location C_Compiler::next (void) const {
+  return GALGAS_location (mStartLocationForNext, mEndLocationForNext, mSourceTextPtr) ;
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Check And Generate File
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //   C H E C K    A N D    G E N E R A T E   F I L E                                                                   *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 static const char * START_OF_USER_ZONE_1 =  "--- START OF USER ZONE 1\n" ;
 static const char * END_OF_USER_ZONE_1   =  "--- END OF USER ZONE 1\n" ;
 static const char * START_OF_USER_ZONE_2 =  "--- START OF USER ZONE 2\n" ;
 static const char * END_OF_USER_ZONE_2   =  "--- END OF USER ZONE 2\n" ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::generateFile (const C_String & inLineCommentPrefix,
                                const TC_UniqueArray <C_String> & inDirectoriesToExclude,
@@ -499,7 +504,7 @@ void C_Compiler::generateFile (const C_String & inLineCommentPrefix,
                           inMakeExecutable) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::generateFileFromPathes (const C_String & inStartPath,
                                          const TC_UniqueArray <C_String> & inDirectoriesToExclude,
@@ -535,7 +540,7 @@ void C_Compiler::generateFileFromPathes (const C_String & inStartPath,
         ggs_printFileOperationSuccess (C_String ("Created '") + fileName + "'.\n") ;
       }
     }else{
-      ggs_printWarning (NULL, C_LocationInSource (), C_String ("Need to create '") + fileName + "'.\n" COMMA_HERE) ;
+      ggs_printWarning (NULL, C_IssueWithFixIt (), C_String ("Need to create '") + fileName + "'.\n" COMMA_HERE) ;
     }
   }else{
     const C_String previousContents = C_FileManager::stringWithContentOfFile (fullPathName) ;
@@ -554,46 +559,13 @@ void C_Compiler::generateFileFromPathes (const C_String & inStartPath,
           }
         }
       }else{
-        ggs_printWarning (NULL, C_LocationInSource (), C_String ("Need to replace '") + fullPathName + "'.\n" COMMA_HERE) ;
+        ggs_printWarning (NULL, C_IssueWithFixIt (), C_String ("Need to replace '") + fullPathName + "'.\n" COMMA_HERE) ;
       }
     }
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
-
-void C_Compiler::enterPragma (const GALGAS_lstring & inPragmaName,
-                              const GALGAS_lstring & inPragmaArgument
-                              COMMA_LOCATION_ARGS) {
-  if (inPragmaName.isValid () && inPragmaArgument.isValid ()) {
-    const C_String pragmaName = inPragmaName.getter_string (THERE).stringValue () ;
-    const C_String pragmaArgument = inPragmaArgument.getter_string (THERE).stringValue () ;
-    if (pragmaName == "traceVariableState") {
-      if (pragmaArgument.length () == 0) {
-        mCheckedVariableList.free () ;
-      }else{
-        mCheckedVariableList.addObject (pragmaArgument) ;
-      }
-    }else{
-      semanticErrorAtLocation (inPragmaName.getter_location (THERE), "invalid name: only 'traceVariableState' is allowed here" COMMA_HERE) ;
-    }
-  }
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-int32_t C_Compiler::checkedVariableListEntryCount (void) const {
-  return mCheckedVariableList.count () ;
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------
-
-C_String C_Compiler::checkedVariableAtIndex (const int32_t inIndex COMMA_LOCATION_ARGS) const {
-  return mCheckedVariableList (inIndex COMMA_THERE) ;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_Compiler::generateFileWithPatternFromPathes (
   const C_String & inStartPath,
@@ -644,6 +616,7 @@ void C_Compiler::generateFileWithPatternFromPathes (
       if (verboseOptionOn) {
         ggs_printFileCreationSuccess (C_String ("Created '") + fileName + "'.\n") ;
       }
+      
       f.close () ;
       if (inMakeExecutable) {
         #if COMPILE_FOR_WINDOWS == 0
@@ -654,7 +627,7 @@ void C_Compiler::generateFileWithPatternFromPathes (
         #endif
       }
     }else{
-      ggs_printWarning (NULL, C_LocationInSource (), C_String ("Need to create '") + fileName + "'.\n" COMMA_HERE) ;
+      ggs_printWarning (NULL, C_IssueWithFixIt (), C_String ("Need to create '") + fileName + "'.\n" COMMA_HERE) ;
     }
   }else{
     C_String firstUserPart ;
@@ -688,7 +661,7 @@ void C_Compiler::generateFileWithPatternFromPathes (
       secondGeneratedPart = stringArray (1 COMMA_HERE) ;
     }
     if (! ok) {
-      ggs_printError (NULL, C_LocationInSource (), C_String ("BAD FILE '") + fullPathName + "'.\n" COMMA_HERE) ;
+      ggs_printError (NULL, C_IssueWithFixIt (), C_String ("BAD FILE '") + fullPathName + "'.\n" COMMA_HERE) ;
     }else if ((firstGeneratedPart == inGeneratedZone2) && (secondGeneratedPart == inGeneratedZone3)) {
     }else if (performGeneration ()) {
       C_TextFileWrite f (fullPathName) ;
@@ -716,10 +689,10 @@ void C_Compiler::generateFileWithPatternFromPathes (
         #endif
       }
     }else{
-      ggs_printWarning (NULL, C_LocationInSource (), C_String ("Need to replace '") + fullPathName + "'.\n" COMMA_HERE) ;
+      ggs_printWarning (NULL, C_IssueWithFixIt (), C_String ("Need to replace '") + fullPathName + "'.\n" COMMA_HERE) ;
     }
   }
 }
 
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*

@@ -34,7 +34,7 @@ with lexique goil_lexique {
 }
 
 #--- Added by PM
-with lexique template_scanner {
+with lexique gtl_scanner {
   fileExtension : "goilTemplate"
   title: "Template"
   blockComment : "#"

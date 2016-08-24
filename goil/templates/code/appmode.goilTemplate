@@ -8,8 +8,8 @@
 
 let default_app_mode := ""
 
-let app_mode_mask := emptymap
-let app_mode_id := emptymap
+let app_mode_mask := @[]
+let app_mode_id := @[]
 let mask := 1
 
 foreach mode in APPMODE do
@@ -63,7 +63,7 @@ CONST(tpl_appmode_mask, OS_CONST) tpl_task_app_mode[TASK_COUNT] = {
 %
 do
   let mask := 0
-  let text_mask := emptylist
+  let text_mask := @()
   if task::AUTOSTART then
     if exists task::AUTOSTART_S::APPMODE then
       foreach mode in task::AUTOSTART_S::APPMODE do
@@ -81,7 +81,7 @@ do
   
   foreach t_m in text_mask
   do
-    ! t_m::VALUE
+    ! t_m
   between % | %
   end foreach
   % */ %
@@ -103,7 +103,7 @@ CONST(tpl_appmode_mask, OS_CONST) tpl_alarm_app_mode[ALARM_COUNT] = {
 %
 do
   let mask := 0
-  let text_mask := emptylist
+  let text_mask := @()
   if alarm::AUTOSTART then
     if exists alarm::AUTOSTART_S::APPMODE then
       foreach mode in alarm::AUTOSTART_S::APPMODE do
@@ -121,7 +121,7 @@ do
   
   foreach t_m in text_mask
   do
-    ! t_m::VALUE
+    ! t_m
   between % | %
   end foreach
   % */ %
@@ -143,7 +143,7 @@ CONST(tpl_appmode_mask, OS_CONST) tpl_scheduletable_app_mode[SCHEDTABLE_COUNT] =
 %
 do
   let mask := 0
-  let text_mask := emptylist
+  let text_mask := @()
   if scheduletable::AUTOSTART != "NONE" then
     if exists scheduletable::AUTOSTART_S::APPMODE then
       foreach mode in scheduletable::AUTOSTART_S::APPMODE do
@@ -161,7 +161,7 @@ do
   
   foreach t_m in text_mask
   do
-    ! t_m::VALUE
+    ! t_m
   between % | %
   end foreach
   % */ %

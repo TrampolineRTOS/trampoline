@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //  C_UIntSet : algorithms on sets of uint32_t                                                                         *
 //                                                                                                                     *
@@ -18,24 +18,24 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include "C_UIntSet.h"
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_UIntSet::C_UIntSet (void) :
 mDefinition () {
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_UIntSet::C_UIntSet (const uint32_t inValue) :
 mDefinition () {
   add (inValue) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_UIntSet::add (const uint32_t inNodeIndex) {
   const int32_t idx = (int32_t) (inNodeIndex >> 6) ;
@@ -43,9 +43,12 @@ void C_UIntSet::add (const uint32_t inNodeIndex) {
     mDefinition.addObject (0) ;
   }
   mDefinition (idx COMMA_HERE) |= ((uint64_t) 1) << (inNodeIndex & 63) ;
+  #ifndef DO_NOT_GENERATE_CHECKINGS
+    check () ;
+  #endif
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_UIntSet::remove (const uint32_t inNodeIndex) {
   const int32_t idx = (int32_t) (inNodeIndex >> 6) ;
@@ -55,9 +58,12 @@ void C_UIntSet::remove (const uint32_t inNodeIndex) {
       mDefinition.removeLastObject (HERE) ;
     }
   }
+  #ifndef DO_NOT_GENERATE_CHECKINGS
+    check () ;
+  #endif
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_UIntSet::getBoolValueArray (TC_UniqueArray <bool> & outBoolValueArray) const {
   outBoolValueArray.setCountToZero () ;
@@ -72,7 +78,7 @@ void C_UIntSet::getBoolValueArray (TC_UniqueArray <bool> & outBoolValueArray) co
   }
 }
   
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_UIntSet::getValueArray (TC_UniqueArray <uint32_t> & outValueArray) const {
   outValueArray.setCountToZero () ;
@@ -88,7 +94,7 @@ void C_UIntSet::getValueArray (TC_UniqueArray <uint32_t> & outValueArray) const 
   }
 }
   
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 bool C_UIntSet::contains (const uint32_t inNodeIndex) const {
   const int32_t idx = (int32_t) (inNodeIndex >> 6) ;
@@ -99,7 +105,7 @@ bool C_UIntSet::contains (const uint32_t inNodeIndex) const {
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 uint32_t C_UIntSet::firstValueNotIsSet (void) const {
   uint32_t result = 0 ;
@@ -114,7 +120,7 @@ uint32_t C_UIntSet::firstValueNotIsSet (void) const {
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 uint32_t C_UIntSet::count (void) const {
   uint32_t result = 0 ;
@@ -128,7 +134,7 @@ uint32_t C_UIntSet::count (void) const {
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_UIntSet::operator &= (const C_UIntSet & inOther) {
   while (mDefinition.count () > inOther.mDefinition.count ()) {
@@ -140,9 +146,12 @@ void C_UIntSet::operator &= (const C_UIntSet & inOther) {
   while ((mDefinition.count () > 0) && (mDefinition.lastObject (HERE) == 0)) {
     mDefinition.removeLastObject (HERE) ;
   }
+  #ifndef DO_NOT_GENERATE_CHECKINGS
+    check () ;
+  #endif
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_UIntSet::operator |= (const C_UIntSet & inOther) {
   while (mDefinition.count () < inOther.mDefinition.count ()) {
@@ -151,15 +160,18 @@ void C_UIntSet::operator |= (const C_UIntSet & inOther) {
   for (int32_t i=0 ; i<inOther.mDefinition.count () ; i++) {
     mDefinition (i COMMA_HERE) |= inOther.mDefinition (i COMMA_HERE) ;
   }
+  #ifndef DO_NOT_GENERATE_CHECKINGS
+    check () ;
+  #endif
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 static inline int32_t minSInt32 (const int32_t inA, const int32_t inB) {
   return (inA < inB) ? inA : inB ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_UIntSet::operator -= (const C_UIntSet & inOther) {
   const int32_t n = minSInt32 (mDefinition.count (), inOther.mDefinition.count ()) ;
@@ -169,9 +181,12 @@ void C_UIntSet::operator -= (const C_UIntSet & inOther) {
   while ((mDefinition.count () > 0) && (mDefinition.lastObject (HERE) == 0)) {
     mDefinition.removeLastObject (HERE) ;
   }
+  #ifndef DO_NOT_GENERATE_CHECKINGS
+    check () ;
+  #endif
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 bool C_UIntSet::operator == (const C_UIntSet & inOther) const {
   bool result = mDefinition.count () == inOther.mDefinition.count () ;
@@ -181,10 +196,20 @@ bool C_UIntSet::operator == (const C_UIntSet & inOther) const {
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 bool C_UIntSet::operator != (const C_UIntSet & inOther) const {
   return ! (*this == inOther) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
+
+#ifndef DO_NOT_GENERATE_CHECKINGS
+  void C_UIntSet::check (void) const {
+    if (mDefinition.count () > 0) {
+      MF_Assert (mDefinition.lastObject (HERE) != 0, "last entry of C_UIntSet is 0", 0, 0) ;
+    }
+  }
+#endif
+
+//---------------------------------------------------------------------------------------------------------------------*

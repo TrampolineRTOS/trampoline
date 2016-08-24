@@ -27,9 +27,9 @@
 syntax options_parser(options_scanner) {
 
 rule <option_parser_start>
-  !@TfieldMap options
+  !@gtlData options
 {
-  options = .emptyMap
+  options = @gtlStruct.new { !.here !lstring(!"Passed options") !.emptyMap }
   repeat
     <option_item> !?options
   while $,$
@@ -37,87 +37,71 @@ rule <option_parser_start>
 }
 
 rule <option_item>
-  ?!@TfieldMap options
+  ?!@gtlData options
 {
   $idf$ ?let @lstring key
   $=$
-  @Ttype  type
-  @Tvalue value
+  @gtlData opt
   select
-    <option_value> ?type ?value
+    <option_value> ?opt
   or
-    <list_option_value> ?type ?value
+    <list_option_value> ?opt
   end
-  [!?options insertKey !key !type ! value] 
+  [!?options setStructField !key !opt] 
 }
 
 rule <option_value>
-  !@Ttype  type
-  !@Tvalue value
+  !@gtlData opt
 {
   $string$ ?let @lstring str
-  type = @Ttype.stringType
-  value = valueWithString(![str string] !emptyLString())
+  opt = @gtlString.new { !str !emptylstring() !str }
 }
 
 rule <option_value>
-  !@Ttype  type
-  !@Tvalue value
+  !@gtlData opt
 {
   $idf$ ?let @lstring str
-  type = @Ttype.stringType
-  value = valueWithString(![str string] !emptyLString())
+  opt = @gtlString.new { !str !emptylstring() !str }
 }
 
 rule <option_value>
-  !@Ttype  type
-  !@Tvalue value
+  !@gtlData opt
 {
   $uint_number$ ?let @luint64 num
-  type = @Ttype.intType
-  value = valueWithSigned(![[num uint64] bigint] !emptyLString())
+  opt = @gtlInt.new { !num !emptylstring() ![num bigint] }
 }
 
 rule <option_value>
-  !@Ttype  type
-  !@Tvalue value
+  !@gtlData opt
 {
   $float_number$ ?let @ldouble num
-  type = @Ttype.floatType
-  value = valueWithFloat(![num double] !emptyLString())
+  opt = @gtlFloat.new { !num !emptylstring() !num }
 }
 
 rule <option_value>
-  !@Ttype  type
-  !@Tvalue value
+  !@gtlData opt
 {
   $-$
   select
     $uint_number$ ?let @luint64 num
-    type = @Ttype.intType
-    value = valueWithSigned(!-[[num uint64] bigint] !emptyLString())
+    opt = @gtlInt.new { !num !emptylstring() !-[num bigint] }
   or
     $float_number$ ?let @ldouble num
-    type = @Ttype.floatType
-    value = valueWithFloat(!-[num double] !emptyLString())
+    opt = @gtlFloat.new { !num !emptylstring() !-[num double] }
   end
 }
 
 rule <list_option_value>
-  !@Ttype  type
-  !@Tvalue value
+  !@gtlData opt
 {
-  @TfieldMapList listOption = .emptyList
+  @list listOption = .emptyList
   $($
   repeat
-  <option_value> ?let @Ttype valType ?let @Tvalue valVal
-  @TfieldMap item = .emptyMap
-  [!?item insertKey !lstringWith(!"VALUE") !valType !valVal]
-  listOption += !item
+    <option_value> ?let @gtlData item
+    listOption += !item
   while $,$
   end
-  type = @Ttype.listType
-  value = valueWithList(!listOption !emptyLString())
+  opt = @gtlList.new { !.here !emptylstring() !listOption }
   $)$
 }
 

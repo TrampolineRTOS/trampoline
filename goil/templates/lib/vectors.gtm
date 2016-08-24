@@ -1,0 +1,44 @@
+%
+#----------------------------------------------------------------------------*
+# function to compute the vectors
+#----------------------------------------------------------------------------*
+
+func computeVector (app, proc, owned_proc) vector
+  let vector := ""
+  if exists owned_proc[proc::NAME] then
+    let vector := "1"
+  else
+    let vector := ""
+    let acc_app := exists proc::ACCESSING_APPLICATION default ( @() )
+    let acc_app_set := [exists proc::ACCESSING_APPLICATION default ( @() ) setBy: "VALUE"]
+    if [acc_app_set contains: app::NAME] then
+      let vector := vector . "1"
+    else
+      let vector := vector . "0"
+    end if
+  end if
+end func
+
+func computeBinaryVectorSize(vector) size
+  let size := [vector length] / 8
+  if [vector length] mod 8 != 0 then let size := size + 1 end if
+end func
+
+func computeBinaryVector(vector, size) binary_vector
+  let start := 0
+  let binary_vector := @()
+  loop i from 1 to size do
+    let byte := [[vector subString: start, 8] reversedString]
+    let val := 0
+    loop bit from 0 to [byte length] - 1 do
+      let val := val << 1
+      if [byte subString: bit, 1] == "1" then
+        let val := val + 1
+      end if
+    end loop
+    let binary_vector_struct::VALUE := [val string]
+    let binary_vector += binary_vector_struct
+    let start := start + 8
+  end loop
+end func
+

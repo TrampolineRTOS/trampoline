@@ -52,7 +52,7 @@ OIL_FILE = % !OILFILENAME %
 # it should be declared as APP_SRC in the OS section of the .oil file
 # (many times allowed).
 %
-foreach src in exists OS::BUILD_S::APP_SRC default (emptylist)
+foreach src in exists OS::BUILD_S::APP_SRC default ( @() )
   before %SOURCES = %
   do !src::VALUE
   between % %
@@ -238,7 +238,7 @@ foreach COMPONENT in TARGETPATHLIST
 before %
 MACHINE_INCLUDE_PATH =%
 do 
-  let PARTIAL_PATH := PARTIAL_PATH . "/" . COMPONENT::VALUE
+  let PARTIAL_PATH := PARTIAL_PATH . "/" . COMPONENT
 % -I% !PARTIAL_PATH 
 end foreach
 
@@ -247,7 +247,7 @@ foreach COMPONENT in TARGETPATHLIST
 before %
 MACHINE_INCLUDE_MAKEFILE =%
 do 
-  let PARTIAL_PATH := PARTIAL_PATH . "/" . COMPONENT::VALUE
+  let PARTIAL_PATH := PARTIAL_PATH . "/" . COMPONENT
 % % !PARTIAL_PATH%/Makefile% 
 end foreach
 
@@ -256,7 +256,7 @@ foreach COMPONENT in TARGETPATHLIST
 before %
 MACHINE_ALL_PATHS =%
 do 
-  let PARTIAL_PATH := PARTIAL_PATH . "/" . COMPONENT::VALUE
+  let PARTIAL_PATH := PARTIAL_PATH . "/" . COMPONENT
 % % !PARTIAL_PATH 
 end foreach%
 

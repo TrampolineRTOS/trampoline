@@ -75,7 +75,10 @@ static NSMutableDictionary * gDocumentDataDictionary ;
     for (PMIssueDescriptor * issue in inIssueArray) {
       // NSLog (@"issue.issueURL %@, fileURL %@", issue.issueStandardizedURL, fileURL) ;
       if ([issue.issueStandardizedURL isEqualTo:fileURL.standardizedURL]) {
-        [issue setLocationInSourceString:[self locationForLineInSource:issue.issueLine] + issue.issueColumn - 1] ;
+        [issue
+          setStartLocationInSourceString:[self locationForLineInSource:issue.issueLine] + issue.issueStartColumn - 1
+          endLocation:[self locationForLineInSource:issue.issueLine] + issue.issueEndColumn - 1
+        ] ;
         [mIssueArray addObject:issue] ;
       }
     }

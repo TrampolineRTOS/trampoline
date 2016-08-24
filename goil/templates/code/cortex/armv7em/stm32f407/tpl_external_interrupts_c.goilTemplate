@@ -50,7 +50,7 @@ FUNC(void, OS_CODE) tpl_init_external_interrupts()
 {%
 
 # look for EXTIx_IRQ interrupt sources in COUNTERS and ISR
-let ITOBJ := COUNTER . ISR
+let ITOBJ := COUNTER | ISR
 
 # Check subattributes are defined for EXTIxxx it sources
 # This should be done by goil according to the IMPLEMENTATION but currently
@@ -65,7 +65,7 @@ foreach obj in ITOBJ do
   end if
 end foreach
 
-let USED_EXTI := emptymap
+let USED_EXTI := @[ ]
 
 # Check for sanity of the description and gather multiple pins for EXTI9_5_IRQ
 # and EXTI15_10_IRQ
@@ -105,19 +105,20 @@ foreach obj in ITOBJ do
   end if
 end foreach
 
-let usedGPIO := emptymap
-let usedPortPin := emptymap
+let usedGPIO := @[ ]
+let usedPortPin := @[ ]
+
 foreach src in USED_EXTI do
   foreach pin in src do
     if typeof pin == @string then
-      let portPin::TRIGGER := exists src[KEY."_S"]::TRIGGER default ("RISING")
-      let portPin::PULL := exists src[KEY."_S"]::PULL default ("NONE")
+      let portPin::TRIGGER := exists src[KEY+"_S"]::TRIGGER default ("RISING")
+      let portPin::PULL := exists src[KEY+"_S"]::PULL default ("NONE")
       let portPin::NUMBER := [pin rightSubString: 1]
       let portPin::GPIO := [pin subString: 1, 1]
       let usedPortPin[pin] := portPin
       let gpio := [pin subString: 1, 1]
       if not exists usedGPIO[gpio] then
-        let usedGPIO[gpio] := emptylist
+        let usedGPIO[gpio] := @( )
       end if
       let usedGPIO[gpio] += portPin
     end if
@@ -194,7 +195,7 @@ do%
   if    pin::TRIGGER == "RISING" then %Rising%
   elsif pin::TRIGGER == "FALLING" then %Falling%
   else  %Rising_Falling%
-  end if %;% tab 60 %/* Trigger on % ![[pin::TRIGGER lowercaseString] stringByCapitalizingFirstCharacter]% edge% tab 88 %*/
+  end if %;% tab 60 %/* Trigger on % ![[pin::TRIGGER lowercaseString] capitalized]% edge% tab 88 %*/
   EXTI_Init(&EXTI_InitDef);% tab 60 %/* Add to EXTI% tab 88 %*/%
 between%
 %
@@ -239,7 +240,7 @@ FUNC(void, OS_CODE) % !KEY %_ClearFlag(void)
   if exists src["PIN"] then
     %EXTI_Line% !usedPortPin[src["PIN"]]::NUMBER
   else
-    let lineList := emptylist
+    let lineList := @( )
     foreach pin in src do
       if typeof pin == @string then
         let lineList += "EXTI_Line".usedPortPin[pin]::NUMBER

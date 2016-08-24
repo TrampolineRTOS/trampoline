@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
@@ -16,7 +16,7 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #import "OC_GGS_ApplicationDelegate.h"
 #import "OC_GGS_Document.h"
@@ -27,31 +27,31 @@
 #import "F_CocoaWrapperForGalgas.h"
 #import "PMDebug.h"
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PM_HANDLE_UPDATE
   #import "PMApplicationUpdate.h"
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 //#define DEBUG_MESSAGES
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef NS_ENUM
   typedef NSUInteger NSAutoresizingMaskOptions ;
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 @implementation OC_GGS_ApplicationDelegate
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (instancetype) init {
   #ifdef DEBUG_MESSAGES
@@ -72,11 +72,11 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   return self ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //   S E T    A P P L I C A T I O N    M E N U    I T E M    T I T L E S                                               *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) setApplicationMenuItemTitles {
   #ifdef DEBUG_MESSAGES
@@ -110,7 +110,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (NSArray *) commandLineItemArray {
   #ifdef DEBUG_MESSAGES
@@ -119,7 +119,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   return mCommandLineItemArray ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (NSTabView *) preferencesTabView {
   #ifdef DEBUG_MESSAGES
@@ -128,7 +128,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   return mPreferencesTabView ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (NSString *) compilerToolPath {
   #ifdef DEBUG_MESSAGES
@@ -144,7 +144,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (BOOL) prefixByToolUtility {
   #ifdef DEBUG_MESSAGES
@@ -153,7 +153,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   return [[NSUserDefaults standardUserDefaults] boolForKey:GGS_prefix_by_tool_utility] ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (NSString *) toolUtilityPrefix {
   #ifdef DEBUG_MESSAGES
@@ -162,7 +162,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   return @"/usr/bin/time" ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (NSString *) commandLineString {
   #ifdef DEBUG_MESSAGES
@@ -236,15 +236,15 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   return s ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #pragma mark Lexical Coloring
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //       S E T    T E X T    C O L O R S    P R E F E R E N C E S                                                      *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) setUpView: (NSView *) ioView
          withCurrentRectangle: (NSRect *) ioRect
@@ -348,7 +348,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   ioRect->origin.y -= 25.0 ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) setTextColorsAndFontForTokenizer: (OC_Lexique *) inTokenizer
          atIndex: (NSUInteger) inIndex {
@@ -477,17 +477,10 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   [tvi setLabel:title] ;
   [mLexicalColoringTabView insertTabViewItem:tvi atIndex: (NSInteger) inIndex] ;
 //--- Duplicate 'SetFont' Button
-//  NSLog (@"ALL NAMES IN PREFERENCES: '%@'", allFontPreferenceNames) ;
   NSButton * setFontButton = [[NSButton alloc] initWithFrame:[mSetFontButton frame]] ;
-//  NSData * data = [NSArchiver archivedDataWithRootObject:mSetFontButton] ;
-//  NSButton * setFontButton = [NSUnarchiver unarchiveObjectWithData:data] ;
-//  [setFontButton setButtonType:[mSetFontButton buttonType]] ;
-//  [setFontButton setAutoresizingMask:[mSetFontButton autoresizingMask]] ;
-//  NSLog (@"TITLE '%@'", [mSetFontButton title]) ;
   [[setFontButton cell] setRepresentedObject:allFontPreferenceNames] ;
   [setFontButton setTitle:@"Set Font…"] ;
   [setFontButton setState:[mSetFontButton state]] ;
-//  [setFontButton setAttributedTitle:[mSetFontButton attributedTitle]] ;
   [setFontButton setBezelStyle:[mSetFontButton bezelStyle]] ;
   [setFontButton setBordered:[mSetFontButton isBordered]] ;
   [setFontButton setAutoresizingMask:NSViewNotSizable] ;
@@ -507,11 +500,9 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   [sc setAutoresizingMask:[mLexicalColoringScrollView autoresizingMask]] ;
   [[tvi view] addSubview:sc] ;
   [sc setDocumentView:view] ;
-  // NSRect fff = [[tvi view] frame] ;
-  // NSLog (@"%f %f %f %f", fff.origin.x, fff.origin.y, fff.size.width, fff.size.height) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) setFontAction: (id) inSender {
   #ifdef DEBUG_MESSAGES
@@ -519,7 +510,6 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   #endif
 //--- Get all preference names
   mCurrentFontArray = [[inSender cell] representedObject] ;
-  //NSLog (@"mCurrentFontArray '%@'", mCurrentFontArray) ;
   NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults] ;
   NSString * preferenceName = nil ;
   NSMutableSet * fontSet = [NSMutableSet new] ;
@@ -532,9 +522,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
     if (f != nil) {
       [fontSet addObject:f] ;
     }
-    //NSLog (@"%@ -> '%@' -> '%@'", preferenceName, data, [f displayName]) ;
   }
-  // NSLog (@"Font set : '%@'", fontSet) ;
 //--- Set font manager selected fonts
   NSFontManager * fontManager = [NSFontManager sharedFontManager] ;
   if ([fontSet count] == 1) {
@@ -552,14 +540,12 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   [fontManager orderFrontFontPanel:self] ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) changeFont: (id) inSender {
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
-//--- Get all preference names
-  // NSLog (@"mCurrentFontArray '%@'", mCurrentFontArray) ;
 //--- Changing fonts
   NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults] ;
   NSFontManager * fontManager = [NSFontManager sharedFontManager] ;
@@ -582,7 +568,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) setTextColorsPreferences {
   #ifdef DEBUG_MESSAGES
@@ -598,11 +584,11 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   mLexicalColoringScrollView = nil ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #pragma mark Build Text Macros Menu
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) insertTextMacroWithIndex: (NSUInteger) inIndex
          titleComponents: (NSArray *) inTitleComponents
@@ -610,7 +596,6 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
- // NSLog (@"[inTitleComponents count] %u, inMenu %@", [inTitleComponents count], inMenu) ;
   if ([inTitleComponents count] == 1) {
     [inMenu
       addItemWithTitle:[inTitleComponents lastObject]
@@ -650,17 +635,16 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //       B U I L D    T E X T    M A C R O    M E N U                                                                  *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) buildTextMacroMenu {
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
-  // NSLog (@"mTextMacroMenu %@", mTextMacroMenu) ;
   NSArray * tokenizerArray = tokenizers () ;
   NSUInteger macroCount = 0 ;
   for (OC_Lexique * tokenizer in tokenizerArray) {
@@ -685,15 +669,15 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #pragma mark Build Option Items
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //   B U I L D    B O O L    C O M M A N D    L I N E    O P T I O N S                                                 *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) buildBooleanCommandLineOptionsInView: (NSView *) inView
          enclosingRect: (NSRect *) ioRect {
@@ -731,11 +715,11 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //   B U I L D    U I N T    C O M M A N D    L I N E    O P T I O N S                                                 *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) buildUnsignedIntegerCommandLineOptionsInView: (NSView *) inView
          enclosingRect: (NSRect *) ioRect {
@@ -779,7 +763,6 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   //--- Comment text
     tx = [NSTextField new] ;
     NSString * title = [option title] ;
- //   [tx setTitleWithMnemonic: title] ;
     [tx setStringValue:title] ;
     [tx setAutoresizingMask: mask] ;
     NSDictionary * d = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -798,11 +781,11 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //   B U I L D    U I N T    C O M M A N D    L I N E    O P T I O N S                                                 *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) buildStringCommandLineOptionsInView: (NSView *) inView
          enclosingRect: (NSRect *) ioRect {
@@ -841,7 +824,6 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   //--- Comment text
     tx = [NSTextField new] ;
     NSString * title = [option title] ;
-//    [tx setTitleWithMnemonic: title] ;
     [tx setStringValue:title] ;
     [tx setAutoresizingMask: mask] ;
     NSDictionary * d = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -860,11 +842,11 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //   POPULATE TOOL POPUPBUTTON                                                                                         *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) populateToolPopupButtonInView: (NSView *) inView {
   #ifdef DEBUG_MESSAGES
@@ -902,11 +884,11 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   [mToolPopUpButton setAction:@selector (toolSelectionDidChange:)] ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //       A W A K E    F R O M    N I B                                                                                 *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) awakeFromNib {
   #ifdef DEBUG_MESSAGES
@@ -1109,7 +1091,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   #endif
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) preferencesDidChange: (id) inUsedArgument {
   #ifdef DEBUG_MESSAGES
@@ -1119,7 +1101,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   [self  didChangeValueForKey:@"commandLineString"] ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (NSArray *) toolNameArray {
   #ifdef DEBUG_MESSAGES
@@ -1128,11 +1110,11 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   return mToolNameArray ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #pragma mark Preferences Change
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (IBAction) toolSelectionDidChange: (id) inSender {
   #ifdef DEBUG_MESSAGES
@@ -1145,15 +1127,15 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   [self  didChangeValueForKey:@"commandLineString"] ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #pragma mark Track Window Moving and Resizing
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //                              windowDidMove:                                                                         *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) windowDidMove: (NSNotification *) inNotification {
   #ifdef DEBUG_MESSAGES
@@ -1165,11 +1147,11 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   [ud setObject:s forKey:GGS_preference_window_frame] ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //                             windowDidResize:                                                                        *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) windowDidResize: (NSNotification *) inNotification {
   #ifdef DEBUG_MESSAGES
@@ -1181,25 +1163,25 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   [ud setObject:s forKey:GGS_preference_window_frame] ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #pragma mark User Actions
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //       O P E N    A N    U N T I T L E D    D O C U M E N T    A T    S T A R T U P                                   *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (BOOL) applicationShouldOpenUntitledFile: (NSApplication *) inSender {
   return NO ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //       A C T I O N    N E W  D O C U M E N T                                                                         *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) changeNewDocumentTypeAction: (id) inSender {
   #ifdef DEBUG_MESSAGES
@@ -1219,7 +1201,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   [savePanel setAllowedFileTypes:[NSArray arrayWithObject:extension]] ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) newDocument: (id) inSender {
   #ifdef DEBUG_MESSAGES
@@ -1271,7 +1253,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (IBAction) showAllocationWindow: (id) inSender {
   #ifdef DEBUG_MESSAGES
@@ -1280,11 +1262,11 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   showAllocationStatsWindow () ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #pragma mark Termination Handling
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (NSApplicationTerminateReply) applicationShouldTerminate:(NSApplication *)sender {
   #ifdef DEBUG_MESSAGES
@@ -1305,11 +1287,11 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   return canTerminateApplication ? NSTerminateNow : NSTerminateCancel ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #pragma mark Source text preferences
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) updateSourceTextPreferenceCount {
   #ifdef DEBUG_MESSAGES
@@ -1341,7 +1323,7 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   [mSourcePreferenceStatsTextField setStringValue:s] ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (IBAction) clearSourceDocumentPreferencesEntries: (id) inSender {
   #ifdef DEBUG_MESSAGES
@@ -1366,6 +1348,6 @@ OC_GGS_ApplicationDelegate * gCocoaApplicationDelegate ;
   [self updateSourceTextPreferenceCount] ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 @end

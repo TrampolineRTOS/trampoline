@@ -3,11 +3,11 @@
 # Check the priority of ISR1 connected to the same IRQ are the same
 #
 
-let isr1ForIRQ := emptymap
+let isr1ForIRQ := @[]
 
 foreach isr in ISRS1 do
   if not exists isr1ForIRQ[isr::SOURCE] then
-    let isr1ForIRQ[isr::SOURCE] := emptylist
+    let isr1ForIRQ[isr::SOURCE] := @()
   end if
   let isr1ForIRQ[isr::SOURCE] += isr
 end foreach

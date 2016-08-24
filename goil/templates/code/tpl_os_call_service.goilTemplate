@@ -2,7 +2,7 @@ FUNC(% !exists sc::RETURN_TYPE default("void") %, % !api::ID_PREFIX %_CODE) % !e
     if exists sc::ARGUMENT then
       foreach arg in sc::ARGUMENT do
          !arg::KIND %(% !arg::TYPE %, AUTOMATIC%
-          if [arg::KIND substringExists: "P2"] then
+          if [arg::KIND subStringExists: "P2"] then
             %, OS_APPL_DATA%
           end if
         %) % !arg::NAME 
@@ -16,7 +16,7 @@ FUNC(% !exists sc::RETURN_TYPE default("void") %, % !api::ID_PREFIX %_CODE) % !e
     %return %
   end if
   !sc::KERNEL %(%
-  foreach arg in exists sc::ARGUMENT default (emptylist) do
+  foreach arg in exists sc::ARGUMENT default ( @() ) do
     !arg::NAME
   between %, %
   end foreach

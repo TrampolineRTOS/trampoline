@@ -87,7 +87,7 @@ class GenericGalgasMakefile :
     make = makefile.Make (self.mGoal, self.mMaxParallelJobs == 1) # Display command utility tool path if sequential build
   #--------------------------------------------------------------------------- Add Compile rule for sources
   #--- Object file directory
-    objectDirectory = os.path.normpath (os.getcwd () + "/../build/cli-objects/makefile-" + self.mTargetName + "-objects")
+    objectDirectory = "../build/cli-objects/makefile-" + self.mTargetName + "-objects"
   #---
     objectFileList = []
     for source in SOURCES:
@@ -130,7 +130,7 @@ class GenericGalgasMakefile :
     make.addRule (rule) ;
   #--------------------------------------------------------------------------- Add Compile rule for sources debug
   #--- Object file directory
-    debugObjectDirectory = os.path.normpath (os.getcwd () + "/../build/cli-objects/makefile-" + self.mTargetName + "-debug-objects")
+    debugObjectDirectory = "../build/cli-objects/makefile-" + self.mTargetName + "-debug-objects"
   #---
     debugObjectFileList = []
     for source in SOURCES:
@@ -164,7 +164,6 @@ class GenericGalgasMakefile :
     rule.mCommand += self.mLinkerTool
     rule.mCommand += debugObjectFileList
     rule.mCommand += ["-o", EXECUTABLE_DEBUG]
-#    rule.mCommand += ["-L", GMP_DIRECTORY_PATH, "-lgmp-" + SYSTEM_MACHINE]
     rule.mCommand += self.mLinkerOptions
     make.addRule (rule) ;
   #--------------------------------------------------------------------------- Add install EXECUTABLE file rule

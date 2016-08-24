@@ -22,8 +22,8 @@ def buildForMacOSX (dictionary, EXECUTABLE, GOAL, maxParallelJobs, showCommands)
   gmf.mLinkerTool   = ["g++"]
   gmf.mStripTool    = ["strip"] # , "-A", "-r", "-n", "-u"
   gmf.mSudoTool     = ["sudo"]
-  gmf.mCompilationMessage = "Native Compiling for Mac OS X"
-  gmf.mLinkingMessage = "Native Linking for Mac OS X"
+  gmf.mCompilationMessage = "Native Compiling for OS X"
+  gmf.mLinkingMessage = "Native Linking for OS X"
   gmf.mInstallationgMessage = "Installing"
   gmf.mStripMessage = "Stripping"
 #--- Options for all compilers

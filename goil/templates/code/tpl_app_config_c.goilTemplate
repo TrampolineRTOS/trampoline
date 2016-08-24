@@ -368,8 +368,8 @@ tpl_resource_table[RESOURCE_COUNT] = {%
       let accessing_application := false
       foreach application in APPLICATIONS do
         if exists application::CORE default(0) == core_id then
-          let res_map := mapof exists application::RESOURCE default(emptylist) by VALUE
-          let app_map := mapof exists resource::ACCESSING_APPLICATION default(emptylist) by VALUE
+          let res_map := mapof exists application::RESOURCE default( @() ) by VALUE
+          let app_map := mapof exists resource::ACCESSING_APPLICATION default( @() ) by VALUE
           if (exists res_map[resource::NAME])
            | (exists app_map[application::NAME]) then
             let accessing_application := true
@@ -973,7 +973,7 @@ CONST(tpl_ioc_queued_mo, OS_CONST) % !ioc::NAME %_mo =
 %
     let iteration1 := 0
     foreach typeName in ioc::DATATYPENAME do
-      if typeof ioc::SEMANTICS_S::INIT_VALUE_SYMBOL == @enum then if ioc::SEMANTICS_S::INIT_VALUE_SYMBOL == @auto then 
+      if typeof ioc::SEMANTICS_S::INIT_VALUE_SYMBOL == @enum then if ioc::SEMANTICS_S::INIT_VALUE_SYMBOL == $auto then 
       % %#%CONST(% !typeName::VALUE %, OS_CONST) % !ioc::NAME %_init_buffer_% !iteration1 % = 0;%
       end if
       else
@@ -1011,7 +1011,7 @@ CONST(tpl_ioc_buffer, OS_CONST) % !ioc::NAME %_init_buffer[% !iteration2 %] =
 %
     let iteration3 := 0
     foreach typeName in ioc::DATATYPENAME do
-      if typeof ioc::SEMANTICS_S::INIT_VALUE_SYMBOL == @enum then if ioc::SEMANTICS_S::INIT_VALUE_SYMBOL == @auto then
+      if typeof ioc::SEMANTICS_S::INIT_VALUE_SYMBOL == @enum then if ioc::SEMANTICS_S::INIT_VALUE_SYMBOL == $auto then
       % NULL_PTR%
       end if
       else

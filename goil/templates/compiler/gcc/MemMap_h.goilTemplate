@@ -57,8 +57,8 @@
 #endif
 
 %
-for SECTION_KIND in "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" do
-  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+foreach SECTION_KIND in @( "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" ) do
+  foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
 %
 #ifdef OS_START_SEC_VAR% !SECTION_KIND !DATA_SIZE %
   #undef OS_START_SEC_VAR% !SECTION_KIND !DATA_SIZE %
@@ -83,16 +83,16 @@ for SECTION_KIND in "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" do
   #endif
 #endif
 %
-  end for
-end for
+  end foreach
+end foreach
 %
 
 /*
  * Const, Calibration, Carto, Configuration data sections
  */
 %
-for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
-  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+foreach SECTION_KIND in @( "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" ) do
+  foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
 %
 #ifdef OS_START_SEC% !SECTION_KIND !DATA_SIZE %
   #undef OS_START_SEC% !SECTION_KIND !DATA_SIZE %
@@ -117,8 +117,8 @@ for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
   #endif
 #endif
 %
-  end for
-end for
+  end foreach
+end foreach
 %
 
 
@@ -212,8 +212,8 @@ foreach app in APPLICATIONS do
  * Variables sections
  */
 %
-  for SECTION_KIND in "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" do
-    for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+  foreach SECTION_KIND in @( "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" ) do
+    foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
 %
 #ifdef APP_OS_APP_% !app::NAME %_START_SEC_VAR% !SECTION_KIND !DATA_SIZE %
   #undef APP_OS_APP_% !app::NAME %_START_SEC_VAR% !SECTION_KIND !DATA_SIZE %
@@ -238,15 +238,15 @@ foreach app in APPLICATIONS do
   #endif
 #endif
 %
-    end for
-  end for
+    end foreach
+  end foreach
 %
 /*
  * Const, Calibration, Carto, Configuration data sections
  */
 %
-  for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
-    for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+  foreach SECTION_KIND in @( "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" ) do
+    foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
 %
 #ifdef APP_OS_APP_% !app::NAME %_START_SEC% !SECTION_KIND !DATA_SIZE %
   #undef APP_OS_APP_% !app::NAME %_START_SEC% !SECTION_KIND !DATA_SIZE %
@@ -271,8 +271,8 @@ foreach app in APPLICATIONS do
   #endif
 #endif
 %
-    end for
-  end for
+    end foreach
+  end foreach
 end foreach
 %
 
@@ -337,8 +337,8 @@ foreach proc in PROCESSES do
  * Variables sections
  */
 %
-  for SECTION_KIND in "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" do
-    for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+  foreach SECTION_KIND in @( "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" ) do
+    foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
 %
 #ifdef APP_% !proc::KIND %_% !proc::NAME %_START_SEC_VAR% !SECTION_KIND !DATA_SIZE %
   #undef APP_% !proc::KIND %_% !proc::NAME %_START_SEC_VAR% !SECTION_KIND !DATA_SIZE %
@@ -363,16 +363,16 @@ foreach proc in PROCESSES do
   #endif
 #endif
 %
-    end for
-  end for
+    end foreach
+  end foreach
 %
 
 /*
  * Const, Calibration, Carto, Configuration data sections
  */
 %
-  for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
-    for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+  foreach SECTION_KIND in @( "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" ) do
+    foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
 %
 #ifdef APP_% !proc::KIND %_% !proc::NAME %_START_SEC% !SECTION_KIND !DATA_SIZE %
   #undef APP_% !proc::KIND %_% !proc::NAME %_START_SEC% !SECTION_KIND !DATA_SIZE %
@@ -397,8 +397,8 @@ foreach proc in PROCESSES do
   #endif
 #endif
 %
-    end for
-  end for
+    end foreach
+  end foreach
 end foreach
 %
 %
@@ -436,8 +436,8 @@ foreach isr in ISRS1 do
  * Variables sections
  */
 %
-  for SECTION_KIND in "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" do
-    for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+  foreach SECTION_KIND in @( "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" ) do
+    foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
 %
 #ifdef APP_ISR_% !isr::NAME %_START_SEC_VAR% !SECTION_KIND !DATA_SIZE %
   #undef APP_ISR_% !isr::NAME %_START_SEC_VAR% !SECTION_KIND !DATA_SIZE %
@@ -462,16 +462,16 @@ foreach isr in ISRS1 do
   #endif
 #endif
 %
-    end for
-  end for
+    end foreach
+  end foreach
 %
 
 /*
  * Const, Calibration, Carto, Configuration data sections
  */
 %
-  for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
-    for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+  foreach SECTION_KIND in @( "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" ) do
+    foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
 %
 #ifdef APP_ISR_% !isr::NAME %_START_SEC% !SECTION_KIND !DATA_SIZE %
   #undef APP_ISR_% !isr::NAME %_START_SEC% !SECTION_KIND !DATA_SIZE %
@@ -496,8 +496,8 @@ foreach isr in ISRS1 do
   #endif
 #endif
 %
-    end for
-  end for
+    end foreach
+  end foreach
 end foreach
 %
 %
@@ -567,8 +567,8 @@ loop core from 0 to OS::NUMBER_OF_CORES - 1 do
  * Variables sections
  */
 %
-  for SECTION_KIND in "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" do
-    for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+  foreach SECTION_KIND in @( "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" ) do
+    foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
 %
 #ifdef APP_% !proc::KIND %_% !proc::NAME %_START_SEC_VAR% !SECTION_KIND !DATA_SIZE %
   #undef APP_% !proc::KIND %_% !proc::NAME %_START_SEC_VAR% !SECTION_KIND !DATA_SIZE %
@@ -593,16 +593,16 @@ loop core from 0 to OS::NUMBER_OF_CORES - 1 do
   #endif
 #endif
 %
-    end for
-  end for
+    end foreach
+  end foreach
 %
 
 /*
  * Const, Calibration, Carto, Configuration data sections
  */
 %
-  for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
-    for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+  foreach SECTION_KIND in @( "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" ) do
+    foreach DATA_SIZE in @( "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" ) do
 %
 #ifdef APP_% !proc::KIND %_% !proc::NAME %_START_SEC% !SECTION_KIND !DATA_SIZE %
   #undef APP_% !proc::KIND %_% !proc::NAME %_START_SEC% !SECTION_KIND !DATA_SIZE %
@@ -627,8 +627,8 @@ loop core from 0 to OS::NUMBER_OF_CORES - 1 do
   #endif
 #endif
 %
-    end for
-  end for
+    end foreach
+  end foreach
 end loop
 %
 

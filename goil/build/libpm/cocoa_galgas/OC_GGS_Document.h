@@ -1,8 +1,8 @@
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2003, ..., 2014 Pierre Molinaro.                                                                     *
+//  Copyright (C) 2003, ..., 2016 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -16,11 +16,11 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #import "CocoaGalgasPrefix.h"
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 @class OC_GGS_TextView ;
 @class OC_GGS_DelegateForSyntaxColoring ;
@@ -34,7 +34,7 @@
 @class OC_GGS_DocumentData ;
 @class OC_GGS_RulerViewForBuildOutput ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 @interface OC_GGS_Document : NSDocument <NSTextViewDelegate,
                                          NSSplitViewDelegate,
@@ -125,7 +125,6 @@
 
 - (void) actionOpenFromSelectionInNewWindow: (id) sender ;
 - (void) actionOpenFromSelection: (id) sender ;
-- (IBAction) revealInFinderAction: (id) inSender ;
 
 - (void) updateSearchResultForFile: (NSString *) inFilePath
          previousRange: (NSRange) inPreviousRange
@@ -145,7 +144,6 @@
 - (IBAction) actionShiftRight: (id) sender ;
 
 - (IBAction) actionBuildFirst: (id) sender ;
-- (IBAction) actionBuildSelected: (id) sender ;
 - (IBAction) stopBuild: (id) sender ;
 
 - (NSString *) sourceStringForGlobalSearch ;
@@ -159,5 +157,5 @@
 - (void) buildCompleted ;
 @end
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 

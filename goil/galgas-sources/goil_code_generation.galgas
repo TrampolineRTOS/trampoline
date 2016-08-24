@@ -680,6 +680,42 @@ proc generate_mask_type
 #  end foreach;
 #end routine;
 
+class @goilContext : @gtlContext {}
+
+override getter @goilContext fullPrefix
+  ?let @gtlData vars
+  ->@lstring full
+{
+  @string stringPrefix = prefix
+  if "compiler" == stringPrefix then
+    [vars structField !lstring(!"COMPILER") ?@gtlData compiler]
+    stringPrefix += "/" + (compiler as @gtlString)
+  elsif "linker" == stringPrefix then
+    [vars structField !lstring(!"LINKER") ?@gtlData linker]
+    stringPrefix += "/" + (linker as @gtlString)
+  elsif "assembler" == stringPrefix then
+    [vars structField !lstring(!"ASSEMBLER") ?@gtlData assembler]
+    stringPrefix += "/" + (assembler as @gtlString)
+  elsif stringPrefix == "ROOT" then
+    stringPrefix = ""
+  end
+  full = .new { !stringPrefix !prefix }
+#  message "%%%% Return : " + full + "\n"
+}
+
+func emptyGoilContext
+  ->@goilContext context 
+{
+  context = .new {
+    !emptylstring()
+    !""
+    !""
+    !".gtl"
+    !.emptyList
+    !.emptyList
+  }
+}
+
 ##
 # @fn generate_all
 #
@@ -688,7 +724,8 @@ proc generate_mask_type
 # @param cpu the root object got from the parsing
 # 
 proc generate_all
-  ?let @TfieldMap cfg {
+  ?@gtlData cfg
+{
   # code generation
 #  @string timestamp := [@string stringWithCurrentDateTime];
 
@@ -698,111 +735,49 @@ proc generate_all
       @string target = [option goil_options.target_platform value]
       if target != "" then
 
-#          @string types := template_string[!"code" !"types"];
-
-#          @config cfg [emptyMap];
-#          @lstring cfg_file := config_file[];
-#          if [cfg_file string] != "" then
-#              grammar cfg_grammar in cfg_file ?cfg;
-#          end if;
-#
-#          @lstring extra_cfg_file := extra_config_file[];
-#          if [extra_cfg_file string] != "" then
-#              grammar cfg_grammar in extra_cfg_file ?cfg;
-#          end if;
-#
-#          @os_config generated_conf := os_cfg[!cpu];
-#
-#          @uint max_task_prio;
-#          @uint max_prio;
-#          @prio_map actual_prio [emptyMap];
-#          compute_actual_task_priority
-#              ![cpu tasks]
-#              !?actual_prio
-#              ?max_task_prio;
-#
-#          compute_actual_isr_priority
-#              ![cpu isrs]
-#              !?actual_prio
-#              !max_task_prio
-#              ?max_prio;
-#
-#          @prio_map rez_actual_prio;
-#          @stringMap rez_comments;
-#          compute_rez_priority 
-#              ![cpu resources]
-#              ![cpu tasks]
-#              ![cpu isrs] 
-#              !actual_prio
-#              ?rez_actual_prio
-#              ?rez_comments;
-#
-#          @prio_list ready_list;
-#          compute_ready_list
-#              !cpu
-#              !actual_prio
-#              !rez_actual_prio
-#              !max_task_prio
-#              !max_prio
-#              ?ready_list;
-#
-#          @stringMap app_for_obj;
-#          compute_app_for_obj
-#              ![cpu applis]
-#              ?app_for_obj;
-#
-#
-#          generate_types
-#              ![cpu tasks]
-#              ![cpu isrs]
-#              ![cpu alarms]
-#              ![cpu counters]
-#              ![cpu resources]
-#              ![cpu scheduletables]
-#              ![cpu applis]
-#              !max_prio
-#              !?types;
-#            
-#          @eventMaskMap eventMasks;
-#          computeEvents !cpu ?eventMasks;
-#
-#          @goilTemplateVariableMap sysCfg [emptyMap];
-#          
-#          setEnvData !cpu !?sysCfg;
-#          setProcessesList !cpu !actual_prio !app_for_obj !?sysCfg;
-#          setBasicTasksList !cpu !actual_prio !app_for_obj !?sysCfg;
-#          setExtendedTasksList !cpu !actual_prio !app_for_obj !?sysCfg;
-#          setTasksList !cpu !actual_prio !app_for_obj !?sysCfg;
-#          setISRs1List !cpu !actual_prio !app_for_obj !?sysCfg;
-#          setISRs2List !cpu !actual_prio !app_for_obj !?sysCfg;
-#          setCountersList !cpu !app_for_obj !?sysCfg;
-#          setEventsList !cpu !eventMasks !?sysCfg;
-#          setAlarmsList !cpu !app_for_obj !?sysCfg;
-#          setResourcesList !cpu !rez_actual_prio  !app_for_obj !?sysCfg;
-#          setMessagesList !cpu !app_for_obj !?sysCfg;
-#          setScheduletablesList !cpu !app_for_obj !?sysCfg;
-#          setOsapplicationsList !cpu !app_for_obj !?sysCfg;
-#          setProcessCount !cpu !?sysCfg;
-#          setBuildConfig !cpu !?sysCfg;
-#          setReadyList !cpu !ready_list !?sysCfg;         
-#          addBoolValue !?sysCfg ![@lstring new !"AUTOSAR" !here] ![option goil_options.autosar_on value];
-#          addUnsignedValue !?sysCfg !lstringWith[!"MAXTASKPRIORITY"] ![max_task_prio uint64];
-#          setOsConfig !cpu !?sysCfg;
-#          setInterruptSources !cfg !?sysCfg;
-#          
-#          #log sysCfg;
-#          
-#          #
-#          # Add the API description
-#          #
-#          @string apiDescriptionFile := templateFilePath[!"config" !"api.desc"];
-#          if apiDescriptionFile != "" then
-#            grammar api_grammar in lstringWith[!apiDescriptionFile] !?sysCfg;
-#          else
-#            error here: "No api.desc file found in config templates";
-#          end if;
+          # Build a template instruction
+          @gtlTemplateInstruction rootTemplateInstruction = .new {
+            !.here
+            !emptylstring()
+            !@gtlTerminal.new {
+              !.here
+              !@gtlString.new { 
+                !.here 
+                !lstring(!"root template filename") 
+                ![option goil_options.root value]
+              }
+            }
+            !false       # should always exist
+            !true        # global template
+            !.emptyList  # no argument
+            !.emptyList  # no instruction if not found
+          }
+                    
+          @gtlContext context = emptyGoilContext()
+          [!?context setTemplateDirectory
+            !templates_directory(!"")
+          ]
+          [!?context setTemplateExtension
+            !".goilTemplate"
+          ]
+          [!?context addModulePath
+            !templates_directory(!"")
+            !"lib"
+          ]
+          [!?context setPath
+            ![option goil_options.target_platform value]
+          ]
+                    
+          @library    lib = emptyLib()
+          @string     goilLog = ""
           
-          @string goilLog = computeTemplate(!"" !cfg ![option goil_options.root value])
+          [rootTemplateInstruction execute
+            !?context
+            !?cfg
+            !?lib
+            !?goilLog
+          ]
+
           if [option goil_options.generate_log value] then
             [goilLog writeToFile !"goil.log"]
           end

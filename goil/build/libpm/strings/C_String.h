@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //  C_String : an implementation of fully dynamic character string                                                     *
 //                                                                                                                     *
@@ -18,12 +18,12 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef CLASS_C_STRING_DEFINED
 #define CLASS_C_STRING_DEFINED
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include "utilities/M_SourceLocation.h"
 #include "collections/TC_Array.h"
@@ -33,26 +33,26 @@
 #include "utilities/TF_Swap.h"
 #include "time/C_DateTime.h"
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include <exception>
 #include <stdio.h> 
 #include <dirent.h> 
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef COMPILE_FOR_WINDOWS
   #error COMPILE_FOR_WINDOWS is undefined
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #if COMPILE_FOR_WINDOWS == 0
   #include <sys/types.h>
   #include <sys/stat.h>
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 typedef enum {
   kUTF_8_FileEncoding,
@@ -80,11 +80,11 @@ typedef enum {
   kMacRoman_FileEncoding
 } PMTextFileEncoding ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //      Fully dynamic character string : C_String                                                                      *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 class C_String : public AC_OutputStream {
 //--- Constructors
@@ -99,6 +99,9 @@ class C_String : public AC_OutputStream {
 //--- Handling copy
   public : C_String (const C_String & inSource) ;
   public : C_String & operator = (const C_String & inString) ;
+
+//--- Get string from stdin
+  public : static C_String newWithStdIn (void) ;
 
 //--- Copy from a C string
   public : C_String & operator = (const char * inSource) ;
@@ -115,11 +118,6 @@ class C_String : public AC_OutputStream {
 //--- Init from a string
   public : void setFromCstring (const char * inCstring) ;
   public : void setFromString (const C_String & inString) ;
-
-//--- Registering
-  public : void enableRegistering (void) ;
-  public : void disableRegistering (void) ;
-  public : bool registeringIsEnabled (void) const ;
 
 //--- Insulate
   public : void insulate (void) const ;
@@ -159,13 +157,11 @@ class C_String : public AC_OutputStream {
 //--- Get string length
   public : int32_t length (void) const ;
 
-//--- Get a representation that contains only letters, digits or '_', so that 
-//    it is a valid C identifier
+//--- Get a representation that contains only letters, digits or '_', so that it is a valid C identifier
   public : C_String identifierRepresentation (void) const ; // Preserves ASCII letters
-  public : C_String nameRepresentation (void) const ; // Preserves ASCII letters and digits
-
-//--- Get an UTF32 representation
-  public : C_String utf32Representation (void) const ;
+  public : C_String nameRepresentation (void) const ; // Preserves ASCII letters, digits and '_'
+  public : C_String assemblerRepresentation (void) const ; // Preserves ASCII letters, digits, '_', '.' and '$'
+  public : C_String decodedStringFromRepresentation (bool & outOk) const ; // Reverses the above representations
 
 //--- Get an HTML representation (&, <, > and " are escaped using HTML escape sequence)
   public : C_String HTMLRepresentation (void) const ;
@@ -312,11 +308,11 @@ class C_String : public AC_OutputStream {
   private : mutable class cEmbeddedString * mEmbeddedString ;
 } ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //  Exception generated by readTextFile method when a read error occurs                                                *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 const size_t kTextReadExceptionStringMaxLength = 1000 ;
 
@@ -328,6 +324,6 @@ class C_TextReadException : public ::std::  exception {
   public : virtual const char * what (void) const throw () ;
 } ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #endif

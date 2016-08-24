@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //  AC_GALGAS_uniqueMap : Base class for GALGAS map                                                                    *
 //                                                                                                                     *
@@ -18,9 +18,9 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
-#include "galgas2/predefined-types.h"
+#include "all-predefined-types.h"
 #include "galgas2/capCollectionElement.h"
 #include "galgas2/C_galgas_type_descriptor.h"
 #include "utilities/MF_Assert.h"
@@ -29,18 +29,18 @@
 #include "collections/TC_UniqueArray.h"
 #include "galgas2/C_galgas_CLI_Options.h"
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 class cUniqueMapNode ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 typedef struct {
   cUniqueMapNode * mSource ;
   cUniqueMapNode * mTarget ;
 } structDependanceEdge ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 static bool operator == (const structDependanceEdge & inOperand1,
                          const structDependanceEdge & inOperand2) {
@@ -51,11 +51,11 @@ static bool operator == (const structDependanceEdge & inOperand1,
   ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //  c S h a r e d M a p R o o t                                                                                        *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 class cSharedUniqueMapRoot : public C_SharedObject {
 //--------------------------------- Attributes
@@ -212,11 +212,11 @@ class cSharedUniqueMapRoot : public C_SharedObject {
   friend class AC_GALGAS_uniqueMap ;
 } ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //     c S h a r e d P r o x y                                                                                         *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 class cSharedProxy : public C_SharedObject {
 //--- Attribute
@@ -236,11 +236,11 @@ class cSharedProxy : public C_SharedObject {
   private : cSharedProxy & operator = (const cSharedProxy &) ;
 } ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //  c M a p N o d e                                                                                                    *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 class cUniqueMapNode {
   public : cUniqueMapNode * mInfPtr ;
@@ -278,7 +278,7 @@ class cUniqueMapNode {
   friend class AC_GALGAS_uniqueMapProxy ;
 } ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 cSharedUniqueMapRoot::cSharedUniqueMapRoot (LOCATION_ARGS) :
 C_SharedObject (THERE),
@@ -296,14 +296,14 @@ mEndBranchCount (0),
 mStateArrayLevel (0) {
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 cSharedUniqueMapRoot::~ cSharedUniqueMapRoot (void) {
   macroMyDelete (mRoot) ;
   macroDetachSharedObject (mOverridenMap) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 cUniqueMapNode::cUniqueMapNode (const C_String & inKey,
                                 const uint32_t inInitialState,
@@ -321,7 +321,7 @@ mStateArray (NULL),
 mStateArraySize (0) {
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 cUniqueMapNode::~cUniqueMapNode (void) {
   macroMyDelete (mInfPtr) ;
@@ -334,13 +334,13 @@ cUniqueMapNode::~cUniqueMapNode (void) {
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Check Map
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static void checkNode (const cUniqueMapNode * inNode,
@@ -355,7 +355,7 @@ cUniqueMapNode::~cUniqueMapNode (void) {
   }
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void cSharedUniqueMapRoot::checkMap (LOCATION_ARGS) const {
@@ -365,13 +365,13 @@ cUniqueMapNode::~cUniqueMapNode (void) {
   }
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Constructor, destructor and copy
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 AC_GALGAS_uniqueMap::AC_GALGAS_uniqueMap (const mapAutomatonIssueEnum inShadowBehaviour,
                                           const C_String & inShadowMessage) :
@@ -381,7 +381,7 @@ mShadowBehaviour (inShadowBehaviour),
 mShadowMessage (inShadowMessage) {
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 AC_GALGAS_uniqueMap::AC_GALGAS_uniqueMap (const AC_GALGAS_uniqueMap & inSource) :
 AC_GALGAS_root (),
@@ -391,38 +391,38 @@ mShadowMessage (inSource.mShadowMessage) {
   macroAssignSharedObject (mSharedMap, inSource.mSharedMap) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 AC_GALGAS_uniqueMap & AC_GALGAS_uniqueMap::operator = (const AC_GALGAS_uniqueMap & inSource) {
   macroAssignSharedObject (mSharedMap, inSource.mSharedMap) ;
   return *this ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 AC_GALGAS_uniqueMap::~AC_GALGAS_uniqueMap (void) {
   macroDetachSharedObject (mSharedMap) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void AC_GALGAS_uniqueMap::drop (void) {
   macroDetachSharedObject (mSharedMap) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void AC_GALGAS_uniqueMap::makeNewEmptyMap (LOCATION_ARGS) {
   macroMyNew (mSharedMap, cSharedUniqueMapRoot (THERE)) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Description, log
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 static void internalDescription (cUniqueMapNode * inNode,
                                  C_String & ioString,
@@ -440,7 +440,7 @@ static void internalDescription (cUniqueMapNode * inNode,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void cSharedUniqueMapRoot::description (C_String & ioString,
                                         const int32_t inIndentation,
@@ -458,7 +458,7 @@ void cSharedUniqueMapRoot::description (C_String & ioString,
   internalDescription (mRoot, ioString, inIndentation, idx) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void AC_GALGAS_uniqueMap::description (C_String & ioString,
                                        const int32_t inIndentation) const {
@@ -478,13 +478,13 @@ void AC_GALGAS_uniqueMap::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Search in map and overridden maps
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 cUniqueMapNode * cSharedUniqueMapRoot::findEntryInMap (const C_String & inKey,
                                                        const cSharedUniqueMapRoot * inFirstMap) const {
@@ -508,7 +508,7 @@ cUniqueMapNode * cSharedUniqueMapRoot::findEntryInMap (const C_String & inKey,
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 const cUniqueMapNode * cSharedUniqueMapRoot::findNodeForKeyInMapOrInOverridenMaps (const GALGAS_string & inKey,
                                                                                    C_Compiler * inCompiler
@@ -526,13 +526,13 @@ const cUniqueMapNode * cSharedUniqueMapRoot::findNodeForKeyInMapOrInOverridenMap
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Search for "with" read only access
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 const cCollectionElement * AC_GALGAS_uniqueMap::readAccessForWithInstruction (const GALGAS_string & inKey) const {
   const cCollectionElement * result = NULL ;
@@ -545,13 +545,13 @@ const cCollectionElement * AC_GALGAS_uniqueMap::readAccessForWithInstruction (co
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Insert
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 static void rotateLeft (cUniqueMapNode * & ioRootPtr) {
   cUniqueMapNode * b = ioRootPtr->mSupPtr ;
@@ -572,7 +572,7 @@ static void rotateLeft (cUniqueMapNode * & ioRootPtr) {
   ioRootPtr = b ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 static void rotateRight (cUniqueMapNode * & ioRootPtr) {
   cUniqueMapNode * b = ioRootPtr->mInfPtr ;
@@ -592,7 +592,7 @@ static void rotateRight (cUniqueMapNode * & ioRootPtr) {
   ioRootPtr = b ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 static cUniqueMapNode * internalInsert (cUniqueMapNode * & ioRootPtr,
                                         const C_String & inKey,
@@ -649,7 +649,7 @@ static cUniqueMapNode * internalInsert (cUniqueMapNode * & ioRootPtr,
   return matchingEntry ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 cUniqueMapNode * cSharedUniqueMapRoot::performInsert (capCollectionElement & inAttributes,
                                                       C_Compiler * inCompiler,
@@ -714,7 +714,7 @@ cUniqueMapNode * cSharedUniqueMapRoot::performInsert (capCollectionElement & inA
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void AC_GALGAS_uniqueMap::insertInSharedMap (capCollectionElement & inAttributes,
                                              C_Compiler * inCompiler,
@@ -734,13 +734,13 @@ void AC_GALGAS_uniqueMap::insertInSharedMap (capCollectionElement & inAttributes
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Modifier enterEdge
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void cSharedUniqueMapRoot::enterEdge (cUniqueMapNode * inSource,
                                       cUniqueMapNode * inTarget) {
@@ -748,7 +748,7 @@ void cSharedUniqueMapRoot::enterEdge (cUniqueMapNode * inSource,
   mDependenceEdges.addObjectIfUnique (e) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void AC_GALGAS_uniqueMap::setter_enterEdge (const GALGAS_lstring & inSource,
                                               const GALGAS_lstring & inTarget
@@ -760,13 +760,13 @@ void AC_GALGAS_uniqueMap::setter_enterEdge (const GALGAS_lstring & inSource,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Modifier enterEdge
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 class cTopologicalSortElement {
   public : uint32_t mDependencyCount ;
@@ -778,7 +778,7 @@ class cTopologicalSortElement {
   public : cTopologicalSortElement (void) ;
 } ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 cTopologicalSortElement::cTopologicalSortElement (void) :
 mDependencyCount (0),
@@ -787,7 +787,7 @@ mExplorationLink (-1),
 mKey () {
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 static void enterNodes (const cUniqueMapNode * inNode,
                         TC_UniqueArray <cTopologicalSortElement> & ioArray,
@@ -805,7 +805,7 @@ static void enterNodes (const cUniqueMapNode * inNode,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void cSharedUniqueMapRoot::internalTopologicalSort (GALGAS_lstringlist & outSortedNodeKeyList,
                                                     GALGAS_lstringlist & outUnsortedNodeKeyList) const {
@@ -870,7 +870,7 @@ void cSharedUniqueMapRoot::internalTopologicalSort (GALGAS_lstringlist & outSort
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void AC_GALGAS_uniqueMap::method_topologicalSort (GALGAS_lstringlist & outSortedKeys,
                                                   GALGAS_lstringlist & outUnsortedKeys,
@@ -895,13 +895,13 @@ void AC_GALGAS_uniqueMap::method_topologicalSort (GALGAS_lstringlist & outSorted
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Reader edgeGraphvizRepresentation
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String cSharedUniqueMapRoot::edgeGraphvizRepresentation (void) const {
   C_String s ;
@@ -916,7 +916,7 @@ C_String cSharedUniqueMapRoot::edgeGraphvizRepresentation (void) const {
   return s ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_string AC_GALGAS_uniqueMap::getter_edgeGraphvizRepresentation (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
@@ -926,13 +926,13 @@ GALGAS_string AC_GALGAS_uniqueMap::getter_edgeGraphvizRepresentation (UNUSED_LOC
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Reader count
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_uint AC_GALGAS_uniqueMap::getter_count (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
@@ -942,7 +942,7 @@ GALGAS_uint AC_GALGAS_uniqueMap::getter_count (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 uint32_t AC_GALGAS_uniqueMap::count (void) const {
   uint32_t result = 0 ;
@@ -952,13 +952,13 @@ uint32_t AC_GALGAS_uniqueMap::count (void) const {
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Reader "allKeys"
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 static void enterKeyInStringSet (const cUniqueMapNode * inNode,
                                  GALGAS_stringset & ioResult) {
@@ -970,7 +970,7 @@ static void enterKeyInStringSet (const cUniqueMapNode * inNode,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_stringset cSharedUniqueMapRoot::getter_allKeys (LOCATION_ARGS) const {
   GALGAS_stringset result = GALGAS_stringset::constructor_emptySet (THERE) ;
@@ -978,7 +978,7 @@ GALGAS_stringset cSharedUniqueMapRoot::getter_allKeys (LOCATION_ARGS) const {
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_stringset AC_GALGAS_uniqueMap::getter_allKeys (LOCATION_ARGS) const {
   GALGAS_stringset result ;
@@ -988,13 +988,13 @@ GALGAS_stringset AC_GALGAS_uniqueMap::getter_allKeys (LOCATION_ARGS) const {
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Reader "allKeyList"
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 static void enterKeyInLStringList (cUniqueMapNode * inNode,
                                    GALGAS_lstringlist & ioResult) {
@@ -1009,7 +1009,7 @@ static void enterKeyInLStringList (cUniqueMapNode * inNode,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstringlist cSharedUniqueMapRoot::getter_allKeyList (LOCATION_ARGS) const {
   GALGAS_lstringlist result = GALGAS_lstringlist::constructor_emptyList (THERE) ;
@@ -1017,7 +1017,7 @@ GALGAS_lstringlist cSharedUniqueMapRoot::getter_allKeyList (LOCATION_ARGS) const
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstringlist AC_GALGAS_uniqueMap::getter_allKeyList (LOCATION_ARGS) const {
   GALGAS_lstringlist result ;
@@ -1027,13 +1027,13 @@ GALGAS_lstringlist AC_GALGAS_uniqueMap::getter_allKeyList (LOCATION_ARGS) const 
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Reader unsolvedProxyCount
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 static uint32_t unsolvedProxyCountForNode (const cUniqueMapNode * inNode) {
   uint32_t result = 0 ;
@@ -1045,13 +1045,13 @@ static uint32_t unsolvedProxyCountForNode (const cUniqueMapNode * inNode) {
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 uint32_t cSharedUniqueMapRoot::unsolvedProxyCount (void) const {
   return unsolvedProxyCountForNode (mRoot) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_uint AC_GALGAS_uniqueMap::getter_unsolvedProxyCount (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
@@ -1061,13 +1061,13 @@ GALGAS_uint AC_GALGAS_uniqueMap::getter_unsolvedProxyCount (UNUSED_LOCATION_ARGS
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Reader "unsolvedProxyKeyList"
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 static void recursiveUnsolvedKeyList (cUniqueMapNode * inNode,
                                       GALGAS_lstringlist & ioResult) {
@@ -1088,14 +1088,14 @@ static void recursiveUnsolvedKeyList (cUniqueMapNode * inNode,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void cSharedUniqueMapRoot::unsolvedProxyKeyList (GALGAS_lstringlist & ioList) const {
   ioList = GALGAS_lstringlist::constructor_emptyList (HERE) ;
   recursiveUnsolvedKeyList (mRoot, ioList) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstringlist AC_GALGAS_uniqueMap::getter_unsolvedProxyList (UNUSED_LOCATION_ARGS) const {
   GALGAS_lstringlist result ;
@@ -1105,13 +1105,13 @@ GALGAS_lstringlist AC_GALGAS_uniqueMap::getter_unsolvedProxyList (UNUSED_LOCATIO
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Reader locationForKey
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_location cSharedUniqueMapRoot::getter_locationForKey (const GALGAS_string & inKey,
                                                              C_Compiler * inCompiler
@@ -1133,7 +1133,7 @@ GALGAS_location cSharedUniqueMapRoot::getter_locationForKey (const GALGAS_string
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_location AC_GALGAS_uniqueMap::getter_locationForKey (const GALGAS_string & inKey,
                                                             C_Compiler * inCompiler
@@ -1145,13 +1145,13 @@ GALGAS_location AC_GALGAS_uniqueMap::getter_locationForKey (const GALGAS_string 
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Reader hasKey
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_bool cSharedUniqueMapRoot::getter_hasKey (const GALGAS_string & inKey
                                                  COMMA_UNUSED_LOCATION_ARGS) const {
@@ -1164,7 +1164,7 @@ GALGAS_bool cSharedUniqueMapRoot::getter_hasKey (const GALGAS_string & inKey
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_bool AC_GALGAS_uniqueMap::getter_hasKey (const GALGAS_string & inKey
                                                 COMMA_LOCATION_ARGS) const {
@@ -1175,13 +1175,13 @@ GALGAS_bool AC_GALGAS_uniqueMap::getter_hasKey (const GALGAS_string & inKey
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Search
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 static void emitErrorMessageForKey (const GALGAS_lstring & inKey,
                                     C_Compiler * inCompiler,
@@ -1208,10 +1208,10 @@ static void emitErrorMessageForKey (const GALGAS_lstring & inKey,
   }
 //--- Emit error message
   const GALGAS_location key_location = inKey.mAttribute_location ;
-  inCompiler->semanticErrorAtLocation (key_location, message COMMA_THERE) ;
+  inCompiler->semanticErrorAtLocation (key_location, message, TC_Array <C_FixItDescription> () COMMA_THERE) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 static C_String buildIssueMessage (const char * inIssueMessage,
                                    const C_String & inKey) {
@@ -1236,7 +1236,7 @@ static C_String buildIssueMessage (const char * inIssueMessage,
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 static void findNearestKeyForNode (const C_String & inKey,
                                    const cUniqueMapNode * inCurrentNode,
@@ -1258,7 +1258,7 @@ static void findNearestKeyForNode (const C_String & inKey,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void cSharedUniqueMapRoot::findNearestKey (const C_String & inKey,
                                            TC_UniqueArray <C_String> & ioNearestKeyArray) const {
@@ -1270,7 +1270,7 @@ void cSharedUniqueMapRoot::findNearestKey (const C_String & inKey,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void AC_GALGAS_uniqueMap::findNearestKey (const C_String & inKey,
                                           TC_UniqueArray <C_String> & ioNearestKeyArray) const {
@@ -1279,7 +1279,7 @@ void AC_GALGAS_uniqueMap::findNearestKey (const C_String & inKey,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 cUniqueMapNode * cSharedUniqueMapRoot::performSearch (const GALGAS_lstring & inKey,
                                                       C_Compiler * inCompiler,
@@ -1298,7 +1298,7 @@ cUniqueMapNode * cSharedUniqueMapRoot::performSearch (const GALGAS_lstring & inK
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 const cCollectionElement * AC_GALGAS_uniqueMap::performSearch (const GALGAS_lstring & inKey,
                                                                C_Compiler * inCompiler,
@@ -1314,15 +1314,13 @@ const cCollectionElement * AC_GALGAS_uniqueMap::performSearch (const GALGAS_lstr
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 const cCollectionElement * AC_GALGAS_uniqueMap::performSearch (const GALGAS_lstring & inKey,
                                                                C_Compiler * inCompiler,
                                                                const uint32_t inActionIndex,
                                                                const cMapAutomatonTransition inTransitionArray [],
                                                                const uint32_t inAutomatonActionCount,
-                                                               const char * inAutomatonStateNames [],
-                                                               const char * inAutomatonActionNames [],
                                                                #ifndef DO_NOT_GENERATE_CHECKINGS
                                                                  const uint32_t inAutomatonStateCount,
                                                                #endif
@@ -1338,18 +1336,6 @@ const cCollectionElement * AC_GALGAS_uniqueMap::performSearch (const GALGAS_lstr
       MF_Assert (inActionIndex < inAutomatonActionCount, "inActionIndex (%lld) >= inAutomatonActionCount (%lld)", (int64_t) inActionIndex, (int64_t) inAutomatonActionCount) ;
       const cMapAutomatonTransition & transition = inTransitionArray [node->mCurrentState * inAutomatonActionCount + inActionIndex] ;
       // printf ("NODE '%s' : %d -> %d\n", inKey.getter_string (HERE).stringValue ().cString (HERE), node->mCurrentState, transition.mTargetStateIndex) ;
-      const int32_t checkedVariableListEntryCount = inCompiler->checkedVariableListEntryCount () ;
-      for (int32_t i=0 ; i<checkedVariableListEntryCount ; i++) {
-        const C_String variableName = inCompiler->checkedVariableAtIndex (i COMMA_HERE) ;
-        if (variableName == inKey.getter_string (HERE).stringValue ()) {
-          printf ("[traceVariableState '%s' at line %d : %s |- %s -> %s]\n",
-                  variableName.cString (HERE),
-                  inKey.getter_location (HERE).startLocation ().lineNumber (),
-                  inAutomatonStateNames [node->mCurrentState],
-                  inAutomatonActionNames [inActionIndex],
-                  inAutomatonStateNames [transition.mTargetStateIndex]) ;
-        }
-      }
       node->mCurrentState = transition.mTargetStateIndex ;
       MF_Assert (node->mCurrentState < inAutomatonStateCount, "node->mCurrentState (%lld) >= inAutomatonStateCount (%lld)", (int64_t) node->mCurrentState, (int64_t) inAutomatonStateCount) ;
     //--- Issue ?
@@ -1367,7 +1353,7 @@ const cCollectionElement * AC_GALGAS_uniqueMap::performSearch (const GALGAS_lstr
         macroValidSharedObject (node->mAttributes.ptr (), cMapElement) ;
         const GALGAS_location loc = inKey.mAttribute_location ;
         const C_String errorMessage = buildIssueMessage (transition.mIssueMessage, inKey.mAttribute_string.stringValue ()) ;
-        inCompiler->semanticErrorAtLocation (loc, errorMessage COMMA_THERE) ;
+        inCompiler->semanticErrorAtLocation (loc, errorMessage, TC_Array <C_FixItDescription> () COMMA_THERE) ;
         result = NULL ; // All output arguments will not be built
         }
         break ;
@@ -1377,13 +1363,13 @@ const cCollectionElement * AC_GALGAS_uniqueMap::performSearch (const GALGAS_lstr
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark searchForReadingAttribute
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 const cMapElement * cSharedUniqueMapRoot::searchForReadingAttribute (const GALGAS_string & inKey,
                                                                      C_Compiler * inCompiler
@@ -1405,7 +1391,7 @@ const cMapElement * cSharedUniqueMapRoot::searchForReadingAttribute (const GALGA
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 const cMapElement * AC_GALGAS_uniqueMap::searchForReadingAttribute (const GALGAS_string & inKey,
                                                                     C_Compiler * inCompiler
@@ -1417,13 +1403,13 @@ const cMapElement * AC_GALGAS_uniqueMap::searchForReadingAttribute (const GALGAS
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark searchForReadWriteAttribute (string)
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 cMapElement * cSharedUniqueMapRoot::searchForReadWriteAttribute (const GALGAS_string & inKey,
                                                                  C_Compiler * /* inCompiler */
@@ -1440,7 +1426,7 @@ cMapElement * cSharedUniqueMapRoot::searchForReadWriteAttribute (const GALGAS_st
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 cMapElement * AC_GALGAS_uniqueMap::searchForReadWriteAttribute (const GALGAS_string & inKey,
                                                                 C_Compiler * inCompiler
@@ -1452,13 +1438,13 @@ cMapElement * AC_GALGAS_uniqueMap::searchForReadWriteAttribute (const GALGAS_str
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark searchForReadWriteAttribute (lstring)
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 cMapElement * cSharedUniqueMapRoot::searchForReadWriteAttribute (const GALGAS_lstring & inKey,
                                                                  C_Compiler * inCompiler,
@@ -1479,7 +1465,7 @@ cMapElement * cSharedUniqueMapRoot::searchForReadWriteAttribute (const GALGAS_ls
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 cMapElement * AC_GALGAS_uniqueMap::searchForReadWriteAttribute (const GALGAS_lstring & inKey,
                                                                 C_Compiler * inCompiler,
@@ -1492,13 +1478,13 @@ cMapElement * AC_GALGAS_uniqueMap::searchForReadWriteAttribute (const GALGAS_lst
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Object Compare
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cSharedUniqueMapRoot::mapCompare (const cSharedUniqueMapRoot * inOperand) const {
   typeComparisonResult result = kOperandEqual ;
@@ -1527,7 +1513,7 @@ typeComparisonResult cSharedUniqueMapRoot::mapCompare (const cSharedUniqueMapRoo
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult AC_GALGAS_uniqueMap::objectCompare (const AC_GALGAS_uniqueMap & inOperand) const {
   typeComparisonResult result = kOperandNotValid ;
@@ -1537,13 +1523,13 @@ typeComparisonResult AC_GALGAS_uniqueMap::objectCompare (const AC_GALGAS_uniqueM
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Open Override
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 static void recursiveInitializeStateArray (cUniqueMapNode * inNode,
                                            const uint32_t inIndex) {
@@ -1560,7 +1546,7 @@ static void recursiveInitializeStateArray (cUniqueMapNode * inNode,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void cSharedUniqueMapRoot::openOverride (const cBranchOverrideTransformationDescriptor inBranchBehaviourArray [],
                                          const uint32_t inBranchBehaviourArraySize,
@@ -1599,7 +1585,7 @@ void cSharedUniqueMapRoot::openOverride (const cBranchOverrideTransformationDesc
   #endif
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void AC_GALGAS_uniqueMap::openOverride (const cBranchOverrideTransformationDescriptor inBranchBehaviourArray [],
                                         const uint32_t inBranchBehaviourSize,
@@ -1627,13 +1613,13 @@ void AC_GALGAS_uniqueMap::openOverride (const cBranchOverrideTransformationDescr
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark map Open Branch
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 static void recursiveRestoreInitialState (cUniqueMapNode * inNode,
                                           const uint32_t inIndex) {
@@ -1646,7 +1632,7 @@ static void recursiveRestoreInitialState (cUniqueMapNode * inNode,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void cSharedUniqueMapRoot::openBranch (C_Compiler * inCompiler
                                        COMMA_LOCATION_ARGS) {
@@ -1676,7 +1662,7 @@ void cSharedUniqueMapRoot::openBranch (C_Compiler * inCompiler
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void AC_GALGAS_uniqueMap::setter_openBranch (C_Compiler * inCompiler
                                              COMMA_LOCATION_ARGS) {
@@ -1685,13 +1671,13 @@ void AC_GALGAS_uniqueMap::setter_openBranch (C_Compiler * inCompiler
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark map End Branch
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 static void printIssueMessage (C_Compiler * inCompiler,
                                const C_String & inKey,
@@ -1707,14 +1693,14 @@ static void printIssueMessage (C_Compiler * inCompiler,
       break ;
     case kMapAutomatonIssueError : {
       const C_String errorMessage = buildIssueMessage (inIssueMessage, inKey) ;
-      inCompiler->semanticErrorAtLocation (inIssueLocation, errorMessage COMMA_THERE) ;
+      inCompiler->semanticErrorAtLocation (inIssueLocation, errorMessage, TC_Array <C_FixItDescription> () COMMA_THERE) ;
       }
       break ;
     case kMapAutomatonNoIssue : break ;
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 static void recursiveCheckBranchTransition (C_Compiler * inCompiler,
                                             const GALGAS_location & inIssueLocation,
@@ -1796,7 +1782,7 @@ static void recursiveCheckBranchTransition (C_Compiler * inCompiler,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void cSharedUniqueMapRoot::closeBranch (const GALGAS_location & inErrorLocation,
                                         const cMapAutomatonFinalIssue inAutomatonFinalIssueArray [],
@@ -1847,7 +1833,7 @@ void cSharedUniqueMapRoot::closeBranch (const GALGAS_location & inErrorLocation,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void AC_GALGAS_uniqueMap::closeBranch (const GALGAS_location & inErrorLocation,
                                        const cMapAutomatonFinalIssue inAutomatonFinalIssueArray [],
@@ -1866,13 +1852,13 @@ void AC_GALGAS_uniqueMap::closeBranch (const GALGAS_location & inErrorLocation,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark map End Override
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 static void recursiveSetFinalState (cUniqueMapNode * inNode,
                                     const uint32_t inIndex) {
@@ -1884,7 +1870,7 @@ static void recursiveSetFinalState (cUniqueMapNode * inNode,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void cSharedUniqueMapRoot::closeOverride (const GALGAS_location & inErrorLocation,
                                           C_Compiler * inCompiler
@@ -1895,11 +1881,11 @@ void cSharedUniqueMapRoot::closeOverride (const GALGAS_location & inErrorLocatio
     m << "Illegal invocation of 'closeOverride' modifier: the '"
       << mOverrideName
       << "' override is still running" ;
-    inCompiler->semanticErrorAtLocation (inErrorLocation, m COMMA_THERE) ;
+    inCompiler->semanticErrorAtLocation (inErrorLocation, m, TC_Array <C_FixItDescription> () COMMA_THERE) ;
   }else if (mOverridenMap->mBeginBranchCount != mOverridenMap->mEndBranchCount) {
     C_String m ;
     m << "Illegal invocation of 'closeOverride' modifier: openBranch / closeBranch invocations should be balanced" ;
-    inCompiler->semanticErrorAtLocation (inErrorLocation, m COMMA_THERE) ;
+    inCompiler->semanticErrorAtLocation (inErrorLocation, m, TC_Array <C_FixItDescription> () COMMA_THERE) ;
   }
 //--- Decrement level of overriden maps
   macroValidSharedObject (mOverridenMap, cSharedUniqueMapRoot) ;
@@ -1917,7 +1903,7 @@ void cSharedUniqueMapRoot::closeOverride (const GALGAS_location & inErrorLocatio
   #endif
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void AC_GALGAS_uniqueMap::setter_closeOverride (const GALGAS_location & inErrorLocation,
                                                 C_Compiler * inCompiler
@@ -1934,13 +1920,13 @@ void AC_GALGAS_uniqueMap::setter_closeOverride (const GALGAS_location & inErrorL
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark map checkAutomatonStates
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 static void recursiveCheckAutomatonStates (const cUniqueMapNode * inNode,
                                            C_Compiler * inCompiler,
@@ -1964,7 +1950,7 @@ static void recursiveCheckAutomatonStates (const cUniqueMapNode * inNode,
           const C_String errorMessage = buildIssueMessage (issue.mIssueMessage, inNode->mKey) ;
           macroValidSharedObject (inNode->mAttributes.ptr (), cMapElement) ;
           const GALGAS_location loc = ((const cMapElement *) inNode->mAttributes.ptr ())->mAttribute_lkey.mAttribute_location ;
-          inCompiler->semanticErrorAtLocation (loc, errorMessage COMMA_THERE) ;
+          inCompiler->semanticErrorAtLocation (loc, errorMessage, TC_Array <C_FixItDescription> () COMMA_THERE) ;
           }
           break ;
         case kMapAutomatonNoIssue : break ;
@@ -1974,7 +1960,7 @@ static void recursiveCheckAutomatonStates (const cUniqueMapNode * inNode,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void cSharedUniqueMapRoot::checkAutomatonStates (const GALGAS_location & inErrorLocation,
                                                  const cMapAutomatonFinalIssue inAutomatonFinalIssueArray [],
@@ -1983,7 +1969,7 @@ void cSharedUniqueMapRoot::checkAutomatonStates (const GALGAS_location & inError
   recursiveCheckAutomatonStates (mRoot, inCompiler, inErrorLocation, inAutomatonFinalIssueArray COMMA_THERE) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void AC_GALGAS_uniqueMap::checkAutomatonStates (const GALGAS_location & inErrorLocation,
                                                 const cMapAutomatonFinalIssue inAutomatonFinalIssueArray [],
@@ -1994,13 +1980,13 @@ void AC_GALGAS_uniqueMap::checkAutomatonStates (const GALGAS_location & inErrorL
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark map cEnumerator
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 static void enterAscendingEnumeration (cUniqueMapNode * inNode,
                                        capCollectionElementArray & ioEnumerationArray) {
@@ -2013,7 +1999,7 @@ static void enterAscendingEnumeration (cUniqueMapNode * inNode,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 static void enterDescendingEnumeration (cUniqueMapNode * inNode,
                                         capCollectionElementArray & ioEnumerationArray) {
@@ -2026,7 +2012,7 @@ static void enterDescendingEnumeration (cUniqueMapNode * inNode,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void cSharedUniqueMapRoot::populateEnumerationArray (capCollectionElementArray & ioEnumerationArray,
                                                      const typeEnumerationOrder inEnumerationOrder) const {
@@ -2047,7 +2033,7 @@ void cSharedUniqueMapRoot::populateEnumerationArray (capCollectionElementArray &
   MF_Assert (mNodeCount == ioEnumerationArray.count (), "mNodeCount (%lld) != ioEnumerationArray.count () (%lld)", mNodeCount, ioEnumerationArray.count ()) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void AC_GALGAS_uniqueMap::populateEnumerationArray (capCollectionElementArray & ioEnumerationArray,
                                                     const typeEnumerationOrder inEnumerationOrder) const {
@@ -2057,7 +2043,7 @@ void AC_GALGAS_uniqueMap::populateEnumerationArray (capCollectionElementArray & 
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 cSharedProxy::cSharedProxy (cUniqueMapNode * inNode
                             COMMA_LOCATION_ARGS) :
@@ -2067,13 +2053,13 @@ mNode (inNode) {
   inNode->mProxy = this ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 cSharedProxy::~cSharedProxy (void) {
   detachProxy () ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void cSharedProxy::detachProxy (void) {
   if (NULL != mNode) {
@@ -2082,13 +2068,13 @@ void cSharedProxy::detachProxy (void) {
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Map Proxy
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 AC_GALGAS_uniqueMapProxy::AC_GALGAS_uniqueMapProxy (void) :
 AC_GALGAS_root (),
@@ -2096,7 +2082,7 @@ mState (kNotValid),
 mSharedProxy (NULL) {
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 AC_GALGAS_uniqueMapProxy::AC_GALGAS_uniqueMapProxy (const AC_GALGAS_uniqueMapProxy & inSource) :
 AC_GALGAS_root (),
@@ -2105,7 +2091,7 @@ mSharedProxy (NULL) {
   macroAssignSharedObject (mSharedProxy, inSource.mSharedProxy) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 AC_GALGAS_uniqueMapProxy & AC_GALGAS_uniqueMapProxy::operator = (const AC_GALGAS_uniqueMapProxy & inSource) {
   mState = inSource.mState ;
@@ -2113,33 +2099,33 @@ AC_GALGAS_uniqueMapProxy & AC_GALGAS_uniqueMapProxy::operator = (const AC_GALGAS
   return * this ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 AC_GALGAS_uniqueMapProxy::~ AC_GALGAS_uniqueMapProxy (void) {
   drop () ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 bool AC_GALGAS_uniqueMapProxy::isValid (void) const {
   return (kIsNull == mState) || (kIsRegular == mState) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void AC_GALGAS_uniqueMapProxy::drop (void) {
   macroDetachSharedObject (mSharedProxy) ;
   mState = kNotValid ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void AC_GALGAS_uniqueMapProxy::makeNullProxy (LOCATION_ARGS) {
   MF_AssertThere (kNotValid == mState, "invalid state for 'makeNullProxy'", 0, 0) ;
   mState = kIsNull ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void AC_GALGAS_uniqueMapProxy::attachProxyToMapNode (cUniqueMapNode * inMapNode) {
   MF_Assert (kNotValid == mState, "invalid state for 'makeNullProxy'", 0, 0) ;
@@ -2154,7 +2140,7 @@ void AC_GALGAS_uniqueMapProxy::attachProxyToMapNode (cUniqueMapNode * inMapNode)
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_bool AC_GALGAS_uniqueMapProxy::getter_isRegular (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
@@ -2164,7 +2150,7 @@ GALGAS_bool AC_GALGAS_uniqueMapProxy::getter_isRegular (UNUSED_LOCATION_ARGS) co
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_bool AC_GALGAS_uniqueMapProxy::getter_isNull (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
@@ -2174,7 +2160,7 @@ GALGAS_bool AC_GALGAS_uniqueMapProxy::getter_isNull (UNUSED_LOCATION_ARGS) const
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_bool AC_GALGAS_uniqueMapProxy::getter_isSolved (C_Compiler * inCompiler
                                                        COMMA_LOCATION_ARGS) const {
@@ -2198,7 +2184,7 @@ GALGAS_bool AC_GALGAS_uniqueMapProxy::getter_isSolved (C_Compiler * inCompiler
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 const cMapElement * AC_GALGAS_uniqueMapProxy::getAttributeListPointer (C_Compiler * inCompiler,
                                                                        const char * inReaderName
@@ -2224,7 +2210,7 @@ const cMapElement * AC_GALGAS_uniqueMapProxy::getAttributeListPointer (C_Compile
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstring AC_GALGAS_uniqueMapProxy::getter_lkey (C_Compiler * inCompiler
                                                       COMMA_LOCATION_ARGS) const {
@@ -2237,7 +2223,7 @@ GALGAS_lstring AC_GALGAS_uniqueMapProxy::getter_lkey (C_Compiler * inCompiler
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_string AC_GALGAS_uniqueMapProxy::getter_key (C_Compiler * inCompiler
                                                     COMMA_LOCATION_ARGS) const {
@@ -2261,7 +2247,7 @@ GALGAS_string AC_GALGAS_uniqueMapProxy::getter_key (C_Compiler * inCompiler
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_string AC_GALGAS_uniqueMapProxy::getter_identifierRepresentation (C_Compiler * inCompiler
                                                                          COMMA_LOCATION_ARGS) const {
@@ -2285,7 +2271,7 @@ GALGAS_string AC_GALGAS_uniqueMapProxy::getter_identifierRepresentation (C_Compi
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void AC_GALGAS_uniqueMapProxy::description (C_String & ioString,
                                             const int32_t /* inIndentation */) const {
@@ -2316,7 +2302,7 @@ void AC_GALGAS_uniqueMapProxy::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 cUniqueMapNode * AC_GALGAS_uniqueMap::searchEntryInMap (const C_String & inKey) const {
   cUniqueMapNode * result = NULL ;
@@ -2326,7 +2312,7 @@ cUniqueMapNode * AC_GALGAS_uniqueMap::searchEntryInMap (const C_String & inKey) 
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void AC_GALGAS_uniqueMapProxy::internalMakeRegularProxyBySearchingKey (const AC_GALGAS_uniqueMap & inMap,
                                                                        const GALGAS_lstring & inKey,
@@ -2344,7 +2330,7 @@ void AC_GALGAS_uniqueMapProxy::internalMakeRegularProxyBySearchingKey (const AC_
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 static cUniqueMapNode * internalInsertProxy (cUniqueMapNode * & ioRootPtr,
                                              const C_String & inKey,
@@ -2401,7 +2387,7 @@ static cUniqueMapNode * internalInsertProxy (cUniqueMapNode * & ioRootPtr,
   return matchingEntry ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 cUniqueMapNode * cSharedUniqueMapRoot::performInsertProxy (const C_String & inKey,
                                                            const GALGAS_location & inLocation) {
@@ -2409,7 +2395,7 @@ cUniqueMapNode * cSharedUniqueMapRoot::performInsertProxy (const C_String & inKe
   return internalInsertProxy (mRoot, inKey, inLocation, extension) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 cUniqueMapNode * AC_GALGAS_uniqueMap::performInsertProxy (const C_String & inKey,
                                                           const GALGAS_location & inLocation
@@ -2421,7 +2407,7 @@ cUniqueMapNode * AC_GALGAS_uniqueMap::performInsertProxy (const C_String & inKey
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void AC_GALGAS_uniqueMapProxy::internalMakeProxy (AC_GALGAS_uniqueMap & ioMap,
                                                   const GALGAS_lstring & inKey
@@ -2436,7 +2422,7 @@ void AC_GALGAS_uniqueMapProxy::internalMakeProxy (AC_GALGAS_uniqueMap & ioMap,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void AC_GALGAS_uniqueMapProxy::internalMakeProxyFromString (AC_GALGAS_uniqueMap & ioMap,
                                                             const GALGAS_string & inKey
@@ -2451,7 +2437,7 @@ void AC_GALGAS_uniqueMapProxy::internalMakeProxyFromString (AC_GALGAS_uniqueMap 
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult AC_GALGAS_uniqueMapProxy::objectCompare (const AC_GALGAS_uniqueMapProxy & inOperand) const {
   typeComparisonResult result = kOperandNotValid ;
@@ -2477,5 +2463,5 @@ typeComparisonResult AC_GALGAS_uniqueMapProxy::objectCompare (const AC_GALGAS_un
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 

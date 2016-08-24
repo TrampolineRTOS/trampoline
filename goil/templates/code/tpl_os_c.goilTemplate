@@ -30,7 +30,7 @@ end foreach%
 template if exists tpl_os_specific_part
 
 foreach api in APIUSED do
-  foreach cst in exists api::CONST default (emptylist) do%
+  foreach cst in exists api::CONST default (@()) do%
 CONST(% !cst::TYPE %, % !cst::STORAGE %) % !cst::NAME % = % !cst::VALUE %;%
   end foreach
 %
@@ -46,7 +46,7 @@ CONST(% !cst::TYPE %, % !cst::STORAGE %) % !cst::NAME % = % !cst::VALUE %;%
 /*
  * % !exists sc::ACTUAL default(sc::NAME) %
  *
-% ![[[[sc::NAME description] interpretEscape] wrap :70,0] columnPrefixedBy :" * "] %
+% ![[[sc::NAME description] wrap :70,0] columnPrefixedBy :" * "] %
  *%
     if exists sc::ACTUAL then%
  * Note: % !sc::NAME % is provided in tpl_os_% !api::NAME %.c.
@@ -54,7 +54,7 @@ CONST(% !cst::TYPE %, % !cst::STORAGE %) % !cst::NAME % = % !cst::VALUE %;%
  *       % ! sc::ACTUAL % should not be called directly by the application
  *%
     end if
-    foreach arg in exists sc::ARGUMENT default (emptylist) do
+    foreach arg in exists sc::ARGUMENT default (@()) do
       %
 % ![[arg::NAME.":  ".[arg::NAME description] wrap :70,[arg::NAME length]+3] columnPrefixedBy : " * "]
     end foreach

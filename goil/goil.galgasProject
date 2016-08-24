@@ -24,6 +24,7 @@
 #
 #---------------------------------------------------------------------------*
 
+# 3.0.0    Templates parsing/execution uses GTL
 # 2.1.29   Added setBitAtIndex and bitAtIndex methods for int
 # 2.1.28   integers are now bigint in GTL. Uses of embedded GMP library
 # 2.1.27   \", \n and \\ in OIL litteral strings
@@ -38,7 +39,7 @@
 #          string
 # 2.1.20   Added -o and -r options to goil
 
-project (2:1:29) -> "goil" {
+project (3:0:0) -> "goil" {
 
 #  feature libpmAtPath : "../galgas_sources/GALGAS_OUTPUT/libpm" ;
   %makefile-macosx
@@ -52,18 +53,21 @@ project (2:1:29) -> "goil" {
   %LatestMacOS
   %applicationBundleBase : "fr.irccyn.str"
   
-  #
-  # New templates (added by PM)
-  #
-  "galgas-sources/template_semantics.galgas"
-  "galgas-sources/template_scanner.galgas"
-  "galgas-sources/template_expression_parser.galgas"
-  "galgas-sources/template_parser.galgas"
-  "galgas-sources/template_grammar.galgas"
-  "galgas-sources/template_invocation.galgas"
-  "galgas-sources/template_routines.galgas"
-  "galgas-sources/template_functions.galgas"
-#  "galgas-sources/template_instructions.galgas"
+  "galgas-sources/gtl_types.galgas"
+  "galgas-sources/gtl_expressions.galgas"
+  "galgas-sources/gtl_data_types.galgas"
+  "galgas-sources/gtl_scanner.galgas"
+  "galgas-sources/gtl_parser.galgas"
+  "galgas-sources/gtl_instruction_parser.galgas"
+  "galgas-sources/gtl_module.galgas"
+  "galgas-sources/gtl_module_parser.galgas"
+  "galgas-sources/gtl_module_grammar.galgas"
+  "galgas-sources/gtl_expression_parser.galgas"
+  "galgas-sources/gtl_instructions.galgas"
+  "galgas-sources/gtl_grammar.galgas"
+  "galgas-sources/gtl_functions.galgas"
+  "galgas-sources/gtl_options.galgas"
+
 
   "galgas-sources/goil_lexique.galgas"
   "galgas-sources/goil_options.galgas"

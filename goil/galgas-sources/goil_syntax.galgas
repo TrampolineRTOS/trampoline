@@ -94,7 +94,7 @@ rule <start> {
     verifyAll ( !imp !application)
   end
   if @uint. errorCount == 0 then
-    @TfieldMap templateData = [application templateData !imp]
+    @gtlData templateData = [application templateData !imp]
 #    addStringValue !?templateData !lstringWith[!"PROJECT"] ![projectName[] lastPathComponent];
 
     generate_all ( !templateData)

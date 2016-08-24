@@ -16,13 +16,13 @@ volatile VAR(uint32, OS_VAR) tpl_time_counter = 0;
 # Target specific initializations
 # build the maps for IRQ
 #
-let objForIRQ := emptymap
+let objForIRQ := @[]
 
 # Map ISR into objForIRQ
 foreach isr in ISR do
   let key := isr::SOURCE
   if not exists objForIRQ[key] then
-    let objForIRQ[key] := emptylist
+    let objForIRQ[key] := @()
   end if
   let isr::KIND := "ISR"
   let objForIRQ[key] += isr
@@ -32,7 +32,7 @@ end foreach
 foreach cnt in COUNTER do
   let key := cnt::SOURCE
   if not exists objForIRQ[key] then
-    let objForIRQ[key] := emptylist
+    let objForIRQ[key] := @()
   end if
   let cnt::KIND := "COUNTER"
   let objForIRQ[key] += cnt
@@ -41,14 +41,14 @@ end foreach
 let INTERRUPTMAP := mapof INTERRUPT by NAME
 
 # Build the list of counters to call
-let counterForIRQ := emptymap
+let counterForIRQ := @[]
 
 # Build a list of virtual objects (counters) each of them holding values :
 # handlerSource, handlerName, handlerAck, generatePrimaryIrq
 foreach objList in objForIRQ do
   foreach obj in objList do
     if obj::KIND == "COUNTER" then
-      let counterForIRQ[KEY] := emptylist
+      let counterForIRQ[KEY] := @()
     end if
   end foreach
   foreach obj in objList do
@@ -66,7 +66,7 @@ FUNC(tpl_bool, OS_CODE) tpl_tick_% !KEY %(void)
 {
 %
   foreach obj in objCounter do
-  %  tpl_counter_tick(&% !obj::VALUE %_counter_desc);
+  %  tpl_counter_tick(&% !obj %_counter_desc);
 %
   end foreach
   if obj_KEY == "SysTick" then

@@ -1,0 +1,390 @@
+#-----------------------------------------------------------------------------*
+#
+#  @file gtl_module_parser.galgas
+#
+#  @section desc File description
+#
+#  Parsing of GTL modules.
+#
+#  @section copyright Copyright
+#
+#  Goil OIL compiler, part of Trampoline RTOS
+#
+#  Trampoline is copyright (c) CNRS, University of Nantes,
+#  Ecole Centrale de Nantes
+#  Trampoline is protected by the French intellectual property law.
+#
+#  This software is distributed under the GNU Public Licence V2.
+#  Check the LICENSE file in the root directory of Trampoline
+#
+#  $Date$
+#  $Rev$
+#  $Author$
+#  $URL$
+#
+#-----------------------------------------------------------------------------*
+
+syntax gtl_module_parser (gtl_scanner) {
+
+rule <gtl_expression>
+  !@gtlExpression expression
+
+rule <gtl_simple_instruction>
+  !@gtlInstruction instruction
+
+rule <gtl_import>
+  ?@gtlContext context
+  ?!@library lib 
+
+rule <gtl_argument_list>
+  !@gtlArgumentList arguments
+
+#-----------------------------------------------------------------------------*
+# Instruction list in a setter, getter or function or any control instruction
+#-----------------------------------------------------------------------------*
+rule <gtl_instruction_list>
+  !@gtlInstructionList instructionList
+{
+  instructionList = .emptyList
+
+  repeat
+  while
+    <gtl_instruction> ?@gtlInstruction instruction
+    instructionList += !instruction
+    @string templateString = @string.retrieveAndResetTemplateString
+    if templateString != "" then
+      instructionList +=
+        !@gtlTemplateStringInstruction.new{ !.here !templateString }
+    end
+  while
+    <gtl_simple_instruction> ?@gtlInstruction instruction
+    instructionList += !instruction
+    @string templateString = @string.retrieveAndResetTemplateString
+    if templateString != "" then
+      instructionList +=
+        !@gtlTemplateStringInstruction.new{ !.here !templateString }
+    end
+  end
+}
+
+#-----------------------------------------------------------------------------*
+# Start symbol of a module
+#-----------------------------------------------------------------------------*
+rule <gtl_module_start_symbol>
+  ?@gtlContext context
+  ?!@library lib
+{
+  repeat
+  while
+    <gtl_import> !context !?lib
+  end
+
+  repeat
+  while
+    <gtl_function> ?@gtlFunction aFunction
+    [!?lib putFunction ![aFunction name] !aFunction]
+  while
+    <gtl_getter> ?@gtlGetter aGetter
+    [!?lib putGetter ![aGetter typedName] !aGetter]
+  while
+    <gtl_setter> ?@gtlSetter aSetter
+    [!?lib putSetter ![aSetter typedName] !aSetter]
+  end
+}
+
+#-----------------------------------------------------------------------------*
+# function definition
+#-----------------------------------------------------------------------------*
+rule <gtl_function>
+  !@gtlFunction function
+{
+  $func$
+  $identifier$ ?let @lstring functionName
+  @location where = .here
+  <gtl_argument_list> ?@gtlArgumentList arguments
+  $identifier$ ?let @lstring returnVariable
+  <gtl_instruction_list> ?let @gtlInstructionList instructionList
+  $end$ $func$
+  
+  function = .new {
+    !where !functionName !arguments !instructionList !returnVariable
+  }
+}
+
+#-----------------------------------------------------------------------------*
+# getter definition
+#-----------------------------------------------------------------------------*
+rule <gtl_getter>
+  !@gtlGetter aGetter
+{
+  $getter$
+  $@$ $identifier$ ?let @lstring targetType
+  $identifier$ ?let @lstring getterName
+  @location where = .here
+  <gtl_argument_list> ?@gtlArgumentList arguments
+  $identifier$ ?let @lstring returnVariable
+  <gtl_instruction_list> ?let @gtlInstructionList instructionList
+  $end$ $getter$
+  
+  aGetter = .new {
+    !where
+    !getterName
+    !arguments
+    !instructionList
+    !returnVariable
+    ![targetType gtlType]
+  }
+}
+
+#-----------------------------------------------------------------------------*
+# setter definition
+#-----------------------------------------------------------------------------*
+rule <gtl_setter>
+  !@gtlSetter aSetter
+{
+  $setter$
+  $@$ $identifier$ ?let @lstring targetType
+  $identifier$ ?let @lstring getterName
+  @location where = .here
+  <gtl_argument_list> ?@gtlArgumentList arguments
+  <gtl_instruction_list> ?let @gtlInstructionList instructionList
+  $end$ $setter$
+  
+  aSetter = .new {
+    !where
+    !getterName
+    !arguments
+    !instructionList
+    ![targetType gtlType]
+  }
+}
+
+#-----------------------------------------------------------------------------*
+# if ... elsif ... else ... end if instruction in a module
+#-----------------------------------------------------------------------------*
+rule <gtl_instruction>
+  !@gtlInstruction instruction
+{
+  @gtlThenElsifStatementList thenElsifList = .emptyList
+  @gtlInstructionList elseList = .emptyList
+  
+  $if$ @location where = .here
+  repeat
+    <gtl_expression> ?@gtlExpression condition
+    $then$
+    <gtl_instruction_list> ?@gtlInstructionList instructionList
+    
+    thenElsifList += !condition !instructionList
+  while
+    $elsif$
+  end
+#--- else
+  select
+    $else$
+    <gtl_instruction_list> ?elseList
+  or end
+#---
+  $end$
+  $if$
+  
+  instruction = @gtlIfStatementInstruction.new {
+    !where !thenElsifList !elseList
+  }
+}
+
+#-----------------------------------------------------------------------------*
+# foreach instruction in a module
+#-----------------------------------------------------------------------------*
+rule <gtl_instruction>
+  !@gtlInstruction instruction
+{
+  @gtlInstructionList beforeList = .emptyList
+  @gtlInstructionList doList = .emptyList
+  @gtlInstructionList betweenList = .emptyList
+  @gtlInstructionList afterList = .emptyList
+  @lstring indexName
+  @lstring variableName
+
+  $foreach$ @location where = .here
+  $identifier$ ?var @lstring keyName
+  select
+    $,$ $identifier$ ?variableName
+  or
+    variableName = keyName
+    keyName = .new { !"" !where }
+  end
+  select
+    $($ $identifier$ ?indexName $)$
+  or
+    indexName = .new { !"INDEX" !.here }
+  end
+  $in$
+  <gtl_expression> ?@gtlExpression iterable
+#--- before block
+  select
+    $before$
+    <gtl_instruction_list> ?beforeList
+  or end
+#--- do block
+  $do$
+  <gtl_instruction_list> ?doList
+#--- between block
+  select
+    $between$
+    <gtl_instruction_list> ?betweenList
+  or end
+#--- after block
+  select
+    $after$
+    <gtl_instruction_list> ?afterList
+  or end
+#---
+  $end$
+  $foreach$
+  
+  instruction = @gtlForeachStatementInstruction.new {
+    !where
+    !keyName
+    !variableName 
+    !indexName 
+    !iterable 
+    !beforeList 
+    !betweenList
+    !afterList
+    !doList
+  }
+}
+
+#-----------------------------------------------------------------------------*
+# for instruction in a module
+#-----------------------------------------------------------------------------*
+rule <gtl_instruction>
+  !@gtlInstruction instruction
+{
+  @gtlInstructionList doList = .emptyList
+  @gtlInstructionList betweenList = .emptyList
+  @gtlExpressionList  iterable = .emptyList 
+
+  $for$ @location where = .here
+  if [option gtl_options.warnDeprecated value] then
+    warning .here : "for var in expression, ..., expression is deprecated"
+      fixit { replace "foreach var in @( expression, ..., expression )" }
+  end
+  $identifier$ ?let @lstring variableName
+  $in$
+  repeat
+    <gtl_expression> ?@gtlExpression expression
+    iterable += !expression
+  while
+    $,$
+  end
+#--- Do block
+  $do$
+  <gtl_instruction_list> ?doList
+#--- between block
+  select
+    $between$
+    <gtl_instruction_list> ?betweenList
+  or end
+#---
+  $end$
+  $for$
+  
+  instruction = @gtlForStatementInstruction.new {
+    !where !variableName !iterable !betweenList !doList
+  }
+}
+
+#-----------------------------------------------------------------------------*
+# loop instruction in a module
+#-----------------------------------------------------------------------------*
+rule <gtl_instruction>
+  !@gtlInstruction instruction
+{
+  @gtlInstructionList beforeList = .emptyList
+  @gtlInstructionList betweenList = .emptyList
+  @gtlInstructionList afterList = .emptyList
+  @sint64 direction = 1LS
+  
+  $loop$ @location where = .here
+
+  @gtlExpression step = @gtlTerminal.new {
+    !where !@gtlInt.new { !where !emptylstring() !1_G }
+  }
+
+  $identifier$ ?var  @lstring variableName
+  $from$
+  <gtl_expression> ?@gtlExpression start
+  select
+  or
+    $up$
+  or
+    $down$ direction = -1LS
+  end
+  $to$
+  <gtl_expression>  ?@gtlExpression stop
+  select
+    $step$
+    <gtl_expression> ?step
+  or end
+#--- before block
+  select
+    $before$
+    <gtl_instruction_list> ?beforeList
+  or end
+#--- do block
+  $do$
+  <gtl_instruction_list> ?@gtlInstructionList doList
+#--- between block
+  select
+    $between$
+    <gtl_instruction_list> ?betweenList
+  or end
+#--- after block
+  select
+    $after$
+    <gtl_instruction_list> ?afterList
+  or end
+#---
+  $end$
+  $loop$
+  
+  instruction = @gtlLoopStatementInstruction.new {
+    !where !variableName !start !stop !step !direction
+    !beforeList !betweenList !afterList !doList
+  }
+}
+
+#-----------------------------------------------------------------------------*
+# repat instruction in a module
+#-----------------------------------------------------------------------------*
+rule <gtl_instruction>
+  !@gtlInstruction instruction
+{
+  @gtlExpression limit
+  
+  $repeat$ @location where = .here
+  select
+    $($
+    <gtl_expression> ?limit
+    $)$
+  or
+    limit = @gtlTerminal.new {
+      !.here
+      !@gtlInt.new{ !.here !emptylstring() ![@uint.max{} bigint] }
+    }
+  end
+  <gtl_instruction_list> ?@gtlInstructionList continueList
+  $while$
+  <gtl_expression> ?@gtlExpression condition
+  $do$
+  <gtl_instruction_list> ?@gtlInstructionList doList
+  $end$
+  $repeat$
+  
+  instruction = @gtlRepeatStatementInstruction.new {
+    !where !limit !condition !continueList !doList
+  }
+}
+
+}

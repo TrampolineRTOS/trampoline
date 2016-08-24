@@ -26,9 +26,9 @@
 #
 
 # Verify a subgoal is not used in more than one goal
-let usedGoal := emptymap
-foreach pb in exists POSTBUILD default(emptylist) do
-  foreach cmd in exists pb::COMMAND default (emptylist) do
+let usedGoal := @[]
+foreach pb in exists POSTBUILD default( @() ) do
+  foreach cmd in exists pb::COMMAND default ( @() ) do
     if exists pb::SUBGOAL then
       if pb::SUBGOAL == true then
         if exists usedGoal[pb::NAME] then
@@ -128,9 +128,9 @@ if [IOC length] > 0 then
 %
 sourceList.append("% !PROJECT %/tpl_ioc_api_config.c")%
 end if
-foreach platform in exists GENERATED_FILES default (emptylist) do
-  if not exists platform::CFILE then let platform::CFILE := emptylist end if
-  if not exists platform::ASFILE then let platform::ASFILE := emptylist end if
+foreach platform in exists GENERATED_FILES default ( @() ) do
+  if not exists platform::CFILE then let platform::CFILE := @() end if
+  if not exists platform::ASFILE then let platform::ASFILE := @() end if
   foreach file in platform::CFILE do
 %
 sourceList.append("% !PROJECT."/".file::VALUE %")%

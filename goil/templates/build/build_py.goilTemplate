@@ -26,20 +26,20 @@
 #
 
 if not exists OS::BUILD_S::CFLAGS then
-  let OS::BUILD_S::CFLAGS := emptylist
+  let OS::BUILD_S::CFLAGS := @()
 end if
 
 if not exists OS::BUILD_S::ASFLAGS then
-  let OS::BUILD_S::ASFLAGS := emptylist
+  let OS::BUILD_S::ASFLAGS := @()
 end if
 
 if not exists OS::BUILD_S::LDFLAGS then
-  let OS::BUILD_S::LDFLAGS := emptylist
+  let OS::BUILD_S::LDFLAGS := @()
 end if
 
-let postgoals := emptymap
+let postgoals := @[]
 if exists POSTBUILD then
-  let postgoals := mapof exists POSTBUILD default (emptylist) by NAME
+  let postgoals := mapof exists POSTBUILD default ( @() ) by NAME
 end if
 
 %#! /usr/bin/env python
@@ -117,44 +117,44 @@ cflags = []
 cppflags = []
 ldflags = []
 asflags = []%
-foreach optionSet in exists BUILDOPTIONS default (emptylist) do
-  foreach flags in exists optionSet::CFLAGS default (emptylist) do
+foreach optionSet in exists BUILDOPTIONS default ( @() ) do
+  foreach flags in exists optionSet::CFLAGS default ( @() ) do
     %
 cflags += "% !flags::VALUE %".split()%
   end foreach
 end foreach
-foreach flags in exists OS::BUILD_S::CFLAGS default (emptylist) do
+foreach flags in exists OS::BUILD_S::CFLAGS default ( @() ) do
   %
 cflags += "% !flags::VALUE %".split()%
 end foreach
-foreach optionSet in exists BUILDOPTIONS default (emptylist) do
-  foreach flags in exists optionSet::CPPFLAGS default (emptylist) do
+foreach optionSet in exists BUILDOPTIONS default ( @() ) do
+  foreach flags in exists optionSet::CPPFLAGS default ( @() ) do
   %
 cppflags += "% !flags::VALUE %".split()%
   end foreach
 end foreach
-foreach flags in exists OS::BUILD_S::CPPFLAGS default (emptylist) do
+foreach flags in exists OS::BUILD_S::CPPFLAGS default ( @() ) do
   %
 cppflags += "% !flags::VALUE %".split()%
 end foreach
-foreach optionSet in exists BUILDOPTIONS default (emptylist) do
-  foreach flags in exists optionSet::COMMONFLAGS default (emptylist) do
+foreach optionSet in exists BUILDOPTIONS default ( @() ) do
+  foreach flags in exists optionSet::COMMONFLAGS default ( @() ) do
   %
 cflags += "% !flags::VALUE %".split()
 cppflags += "% !flags::VALUE %".split()%
   end foreach
 end foreach
-foreach flags in exists OS::BUILD_S::COMMONFLAGS default (emptylist) do
+foreach flags in exists OS::BUILD_S::COMMONFLAGS default ( @() ) do
   %
 cflags += "% !flags::VALUE %".split()
 cppflags += "% !flags::VALUE %".split()%
 end foreach
 let MACHINESPATH := OS::BUILD_S::TRAMPOLINE_BASE_PATH."/machines"
-foreach platform in exists PLATFORM_FILES default (emptylist) do%
+foreach platform in exists PLATFORM_FILES default ( @() ) do%
 cflags += ["-I","% !MACHINESPATH . "/" . platform::PATH %"]
 cppflags += ["-I","% !MACHINESPATH . "/" . platform::PATH %"]%
 end foreach
-foreach library in exists USEDLIB default (emptylist) do%
+foreach library in exists USEDLIB default ( @() ) do%
 cflags += ["-I","% !MACHINESPATH . "/" . library::PATH %"]
 cppflags += ["-I","% !MACHINESPATH . "/" . library::PATH %"]%
 end foreach
@@ -168,8 +168,8 @@ cflags += ["-I", "% !PROJECT %"]
 cppflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/os"]
 cppflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/debug"]
 cppflags += ["-I", "% !PROJECT %"]%
-foreach optionSet in exists BUILDOPTIONS default (emptylist) do
-  foreach flags in exists optionSet::LDFLAGS default (emptylist) do
+foreach optionSet in exists BUILDOPTIONS default ( @() ) do
+  foreach flags in exists optionSet::LDFLAGS default ( @() ) do
   %
 ldflags += "% !flags::VALUE %".split()%
   end foreach
@@ -182,8 +182,8 @@ if exists OS::MEMMAP_S::LINKER then
 %
 ldflags += ["-T", "% !PROJECT %/% !OS::MEMMAP_S::LINKER_S::SCRIPT %"]%
 end if
-foreach optionSet in exists BUILDOPTIONS default (emptylist) do
-  foreach flags in exists optionSet::ASFLAGS default (emptylist) do
+foreach optionSet in exists BUILDOPTIONS default ( @() ) do
+  foreach flags in exists optionSet::ASFLAGS default ( @() ) do
   %
 asflags += "% !flags::VALUE %".split()%
   end foreach
@@ -267,7 +267,7 @@ cSourceList.append(projfile.ProjectFile("% !path.file::VALUE %", trampoline_base
   end foreach
 end if
 
-foreach module in exists OS::KERNEL_MODULE default (emptylist)
+foreach module in exists OS::KERNEL_MODULE default ( @() )
 do
   if exists KERNEL_MAP[module::VALUE] then
     if module::VALUE != "osek_kernel" &
@@ -296,7 +296,7 @@ cSourceList.append(projfile.ProjectFile("% !service_set::DIRECTORY."/".file::VAL
   end foreach
 end foreach
 
-foreach src in exists OS::BUILD_S::APP_SRC default (emptylist)
+foreach src in exists OS::BUILD_S::APP_SRC default ( @() )
 before
 %
 
@@ -305,7 +305,7 @@ do
 %
 cSourceList.append(projfile.ProjectFile("% !src::VALUE %"))%
 end foreach
-foreach src in exists OS::BUILD_S::APP_CPPSRC default (emptylist)
+foreach src in exists OS::BUILD_S::APP_CPPSRC default ( @() )
 before
 %
 
@@ -335,9 +335,9 @@ if [IOC length] > 0 then
 %
 cSourceList.append(projfile.ProjectFile("% !PROJECT %/tpl_ioc_api_config.c"))%
 end if
-foreach platform in exists GENERATED_FILES default (emptylist) do
-  if not exists platform::CFILE then let platform::CFILE := emptylist end if
-  if not exists platform::ASFILE then let platform::ASFILE := emptylist end if
+foreach platform in exists GENERATED_FILES default ( @() ) do
+  if not exists platform::CFILE then let platform::CFILE := @() end if
+  if not exists platform::ASFILE then let platform::ASFILE := @() end if
   foreach file in platform::CFILE do
 %
 cSourceList.append(projfile.ProjectFile("% !PROJECT."/".file::VALUE %"))%
@@ -347,10 +347,10 @@ cSourceList.append(projfile.ProjectFile("% !PROJECT."/".file::VALUE %"))%
 sSourceList.append(projfile.ProjectFile("% !PROJECT."/".file::VALUE %"))%
   end foreach
 end foreach
-foreach platform in exists PLATFORM_FILES default (emptylist) do
-  if not exists platform::CFILE then let platform::CFILE := emptylist end if
-  if not exists platform::CPPFILE then let platform::CPPFILE := emptylist end if
-  if not exists platform::ASFILE then let platform::ASFILE := emptylist end if
+foreach platform in exists PLATFORM_FILES default ( @() ) do
+  if not exists platform::CFILE then let platform::CFILE := @() end if
+  if not exists platform::CPPFILE then let platform::CPPFILE := @() end if
+  if not exists platform::ASFILE then let platform::ASFILE := @() end if
   foreach file in platform::CFILE do
 %
 cSourceList.append(projfile.ProjectFile("% !"machines/".platform::PATH."/".file::VALUE %", trampoline_base_path))%
@@ -366,10 +366,10 @@ sSourceList.append(projfile.ProjectFile("% !"machines/".platform::PATH."/".file:
 end foreach
 
 # add the libraries
-foreach library in exists USEDLIB default (emptylist) do
-  if not exists library::CFILE then let library::CFILE := emptylist end if
-  if not exists library::CPPFILE then let library::CPPFILE := emptylist end if
-  if not exists library::ASFILE then let library::ASFILE := emptylist end if
+foreach library in exists USEDLIB default ( @() ) do
+  if not exists library::CFILE then let library::CFILE := @() end if
+  if not exists library::CPPFILE then let library::CPPFILE := @() end if
+  if not exists library::ASFILE then let library::ASFILE := @() end if
   foreach file in library::CFILE do
 %
 cSourceList.append(projfile.ProjectFile("% !"machines/".library::PATH."/".file::VALUE %", trampoline_base_path))%
@@ -488,7 +488,7 @@ make.addRule (rule)
 make.addGoal("all", [product], "Building all")
 make.addGoal("compile", objectList, "Compile source files")
 %
-foreach goal in exists GOAL default(emptylist) do
+foreach goal in exists GOAL default( @() ) do
 %
 rule = makefile.Rule([], "% !goal::MESSAGE %")
 depList = []%
@@ -516,7 +516,7 @@ end foreach
 
 make.runGoal(maxParallelJobs, maxParallelJobs == 1)
 %
-foreach pc in exists POSTCOMMAND default (emptylist)
+foreach pc in exists POSTCOMMAND default ( @() )
   before%
 #----------------------------------------------------------------------
 #--- post commands
@@ -526,7 +526,7 @@ if make.errorCount() == 0:%
   if askedGoal == "% !pc::NAME %" :%
   foreach cmd in pc::COMMAND do
     let commandLine := cmd::COMMAND . " "
-    foreach opt in exists cmd::PREOPTION default (emptylist) do
+    foreach opt in exists cmd::PREOPTION default ( @() ) do
       let commandLine := commandLine . opt::VALUE . " "
     end foreach
     if exists cmd::INPUT then
@@ -539,7 +539,7 @@ if make.errorCount() == 0:%
     if exists cmd::OUTPUT then
       let commandLine := commandLine . OUTPUT . " "
     end if
-    foreach opt in exists cmd::POSTOPTION default (emptylist) do
+    foreach opt in exists cmd::POSTOPTION default ( @() ) do
       let commandLine := commandLine . opt::VALUE . " "
     end foreach%
     if makefile.find_executable("% !cmd::COMMAND %") != None:

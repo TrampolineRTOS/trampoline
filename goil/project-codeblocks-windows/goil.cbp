@@ -67,11 +67,16 @@
   <Unit filename="../build/libpm/all-libpm.cpp" />
   <Unit filename="../build/libpm/galgas2/all-galgas.cpp" />
   <Unit filename="../build/libpm/galgas2/C_galgas_quiet_option.cpp" />
+  <Unit filename="../build/output/all-declarations-8.cpp" />
+  <Unit filename="../build/output/all-declarations-7.cpp" />
+  <Unit filename="../build/output/all-declarations-6.cpp" />
+  <Unit filename="../build/output/all-declarations-5.cpp" />
   <Unit filename="../build/output/all-declarations-4.cpp" />
   <Unit filename="../build/output/all-declarations-3.cpp" />
   <Unit filename="../build/output/all-declarations-2.cpp" />
   <Unit filename="../build/output/all-declarations-1.cpp" />
   <Unit filename="../build/output/all-declarations-0.cpp" />
+  <Unit filename="../build/output/all-predefined-types.cpp" />
 
   <Unit filename="../build/libpm/gmp/32-mp_bases.c" />
   <Unit filename="../build/libpm/gmp/64-mp_bases.c" />

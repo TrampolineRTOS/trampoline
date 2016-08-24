@@ -1,0 +1,307 @@
+#-----------------------------------------------------------------------------*
+#
+#  @file gtl_instruction_parser.galgas
+#
+#  @section desc File description
+#
+#  Parsing of GTL.
+#
+#  @section copyright Copyright
+#
+#  Goil OIL compiler, part of Trampoline RTOS
+#
+#  Trampoline is copyright (c) CNRS, University of Nantes,
+#  Ecole Centrale de Nantes
+#  Trampoline is protected by the French intellectual property law.
+#
+#  This software is distributed under the GNU Public Licence V2.
+#  Check the LICENSE file in the root directory of Trampoline
+#
+#  $Date$
+#  $Rev$
+#  $Author$
+#  $URL$
+#
+#-----------------------------------------------------------------------------*
+
+syntax gtl_instruction_parser (gtl_scanner) {
+
+rule <gtl_expression>
+  !@gtlExpression expression
+
+rule <gtl_variable>
+  !@gtlVarPath path
+
+rule <gtl_variable_or_here>
+  !@gtlVarPath variable
+  !@bool hereInstead
+
+#-----------------------------------------------------------------------------*
+rule <gtl_simple_instruction>
+  !@gtlInstruction instruction
+{
+  $let$ @location where = .here
+  <gtl_variable> ?@gtlVarPath variable
+  select
+    $:=$
+    <gtl_expression> ?@gtlExpression expression
+    instruction = @gtlLetInstruction.new { !where !variable !expression} 
+  or
+    $+=$
+    <gtl_expression> ?@gtlExpression expression
+    instruction = @gtlLetAddInstruction.new { !where !variable !expression} 
+  or
+    $-=$
+    <gtl_expression> ?@gtlExpression expression
+    instruction = @gtlLetSubstractInstruction.new { !where !variable !expression} 
+  or
+    $*=$
+    <gtl_expression> ?@gtlExpression expression
+    instruction = @gtlLetMultiplyInstruction.new { !where !variable !expression} 
+  or
+    $/=$
+    <gtl_expression> ?@gtlExpression expression
+    instruction = @gtlLetDivideInstruction.new { !where !variable !expression} 
+  or
+    $mod=$
+    <gtl_expression> ?@gtlExpression expression
+    instruction = @gtlLetModuloInstruction.new { !where !variable !expression} 
+  or
+    $<<=$
+    <gtl_expression> ?@gtlExpression expression
+    instruction = @gtlLetShiftLeftInstruction.new { !where !variable !expression} 
+  or
+    $>>=$
+    <gtl_expression> ?@gtlExpression expression
+    instruction = @gtlLetShiftRightInstruction.new { !where !variable !expression} 
+  or
+    $&=$
+    <gtl_expression> ?@gtlExpression expression
+    instruction = @gtlLetAndInstruction.new { !where !variable !expression} 
+  or
+    $|=$
+    <gtl_expression> ?@gtlExpression expression
+    instruction = @gtlLetOrInstruction.new { !where !variable !expression} 
+  or
+    $^=$
+    <gtl_expression> ?@gtlExpression expression
+    instruction = @gtlLetXorInstruction.new { !where !variable !expression}
+  or
+    instruction = @gtlLetUnconstructedInstruction.new { !where !variable }
+  end
+}
+
+#-----------------------------------------------------------------------------*
+rule <gtl_simple_instruction>
+  !@gtlInstruction instruction
+{
+  $unlet$ @location where = .here
+  <gtl_variable> ?@gtlVarPath variable
+  instruction = @gtlUnletInstruction.new { !where !variable }
+}
+
+#-----------------------------------------------------------------------------*
+rule <gtl_simple_instruction>
+  !@gtlInstruction instruction
+{
+  $error$ @location where = .here
+  <gtl_variable_or_here> ?@gtlVarPath variable ?@bool hereInstead
+  $:$
+  <gtl_expression> ?@gtlExpression expression
+
+  instruction = @gtlErrorStatementInstruction.new {
+    !where !variable !hereInstead !expression
+  }
+}
+
+#-----------------------------------------------------------------------------*
+rule <gtl_simple_instruction>
+  !@gtlInstruction instruction
+{
+  $warning$ @location where = .here
+  <gtl_variable_or_here> ?@gtlVarPath variable ?@bool hereInstead
+  $:$
+  <gtl_expression> ?@gtlExpression expression
+
+  instruction = @gtlWarningStatementInstruction.new {
+    !where !variable !hereInstead !expression
+  }
+}
+
+#-----------------------------------------------------------------------------*
+rule <gtl_simple_instruction>
+  !@gtlInstruction instruction
+{
+  $print$ @location where = .here
+  <gtl_expression> ?@gtlExpression expression
+
+  instruction = @gtlPrintStatementInstruction.new {
+    !where !false !expression
+  }
+}
+
+#-----------------------------------------------------------------------------*
+rule <gtl_simple_instruction>
+  !@gtlInstruction instruction
+{
+  $println$ @location where = .here
+  select
+    <gtl_expression> ?@gtlExpression expression
+    instruction = @gtlPrintStatementInstruction.new {
+      !where !true !expression
+    }
+  or
+    instruction = @gtlPrintStatementInstruction.new {
+      !where
+      !true 
+      !@gtlTerminal.new { !where !@gtlString.new { !where !emptylstring() !"" } }
+    }    
+  end
+}
+
+#-----------------------------------------------------------------------------*
+rule <gtl_simple_instruction>
+  !@gtlInstruction instruction
+{
+  $display$ @location where = .here
+  <gtl_variable> ?@gtlVarPath variable
+
+  instruction = @gtlDisplayStatementInstruction.new {
+    !where !variable
+  }
+}
+
+#-----------------------------------------------------------------------------*
+rule <gtl_simple_instruction>
+  !@gtlInstruction instruction
+{
+  $sort$ @location where = .here
+  <gtl_variable> ?@gtlVarPath variable
+  select
+    @sortingKeyList sortList = .emptyList
+    $by$
+    repeat
+      $identifier$ ?let @lstring key
+      <gtl_sorting_order> ?@lsint order
+      sortList += !key !order
+    while $,$ end
+    
+    instruction = @gtlSortStatementStructInstruction.new {
+      !where !variable !sortList
+    }    
+  or
+    <gtl_sorting_order> ?@lsint order
+    
+    instruction = @gtlSortStatementInstruction.new {
+      !where !variable !order
+    }
+  end
+}
+
+#-----------------------------------------------------------------------------*
+rule <gtl_simple_instruction>
+  !@gtlInstruction instruction
+{
+  $tab$ @location where = .here
+  <gtl_expression> ?@gtlExpression expression
+  
+  instruction = @gtlTabStatementInstruction.new {
+    !where !expression
+  }  
+}
+
+#-----------------------------------------------------------------------------*
+rule <gtl_simple_instruction>
+  !@gtlInstruction instruction
+{
+  $variables$ @location where = .here
+  instruction = @gtlVariablesInstruction.new { !where }
+}
+
+#-----------------------------------------------------------------------------*
+rule <gtl_simple_instruction>
+  !@gtlInstruction instruction
+{
+  $libraries$ @location where = .here
+  instruction = @gtlLibrariesInstruction.new { !where }
+}
+
+#-----------------------------------------------------------------------------*
+rule <gtl_simple_instruction>
+  !@gtlInstruction instruction
+{
+  $[!$
+  <gtl_variable> ?@gtlVarPath target
+  $identifier$ ?let @lstring setterName
+  @gtlExpressionList argumentList = .emptyList
+  select
+  or
+    $:$
+    repeat
+      <gtl_expression> ?@gtlExpression argument
+      argumentList += !argument
+    while
+      $,$
+    end
+  end
+  $]$
+  instruction = @gtlSetterCallInstruction.new {
+    !.here
+    !target
+    !setterName
+    !argumentList
+  }
+}
+
+#-----------------------------------------------------------------------------*
+rule <gtl_sorting_order>
+  !@lsint order
+{
+  select
+    $>$ 
+    order = @lsint. new { !-1s !@location.here}
+  or
+    $<$
+    order = @lsint. new { !1s !@location.here}
+  end
+}
+
+#-----------------------------------------------------------------------------*
+rule <gtl_import>
+  ?@gtlContext context
+  ?!@library   lib 
+{
+  $import$ $string$ ?let @lstring fileName
+  @string fullName = [fileName string]
+  if [fullName pathExtension] != "gtm" then
+    fullName = [fileName string] + ".gtm"
+  end
+  
+  @bool found = false
+  if not [fullName fileExists] then
+    # search in path
+    for (searchPath) in [context importPath] do
+      if not found then
+        @string name = [searchPath stringByAppendingPath !fullName]
+        if [name fileExists] then
+          fullName = name
+          found = true
+        end
+      end
+    end
+  else
+    found = true
+  end
+  
+  if found then
+    if not [lib hasImport !fullName] then
+      [!?lib doImport !fullName]
+      grammar gtl_module_grammar in
+        @lstring.new{ !fullName ![fileName location] } !context !?lib
+    end
+  else
+    error .here : "module not found"
+  end
+}
+
+}

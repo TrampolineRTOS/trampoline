@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //   GALGAS_data : this class implements the GALGAS 'data' native type                                                 *
 //                                                                                                                     *
@@ -18,9 +18,9 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
-#include "galgas2/predefined-types.h"
+#include "all-predefined-types.h"
 #include "galgas2/capCollectionElement.h"
 #include "galgas2/cCollectionElement.h"
 #include "galgas2/C_Compiler.h"
@@ -30,33 +30,33 @@
 #include "files/C_BinaryFileWrite.h"
 #include "galgas2/F_verbose_output.h"
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include <ctype.h>
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //   GALGAS_data                                                                                                       *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_data::GALGAS_data (void) :
 mIsValid (false),
 mData () {
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_data::GALGAS_data (const C_Data & inData) :
 mIsValid (true),
 mData (inData) {
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_data GALGAS_data::constructor_emptyData (UNUSED_LOCATION_ARGS) {
   return GALGAS_data (C_Data ()) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_data GALGAS_data::constructor_dataWithContentsOfFile (const GALGAS_string & inFilePath,
                                                              C_Compiler * inCompiler
@@ -77,7 +77,7 @@ GALGAS_data GALGAS_data::constructor_dataWithContentsOfFile (const GALGAS_string
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult GALGAS_data::objectCompare (const GALGAS_data & inOperand) const {
   typeComparisonResult result = kOperandNotValid ;
@@ -94,7 +94,7 @@ typeComparisonResult GALGAS_data::objectCompare (const GALGAS_data & inOperand) 
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_data::description (C_String & ioString,
                                const int32_t /* inIndentation */) const {
@@ -107,7 +107,7 @@ void GALGAS_data::description (C_String & ioString,
   ioString << ">" ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_uint GALGAS_data::getter_length (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
@@ -117,7 +117,7 @@ GALGAS_uint GALGAS_data::getter_length (UNUSED_LOCATION_ARGS) const {
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_string GALGAS_data::getter_cStringRepresentation (UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
@@ -134,11 +134,11 @@ GALGAS_string GALGAS_data::getter_cStringRepresentation (UNUSED_LOCATION_ARGS) c
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_data::setter_appendByte (GALGAS_uint inArgument0,
-                                       C_Compiler * inCompiler
-                                       COMMA_LOCATION_ARGS) {
+                                     C_Compiler * inCompiler
+                                     COMMA_LOCATION_ARGS) {
   if (inArgument0.isValid ()) {
     if (inArgument0.uintValue () > 255) {
       inCompiler->onTheFlyRunTimeError ("'@data appendByte' modifier invoked with value greater than 255" COMMA_THERE) ;
@@ -149,11 +149,11 @@ void GALGAS_data::setter_appendByte (GALGAS_uint inArgument0,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_data::setter_appendShortBE (GALGAS_uint inArgument0,
-                                          C_Compiler * inCompiler
-                                          COMMA_LOCATION_ARGS) {
+                                        C_Compiler * inCompiler
+                                        COMMA_LOCATION_ARGS) {
   if (inArgument0.isValid ()) {
     if (inArgument0.uintValue () > 0xFFFF) {
       inCompiler->onTheFlyRunTimeError ("'@data appendShortBE' modifier invoked with value greater than 0xFFFF" COMMA_THERE) ;
@@ -165,11 +165,11 @@ void GALGAS_data::setter_appendShortBE (GALGAS_uint inArgument0,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_data::setter_appendShortLE (GALGAS_uint inArgument0,
-                                          C_Compiler * inCompiler
-                                          COMMA_LOCATION_ARGS) {
+                                        C_Compiler * inCompiler
+                                        COMMA_LOCATION_ARGS) {
   if (inArgument0.isValid ()) {
     if (inArgument0.uintValue () > 0xFFFF) {
       inCompiler->onTheFlyRunTimeError ("'@data appendShortLE' modifier invoked with value greater than 0xFFFF" COMMA_THERE) ;
@@ -181,10 +181,10 @@ void GALGAS_data::setter_appendShortLE (GALGAS_uint inArgument0,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_data::setter_appendUIntBE (GALGAS_uint inArgument0
-                                         COMMA_UNUSED_LOCATION_ARGS) {
+                                       COMMA_UNUSED_LOCATION_ARGS) {
   if (inArgument0.isValid ()) {
     const uint32_t value = inArgument0.uintValue () ;
     mData.appendByte ((uint8_t) (value >> 24)) ;
@@ -194,10 +194,10 @@ void GALGAS_data::setter_appendUIntBE (GALGAS_uint inArgument0
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_data::setter_appendUIntLE (GALGAS_uint inArgument0
-                                         COMMA_UNUSED_LOCATION_ARGS) {
+                                       COMMA_UNUSED_LOCATION_ARGS) {
   if (inArgument0.isValid ()) {
     const uint32_t value = inArgument0.uintValue () ;
     mData.appendByte ((uint8_t) (value & 255)) ;
@@ -207,10 +207,10 @@ void GALGAS_data::setter_appendUIntLE (GALGAS_uint inArgument0
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_data::setter_appendUTF_38_String (GALGAS_string inString
-                                                COMMA_UNUSED_LOCATION_ARGS) {
+                                              COMMA_UNUSED_LOCATION_ARGS) {
   if (inString.isValid ()) {
     const C_String s = inString.stringValue () ;
     for (int32_t i=0 ; i<s.length () ; i++) {
@@ -225,16 +225,16 @@ void GALGAS_data::setter_appendUTF_38_String (GALGAS_string inString
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_data::setter_appendData (GALGAS_data inData
-                                       COMMA_UNUSED_LOCATION_ARGS) {
+                                     COMMA_UNUSED_LOCATION_ARGS) {
   if (inData.isValid ()) {
     mData.appendData (inData.mData) ;
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_data::method_writeToFileWhenDifferentContents (GALGAS_string inFilePath,
                                                            GALGAS_bool & outFileWritten,
@@ -274,13 +274,13 @@ void GALGAS_data::method_writeToFileWhenDifferentContents (GALGAS_string inFileP
           }
         }
       }else{
-        ggs_printWarning (NULL, C_LocationInSource (), C_String ("Need to write '") + inFilePath.stringValue () + "'.\n" COMMA_HERE) ;
+        ggs_printWarning (NULL, C_IssueWithFixIt (), C_String ("Need to write '") + inFilePath.stringValue () + "'.\n" COMMA_HERE) ;
       }
     }
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_data::method_writeToFile (GALGAS_string inFilePath,
                                       C_Compiler * inCompiler
@@ -290,7 +290,7 @@ void GALGAS_data::method_writeToFile (GALGAS_string inFilePath,
     if (filePath.length () == 0) {
       inCompiler->onTheFlyRunTimeError ("'@data writeToFile' modifier invoked with empty file path argument" COMMA_THERE) ;
     }else if (! C_Compiler::performGeneration ()) {
-      ggs_printWarning (NULL, C_LocationInSource (), C_String ("Need to write '") + filePath + "'.\n" COMMA_HERE) ;
+      ggs_printWarning (NULL, C_IssueWithFixIt (), C_String ("Need to write '") + filePath + "'.\n" COMMA_HERE) ;
     }else{
       const bool fileAlreadyExists = C_FileManager::fileExistsAtPath (filePath) ;
       const bool verboseOptionOn = verboseOutput () ;
@@ -317,7 +317,7 @@ void GALGAS_data::method_writeToFile (GALGAS_string inFilePath,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_data::method_writeToExecutableFile (GALGAS_string inFilePath,
                                                 C_Compiler * inCompiler
@@ -327,7 +327,7 @@ void GALGAS_data::method_writeToExecutableFile (GALGAS_string inFilePath,
     if (filePath.length () == 0) {
       inCompiler->onTheFlyRunTimeError ("'@data writeToFile' modifier invoked with empty file path argument" COMMA_THERE) ;
     }else if (! C_Compiler::performGeneration ()) {
-      ggs_printWarning (NULL, C_LocationInSource (), C_String ("Need to write '") + filePath + "'.\n" COMMA_HERE) ;
+      ggs_printWarning (NULL, C_IssueWithFixIt (), C_String ("Need to write '") + filePath + "'.\n" COMMA_HERE) ;
     }else{
       const bool fileAlreadyExists = C_FileManager::fileExistsAtPath (filePath) ;
       const bool verboseOptionOn = verboseOutput () ;
@@ -355,9 +355,9 @@ void GALGAS_data::method_writeToExecutableFile (GALGAS_string inFilePath,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //   cCollectionElement_data                                                                                           *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 class cCollectionElement_data : public cCollectionElement {
 //--- Private member
@@ -385,7 +385,7 @@ class cCollectionElement_data : public cCollectionElement {
  public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
 } ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 cCollectionElement_data::cCollectionElement_data (const GALGAS_uint & inData
                                                   COMMA_LOCATION_ARGS) :
@@ -393,13 +393,13 @@ cCollectionElement (THERE),
 mAttribute_data (inData) {
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 bool cCollectionElement_data::isValid (void) const {
   return mAttribute_data.isValid () ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 typeComparisonResult cCollectionElement_data::compare (const cCollectionElement * inOperand) const {
   const cCollectionElement_data * operand = (const cCollectionElement_data *) inOperand ;
@@ -407,7 +407,7 @@ typeComparisonResult cCollectionElement_data::compare (const cCollectionElement 
   return mAttribute_data.objectCompare (operand->mAttribute_data) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 cCollectionElement * cCollectionElement_data::copy (void) {
   cCollectionElement_data * p = NULL ;
@@ -415,23 +415,23 @@ cCollectionElement * cCollectionElement_data::copy (void) {
   return p ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void cCollectionElement_data::description (C_String & ioString, const int32_t inIndentation) const {
   mAttribute_data.description (ioString, inIndentation) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//     cEnumerator_data class                                                  *
+//     cEnumerator_data class                                                                                          *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark cEnumerator_data
 #endif
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_data::populateEnumerationArray (capCollectionElementArray & inEnumerationArray,
                                             const typeEnumerationOrder inEnumerationOrder) const {
@@ -464,7 +464,7 @@ void GALGAS_data::populateEnumerationArray (capCollectionElementArray & inEnumer
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 cEnumerator_data::cEnumerator_data (const GALGAS_data & inEnumeratedObject,
                                     const typeEnumerationOrder inOrder) :
@@ -472,7 +472,7 @@ cGenericAbstractEnumerator () {
   inEnumeratedObject.populateEnumerationArray (mEnumerationArray, inOrder) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_uint cEnumerator_data::current_data (LOCATION_ARGS) const {
   const cCollectionElement_data * p = (const cCollectionElement_data *) (currentObjectPtr (THERE)) ;
@@ -480,7 +480,7 @@ GALGAS_uint cEnumerator_data::current_data (LOCATION_ARGS) const {
   return p->attribute_data () ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_uint cEnumerator_data::current (LOCATION_ARGS) const {
   const cCollectionElement_data * p = (const cCollectionElement_data *) (currentObjectPtr (THERE)) ;
@@ -488,4 +488,4 @@ GALGAS_uint cEnumerator_data::current (LOCATION_ARGS) const {
   return p->attribute_data () ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*

@@ -1,0 +1,12 @@
+%
+#----------------------------------------------------------------------------*
+# function to join string
+#----------------------------------------------------------------------------*
+
+func join (items) result
+  let result := ""
+  foreach item in items
+    do let result := result + item::VALUE
+    between let result := result + ", "
+  end foreach
+end func

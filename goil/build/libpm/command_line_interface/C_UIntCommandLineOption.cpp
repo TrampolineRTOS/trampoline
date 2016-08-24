@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //  Generic Unsigned Command Line Interface Option                                                                     *
 //                                                                                                                     *
@@ -18,22 +18,22 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include <string.h>
 #include <stdio.h>
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include "command_line_interface/C_UIntCommandLineOption.h"
 #include "strings/C_String.h"
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 static C_UIntCommandLineOption * gFirstIntOption ;
 static C_UIntCommandLineOption * gLastIntOption ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_UIntCommandLineOption::C_UIntCommandLineOption (const char * inDomainName,
                                                   const char * inIdentifier,
@@ -53,7 +53,7 @@ mDefaultValue (inDefaultValue) {
   gLastIntOption = this ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_UIntCommandLineOption::
 setUIntOptionForCommandChar (const char * inCommandCommandLineOptionString,
@@ -80,7 +80,7 @@ setUIntOptionForCommandChar (const char * inCommandCommandLineOptionString,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_UIntCommandLineOption::
 setUIntOptionForCommandString (const char * inCommandCommandLineOptionString,
@@ -122,7 +122,7 @@ setUIntOptionForCommandString (const char * inCommandCommandLineOptionString,
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_UIntCommandLineOption::printUsageOfUIntOptions (void) {
   C_UIntCommandLineOption * p = gFirstIntOption ;
@@ -139,7 +139,7 @@ void C_UIntCommandLineOption::printUsageOfUIntOptions (void) {
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_UIntCommandLineOption::printUIntOptions (const uint32_t inDisplayLength) {
   C_UIntCommandLineOption * p = gFirstIntOption ;
@@ -177,7 +177,7 @@ void C_UIntCommandLineOption::printUIntOptions (const uint32_t inDisplayLength) 
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void C_UIntCommandLineOption::getUIntOptionNameList (TC_UniqueArray <C_String> & outArray) {
   C_UIntCommandLineOption * p = gFirstIntOption ;
@@ -188,7 +188,7 @@ void C_UIntCommandLineOption::getUIntOptionNameList (TC_UniqueArray <C_String> &
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 utf32 C_UIntCommandLineOption::getUIntOptionInvocationLetter (const C_String & inDomainName,
                                                        const C_String & inIdentifier) {
@@ -203,7 +203,7 @@ utf32 C_UIntCommandLineOption::getUIntOptionInvocationLetter (const C_String & i
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_UIntCommandLineOption::getUIntOptionInvocationString (const C_String & inDomainName,
                                                        const C_String & inIdentifier) {
@@ -218,7 +218,7 @@ C_String C_UIntCommandLineOption::getUIntOptionInvocationString (const C_String 
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_UIntCommandLineOption::getUIntOptionCommentString (const C_String & inDomainName,
                                                        const C_String & inIdentifier) {
@@ -233,4 +233,4 @@ C_String C_UIntCommandLineOption::getUIntOptionCommentString (const C_String & i
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*

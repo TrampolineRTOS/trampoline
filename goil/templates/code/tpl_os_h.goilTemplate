@@ -49,7 +49,7 @@ foreach lib in PRIMARYUSEDLIB do
   if exists lib::CPPHEADER then
     let countCPPHeader := countCPPHeader + [lib::CPPHEADER length]
   end if
-  foreach header in exists lib::CHEADER default (emptylist) do
+  foreach header in exists lib::CHEADER default ( @() ) do
 %
 #include "% !header::VALUE %"%
   end foreach
@@ -64,7 +64,7 @@ foreach api in APIUSED do
  * % !file::VALUE %.h and % !file::VALUE %.c%
   end foreach%
  *--------------------------------------------------------------------------*/%
-  foreach header in exists api::HEADER default (emptylist) do%
+  foreach header in exists api::HEADER default ( @() ) do%
 #include "% !header::VALUE %.h"%
   end foreach%
 %
@@ -75,8 +75,8 @@ foreach api in APIUSED do
 /*
  * %  !sc::NAME %
  *
-%     ![[[[sc::NAME description] interpretEscape] wrap :70,0] columnPrefixedBy :" * "]
-      foreach arg in exists sc::ARGUMENT default (emptylist) do %
+%     ![[[sc::NAME description] wrap :70,0] columnPrefixedBy :" * "]
+      foreach arg in exists sc::ARGUMENT default ( @() ) do %
  *
 %       ![[arg::NAME.":  ".[arg::NAME description] wrap :70,[arg::NAME length]+3] columnPrefixedBy : " * "]
       end foreach
@@ -91,7 +91,7 @@ FUNC(% !exists sc::RETURN_TYPE default("void") %, % !api::ID_PREFIX %_CODE) % !s
         foreach arg in sc::ARGUMENT do
         %
   %       !arg::KIND %(% !arg::TYPE %, AUTOMATIC%
-          if [arg::KIND substringExists: "P2"] then
+          if [arg::KIND subStringExists: "P2"] then
             %, OS_APPL_DATA%
           end if
         %) % !arg::NAME 
@@ -117,7 +117,7 @@ if countCPPHeader > 0 then
 #ifdef __cplusplus%
 end if
 foreach lib in PRIMARYUSEDLIB do
-  foreach header in exists lib::CPPHEADER default (emptylist) do
+  foreach header in exists lib::CPPHEADER default ( @() ) do
 %
 #include "% !header::VALUE %"%
   end foreach

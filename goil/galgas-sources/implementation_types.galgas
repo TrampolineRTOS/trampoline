@@ -421,7 +421,7 @@ abstract class @impType {
 
 abstract getter @impType mergeWithType
   ?@impType unused typeToMerge
-  ->@impType mergedType
+  ->@impType
 #{
 #  mergedType = self
 #}

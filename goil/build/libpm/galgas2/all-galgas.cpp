@@ -9,6 +9,7 @@
 #include "C_galgas_function_descriptor.cpp"
 #include "C_galgas_io.cpp"
 #include "C_galgas_class_inspector.cpp"
+#include "C_IssueWithFixIt.cpp"
 #include "cObjectArray.cpp"
 #include "cCollectionElement.cpp"
 #include "capCollectionElement.cpp"
@@ -31,7 +32,6 @@
 #include "acPtr_class.cpp"
 #include "cPtr_object.cpp"
 
-#include "predefined-types.cpp"
 #include "scanner_actions.cpp"
 #include "GALGAS_application.cpp"
 #include "GALGAS_bigint.cpp"

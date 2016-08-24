@@ -12,13 +12,13 @@
 #
 let INTERRUPTMAP := mapof INTERRUPT by NAME
 
-let objForIRQ := emptymap
+let objForIRQ := @[]
 
 # Map ISR into objForIRQ
 foreach isr in ISR do
   let key := isr::SOURCE
   if not exists objForIRQ[key] then
-    let objForIRQ[key] := emptylist
+    let objForIRQ[key] := @()
   end if
   let isr::KIND := "ISR"
   let isr::ACK := INTERRUPTMAP[key]::ACK
@@ -29,7 +29,7 @@ end foreach
 foreach cnt in COUNTER do
   let key := cnt::SOURCE
   if not exists objForIRQ[key] then
-    let objForIRQ[key] := emptylist
+    let objForIRQ[key] := @()
   end if
   let cnt::KIND := "COUNTER"
   let cnt::ACK := INTERRUPTMAP[key]::ACK
@@ -37,14 +37,14 @@ foreach cnt in COUNTER do
 end foreach
 
 # Build the list of counters to call
-let counterForIRQ := emptymap
+let counterForIRQ := @[ ]
 
 # Build a list of virtual objects (counters) each of them holding values :
 # handlerSource, handlerName, handlerAck, generatePrimaryIrq
 foreach objList in objForIRQ do
   foreach obj in objList do
     if obj::KIND == "COUNTER" then
-      let counterForIRQ[KEY] := emptylist
+      let counterForIRQ[KEY] := @()
     end if
   end foreach
   foreach obj in objList do

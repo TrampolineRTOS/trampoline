@@ -1,8 +1,8 @@
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2011, ..., 2014 Pierre Molinaro.                                                                     *
+//  Copyright (C) 2011, ..., 2016 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -16,7 +16,7 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #import "OC_GGS_TextView.h"
 #import "OC_GGS_TextDisplayDescriptor.h"
@@ -30,19 +30,19 @@
 #import "OC_GGS_Scroller.h"
 #import "PMDebug.h"
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 //#define DEBUG_MESSAGES
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 @implementation OC_GGS_TextView
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //       I N I T                                                                                                       *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (id) initWithFrame: (NSRect) inFrame
        documentUsedForDisplaying: (OC_GGS_Document *) inDocumentUsedForDisplaying
@@ -74,11 +74,12 @@
       options:NSKeyValueObservingOptionNew
       context:NULL
     ] ;
+    [self updateCursorColor] ;
   }
   return self;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) FINALIZE_OR_DEALLOC {
   NSUserDefaults * df = [NSUserDefaults standardUserDefaults] ;
@@ -98,14 +99,28 @@
   macroSuperFinalize ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) detachTextView {
   mDocumentUsedForDisplaying = nil ;
   mDisplayDescriptor = nil ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
+
+- (void) updateCursorColor {
+  NSUserDefaults * df = [NSUserDefaults standardUserDefaults] ;
+  NSData * data = [df valueForKey:GGS_editor_background_color] ;
+  // NSLog (@"DATA %@", data) ;
+  NSColor * color = [[NSUnarchiver unarchiveObjectWithData:data] colorUsingColorSpaceName:NSCalibratedRGBColorSpace] ;
+  if ([color brightnessComponent] > 0.5) {
+    self.insertionPointColor = [color blendedColorWithFraction:0.5 ofColor:[NSColor blackColor]] ;
+  }else{
+    self.insertionPointColor = [color blendedColorWithFraction:0.5 ofColor:[NSColor whiteColor]] ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) observeValueForKeyPath:(NSString *) inKeyPath
          ofObject:(id) inObject
@@ -117,6 +132,7 @@
   }else if ((inObject == df) && [inKeyPath isEqualToString:GGS_page_guide_column]) {
     [self setNeedsDisplay:YES] ;
   }else if ((inObject == df) && [inKeyPath isEqualToString:GGS_editor_background_color]) {
+    [self updateCursorColor] ;
     [self setNeedsDisplay:YES] ;
   }else{
     [super
@@ -128,7 +144,7 @@
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) setIssueArray: (NSArray *) inIssueArray {
 //--- Tell ruler to refresh
@@ -143,23 +159,23 @@
   [self setNeedsDisplay:YES] ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (NSColor *) errorHiliteColor {
   return [NSColor colorWithCalibratedRed:1.0 green:0.0 blue:0.0 alpha:0.2F] ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (NSColor *) warningHiliteColor {
   return [NSColor colorWithCalibratedRed:1.0 green:0.5 blue:0.0 alpha:0.2F] ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #define BULLET_SIZE (4.0)
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) drawRect: (NSRect) inRect {
   // NSLog (@"%s", __PRETTY_FUNCTION__) ;
@@ -210,13 +226,17 @@
   for (PMIssueDescriptor * issue in mIssueArray) {
     if (issue.locationInSourceStringStatus == kLocationInSourceStringSolved) {
       // NSLog (@"lineRange [%u, %u]", lineRange.location, lineRange.length) ;
-      NSRect lineRect = [self.layoutManager lineFragmentUsedRectForGlyphAtIndex:issue.locationInSourceString effectiveRange:NULL] ;
+      NSRect lineRect = [self.layoutManager lineFragmentUsedRectForGlyphAtIndex:issue.startLocationInSourceString effectiveRange:NULL] ;
       lineRect.size.width = self.visibleRect.size.width ;
       // NSLog (@"r1 {{%g, %g}, {%g, %g}}", r1.origin.x, r1.origin.y, r1.size.width, r1.size.height) ;
       [issue.isError ? errorHiliteBezierPath : warningHiliteBezierPath appendBezierPathWithRect:lineRect] ;
-      const NSPoint p1 = [self.layoutManager locationForGlyphAtIndex:issue.locationInSourceString] ;
-      const NSRect r = {{p1.x - BULLET_SIZE / 2.0, lineRect.origin.y + lineRect.size.height - BULLET_SIZE}, {BULLET_SIZE, BULLET_SIZE}} ;
-      [issue.isError ? errorBulletBezierPath : warningBulletBezierPath appendBezierPathWithOvalInRect:r] ;
+      const NSPoint p1 = [self.layoutManager locationForGlyphAtIndex:issue.startLocationInSourceString] ;
+      const NSPoint p2 = [self.layoutManager locationForGlyphAtIndex:issue.endLocationInSourceString + 1] ;
+      const NSRect r = {
+        {p1.x - BULLET_SIZE / 2.0, lineRect.origin.y + lineRect.size.height},
+        {BULLET_SIZE + p2.x - p1.x, BULLET_SIZE}
+      } ;
+      [issue.isError ? errorBulletBezierPath : warningBulletBezierPath appendBezierPathWithRect:r] ;
     }
   }
 //--- Draw warning hilite
@@ -233,17 +253,19 @@
   [errorBulletBezierPath fill] ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #pragma mark Key Down
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) keyDown: (NSEvent *) inEvent {
   NSString * keys = inEvent.characters ;
   if (keys.length == 0) {
     [super keyDown:inEvent] ;
   }else{
+    const NSUInteger flags = NSShiftKeyMask | NSControlKeyMask | NSAlternateKeyMask | NSCommandKeyMask ;
+    // NSLog (@"MODIFIERS 0x%lx 0x%lX", [inEvent modifierFlags], flags) ;
     const unichar c = [keys characterAtIndex:0] ;
     switch (c) {
     case 9 : // A Tab Character ?
@@ -284,11 +306,23 @@
         }
         [self insertText:stringToInsert] ;
       }break ;
+    case 63234 : // Left arrow
+      if (([self selectedRange].length > 0) && (([inEvent modifierFlags] & flags) == 0)) {
+        [mDisplayDescriptor shiftLeftAction] ;
+      }else{
+        [super keyDown:inEvent] ;
+      }
+      break ;
+    case 63235 : // Right arrow
+      if (([self selectedRange].length > 0) && (([inEvent modifierFlags] & flags) == 0)) {
+        [mDisplayDescriptor shiftRightAction] ;
+      }else{
+        [super keyDown:inEvent] ;
+      }
+      break ;
     case 127 : // A Back Character ?
     case 63232 : // Up arrow
     case 63233 : // Down arrow
-    case 63234 : // Left arrow
-    case 63235 : // Right arrow
     case 63272 : // Suppr
     case 63273 : // Home
     case 63275 : // Goto end
@@ -306,11 +340,11 @@
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #pragma mark Token selection
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (NSRange) selectionRangeForProposedRange:(NSRange) inProposedSelRange
             granularity: (NSSelectionGranularity) inGranularity {
@@ -348,18 +382,18 @@
   return result ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #pragma mark Source Indexing
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) selectAllTokenCharacters: (id) inSender  {
   const NSRange r = [[inSender representedObject] rangeValue] ;
   [mDisplayDescriptor setSelectionRangeAndMakeItVisible:r] ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) indexingMenuAction: (id) inSender {
   NSString * descriptor = [inSender representedObject] ;
@@ -372,41 +406,48 @@
   [tdd setSelectionRangeAndMakeItVisible:NSMakeRange (tokenLocation, tokenLength)] ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #pragma mark mouse Down (for source indexing)
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (void) mouseDown:(NSEvent *) inEvent {
   if ((inEvent.modifierFlags & NSCommandKeyMask) != 0) {
+  //--- Select range
     const NSPoint local_point = [self convertPoint:[inEvent locationInWindow] fromView:nil] ;
     const NSUInteger characterIndex = [self characterIndexForInsertionAtPoint:local_point] ;
     const NSRange selectedRange = {characterIndex, 0} ;
     const NSRange r = [self selectionRangeForProposedRange:selectedRange granularity:NSSelectByWord] ;
     [self setSelectedRange:r] ;
+    NSMenu * menu = [[NSMenu alloc] initWithTitle:@""] ;
+  //--- Add issues
+    for (PMIssueDescriptor * issue in mIssueArray) {
+      if ([issue intersectWithRange:r]) {
+        [issue storeItemsToMenu:menu displayDescriptor:mDisplayDescriptor] ;
+      }
+    }
+  //--- Source indexing
     OC_GGS_TextSyntaxColoring * dsc = mDisplayDescriptor.documentData.textSyntaxColoring ;
-    NSMenu * menu = [dsc indexMenuForRange:r textDisplayDescriptor:mDisplayDescriptor] ;
-    [NSMenu
-      popUpContextMenu:menu
-      withEvent:inEvent
-      forView:self
-      withFont:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]]
-    ] ;
+    [dsc appendIndexingToMenu:menu forRange:r textDisplayDescriptor:mDisplayDescriptor] ;
+  //--- Display menu
+    menu.font = [NSFont systemFontOfSize:[NSFont smallSystemFontSize]] ;
+    menu.allowsContextMenuPlugIns = NO ;
+    [NSMenu popUpContextMenu:menu withEvent:inEvent forView:self] ;
   }else{
     [super mouseDown:inEvent] ;
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #pragma mark Autocompletion
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 // http://www.cocoabuilder.com/archive/cocoa/97892-can-select-nstextview-completion-when-partial-word-length-2.html
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (NSRange) rangeForUserCompletion {
   NSRange charRange = {NSNotFound, 0} ;
@@ -425,7 +466,7 @@
   return charRange ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 - (NSArray *) completionsForPartialWordRange: (NSRange) inCharRange
               indexOfSelectedItem: (NSInteger *) outIndex {
@@ -459,6 +500,6 @@
   return [completionSet.allObjects sortedArrayUsingSelector:@selector (compare:)] ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 @end

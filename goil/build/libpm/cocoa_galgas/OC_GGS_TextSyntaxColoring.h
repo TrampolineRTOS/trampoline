@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
@@ -16,7 +16,7 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #import "CocoaGalgasPrefix.h"
 
@@ -88,8 +88,9 @@
 
 - (void) documentHasBeenSaved ;
 
-- (NSMenu *) indexMenuForRange: (NSRange) inSelectedRange
-             textDisplayDescriptor: (OC_GGS_TextDisplayDescriptor *) inTextDisplayDescriptor ;
+- (void) appendIndexingToMenu: (NSMenu *) inMenu
+         forRange: (NSRange) inSelectedRange
+         textDisplayDescriptor: (OC_GGS_TextDisplayDescriptor *) inTextDisplayDescriptor ;
 
 - (NSUInteger) displayDescriptorCount ;
 

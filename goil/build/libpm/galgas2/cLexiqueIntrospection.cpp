@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //  Lexique introspection                                                                                              *
 //                                                                                                                     *
@@ -18,18 +18,18 @@
 //  warranty of MERCHANDIBILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for            *
 //  more details.                                                                                                      *
 //                                                                                                                     *
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 #include "galgas2/cLexiqueIntrospection.h"
 #include "galgas2/C_galgas_CLI_Options.h"
 #include "galgas2/C_Compiler.h"
 #include "files/C_FileManager.h"
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 static cLexiqueIntrospection * gLexiqueIntrospectionRoot = NULL ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 cLexiqueIntrospection::cLexiqueIntrospection (void (*appendKeywordListNames) (TC_UniqueArray <C_String> & ioList),
                                               Type_getKeywordsForIdentifier getKeywordsForIdentifier) :
@@ -39,7 +39,7 @@ mGetKeywordsForIdentifier (getKeywordsForIdentifier) {
   gLexiqueIntrospectionRoot = this ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void cLexiqueIntrospection::getKeywordListNames (TC_UniqueArray <C_String> & outList) {
   outList.setCountToZero () ;
@@ -50,7 +50,7 @@ void cLexiqueIntrospection::getKeywordListNames (TC_UniqueArray <C_String> & out
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void cLexiqueIntrospection::getKeywordListForIdentifier (const C_String & inIdentifier,
                                                          bool & outFound,
@@ -64,7 +64,7 @@ void cLexiqueIntrospection::getKeywordListForIdentifier (const C_String & inIden
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
 void cLexiqueIntrospection::handleGetKeywordListOption (C_Compiler * inCompiler) {
   const C_String option = gOption_galgas_5F_builtin_5F_options_outputKeywordList.getter_value () ;
@@ -126,5 +126,5 @@ void cLexiqueIntrospection::handleGetKeywordListOption (C_Compiler * inCompiler)
   }
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------*
 
