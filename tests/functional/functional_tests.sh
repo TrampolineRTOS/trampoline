@@ -84,11 +84,26 @@ else
 				goil --target=$1 --templates=../../../goil/templates/ ${i}.oil 2>&1 | tee -a ../functional_results.log
 			fi
 
-			#if goil succeed (Makefile has been created) -> do make and execute file
+			#if goil succeed (Makefile has been created) -> do make
 			if `test -f Makefile`
 			then
 			    make CC=gcc AS=gcc LD=gcc -s
+			else
+				echo "...\nfailure during Goil file Generation.\n" >> ../functional_results.log
+			fi
+
+			#if compilation succeed (Executable has been created) -> execute file
+			if `test -f ./${i}_exe`
+			then
 				./${i}_exe >> ../functional_results.log
+			else
+				echo "...\nfailure during Compilation.\n" >> ../functional_results.log
+			fi
+
+			#if execution failed (Return value != 0), print an error
+			if `test $? -ne 0`
+			then
+				echo "...\nfailure during Execution.\n" >> ../functional_results.log
 			fi
 
 			#Go out of the test sequence
