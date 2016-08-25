@@ -1,0 +1,38 @@
+/*
+ * ARMv6-M build options for gcc (CortexM0+)
+ */
+CPU buildOptions {
+  BUILDOPTIONS defaultBuildOptionsForAVR {
+    /*
+     * Common flags for C and C++ compiling
+     */
+    COMMONFLAGS = "-g";                           // Produce debugging information
+    COMMONFLAGS = "-Wall";                        // All warnings on
+    COMMONFLAGS = "-Wno-unused-but-set-variable"; // Except unused variables
+    COMMONFLAGS = "-Wmissing-field-initializers"; // Struct initialized with incorrect number of fiels
+    COMMONFLAGS = "-ffunction-sections";          // Each function is put in its own section. Required to deleted unused code
+    COMMONFLAGS = "-fdata-sections";              // Each data is put in its own section. Required to deleted unused data
+    
+    /*
+     * C++ compiler flags
+     */
+    CPPFLAGS = "-fno-rtti";                       // No information for runtime (run time type information) - reduce exe size
+    CPPFLAGS = "-felide-constructors";            // Optimization to omit creating temporary object when used to initialize another object
+    CPPFLAGS = "-fno-threadsafe-statics";         // No thread safe init of local static variables - reduce code size
+    CPPFLAGS = "-fno-use-cxa-get-exception-ptr";  // Don't use the __cxa_get_exception_ptr runtime routine (no exception anyway)
+    CPPFLAGS = "-fno-enforce-eh-specs";           // Don't generate code to check for violation of exception specifications at runtime (no exception anyway)
+    
+    /*
+     * Assembler flags
+     */
+    ASFLAGS = "-g";                               // Produce debugging information
+    ASFLAGS = "-Wall";                            // All warnings on
+    ASFLAGS = "--fatal-warnings";                 // A warning is an error
+
+    
+    LDFLAGS = "--fatal-warnings";                 // A warning is an error
+    LDFLAGS = "--warn-common";                    // Warn when a common symbol is combined with another common symbol
+    LDFLAGS = "--no-undefined";                   // Report unresolved symbol references
+    LDFLAGS = "--gc-sections";                    // Remove unused sections. Works with -ffunction-sections and -fdata-sections, see above
+  };
+};

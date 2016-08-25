@@ -1,13 +1,12 @@
 CPU avrArduino {
 
-  PLATFORM_FILES avr_arduino_machine {
+  PLATFORM_FILES arduinoBase {
     PATH = "avr/arduino";
     CPPFILE = "main.cpp";
   };
 
-  PLATFORM_FILES arduinoBase {
+  PLATFORM_FILES arduinoUno {
     PATH = "avr/arduino/hardware/variants/standard";
-    CPPFILE = "main.cpp";
   };
 
   BUILDOPTIONS buildOptionsForArduino {
@@ -16,6 +15,7 @@ CPU avrArduino {
   };
   
   PLATFORM_FILES arduinoBaseSerial {
+    PATH = "avr/arduino/hardware/cores/arduino";
     CPPFILE = "HardwareSerial0.cpp";
     CPPFILE = "HardwareSerial.cpp";
     CPPFILE = "HID.cpp";
@@ -27,11 +27,11 @@ CPU avrArduino {
     CPPFILE = "USBCore.cpp";
     CPPFILE = "WMath.cpp";
     CPPFILE = "WString.cpp";
-    CPPFILE = "wiring_digital.c";
-    CPPFILE = "wiring.c";
+    CFILE = "wiring_digital.c";
+    CFILE = "wiring.c";
     CPPFILE = "abi.cpp";
-    CPPFILE = "hooks.c";
-
+    CFILE = "hooks.c";
+  };
 };
 
 /*
