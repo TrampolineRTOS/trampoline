@@ -30,15 +30,15 @@
 loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
   let found_it := false
 
-  foreach interrupt in exists INTERCORE_INTERRUPT default(emptylist) do
+  foreach interrupt in exists INTERCORE_INTERRUPT default(@( )) do
     if interrupt::CORE == core_id then
       let found_it := true
     end if
   end foreach
 
   if not found_it then
-    error here : "Core " . [core_id string] . " has no intercore interrupts."
-               . " Need at lest one per core."
+    error here : "Core " + [core_id string] + " has no intercore interrupts."
+               + " Need at lest one per core."
   end if
 end loop
 
@@ -64,10 +64,10 @@ foreach interrupt in INTERCORE_INTERRUPT do
     if  interrupt::NAME != other_interrupt::NAME
       & interrupt::CORE == other_interrupt::CORE
       & interrupt::SOURCE == other_interrupt::SOURCE then
-      error here : "Intercore it " . interrupt::NAME . " and "
-                 . other_interrupt::NAME . " have the same core ("
-                 . [interrupt::CORE string] . ") and the same source ("
-                 . interrupt::SOURCE . ")"
+      error here : "Intercore it " + interrupt::NAME + " and "
+                 + other_interrupt::NAME + " have the same core ("
+                 + [interrupt::CORE string] + ") and the same source ("
+                 + interrupt::SOURCE + ")"
     end if
 
   end foreach

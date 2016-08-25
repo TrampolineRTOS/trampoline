@@ -121,12 +121,12 @@ end foreach
     *(.rodata*)    /* litteral strings (constants, strings, etc.) */
 %
 foreach app in APPLICATIONS do
- for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
-  for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
+ foreach DATA_SIZE in @("32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED") do
+  foreach SECTION_KIND in @("_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_") do
 %      *(.OS_APP_% !app::NAME %_SEC% !SECTION_KIND !DATA_SIZE %)
 %
-  end for
- end for
+  end foreach
+ end foreach
 end foreach
 %
   } >romMirror AT>rom
@@ -139,12 +139,12 @@ SECTIONS {
   procconst : ALIGN(4){
 %
 foreach proc in PROCESSES do
- for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
-  for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
+ foreach DATA_SIZE in @("32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED") do
+  foreach SECTION_KIND in @("_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_") do
 %      *(.% !proc::KIND %_% !proc::NAME %_SEC% !SECTION_KIND !DATA_SIZE %)
 %
-  end for
- end for
+  end foreach
+ end foreach
 end foreach
 %    
     . = ALIGN(4);
@@ -231,23 +231,23 @@ foreach proc in PROCESSES do
 %
 /* Initialized variables section of % !proc::KIND % % !proc::NAME % */
 %
-  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
-    for SECTION_KIND in "_POWER_ON_INIT_" do
+  foreach DATA_SIZE in @("32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED") do
+    foreach SECTION_KIND in @("_POWER_ON_INIT_") do
 %    *(.% !proc::KIND %_% !proc::NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
 %
-    end for
-  end for
+    end foreach
+  end foreach
 end foreach
 
 foreach app in APPLICATIONS do
 %/* Initialized variables section of OS_APP % !app::NAME % */
 %
-  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
-    for SECTION_KIND in "_POWER_ON_INIT_" do
+  foreach DATA_SIZE in @("32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED") do
+    foreach SECTION_KIND in @("_POWER_ON_INIT_") do
 %    *(.OS_APP_% !app::NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
 %
-    end for
-  end for
+    end foreach
+  end foreach
 end foreach
 %
     . = ALIGN(4);
@@ -267,12 +267,12 @@ foreach proc in PROCESSES do
     __SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN = .;
   /* --- Initialized variables section of % !proc::KIND % % !proc::NAME % */
 %
-  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
-    for SECTION_KIND in "_NOINIT_","_FAST_","_" do
+  foreach DATA_SIZE in @("32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED") do
+    foreach SECTION_KIND in @("_NOINIT_","_FAST_","_") do
 %    *(.% !proc::KIND %_% !proc::NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
 %
-    end for
-  end for
+    end foreach
+  end foreach
 %     __SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN = .;
      __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 4K ? 4K : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
      __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 1K ? 1K : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
@@ -333,12 +333,12 @@ foreach app in APPLICATIONS do
     __SEG_START_OS_APP_% !app::NAME %_VAR_RGN = .;
   /* --- Initialized variables section of OS_APP % !app::NAME % */
 %
-  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
-    for SECTION_KIND in "_NOINIT_","_FAST_","_" do
+  foreach DATA_SIZE in @("32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED") do
+    foreach SECTION_KIND in @("_NOINIT_","_FAST_","_") do
 %    *(.OS_APP_% !app::NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
 %
-    end for
-  end for
+    end foreach
+  end foreach
 %    . = ALIGN(4);
     __SEG_END_OS_APP_% !app::NAME %_VAR_RGN = .;
     __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 4K ? 4K : __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN;

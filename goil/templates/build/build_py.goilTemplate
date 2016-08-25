@@ -149,14 +149,14 @@ foreach flags in exists OS::BUILD_S::COMMONFLAGS default ( @() ) do
 cflags += "% !flags::VALUE %".split()
 cppflags += "% !flags::VALUE %".split()%
 end foreach
-let MACHINESPATH := OS::BUILD_S::TRAMPOLINE_BASE_PATH."/machines"
+let MACHINESPATH := OS::BUILD_S::TRAMPOLINE_BASE_PATH+"/machines"
 foreach platform in exists PLATFORM_FILES default ( @() ) do%
-cflags += ["-I","% !MACHINESPATH . "/" . platform::PATH %"]
-cppflags += ["-I","% !MACHINESPATH . "/" . platform::PATH %"]%
+cflags += ["-I","% !MACHINESPATH + "/" + platform::PATH %"]
+cppflags += ["-I","% !MACHINESPATH + "/" + platform::PATH %"]%
 end foreach
 foreach library in exists USEDLIB default ( @() ) do%
-cflags += ["-I","% !MACHINESPATH . "/" . library::PATH %"]
-cppflags += ["-I","% !MACHINESPATH . "/" . library::PATH %"]%
+cflags += ["-I","% !MACHINESPATH + "/" + library::PATH %"]
+cppflags += ["-I","% !MACHINESPATH + "/" + library::PATH %"]%
 end foreach
 %
 if with_ioc:
@@ -239,20 +239,20 @@ oilSourceList.append("% !OILFILENAME %")
 #--- Kernel files %
 
 let KERNEL_MAP := mapof KERNEL by NAME
-let path := KERNEL_MAP["osek_kernel"]::PATH."/"
+let path := KERNEL_MAP["osek_kernel"]::PATH+"/"
 foreach file in KERNEL_MAP["osek_kernel"]::FILE do
 %
-cSourceList.append(projfile.ProjectFile("% !path.file::VALUE %", trampoline_base_path))%
+cSourceList.append(projfile.ProjectFile("% !path+file::VALUE %", trampoline_base_path))%
 end foreach
 
 if USECOM then
 %
 cflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/com"]
 cppflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/com"]%
-  let path := KERNEL_MAP["com_kernel"]::PATH."/"
+  let path := KERNEL_MAP["com_kernel"]::PATH+"/"
   foreach file in KERNEL_MAP["com_kernel"]::FILE do
 %
-cSourceList.append(projfile.ProjectFile("% !path.file::VALUE %", trampoline_base_path))%
+cSourceList.append(projfile.ProjectFile("% !path+file::VALUE %", trampoline_base_path))%
   end foreach
 end if
 
@@ -260,10 +260,10 @@ if OS::SCALABILITYCLASS > 0 then
 %
 cflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/autosar"]
 cppflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/autosar"]%
-  let path := KERNEL_MAP["autosar_kernel"]::PATH."/"
+  let path := KERNEL_MAP["autosar_kernel"]::PATH+"/"
   foreach file in KERNEL_MAP["autosar_kernel"]::FILE do
 %
-cSourceList.append(projfile.ProjectFile("% !path.file::VALUE %", trampoline_base_path))%
+cSourceList.append(projfile.ProjectFile("% !path+file::VALUE %", trampoline_base_path))%
   end foreach
 end if
 
@@ -273,13 +273,13 @@ do
     if module::VALUE != "osek_kernel" &
        module::VALUE != "com_kernel" &
        module::VALUE != "autosar_kernel" then
-      let path := KERNEL_MAP[module::VALUE]::PATH."/"
+      let path := KERNEL_MAP[module::VALUE]::PATH+"/"
 %
 cflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/% !KERNEL_MAP[module::VALUE]::PATH%"]%
       foreach file in KERNEL_MAP[module::VALUE]::FILE
       do
 %
-cSourceList.append(projfile.ProjectFile("% !path.file::VALUE %", trampoline_base_path))%
+cSourceList.append(projfile.ProjectFile("% !path+file::VALUE %", trampoline_base_path))%
       end foreach
     else
       error module:"Module does not exist"
@@ -292,7 +292,7 @@ end foreach
 foreach service_set in APIUSED do
   foreach file in service_set::FILE do
 %
-cSourceList.append(projfile.ProjectFile("% !service_set::DIRECTORY."/".file::VALUE %.c", trampoline_base_path))%
+cSourceList.append(projfile.ProjectFile("% !service_set::DIRECTORY+"/"+file::VALUE %.c", trampoline_base_path))%
   end foreach
 end foreach
 
@@ -340,11 +340,11 @@ foreach platform in exists GENERATED_FILES default ( @() ) do
   if not exists platform::ASFILE then let platform::ASFILE := @() end if
   foreach file in platform::CFILE do
 %
-cSourceList.append(projfile.ProjectFile("% !PROJECT."/".file::VALUE %"))%
+cSourceList.append(projfile.ProjectFile("% !PROJECT+"/"+file::VALUE %"))%
   end foreach
   foreach file in platform::ASFILE do
 %
-sSourceList.append(projfile.ProjectFile("% !PROJECT."/".file::VALUE %"))%
+sSourceList.append(projfile.ProjectFile("% !PROJECT+"/"+file::VALUE %"))%
   end foreach
 end foreach
 foreach platform in exists PLATFORM_FILES default ( @() ) do
@@ -353,15 +353,15 @@ foreach platform in exists PLATFORM_FILES default ( @() ) do
   if not exists platform::ASFILE then let platform::ASFILE := @() end if
   foreach file in platform::CFILE do
 %
-cSourceList.append(projfile.ProjectFile("% !"machines/".platform::PATH."/".file::VALUE %", trampoline_base_path))%
+cSourceList.append(projfile.ProjectFile("% !"machines/"+platform::PATH+"/"+file::VALUE %", trampoline_base_path))%
   end foreach
   foreach file in platform::CPPFILE do
 %
-cppSourceList.append(projfile.ProjectFile("% !"machines/".platform::PATH."/".file::VALUE %", trampoline_base_path))%
+cppSourceList.append(projfile.ProjectFile("% !"machines/"+platform::PATH+"/"+file::VALUE %", trampoline_base_path))%
   end foreach
   foreach file in platform::ASFILE do
 %
-sSourceList.append(projfile.ProjectFile("% !"machines/".platform::PATH."/".file::VALUE %", trampoline_base_path))%
+sSourceList.append(projfile.ProjectFile("% !"machines/"+platform::PATH+"/"+file::VALUE %", trampoline_base_path))%
   end foreach
 end foreach
 
@@ -372,15 +372,15 @@ foreach library in exists USEDLIB default ( @() ) do
   if not exists library::ASFILE then let library::ASFILE := @() end if
   foreach file in library::CFILE do
 %
-cSourceList.append(projfile.ProjectFile("% !"machines/".library::PATH."/".file::VALUE %", trampoline_base_path))%
+cSourceList.append(projfile.ProjectFile("% !"machines/"+library::PATH+"/"+file::VALUE %", trampoline_base_path))%
   end foreach
   foreach file in library::CPPFILE do
 %
-cppSourceList.append(projfile.ProjectFile("% !"machines/".library::PATH."/".file::VALUE %", trampoline_base_path))%
+cppSourceList.append(projfile.ProjectFile("% !"machines/"+library::PATH+"/"+file::VALUE %", trampoline_base_path))%
   end foreach
   foreach file in library::ASFILE do
 %
-sSourceList.append(projfile.ProjectFile("% !"machines/".library::PATH."/".file::VALUE %", trampoline_base_path))%
+sSourceList.append(projfile.ProjectFile("% !"machines/"+library::PATH+"/"+file::VALUE %", trampoline_base_path))%
   end foreach
 end foreach
 %
@@ -458,7 +458,7 @@ if True:%
 #    if inFile == "ORIGINAL_TARGET" then
 #      let outFile := OS::BUILD_S::APP_NAME
 #    else
-     let outFile := inFile . exists command::OUTPUT default("")
+     let outFile := inFile + exists command::OUTPUT default("")
 #    end if
     if    command::TYPE == "COPIER" then %
   postCommand = makefile.PostCommand("Generating binary % !outFile % from % !inFile %")
@@ -525,22 +525,22 @@ if make.errorCount() == 0:%
   do%
   if askedGoal == "% !pc::NAME %" :%
   foreach cmd in pc::COMMAND do
-    let commandLine := cmd::COMMAND . " "
+    let commandLine := cmd::COMMAND + " "
     foreach opt in exists cmd::PREOPTION default ( @() ) do
-      let commandLine := commandLine . opt::VALUE . " "
+      let commandLine := commandLine + opt::VALUE + " "
     end foreach
     if exists cmd::INPUT then
       if cmd::INPUT == "TARGET" then
-        let commandLine := commandLine . target . cmd::INPUT_S::EXT . " "
+        let commandLine := commandLine + target + cmd::INPUT_S::EXT + " "
       else
-        let commandLine := commandLine . cmd::INPUT_S::SOURCE . " "
+        let commandLine := commandLine + cmd::INPUT_S::SOURCE + " "
       end if
     end if
     if exists cmd::OUTPUT then
-      let commandLine := commandLine . OUTPUT . " "
+      let commandLine := commandLine + OUTPUT + " "
     end if
     foreach opt in exists cmd::POSTOPTION default ( @() ) do
-      let commandLine := commandLine . opt::VALUE . " "
+      let commandLine := commandLine + opt::VALUE + " "
     end foreach%
     if makefile.find_executable("% !cmd::COMMAND %") != None:
       subprocess.call('% !commandLine %',shell=True)

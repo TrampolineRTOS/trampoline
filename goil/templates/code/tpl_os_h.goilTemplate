@@ -78,7 +78,7 @@ foreach api in APIUSED do
 %     ![[[sc::NAME description] wrap :70,0] columnPrefixedBy :" * "]
       foreach arg in exists sc::ARGUMENT default ( @() ) do %
  *
-%       ![[arg::NAME.":  ".[arg::NAME description] wrap :70,[arg::NAME length]+3] columnPrefixedBy : " * "]
+%       ![[arg::NAME+":  "+[arg::NAME description] wrap :70,[arg::NAME length]+3] columnPrefixedBy : " * "]
       end foreach
       if exists sc::RETURN_TYPE then%
  *

@@ -232,13 +232,13 @@ if CHIP != "" then %
 CHIP = % !CHIP end if
 if BOARD != "" then %
 BOARD = % !BOARD end if 
-let MACHINESPATH := OS::BUILD_S::TRAMPOLINE_BASE_PATH."/machines"
+let MACHINESPATH := OS::BUILD_S::TRAMPOLINE_BASE_PATH+"/machines"
 let PARTIAL_PATH := MACHINESPATH
 foreach COMPONENT in TARGETPATHLIST
 before %
 MACHINE_INCLUDE_PATH =%
 do 
-  let PARTIAL_PATH := PARTIAL_PATH . "/" . COMPONENT
+  let PARTIAL_PATH := PARTIAL_PATH + "/" + COMPONENT
 % -I% !PARTIAL_PATH 
 end foreach
 
@@ -247,7 +247,7 @@ foreach COMPONENT in TARGETPATHLIST
 before %
 MACHINE_INCLUDE_MAKEFILE =%
 do 
-  let PARTIAL_PATH := PARTIAL_PATH . "/" . COMPONENT
+  let PARTIAL_PATH := PARTIAL_PATH + "/" + COMPONENT
 % % !PARTIAL_PATH%/Makefile% 
 end foreach
 
@@ -256,7 +256,7 @@ foreach COMPONENT in TARGETPATHLIST
 before %
 MACHINE_ALL_PATHS =%
 do 
-  let PARTIAL_PATH := PARTIAL_PATH . "/" . COMPONENT
+  let PARTIAL_PATH := PARTIAL_PATH + "/" + COMPONENT
 % % !PARTIAL_PATH 
 end foreach%
 

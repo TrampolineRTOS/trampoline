@@ -57,9 +57,9 @@ let st::STATE := state
 # put before activate task actions and after set event actions
 #
 loop expiry_index from 0 to [st::EXPIRY_POINT length] - 1 do
-  let set_event := emptylist
-  let activate_task := emptylist
-  let finalize := emptylist
+  let set_event := @( )
+  let activate_task := @( )
+  let finalize := @( )
   foreach action in st::EXPIRY_POINT[expiry_index]::ACTION do
     if    action::VALUE == "SETEVENT" then
       let set_event += action
@@ -69,7 +69,7 @@ loop expiry_index from 0 to [st::EXPIRY_POINT length] - 1 do
       let finalize += action
     end if
   end foreach
-  let actions := emptylist
+  let actions := @( )
   foreach action in activate_task do
     let actions += action
   end foreach
@@ -93,7 +93,7 @@ end loop
 %
 foreach ep in st::EXPIRY_POINT do
   foreach act in ep::ACTION do
-    let action_name := st::NAME . "_" . [ep::OFFSET string] . "_" . [INDEX string]
+    let action_name := st::NAME + "_" + [ep::OFFSET string] + "_" + [INDEX string]
     let action := act::VALUE
     let action_s := act::VALUE_S
     # action_descriptor uses current NAME to name the action

@@ -39,8 +39,8 @@ end foreach
 let interrupt_map := mapof INTERRUPT by NAME
 foreach counter in HARDWARECOUNTERS do
   if not exists interrupt_map[counter::SOURCE] then
-    error counter::NAME : "interrupt source " . counter::SOURCE . " does not "
-                        . "exists."
+    error counter::NAME : "interrupt source " + counter::SOURCE + " does not "
+                        + "exists."
   end if
 end foreach
 
@@ -51,7 +51,7 @@ end foreach
 foreach counter in SOFTWARECOUNTERS do
   if counter::HANDLER == "watchdog" then
     error counter::TYPE : "Watchdog must be an hardwarecounter. Please set the"
-                        . " type to HARDWARECOUNTER."
+                        + " type to HARDWARECOUNTER."
   end if
 end foreach
 
@@ -81,7 +81,7 @@ foreach counter in HARDWARECOUNTERS do
     & counter::SOURCE != "pit_ch2"
     & counter::SOURCE != "pit_ch3" then
     error counter::NAME : "Watchdog must use a pit channel. Possible values : "
-                        . "pit_ch0, pit_ch1, pit_ch2, pit_ch3"
+                        + "pit_ch0, pit_ch1, pit_ch2, pit_ch3"
   end if
 end foreach
 
@@ -110,14 +110,14 @@ end if
 # Two hardware counters that uses the same channel must have the same frequency
 #
 
-let pit_channel_list := emptymap
+let pit_channel_list := @[ ]
 foreach counter in HARDWARECOUNTERS do
   if exists pit_channel_list[counter::SOURCE] then
     if pit_channel_list[counter::SOURCE]::FREQUENCY != counter::FREQUENCY then
-      error counter::FREQUENCY : "Counters " . counter::NAME . " and "
-                               . pit_channel_list[counter::SOURCE]::NAME
-                               . " have different frequencies and the same "
-                               . "interrupt source " . counter::SOURCE
+      error counter::FREQUENCY : "Counters " + counter::NAME + " and "
+                               + pit_channel_list[counter::SOURCE]::NAME
+                               + " have different frequencies and the same "
+                               + "interrupt source " + counter::SOURCE
     end if
   else
     let pit_channel_list[counter::SOURCE] := counter
@@ -132,8 +132,8 @@ end foreach
 if OS::NUMBER_OF_CORES > 1 then
   foreach counter in HARDWARECOUNTERS do
     if counter::SOURCE == "decrementer" then
-      warning counter::SOURCE : "Decrementer, used by " . counter::NAME . ", "
-                              . " is not tested in multicore."
+      warning counter::SOURCE : "Decrementer, used by " + counter::NAME + ", "
+                              + " is not tested in multicore."
     end if
   end foreach
 end if

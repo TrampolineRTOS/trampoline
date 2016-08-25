@@ -31,7 +31,7 @@
 
 if OS::NUMBER_OF_CORES > 2 then
   error OS::NUMBER_OF_CORES : "Too many cores for the selected chip (MPC5643L)"
-                            . " Max 2 cores. "
+                            + " Max 2 cores. "
 end if
 
 

@@ -6,7 +6,7 @@
 #include "tpl_memmap.h"
 
 %
-let used_counters := emptymap
+let used_counters := @( )
 foreach counter in HARDWARECOUNTERS do
   let used_counters[counter::SOURCE] := counter
 end foreach

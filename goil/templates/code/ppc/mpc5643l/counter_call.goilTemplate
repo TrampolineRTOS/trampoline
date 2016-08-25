@@ -3,7 +3,7 @@
 # build an empty list when the list does not exist. This simplify
 # further processing because existence test is not necessary
 
-let INTERCORE_INTERRUPT := exists INTERCORE_INTERRUPT default (emptylist)
+let INTERCORE_INTERRUPT := exists INTERCORE_INTERRUPT default (@( ))
 %
 #include "tpl_os_kernel.h"          /* tpl_schedule */
 #include "tpl_os_timeobj_kernel.h"  /* tpl_counter_tick */
@@ -24,9 +24,9 @@ if OS::NUMBER_OF_CORES == 1 then
   let counter_map   := mapof COUNTER by NAME
   let interrupt_map := mapof INTERRUPT by NAME
 
-  let used_interrupts := emptymap
+  let used_interrupts := @( )
   foreach application in APPLICATION do
-    foreach counter_name in exists application::COUNTER default(emptylist) do
+    foreach counter_name in exists application::COUNTER default(@( )) do
       let counter := counter_map[counter_name::VALUE]
       if counter::TYPE == "HARDWARE" then
         let interrupt := interrupt_map[counter::SOURCE]
@@ -77,10 +77,10 @@ end foreach
 
   # Get used counter source for each core
   loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
-    let used_interrupts := emptymap
+    let used_interrupts := @( )
     foreach application in APPLICATION do
       if application::CORE == core_id then
-        foreach counter_name in exists application::COUNTER default(emptylist) do
+        foreach counter_name in exists application::COUNTER default(@( )) do
           let counter := counter_map[counter_name::VALUE]
           if counter::TYPE == "HARDWARE" then
             let interrupt := interrupt_map[counter::SOURCE]
@@ -99,7 +99,7 @@ FUNC(void, OS_CODE) tpl_call_counter_tick_% !interrupt::NAME %_% !core_id %(void
     # Call tpl_counter tick for each counter using this interrupt in this core
     foreach application in APPLICATION do
       if application::CORE == core_id then
-        foreach counter_name in exists application::COUNTER default(emptylist) do
+        foreach counter_name in exists application::COUNTER default(@( )) do
           let counter := counter_map[counter_name::VALUE]
           if counter::SOURCE == interrupt::NAME
            & counter::TYPE == "HARDWARE" then%

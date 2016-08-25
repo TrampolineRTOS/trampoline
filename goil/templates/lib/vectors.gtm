@@ -12,9 +12,9 @@ func computeVector (app, proc, owned_proc) vector
     let acc_app := exists proc::ACCESSING_APPLICATION default ( @() )
     let acc_app_set := [exists proc::ACCESSING_APPLICATION default ( @() ) setBy: "VALUE"]
     if [acc_app_set contains: app::NAME] then
-      let vector := vector . "1"
+      let vector := vector + "1"
     else
-      let vector := vector . "0"
+      let vector := vector + "0"
     end if
   end if
 end func

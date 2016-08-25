@@ -9,8 +9,8 @@ if exists proc::STACKSIZE then
       end if
     end foreach
 
-    foreach task in TASKS do
-      if task::USEFLOAT then
+    foreach tsk in TASKS do
+      if tsk::USEFLOAT then
         let use_float := true
       end if
     end foreach

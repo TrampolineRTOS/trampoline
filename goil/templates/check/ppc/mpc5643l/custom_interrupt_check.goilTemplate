@@ -33,9 +33,9 @@ let previous_id := ""
 let previous_it
 foreach interrupt in sorted_interrupt do
   if [interrupt::ID string] == previous_id & previous_id != "" then
-    error interrupt::ID : "Interrupts " . interrupt::NAME . " and "
-                        . previous_it::NAME . " have the same ID ("
-                        . [interrupt::ID string] . ")"
+    error interrupt::ID : "Interrupts " + interrupt::NAME + " and "
+                        + previous_it::NAME + " have the same ID ("
+                        + [interrupt::ID string] + ")"
   end if
   let previous_id := [interrupt::ID string]
   let previous_it := interrupt

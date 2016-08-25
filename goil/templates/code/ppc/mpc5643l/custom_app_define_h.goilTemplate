@@ -3,23 +3,23 @@
 # build an empty list when the list does not exist. This simplify
 # further processing because existence test is not necessary
 
-let INTERCORE_INTERRUPT := exists INTERCORE_INTERRUPT default (emptylist)
+let INTERCORE_INTERRUPT := exists INTERCORE_INTERRUPT default (@( ))
 
 %
 /*=============================================================================
  * Target specific definitions
  */
 %
-let channel_map := emptymap
+let channel_map := @( )
 let channel_map["pit_ch0"] := "TPL_PIT_0"
 let channel_map["pit_ch1"] := "TPL_PIT_1"
 let channel_map["pit_ch2"] := "TPL_PIT_2"
 let channel_map["pit_ch3"] := "TPL_PIT_3"
 
 # Count only counters used in applications
-let used_counters := emptymap
+let used_counters := @( )
 foreach app in APPLICATION do
-  foreach app_counter in exists app::COUNTER default(emptylist) do
+  foreach app_counter in exists app::COUNTER default(@( )) do
     foreach counter in HARDWARECOUNTERS do
       if app_counter::VALUE == counter::NAME then
         let used_counters[counter::SOURCE] := counter
@@ -115,7 +115,7 @@ end foreach
 let irqs := mapof INTERRUPT by NAME
 
 loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
-  let it_list := emptylist
+  let it_list := @( )
 
   # Get a list of intercore_interrupt for each core
   foreach it in INTERCORE_INTERRUPT do

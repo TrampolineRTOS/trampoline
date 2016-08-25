@@ -1,7 +1,7 @@
 #ENTRY(_start)
 
 %
-let section_kind_hash := emptymap
+let section_kind_hash := @( )
 let section_kind_hash["_NOINIT_"]           := "NI"
 let section_kind_hash["_POWER_ON_INIT_"]    := "PI"
 let section_kind_hash["_FAST_"]             := "FS"
@@ -11,7 +11,7 @@ let section_kind_hash["_CARTO_"]            := "CR"
 let section_kind_hash["_CONFIG_DATA_"]      := "CF"
 let section_kind_hash["_"]                  := "__"
 
-let data_size_hash := emptymap
+let data_size_hash := @( )
 let data_size_hash["32BIT"]             := "32"
 let data_size_hash["16BIT"]             := "16"
 let data_size_hash["8BIT"]              := "08"
@@ -162,19 +162,19 @@ let data_size_hash["UNSPECIFIED"]       := "UN"
 +seg appconst -a osconst -n appconst -r4
 %
 foreach app in APPLICATIONS do
- let pragma_app_name := [("000" . [INDEX string]) rightSubString: 3]
- for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
-  for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
+ let pragma_app_name := [("000" + [INDEX string]) rightSubString: 3]
+ foreach DATA_SIZE in @("32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED") do
+  foreach SECTION_KIND in @("_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_") do
    let pragma_section_kind := section_kind_hash[SECTION_KIND]
    let pragma_data_size := data_size_hash[DATA_SIZE]
-   let section_name := ".osApC" . pragma_app_name
-                                . pragma_section_kind
-                                . pragma_data_size
+   let section_name := ".osApC" + pragma_app_name
+                                + pragma_section_kind
+                                + pragma_data_size
 %
      +grp appconst=% !section_name %
 %
-  end for
- end for
+  end foreach
+ end foreach
 end foreach
 %
 
@@ -185,17 +185,17 @@ end foreach
 
 %
 
-for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
- for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
+foreach DATA_SIZE in @("32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED") do
+ foreach SECTION_KIND in @("_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_") do
   let pragma_section_kind := section_kind_hash[SECTION_KIND]
   let pragma_data_size := data_size_hash[DATA_SIZE]
   foreach proc in PROCESSES do
     let pragma_proc_kind := [proc::KIND leftSubString: 2]
-    let pragma_proc_name := [("000" . [INDEX string]) rightSubString: 3]
-    let section_name := ".Cst" . pragma_proc_kind
-                               . pragma_proc_name
-                               . pragma_section_kind
-                               . pragma_data_size
+    let pragma_proc_name := [("000" + [INDEX string]) rightSubString: 3]
+    let section_name := ".Cst" + pragma_proc_kind
+                               + pragma_proc_name
+                               + pragma_section_kind
+                               + pragma_data_size
 %
     +grp procconst=% !section_name %
 %
@@ -211,13 +211,13 @@ for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
       let proc::NAME := "IDLE_TASK"
       let pragma_proc_name := "Idl"
     else
-      let proc::NAME := "IDLE_TASK_".[core string]
-      let pragma_proc_name := "Id".[[core string] rightSubString: 1]
+      let proc::NAME := "IDLE_TASK_"+[core string]
+      let pragma_proc_name := "Id"+[[core string] rightSubString: 1]
     end if
-    let section_name := ".Cst" . pragma_proc_kind
-                               . pragma_proc_name
-                               . pragma_section_kind
-                               . pragma_data_size
+    let section_name := ".Cst" + pragma_proc_kind
+                               + pragma_proc_name
+                               + pragma_section_kind
+                               + pragma_data_size
 %
     +grp procconst=% !section_name %
 %
@@ -226,16 +226,16 @@ for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
 
 %
   foreach isr in ISRS1 do
-    let pragma_isr_name := [("000" . [INDEX string]) rightSubString: 3]
-    let section_name := ".IrCs" . pragma_isr_name
-                                . pragma_section_kind
-                                . pragma_data_size
+    let pragma_isr_name := [("000" + [INDEX string]) rightSubString: 3]
+    let section_name := ".IrCs" + pragma_isr_name
+                                + pragma_section_kind
+                                + pragma_data_size
 %
     +grp procconst=% !section_name %
 %
   end foreach
- end for
-end for
+ end foreach
+end foreach
 %
 
 # /* Other (garbage) constants */
@@ -309,9 +309,9 @@ end for
 %
 foreach proc in PROCESSES do
     let pragma_proc_kind := [proc::KIND leftSubString: 2]
-    let pragma_proc_name := [("000" . [INDEX string]) rightSubString: 3]
-    let section_name := ".Cde" . pragma_proc_kind
-                               . pragma_proc_name
+    let pragma_proc_name := [("000" + [INDEX string]) rightSubString: 3]
+    let section_name := ".Cde" + pragma_proc_kind
+                               + pragma_proc_name
 %
      +grp apptext=% !section_name %
 %
@@ -327,11 +327,11 @@ loop core from 0 to OS::NUMBER_OF_CORES - 1 do
     let proc::NAME := "IDLE_TASK"
     let pragma_proc_name := "Idl"
   else
-    let proc::NAME := "IDLE_TASK_".[core string]
-    let pragma_proc_name := "Id".[[core string] rightSubString: 1]
+    let proc::NAME := "IDLE_TASK_"+[core string]
+    let pragma_proc_name := "Id"+[[core string] rightSubString: 1]
   end if
-  let section_name := ".Cde" . pragma_proc_kind
-                             . pragma_proc_name
+  let section_name := ".Cde" + pragma_proc_kind
+                             + pragma_proc_name
 %
      +grp apptext=% !section_name %
 %
@@ -340,8 +340,8 @@ end loop
 
 %
 foreach isr in ISRS1 do
-    let pragma_isr_name := [("000" . [INDEX string]) rightSubString: 3]
-    let section_name := ".IrCd" . pragma_isr_name
+    let pragma_isr_name := [("000" + [INDEX string]) rightSubString: 3]
+    let section_name := ".IrCd" + pragma_isr_name
 %
     +grp apptext=% !section_name %
 %
@@ -382,24 +382,24 @@ end foreach
 
 %
 foreach app in APPLICATIONS do
-  let pragma_app_name := [("000" . [INDEX string]) rightSubString: 3]
+  let pragma_app_name := [("000" + [INDEX string]) rightSubString: 3]
 %
 # /* Initialized variables section of OS_APP % !app::NAME % */
   +def ___SEG_START_OS_APP_% !app::NAME %_VAR_RGN=@appvars
 %
   let section_name := ""
-  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
-    for SECTION_KIND in "_POWER_ON_INIT_","_FAST_","_" do
+  foreach DATA_SIZE in @("32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED") do
+    foreach SECTION_KIND in @("_POWER_ON_INIT_","_FAST_","_") do
      let pragma_section_kind := section_kind_hash[SECTION_KIND]
      let pragma_data_size := data_size_hash[DATA_SIZE]
-     let section_name     := ".osApV" . pragma_app_name
-                                      . pragma_section_kind
-                                      . pragma_data_size
+     let section_name     := ".osApV" + pragma_app_name
+                                      + pragma_section_kind
+                                      + pragma_data_size
 %
     +grp appvars=% !section_name %
 %
-    end for
-  end for
+    end foreach
+  end foreach
 %
   +def ___SEG_END_OS_APP_% !app::NAME %_VAR_RGN=@appvars
 %
@@ -412,28 +412,28 @@ end foreach
 let segment_name  := "appvars"
 foreach proc in PROCESSES do
   let pragma_proc_kind := [proc::KIND leftSubString: 2]
-  let pragma_proc_name := [("000" . [INDEX string]) rightSubString: 3]
+  let pragma_proc_name := [("000" + [INDEX string]) rightSubString: 3]
   let previous_segment_name := segment_name
-  let segment_name     := ".Var" . pragma_proc_kind
-                                 . pragma_proc_name
+  let segment_name     := ".Var" + pragma_proc_kind
+                                 + pragma_proc_name
 %
 # /* Initialized variables section of % !proc::KIND % % !proc::NAME % */
   +seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r4 -id
 
 %
-  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
-    for SECTION_KIND in "_POWER_ON_INIT_","_FAST_","_" do
+  foreach DATA_SIZE in @("32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED") do
+    foreach SECTION_KIND in @("_POWER_ON_INIT_","_FAST_","_") do
       let pragma_section_kind := section_kind_hash[SECTION_KIND]
       let pragma_data_size := data_size_hash[DATA_SIZE]
-      let section_name := ".Var" . pragma_proc_kind
-                                 . pragma_proc_name
-                                 . pragma_section_kind
-                                 . pragma_data_size
+      let section_name := ".Var" + pragma_proc_kind
+                                 + pragma_proc_name
+                                 + pragma_section_kind
+                                 + pragma_data_size
 %
       +grp % !segment_name %=% !section_name %
 %
-    end for
-  end for
+    end foreach
+  end foreach
 %
   +def ___SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pstart(% !segment_name %)
   +def ___SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pend(% !segment_name %)
@@ -450,29 +450,29 @@ loop core from 0 to OS::NUMBER_OF_CORES - 1 do
     let proc::NAME := "IDLE_TASK"
     let pragma_proc_name := "Idl"
   else
-    let proc::NAME := "IDLE_TASK_".[core string]
-    let pragma_proc_name := "Id".[[core string] rightSubString: 1]
+    let proc::NAME := "IDLE_TASK_"+[core string]
+    let pragma_proc_name := "Id"+[[core string] rightSubString: 1]
   end if
   let previous_segment_name := segment_name
-  let segment_name     := ".Var" . pragma_proc_kind
-                                 . pragma_proc_name
+  let segment_name     := ".Var" + pragma_proc_kind
+                                 + pragma_proc_name
 %
 # /* Initialized variables section of % !proc::KIND % % !proc::NAME % */
   +seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r4 -id
 %
-  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
-    for SECTION_KIND in "_POWER_ON_INIT_","_FAST_","_" do
+  foreach DATA_SIZE in @("32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED") do
+    foreach SECTION_KIND in @("_POWER_ON_INIT_","_FAST_","_") do
       let pragma_section_kind := section_kind_hash[SECTION_KIND]
       let pragma_data_size := data_size_hash[DATA_SIZE]
-      let section_name := ".Var" . pragma_proc_kind
-                                 . pragma_proc_name
-                                 . pragma_section_kind
-                                 . pragma_data_size
+      let section_name := ".Var" + pragma_proc_kind
+                                 + pragma_proc_name
+                                 + pragma_section_kind
+                                 + pragma_data_size
 %
       +grp % !segment_name %=% !section_name %
 %
-    end for
-  end for
+    end foreach
+  end foreach
 %
   +def ___SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pstart(% !segment_name %)
   +def ___SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pend(% !segment_name %)
@@ -508,18 +508,18 @@ end loop
 
 %
 foreach app in APPLICATIONS do
-  let pragma_app_name := [("000" . [INDEX string]) rightSubString: 3]
+  let pragma_app_name := [("000" + [INDEX string]) rightSubString: 3]
   let section_name := ""
-  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+  foreach DATA_SIZE in @("32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED") do
     let pragma_section_kind := section_kind_hash["_NOINIT_"]
     let pragma_data_size := data_size_hash[DATA_SIZE]
-    let section_name     := ".osApV" . pragma_app_name
-                                     . pragma_section_kind
-                                     . pragma_data_size
+    let section_name     := ".osApV" + pragma_app_name
+                                     + pragma_section_kind
+                                     + pragma_data_size
 %
     +grp appvarnoinit=% !section_name %
 %
-  end for
+  end foreach
 end foreach
 %
 
@@ -529,26 +529,26 @@ end foreach
 let segment_name  := "appvarnoinit"
 foreach proc in PROCESSES do
   let pragma_proc_kind := [proc::KIND leftSubString: 2]
-  let pragma_proc_name := [("000" . [INDEX string]) rightSubString: 3]
+  let pragma_proc_name := [("000" + [INDEX string]) rightSubString: 3]
   let previous_segment_name := segment_name
-  let segment_name     := ".VarNI" . pragma_proc_kind
-                                   . pragma_proc_name
+  let segment_name     := ".VarNI" + pragma_proc_kind
+                                   + pragma_proc_name
 %
 # /* Unitialized variables section of % !proc::KIND % % !proc::NAME % */
   +seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r4
 
 %
-  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+  foreach DATA_SIZE in @("32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED") do
     let pragma_section_kind := section_kind_hash["_NOINIT_"]
     let pragma_data_size := data_size_hash[DATA_SIZE]
-    let section_name := ".Var" . pragma_proc_kind
-                               . pragma_proc_name
-                               . pragma_section_kind
-                               . pragma_data_size
+    let section_name := ".Var" + pragma_proc_kind
+                               + pragma_proc_name
+                               + pragma_section_kind
+                               + pragma_data_size
 %
       +grp % !segment_name %=% !section_name %
 %
-  end for
+  end foreach
 %
 #  +def ___SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pstart(% !segment_name %)
 #  +def ___SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pend(% !segment_name %)
@@ -565,27 +565,27 @@ loop core from 0 to OS::NUMBER_OF_CORES - 1 do
     let proc::NAME := "IDLE_TASK"
     let pragma_proc_name := "Idl"
   else
-    let proc::NAME := "IDLE_TASK_".[core string]
-    let pragma_proc_name := "Id".[[core string] rightSubString: 1]
+    let proc::NAME := "IDLE_TASK_"+[core string]
+    let pragma_proc_name := "Id"+[[core string] rightSubString: 1]
   end if
   let previous_segment_name := segment_name
-  let segment_name     := ".VarNI" . pragma_proc_kind
-                                   . pragma_proc_name
+  let segment_name     := ".VarNI" + pragma_proc_kind
+                                   + pragma_proc_name
 %
 # /* Unitialized variables section of % !proc::KIND % % !proc::NAME % */
   +seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r4
 %
-  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+  foreach DATA_SIZE in @("32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED") do
     let pragma_section_kind := section_kind_hash["_NOINIT_"]
     let pragma_data_size := data_size_hash[DATA_SIZE]
-    let section_name := ".Var" . pragma_proc_kind
-                               . pragma_proc_name
-                               . pragma_section_kind
-                               . pragma_data_size
+    let section_name := ".Var" + pragma_proc_kind
+                               + pragma_proc_name
+                               + pragma_section_kind
+                               + pragma_data_size
 %
       +grp % !segment_name %=% !section_name %
 %
-  end for
+  end foreach
 %
 #  +def ___SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pstart(% !segment_name %)
 #  +def ___SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pend(% !segment_name %)
@@ -608,10 +608,10 @@ end loop
 let segment_name := "bss_garbage"
 foreach proc in PROCESSES do
   let pragma_proc_kind := [proc::KIND leftSubString: 2]
-  let pragma_proc_name := [("000" . [INDEX string]) rightSubString: 3]
+  let pragma_proc_name := [("000" + [INDEX string]) rightSubString: 3]
   let previous_segment_name := segment_name
-  let segment_name     := ".Stk" . pragma_proc_kind
-                                 . pragma_proc_name
+  let segment_name     := ".Stk" + pragma_proc_kind
+                                 + pragma_proc_name
 %
 # /* Section of stack of % !proc::KIND % % !proc::NAME %  */
   +seg % !segment_name %  -a % !previous_segment_name % -n % !segment_name % -r4
@@ -631,12 +631,12 @@ loop core from 0 to OS::NUMBER_OF_CORES - 1 do
     let proc::NAME := "IDLE_TASK"
     let pragma_proc_name := "Idl"
   else
-    let proc::NAME := "IDLE_TASK_".[core string]
-    let pragma_proc_name := "Id".[[core string] rightSubString: 1]
+    let proc::NAME := "IDLE_TASK_"+[core string]
+    let pragma_proc_name := "Id"+[[core string] rightSubString: 1]
   end if
   let previous_segment_name := segment_name
-  let segment_name     := ".Stk" . pragma_proc_kind
-                                 . pragma_proc_name
+  let segment_name     := ".Stk" + pragma_proc_kind
+                                 + pragma_proc_name
 %
 # /* Section of stack of % !proc::KIND % % !proc::NAME %  */
   +seg % !segment_name %  -a % !previous_segment_name % -n % !segment_name % -r4

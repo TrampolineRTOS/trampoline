@@ -329,61 +329,61 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
     if [task length] > 1 then 
       error KEY : "TASK " + KEY + " belong to more than one Application"
       foreach app in task do
-        error app::NAME : "It belongs to APPLICATION ".app::NAME
+        error app::NAME : "It belongs to APPLICATION "+app::NAME
       end foreach
     end if
   end foreach
   
   foreach isr in isr_map do
     if [isr length] > 1 then 
-      error KEY : "ISR ".KEY." belong to more than one Application"
+      error KEY : "ISR "+KEY+" belong to more than one Application"
       foreach app in isr do
-        error app::NAME : "It belongs to APPLICATION ".app::NAME
+        error app::NAME : "It belongs to APPLICATION "+app::NAME
       end foreach
     end if
   end foreach
   
   foreach counter in counter_map do
     if [counter length] > 1 then 
-      error KEY : "COUNTER ".KEY." belong to more than one Application"
+      error KEY : "COUNTER "+KEY+" belong to more than one Application"
       foreach app in counter do
-        error app::NAME : "It belongs to APPLICATION ".app::NAME
+        error app::NAME : "It belongs to APPLICATION "+app::NAME
       end foreach
     end if
   end foreach
   
   foreach alarm in alarm_map do
     if [alarm length] > 1 then 
-      error KEY : "ALARM ".KEY." belong to more than one Application"
+      error KEY : "ALARM "+KEY+" belong to more than one Application"
       foreach app in task do
-        error app::NAME : "It belongs to APPLICATION ".app::NAME
+        error app::NAME : "It belongs to APPLICATION "+app::NAME
       end foreach
     end if
   end foreach
   
   foreach resource in resource_map do
     if [resource length] > 1 then 
-      error KEY : "RESOURCE ".KEY." belong to more than one Application"
+      error KEY : "RESOURCE "+KEY+" belong to more than one Application"
       foreach app in resource do
-        error app::NAME : "It belongs to APPLICATION ".app::NAME
+        error app::NAME : "It belongs to APPLICATION "+app::NAME
       end foreach
     end if
   end foreach
   
   foreach message in message_map do
     if [message length] > 1 then 
-      error KEY : "MESSAGE ".KEY." belong to more than one Application"
+      error KEY : "MESSAGE "+KEY+" belong to more than one Application"
       foreach app in message do
-        error app::NAME : "It belongs to APPLICATION ".app::NAME
+        error app::NAME : "It belongs to APPLICATION "+app::NAME
       end foreach
     end if
   end foreach
   
   foreach scheduletable in scheduletable_map do
     if [scheduletable length] > 1 then 
-      error KEY : "SCHEDULETABLE ".KEY." belong to more than one Application"
+      error KEY : "SCHEDULETABLE "+KEY+" belong to more than one Application"
       foreach app in scheduletable do
-        error app::NAME : "It belongs to APPLICATION ".app::NAME
+        error app::NAME : "It belongs to APPLICATION "+app::NAME
       end foreach
     end if
   end foreach
@@ -393,7 +393,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
   let task_with_app := @()
   foreach task in TASK do
     if not exists task_map[task::NAME] then
-      error task::NAME : "TASK ".task::NAME." does not belong to any Application"
+      error task::NAME : "TASK "+task::NAME+" does not belong to any Application"
     else
       let app := [task_map[task::NAME] first]
       let task::APPLICATION := app
@@ -406,7 +406,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
   let isr_with_app := @()
   foreach isr in ISR do
     if not exists isr_map[isr::NAME] then
-      error isr::NAME : "ISR ".isr::NAME." does not belong to any Application"
+      error isr::NAME : "ISR "+isr::NAME+" does not belong to any Application"
     else
       let app := [isr_map[isr::NAME] first]
       let isr::APPLICATION := app
@@ -419,7 +419,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
   let counter_with_app := @()
   foreach counter in COUNTER do
     if not exists counter_map[counter::NAME] then
-      error counter::NAME : "COUNTER ".counter::NAME." does not belong to any Application"
+      error counter::NAME : "COUNTER "+counter::NAME+" does not belong to any Application"
     elsif [counter_map[counter::NAME] length] > 0 then
       let app := [counter_map[counter::NAME] first]
       let counter::APPLICATION := app
@@ -431,7 +431,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
   let alarm_with_app := @()
   foreach alarm in ALARM do
     if not exists alarm_map[alarm::NAME] then
-      error alarm::NAME : "ALARM ".alarm::NAME." does not belong to any Application"
+      error alarm::NAME : "ALARM "+alarm::NAME+" does not belong to any Application"
     else
       let app := [alarm_map[alarm::NAME] first]
       let alarm::APPLICATION := app
@@ -444,7 +444,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
   let rez_with_app := @()
   foreach resource in RESOURCE do
     if not exists resource_map[resource::NAME] then
-      error resource::NAME : "Resource ".resource::NAME." does not belong to any Application"
+      error resource::NAME : "Resource "+resource::NAME+" does not belong to any Application"
     else
       let app := [resource_map[resource::NAME] first]
       let resource::APPLICATION := app
@@ -456,7 +456,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
   let mess_with_app := @()
   foreach message in MESSAGE do
     if not exists message_map[message::NAME] then
-      error message::NAME : "Message ".message::NAME." does not belong to any Application"
+      error message::NAME : "Message "+message::NAME+" does not belong to any Application"
     else
       let app := [message_map[message::NAME] first]
       let message::APPLICATION := app::VALUE
@@ -468,7 +468,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
   let st_with_app := @()
   foreach scheduletable in SCHEDULETABLE do
     if not exists scheduletable_map[scheduletable::NAME] then
-      error scheduletable::NAME : "Schedule Table ".scheduletable::NAME." does not belong to any Application"
+      error scheduletable::NAME : "Schedule Table "+scheduletable::NAME+" does not belong to any Application"
     else
       let app := [scheduletable_map[scheduletable::NAME] first]
       let scheduletable::APPLICATION := app
@@ -792,10 +792,10 @@ if OS::NUMBER_OF_CORES > 1 then
   foreach app in APPLICATION do
     let core := exists app::CORE default (0)
     foreach task in exists app::TASK default (@()) do
-      let CORE_FOR_PROCESS[task] := core
+      let CORE_FOR_PROCESS[task::VALUE] := core
     end foreach
     foreach isr in exists app::ISR default (@()) do
-      let CORE_FOR_PROCESS[isr] := core
+      let CORE_FOR_PROCESS[isr::VALUE] := core
     end foreach
   end foreach
 end if
@@ -1406,38 +1406,38 @@ template api
 
 !PROJECT %/tpl_app_custom_types.h
 %
-write to PROJECT."/tpl_app_custom_types.h":
+write to PROJECT+"/tpl_app_custom_types.h":
   template tpl_app_custom_types_h in code
 end write
 
 !PROJECT %/tpl_app_config.c
 %
-write to PROJECT."/tpl_app_config.c":
+write to PROJECT+"/tpl_app_config.c":
   template tpl_app_config_c in code
 end write
 
 !PROJECT %/tpl_app_config.h
 %
-write to PROJECT."/tpl_app_config.h":
+write to PROJECT+"/tpl_app_config.h":
   template tpl_app_config_h in code
 end write
 
 !PROJECT %/tpl_app_define.h
 %
-write to PROJECT."/tpl_app_define.h":
+write to PROJECT+"/tpl_app_define.h":
   template tpl_app_define_h in code
 end write
 
 if [ioc_reordered length] != 0 then
   !PROJECT %/tpl_ioc_api_config.c
 %
-  write to PROJECT."/tpl_ioc_api_config.c":
+  write to PROJECT+"/tpl_ioc_api_config.c":
     template tpl_ioc_api_config_c in code
   end write
 
   !PROJECT %/tpl_ioc_api_config.h
 %
-  write to PROJECT."/tpl_ioc_api_config.h":
+  write to PROJECT+"/tpl_ioc_api_config.h":
     template tpl_ioc_api_config_h in code
   end write
 end if
@@ -1447,17 +1447,17 @@ if OS::MEMMAP then
     let COMPILER := OS::MEMMAP_S::COMPILER
     !PROJECT %/MemMap.h
 %
-    write to PROJECT."/MemMap.h":
+    write to PROJECT+"/MemMap.h":
       template MemMap_h in compiler
     end write
     !PROJECT %/Compiler.h
 %
-    write to PROJECT."/Compiler.h":
+    write to PROJECT+"/Compiler.h":
       template Compiler_h in compiler
     end write
     !PROJECT %/Compiler_Cfg.h
 %
-    write to PROJECT."/Compiler_Cfg.h":
+    write to PROJECT+"/Compiler_Cfg.h":
       template Compiler_Cfg_h in compiler
     end write
   end if
@@ -1466,7 +1466,7 @@ if OS::MEMMAP then
     let LINKER := OS::MEMMAP_S::LINKER
     !PROJECT %/% !OS::MEMMAP_S::LINKER_S::SCRIPT%
 %
-    write to PROJECT."/".OS::MEMMAP_S::LINKER_S::SCRIPT:
+    write to PROJECT+"/"+OS::MEMMAP_S::LINKER_S::SCRIPT:
       template script in linker
     end write
   end if
@@ -1475,7 +1475,7 @@ if OS::MEMMAP then
     let ASSEMBLER := OS::MEMMAP_S::ASSEMBLER
     !PROJECT %/AsMemMap.h
 %
-    write to PROJECT."/AsMemMap.h":
+    write to PROJECT+"/AsMemMap.h":
       template AsMemMap_h in assembler
     end write
   end if
@@ -1484,7 +1484,7 @@ end if
 if OS::TRACE then
 !PROJECT%.desc
 %
-  write to PROJECT.".desc":
+  write to PROJECT+".desc":
     template trace_description in log
   end write
 end if
@@ -1495,6 +1495,6 @@ template if exists custom_code in code
 
 !PROJECT %/stm_structure.c
 %
-write to PROJECT."/stm_structure.c":
+write to PROJECT+"/stm_structure.c":
   template stm_structure_c in code
 end write

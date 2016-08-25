@@ -9,13 +9,13 @@
 # Target specific initializations
 # build the maps for IRQ
 #
-let objForIRQ := emptymap
+let objForIRQ := @[ ]
 
 # Map ISR into objForIRQ
 foreach isr in ISR do
   let key := isr::SOURCE
   if not exists objForIRQ[key] then
-    let objForIRQ[key] := emptylist
+    let objForIRQ[key] := @( )
   end if
   let isr::KIND := "ISR"
   let objForIRQ[key] += isr
@@ -25,7 +25,7 @@ end foreach
 foreach cnt in COUNTER do
   let key := cnt::SOURCE
   if not exists objForIRQ[key] then
-    let objForIRQ[key] := emptylist
+    let objForIRQ[key] := @( )
   end if
   let cnt::KIND := "COUNTER"
   let objForIRQ[key] += cnt

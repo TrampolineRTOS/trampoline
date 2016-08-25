@@ -74,7 +74,7 @@ do
       end foreach
     end if
     if [text_mask length] == 0 then
-      warning task::AUTOSTART : "Task ".task::NAME." is AUTOSTART but does not declare any APPMODE"
+      warning task::AUTOSTART : "Task "+task::NAME+" is AUTOSTART but does not declare any APPMODE"
     end if
   end if
   %  % ! mask % /* task % ! task::NAME % : % 
@@ -114,7 +114,7 @@ do
       end foreach
     end if
     if [text_mask length] == 0 then
-      warning alarm::AUTOSTART : "Alarm ".alarm::NAME." is AUTOSTART but does not declare any APPMODE"
+      warning alarm::AUTOSTART : "Alarm "+alarm::NAME+" is AUTOSTART but does not declare any APPMODE"
     end if
   end if
   %  % ! mask % /* alarm % ! alarm::NAME % : % 
@@ -154,7 +154,7 @@ do
       end foreach
     end if
     if [text_mask length] == 0 then
-      warning scheduletable::AUTOSTART : "Scedule Table ".scheduletable::NAME." is AUTOSTART but does not declare any APPMODE"
+      warning scheduletable::AUTOSTART : "Scedule Table "+scheduletable::NAME+" is AUTOSTART but does not declare any APPMODE"
     end if
   end if
   %  % ! mask % /* schedule table % ! scheduletable::NAME % : % 

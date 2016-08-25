@@ -52,7 +52,7 @@ end if
 # Multicore
 if OS::NUMBER_OF_CORES > 1 then
   let APIUSED += APIMAP["multicore"]
-  warning here : "Adding multicore"
+  #warning here: "Adding multicore"
 
   if [SPINLOCK length] > 0 then
     let APIUSED += APIMAP["spinlock"]
@@ -71,28 +71,28 @@ end if
 if OS::SYSTEM_CALL then
   !PROJECT %/tpl_dispatch_table.c
 %
-  write to PROJECT."/tpl_dispatch_table.c":
+  write to PROJECT+"/tpl_dispatch_table.c":
     template tpl_dispatch_table_c in code
   end write
   template tpl_invoque_s in code
 else
   !PROJECT %/tpl_os.c
 %
-  write to PROJECT."/tpl_os.c":
+  write to PROJECT+"/tpl_os.c":
     template tpl_os_c in code
   end write
 end if
 
 !PROJECT %/tpl_os.h
 %
-write to PROJECT."/tpl_os.h":
+write to PROJECT+"/tpl_os.h":
   template tpl_os_h in code
 end write
 
 if OS::SYSTEM_CALL | OS::USEGETSERVICEID | exists COM::COMUSEGETSERVICEID default (false) then
 !PROJECT %/tpl_service_ids.h
 %
-write to PROJECT."/tpl_service_ids.h":
+write to PROJECT+"/tpl_service_ids.h":
   template tpl_service_ids_h in code
 end write
 end if
@@ -110,6 +110,10 @@ if OS::BUILD then
     end write
     write to executable "make.py":
       template if exists make_py in build
+    end write
+  elsif OS::BUILD_S::SYSTEM == "ATMELSTUDIO" then
+    write to "atmelStudio_"+PROJECT+"/"+PROJECT+".cproj":
+      template if exists atmelStudioProject in build
     end write
   end if
 end if

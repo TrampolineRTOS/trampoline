@@ -68,6 +68,7 @@ extern void (*__init_array_start[])(void) __attribute__((weak));
 extern void (*__init_array_end[])(void) __attribute__((weak));
 extern void (*__fini_array_start[])(void) __attribute__((weak));
 extern void (*__fini_array_end[])(void) __attribute__((weak));
+void system_init();
 
 // Iterate over all the preinit/init routines.
 inline void __libc_init_array(void)
@@ -75,9 +76,13 @@ inline void __libc_init_array(void)
   size_t count;
   size_t i;
 
-  count = __preinit_array_end - __preinit_array_start;
-  for (i = 0; i < count; i++)
-    __preinit_array_start[i]();
+  // fix: Atmel Studio seems not to flash correctly the 
+  // tab of function pointers. 
+  // Call the init function directly for now.
+  system_init();
+// count = __preinit_array_end - __preinit_array_start;
+//  for (i = 0; i < count; i++)
+//    __preinit_array_start[i]();
 
   // If you need to run the code in the .init section, please use
   // the startup files, since this requires the code in crti.o and crtn.o
@@ -138,7 +143,7 @@ void tpl_continue_reset_handler(void)
 }
 
 // System initialisation, executed before constructors.
-void __attribute__((section(".after_vectors"))) system_init()
+void system_init()
 {
   // Copy the data segment from Flash to RAM.
   // This is here since some library crt0 code does not perform it there

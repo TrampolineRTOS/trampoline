@@ -506,7 +506,7 @@ loop core from 0 to OS::NUMBER_OF_CORES - 1 do
   if OS::NUMBER_OF_CORES == 1 then
     let proc::NAME := "IDLE_TASK"
   else
-    let proc::NAME := "IDLE_TASK_".[core string]
+    let proc::NAME := "IDLE_TASK_"+[core string]
   end if
 %
 /*-----------------------------------------------------------------------------

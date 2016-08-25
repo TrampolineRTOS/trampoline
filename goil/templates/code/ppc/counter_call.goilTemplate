@@ -7,7 +7,7 @@
 %
 
 foreach interrupt in INTERRUPT do
-  let counterFct := emptylist
+  let counterFct := @( )
   foreach counter in HARDWARECOUNTERS do
     if counter::SOURCE == interrupt::NAME then
       let counterFct += counter::NAME

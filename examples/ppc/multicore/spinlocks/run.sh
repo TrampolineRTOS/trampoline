@@ -21,7 +21,7 @@ RSYNC_EXCLUDE="--exclude .git
                --exclude goil"
 
 # Goil command
-GOIL=goil
+GOIL="goil --warn-deprecated"
 # Goil arch target (Ex: ppc/mpc5643l)
 GOIL_TARGET="ppc/mpc5643l/multicore"
 # Goil source (Ex: ./blink.oil)

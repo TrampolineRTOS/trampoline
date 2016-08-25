@@ -44,7 +44,7 @@ end foreach
 
 foreach isr in ISRS do
   if isr::USEFLOAT & not OS::HASFLOAT then
-    error isr::USEFLOAT : "The ".TARGET." does not support floating point"
+    error isr::USEFLOAT : "The "+TARGET+" does not support floating point"
   end if
 end foreach
 

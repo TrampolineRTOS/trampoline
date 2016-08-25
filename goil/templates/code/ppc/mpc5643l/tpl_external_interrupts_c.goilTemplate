@@ -28,7 +28,7 @@
 # build an empty list when the list does not exist. This simplify
 # further processing because existence test is not necessary
 
-let INTERCORE_INTERRUPT := exists INTERCORE_INTERRUPT default (emptylist)
+let INTERCORE_INTERRUPT := exists INTERCORE_INTERRUPT default (@( ))
 %
 /*=============================================================================
  * External interrupts configuration structures
@@ -73,10 +73,10 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
   /* ISR Priorities */
 %
 # Get the maximum priority of used IRQs
-let max_irq_prio := emptymap
+let max_irq_prio := @( )
 foreach app in APPLICATION do
   if app::CORE == core_id then
-    foreach isr_app in exists app::ISR default (emptylist) do
+    foreach isr_app in exists app::ISR default (@( )) do
       let isr := isr_map[isr_app::VALUE]
       if exists max_irq_prio[isr::SOURCE] then
         if max_irq_prio[isr::SOURCE]::PRIORITY < isr::PRIORITY then
@@ -90,7 +90,7 @@ foreach app in APPLICATION do
 end foreach
 
 # Sort them by priority
-let sorted_isrs := emptylist
+let sorted_isrs := @( )
 foreach isr in max_irq_prio do
   let sorted_isrs += isr
 end foreach
@@ -113,7 +113,7 @@ end foreach
 
   foreach application in APPLICATION do
     if application::CORE == core_id then
-      foreach counter_name in exists application::COUNTER default (emptylist) do
+      foreach counter_name in exists application::COUNTER default (@( )) do
         let counter := counter_map[counter_name::VALUE]
         if counter::SOURCE != "decrementer"
          & counter::TYPE == "HARDWARE" then
@@ -146,14 +146,14 @@ end loop
 #   tpl_load_pits
 #
 
-let channel_map := emptymap
+let channel_map := @( )
 let channel_map["pit_ch0"] := "TPL_PIT_0"
 let channel_map["pit_ch1"] := "TPL_PIT_1"
 let channel_map["pit_ch2"] := "TPL_PIT_2"
 let channel_map["pit_ch3"] := "TPL_PIT_3"
 
 # Get a list of used pit channels (with no duplicates)
-let used_pit_channels := emptymap
+let used_pit_channels := @( )
 foreach counter in HARDWARECOUNTERS do
   if counter::SOURCE != "decrementer" then
     let used_pit_channels[counter::SOURCE] := counter
@@ -191,17 +191,17 @@ end if
 let counter_map   := mapof COUNTER by NAME
 let interrupt_map := mapof INTERRUPT by NAME
 
-let channel_map := emptymap
+let channel_map := @( )
 let channel_map["pit_ch0"] := "TPL_PIT_0"
 let channel_map["pit_ch1"] := "TPL_PIT_1"
 let channel_map["pit_ch2"] := "TPL_PIT_2"
 let channel_map["pit_ch3"] := "TPL_PIT_3"
 
 loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
-  let used_interrupts := emptymap
+  let used_interrupts := @( )
   foreach application in APPLICATION do
     if application::CORE == core_id then
-      foreach counter_name in exists application::COUNTER default (emptylist) do
+      foreach counter_name in exists application::COUNTER default (@( )) do
         let counter := counter_map[counter_name::VALUE]
         if counter::SOURCE != "decrementer" & counter::TYPE == "HARDWARE" then
           let interrupt := interrupt_map[counter::SOURCE]
@@ -268,7 +268,7 @@ FUNC(tpl_bool, OS_CODE) tpl_isr_handler_% !isr::NAME %(void) {%
 %
     let isr_core := 0
     foreach application in APPLICATION do
-      foreach app_isr in exists application::ISR default (emptylist) do
+      foreach app_isr in exists application::ISR default (@( )) do
         if app_isr::VALUE == isr::NAME then
           let isr_core := application::CORE
         end if
