@@ -66,7 +66,7 @@ FUNC(tpl_bool, OS_CODE) tpl_tick_% !KEY %(void)
 {
 %
   foreach obj in objCounter do
-  %  tpl_counter_tick(&% !obj::VALUE %_counter_desc);
+  %  tpl_counter_tick(&% !obj %_counter_desc);
 %
   end foreach
   if obj_KEY == "SysTick" then
