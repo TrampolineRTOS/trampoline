@@ -24,6 +24,7 @@
 #
 #---------------------------------------------------------------------------*
 
+# 3.0.1    Bug fix in GTL, warnings was in fact errors
 # 3.0.0    Templates parsing/execution uses GTL
 # 2.1.29   Added setBitAtIndex and bitAtIndex methods for int
 # 2.1.28   integers are now bigint in GTL. Uses of embedded GMP library
@@ -39,7 +40,7 @@
 #          string
 # 2.1.20   Added -o and -r options to goil
 
-project (3:0:0) -> "goil" {
+project (3:0:1) -> "goil" {
 
 #  feature libpmAtPath : "../galgas_sources/GALGAS_OUTPUT/libpm" ;
   %makefile-macosx
