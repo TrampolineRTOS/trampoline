@@ -96,7 +96,7 @@ let pin2EicList := @(
 )
 
 let pin2Eic := mapof pin2EicList by PIN
-let pin2EicDone := emptymap
+let pin2EicDone := @[ ]
 %
 /*
  * External Interrupts initialization for the SAMD21 Microcontroller
@@ -117,7 +117,7 @@ FUNC(void, OS_CODE) tpl_init_external_interrupts()
 {%
 
 # look for EXTIx_IRQ interrupt sources in COUNTERS and ISR
-let ITOBJ := COUNTER . ISR
+let ITOBJ := COUNTER + ISR
 
 # Check subattributes are defined for EXTIxxx it sources
 # This should be done by goil according to the IMPLEMENTATION but currently
@@ -151,7 +151,7 @@ foreach obj in ITOBJ do
       let EIC_num := 0
       #check EIC exists
       if not exists pin2Eic[obj::SOURCE_S::PIN]::EICNUM then
-        error obj::SOURCE_S::PIN : "pin ". obj::SOURCE_S::PIN.
+        error obj::SOURCE_S::PIN : "pin "+ obj::SOURCE_S::PIN+
                                    " does not have any EIC entry associated"
         let ok := false
       end if
@@ -159,8 +159,8 @@ foreach obj in ITOBJ do
         let EIC_num := pin2Eic[obj::SOURCE_S::PIN]::EICNUM
         #check that the EIC num have not been configured before
         if exists pin2EicDone[EIC_num] then
-          let str := "pins ".obj::SOURCE_S::PIN." and ".pin2EicDone[EIC_num].
-                      " uses EIC entry :".EIC_num
+          let str := "pins "+obj::SOURCE_S::PIN+" and "+pin2EicDone[EIC_num]+
+                      " uses EIC entry :"+EIC_num
           error obj::SOURCE_S::PIN : str
           let ok := false
         end if

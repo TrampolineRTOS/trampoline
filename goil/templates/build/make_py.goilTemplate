@@ -133,11 +133,11 @@ foreach platform in exists GENERATED_FILES default ( @() ) do
   if not exists platform::ASFILE then let platform::ASFILE := @() end if
   foreach file in platform::CFILE do
 %
-sourceList.append("% !PROJECT."/".file::VALUE %")%
+sourceList.append("% !PROJECT+"/"+file::VALUE %")%
   end foreach
   foreach file in platform::ASFILE do
 %
-sourceList.append("% !PROJECT."/".file::VALUE %")%
+sourceList.append("% !PROJECT+"/"+file::VALUE %")%
   end foreach
 end foreach
 %

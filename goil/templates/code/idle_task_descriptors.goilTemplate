@@ -29,9 +29,9 @@ let task::ID   := "IDLE_TASK_ID"
 template task_descriptor
 else
 loop core from 0 to OS::NUMBER_OF_CORES - 1 do
-let task::NAME := "IDLE_TASK_".[core string]
+let task::NAME := "IDLE_TASK_"+[core string]
 let task::FUNC := "idle_function"
-let task::ID   := "IDLE_TASK_".[core string]."_ID"
+let task::ID   := "IDLE_TASK_"+[core string]+"_ID"
 let CORE_FOR_PROCESS[task::NAME] := core
 template task_descriptor
 end loop

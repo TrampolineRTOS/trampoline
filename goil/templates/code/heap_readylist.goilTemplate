@@ -101,7 +101,7 @@ end if
 foreach core in CORES do
   let core_id := ""
   if [CORES length] > 1 then
-    let core_id := "_core".KEY
+    let core_id := "_core"+KEY
   end if
   # compute the size of the heap
   let heap_size := 1 # for the idle task
