@@ -52,7 +52,7 @@ end if
 # Multicore
 if OS::NUMBER_OF_CORES > 1 then
   let APIUSED += APIMAP["multicore"]
-  #warning here: "Adding multicore"
+  warning here: "Adding multicore"
 
   if [SPINLOCK length] > 0 then
     let APIUSED += APIMAP["spinlock"]
