@@ -1,6 +1,6 @@
 %
 if not exists proc::STACKSIZE then
-  error proc::NAME : "STACKSIZE attribute not defined for ".proc::KIND." ".proc::NAME
+  error proc::NAME : "STACKSIZE attribute not defined for "+proc::KIND+" "+proc::NAME
 else
 %
 /*
@@ -28,7 +28,7 @@ avr_context % !proc::NAME %_int_context;
 #include "tpl_memmap.h"
 % if proc::KIND == "ISR" then 
     if not exists proc::STACKSIZE then
-       error NAME : "!STACKSIZE attribute not defined for ".proc::KIND." ".proc::NAME
+       error NAME : "!STACKSIZE attribute not defined for "+proc::KIND+" "+proc::NAME
     else
 
 %

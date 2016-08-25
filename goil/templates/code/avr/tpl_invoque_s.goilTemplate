@@ -1,13 +1,13 @@
 %
 !PROJECT %/tpl_invoque.S
 %
-write to PROJECT."/tpl_invoque.S":
+write to PROJECT+"/tpl_invoque.S":
   let EXTENSION := "S"
   let ASSEMBLERHEADER := true
   template tpl_invoque in code
 end write
 
-write to PROJECT."/tpl_invoque_isr.S":
+write to PROJECT+"/tpl_invoque_isr.S":
   let EXTENSION := "S"
   template tpl_invoque_isr_s in code
 end write
