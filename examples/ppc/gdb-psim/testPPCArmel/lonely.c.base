@@ -1,0 +1,24 @@
+#include "tpl_os.h"
+#include "tpl_os_task_kernel.h"
+#include "tpl_os_resource_kernel.h"
+
+DeclareTask(iamsolonely);
+DeclareResource(res);
+TaskRefType tref;
+
+void launchTest(); //in assembly file
+
+FUNC(int, OS_APPL_CODE) main(void)
+{
+	launchTest();
+}
+
+int test(void)
+{
+	return __KEY__;
+}
+
+TASK(iamsolonely)
+{
+	TerminateTask();
+}
