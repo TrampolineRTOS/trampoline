@@ -39,29 +39,29 @@ end if
 let map_spinlock := mapof SPINLOCK by NAME
 
 foreach spinlock in SPINLOCK do
-  let found_spinlock := emptymap
-  let color_spinlock := emptymap
+  let found_spinlock := @( )
+  let color_spinlock := @( )
   let found_spinlock[spinlock::NAME] := spinlock
-#  println "########## " . spinlock::NAME . " ##########"
+#  println "########## " + spinlock::NAME + " ##########"
 
   repeat
     let found_new := false
     foreach new_spinlock in found_spinlock do
       if not exists color_spinlock[new_spinlock::NAME] then
-#        println "=== " . new_spinlock::NAME . " ==="
+#        println "=== " + new_spinlock::NAME + " ==="
         let color_spinlock[new_spinlock::NAME] := true
 
-        foreach son in exists new_spinlock::SUCCESSOR default (emptylist) do
+        foreach son in exists new_spinlock::SUCCESSOR default (@( )) do
           if son::VALUE == spinlock::NAME then
-            error spinlock::NAME : "Spinlock " . son::VALUE . " found in a cycle !"
+            error spinlock::NAME : "Spinlock " + son::VALUE + " found in a cycle !"
           end if
           let found_spinlock[son::VALUE] := map_spinlock[son::VALUE]
           let found_new := true
-#          println "> " . son::VALUE . ""
+#          println "> " + son::VALUE + ""
         end foreach
       end if
     end foreach
-  while found_new
+  while found_new do
   end repeat
 
 end foreach
@@ -76,7 +76,7 @@ if not OS::USERESSCHEDULER then
   foreach spinlock in SPINLOCK do
     if spinlock::LOCKMETHOD == "LOCK_WITH_RES_SCHEDULER" then
       error spinlock::LOCKMETHOD : "Spinlock with LOCK_WITH_RES_SCHEDULER"
-                                 . " method but OS::USERESSCHEDULER is not set"
+                                 + " method but OS::USERESSCHEDULER is not set"
     end if
   end foreach
 end if

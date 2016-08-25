@@ -4,7 +4,7 @@
 %
 
 # Compute Spinlock ids
-let spinlock_id  := emptymap
+let spinlock_id  := @( )
 foreach spinlock in SPINLOCK do
   let spinlock_id[spinlock::NAME] := INDEX
 end foreach
@@ -16,8 +16,8 @@ foreach spinlock in SPINLOCK do%
  */%
 
   if OS::STATUS == "EXTENDED" then
-      let color_spinlock := emptymap
-      let successors := emptylist
+      let color_spinlock := @( )
+      let successors := @( )
       let successors += spinlock
       # Get the list of successors
       repeat
@@ -26,13 +26,13 @@ foreach spinlock in SPINLOCK do%
           if not exists color_spinlock[successor::NAME] then
             let color_spinlock[successor::NAME] := true
 
-            foreach son in exists successor::SUCCESSOR default (emptylist) do
+            foreach son in exists successor::SUCCESSOR default (@( )) do
               let successors += spinlock_map[son::VALUE]
               let found_new := true
             end foreach
           end if
         end foreach
-      while found_new
+      while found_new do
       end repeat
 
       # successor_bitfield is a bigint, so we can store as many bits as

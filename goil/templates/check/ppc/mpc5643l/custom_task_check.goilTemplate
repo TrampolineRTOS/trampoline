@@ -29,7 +29,7 @@
 
 foreach task in TASKS do
   if task::USEFLOAT & not OS::HASFLOAT then
-    error task::USEFLOAT : "The ".TARGET." does not support floating point"
+    error task::USEFLOAT : "The "+TARGET+" does not support floating point"
   end if
 end foreach
 

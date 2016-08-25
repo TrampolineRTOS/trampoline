@@ -792,10 +792,10 @@ if OS::NUMBER_OF_CORES > 1 then
   foreach app in APPLICATION do
     let core := exists app::CORE default (0)
     foreach task in exists app::TASK default (@()) do
-      let CORE_FOR_PROCESS[task] := core
+      let CORE_FOR_PROCESS[task::VALUE] := core
     end foreach
     foreach isr in exists app::ISR default (@()) do
-      let CORE_FOR_PROCESS[isr] := core
+      let CORE_FOR_PROCESS[isr::VALUE] := core
     end foreach
   end foreach
 end if

@@ -3,7 +3,7 @@
 # build an empty list when the list does not exist. This simplify
 # further processing because existence test is not necessary
 
-let INTERCORE_INTERRUPT := exists INTERCORE_INTERRUPT default (emptylist)
+let INTERCORE_INTERRUPT := exists INTERCORE_INTERRUPT default (@( ))
 %
 /*-----------------------------------------------------------------------------
  * Interrupt specific structures
@@ -42,10 +42,10 @@ let counter_map   := mapof COUNTER by NAME
 let interrupt_map := mapof INTERRUPT by NAME
 
 loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
-  let used_interrupts := emptymap
+  let used_interrupts := @( )
   foreach application in APPLICATION do
     if application::CORE == core_id then
-      foreach counter_name in exists application::COUNTER default (emptylist) do
+      foreach counter_name in exists application::COUNTER default (@( )) do
         let counter := counter_map[counter_name::VALUE]
         if counter::SOURCE != "decrementer"
          & counter::TYPE == "HARDWARE" then
@@ -75,11 +75,11 @@ let counter_map   := mapof COUNTER by NAME
 loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
 
   ###### Get used counters and isrs
-  let used_counters := emptymap
+  let used_counters := @( )
   foreach application in APPLICATION do
     if application::CORE == core_id then
       ### Used counters
-      foreach counter_name in exists application::COUNTER default (emptylist) do
+      foreach counter_name in exists application::COUNTER default (@( )) do
         let counter := counter_map[counter_name::VALUE]
         let used_counters[counter::NAME] := counter
       end foreach
@@ -136,7 +136,7 @@ CONST(tpl_it_vector_entry, OS_CONST) tpl_it_table_%!core_id%[% !INTERRUPT_COUNT:
         foreach isr in ISRS do
           foreach application in APPLICATION do
             if application::CORE == core_id then
-              foreach app_isr in exists application::ISR default (emptylist) do
+              foreach app_isr in exists application::ISR default (@( )) do
                 if app_isr::VALUE == isr::NAME
                  & isr::SOURCE == interrupt::NAME
                  & not entryFound then
