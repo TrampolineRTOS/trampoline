@@ -43,7 +43,6 @@ DeclareApplication(app1);
 DeclareApplication(app2);
 DeclareApplication(INVALID_OSAPPLICATION);
 DeclareCounter(Software_Counter);
-DeclareCounter(SystemCounter);
 DeclareCounter(INVALID_COUNTER);
 DeclareResource(Resource1);
 DeclareResource(RES_SCHEDULER);
@@ -61,8 +60,8 @@ DeclareISR(isr1);
 static void test_t1_instance(void)
 {
 	ObjectAccessType result_obj_1, result_obj_2, result_obj_3, result_obj_4, result_obj_5, result_obj_6, result_obj_7, result_obj_8, result_obj_9, result_obj_10, result_obj_11, result_obj_12;
-	ObjectAccessType result_obj_13, result_obj_14, result_obj_15, result_obj_16, result_obj_17, result_obj_18, result_obj_19, result_obj_20, result_obj_21, result_obj_22, result_obj_23;
-	ApplicationType result_app_1, result_app_2, result_app_3, result_app_4, result_app_5, result_app_6, result_app_7, result_app_8, result_app_9, result_app_10, result_app_11, result_app_12, result_app_13, result_app_14, result_app_15;
+	ObjectAccessType result_obj_13, result_obj_14, result_obj_15, result_obj_16, result_obj_17, result_obj_18, result_obj_19, result_obj_20, result_obj_21, result_obj_22;//, result_obj_23;
+	ApplicationType result_app_1, result_app_2, result_app_3, result_app_4, result_app_5, result_app_6, result_app_7, result_app_8, result_app_9, result_app_10, result_app_11, result_app_12, result_app_13, result_app_14;
 	
 	SCHEDULING_CHECK_INIT(1);
 	result_obj_1 = CheckObjectAccess(INVALID_OSAPPLICATION, OBJECT_TASK, t1); 
@@ -159,76 +158,66 @@ static void test_t1_instance(void)
 	SCHEDULING_CHECK_AND_EQUAL_INT(22, NO_ACCESS, result_obj_22);
 	
 	SCHEDULING_CHECK_INIT(23);
-	result_obj_23 = CheckObjectAccess(app1, OBJECT_COUNTER, SystemCounter); 
-	SCHEDULING_CHECK_AND_EQUAL_INT(23, NO_ACCESS, result_obj_23);
-	
+	result_app_1 = CheckObjectOwnership(OBJECT_TYPE_COUNT, t1); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(23, INVALID_OSAPPLICATION, result_app_1);
 	
 	SCHEDULING_CHECK_INIT(24);
-	result_app_1 = CheckObjectOwnership(OBJECT_TYPE_COUNT, t1); 
-	SCHEDULING_CHECK_AND_EQUAL_INT(24, INVALID_OSAPPLICATION, result_app_1);
+	result_app_2 = CheckObjectOwnership(OBJECT_TASK, INVALID_TASK); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(24, INVALID_OSAPPLICATION, result_app_2);
 	
 	SCHEDULING_CHECK_INIT(25);
-	result_app_2 = CheckObjectOwnership(OBJECT_TASK, INVALID_TASK); 
-	SCHEDULING_CHECK_AND_EQUAL_INT(25, INVALID_OSAPPLICATION, result_app_2);
+	result_app_3 = CheckObjectOwnership(OBJECT_TASK, t1); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(25, app1, result_app_3);
+	
 	
 	SCHEDULING_CHECK_INIT(26);
-	result_app_3 = CheckObjectOwnership(OBJECT_TASK, t1); 
-	SCHEDULING_CHECK_AND_EQUAL_INT(26, app1, result_app_3);
-	
+	result_app_4 = CheckObjectOwnership(OBJECT_ISR, INVALID_ISR); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(26, INVALID_OSAPPLICATION, result_app_4);
 	
 	SCHEDULING_CHECK_INIT(27);
-	result_app_4 = CheckObjectOwnership(OBJECT_ISR, INVALID_ISR); 
-	SCHEDULING_CHECK_AND_EQUAL_INT(27, INVALID_OSAPPLICATION, result_app_4);
+	result_app_5 = CheckObjectOwnership(OBJECT_ISR, isr1); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(27, app2, result_app_5);
+	
 	
 	SCHEDULING_CHECK_INIT(28);
-	result_app_5 = CheckObjectOwnership(OBJECT_ISR, isr1); 
-	SCHEDULING_CHECK_AND_EQUAL_INT(28, app2, result_app_5);
-	
+	result_app_6 = CheckObjectOwnership(OBJECT_ALARM, INVALID_ALARM); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(28, INVALID_OSAPPLICATION, result_app_6);
 	
 	SCHEDULING_CHECK_INIT(29);
-	result_app_6 = CheckObjectOwnership(OBJECT_ALARM, INVALID_ALARM); 
-	SCHEDULING_CHECK_AND_EQUAL_INT(29, INVALID_OSAPPLICATION, result_app_6);
+	result_app_7 = CheckObjectOwnership(OBJECT_ALARM, Alarm1); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(29, app1, result_app_7);
+	
 	
 	SCHEDULING_CHECK_INIT(30);
-	result_app_7 = CheckObjectOwnership(OBJECT_ALARM, Alarm1); 
-	SCHEDULING_CHECK_AND_EQUAL_INT(30, app1, result_app_7);
-	
+	result_app_8 = CheckObjectOwnership(OBJECT_RESOURCE, INVALID_RESOURCE); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(30, INVALID_OSAPPLICATION, result_app_8);
 	
 	SCHEDULING_CHECK_INIT(31);
-	result_app_8 = CheckObjectOwnership(OBJECT_RESOURCE, INVALID_RESOURCE); 
-	SCHEDULING_CHECK_AND_EQUAL_INT(31, INVALID_OSAPPLICATION, result_app_8);
+	result_app_9 = CheckObjectOwnership(OBJECT_RESOURCE, Resource1); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(31, app1, result_app_9);
 	
 	SCHEDULING_CHECK_INIT(32);
-	result_app_9 = CheckObjectOwnership(OBJECT_RESOURCE, Resource1); 
-	SCHEDULING_CHECK_AND_EQUAL_INT(32, app1, result_app_9);
+	result_app_10 = CheckObjectOwnership(OBJECT_RESOURCE, RES_SCHEDULER); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(32, INVALID_OSAPPLICATION, result_app_10);
+	
 	
 	SCHEDULING_CHECK_INIT(33);
-	result_app_10 = CheckObjectOwnership(OBJECT_RESOURCE, RES_SCHEDULER); 
-	SCHEDULING_CHECK_AND_EQUAL_INT(33, INVALID_OSAPPLICATION, result_app_10);
-	
+	result_app_11 = CheckObjectOwnership(OBJECT_SCHEDULETABLE, INVALID_SCHEDULETABLE); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(33, INVALID_OSAPPLICATION, result_app_11);
 	
 	SCHEDULING_CHECK_INIT(34);
-	result_app_11 = CheckObjectOwnership(OBJECT_SCHEDULETABLE, INVALID_SCHEDULETABLE); 
-	SCHEDULING_CHECK_AND_EQUAL_INT(34, INVALID_OSAPPLICATION, result_app_11);
+	result_app_12 = CheckObjectOwnership(OBJECT_SCHEDULETABLE, sched1); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(34, app1, result_app_12);
+	
 	
 	SCHEDULING_CHECK_INIT(35);
-	result_app_12 = CheckObjectOwnership(OBJECT_SCHEDULETABLE, sched1); 
-	SCHEDULING_CHECK_AND_EQUAL_INT(35, app1, result_app_12);
-	
+	result_app_13 = CheckObjectOwnership(OBJECT_COUNTER, INVALID_COUNTER); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(35, INVALID_OSAPPLICATION, result_app_13);
 	
 	SCHEDULING_CHECK_INIT(36);
-	result_app_13 = CheckObjectOwnership(OBJECT_COUNTER, INVALID_COUNTER); 
-	SCHEDULING_CHECK_AND_EQUAL_INT(36, INVALID_OSAPPLICATION, result_app_13);
-	
-	SCHEDULING_CHECK_INIT(37);
 	result_app_14 = CheckObjectOwnership(OBJECT_COUNTER, Software_Counter); 
-	SCHEDULING_CHECK_AND_EQUAL_INT(37, app1, result_app_14);
+	SCHEDULING_CHECK_AND_EQUAL_INT(36, app1, result_app_14);
 	
-	SCHEDULING_CHECK_INIT(38);
-	result_app_15 = CheckObjectOwnership(OBJECT_COUNTER, SystemCounter); 
-	SCHEDULING_CHECK_AND_EQUAL_INT(38, INVALID_OSAPPLICATION, result_app_15);
-	
-		
 }
 
 /*create the test suite with all the test cases*/

@@ -26,6 +26,7 @@
  */
 
 #include "tpl_app_config.h"
+#include "tpl_app_custom_types.h"
 
 /* TODO change viper API to hide this variable */
 #if ((WITH_AUTOSAR == YES) && (SCHEDTABLE_COUNT > 0)) || (ALARM_COUNT > 0)

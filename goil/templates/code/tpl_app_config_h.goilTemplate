@@ -59,16 +59,7 @@ extern CONSTP2CONST(char, AUTOMATIC, OS_APPL_DATA)
  * Declaration of Counters constants
  */%
 foreach counter in COUNTERS do
-  if (counter::NAME != "SystemCounter") | (OS::SCALABILITYCLASS >= 3) then
-%
-extern CONST(tpl_tick, OS_CONST) OSTICKSPERBASE_% !counter::NAME %;
-extern CONST(tpl_tick, OS_CONST) OSMAXALLOWEDVALUE_% !counter::NAME %;
-extern CONST(tpl_tick, OS_CONST) OSMINCYCLE_% !counter::NAME %;
-%
-  end if
-end foreach
-
-if (OS::SCALABILITYCLASS < 3) then
+  if (counter::NAME == "SystemCounter") & (OS::SCALABILITYCLASS < 3) then
 %
 /*-----------------------------------------------------------------------------
  * Constants of the SystemCounter
@@ -76,9 +67,18 @@ if (OS::SCALABILITYCLASS < 3) then
 extern CONST(tpl_tick, OS_CONST) OSTICKSPERBASE;
 extern CONST(tpl_tick, OS_CONST) OSMAXALLOWEDVALUE;
 extern CONST(tpl_tick, OS_CONST) OSMINCYCLE;
-
 %
-end if
+  else
+%
+/*-----------------------------------------------------------------------------
+ * Constants of the counter % !counter::NAME %
+ */
+extern CONST(tpl_tick, OS_CONST) OSTICKSPERBASE_% !counter::NAME %;
+extern CONST(tpl_tick, OS_CONST) OSMAXALLOWEDVALUE_% !counter::NAME %;
+extern CONST(tpl_tick, OS_CONST) OSMINCYCLE_% !counter::NAME %;
+%
+  end if
+end foreach
 
 if AUTOSAR then
   foreach trusted_function in TRUSTEDFUNCTIONS
