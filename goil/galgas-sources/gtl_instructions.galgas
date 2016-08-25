@@ -842,7 +842,7 @@ override method @gtlWarningStatementInstruction execute
   end
   @gtlData warningMessageData = [warningMessage eval !vars !lib]
   if [warningMessageData dynamicType] == `@gtlString then
-    error warningLocation : [warningMessageData as @gtlString value]
+    warning warningLocation : [warningMessageData as @gtlString value]
   else
     error [warningMessage location] : "string expected"
   end
