@@ -25,7 +25,7 @@
 *.html          text eol=lf
 
 # Files that must be normalized to crlf format
-*.bat           text eol=crlf
+#*.bat           text eol=crlf
 
 # Files that must stay untouched
 *.a     binary
