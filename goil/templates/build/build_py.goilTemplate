@@ -116,7 +116,14 @@ trampoline_base_path = "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/"
 cflags = []
 cppflags = []
 ldflags = []
-asflags = []%
+asflags = []
+# flags that should appear at the beginning of the command.
+precflags = []
+precppflags = []
+preldflags = []
+preasflags = []
+%
+#CFLAGS
 foreach optionSet in exists BUILDOPTIONS default ( @() ) do
   foreach flags in exists optionSet::CFLAGS default ( @() ) do
     %
@@ -127,6 +134,18 @@ foreach flags in exists OS::BUILD_S::CFLAGS default ( @() ) do
   %
 cflags += "% !flags::VALUE %".split()%
 end foreach
+#PRE CFLAGS
+foreach optionSet in exists BUILDOPTIONS default ( @() ) do
+  foreach flags in exists optionSet::PRECFLAGS default ( @() ) do
+    %
+precflags += "% !flags::VALUE %".split()%
+  end foreach
+end foreach
+foreach flags in exists OS::BUILD_S::PRECFLAGS default ( @() ) do
+  %
+precflags += "% !flags::VALUE %".split()%
+end foreach
+#CPPFLAGS
 foreach optionSet in exists BUILDOPTIONS default ( @() ) do
   foreach flags in exists optionSet::CPPFLAGS default ( @() ) do
   %
@@ -137,6 +156,18 @@ foreach flags in exists OS::BUILD_S::CPPFLAGS default ( @() ) do
   %
 cppflags += "% !flags::VALUE %".split()%
 end foreach
+#PRECPPFLAGS
+foreach optionSet in exists BUILDOPTIONS default ( @() ) do
+  foreach flags in exists optionSet::PRECPPFLAGS default ( @() ) do
+  %
+precppflags += "% !flags::VALUE %".split()%
+  end foreach
+end foreach
+foreach flags in exists OS::BUILD_S::PRECPPFLAGS default ( @() ) do
+  %
+precppflags += "% !flags::VALUE %".split()%
+end foreach
+#COMMON FLAGS
 foreach optionSet in exists BUILDOPTIONS default ( @() ) do
   foreach flags in exists optionSet::COMMONFLAGS default ( @() ) do
   %
@@ -149,6 +180,21 @@ foreach flags in exists OS::BUILD_S::COMMONFLAGS default ( @() ) do
 cflags += "% !flags::VALUE %".split()
 cppflags += "% !flags::VALUE %".split()%
 end foreach
+#PRE COMMON FLAGS
+#COMMON FLAGS
+foreach optionSet in exists BUILDOPTIONS default ( @() ) do
+  foreach flags in exists optionSet::PRECOMMONFLAGS default ( @() ) do
+  %
+precflags += "% !flags::VALUE %".split()
+precppflags += "% !flags::VALUE %".split()%
+  end foreach
+end foreach
+foreach flags in exists OS::BUILD_S::PRECOMMONFLAGS default ( @() ) do
+  %
+precflags += "% !flags::VALUE %".split()
+precppflags += "% !flags::VALUE %".split()%
+end foreach
+
 let MACHINESPATH := OS::BUILD_S::TRAMPOLINE_BASE_PATH+"/machines"
 foreach platform in exists PLATFORM_FILES default ( @() ) do%
 cflags += ["-I","% !MACHINESPATH + "/" + platform::PATH %"]
@@ -168,6 +214,7 @@ cflags += ["-I", "% !PROJECT %"]
 cppflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/os"]
 cppflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/debug"]
 cppflags += ["-I", "% !PROJECT %"]%
+#LDFLAGS
 foreach optionSet in exists BUILDOPTIONS default ( @() ) do
   foreach flags in exists optionSet::LDFLAGS default ( @() ) do
   %
@@ -178,20 +225,45 @@ foreach flags in OS::BUILD_S::LDFLAGS do
   %
 ldflags += "% !flags::VALUE %".split()%
 end foreach
+#PRE LDFLAGS
+foreach optionSet in exists BUILDOPTIONS default ( @() ) do
+  foreach flags in exists optionSet::PRELDFLAGS default ( @() ) do
+  %
+preldflags += "% !flags::VALUE %".split()%
+  end foreach
+end foreach
+foreach flags in exists OS::BUILD_S::PRELDFLAGS default ( @() ) do
+  %
+preldflags += "% !flags::VALUE %".split()%
+end foreach
+
 if exists OS::MEMMAP_S::LINKER then
 %
 ldflags += ["-T", "% !PROJECT %/% !OS::MEMMAP_S::LINKER_S::SCRIPT %"]%
 end if
+#ASFLAGS
 foreach optionSet in exists BUILDOPTIONS default ( @() ) do
   foreach flags in exists optionSet::ASFLAGS default ( @() ) do
   %
 asflags += "% !flags::VALUE %".split()%
   end foreach
 end foreach
-foreach flags in OS::BUILD_S::ASFLAGS do
+foreach flags in exists OS::BUILD_S::ASFLAGS default ( @() ) do
   %
 asflags += "% !flags::VALUE %".split()%
 end foreach
+#PRE ASFLAGS
+foreach optionSet in exists BUILDOPTIONS default ( @() ) do
+  foreach flags in exists optionSet::PREASFLAGS default ( @() ) do
+  %
+preasflags += "% !flags::VALUE %".split()%
+  end foreach
+end foreach
+foreach flags in exists OS::BUILD_S::PREASFLAGS default ( @() ) do
+  %
+preasflags += "% !flags::VALUE %".split()%
+end foreach
+
 %
 
 %
@@ -398,6 +470,7 @@ for sourceFile in cSourceList:
   rule.deleteTargetDirectoryOnClean()
   rule.mDependences.append(source)
   rule.mCommand.append(compiler)
+  rule.mCommand += precflags
   rule.mCommand += ["-c", source]
   rule.mCommand += ["-o", object]
   rule.mCommand += ["-MD", "-MP", "-MF", depObject]
@@ -414,6 +487,7 @@ for sourceFile in cppSourceList:
   rule.deleteTargetDirectoryOnClean()
   rule.mDependences.append(source)
   rule.mCommand.append(cppCompiler)
+  rule.mCommand += precppflags
   rule.mCommand += ["-c", source]
   rule.mCommand += ["-o", object]
   rule.mCommand += ["-MD", "-MP", "-MF", depObject]
@@ -428,6 +502,7 @@ for sourceFile in sSourceList:
   rule = makefile.Rule([object], "Assembling " + source)
   rule.mDependences.append(source)
   rule.mCommand.append(assembler)
+  rule.mCommand += preasflags
   rule.mCommand += ["-c", source]
   rule.mCommand += ["-o", object]
   rule.mCommand += asflags

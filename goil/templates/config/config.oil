@@ -147,6 +147,13 @@ IMPLEMENTATION trampoline_common {
     STRING COMMONFLAGS[]; /* common flags for C++ and C */
     STRING ASFLAGS[];
     STRING LDFLAGS[];
+    /* idem for flags that should appear in the beginning of the
+    command */
+    STRING PRECFLAGS[];
+    STRING PRECPPFLAGS[];
+    STRING PRECOMMONFLAGS[]; /* common flags for C++ and C */
+    STRING PREASFLAGS[];
+    STRING PRELDFLAGS[];
   };
 
   OS {

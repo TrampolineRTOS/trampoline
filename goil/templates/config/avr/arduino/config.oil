@@ -11,7 +11,7 @@ CPU avrArduino {
 
   BUILDOPTIONS buildOptionsForArduino {
     CFLAGS = "-lm"; //math lib requied
-    ASFLAGS = "-x assembler-with-cpp";
+    PREASFLAGS = "-x assembler-with-cpp";
   };
   
   PLATFORM_FILES arduinoBaseSerial {
