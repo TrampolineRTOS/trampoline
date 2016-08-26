@@ -27,8 +27,8 @@ import "vectors"
 #------------------------------------------------------------------------------*
 # Check goil version is ok
 #
-if version() != "3.0.0" then
-  error here : "Goil version 3.0.0 required"
+if version() != "3.0.2" then
+  error here : "Goil version 3.0.2 required"
 end if
 
 #------------------------------------------------------------------------------*
