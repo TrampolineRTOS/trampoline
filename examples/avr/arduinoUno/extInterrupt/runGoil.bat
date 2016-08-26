@@ -1,2 +1,2 @@
-goil --target=avr/arduino --templates=../../../../goil/templates/ extInterrupt.oil
+goil --target=avr/arduino/uno --templates=../../../../goil/templates/ extInterrupt.oil
 pause

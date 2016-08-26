@@ -1,2 +1,2 @@
-goil --target=avr/arduino --templates=../../../../goil/templates/ blink.oil
+goil --target=avr/arduino/uno --templates=../../../../goil/templates/ blink.oil
 pause
