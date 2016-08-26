@@ -1,0 +1,29 @@
+CPU avrArduino {
+
+  PLATFORM_FILES arduinoMega {
+    PATH = "avr/arduino/hardware/variants/mega";
+  };
+  
+  STDLIBVARIANT gccAvrKind {
+    KIND = "avr6";
+  };
+  
+  BUILDOPTIONS buildOptionsForArduino {
+    COMMONFLAGS = "-Os -Wall -DF_CPU=16000000 -mmcu=atmega2560"; //CFLAGS + CPPFLAGS
+    ASFLAGS = "-DF_CPU=16000000 -mmcu=atmega2560";
+    LDFLAGS = "-DF_CPU=16000000 -mmcu=atmega2560";
+  };
+
+};
+
+CPU arduino {
+
+  POSTCOMMAND flash {
+    COMMAND flash {
+      MESSAGE = "Flashing";
+      COMMAND = "avrdude";
+      INPUT = TARGET { EXT = ""; };
+      PREOPTION = "-c stk500v2 -p m2560 -P/dev/ttyUSB0 -U flash:w:";
+    };
+  };
+}; 

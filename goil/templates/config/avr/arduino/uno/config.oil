@@ -1,0 +1,29 @@
+CPU avrArduino {
+
+  PLATFORM_FILES arduinoUno {
+    PATH = "avr/arduino/hardware/variants/standard";
+  };
+  
+  STDLIBVARIANT gccAvrKind {
+    KIND = "avr5";
+  };
+
+  BUILDOPTIONS buildOptionsForArduino {
+    COMMONFLAGS = "-Os -Wall -DF_CPU=16000000 -mmcu=atmega328p"; //CFLAGS + CPPFLAGS
+    ASFLAGS = "-DF_CPU=16000000 -mmcu=atmega328p";
+    LDFLAGS = "-DF_CPU=16000000 -mmcu=atmega328p";
+  };
+
+};
+
+CPU arduino {
+
+  POSTCOMMAND flash {
+    COMMAND flash {
+      MESSAGE = "Flashing";
+      COMMAND = "avrdude";
+      INPUT = TARGET { EXT = ""; };
+      PREOPTION = "-c arduino -p m328p -P/dev/ttyUSB0 -U flash:w:";
+    };
+  };
+}; 

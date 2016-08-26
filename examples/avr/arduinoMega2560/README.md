@@ -6,23 +6,24 @@ The main difference with the core of ATMega328p (Arduino Uno) is that the progra
 #first run
 In the first run, the `goil` compiler will generate:
 
-* a `Makefile` (to build everything)
+* a python build script `make.py` (to build everything)
 * C data structures related to the `.oil` description.
 
-Build oil related generated .c and .h files and the Makefile. If `file.oil` is the main `oil` file, and `TRAMPOLINE_ROOT` is the path to the root of trampoline:
+If `file.oil` is the main `oil` file, and `TRAMPOLINE_ROOT` is the path to the root of trampoline:
 
-`$goil --target=avr/arduino --templates=$TRAMPOLINE_ROOT/goil/templates/ file.oil`
-
-(The generated file .aps is a deprecated AVR Studio 4 project for Windows users).
+`$goil --target=avr/arduino/mega --templates=$TRAMPOLINE_ROOT/goil/templates/ file.oil`
 
 #Build
 The commands builds the binary file (both the `.elf` and `.hex` files).
 
-`$make -s`
+`$./make.py`
 
-`goil` will now be called directly from the Makefile if the .oil file is updated, it should not be called directly again.
+`goil` will now be called directly from the python build script if the .oil file is updated, it should not be called directly again.
 
 #flash
+
+***DEPRECATED***
+
 The serial device name should be defined in the oil file (`CPU -> OS -> ARDUINO section`). For example:
 
 `      PORT = "/dev/tty.usbmodem1411";`

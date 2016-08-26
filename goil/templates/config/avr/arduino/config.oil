@@ -5,13 +5,10 @@ CPU avrArduino {
     CPPFILE = "main.cpp";
   };
 
-  PLATFORM_FILES arduinoUno {
-    PATH = "avr/arduino/hardware/variants/standard";
-  };
-
   BUILDOPTIONS buildOptionsForArduino {
     PRELDFLAGS = "-lm"; //math lib requied
     PREASFLAGS = "-x assembler-with-cpp";
+    COMMONFLAGS = "-Wno-unused-but-set-variable";
   };
   
   PLATFORM_FILES arduinoBaseSerial {
@@ -33,10 +30,6 @@ CPU avrArduino {
     CFILE = "hooks.c";
   };
   
-  STDLIBVARIANT gccAvrKind {
-    KIND = "avr5";
-  };
-
 };
 
 /*
@@ -61,10 +54,7 @@ IMPLEMENTATION Trampoline {
   OS {
         BOOLEAN [
           TRUE {
-            ENUM [UNO, MEGA] BOARD; //card variant.
-            //path to libc (required for <avr/io.h>)
-            STRING AVR_LIBC = "/usr/lib/avr/include";
-            //port to flash Arduino
+            //port to flash Arduino => marche pas!
             STRING PORT = "/dev/ttyUSB0";
             
             //BOOLEAN SPI = FALSE;
@@ -91,14 +81,5 @@ CPU arduino {
     MAXALLOWEDVALUE = 65535;
     MINCYCLE = 1;
     SOURCE = "TIMER0_OVF_vect";
-  };
-
-  POSTCOMMAND flash {
-    COMMAND flash {
-      MESSAGE = "Flashing";
-      COMMAND = "avrdude";
-      INPUT = TARGET { EXT = ""; };
-      PREOPTION = "-c arduino -p m328p -P/dev/ttyUSB0 -U flash:w:";
-    };
   };
 }; 

@@ -18,20 +18,20 @@ CPU test {
   OS config {
     STATUS = STANDARD;
     ARDUINO = TRUE {
-      BOARD = MEGA;
-      SERIAL = TRUE;
-      PORT = "/dev/tty.usbmodem1411";
-      AVR_LIBC = "/usr/local/CrossPack-AVR/avr/include/";
+      SERIAL = TRUE; //use the serial interface 
+      PORT = "/dev/tty.usbmodem1411"; //serial port (flash)
     };
     BUILD = TRUE {
       TRAMPOLINE_BASE_PATH = "../../../..";
       APP_NAME = "trampuinoBlink";
       APP_SRC = "blink.cpp";
+      CPPCOMPILER = "avr-g++";
       COMPILER = "avr-gcc";
       LINKER = "avr-gcc";
       ASSEMBLER = "avr-gcc";
+      SYSTEM = PYTHON;
     };
-	SYSTEM_CALL = TRUE;
+    SYSTEM_CALL = TRUE;
   };
 
   APPMODE std {};
