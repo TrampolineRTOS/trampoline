@@ -10,7 +10,7 @@ CPU avrArduino {
   };
 
   BUILDOPTIONS buildOptionsForArduino {
-    CFLAGS = "-lm"; //math lib requied
+    PRELDFLAGS = "-lm"; //math lib requied
     PREASFLAGS = "-x assembler-with-cpp";
   };
   
@@ -32,6 +32,11 @@ CPU avrArduino {
     CPPFILE = "abi.cpp";
     CFILE = "hooks.c";
   };
+  
+  STDLIBVARIANT gccAvrKind {
+    KIND = "avr5";
+  };
+
 };
 
 /*

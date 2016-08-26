@@ -515,6 +515,7 @@ rule.mDeleteTargetOnError = True
 rule.mDependences += objectList
 rule.mCommand += [linker]
 rule.mCommand += ["-o", product]
+rule.mCommand += preldflags
 rule.mCommand += objectList
 rule.mCommand += ldflags%
 let target := OS::BUILD_S::APP_NAME

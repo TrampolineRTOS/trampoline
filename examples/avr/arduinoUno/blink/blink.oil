@@ -27,9 +27,9 @@ CPU test {
       TRAMPOLINE_BASE_PATH = "../../../..";
       APP_NAME = "trampuinoBlink";
       APP_SRC = "blink.cpp";
+      COMMONFLAGS = "-Os -Wall -DF_CPU=16000000 -mmcu=atmega328p"; //CFLAGS + CPPFLAGS
       ASFLAGS = "-DF_CPU=16000000 -mmcu=atmega328p";
-      CFLAGS = "-Os -DF_CPU=16000000 -mmcu=atmega328p";
-      CPPFLAGS = "-Os -DF_CPU=16000000 -mmcu=atmega328p";
+      LDFLAGS = "-DF_CPU=16000000 -mmcu=atmega328p";
       CPPCOMPILER = "avr-g++";
       COMPILER = "avr-gcc";
       LINKER = "avr-gcc";
