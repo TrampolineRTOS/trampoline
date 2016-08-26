@@ -122,6 +122,7 @@ precflags = []
 precppflags = []
 preldflags = []
 preasflags = []
+includeDirs = []
 %
 #CFLAGS
 foreach optionSet in exists BUILDOPTIONS default ( @() ) do
@@ -194,26 +195,25 @@ foreach flags in exists OS::BUILD_S::PRECOMMONFLAGS default ( @() ) do
 precflags += "% !flags::VALUE %".split()
 precppflags += "% !flags::VALUE %".split()%
 end foreach
+#include dirs
 
 let MACHINESPATH := OS::BUILD_S::TRAMPOLINE_BASE_PATH+"/machines"
 foreach platform in exists PLATFORM_FILES default ( @() ) do%
-cflags += ["-I","% !MACHINESPATH + "/" + platform::PATH %"]
-cppflags += ["-I","% !MACHINESPATH + "/" + platform::PATH %"]%
+includeDirs += ["-I","% !MACHINESPATH + "/" + platform::PATH %"]%
 end foreach
 foreach library in exists USEDLIB default ( @() ) do%
-cflags += ["-I","% !MACHINESPATH + "/" + library::PATH %"]
-cppflags += ["-I","% !MACHINESPATH + "/" + library::PATH %"]%
+includeDirs += ["-I","% !MACHINESPATH + "/" + library::PATH %"]%
 end foreach
 %
 if with_ioc:
-  cflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/ioc"]
-  cppflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/ioc"]
-cflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/os"]
-cflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/debug"]
-cflags += ["-I", "% !PROJECT %"]
-cppflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/os"]
-cppflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/debug"]
-cppflags += ["-I", "% !PROJECT %"]%
+  includeDirs += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/ioc"]
+includeDirs += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/os"]
+includeDirs += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/debug"]
+includeDirs += ["-I", "% !PROJECT %"]
+cflags   += includeDirs
+cppflags += includeDirs
+asflags  += includeDirs
+%
 #LDFLAGS
 foreach optionSet in exists BUILDOPTIONS default ( @() ) do
   foreach flags in exists optionSet::LDFLAGS default ( @() ) do
