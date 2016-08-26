@@ -6180,6 +6180,7 @@ void cParser_options_5F_parser::rule_options_5F_parser_option_5F_item_i1_ (GALGA
     break ;
   }
   {
+  ioArgument_options.insulate (HERE) ; // §ABSTRACT
   cPtr_gtlData * ptr_1094 = (cPtr_gtlData *) ioArgument_options.ptr () ;
   callExtensionSetter_setStructField ((cPtr_gtlData *) ptr_1094, var_key_987, var_opt_1008, inCompiler COMMA_SOURCE_FILE ("options_parser.galgas", 50)) ;
   }

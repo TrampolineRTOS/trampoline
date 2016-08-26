@@ -24,6 +24,7 @@
 #
 #---------------------------------------------------------------------------*
 
+# 3.0.2    Bug fix in GTL, lazy copy bug from galgas
 # 3.0.1    Bug fix in GTL, warnings was in fact errors
 # 3.0.0    Templates parsing/execution uses GTL
 # 2.1.29   Added setBitAtIndex and bitAtIndex methods for int
@@ -40,9 +41,8 @@
 #          string
 # 2.1.20   Added -o and -r options to goil
 
-project (3:0:1) -> "goil" {
+project (3:0:2) -> "goil" {
 
-#  feature libpmAtPath : "../galgas_sources/GALGAS_OUTPUT/libpm" ;
   %makefile-macosx
   %makefile-unix
   %makefile-x86linux32-on-macosx

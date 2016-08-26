@@ -109,10 +109,10 @@ mLatexOutputString (),
 mLatexNextCharacterToEnterIndex (0) {
 //---
   if (inSourceFileName.length () > 0) {
-    MF_Assert (UNICODE_VALUE (inSourceFileName (0 COMMA_HERE)) == '/',
-               "*** SOURCE FILE PATH '%s' IS NOT ABSOLUTE ***\n",
-               (intptr_t) inSourceFileName.cString (HERE),
-               0) ;
+//    MF_Assert (UNICODE_VALUE (inSourceFileName (0 COMMA_HERE)) == '/',
+//               "*** SOURCE FILE PATH '%s' IS NOT ABSOLUTE ***\n",
+//               (intptr_t) inSourceFileName.cString (HERE),
+//               0) ;
     // printf ("*** '%s'\n", inSourceFileName.cString (HERE)) ;
     /* if (mCallerCompiler != NULL) {
       macroValidPointer (mCallerCompiler) ;

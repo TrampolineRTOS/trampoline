@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Cocoa goil 2.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
 		<key>Cocoa goil.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -22,6 +27,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>472EC9115B10C292EF8BC986</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>B37FEEDFDEAAB192EAD4AC0E</key>
 		<dict>
 			<key>primary</key>

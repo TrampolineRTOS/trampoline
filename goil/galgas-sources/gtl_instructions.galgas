@@ -416,13 +416,17 @@ override method @gtlTemplateInstruction execute
   ?!@gtlData    vars
   ?!@library    lib
   ?!@string     outputString
-{  
+{
+  # the invoked template context is a copy so that it can modify it without
+  # changing the behavior of the invoking template
   @gtlContext newContext = context
 
+  # set the new prefix if it exists
   if "" != prefix then
     [!?newContext setPrefix !prefix]
   end
 
+  # compute the full template filename
   @lstring templateFileName = [newContext fullTemplateFileName
     !vars
     ![[fileName eval !vars !lib] as @gtlString lstring]
@@ -431,16 +435,19 @@ override method @gtlTemplateInstruction execute
   @gtlData localVars
   [!?newContext setInputVars !.emptyList]
   if not isGlobal then
-    # build the variable map for the template
+    # local template
+    # build the variable map for the template and add the arguments
     localVars = @gtlStruct.new { !where !emptylstring() !.emptyMap }
     for (argumentExpression) in arguments do
       @gtlData evaluedArg = [argumentExpression eval !vars !lib]
       [!?newContext addInputVariable !evaluedArg]
     end
   else
+    # global template. The variables are a copy of the invoking template
     localVars = vars
   end
   
+  # get the invoked template
   [!?lib getTemplate
     !newContext
     !templateFileName
@@ -451,9 +458,11 @@ override method @gtlTemplateInstruction execute
   ]
   
   if found then
+    # execute if it is found
     [result execute !?newContext !?localVars !?lib !?outputString]
   else
     if ifExists then
+      # if not found and if exists variant
       @gtlData localMap = [vars overrideMap]
       [instructionsIfNotFound execute !?context !?localMap !?lib !?outputString]
       vars = [localMap overriddenMap]
