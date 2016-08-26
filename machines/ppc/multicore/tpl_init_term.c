@@ -199,12 +199,13 @@ FUNC(void, OS_CODE) tpl_init_core(void)
 #if (TPL_USE_DECREMENTER == YES)
   tpl_init_dec();
 #endif
-
+#if WITH_MEMORY_PROTECTION == YES
+  tpl_init_mp();
+#endif
 }
 
 FUNC(void, OS_CODE) tpl_init_mode_entry_module(void)
 {
-  // MC_ME CONFIG
   /* PC1 Mode behaviour : Peripheral active in RUN0-3 modes   */
   TPL_ME.RUN_PC[ME_PC1_CONFIGURATION] = ME_RUNPC_RUN0
                                       | ME_RUNPC_RUN1
@@ -212,7 +213,7 @@ FUNC(void, OS_CODE) tpl_init_mode_entry_module(void)
                                       | ME_RUNPC_RUN3;
 
 #if (TPL_USE_PIT == YES)
-  /* Set PIT to PC1 mode  */
+  /* Set PIT in PC1 mode  */
   TPL_ME.PCTL[ME_PCTL_PIT] = ME_PC1_CONFIGURATION;
 #endif
 
@@ -228,7 +229,7 @@ FUNC(void, OS_CODE) tpl_init_mode_entry_module(void)
 
 FUNC(void, OS_CODE) tpl_rgm_clear(void)
 {
-  // RGM Clear safe mode status
+  /* RGM Clear safe mode status */
   while(TPL_RGM.FES || TPL_RGM.DES) {
       TPL_RGM.FES = (uint16) 0xFFFF;
       TPL_RGM.DES = (uint16) 0xFFFF;
@@ -251,10 +252,6 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
 
 #if WITH_ORTI == YES
   tpl_fill_stack_pattern();
-#endif
-
-#if WITH_MEMORY_PROTECTION == YES
-  tpl_init_mp();
 #endif
 
   tpl_init_isr_prio();

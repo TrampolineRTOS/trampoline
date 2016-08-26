@@ -31,6 +31,7 @@
 #define TPL_REGISTERS_H
 
 #include "tpl_os_std_types.h"
+#include "Compiler.h"
 
 /*=============================================================================
  * External interrupt bit mask in MSR
@@ -276,6 +277,40 @@ struct _tpl_swt {
 
 #define TPL_SWT (*(volatile struct _tpl_swt *) 0xFFF38000UL)
 
-#endif
+/*=============================================================================
+ *  System Integration Unit (SIUL) section
+ */
+struct __siul__ {
+    uint32 reserved_0;
+    uint32 MIDR1;         /* MCU ID Register 1 */
+    uint32 MIDR2;         /* MCU ID Register 2 */
+    uint32 reserved_1[2];
+    uint32 ISR;           /* Interrupt Status Register */
+    uint32 IRER;          /* Interrupt Request Enable Register */
+    uint32 reserved_2[3];
+    uint32 IREER;         /* Interrupt Rising-Edge Event Enable Register */
+    uint32 IFEER;         /* Interrupt Falling-Edge Event Enable Register */
+    uint32 IFER;          /* Interrupt Filter Enable Register */
+    uint32 reserved_3[3];
+    uint16 PCR[108];      /* Pad Configuration Registers */
+    uint32 reserved_4[250];
+    uint8  PSMI[36];      /* Pad Selection for Multiplexed Input */
+    uint32 reserved_5[55];
+    uint8  GPDO[108];     /* GPIO Pin Data Output Registers */
+    uint32 reserved_6[101];
+    uint8  GPDI[108];     /* GPIO Pin Data Input Registers */
+    uint32 reserved_7[229];
+    uint32 PGPDO[4];      /* Parallel GPIO Pin Data Output Registers */
+    uint32 reserved_8[12];
+    uint32 PGPDI[4];      /* Parallel GPIO Pin Data Input Registers */
+    uint32 reserved_9[12];
+    uint32 MPGPDO[4];     /* Masked Parallel GPIO Pin Data Output */
+    uint32 reserved_10[217];
+    uint32 IFMC[32];      /* Interrupt Filter Maximum Counter Register */
+    uint32 IFCPR;         /* Interrupt Filter Clock Prescaler Register */
+    };
 
+#define SIUL (* (volatile struct __siul__*) 0xC3F90000UL)
+
+#endif
 

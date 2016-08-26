@@ -91,6 +91,13 @@ end if%
 #define WITH_VLE       % !yesNo(OS::USEVLE) %
 
 /*-----------------------------------------------------------------------------
+ *
+ */
+#if WITH_DEBUG == YES
+# define DEBUG_OS_MCU_IN_SUPERVISOR_MODE
+#endif
+
+/*-----------------------------------------------------------------------------
  * Use FLOAT instructions
  */%
 let use_float := false

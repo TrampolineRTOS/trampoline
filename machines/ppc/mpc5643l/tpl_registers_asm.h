@@ -230,7 +230,45 @@
 #define MPU_RGD10_access 0x4A8
 #define MPU_RGD10_pid    0x4AC
 
+/*
+ * MPU Region descriptor 10
+ */
+#define MPU_RGD11_start  0x4B0
+#define MPU_RGD11_end    0x4B4
+#define MPU_RGD11_access 0x4B8
+#define MPU_RGD11_pid    0x4BC
 
+/*
+ * MPU Region descriptor 10
+ */
+#define MPU_RGD12_start  0x4C0
+#define MPU_RGD12_end    0x4C4
+#define MPU_RGD12_access 0x4C8
+#define MPU_RGD12_pid    0x4CC
+
+/*
+ * MPU Region descriptor 10
+ */
+#define MPU_RGD13_start  0x4D0
+#define MPU_RGD13_end    0x4D4
+#define MPU_RGD13_access 0x4D8
+#define MPU_RGD13_pid    0x4DC
+
+/*
+ * MPU Region descriptor 10
+ */
+#define MPU_RGD14_start  0x4E0
+#define MPU_RGD14_end    0x4E4
+#define MPU_RGD14_access 0x4E8
+#define MPU_RGD14_pid    0x4EC
+
+/*
+ * MPU Region descriptor 10
+ */
+#define MPU_RGD15_start  0x4F0
+#define MPU_RGD15_end    0x4F4
+#define MPU_RGD15_access 0x4F8
+#define MPU_RGD15_pid    0x4FC
 
 /*=============================================================================
  * Interrupts registers
@@ -299,6 +337,12 @@
 /* We're using the Gate 0 of the sema4_0 to get the kernel lock */
 #define TPL_SEMA4_BASE  0xFFF24000
 #define TPL_GATE_KERNEL 0
+
+/*=============================================================================
+ *  System Integration Unit Lite (SIUL) section
+ */
+#define SIU_BASE 0xC3F90000
+#define SIU_END  0xC3F94000
 
 #endif
 

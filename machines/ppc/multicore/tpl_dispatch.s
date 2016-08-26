@@ -108,14 +108,14 @@ TPL_GLOBAL_REF(tpl_enter_kernel_sc):
   se_mtar   r11,r5
   se_mtar   r12,r6
   mfspr     r6,spr_PIR
-  e_slwi    r6,r6,2
+  se_slwi   r6,2
   e_lis     r5,TPL_HIG(TPL_GLOBAL_REF(tpl_reentrancy_counter))
   e_add16i  r5,TPL_LOW(TPL_GLOBAL_REF(tpl_reentrancy_counter))
   se_add    r5,r6
-  e_lwz     r6,0(r5)   /*  get the value of the counter */
-  e_cmp16i  r6,0
-  e_addi    r6,r6,1
-  e_stw     r6,0(r5)
+  se_lwz    r6,0(r5)   /*  get the value of the counter */
+  se_cmpi   r6,0
+  se_addi   r6,1
+  se_stw    r6,0(r5)
 
   e_bne     no_stack_change_sc
 
@@ -213,7 +213,7 @@ TPL_GLOBAL_REF(tpl_enter_kernel):
   e_lis     r5,TPL_HIG(TPL_GLOBAL_REF(tpl_reentrancy_counter))
   e_add16i  r5,TPL_LOW(TPL_GLOBAL_REF(tpl_reentrancy_counter))
   se_add    r5,r6
-  e_lwz     r6,0(r5)   /*  get the value of the counter */
+  se_lwz    r6,0(r5)  /*  get the value of the counter */
   e_cmp16i  r6,0
   e_addi    r6,r6,1
   e_stw     r6,0(r5)
@@ -228,7 +228,7 @@ TPL_GLOBAL_REF(tpl_enter_kernel):
   e_lis     r5,TPL_HIG(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* get the kernel   */
   e_add16i  r5,TPL_LOW(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* stack bottom ptr */
   se_add    r5,r6
-  e_lwz     r5,0(r5)
+  se_lwz    r5,0(r5)
   e_stw     r1,KS_SP-KS_FOOTPRINT(r5)  /*  save the sp of the caller     */
   se_mr     r1,r5                      /*  set the kernel stack          */
 

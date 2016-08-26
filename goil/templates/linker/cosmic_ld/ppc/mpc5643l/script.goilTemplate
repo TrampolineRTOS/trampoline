@@ -153,9 +153,9 @@ let data_size_hash["UNSPECIFIED"]       := "UN"
 
 +seg osconst -a rchw -n osconst -r4
 +grp osconst=.osConst
-+def ___SEG_START_API_CONST_RGN=@osconst
 +grp osconst=.osApiConst
-+def ___SEG_END_API_CONST_RGN=@osconst
++def ___SEG_START_API_CONST_RGN=pstart(osconst)
++def ___SEG_END_API_CONST_RGN=pend(osconst)
 
 # /* Application constants */
 
@@ -181,7 +181,8 @@ end foreach
 # /* Tasks and ISR constants */
 
 +seg procconst -a appconst -n procconst -r4
-+def __PROGCONST_SECTION_STOP=pstart(procconst)
++def __PROGCONST_SECTION_START=pstart(procconst)
++def __PROGCONST_SECTION_STOP=pend(procconst)
 
 %
 
@@ -300,9 +301,10 @@ end foreach
 
 +seg apptext -a text_garbage -n apptext -r4
 +grp apptext=.rodata
-+def ___SEG_START_API_CODE_RGN=@apptext
 +grp apptext=.osApiCode
-+def ___SEG_END_API_CODE_RGN=@apptext
++def ___SEG_START_API_CODE_RGN=pstart(apptext)
++def ___SEG_END_API_CODE_RGN=pend(apptext)
+
 
 #  /* Tasks and ISR text section */
 
@@ -497,12 +499,12 @@ end loop
 #===========================================
 #             Uninitialized Data
 
-#   /* Operating system (Trampoline) Unitialized datas */
+#   /* Operating system (Trampoline) Uninitialized datas */
 
 +seg osvarnoinit     -a data_garbage   -n osvarnoinit  -r4
 +grp osvarnoinit=.osVarNoInit
 
-#   /* Applications Unitialized datas */
+#   /* Applications Uninitialized datas */
 
 +seg appvarnoinit -a osvarnoinit -n appvarnoinit -r4
 
@@ -523,7 +525,7 @@ foreach app in APPLICATIONS do
 end foreach
 %
 
-#   /* Tasks Unitialized datas */
+#   /* Tasks Uninitialized datas */
 
 %
 let segment_name  := "appvarnoinit"
@@ -534,7 +536,7 @@ foreach proc in PROCESSES do
   let segment_name     := ".VarNI" + pragma_proc_kind
                                    + pragma_proc_name
 %
-# /* Unitialized variables section of % !proc::KIND % % !proc::NAME % */
+# /* Uninitialized variables section of % !proc::KIND % % !proc::NAME % */
   +seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r4
 
 %
@@ -572,7 +574,7 @@ loop core from 0 to OS::NUMBER_OF_CORES - 1 do
   let segment_name     := ".VarNI" + pragma_proc_kind
                                    + pragma_proc_name
 %
-# /* Unitialized variables section of % !proc::KIND % % !proc::NAME % */
+# /* Uninitialized variables section of % !proc::KIND % % !proc::NAME % */
   +seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r4
 %
   foreach DATA_SIZE in @("32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED") do
@@ -593,7 +595,7 @@ loop core from 0 to OS::NUMBER_OF_CORES - 1 do
 end loop
 %
 
-#   /* Remaining (garbage) Unitialized datas */
+#   /* Remaining (garbage) Uninitialized datas */
 
 +seg bss_garbage   -a % !segment_name % -n bss_garbage  -r4
 +grp bss_garbage=.bss
@@ -703,5 +705,4 @@ end loop
 #             Include files
 
 @*
-
 

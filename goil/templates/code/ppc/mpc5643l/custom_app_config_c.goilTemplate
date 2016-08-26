@@ -19,21 +19,46 @@ end if
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
+%
+if USEMEMORYPROTECTION then
+  loop core from 0 to OS::NUMBER_OF_CORES - 1
+  before
+%
+/***** Memory Protection Unit base address table *****/
+#include "tpl_registers_asm.h"
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+CONST(uint32, OS_CONST) tpl_mpu[% !OS::NUMBER_OF_CORES %] =
+{
+%
+  do      %   (uint32)TPL_MPU% !core %_Base%
+    between %,
+%
+  after   %
+};
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 
-/***** Interrupt Controller base address table *****/
+%
+  end loop
+end if
+%
+
 %
 loop core from 0 to OS::NUMBER_OF_CORES - 1
-before
+  before
 %
+/***** Interrupt Controller base address table *****/
+#include "tpl_registers.h"
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 CONSTP2CONST(struct _tpl_intc, OS_CONST, OS_CONST) tpl_intc[% !OS::NUMBER_OF_CORES %] =
 {
 %
-    do      %   (struct _tpl_intc*)TPL_INTC% !core %_Base%
+  do      %   (struct _tpl_intc*)TPL_INTC% !core %_Base%
     between %,
 %
-    after   %
+  after   %
 };
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -42,12 +67,13 @@ CONSTP2CONST(struct _tpl_intc, OS_CONST, OS_CONST) tpl_intc[% !OS::NUMBER_OF_COR
 end loop
 %
 
-/***** Semaphore base address table *****/
 %
 if OS::NUMBER_OF_CORES > 1 then
   loop core from 0 to OS::NUMBER_OF_CORES - 1
-  before
+    before
 %
+/***** Semaphore base address table *****/
+#include "tpl_registers.h"
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 CONSTP2CONST(struct _tpl_sema4, OS_CONST, OS_CONST) tpl_sem[% !OS::NUMBER_OF_CORES %] =
