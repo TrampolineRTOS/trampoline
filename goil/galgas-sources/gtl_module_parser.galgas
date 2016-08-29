@@ -52,18 +52,18 @@ rule <gtl_instruction_list>
     <gtl_instruction> ?@gtlInstruction instruction
     instructionList += !instruction
     @string templateString = @string.retrieveAndResetTemplateString
-    if templateString != "" then
-      instructionList +=
-        !@gtlTemplateStringInstruction.new{ !.here !templateString }
-    end
+#    if templateString != "" then
+#      instructionList +=
+#        !@gtlTemplateStringInstruction.new{ !.here !signature(!.here) !templateString }
+#    end
   while
     <gtl_simple_instruction> ?@gtlInstruction instruction
     instructionList += !instruction
     @string templateString = @string.retrieveAndResetTemplateString
-    if templateString != "" then
-      instructionList +=
-        !@gtlTemplateStringInstruction.new{ !.here !templateString }
-    end
+#    if templateString != "" then
+#      instructionList +=
+#        !@gtlTemplateStringInstruction.new{ !.here !signature(!.here) !templateString }
+#    end
   end
 }
 
@@ -188,7 +188,7 @@ rule <gtl_instruction>
   $if$
   
   instruction = @gtlIfStatementInstruction.new {
-    !where !thenElsifList !elseList
+    !where !signature(!where) !thenElsifList !elseList
   }
 }
 
@@ -244,6 +244,7 @@ rule <gtl_instruction>
   
   instruction = @gtlForeachStatementInstruction.new {
     !where
+    !signature(!where) 
     !keyName
     !variableName 
     !indexName 
@@ -291,7 +292,7 @@ rule <gtl_instruction>
   $for$
   
   instruction = @gtlForStatementInstruction.new {
-    !where !variableName !iterable !betweenList !doList
+    !where !signature(!where) !variableName !iterable !betweenList !doList
   }
 }
 
@@ -350,7 +351,7 @@ rule <gtl_instruction>
   $loop$
   
   instruction = @gtlLoopStatementInstruction.new {
-    !where !variableName !start !stop !step !direction
+    !where !signature(!where) !variableName !start !stop !step !direction
     !beforeList !betweenList !afterList !doList
   }
 }
@@ -383,7 +384,7 @@ rule <gtl_instruction>
   $repeat$
   
   instruction = @gtlRepeatStatementInstruction.new {
-    !where !limit !condition !continueList !doList
+    !where !signature(!where) !limit !condition !continueList !doList
   }
 }
 

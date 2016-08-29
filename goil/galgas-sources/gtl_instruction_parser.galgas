@@ -45,49 +45,108 @@ rule <gtl_simple_instruction>
   select
     $:=$
     <gtl_expression> ?@gtlExpression expression
-    instruction = @gtlLetInstruction.new { !where !variable !expression} 
+    instruction = @gtlLetInstruction.new { 
+      !where
+      !signature(!where)
+      !variable
+      !expression
+    } 
   or
     $+=$
     <gtl_expression> ?@gtlExpression expression
-    instruction = @gtlLetAddInstruction.new { !where !variable !expression} 
+    instruction = @gtlLetAddInstruction.new {
+      !where
+      !signature(!where)
+      !variable
+      !expression
+    } 
   or
     $-=$
     <gtl_expression> ?@gtlExpression expression
-    instruction = @gtlLetSubstractInstruction.new { !where !variable !expression} 
+    instruction = @gtlLetSubstractInstruction.new {
+      !where
+      !signature(!where)
+      !variable
+      !expression
+    } 
   or
     $*=$
     <gtl_expression> ?@gtlExpression expression
-    instruction = @gtlLetMultiplyInstruction.new { !where !variable !expression} 
+    instruction = @gtlLetMultiplyInstruction.new {
+      !where
+      !signature(!where)
+      !variable
+      !expression
+    } 
   or
     $/=$
     <gtl_expression> ?@gtlExpression expression
-    instruction = @gtlLetDivideInstruction.new { !where !variable !expression} 
+    instruction = @gtlLetDivideInstruction.new {
+      !where
+      !signature(!where)
+      !variable
+      !expression
+    } 
   or
     $mod=$
     <gtl_expression> ?@gtlExpression expression
-    instruction = @gtlLetModuloInstruction.new { !where !variable !expression} 
+    instruction = @gtlLetModuloInstruction.new {
+      !where
+      !signature(!where)
+      !variable
+      !expression
+    } 
   or
     $<<=$
     <gtl_expression> ?@gtlExpression expression
-    instruction = @gtlLetShiftLeftInstruction.new { !where !variable !expression} 
+    instruction = @gtlLetShiftLeftInstruction.new {
+      !where
+      !signature(!where)
+      !variable
+      !expression
+    } 
   or
     $>>=$
     <gtl_expression> ?@gtlExpression expression
-    instruction = @gtlLetShiftRightInstruction.new { !where !variable !expression} 
+    instruction = @gtlLetShiftRightInstruction.new {
+      !where
+      !signature(!where)
+      !variable
+      !expression
+    } 
   or
     $&=$
     <gtl_expression> ?@gtlExpression expression
-    instruction = @gtlLetAndInstruction.new { !where !variable !expression} 
+    instruction = @gtlLetAndInstruction.new {
+      !where
+      !signature(!where)
+      !variable
+      !expression
+    } 
   or
     $|=$
     <gtl_expression> ?@gtlExpression expression
-    instruction = @gtlLetOrInstruction.new { !where !variable !expression} 
+    instruction = @gtlLetOrInstruction.new {
+      !where
+      !signature(!where)
+      !variable
+      !expression
+    } 
   or
     $^=$
     <gtl_expression> ?@gtlExpression expression
-    instruction = @gtlLetXorInstruction.new { !where !variable !expression}
+    instruction = @gtlLetXorInstruction.new {
+      !where
+      !signature(!where)
+      !variable
+      !expression
+    }
   or
-    instruction = @gtlLetUnconstructedInstruction.new { !where !variable }
+    instruction = @gtlLetUnconstructedInstruction.new {
+      !where
+      !signature(!where)
+      !variable
+    }
   end
 }
 
@@ -97,7 +156,11 @@ rule <gtl_simple_instruction>
 {
   $unlet$ @location where = .here
   <gtl_variable> ?@gtlVarPath variable
-  instruction = @gtlUnletInstruction.new { !where !variable }
+  instruction = @gtlUnletInstruction.new {
+    !where
+    !signature(!where)
+    !variable
+  }
 }
 
 #-----------------------------------------------------------------------------*
@@ -110,7 +173,11 @@ rule <gtl_simple_instruction>
   <gtl_expression> ?@gtlExpression expression
 
   instruction = @gtlErrorStatementInstruction.new {
-    !where !variable !hereInstead !expression
+    !where
+    !signature(!where)
+    !variable 
+    !hereInstead 
+    !expression
   }
 }
 
@@ -124,7 +191,11 @@ rule <gtl_simple_instruction>
   <gtl_expression> ?@gtlExpression expression
 
   instruction = @gtlWarningStatementInstruction.new {
-    !where !variable !hereInstead !expression
+    !where
+    !signature(!where)
+    !variable
+    !hereInstead
+    !expression
   }
 }
 
@@ -136,7 +207,10 @@ rule <gtl_simple_instruction>
   <gtl_expression> ?@gtlExpression expression
 
   instruction = @gtlPrintStatementInstruction.new {
-    !where !false !expression
+    !where
+    !signature(!where)
+    !false
+    !expression
   }
 }
 
@@ -148,11 +222,15 @@ rule <gtl_simple_instruction>
   select
     <gtl_expression> ?@gtlExpression expression
     instruction = @gtlPrintStatementInstruction.new {
-      !where !true !expression
+      !where
+      !signature(!where)
+      !true
+      !expression
     }
   or
     instruction = @gtlPrintStatementInstruction.new {
       !where
+      !signature(!where)
       !true 
       !@gtlTerminal.new { !where !@gtlString.new { !where !emptylstring() !"" } }
     }    
@@ -167,7 +245,9 @@ rule <gtl_simple_instruction>
   <gtl_variable> ?@gtlVarPath variable
 
   instruction = @gtlDisplayStatementInstruction.new {
-    !where !variable
+    !where
+    !signature(!where)
+    !variable
   }
 }
 
@@ -187,13 +267,19 @@ rule <gtl_simple_instruction>
     while $,$ end
     
     instruction = @gtlSortStatementStructInstruction.new {
-      !where !variable !sortList
+      !where 
+      !signature(!where)
+      !variable
+      !sortList
     }    
   or
     <gtl_sorting_order> ?@lsint order
     
     instruction = @gtlSortStatementInstruction.new {
-      !where !variable !order
+      !where
+      !signature(!where)
+      !variable
+      !order
     }
   end
 }
@@ -206,7 +292,9 @@ rule <gtl_simple_instruction>
   <gtl_expression> ?@gtlExpression expression
   
   instruction = @gtlTabStatementInstruction.new {
-    !where !expression
+    !where
+    !signature(!where)
+    !expression
   }  
 }
 
@@ -215,7 +303,11 @@ rule <gtl_simple_instruction>
   !@gtlInstruction instruction
 {
   $variables$ @location where = .here
-  instruction = @gtlVariablesInstruction.new { !where }
+  instruction = @gtlVariablesInstruction.new {
+    !where
+    !signature(!where)
+    !false
+  }
 }
 
 #-----------------------------------------------------------------------------*
@@ -223,7 +315,10 @@ rule <gtl_simple_instruction>
   !@gtlInstruction instruction
 {
   $libraries$ @location where = .here
-  instruction = @gtlLibrariesInstruction.new { !where }
+  instruction = @gtlLibrariesInstruction.new {
+    !where 
+    !signature(!where)
+  }
 }
 
 #-----------------------------------------------------------------------------*
@@ -233,6 +328,7 @@ rule <gtl_simple_instruction>
   $[!$
   <gtl_variable> ?@gtlVarPath target
   $identifier$ ?let @lstring setterName
+  @location where = .here
   @gtlExpressionList argumentList = .emptyList
   select
   or
@@ -246,7 +342,8 @@ rule <gtl_simple_instruction>
   end
   $]$
   instruction = @gtlSetterCallInstruction.new {
-    !.here
+    !where
+    !signature(!where)
     !target
     !setterName
     !argumentList

@@ -68,7 +68,11 @@ rule <gtl_template_instruction_list> !@gtlInstructionList instructionList
     @string templateString = @string.retrieveAndResetTemplateString
     if templateString != "" then
       instructionList +=
-        !@gtlTemplateStringInstruction.new{ !.here !templateString }
+        !@gtlTemplateStringInstruction.new{ 
+          !.here
+          !""
+          !templateString
+        }
     end
   while
     <gtl_template_instruction> ?@gtlInstruction instruction
@@ -88,7 +92,11 @@ rule <gtl_template_instruction> !@gtlInstruction instruction
   $!$ @location where = .here
   <gtl_expression> ?@gtlExpression expression
   
-  instruction = @gtlEmitInstruction.new { !where !expression }
+  instruction = @gtlEmitInstruction.new {
+    !where
+    !signature(!where)
+    !expression
+  }
 }
 
 #-----------------------------------------------------------------------------*
@@ -108,7 +116,11 @@ rule <gtl_template_instruction> !@gtlInstruction instruction
   $end$ $write$ 
   
   instruction = @gtlWriteToInstruction.new {
-    !where !fileName !isExecutable !instructionList
+    !where
+    !signature(!where)
+    !fileName
+    !isExecutable
+    !instructionList
   }
 }
 
@@ -157,6 +169,7 @@ rule <gtl_template_instruction> !@gtlInstruction instruction
   end
   instruction = @gtlTemplateInstruction.new {
     !where
+    !signature(!where)
     !prefix
     !fileName
     !ifExists
@@ -173,7 +186,9 @@ rule <gtl_template_instruction> !@gtlInstruction instruction
   <gtl_variable> ?let @gtlVarPath columnConstantName
   
   instruction = @gtlGetColumnInstruction.new {
-    !where !columnConstantName
+    !where
+    !signature(!where)
+    !columnConstantName
   }
 }
 
@@ -203,7 +218,9 @@ rule <gtl_template_instruction> !@gtlInstruction instruction
   $if$
   
   instruction = @gtlIfStatementInstruction.new {
-    !where !thenElsifList !elseList
+    !where
+    !signature(!where)
+    !thenElsifList !elseList
   }
 }
 
@@ -256,6 +273,7 @@ rule <gtl_template_instruction> !@gtlInstruction instruction
   
   instruction = @gtlForeachStatementInstruction.new {
     !where
+    !signature(!where)
     !keyName
     !variableName 
     !indexName 
@@ -300,7 +318,12 @@ rule <gtl_template_instruction> !@gtlInstruction instruction
   $for$
   
   instruction = @gtlForStatementInstruction.new {
-    !where !variableName !iterable !betweenList !doList
+    !where
+    !signature(!where)
+    !variableName
+    !iterable
+    !betweenList
+    !doList
   }
 }
 
@@ -356,8 +379,17 @@ rule <gtl_template_instruction> !@gtlInstruction instruction
   $loop$
   
   instruction = @gtlLoopStatementInstruction.new {
-    !where !variableName !start !stop !step !direction
-    !beforeList !betweenList !afterList !doList
+    !where
+    !signature(!where)
+    !variableName
+    !start
+    !stop
+    !step
+    !direction
+    !beforeList
+    !betweenList
+    !afterList
+    !doList
   }
 }
 
@@ -385,7 +417,12 @@ rule <gtl_template_instruction> !@gtlInstruction instruction
   $repeat$
   
   instruction = @gtlRepeatStatementInstruction.new {
-    !where !limit !condition !continueList !doList
+    !where
+    !signature(!where)
+    !limit
+    !condition
+    !continueList
+    !doList
   }
 }
 
@@ -396,7 +433,9 @@ rule <gtl_template_instruction> !@gtlInstruction instruction
   <gtl_argument_list> ?@gtlArgumentList arguments
   
   instruction = @gtlInputStatementInstruction.new {
-    !where !arguments
+    !where
+    !signature(!where)
+    !arguments
   }
 }
 

@@ -29,6 +29,7 @@
 #-----------------------------------------------------------------------------*
 abstract class @gtlInstruction {
   @location where
+  @string   signature
 }
 
 getter @gtlInstruction location
@@ -47,7 +48,7 @@ abstract method @gtlInstruction execute
 # instruction list
 #-----------------------------------------------------------------------------*
 list @gtlInstructionList {
-  @gtlInstruction instruction
+  @gtlInstruction instruction %setter
 }
 
 method @gtlInstructionList execute
@@ -56,11 +57,43 @@ method @gtlInstructionList execute
   ?!@library    lib
   ?!@string     outputString
 {
-  for () in self do
-    if @uint.errorCount == 0 then
+  if [context debugActive] then
+    for () in self do
+      if [context breakOnNext] then
+        [instruction displayWithLocation ![context debuggerContext]]
+        [context executeStepDoList !?context !?vars !?lib !?outputString]
+        @bool continueLoop = true
+        loop (@uint.max)
+          message [context promptStyle] + "gtl> " + endc()
+          @string input = @string.newWithStdIn{}
+          @gtlInstruction command
+          if [input stringByTrimmingWhiteSpaces] == "" then
+            command = @gtlStepInstruction.new { !.here !"" }
+          else
+            grammar gtl_debugger_grammar on ("%" + input,"Debugger command")
+              ?command
+          end
+          if command is == @gtlStepInstruction then
+            continueLoop = false
+          else
+            if [command mayExecuteWithoutError !vars !lib] then
+              message [context outputStyle]
+              [command execute !?context !?vars !?lib !?outputString]
+              message endc()
+            end
+          end
+        while continueLoop do
+        end
+      end
       [instruction execute !?context !?vars !?lib !?outputString]
-      if @uint.errorCount != 0 then
-        error instruction : "runtime error"
+    end
+  else
+    for () in self do
+      if @uint.errorCount == 0 then
+        [instruction execute !?context !?vars !?lib !?outputString]
+        if @uint.errorCount != 0 then
+          error instruction : "runtime error"
+        end
       end
     end
   end
@@ -84,7 +117,7 @@ override method @gtlLetUnconstructedInstruction execute
     }
   ]
 }
-  
+
 #-----------------------------------------------------------------------------*
 # let instructions base class
 #-----------------------------------------------------------------------------*
@@ -354,6 +387,7 @@ class @gtlWriteToInstruction : @gtlInstruction {
   @gtlInstructionList instructions
 }
 
+
 override method @gtlWriteToInstruction execute
   ?!@gtlContext    context
   ?!@gtlData       vars
@@ -416,18 +450,15 @@ override method @gtlTemplateInstruction execute
   ?!@gtlData    vars
   ?!@library    lib
   ?!@string     outputString
-{
-  # the invoked template context is a copy so that it can modify it without
-  # changing the behavior of the invoking template
+{  
   @gtlContext newContext = context
 
-  # set the new prefix if it exists
   if "" != prefix then
     [!?newContext setPrefix !prefix]
   end
 
-  # compute the full template filename
   @lstring templateFileName = [newContext fullTemplateFileName
+    !context
     !vars
     ![[fileName eval !vars !lib] as @gtlString lstring]
   ]
@@ -435,19 +466,16 @@ override method @gtlTemplateInstruction execute
   @gtlData localVars
   [!?newContext setInputVars !.emptyList]
   if not isGlobal then
-    # local template
-    # build the variable map for the template and add the arguments
+    # build the variable map for the template
     localVars = @gtlStruct.new { !where !emptylstring() !.emptyMap }
     for (argumentExpression) in arguments do
       @gtlData evaluedArg = [argumentExpression eval !vars !lib]
       [!?newContext addInputVariable !evaluedArg]
     end
   else
-    # global template. The variables are a copy of the invoking template
     localVars = vars
   end
   
-  # get the invoked template
   [!?lib getTemplate
     !newContext
     !templateFileName
@@ -458,11 +486,9 @@ override method @gtlTemplateInstruction execute
   ]
   
   if found then
-    # execute if it is found
     [result execute !?newContext !?localVars !?lib !?outputString]
   else
     if ifExists then
-      # if not found and if exists variant
       @gtlData localMap = [vars overrideMap]
       [instructionsIfNotFound execute !?context !?localMap !?lib !?outputString]
       vars = [localMap overriddenMap]
@@ -1086,13 +1112,27 @@ override method @gtlTabStatementInstruction execute
 #-----------------------------------------------------------------------------*
 # template instructions : variables
 #-----------------------------------------------------------------------------*
-class @gtlVariablesInstruction : @gtlInstruction {}
+class @gtlVariablesInstruction : @gtlInstruction
+{
+  @bool shortDisplay
+}
 
-override method @gtlVariablesInstruction execute
-  ?!@gtlContext unused context
-  ?!@gtlData           vars
-  ?!@library    unused lib
-  ?!@string     unused outputString
+method @gtlVariablesInstruction displayShort
+  ?let @gtlData vars
+{
+  cast vars
+  case == @gtlStruct variableMap:
+    for (name variable) in [variableMap value] do
+      message [name string] + " >\n"
+      message [variable desc !4]
+    end
+  else
+    error self : "INTERNAL ERROR. a variable map should be a @gtlStruct"
+  end
+}
+
+method @gtlVariablesInstruction displayLong
+  ?let @gtlData vars
 {
   @string delimitor = @string.stringWithSequenceOfCharacters{!'=' !79 } + "\n"
   @string varDelim  = @string.stringWithSequenceOfCharacters{!'-' !79 } + "\n"
@@ -1104,16 +1144,29 @@ override method @gtlVariablesInstruction execute
   message delimitor
   cast vars
   case == @gtlStruct variableMap:
-  for (name variable) in [variableMap value] do
-    message varDelim
-    message [name string] + "\n"
-    message varDelim
-    message [variable desc !0]
-  end
+    for (name variable) in [variableMap value] do
+      message varDelim
+      message [name string] + "\n"
+      message varDelim
+      message [variable desc !0]
+    end
   else
     error self : "INTERNAL ERROR. a variable map should be a @gtlStruct"
   end
   message delimitor
+}
+
+override method @gtlVariablesInstruction execute
+  ?!@gtlContext unused context
+  ?!@gtlData           vars
+  ?!@library    unused lib
+  ?!@string     unused outputString
+{
+  if shortDisplay then
+    [self displayShort !vars]
+  else
+    [self displayLong !vars]
+  end
 }
 
 #-----------------------------------------------------------------------------*
@@ -1253,4 +1306,3 @@ override method @gtlInputStatementInstruction execute
     [!?vars setStructField !name !arg]
   end
 }
-

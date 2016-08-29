@@ -713,6 +713,7 @@ func emptyGoilContext
     !".gtl"
     !.emptyList
     !.emptyList
+    !defaultDebugSettings()
   }
 }
 
@@ -738,6 +739,7 @@ proc generate_all
           # Build a template instruction
           @gtlTemplateInstruction rootTemplateInstruction = .new {
             !.here
+            !""
             !emptylstring()
             !@gtlTerminal.new {
               !.here
@@ -758,7 +760,7 @@ proc generate_all
             !templates_directory(!"")
           ]
           [!?context setTemplateExtension
-            !".goilTemplate"
+            !"goilTemplate"
           ]
           [!?context addModulePath
             !templates_directory(!"")

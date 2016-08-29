@@ -24,6 +24,7 @@
 #
 #---------------------------------------------------------------------------*
 
+# 3.0.3    Updated to GTL 3.0.3. Debugger in progress
 # 3.0.2    Bug fix in GTL, lazy copy bug from galgas
 # 3.0.1    Bug fix in GTL, warnings was in fact errors
 # 3.0.0    Templates parsing/execution uses GTL
@@ -41,7 +42,7 @@
 #          string
 # 2.1.20   Added -o and -r options to goil
 
-project (3:0:2) -> "goil" {
+project (3:0:3) -> "goil" {
 
   %makefile-macosx
   %makefile-unix
@@ -68,6 +69,9 @@ project (3:0:2) -> "goil" {
   "galgas-sources/gtl_grammar.galgas"
   "galgas-sources/gtl_functions.galgas"
   "galgas-sources/gtl_options.galgas"
+  "galgas-sources/gtl_debugger.galgas"
+  "galgas-sources/gtl_debugger_parser.galgas"
+  "galgas-sources/gtl_debugger_grammar.galgas"
 
 
   "galgas-sources/goil_lexique.galgas"

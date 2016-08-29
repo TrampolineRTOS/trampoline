@@ -16,6 +16,15 @@ void enterOptionsFor_gtl_5F_options (NSMutableArray * ioBoolOptionArray,
   OC_GGS_CommandLineOption * option ;
   option = [[OC_GGS_CommandLineOption alloc]
     initWithDomainName:@"gtl_options"
+    identifier:@"debug"
+    commandChar:0
+    commandString:@"debug"
+    comment:@"Execute the GTL templates in debug mode"
+    defaultValue:@""
+  ] ;
+  [ioBoolOptionArray addObject:option] ;
+  option = [[OC_GGS_CommandLineOption alloc]
+    initWithDomainName:@"gtl_options"
     identifier:@"warnDeprecated"
     commandChar:0
     commandString:@"warn-deprecated"

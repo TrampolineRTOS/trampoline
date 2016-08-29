@@ -1,0 +1,983 @@
+#-----------------------------------------------------------------------------*
+#
+#  @file gtl_debugger.galgas
+#
+#  @section desc File description
+#
+#  Debugger for GTL.
+#
+#  @section copyright Copyright
+#
+#  GTL template language, part of Trampoline RTOS
+#
+#  Trampoline is copyright (c) CNRS, University of Nantes,
+#  Ecole Centrale de Nantes
+#  Trampoline is protected by the French intellectual property law.
+#
+#  This software is distributed under the GNU Public Licence V2.
+#  Check the LICENSE file in the root directory of Trampoline
+#
+#  $Date$
+#  $Rev$
+#  $Author$
+#  $URL$
+#
+#-----------------------------------------------------------------------------*
+
+func signature
+  ?@location loc
+  ->@string result
+{
+  if [option gtl_options.debug value] then
+    @string signatureString =
+      [[loc file] lastPathComponent]
+      + ":"
+      + [loc line]
+#      message signatureString + "\n"
+    result = [signatureString md5]
+  else
+    result = ""
+  end
+}
+
+func %once bold        ->@string bold      { bold      = "\u001B[1m"  }
+func %once underline   ->@string underline { underline = "\u001B[4m"  }
+func %once blink       ->@string blink     { blink     = "\u001B[5m"  }
+func %once black       ->@string black     { black     = "\u001B[90m" }
+func %once red         ->@string red       { red       = "\u001B[91m" }
+func %once green       ->@string green     { green     = "\u001B[92m" }
+func %once yellow      ->@string yellow    { yellow    = "\u001B[93m" }
+func %once blue        ->@string blue      { blue      = "\u001B[94m" }
+func %once magenta     ->@string magenta   { magenta   = "\u001B[95m" }
+func %once cyan        ->@string cyan      { cyan      = "\u001B[96m" }
+func %once darkred     ->@string red       { red       = "\u001B[31m" }
+func %once darkgreen   ->@string green     { green     = "\u001B[32m" }
+func %once darkyellow  ->@string yellow    { yellow    = "\u001B[33m" }
+func %once darkblue    ->@string blue      { blue      = "\u001B[34m" }
+func %once darkmagenta ->@string magenta   { magenta   = "\u001B[35m" }
+func %once darkcyan    ->@string cyan      { cyan      = "\u001B[36m" }
+func %once white       ->@string white     { white     = "\u001B[97m" }
+func %once endc        ->@string endc      { endc      = "\u001B[0m"  }
+
+#=============================================================================*
+# @@debuggerContext is used to store the debugging context
+#-----------------------------------------------------------------------------*
+class @debuggerContext
+{
+  @bool debugActive          %setter
+  @bool breakOnNext          %setter
+  @string promptColor        %setter
+  @string promptFace         %setter
+  @string instructionColor   %setter
+  @string instructionFace    %setter
+  @string outputColor        %setter
+  @string outputFace         %setter
+  @string warningColor       %setter
+  @string warningFace        %setter
+  @gtlInstructionList doList
+}
+
+#-----------------------------------------------------------------------------*
+setter @debuggerContext appendInstructionToStepDo
+  ?@gtlInstruction instruction
+{
+  doList += !instruction
+}
+
+#-----------------------------------------------------------------------------*
+setter @debuggerContext deleteStepDoInstruction
+  ?let @lbigint numToDelete
+{
+  if [numToDelete bigint] <= [@uint.max bigint] then
+    @uint numToDeleteUInt = [numToDelete uint]
+    if numToDeleteUInt < [doList length] then
+      [!?doList removeAtIndex ?@gtlInstruction instruction !numToDeleteUInt]
+      message "Command: "
+      message instructionColor + instructionFace
+      [instruction display]
+      message outputColor + outputFace
+      message " deleted\n"
+    else
+      message warningColor + warningFace
+      message "no do command at this index: " + [numToDelete bigint] + "\n"
+    end
+  else
+    message warningColor + warningFace
+    message "no do command at this index: " + [numToDelete bigint] + "\n"
+  end
+}
+
+#-----------------------------------------------------------------------------*
+method @debuggerContext listStepDoInstructions
+{
+  if [doList length] > 0 then
+    message "Step do commands:\n"
+    for (instruction) in doList do (index)
+      message [[index string] stringByLeftPadding !4 !' '] + ": "
+      message instructionColor + instructionFace
+      [instruction display]
+      message "\n"
+      message outputColor + outputFace
+    end
+  else
+    message "No step do commands\n"
+  end
+}
+
+#-----------------------------------------------------------------------------*
+func defaultDebugSettings
+  ->@debuggerContext debugSettings
+{
+  debugSettings = .new {
+    !false
+    !false
+    !red()
+    !""
+    !blue()
+    !bold()
+    !darkgreen()
+    !""
+    !darkyellow()
+    !bold()
+    !.emptyList
+  }
+}
+
+#-----------------------------------------------------------------------------*
+setter @gtlContext setDebugger
+  ?@bool debugOn
+{
+  [!?debuggerContext setDebugActive !debugOn]
+}
+
+#-----------------------------------------------------------------------------*
+setter @gtlContext setBreakOnNext
+{
+  [!?debuggerContext setBreakOnNext !true]
+}
+
+#-----------------------------------------------------------------------------*
+getter @gtlContext debugActive
+  ->@bool debugOn
+{
+  debugOn = [debuggerContext debugActive]
+}
+
+#-----------------------------------------------------------------------------*
+getter @gtlContext breakOnNext
+  ->@bool breakOnNext
+{
+  breakOnNext = [debuggerContext breakOnNext]
+}
+
+#-----------------------------------------------------------------------------*
+getter @gtlContext promptStyle
+  ->@string result
+{
+  result = [debuggerContext promptColor] + [debuggerContext promptFace]
+}
+
+#-----------------------------------------------------------------------------*
+getter @gtlContext outputStyle
+  ->@string result
+{
+  result = [debuggerContext outputColor] + [debuggerContext outputFace]
+}
+
+#-----------------------------------------------------------------------------*
+setter @gtlContext appendInstructionToStepDo
+  ?@gtlInstruction instruction
+{
+  [!?debuggerContext appendInstructionToStepDo !instruction]
+}
+
+#-----------------------------------------------------------------------------*
+setter @gtlContext deleteStepDoInstruction
+  ?let @lbigint numToDelete
+{
+  [!?debuggerContext deleteStepDoInstruction !numToDelete]
+}
+
+#-----------------------------------------------------------------------------*
+method @gtlContext listStepDoInstructions
+{
+  [debuggerContext listStepDoInstructions]
+}
+
+#-----------------------------------------------------------------------------*
+method @gtlContext executeStepDoList
+  ?!@gtlContext context
+  ?!@gtlData    vars
+  ?!@library    lib
+  ?!@string     outputString
+{
+  message [context outputStyle]
+  for (instruction) in [debuggerContext doList] do
+    [instruction execute !?context !?vars !?lib !?outputString]
+  end 
+  message endc()
+}
+
+#=============================================================================*
+getter @gtlVarPath stringRepresentation
+  ->@string result
+{
+  result = [[self itemAtIndex !0] stringRepresentation !""]
+  for (item) in [self subListFromIndex !1] do
+    result += [item stringRepresentation !"::"]
+  end
+}
+
+#-----------------------------------------------------------------------------*
+abstract getter @gtlVarItem stringRepresentation
+  ?let @string concatString
+  ->@string
+
+#-----------------------------------------------------------------------------*
+override getter @gtlVarItemField stringRepresentation
+  ?let @string concatString
+  ->@string result
+{
+  result = concatString + field
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlVarItemSubCollection stringRepresentation
+  ?let @string unused concatString
+  ->@string result
+{
+  result = "[" + [key stringRepresentation] + "]"
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlVarItemCollection stringRepresentation
+  ?let @string concatString
+  ->@string result
+{
+  result = concatString + field + '[' + [key stringRepresentation] + ']'
+}
+
+#=============================================================================*
+abstract getter @gtlExpression stringRepresentation
+  ->@string
+
+#-----------------------------------------------------------------------------*
+override getter @gtlAddExpression stringRepresentation
+  ->@string result
+{
+  result = [lSon stringRepresentation] + " + " + [rSon stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlAndExpression stringRepresentation
+  ->@string result
+{
+  result = [lSon stringRepresentation] + " & " + [rSon stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlDivideExpression stringRepresentation
+  ->@string result
+{
+  result = [lSon stringRepresentation] + " / " + [rSon stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlEqualExpression stringRepresentation
+  ->@string result
+{
+  result = [lSon stringRepresentation] + " == " + [rSon stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlGreaterOrEqualExpression stringRepresentation
+  ->@string result
+{
+  result = [lSon stringRepresentation] + " >= " + [rSon stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlGreaterThanExpression stringRepresentation
+  ->@string result
+{
+  result = [lSon stringRepresentation] + " > " + [rSon stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlLowerOrEqualExpression stringRepresentation
+  ->@string result
+{
+  result = [lSon stringRepresentation] + " <= " + [rSon stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlLowerThanExpression stringRepresentation
+  ->@string result
+{
+  result = [lSon stringRepresentation] + " < " + [rSon stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlModulusExpression stringRepresentation
+  ->@string result
+{
+  result = [lSon stringRepresentation] + " mod " + [rSon stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlMultiplyExpression stringRepresentation
+  ->@string result
+{
+  result = [lSon stringRepresentation] + " * " + [rSon stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlNotEqualExpression stringRepresentation
+  ->@string result
+{
+  result = [lSon stringRepresentation] + " != " + [rSon stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlOrExpression stringRepresentation
+  ->@string result
+{
+  result = [lSon stringRepresentation] + " | " + [rSon stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlShiftLeftExpression stringRepresentation
+  ->@string result
+{
+  result = [lSon stringRepresentation] + " << " + [rSon stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlShiftRightExpression stringRepresentation
+  ->@string result
+{
+  result = [lSon stringRepresentation] + " >> " + [rSon stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlSubstractExpression stringRepresentation
+  ->@string result
+{
+  result = [lSon stringRepresentation] + " - " + [rSon stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlXorExpression stringRepresentation
+  ->@string result
+{
+  result = [lSon stringRepresentation] + " ^ " + [rSon stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlExistsExpression stringRepresentation
+  ->@string result
+{
+  result = "exists " + [variable stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlFunctionCallExpression stringRepresentation
+  ->@string result
+{
+  result = [functionName string] + "(" + [functionArguments stringRepresentation] + ")"
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlGetterCallExpression stringRepresentation
+  ->@string result
+{
+  result = "[" + [target stringRepresentation] + " " + getterName
+  if [arguments length] > 0 then
+    result = result + ": " + [arguments stringRepresentation]    
+  end
+  result = result + "]"
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlListOfExpression stringRepresentation
+  ->@string result
+{
+  result = "listof " + [expression stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlLiteralListExpression stringRepresentation
+  ->@string result
+{
+  result = "@( " + [value stringRepresentation] + " )"
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlLiteralMapExpression stringRepresentation
+  ->@string result
+{
+  result = "@[ " + [value mapRepresentation] + " ]"
+}
+  
+#-----------------------------------------------------------------------------*
+override getter @gtlLiteralSetExpression stringRepresentation
+  ->@string result
+{
+  result = "@! " + [value stringRepresentation] + " !"
+}
+  
+#-----------------------------------------------------------------------------*
+override getter @gtlLiteralStructExpression stringRepresentation
+  ->@string result
+{
+  result = "@{ " + [value structRepresentation] + " }"
+}
+  
+#-----------------------------------------------------------------------------*
+override getter @gtlMapOfStructExpression stringRepresentation
+  ->@string result
+{
+  result = "mapof " + [expression stringRepresentation] + " end"
+}
+  
+#-----------------------------------------------------------------------------*
+override getter @gtlTerminal stringRepresentation
+  ->@string result
+{
+  result = [value stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlTypeOfExpression stringRepresentation
+  ->@string result
+{
+  result = "typeof " + [variable stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlMinusExpression stringRepresentation
+  ->@string result
+{
+  result = "-" + [son stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlNotExpression stringRepresentation
+  ->@string result
+{
+  result = "not " + [son stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlParenthesizedExpression stringRepresentation
+  ->@string result
+{
+  result = "(" + [son stringRepresentation] + ")"
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlPlusExpression stringRepresentation
+  ->@string result
+{
+  result = "+" + [son stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlVarRef stringRepresentation
+  ->@string result
+{
+  result = [variableName stringRepresentation]
+}
+
+#=============================================================================*
+abstract getter @gtlData stringRepresentation
+  ->@string
+  
+#-----------------------------------------------------------------------------*
+override getter @gtlBool stringRepresentation
+  ->@string result
+{
+  result = [self string]
+}
+  
+#-----------------------------------------------------------------------------*
+override getter @gtlChar stringRepresentation
+  ->@string result
+{
+  result = [self string]
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlEnum stringRepresentation
+  ->@string result
+{
+  result = "$" + [self string]
+}
+  
+#-----------------------------------------------------------------------------*
+override getter @gtlFloat stringRepresentation
+  ->@string result
+{
+  result = [self string]
+}
+  
+#-----------------------------------------------------------------------------*
+override getter @gtlInt stringRepresentation
+  ->@string result
+{
+  result = [self string]
+}
+  
+#-----------------------------------------------------------------------------*
+override getter @gtlString stringRepresentation
+  ->@string result
+{
+  @string literalString = [self string]
+  literalString = [literalString stringByReplacingStringByString !"\n" !"\\n"] 
+  literalString = [literalString stringByReplacingStringByString !"\t" !"\\t"] 
+  literalString = [literalString stringByReplacingStringByString !"\f" !"\\f"] 
+  literalString = [literalString stringByReplacingStringByString !"\r" !"\\r"] 
+  literalString = [literalString stringByReplacingStringByString !"\v" !"\\v"] 
+  literalString = [literalString stringByReplacingStringByString !"\\" !"\\\\"] 
+  literalString = [literalString stringByReplacingStringByString !"\"" !"\\\""] 
+  result = "\"" + literalString + "\""
+}
+  
+#-----------------------------------------------------------------------------*
+override getter @gtlUnconstructed stringRepresentation
+  ->@string result
+{
+  result = "*UNCONSTRUCTED*"
+}
+  
+#-----------------------------------------------------------------------------*
+override getter @gtlType stringRepresentation
+  ->@string result
+{
+  result = "@" + [self string]
+}
+  
+#-----------------------------------------------------------------------------*
+override getter @gtlList stringRepresentation
+  ->@string result
+{
+  result = "@( "
+  for (item) in value do
+    result = result + [item stringRepresentation]
+  between
+    result = result + ", "
+  end
+  result = result + " )"
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlMap stringRepresentation
+  ->@string result
+{
+  result = "@[ "
+  for (key item) in value do
+    result = result + "\"" + key + "\": " + [item stringRepresentation]
+  between
+    result = result + ", "
+  end
+  result = result + " ]"
+}
+  
+#-----------------------------------------------------------------------------*
+override getter @gtlStruct stringRepresentation
+  ->@string result
+{
+  result = "@{ "
+  for (key item) in value do
+    result = result + key + ": " + [item stringRepresentation]
+  between
+    result = result + ", "
+  end
+  result = result + " }"
+}
+  
+#-----------------------------------------------------------------------------*
+override getter @gtlSet stringRepresentation
+  ->@string result
+{
+  result = "@! "
+  for (item) in value do
+    result = result + item
+  between
+    result = result + ", "
+  end
+  result = result + " !"
+}
+  
+#=============================================================================*
+getter @gtlExpressionList stringRepresentation
+  ->@string result
+{
+  result = ""
+  for (expression) in self do
+    result = result + [expression stringRepresentation]
+  between
+    result = result + ", "
+  end
+}
+
+#=============================================================================*
+getter @gtlExpressionMap mapRepresentation
+  ->@string result
+{
+  result = ""
+  for (key expression) in self do
+    result = result + "\"" + key + "\": " + [expression stringRepresentation]
+  between
+    result = result + ", "
+  end
+}
+
+#-----------------------------------------------------------------------------*
+getter @gtlExpressionMap structRepresentation
+  ->@string result
+{
+  result = ""
+  for (key expression) in self do
+    result = result + key + ": " + [expression stringRepresentation]
+  between
+    result = result + ", "
+  end
+}
+
+#=============================================================================*
+getter @gtlArgumentList stringRepresentation
+  ->@string result
+{
+  result = ""
+  for (typed type name) in self do
+    result = result + name
+    if typed then
+      result = result + " : @" + [type typeName]
+    end  
+  between
+    result = result + ", "
+  end
+}
+
+#=============================================================================*
+getter @lsint stringRepresentation
+  ->@string result
+{
+  result = if 0S < self then "<" else ">" end
+}
+
+#=============================================================================*
+getter @sortingKeyList stringRepresentation
+  ->@string result
+{
+  result = ""
+  for (key order) in self do
+    result = result + key + " " + [order stringRepresentation]
+  between
+    result = ", "
+  end
+}
+
+#=============================================================================*
+getter @gtlInstruction shortLocation
+  ->@string result
+{
+  result = [[where file] lastPathComponent] + ":" + [where line]
+}
+
+#-----------------------------------------------------------------------------*
+method @gtlInstruction displayWithLocation
+  ?let @debuggerContext context
+{
+  message [self shortLocation] + " > "
+  message [context instructionColor] + [context instructionFace]
+  [self display]
+  message endc() + "\n"
+}
+
+#=============================================================================*
+method @gtlInstruction display
+{
+  message "[Display not available]"
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlLetUnconstructedInstruction display
+{
+  message "let " + [lValue stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlLetInstruction display
+{
+  message "let "
+    + [lValue stringRepresentation]
+    + " := "
+    + [rValue stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlLetAddInstruction display
+{
+  message "let "
+    + [lValue stringRepresentation]
+    + " += "
+    + [rValue stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlLetSubstractInstruction display
+{
+  message "let "
+    + [lValue stringRepresentation]
+    + " -= "
+    + [rValue stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlLetMultiplyInstruction display
+{
+  message "let "
+    + [lValue stringRepresentation]
+    + " *= "
+    + [rValue stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlLetDivideInstruction display
+{
+  message "let "
+    + [lValue stringRepresentation]
+    + " /= "
+    + [rValue stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlLetModuloInstruction display
+{
+  message "let "
+    + [lValue stringRepresentation]
+    + " mod= "
+    + [rValue stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlLetShiftLeftInstruction display
+{
+  message "let "
+    + [lValue stringRepresentation]
+    + " <<= "
+    + [rValue stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlLetShiftRightInstruction display
+{
+  message "let "
+    + [lValue stringRepresentation]
+    + " >>= "
+    + [rValue stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlLetAndInstruction display
+{
+  message "let "
+    + [lValue stringRepresentation]
+    + " &= "
+    + [rValue stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlLetOrInstruction display
+{
+  message "let "
+    + [lValue stringRepresentation]
+    + " |= "
+    + [rValue stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlLetXorInstruction display
+{
+  message "let "
+    + [lValue stringRepresentation]
+    + " ^= "
+    + [rValue stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlLoopStatementInstruction display
+{
+  message "loop "
+    + identifier
+    + " from "
+    + [start stringRepresentation]
+    + if upDown == -1S then " down" else "" end
+    + " to "
+    + [stop stringRepresentation]
+    + " step "
+    + [step stringRepresentation]
+    + " do"
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlWarningStatementInstruction display
+{
+  message "warning "
+    + if hereInstead then "here" else [identifier stringRepresentation] end
+    + " : "
+    + [warningMessage stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlErrorStatementInstruction display
+{
+  message "error "
+    + if hereInstead then "here" else [identifier stringRepresentation] end
+    + " : "
+    + [errorMessage stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlDisplayStatementInstruction display
+{
+  message "display " + [variablePath stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlPrintStatementInstruction display
+{
+  message "print"
+    + if carriageReturn then "ln " else " " end
+    + [messageToPrint stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlTemplateStringInstruction display
+{
+  message "%" + value + "%"
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlInputStatementInstruction display
+{
+  message "input ( " + [formalArguments stringRepresentation] + " )"
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlSortStatementInstruction display
+{
+  message "sort "
+    + [variablePath stringRepresentation] 
+    + " " 
+    + [order stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlSortStatementStructInstruction display
+{
+  message "sort "
+    + [variablePath stringRepresentation] 
+    + " by "
+    + [sortingKey stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlTemplateInstruction display
+{
+  message "template "
+    + if isGlobal then "" else "( " + [arguments stringRepresentation] + " ) " end
+    + if ifExists then "if exists " else "" end
+    + [fileName stringRepresentation]
+    + if "" == prefix then " " else " in " + prefix + " " end
+    + if ifExists & [instructionsIfNotFound length] > 0 then "or ..." else "" end
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlEmitInstruction display
+{
+  message "! " + [rValue stringRepresentation]
+}
+
+#=============================================================================*
+getter @gtlInstruction mayExecuteWithoutError
+  ?let @gtlData unused context
+  ?let @library unused lib
+  ->@bool may
+{
+  may = true
+}
+
+#-----------------------------------------------------------------------------*
+override getter @gtlDisplayStatementInstruction mayExecuteWithoutError
+  ?let @gtlData context
+  ?let @library lib
+  ->@bool may
+{
+  may =  [variablePath exists !context !lib]
+}
+
+#-----------------------------------------------------------------------------*
+# Debugger instruction : step
+#-----------------------------------------------------------------------------*
+class @gtlStepInstruction : @gtlInstruction {}
+
+override method @gtlStepInstruction execute
+  ?!@gtlContext unused context
+  ?!@gtlData    unused vars
+  ?!@library    unused lib
+  ?!@string     unused outputString
+{
+}
+
+#-----------------------------------------------------------------------------*
+# Debugger instruction : do <instruction>
+#-----------------------------------------------------------------------------*
+class @gtlDoInstInstruction : @gtlInstruction
+{
+  @gtlInstruction instructionToDo
+}
+
+override method @gtlDoInstInstruction execute
+  ?!@gtlContext        context
+  ?!@gtlData    unused vars
+  ?!@library    unused lib
+  ?!@string     unused outputString
+{
+  [!?context appendInstructionToStepDo !instructionToDo]
+}
+
+#-----------------------------------------------------------------------------*
+# Debugger instruction : do no <num>
+#-----------------------------------------------------------------------------*
+class @gtlDoNoInstruction : @gtlInstruction
+{
+  @lbigint numToDelete
+}
+
+override method @gtlDoNoInstruction execute
+  ?!@gtlContext        context
+  ?!@gtlData    unused vars
+  ?!@library    unused lib
+  ?!@string     unused outputString
+{
+  [!?context deleteStepDoInstruction !numToDelete]
+}
+
+#-----------------------------------------------------------------------------*
+# Debugger instruction : do
+#-----------------------------------------------------------------------------*
+class @gtlDoInstruction : @gtlInstruction
+{
+}
+
+override method @gtlDoInstruction execute
+  ?!@gtlContext        context
+  ?!@gtlData    unused vars
+  ?!@library    unused lib
+  ?!@string     unused outputString
+{
+  [context listStepDoInstructions]
+}

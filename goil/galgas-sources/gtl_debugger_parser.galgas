@@ -1,0 +1,259 @@
+#-----------------------------------------------------------------------------*
+#
+#  @file gtl_debugger_parser.galgas
+#
+#  @section desc File description
+#
+#  Debugger parser for GTL.
+#
+#  @section copyright Copyright
+#
+#  GTL template language, part of Trampoline RTOS
+#
+#  Trampoline is copyright (c) CNRS, University of Nantes,
+#  Ecole Centrale de Nantes
+#  Trampoline is protected by the French intellectual property law.
+#
+#  This software is distributed under the GNU Public Licence V2.
+#  Check the LICENSE file in the root directory of Trampoline
+#
+#  $Date$
+#  $Rev$
+#  $Author$
+#  $URL$
+#
+#-----------------------------------------------------------------------------*
+
+syntax gtl_debugger_parser (gtl_scanner) {
+
+#-----------------------------------------------------------------------------*
+rule <gtl_expression>
+  !@gtlExpression expression
+
+rule <gtl_variable>
+  !@gtlVarPath path
+
+#-----------------------------------------------------------------------------*
+rule <gtl_debugger_command>
+  !@gtlInstruction instruction
+{
+  $step$
+  instruction = @gtlStepInstruction.new {
+    !.here
+    !""
+  }
+}
+
+#-----------------------------------------------------------------------------*
+rule <gtl_debugger_command>
+  !@gtlInstruction instruction
+{
+  
+  $do$
+  select
+    <gtl_step_do_command> ?@gtlInstruction instructionToStepDo
+    instruction = @gtlDoInstInstruction.new {
+      !.here
+      !""
+      !instructionToStepDo
+    }
+  or
+    $no$
+    $signed_literal_integer_bigint$ ?let @lbigint num
+    instruction = @gtlDoNoInstruction.new {
+      !.here
+      !""
+      !num
+    }
+  or
+    instruction = @gtlDoInstruction.new {
+      !.here
+      !""
+    }    
+  end
+}
+
+#-----------------------------------------------------------------------------*
+rule <gtl_debugger_command>
+  !@gtlInstruction instruction
+{
+  instruction = @gtlStepInstruction.new {
+    !.here
+    !""
+  }
+}
+
+#-----------------------------------------------------------------------------*
+rule <gtl_debugger_command>
+  !@gtlInstruction instruction
+{
+  $let$
+  <gtl_variable> ?@gtlVarPath variable
+  select
+    $:=$
+    <gtl_expression> ?@gtlExpression expression
+    instruction = @gtlLetInstruction.new { 
+      !.here
+      !""
+      !variable
+      !expression
+    } 
+  or
+    $+=$
+    <gtl_expression> ?@gtlExpression expression
+    instruction = @gtlLetAddInstruction.new {
+      !.here
+      !""
+      !variable
+      !expression
+    } 
+  or
+    $-=$
+    <gtl_expression> ?@gtlExpression expression
+    instruction = @gtlLetSubstractInstruction.new {
+      !.here
+      !""
+      !variable
+      !expression
+    } 
+  or
+    $*=$
+    <gtl_expression> ?@gtlExpression expression
+    instruction = @gtlLetMultiplyInstruction.new {
+      !.here
+      !""
+      !variable
+      !expression
+    } 
+  or
+    $/=$
+    <gtl_expression> ?@gtlExpression expression
+    instruction = @gtlLetDivideInstruction.new {
+      !.here
+      !""
+      !variable
+      !expression
+    } 
+  or
+    $mod=$
+    <gtl_expression> ?@gtlExpression expression
+    instruction = @gtlLetModuloInstruction.new {
+      !.here
+      !""
+      !variable
+      !expression
+    } 
+  or
+    $<<=$
+    <gtl_expression> ?@gtlExpression expression
+    instruction = @gtlLetShiftLeftInstruction.new {
+      !.here
+      !""
+      !variable
+      !expression
+    } 
+  or
+    $>>=$
+    <gtl_expression> ?@gtlExpression expression
+    instruction = @gtlLetShiftRightInstruction.new {
+      !.here
+      !""
+      !variable
+      !expression
+    } 
+  or
+    $&=$
+    <gtl_expression> ?@gtlExpression expression
+    instruction = @gtlLetAndInstruction.new {
+      !.here
+      !""
+      !variable
+      !expression
+    } 
+  or
+    $|=$
+    <gtl_expression> ?@gtlExpression expression
+    instruction = @gtlLetOrInstruction.new {
+      !.here
+      !""
+      !variable
+      !expression
+    } 
+  or
+    $^=$
+    <gtl_expression> ?@gtlExpression expression
+    instruction = @gtlLetXorInstruction.new {
+      !.here
+      !""
+      !variable
+      !expression
+    }
+  or
+    instruction = @gtlLetUnconstructedInstruction.new {
+      !.here
+      !""
+      !variable
+    }
+  end
+}
+
+#-----------------------------------------------------------------------------*
+rule <gtl_debugger_command>
+  !@gtlInstruction instruction
+{
+  $unlet$
+  <gtl_variable> ?@gtlVarPath variable
+  instruction = @gtlUnletInstruction.new {
+    !.here
+    !""
+    !variable
+  }
+}
+
+#-----------------------------------------------------------------------------*
+rule <gtl_debugger_command>
+  !@gtlInstruction instruction
+{
+  <gtl_step_do_command> ?instruction
+}
+
+#-----------------------------------------------------------------------------*
+rule <gtl_step_do_command>
+  !@gtlInstruction instruction
+{
+  $variables$
+  instruction = @gtlVariablesInstruction.new {
+    !.here
+    !""
+    !true
+  }
+}
+
+#-----------------------------------------------------------------------------*
+rule <gtl_step_do_command>
+  !@gtlInstruction instruction
+{
+  $display$
+  <gtl_variable> ?@gtlVarPath variable  
+  instruction = @gtlDisplayStatementInstruction.new {
+    !.here
+    !""
+    !variable
+  }
+}
+
+#-----------------------------------------------------------------------------*
+rule <gtl_step_do_command>
+  !@gtlInstruction instruction
+{
+  $print$ 
+  <gtl_expression> ?@gtlExpression expression
+  instruction = @gtlPrintStatementInstruction.new {
+    !.here
+    !""
+    !true
+    !expression
+  }
+}
+
+}

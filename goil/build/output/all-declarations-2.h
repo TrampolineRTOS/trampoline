@@ -240,6 +240,190 @@ class cParser_gtl_5F_module_5F_parser {
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
+//                                               @debuggerContext class                                                *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_debuggerContext : public AC_GALGAS_class {
+//--- Constructor
+  public : GALGAS_debuggerContext (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public : static GALGAS_debuggerContext constructor_default (LOCATION_ARGS) ;
+
+//---
+  public : inline const class cPtr_debuggerContext * ptr (void) const { return (const cPtr_debuggerContext *) mObjectPtr ; }
+
+//--------------------------------- Constructor from pointer
+  public : GALGAS_debuggerContext (const cPtr_debuggerContext * inSourcePtr) ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
+
+//--------------------------------- Object extraction
+  public : static GALGAS_debuggerContext extractObject (const GALGAS_object & inObject,
+                                                        C_Compiler * inCompiler
+                                                        COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public : static class GALGAS_debuggerContext constructor_new (const class GALGAS_bool & inOperand0,
+                                                                const class GALGAS_bool & inOperand1,
+                                                                const class GALGAS_string & inOperand2,
+                                                                const class GALGAS_string & inOperand3,
+                                                                const class GALGAS_string & inOperand4,
+                                                                const class GALGAS_string & inOperand5,
+                                                                const class GALGAS_string & inOperand6,
+                                                                const class GALGAS_string & inOperand7,
+                                                                const class GALGAS_string & inOperand8,
+                                                                const class GALGAS_string & inOperand9,
+                                                                const class GALGAS_gtlInstructionList & inOperand10
+                                                                COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public : typeComparisonResult objectCompare (const GALGAS_debuggerContext & inOperand) const ;
+
+//--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_setBreakOnNext (class GALGAS_bool inArgument0
+                                                        COMMA_LOCATION_ARGS) ;
+
+  public : VIRTUAL_IN_DEBUG void setter_setDebugActive (class GALGAS_bool inArgument0
+                                                        COMMA_LOCATION_ARGS) ;
+
+  public : VIRTUAL_IN_DEBUG void setter_setInstructionColor (class GALGAS_string inArgument0
+                                                             COMMA_LOCATION_ARGS) ;
+
+  public : VIRTUAL_IN_DEBUG void setter_setInstructionFace (class GALGAS_string inArgument0
+                                                            COMMA_LOCATION_ARGS) ;
+
+  public : VIRTUAL_IN_DEBUG void setter_setOutputColor (class GALGAS_string inArgument0
+                                                        COMMA_LOCATION_ARGS) ;
+
+  public : VIRTUAL_IN_DEBUG void setter_setOutputFace (class GALGAS_string inArgument0
+                                                       COMMA_LOCATION_ARGS) ;
+
+  public : VIRTUAL_IN_DEBUG void setter_setPromptColor (class GALGAS_string inArgument0
+                                                        COMMA_LOCATION_ARGS) ;
+
+  public : VIRTUAL_IN_DEBUG void setter_setPromptFace (class GALGAS_string inArgument0
+                                                       COMMA_LOCATION_ARGS) ;
+
+  public : VIRTUAL_IN_DEBUG void setter_setWarningColor (class GALGAS_string inArgument0
+                                                         COMMA_LOCATION_ARGS) ;
+
+  public : VIRTUAL_IN_DEBUG void setter_setWarningFace (class GALGAS_string inArgument0
+                                                        COMMA_LOCATION_ARGS) ;
+
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+  public : VIRTUAL_IN_DEBUG class GALGAS_bool getter_breakOnNext (LOCATION_ARGS) const ;
+
+  public : VIRTUAL_IN_DEBUG class GALGAS_bool getter_debugActive (LOCATION_ARGS) const ;
+
+  public : VIRTUAL_IN_DEBUG class GALGAS_gtlInstructionList getter_doList (LOCATION_ARGS) const ;
+
+  public : VIRTUAL_IN_DEBUG class GALGAS_string getter_instructionColor (LOCATION_ARGS) const ;
+
+  public : VIRTUAL_IN_DEBUG class GALGAS_string getter_instructionFace (LOCATION_ARGS) const ;
+
+  public : VIRTUAL_IN_DEBUG class GALGAS_string getter_outputColor (LOCATION_ARGS) const ;
+
+  public : VIRTUAL_IN_DEBUG class GALGAS_string getter_outputFace (LOCATION_ARGS) const ;
+
+  public : VIRTUAL_IN_DEBUG class GALGAS_string getter_promptColor (LOCATION_ARGS) const ;
+
+  public : VIRTUAL_IN_DEBUG class GALGAS_string getter_promptFace (LOCATION_ARGS) const ;
+
+  public : VIRTUAL_IN_DEBUG class GALGAS_string getter_warningColor (LOCATION_ARGS) const ;
+
+  public : VIRTUAL_IN_DEBUG class GALGAS_string getter_warningFace (LOCATION_ARGS) const ;
+
+
+//--------------------------------- Introspection
+  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+ 
+} ; // End of GALGAS_debuggerContext class
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_debuggerContext ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                      Pointer class for @debuggerContext class                                       *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class cPtr_debuggerContext : public acPtr_class {
+//--- Attributes
+  public : GALGAS_bool mAttribute_debugActive ;
+  public : GALGAS_bool mAttribute_breakOnNext ;
+  public : GALGAS_string mAttribute_promptColor ;
+  public : GALGAS_string mAttribute_promptFace ;
+  public : GALGAS_string mAttribute_instructionColor ;
+  public : GALGAS_string mAttribute_instructionFace ;
+  public : GALGAS_string mAttribute_outputColor ;
+  public : GALGAS_string mAttribute_outputFace ;
+  public : GALGAS_string mAttribute_warningColor ;
+  public : GALGAS_string mAttribute_warningFace ;
+  public : GALGAS_gtlInstructionList mAttribute_doList ;
+
+//--- Constructor
+  public : cPtr_debuggerContext (const GALGAS_bool & in_debugActive,
+                                 const GALGAS_bool & in_breakOnNext,
+                                 const GALGAS_string & in_promptColor,
+                                 const GALGAS_string & in_promptFace,
+                                 const GALGAS_string & in_instructionColor,
+                                 const GALGAS_string & in_instructionFace,
+                                 const GALGAS_string & in_outputColor,
+                                 const GALGAS_string & in_outputFace,
+                                 const GALGAS_string & in_warningColor,
+                                 const GALGAS_string & in_warningFace,
+                                 const GALGAS_gtlInstructionList & in_doList
+                                 COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
+
+//--- Attribute accessors
+  public : VIRTUAL_IN_DEBUG GALGAS_bool getter_debugActive (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setDebugActive (GALGAS_bool inValue COMMA_LOCATION_ARGS) ;
+  public : VIRTUAL_IN_DEBUG GALGAS_bool getter_breakOnNext (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setBreakOnNext (GALGAS_bool inValue COMMA_LOCATION_ARGS) ;
+  public : VIRTUAL_IN_DEBUG GALGAS_string getter_promptColor (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setPromptColor (GALGAS_string inValue COMMA_LOCATION_ARGS) ;
+  public : VIRTUAL_IN_DEBUG GALGAS_string getter_promptFace (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setPromptFace (GALGAS_string inValue COMMA_LOCATION_ARGS) ;
+  public : VIRTUAL_IN_DEBUG GALGAS_string getter_instructionColor (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setInstructionColor (GALGAS_string inValue COMMA_LOCATION_ARGS) ;
+  public : VIRTUAL_IN_DEBUG GALGAS_string getter_instructionFace (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setInstructionFace (GALGAS_string inValue COMMA_LOCATION_ARGS) ;
+  public : VIRTUAL_IN_DEBUG GALGAS_string getter_outputColor (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setOutputColor (GALGAS_string inValue COMMA_LOCATION_ARGS) ;
+  public : VIRTUAL_IN_DEBUG GALGAS_string getter_outputFace (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setOutputFace (GALGAS_string inValue COMMA_LOCATION_ARGS) ;
+  public : VIRTUAL_IN_DEBUG GALGAS_string getter_warningColor (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setWarningColor (GALGAS_string inValue COMMA_LOCATION_ARGS) ;
+  public : VIRTUAL_IN_DEBUG GALGAS_string getter_warningFace (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setWarningFace (GALGAS_string inValue COMMA_LOCATION_ARGS) ;
+  public : VIRTUAL_IN_DEBUG GALGAS_gtlInstructionList getter_doList (LOCATION_ARGS) const ;
+//--- Description
+  public : virtual void description (C_String & ioString,
+                                     const int32_t inIndentation) const ;
+
+  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
+
+  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
+
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //                                                  @gtlContext class                                                  *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -273,7 +457,8 @@ class GALGAS_gtlContext : public AC_GALGAS_class {
                                                            const class GALGAS_string & inOperand2,
                                                            const class GALGAS_string & inOperand3,
                                                            const class GALGAS_stringlist & inOperand4,
-                                                           const class GALGAS_gtlDataList & inOperand5
+                                                           const class GALGAS_gtlDataList & inOperand5,
+                                                           const class GALGAS_debuggerContext & inOperand6
                                                            COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Comparison
@@ -300,6 +485,8 @@ class GALGAS_gtlContext : public AC_GALGAS_class {
 //--------------------------------- Class Methods
 
 //--------------------------------- Getters
+  public : VIRTUAL_IN_DEBUG class GALGAS_debuggerContext getter_debuggerContext (LOCATION_ARGS) const ;
+
   public : VIRTUAL_IN_DEBUG class GALGAS_stringlist getter_importPath (LOCATION_ARGS) const ;
 
   public : VIRTUAL_IN_DEBUG class GALGAS_gtlDataList getter_inputVars (LOCATION_ARGS) const ;
@@ -337,6 +524,7 @@ class cPtr_gtlContext : public acPtr_class {
   public : GALGAS_string mAttribute_templateExtension ;
   public : GALGAS_stringlist mAttribute_importPath ;
   public : GALGAS_gtlDataList mAttribute_inputVars ;
+  public : GALGAS_debuggerContext mAttribute_debuggerContext ;
 
 //--- Constructor
   public : cPtr_gtlContext (const GALGAS_lstring & in_prefix,
@@ -344,7 +532,8 @@ class cPtr_gtlContext : public acPtr_class {
                             const GALGAS_string & in_templateDirectory,
                             const GALGAS_string & in_templateExtension,
                             const GALGAS_stringlist & in_importPath,
-                            const GALGAS_gtlDataList & in_inputVars
+                            const GALGAS_gtlDataList & in_inputVars,
+                            const GALGAS_debuggerContext & in_debuggerContext
                             COMMA_LOCATION_ARGS) ;
 
 //--- Duplication
@@ -362,6 +551,7 @@ class cPtr_gtlContext : public acPtr_class {
   public : VIRTUAL_IN_DEBUG GALGAS_stringlist getter_importPath (LOCATION_ARGS) const ;
   public : VIRTUAL_IN_DEBUG GALGAS_gtlDataList getter_inputVars (LOCATION_ARGS) const ;
   public : VIRTUAL_IN_DEBUG void setter_setInputVars (GALGAS_gtlDataList inValue COMMA_LOCATION_ARGS) ;
+  public : VIRTUAL_IN_DEBUG GALGAS_debuggerContext getter_debuggerContext (LOCATION_ARGS) const ;
 //--- Description
   public : virtual void description (C_String & ioString,
                                      const int32_t inIndentation) const ;
@@ -403,10 +593,11 @@ class GALGAS_gtlForStatementInstruction : public GALGAS_gtlInstruction {
 
 //--------------------------------- GALGAS constructors
   public : static class GALGAS_gtlForStatementInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                           const class GALGAS_lstring & inOperand1,
-                                                                           const class GALGAS_gtlExpressionList & inOperand2,
-                                                                           const class GALGAS_gtlInstructionList & inOperand3,
-                                                                           const class GALGAS_gtlInstructionList & inOperand4
+                                                                           const class GALGAS_string & inOperand1,
+                                                                           const class GALGAS_lstring & inOperand2,
+                                                                           const class GALGAS_gtlExpressionList & inOperand3,
+                                                                           const class GALGAS_gtlInstructionList & inOperand4,
+                                                                           const class GALGAS_gtlInstructionList & inOperand5
                                                                            COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Comparison
@@ -452,6 +643,7 @@ class cPtr_gtlForStatementInstruction : public cPtr_gtlInstruction {
 
 //--- Constructor
   public : cPtr_gtlForStatementInstruction (const GALGAS_location & in_where,
+                                            const GALGAS_string & in_signature,
                                             const GALGAS_lstring & in_identifier,
                                             const GALGAS_gtlExpressionList & in_iterable,
                                             const GALGAS_gtlInstructionList & in_betweenList,
@@ -504,14 +696,15 @@ class GALGAS_gtlForeachStatementInstruction : public GALGAS_gtlInstruction {
 
 //--------------------------------- GALGAS constructors
   public : static class GALGAS_gtlForeachStatementInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                               const class GALGAS_lstring & inOperand1,
+                                                                               const class GALGAS_string & inOperand1,
                                                                                const class GALGAS_lstring & inOperand2,
                                                                                const class GALGAS_lstring & inOperand3,
-                                                                               const class GALGAS_gtlExpression & inOperand4,
-                                                                               const class GALGAS_gtlInstructionList & inOperand5,
+                                                                               const class GALGAS_lstring & inOperand4,
+                                                                               const class GALGAS_gtlExpression & inOperand5,
                                                                                const class GALGAS_gtlInstructionList & inOperand6,
                                                                                const class GALGAS_gtlInstructionList & inOperand7,
-                                                                               const class GALGAS_gtlInstructionList & inOperand8
+                                                                               const class GALGAS_gtlInstructionList & inOperand8,
+                                                                               const class GALGAS_gtlInstructionList & inOperand9
                                                                                COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Comparison
@@ -569,6 +762,7 @@ class cPtr_gtlForeachStatementInstruction : public cPtr_gtlInstruction {
 
 //--- Constructor
   public : cPtr_gtlForeachStatementInstruction (const GALGAS_location & in_where,
+                                                const GALGAS_string & in_signature,
                                                 const GALGAS_lstring & in_keyName,
                                                 const GALGAS_lstring & in_variableName,
                                                 const GALGAS_lstring & in_indexName,
@@ -666,8 +860,9 @@ class GALGAS_gtlIfStatementInstruction : public GALGAS_gtlInstruction {
 
 //--------------------------------- GALGAS constructors
   public : static class GALGAS_gtlIfStatementInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                          const class GALGAS_gtlThenElsifStatementList & inOperand1,
-                                                                          const class GALGAS_gtlInstructionList & inOperand2
+                                                                          const class GALGAS_string & inOperand1,
+                                                                          const class GALGAS_gtlThenElsifStatementList & inOperand2,
+                                                                          const class GALGAS_gtlInstructionList & inOperand3
                                                                           COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Comparison
@@ -707,6 +902,7 @@ class cPtr_gtlIfStatementInstruction : public cPtr_gtlInstruction {
 
 //--- Constructor
   public : cPtr_gtlIfStatementInstruction (const GALGAS_location & in_where,
+                                           const GALGAS_string & in_signature,
                                            const GALGAS_gtlThenElsifStatementList & in_thenElsifList,
                                            const GALGAS_gtlInstructionList & in_elseList
                                            COMMA_LOCATION_ARGS) ;
@@ -755,15 +951,16 @@ class GALGAS_gtlLoopStatementInstruction : public GALGAS_gtlInstruction {
 
 //--------------------------------- GALGAS constructors
   public : static class GALGAS_gtlLoopStatementInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                            const class GALGAS_lstring & inOperand1,
-                                                                            const class GALGAS_gtlExpression & inOperand2,
+                                                                            const class GALGAS_string & inOperand1,
+                                                                            const class GALGAS_lstring & inOperand2,
                                                                             const class GALGAS_gtlExpression & inOperand3,
                                                                             const class GALGAS_gtlExpression & inOperand4,
-                                                                            const class GALGAS_sint_36__34_ & inOperand5,
-                                                                            const class GALGAS_gtlInstructionList & inOperand6,
+                                                                            const class GALGAS_gtlExpression & inOperand5,
+                                                                            const class GALGAS_sint_36__34_ & inOperand6,
                                                                             const class GALGAS_gtlInstructionList & inOperand7,
                                                                             const class GALGAS_gtlInstructionList & inOperand8,
-                                                                            const class GALGAS_gtlInstructionList & inOperand9
+                                                                            const class GALGAS_gtlInstructionList & inOperand9,
+                                                                            const class GALGAS_gtlInstructionList & inOperand10
                                                                             COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Comparison
@@ -824,6 +1021,7 @@ class cPtr_gtlLoopStatementInstruction : public cPtr_gtlInstruction {
 
 //--- Constructor
   public : cPtr_gtlLoopStatementInstruction (const GALGAS_location & in_where,
+                                             const GALGAS_string & in_signature,
                                              const GALGAS_lstring & in_identifier,
                                              const GALGAS_gtlExpression & in_start,
                                              const GALGAS_gtlExpression & in_stop,
@@ -886,10 +1084,11 @@ class GALGAS_gtlRepeatStatementInstruction : public GALGAS_gtlInstruction {
 
 //--------------------------------- GALGAS constructors
   public : static class GALGAS_gtlRepeatStatementInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                              const class GALGAS_gtlExpression & inOperand1,
+                                                                              const class GALGAS_string & inOperand1,
                                                                               const class GALGAS_gtlExpression & inOperand2,
-                                                                              const class GALGAS_gtlInstructionList & inOperand3,
-                                                                              const class GALGAS_gtlInstructionList & inOperand4
+                                                                              const class GALGAS_gtlExpression & inOperand3,
+                                                                              const class GALGAS_gtlInstructionList & inOperand4,
+                                                                              const class GALGAS_gtlInstructionList & inOperand5
                                                                               COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Comparison
@@ -935,6 +1134,7 @@ class cPtr_gtlRepeatStatementInstruction : public cPtr_gtlInstruction {
 
 //--- Constructor
   public : cPtr_gtlRepeatStatementInstruction (const GALGAS_location & in_where,
+                                               const GALGAS_string & in_signature,
                                                const GALGAS_gtlExpression & in_limit,
                                                const GALGAS_gtlExpression & in_condition,
                                                const GALGAS_gtlInstructionList & in_continueList,
@@ -982,92 +1182,6 @@ class cPtr_gtlSetter : public cPtr_gtlExecutableEntity {
 
 //--- Attribute accessors
   public : VIRTUAL_IN_DEBUG GALGAS_type getter_targetType (LOCATION_ARGS) const ;
-//--- Description
-  public : virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const ;
-
-  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
-
-  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
-
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                         @gtlTemplateStringInstruction class                                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlTemplateStringInstruction : public GALGAS_gtlInstruction {
-//--- Constructor
-  public : GALGAS_gtlTemplateStringInstruction (void) ;
-
-//--------------------------------- Default GALGAS constructor
-  public : static GALGAS_gtlTemplateStringInstruction constructor_default (LOCATION_ARGS) ;
-
-//---
-  public : inline const class cPtr_gtlTemplateStringInstruction * ptr (void) const { return (const cPtr_gtlTemplateStringInstruction *) mObjectPtr ; }
-
-//--------------------------------- Constructor from pointer
-  public : GALGAS_gtlTemplateStringInstruction (const cPtr_gtlTemplateStringInstruction * inSourcePtr) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public : static GALGAS_gtlTemplateStringInstruction extractObject (const GALGAS_object & inObject,
-                                                                     C_Compiler * inCompiler
-                                                                     COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public : static class GALGAS_gtlTemplateStringInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                             const class GALGAS_string & inOperand1
-                                                                             COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const GALGAS_gtlTemplateStringInstruction & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-  public : VIRTUAL_IN_DEBUG class GALGAS_string getter_value (LOCATION_ARGS) const ;
-
-
-//--------------------------------- Introspection
-  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_gtlTemplateStringInstruction class
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlTemplateStringInstruction ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                Pointer class for @gtlTemplateStringInstruction class                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cPtr_gtlTemplateStringInstruction : public cPtr_gtlInstruction {
-//--- Attributes
-  public : GALGAS_string mAttribute_value ;
-
-//--- Constructor
-  public : cPtr_gtlTemplateStringInstruction (const GALGAS_location & in_where,
-                                              const GALGAS_string & in_value
-                                              COMMA_LOCATION_ARGS) ;
-
-//--- Duplication
-  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
-
-//--- Attribute accessors
-  public : VIRTUAL_IN_DEBUG GALGAS_string getter_value (LOCATION_ARGS) const ;
 //--- Description
   public : virtual void description (C_String & ioString,
                                      const int32_t inIndentation) const ;
@@ -1185,6 +1299,16 @@ class cPtr_library : public acPtr_class {
   public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
 
 } ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                                Function 'signature'                                                 *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_string function_signature (class GALGAS_location inArgument0,
+                                        class C_Compiler * inCompiler
+                                        COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
@@ -1441,92 +1565,6 @@ class cParser_gtl_5F_instruction_5F_parser {
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                                        @gtlDisplayStatementInstruction class                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlDisplayStatementInstruction : public GALGAS_gtlInstruction {
-//--- Constructor
-  public : GALGAS_gtlDisplayStatementInstruction (void) ;
-
-//--------------------------------- Default GALGAS constructor
-  public : static GALGAS_gtlDisplayStatementInstruction constructor_default (LOCATION_ARGS) ;
-
-//---
-  public : inline const class cPtr_gtlDisplayStatementInstruction * ptr (void) const { return (const cPtr_gtlDisplayStatementInstruction *) mObjectPtr ; }
-
-//--------------------------------- Constructor from pointer
-  public : GALGAS_gtlDisplayStatementInstruction (const cPtr_gtlDisplayStatementInstruction * inSourcePtr) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public : static GALGAS_gtlDisplayStatementInstruction extractObject (const GALGAS_object & inObject,
-                                                                       C_Compiler * inCompiler
-                                                                       COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public : static class GALGAS_gtlDisplayStatementInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                               const class GALGAS_gtlVarPath & inOperand1
-                                                                               COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const GALGAS_gtlDisplayStatementInstruction & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-  public : VIRTUAL_IN_DEBUG class GALGAS_gtlVarPath getter_variablePath (LOCATION_ARGS) const ;
-
-
-//--------------------------------- Introspection
-  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_gtlDisplayStatementInstruction class
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlDisplayStatementInstruction ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               Pointer class for @gtlDisplayStatementInstruction class                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cPtr_gtlDisplayStatementInstruction : public cPtr_gtlInstruction {
-//--- Attributes
-  public : GALGAS_gtlVarPath mAttribute_variablePath ;
-
-//--- Constructor
-  public : cPtr_gtlDisplayStatementInstruction (const GALGAS_location & in_where,
-                                                const GALGAS_gtlVarPath & in_variablePath
-                                                COMMA_LOCATION_ARGS) ;
-
-//--- Duplication
-  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
-
-//--- Attribute accessors
-  public : VIRTUAL_IN_DEBUG GALGAS_gtlVarPath getter_variablePath (LOCATION_ARGS) const ;
-//--- Description
-  public : virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const ;
-
-  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
-
-  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
-
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
 //                                         @gtlErrorStatementInstruction class                                         *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -1553,9 +1591,10 @@ class GALGAS_gtlErrorStatementInstruction : public GALGAS_gtlInstruction {
 
 //--------------------------------- GALGAS constructors
   public : static class GALGAS_gtlErrorStatementInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                             const class GALGAS_gtlVarPath & inOperand1,
-                                                                             const class GALGAS_bool & inOperand2,
-                                                                             const class GALGAS_gtlExpression & inOperand3
+                                                                             const class GALGAS_string & inOperand1,
+                                                                             const class GALGAS_gtlVarPath & inOperand2,
+                                                                             const class GALGAS_bool & inOperand3,
+                                                                             const class GALGAS_gtlExpression & inOperand4
                                                                              COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Comparison
@@ -1598,6 +1637,7 @@ class cPtr_gtlErrorStatementInstruction : public cPtr_gtlInstruction {
 
 //--- Constructor
   public : cPtr_gtlErrorStatementInstruction (const GALGAS_location & in_where,
+                                              const GALGAS_string & in_signature,
                                               const GALGAS_gtlVarPath & in_identifier,
                                               const GALGAS_bool & in_hereInstead,
                                               const GALGAS_gtlExpression & in_errorMessage
@@ -1610,1059 +1650,6 @@ class cPtr_gtlErrorStatementInstruction : public cPtr_gtlInstruction {
   public : VIRTUAL_IN_DEBUG GALGAS_gtlVarPath getter_identifier (LOCATION_ARGS) const ;
   public : VIRTUAL_IN_DEBUG GALGAS_bool getter_hereInstead (LOCATION_ARGS) const ;
   public : VIRTUAL_IN_DEBUG GALGAS_gtlExpression getter_errorMessage (LOCATION_ARGS) const ;
-//--- Description
-  public : virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const ;
-
-  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
-
-  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
-
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        @gtlLetUnconstructedInstruction class                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlLetUnconstructedInstruction : public GALGAS_gtlInstruction {
-//--- Constructor
-  public : GALGAS_gtlLetUnconstructedInstruction (void) ;
-
-//--------------------------------- Default GALGAS constructor
-  public : static GALGAS_gtlLetUnconstructedInstruction constructor_default (LOCATION_ARGS) ;
-
-//---
-  public : inline const class cPtr_gtlLetUnconstructedInstruction * ptr (void) const { return (const cPtr_gtlLetUnconstructedInstruction *) mObjectPtr ; }
-
-//--------------------------------- Constructor from pointer
-  public : GALGAS_gtlLetUnconstructedInstruction (const cPtr_gtlLetUnconstructedInstruction * inSourcePtr) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public : static GALGAS_gtlLetUnconstructedInstruction extractObject (const GALGAS_object & inObject,
-                                                                       C_Compiler * inCompiler
-                                                                       COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public : static class GALGAS_gtlLetUnconstructedInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                               const class GALGAS_gtlVarPath & inOperand1
-                                                                               COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const GALGAS_gtlLetUnconstructedInstruction & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-  public : VIRTUAL_IN_DEBUG class GALGAS_gtlVarPath getter_lValue (LOCATION_ARGS) const ;
-
-
-//--------------------------------- Introspection
-  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_gtlLetUnconstructedInstruction class
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlLetUnconstructedInstruction ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               Pointer class for @gtlLetUnconstructedInstruction class                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cPtr_gtlLetUnconstructedInstruction : public cPtr_gtlInstruction {
-//--- Attributes
-  public : GALGAS_gtlVarPath mAttribute_lValue ;
-
-//--- Constructor
-  public : cPtr_gtlLetUnconstructedInstruction (const GALGAS_location & in_where,
-                                                const GALGAS_gtlVarPath & in_lValue
-                                                COMMA_LOCATION_ARGS) ;
-
-//--- Duplication
-  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
-
-//--- Attribute accessors
-  public : VIRTUAL_IN_DEBUG GALGAS_gtlVarPath getter_lValue (LOCATION_ARGS) const ;
-//--- Description
-  public : virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const ;
-
-  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
-
-  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
-
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                             @gtlAssignInstruction class                                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlAssignInstruction : public GALGAS_gtlLetUnconstructedInstruction {
-//--- Constructor
-  public : GALGAS_gtlAssignInstruction (void) ;
-
-//---
-  public : inline const class cPtr_gtlAssignInstruction * ptr (void) const { return (const cPtr_gtlAssignInstruction *) mObjectPtr ; }
-
-//--------------------------------- Constructor from pointer
-  public : GALGAS_gtlAssignInstruction (const cPtr_gtlAssignInstruction * inSourcePtr) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public : static GALGAS_gtlAssignInstruction extractObject (const GALGAS_object & inObject,
-                                                             C_Compiler * inCompiler
-                                                             COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const GALGAS_gtlAssignInstruction & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-  public : VIRTUAL_IN_DEBUG class GALGAS_gtlExpression getter_rValue (LOCATION_ARGS) const ;
-
-
-//--------------------------------- Introspection
-  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_gtlAssignInstruction class
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlAssignInstruction ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    Pointer class for @gtlAssignInstruction class                                    *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cPtr_gtlAssignInstruction : public cPtr_gtlLetUnconstructedInstruction {
-//--- Attributes
-  public : GALGAS_gtlExpression mAttribute_rValue ;
-
-//--- Constructor
-  public : cPtr_gtlAssignInstruction (const GALGAS_location & in_where,
-                                      const GALGAS_gtlVarPath & in_lValue,
-                                      const GALGAS_gtlExpression & in_rValue
-                                      COMMA_LOCATION_ARGS) ;
-
-//--- Attribute accessors
-  public : VIRTUAL_IN_DEBUG GALGAS_gtlExpression getter_rValue (LOCATION_ARGS) const ;
-//--- Description
-  public : virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const = 0 ;
-
-  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const = 0 ;
-
-  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const = 0 ;
-
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                             @gtlLetAddInstruction class                                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlLetAddInstruction : public GALGAS_gtlAssignInstruction {
-//--- Constructor
-  public : GALGAS_gtlLetAddInstruction (void) ;
-
-//---
-  public : inline const class cPtr_gtlLetAddInstruction * ptr (void) const { return (const cPtr_gtlLetAddInstruction *) mObjectPtr ; }
-
-//--------------------------------- Constructor from pointer
-  public : GALGAS_gtlLetAddInstruction (const cPtr_gtlLetAddInstruction * inSourcePtr) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public : static GALGAS_gtlLetAddInstruction extractObject (const GALGAS_object & inObject,
-                                                             C_Compiler * inCompiler
-                                                             COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public : static class GALGAS_gtlLetAddInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                     const class GALGAS_gtlVarPath & inOperand1,
-                                                                     const class GALGAS_gtlExpression & inOperand2
-                                                                     COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const GALGAS_gtlLetAddInstruction & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-
-//--------------------------------- Introspection
-  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_gtlLetAddInstruction class
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlLetAddInstruction ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    Pointer class for @gtlLetAddInstruction class                                    *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cPtr_gtlLetAddInstruction : public cPtr_gtlAssignInstruction {
-//--- Attributes
-
-//--- Constructor
-  public : cPtr_gtlLetAddInstruction (const GALGAS_location & in_where,
-                                      const GALGAS_gtlVarPath & in_lValue,
-                                      const GALGAS_gtlExpression & in_rValue
-                                      COMMA_LOCATION_ARGS) ;
-
-//--- Duplication
-  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
-
-//--- Attribute accessors
-//--- Description
-  public : virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const ;
-
-  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
-
-  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
-
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                             @gtlLetAndInstruction class                                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlLetAndInstruction : public GALGAS_gtlAssignInstruction {
-//--- Constructor
-  public : GALGAS_gtlLetAndInstruction (void) ;
-
-//---
-  public : inline const class cPtr_gtlLetAndInstruction * ptr (void) const { return (const cPtr_gtlLetAndInstruction *) mObjectPtr ; }
-
-//--------------------------------- Constructor from pointer
-  public : GALGAS_gtlLetAndInstruction (const cPtr_gtlLetAndInstruction * inSourcePtr) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public : static GALGAS_gtlLetAndInstruction extractObject (const GALGAS_object & inObject,
-                                                             C_Compiler * inCompiler
-                                                             COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public : static class GALGAS_gtlLetAndInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                     const class GALGAS_gtlVarPath & inOperand1,
-                                                                     const class GALGAS_gtlExpression & inOperand2
-                                                                     COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const GALGAS_gtlLetAndInstruction & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-
-//--------------------------------- Introspection
-  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_gtlLetAndInstruction class
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlLetAndInstruction ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    Pointer class for @gtlLetAndInstruction class                                    *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cPtr_gtlLetAndInstruction : public cPtr_gtlAssignInstruction {
-//--- Attributes
-
-//--- Constructor
-  public : cPtr_gtlLetAndInstruction (const GALGAS_location & in_where,
-                                      const GALGAS_gtlVarPath & in_lValue,
-                                      const GALGAS_gtlExpression & in_rValue
-                                      COMMA_LOCATION_ARGS) ;
-
-//--- Duplication
-  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
-
-//--- Attribute accessors
-//--- Description
-  public : virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const ;
-
-  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
-
-  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
-
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                           @gtlLetDivideInstruction class                                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlLetDivideInstruction : public GALGAS_gtlAssignInstruction {
-//--- Constructor
-  public : GALGAS_gtlLetDivideInstruction (void) ;
-
-//---
-  public : inline const class cPtr_gtlLetDivideInstruction * ptr (void) const { return (const cPtr_gtlLetDivideInstruction *) mObjectPtr ; }
-
-//--------------------------------- Constructor from pointer
-  public : GALGAS_gtlLetDivideInstruction (const cPtr_gtlLetDivideInstruction * inSourcePtr) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public : static GALGAS_gtlLetDivideInstruction extractObject (const GALGAS_object & inObject,
-                                                                C_Compiler * inCompiler
-                                                                COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public : static class GALGAS_gtlLetDivideInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                        const class GALGAS_gtlVarPath & inOperand1,
-                                                                        const class GALGAS_gtlExpression & inOperand2
-                                                                        COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const GALGAS_gtlLetDivideInstruction & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-
-//--------------------------------- Introspection
-  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_gtlLetDivideInstruction class
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlLetDivideInstruction ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  Pointer class for @gtlLetDivideInstruction class                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cPtr_gtlLetDivideInstruction : public cPtr_gtlAssignInstruction {
-//--- Attributes
-
-//--- Constructor
-  public : cPtr_gtlLetDivideInstruction (const GALGAS_location & in_where,
-                                         const GALGAS_gtlVarPath & in_lValue,
-                                         const GALGAS_gtlExpression & in_rValue
-                                         COMMA_LOCATION_ARGS) ;
-
-//--- Duplication
-  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
-
-//--- Attribute accessors
-//--- Description
-  public : virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const ;
-
-  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
-
-  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
-
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                              @gtlLetInstruction class                                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlLetInstruction : public GALGAS_gtlAssignInstruction {
-//--- Constructor
-  public : GALGAS_gtlLetInstruction (void) ;
-
-//---
-  public : inline const class cPtr_gtlLetInstruction * ptr (void) const { return (const cPtr_gtlLetInstruction *) mObjectPtr ; }
-
-//--------------------------------- Constructor from pointer
-  public : GALGAS_gtlLetInstruction (const cPtr_gtlLetInstruction * inSourcePtr) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public : static GALGAS_gtlLetInstruction extractObject (const GALGAS_object & inObject,
-                                                          C_Compiler * inCompiler
-                                                          COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public : static class GALGAS_gtlLetInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                  const class GALGAS_gtlVarPath & inOperand1,
-                                                                  const class GALGAS_gtlExpression & inOperand2
-                                                                  COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const GALGAS_gtlLetInstruction & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-
-//--------------------------------- Introspection
-  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_gtlLetInstruction class
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlLetInstruction ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Pointer class for @gtlLetInstruction class                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cPtr_gtlLetInstruction : public cPtr_gtlAssignInstruction {
-//--- Attributes
-
-//--- Constructor
-  public : cPtr_gtlLetInstruction (const GALGAS_location & in_where,
-                                   const GALGAS_gtlVarPath & in_lValue,
-                                   const GALGAS_gtlExpression & in_rValue
-                                   COMMA_LOCATION_ARGS) ;
-
-//--- Duplication
-  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
-
-//--- Attribute accessors
-//--- Description
-  public : virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const ;
-
-  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
-
-  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
-
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                           @gtlLetModuloInstruction class                                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlLetModuloInstruction : public GALGAS_gtlAssignInstruction {
-//--- Constructor
-  public : GALGAS_gtlLetModuloInstruction (void) ;
-
-//---
-  public : inline const class cPtr_gtlLetModuloInstruction * ptr (void) const { return (const cPtr_gtlLetModuloInstruction *) mObjectPtr ; }
-
-//--------------------------------- Constructor from pointer
-  public : GALGAS_gtlLetModuloInstruction (const cPtr_gtlLetModuloInstruction * inSourcePtr) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public : static GALGAS_gtlLetModuloInstruction extractObject (const GALGAS_object & inObject,
-                                                                C_Compiler * inCompiler
-                                                                COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public : static class GALGAS_gtlLetModuloInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                        const class GALGAS_gtlVarPath & inOperand1,
-                                                                        const class GALGAS_gtlExpression & inOperand2
-                                                                        COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const GALGAS_gtlLetModuloInstruction & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-
-//--------------------------------- Introspection
-  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_gtlLetModuloInstruction class
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlLetModuloInstruction ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  Pointer class for @gtlLetModuloInstruction class                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cPtr_gtlLetModuloInstruction : public cPtr_gtlAssignInstruction {
-//--- Attributes
-
-//--- Constructor
-  public : cPtr_gtlLetModuloInstruction (const GALGAS_location & in_where,
-                                         const GALGAS_gtlVarPath & in_lValue,
-                                         const GALGAS_gtlExpression & in_rValue
-                                         COMMA_LOCATION_ARGS) ;
-
-//--- Duplication
-  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
-
-//--- Attribute accessors
-//--- Description
-  public : virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const ;
-
-  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
-
-  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
-
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                          @gtlLetMultiplyInstruction class                                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlLetMultiplyInstruction : public GALGAS_gtlAssignInstruction {
-//--- Constructor
-  public : GALGAS_gtlLetMultiplyInstruction (void) ;
-
-//---
-  public : inline const class cPtr_gtlLetMultiplyInstruction * ptr (void) const { return (const cPtr_gtlLetMultiplyInstruction *) mObjectPtr ; }
-
-//--------------------------------- Constructor from pointer
-  public : GALGAS_gtlLetMultiplyInstruction (const cPtr_gtlLetMultiplyInstruction * inSourcePtr) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public : static GALGAS_gtlLetMultiplyInstruction extractObject (const GALGAS_object & inObject,
-                                                                  C_Compiler * inCompiler
-                                                                  COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public : static class GALGAS_gtlLetMultiplyInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                          const class GALGAS_gtlVarPath & inOperand1,
-                                                                          const class GALGAS_gtlExpression & inOperand2
-                                                                          COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const GALGAS_gtlLetMultiplyInstruction & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-
-//--------------------------------- Introspection
-  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_gtlLetMultiplyInstruction class
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlLetMultiplyInstruction ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 Pointer class for @gtlLetMultiplyInstruction class                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cPtr_gtlLetMultiplyInstruction : public cPtr_gtlAssignInstruction {
-//--- Attributes
-
-//--- Constructor
-  public : cPtr_gtlLetMultiplyInstruction (const GALGAS_location & in_where,
-                                           const GALGAS_gtlVarPath & in_lValue,
-                                           const GALGAS_gtlExpression & in_rValue
-                                           COMMA_LOCATION_ARGS) ;
-
-//--- Duplication
-  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
-
-//--- Attribute accessors
-//--- Description
-  public : virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const ;
-
-  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
-
-  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
-
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                             @gtlLetOrInstruction class                                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlLetOrInstruction : public GALGAS_gtlAssignInstruction {
-//--- Constructor
-  public : GALGAS_gtlLetOrInstruction (void) ;
-
-//---
-  public : inline const class cPtr_gtlLetOrInstruction * ptr (void) const { return (const cPtr_gtlLetOrInstruction *) mObjectPtr ; }
-
-//--------------------------------- Constructor from pointer
-  public : GALGAS_gtlLetOrInstruction (const cPtr_gtlLetOrInstruction * inSourcePtr) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public : static GALGAS_gtlLetOrInstruction extractObject (const GALGAS_object & inObject,
-                                                            C_Compiler * inCompiler
-                                                            COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public : static class GALGAS_gtlLetOrInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                    const class GALGAS_gtlVarPath & inOperand1,
-                                                                    const class GALGAS_gtlExpression & inOperand2
-                                                                    COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const GALGAS_gtlLetOrInstruction & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-
-//--------------------------------- Introspection
-  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_gtlLetOrInstruction class
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlLetOrInstruction ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    Pointer class for @gtlLetOrInstruction class                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cPtr_gtlLetOrInstruction : public cPtr_gtlAssignInstruction {
-//--- Attributes
-
-//--- Constructor
-  public : cPtr_gtlLetOrInstruction (const GALGAS_location & in_where,
-                                     const GALGAS_gtlVarPath & in_lValue,
-                                     const GALGAS_gtlExpression & in_rValue
-                                     COMMA_LOCATION_ARGS) ;
-
-//--- Duplication
-  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
-
-//--- Attribute accessors
-//--- Description
-  public : virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const ;
-
-  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
-
-  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
-
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                          @gtlLetShiftLeftInstruction class                                          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlLetShiftLeftInstruction : public GALGAS_gtlAssignInstruction {
-//--- Constructor
-  public : GALGAS_gtlLetShiftLeftInstruction (void) ;
-
-//---
-  public : inline const class cPtr_gtlLetShiftLeftInstruction * ptr (void) const { return (const cPtr_gtlLetShiftLeftInstruction *) mObjectPtr ; }
-
-//--------------------------------- Constructor from pointer
-  public : GALGAS_gtlLetShiftLeftInstruction (const cPtr_gtlLetShiftLeftInstruction * inSourcePtr) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public : static GALGAS_gtlLetShiftLeftInstruction extractObject (const GALGAS_object & inObject,
-                                                                   C_Compiler * inCompiler
-                                                                   COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public : static class GALGAS_gtlLetShiftLeftInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                           const class GALGAS_gtlVarPath & inOperand1,
-                                                                           const class GALGAS_gtlExpression & inOperand2
-                                                                           COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const GALGAS_gtlLetShiftLeftInstruction & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-
-//--------------------------------- Introspection
-  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_gtlLetShiftLeftInstruction class
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlLetShiftLeftInstruction ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 Pointer class for @gtlLetShiftLeftInstruction class                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cPtr_gtlLetShiftLeftInstruction : public cPtr_gtlAssignInstruction {
-//--- Attributes
-
-//--- Constructor
-  public : cPtr_gtlLetShiftLeftInstruction (const GALGAS_location & in_where,
-                                            const GALGAS_gtlVarPath & in_lValue,
-                                            const GALGAS_gtlExpression & in_rValue
-                                            COMMA_LOCATION_ARGS) ;
-
-//--- Duplication
-  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
-
-//--- Attribute accessors
-//--- Description
-  public : virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const ;
-
-  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
-
-  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
-
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                         @gtlLetShiftRightInstruction class                                          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlLetShiftRightInstruction : public GALGAS_gtlAssignInstruction {
-//--- Constructor
-  public : GALGAS_gtlLetShiftRightInstruction (void) ;
-
-//---
-  public : inline const class cPtr_gtlLetShiftRightInstruction * ptr (void) const { return (const cPtr_gtlLetShiftRightInstruction *) mObjectPtr ; }
-
-//--------------------------------- Constructor from pointer
-  public : GALGAS_gtlLetShiftRightInstruction (const cPtr_gtlLetShiftRightInstruction * inSourcePtr) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public : static GALGAS_gtlLetShiftRightInstruction extractObject (const GALGAS_object & inObject,
-                                                                    C_Compiler * inCompiler
-                                                                    COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public : static class GALGAS_gtlLetShiftRightInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                            const class GALGAS_gtlVarPath & inOperand1,
-                                                                            const class GALGAS_gtlExpression & inOperand2
-                                                                            COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const GALGAS_gtlLetShiftRightInstruction & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-
-//--------------------------------- Introspection
-  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_gtlLetShiftRightInstruction class
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlLetShiftRightInstruction ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                Pointer class for @gtlLetShiftRightInstruction class                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cPtr_gtlLetShiftRightInstruction : public cPtr_gtlAssignInstruction {
-//--- Attributes
-
-//--- Constructor
-  public : cPtr_gtlLetShiftRightInstruction (const GALGAS_location & in_where,
-                                             const GALGAS_gtlVarPath & in_lValue,
-                                             const GALGAS_gtlExpression & in_rValue
-                                             COMMA_LOCATION_ARGS) ;
-
-//--- Duplication
-  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
-
-//--- Attribute accessors
-//--- Description
-  public : virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const ;
-
-  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
-
-  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
-
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                          @gtlLetSubstractInstruction class                                          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlLetSubstractInstruction : public GALGAS_gtlAssignInstruction {
-//--- Constructor
-  public : GALGAS_gtlLetSubstractInstruction (void) ;
-
-//---
-  public : inline const class cPtr_gtlLetSubstractInstruction * ptr (void) const { return (const cPtr_gtlLetSubstractInstruction *) mObjectPtr ; }
-
-//--------------------------------- Constructor from pointer
-  public : GALGAS_gtlLetSubstractInstruction (const cPtr_gtlLetSubstractInstruction * inSourcePtr) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public : static GALGAS_gtlLetSubstractInstruction extractObject (const GALGAS_object & inObject,
-                                                                   C_Compiler * inCompiler
-                                                                   COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public : static class GALGAS_gtlLetSubstractInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                           const class GALGAS_gtlVarPath & inOperand1,
-                                                                           const class GALGAS_gtlExpression & inOperand2
-                                                                           COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const GALGAS_gtlLetSubstractInstruction & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-
-//--------------------------------- Introspection
-  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_gtlLetSubstractInstruction class
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlLetSubstractInstruction ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 Pointer class for @gtlLetSubstractInstruction class                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cPtr_gtlLetSubstractInstruction : public cPtr_gtlAssignInstruction {
-//--- Attributes
-
-//--- Constructor
-  public : cPtr_gtlLetSubstractInstruction (const GALGAS_location & in_where,
-                                            const GALGAS_gtlVarPath & in_lValue,
-                                            const GALGAS_gtlExpression & in_rValue
-                                            COMMA_LOCATION_ARGS) ;
-
-//--- Duplication
-  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
-
-//--- Attribute accessors
-//--- Description
-  public : virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const ;
-
-  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
-
-  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
-
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                             @gtlLetXorInstruction class                                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlLetXorInstruction : public GALGAS_gtlAssignInstruction {
-//--- Constructor
-  public : GALGAS_gtlLetXorInstruction (void) ;
-
-//---
-  public : inline const class cPtr_gtlLetXorInstruction * ptr (void) const { return (const cPtr_gtlLetXorInstruction *) mObjectPtr ; }
-
-//--------------------------------- Constructor from pointer
-  public : GALGAS_gtlLetXorInstruction (const cPtr_gtlLetXorInstruction * inSourcePtr) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public : static GALGAS_gtlLetXorInstruction extractObject (const GALGAS_object & inObject,
-                                                             C_Compiler * inCompiler
-                                                             COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public : static class GALGAS_gtlLetXorInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                     const class GALGAS_gtlVarPath & inOperand1,
-                                                                     const class GALGAS_gtlExpression & inOperand2
-                                                                     COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const GALGAS_gtlLetXorInstruction & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-
-//--------------------------------- Introspection
-  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_gtlLetXorInstruction class
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlLetXorInstruction ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    Pointer class for @gtlLetXorInstruction class                                    *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cPtr_gtlLetXorInstruction : public cPtr_gtlAssignInstruction {
-//--- Attributes
-
-//--- Constructor
-  public : cPtr_gtlLetXorInstruction (const GALGAS_location & in_where,
-                                      const GALGAS_gtlVarPath & in_lValue,
-                                      const GALGAS_gtlExpression & in_rValue
-                                      COMMA_LOCATION_ARGS) ;
-
-//--- Duplication
-  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
-
-//--- Attribute accessors
 //--- Description
   public : virtual void description (C_String & ioString,
                                      const int32_t inIndentation) const ;
@@ -2703,7 +1690,8 @@ class GALGAS_gtlLibrariesInstruction : public GALGAS_gtlInstruction {
                                                                 COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- GALGAS constructors
-  public : static class GALGAS_gtlLibrariesInstruction constructor_new (const class GALGAS_location & inOperand0
+  public : static class GALGAS_gtlLibrariesInstruction constructor_new (const class GALGAS_location & inOperand0,
+                                                                        const class GALGAS_string & inOperand1
                                                                         COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Comparison
@@ -2736,102 +1724,14 @@ class cPtr_gtlLibrariesInstruction : public cPtr_gtlInstruction {
 //--- Attributes
 
 //--- Constructor
-  public : cPtr_gtlLibrariesInstruction (const GALGAS_location & in_where
+  public : cPtr_gtlLibrariesInstruction (const GALGAS_location & in_where,
+                                         const GALGAS_string & in_signature
                                          COMMA_LOCATION_ARGS) ;
 
 //--- Duplication
   public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
 
 //--- Attribute accessors
-//--- Description
-  public : virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const ;
-
-  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
-
-  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
-
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                         @gtlPrintStatementInstruction class                                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlPrintStatementInstruction : public GALGAS_gtlInstruction {
-//--- Constructor
-  public : GALGAS_gtlPrintStatementInstruction (void) ;
-
-//---
-  public : inline const class cPtr_gtlPrintStatementInstruction * ptr (void) const { return (const cPtr_gtlPrintStatementInstruction *) mObjectPtr ; }
-
-//--------------------------------- Constructor from pointer
-  public : GALGAS_gtlPrintStatementInstruction (const cPtr_gtlPrintStatementInstruction * inSourcePtr) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public : static GALGAS_gtlPrintStatementInstruction extractObject (const GALGAS_object & inObject,
-                                                                     C_Compiler * inCompiler
-                                                                     COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public : static class GALGAS_gtlPrintStatementInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                             const class GALGAS_bool & inOperand1,
-                                                                             const class GALGAS_gtlExpression & inOperand2
-                                                                             COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const GALGAS_gtlPrintStatementInstruction & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-  public : VIRTUAL_IN_DEBUG class GALGAS_bool getter_carriageReturn (LOCATION_ARGS) const ;
-
-  public : VIRTUAL_IN_DEBUG class GALGAS_gtlExpression getter_messageToPrint (LOCATION_ARGS) const ;
-
-
-//--------------------------------- Introspection
-  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_gtlPrintStatementInstruction class
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlPrintStatementInstruction ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                Pointer class for @gtlPrintStatementInstruction class                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cPtr_gtlPrintStatementInstruction : public cPtr_gtlInstruction {
-//--- Attributes
-  public : GALGAS_bool mAttribute_carriageReturn ;
-  public : GALGAS_gtlExpression mAttribute_messageToPrint ;
-
-//--- Constructor
-  public : cPtr_gtlPrintStatementInstruction (const GALGAS_location & in_where,
-                                              const GALGAS_bool & in_carriageReturn,
-                                              const GALGAS_gtlExpression & in_messageToPrint
-                                              COMMA_LOCATION_ARGS) ;
-
-//--- Duplication
-  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
-
-//--- Attribute accessors
-  public : VIRTUAL_IN_DEBUG GALGAS_bool getter_carriageReturn (LOCATION_ARGS) const ;
-  public : VIRTUAL_IN_DEBUG GALGAS_gtlExpression getter_messageToPrint (LOCATION_ARGS) const ;
 //--- Description
   public : virtual void description (C_String & ioString,
                                      const int32_t inIndentation) const ;
@@ -2873,9 +1773,10 @@ class GALGAS_gtlSetterCallInstruction : public GALGAS_gtlInstruction {
 
 //--------------------------------- GALGAS constructors
   public : static class GALGAS_gtlSetterCallInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                         const class GALGAS_gtlVarPath & inOperand1,
-                                                                         const class GALGAS_lstring & inOperand2,
-                                                                         const class GALGAS_gtlExpressionList & inOperand3
+                                                                         const class GALGAS_string & inOperand1,
+                                                                         const class GALGAS_gtlVarPath & inOperand2,
+                                                                         const class GALGAS_lstring & inOperand3,
+                                                                         const class GALGAS_gtlExpressionList & inOperand4
                                                                          COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Comparison
@@ -2918,6 +1819,7 @@ class cPtr_gtlSetterCallInstruction : public cPtr_gtlInstruction {
 
 //--- Constructor
   public : cPtr_gtlSetterCallInstruction (const GALGAS_location & in_where,
+                                          const GALGAS_string & in_signature,
                                           const GALGAS_gtlVarPath & in_target,
                                           const GALGAS_lstring & in_setterName,
                                           const GALGAS_gtlExpressionList & in_arguments
@@ -3000,6 +1902,7 @@ class cPtr_gtlAbstractSortInstruction : public cPtr_gtlInstruction {
 
 //--- Constructor
   public : cPtr_gtlAbstractSortInstruction (const GALGAS_location & in_where,
+                                            const GALGAS_string & in_signature,
                                             const GALGAS_gtlVarPath & in_variablePath
                                             COMMA_LOCATION_ARGS) ;
 
@@ -3046,8 +1949,9 @@ class GALGAS_gtlSortStatementInstruction : public GALGAS_gtlAbstractSortInstruct
 
 //--------------------------------- GALGAS constructors
   public : static class GALGAS_gtlSortStatementInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                            const class GALGAS_gtlVarPath & inOperand1,
-                                                                            const class GALGAS_lsint & inOperand2
+                                                                            const class GALGAS_string & inOperand1,
+                                                                            const class GALGAS_gtlVarPath & inOperand2,
+                                                                            const class GALGAS_lsint & inOperand3
                                                                             COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Comparison
@@ -3084,6 +1988,7 @@ class cPtr_gtlSortStatementInstruction : public cPtr_gtlAbstractSortInstruction 
 
 //--- Constructor
   public : cPtr_gtlSortStatementInstruction (const GALGAS_location & in_where,
+                                             const GALGAS_string & in_signature,
                                              const GALGAS_gtlVarPath & in_variablePath,
                                              const GALGAS_lsint & in_order
                                              COMMA_LOCATION_ARGS) ;
@@ -3134,8 +2039,9 @@ class GALGAS_gtlSortStatementStructInstruction : public GALGAS_gtlAbstractSortIn
 
 //--------------------------------- GALGAS constructors
   public : static class GALGAS_gtlSortStatementStructInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                                  const class GALGAS_gtlVarPath & inOperand1,
-                                                                                  const class GALGAS_sortingKeyList & inOperand2
+                                                                                  const class GALGAS_string & inOperand1,
+                                                                                  const class GALGAS_gtlVarPath & inOperand2,
+                                                                                  const class GALGAS_sortingKeyList & inOperand3
                                                                                   COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Comparison
@@ -3172,6 +2078,7 @@ class cPtr_gtlSortStatementStructInstruction : public cPtr_gtlAbstractSortInstru
 
 //--- Constructor
   public : cPtr_gtlSortStatementStructInstruction (const GALGAS_location & in_where,
+                                                   const GALGAS_string & in_signature,
                                                    const GALGAS_gtlVarPath & in_variablePath,
                                                    const GALGAS_sortingKeyList & in_sortingKey
                                                    COMMA_LOCATION_ARGS) ;
@@ -3219,7 +2126,8 @@ class GALGAS_gtlTabStatementInstruction : public GALGAS_gtlInstruction {
 
 //--------------------------------- GALGAS constructors
   public : static class GALGAS_gtlTabStatementInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                           const class GALGAS_gtlExpression & inOperand1
+                                                                           const class GALGAS_string & inOperand1,
+                                                                           const class GALGAS_gtlExpression & inOperand2
                                                                            COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Comparison
@@ -3256,6 +2164,7 @@ class cPtr_gtlTabStatementInstruction : public cPtr_gtlInstruction {
 
 //--- Constructor
   public : cPtr_gtlTabStatementInstruction (const GALGAS_location & in_where,
+                                            const GALGAS_string & in_signature,
                                             const GALGAS_gtlExpression & in_tabValue
                                             COMMA_LOCATION_ARGS) ;
 
@@ -3264,168 +2173,6 @@ class cPtr_gtlTabStatementInstruction : public cPtr_gtlInstruction {
 
 //--- Attribute accessors
   public : VIRTUAL_IN_DEBUG GALGAS_gtlExpression getter_tabValue (LOCATION_ARGS) const ;
-//--- Description
-  public : virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const ;
-
-  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
-
-  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
-
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                             @gtlUnletInstruction class                                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlUnletInstruction : public GALGAS_gtlLetUnconstructedInstruction {
-//--- Constructor
-  public : GALGAS_gtlUnletInstruction (void) ;
-
-//--------------------------------- Default GALGAS constructor
-  public : static GALGAS_gtlUnletInstruction constructor_default (LOCATION_ARGS) ;
-
-//---
-  public : inline const class cPtr_gtlUnletInstruction * ptr (void) const { return (const cPtr_gtlUnletInstruction *) mObjectPtr ; }
-
-//--------------------------------- Constructor from pointer
-  public : GALGAS_gtlUnletInstruction (const cPtr_gtlUnletInstruction * inSourcePtr) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public : static GALGAS_gtlUnletInstruction extractObject (const GALGAS_object & inObject,
-                                                            C_Compiler * inCompiler
-                                                            COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public : static class GALGAS_gtlUnletInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                    const class GALGAS_gtlVarPath & inOperand1
-                                                                    COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const GALGAS_gtlUnletInstruction & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-
-//--------------------------------- Introspection
-  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_gtlUnletInstruction class
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlUnletInstruction ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    Pointer class for @gtlUnletInstruction class                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cPtr_gtlUnletInstruction : public cPtr_gtlLetUnconstructedInstruction {
-//--- Attributes
-
-//--- Constructor
-  public : cPtr_gtlUnletInstruction (const GALGAS_location & in_where,
-                                     const GALGAS_gtlVarPath & in_lValue
-                                     COMMA_LOCATION_ARGS) ;
-
-//--- Duplication
-  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
-
-//--- Attribute accessors
-//--- Description
-  public : virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const ;
-
-  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
-
-  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
-
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                           @gtlVariablesInstruction class                                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlVariablesInstruction : public GALGAS_gtlInstruction {
-//--- Constructor
-  public : GALGAS_gtlVariablesInstruction (void) ;
-
-//--------------------------------- Default GALGAS constructor
-  public : static GALGAS_gtlVariablesInstruction constructor_default (LOCATION_ARGS) ;
-
-//---
-  public : inline const class cPtr_gtlVariablesInstruction * ptr (void) const { return (const cPtr_gtlVariablesInstruction *) mObjectPtr ; }
-
-//--------------------------------- Constructor from pointer
-  public : GALGAS_gtlVariablesInstruction (const cPtr_gtlVariablesInstruction * inSourcePtr) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public : static GALGAS_gtlVariablesInstruction extractObject (const GALGAS_object & inObject,
-                                                                C_Compiler * inCompiler
-                                                                COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public : static class GALGAS_gtlVariablesInstruction constructor_new (const class GALGAS_location & inOperand0
-                                                                        COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const GALGAS_gtlVariablesInstruction & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-
-//--------------------------------- Introspection
-  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_gtlVariablesInstruction class
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlVariablesInstruction ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  Pointer class for @gtlVariablesInstruction class                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cPtr_gtlVariablesInstruction : public cPtr_gtlInstruction {
-//--- Attributes
-
-//--- Constructor
-  public : cPtr_gtlVariablesInstruction (const GALGAS_location & in_where
-                                         COMMA_LOCATION_ARGS) ;
-
-//--- Duplication
-  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
-
-//--- Attribute accessors
 //--- Description
   public : virtual void description (C_String & ioString,
                                      const int32_t inIndentation) const ;
@@ -3464,9 +2211,10 @@ class GALGAS_gtlWarningStatementInstruction : public GALGAS_gtlInstruction {
 
 //--------------------------------- GALGAS constructors
   public : static class GALGAS_gtlWarningStatementInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                               const class GALGAS_gtlVarPath & inOperand1,
-                                                                               const class GALGAS_bool & inOperand2,
-                                                                               const class GALGAS_gtlExpression & inOperand3
+                                                                               const class GALGAS_string & inOperand1,
+                                                                               const class GALGAS_gtlVarPath & inOperand2,
+                                                                               const class GALGAS_bool & inOperand3,
+                                                                               const class GALGAS_gtlExpression & inOperand4
                                                                                COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Comparison
@@ -3509,6 +2257,7 @@ class cPtr_gtlWarningStatementInstruction : public cPtr_gtlInstruction {
 
 //--- Constructor
   public : cPtr_gtlWarningStatementInstruction (const GALGAS_location & in_where,
+                                                const GALGAS_string & in_signature,
                                                 const GALGAS_gtlVarPath & in_identifier,
                                                 const GALGAS_bool & in_hereInstead,
                                                 const GALGAS_gtlExpression & in_warningMessage
@@ -4096,7 +2845,8 @@ class GALGAS_gtlEmitInstruction : public GALGAS_gtlInstruction {
 
 //--------------------------------- GALGAS constructors
   public : static class GALGAS_gtlEmitInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                   const class GALGAS_gtlExpression & inOperand1
+                                                                   const class GALGAS_string & inOperand1,
+                                                                   const class GALGAS_gtlExpression & inOperand2
                                                                    COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Comparison
@@ -4133,6 +2883,7 @@ class cPtr_gtlEmitInstruction : public cPtr_gtlInstruction {
 
 //--- Constructor
   public : cPtr_gtlEmitInstruction (const GALGAS_location & in_where,
+                                    const GALGAS_string & in_signature,
                                     const GALGAS_gtlExpression & in_rValue
                                     COMMA_LOCATION_ARGS) ;
 
@@ -4182,7 +2933,8 @@ class GALGAS_gtlGetColumnInstruction : public GALGAS_gtlInstruction {
 
 //--------------------------------- GALGAS constructors
   public : static class GALGAS_gtlGetColumnInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                        const class GALGAS_gtlVarPath & inOperand1
+                                                                        const class GALGAS_string & inOperand1,
+                                                                        const class GALGAS_gtlVarPath & inOperand2
                                                                         COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Comparison
@@ -4219,6 +2971,7 @@ class cPtr_gtlGetColumnInstruction : public cPtr_gtlInstruction {
 
 //--- Constructor
   public : cPtr_gtlGetColumnInstruction (const GALGAS_location & in_where,
+                                         const GALGAS_string & in_signature,
                                          const GALGAS_gtlVarPath & in_destVariable
                                          COMMA_LOCATION_ARGS) ;
 
@@ -4268,7 +3021,8 @@ class GALGAS_gtlInputStatementInstruction : public GALGAS_gtlInstruction {
 
 //--------------------------------- GALGAS constructors
   public : static class GALGAS_gtlInputStatementInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                             const class GALGAS_gtlArgumentList & inOperand1
+                                                                             const class GALGAS_string & inOperand1,
+                                                                             const class GALGAS_gtlArgumentList & inOperand2
                                                                              COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Comparison
@@ -4305,6 +3059,7 @@ class cPtr_gtlInputStatementInstruction : public cPtr_gtlInstruction {
 
 //--- Constructor
   public : cPtr_gtlInputStatementInstruction (const GALGAS_location & in_where,
+                                              const GALGAS_string & in_signature,
                                               const GALGAS_gtlArgumentList & in_formalArguments
                                               COMMA_LOCATION_ARGS) ;
 
@@ -4351,12 +3106,13 @@ class GALGAS_gtlTemplateInstruction : public GALGAS_gtlInstruction {
 
 //--------------------------------- GALGAS constructors
   public : static class GALGAS_gtlTemplateInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                       const class GALGAS_lstring & inOperand1,
-                                                                       const class GALGAS_gtlExpression & inOperand2,
-                                                                       const class GALGAS_bool & inOperand3,
+                                                                       const class GALGAS_string & inOperand1,
+                                                                       const class GALGAS_lstring & inOperand2,
+                                                                       const class GALGAS_gtlExpression & inOperand3,
                                                                        const class GALGAS_bool & inOperand4,
-                                                                       const class GALGAS_gtlExpressionList & inOperand5,
-                                                                       const class GALGAS_gtlInstructionList & inOperand6
+                                                                       const class GALGAS_bool & inOperand5,
+                                                                       const class GALGAS_gtlExpressionList & inOperand6,
+                                                                       const class GALGAS_gtlInstructionList & inOperand7
                                                                        COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Comparison
@@ -4408,6 +3164,7 @@ class cPtr_gtlTemplateInstruction : public cPtr_gtlInstruction {
 
 //--- Constructor
   public : cPtr_gtlTemplateInstruction (const GALGAS_location & in_where,
+                                        const GALGAS_string & in_signature,
                                         const GALGAS_lstring & in_prefix,
                                         const GALGAS_gtlExpression & in_fileName,
                                         const GALGAS_bool & in_ifExists,
@@ -4426,6 +3183,94 @@ class cPtr_gtlTemplateInstruction : public cPtr_gtlInstruction {
   public : VIRTUAL_IN_DEBUG GALGAS_bool getter_isGlobal (LOCATION_ARGS) const ;
   public : VIRTUAL_IN_DEBUG GALGAS_gtlExpressionList getter_arguments (LOCATION_ARGS) const ;
   public : VIRTUAL_IN_DEBUG GALGAS_gtlInstructionList getter_instructionsIfNotFound (LOCATION_ARGS) const ;
+//--- Description
+  public : virtual void description (C_String & ioString,
+                                     const int32_t inIndentation) const ;
+
+  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
+
+  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
+
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                         @gtlTemplateStringInstruction class                                         *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_gtlTemplateStringInstruction : public GALGAS_gtlInstruction {
+//--- Constructor
+  public : GALGAS_gtlTemplateStringInstruction (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public : static GALGAS_gtlTemplateStringInstruction constructor_default (LOCATION_ARGS) ;
+
+//---
+  public : inline const class cPtr_gtlTemplateStringInstruction * ptr (void) const { return (const cPtr_gtlTemplateStringInstruction *) mObjectPtr ; }
+
+//--------------------------------- Constructor from pointer
+  public : GALGAS_gtlTemplateStringInstruction (const cPtr_gtlTemplateStringInstruction * inSourcePtr) ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
+
+//--------------------------------- Object extraction
+  public : static GALGAS_gtlTemplateStringInstruction extractObject (const GALGAS_object & inObject,
+                                                                     C_Compiler * inCompiler
+                                                                     COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public : static class GALGAS_gtlTemplateStringInstruction constructor_new (const class GALGAS_location & inOperand0,
+                                                                             const class GALGAS_string & inOperand1,
+                                                                             const class GALGAS_string & inOperand2
+                                                                             COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public : typeComparisonResult objectCompare (const GALGAS_gtlTemplateStringInstruction & inOperand) const ;
+
+//--------------------------------- Setters
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+  public : VIRTUAL_IN_DEBUG class GALGAS_string getter_value (LOCATION_ARGS) const ;
+
+
+//--------------------------------- Introspection
+  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+ 
+} ; // End of GALGAS_gtlTemplateStringInstruction class
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlTemplateStringInstruction ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                Pointer class for @gtlTemplateStringInstruction class                                *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class cPtr_gtlTemplateStringInstruction : public cPtr_gtlInstruction {
+//--- Attributes
+  public : GALGAS_string mAttribute_value ;
+
+//--- Constructor
+  public : cPtr_gtlTemplateStringInstruction (const GALGAS_location & in_where,
+                                              const GALGAS_string & in_signature,
+                                              const GALGAS_string & in_value
+                                              COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
+
+//--- Attribute accessors
+  public : VIRTUAL_IN_DEBUG GALGAS_string getter_value (LOCATION_ARGS) const ;
 //--- Description
   public : virtual void description (C_String & ioString,
                                      const int32_t inIndentation) const ;
@@ -4464,9 +3309,10 @@ class GALGAS_gtlWriteToInstruction : public GALGAS_gtlInstruction {
 
 //--------------------------------- GALGAS constructors
   public : static class GALGAS_gtlWriteToInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                      const class GALGAS_gtlExpression & inOperand1,
-                                                                      const class GALGAS_bool & inOperand2,
-                                                                      const class GALGAS_gtlInstructionList & inOperand3
+                                                                      const class GALGAS_string & inOperand1,
+                                                                      const class GALGAS_gtlExpression & inOperand2,
+                                                                      const class GALGAS_bool & inOperand3,
+                                                                      const class GALGAS_gtlInstructionList & inOperand4
                                                                       COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Comparison
@@ -4509,6 +3355,7 @@ class cPtr_gtlWriteToInstruction : public cPtr_gtlInstruction {
 
 //--- Constructor
   public : cPtr_gtlWriteToInstruction (const GALGAS_location & in_where,
+                                       const GALGAS_string & in_signature,
                                        const GALGAS_gtlExpression & in_fileNameExpression,
                                        const GALGAS_bool & in_isExecutable,
                                        const GALGAS_gtlInstructionList & in_instructions
@@ -4977,297 +3824,6 @@ class cGrammar_goil_5F_grammar : public cParser_goil_5F_syntax,
   public : virtual int32_t select_implementation_5F_parser_29 (C_Lexique_goil_5F_lexique *) ;
 
   public : virtual int32_t select_implementation_5F_parser_30 (C_Lexique_goil_5F_lexique *) ;
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//---------------------------------------------------------------------------------------------------------------------*
-//  GRAMMAR gtl_grammar
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cGrammar_gtl_5F_grammar : public cParser_gtl_5F_parser,
-                                public cParser_gtl_5F_expression_5F_parser,
-                                public cParser_gtl_5F_instruction_5F_parser {
-//------------------------------------- 'gtl_argument_list' non terminal
-//--- 'parse' label
-  public : virtual void nt_gtl_5F_argument_5F_list_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public : virtual void nt_gtl_5F_argument_5F_list_ (GALGAS_gtlArgumentList & outArgument0,
-                                                     C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//------------------------------------- 'gtl_expression' non terminal
-//--- 'parse' label
-  public : virtual void nt_gtl_5F_expression_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public : virtual void nt_gtl_5F_expression_ (GALGAS_gtlExpression & outArgument0,
-                                               C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//------------------------------------- 'gtl_factor' non terminal
-//--- 'parse' label
-  public : virtual void nt_gtl_5F_factor_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public : virtual void nt_gtl_5F_factor_ (GALGAS_gtlExpression & outArgument0,
-                                           C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//------------------------------------- 'gtl_file_name' non terminal
-//--- 'parse' label
-  public : virtual void nt_gtl_5F_file_5F_name_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public : virtual void nt_gtl_5F_file_5F_name_ (GALGAS_gtlExpression & outArgument0,
-                                                 C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//------------------------------------- 'gtl_import' non terminal
-//--- 'parse' label
-  public : virtual void nt_gtl_5F_import_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public : virtual void nt_gtl_5F_import_ (GALGAS_gtlContext inArgument0,
-                                           GALGAS_library & ioArgument1,
-                                           C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//------------------------------------- 'gtl_relation_factor' non terminal
-//--- 'parse' label
-  public : virtual void nt_gtl_5F_relation_5F_factor_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public : virtual void nt_gtl_5F_relation_5F_factor_ (GALGAS_gtlExpression & outArgument0,
-                                                       C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//------------------------------------- 'gtl_relation_term' non terminal
-//--- 'parse' label
-  public : virtual void nt_gtl_5F_relation_5F_term_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public : virtual void nt_gtl_5F_relation_5F_term_ (GALGAS_gtlExpression & outArgument0,
-                                                     C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//------------------------------------- 'gtl_simple_expression' non terminal
-//--- 'parse' label
-  public : virtual void nt_gtl_5F_simple_5F_expression_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public : virtual void nt_gtl_5F_simple_5F_expression_ (GALGAS_gtlExpression & outArgument0,
-                                                         C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//------------------------------------- 'gtl_simple_instruction' non terminal
-//--- 'parse' label
-  public : virtual void nt_gtl_5F_simple_5F_instruction_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public : virtual void nt_gtl_5F_simple_5F_instruction_ (GALGAS_gtlInstruction & outArgument0,
-                                                          C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//------------------------------------- 'gtl_sorting_order' non terminal
-//--- 'parse' label
-  public : virtual void nt_gtl_5F_sorting_5F_order_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public : virtual void nt_gtl_5F_sorting_5F_order_ (GALGAS_lsint & outArgument0,
-                                                     C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//------------------------------------- 'gtl_start_symbol' non terminal
-//--- 'parse' label
-  public : virtual void nt_gtl_5F_start_5F_symbol_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public : virtual void nt_gtl_5F_start_5F_symbol_ (GALGAS_gtlContext inArgument0,
-                                                    GALGAS_library & ioArgument1,
-                                                    GALGAS_gtlInstructionList & outArgument2,
-                                                    C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//--- Start symbol
-  public : static void _performSourceFileParsing_ (C_Compiler * inCompiler,
-                                                   GALGAS_lstring inFileName,
-                                                   GALGAS_gtlContext inArgument0,
-                                                   GALGAS_library & ioArgument1,
-                                                   GALGAS_gtlInstructionList & outArgument2
-                                                   COMMA_LOCATION_ARGS) ;
-
-  public : static void _performSourceStringParsing_ (C_Compiler * inCompiler,
-                                                     GALGAS_string inSourceString,
-                                                     GALGAS_string inNameString,
-                                                     GALGAS_gtlContext inArgument0,
-                                                     GALGAS_library & ioArgument1,
-                                                     GALGAS_gtlInstructionList & outArgument2
-                                                     COMMA_LOCATION_ARGS) ;
-
-//--- Indexing
-  public : static void performIndexing (C_Compiler * inCompiler,
-                                        const C_String & inSourceFilePath) ;
-
-//--- Only lexical analysis
-  public : static void performOnlyLexicalAnalysis (C_Compiler * inCompiler,
-                                                   const C_String & inSourceFilePath) ;
-
-//--- Only syntax analysis
-  public : static void performOnlySyntaxAnalysis (C_Compiler * inCompiler,
-                                                  const C_String & inSourceFilePath) ;
-
-//------------------------------------- 'gtl_template_instruction' non terminal
-//--- 'parse' label
-  public : virtual void nt_gtl_5F_template_5F_instruction_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public : virtual void nt_gtl_5F_template_5F_instruction_ (GALGAS_gtlInstruction & outArgument0,
-                                                            C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//------------------------------------- 'gtl_template_instruction_list' non terminal
-//--- 'parse' label
-  public : virtual void nt_gtl_5F_template_5F_instruction_5F_list_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public : virtual void nt_gtl_5F_template_5F_instruction_5F_list_ (GALGAS_gtlInstructionList & outArgument0,
-                                                                    C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//------------------------------------- 'gtl_term' non terminal
-//--- 'parse' label
-  public : virtual void nt_gtl_5F_term_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public : virtual void nt_gtl_5F_term_ (GALGAS_gtlExpression & outArgument0,
-                                         C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//------------------------------------- 'gtl_variable' non terminal
-//--- 'parse' label
-  public : virtual void nt_gtl_5F_variable_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public : virtual void nt_gtl_5F_variable_ (GALGAS_gtlVarPath & outArgument0,
-                                             C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//------------------------------------- 'gtl_variable_or_here' non terminal
-//--- 'parse' label
-  public : virtual void nt_gtl_5F_variable_5F_or_5F_here_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-//----------- '' label
-  public : virtual void nt_gtl_5F_variable_5F_or_5F_here_ (GALGAS_gtlVarPath & outArgument0,
-                                                           GALGAS_bool & outArgument1,
-                                                           C_Lexique_gtl_5F_scanner * inCompiler) ;
-
-  public : virtual int32_t select_gtl_5F_parser_0 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_parser_1 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_parser_2 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_parser_3 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_parser_4 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_parser_5 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_parser_6 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_parser_7 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_parser_8 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_parser_9 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_parser_10 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_parser_11 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_parser_12 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_parser_13 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_parser_14 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_parser_15 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_parser_16 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_parser_17 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_parser_18 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_parser_19 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_parser_20 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_parser_21 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_parser_22 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_parser_23 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_parser_24 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_parser_25 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_expression_5F_parser_0 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_expression_5F_parser_1 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_expression_5F_parser_2 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_expression_5F_parser_3 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_expression_5F_parser_4 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_expression_5F_parser_5 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_expression_5F_parser_6 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_expression_5F_parser_7 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_expression_5F_parser_8 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_expression_5F_parser_9 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_expression_5F_parser_10 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_expression_5F_parser_11 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_expression_5F_parser_12 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_expression_5F_parser_13 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_expression_5F_parser_14 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_expression_5F_parser_15 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_expression_5F_parser_16 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_expression_5F_parser_17 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_expression_5F_parser_18 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_expression_5F_parser_19 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_expression_5F_parser_20 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_expression_5F_parser_21 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_expression_5F_parser_22 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_expression_5F_parser_23 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_expression_5F_parser_24 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_expression_5F_parser_25 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_expression_5F_parser_26 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_expression_5F_parser_27 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_instruction_5F_parser_0 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_instruction_5F_parser_1 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_instruction_5F_parser_2 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_instruction_5F_parser_3 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_instruction_5F_parser_4 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_instruction_5F_parser_5 (C_Lexique_gtl_5F_scanner *) ;
-
-  public : virtual int32_t select_gtl_5F_instruction_5F_parser_6 (C_Lexique_gtl_5F_scanner *) ;
 } ;
 
 //---------------------------------------------------------------------------------------------------------------------*

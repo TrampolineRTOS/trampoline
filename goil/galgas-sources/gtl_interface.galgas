@@ -34,9 +34,13 @@ func invokeGTL
 {  
   result = ""
   
+  [!?context setDebugger ![option gtl_options.debug value]]
+  [!?context setBreakOnNext]
+
   # Build a template instruction
   @gtlTemplateInstruction rootTemplateInstruction = .new {
     !.here
+    !""
     !emptylstring()          # empty prefix
     !@gtlTerminal.new {      # literal gtlString to store the file name
       !.here
@@ -50,6 +54,7 @@ func invokeGTL
   
   # Execute the template
   @library    lib = emptyLib()
+
   [rootTemplateInstruction execute
     !?context
     !?vars

@@ -8,7 +8,7 @@
 #
 #  @section copyright Copyright
 #
-#  Goil OIL compiler, part of Trampoline RTOS
+#  GTL template language, part of Trampoline RTOS
 #
 #  Trampoline is copyright (c) CNRS, University of Nantes,
 #  Ecole Centrale de Nantes
@@ -28,12 +28,13 @@
 # @gtlContext is used to store the execution context of a template
 #-----------------------------------------------------------------------------*
 class @gtlContext {
-  @lstring     prefix             %setter
-  @string      path               %setter
-  @string      templateDirectory  %setter
-  @string      templateExtension  %setter
-  @stringlist  importPath
-  @gtlDataList inputVars          %setter
+  @lstring         prefix             %setter
+  @string          path               %setter
+  @string          templateDirectory  %setter
+  @string          templateExtension  %setter
+  @stringlist      importPath
+  @gtlDataList     inputVars          %setter
+  @debuggerContext debuggerContext
 }
 
 func emptyContext
@@ -43,9 +44,10 @@ func emptyContext
     !emptylstring()
     !""
     !""
-    !".gtl"
+    !"gtl"
     !.emptyList
     !.emptyList
+    !defaultDebugSettings()
   }
 }
 
@@ -82,9 +84,22 @@ getter @gtlContext fullPrefix
   full = prefix
 }  
 
+func pathWithExtension
+  ?@gtlContext context
+  ?@string     path
+  ->@string extendedPath
+{
+  if [path pathExtension] != [context templateExtension] then
+    extendedPath = path + "." + [context templateExtension]
+  else
+    extendedPath = path
+  end
+}
+
 getter @gtlContext fullTemplateFileName
-  ?@gtlData vars
-  ?@lstring simpleName
+  ?@gtlContext context
+  ?@gtlData    vars
+  ?@lstring    simpleName
   ->@lstring fullName
 {
   @gtlContext copy = self
@@ -92,21 +107,21 @@ getter @gtlContext fullTemplateFileName
   @string prefixedTemplatePath = 
     [templateDirectory stringByAppendingPath !fullPref]  
   @string hierarchicalPath = path
-  @string rootPath =
-    [prefixedTemplatePath stringByAppendingPath
-      ![simpleName string]
-    ]
-    + templateExtension
+  @string rootPath = pathWithExtension(
+    !context
+    ![prefixedTemplatePath stringByAppendingPath ![simpleName string]]
+  )
   
   @bool found = false
 
   loop ( [hierarchicalPath length] )
   while not found && [hierarchicalPath length] > 0 do
-    @string fullPath = [
-      [prefixedTemplatePath stringByAppendingPath !hierarchicalPath] stringByAppendingPath
+    @string fullPath = pathWithExtension(
+      !context
+      ![[prefixedTemplatePath stringByAppendingPath !hierarchicalPath] stringByAppendingPath
         !simpleName
-    ] + templateExtension
-      
+       ]
+    )
 #    message "Search in " + fullPath + "... "    
     if [fullPath fileExists] then
 #      message "found\n"

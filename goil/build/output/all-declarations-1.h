@@ -11,6 +11,394 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
+//                                               @implementationMap map                                                *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class cMapElement_implementationMap ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+extern const char * kSearchErrorMessage_implementationMap_get ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_implementationMap : public AC_GALGAS_map {
+//--------------------------------- Default constructor
+  public : GALGAS_implementationMap (void) ;
+
+//--------------------------------- Handle copy
+  public : GALGAS_implementationMap (const GALGAS_implementationMap & inSource) ;
+  public : GALGAS_implementationMap & operator = (const GALGAS_implementationMap & inSource) ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
+
+//--------------------------------- Object extraction
+  public : static GALGAS_implementationMap extractObject (const GALGAS_object & inObject,
+                                                          C_Compiler * inCompiler
+                                                          COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public : static class GALGAS_implementationMap constructor_emptyMap (LOCATION_ARGS) ;
+
+  public : static class GALGAS_implementationMap constructor_mapWithMapToOverride (const class GALGAS_implementationMap & inOperand0
+                                                                                   COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- += operator (with list of field expressions)
+  public : VIRTUAL_IN_DEBUG void addAssign_operation (const class GALGAS_lstring & inOperand0,
+                                                      const class GALGAS_implementationObject & inOperand1,
+                                                      C_Compiler * inCompiler
+                                                      COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_del (class GALGAS_lstring constinArgument0,
+                                             class GALGAS_implementationObject & outArgument1,
+                                             C_Compiler * inCompiler
+                                             COMMA_LOCATION_ARGS) ;
+
+  public : VIRTUAL_IN_DEBUG void setter_put (class GALGAS_lstring constinArgument0,
+                                             class GALGAS_implementationObject constinArgument1,
+                                             C_Compiler * inCompiler
+                                             COMMA_LOCATION_ARGS) ;
+
+  public : VIRTUAL_IN_DEBUG void setter_setObjForKey (class GALGAS_implementationObject constinArgument0,
+                                                      class GALGAS_string constinArgument1,
+                                                      C_Compiler * inCompiler
+                                                      COMMA_LOCATION_ARGS) ;
+
+
+//--------------------------------- Instance Methods
+  public : VIRTUAL_IN_DEBUG void method_get (class GALGAS_lstring constinArgument0,
+                                             class GALGAS_implementationObject & outArgument1,
+                                             C_Compiler * inCompiler
+                                             COMMA_LOCATION_ARGS) const ;
+
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+  public : VIRTUAL_IN_DEBUG class GALGAS_implementationObject getter_objForKey (const class GALGAS_string & constinOperand0,
+                                                                                C_Compiler * inCompiler
+                                                                                COMMA_LOCATION_ARGS) const ;
+
+  public : VIRTUAL_IN_DEBUG class GALGAS_implementationMap getter_overriddenMap (C_Compiler * inCompiler
+                                                                                 COMMA_LOCATION_ARGS) const ;
+
+
+//--------------------------------- Introspection
+  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public : VIRTUAL_IN_DEBUG cMapElement_implementationMap * readWriteAccessForWithInstruction (C_Compiler * inCompiler,
+                                                                                               const GALGAS_string & inKey
+                                                                                               COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Friend
+
+  friend class cEnumerator_implementationMap ;
+ 
+} ; // End of GALGAS_implementationMap class
+
+//---------------------------------------------------------------------------------------------------------------------*
+//   Enumerator declaration                                                                                            *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class cEnumerator_implementationMap : public cGenericAbstractEnumerator {
+  public : cEnumerator_implementationMap (const GALGAS_implementationMap & inEnumeratedObject,
+                                          const typeEnumerationOrder inOrder) ;
+
+//--- Current element access
+  public : class GALGAS_lstring current_lkey (LOCATION_ARGS) const ;
+  public : class GALGAS_implementationObject current_obj (LOCATION_ARGS) const ;
+//--- Current element access
+  public : class GALGAS_implementationMap_2D_element current (LOCATION_ARGS) const ;
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_implementationMap ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                             @implementationObject class                                             *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_implementationObject : public AC_GALGAS_class {
+//--- Constructor
+  public : GALGAS_implementationObject (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public : static GALGAS_implementationObject constructor_default (LOCATION_ARGS) ;
+
+//---
+  public : inline const class cPtr_implementationObject * ptr (void) const { return (const cPtr_implementationObject *) mObjectPtr ; }
+
+//--------------------------------- Constructor from pointer
+  public : GALGAS_implementationObject (const cPtr_implementationObject * inSourcePtr) ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
+
+//--------------------------------- Object extraction
+  public : static GALGAS_implementationObject extractObject (const GALGAS_object & inObject,
+                                                             C_Compiler * inCompiler
+                                                             COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public : static class GALGAS_implementationObject constructor_new (const class GALGAS_lbool & inOperand0,
+                                                                     const class GALGAS_implementationObjectMap & inOperand1
+                                                                     COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public : typeComparisonResult objectCompare (const GALGAS_implementationObject & inOperand) const ;
+
+//--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_setAttributes (class GALGAS_implementationObjectMap inArgument0
+                                                       COMMA_LOCATION_ARGS) ;
+
+  public : VIRTUAL_IN_DEBUG void setter_setMultiple (class GALGAS_lbool inArgument0
+                                                     COMMA_LOCATION_ARGS) ;
+
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+  public : VIRTUAL_IN_DEBUG class GALGAS_implementationObjectMap getter_attributes (LOCATION_ARGS) const ;
+
+  public : VIRTUAL_IN_DEBUG class GALGAS_lbool getter_multiple (LOCATION_ARGS) const ;
+
+
+//--------------------------------- Introspection
+  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+ 
+} ; // End of GALGAS_implementationObject class
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_implementationObject ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                    Class for element of '@implementationMap' map                                    *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class cMapElement_implementationMap : public cMapElement {
+//--- Map attributes
+  public : GALGAS_implementationObject mAttribute_obj ;
+
+//--- Constructor
+  public : cMapElement_implementationMap (const GALGAS_lstring & inKey,
+                                          const GALGAS_implementationObject & in_obj
+                                          COMMA_LOCATION_ARGS) ;
+
+//--- Virtual method for comparing elements
+  public : virtual typeComparisonResult compare (const cCollectionElement * inOperand) const ;
+
+//--- Virtual method that checks that all attributes are valid
+  public : virtual bool isValid (void) const ;
+
+//--- Virtual method that returns a copy of current object
+  public : virtual cMapElement * copy (void) ;
+
+//--- Description
+ public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                        @implementationMap_2D_element struct                                         *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_implementationMap_2D_element : public AC_GALGAS_root {
+//--------------------------------- Public data members
+  public : GALGAS_lstring mAttribute_lkey ;
+  public : GALGAS_implementationObject mAttribute_obj ;
+
+
+//--------------------------------- Accessors
+  public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
+  public : VIRTUAL_IN_DEBUG void drop (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public : static GALGAS_implementationMap_2D_element constructor_default (LOCATION_ARGS) ;
+
+//--------------------------------- Default constructor
+  public : GALGAS_implementationMap_2D_element (void) ;
+
+//--------------------------------- Virtual destructor (in debug mode)
+  public : VIRTUAL_IN_DEBUG ~ GALGAS_implementationMap_2D_element (void) ;
+
+//--------------------------------- Native constructor
+  public : GALGAS_implementationMap_2D_element (const GALGAS_lstring & in_lkey,
+                                                const GALGAS_implementationObject & in_obj) ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
+
+//--------------------------------- Object extraction
+  public : static GALGAS_implementationMap_2D_element extractObject (const GALGAS_object & inObject,
+                                                                     C_Compiler * inCompiler
+                                                                     COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public : static class GALGAS_implementationMap_2D_element constructor_new (const class GALGAS_lstring & inOperand0,
+                                                                             const class GALGAS_implementationObject & inOperand1
+                                                                             COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Implementation of getter 'description'
+  public : VIRTUAL_IN_DEBUG void description (C_String & ioString,
+                                              const int32_t inIndentation) const ;
+//--------------------------------- Comparison
+  public : typeComparisonResult objectCompare (const GALGAS_implementationMap_2D_element & inOperand) const ;
+
+//--------------------------------- Setters
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+  public : VIRTUAL_IN_DEBUG class GALGAS_lstring getter_lkey (LOCATION_ARGS) const ;
+
+  public : VIRTUAL_IN_DEBUG class GALGAS_implementationObject getter_obj (LOCATION_ARGS) const ;
+
+
+//--------------------------------- Introspection
+  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+ 
+} ; // End of GALGAS_implementationMap_2D_element class
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_implementationMap_2D_element ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                             LEXIQUE options_5F_scanner                                              *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+#include "galgas2/C_Lexique.h"
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                    E X T E R N    R O U T I N E S                                                                   *
+//---------------------------------------------------------------------------------------------------------------------*
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                    E X T E R N    F U N C T I O N S                                                                 *
+//---------------------------------------------------------------------------------------------------------------------*
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                       T O K E N    C L A S S                                                                        *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class cTokenFor_options_5F_scanner : public cToken {
+  public : double mLexicalAttribute_floatNumber ;
+  public : uint64_t mLexicalAttribute_integerNumber ;
+  public : C_String mLexicalAttribute_key ;
+  public : C_String mLexicalAttribute_number ;
+  public : C_String mLexicalAttribute_string ;
+
+  public : cTokenFor_options_5F_scanner (void) ;
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                     S C A N N E R    C L A S S                                                                      *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class C_Lexique_options_5F_scanner : public C_Lexique {
+//--- Constructors
+  public : C_Lexique_options_5F_scanner (C_Compiler * inCallerCompiler,
+                       const C_String & inDependencyFileExtension,
+                       const C_String & inDependencyFilePath,
+                       const C_String & inSourceFileName
+                       COMMA_LOCATION_ARGS) ;
+
+  public : C_Lexique_options_5F_scanner (C_Compiler * inCallerCompiler,
+                       const C_String & inSourceString,
+                       const C_String & inStringForError
+                       COMMA_LOCATION_ARGS) ;
+
+//--- Instrospection
+  public : static GALGAS_stringlist symbols (LOCATION_ARGS) ;
+
+//--- Declaring a protected virtual destructor enables the compiler to raise
+//    an error if a direct delete is performed; only the static method
+//    C_SharedObject::detachPointer may invoke delete.
+  #ifndef DO_NOT_GENERATE_CHECKINGS
+    protected : virtual ~ C_Lexique_options_5F_scanner (void) {}
+  #endif
+
+
+
+//--- Terminal symbols enumeration
+  public : enum {kToken_,
+   kToken_idf,
+   kToken_string,
+   kToken_uint_5F_number,
+   kToken_float_5F_number,
+   kToken__3D_,
+   kToken__2C_,
+   kToken__2D_,
+   kToken__28_,
+   kToken__29_} ;
+
+//--- Key words table 'optionsDelimiters'
+  public : static int16_t search_into_optionsDelimiters (const C_String & inSearchedString) ;
+  
+
+//--- Assign from attribute
+  public : GALGAS_ldouble synthetizedAttribute_floatNumber (void) const ;
+  public : GALGAS_luint_36__34_ synthetizedAttribute_integerNumber (void) const ;
+  public : GALGAS_lstring synthetizedAttribute_key (void) const ;
+  public : GALGAS_lstring synthetizedAttribute_number (void) const ;
+  public : GALGAS_lstring synthetizedAttribute_string (void) const ;
+
+
+//--- Attribute access
+  public : double attributeValue_floatNumber (void) const ;
+  public : uint64_t attributeValue_integerNumber (void) const ;
+  public : C_String attributeValue_key (void) const ;
+  public : C_String attributeValue_number (void) const ;
+  public : C_String attributeValue_string (void) const ;
+
+
+//--- Indexing keys
+
+//--- Indexing directory
+  protected : virtual C_String indexingDirectory (void) const ;
+
+//--- Parse lexical token
+  protected : virtual bool parseLexicalToken (void) ;
+
+//--- Get terminal message
+  protected : virtual C_String getMessageForTerminal (const int16_t inTerminalSymbol) const ;
+
+//--- Get terminal count
+  public : virtual int16_t terminalVocabularyCount (void) const { return 9 ; }
+
+//--- Get Token String
+  public : virtual C_String getCurrentTokenString (const cToken * inTokenPtr) const ;
+
+//--- Enter Token
+  protected : void enterToken (cTokenFor_options_5F_scanner & ioToken) ;
+
+//--- Style name for Latex
+  protected : virtual C_String styleNameForIndex (const uint32_t inStyleIndex) const ;
+  protected : virtual uint32_t styleIndexForTerminal (const int32_t inTerminalIndex) const ;
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //                                                 @identifierMap map                                                  *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -5551,6 +5939,187 @@ void callExtensionSetter_setStructField (class cPtr_gtlData * inObject,
                                          C_Compiler * inCompiler
                                          COMMA_LOCATION_ARGS) ;
 
+//---------------------------------------------------------------------------------------------------------------------*
+//  GRAMMAR gtl_debugger_grammar
+//---------------------------------------------------------------------------------------------------------------------*
+
+class cGrammar_gtl_5F_debugger_5F_grammar : public cParser_gtl_5F_debugger_5F_parser,
+                                            public cParser_gtl_5F_expression_5F_parser {
+//------------------------------------- 'gtl_argument_list' non terminal
+//--- 'parse' label
+  public : virtual void nt_gtl_5F_argument_5F_list_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_gtl_5F_argument_5F_list_ (GALGAS_gtlArgumentList & outArgument0,
+                                                     C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//------------------------------------- 'gtl_debugger_command' non terminal
+//--- 'parse' label
+  public : virtual void nt_gtl_5F_debugger_5F_command_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_gtl_5F_debugger_5F_command_ (GALGAS_gtlInstruction & outArgument0,
+                                                        C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//--- Start symbol
+  public : static void _performSourceFileParsing_ (C_Compiler * inCompiler,
+                                                   GALGAS_lstring inFileName,
+                                                   GALGAS_gtlInstruction & outArgument0
+                                                   COMMA_LOCATION_ARGS) ;
+
+  public : static void _performSourceStringParsing_ (C_Compiler * inCompiler,
+                                                     GALGAS_string inSourceString,
+                                                     GALGAS_string inNameString,
+                                                     GALGAS_gtlInstruction & outArgument0
+                                                     COMMA_LOCATION_ARGS) ;
+
+//--- Indexing
+  public : static void performIndexing (C_Compiler * inCompiler,
+                                        const C_String & inSourceFilePath) ;
+
+//--- Only lexical analysis
+  public : static void performOnlyLexicalAnalysis (C_Compiler * inCompiler,
+                                                   const C_String & inSourceFilePath) ;
+
+//--- Only syntax analysis
+  public : static void performOnlySyntaxAnalysis (C_Compiler * inCompiler,
+                                                  const C_String & inSourceFilePath) ;
+
+//------------------------------------- 'gtl_expression' non terminal
+//--- 'parse' label
+  public : virtual void nt_gtl_5F_expression_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_gtl_5F_expression_ (GALGAS_gtlExpression & outArgument0,
+                                               C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//------------------------------------- 'gtl_factor' non terminal
+//--- 'parse' label
+  public : virtual void nt_gtl_5F_factor_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_gtl_5F_factor_ (GALGAS_gtlExpression & outArgument0,
+                                           C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//------------------------------------- 'gtl_relation_factor' non terminal
+//--- 'parse' label
+  public : virtual void nt_gtl_5F_relation_5F_factor_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_gtl_5F_relation_5F_factor_ (GALGAS_gtlExpression & outArgument0,
+                                                       C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//------------------------------------- 'gtl_relation_term' non terminal
+//--- 'parse' label
+  public : virtual void nt_gtl_5F_relation_5F_term_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_gtl_5F_relation_5F_term_ (GALGAS_gtlExpression & outArgument0,
+                                                     C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//------------------------------------- 'gtl_simple_expression' non terminal
+//--- 'parse' label
+  public : virtual void nt_gtl_5F_simple_5F_expression_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_gtl_5F_simple_5F_expression_ (GALGAS_gtlExpression & outArgument0,
+                                                         C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//------------------------------------- 'gtl_step_do_command' non terminal
+//--- 'parse' label
+  public : virtual void nt_gtl_5F_step_5F_do_5F_command_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_gtl_5F_step_5F_do_5F_command_ (GALGAS_gtlInstruction & outArgument0,
+                                                          C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//------------------------------------- 'gtl_term' non terminal
+//--- 'parse' label
+  public : virtual void nt_gtl_5F_term_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_gtl_5F_term_ (GALGAS_gtlExpression & outArgument0,
+                                         C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//------------------------------------- 'gtl_variable' non terminal
+//--- 'parse' label
+  public : virtual void nt_gtl_5F_variable_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_gtl_5F_variable_ (GALGAS_gtlVarPath & outArgument0,
+                                             C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//------------------------------------- 'gtl_variable_or_here' non terminal
+//--- 'parse' label
+  public : virtual void nt_gtl_5F_variable_5F_or_5F_here_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_gtl_5F_variable_5F_or_5F_here_ (GALGAS_gtlVarPath & outArgument0,
+                                                           GALGAS_bool & outArgument1,
+                                                           C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+  public : virtual int32_t select_gtl_5F_debugger_5F_parser_0 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_debugger_5F_parser_1 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_0 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_1 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_2 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_3 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_4 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_5 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_6 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_7 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_8 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_9 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_10 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_11 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_12 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_13 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_14 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_15 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_16 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_17 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_18 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_19 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_20 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_21 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_22 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_23 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_24 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_25 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_26 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_27 (C_Lexique_gtl_5F_scanner *) ;
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //                                                @attributeRange class                                                *

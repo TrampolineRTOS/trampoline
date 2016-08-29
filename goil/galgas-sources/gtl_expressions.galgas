@@ -806,9 +806,8 @@ method @gtlVarPath delete
 {
   if [self length] > 0 then
     @gtlVarItem item = [self itemAtIndex !0]
-    @gtlData context = vars
     [item deleteInContext
-      !?context
+      !?vars
       !vars
       !lib
       ![self subListFromIndex !1]
