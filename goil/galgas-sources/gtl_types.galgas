@@ -34,7 +34,7 @@ class @gtlContext {
   @string          templateExtension  %setter
   @stringlist      importPath
   @gtlDataList     inputVars          %setter
-  @debuggerContext debuggerContext
+  @debuggerContext debuggerContext    %setter
 }
 
 func emptyContext

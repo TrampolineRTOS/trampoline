@@ -37,6 +37,21 @@ rule <gtl_variable>
 rule <gtl_debugger_command>
   !@gtlInstruction instruction
 {
+  $identifier$ ?let @lstring command
+  if "c" == command | "cont" == command | "continue" == command then
+    instruction = @gtlContinueInstruction.new {
+      !.here
+      !""
+    }
+  else
+    error .here : "Illegal command: " + command : instruction
+  end
+}
+
+#-----------------------------------------------------------------------------*
+rule <gtl_debugger_command>
+  !@gtlInstruction instruction
+{
   $step$
   instruction = @gtlStepInstruction.new {
     !.here
@@ -60,7 +75,7 @@ rule <gtl_debugger_command>
   or
     $not$
     $signed_literal_integer_bigint$ ?let @lbigint num
-    instruction = @gtlDoNoInstruction.new {
+    instruction = @gtlDoNotInstruction.new {
       !.here
       !""
       !num

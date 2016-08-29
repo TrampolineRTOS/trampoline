@@ -66,6 +66,7 @@ class @debuggerContext
 {
   @bool debugActive          %setter
   @bool breakOnNext          %setter
+  @bool loopOnCommand        %setter
   @string promptColor        %setter
   @string promptFace         %setter
   @string instructionColor   %setter
@@ -131,6 +132,7 @@ func defaultDebugSettings
   debugSettings = .new {
     ![option gtl_options.debug value]
     ![option gtl_options.debug value]
+    !false
     !red()
     !""
     !blue()
@@ -152,8 +154,9 @@ setter @gtlContext setDebugger
 
 #-----------------------------------------------------------------------------*
 setter @gtlContext setBreakOnNext
+  ?@bool break
 {
-  [!?debuggerContext setBreakOnNext !true]
+  [!?debuggerContext setBreakOnNext !break]
 }
 
 #-----------------------------------------------------------------------------*
@@ -216,6 +219,20 @@ method @gtlContext executeStepDoList
     [instruction execute !?context !?vars !?lib !?outputString]
   end 
   message endc()
+}
+
+#-----------------------------------------------------------------------------*
+setter @gtlContext setLoopOnCommand
+  ?@bool loopOnCommand
+{
+  [!?debuggerContext setLoopOnCommand !loopOnCommand]
+}
+
+#-----------------------------------------------------------------------------*
+getter @gtlContext loopOnCommand
+  ->@bool loopOnCommand
+{
+  loopOnCommand = [debuggerContext loopOnCommand]
 }
 
 #=============================================================================*
@@ -1030,11 +1047,12 @@ override getter @gtlDisplayStatementInstruction mayExecuteWithoutError
 class @gtlStepInstruction : @gtlInstruction {}
 
 override method @gtlStepInstruction execute
-  ?!@gtlContext unused context
+  ?!@gtlContext context
   ?!@gtlData    unused vars
   ?!@library    unused lib
   ?!@string     unused outputString
 {
+  [!?context setLoopOnCommand !false]
 }
 
 #-----------------------------------------------------------------------------*
@@ -1057,12 +1075,12 @@ override method @gtlDoInstInstruction execute
 #-----------------------------------------------------------------------------*
 # Debugger instruction : do no <num>
 #-----------------------------------------------------------------------------*
-class @gtlDoNoInstruction : @gtlInstruction
+class @gtlDoNotInstruction : @gtlInstruction
 {
   @lbigint numToDelete
 }
 
-override method @gtlDoNoInstruction execute
+override method @gtlDoNotInstruction execute
   ?!@gtlContext        context
   ?!@gtlData    unused vars
   ?!@library    unused lib
@@ -1085,4 +1103,21 @@ override method @gtlDoInstruction execute
   ?!@string     unused outputString
 {
   [context listStepDoInstructions]
+}
+
+#-----------------------------------------------------------------------------*
+# Debugger instruction : continue
+#-----------------------------------------------------------------------------*
+class @gtlContinueInstruction : @gtlInstruction
+{
+}
+
+override method @gtlContinueInstruction execute
+  ?!@gtlContext        context
+  ?!@gtlData    unused vars
+  ?!@library    unused lib
+  ?!@string     unused outputString
+{
+  [!?context setBreakOnNext !false]
+  [!?context setLoopOnCommand !false]
 }

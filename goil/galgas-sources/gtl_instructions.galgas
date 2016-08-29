@@ -62,7 +62,7 @@ method @gtlInstructionList execute
       if [context breakOnNext] then
         [instruction displayWithLocation ![context debuggerContext]]
         [context executeStepDoList !?context !?vars !?lib !?outputString]
-        @bool continueLoop = true
+        [!?context setLoopOnCommand !true]
         loop (@uint.max)
           message [context promptStyle] + "gtl> " + endc()
           @string input = @string.newWithStdIn{}
@@ -74,18 +74,14 @@ method @gtlInstructionList execute
             grammar gtl_debugger_grammar on ("%" + input,"Debugger command")
               ?command
           end
-          if command is == @gtlStepInstruction then
-            continueLoop = false
-          else
-            if  @uint.errorCount == currentErrorCount then
-              if [command mayExecuteWithoutError !vars !lib] then
-                message [context outputStyle]
-                [command execute !?context !?vars !?lib !?outputString]
-                message endc()
-              end
+          if  @uint.errorCount == currentErrorCount then
+            if [command mayExecuteWithoutError !vars !lib] then
+              message [context outputStyle]
+              [command execute !?context !?vars !?lib !?outputString]
+              message endc()
             end
           end
-        while continueLoop do
+        while [context loopOnCommand] do
         end
       end
       [instruction execute !?context !?vars !?lib !?outputString]
@@ -498,7 +494,9 @@ override method @gtlTemplateInstruction execute
       [instructionsIfNotFound execute !?context !?localMap !?lib !?outputString]
       vars = [localMap overriddenMap]
     end
-  end 
+  end
+  
+  [!?context setDebuggerContext ![newContext debuggerContext]] 
 }
 
 #-----------------------------------------------------------------------------*

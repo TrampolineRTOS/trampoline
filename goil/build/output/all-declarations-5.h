@@ -1253,6 +1253,27 @@ class GALGAS_bool callExtensionGetter_debugActive (const cPtr_gtlContext * inObj
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
+//                                    Extension getter '@gtlContext loopOnCommand'                                     *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typedef class GALGAS_bool (*enterExtensionGetter_gtlContext_loopOnCommand) (const class cPtr_gtlContext * inObject,
+                                                                            C_Compiler * inCompiler
+                                                                            COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterExtensionGetter_loopOnCommand (const int32_t inClassIndex,
+                                         enterExtensionGetter_gtlContext_loopOnCommand inGetter) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_bool callExtensionGetter_loopOnCommand (const cPtr_gtlContext * inObject,
+                                                     class C_Compiler * inCompiler
+                                                     COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //                                     Extension getter '@gtlContext outputStyle'                                      *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -1369,6 +1390,29 @@ void callExtensionMethod_displayWithLocation (const class cPtr_gtlInstruction * 
                                               const GALGAS_debuggerContext constin_context,
                                               C_Compiler * inCompiler
                                               COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                   Extension setter '@gtlContext setLoopOnCommand'                                   *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typedef void (*extensionSetterSignature_gtlContext_setLoopOnCommand) (class cPtr_gtlContext * inObject,
+                                                                      class GALGAS_bool inArgument0,
+                                                                      class C_Compiler * inCompiler
+                                                                      COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterExtensionSetter_setLoopOnCommand (const int32_t inClassIndex,
+                                            extensionSetterSignature_gtlContext_setLoopOnCommand inModifier) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void callExtensionSetter_setLoopOnCommand (class cPtr_gtlContext * inObject,
+                                           GALGAS_bool in_loopOnCommand,
+                                           C_Compiler * inCompiler
+                                           COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
@@ -1818,28 +1862,5 @@ class GALGAS_implementationObjectMap extensionGetter_mergeImplementationObjectAt
                                                                                               const class GALGAS_implementationObjectMap & constinArgument0,
                                                                                               class C_Compiler * inCompiler
                                                                                               COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Extension getter '@implementation hasLKey'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_bool (*enterExtensionGetter_implementation_hasLKey) (const class cPtr_implementation * inObject,
-                                                                          const class GALGAS_lstring & constinArgument0,
-                                                                          C_Compiler * inCompiler
-                                                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_hasLKey (const int32_t inClassIndex,
-                                   enterExtensionGetter_implementation_hasLKey inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_bool callExtensionGetter_hasLKey (const cPtr_implementation * inObject,
-                                               const GALGAS_lstring & constin_key,
-                                               class C_Compiler * inCompiler
-                                               COMMA_LOCATION_ARGS) ;
 
 #endif

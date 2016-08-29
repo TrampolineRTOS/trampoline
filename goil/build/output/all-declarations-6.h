@@ -11,6 +11,29 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
+//                                     Extension getter '@implementation hasLKey'                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typedef class GALGAS_bool (*enterExtensionGetter_implementation_hasLKey) (const class cPtr_implementation * inObject,
+                                                                          const class GALGAS_lstring & constinArgument0,
+                                                                          C_Compiler * inCompiler
+                                                                          COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterExtensionGetter_hasLKey (const int32_t inClassIndex,
+                                   enterExtensionGetter_implementation_hasLKey inGetter) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_bool callExtensionGetter_hasLKey (const cPtr_implementation * inObject,
+                                               const GALGAS_lstring & constin_key,
+                                               class C_Compiler * inCompiler
+                                               COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //                                 Extension method '@implementation checkTypeForKind'                                 *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -2002,6 +2025,7 @@ void callExtensionSetter_setDebugger (class cPtr_gtlContext * inObject,
 //---------------------------------------------------------------------------------------------------------------------*
 
 typedef void (*extensionSetterSignature_gtlContext_setBreakOnNext) (class cPtr_gtlContext * inObject,
+                                                                    class GALGAS_bool inArgument0,
                                                                     class C_Compiler * inCompiler
                                                                     COMMA_LOCATION_ARGS) ;
 
@@ -2013,6 +2037,7 @@ void enterExtensionSetter_setBreakOnNext (const int32_t inClassIndex,
 //---------------------------------------------------------------------------------------------------------------------*
 
 void callExtensionSetter_setBreakOnNext (class cPtr_gtlContext * inObject,
+                                         GALGAS_bool in_break,
                                          C_Compiler * inCompiler
                                          COMMA_LOCATION_ARGS) ;
 

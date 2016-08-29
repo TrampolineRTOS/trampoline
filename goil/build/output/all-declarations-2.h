@@ -270,7 +270,7 @@ class GALGAS_debuggerContext : public AC_GALGAS_class {
 //--------------------------------- GALGAS constructors
   public : static class GALGAS_debuggerContext constructor_new (const class GALGAS_bool & inOperand0,
                                                                 const class GALGAS_bool & inOperand1,
-                                                                const class GALGAS_string & inOperand2,
+                                                                const class GALGAS_bool & inOperand2,
                                                                 const class GALGAS_string & inOperand3,
                                                                 const class GALGAS_string & inOperand4,
                                                                 const class GALGAS_string & inOperand5,
@@ -278,7 +278,8 @@ class GALGAS_debuggerContext : public AC_GALGAS_class {
                                                                 const class GALGAS_string & inOperand7,
                                                                 const class GALGAS_string & inOperand8,
                                                                 const class GALGAS_string & inOperand9,
-                                                                const class GALGAS_gtlInstructionList & inOperand10
+                                                                const class GALGAS_string & inOperand10,
+                                                                const class GALGAS_gtlInstructionList & inOperand11
                                                                 COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Comparison
@@ -296,6 +297,9 @@ class GALGAS_debuggerContext : public AC_GALGAS_class {
 
   public : VIRTUAL_IN_DEBUG void setter_setInstructionFace (class GALGAS_string inArgument0
                                                             COMMA_LOCATION_ARGS) ;
+
+  public : VIRTUAL_IN_DEBUG void setter_setLoopOnCommand (class GALGAS_bool inArgument0
+                                                          COMMA_LOCATION_ARGS) ;
 
   public : VIRTUAL_IN_DEBUG void setter_setOutputColor (class GALGAS_string inArgument0
                                                         COMMA_LOCATION_ARGS) ;
@@ -330,6 +334,8 @@ class GALGAS_debuggerContext : public AC_GALGAS_class {
 
   public : VIRTUAL_IN_DEBUG class GALGAS_string getter_instructionFace (LOCATION_ARGS) const ;
 
+  public : VIRTUAL_IN_DEBUG class GALGAS_bool getter_loopOnCommand (LOCATION_ARGS) const ;
+
   public : VIRTUAL_IN_DEBUG class GALGAS_string getter_outputColor (LOCATION_ARGS) const ;
 
   public : VIRTUAL_IN_DEBUG class GALGAS_string getter_outputFace (LOCATION_ARGS) const ;
@@ -363,6 +369,7 @@ class cPtr_debuggerContext : public acPtr_class {
 //--- Attributes
   public : GALGAS_bool mAttribute_debugActive ;
   public : GALGAS_bool mAttribute_breakOnNext ;
+  public : GALGAS_bool mAttribute_loopOnCommand ;
   public : GALGAS_string mAttribute_promptColor ;
   public : GALGAS_string mAttribute_promptFace ;
   public : GALGAS_string mAttribute_instructionColor ;
@@ -376,6 +383,7 @@ class cPtr_debuggerContext : public acPtr_class {
 //--- Constructor
   public : cPtr_debuggerContext (const GALGAS_bool & in_debugActive,
                                  const GALGAS_bool & in_breakOnNext,
+                                 const GALGAS_bool & in_loopOnCommand,
                                  const GALGAS_string & in_promptColor,
                                  const GALGAS_string & in_promptFace,
                                  const GALGAS_string & in_instructionColor,
@@ -395,6 +403,8 @@ class cPtr_debuggerContext : public acPtr_class {
   public : VIRTUAL_IN_DEBUG void setter_setDebugActive (GALGAS_bool inValue COMMA_LOCATION_ARGS) ;
   public : VIRTUAL_IN_DEBUG GALGAS_bool getter_breakOnNext (LOCATION_ARGS) const ;
   public : VIRTUAL_IN_DEBUG void setter_setBreakOnNext (GALGAS_bool inValue COMMA_LOCATION_ARGS) ;
+  public : VIRTUAL_IN_DEBUG GALGAS_bool getter_loopOnCommand (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setLoopOnCommand (GALGAS_bool inValue COMMA_LOCATION_ARGS) ;
   public : VIRTUAL_IN_DEBUG GALGAS_string getter_promptColor (LOCATION_ARGS) const ;
   public : VIRTUAL_IN_DEBUG void setter_setPromptColor (GALGAS_string inValue COMMA_LOCATION_ARGS) ;
   public : VIRTUAL_IN_DEBUG GALGAS_string getter_promptFace (LOCATION_ARGS) const ;
@@ -465,6 +475,9 @@ class GALGAS_gtlContext : public AC_GALGAS_class {
   public : typeComparisonResult objectCompare (const GALGAS_gtlContext & inOperand) const ;
 
 //--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_setDebuggerContext (class GALGAS_debuggerContext inArgument0
+                                                            COMMA_LOCATION_ARGS) ;
+
   public : VIRTUAL_IN_DEBUG void setter_setInputVars (class GALGAS_gtlDataList inArgument0
                                                       COMMA_LOCATION_ARGS) ;
 
@@ -552,6 +565,7 @@ class cPtr_gtlContext : public acPtr_class {
   public : VIRTUAL_IN_DEBUG GALGAS_gtlDataList getter_inputVars (LOCATION_ARGS) const ;
   public : VIRTUAL_IN_DEBUG void setter_setInputVars (GALGAS_gtlDataList inValue COMMA_LOCATION_ARGS) ;
   public : VIRTUAL_IN_DEBUG GALGAS_debuggerContext getter_debuggerContext (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setDebuggerContext (GALGAS_debuggerContext inValue COMMA_LOCATION_ARGS) ;
 //--- Description
   public : virtual void description (C_String & ioString,
                                      const int32_t inIndentation) const ;

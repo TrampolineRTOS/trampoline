@@ -10,6 +10,31 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
+//                                   Overriding extension method '@noRange enclose'                                    *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void extensionMethod_noRange_enclose (const cPtr_attributeRange * /* inObject */,
+                                             GALGAS_bool & outArgument_isWithin,
+                                             const GALGAS_attributeRange /* constinArgument_value */,
+                                             C_Compiler * /* inCompiler */
+                                             COMMA_UNUSED_LOCATION_ARGS) {
+  outArgument_isWithin = GALGAS_bool (true) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void defineExtensionMethod_noRange_enclose (void) {
+  enterExtensionMethod_enclose (kTypeDescriptor_GALGAS_noRange.mSlotID,
+                                extensionMethod_noRange_enclose) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_PrologueEpilogue gMethod_noRange_enclose (defineExtensionMethod_noRange_enclose, NULL) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //                              Overriding extension method '@uint32AttributeSet enclose'                              *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*

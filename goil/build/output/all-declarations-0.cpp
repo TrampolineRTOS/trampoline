@@ -10342,14 +10342,22 @@ GALGAS_sortingKeyList GALGAS_sortingKeyList::extractObject (const GALGAS_object 
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i0_ (GALGAS_gtlInstruction & outArgument_instruction,
                                                                                                        C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_instruction.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_step) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 40)) ;
-  outArgument_instruction = GALGAS_gtlStepInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 42)), GALGAS_string::makeEmptyString ()  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 41)) ;
+  GALGAS_lstring var_command_1074 = inCompiler->synthetizedAttribute_tokenString () ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 40)) ;
+  const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, GALGAS_string ("c").objectCompare (var_command_1074.getter_string (SOURCE_FILE ("gtl_debugger_parser.galgas", 41)))).operator_or (GALGAS_bool (kIsEqual, GALGAS_string ("cont").objectCompare (var_command_1074.getter_string (SOURCE_FILE ("gtl_debugger_parser.galgas", 41)))) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 41)).operator_or (GALGAS_bool (kIsEqual, GALGAS_string ("continue").objectCompare (var_command_1074.getter_string (SOURCE_FILE ("gtl_debugger_parser.galgas", 41)))) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 41)).boolEnum () ;
+  if (kBoolTrue == test_0) {
+    outArgument_instruction = GALGAS_gtlContinueInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 43)), GALGAS_string::makeEmptyString ()  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 42)) ;
+  }else if (kBoolFalse == test_0) {
+    TC_Array <C_FixItDescription> fixItArray1 ;
+    inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 47)), GALGAS_string ("Illegal command: ").add_operation (var_command_1074.getter_string (SOURCE_FILE ("gtl_debugger_parser.galgas", 47)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 47)), fixItArray1  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 47)) ;
+    outArgument_instruction.drop () ; // Release error dropped variable
+  }
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i0_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_step) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 40)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 40)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -10358,44 +10366,14 @@ void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_de
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i1_ (GALGAS_gtlInstruction & outArgument_instruction,
                                                                                                        C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_instruction.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_do) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 52)) ;
-  switch (select_gtl_5F_debugger_5F_parser_0 (inCompiler)) {
-  case 1: {
-    GALGAS_gtlInstruction var_instructionToStepDo_1337 ;
-    nt_gtl_5F_step_5F_do_5F_command_ (var_instructionToStepDo_1337, inCompiler) ;
-    outArgument_instruction = GALGAS_gtlDoInstInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 56)), GALGAS_string::makeEmptyString (), var_instructionToStepDo_1337  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 55)) ;
-  } break ;
-  case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_not) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 61)) ;
-    GALGAS_lbigint var_num_1508 = inCompiler->synthetizedAttribute_intValue () ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 62)) ;
-    outArgument_instruction = GALGAS_gtlDoNoInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 64)), GALGAS_string::makeEmptyString (), var_num_1508  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 63)) ;
-  } break ;
-  case 3: {
-    outArgument_instruction = GALGAS_gtlDoInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 70)), GALGAS_string::makeEmptyString ()  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 69)) ;
-  } break ;
-  default:
-    break ;
-  }
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_step) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 55)) ;
+  outArgument_instruction = GALGAS_gtlStepInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 57)), GALGAS_string::makeEmptyString ()  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 56)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i1_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_do) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 52)) ;
-  switch (select_gtl_5F_debugger_5F_parser_0 (inCompiler)) {
-  case 1: {
-    nt_gtl_5F_step_5F_do_5F_command_parse (inCompiler) ;
-  } break ;
-  case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_not) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 61)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 62)) ;
-  } break ;
-  case 3: {
-  } break ;
-  default:
-    break ;
-  }
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_step) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 55)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -10404,12 +10382,44 @@ void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_de
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i2_ (GALGAS_gtlInstruction & outArgument_instruction,
                                                                                                        C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_instruction.drop () ; // Release 'out' argument
-  outArgument_instruction = GALGAS_gtlStepInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 81)), GALGAS_string::makeEmptyString ()  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 80)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_do) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 67)) ;
+  switch (select_gtl_5F_debugger_5F_parser_0 (inCompiler)) {
+  case 1: {
+    GALGAS_gtlInstruction var_instructionToStepDo_1739 ;
+    nt_gtl_5F_step_5F_do_5F_command_ (var_instructionToStepDo_1739, inCompiler) ;
+    outArgument_instruction = GALGAS_gtlDoInstInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 71)), GALGAS_string::makeEmptyString (), var_instructionToStepDo_1739  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 70)) ;
+  } break ;
+  case 2: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_not) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 76)) ;
+    GALGAS_lbigint var_num_1910 = inCompiler->synthetizedAttribute_intValue () ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 77)) ;
+    outArgument_instruction = GALGAS_gtlDoNotInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 79)), GALGAS_string::makeEmptyString (), var_num_1910  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 78)) ;
+  } break ;
+  case 3: {
+    outArgument_instruction = GALGAS_gtlDoInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 85)), GALGAS_string::makeEmptyString ()  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 84)) ;
+  } break ;
+  default:
+    break ;
+  }
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i2_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_do) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 67)) ;
+  switch (select_gtl_5F_debugger_5F_parser_0 (inCompiler)) {
+  case 1: {
+    nt_gtl_5F_step_5F_do_5F_command_parse (inCompiler) ;
+  } break ;
+  case 2: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_not) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 76)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 77)) ;
+  } break ;
+  case 3: {
+  } break ;
+  default:
+    break ;
+  }
   inCompiler->resetTemplateString () ;
 }
 
@@ -10418,139 +10428,12 @@ void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_de
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i3_ (GALGAS_gtlInstruction & outArgument_instruction,
                                                                                                        C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_instruction.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_let) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 90)) ;
-  GALGAS_gtlVarPath var_variable_2078 ;
-  nt_gtl_5F_variable_ (var_variable_2078, inCompiler) ;
-  switch (select_gtl_5F_debugger_5F_parser_1 (inCompiler)) {
-  case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3A__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 93)) ;
-    GALGAS_gtlExpression var_expression_2144 ;
-    nt_gtl_5F_expression_ (var_expression_2144, inCompiler) ;
-    outArgument_instruction = GALGAS_gtlLetInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 96)), GALGAS_string::makeEmptyString (), var_variable_2078, var_expression_2144  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 95)) ;
-  } break ;
-  case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2B__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 102)) ;
-    GALGAS_gtlExpression var_expression_2314 ;
-    nt_gtl_5F_expression_ (var_expression_2314, inCompiler) ;
-    outArgument_instruction = GALGAS_gtlLetAddInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 105)), GALGAS_string::makeEmptyString (), var_variable_2078, var_expression_2314  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 104)) ;
-  } break ;
-  case 3: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2D__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 111)) ;
-    GALGAS_gtlExpression var_expression_2486 ;
-    nt_gtl_5F_expression_ (var_expression_2486, inCompiler) ;
-    outArgument_instruction = GALGAS_gtlLetSubstractInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 114)), GALGAS_string::makeEmptyString (), var_variable_2078, var_expression_2486  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 113)) ;
-  } break ;
-  case 4: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2A__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 120)) ;
-    GALGAS_gtlExpression var_expression_2664 ;
-    nt_gtl_5F_expression_ (var_expression_2664, inCompiler) ;
-    outArgument_instruction = GALGAS_gtlLetMultiplyInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 123)), GALGAS_string::makeEmptyString (), var_variable_2078, var_expression_2664  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 122)) ;
-  } break ;
-  case 5: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2F__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 129)) ;
-    GALGAS_gtlExpression var_expression_2841 ;
-    nt_gtl_5F_expression_ (var_expression_2841, inCompiler) ;
-    outArgument_instruction = GALGAS_gtlLetDivideInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 132)), GALGAS_string::makeEmptyString (), var_variable_2078, var_expression_2841  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 131)) ;
-  } break ;
-  case 6: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_mod_3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 138)) ;
-    GALGAS_gtlExpression var_expression_3018 ;
-    nt_gtl_5F_expression_ (var_expression_3018, inCompiler) ;
-    outArgument_instruction = GALGAS_gtlLetModuloInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 141)), GALGAS_string::makeEmptyString (), var_variable_2078, var_expression_3018  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 140)) ;
-  } break ;
-  case 7: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3C__3C__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 147)) ;
-    GALGAS_gtlExpression var_expression_3194 ;
-    nt_gtl_5F_expression_ (var_expression_3194, inCompiler) ;
-    outArgument_instruction = GALGAS_gtlLetShiftLeftInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 150)), GALGAS_string::makeEmptyString (), var_variable_2078, var_expression_3194  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 149)) ;
-  } break ;
-  case 8: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3E__3E__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 156)) ;
-    GALGAS_gtlExpression var_expression_3373 ;
-    nt_gtl_5F_expression_ (var_expression_3373, inCompiler) ;
-    outArgument_instruction = GALGAS_gtlLetShiftRightInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 159)), GALGAS_string::makeEmptyString (), var_variable_2078, var_expression_3373  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 158)) ;
-  } break ;
-  case 9: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__26__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 165)) ;
-    GALGAS_gtlExpression var_expression_3552 ;
-    nt_gtl_5F_expression_ (var_expression_3552, inCompiler) ;
-    outArgument_instruction = GALGAS_gtlLetAndInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 168)), GALGAS_string::makeEmptyString (), var_variable_2078, var_expression_3552  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 167)) ;
-  } break ;
-  case 10: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__7C__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 174)) ;
-    GALGAS_gtlExpression var_expression_3724 ;
-    nt_gtl_5F_expression_ (var_expression_3724, inCompiler) ;
-    outArgument_instruction = GALGAS_gtlLetOrInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 177)), GALGAS_string::makeEmptyString (), var_variable_2078, var_expression_3724  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 176)) ;
-  } break ;
-  case 11: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5E__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 183)) ;
-    GALGAS_gtlExpression var_expression_3895 ;
-    nt_gtl_5F_expression_ (var_expression_3895, inCompiler) ;
-    outArgument_instruction = GALGAS_gtlLetXorInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 186)), GALGAS_string::makeEmptyString (), var_variable_2078, var_expression_3895  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 185)) ;
-  } break ;
-  case 12: {
-    outArgument_instruction = GALGAS_gtlLetUnconstructedInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 193)), GALGAS_string::makeEmptyString (), var_variable_2078  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 192)) ;
-  } break ;
-  default:
-    break ;
-  }
+  outArgument_instruction = GALGAS_gtlStepInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 96)), GALGAS_string::makeEmptyString ()  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 95)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i3_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_let) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 90)) ;
-  nt_gtl_5F_variable_parse (inCompiler) ;
-  switch (select_gtl_5F_debugger_5F_parser_1 (inCompiler)) {
-  case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3A__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 93)) ;
-    nt_gtl_5F_expression_parse (inCompiler) ;
-  } break ;
-  case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2B__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 102)) ;
-    nt_gtl_5F_expression_parse (inCompiler) ;
-  } break ;
-  case 3: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2D__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 111)) ;
-    nt_gtl_5F_expression_parse (inCompiler) ;
-  } break ;
-  case 4: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2A__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 120)) ;
-    nt_gtl_5F_expression_parse (inCompiler) ;
-  } break ;
-  case 5: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2F__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 129)) ;
-    nt_gtl_5F_expression_parse (inCompiler) ;
-  } break ;
-  case 6: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_mod_3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 138)) ;
-    nt_gtl_5F_expression_parse (inCompiler) ;
-  } break ;
-  case 7: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3C__3C__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 147)) ;
-    nt_gtl_5F_expression_parse (inCompiler) ;
-  } break ;
-  case 8: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3E__3E__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 156)) ;
-    nt_gtl_5F_expression_parse (inCompiler) ;
-  } break ;
-  case 9: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__26__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 165)) ;
-    nt_gtl_5F_expression_parse (inCompiler) ;
-  } break ;
-  case 10: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__7C__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 174)) ;
-    nt_gtl_5F_expression_parse (inCompiler) ;
-  } break ;
-  case 11: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5E__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 183)) ;
-    nt_gtl_5F_expression_parse (inCompiler) ;
-  } break ;
-  case 12: {
-  } break ;
-  default:
-    break ;
-  }
   inCompiler->resetTemplateString () ;
 }
 
@@ -10559,17 +10442,139 @@ void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_de
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i4_ (GALGAS_gtlInstruction & outArgument_instruction,
                                                                                                        C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_instruction.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_unlet) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 204)) ;
-  GALGAS_gtlVarPath var_variable_4309 ;
-  nt_gtl_5F_variable_ (var_variable_4309, inCompiler) ;
-  outArgument_instruction = GALGAS_gtlUnletInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 207)), GALGAS_string::makeEmptyString (), var_variable_4309  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 206)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_let) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 105)) ;
+  GALGAS_gtlVarPath var_variable_2481 ;
+  nt_gtl_5F_variable_ (var_variable_2481, inCompiler) ;
+  switch (select_gtl_5F_debugger_5F_parser_1 (inCompiler)) {
+  case 1: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3A__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 108)) ;
+    GALGAS_gtlExpression var_expression_2547 ;
+    nt_gtl_5F_expression_ (var_expression_2547, inCompiler) ;
+    outArgument_instruction = GALGAS_gtlLetInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 111)), GALGAS_string::makeEmptyString (), var_variable_2481, var_expression_2547  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 110)) ;
+  } break ;
+  case 2: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2B__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 117)) ;
+    GALGAS_gtlExpression var_expression_2717 ;
+    nt_gtl_5F_expression_ (var_expression_2717, inCompiler) ;
+    outArgument_instruction = GALGAS_gtlLetAddInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 120)), GALGAS_string::makeEmptyString (), var_variable_2481, var_expression_2717  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 119)) ;
+  } break ;
+  case 3: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2D__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 126)) ;
+    GALGAS_gtlExpression var_expression_2889 ;
+    nt_gtl_5F_expression_ (var_expression_2889, inCompiler) ;
+    outArgument_instruction = GALGAS_gtlLetSubstractInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 129)), GALGAS_string::makeEmptyString (), var_variable_2481, var_expression_2889  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 128)) ;
+  } break ;
+  case 4: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2A__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 135)) ;
+    GALGAS_gtlExpression var_expression_3067 ;
+    nt_gtl_5F_expression_ (var_expression_3067, inCompiler) ;
+    outArgument_instruction = GALGAS_gtlLetMultiplyInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 138)), GALGAS_string::makeEmptyString (), var_variable_2481, var_expression_3067  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 137)) ;
+  } break ;
+  case 5: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2F__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 144)) ;
+    GALGAS_gtlExpression var_expression_3244 ;
+    nt_gtl_5F_expression_ (var_expression_3244, inCompiler) ;
+    outArgument_instruction = GALGAS_gtlLetDivideInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 147)), GALGAS_string::makeEmptyString (), var_variable_2481, var_expression_3244  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 146)) ;
+  } break ;
+  case 6: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_mod_3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 153)) ;
+    GALGAS_gtlExpression var_expression_3421 ;
+    nt_gtl_5F_expression_ (var_expression_3421, inCompiler) ;
+    outArgument_instruction = GALGAS_gtlLetModuloInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 156)), GALGAS_string::makeEmptyString (), var_variable_2481, var_expression_3421  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 155)) ;
+  } break ;
+  case 7: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3C__3C__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 162)) ;
+    GALGAS_gtlExpression var_expression_3597 ;
+    nt_gtl_5F_expression_ (var_expression_3597, inCompiler) ;
+    outArgument_instruction = GALGAS_gtlLetShiftLeftInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 165)), GALGAS_string::makeEmptyString (), var_variable_2481, var_expression_3597  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 164)) ;
+  } break ;
+  case 8: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3E__3E__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 171)) ;
+    GALGAS_gtlExpression var_expression_3776 ;
+    nt_gtl_5F_expression_ (var_expression_3776, inCompiler) ;
+    outArgument_instruction = GALGAS_gtlLetShiftRightInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 174)), GALGAS_string::makeEmptyString (), var_variable_2481, var_expression_3776  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 173)) ;
+  } break ;
+  case 9: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__26__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 180)) ;
+    GALGAS_gtlExpression var_expression_3955 ;
+    nt_gtl_5F_expression_ (var_expression_3955, inCompiler) ;
+    outArgument_instruction = GALGAS_gtlLetAndInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 183)), GALGAS_string::makeEmptyString (), var_variable_2481, var_expression_3955  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 182)) ;
+  } break ;
+  case 10: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__7C__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 189)) ;
+    GALGAS_gtlExpression var_expression_4127 ;
+    nt_gtl_5F_expression_ (var_expression_4127, inCompiler) ;
+    outArgument_instruction = GALGAS_gtlLetOrInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 192)), GALGAS_string::makeEmptyString (), var_variable_2481, var_expression_4127  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 191)) ;
+  } break ;
+  case 11: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5E__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 198)) ;
+    GALGAS_gtlExpression var_expression_4298 ;
+    nt_gtl_5F_expression_ (var_expression_4298, inCompiler) ;
+    outArgument_instruction = GALGAS_gtlLetXorInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 201)), GALGAS_string::makeEmptyString (), var_variable_2481, var_expression_4298  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 200)) ;
+  } break ;
+  case 12: {
+    outArgument_instruction = GALGAS_gtlLetUnconstructedInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 208)), GALGAS_string::makeEmptyString (), var_variable_2481  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 207)) ;
+  } break ;
+  default:
+    break ;
+  }
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i4_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_unlet) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 204)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_let) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 105)) ;
   nt_gtl_5F_variable_parse (inCompiler) ;
+  switch (select_gtl_5F_debugger_5F_parser_1 (inCompiler)) {
+  case 1: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3A__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 108)) ;
+    nt_gtl_5F_expression_parse (inCompiler) ;
+  } break ;
+  case 2: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2B__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 117)) ;
+    nt_gtl_5F_expression_parse (inCompiler) ;
+  } break ;
+  case 3: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2D__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 126)) ;
+    nt_gtl_5F_expression_parse (inCompiler) ;
+  } break ;
+  case 4: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2A__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 135)) ;
+    nt_gtl_5F_expression_parse (inCompiler) ;
+  } break ;
+  case 5: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2F__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 144)) ;
+    nt_gtl_5F_expression_parse (inCompiler) ;
+  } break ;
+  case 6: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_mod_3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 153)) ;
+    nt_gtl_5F_expression_parse (inCompiler) ;
+  } break ;
+  case 7: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3C__3C__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 162)) ;
+    nt_gtl_5F_expression_parse (inCompiler) ;
+  } break ;
+  case 8: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3E__3E__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 171)) ;
+    nt_gtl_5F_expression_parse (inCompiler) ;
+  } break ;
+  case 9: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__26__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 180)) ;
+    nt_gtl_5F_expression_parse (inCompiler) ;
+  } break ;
+  case 10: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__7C__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 189)) ;
+    nt_gtl_5F_expression_parse (inCompiler) ;
+  } break ;
+  case 11: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5E__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 198)) ;
+    nt_gtl_5F_expression_parse (inCompiler) ;
+  } break ;
+  case 12: {
+  } break ;
+  default:
+    break ;
+  }
   inCompiler->resetTemplateString () ;
 }
 
@@ -10578,29 +10583,32 @@ void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_de
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i5_ (GALGAS_gtlInstruction & outArgument_instruction,
                                                                                                        C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_instruction.drop () ; // Release 'out' argument
-  nt_gtl_5F_step_5F_do_5F_command_ (outArgument_instruction, inCompiler) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_unlet) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 219)) ;
+  GALGAS_gtlVarPath var_variable_4712 ;
+  nt_gtl_5F_variable_ (var_variable_4712, inCompiler) ;
+  outArgument_instruction = GALGAS_gtlUnletInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 222)), GALGAS_string::makeEmptyString (), var_variable_4712  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 221)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i5_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  nt_gtl_5F_step_5F_do_5F_command_parse (inCompiler) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_unlet) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 219)) ;
+  nt_gtl_5F_variable_parse (inCompiler) ;
   inCompiler->resetTemplateString () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i6_ (GALGAS_gtlInstruction & outArgument_instruction,
-                                                                                                         C_Lexique_gtl_5F_scanner * inCompiler) {
+void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i6_ (GALGAS_gtlInstruction & outArgument_instruction,
+                                                                                                       C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_instruction.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_variables) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 224)) ;
-  outArgument_instruction = GALGAS_gtlVariablesInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 226)), GALGAS_string::makeEmptyString (), GALGAS_bool (true)  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 225)) ;
+  nt_gtl_5F_step_5F_do_5F_command_ (outArgument_instruction, inCompiler) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i6_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_variables) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 224)) ;
+void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i6_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
+  nt_gtl_5F_step_5F_do_5F_command_parse (inCompiler) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -10609,17 +10617,14 @@ void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_st
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i7_ (GALGAS_gtlInstruction & outArgument_instruction,
                                                                                                          C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_instruction.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_display) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 236)) ;
-  GALGAS_gtlVarPath var_variable_5001 ;
-  nt_gtl_5F_variable_ (var_variable_5001, inCompiler) ;
-  outArgument_instruction = GALGAS_gtlDisplayStatementInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 239)), GALGAS_string::makeEmptyString (), var_variable_5001  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 238)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_variables) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 239)) ;
+  outArgument_instruction = GALGAS_gtlVariablesInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 241)), GALGAS_string::makeEmptyString (), GALGAS_bool (true)  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 240)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i7_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_display) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 236)) ;
-  nt_gtl_5F_variable_parse (inCompiler) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_variables) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 239)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -10628,16 +10633,35 @@ void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_st
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i8_ (GALGAS_gtlInstruction & outArgument_instruction,
                                                                                                          C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_instruction.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_print) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 249)) ;
-  GALGAS_gtlExpression var_expression_5294 ;
-  nt_gtl_5F_expression_ (var_expression_5294, inCompiler) ;
-  outArgument_instruction = GALGAS_gtlPrintStatementInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 252)), GALGAS_string::makeEmptyString (), GALGAS_bool (true), var_expression_5294  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 251)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_display) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 251)) ;
+  GALGAS_gtlVarPath var_variable_5404 ;
+  nt_gtl_5F_variable_ (var_variable_5404, inCompiler) ;
+  outArgument_instruction = GALGAS_gtlDisplayStatementInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 254)), GALGAS_string::makeEmptyString (), var_variable_5404  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 253)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i8_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_print) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 249)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_display) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 251)) ;
+  nt_gtl_5F_variable_parse (inCompiler) ;
+  inCompiler->resetTemplateString () ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i9_ (GALGAS_gtlInstruction & outArgument_instruction,
+                                                                                                         C_Lexique_gtl_5F_scanner * inCompiler) {
+  outArgument_instruction.drop () ; // Release 'out' argument
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_print) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 264)) ;
+  GALGAS_gtlExpression var_expression_5697 ;
+  nt_gtl_5F_expression_ (var_expression_5697, inCompiler) ;
+  outArgument_instruction = GALGAS_gtlPrintStatementInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 267)), GALGAS_string::makeEmptyString (), GALGAS_bool (true), var_expression_5697  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 266)) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i9_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_print) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 264)) ;
   nt_gtl_5F_expression_parse (inCompiler) ;
   inCompiler->resetTemplateString () ;
 }
