@@ -27,7 +27,8 @@ CPU blink {
       ASSEMBLER = "arm-none-eabi-as";
       LINKER = "arm-none-eabi-ld";
       COPIER = "arm-none-eabi-objcopy";
-      SYSTEM = PYTHON;
+      //SYSTEM = PYTHON;
+      SYSTEM = ATMELSTUDIO;
     };
     SYSTEM_CALL = TRUE;
     MEMMAP = TRUE {

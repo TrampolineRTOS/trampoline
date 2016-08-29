@@ -20,4 +20,8 @@ CPU kernel {
     PATH = "autosar";
     FILE = "tpl_as_action.c";
   };
+  KERNEL protec_kernel {
+    PATH = "autosar";
+    FILE = "tpl_as_protec_hook.c";
+  };
 };
