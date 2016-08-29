@@ -381,6 +381,17 @@ override getter @gtlExistsExpression stringRepresentation
 }
 
 #-----------------------------------------------------------------------------*
+override getter @gtlExistsDefaultExpression stringRepresentation
+  ->@string result
+{
+  result = "exists "
+    + [variable stringRepresentation]
+    + " default ( "
+    + [defaultValue stringRepresentation]
+    + " )"
+}
+
+#-----------------------------------------------------------------------------*
 override getter @gtlFunctionCallExpression stringRepresentation
   ->@string result
 {
@@ -899,6 +910,100 @@ override method @gtlTemplateInstruction display
 override method @gtlEmitInstruction display
 {
   message "! " + [rValue stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlIfStatementInstruction display
+{
+  message "if "
+    + [[thenElsifList conditionAtIndex !0] stringRepresentation]
+    + " then"
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlForStatementInstruction display
+{
+  message "for "
+    + identifier
+    + " in "
+    + [iterable stringRepresentation]
+    + " do"
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlForeachStatementInstruction display
+{
+  message "foreach "
+    + if "" == keyName then "" else [keyName string] + ", " end
+    + variableName
+    + " (" + indexName+ ") "
+    + " in "
+    + [iterable stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlGetColumnInstruction display
+{
+  message "? " + [destVariable stringRepresentation]
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlLibrariesInstruction display
+{
+  message "libraries"
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlRepeatStatementInstruction display
+{
+  message "repeat "
+  cast limit
+  case == @gtlTerminal term:
+    cast [term value]
+    case == @gtlInt intLimit:
+      if [[intLimit value] uint] != @uint.max then
+        message " (" + [intLimit string] + ")"
+      end
+    end
+  else
+    message " (" + [limit stringRepresentation] + ")"
+  end
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlSetterCallInstruction display
+{
+  message "[!"
+    + [target stringRepresentation]
+    + setterName
+    + if [arguments length] > 0 then
+        ": " + [arguments stringRepresentation] + "]"
+      else
+        "]"
+      end
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlVariablesInstruction display
+{
+  message "variables"
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlWriteToInstruction display
+{
+  message "write to "
+    + if isExecutable then "executable " else "" end
+    + [fileNameExpression stringRepresentation]
+    + " :"
+    
+}
+
+#-----------------------------------------------------------------------------*
+override method @gtlTabStatementInstruction display
+{
+  message "tab " + [tabValue stringRepresentation]
+    
 }
 
 #=============================================================================*

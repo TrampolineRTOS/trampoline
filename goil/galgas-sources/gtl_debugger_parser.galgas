@@ -58,7 +58,7 @@ rule <gtl_debugger_command>
       !instructionToStepDo
     }
   or
-    $no$
+    $not$
     $signed_literal_integer_bigint$ ?let @lbigint num
     instruction = @gtlDoNoInstruction.new {
       !.here

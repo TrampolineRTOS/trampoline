@@ -1231,6 +1231,8 @@ override getter @gtlFunctionCallExpression eval
   ? let @library lib
   -> @gtlData result
 {
+  @uint currentErrorCount = @uint.errorCount
+  
   if @function.isFunctionDefined { ![functionName string] } then
     # built in function
     @objectlist arguments = .emptyList
@@ -1256,7 +1258,7 @@ override getter @gtlFunctionCallExpression eval
       for (formal) in formalParameterList, (actual) in dataArguments do (index)
         checkArgumentError(!functionName !formal !actual !index)
       end
-      if @uint.errorCount == 0 then
+      if currentErrorCount == @uint.errorCount then
         let @object returnedValue =
           [function invoke !arguments ![functionName location]]
         result = validateReturnValue(!functionName !returnedValue) 

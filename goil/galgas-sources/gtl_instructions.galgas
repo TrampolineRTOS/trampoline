@@ -67,6 +67,7 @@ method @gtlInstructionList execute
           message [context promptStyle] + "gtl> " + endc()
           @string input = @string.newWithStdIn{}
           @gtlInstruction command
+          @uint currentErrorCount = @uint.errorCount
           if [input stringByTrimmingWhiteSpaces] == "" then
             command = @gtlStepInstruction.new { !.here !"" }
           else
@@ -76,10 +77,12 @@ method @gtlInstructionList execute
           if command is == @gtlStepInstruction then
             continueLoop = false
           else
-            if [command mayExecuteWithoutError !vars !lib] then
-              message [context outputStyle]
-              [command execute !?context !?vars !?lib !?outputString]
-              message endc()
+            if  @uint.errorCount == currentErrorCount then
+              if [command mayExecuteWithoutError !vars !lib] then
+                message [context outputStyle]
+                [command execute !?context !?vars !?lib !?outputString]
+                message endc()
+              end
             end
           end
         while continueLoop do
@@ -394,6 +397,7 @@ override method @gtlWriteToInstruction execute
   ?!@library       lib
   ?!@string unused outputString
 { 
+  @uint currentErrorCount = @uint.errorCount
   @string fullFileName = [[fileNameExpression eval !vars !lib] string]
   @gtlString fileName = .new{
     !where
@@ -419,9 +423,10 @@ override method @gtlWriteToInstruction execute
     !filePath
     !0
   ]
-  if (@uint.errorCount == 0) then
+  
+  if (currentErrorCount == @uint.errorCount) then
     [instructions execute !?context !?varsCopy !?lib !?result]
-    if (@uint.errorCount == 0) then
+    if (currentErrorCount == @uint.errorCount) then
       if isExecutable then
         @string directory = [fullFileName stringByDeletingLastPathComponent]
         if directory != "" then [directory makeDirectory] end
