@@ -343,20 +343,28 @@ end foreach
 #=============================================================================#
 
 #===========================================
-#             Initialized Data
+#             Operating System (Trampoline) Datas
 # Initialized datas segments are marked with the -id option
 
 # /* Operating system (Trampoline) Initialized datas */
 +seg osvars -b sram_base -n osvars -id
   +grp osvars=.osVar
+# /* Operating system (Trampoline) Uninitialized datas */
++seg osvarnoinit -a osvars -n osvarnoinit -r4
+  +grp osvarnoinit=.osVarNoInit
 
-# /* Applications Initialized datas */
-+seg appvars -a osvars -n appvars -r4 -id
+#===========================================
+#             Applications Datas
+# Initialized datas segments are marked with the -id option
 %
+let segment_name := "osvarnoinit"
 foreach app in APPLICATIONS do
   let pragma_app_name := [("000" + [INDEX string]) rightSubString: 3]
+  let previous_segment_name := segment_name
+  let segment_name := ".osApV" + pragma_app_name
 %
 # /* Initialized variables section of OS_APP % !app::NAME % */
++seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r4 -id
 %
   let section_name := ""
   foreach DATA_SIZE in @("32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED") do
@@ -366,18 +374,39 @@ foreach app in APPLICATIONS do
      let section_name     := ".osApV" + pragma_app_name
                                       + pragma_section_kind
                                       + pragma_data_size
-%  +grp appvars=% !section_name %
+%  +grp % !segment_name %=% !section_name %
 %
     end foreach
   end foreach
-%+def ___SEG_START_OS_APP_% !app::NAME %_VAR_RGN=@appvars
-+def ___SEG_END_OS_APP_% !app::NAME %_VAR_RGN=@appvars
+
+  let previous_segment_name := segment_name
+  let pragma_section_kind := section_kind_hash["_NOINIT_"]
+  let segment_name := ".osApV" + pragma_app_name
+                               + pragma_section_kind
+  let section_name := ""
+%
+# /* UnInitialized variables section of OS_APP % !app::NAME % */
++seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r4
+%
+  foreach DATA_SIZE in @("32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED") do
+    let pragma_data_size := data_size_hash[DATA_SIZE]
+    let section_name     := ".osApV" + pragma_app_name
+                                     + pragma_section_kind
+                                     + pragma_data_size
+%  +grp % !segment_name %=% !section_name %
+%
+  end foreach
+%+def ___SEG_START_OS_APP_% !app::NAME %_VAR_RGN=pstart(% !previous_segment_name %)
++def ___SEG_END_OS_APP_% !app::NAME %_VAR_RGN=pend(% !segment_name %)
+
 %
 end foreach
 %
-# /* Tasks Initialized datas */
+
+#===========================================
+#             Tasks Datas
+# Initialized datas segments are marked with the -id option
 %
-let segment_name  := "appvars"
 foreach proc in PROCESSES do
   let pragma_proc_kind := [proc::KIND leftSubString: 2]
   let pragma_proc_name := [("000" + [INDEX string]) rightSubString: 3]
@@ -400,8 +429,29 @@ foreach proc in PROCESSES do
 %
     end foreach
   end foreach
-%+def ___SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pstart(% !segment_name %)
+
+  let previous_segment_name := segment_name
+  let pragma_section_kind := section_kind_hash["_NOINIT_"]
+  let segment_name     := ".VarNI" + pragma_proc_kind
+                                   + pragma_proc_name
+  let section_name := ""
+%
+# /* Uninitialized variables section of % !proc::KIND % % !proc::NAME % */
++seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r4
+%
+  foreach DATA_SIZE in @("32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED") do
+    let pragma_section_kind := section_kind_hash["_NOINIT_"]
+    let pragma_data_size := data_size_hash[DATA_SIZE]
+    let section_name := ".Var" + pragma_proc_kind
+                               + pragma_proc_name
+                               + pragma_section_kind
+                               + pragma_data_size
+%  +grp % !segment_name %=% !section_name %
+%
+  end foreach
+%+def ___SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pstart(% !previous_segment_name %)
 +def ___SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pend(% !segment_name %)
+
 %
 end foreach
 
@@ -435,12 +485,33 @@ loop core from 0 to OS::NUMBER_OF_CORES - 1 do
 %
     end foreach
   end foreach
-%+def ___SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pstart(% !segment_name %)
+
+  let previous_segment_name := segment_name
+  let pragma_section_kind := section_kind_hash["_NOINIT_"]
+  let segment_name     := ".VarNI" + pragma_proc_kind
+                                   + pragma_proc_name
+  let section_name := ""
+%
+# /* Uninitialized variables section of % !proc::KIND % % !proc::NAME % */
++seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r4
+%
+  foreach DATA_SIZE in @("32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED") do
+    let pragma_section_kind := section_kind_hash["_NOINIT_"]
+    let pragma_data_size := data_size_hash[DATA_SIZE]
+    let section_name := ".Var" + pragma_proc_kind
+                               + pragma_proc_name
+                               + pragma_section_kind
+                               + pragma_data_size
+%  +grp % !segment_name %=% !section_name %
+%
+  end foreach
+%+def ___SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pstart(% !previous_segment_name %)
 +def ___SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pend(% !segment_name %)
+
 %
 end loop
 %
-#   /* Remaining (garbage) Initialized datas */
+# /* Remaining (garbage) Initialized datas */
 +seg data_garbage   -a % !segment_name %  -n data_garbage -r4 -id
   +grp data_garbage=.data
   +grp data_garbage=.sdata
@@ -453,93 +524,8 @@ end loop
   +grp data_garbage=.eh_frame
   +grp data_garbage=.jcr
 
-#===========================================
-#             Uninitialized Data
-
-#   /* Operating system (Trampoline) Uninitialized datas */
-+seg osvarnoinit     -a data_garbage   -n osvarnoinit  -r4
-  +grp osvarnoinit=.osVarNoInit
-
-#   /* Applications Uninitialized datas */
-+seg appvarnoinit -a osvarnoinit -n appvarnoinit -r4
-%
-foreach app in APPLICATIONS do
-  let pragma_app_name := [("000" + [INDEX string]) rightSubString: 3]
-  let section_name := ""
-  foreach DATA_SIZE in @("32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED") do
-    let pragma_section_kind := section_kind_hash["_NOINIT_"]
-    let pragma_data_size := data_size_hash[DATA_SIZE]
-    let section_name     := ".osApV" + pragma_app_name
-                                     + pragma_section_kind
-                                     + pragma_data_size
-%  +grp appvarnoinit=% !section_name %
-%
-  end foreach
-end foreach
-%
-#   /* Tasks Uninitialized datas */
-%
-let segment_name  := "appvarnoinit"
-foreach proc in PROCESSES do
-  let pragma_proc_kind := [proc::KIND leftSubString: 2]
-  let pragma_proc_name := [("000" + [INDEX string]) rightSubString: 3]
-  let previous_segment_name := segment_name
-  let segment_name     := ".VarNI" + pragma_proc_kind
-                                   + pragma_proc_name
-%
-# /* Uninitialized variables section of % !proc::KIND % % !proc::NAME % */
-+seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r4
-%
-  foreach DATA_SIZE in @("32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED") do
-    let pragma_section_kind := section_kind_hash["_NOINIT_"]
-    let pragma_data_size := data_size_hash[DATA_SIZE]
-    let section_name := ".Var" + pragma_proc_kind
-                               + pragma_proc_name
-                               + pragma_section_kind
-                               + pragma_data_size
-%  +grp % !segment_name %=% !section_name %
-%
-  end foreach
-%#+def ___SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pstart(% !segment_name %)
-#+def ___SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pend(% !segment_name %)
-%
-end foreach
-
-loop core from 0 to OS::NUMBER_OF_CORES - 1 do
-  let proc::KIND := "Task"
-  let pragma_proc_kind := "T"
-  let pragma_proc_name := ""
-  if OS::NUMBER_OF_CORES == 1 then
-    let proc::NAME := "IDLE_TASK"
-    let pragma_proc_name := "Idl"
-  else
-    let proc::NAME := "IDLE_TASK_"+[core string]
-    let pragma_proc_name := "Id"+[[core string] rightSubString: 1]
-  end if
-  let previous_segment_name := segment_name
-  let segment_name     := ".VarNI" + pragma_proc_kind
-                                   + pragma_proc_name
-%
-# /* Uninitialized variables section of % !proc::KIND % % !proc::NAME % */
-+seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r4
-%
-  foreach DATA_SIZE in @("32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED") do
-    let pragma_section_kind := section_kind_hash["_NOINIT_"]
-    let pragma_data_size := data_size_hash[DATA_SIZE]
-    let section_name := ".Var" + pragma_proc_kind
-                               + pragma_proc_name
-                               + pragma_section_kind
-                               + pragma_data_size
-%  +grp % !segment_name %=% !section_name %
-%
-  end foreach
-%#+def ___SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pstart(% !segment_name %)
-#+def ___SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pend(% !segment_name %)
-%
-end loop
-%
-#   /* Remaining (garbage) Uninitialized datas */
-+seg bss_garbage   -a % !segment_name % -n bss_garbage  -r4
+# /* Remaining (garbage) Uninitialized datas */
++seg bss_garbage   -a data_garbage -n bss_garbage  -r4
   +grp bss_garbage=.bss
   +grp bss_garbage=.sbss
 
