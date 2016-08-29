@@ -337,6 +337,15 @@ cppflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/autosar"]%
 %
 cSourceList.append(projfile.ProjectFile("% !path+file::VALUE %", trampoline_base_path))%
   end foreach
+
+  if (exists USEMEMORYPROTECTION default (false))
+   | (exists OS::TIMINGPROTECTION default (false)) then
+    let path := KERNEL_MAP["protec_kernel"]::PATH+"/"
+    foreach file in KERNEL_MAP["protec_kernel"]::FILE do
+%
+cSourceList.append(projfile.ProjectFile("% !path+file::VALUE %", trampoline_base_path))%
+    end foreach
+  end if
 end if
 
 foreach module in exists OS::KERNEL_MODULE default ( @() )
@@ -344,7 +353,8 @@ do
   if exists KERNEL_MAP[module::VALUE] then
     if module::VALUE != "osek_kernel" &
        module::VALUE != "com_kernel" &
-       module::VALUE != "autosar_kernel" then
+       module::VALUE != "autosar_kernel" &
+       module::VALUE != "protec_kernel" then
       let path := KERNEL_MAP[module::VALUE]::PATH+"/"
 %
 cflags += ["-I", "% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %/% !KERNEL_MAP[module::VALUE]::PATH%"]%
