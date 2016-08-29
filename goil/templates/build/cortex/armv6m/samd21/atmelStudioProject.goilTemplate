@@ -1,18 +1,18 @@
 %
 #set all paths (add '../..' as atmel studio project is in a subfolder).
-let pathList := emptylist
+let pathList := @()
 let pathList += "../../".PROJECT
 let pathList += "../../".OS::BUILD_S::TRAMPOLINE_BASE_PATH."/os"
 let pathList += "../../".OS::BUILD_S::TRAMPOLINE_BASE_PATH."/ioc"
 let pathList += "../../".OS::BUILD_S::TRAMPOLINE_BASE_PATH."/debug"
 let partialTargetPath := ""
-foreach platform in exists PLATFORM_FILES default (emptylist)
+foreach platform in exists PLATFORM_FILES default (@())
 do
   let pathList += "../../".OS::BUILD_S::TRAMPOLINE_BASE_PATH."/machines/".platform::PATH
 end foreach
 
 #generated files
-let generatedFiles := emptylist
+let generatedFiles := @()
 let generatedFiles += "tpl_app_config.c"
 if OS::SYSTEM_CALL then
   let generatedFiles += "tpl_dispatch_table.c"
@@ -26,9 +26,9 @@ end if
 if [IOC length] > 0 then
   let generatedFiles += "tpl_ioc_api_config.c"
 end if
-foreach platform in exists GENERATED_FILES default (emptylist) do
-  if not exists platform::CFILE then let platform::CFILE := emptylist end if
-  if not exists platform::ASFILE then let platform::ASFILE := emptylist end if
+foreach platform in exists GENERATED_FILES default (@()) do
+  if not exists platform::CFILE then let platform::CFILE := @() end if
+  if not exists platform::ASFILE then let platform::ASFILE := @() end if
   foreach file in platform::CFILE do
     let generatedFiles += file::VALUE
   end foreach
@@ -40,7 +40,7 @@ end foreach
 
 #kernel files.
 let KERNEL_MAP := mapof KERNEL by NAME
-let FILES := emptymap
+let FILES := @[]
 let FILES["osek_kernel"] := KERNEL_MAP["osek_kernel"]
 if USECOM then
   let FILES["com_kernel"] := KERNEL_MAP["com_kernel"]
@@ -48,7 +48,7 @@ end if
 if OS::SCALABILITYCLASS > 0 then
   let FILES["autosar_kernel"] := KERNEL_MAP["autosar_kernel"]
 end if
-foreach module in exists OS::KERNEL_MODULE default (emptylist)
+foreach module in exists OS::KERNEL_MODULE default (@())
 do
   if exists KERNEL_MAP[module::VALUE] then
     if module::VALUE != "osek_kernel" &
@@ -62,7 +62,7 @@ do
 end foreach
 foreach service_set in APIUSED do
   let FILES[service_set::NAME]::PATH := service_set::DIRECTORY
-  let files := emptylist
+  let files := @()
   foreach file in service_set::FILE do
     let files += file::VALUE.".c"
   end foreach
@@ -70,9 +70,9 @@ foreach service_set in APIUSED do
 end foreach
 
 #user files
-let USER_FILES := emptymap
-let USER_FILES["c"]   := exists OS::BUILD_S::APP_SRC    default (emptylist)
-let USER_FILES["cpp"] := exists OS::BUILD_S::APP_CPPSRC default (emptylist)
+let USER_FILES := @[]
+let USER_FILES["c"]   := exists OS::BUILD_S::APP_SRC    default (@())
+let USER_FILES["cpp"] := exists OS::BUILD_S::APP_CPPSRC default (@())
 
 #project Folder
 let projectFolder := "aStudio_".PROJECT
@@ -173,7 +173,7 @@ let projectFolder := "aStudio_".PROJECT
   <armgcc.compiler.directories.IncludePaths>
     <ListValues>
 %foreach path in pathList do
-  %      <Value>%!path::VALUE%</Value>%
+  %      <Value>%!path%</Value>%
 between %\n%
 end foreach%
     </ListValues>
@@ -201,7 +201,7 @@ end foreach%
   <armgcc.assembler.general.IncludePaths>
     <ListValues>
 %foreach path in pathList do
-  %      <Value>%!path::VALUE%</Value>%
+  %      <Value>%!path%</Value>%
 between %\n%
 end foreach%
     </ListValues>
@@ -210,7 +210,7 @@ end foreach%
   <armgcc.preprocessingassembler.general.IncludePaths>
     <ListValues>
 %foreach path in pathList do
-  %      <Value>%!path::VALUE%</Value>%
+  %      <Value>%!path%</Value>%
 between %\n%
 end foreach%
     </ListValues>
@@ -221,25 +221,33 @@ end foreach%
   </PropertyGroup>
   <ItemGroup>
 %foreach file in generatedFiles do
-%    <Compile Include="../%!PROJECT%/%!file::VALUE%">
+%    <Compile Include="../%!PROJECT%/%!file%">
       <SubType>compile</SubType>
-      <Link>trampoline/generated/%!file::VALUE%</Link>
+      <Link>trampoline/generated/%!file%</Link>
     </Compile>
 %
 end foreach
 foreach module in FILES do
   foreach f in module::FILE do
+    if exists f::VALUE then #old goilv2 approach with ::VALUE
 %    <Compile Include="../%!OS::BUILD_S::TRAMPOLINE_BASE_PATH%/%!module::PATH%/%!f::VALUE%">
       <SubType>compile</SubType>
       <Link>trampoline/%!module::PATH%/%!f::VALUE%</Link>
     </Compile>
 %
+    else #updated files.
+%    <Compile Include="../%!OS::BUILD_S::TRAMPOLINE_BASE_PATH%/%!module::PATH%/%!f%">
+      <SubType>compile</SubType>
+      <Link>trampoline/%!module::PATH%/%!f%</Link>
+    </Compile>
+%
+    end if
   end foreach
 end foreach
 
 #machine files
-foreach platform in exists PLATFORM_FILES default (emptylist) do
-  foreach file in exists platform::CFILE default (emptylist) do
+foreach platform in exists PLATFORM_FILES default (@()) do
+  foreach file in exists platform::CFILE default (@()) do
 %    <Compile Include="../%!OS::BUILD_S::TRAMPOLINE_BASE_PATH%/machines/%!platform::PATH%/%!file::VALUE%">
       <SubType>compile</SubType>
       <Link>trampoline/machines/%!file::VALUE%</Link>
@@ -249,7 +257,7 @@ foreach platform in exists PLATFORM_FILES default (emptylist) do
 end foreach
 
 #application files
-foreach file in exists OS::BUILD_S::APP_SRC default (emptylist) do
+foreach file in exists OS::BUILD_S::APP_SRC default (@()) do
 %    <Compile Include="../%!file::VALUE%">
       <SubType>compile</SubType>
       <Link>%!file::VALUE%</Link>
