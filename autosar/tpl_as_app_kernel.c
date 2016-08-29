@@ -275,173 +275,175 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(
 
 #if APP_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-  restart_id = tpl_app_table[app_id]->restart;
-
-  DOW_DO(printf("CALLING TerminateApplication");)
-
-
-  if ((restart_opt == RESTART) || (restart_opt == NO_RESTART))
   {
-    if (app_id < APP_COUNT)
-    {
+    restart_id = tpl_app_table[app_id]->restart;
 
-      /*
-       * upadte the state of the application
-       */
-      if( restart_opt == RESTART )
+    DOW_DO(printf("CALLING TerminateApplication");)
+
+
+    if ((restart_opt == RESTART) || (restart_opt == NO_RESTART))
+    {
+      if (app_id < APP_COUNT)
       {
-        tpl_app_dyn_table[app_id].state = APPLICATION_RESTARTING;
+
+        /*
+         * upadte the state of the application
+         */
+        if( restart_opt == RESTART )
+        {
+          tpl_app_dyn_table[app_id].state = APPLICATION_RESTARTING;
+        }
+        else
+        {
+          tpl_app_dyn_table[app_id].state = APPLICATION_TERMINATED;
+        }
+
+        /*
+         * First, remove all alarms belonging
+         * to the OS application from the queue
+         */
+#if ALARM_COUNT > 0
+        {
+          P2CONST(tpl_alarm_id, AUTOMATIC, OS_APPL_CONST) alarms =
+          tpl_app_table[app_id]->alarms;
+          CONST(tpl_alarm_id, AUTOMATIC) alarm_count =
+          tpl_app_table[app_id]->alarm_count;
+          VAR(tpl_alarm_id, AUTOMATIC) i;
+          for (i = 0; i < alarm_count; i++)
+          {
+            CONST(tpl_alarm_id, AUTOMATIC) alarm_id = alarms[i];
+            P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm =
+              tpl_alarm_table[alarm_id];
+            DOW_DO(printf("Removing alarm %d\n",(int)alarm_id);)
+            if (alarm->state == ALARM_ACTIVE)
+            {
+              tpl_remove_time_obj(alarm);
+              alarm->state = ALARM_SLEEP;
+            }
+          }
+        }
+#endif
+        /*
+         * Then remove all the schedule tables belonging
+         * to the OS application from the queue
+         */
+#if SCHEDTABLE_COUNT > 0
+        {
+          P2CONST(tpl_schedtable_id, AUTOMATIC, OS_APPL_CONST) schedtables =
+          tpl_app_table[app_id]->sts;
+          CONST(tpl_schedtable_id, AUTOMATIC) schedtable_count =
+          tpl_app_table[app_id]->st_count;
+          VAR(tpl_schedtable_id, AUTOMATIC) i;
+          for (i = 0; i < schedtable_count; i++)
+          {
+            CONST(tpl_schedtable_id, AUTOMATIC) schedtable_id = schedtables[i];
+            P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) schedtable =
+              tpl_schedtable_table[schedtable_id];
+            if (schedtable->b_desc.state != SCHEDULETABLE_STOPPED)
+            {
+              tpl_remove_time_obj(&(schedtable->b_desc));
+              schedtable->b_desc.state = SCHEDULETABLE_STOPPED;
+              schedtable->index = 0;
+            }
+          }
+        }
+#endif
+#if (TASK_COUNT > 0) || (ISR_COUNT > 0)
+        /*
+         * Then remove all processes belonging to the OS
+         * application in the ready list and in the waiting
+         * state (the running process called this service)
+         */
+        {
+          P2CONST(tpl_proc_id, AUTOMATIC, OS_APPL_CONST) procs =
+          tpl_app_table[app_id]->procs;
+          CONST(tpl_proc_id, AUTOMATIC) proc_count =
+          tpl_app_table[app_id]->proc_count;
+          VAR(tpl_proc_id, AUTOMATIC) i;
+          for (i = 0; i < proc_count; i++)
+          {
+            CONST(tpl_proc_id, AUTOMATIC) proc_id = procs[i];
+            /* remove the process from the ready queue */
+            tpl_remove_proc(proc_id);
+            /*
+             * release the resources, both external
+             * and internal, that could be held
+             */
+#if RESOURCE_COUNT > 0
+            tpl_release_all_resources(proc_id);
+#endif
+            tpl_release_internal_resource(proc_id);
+            /* reset the task descriptor */
+            tpl_dyn_proc_table[proc_id]->state = SUSPENDED;
+            tpl_dyn_proc_table[proc_id]->activate_count = 0;
+            tpl_dyn_proc_table[proc_id]->priority =
+            tpl_stat_proc_table[proc_id]->base_priority;
+          }
+        }
+#endif
+#if SPINLOCK_COUNT > 0
+        /*
+         * Then release all the spinlocks that has been taken by the core that
+         * has its application terminated.
+         */
+        {
+          RELEASE_ALL_SPINLOCKS(tpl_core_id_for_app[app_id]);
+        }
+#endif
+
+        /* Restart the application and call the restart task if needed  */
+        if ((RESTART == restart_opt) &&
+            (restart_id != INVALID_TASK))
+        {
+          result = tpl_activate_task(restart_id);
+        }
+
+        if (TPL_KERN_REF(a_tpl_kern).s_running->app_id == app_id)
+        {
+          /*
+           * if running task is part of terminating application,
+           * it must be killed. In this case the restart task runs on the same
+           * core so everything happens on the current core.
+           */
+          TPL_KERN_REF(a_tpl_kern).running->activate_count--;
+          tpl_terminate();
+          TPL_KERN_REF(a_tpl_kern).need_switch = NEED_SWITCH;
+          tpl_start(CORE_ID_OR_NOTHING(core_id));
+        }
+        else if (restart_id != INVALID_TASK)
+        {
+          /*
+           * The running task is not part of the terminating application.
+           * So the restart task, if any, may have triggered a rescheduling
+           * on the core it belongs to.
+           */
+          GET_PROC_CORE_ID(restart_id, restart_core_id)
+
+          if (TPL_KERN(restart_core_id).need_schedule)
+          {
+            tpl_schedule_from_running(CORE_ID_OR_NOTHING(restart_core_id));
+          }
+        }
+
+      LOCAL_SWITCH_CONTEXT_NOSAVE(core_id)
+
       }
       else
       {
-        tpl_app_dyn_table[app_id].state = APPLICATION_TERMINATED;
+        result = E_OS_CALLEVEL;
       }
-
-      /*
-       * First, remove all alarms belonging
-       * to the OS application from the queue
-       */
-#if ALARM_COUNT > 0
-      {
-        P2CONST(tpl_alarm_id, AUTOMATIC, OS_APPL_CONST) alarms =
-        tpl_app_table[app_id]->alarms;
-        CONST(tpl_alarm_id, AUTOMATIC) alarm_count =
-        tpl_app_table[app_id]->alarm_count;
-        VAR(tpl_alarm_id, AUTOMATIC) i;
-        for (i = 0; i < alarm_count; i++)
-        {
-          CONST(tpl_alarm_id, AUTOMATIC) alarm_id = alarms[i];
-          P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm =
-            tpl_alarm_table[alarm_id];
-          DOW_DO(printf("Removing alarm %d\n",(int)alarm_id);)
-          if (alarm->state == ALARM_ACTIVE)
-          {
-            tpl_remove_time_obj(alarm);
-            alarm->state = ALARM_SLEEP;
-          }
-        }
-      }
-#endif
-      /*
-       * Then remove all the schedule tables belonging
-       * to the OS application from the queue
-       */
-#if SCHEDTABLE_COUNT > 0
-      {
-        P2CONST(tpl_schedtable_id, AUTOMATIC, OS_APPL_CONST) schedtables =
-        tpl_app_table[app_id]->sts;
-        CONST(tpl_schedtable_id, AUTOMATIC) schedtable_count =
-        tpl_app_table[app_id]->st_count;
-        VAR(tpl_schedtable_id, AUTOMATIC) i;
-        for (i = 0; i < schedtable_count; i++)
-        {
-          CONST(tpl_schedtable_id, AUTOMATIC) schedtable_id = schedtables[i];
-          P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) schedtable =
-            tpl_schedtable_table[schedtable_id];
-          if (schedtable->b_desc.state != SCHEDULETABLE_STOPPED)
-          {
-            tpl_remove_time_obj(&(schedtable->b_desc));
-            schedtable->b_desc.state = SCHEDULETABLE_STOPPED;
-            schedtable->index = 0;
-          }
-        }
-      }
-#endif
-#if (TASK_COUNT > 0) || (ISR_COUNT > 0)
-      /*
-       * Then remove all processes belonging to the OS
-       * application in the ready list and in the waiting
-       * state (the running process called this service)
-       */
-      {
-        P2CONST(tpl_proc_id, AUTOMATIC, OS_APPL_CONST) procs =
-        tpl_app_table[app_id]->procs;
-        CONST(tpl_proc_id, AUTOMATIC) proc_count =
-        tpl_app_table[app_id]->proc_count;
-        VAR(tpl_proc_id, AUTOMATIC) i;
-        for (i = 0; i < proc_count; i++)
-        {
-          CONST(tpl_proc_id, AUTOMATIC) proc_id = procs[i];
-          /* remove the process from the ready queue */
-          tpl_remove_proc(proc_id);
-          /*
-           * release the resources, both external
-           * and internal, that could be held
-           */
-#if RESOURCE_COUNT > 0
-          tpl_release_all_resources(proc_id);
-#endif
-          tpl_release_internal_resource(proc_id);
-          /* reset the task descriptor */
-          tpl_dyn_proc_table[proc_id]->state = SUSPENDED;
-          tpl_dyn_proc_table[proc_id]->activate_count = 0;
-          tpl_dyn_proc_table[proc_id]->priority =
-          tpl_stat_proc_table[proc_id]->base_priority;
-        }
-      }
-#endif
-#if SPINLOCK_COUNT > 0
-      /*
-       * Then release all the spinlocks that has been taken by the core that
-       * has its application terminated.
-       */
-      {
-        RELEASE_ALL_SPINLOCKS(tpl_core_id_for_app[app_id]);
-      }
-#endif
-
-      /* Restart the application and call the restart task if needed  */
-      if ((RESTART == restart_opt) &&
-          (restart_id != INVALID_TASK))
-      {
-        result = tpl_activate_task(restart_id);
-      }  
-
-      if (TPL_KERN_REF(a_tpl_kern).s_running->app_id == app_id)
-      {
-        /* 
-         * if running task is part of terminating application, 
-         * it must be killed. In this case the restart task runs on the same
-         * core so everything happens on the current core.
-         */
-        TPL_KERN_REF(a_tpl_kern).running->activate_count--;
-        tpl_terminate();
-        TPL_KERN_REF(a_tpl_kern).need_switch = NEED_SWITCH;
-        tpl_start(CORE_ID_OR_NOTHING(core_id));
-      }
-      else if (restart_id != INVALID_TASK)
-      {
-        /*
-         * The running task is not part of the terminating application.
-         * So the restart task, if any, may have triggered a rescheduling
-         * on the core it belongs to.
-         */
-        GET_PROC_CORE_ID(restart_id, restart_core_id)
-        
-        if (TPL_KERN(restart_core_id).need_schedule)
-        {
-          tpl_schedule_from_running(CORE_ID_OR_NOTHING(restart_core_id));
-        }
-      }
-
-    LOCAL_SWITCH_CONTEXT_NOSAVE(core_id)
-
     }
     else
     {
-      result = E_OS_CALLEVEL;
+     result = E_OS_VALUE;
     }
   }
-  else
-  {
-   result = E_OS_VALUE;
-  }
-  IF_NO_EXTENDED_ERROR_END()
 #else
   IF_NO_EXTENDED_ERROR(result)
-  /* return E_OS_CALLEVEL when no OS-Application ?*/
-  result = E_OS_CALLEVEL;
-  IF_NO_EXTENDED_ERROR_END()
+  {
+    /* return E_OS_CALLEVEL when no OS-Application ?*/
+    result = E_OS_CALLEVEL;
+  }
 #endif
 
   PROCESS_ERROR(result)
@@ -476,27 +478,26 @@ FUNC(tpl_status, OS_CODE) tpl_allow_access_service(void)
   STORE_SERVICE(OSServiceId_AllowAccess)
 
   IF_NO_EXTENDED_ERROR(result)
-
-  app_id = TPL_KERN(core_id).s_running->app_id;
-
-  if (app_id < APP_COUNT)
   {
-    app_state = tpl_app_dyn_table[app_id].state;
-    if(app_state == APPLICATION_RESTARTING)
+    app_id = TPL_KERN(core_id).s_running->app_id;
+
+    if (app_id < APP_COUNT)
     {
-      tpl_app_dyn_table[app_id].state = APPLICATION_ACCESSIBLE;
+      app_state = tpl_app_dyn_table[app_id].state;
+      if(app_state == APPLICATION_RESTARTING)
+      {
+        tpl_app_dyn_table[app_id].state = APPLICATION_ACCESSIBLE;
+      }
+      else
+      {
+        result = E_OS_STATE;
+      }
     }
     else
     {
-      result = E_OS_STATE;
+      result = E_OS_VALUE;
     }
   }
-  else
-  {
-    result = E_OS_VALUE;
-  }
-
-  IF_NO_EXTENDED_ERROR_END()
 
   PROCESS_ERROR(result)
 
@@ -530,17 +531,16 @@ FUNC(tpl_status, OS_CODE) tpl_get_application_state_service(
   STORE_APPLICATION_ID(app_id)
 
   IF_NO_EXTENDED_ERROR(result)
-
-  if (app_id < APP_COUNT)
   {
-    *app_state = tpl_app_dyn_table[app_id].state;
+    if (app_id < APP_COUNT)
+    {
+      *app_state = tpl_app_dyn_table[app_id].state;
+    }
+    else
+    {
+      result = E_OS_ID;
+    }
   }
-  else
-  {
-    result = E_OS_ID;
-  }
-
-  IF_NO_EXTENDED_ERROR_END()
 
   PROCESS_ERROR(result)
 

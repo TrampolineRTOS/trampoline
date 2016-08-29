@@ -170,24 +170,24 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_synchron_service(
 	CHECK_SCHEDTABLE_SYNC_STRATEGY_DIFF_ERROR(sched_table_id, SCHEDTABLE_EXPLICIT_SYNC, result)
 
 #if SCHEDTABLE_COUNT > 0
-	IF_NO_EXTENDED_ERROR(result)
-  st = tpl_schedtable_table[sched_table_id];
-		
-  if (st->b_desc.state == (tpl_schedtable_state)SCHEDULETABLE_STOPPED)
+  IF_NO_EXTENDED_ERROR(result)
   {
-    /*
-     * the schedule table is not already started,
-     * it is put in the waiting state until the global time is provided
-     */
-    st->b_desc.state = SCHEDULETABLE_WAITING;
+    st = tpl_schedtable_table[sched_table_id];
+
+    if (st->b_desc.state == (tpl_schedtable_state)SCHEDULETABLE_STOPPED)
+    {
+      /*
+       * the schedule table is not already started,
+       * it is put in the waiting state until the global time is provided
+       */
+      st->b_desc.state = SCHEDULETABLE_WAITING;
+    }
+    else
+    {
+      /* the schedule table is already started, return the proper error code */
+      result = E_OS_STATE;
+    }
   }
-  else
-  {
-    /* the schedule table is already started, return the proper error code */
-    result = E_OS_STATE;
-  }
-	
-  IF_NO_EXTENDED_ERROR_END()
 #endif
 
   PROCESS_ERROR(result)
@@ -237,19 +237,19 @@ FUNC(tpl_status, OS_CODE) tpl_sync_schedule_table_service(
 	
 #if SCHEDTABLE_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-  st = tpl_schedtable_table[sched_table_id];
-	
-  /* if schedule table is waiting, start it, else if running synchronize it */
-  if( st->b_desc.state == SCHEDULETABLE_WAITING )
   {
-    tpl_start_sched_table_sync(&(st->b_desc), value);
+    st = tpl_schedtable_table[sched_table_id];
+
+    /* if schedule table is waiting, start it, else if running synchronize it */
+    if( st->b_desc.state == SCHEDULETABLE_WAITING )
+    {
+      tpl_start_sched_table_sync(&(st->b_desc), value);
+    }
+    else
+    {
+      tpl_sync_sched_table(&(st->b_desc), value);
+    }
   }
-  else
-  {
-    tpl_sync_sched_table(&(st->b_desc), value);
-  }
-	
-  IF_NO_EXTENDED_ERROR_END()
 #endif
 	
   PROCESS_ERROR(result)
@@ -296,23 +296,22 @@ FUNC(tpl_status, OS_CODE) tpl_set_schedule_table_async_service(
 
 #if SCHEDTABLE_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-  st = tpl_schedtable_table[sched_table_id];
-  /*
-   * MISRA RULE 45 VIOLATION: a tpl_time_obj_static* is cast to a
-   * tpl_schedtable_static*. This cast behaves correctly because the first
-   * member of tpl_schedula_table_static is a tpl_time_obj_static
-   */
-  schedtable = (P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))st->b_desc.stat_part;
-    
-  /* check the state of the schedule table */
-  if( (SCHEDULETABLE_RUNNING == st->b_desc.state)
-      || (SCHEDULETABLE_RUNNING_AND_SYNCHRONOUS == st->b_desc.state) )
   {
-    st->b_desc.state = SCHEDULETABLE_RUNNING | SCHEDULETABLE_ASYNC;
-    /*st->deviation = 0;*/
+    st = tpl_schedtable_table[sched_table_id];
+    /*
+     * MISRA RULE 45 VIOLATION: a tpl_time_obj_static* is cast to a
+     * tpl_schedtable_static*. This cast behaves correctly because the first
+     * member of tpl_schedula_table_static is a tpl_time_obj_static
+     */
+    schedtable = (P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))st->b_desc.stat_part;
+    /* check the state of the schedule table */
+    if( (SCHEDULETABLE_RUNNING == st->b_desc.state)
+        || (SCHEDULETABLE_RUNNING_AND_SYNCHRONOUS == st->b_desc.state) )
+    {
+      st->b_desc.state = SCHEDULETABLE_RUNNING | SCHEDULETABLE_ASYNC;
+      /*st->deviation = 0;*/
+    }
   }
-
-  IF_NO_EXTENDED_ERROR_END()
 #endif
 	
   PROCESS_ERROR(result)

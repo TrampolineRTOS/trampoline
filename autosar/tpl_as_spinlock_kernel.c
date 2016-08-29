@@ -72,9 +72,8 @@ FUNC(tpl_status, OS_CODE) tpl_get_spinlock_service(
   /*  check spinlock nesting order error          */
   CHECK_SPINLOCK_NESTING_ORDER_ERROR(core_id, spinlock_id, result)
 
-
   IF_NO_EXTENDED_ERROR(result)
-
+  {
     /* increase the tolerance level of interrupts following the spinlock's
      * lock method */
     SPINLOCK_SUSPEND_INTERRUPTS(core_id, spinlock_id)
@@ -90,8 +89,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_spinlock_service(
 
     /* store id of last taken spinlock, so we can check later the nesting order */
     SET_LAST_TAKEN_SPINLOCK(core_id, spinlock_id)
-
-  IF_NO_EXTENDED_ERROR_END()
+  }
 
 
   PROCESS_ERROR(result)
@@ -130,9 +128,8 @@ FUNC(tpl_status, OS_CODE) tpl_release_spinlock_service(
   /*  check spinlock nesting order error          */
   CHECK_SPINLOCK_UNNESTING_ORDER_ERROR(core_id, spinlock_id, result)
 
-
   IF_NO_EXTENDED_ERROR(result)
-
+  {
     /*  get the lock descriptor                   */
     lock = &(tpl_spinlock_table[spinlock_id]->state);
 
@@ -144,9 +141,7 @@ FUNC(tpl_status, OS_CODE) tpl_release_spinlock_service(
 
     /* lower the tolerance level of interrupts. Release res_scheduler */
     SPINLOCK_RESUME_INTERRUPTS(core_id)
-
-  IF_NO_EXTENDED_ERROR_END()
-
+  }
 
   PROCESS_ERROR(result)
 
@@ -184,9 +179,8 @@ FUNC(tpl_status, OS_CODE) tpl_try_to_get_spinlock_service(
   /*  check spinlock nesting order error          */
   CHECK_SPINLOCK_NESTING_ORDER_ERROR(core_id, spinlock_id, result)
 
-
   IF_NO_EXTENDED_ERROR(result)
-
+  {
     /* increase the tolerance level of interrupts following the spinlock's
      * lock method */
     SPINLOCK_SUSPEND_INTERRUPTS(core_id, spinlock_id)
@@ -209,9 +203,7 @@ FUNC(tpl_status, OS_CODE) tpl_try_to_get_spinlock_service(
       */
       SPINLOCK_RESUME_INTERRUPTS(core_id)
     }
-
-  IF_NO_EXTENDED_ERROR_END()
-
+  }
 
   PROCESS_ERROR(result)
 

@@ -132,12 +132,13 @@ FUNC(void, OS_CODE) tpl_start_core_service(
   CHECK_OS_NOT_STARTED(tpl_get_core_id(), result)
 
   IF_NO_EXTENDED_ERROR(result)
+  {
     tpl_core_status[core_id] = STARTED_CORE_AUTOSAR;
     tpl_number_of_activated_cores++;
     tpl_start_count_0++;
     tpl_start_count_1++;
     tpl_start_core(core_id);
-  IF_NO_EXTENDED_ERROR_END()
+  }
 
   /* END_START_CORE_CRITICAL_SECTION() */
 
@@ -179,10 +180,11 @@ FUNC(void, OS_CODE) tpl_start_non_autosar_core_service(
   CHECK_START_CORE_ERROR(core_id, result)
 
   IF_NO_EXTENDED_ERROR(result)
+  {
     tpl_core_status[tpl_get_core_id()] = STARTED_CORE_NON_AUTOSAR;
     tpl_number_of_non_autosar_activated_cores++;
     tpl_start_core(core_id);
-  IF_NO_EXTENDED_ERROR_END()
+  }
 
   PROCESS_ERROR(result)
 
@@ -253,8 +255,9 @@ FUNC(StatusType, OS_CODE) tpl_get_core_status_service(
   CHECK_CORE_ID_ERROR(core_id, result)
 
   IF_NO_EXTENDED_ERROR(result)
+  {
     *status = tpl_core_status[core_id];
-  IF_NO_EXTENDED_ERROR_END()
+  }
 
   PROCESS_ERROR(result)
 

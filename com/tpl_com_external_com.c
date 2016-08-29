@@ -42,12 +42,11 @@ FUNC(tpl_status, OS_CODE) tpl_send_static_external_message(
   /* filter the message */
   if (tpl_filtering(mo_buf, data, esmo->filter))
   {
-  
 #if WITH_CPU_ORDER_CALLOUT == YES
     /* call the CPU-order message callout */
     if (COM_TRUE == esmo->base_mo.cpu_callout())
-    {
 #endif
+    {
       /*
        * does the byte ordering of the message or not.
        * If cpu order and network order differs, the data are ordered and
@@ -60,24 +59,20 @@ FUNC(tpl_status, OS_CODE) tpl_send_static_external_message(
 #if WITH_NET_ORDER_CALLOUT == YES
       /* call the Network-order message callout */
       if (COM_TRUE == esmo->base_mo.net_callout())
-      {
 #endif
+      {
 
         /* copy & pack the message object in the IPDU */
         esmo->copy_and_pack(esmo);
-        /* 
-         * notify the IPDU. According to the message property and 
+        /*
+         * notify the IPDU. According to the message property and
          * the transfer property, this may trigger the sending of
          * the IPDU to the network.
          */
         tpl_notify_ipdu(esmo->base_mo.property);
 
-#if WITH_NET_ORDER_CALLOUT == YES
-      }  
-#endif
-#if WITH_CPU_ORDER_CALLOUT == YES
+      }
     }
-#endif
   }
   /*
    * if at least an internal target exists,
@@ -106,27 +101,21 @@ FUNC(tpl_status, OS_CODE) tpl_send_zero_external_message(
 #if WITH_CPU_ORDER_CALLOUT == YES
     /* call the CPU-order message callout */
     if (COM_TRUE == esmo->cpu_callout())
-    {
 #endif
-
+    {
 #if WITH_NET_ORDER_CALLOUT == YES
       /* call the Network-order message callout */
       if (COM_TRUE == esmo->net_callout())
-      {
 #endif
-        /* 
-         * notify the IPDU. According to the message property and 
+      {
+        /*
+         * notify the IPDU. According to the message property and
          * the transfer property, this may trigger the sending of
          * the IPDU to the network.
          */
         tpl_notify_ipdu(esmo->property);
-
-#if WITH_NET_ORDER_CALLOUT == YES
-      }  
-#endif
-#if WITH_CPU_ORDER_CALLOUT == YES
+      }
     }
-#endif
   /*
    * if at least an internal target exists, the tpl_send_zero_internal_message
    * function is called

@@ -185,7 +185,7 @@ FUNC(void, OS_CODE) printrl(P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg)
 FUNC(void, OS_CODE) print_kern(P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg)
 {
 #if NUMBER_OF_CORES > 1
-  /* TOFO */
+  /* TODO */
 #else
   printf("KERN %s running : %s[%ld](%d), elected : %s[%ld](%d)\n",
     msg,
@@ -1138,12 +1138,10 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
 # if NUMBER_OF_CORES > 1
   /* Only one core must do this initialization */
   if (core_id == OS_CORE_ID_MASTER)
+# endif
   {
-# endif
     tpl_ioc_init_unqueued();
-# if NUMBER_OF_CORES > 1
   }
-# endif
 #endif
 
 #if TASK_COUNT > 0
@@ -1156,12 +1154,10 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
 # if NUMBER_OF_CORES > 1
       // In multicore, we must check if the task belongs to the core
       if (tpl_stat_proc_table[i]->core_id == core_id)
+# endif
       {
-# endif
         result = tpl_activate_task(i);
-# if NUMBER_OF_CORES > 1
       }
-# endif
     }
   }
 #endif
@@ -1177,13 +1173,11 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
 # if (NUMBER_OF_CORES > 1) && (WITH_OSAPPLICATION == YES)
       // In multicore, we must check if the alarm belongs to the core
       if (tpl_core_id_for_app[auto_time_obj->stat_part->app_id] == core_id)
-      {
 # endif
+      {
         auto_time_obj->state = ALARM_ACTIVE;
         tpl_insert_time_obj(auto_time_obj);
-# if (NUMBER_OF_CORES > 1) && (WITH_OSAPPLICATION == YES)
       }
-# endif
     }
   }
 
@@ -1200,8 +1194,8 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
 # if (NUMBER_OF_CORES > 1) && (WITH_OSAPPLICATION == YES)
       // In multicore, we must check if the schedule table belongs to the core
       if (tpl_core_id_for_app[auto_time_obj->stat_part->app_id] == core_id)
-      {
 # endif
+      {
         if (auto_time_obj->state == (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART_RELATIVE)
         {
           auto_time_obj->state = SCHEDULETABLE_STOPPED;
@@ -1225,9 +1219,7 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
           }
 #endif
         }
-# if (NUMBER_OF_CORES > 1) && (WITH_OSAPPLICATION == YES)
       }
-#endif
     }
   }
 #endif

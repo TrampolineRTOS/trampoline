@@ -1054,23 +1054,9 @@ tpl_service.parameters.id.spinlock_id = (spinlockid);
  */
 #if WITH_OS_EXTENDED == YES
 #   define IF_NO_EXTENDED_ERROR(result) \
-    if ((result) == E_OK) {
+    if ((result) == E_OK)
 #else
 #   define IF_NO_EXTENDED_ERROR(result)
-#endif
-
-/**
- * @def END_IF_NO_EXTENDED_ERROR
- *
- * Closes a #IF_NO_EXTENDED_ERROR opened section
- *
- * @see #IF_NO_EXTENDED_ERROR
- */
-#if WITH_OS_EXTENDED == YES
-#   define IF_NO_EXTENDED_ERROR_END() \
-    }
-#else
-#   define IF_NO_EXTENDED_ERROR_END()
 #endif
 
 /**

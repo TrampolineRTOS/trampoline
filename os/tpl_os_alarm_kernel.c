@@ -114,12 +114,13 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_base_service(
 
 #if ALARM_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-  alarm = tpl_alarm_table[alarm_id];
+  {
+    alarm = tpl_alarm_table[alarm_id];
 
-  info->ticksperbase = alarm->stat_part->counter->ticks_per_base;
-  info->maxallowedvalue = alarm->stat_part->counter->max_allowed_value;
-  info->mincycle = alarm->stat_part->counter->min_cycle;
-  IF_NO_EXTENDED_ERROR_END()
+    info->ticksperbase = alarm->stat_part->counter->ticks_per_base;
+    info->maxallowedvalue = alarm->stat_part->counter->max_allowed_value;
+    info->mincycle = alarm->stat_part->counter->min_cycle;
+  }
 #endif
 
   PROCESS_ERROR(result)
@@ -159,6 +160,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
 
 #if ALARM_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
+  {
     alarm = tpl_alarm_table[alarm_id];
 
     /*  verify the alarm is active  */
@@ -177,7 +179,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
     {
       result = E_OS_NOFUNC;
     }
-  IF_NO_EXTENDED_ERROR_END()
+  }
 #endif
 
   PROCESS_ERROR(result)
@@ -221,29 +223,30 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
 
 #if ALARM_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-  alarm = tpl_alarm_table[alarm_id];
+  {
+    alarm = tpl_alarm_table[alarm_id];
 
-  if (alarm->state == (tpl_time_obj_state)ALARM_SLEEP)
-  {
-    cnt = alarm->stat_part->counter;
-    /*  the alarm is not in use, proceed    */
-    date = cnt->current_date + increment;
-    if (date > cnt->max_allowed_value)
+    if (alarm->state == (tpl_time_obj_state)ALARM_SLEEP)
     {
-        date -= (cnt->max_allowed_value + 1);
+      cnt = alarm->stat_part->counter;
+      /*  the alarm is not in use, proceed    */
+      date = cnt->current_date + increment;
+      if (date > cnt->max_allowed_value)
+      {
+          date -= (cnt->max_allowed_value + 1);
+      }
+      alarm->date = date;
+      alarm->cycle = cycle;
+      alarm->state = ALARM_ACTIVE;
+      tpl_insert_time_obj(alarm);
+      TRACE_ALARM_SCHEDULED(alarm)
     }
-    alarm->date = date;
-    alarm->cycle = cycle;
-    alarm->state = ALARM_ACTIVE;
-    tpl_insert_time_obj(alarm);
-    TRACE_ALARM_SCHEDULED(alarm)
+    else
+    {
+      /*  the alarm is in use, return the proper error code   */
+      result = E_OS_STATE;
+    }
   }
-  else
-  {
-    /*  the alarm is in use, return the proper error code   */
-    result = E_OS_STATE;
-  }
-  IF_NO_EXTENDED_ERROR_END()
 #endif
 
   PROCESS_ERROR(result)
@@ -290,23 +293,24 @@ FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
 
 #if ALARM_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-  alarm = tpl_alarm_table[alarm_id];
+  {
+    alarm = tpl_alarm_table[alarm_id];
 
-  if (alarm->state == (tpl_time_obj_state)ALARM_SLEEP)
-  {
-    /*  the alarm is not in use, proceed    */
-    alarm->date = start;
-    alarm->cycle = cycle;
-    alarm->state = ALARM_ACTIVE;
-    tpl_insert_time_obj(alarm);
-    TRACE_ALARM_SCHEDULED(alarm)
+    if (alarm->state == (tpl_time_obj_state)ALARM_SLEEP)
+    {
+      /*  the alarm is not in use, proceed    */
+      alarm->date = start;
+      alarm->cycle = cycle;
+      alarm->state = ALARM_ACTIVE;
+      tpl_insert_time_obj(alarm);
+      TRACE_ALARM_SCHEDULED(alarm)
+    }
+    else
+    {
+      /*  the alarm is in use, return the proper error code   */
+      result = E_OS_STATE;
+    }
   }
-  else
-  {
-    /*  the alarm is in use, return the proper error code   */
-    result = E_OS_STATE;
-  }
-  IF_NO_EXTENDED_ERROR_END()
 #endif
 
   PROCESS_ERROR(result)
@@ -346,19 +350,20 @@ FUNC(tpl_status, OS_CODE) tpl_cancel_alarm_service(
 
 #if ALARM_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-  alarm = tpl_alarm_table[alarm_id];
+  {
+    alarm = tpl_alarm_table[alarm_id];
 
-  if (alarm->state == (tpl_time_obj_state)ALARM_ACTIVE)
-  {
-    tpl_remove_time_obj(alarm);
-    TRACE_ALARM_CANCEL(alarm_id)
-    alarm->state = ALARM_SLEEP;
+    if (alarm->state == (tpl_time_obj_state)ALARM_ACTIVE)
+    {
+      tpl_remove_time_obj(alarm);
+      TRACE_ALARM_CANCEL(alarm_id)
+      alarm->state = ALARM_SLEEP;
+    }
+    else
+    {
+      result = E_OS_NOFUNC;
+    }
   }
-  else
-  {
-    result = E_OS_NOFUNC;
-  }
-  IF_NO_EXTENDED_ERROR_END()
 #endif
 
   PROCESS_ERROR(result)
