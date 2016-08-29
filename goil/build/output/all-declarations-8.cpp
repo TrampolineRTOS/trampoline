@@ -9080,15 +9080,15 @@ static GALGAS_string extensionGetter_gtlString_stringRepresentation (const cPtr_
   const cPtr_gtlString * object = (const cPtr_gtlString *) inObject ;
   macroValidSharedObject (object, cPtr_gtlString) ;
   const GALGAS_gtlString temp_0 = object ;
-  GALGAS_string var_literalString_16860 = callExtensionGetter_string ((const cPtr_gtlString *) temp_0.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 535)) ;
-  var_literalString_16860 = var_literalString_16860.getter_stringByReplacingStringByString (GALGAS_string ("\n"), GALGAS_string ("\\n"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 536)) ;
-  var_literalString_16860 = var_literalString_16860.getter_stringByReplacingStringByString (GALGAS_string ("\t"), GALGAS_string ("\\t"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 537)) ;
-  var_literalString_16860 = var_literalString_16860.getter_stringByReplacingStringByString (GALGAS_string ("\f"), GALGAS_string ("\\f"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 538)) ;
-  var_literalString_16860 = var_literalString_16860.getter_stringByReplacingStringByString (GALGAS_string ("\r"), GALGAS_string ("\\r"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 539)) ;
-  var_literalString_16860 = var_literalString_16860.getter_stringByReplacingStringByString (GALGAS_string ("\v"), GALGAS_string ("\\v"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 540)) ;
-  var_literalString_16860 = var_literalString_16860.getter_stringByReplacingStringByString (GALGAS_string ("\\"), GALGAS_string ("\\\\"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 541)) ;
-  var_literalString_16860 = var_literalString_16860.getter_stringByReplacingStringByString (GALGAS_string ("\""), GALGAS_string ("\\\""), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 542)) ;
-  result_result = GALGAS_string ("\"").add_operation (var_literalString_16860, inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 543)).add_operation (GALGAS_string ("\""), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 543)) ;
+  GALGAS_string var_literalString_16914 = callExtensionGetter_string ((const cPtr_gtlString *) temp_0.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 535)) ;
+  var_literalString_16914 = var_literalString_16914.getter_stringByReplacingStringByString (GALGAS_string ("\n"), GALGAS_string ("\\n"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 536)) ;
+  var_literalString_16914 = var_literalString_16914.getter_stringByReplacingStringByString (GALGAS_string ("\t"), GALGAS_string ("\\t"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 537)) ;
+  var_literalString_16914 = var_literalString_16914.getter_stringByReplacingStringByString (GALGAS_string ("\f"), GALGAS_string ("\\f"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 538)) ;
+  var_literalString_16914 = var_literalString_16914.getter_stringByReplacingStringByString (GALGAS_string ("\r"), GALGAS_string ("\\r"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 539)) ;
+  var_literalString_16914 = var_literalString_16914.getter_stringByReplacingStringByString (GALGAS_string ("\v"), GALGAS_string ("\\v"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 540)) ;
+  var_literalString_16914 = var_literalString_16914.getter_stringByReplacingStringByString (GALGAS_string ("\\"), GALGAS_string ("\\\\"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 541)) ;
+  var_literalString_16914 = var_literalString_16914.getter_stringByReplacingStringByString (GALGAS_string ("\""), GALGAS_string ("\\\""), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 542)) ;
+  result_result = GALGAS_string ("\"").add_operation (var_literalString_16914, inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 543)).add_operation (GALGAS_string ("\""), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 543)) ;
 //---
   return result_result ;
 }
@@ -9175,13 +9175,13 @@ static GALGAS_string extensionGetter_gtlList_stringRepresentation (const cPtr_gt
   const cPtr_gtlList * object = (const cPtr_gtlList *) inObject ;
   macroValidSharedObject (object, cPtr_gtlList) ;
   result_result = GALGAS_string ("@( ") ;
-  cEnumerator_list enumerator_18041 (object->mAttribute_value, kEnumeration_up) ;
-  while (enumerator_18041.hasCurrentObject ()) {
-    result_result = result_result.add_operation (callExtensionGetter_stringRepresentation ((const cPtr_gtlData *) enumerator_18041.current_value (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 566)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 566)) ;
-    if (enumerator_18041.hasNextObject ()) {
+  cEnumerator_list enumerator_18095 (object->mAttribute_value, kEnumeration_up) ;
+  while (enumerator_18095.hasCurrentObject ()) {
+    result_result = result_result.add_operation (callExtensionGetter_stringRepresentation ((const cPtr_gtlData *) enumerator_18095.current_value (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 566)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 566)) ;
+    if (enumerator_18095.hasNextObject ()) {
       result_result = result_result.add_operation (GALGAS_string (", "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 568)) ;
     }
-    enumerator_18041.gotoNextObject () ;
+    enumerator_18095.gotoNextObject () ;
   }
   result_result = result_result.add_operation (GALGAS_string (" )"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 570)) ;
 //---
@@ -9213,13 +9213,13 @@ static GALGAS_string extensionGetter_gtlMap_stringRepresentation (const cPtr_gtl
   const cPtr_gtlMap * object = (const cPtr_gtlMap *) inObject ;
   macroValidSharedObject (object, cPtr_gtlMap) ;
   result_result = GALGAS_string ("@[ ") ;
-  cEnumerator_gtlVarMap enumerator_18354 (object->mAttribute_value, kEnumeration_up) ;
-  while (enumerator_18354.hasCurrentObject ()) {
-    result_result = result_result.add_operation (GALGAS_string ("\""), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 579)).add_operation (enumerator_18354.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_debugger.galgas", 579)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 579)).add_operation (GALGAS_string ("\": "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 579)).add_operation (callExtensionGetter_stringRepresentation ((const cPtr_gtlData *) enumerator_18354.current_value (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 579)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 579)) ;
-    if (enumerator_18354.hasNextObject ()) {
+  cEnumerator_gtlVarMap enumerator_18408 (object->mAttribute_value, kEnumeration_up) ;
+  while (enumerator_18408.hasCurrentObject ()) {
+    result_result = result_result.add_operation (GALGAS_string ("\""), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 579)).add_operation (enumerator_18408.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_debugger.galgas", 579)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 579)).add_operation (GALGAS_string ("\": "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 579)).add_operation (callExtensionGetter_stringRepresentation ((const cPtr_gtlData *) enumerator_18408.current_value (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 579)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 579)) ;
+    if (enumerator_18408.hasNextObject ()) {
       result_result = result_result.add_operation (GALGAS_string (", "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 581)) ;
     }
-    enumerator_18354.gotoNextObject () ;
+    enumerator_18408.gotoNextObject () ;
   }
   result_result = result_result.add_operation (GALGAS_string (" ]"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 583)) ;
 //---
@@ -9251,13 +9251,13 @@ static GALGAS_string extensionGetter_gtlStruct_stringRepresentation (const cPtr_
   const cPtr_gtlStruct * object = (const cPtr_gtlStruct *) inObject ;
   macroValidSharedObject (object, cPtr_gtlStruct) ;
   result_result = GALGAS_string ("@{ ") ;
-  cEnumerator_gtlVarMap enumerator_18694 (object->mAttribute_value, kEnumeration_up) ;
-  while (enumerator_18694.hasCurrentObject ()) {
-    result_result = result_result.add_operation (enumerator_18694.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_debugger.galgas", 592)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 592)).add_operation (GALGAS_string (": "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 592)).add_operation (callExtensionGetter_stringRepresentation ((const cPtr_gtlData *) enumerator_18694.current_value (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 592)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 592)) ;
-    if (enumerator_18694.hasNextObject ()) {
+  cEnumerator_gtlVarMap enumerator_18748 (object->mAttribute_value, kEnumeration_up) ;
+  while (enumerator_18748.hasCurrentObject ()) {
+    result_result = result_result.add_operation (enumerator_18748.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_debugger.galgas", 592)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 592)).add_operation (GALGAS_string (": "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 592)).add_operation (callExtensionGetter_stringRepresentation ((const cPtr_gtlData *) enumerator_18748.current_value (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 592)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 592)) ;
+    if (enumerator_18748.hasNextObject ()) {
       result_result = result_result.add_operation (GALGAS_string (", "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 594)) ;
     }
-    enumerator_18694.gotoNextObject () ;
+    enumerator_18748.gotoNextObject () ;
   }
   result_result = result_result.add_operation (GALGAS_string (" }"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 596)) ;
 //---
@@ -9289,13 +9289,13 @@ static GALGAS_string extensionGetter_gtlSet_stringRepresentation (const cPtr_gtl
   const cPtr_gtlSet * object = (const cPtr_gtlSet *) inObject ;
   macroValidSharedObject (object, cPtr_gtlSet) ;
   result_result = GALGAS_string ("@! ") ;
-  cEnumerator_stringset enumerator_19018 (object->mAttribute_value, kEnumeration_up) ;
-  while (enumerator_19018.hasCurrentObject ()) {
-    result_result = result_result.add_operation (enumerator_19018.current_key (HERE), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 605)) ;
-    if (enumerator_19018.hasNextObject ()) {
+  cEnumerator_stringset enumerator_19072 (object->mAttribute_value, kEnumeration_up) ;
+  while (enumerator_19072.hasCurrentObject ()) {
+    result_result = result_result.add_operation (enumerator_19072.current_key (HERE), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 605)) ;
+    if (enumerator_19072.hasNextObject ()) {
       result_result = result_result.add_operation (GALGAS_string (", "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 607)) ;
     }
-    enumerator_19018.gotoNextObject () ;
+    enumerator_19072.gotoNextObject () ;
   }
   result_result = result_result.add_operation (GALGAS_string (" !"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 609)) ;
 //---
@@ -10019,8 +10019,8 @@ static void extensionMethod_gtlDoInstInstruction_execute (const cPtr_gtlInstruct
   macroValidSharedObject (object, cPtr_gtlDoInstInstruction) ;
   {
   ioArgument_context.insulate (HERE) ;
-  cPtr_gtlContext * ptr_28591 = (cPtr_gtlContext *) ioArgument_context.ptr () ;
-  callExtensionSetter_appendInstructionToStepDo ((cPtr_gtlContext *) ptr_28591, object->mAttribute_instructionToDo, inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 949)) ;
+  cPtr_gtlContext * ptr_28645 = (cPtr_gtlContext *) ioArgument_context.ptr () ;
+  callExtensionSetter_appendInstructionToStepDo ((cPtr_gtlContext *) ptr_28645, object->mAttribute_instructionToDo, inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 949)) ;
   }
 }
 
@@ -10052,8 +10052,8 @@ static void extensionMethod_gtlDoNoInstruction_execute (const cPtr_gtlInstructio
   macroValidSharedObject (object, cPtr_gtlDoNoInstruction) ;
   {
   ioArgument_context.insulate (HERE) ;
-  cPtr_gtlContext * ptr_29088 = (cPtr_gtlContext *) ioArgument_context.ptr () ;
-  callExtensionSetter_deleteStepDoInstruction ((cPtr_gtlContext *) ptr_29088, object->mAttribute_numToDelete, inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 966)) ;
+  cPtr_gtlContext * ptr_29142 = (cPtr_gtlContext *) ioArgument_context.ptr () ;
+  callExtensionSetter_deleteStepDoInstruction ((cPtr_gtlContext *) ptr_29142, object->mAttribute_numToDelete, inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 966)) ;
   }
 }
 

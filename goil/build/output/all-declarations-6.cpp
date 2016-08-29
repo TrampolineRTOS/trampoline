@@ -13351,8 +13351,8 @@ static void extensionSetter_gtlContext_appendInstructionToStepDo (cPtr_gtlContex
   macroValidSharedObject (object, cPtr_gtlContext) ;
   {
   object->mAttribute_debuggerContext.insulate (HERE) ;
-  cPtr_debuggerContext * ptr_6013 = (cPtr_debuggerContext *) object->mAttribute_debuggerContext.ptr () ;
-  callExtensionSetter_appendInstructionToStepDo ((cPtr_debuggerContext *) ptr_6013, inArgument_instruction, inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 191)) ;
+  cPtr_debuggerContext * ptr_6067 = (cPtr_debuggerContext *) object->mAttribute_debuggerContext.ptr () ;
+  callExtensionSetter_appendInstructionToStepDo ((cPtr_debuggerContext *) ptr_6067, inArgument_instruction, inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 191)) ;
   }
 }
 //---------------------------------------------------------------------------------------------------------------------*
@@ -13428,8 +13428,8 @@ static void extensionSetter_gtlContext_deleteStepDoInstruction (cPtr_gtlContext 
   macroValidSharedObject (object, cPtr_gtlContext) ;
   {
   object->mAttribute_debuggerContext.insulate (HERE) ;
-  cPtr_debuggerContext * ptr_6230 = (cPtr_debuggerContext *) object->mAttribute_debuggerContext.ptr () ;
-  callExtensionSetter_deleteStepDoInstruction ((cPtr_debuggerContext *) ptr_6230, constinArgument_numToDelete, inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 198)) ;
+  cPtr_debuggerContext * ptr_6284 = (cPtr_debuggerContext *) object->mAttribute_debuggerContext.ptr () ;
+  callExtensionSetter_deleteStepDoInstruction ((cPtr_debuggerContext *) ptr_6284, constinArgument_numToDelete, inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 198)) ;
   }
 }
 //---------------------------------------------------------------------------------------------------------------------*
@@ -13585,10 +13585,10 @@ static void extensionMethod_gtlContext_executeStepDoList (const cPtr_gtlContext 
   const cPtr_gtlContext * object = inObject ;
   macroValidSharedObject (object, cPtr_gtlContext) ;
   inCompiler->printMessage (callExtensionGetter_outputStyle ((const cPtr_gtlContext *) ioArgument_context.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 214))  COMMA_SOURCE_FILE ("gtl_debugger.galgas", 214)) ;
-  cEnumerator_gtlInstructionList enumerator_6734 (object->mAttribute_debuggerContext.getter_doList (SOURCE_FILE ("gtl_debugger.galgas", 215)), kEnumeration_up) ;
-  while (enumerator_6734.hasCurrentObject ()) {
-    callExtensionMethod_execute ((const cPtr_gtlInstruction *) enumerator_6734.current_instruction (HERE).ptr (), ioArgument_context, ioArgument_vars, ioArgument_lib, ioArgument_outputString, inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 216)) ;
-    enumerator_6734.gotoNextObject () ;
+  cEnumerator_gtlInstructionList enumerator_6788 (object->mAttribute_debuggerContext.getter_doList (SOURCE_FILE ("gtl_debugger.galgas", 215)), kEnumeration_up) ;
+  while (enumerator_6788.hasCurrentObject ()) {
+    callExtensionMethod_execute ((const cPtr_gtlInstruction *) enumerator_6788.current_instruction (HERE).ptr (), ioArgument_context, ioArgument_vars, ioArgument_lib, ioArgument_outputString, inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 216)) ;
+    enumerator_6788.gotoNextObject () ;
   }
   inCompiler->printMessage (function_endc (inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 218))  COMMA_SOURCE_FILE ("gtl_debugger.galgas", 218)) ;
 }

@@ -129,8 +129,8 @@ func defaultDebugSettings
   ->@debuggerContext debugSettings
 {
   debugSettings = .new {
-    !false
-    !false
+    ![option gtl_options.debug value]
+    ![option gtl_options.debug value]
     !red()
     !""
     !blue()
