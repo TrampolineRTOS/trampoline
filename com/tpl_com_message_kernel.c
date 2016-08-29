@@ -77,33 +77,33 @@ FUNC(tpl_status, OS_CODE) tpl_get_message_status_service(
 	
 #if RECEIVE_MESSAGE_COUNT > 0
 	IF_NO_EXTENDED_ERROR(result)
-	/*  get the message object from its id			*/          
-	rmo = (tpl_data_receiving_mo *)tpl_receive_message_table[mess_id];
-	queue = &((tpl_internal_receiving_queued_mo *)rmo)->queue;
-	
-	/* if message queued							*/
-	if( queue->element_size != 0 )
-	{
-		struct TPL_QUEUE_DYNAMIC    *dq = queue->dyn_desc;
-		tpl_com_data    *p = tpl_queue_element_for_read(queue);
-		if (p != NULL)
+    {
+		/*  get the message object from its id			*/          
+		rmo = (tpl_data_receiving_mo *)tpl_receive_message_table[mess_id];
+		queue = &((tpl_internal_receiving_queued_mo *)rmo)->queue;
+		
+		/* if message queued							*/
+		if( queue->element_size != 0 )
 		{
-			/* if an overflow occured in the previous sent message */
-			if (dq->overflow)
+			struct TPL_QUEUE_DYNAMIC    *dq = queue->dyn_desc;
+			tpl_com_data    *p = tpl_queue_element_for_read(queue);
+			if (p != NULL)
 			{
-				result =  E_COM_LIMIT;
+				/* if an overflow occured in the previous sent message */
+				if (dq->overflow)
+				{
+					result =  E_COM_LIMIT;
+				}
+			}
+			else{
+    	  result = E_COM_NOMSG;
 			}
 		}
 		else{
-      result = E_COM_NOMSG;
+			/* if message unqueued						*/
+			result =  E_COM_ID;
 		}
 	}
-	else{
-		/* if message unqueued						*/
-		result =  E_COM_ID;
-	}
-	
-	IF_NO_EXTENDED_ERROR_END();
 #endif
   
 	PROCESS_GETMESSAGESTATUS_ERROR(result)
@@ -142,11 +142,12 @@ FUNC(tpl_status, OS_CODE) tpl_send_message_service(
 	
 #if SEND_MESSAGE_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-  /*  get the message object from its id          */
-  smo = (tpl_base_sending_mo *)tpl_send_message_table[mess_id];
-  /*  call the sending function                   */
-  result = smo->sender(smo, data);
-  IF_NO_EXTENDED_ERROR_END()
+  {
+    /*  get the message object from its id          */
+    smo = (tpl_base_sending_mo *)tpl_send_message_table[mess_id];
+    /*  call the sending function                   */
+    result = smo->sender(smo, data);
+  }
 #endif
   
   PROCESS_COM_ERROR(result)
@@ -179,11 +180,12 @@ FUNC(tpl_status, OS_CODE) tpl_receive_message_service(
   
 #if RECEIVE_MESSAGE_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-  /*  get the message object from its id          */
-  rmo = (tpl_data_receiving_mo *)tpl_receive_message_table[mess_id];
-  /*  call the sending function                   */
-  result = rmo->copier(data, rmo);
-  IF_NO_EXTENDED_ERROR_END()
+  {
+    /*  get the message object from its id          */
+    rmo = (tpl_data_receiving_mo *)tpl_receive_message_table[mess_id];
+    /*  call the sending function                   */
+    result = rmo->copier(data, rmo);
+  }
 #endif
   
   PROCESS_COM_ERROR(result)
@@ -218,11 +220,12 @@ FUNC(tpl_status, OS_CODE) tpl_send_zero_message_service(
 	
 #if SEND_MESSAGE_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-  /*  get the message object from its id          */
-  smo = (tpl_base_sending_mo *)tpl_send_message_table[mess_id];
-  /*  call the sending function                   */
-  smo->sender(smo, NULL);
-  IF_NO_EXTENDED_ERROR_END()
+  {
+    /*  get the message object from its id          */
+    smo = (tpl_base_sending_mo *)tpl_send_message_table[mess_id];
+    /*  call the sending function                   */
+    smo->sender(smo, NULL);
+  }
 #endif
   
   PROCESS_COM_ERROR(result)

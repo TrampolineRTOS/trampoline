@@ -330,6 +330,7 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_rel_service(
 	
 #if SCHEDTABLE_COUNT > 0
     IF_NO_EXTENDED_ERROR(result)
+	{
 		st = tpl_schedtable_table[sched_table_id];
         /* MISRA RULE 45 VIOLATION: a tpl_time_obj_static* is cast to a
            tpl_schedtable_static*. This cast behaves correctly because the first memeber
@@ -364,7 +365,7 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_rel_service(
 				return the proper error code                        */
 			result = E_OS_STATE;
 		}
-    IF_NO_EXTENDED_ERROR_END()
+	}
 #endif
 
     PROCESS_ERROR(result)
@@ -413,6 +414,7 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_abs_service(
 
 #if SCHEDTABLE_COUNT > 0
 	IF_NO_EXTENDED_ERROR(result)
+	{
 		st = tpl_schedtable_table[sched_table_id];
 		/* MISRA RULE 45 VIOLATION: a tpl_time_obj_static* is cast to a
 	   tpl_schedtable_static*. This cast behaves correctly because the first memeber
@@ -464,7 +466,7 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_abs_service(
                 return the proper error code                        */
             result = E_OS_STATE;
         }
-    IF_NO_EXTENDED_ERROR_END()
+	}
 #endif
 
     PROCESS_ERROR(result)
@@ -505,31 +507,32 @@ FUNC(tpl_status, OS_CODE) tpl_stop_schedule_table_service(
 
 #if SCHEDTABLE_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-  st = tpl_schedtable_table[sched_table_id];
+  {
+    st = tpl_schedtable_table[sched_table_id];
 
-  /* Check the schedule table is started */
-  if (st->b_desc.state != (tpl_schedtable_state)SCHEDULETABLE_STOPPED)
-  {
-    /* check if next schedule table exists */
-    if (st->next != NULL)
+    /* Check the schedule table is started */
+    if (st->b_desc.state != (tpl_schedtable_state)SCHEDULETABLE_STOPPED)
     {
-      st->next->b_desc.state = SCHEDULETABLE_STOPPED;
+      /* check if next schedule table exists */
+      if (st->next != NULL)
+      {
+        st->next->b_desc.state = SCHEDULETABLE_STOPPED;
+      }
+      		
+      /*
+       * MISRA RULE 45 VIOLATION: a tpl_schedtable* is cast to a
+       * tpl_time_obj*. This cast behaves correctly because the first member
+       * of tpl_schedul_table is a tpl_time_obj
+       */
+      tpl_remove_time_obj((tpl_time_obj *)st);
+      st->b_desc.state = SCHEDULETABLE_STOPPED;
+      st->index = 0; /* reset the expiry point index to 0 */
     }
-			
-    /*
-     * MISRA RULE 45 VIOLATION: a tpl_schedtable* is cast to a
-     * tpl_time_obj*. This cast behaves correctly because the first member
-     * of tpl_schedul_table is a tpl_time_obj
-     */
-    tpl_remove_time_obj((tpl_time_obj *)st);
-    st->b_desc.state = SCHEDULETABLE_STOPPED;
-    st->index = 0; /* reset the expiry point index to 0 */
+    else
+    {
+      result = E_OS_NOFUNC;
+    }
   }
-  else
-  {
-    result = E_OS_NOFUNC;
-  }
-  IF_NO_EXTENDED_ERROR_END()
 #endif
 
   PROCESS_ERROR(result)
@@ -580,32 +583,33 @@ FUNC(tpl_status, OS_CODE) tpl_next_schedule_table_service(
 
 #if SCHEDTABLE_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-  current_st = tpl_schedtable_table[current_st_id];
-  next_st = tpl_schedtable_table[next_st_id];
-
-  CHECK_SCHEDTABLE_COUNTERS(current_st, next_st, result)
-
-  IF_NO_EXTENDED_ERROR(result)
-  
-  /*  Check the current schedule table is started         */
-  if ((current_st->b_desc.state != SCHEDULETABLE_STOPPED) &&
-      (current_st->b_desc.state != SCHEDULETABLE_NEXT))
   {
-    /*  Set the next pointer                            */
-    if (current_st->next != NULL)
+    current_st = tpl_schedtable_table[current_st_id];
+    next_st = tpl_schedtable_table[next_st_id];
+
+    CHECK_SCHEDTABLE_COUNTERS(current_st, next_st, result)
+
+    IF_NO_EXTENDED_ERROR(result)
     {
-      current_st->next->b_desc.state = SCHEDULETABLE_STOPPED;
+      /*  Check the current schedule table is started         */
+      if ((current_st->b_desc.state != SCHEDULETABLE_STOPPED) &&
+          (current_st->b_desc.state != SCHEDULETABLE_NEXT))
+      {
+        /*  Set the next pointer                            */
+        if (current_st->next != NULL)
+        {
+          current_st->next->b_desc.state = SCHEDULETABLE_STOPPED;
+        }
+        current_st->next = next_st;
+        /*  And the state of the next schedule table        */
+        next_st->b_desc.state = SCHEDULETABLE_NEXT;
+      }
+      else
+      {
+        result = E_OS_NOFUNC;
+      }
     }
-    current_st->next = next_st;
-    /*  And the state of the next schedule table        */
-    next_st->b_desc.state = SCHEDULETABLE_NEXT;
   }
-  else
-  {
-    result = E_OS_NOFUNC;
-  }
-  IF_NO_EXTENDED_ERROR_END()
-  IF_NO_EXTENDED_ERROR_END()
 #endif
 
   PROCESS_ERROR(result)
@@ -653,9 +657,10 @@ FUNC(tpl_status, OS_CODE) tpl_get_schedule_table_status_service(
   
 #if SCHEDTABLE_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-  st = tpl_schedtable_table[sched_table_id];
-  *status = (st->b_desc.state & ~SCHEDULETABLE_BOOTSTRAP & ~SCHEDULETABLE_ASYNC);
-  IF_NO_EXTENDED_ERROR_END()
+  {
+    st = tpl_schedtable_table[sched_table_id];
+    *status = (st->b_desc.state & ~SCHEDULETABLE_BOOTSTRAP & ~SCHEDULETABLE_ASYNC);
+  }
 #endif
 	
   PROCESS_ERROR(result)

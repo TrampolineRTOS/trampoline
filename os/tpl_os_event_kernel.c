@@ -81,13 +81,14 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
 
 #if EXTENDED_TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-  result = tpl_set_event(task_id, event);
-  if (result == E_OK && TPL_KERN(proc_core_id).need_schedule)
   {
-    tpl_schedule_from_running(CORE_ID_OR_NOTHING(proc_core_id));
-    SWITCH_CONTEXT(CORE_ID_OR_NOTHING(proc_core_id))
+    result = tpl_set_event(task_id, event);
+    if (result == E_OK && TPL_KERN(proc_core_id).need_schedule)
+    {
+      tpl_schedule_from_running(CORE_ID_OR_NOTHING(proc_core_id));
+      SWITCH_CONTEXT(CORE_ID_OR_NOTHING(proc_core_id))
+    }
   }
-  IF_NO_EXTENDED_ERROR_END()
 #endif
 
   PROCESS_ERROR(result)
@@ -123,9 +124,10 @@ FUNC(tpl_status, OS_CODE) tpl_clear_event_service(
 
 #if EXTENDED_TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
+  {
     tpl_task_events_table[(tpl_proc_id)TPL_KERN(core_id).running_id]->evt_set &=
       (tpl_event_mask)(~event);
-  IF_NO_EXTENDED_ERROR_END()
+  }
 #endif
 
   PROCESS_ERROR(result)
@@ -170,8 +172,9 @@ FUNC(tpl_status, OS_CODE) tpl_get_event_service(
 
 #if EXTENDED_TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-  *event = tpl_task_events_table[task_id]->evt_set;
-  IF_NO_EXTENDED_ERROR_END()
+  {
+    *event = tpl_task_events_table[task_id]->evt_set;
+  }
 #endif
 
   PROCESS_ERROR(result)
@@ -215,36 +218,35 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
 
 #if EXTENDED_TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-
-  /* all the evt_wait is overidden. */
-  task_events->evt_wait = event;
+  {
+    /* all the evt_wait is overidden. */
+    task_events->evt_wait = event;
 
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
-  /* reset the execution budget */
-  tpl_tp_on_terminate_or_wait(TPL_KERN_REF(kern).running_id);
+    /* reset the execution budget */
+    tpl_tp_on_terminate_or_wait(TPL_KERN_REF(kern).running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION  == YES */
 
-  /* check one of the event to wait is not already set */
-  if ((task_events->evt_set & task_events->evt_wait) == 0)
-  {
-    /* No event is set, the task blocks */
-    tpl_block();
-  }
-#if WITH_AUTOSAR_TIMING_PROTECTION == YES
-  else
-  {
-    if (FALSE == tpl_tp_on_activate_or_release(TPL_KERN_REF(kern).running_id))
+    /* check one of the event to wait is not already set */
+    if ((task_events->evt_set & task_events->evt_wait) == 0)
     {
-      tpl_call_protection_hook(E_OS_PROTECTION_ARRIVAL);
+      /* No event is set, the task blocks */
+      tpl_block();
     }
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
     else
     {
-      tpl_tp_on_start(TPL_KERN_REF(kern).running_id);
+      if (FALSE == tpl_tp_on_activate_or_release(TPL_KERN_REF(kern).running_id))
+      {
+        tpl_call_protection_hook(E_OS_PROTECTION_ARRIVAL);
+      }
+      else
+      {
+        tpl_tp_on_start(TPL_KERN_REF(kern).running_id);
+      }
     }
-  }
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION == YES */
-
-  IF_NO_EXTENDED_ERROR_END()
+  }
 #endif
 
   PROCESS_ERROR(result)

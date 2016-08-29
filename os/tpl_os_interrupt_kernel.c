@@ -239,22 +239,21 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void)
 
 #if ISR_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
+  {
+    /* the activate count is decreased */
+    TPL_KERN(core_id).running->activate_count--;
 
-  /* the activate count is decreased */
-  TPL_KERN(core_id).running->activate_count--;
+    /* terminate the running ISR */
+    tpl_terminate();
+    /* hardware dependant, the cpu priority is decreased */
+    tpl_restore_cpu_priority();
+    /* process switching should occur */
+    TPL_KERN(core_id).need_switch = NEED_SWITCH;
+    /* start the highest priority process */
+    tpl_start(CORE_ID_OR_NOTHING(core_id));
 
-  /* terminate the running ISR */
-  tpl_terminate();
-  /* hardware dependant, the cpu priority is decreased */
-  tpl_restore_cpu_priority();
-  /* process switching should occur */
-  TPL_KERN(core_id).need_switch = NEED_SWITCH;
-  /* start the highest priority process */
-  tpl_start(CORE_ID_OR_NOTHING(core_id));
-
-  LOCAL_SWITCH_CONTEXT_NOSAVE(core_id)
-
-  IF_NO_EXTENDED_ERROR_END()
+    LOCAL_SWITCH_CONTEXT_NOSAVE(core_id)
+  }
 #endif
 
   PROCESS_ERROR(result)
@@ -351,8 +350,8 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(
    */
 #if WITH_OS_EXTENDED == YES
   if ((isr_id >= TASK_COUNT) && (isr_id < (TASK_COUNT + ISR_COUNT)))
-  {
 #endif
+  {
     tpl_it_nesting++;
 
     isr = tpl_isr_stat_table[isr_id - TASK_COUNT];
@@ -387,9 +386,7 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(
       tpl_schedule_from_running(CORE_ID_OR_NOTHING(core_id));
       LOCAL_SWITCH_CONTEXT(core_id)
     }
-#if WITH_OS_EXTENDED == YES
   }
-#endif
 }
 
 

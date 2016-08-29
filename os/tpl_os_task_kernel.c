@@ -79,6 +79,7 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
 
 #if TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
+  {
 
     DOW_DO(printf("*S* ActivateTask\n"));
 
@@ -88,8 +89,8 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
       tpl_schedule_from_running(CORE_ID_OR_NOTHING(proc_core_id));
       DOW_DO(printf("*S* ActivateTask - rescheduling done\n"));
       SWITCH_CONTEXT(CORE_ID_OR_NOTHING(proc_core_id))
-	  }
-  IF_NO_EXTENDED_ERROR_END()
+    }
+  }
 #endif
 
   PROCESS_ERROR(result)
@@ -123,6 +124,7 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
 
 #if TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
+  {
     /* the activate count is decreased */
     TPL_KERN(core_id).running->activate_count--;
 
@@ -134,8 +136,7 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
     tpl_start(CORE_ID_OR_NOTHING(core_id));
 
     SWITCH_CONTEXT_NOSAVE(CORE_ID_OR_NOTHING(core_id))
-
-  IF_NO_EXTENDED_ERROR_END()
+  }
 #endif
 
   PROCESS_ERROR(result)
@@ -178,6 +179,7 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
 
 #if TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
+  {
     /* the activate count is decreased */
     TPL_KERN(core_id).running->activate_count--;
 
@@ -221,8 +223,7 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
       /* the activate count is restored since the caller does not terminate */
       TPL_KERN(core_id).running->activate_count++;
     }
-
-  IF_NO_EXTENDED_ERROR_END()
+  }
 #endif
 
   PROCESS_ERROR(result)
@@ -258,7 +259,7 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
 
 #if TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-
+  {
     DOW_DO(printf("*S* Schedule\n"));
     /*  release the internal resource   */
     tpl_release_internal_resource((tpl_proc_id)TPL_KERN(core_id).running_id);
@@ -272,8 +273,7 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
     }
 
     LOCAL_SWITCH_CONTEXT(core_id)
-
-  IF_NO_EXTENDED_ERROR_END()
+  }
 #endif
 
   PROCESS_ERROR(result)
@@ -309,15 +309,16 @@ FUNC(StatusType, OS_CODE) tpl_get_task_id_service(
    *  tpl_kern.running_id is uint32 (tpl_os_kernel.h) (always >= 0)
    *  INVALID_TASK is returned         */
   IF_NO_EXTENDED_ERROR(result)
-	if (TPL_KERN(core_id).running_id < TASK_COUNT)
-	{
-		*task_id = (tpl_proc_id)TPL_KERN(core_id).running_id;
-	}
-	else
-	{
-		*task_id = INVALID_TASK;
-	}
-  IF_NO_EXTENDED_ERROR_END()
+  {
+    if (TPL_KERN(core_id).running_id < TASK_COUNT)
+    {
+      *task_id = (tpl_proc_id)TPL_KERN(core_id).running_id;
+    }
+    else
+    {
+      *task_id = INVALID_TASK;
+    }
+  }
 
   PROCESS_ERROR(result)
 
@@ -356,8 +357,9 @@ FUNC(StatusType, OS_CODE) tpl_get_task_state_service(
 
 #if TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
+  {
     *state = (tpl_dyn_proc_table[task_id]->state) & 0x3;
-  IF_NO_EXTENDED_ERROR_END()
+  }
 #endif
 
   PROCESS_ERROR(result)

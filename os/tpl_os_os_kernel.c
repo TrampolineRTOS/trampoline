@@ -121,53 +121,50 @@ FUNC(void, OS_CODE) tpl_start_os_service(
   CHECK_OS_NOT_STARTED(core_id, result)
 
   IF_NO_EXTENDED_ERROR(result)
-  /* { */
-
+  {
 #if NUMBER_OF_CORES > 1
-  /*
-   * Sync barrier at start of tpl_start_os_service.
-   */
-  tpl_sync_barrier(&tpl_start_count_0, &tpl_startos_sync_lock);
+    /*
+     * Sync barrier at start of tpl_start_os_service.
+     */
+    tpl_sync_barrier(&tpl_start_count_0, &tpl_startos_sync_lock);
 
-  application_mode[core_id] = mode;
+    application_mode[core_id] = mode;
 #else
-  application_mode = mode;
+    application_mode = mode;
 #endif
 
-  TRACE_TPL_INIT()
+    TRACE_TPL_INIT()
 
-  tpl_init_os(mode);
+    tpl_init_os(mode);
 
-  tpl_enable_counters();
+    tpl_enable_counters();
 
-  /*
-   * Call the startup hook. According to the spec, it should be called
-   * after the os is initialized and before the scheduler is running
-   */
-  CALL_STARTUP_HOOK()
+    /*
+     * Call the startup hook. According to the spec, it should be called
+     * after the os is initialized and before the scheduler is running
+     */
+    CALL_STARTUP_HOOK()
 
-  /*
-   * Call the OS Application startup hooks if needed
-   */
-  CALL_OSAPPLICATION_STARTUP_HOOKS()
+    /*
+     * Call the OS Application startup hooks if needed
+     */
+    CALL_OSAPPLICATION_STARTUP_HOOKS()
 
 #if NUMBER_OF_CORES > 1
-  /*
-   * Sync barrier just before starting the scheduling.
-   */
-  tpl_sync_barrier(&tpl_start_count_1, &tpl_startos_sync_lock);
+    /*
+     * Sync barrier just before starting the scheduling.
+     */
+    tpl_sync_barrier(&tpl_start_count_1, &tpl_startos_sync_lock);
 #endif
 
-  /*
-   * Call tpl_start_scheduling to elect the highest priority task
-   * if such a task exists.
-   */
-  tpl_start_scheduling(CORE_ID_OR_NOTHING(core_id));
+    /*
+     * Call tpl_start_scheduling to elect the highest priority task
+     * if such a task exists.
+     */
+    tpl_start_scheduling(CORE_ID_OR_NOTHING(core_id));
 
-  SWITCH_CONTEXT_NOSAVE(core_id)
-
-  /* } */
-  IF_NO_EXTENDED_ERROR_END()
+    SWITCH_CONTEXT_NOSAVE(core_id)
+  }
 
   PROCESS_ERROR(result)
 
@@ -192,31 +189,27 @@ FUNC(void, OS_CODE) tpl_shutdown_os_service(
    */
 #if WITH_OSAPPLICATION == YES
   if (TPL_KERN(core_id).running->trusted_counter > 0)
-  {
 #endif
+  {
+    /*  store information for error hook routine */
+    STORE_SERVICE(OSServiceId_ShutdownOS)
 
-  /*  store information for error hook routine */
-  STORE_SERVICE(OSServiceId_ShutdownOS)
+    /*
+     * Call the OS Application shutdown hooks if needed
+     */
+    CALL_OSAPPLICATION_SHUTDOWN_HOOKS()
 
-  /*
-   * Call the OS Application shutdown hooks if needed
-   */
-  CALL_OSAPPLICATION_SHUTDOWN_HOOKS()
-
-  CALL_SHUTDOWN_HOOK(error)
+    CALL_SHUTDOWN_HOOK(error)
 
 #if SPINLOCK_COUNT > 0
-  RELEASE_ALL_SPINLOCKS(core_id);
+    RELEASE_ALL_SPINLOCKS(core_id);
 #endif
 
-  TRACE_TPL_TERMINATE()
+    TRACE_TPL_TERMINATE()
 
-  /* architecture dependant shutdown. */
-  tpl_shutdown();
-
-#if WITH_OSAPPLICATION == YES
+    /* architecture dependant shutdown. */
+    tpl_shutdown();
   }
-#endif
 
   /*  unlock the kernel */
   UNLOCK_KERNEL()

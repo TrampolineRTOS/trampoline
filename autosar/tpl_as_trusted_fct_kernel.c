@@ -42,28 +42,23 @@ FUNC(tpl_status, OS_CODE) tpl_call_trusted_function_service(
 {
   VAR(tpl_status, AUTOMATIC) result = E_OK;
 
-#if (TRUSTED_FCT_COUNT > 0)						
-	if (fct_idx < TRUSTED_FCT_COUNT)			
-	{												
-		CONST(tpl_trusted_fct, AUTOMATIC) tf = tpl_trusted_fct_table[fct_idx];
-#if WITH_OSAPPLICATION == YES
-		tpl_kern.running->trusted_counter++;
+#if (TRUSTED_FCT_COUNT > 0)
+  if (fct_idx < TRUSTED_FCT_COUNT)
+  {
+    CONST(tpl_trusted_fct, AUTOMATIC) tf = tpl_trusted_fct_table[fct_idx];
+#   if WITH_OSAPPLICATION == YES
+    tpl_kern.running->trusted_counter++;
+#   endif
+    tf(fct_idx, fct_param);
+#   if WITH_OSAPPLICATION == YES
+    tpl_kern.running->trusted_counter--;
+#   endif
+  }
+  else
 #endif
-		tf(fct_idx, fct_param);						
-#if WITH_OSAPPLICATION == YES
-		tpl_kern.running->trusted_counter--;
-#endif
-	}												
-	else											
-	{												
-#endif
-	
-		result = E_OS_SERVICEID;
-
-#if (TRUSTED_FCT_COUNT > 0)						
-	}												
-#endif
-	
+  {
+    result = E_OS_SERVICEID;
+  }
   return result;
 }
 

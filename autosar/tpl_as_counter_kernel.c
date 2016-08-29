@@ -95,7 +95,7 @@ FUNC(tpl_status, OS_CODE) tpl_increment_counter_service(
 	
 #if COUNTER_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-
+  {
     /*  get the counter descriptor              */
     counter = tpl_counter_table[counter_id];
 
@@ -110,8 +110,7 @@ FUNC(tpl_status, OS_CODE) tpl_increment_counter_service(
       tpl_schedule_from_running(CORE_ID_OR_NOTHING(core_id));
       LOCAL_SWITCH_CONTEXT(core_id)
     }
-
-  IF_NO_EXTENDED_ERROR_END()
+  }
 #endif
 
   PROCESS_ERROR(result)
@@ -165,14 +164,13 @@ FUNC(tpl_status, OS_CODE) tpl_get_counter_value_service(
 
 #if COUNTER_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-
+  {
     /*  get the counter descriptor              */
     counter = tpl_counter_table[counter_id];
 
     /*  copy its value in value ref             */
     *value = counter->current_date;
-
-  IF_NO_EXTENDED_ERROR_END()
+  }
 #endif
 
   PROCESS_ERROR(result)
@@ -234,7 +232,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_elapsed_counter_value_service(
 
 #if COUNTER_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-
+  {
     /*  get the counter descriptor              */
     counter = tpl_counter_table[counter_id];
 
@@ -245,8 +243,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_elapsed_counter_value_service(
     }
     *value = cpt_val - *previous_value;
     *previous_value = counter->current_date;
-
-  IF_NO_EXTENDED_ERROR_END()
+  }
 #endif
 
   PROCESS_ERROR(result)

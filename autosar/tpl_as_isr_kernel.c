@@ -178,8 +178,9 @@ FUNC(tpl_status, OS_CODE) tpl_disable_interrupt_source_service(
 
 #if ISR_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
+  {
     tpl_disable_isr2_by_user(isr_id);
-  IF_NO_EXTENDED_ERROR_END()
+  }
 #endif
 
   return result;
@@ -199,8 +200,9 @@ FUNC(tpl_status, OS_CODE) tpl_enable_interrupt_source_service(
 
 #if ISR_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
+  {
     tpl_enable_isr2_by_user(isr_id);
-  IF_NO_EXTENDED_ERROR_END()
+  }
 #endif
 
   return result;

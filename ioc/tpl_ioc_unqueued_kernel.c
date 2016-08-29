@@ -67,7 +67,7 @@ FUNC(tpl_status, OS_CODE) tpl_ioc_send_unqueued_service(
 
 #if IOC_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-
+  {
     ioc_stat = tpl_ioc_unqueued_table[ioc_id-IOC_QUEUED_COUNT];
 
     /* loop on all message to send, which means all parameters
@@ -87,8 +87,7 @@ FUNC(tpl_status, OS_CODE) tpl_ioc_send_unqueued_service(
       }
 
     }
-
-  IF_NO_EXTENDED_ERROR_END()
+  }
 #endif
 
   PROCESS_ERROR(result)
@@ -148,7 +147,7 @@ FUNC(StatusType, OS_CODE) tpl_ioc_receive_unqueued_service(
 
 #if IOC_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-
+  {
     ioc_stat = tpl_ioc_unqueued_table[ioc_id-IOC_QUEUED_COUNT];
 
     /* loop on all message to receive, which means all parameters
@@ -168,8 +167,7 @@ FUNC(StatusType, OS_CODE) tpl_ioc_receive_unqueued_service(
       }
 
     }
-
-  IF_NO_EXTENDED_ERROR_END()
+  }
 #endif
 
   PROCESS_ERROR(result)

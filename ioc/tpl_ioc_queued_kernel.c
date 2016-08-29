@@ -66,7 +66,7 @@ FUNC(tpl_status, OS_CODE) tpl_ioc_send_queued_service(
 
 #if IOC_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-
+  {
     ioc_stat = tpl_ioc_queued_table[ioc_id];
 
     /* loop on all message to send, which means all parameters
@@ -96,8 +96,7 @@ FUNC(tpl_status, OS_CODE) tpl_ioc_send_queued_service(
         queue_stat->dyn_desc->overflow=TRUE;
       }
     }
-
-  IF_NO_EXTENDED_ERROR_END()
+  }
 #endif
 
   PROCESS_ERROR(result)
@@ -159,7 +158,7 @@ FUNC(tpl_status, OS_CODE) tpl_ioc_receive_queued_service(
 
 #if IOC_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-
+  {
     ioc_stat = tpl_ioc_queued_table[ioc_id];
 
     /* loop on all message to receive, which means all parameters
@@ -200,8 +199,7 @@ FUNC(tpl_status, OS_CODE) tpl_ioc_receive_queued_service(
         queue_stat->dyn_desc->overflow=FALSE;
       }
     }
-
-  IF_NO_EXTENDED_ERROR_END()
+  }
 #endif
 
   PROCESS_ERROR(result)
@@ -259,7 +257,7 @@ FUNC(StatusType, OS_CODE) tpl_ioc_empty_queue_service(
 
 #if IOC_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-
+  {
     ioc_stat = tpl_ioc_queued_table[ioc_id];
 
     /* loop on all message to clear */
@@ -270,8 +268,7 @@ FUNC(StatusType, OS_CODE) tpl_ioc_empty_queue_service(
       queue_stat->dyn_desc->overflow = FALSE;
 
     }
-
-  IF_NO_EXTENDED_ERROR_END()
+  }
 #endif
 
   PROCESS_ERROR(result)
