@@ -96,7 +96,7 @@ let data_size_hash["UNSPECIFIED"]       := "UN"
 # * 0x4000_0000 | ---------------------------------------------------- *
 # *             |                                                      *
 # * 64 KB (DPM) | SRAM1                                                *
-# * 128KB (LSM) | --> Initialized Data, Bss, Stacks                    *
+# * 128KB (LSM) | --> (Un)Initialized Datas, Bss, Stacks               *
 # *             |                                                      *
 # * 0x5000_0000 | ---------------------------------------------------- *
 # *             |                                                      *
@@ -148,17 +148,14 @@ let data_size_hash["UNSPECIFIED"]       := "UN"
 #===========================================
 #             CONSTANTS
 
-
 # /* OS constants */
-
 +seg osconst -a rchw -n osconst -r4
-+grp osconst=.osConst
-+grp osconst=.osApiConst
+  +grp osconst=.osConst
+  +grp osconst=.osApiConst
 +def ___SEG_START_API_CONST_RGN=pstart(osconst)
 +def ___SEG_END_API_CONST_RGN=pend(osconst)
 
 # /* Application constants */
-
 +seg appconst -a osconst -n appconst -r4
 %
 foreach app in APPLICATIONS do
@@ -170,8 +167,7 @@ foreach app in APPLICATIONS do
    let section_name := ".osApC" + pragma_app_name
                                 + pragma_section_kind
                                 + pragma_data_size
-%
-     +grp appconst=% !section_name %
+%  +grp appconst=% !section_name %
 %
   end foreach
  end foreach
@@ -179,11 +175,7 @@ end foreach
 %
 
 # /* Tasks and ISR constants */
-
 +seg procconst -a appconst -n procconst -r4
-+def __PROGCONST_SECTION_START=pstart(procconst)
-+def __PROGCONST_SECTION_STOP=pend(procconst)
-
 %
 
 foreach DATA_SIZE in @("32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED") do
@@ -197,13 +189,10 @@ foreach DATA_SIZE in @("32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED") do
                                + pragma_proc_name
                                + pragma_section_kind
                                + pragma_data_size
-%
-    +grp procconst=% !section_name %
+%  +grp procconst=% !section_name %
 %
   end foreach
-%
 
-%
   loop core from 0 to OS::NUMBER_OF_CORES - 1 do
     let proc::KIND := "Task"
     let pragma_proc_kind := "T"
@@ -219,30 +208,27 @@ foreach DATA_SIZE in @("32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED") do
                                + pragma_proc_name
                                + pragma_section_kind
                                + pragma_data_size
-%
-    +grp procconst=% !section_name %
+%  +grp procconst=% !section_name %
 %
   end loop
-%
 
-%
   foreach isr in ISRS1 do
     let pragma_isr_name := [("000" + [INDEX string]) rightSubString: 3]
     let section_name := ".IrCs" + pragma_isr_name
                                 + pragma_section_kind
                                 + pragma_data_size
-%
-    +grp procconst=% !section_name %
+%  +grp procconst=% !section_name %
 %
   end foreach
  end foreach
 end foreach
-%
+
+%+def __PROGCONST_SECTION_START=pstart(procconst)
++def __PROGCONST_SECTION_STOP=pend(procconst)
 
 # /* Other (garbage) constants */
-
 +seg const_garbage -a procconst -n const_garbage
-+grp const_garbage=.sconst
+  +grp const_garbage=.sconst
 
 #===========================================
 #             IVORS
@@ -281,7 +267,7 @@ end foreach
 #  * 0x10000 to 0x10fff. So the osBoot section must not exceed a size of 3.5kb
 #  */
 +seg osboot -b boot_base -m boot_size -n osboot
-+grp osboot=.osBoot
+  +grp osboot=.osBoot
 
 # /* Other (garbage) codes
 #  * We're putting these segments first because they can (should) not contain
@@ -290,37 +276,29 @@ end foreach
 #  */
 
 +seg text_garbage -b application_base -m application_size -n text_garbage
-+grp text_garbage=.text
-+grp text_garbage=.vtext
-+grp text_garbage=.ctors
-+grp text_garbage=.dtors
-+grp text_garbage=.init
-+grp text_garbage=.fini
+  +grp text_garbage=.text
+  +grp text_garbage=.vtext
+  +grp text_garbage=.ctors
+  +grp text_garbage=.dtors
+  +grp text_garbage=.init
+  +grp text_garbage=.fini
 
 #  /* Application text section */
-
 +seg apptext -a text_garbage -n apptext -r4
-+grp apptext=.rodata
-+grp apptext=.osApiCode
-+def ___SEG_START_API_CODE_RGN=pstart(apptext)
-+def ___SEG_END_API_CODE_RGN=pend(apptext)
-
+  +grp apptext=.rodata
+  +grp apptext=.osApiCode
 
 #  /* Tasks and ISR text section */
-
 %
 foreach proc in PROCESSES do
     let pragma_proc_kind := [proc::KIND leftSubString: 2]
     let pragma_proc_name := [("000" + [INDEX string]) rightSubString: 3]
     let section_name := ".Cde" + pragma_proc_kind
                                + pragma_proc_name
-%
-     +grp apptext=% !section_name %
+%  +grp apptext=% !section_name %
 %
 end foreach
-%
 
-%
 loop core from 0 to OS::NUMBER_OF_CORES - 1 do
   let proc::KIND := "Task"
   let pragma_proc_kind := "T"
@@ -334,34 +312,30 @@ loop core from 0 to OS::NUMBER_OF_CORES - 1 do
   end if
   let section_name := ".Cde" + pragma_proc_kind
                              + pragma_proc_name
-%
-     +grp apptext=% !section_name %
+%  +grp apptext=% !section_name %
 %
 end loop
-%
 
-%
 foreach isr in ISRS1 do
     let pragma_isr_name := [("000" + [INDEX string]) rightSubString: 3]
     let section_name := ".IrCd" + pragma_isr_name
-%
-    +grp apptext=% !section_name %
+%  +grp apptext=% !section_name %
 %
 end foreach
-%
+%+def ___SEG_START_API_CODE_RGN=pstart(apptext)
++def ___SEG_END_API_CODE_RGN=pend(apptext)
 
 # /*
 #  * Operating system (Trampoline) text section.
 #  * Copy of initialized datas are located after this section (-it option).
 #  */
-
 +seg ostext     -a apptext   -n ostext    -r4   -it
-+grp ostext=.SC_handler
-+grp ostext=.EI_handler
-+grp ostext=.dec_handler
-+grp ostext=.osCode
-+grp ostext=.appCmonCode
-+grp ostext=.startup
+  +grp ostext=.SC_handler
+  +grp ostext=.EI_handler
+  +grp ostext=.dec_handler
+  +grp ostext=.osCode
+  +grp ostext=.appCmonCode
+  +grp ostext=.startup
 
 
 #=============================================================================#
@@ -370,24 +344,19 @@ end foreach
 
 #===========================================
 #             Initialized Data
+# Initialized datas segments are marked with the -id option
 
-#  /* Initialized datas segments are marked with the -id option */
-
-#   /* Operating system (Trampoline) Initialized datas */
-
+# /* Operating system (Trampoline) Initialized datas */
 +seg osvars -b sram_base -n osvars -id
-+grp osvars=.osVar
+  +grp osvars=.osVar
 
-#   /* Applications Initialized datas */
-
+# /* Applications Initialized datas */
 +seg appvars -a osvars -n appvars -r4 -id
-
 %
 foreach app in APPLICATIONS do
   let pragma_app_name := [("000" + [INDEX string]) rightSubString: 3]
 %
 # /* Initialized variables section of OS_APP % !app::NAME % */
-  +def ___SEG_START_OS_APP_% !app::NAME %_VAR_RGN=@appvars
 %
   let section_name := ""
   foreach DATA_SIZE in @("32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED") do
@@ -397,19 +366,16 @@ foreach app in APPLICATIONS do
      let section_name     := ".osApV" + pragma_app_name
                                       + pragma_section_kind
                                       + pragma_data_size
-%
-    +grp appvars=% !section_name %
+%  +grp appvars=% !section_name %
 %
     end foreach
   end foreach
-%
-  +def ___SEG_END_OS_APP_% !app::NAME %_VAR_RGN=@appvars
+%+def ___SEG_START_OS_APP_% !app::NAME %_VAR_RGN=@appvars
++def ___SEG_END_OS_APP_% !app::NAME %_VAR_RGN=@appvars
 %
 end foreach
 %
-
-#   /* Tasks Initialized datas */
-
+# /* Tasks Initialized datas */
 %
 let segment_name  := "appvars"
 foreach proc in PROCESSES do
@@ -420,8 +386,7 @@ foreach proc in PROCESSES do
                                  + pragma_proc_name
 %
 # /* Initialized variables section of % !proc::KIND % % !proc::NAME % */
-  +seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r4 -id
-
++seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r4 -id
 %
   foreach DATA_SIZE in @("32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED") do
     foreach SECTION_KIND in @("_POWER_ON_INIT_","_FAST_","_") do
@@ -431,19 +396,15 @@ foreach proc in PROCESSES do
                                  + pragma_proc_name
                                  + pragma_section_kind
                                  + pragma_data_size
-%
-      +grp % !segment_name %=% !section_name %
+%  +grp % !segment_name %=% !section_name %
 %
     end foreach
   end foreach
-%
-  +def ___SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pstart(% !segment_name %)
-  +def ___SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pend(% !segment_name %)
+%+def ___SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pstart(% !segment_name %)
++def ___SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pend(% !segment_name %)
 %
 end foreach
-%
 
-%
 loop core from 0 to OS::NUMBER_OF_CORES - 1 do
   let proc::KIND := "Task"
   let pragma_proc_kind := "T"
@@ -460,7 +421,7 @@ loop core from 0 to OS::NUMBER_OF_CORES - 1 do
                                  + pragma_proc_name
 %
 # /* Initialized variables section of % !proc::KIND % % !proc::NAME % */
-  +seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r4 -id
++seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r4 -id
 %
   foreach DATA_SIZE in @("32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED") do
     foreach SECTION_KIND in @("_POWER_ON_INIT_","_FAST_","_") do
@@ -470,44 +431,37 @@ loop core from 0 to OS::NUMBER_OF_CORES - 1 do
                                  + pragma_proc_name
                                  + pragma_section_kind
                                  + pragma_data_size
-%
-      +grp % !segment_name %=% !section_name %
+%  +grp % !segment_name %=% !section_name %
 %
     end foreach
   end foreach
-%
-  +def ___SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pstart(% !segment_name %)
-  +def ___SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pend(% !segment_name %)
+%+def ___SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pstart(% !segment_name %)
++def ___SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pend(% !segment_name %)
 %
 end loop
 %
-
 #   /* Remaining (garbage) Initialized datas */
-
 +seg data_garbage   -a % !segment_name %  -n data_garbage -r4 -id
-+grp data_garbage=.data
-+grp data_garbage=.sdata
-+grp data_garbage=.sdata2
-+grp data_garbage=.got
-+grp data_garbage=.got1
-+grp data_garbage=.got2
-+grp data_garbage=.fixup
-+grp data_garbage=.gcc_except_table
-+grp data_garbage=.eh_frame
-+grp data_garbage=.jcr
+  +grp data_garbage=.data
+  +grp data_garbage=.sdata
+  +grp data_garbage=.sdata2
+  +grp data_garbage=.got
+  +grp data_garbage=.got1
+  +grp data_garbage=.got2
+  +grp data_garbage=.fixup
+  +grp data_garbage=.gcc_except_table
+  +grp data_garbage=.eh_frame
+  +grp data_garbage=.jcr
 
 #===========================================
 #             Uninitialized Data
 
 #   /* Operating system (Trampoline) Uninitialized datas */
-
 +seg osvarnoinit     -a data_garbage   -n osvarnoinit  -r4
-+grp osvarnoinit=.osVarNoInit
+  +grp osvarnoinit=.osVarNoInit
 
 #   /* Applications Uninitialized datas */
-
 +seg appvarnoinit -a osvarnoinit -n appvarnoinit -r4
-
 %
 foreach app in APPLICATIONS do
   let pragma_app_name := [("000" + [INDEX string]) rightSubString: 3]
@@ -518,15 +472,12 @@ foreach app in APPLICATIONS do
     let section_name     := ".osApV" + pragma_app_name
                                      + pragma_section_kind
                                      + pragma_data_size
-%
-    +grp appvarnoinit=% !section_name %
+%  +grp appvarnoinit=% !section_name %
 %
   end foreach
 end foreach
 %
-
 #   /* Tasks Uninitialized datas */
-
 %
 let segment_name  := "appvarnoinit"
 foreach proc in PROCESSES do
@@ -537,8 +488,7 @@ foreach proc in PROCESSES do
                                    + pragma_proc_name
 %
 # /* Uninitialized variables section of % !proc::KIND % % !proc::NAME % */
-  +seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r4
-
++seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r4
 %
   foreach DATA_SIZE in @("32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED") do
     let pragma_section_kind := section_kind_hash["_NOINIT_"]
@@ -547,18 +497,14 @@ foreach proc in PROCESSES do
                                + pragma_proc_name
                                + pragma_section_kind
                                + pragma_data_size
-%
-      +grp % !segment_name %=% !section_name %
+%  +grp % !segment_name %=% !section_name %
 %
   end foreach
-%
-#  +def ___SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pstart(% !segment_name %)
-#  +def ___SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pend(% !segment_name %)
+%#+def ___SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pstart(% !segment_name %)
+#+def ___SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pend(% !segment_name %)
 %
 end foreach
-%
 
-%
 loop core from 0 to OS::NUMBER_OF_CORES - 1 do
   let proc::KIND := "Task"
   let pragma_proc_kind := "T"
@@ -575,7 +521,7 @@ loop core from 0 to OS::NUMBER_OF_CORES - 1 do
                                    + pragma_proc_name
 %
 # /* Uninitialized variables section of % !proc::KIND % % !proc::NAME % */
-  +seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r4
++seg % !segment_name % -a % !previous_segment_name % -n % !segment_name % -r4
 %
   foreach DATA_SIZE in @("32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED") do
     let pragma_section_kind := section_kind_hash["_NOINIT_"]
@@ -584,28 +530,23 @@ loop core from 0 to OS::NUMBER_OF_CORES - 1 do
                                + pragma_proc_name
                                + pragma_section_kind
                                + pragma_data_size
-%
-      +grp % !segment_name %=% !section_name %
+%  +grp % !segment_name %=% !section_name %
 %
   end foreach
-%
-#  +def ___SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pstart(% !segment_name %)
-#  +def ___SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pend(% !segment_name %)
+%#+def ___SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pstart(% !segment_name %)
+#+def ___SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN=pend(% !segment_name %)
 %
 end loop
 %
-
 #   /* Remaining (garbage) Uninitialized datas */
-
 +seg bss_garbage   -a % !segment_name % -n bss_garbage  -r4
-+grp bss_garbage=.bss
-+grp bss_garbage=.sbss
+  +grp bss_garbage=.bss
+  +grp bss_garbage=.sbss
 
 #===========================================
 #             Stacks
 
 # /* Tasks stacks */
-
 %
 let segment_name := "bss_garbage"
 foreach proc in PROCESSES do
@@ -616,15 +557,12 @@ foreach proc in PROCESSES do
                                  + pragma_proc_name
 %
 # /* Section of stack of % !proc::KIND % % !proc::NAME %  */
-  +seg % !segment_name %  -a % !previous_segment_name % -n % !segment_name % -r4
-
-  +def ___SEG_START_% !proc::KIND %_% !proc::NAME %_STACK_RGN=pstart(% !segment_name %)
-  +def ___SEG_END_% !proc::KIND %_% !proc::NAME %_STACK_RGN=pend(% !segment_name %)
++seg % !segment_name %  -a % !previous_segment_name % -n % !segment_name % -r4
++def ___SEG_START_% !proc::KIND %_% !proc::NAME %_STACK_RGN=pstart(% !segment_name %)
++def ___SEG_END_% !proc::KIND %_% !proc::NAME %_STACK_RGN=pend(% !segment_name %)
 %
 end foreach
-%
 
-%
 loop core from 0 to OS::NUMBER_OF_CORES - 1 do
   let proc::KIND := "Task"
   let pragma_proc_kind := "T"
@@ -641,10 +579,9 @@ loop core from 0 to OS::NUMBER_OF_CORES - 1 do
                                  + pragma_proc_name
 %
 # /* Section of stack of % !proc::KIND % % !proc::NAME %  */
-  +seg % !segment_name %  -a % !previous_segment_name % -n % !segment_name % -r4
-
-  +def ___SEG_START_% !proc::KIND %_% !proc::NAME %_STACK_RGN=pstart(% !segment_name %)
-  +def ___SEG_END_% !proc::KIND %_% !proc::NAME %_STACK_RGN=pend(% !segment_name %)
++seg % !segment_name %  -a % !previous_segment_name % -n % !segment_name % -r4
++def ___SEG_START_% !proc::KIND %_% !proc::NAME %_STACK_RGN=pstart(% !segment_name %)
++def ___SEG_END_% !proc::KIND %_% !proc::NAME %_STACK_RGN=pend(% !segment_name %)
 %
 end loop
 %
@@ -653,10 +590,10 @@ end loop
 #             Garbage
 
 +seg comment   -a % !segment_name % -n comment -r4
-+grp comment=.comment
+  +grp comment=.comment
 
 +seg relocatable -a comment -n relocatable -r4
-+grp relocatable=.rela.*
+  +grp relocatable=.rela.*
 
 #===========================================
 #             Definitions

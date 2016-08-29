@@ -51,13 +51,11 @@
 /*
  * VAR region access right
  */
-//#define var_rgn_access  0x0000001E
 #define var_rgn_access  0x0000079E
 
 /*
  * STACK region access right
  */
-//#define stack_rgn_access  0x0000001E
 #define stack_rgn_access  0x0000079E
 
 /*
@@ -66,7 +64,6 @@
  * and rxw in supervisor mode
  */
 /* #define exe_rgn_access  0x0000001D */
-//#define exe_rgn_access  0x00000005
 #define exe_rgn_access  0x00000145
 
 
@@ -75,7 +72,6 @@
  * Here, the region is r in User mode
  * and rxw in supervisor mode
  */
-//#define const_rgn_access  0x00000004
 #define const_rgn_access  0x00000104
 
 /*
