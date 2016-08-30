@@ -41,9 +41,6 @@
 #include "tpl_machine_interface.h"
 #include "tpl_as_protec_hook.h"
 
-#include <assert.h>
-#include <stdio.h>
-
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
 
 #define OS_START_SEC_VAR_NOINIT_UNSPECIFIED
@@ -67,8 +64,9 @@ VAR(tpl_proc_id, OS_VAR) tpl_tp_watchdog_owner;
 void tpl_tp_set_watchdog_id(unsigned int id)
 {
     /* Id shall be between 0 and 3. Let's check this */
-    assert(0 <= id && id <= 3);
+    DOW_ASSERT(0 <= id && id <= 3);
     tpl_tp_watchdog_id = id;
+    /* FIXME : Multicorize and test this */
     tpl_tp_watchdog_owner = tpl_kern.running_id;
     return ;
 }
@@ -76,7 +74,7 @@ void tpl_tp_set_watchdog_id(unsigned int id)
 unsigned int tpl_tp_get_watchdog_id()
 {
     /* tpl_tp_watchdog_id shall be between 0 and 3. Let's check this */
-    assert(0 <= tpl_tp_watchdog_id && tpl_tp_watchdog_id <= 3);
+    DOW_ASSERT(0 <= tpl_tp_watchdog_id && tpl_tp_watchdog_id <= 3);
     return tpl_tp_watchdog_id;
 }
 
@@ -167,7 +165,7 @@ FUNC(tpl_bool, OS_CODE) tpl_tp_on_terminate_or_wait(
         /* *LOCK watchdogs shall be inactive, therefore, the active watchdog 
          * shall be EXECUTIONBUDGET. Let's check this 
          */
-        assert(tpl_tp_get_watchdog_id() == EXECUTIONBUDGET);
+        DOW_ASSERT(tpl_tp_get_watchdog_id() == EXECUTIONBUDGET);
 
         /* If the watchdog is active, cancel it */ 
         if(tp->watchdogs[EXECUTIONBUDGET].is_active == TRUE)
