@@ -12,6 +12,1017 @@
 //   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
+typeComparisonResult cPtr_gtlForeachStatementInstruction::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
+  typeComparisonResult result = kOperandEqual ;
+  const cPtr_gtlForeachStatementInstruction * p = (const cPtr_gtlForeachStatementInstruction *) inOperandPtr ;
+  macroValidSharedObject (p, cPtr_gtlForeachStatementInstruction) ;
+  if (kOperandEqual == result) {
+    result = mAttribute_where.objectCompare (p->mAttribute_where) ;
+  }
+  if (kOperandEqual == result) {
+    result = mAttribute_signature.objectCompare (p->mAttribute_signature) ;
+  }
+  if (kOperandEqual == result) {
+    result = mAttribute_keyName.objectCompare (p->mAttribute_keyName) ;
+  }
+  if (kOperandEqual == result) {
+    result = mAttribute_variableName.objectCompare (p->mAttribute_variableName) ;
+  }
+  if (kOperandEqual == result) {
+    result = mAttribute_indexName.objectCompare (p->mAttribute_indexName) ;
+  }
+  if (kOperandEqual == result) {
+    result = mAttribute_iterable.objectCompare (p->mAttribute_iterable) ;
+  }
+  if (kOperandEqual == result) {
+    result = mAttribute_beforeList.objectCompare (p->mAttribute_beforeList) ;
+  }
+  if (kOperandEqual == result) {
+    result = mAttribute_betweenList.objectCompare (p->mAttribute_betweenList) ;
+  }
+  if (kOperandEqual == result) {
+    result = mAttribute_afterList.objectCompare (p->mAttribute_afterList) ;
+  }
+  if (kOperandEqual == result) {
+    result = mAttribute_doList.objectCompare (p->mAttribute_doList) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+
+typeComparisonResult GALGAS_gtlForeachStatementInstruction::objectCompare (const GALGAS_gtlForeachStatementInstruction & inOperand) const {
+  typeComparisonResult result = kOperandNotValid ;
+  if (isValid () && inOperand.isValid ()) {
+    const int32_t mySlot = mObjectPtr->classDescriptor ()->mSlotID ;
+    const int32_t operandSlot = inOperand.mObjectPtr->classDescriptor ()->mSlotID ;
+    if (mySlot < operandSlot) {
+      result = kFirstOperandLowerThanSecond ;
+    }else if (mySlot > operandSlot) {
+      result = kFirstOperandGreaterThanSecond ;
+    }else{
+      result = mObjectPtr->dynamicObjectCompare (inOperand.mObjectPtr) ;
+    }
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlForeachStatementInstruction::GALGAS_gtlForeachStatementInstruction (void) :
+GALGAS_gtlInstruction () {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlForeachStatementInstruction::GALGAS_gtlForeachStatementInstruction (const cPtr_gtlForeachStatementInstruction * inSourcePtr) :
+GALGAS_gtlInstruction (inSourcePtr) {
+  macroNullOrValidSharedObject (inSourcePtr, cPtr_gtlForeachStatementInstruction) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlForeachStatementInstruction GALGAS_gtlForeachStatementInstruction::constructor_new (const GALGAS_location & inAttribute_where,
+                                                                                              const GALGAS_string & inAttribute_signature,
+                                                                                              const GALGAS_lstring & inAttribute_keyName,
+                                                                                              const GALGAS_lstring & inAttribute_variableName,
+                                                                                              const GALGAS_lstring & inAttribute_indexName,
+                                                                                              const GALGAS_gtlExpression & inAttribute_iterable,
+                                                                                              const GALGAS_gtlInstructionList & inAttribute_beforeList,
+                                                                                              const GALGAS_gtlInstructionList & inAttribute_betweenList,
+                                                                                              const GALGAS_gtlInstructionList & inAttribute_afterList,
+                                                                                              const GALGAS_gtlInstructionList & inAttribute_doList
+                                                                                              COMMA_LOCATION_ARGS) {
+  GALGAS_gtlForeachStatementInstruction result ;
+  if (inAttribute_where.isValid () && inAttribute_signature.isValid () && inAttribute_keyName.isValid () && inAttribute_variableName.isValid () && inAttribute_indexName.isValid () && inAttribute_iterable.isValid () && inAttribute_beforeList.isValid () && inAttribute_betweenList.isValid () && inAttribute_afterList.isValid () && inAttribute_doList.isValid ()) {
+    macroMyNew (result.mObjectPtr, cPtr_gtlForeachStatementInstruction (inAttribute_where, inAttribute_signature, inAttribute_keyName, inAttribute_variableName, inAttribute_indexName, inAttribute_iterable, inAttribute_beforeList, inAttribute_betweenList, inAttribute_afterList, inAttribute_doList COMMA_THERE)) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_lstring GALGAS_gtlForeachStatementInstruction::getter_keyName (UNUSED_LOCATION_ARGS) const {
+  GALGAS_lstring result ;
+  if (NULL != mObjectPtr) {
+    const cPtr_gtlForeachStatementInstruction * p = (const cPtr_gtlForeachStatementInstruction *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_gtlForeachStatementInstruction) ;
+    result = p->mAttribute_keyName ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_lstring cPtr_gtlForeachStatementInstruction::getter_keyName (UNUSED_LOCATION_ARGS) const {
+  return mAttribute_keyName ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_lstring GALGAS_gtlForeachStatementInstruction::getter_variableName (UNUSED_LOCATION_ARGS) const {
+  GALGAS_lstring result ;
+  if (NULL != mObjectPtr) {
+    const cPtr_gtlForeachStatementInstruction * p = (const cPtr_gtlForeachStatementInstruction *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_gtlForeachStatementInstruction) ;
+    result = p->mAttribute_variableName ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_lstring cPtr_gtlForeachStatementInstruction::getter_variableName (UNUSED_LOCATION_ARGS) const {
+  return mAttribute_variableName ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_lstring GALGAS_gtlForeachStatementInstruction::getter_indexName (UNUSED_LOCATION_ARGS) const {
+  GALGAS_lstring result ;
+  if (NULL != mObjectPtr) {
+    const cPtr_gtlForeachStatementInstruction * p = (const cPtr_gtlForeachStatementInstruction *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_gtlForeachStatementInstruction) ;
+    result = p->mAttribute_indexName ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_lstring cPtr_gtlForeachStatementInstruction::getter_indexName (UNUSED_LOCATION_ARGS) const {
+  return mAttribute_indexName ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlExpression GALGAS_gtlForeachStatementInstruction::getter_iterable (UNUSED_LOCATION_ARGS) const {
+  GALGAS_gtlExpression result ;
+  if (NULL != mObjectPtr) {
+    const cPtr_gtlForeachStatementInstruction * p = (const cPtr_gtlForeachStatementInstruction *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_gtlForeachStatementInstruction) ;
+    result = p->mAttribute_iterable ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlExpression cPtr_gtlForeachStatementInstruction::getter_iterable (UNUSED_LOCATION_ARGS) const {
+  return mAttribute_iterable ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlInstructionList GALGAS_gtlForeachStatementInstruction::getter_beforeList (UNUSED_LOCATION_ARGS) const {
+  GALGAS_gtlInstructionList result ;
+  if (NULL != mObjectPtr) {
+    const cPtr_gtlForeachStatementInstruction * p = (const cPtr_gtlForeachStatementInstruction *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_gtlForeachStatementInstruction) ;
+    result = p->mAttribute_beforeList ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlInstructionList cPtr_gtlForeachStatementInstruction::getter_beforeList (UNUSED_LOCATION_ARGS) const {
+  return mAttribute_beforeList ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlInstructionList GALGAS_gtlForeachStatementInstruction::getter_betweenList (UNUSED_LOCATION_ARGS) const {
+  GALGAS_gtlInstructionList result ;
+  if (NULL != mObjectPtr) {
+    const cPtr_gtlForeachStatementInstruction * p = (const cPtr_gtlForeachStatementInstruction *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_gtlForeachStatementInstruction) ;
+    result = p->mAttribute_betweenList ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlInstructionList cPtr_gtlForeachStatementInstruction::getter_betweenList (UNUSED_LOCATION_ARGS) const {
+  return mAttribute_betweenList ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlInstructionList GALGAS_gtlForeachStatementInstruction::getter_afterList (UNUSED_LOCATION_ARGS) const {
+  GALGAS_gtlInstructionList result ;
+  if (NULL != mObjectPtr) {
+    const cPtr_gtlForeachStatementInstruction * p = (const cPtr_gtlForeachStatementInstruction *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_gtlForeachStatementInstruction) ;
+    result = p->mAttribute_afterList ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlInstructionList cPtr_gtlForeachStatementInstruction::getter_afterList (UNUSED_LOCATION_ARGS) const {
+  return mAttribute_afterList ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlInstructionList GALGAS_gtlForeachStatementInstruction::getter_doList (UNUSED_LOCATION_ARGS) const {
+  GALGAS_gtlInstructionList result ;
+  if (NULL != mObjectPtr) {
+    const cPtr_gtlForeachStatementInstruction * p = (const cPtr_gtlForeachStatementInstruction *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_gtlForeachStatementInstruction) ;
+    result = p->mAttribute_doList ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlInstructionList cPtr_gtlForeachStatementInstruction::getter_doList (UNUSED_LOCATION_ARGS) const {
+  return mAttribute_doList ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                               Pointer class for @gtlForeachStatementInstruction class                               *
+//---------------------------------------------------------------------------------------------------------------------*
+
+cPtr_gtlForeachStatementInstruction::cPtr_gtlForeachStatementInstruction (const GALGAS_location & in_where,
+                                                                          const GALGAS_string & in_signature,
+                                                                          const GALGAS_lstring & in_keyName,
+                                                                          const GALGAS_lstring & in_variableName,
+                                                                          const GALGAS_lstring & in_indexName,
+                                                                          const GALGAS_gtlExpression & in_iterable,
+                                                                          const GALGAS_gtlInstructionList & in_beforeList,
+                                                                          const GALGAS_gtlInstructionList & in_betweenList,
+                                                                          const GALGAS_gtlInstructionList & in_afterList,
+                                                                          const GALGAS_gtlInstructionList & in_doList
+                                                                          COMMA_LOCATION_ARGS) :
+cPtr_gtlInstruction (in_where, in_signature COMMA_THERE),
+mAttribute_keyName (in_keyName),
+mAttribute_variableName (in_variableName),
+mAttribute_indexName (in_indexName),
+mAttribute_iterable (in_iterable),
+mAttribute_beforeList (in_beforeList),
+mAttribute_betweenList (in_betweenList),
+mAttribute_afterList (in_afterList),
+mAttribute_doList (in_doList) {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor * cPtr_gtlForeachStatementInstruction::classDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_gtlForeachStatementInstruction ;
+}
+
+void cPtr_gtlForeachStatementInstruction::description (C_String & ioString,
+                                                       const int32_t inIndentation) const {
+  ioString << "[@gtlForeachStatementInstruction:" ;
+  mAttribute_where.description (ioString, inIndentation+1) ;
+  ioString << ", " ;
+  mAttribute_signature.description (ioString, inIndentation+1) ;
+  ioString << ", " ;
+  mAttribute_keyName.description (ioString, inIndentation+1) ;
+  ioString << ", " ;
+  mAttribute_variableName.description (ioString, inIndentation+1) ;
+  ioString << ", " ;
+  mAttribute_indexName.description (ioString, inIndentation+1) ;
+  ioString << ", " ;
+  mAttribute_iterable.description (ioString, inIndentation+1) ;
+  ioString << ", " ;
+  mAttribute_beforeList.description (ioString, inIndentation+1) ;
+  ioString << ", " ;
+  mAttribute_betweenList.description (ioString, inIndentation+1) ;
+  ioString << ", " ;
+  mAttribute_afterList.description (ioString, inIndentation+1) ;
+  ioString << ", " ;
+  mAttribute_doList.description (ioString, inIndentation+1) ;
+  ioString << "]" ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+acPtr_class * cPtr_gtlForeachStatementInstruction::duplicate (LOCATION_ARGS) const {
+  acPtr_class * ptr = NULL ;
+  macroMyNew (ptr, cPtr_gtlForeachStatementInstruction (mAttribute_where, mAttribute_signature, mAttribute_keyName, mAttribute_variableName, mAttribute_indexName, mAttribute_iterable, mAttribute_beforeList, mAttribute_betweenList, mAttribute_afterList, mAttribute_doList COMMA_THERE)) ;
+  return ptr ;
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                        @gtlForeachStatementInstruction type                                         *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor
+kTypeDescriptor_GALGAS_gtlForeachStatementInstruction ("gtlForeachStatementInstruction",
+                                                       & kTypeDescriptor_GALGAS_gtlInstruction) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor * GALGAS_gtlForeachStatementInstruction::staticTypeDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_gtlForeachStatementInstruction ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+AC_GALGAS_root * GALGAS_gtlForeachStatementInstruction::clonedObject (void) const {
+  AC_GALGAS_root * result = NULL ;
+  if (isValid ()) {
+    macroMyNew (result, GALGAS_gtlForeachStatementInstruction (*this)) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlForeachStatementInstruction GALGAS_gtlForeachStatementInstruction::extractObject (const GALGAS_object & inObject,
+                                                                                            C_Compiler * inCompiler
+                                                                                            COMMA_LOCATION_ARGS) {
+  GALGAS_gtlForeachStatementInstruction result ;
+  const GALGAS_gtlForeachStatementInstruction * p = (const GALGAS_gtlForeachStatementInstruction *) inObject.embeddedObject () ;
+  if (NULL != p) {
+    if (NULL != dynamic_cast <const GALGAS_gtlForeachStatementInstruction *> (p)) {
+      result = *p ;
+    }else{
+      inCompiler->castError ("gtlForeachStatementInstruction", p->dynamicTypeDescriptor () COMMA_THERE) ;
+    }  
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//   Object comparison                                                                                                 *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typeComparisonResult cPtr_gtlGetColumnInstruction::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
+  typeComparisonResult result = kOperandEqual ;
+  const cPtr_gtlGetColumnInstruction * p = (const cPtr_gtlGetColumnInstruction *) inOperandPtr ;
+  macroValidSharedObject (p, cPtr_gtlGetColumnInstruction) ;
+  if (kOperandEqual == result) {
+    result = mAttribute_where.objectCompare (p->mAttribute_where) ;
+  }
+  if (kOperandEqual == result) {
+    result = mAttribute_signature.objectCompare (p->mAttribute_signature) ;
+  }
+  if (kOperandEqual == result) {
+    result = mAttribute_destVariable.objectCompare (p->mAttribute_destVariable) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+
+typeComparisonResult GALGAS_gtlGetColumnInstruction::objectCompare (const GALGAS_gtlGetColumnInstruction & inOperand) const {
+  typeComparisonResult result = kOperandNotValid ;
+  if (isValid () && inOperand.isValid ()) {
+    const int32_t mySlot = mObjectPtr->classDescriptor ()->mSlotID ;
+    const int32_t operandSlot = inOperand.mObjectPtr->classDescriptor ()->mSlotID ;
+    if (mySlot < operandSlot) {
+      result = kFirstOperandLowerThanSecond ;
+    }else if (mySlot > operandSlot) {
+      result = kFirstOperandGreaterThanSecond ;
+    }else{
+      result = mObjectPtr->dynamicObjectCompare (inOperand.mObjectPtr) ;
+    }
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlGetColumnInstruction::GALGAS_gtlGetColumnInstruction (void) :
+GALGAS_gtlInstruction () {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlGetColumnInstruction GALGAS_gtlGetColumnInstruction::constructor_default (LOCATION_ARGS) {
+  return GALGAS_gtlGetColumnInstruction::constructor_new (GALGAS_location::constructor_nowhere (HERE),
+                                                          GALGAS_string::constructor_default (HERE),
+                                                          GALGAS_gtlVarPath::constructor_emptyList (HERE)
+                                                          COMMA_THERE) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlGetColumnInstruction::GALGAS_gtlGetColumnInstruction (const cPtr_gtlGetColumnInstruction * inSourcePtr) :
+GALGAS_gtlInstruction (inSourcePtr) {
+  macroNullOrValidSharedObject (inSourcePtr, cPtr_gtlGetColumnInstruction) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlGetColumnInstruction GALGAS_gtlGetColumnInstruction::constructor_new (const GALGAS_location & inAttribute_where,
+                                                                                const GALGAS_string & inAttribute_signature,
+                                                                                const GALGAS_gtlVarPath & inAttribute_destVariable
+                                                                                COMMA_LOCATION_ARGS) {
+  GALGAS_gtlGetColumnInstruction result ;
+  if (inAttribute_where.isValid () && inAttribute_signature.isValid () && inAttribute_destVariable.isValid ()) {
+    macroMyNew (result.mObjectPtr, cPtr_gtlGetColumnInstruction (inAttribute_where, inAttribute_signature, inAttribute_destVariable COMMA_THERE)) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlVarPath GALGAS_gtlGetColumnInstruction::getter_destVariable (UNUSED_LOCATION_ARGS) const {
+  GALGAS_gtlVarPath result ;
+  if (NULL != mObjectPtr) {
+    const cPtr_gtlGetColumnInstruction * p = (const cPtr_gtlGetColumnInstruction *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_gtlGetColumnInstruction) ;
+    result = p->mAttribute_destVariable ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlVarPath cPtr_gtlGetColumnInstruction::getter_destVariable (UNUSED_LOCATION_ARGS) const {
+  return mAttribute_destVariable ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                  Pointer class for @gtlGetColumnInstruction class                                   *
+//---------------------------------------------------------------------------------------------------------------------*
+
+cPtr_gtlGetColumnInstruction::cPtr_gtlGetColumnInstruction (const GALGAS_location & in_where,
+                                                            const GALGAS_string & in_signature,
+                                                            const GALGAS_gtlVarPath & in_destVariable
+                                                            COMMA_LOCATION_ARGS) :
+cPtr_gtlInstruction (in_where, in_signature COMMA_THERE),
+mAttribute_destVariable (in_destVariable) {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor * cPtr_gtlGetColumnInstruction::classDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_gtlGetColumnInstruction ;
+}
+
+void cPtr_gtlGetColumnInstruction::description (C_String & ioString,
+                                                const int32_t inIndentation) const {
+  ioString << "[@gtlGetColumnInstruction:" ;
+  mAttribute_where.description (ioString, inIndentation+1) ;
+  ioString << ", " ;
+  mAttribute_signature.description (ioString, inIndentation+1) ;
+  ioString << ", " ;
+  mAttribute_destVariable.description (ioString, inIndentation+1) ;
+  ioString << "]" ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+acPtr_class * cPtr_gtlGetColumnInstruction::duplicate (LOCATION_ARGS) const {
+  acPtr_class * ptr = NULL ;
+  macroMyNew (ptr, cPtr_gtlGetColumnInstruction (mAttribute_where, mAttribute_signature, mAttribute_destVariable COMMA_THERE)) ;
+  return ptr ;
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                            @gtlGetColumnInstruction type                                            *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor
+kTypeDescriptor_GALGAS_gtlGetColumnInstruction ("gtlGetColumnInstruction",
+                                                & kTypeDescriptor_GALGAS_gtlInstruction) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor * GALGAS_gtlGetColumnInstruction::staticTypeDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_gtlGetColumnInstruction ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+AC_GALGAS_root * GALGAS_gtlGetColumnInstruction::clonedObject (void) const {
+  AC_GALGAS_root * result = NULL ;
+  if (isValid ()) {
+    macroMyNew (result, GALGAS_gtlGetColumnInstruction (*this)) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlGetColumnInstruction GALGAS_gtlGetColumnInstruction::extractObject (const GALGAS_object & inObject,
+                                                                              C_Compiler * inCompiler
+                                                                              COMMA_LOCATION_ARGS) {
+  GALGAS_gtlGetColumnInstruction result ;
+  const GALGAS_gtlGetColumnInstruction * p = (const GALGAS_gtlGetColumnInstruction *) inObject.embeddedObject () ;
+  if (NULL != p) {
+    if (NULL != dynamic_cast <const GALGAS_gtlGetColumnInstruction *> (p)) {
+      result = *p ;
+    }else{
+      inCompiler->castError ("gtlGetColumnInstruction", p->dynamicTypeDescriptor () COMMA_THERE) ;
+    }  
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//   Object comparison                                                                                                 *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typeComparisonResult cPtr_gtlHelpInstruction::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
+  typeComparisonResult result = kOperandEqual ;
+  const cPtr_gtlHelpInstruction * p = (const cPtr_gtlHelpInstruction *) inOperandPtr ;
+  macroValidSharedObject (p, cPtr_gtlHelpInstruction) ;
+  if (kOperandEqual == result) {
+    result = mAttribute_where.objectCompare (p->mAttribute_where) ;
+  }
+  if (kOperandEqual == result) {
+    result = mAttribute_signature.objectCompare (p->mAttribute_signature) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+
+typeComparisonResult GALGAS_gtlHelpInstruction::objectCompare (const GALGAS_gtlHelpInstruction & inOperand) const {
+  typeComparisonResult result = kOperandNotValid ;
+  if (isValid () && inOperand.isValid ()) {
+    const int32_t mySlot = mObjectPtr->classDescriptor ()->mSlotID ;
+    const int32_t operandSlot = inOperand.mObjectPtr->classDescriptor ()->mSlotID ;
+    if (mySlot < operandSlot) {
+      result = kFirstOperandLowerThanSecond ;
+    }else if (mySlot > operandSlot) {
+      result = kFirstOperandGreaterThanSecond ;
+    }else{
+      result = mObjectPtr->dynamicObjectCompare (inOperand.mObjectPtr) ;
+    }
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlHelpInstruction::GALGAS_gtlHelpInstruction (void) :
+GALGAS_gtlInstruction () {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlHelpInstruction GALGAS_gtlHelpInstruction::constructor_default (LOCATION_ARGS) {
+  return GALGAS_gtlHelpInstruction::constructor_new (GALGAS_location::constructor_nowhere (HERE),
+                                                     GALGAS_string::constructor_default (HERE)
+                                                     COMMA_THERE) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlHelpInstruction::GALGAS_gtlHelpInstruction (const cPtr_gtlHelpInstruction * inSourcePtr) :
+GALGAS_gtlInstruction (inSourcePtr) {
+  macroNullOrValidSharedObject (inSourcePtr, cPtr_gtlHelpInstruction) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlHelpInstruction GALGAS_gtlHelpInstruction::constructor_new (const GALGAS_location & inAttribute_where,
+                                                                      const GALGAS_string & inAttribute_signature
+                                                                      COMMA_LOCATION_ARGS) {
+  GALGAS_gtlHelpInstruction result ;
+  if (inAttribute_where.isValid () && inAttribute_signature.isValid ()) {
+    macroMyNew (result.mObjectPtr, cPtr_gtlHelpInstruction (inAttribute_where, inAttribute_signature COMMA_THERE)) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                     Pointer class for @gtlHelpInstruction class                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+cPtr_gtlHelpInstruction::cPtr_gtlHelpInstruction (const GALGAS_location & in_where,
+                                                  const GALGAS_string & in_signature
+                                                  COMMA_LOCATION_ARGS) :
+cPtr_gtlInstruction (in_where, in_signature COMMA_THERE) {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor * cPtr_gtlHelpInstruction::classDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_gtlHelpInstruction ;
+}
+
+void cPtr_gtlHelpInstruction::description (C_String & ioString,
+                                           const int32_t inIndentation) const {
+  ioString << "[@gtlHelpInstruction:" ;
+  mAttribute_where.description (ioString, inIndentation+1) ;
+  ioString << ", " ;
+  mAttribute_signature.description (ioString, inIndentation+1) ;
+  ioString << "]" ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+acPtr_class * cPtr_gtlHelpInstruction::duplicate (LOCATION_ARGS) const {
+  acPtr_class * ptr = NULL ;
+  macroMyNew (ptr, cPtr_gtlHelpInstruction (mAttribute_where, mAttribute_signature COMMA_THERE)) ;
+  return ptr ;
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                              @gtlHelpInstruction type                                               *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor
+kTypeDescriptor_GALGAS_gtlHelpInstruction ("gtlHelpInstruction",
+                                           & kTypeDescriptor_GALGAS_gtlInstruction) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor * GALGAS_gtlHelpInstruction::staticTypeDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_gtlHelpInstruction ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+AC_GALGAS_root * GALGAS_gtlHelpInstruction::clonedObject (void) const {
+  AC_GALGAS_root * result = NULL ;
+  if (isValid ()) {
+    macroMyNew (result, GALGAS_gtlHelpInstruction (*this)) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlHelpInstruction GALGAS_gtlHelpInstruction::extractObject (const GALGAS_object & inObject,
+                                                                    C_Compiler * inCompiler
+                                                                    COMMA_LOCATION_ARGS) {
+  GALGAS_gtlHelpInstruction result ;
+  const GALGAS_gtlHelpInstruction * p = (const GALGAS_gtlHelpInstruction *) inObject.embeddedObject () ;
+  if (NULL != p) {
+    if (NULL != dynamic_cast <const GALGAS_gtlHelpInstruction *> (p)) {
+      result = *p ;
+    }else{
+      inCompiler->castError ("gtlHelpInstruction", p->dynamicTypeDescriptor () COMMA_THERE) ;
+    }  
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//   Object comparison                                                                                                 *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typeComparisonResult cPtr_gtlHereInstruction::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
+  typeComparisonResult result = kOperandEqual ;
+  const cPtr_gtlHereInstruction * p = (const cPtr_gtlHereInstruction *) inOperandPtr ;
+  macroValidSharedObject (p, cPtr_gtlHereInstruction) ;
+  if (kOperandEqual == result) {
+    result = mAttribute_where.objectCompare (p->mAttribute_where) ;
+  }
+  if (kOperandEqual == result) {
+    result = mAttribute_signature.objectCompare (p->mAttribute_signature) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+
+typeComparisonResult GALGAS_gtlHereInstruction::objectCompare (const GALGAS_gtlHereInstruction & inOperand) const {
+  typeComparisonResult result = kOperandNotValid ;
+  if (isValid () && inOperand.isValid ()) {
+    const int32_t mySlot = mObjectPtr->classDescriptor ()->mSlotID ;
+    const int32_t operandSlot = inOperand.mObjectPtr->classDescriptor ()->mSlotID ;
+    if (mySlot < operandSlot) {
+      result = kFirstOperandLowerThanSecond ;
+    }else if (mySlot > operandSlot) {
+      result = kFirstOperandGreaterThanSecond ;
+    }else{
+      result = mObjectPtr->dynamicObjectCompare (inOperand.mObjectPtr) ;
+    }
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlHereInstruction::GALGAS_gtlHereInstruction (void) :
+GALGAS_gtlInstruction () {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlHereInstruction GALGAS_gtlHereInstruction::constructor_default (LOCATION_ARGS) {
+  return GALGAS_gtlHereInstruction::constructor_new (GALGAS_location::constructor_nowhere (HERE),
+                                                     GALGAS_string::constructor_default (HERE)
+                                                     COMMA_THERE) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlHereInstruction::GALGAS_gtlHereInstruction (const cPtr_gtlHereInstruction * inSourcePtr) :
+GALGAS_gtlInstruction (inSourcePtr) {
+  macroNullOrValidSharedObject (inSourcePtr, cPtr_gtlHereInstruction) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlHereInstruction GALGAS_gtlHereInstruction::constructor_new (const GALGAS_location & inAttribute_where,
+                                                                      const GALGAS_string & inAttribute_signature
+                                                                      COMMA_LOCATION_ARGS) {
+  GALGAS_gtlHereInstruction result ;
+  if (inAttribute_where.isValid () && inAttribute_signature.isValid ()) {
+    macroMyNew (result.mObjectPtr, cPtr_gtlHereInstruction (inAttribute_where, inAttribute_signature COMMA_THERE)) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                     Pointer class for @gtlHereInstruction class                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+cPtr_gtlHereInstruction::cPtr_gtlHereInstruction (const GALGAS_location & in_where,
+                                                  const GALGAS_string & in_signature
+                                                  COMMA_LOCATION_ARGS) :
+cPtr_gtlInstruction (in_where, in_signature COMMA_THERE) {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor * cPtr_gtlHereInstruction::classDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_gtlHereInstruction ;
+}
+
+void cPtr_gtlHereInstruction::description (C_String & ioString,
+                                           const int32_t inIndentation) const {
+  ioString << "[@gtlHereInstruction:" ;
+  mAttribute_where.description (ioString, inIndentation+1) ;
+  ioString << ", " ;
+  mAttribute_signature.description (ioString, inIndentation+1) ;
+  ioString << "]" ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+acPtr_class * cPtr_gtlHereInstruction::duplicate (LOCATION_ARGS) const {
+  acPtr_class * ptr = NULL ;
+  macroMyNew (ptr, cPtr_gtlHereInstruction (mAttribute_where, mAttribute_signature COMMA_THERE)) ;
+  return ptr ;
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                              @gtlHereInstruction type                                               *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor
+kTypeDescriptor_GALGAS_gtlHereInstruction ("gtlHereInstruction",
+                                           & kTypeDescriptor_GALGAS_gtlInstruction) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor * GALGAS_gtlHereInstruction::staticTypeDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_gtlHereInstruction ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+AC_GALGAS_root * GALGAS_gtlHereInstruction::clonedObject (void) const {
+  AC_GALGAS_root * result = NULL ;
+  if (isValid ()) {
+    macroMyNew (result, GALGAS_gtlHereInstruction (*this)) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlHereInstruction GALGAS_gtlHereInstruction::extractObject (const GALGAS_object & inObject,
+                                                                    C_Compiler * inCompiler
+                                                                    COMMA_LOCATION_ARGS) {
+  GALGAS_gtlHereInstruction result ;
+  const GALGAS_gtlHereInstruction * p = (const GALGAS_gtlHereInstruction *) inObject.embeddedObject () ;
+  if (NULL != p) {
+    if (NULL != dynamic_cast <const GALGAS_gtlHereInstruction *> (p)) {
+      result = *p ;
+    }else{
+      inCompiler->castError ("gtlHereInstruction", p->dynamicTypeDescriptor () COMMA_THERE) ;
+    }  
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//   Object comparison                                                                                                 *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typeComparisonResult cPtr_gtlIfStatementInstruction::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
+  typeComparisonResult result = kOperandEqual ;
+  const cPtr_gtlIfStatementInstruction * p = (const cPtr_gtlIfStatementInstruction *) inOperandPtr ;
+  macroValidSharedObject (p, cPtr_gtlIfStatementInstruction) ;
+  if (kOperandEqual == result) {
+    result = mAttribute_where.objectCompare (p->mAttribute_where) ;
+  }
+  if (kOperandEqual == result) {
+    result = mAttribute_signature.objectCompare (p->mAttribute_signature) ;
+  }
+  if (kOperandEqual == result) {
+    result = mAttribute_thenElsifList.objectCompare (p->mAttribute_thenElsifList) ;
+  }
+  if (kOperandEqual == result) {
+    result = mAttribute_elseList.objectCompare (p->mAttribute_elseList) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+
+typeComparisonResult GALGAS_gtlIfStatementInstruction::objectCompare (const GALGAS_gtlIfStatementInstruction & inOperand) const {
+  typeComparisonResult result = kOperandNotValid ;
+  if (isValid () && inOperand.isValid ()) {
+    const int32_t mySlot = mObjectPtr->classDescriptor ()->mSlotID ;
+    const int32_t operandSlot = inOperand.mObjectPtr->classDescriptor ()->mSlotID ;
+    if (mySlot < operandSlot) {
+      result = kFirstOperandLowerThanSecond ;
+    }else if (mySlot > operandSlot) {
+      result = kFirstOperandGreaterThanSecond ;
+    }else{
+      result = mObjectPtr->dynamicObjectCompare (inOperand.mObjectPtr) ;
+    }
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlIfStatementInstruction::GALGAS_gtlIfStatementInstruction (void) :
+GALGAS_gtlInstruction () {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlIfStatementInstruction GALGAS_gtlIfStatementInstruction::constructor_default (LOCATION_ARGS) {
+  return GALGAS_gtlIfStatementInstruction::constructor_new (GALGAS_location::constructor_nowhere (HERE),
+                                                            GALGAS_string::constructor_default (HERE),
+                                                            GALGAS_gtlThenElsifStatementList::constructor_emptyList (HERE),
+                                                            GALGAS_gtlInstructionList::constructor_emptyList (HERE)
+                                                            COMMA_THERE) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlIfStatementInstruction::GALGAS_gtlIfStatementInstruction (const cPtr_gtlIfStatementInstruction * inSourcePtr) :
+GALGAS_gtlInstruction (inSourcePtr) {
+  macroNullOrValidSharedObject (inSourcePtr, cPtr_gtlIfStatementInstruction) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlIfStatementInstruction GALGAS_gtlIfStatementInstruction::constructor_new (const GALGAS_location & inAttribute_where,
+                                                                                    const GALGAS_string & inAttribute_signature,
+                                                                                    const GALGAS_gtlThenElsifStatementList & inAttribute_thenElsifList,
+                                                                                    const GALGAS_gtlInstructionList & inAttribute_elseList
+                                                                                    COMMA_LOCATION_ARGS) {
+  GALGAS_gtlIfStatementInstruction result ;
+  if (inAttribute_where.isValid () && inAttribute_signature.isValid () && inAttribute_thenElsifList.isValid () && inAttribute_elseList.isValid ()) {
+    macroMyNew (result.mObjectPtr, cPtr_gtlIfStatementInstruction (inAttribute_where, inAttribute_signature, inAttribute_thenElsifList, inAttribute_elseList COMMA_THERE)) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlThenElsifStatementList GALGAS_gtlIfStatementInstruction::getter_thenElsifList (UNUSED_LOCATION_ARGS) const {
+  GALGAS_gtlThenElsifStatementList result ;
+  if (NULL != mObjectPtr) {
+    const cPtr_gtlIfStatementInstruction * p = (const cPtr_gtlIfStatementInstruction *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_gtlIfStatementInstruction) ;
+    result = p->mAttribute_thenElsifList ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlThenElsifStatementList cPtr_gtlIfStatementInstruction::getter_thenElsifList (UNUSED_LOCATION_ARGS) const {
+  return mAttribute_thenElsifList ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlInstructionList GALGAS_gtlIfStatementInstruction::getter_elseList (UNUSED_LOCATION_ARGS) const {
+  GALGAS_gtlInstructionList result ;
+  if (NULL != mObjectPtr) {
+    const cPtr_gtlIfStatementInstruction * p = (const cPtr_gtlIfStatementInstruction *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_gtlIfStatementInstruction) ;
+    result = p->mAttribute_elseList ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlInstructionList cPtr_gtlIfStatementInstruction::getter_elseList (UNUSED_LOCATION_ARGS) const {
+  return mAttribute_elseList ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                 Pointer class for @gtlIfStatementInstruction class                                  *
+//---------------------------------------------------------------------------------------------------------------------*
+
+cPtr_gtlIfStatementInstruction::cPtr_gtlIfStatementInstruction (const GALGAS_location & in_where,
+                                                                const GALGAS_string & in_signature,
+                                                                const GALGAS_gtlThenElsifStatementList & in_thenElsifList,
+                                                                const GALGAS_gtlInstructionList & in_elseList
+                                                                COMMA_LOCATION_ARGS) :
+cPtr_gtlInstruction (in_where, in_signature COMMA_THERE),
+mAttribute_thenElsifList (in_thenElsifList),
+mAttribute_elseList (in_elseList) {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor * cPtr_gtlIfStatementInstruction::classDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_gtlIfStatementInstruction ;
+}
+
+void cPtr_gtlIfStatementInstruction::description (C_String & ioString,
+                                                  const int32_t inIndentation) const {
+  ioString << "[@gtlIfStatementInstruction:" ;
+  mAttribute_where.description (ioString, inIndentation+1) ;
+  ioString << ", " ;
+  mAttribute_signature.description (ioString, inIndentation+1) ;
+  ioString << ", " ;
+  mAttribute_thenElsifList.description (ioString, inIndentation+1) ;
+  ioString << ", " ;
+  mAttribute_elseList.description (ioString, inIndentation+1) ;
+  ioString << "]" ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+acPtr_class * cPtr_gtlIfStatementInstruction::duplicate (LOCATION_ARGS) const {
+  acPtr_class * ptr = NULL ;
+  macroMyNew (ptr, cPtr_gtlIfStatementInstruction (mAttribute_where, mAttribute_signature, mAttribute_thenElsifList, mAttribute_elseList COMMA_THERE)) ;
+  return ptr ;
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                           @gtlIfStatementInstruction type                                           *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor
+kTypeDescriptor_GALGAS_gtlIfStatementInstruction ("gtlIfStatementInstruction",
+                                                  & kTypeDescriptor_GALGAS_gtlInstruction) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor * GALGAS_gtlIfStatementInstruction::staticTypeDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_gtlIfStatementInstruction ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+AC_GALGAS_root * GALGAS_gtlIfStatementInstruction::clonedObject (void) const {
+  AC_GALGAS_root * result = NULL ;
+  if (isValid ()) {
+    macroMyNew (result, GALGAS_gtlIfStatementInstruction (*this)) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlIfStatementInstruction GALGAS_gtlIfStatementInstruction::extractObject (const GALGAS_object & inObject,
+                                                                                  C_Compiler * inCompiler
+                                                                                  COMMA_LOCATION_ARGS) {
+  GALGAS_gtlIfStatementInstruction result ;
+  const GALGAS_gtlIfStatementInstruction * p = (const GALGAS_gtlIfStatementInstruction *) inObject.embeddedObject () ;
+  if (NULL != p) {
+    if (NULL != dynamic_cast <const GALGAS_gtlIfStatementInstruction *> (p)) {
+      result = *p ;
+    }else{
+      inCompiler->castError ("gtlIfStatementInstruction", p->dynamicTypeDescriptor () COMMA_THERE) ;
+    }  
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//   Object comparison                                                                                                 *
+//---------------------------------------------------------------------------------------------------------------------*
+
 typeComparisonResult cPtr_gtlInputStatementInstruction::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
   typeComparisonResult result = kOperandEqual ;
   const cPtr_gtlInputStatementInstruction * p = (const cPtr_gtlInputStatementInstruction *) inOperandPtr ;
@@ -12378,7 +13389,7 @@ static const char * kSourceFileHelpMessages [] = {
 //---------------------------------------------------------------------------------------------------------------------*
 
 const char * projectVersionString (void) {
-  return "3.0.3" ;
+  return "3.0.4" ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -13557,73 +14568,98 @@ void extensionMethod_execute (const GALGAS_gtlInstructionList inObject,
                               COMMA_UNUSED_LOCATION_ARGS) {
   const enumGalgasBool test_0 = callExtensionGetter_debugActive ((const cPtr_gtlContext *) ioArgument_context.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 60)).boolEnum () ;
   if (kBoolTrue == test_0) {
+    {
     const GALGAS_gtlInstructionList temp_1 = inObject ;
-    cEnumerator_gtlInstructionList enumerator_1588 (temp_1, kEnumeration_up) ;
-    while (enumerator_1588.hasCurrentObject ()) {
-      const enumGalgasBool test_2 = callExtensionGetter_breakOnNext ((const cPtr_gtlContext *) ioArgument_context.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 62)).boolEnum () ;
-      if (kBoolTrue == test_2) {
-        callExtensionMethod_displayWithLocation ((const cPtr_gtlInstruction *) enumerator_1588.current_instruction (HERE).ptr (), ioArgument_context.getter_debuggerContext (SOURCE_FILE ("gtl_instructions.galgas", 63)), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 63)) ;
-        callExtensionMethod_executeStepDoList ((const cPtr_gtlContext *) ioArgument_context.ptr (), ioArgument_context, ioArgument_vars, ioArgument_lib, ioArgument_outputString, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 64)) ;
+    ioArgument_context.insulate (HERE) ;
+    cPtr_gtlContext * ptr_1584 = (cPtr_gtlContext *) ioArgument_context.ptr () ;
+    callExtensionSetter_pushInstructionList ((cPtr_gtlContext *) ptr_1584, temp_1, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 61)) ;
+    }
+    GALGAS_uint var_lastErrorCount_1636 = GALGAS_uint::constructor_errorCount (SOURCE_FILE ("gtl_instructions.galgas", 62)) ;
+    const GALGAS_gtlInstructionList temp_2 = inObject ;
+    cEnumerator_gtlInstructionList enumerator_1669 (temp_2, kEnumeration_up) ;
+    GALGAS_uint index_1658 ((uint32_t) 0) ;
+    while (enumerator_1669.hasCurrentObject ()) {
+      GALGAS_bool var_errorCountIncreased_1712 = GALGAS_bool (kIsStrictSup, GALGAS_uint::constructor_errorCount (SOURCE_FILE ("gtl_instructions.galgas", 64)).substract_operation (var_lastErrorCount_1636, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 64)).objectCompare (GALGAS_uint ((uint32_t) 0U))) ;
+      const enumGalgasBool test_3 = callExtensionGetter_breakOnNext ((const cPtr_gtlContext *) ioArgument_context.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 65)).operator_or (callExtensionGetter_breakOn ((const cPtr_gtlContext *) ioArgument_context.ptr (), enumerator_1669.current_instruction (HERE), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 65)) COMMA_SOURCE_FILE ("gtl_instructions.galgas", 65)).operator_or (var_errorCountIncreased_1712 COMMA_SOURCE_FILE ("gtl_instructions.galgas", 65)).boolEnum () ;
+      if (kBoolTrue == test_3) {
         {
         ioArgument_context.insulate (HERE) ;
-        cPtr_gtlContext * ptr_1789 = (cPtr_gtlContext *) ioArgument_context.ptr () ;
-        callExtensionSetter_setLoopOnCommand ((cPtr_gtlContext *) ptr_1789, GALGAS_bool (true), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 65)) ;
+        cPtr_gtlContext * ptr_1864 = (cPtr_gtlContext *) ioArgument_context.ptr () ;
+        callExtensionSetter_setBreakOnNext ((cPtr_gtlContext *) ptr_1864, GALGAS_bool (true), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 66)) ;
         }
-        if (GALGAS_uint::constructor_max (SOURCE_FILE ("gtl_instructions.galgas", 66)).isValid ()) {
-          uint32_t variant_1826 = GALGAS_uint::constructor_max (SOURCE_FILE ("gtl_instructions.galgas", 66)).uintValue () ;
-          bool loop_1826 = true ;
-          while (loop_1826) {
-              inCompiler->printMessage (callExtensionGetter_promptStyle ((const cPtr_gtlContext *) ioArgument_context.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 67)).add_operation (GALGAS_string ("gtl> "), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 67)).add_operation (function_endc (inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 67)), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 67))  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 67)) ;
-              GALGAS_string var_input_1921 = GALGAS_string::constructor_newWithStdIn (SOURCE_FILE ("gtl_instructions.galgas", 68)) ;
-              GALGAS_gtlInstruction var_command_1980 ;
-              GALGAS_uint var_currentErrorCount_2014 = GALGAS_uint::constructor_errorCount (SOURCE_FILE ("gtl_instructions.galgas", 70)) ;
-              const enumGalgasBool test_3 = GALGAS_bool (kIsEqual, var_input_1921.getter_stringByTrimmingWhiteSpaces (SOURCE_FILE ("gtl_instructions.galgas", 71)).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
-              if (kBoolTrue == test_3) {
-                var_command_1980 = GALGAS_gtlStepInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 72)), GALGAS_string::makeEmptyString ()  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 72)) ;
-              }else if (kBoolFalse == test_3) {
-                var_command_1980.drop () ;
-                cGrammar_gtl_5F_debugger_5F_grammar::_performSourceStringParsing_ (inCompiler, GALGAS_string ("%").add_operation (var_input_1921, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 74)), GALGAS_string ("Debugger command"), var_command_1980  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 74)) ;
-              }
-              const enumGalgasBool test_4 = GALGAS_bool (kIsEqual, GALGAS_uint::constructor_errorCount (SOURCE_FILE ("gtl_instructions.galgas", 77)).objectCompare (var_currentErrorCount_2014)).boolEnum () ;
+        {
+        ioArgument_context.insulate (HERE) ;
+        cPtr_gtlContext * ptr_1905 = (cPtr_gtlContext *) ioArgument_context.ptr () ;
+        callExtensionSetter_setNextInstructionIndex ((cPtr_gtlContext *) ptr_1905, index_1658, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 67)) ;
+        }
+        callExtensionMethod_executeStepDoList ((const cPtr_gtlContext *) ioArgument_context.ptr (), ioArgument_context, ioArgument_vars, ioArgument_lib, ioArgument_outputString, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 69)) ;
+        {
+        ioArgument_context.insulate (HERE) ;
+        cPtr_gtlContext * ptr_2100 = (cPtr_gtlContext *) ioArgument_context.ptr () ;
+        callExtensionSetter_setLoopOnCommand ((cPtr_gtlContext *) ptr_2100, GALGAS_bool (true), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 70)) ;
+        }
+        if (GALGAS_uint::constructor_max (SOURCE_FILE ("gtl_instructions.galgas", 71)).isValid ()) {
+          uint32_t variant_2137 = GALGAS_uint::constructor_max (SOURCE_FILE ("gtl_instructions.galgas", 71)).uintValue () ;
+          bool loop_2137 = true ;
+          while (loop_2137) {
+              inCompiler->printMessage (callExtensionGetter_promptStyle ((const cPtr_gtlContext *) ioArgument_context.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 72)).add_operation (GALGAS_string ("gtl> "), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 72)).add_operation (function_endc (inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 72)), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 72))  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 72)) ;
+              GALGAS_string var_input_2232 = GALGAS_string::constructor_newWithStdIn (SOURCE_FILE ("gtl_instructions.galgas", 73)) ;
+              GALGAS_gtlInstruction var_command_2291 ;
+              GALGAS_uint var_currentErrorCount_2325 = GALGAS_uint::constructor_errorCount (SOURCE_FILE ("gtl_instructions.galgas", 75)) ;
+              const enumGalgasBool test_4 = GALGAS_bool (kIsEqual, var_input_2232.getter_stringByTrimmingWhiteSpaces (SOURCE_FILE ("gtl_instructions.galgas", 76)).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
               if (kBoolTrue == test_4) {
-                const enumGalgasBool test_5 = callExtensionGetter_mayExecuteWithoutError ((const cPtr_gtlInstruction *) var_command_1980.ptr (), ioArgument_vars, ioArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 78)).boolEnum () ;
-                if (kBoolTrue == test_5) {
-                  inCompiler->printMessage (callExtensionGetter_outputStyle ((const cPtr_gtlContext *) ioArgument_context.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 79))  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 79)) ;
-                  callExtensionMethod_execute ((const cPtr_gtlInstruction *) var_command_1980.ptr (), ioArgument_context, ioArgument_vars, ioArgument_lib, ioArgument_outputString, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 80)) ;
-                  inCompiler->printMessage (function_endc (inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 81))  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 81)) ;
+                var_command_2291 = GALGAS_gtlStepInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 77)), GALGAS_string::makeEmptyString ()  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 77)) ;
+              }else if (kBoolFalse == test_4) {
+                var_command_2291.drop () ;
+                cGrammar_gtl_5F_debugger_5F_grammar::_performSourceStringParsing_ (inCompiler, GALGAS_string ("%").add_operation (var_input_2232, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 79)), GALGAS_string ("Debugger command"), var_command_2291  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 79)) ;
+              }
+              const enumGalgasBool test_5 = GALGAS_bool (kIsEqual, GALGAS_uint::constructor_errorCount (SOURCE_FILE ("gtl_instructions.galgas", 82)).objectCompare (var_currentErrorCount_2325)).boolEnum () ;
+              if (kBoolTrue == test_5) {
+                const enumGalgasBool test_6 = callExtensionGetter_mayExecuteWithoutError ((const cPtr_gtlInstruction *) var_command_2291.ptr (), ioArgument_vars, ioArgument_lib, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 83)).boolEnum () ;
+                if (kBoolTrue == test_6) {
+                  inCompiler->printMessage (callExtensionGetter_outputStyle ((const cPtr_gtlContext *) ioArgument_context.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 84))  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 84)) ;
+                  callExtensionMethod_execute ((const cPtr_gtlInstruction *) var_command_2291.ptr (), ioArgument_context, ioArgument_vars, ioArgument_lib, ioArgument_outputString, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 85)) ;
+                  inCompiler->printMessage (function_endc (inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 86))  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 86)) ;
                 }
               }
-            loop_1826 = callExtensionGetter_loopOnCommand ((const cPtr_gtlContext *) ioArgument_context.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 84)).isValid () ;
-            if (loop_1826) {
-              loop_1826 = callExtensionGetter_loopOnCommand ((const cPtr_gtlContext *) ioArgument_context.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 84)).boolValue () ;
+            loop_2137 = callExtensionGetter_loopOnCommand ((const cPtr_gtlContext *) ioArgument_context.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 89)).isValid () ;
+            if (loop_2137) {
+              loop_2137 = callExtensionGetter_loopOnCommand ((const cPtr_gtlContext *) ioArgument_context.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 89)).boolValue () ;
             }
-            if (loop_1826 && (0 == variant_1826)) {
-              loop_1826 = false ;
-              inCompiler->loopRunTimeVariantError (SOURCE_FILE ("gtl_instructions.galgas", 66)) ;
+            if (loop_2137 && (0 == variant_2137)) {
+              loop_2137 = false ;
+              inCompiler->loopRunTimeVariantError (SOURCE_FILE ("gtl_instructions.galgas", 71)) ;
             }
-            if (loop_1826) {
-              variant_1826 -- ;
+            if (loop_2137) {
+              variant_2137 -- ;
             }
           }
         }
       }
-      callExtensionMethod_execute ((const cPtr_gtlInstruction *) enumerator_1588.current_instruction (HERE).ptr (), ioArgument_context, ioArgument_vars, ioArgument_lib, ioArgument_outputString, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 87)) ;
-      enumerator_1588.gotoNextObject () ;
+      var_lastErrorCount_1636 = GALGAS_uint::constructor_errorCount (SOURCE_FILE ("gtl_instructions.galgas", 92)) ;
+      callExtensionMethod_execute ((const cPtr_gtlInstruction *) enumerator_1669.current_instruction (HERE).ptr (), ioArgument_context, ioArgument_vars, ioArgument_lib, ioArgument_outputString, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 93)) ;
+      enumerator_1669.gotoNextObject () ;
+      index_1658.increment_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 63)) ;
+    }
+    {
+    ioArgument_context.insulate (HERE) ;
+    cPtr_gtlContext * ptr_3075 = (cPtr_gtlContext *) ioArgument_context.ptr () ;
+    callExtensionSetter_popInstructionList ((cPtr_gtlContext *) ptr_3075, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 95)) ;
     }
   }else if (kBoolFalse == test_0) {
-    const GALGAS_gtlInstructionList temp_6 = inObject ;
-    cEnumerator_gtlInstructionList enumerator_2740 (temp_6, kEnumeration_up) ;
-    while (enumerator_2740.hasCurrentObject ()) {
-      const enumGalgasBool test_7 = GALGAS_bool (kIsEqual, GALGAS_uint::constructor_errorCount (SOURCE_FILE ("gtl_instructions.galgas", 91)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
-      if (kBoolTrue == test_7) {
-        callExtensionMethod_execute ((const cPtr_gtlInstruction *) enumerator_2740.current_instruction (HERE).ptr (), ioArgument_context, ioArgument_vars, ioArgument_lib, ioArgument_outputString, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 92)) ;
-        const enumGalgasBool test_8 = GALGAS_bool (kIsNotEqual, GALGAS_uint::constructor_errorCount (SOURCE_FILE ("gtl_instructions.galgas", 93)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
-        if (kBoolTrue == test_8) {
-          TC_Array <C_FixItDescription> fixItArray9 ;
-          inCompiler->emitSemanticError (callExtensionGetter_location ((const cPtr_gtlInstruction *) enumerator_2740.current_instruction (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 94)), GALGAS_string ("runtime error"), fixItArray9  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 94)) ;
+    const GALGAS_gtlInstructionList temp_7 = inObject ;
+    cEnumerator_gtlInstructionList enumerator_3121 (temp_7, kEnumeration_up) ;
+    while (enumerator_3121.hasCurrentObject ()) {
+      const enumGalgasBool test_8 = GALGAS_bool (kIsEqual, GALGAS_uint::constructor_errorCount (SOURCE_FILE ("gtl_instructions.galgas", 98)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+      if (kBoolTrue == test_8) {
+        callExtensionMethod_execute ((const cPtr_gtlInstruction *) enumerator_3121.current_instruction (HERE).ptr (), ioArgument_context, ioArgument_vars, ioArgument_lib, ioArgument_outputString, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 99)) ;
+        const enumGalgasBool test_9 = GALGAS_bool (kIsNotEqual, GALGAS_uint::constructor_errorCount (SOURCE_FILE ("gtl_instructions.galgas", 100)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+        if (kBoolTrue == test_9) {
+          TC_Array <C_FixItDescription> fixItArray10 ;
+          inCompiler->emitSemanticError (callExtensionGetter_location ((const cPtr_gtlInstruction *) enumerator_3121.current_instruction (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 101)), GALGAS_string ("runtime error"), fixItArray10  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 101)) ;
         }
       }
-      enumerator_2740.gotoNextObject () ;
+      enumerator_3121.gotoNextObject () ;
     }
   }
 }
@@ -13748,12 +14784,12 @@ static void extensionMethod_gtlAbstractSortInstruction_swap (const cPtr_gtlAbstr
                                                              const GALGAS_uint constinArgument_index_32_,
                                                              C_Compiler * inCompiler
                                                              COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_gtlData var_temp_28581 = ioArgument_aList.getter_valueAtIndex (constinArgument_index_31_, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 950)) ;
+  GALGAS_gtlData var_temp_28962 = ioArgument_aList.getter_valueAtIndex (constinArgument_index_31_, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 957)) ;
   {
-  ioArgument_aList.setter_setValueAtIndex (ioArgument_aList.getter_valueAtIndex (constinArgument_index_32_, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 951)), constinArgument_index_31_, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 951)) ;
+  ioArgument_aList.setter_setValueAtIndex (ioArgument_aList.getter_valueAtIndex (constinArgument_index_32_, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 958)), constinArgument_index_31_, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 958)) ;
   }
   {
-  ioArgument_aList.setter_setValueAtIndex (var_temp_28581, constinArgument_index_32_, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 952)) ;
+  ioArgument_aList.setter_setValueAtIndex (var_temp_28962, constinArgument_index_32_, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 959)) ;
   }
 }
 //---------------------------------------------------------------------------------------------------------------------*
@@ -13835,39 +14871,39 @@ static void extensionMethod_gtlAbstractSortInstruction_partition (const cPtr_gtl
                                                                   COMMA_UNUSED_LOCATION_ARGS) {
   const cPtr_gtlAbstractSortInstruction * object = inObject ;
   macroValidSharedObject (object, cPtr_gtlAbstractSortInstruction) ;
-  GALGAS_gtlData var_pivot_28864 = ioArgument_aList.getter_valueAtIndex (ioArgument_pivotIndex, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 961)) ;
+  GALGAS_gtlData var_pivot_29245 = ioArgument_aList.getter_valueAtIndex (ioArgument_pivotIndex, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 968)) ;
   const GALGAS_gtlAbstractSortInstruction temp_0 = object ;
-  callExtensionMethod_swap ((const cPtr_gtlAbstractSortInstruction *) temp_0.ptr (), ioArgument_aList, ioArgument_pivotIndex, constinArgument_max, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 962)) ;
-  GALGAS_uint var_storeIndex_28957 = constinArgument_min ;
-  GALGAS_uint var_i_28973 = constinArgument_min ;
-  if (constinArgument_max.substract_operation (constinArgument_min, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 965)).isValid ()) {
-    uint32_t variant_28986 = constinArgument_max.substract_operation (constinArgument_min, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 965)).uintValue () ;
-    bool loop_28986 = true ;
-    while (loop_28986) {
-      loop_28986 = GALGAS_bool (kIsStrictInf, var_i_28973.objectCompare (constinArgument_max)).isValid () ;
-      if (loop_28986) {
-        loop_28986 = GALGAS_bool (kIsStrictInf, var_i_28973.objectCompare (constinArgument_max)).boolValue () ;
+  callExtensionMethod_swap ((const cPtr_gtlAbstractSortInstruction *) temp_0.ptr (), ioArgument_aList, ioArgument_pivotIndex, constinArgument_max, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 969)) ;
+  GALGAS_uint var_storeIndex_29338 = constinArgument_min ;
+  GALGAS_uint var_i_29354 = constinArgument_min ;
+  if (constinArgument_max.substract_operation (constinArgument_min, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 972)).isValid ()) {
+    uint32_t variant_29367 = constinArgument_max.substract_operation (constinArgument_min, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 972)).uintValue () ;
+    bool loop_29367 = true ;
+    while (loop_29367) {
+      loop_29367 = GALGAS_bool (kIsStrictInf, var_i_29354.objectCompare (constinArgument_max)).isValid () ;
+      if (loop_29367) {
+        loop_29367 = GALGAS_bool (kIsStrictInf, var_i_29354.objectCompare (constinArgument_max)).boolValue () ;
       }
-      if (loop_28986 && (0 == variant_28986)) {
-        loop_28986 = false ;
-        inCompiler->loopRunTimeVariantError (SOURCE_FILE ("gtl_instructions.galgas", 965)) ;
+      if (loop_29367 && (0 == variant_29367)) {
+        loop_29367 = false ;
+        inCompiler->loopRunTimeVariantError (SOURCE_FILE ("gtl_instructions.galgas", 972)) ;
       }
-      if (loop_28986) {
-        variant_28986 -- ;
+      if (loop_29367) {
+        variant_29367 -- ;
         const GALGAS_gtlAbstractSortInstruction temp_1 = object ;
-        const enumGalgasBool test_2 = GALGAS_bool (kIsEqual, callExtensionGetter_compare ((const cPtr_gtlAbstractSortInstruction *) temp_1.ptr (), ioArgument_aList.getter_valueAtIndex (var_i_28973, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 967)), var_pivot_28864, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 967)).objectCompare (GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 967)))).boolEnum () ;
+        const enumGalgasBool test_2 = GALGAS_bool (kIsEqual, callExtensionGetter_compare ((const cPtr_gtlAbstractSortInstruction *) temp_1.ptr (), ioArgument_aList.getter_valueAtIndex (var_i_29354, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 974)), var_pivot_29245, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 974)).objectCompare (GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 974)))).boolEnum () ;
         if (kBoolTrue == test_2) {
           const GALGAS_gtlAbstractSortInstruction temp_3 = object ;
-          callExtensionMethod_swap ((const cPtr_gtlAbstractSortInstruction *) temp_3.ptr (), ioArgument_aList, var_i_28973, var_storeIndex_28957, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 968)) ;
-          var_storeIndex_28957.increment_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 969)) ;
+          callExtensionMethod_swap ((const cPtr_gtlAbstractSortInstruction *) temp_3.ptr (), ioArgument_aList, var_i_29354, var_storeIndex_29338, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 975)) ;
+          var_storeIndex_29338.increment_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 976)) ;
         }
-        var_i_28973.increment_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 971)) ;
+        var_i_29354.increment_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 978)) ;
       }
     }
   }
   const GALGAS_gtlAbstractSortInstruction temp_4 = object ;
-  callExtensionMethod_swap ((const cPtr_gtlAbstractSortInstruction *) temp_4.ptr (), ioArgument_aList, var_storeIndex_28957, constinArgument_max, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 973)) ;
-  ioArgument_pivotIndex = var_storeIndex_28957 ;
+  callExtensionMethod_swap ((const cPtr_gtlAbstractSortInstruction *) temp_4.ptr (), ioArgument_aList, var_storeIndex_29338, constinArgument_max, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 980)) ;
+  ioArgument_pivotIndex = var_storeIndex_29338 ;
 }
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -13948,13 +14984,13 @@ static void extensionMethod_gtlAbstractSortInstruction_sort (const cPtr_gtlAbstr
   macroValidSharedObject (object, cPtr_gtlAbstractSortInstruction) ;
   const enumGalgasBool test_0 = GALGAS_bool (kIsStrictInf, constinArgument_min.objectCompare (constinArgument_max)).boolEnum () ;
   if (kBoolTrue == test_0) {
-    GALGAS_uint var_pivotIndex_29369 = constinArgument_max.add_operation (constinArgument_min, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 983)).divide_operation (GALGAS_uint ((uint32_t) 2U), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 983)) ;
+    GALGAS_uint var_pivotIndex_29750 = constinArgument_max.add_operation (constinArgument_min, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 990)).divide_operation (GALGAS_uint ((uint32_t) 2U), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 990)) ;
     const GALGAS_gtlAbstractSortInstruction temp_1 = object ;
-    callExtensionMethod_partition ((const cPtr_gtlAbstractSortInstruction *) temp_1.ptr (), ioArgument_aList, constinArgument_min, constinArgument_max, var_pivotIndex_29369, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 984)) ;
+    callExtensionMethod_partition ((const cPtr_gtlAbstractSortInstruction *) temp_1.ptr (), ioArgument_aList, constinArgument_min, constinArgument_max, var_pivotIndex_29750, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 991)) ;
     const GALGAS_gtlAbstractSortInstruction temp_2 = object ;
-    callExtensionMethod_sort ((const cPtr_gtlAbstractSortInstruction *) temp_2.ptr (), ioArgument_aList, constinArgument_min, var_pivotIndex_29369, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 985)) ;
+    callExtensionMethod_sort ((const cPtr_gtlAbstractSortInstruction *) temp_2.ptr (), ioArgument_aList, constinArgument_min, var_pivotIndex_29750, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 992)) ;
     const GALGAS_gtlAbstractSortInstruction temp_3 = object ;
-    callExtensionMethod_sort ((const cPtr_gtlAbstractSortInstruction *) temp_3.ptr (), ioArgument_aList, var_pivotIndex_29369.add_operation (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 986)), constinArgument_max, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 986)) ;
+    callExtensionMethod_sort ((const cPtr_gtlAbstractSortInstruction *) temp_3.ptr (), ioArgument_aList, var_pivotIndex_29750.add_operation (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 993)), constinArgument_max, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 993)) ;
   }
 }
 //---------------------------------------------------------------------------------------------------------------------*
@@ -14038,7 +15074,7 @@ static GALGAS_sint extensionGetter_gtlSortStatementStructInstruction_compareElem
   GALGAS_sint result_result ; // Returned variable
   const cPtr_gtlSortStatementStructInstruction * object = inObject ;
   macroValidSharedObject (object, cPtr_gtlSortStatementStructInstruction) ;
-  const enumGalgasBool test_0 = GALGAS_bool (kIsStrictSup, inArgument_keyList.getter_length (SOURCE_FILE ("gtl_instructions.galgas", 1034)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+  const enumGalgasBool test_0 = GALGAS_bool (kIsStrictSup, inArgument_keyList.getter_length (SOURCE_FILE ("gtl_instructions.galgas", 1041)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
   if (kBoolTrue == test_0) {
     const enumGalgasBool test_1 = GALGAS_bool (constinArgument_s_31_.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_gtlStruct).boolEnum () ;
     if (kBoolTrue == test_1) {
@@ -14049,48 +15085,48 @@ static GALGAS_sint extensionGetter_gtlSortStatementStructInstruction_compareElem
           if (NULL != dynamic_cast <const cPtr_gtlStruct *> (constinArgument_s_31_.ptr ())) {
             temp_3 = (cPtr_gtlStruct *) constinArgument_s_31_.ptr () ;
           }else{
-            inCompiler->castError ("gtlStruct", constinArgument_s_31_.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1037)) ;
+            inCompiler->castError ("gtlStruct", constinArgument_s_31_.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1044)) ;
           }
         }
-        GALGAS_gtlStruct var_s_31_Struct_30847 = temp_3 ;
+        GALGAS_gtlStruct var_s_31_Struct_31228 = temp_3 ;
         GALGAS_gtlStruct temp_4 ;
         if (constinArgument_s_32_.isValid ()) {
           if (NULL != dynamic_cast <const cPtr_gtlStruct *> (constinArgument_s_32_.ptr ())) {
             temp_4 = (cPtr_gtlStruct *) constinArgument_s_32_.ptr () ;
           }else{
-            inCompiler->castError ("gtlStruct", constinArgument_s_32_.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1038)) ;
+            inCompiler->castError ("gtlStruct", constinArgument_s_32_.ptr ()->classDescriptor () COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1045)) ;
           }
         }
-        GALGAS_gtlStruct var_s_32_Struct_30894 = temp_4 ;
-        GALGAS_lstring var_field_30957 ;
-        GALGAS_lsint var_order_30971 ;
+        GALGAS_gtlStruct var_s_32_Struct_31275 = temp_4 ;
+        GALGAS_lstring var_field_31338 ;
+        GALGAS_lsint var_order_31352 ;
         {
-        inArgument_keyList.setter_popFirst (var_field_30957, var_order_30971, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1039)) ;
+        inArgument_keyList.setter_popFirst (var_field_31338, var_order_31352, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1046)) ;
         }
-        GALGAS_gtlData var_s_31_Field_31027 ;
-        var_s_31_Struct_30847.getter_value (SOURCE_FILE ("gtl_instructions.galgas", 1040)).method_get (var_field_30957, var_s_31_Field_31027, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1040)) ;
-        GALGAS_gtlData var_s_32_Field_31083 ;
-        var_s_32_Struct_30894.getter_value (SOURCE_FILE ("gtl_instructions.galgas", 1041)).method_get (var_field_30957, var_s_32_Field_31083, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1041)) ;
-        const enumGalgasBool test_5 = callExtensionGetter_bool ((const cPtr_gtlData *) callExtensionGetter_ltOp ((const cPtr_gtlData *) var_s_31_Field_31027.ptr (), var_s_32_Field_31083, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1042)).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1049)).boolEnum () ;
+        GALGAS_gtlData var_s_31_Field_31408 ;
+        var_s_31_Struct_31228.getter_value (SOURCE_FILE ("gtl_instructions.galgas", 1047)).method_get (var_field_31338, var_s_31_Field_31408, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1047)) ;
+        GALGAS_gtlData var_s_32_Field_31464 ;
+        var_s_32_Struct_31275.getter_value (SOURCE_FILE ("gtl_instructions.galgas", 1048)).method_get (var_field_31338, var_s_32_Field_31464, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1048)) ;
+        const enumGalgasBool test_5 = callExtensionGetter_bool ((const cPtr_gtlData *) callExtensionGetter_ltOp ((const cPtr_gtlData *) var_s_31_Field_31408.ptr (), var_s_32_Field_31464, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1049)).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1056)).boolEnum () ;
         if (kBoolTrue == test_5) {
-          result_result = GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1043)).multiply_operation (var_order_30971.getter_sint (SOURCE_FILE ("gtl_instructions.galgas", 1043)), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1043)) ;
+          result_result = GALGAS_sint ((int32_t) 1L).operator_unary_minus (inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1050)).multiply_operation (var_order_31352.getter_sint (SOURCE_FILE ("gtl_instructions.galgas", 1050)), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1050)) ;
         }else if (kBoolFalse == test_5) {
-          const enumGalgasBool test_6 = callExtensionGetter_bool ((const cPtr_gtlData *) callExtensionGetter_gtOp ((const cPtr_gtlData *) var_s_31_Field_31027.ptr (), var_s_32_Field_31083, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1045)).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1048)).boolEnum () ;
+          const enumGalgasBool test_6 = callExtensionGetter_bool ((const cPtr_gtlData *) callExtensionGetter_gtOp ((const cPtr_gtlData *) var_s_31_Field_31408.ptr (), var_s_32_Field_31464, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1052)).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1055)).boolEnum () ;
           if (kBoolTrue == test_6) {
-            result_result = GALGAS_sint ((int32_t) 1L).multiply_operation (var_order_30971.getter_sint (SOURCE_FILE ("gtl_instructions.galgas", 1046)), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1046)) ;
+            result_result = GALGAS_sint ((int32_t) 1L).multiply_operation (var_order_31352.getter_sint (SOURCE_FILE ("gtl_instructions.galgas", 1053)), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1053)) ;
           }else if (kBoolFalse == test_6) {
             const GALGAS_gtlSortStatementStructInstruction temp_7 = object ;
-            result_result = callExtensionGetter_compareElements ((const cPtr_gtlSortStatementStructInstruction *) temp_7.ptr (), constinArgument_s_31_, constinArgument_s_32_, inArgument_keyList, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1048)) ;
+            result_result = callExtensionGetter_compareElements ((const cPtr_gtlSortStatementStructInstruction *) temp_7.ptr (), constinArgument_s_31_, constinArgument_s_32_, inArgument_keyList, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1055)) ;
           }
         }
       }else if (kBoolFalse == test_2) {
         TC_Array <C_FixItDescription> fixItArray8 ;
-        inCompiler->emitSemanticError (callExtensionGetter_location ((const cPtr_gtlData *) constinArgument_s_32_.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1052)), GALGAS_string ("struct expected"), fixItArray8  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1052)) ;
+        inCompiler->emitSemanticError (callExtensionGetter_location ((const cPtr_gtlData *) constinArgument_s_32_.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1059)), GALGAS_string ("struct expected"), fixItArray8  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1059)) ;
         result_result.drop () ; // Release error dropped variable
       }
     }else if (kBoolFalse == test_1) {
       TC_Array <C_FixItDescription> fixItArray9 ;
-      inCompiler->emitSemanticError (callExtensionGetter_location ((const cPtr_gtlData *) constinArgument_s_31_.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1055)), GALGAS_string ("struct expected"), fixItArray9  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1055)) ;
+      inCompiler->emitSemanticError (callExtensionGetter_location ((const cPtr_gtlData *) constinArgument_s_31_.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1062)), GALGAS_string ("struct expected"), fixItArray9  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1062)) ;
       result_result.drop () ; // Release error dropped variable
     }
   }else if (kBoolFalse == test_0) {
@@ -14176,17 +15212,17 @@ static void extensionMethod_gtlVariablesInstruction_displayShort (const cPtr_gtl
   macroValidSharedObject (object, cPtr_gtlVariablesInstruction) ;
   if (constinArgument_vars.isValid ()) {
     if (constinArgument_vars.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_gtlStruct) {
-      GALGAS_gtlStruct cast_33335_variableMap ((cPtr_gtlStruct *) constinArgument_vars.ptr ()) ;
-      cEnumerator_gtlVarMap enumerator_33383 (cast_33335_variableMap.getter_value (SOURCE_FILE ("gtl_instructions.galgas", 1128)), kEnumeration_up) ;
-      while (enumerator_33383.hasCurrentObject ()) {
-        inCompiler->printMessage (enumerator_33383.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_instructions.galgas", 1129)).add_operation (GALGAS_string (" >\n"), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1129))  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1129)) ;
-        inCompiler->printMessage (callExtensionGetter_desc ((const cPtr_gtlData *) enumerator_33383.current_value (HERE).ptr (), GALGAS_uint ((uint32_t) 4U), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1130))  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1130)) ;
-        enumerator_33383.gotoNextObject () ;
+      GALGAS_gtlStruct cast_33716_variableMap ((cPtr_gtlStruct *) constinArgument_vars.ptr ()) ;
+      cEnumerator_gtlVarMap enumerator_33764 (cast_33716_variableMap.getter_value (SOURCE_FILE ("gtl_instructions.galgas", 1135)), kEnumeration_up) ;
+      while (enumerator_33764.hasCurrentObject ()) {
+        inCompiler->printMessage (enumerator_33764.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_instructions.galgas", 1136)).add_operation (GALGAS_string (" >\n"), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1136))  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1136)) ;
+        inCompiler->printMessage (callExtensionGetter_desc ((const cPtr_gtlData *) enumerator_33764.current_value (HERE).ptr (), GALGAS_uint ((uint32_t) 4U), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1137))  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1137)) ;
+        enumerator_33764.gotoNextObject () ;
       }
     }else{
       const GALGAS_gtlVariablesInstruction temp_0 = object ;
       TC_Array <C_FixItDescription> fixItArray1 ;
-      inCompiler->emitSemanticError (callExtensionGetter_location ((const cPtr_gtlVariablesInstruction *) temp_0.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1133)), GALGAS_string ("INTERNAL ERROR. a variable map should be a @gtlStruct"), fixItArray1  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1133)) ;
+      inCompiler->emitSemanticError (callExtensionGetter_location ((const cPtr_gtlVariablesInstruction *) temp_0.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1140)), GALGAS_string ("INTERNAL ERROR. a variable map should be a @gtlStruct"), fixItArray1  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1140)) ;
     }
   }
 }
@@ -14263,30 +15299,30 @@ static void extensionMethod_gtlVariablesInstruction_displayLong (const cPtr_gtlV
                                                                  COMMA_UNUSED_LOCATION_ARGS) {
   const cPtr_gtlVariablesInstruction * object = inObject ;
   macroValidSharedObject (object, cPtr_gtlVariablesInstruction) ;
-  GALGAS_string var_delimitor_33640 = GALGAS_string::constructor_stringWithSequenceOfCharacters (GALGAS_char (TO_UNICODE (61)), GALGAS_uint ((uint32_t) 79U)  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1140)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1140)) ;
-  GALGAS_string var_varDelim_33718 = GALGAS_string::constructor_stringWithSequenceOfCharacters (GALGAS_char (TO_UNICODE (45)), GALGAS_uint ((uint32_t) 79U)  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1141)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1141)) ;
-  GALGAS_string var_separator_33798 = GALGAS_string::constructor_stringWithSequenceOfCharacters (GALGAS_char (TO_UNICODE (61)), GALGAS_uint ((uint32_t) 17U)  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1142)) ;
-  inCompiler->printMessage (var_separator_33798.add_operation (GALGAS_string (" Variables "), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1143)).add_operation (var_separator_33798, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1143)).add_operation (GALGAS_string ("= Displayed from "), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1144)).add_operation (var_separator_33798, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1144)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1145))  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1143)) ;
-  inCompiler->printMessage (object->mAttribute_where.getter_locationString (inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1146)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1146))  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1146)) ;
-  inCompiler->printMessage (var_delimitor_33640  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1147)) ;
+  GALGAS_string var_delimitor_34021 = GALGAS_string::constructor_stringWithSequenceOfCharacters (GALGAS_char (TO_UNICODE (61)), GALGAS_uint ((uint32_t) 79U)  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1147)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1147)) ;
+  GALGAS_string var_varDelim_34099 = GALGAS_string::constructor_stringWithSequenceOfCharacters (GALGAS_char (TO_UNICODE (45)), GALGAS_uint ((uint32_t) 79U)  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1148)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1148)) ;
+  GALGAS_string var_separator_34179 = GALGAS_string::constructor_stringWithSequenceOfCharacters (GALGAS_char (TO_UNICODE (61)), GALGAS_uint ((uint32_t) 17U)  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1149)) ;
+  inCompiler->printMessage (var_separator_34179.add_operation (GALGAS_string (" Variables "), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1150)).add_operation (var_separator_34179, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1150)).add_operation (GALGAS_string ("= Displayed from "), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1151)).add_operation (var_separator_34179, inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1151)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1152))  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1150)) ;
+  inCompiler->printMessage (object->mAttribute_where.getter_locationString (inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1153)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1153))  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1153)) ;
+  inCompiler->printMessage (var_delimitor_34021  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1154)) ;
   if (constinArgument_vars.isValid ()) {
     if (constinArgument_vars.dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_gtlStruct) {
-      GALGAS_gtlStruct cast_34060_variableMap ((cPtr_gtlStruct *) constinArgument_vars.ptr ()) ;
-      cEnumerator_gtlVarMap enumerator_34108 (cast_34060_variableMap.getter_value (SOURCE_FILE ("gtl_instructions.galgas", 1150)), kEnumeration_up) ;
-      while (enumerator_34108.hasCurrentObject ()) {
-        inCompiler->printMessage (var_varDelim_33718  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1151)) ;
-        inCompiler->printMessage (enumerator_34108.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_instructions.galgas", 1152)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1152))  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1152)) ;
-        inCompiler->printMessage (var_varDelim_33718  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1153)) ;
-        inCompiler->printMessage (callExtensionGetter_desc ((const cPtr_gtlData *) enumerator_34108.current_value (HERE).ptr (), GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1154))  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1154)) ;
-        enumerator_34108.gotoNextObject () ;
+      GALGAS_gtlStruct cast_34441_variableMap ((cPtr_gtlStruct *) constinArgument_vars.ptr ()) ;
+      cEnumerator_gtlVarMap enumerator_34489 (cast_34441_variableMap.getter_value (SOURCE_FILE ("gtl_instructions.galgas", 1157)), kEnumeration_up) ;
+      while (enumerator_34489.hasCurrentObject ()) {
+        inCompiler->printMessage (var_varDelim_34099  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1158)) ;
+        inCompiler->printMessage (enumerator_34489.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_instructions.galgas", 1159)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1159))  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1159)) ;
+        inCompiler->printMessage (var_varDelim_34099  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1160)) ;
+        inCompiler->printMessage (callExtensionGetter_desc ((const cPtr_gtlData *) enumerator_34489.current_value (HERE).ptr (), GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1161))  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1161)) ;
+        enumerator_34489.gotoNextObject () ;
       }
     }else{
       const GALGAS_gtlVariablesInstruction temp_0 = object ;
       TC_Array <C_FixItDescription> fixItArray1 ;
-      inCompiler->emitSemanticError (callExtensionGetter_location ((const cPtr_gtlVariablesInstruction *) temp_0.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1157)), GALGAS_string ("INTERNAL ERROR. a variable map should be a @gtlStruct"), fixItArray1  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1157)) ;
+      inCompiler->emitSemanticError (callExtensionGetter_location ((const cPtr_gtlVariablesInstruction *) temp_0.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1164)), GALGAS_string ("INTERNAL ERROR. a variable map should be a @gtlStruct"), fixItArray1  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1164)) ;
     }
   }
-  inCompiler->printMessage (var_delimitor_33640  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1159)) ;
+  inCompiler->printMessage (var_delimitor_34021  COMMA_SOURCE_FILE ("gtl_instructions.galgas", 1166)) ;
 }
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -14305,816 +15341,4 @@ static void freeExtensionMethod_gtlVariablesInstruction_displayLong (void) {
 
 C_PrologueEpilogue gMethod_gtlVariablesInstruction_displayLong (defineExtensionMethod_gtlVariablesInstruction_displayLong,
                                                                 freeExtensionMethod_gtlVariablesInstruction_displayLong) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 Extension Getter '@gtlVarPath stringRepresentation'                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_string extensionGetter_stringRepresentation (const GALGAS_gtlVarPath & inObject,
-                                                    C_Compiler * inCompiler
-                                                    COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_string result_result ; // Returned variable
-  const GALGAS_gtlVarPath temp_0 = inObject ;
-  result_result = callExtensionGetter_stringRepresentation ((const cPtr_gtlVarItem *) temp_0.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 242)).ptr (), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 242)) ;
-  const GALGAS_gtlVarPath temp_1 = inObject ;
-  cEnumerator_gtlVarPath enumerator_7580 (temp_1.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 243)), kEnumeration_up) ;
-  while (enumerator_7580.hasCurrentObject ()) {
-    result_result.plusAssign_operation(callExtensionGetter_stringRepresentation ((const cPtr_gtlVarItem *) enumerator_7580.current_item (HERE).ptr (), GALGAS_string ("::"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 244)), inCompiler  COMMA_SOURCE_FILE ("gtl_debugger.galgas", 244)) ;
-    enumerator_7580.gotoNextObject () ;
-  }
-//---
-  return result_result ;
-}
-
-
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            Abstract extension getter '@gtlVarItem stringRepresentation'                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-static TC_UniqueArray <enterExtensionGetter_gtlVarItem_stringRepresentation> gExtensionGetterTable_gtlVarItem_stringRepresentation ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_stringRepresentation (const int32_t inClassIndex,
-                                                enterExtensionGetter_gtlVarItem_stringRepresentation inGetter) {
-  gExtensionGetterTable_gtlVarItem_stringRepresentation.forceObjectAtIndex (inClassIndex, inGetter, NULL COMMA_HERE) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void freeExtensionGetter_gtlVarItem_stringRepresentation (void) {
-  gExtensionGetterTable_gtlVarItem_stringRepresentation.free () ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-C_PrologueEpilogue gGetter_gtlVarItem_stringRepresentation (NULL,
-                                                            freeExtensionGetter_gtlVarItem_stringRepresentation) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_string callExtensionGetter_stringRepresentation (const cPtr_gtlVarItem * inObject,
-                                                        const GALGAS_string & in_concatString,
-                                                        C_Compiler * inCompiler
-                                                        COMMA_LOCATION_ARGS) {
-  GALGAS_string result ;
-//--- Find Reader
-  if (NULL != inObject) {
-    macroValidSharedObject (inObject, cPtr_gtlVarItem) ;
-    const C_galgas_type_descriptor * info = inObject->classDescriptor () ;
-    const int32_t classIndex = info->mSlotID ;
-    enterExtensionGetter_gtlVarItem_stringRepresentation f = NULL ;
-    if (classIndex < gExtensionGetterTable_gtlVarItem_stringRepresentation.count ()) {
-      f = gExtensionGetterTable_gtlVarItem_stringRepresentation (classIndex COMMA_HERE) ;
-    }
-    if (NULL == f) {
-       const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
-       while ((NULL == f) && (NULL != p)) {
-         if (p->mSlotID < gExtensionGetterTable_gtlVarItem_stringRepresentation.count ()) {
-           f = gExtensionGetterTable_gtlVarItem_stringRepresentation (p->mSlotID COMMA_HERE) ;
-         }
-         p = p->mSuperclassDescriptor ;
-       }
-       gExtensionGetterTable_gtlVarItem_stringRepresentation.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
-    }
-    if (NULL == f) {
-      fatalError ("FATAL CATEGORY READER CALL ERROR", __FILE__, __LINE__) ;
-    }else{
-      result = f (inObject, in_concatString, inCompiler COMMA_THERE) ;
-    }
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                             Extension Getter '@gtlExpressionList stringRepresentation'                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_string extensionGetter_stringRepresentation (const GALGAS_gtlExpressionList & inObject,
-                                                    C_Compiler * inCompiler
-                                                    COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_string result_result ; // Returned variable
-  result_result = GALGAS_string::makeEmptyString () ;
-  const GALGAS_gtlExpressionList temp_0 = inObject ;
-  cEnumerator_gtlExpressionList enumerator_20119 (temp_0, kEnumeration_up) ;
-  while (enumerator_20119.hasCurrentObject ()) {
-    result_result = result_result.add_operation (callExtensionGetter_stringRepresentation ((const cPtr_gtlExpression *) enumerator_20119.current_expression (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 646)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 646)) ;
-    if (enumerator_20119.hasNextObject ()) {
-      result_result = result_result.add_operation (GALGAS_string (", "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 648)) ;
-    }
-    enumerator_20119.gotoNextObject () ;
-  }
-//---
-  return result_result ;
-}
-
-
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               Extension Getter '@gtlExpressionMap mapRepresentation'                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_string extensionGetter_mapRepresentation (const GALGAS_gtlExpressionMap & inObject,
-                                                 C_Compiler * inCompiler
-                                                 COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_string result_result ; // Returned variable
-  result_result = GALGAS_string::makeEmptyString () ;
-  const GALGAS_gtlExpressionMap temp_0 = inObject ;
-  cEnumerator_gtlExpressionMap enumerator_20413 (temp_0, kEnumeration_up) ;
-  while (enumerator_20413.hasCurrentObject ()) {
-    result_result = result_result.add_operation (GALGAS_string ("\""), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 658)).add_operation (enumerator_20413.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_debugger.galgas", 658)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 658)).add_operation (GALGAS_string ("\": "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 658)).add_operation (callExtensionGetter_stringRepresentation ((const cPtr_gtlExpression *) enumerator_20413.current_expression (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 658)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 658)) ;
-    if (enumerator_20413.hasNextObject ()) {
-      result_result = result_result.add_operation (GALGAS_string (", "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 660)) ;
-    }
-    enumerator_20413.gotoNextObject () ;
-  }
-//---
-  return result_result ;
-}
-
-
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                              Extension Getter '@gtlExpressionMap structRepresentation'                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_string extensionGetter_structRepresentation (const GALGAS_gtlExpressionMap & inObject,
-                                                    C_Compiler * inCompiler
-                                                    COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_string result_result ; // Returned variable
-  result_result = GALGAS_string::makeEmptyString () ;
-  const GALGAS_gtlExpressionMap temp_0 = inObject ;
-  cEnumerator_gtlExpressionMap enumerator_20732 (temp_0, kEnumeration_up) ;
-  while (enumerator_20732.hasCurrentObject ()) {
-    result_result = result_result.add_operation (enumerator_20732.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_debugger.galgas", 670)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 670)).add_operation (GALGAS_string (": "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 670)).add_operation (callExtensionGetter_stringRepresentation ((const cPtr_gtlExpression *) enumerator_20732.current_expression (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 670)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 670)) ;
-    if (enumerator_20732.hasNextObject ()) {
-      result_result = result_result.add_operation (GALGAS_string (", "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 672)) ;
-    }
-    enumerator_20732.gotoNextObject () ;
-  }
-//---
-  return result_result ;
-}
-
-
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                              Extension Getter '@gtlArgumentList stringRepresentation'                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_string extensionGetter_stringRepresentation (const GALGAS_gtlArgumentList & inObject,
-                                                    C_Compiler * inCompiler
-                                                    COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_string result_result ; // Returned variable
-  result_result = GALGAS_string::makeEmptyString () ;
-  const GALGAS_gtlArgumentList temp_0 = inObject ;
-  cEnumerator_gtlArgumentList enumerator_21042 (temp_0, kEnumeration_up) ;
-  while (enumerator_21042.hasCurrentObject ()) {
-    result_result = result_result.add_operation (enumerator_21042.current_name (HERE).getter_string (SOURCE_FILE ("gtl_debugger.galgas", 682)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 682)) ;
-    const enumGalgasBool test_1 = enumerator_21042.current_typed (HERE).boolEnum () ;
-    if (kBoolTrue == test_1) {
-      result_result = result_result.add_operation (GALGAS_string (" : @"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 684)).add_operation (extensionGetter_typeName (enumerator_21042.current_type (HERE), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 684)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 684)) ;
-    }
-    if (enumerator_21042.hasNextObject ()) {
-      result_result = result_result.add_operation (GALGAS_string (", "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 687)) ;
-    }
-    enumerator_21042.gotoNextObject () ;
-  }
-//---
-  return result_result ;
-}
-
-
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               Extension Getter '@sortingKeyList stringRepresentation'                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_string extensionGetter_stringRepresentation (const GALGAS_sortingKeyList & inObject,
-                                                    C_Compiler * inCompiler
-                                                    COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_string result_result ; // Returned variable
-  result_result = GALGAS_string::makeEmptyString () ;
-  const GALGAS_sortingKeyList temp_0 = inObject ;
-  cEnumerator_sortingKeyList enumerator_21565 (temp_0, kEnumeration_up) ;
-  while (enumerator_21565.hasCurrentObject ()) {
-    result_result = result_result.add_operation (enumerator_21565.current_key (HERE).getter_string (SOURCE_FILE ("gtl_debugger.galgas", 704)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 704)).add_operation (GALGAS_string (" "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 704)).add_operation (extensionGetter_stringRepresentation (enumerator_21565.current_order (HERE), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 704)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 704)) ;
-    if (enumerator_21565.hasNextObject ()) {
-      result_result = GALGAS_string (", ") ;
-    }
-    enumerator_21565.gotoNextObject () ;
-  }
-//---
-  return result_result ;
-}
-
-
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  Extension getter '@gtlInstruction shortLocation'                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-static TC_UniqueArray <enterExtensionGetter_gtlInstruction_shortLocation> gExtensionGetterTable_gtlInstruction_shortLocation ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_shortLocation (const int32_t inClassIndex,
-                                         enterExtensionGetter_gtlInstruction_shortLocation inGetter) {
-  gExtensionGetterTable_gtlInstruction_shortLocation.forceObjectAtIndex (inClassIndex, inGetter, NULL COMMA_HERE) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_string callExtensionGetter_shortLocation (const cPtr_gtlInstruction * inObject,
-                                                 C_Compiler * inCompiler
-                                                 COMMA_LOCATION_ARGS) {
-  GALGAS_string result ;
-//--- Find Reader
-  if (NULL != inObject) {
-    macroValidSharedObject (inObject, cPtr_gtlInstruction) ;
-    const C_galgas_type_descriptor * info = inObject->classDescriptor () ;
-    const int32_t classIndex = info->mSlotID ;
-    enterExtensionGetter_gtlInstruction_shortLocation f = NULL ;
-    if (classIndex < gExtensionGetterTable_gtlInstruction_shortLocation.count ()) {
-      f = gExtensionGetterTable_gtlInstruction_shortLocation (classIndex COMMA_HERE) ;
-    }
-    if (NULL == f) {
-       const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
-       while ((NULL == f) && (NULL != p)) {
-         if (p->mSlotID < gExtensionGetterTable_gtlInstruction_shortLocation.count ()) {
-           f = gExtensionGetterTable_gtlInstruction_shortLocation (p->mSlotID COMMA_HERE) ;
-         }
-         p = p->mSuperclassDescriptor ;
-       }
-       gExtensionGetterTable_gtlInstruction_shortLocation.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
-    }
-    if (NULL == f) {
-      fatalError ("FATAL CATEGORY READER CALL ERROR", __FILE__, __LINE__) ;
-    }else{
-      result = f (inObject, inCompiler COMMA_THERE) ;
-    }
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static GALGAS_string extensionGetter_gtlInstruction_shortLocation (const cPtr_gtlInstruction * inObject,
-                                                                   C_Compiler * inCompiler
-                                                                   COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_string result_result ; // Returned variable
-  const cPtr_gtlInstruction * object = inObject ;
-  macroValidSharedObject (object, cPtr_gtlInstruction) ;
-  result_result = object->mAttribute_where.getter_file (inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 714)).getter_lastPathComponent (SOURCE_FILE ("gtl_debugger.galgas", 714)).add_operation (GALGAS_string (":"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 714)).add_operation (object->mAttribute_where.getter_line (inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 714)).getter_string (SOURCE_FILE ("gtl_debugger.galgas", 714)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 714)) ;
-//---
-  return result_result ;
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void defineExtensionGetter_gtlInstruction_shortLocation (void) {
-  enterExtensionGetter_shortLocation (kTypeDescriptor_GALGAS_gtlInstruction.mSlotID,
-                                      extensionGetter_gtlInstruction_shortLocation) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void freeExtensionGetter_gtlInstruction_shortLocation (void) {
-  gExtensionGetterTable_gtlInstruction_shortLocation.free () ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-C_PrologueEpilogue gGetter_gtlInstruction_shortLocation (defineExtensionGetter_gtlInstruction_shortLocation,
-                                                         freeExtensionGetter_gtlInstruction_shortLocation) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               Extension method '@gtlInstruction displayWithLocation'                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-static TC_UniqueArray <extensionMethodSignature_gtlInstruction_displayWithLocation> gExtensionMethodTable_gtlInstruction_displayWithLocation ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_displayWithLocation (const int32_t inClassIndex,
-                                               extensionMethodSignature_gtlInstruction_displayWithLocation inMethod) {
-  gExtensionMethodTable_gtlInstruction_displayWithLocation.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_displayWithLocation (const cPtr_gtlInstruction * inObject,
-                                              const GALGAS_debuggerContext constin_context,
-                                              C_Compiler * inCompiler
-                                              COMMA_LOCATION_ARGS) {
-  if (NULL != inObject) {
-    macroValidSharedObject (inObject, cPtr_gtlInstruction) ;
-    const C_galgas_type_descriptor * info = inObject->classDescriptor () ;
-    const int32_t classIndex = info->mSlotID ;
-    extensionMethodSignature_gtlInstruction_displayWithLocation f = NULL ;
-    if (classIndex < gExtensionMethodTable_gtlInstruction_displayWithLocation.count ()) {
-      f = gExtensionMethodTable_gtlInstruction_displayWithLocation (classIndex COMMA_HERE) ;
-    }
-    if (NULL == f) {
-       const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
-       while ((NULL == f) && (NULL != p)) {
-         if (p->mSlotID < gExtensionMethodTable_gtlInstruction_displayWithLocation.count ()) {
-           f = gExtensionMethodTable_gtlInstruction_displayWithLocation (p->mSlotID COMMA_HERE) ;
-         }
-         p = p->mSuperclassDescriptor ;
-       }
-       gExtensionMethodTable_gtlInstruction_displayWithLocation.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
-    }
-    if (NULL == f) {
-      fatalError ("FATAL CATEGORY METHOD CALL ERROR", __FILE__, __LINE__) ;
-    }else{
-      f (inObject, constin_context, inCompiler COMMA_THERE) ;
-    }
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void extensionMethod_gtlInstruction_displayWithLocation (const cPtr_gtlInstruction * inObject,
-                                                                const GALGAS_debuggerContext constinArgument_context,
-                                                                C_Compiler * inCompiler
-                                                                COMMA_UNUSED_LOCATION_ARGS) {
-  const cPtr_gtlInstruction * object = inObject ;
-  macroValidSharedObject (object, cPtr_gtlInstruction) ;
-  const GALGAS_gtlInstruction temp_0 = object ;
-  inCompiler->printMessage (callExtensionGetter_shortLocation ((const cPtr_gtlInstruction *) temp_0.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 721)).add_operation (GALGAS_string (" > "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 721))  COMMA_SOURCE_FILE ("gtl_debugger.galgas", 721)) ;
-  inCompiler->printMessage (constinArgument_context.getter_instructionColor (SOURCE_FILE ("gtl_debugger.galgas", 722)).add_operation (constinArgument_context.getter_instructionFace (SOURCE_FILE ("gtl_debugger.galgas", 722)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 722))  COMMA_SOURCE_FILE ("gtl_debugger.galgas", 722)) ;
-  const GALGAS_gtlInstruction temp_1 = object ;
-  callExtensionMethod_display ((const cPtr_gtlInstruction *) temp_1.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 723)) ;
-  inCompiler->printMessage (function_endc (inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 724)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 724))  COMMA_SOURCE_FILE ("gtl_debugger.galgas", 724)) ;
-}
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void defineExtensionMethod_gtlInstruction_displayWithLocation (void) {
-  enterExtensionMethod_displayWithLocation (kTypeDescriptor_GALGAS_gtlInstruction.mSlotID,
-                                            extensionMethod_gtlInstruction_displayWithLocation) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void freeExtensionMethod_gtlInstruction_displayWithLocation (void) {
-  gExtensionMethodTable_gtlInstruction_displayWithLocation.free () ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-C_PrologueEpilogue gMethod_gtlInstruction_displayWithLocation (defineExtensionMethod_gtlInstruction_displayWithLocation,
-                                                               freeExtensionMethod_gtlInstruction_displayWithLocation) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Extension method '@gtlInstruction display'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-static TC_UniqueArray <extensionMethodSignature_gtlInstruction_display> gExtensionMethodTable_gtlInstruction_display ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_display (const int32_t inClassIndex,
-                                   extensionMethodSignature_gtlInstruction_display inMethod) {
-  gExtensionMethodTable_gtlInstruction_display.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_display (const cPtr_gtlInstruction * inObject,
-                                  C_Compiler * inCompiler
-                                  COMMA_LOCATION_ARGS) {
-  if (NULL != inObject) {
-    macroValidSharedObject (inObject, cPtr_gtlInstruction) ;
-    const C_galgas_type_descriptor * info = inObject->classDescriptor () ;
-    const int32_t classIndex = info->mSlotID ;
-    extensionMethodSignature_gtlInstruction_display f = NULL ;
-    if (classIndex < gExtensionMethodTable_gtlInstruction_display.count ()) {
-      f = gExtensionMethodTable_gtlInstruction_display (classIndex COMMA_HERE) ;
-    }
-    if (NULL == f) {
-       const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
-       while ((NULL == f) && (NULL != p)) {
-         if (p->mSlotID < gExtensionMethodTable_gtlInstruction_display.count ()) {
-           f = gExtensionMethodTable_gtlInstruction_display (p->mSlotID COMMA_HERE) ;
-         }
-         p = p->mSuperclassDescriptor ;
-       }
-       gExtensionMethodTable_gtlInstruction_display.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
-    }
-    if (NULL == f) {
-      fatalError ("FATAL CATEGORY METHOD CALL ERROR", __FILE__, __LINE__) ;
-    }else{
-      f (inObject, inCompiler COMMA_THERE) ;
-    }
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void extensionMethod_gtlInstruction_display (const cPtr_gtlInstruction * /* inObject */,
-                                                    C_Compiler * inCompiler
-                                                    COMMA_UNUSED_LOCATION_ARGS) {
-  inCompiler->printMessage (GALGAS_string ("[Display not available]")  COMMA_SOURCE_FILE ("gtl_debugger.galgas", 730)) ;
-}
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void defineExtensionMethod_gtlInstruction_display (void) {
-  enterExtensionMethod_display (kTypeDescriptor_GALGAS_gtlInstruction.mSlotID,
-                                extensionMethod_gtlInstruction_display) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void freeExtensionMethod_gtlInstruction_display (void) {
-  gExtensionMethodTable_gtlInstruction_display.free () ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-C_PrologueEpilogue gMethod_gtlInstruction_display (defineExtensionMethod_gtlInstruction_display,
-                                                   freeExtensionMethod_gtlInstruction_display) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                              Extension getter '@gtlInstruction mayExecuteWithoutError'                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-static TC_UniqueArray <enterExtensionGetter_gtlInstruction_mayExecuteWithoutError> gExtensionGetterTable_gtlInstruction_mayExecuteWithoutError ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_mayExecuteWithoutError (const int32_t inClassIndex,
-                                                  enterExtensionGetter_gtlInstruction_mayExecuteWithoutError inGetter) {
-  gExtensionGetterTable_gtlInstruction_mayExecuteWithoutError.forceObjectAtIndex (inClassIndex, inGetter, NULL COMMA_HERE) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_bool callExtensionGetter_mayExecuteWithoutError (const cPtr_gtlInstruction * inObject,
-                                                        const GALGAS_gtlData & in_context,
-                                                        const GALGAS_library & in_lib,
-                                                        C_Compiler * inCompiler
-                                                        COMMA_LOCATION_ARGS) {
-  GALGAS_bool result ;
-//--- Find Reader
-  if (NULL != inObject) {
-    macroValidSharedObject (inObject, cPtr_gtlInstruction) ;
-    const C_galgas_type_descriptor * info = inObject->classDescriptor () ;
-    const int32_t classIndex = info->mSlotID ;
-    enterExtensionGetter_gtlInstruction_mayExecuteWithoutError f = NULL ;
-    if (classIndex < gExtensionGetterTable_gtlInstruction_mayExecuteWithoutError.count ()) {
-      f = gExtensionGetterTable_gtlInstruction_mayExecuteWithoutError (classIndex COMMA_HERE) ;
-    }
-    if (NULL == f) {
-       const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
-       while ((NULL == f) && (NULL != p)) {
-         if (p->mSlotID < gExtensionGetterTable_gtlInstruction_mayExecuteWithoutError.count ()) {
-           f = gExtensionGetterTable_gtlInstruction_mayExecuteWithoutError (p->mSlotID COMMA_HERE) ;
-         }
-         p = p->mSuperclassDescriptor ;
-       }
-       gExtensionGetterTable_gtlInstruction_mayExecuteWithoutError.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
-    }
-    if (NULL == f) {
-      fatalError ("FATAL CATEGORY READER CALL ERROR", __FILE__, __LINE__) ;
-    }else{
-      result = f (inObject, in_context, in_lib, inCompiler COMMA_THERE) ;
-    }
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static GALGAS_bool extensionGetter_gtlInstruction_mayExecuteWithoutError (const cPtr_gtlInstruction * /* inObject */,
-                                                                          const GALGAS_gtlData & /* constinArgument_context */,
-                                                                          const GALGAS_library & /* constinArgument_lib */,
-                                                                          C_Compiler * /* inCompiler */
-                                                                          COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_bool result_may ; // Returned variable
-  result_may = GALGAS_bool (true) ;
-//---
-  return result_may ;
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void defineExtensionGetter_gtlInstruction_mayExecuteWithoutError (void) {
-  enterExtensionGetter_mayExecuteWithoutError (kTypeDescriptor_GALGAS_gtlInstruction.mSlotID,
-                                               extensionGetter_gtlInstruction_mayExecuteWithoutError) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void freeExtensionGetter_gtlInstruction_mayExecuteWithoutError (void) {
-  gExtensionGetterTable_gtlInstruction_mayExecuteWithoutError.free () ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-C_PrologueEpilogue gGetter_gtlInstruction_mayExecuteWithoutError (defineExtensionGetter_gtlInstruction_mayExecuteWithoutError,
-                                                                  freeExtensionGetter_gtlInstruction_mayExecuteWithoutError) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        Extension Getter '@dataType oilType'                                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_string extensionGetter_oilType (const GALGAS_dataType & inObject,
-                                       C_Compiler * /* inCompiler */
-                                       COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_string result_result ; // Returned variable
-  const GALGAS_dataType temp_0 = inObject ;
-  switch (temp_0.enumValue ()) {
-  case GALGAS_dataType::kNotBuilt:
-    break ;
-  case GALGAS_dataType::kEnum_void:
-    {
-      result_result = GALGAS_string ("VOID") ;
-    }
-    break ;
-  case GALGAS_dataType::kEnum_uint_33__32_Number:
-    {
-      result_result = GALGAS_string ("UINT32") ;
-    }
-    break ;
-  case GALGAS_dataType::kEnum_sint_33__32_Number:
-    {
-      result_result = GALGAS_string ("INT32") ;
-    }
-    break ;
-  case GALGAS_dataType::kEnum_uint_36__34_Number:
-    {
-      result_result = GALGAS_string ("UINT64") ;
-    }
-    break ;
-  case GALGAS_dataType::kEnum_sint_36__34_Number:
-    {
-      result_result = GALGAS_string ("INT64") ;
-    }
-    break ;
-  case GALGAS_dataType::kEnum_floatNumber:
-    {
-      result_result = GALGAS_string ("FLOAT") ;
-    }
-    break ;
-  case GALGAS_dataType::kEnum_string:
-    {
-      result_result = GALGAS_string ("STRING") ;
-    }
-    break ;
-  case GALGAS_dataType::kEnum_enumeration:
-    {
-      result_result = GALGAS_string ("ENUM") ;
-    }
-    break ;
-  case GALGAS_dataType::kEnum_boolean:
-    {
-      result_result = GALGAS_string ("BOOLEAN") ;
-    }
-    break ;
-  case GALGAS_dataType::kEnum_identifier:
-    {
-      result_result = GALGAS_string ("IDENTIFIER") ;
-    }
-    break ;
-  case GALGAS_dataType::kEnum_objectType:
-    {
-      result_result = GALGAS_string ("OBJECT_TYPE") ;
-    }
-    break ;
-  case GALGAS_dataType::kEnum_structType:
-    {
-      result_result = GALGAS_string ("STRUCT") ;
-    }
-    break ;
-  }
-//---
-  return result_result ;
-}
-
-
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 Abstract extension method '@attributeRange enclose'                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-static TC_UniqueArray <extensionMethodSignature_attributeRange_enclose> gExtensionMethodTable_attributeRange_enclose ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_enclose (const int32_t inClassIndex,
-                                   extensionMethodSignature_attributeRange_enclose inMethod) {
-  gExtensionMethodTable_attributeRange_enclose.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void freeExtensionMethod_attributeRange_enclose (void) {
-  gExtensionMethodTable_attributeRange_enclose.free () ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-C_PrologueEpilogue gMethod_attributeRange_enclose (NULL,
-                                                   freeExtensionMethod_attributeRange_enclose) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_enclose (const cPtr_attributeRange * inObject,
-                                  GALGAS_bool & out_isWithin,
-                                  const GALGAS_attributeRange constin_value,
-                                  C_Compiler * inCompiler
-                                  COMMA_LOCATION_ARGS) {
-//--- Drop output arguments
-  out_isWithin.drop () ;
-//--- Find method
-  if (NULL != inObject) {
-    macroValidSharedObject (inObject, cPtr_attributeRange) ;
-    const C_galgas_type_descriptor * info = inObject->classDescriptor () ;
-    const int32_t classIndex = info->mSlotID ;
-    extensionMethodSignature_attributeRange_enclose f = NULL ;
-    if (classIndex < gExtensionMethodTable_attributeRange_enclose.count ()) {
-      f = gExtensionMethodTable_attributeRange_enclose (classIndex COMMA_HERE) ;
-    }
-    if (NULL == f) {
-      const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
-      while ((NULL == f) && (NULL != p)) {
-        if (p->mSlotID < gExtensionMethodTable_attributeRange_enclose.count ()) {
-          f = gExtensionMethodTable_attributeRange_enclose (p->mSlotID COMMA_HERE) ;
-        }
-        p = p->mSuperclassDescriptor ;
-      }
-      gExtensionMethodTable_attributeRange_enclose.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
-    }
-    if (NULL == f) {
-      fatalError ("FATAL CATEGORY METHOD CALL ERROR", __FILE__, __LINE__) ;
-    }else{
-      f (inObject, out_isWithin, constin_value, inCompiler COMMA_THERE) ;
-    }
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    Extension Getter '@enumValues mergeWithEnum'                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_enumValues extensionGetter_mergeWithEnum (const GALGAS_enumValues & inObject,
-                                                 const GALGAS_enumValues & constinArgument_enumToMerge,
-                                                 C_Compiler * inCompiler
-                                                 COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_enumValues result_mergedEnum ; // Returned variable
-  result_mergedEnum = GALGAS_enumValues::constructor_emptyMap (SOURCE_FILE ("implementation_types.galgas", 696)) ;
-  const GALGAS_enumValues temp_0 = inObject ;
-  cEnumerator_enumValues enumerator_19313 (temp_0, kEnumeration_up) ;
-  while (enumerator_19313.hasCurrentObject ()) {
-    GALGAS_implementationObjectMap var_attributes_19356 = enumerator_19313.current_subAttributes (HERE) ;
-    const enumGalgasBool test_1 = constinArgument_enumToMerge.getter_hasKey (enumerator_19313.current_lkey (HERE).getter_string (SOURCE_FILE ("implementation_types.galgas", 699)) COMMA_SOURCE_FILE ("implementation_types.galgas", 699)).boolEnum () ;
-    if (kBoolTrue == test_1) {
-      GALGAS_implementationObjectMap var_attributesToMerge_19493 ;
-      constinArgument_enumToMerge.method_get (enumerator_19313.current_lkey (HERE), var_attributesToMerge_19493, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 700)) ;
-      var_attributes_19356 = extensionGetter_mergeImplementationObjectAttributesWith (enumerator_19313.current_subAttributes (HERE), var_attributesToMerge_19493, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 701)) ;
-    }
-    {
-    result_mergedEnum.setter_put (enumerator_19313.current_lkey (HERE), var_attributes_19356, inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 703)) ;
-    }
-    enumerator_19313.gotoNextObject () ;
-  }
-  cEnumerator_enumValues enumerator_19667 (constinArgument_enumToMerge, kEnumeration_up) ;
-  while (enumerator_19667.hasCurrentObject ()) {
-    const GALGAS_enumValues temp_2 = inObject ;
-    const enumGalgasBool test_3 = temp_2.getter_hasKey (enumerator_19667.current_lkey (HERE).getter_string (SOURCE_FILE ("implementation_types.galgas", 706)) COMMA_SOURCE_FILE ("implementation_types.galgas", 706)).operator_not (SOURCE_FILE ("implementation_types.galgas", 706)).boolEnum () ;
-    if (kBoolTrue == test_3) {
-      {
-      result_mergedEnum.setter_put (enumerator_19667.current_lkey (HERE), enumerator_19667.current_subAttributes (HERE), inCompiler COMMA_SOURCE_FILE ("implementation_types.galgas", 707)) ;
-      }
-    }
-    enumerator_19667.gotoNextObject () ;
-  }
-//---
-  return result_mergedEnum ;
-}
-
-
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                      Extension getter '@implementation hasKey'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-static TC_UniqueArray <enterExtensionGetter_implementation_hasKey> gExtensionGetterTable_implementation_hasKey ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_hasKey (const int32_t inClassIndex,
-                                  enterExtensionGetter_implementation_hasKey inGetter) {
-  gExtensionGetterTable_implementation_hasKey.forceObjectAtIndex (inClassIndex, inGetter, NULL COMMA_HERE) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_bool callExtensionGetter_hasKey (const cPtr_implementation * inObject,
-                                        const GALGAS_string & in_key,
-                                        C_Compiler * inCompiler
-                                        COMMA_LOCATION_ARGS) {
-  GALGAS_bool result ;
-//--- Find Reader
-  if (NULL != inObject) {
-    macroValidSharedObject (inObject, cPtr_implementation) ;
-    const C_galgas_type_descriptor * info = inObject->classDescriptor () ;
-    const int32_t classIndex = info->mSlotID ;
-    enterExtensionGetter_implementation_hasKey f = NULL ;
-    if (classIndex < gExtensionGetterTable_implementation_hasKey.count ()) {
-      f = gExtensionGetterTable_implementation_hasKey (classIndex COMMA_HERE) ;
-    }
-    if (NULL == f) {
-       const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
-       while ((NULL == f) && (NULL != p)) {
-         if (p->mSlotID < gExtensionGetterTable_implementation_hasKey.count ()) {
-           f = gExtensionGetterTable_implementation_hasKey (p->mSlotID COMMA_HERE) ;
-         }
-         p = p->mSuperclassDescriptor ;
-       }
-       gExtensionGetterTable_implementation_hasKey.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
-    }
-    if (NULL == f) {
-      fatalError ("FATAL CATEGORY READER CALL ERROR", __FILE__, __LINE__) ;
-    }else{
-      result = f (inObject, in_key, inCompiler COMMA_THERE) ;
-    }
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static GALGAS_bool extensionGetter_implementation_hasKey (const cPtr_implementation * inObject,
-                                                          const GALGAS_string & constinArgument_key,
-                                                          C_Compiler * /* inCompiler */
-                                                          COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_bool result_result ; // Returned variable
-  const cPtr_implementation * object = inObject ;
-  macroValidSharedObject (object, cPtr_implementation) ;
-  result_result = object->mAttribute_imp.getter_hasKey (constinArgument_key COMMA_SOURCE_FILE ("implementation_types.galgas", 765)) ;
-//---
-  return result_result ;
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void defineExtensionGetter_implementation_hasKey (void) {
-  enterExtensionGetter_hasKey (kTypeDescriptor_GALGAS_implementation.mSlotID,
-                               extensionGetter_implementation_hasKey) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void freeExtensionGetter_implementation_hasKey (void) {
-  gExtensionGetterTable_implementation_hasKey.free () ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-C_PrologueEpilogue gGetter_implementation_hasKey (defineExtensionGetter_implementation_hasKey,
-                                                  freeExtensionGetter_implementation_hasKey) ;
 

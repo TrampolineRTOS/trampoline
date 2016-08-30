@@ -24,6 +24,7 @@
 #
 #---------------------------------------------------------------------------*
 
+# 3.0.4    Updated to GTL 3.0.4. Debugger usable
 # 3.0.3    Updated to GTL 3.0.3. Debugger in progress
 # 3.0.2    Bug fix in GTL, lazy copy bug from galgas
 # 3.0.1    Bug fix in GTL, warnings was in fact errors
@@ -42,7 +43,7 @@
 #          string
 # 2.1.20   Added -o and -r options to goil
 
-project (3:0:3) -> "goil" {
+project (3:0:4) -> "goil" {
 
   %makefile-macosx
   %makefile-unix

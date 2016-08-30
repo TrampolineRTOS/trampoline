@@ -34,6 +34,10 @@ func invokeGTL
 {  
   result = ""
   
+  if [option gtl_options.debug value] then
+    message "Starting debugger, type help for command list\n"
+  end 
+ 
   # Build a template instruction
   @gtlTemplateInstruction rootTemplateInstruction = .new {
     !.here

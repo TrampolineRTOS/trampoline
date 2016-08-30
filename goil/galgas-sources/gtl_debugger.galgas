@@ -64,18 +64,23 @@ func %once endc        ->@string endc      { endc      = "\u001B[0m"  }
 #-----------------------------------------------------------------------------*
 class @debuggerContext
 {
-  @bool debugActive          %setter
-  @bool breakOnNext          %setter
-  @bool loopOnCommand        %setter
-  @string promptColor        %setter
-  @string promptFace         %setter
-  @string instructionColor   %setter
-  @string instructionFace    %setter
-  @string outputColor        %setter
-  @string outputFace         %setter
-  @string warningColor       %setter
-  @string warningFace        %setter
-  @gtlInstructionList doList
+  @bool                           debugActive          %setter
+  @bool                           breakOnNext          %setter
+  @bool                           loopOnCommand        %setter
+  @string                         promptColor          %setter
+  @string                         promptFace           %setter
+  @string                         instructionColor     %setter
+  @string                         instructionFace      %setter
+  @string                         outputColor          %setter
+  @string                         outputFace           %setter
+  @string                         warningColor         %setter
+  @string                         warningFace          %setter
+  @gtlInstructionList             doList
+  @gtlBreakpointList              breakpoints
+  @uint                           instructionWindow    %setter
+  @uint                           nextInstructionIndex %setter
+  @gtlInstructionList             instructionList      
+  @gtlInstructionListContextStack contextStack
 }
 
 #-----------------------------------------------------------------------------*
@@ -126,6 +131,131 @@ method @debuggerContext listStepDoInstructions
 }
 
 #-----------------------------------------------------------------------------*
+setter @debuggerContext setBreakpoint
+  ?let @string fileName
+  ?let @uint   lineNum
+{
+  @string signature = [fileName + ":" + lineNum md5]
+  @bool notThere = true
+  for (bp) in breakpoints do
+    if [bp signature] == signature then 
+      notThere = false
+    end
+  end  
+  if notThere then
+    breakpoints += !@gtlBreakpoint.new { !fileName !lineNum !signature }
+  end  
+}
+
+#-----------------------------------------------------------------------------*
+method @debuggerContext listBreakpoints
+{
+  if [breakpoints length] > 0 then
+    message "Breakpoints:\n"
+    for (bp) in breakpoints do (index)
+      message [[index string] stringByLeftPadding !4 !' '] + ": "
+      message instructionColor + instructionFace
+      message [bp fileName] + ":" + [bp lineNum]# + ":" + [bp signature]
+      message "\n"
+      message outputColor + outputFace
+    end  
+  else
+    message "No breakpoint\n"
+  end
+}
+
+#-----------------------------------------------------------------------------*
+setter @debuggerContext deleteBreakpoint
+  ?let @lbigint numToDelete
+{
+  if [numToDelete bigint] <= [@uint.max bigint] then
+    @uint numToDeleteUInt = [numToDelete uint]
+    if numToDeleteUInt < [breakpoints length] then
+      [!?breakpoints removeAtIndex ?@gtlBreakpoint bp !numToDeleteUInt]
+      message "Breakpoint: "
+      message instructionColor + instructionFace
+      message [bp fileName] + ":" + [bp lineNum]
+      message outputColor + outputFace
+      message " deleted\n"
+    else
+      message warningColor + warningFace
+      message "no breakpoint at this index: " + [numToDelete bigint] + "\n"
+    end
+  else
+    message warningColor + warningFace
+    message "no breakpoint at this index: " + [numToDelete bigint] + "\n"
+  end
+}
+
+#-----------------------------------------------------------------------------*
+getter @debuggerContext breakOn
+  ?let @gtlInstruction instruction
+  ->@bool breakOn
+{
+  breakOn = false
+  for (bp) in breakpoints do
+    if [instruction signature] == [bp signature] then
+      breakOn = true
+    end
+  end
+}
+
+#-----------------------------------------------------------------------------*
+method @debuggerContext hereWeAre
+{
+  @uint indentation = 0
+  for (levelIndex levelList) in [contextStack subListFromIndex !1] do
+    message @string.stringWithSequenceOfCharacters{ !' ' !indentation }
+    [[levelList instructionAtIndex !levelIndex] displayWithLocation !self]
+    indentation = indentation + 4
+  end
+
+  @string identationString = .stringWithSequenceOfCharacters{ !' ' !indentation }
+  @uint startIndex
+  @uint displayLength
+
+  if nextInstructionIndex >= instructionWindow then
+    startIndex = nextInstructionIndex - instructionWindow
+  else
+    startIndex = 0
+  end
+  if startIndex + (instructionWindow * 2) < [instructionList length] then
+    displayLength = 2 * instructionWindow
+  else
+    displayLength = [instructionList length] - startIndex
+  end
+  message endc()
+  for (instruction) in
+    [instructionList subListWithRange !@range.new { !startIndex !displayLength }]
+    do (index)
+
+    if index + startIndex == nextInstructionIndex then
+      message red() + bold()
+      message identationString + ">>> "
+      message endc()
+    else
+      message identationString + "    "
+    end
+    [instruction displayWithLocation !self]
+
+  end
+}
+
+#-----------------------------------------------------------------------------*
+setter @debuggerContext pushInstructionList
+  ?let @gtlInstructionList instructions
+{
+  contextStack += !nextInstructionIndex !instructionList
+  nextInstructionIndex = 0
+  instructionList = instructions
+}
+
+setter @debuggerContext popInstructionList
+{
+  [!?contextStack popLast ?nextInstructionIndex ?instructionList]
+}
+
+#-----------------------------------------------------------------------------*
 func defaultDebugSettings
   ->@debuggerContext debugSettings
 {
@@ -141,6 +271,11 @@ func defaultDebugSettings
     !""
     !darkyellow()
     !bold()
+    !.emptyList
+    !.emptyList
+    !5
+    !0
+    !.emptyList
     !.emptyList
   }
 }
@@ -171,6 +306,14 @@ getter @gtlContext breakOnNext
   ->@bool breakOnNext
 {
   breakOnNext = [debuggerContext breakOnNext]
+}
+
+#-----------------------------------------------------------------------------*
+getter @gtlContext breakOn
+  ?@gtlInstruction instruction
+  ->@bool breakOn
+{
+  breakOn = [debuggerContext breakOn !instruction]
 }
 
 #-----------------------------------------------------------------------------*
@@ -222,6 +365,27 @@ method @gtlContext executeStepDoList
 }
 
 #-----------------------------------------------------------------------------*
+setter @gtlContext setBreakpoint
+  ?let @string fileName
+  ?let @uint   lineNum
+{
+  [!?debuggerContext setBreakpoint !fileName !lineNum]
+}
+
+#-----------------------------------------------------------------------------*
+method @gtlContext listBreakpoints
+{
+  [debuggerContext listBreakpoints] 
+}
+
+#-----------------------------------------------------------------------------*
+setter @gtlContext deleteBreakpoint
+  ?let @lbigint numToDelete
+{
+  [!?debuggerContext deleteBreakpoint !numToDelete]
+}
+
+#-----------------------------------------------------------------------------*
 setter @gtlContext setLoopOnCommand
   ?@bool loopOnCommand
 {
@@ -233,6 +397,50 @@ getter @gtlContext loopOnCommand
   ->@bool loopOnCommand
 {
   loopOnCommand = [debuggerContext loopOnCommand]
+}
+
+#-----------------------------------------------------------------------------*
+method @gtlContext hereWeAre
+{
+  [debuggerContext hereWeAre]
+}
+
+#-----------------------------------------------------------------------------*
+setter @gtlContext pushInstructionList
+  ?let @gtlInstructionList instructionList
+{
+  [!?debuggerContext pushInstructionList !instructionList]
+}
+
+#-----------------------------------------------------------------------------*
+setter @gtlContext popInstructionList
+{
+  [!?debuggerContext popInstructionList]
+}
+
+#-----------------------------------------------------------------------------*
+setter @gtlContext setNextInstructionIndex
+  ?@uint index
+{
+  [!?debuggerContext setNextInstructionIndex !index]
+}
+
+#=============================================================================*
+list @gtlInstructionListContextStack
+{
+  @uint               nextInstructionIndex
+  @gtlInstructionList instructionList
+}
+
+#=============================================================================*
+class @gtlBreakpoint {
+  @string fileName
+  @uint   lineNum
+  @string signature
+}
+
+list @gtlBreakpointList {
+  @gtlBreakpoint breakpoint
 }
 
 #=============================================================================*
@@ -1120,4 +1328,118 @@ override method @gtlContinueInstruction execute
 {
   [!?context setBreakOnNext !false]
   [!?context setLoopOnCommand !false]
+}
+
+#-----------------------------------------------------------------------------*
+# Debugger instruction : add a breakpoint
+#-----------------------------------------------------------------------------*
+class @gtlBreakpointInstruction : @gtlInstruction
+{
+  @string fileName
+  @uint   lineNum
+}
+
+override method @gtlBreakpointInstruction execute
+  ?!@gtlContext        context
+  ?!@gtlData    unused vars
+  ?!@library    unused lib
+  ?!@string     unused outputString
+{
+  let instructionList = [[context debuggerContext] instructionList]
+  @string localFileName = ""
+  if [instructionList length] > 0 then
+    localFileName = [
+      [[[instructionList instructionAtIndex !0] location] file]
+      lastPathComponent
+    ]
+    if fileName == localFileName | fileName == "" then
+      message "Setting breakpoint at " + localFileName + ":" + lineNum + "\n"
+      [!?context setBreakpoint !localFileName !lineNum]     
+    else
+      message "Setting breakpoint at " + fileName + ":" + lineNum + "\n"
+      [!?context setBreakpoint !fileName !lineNum]
+    end
+  else
+    message "Unable to set a breakpoint in an empty file\n"
+  end
+}
+
+#-----------------------------------------------------------------------------*
+# Debugger instruction : list breakpoints
+#-----------------------------------------------------------------------------*
+class @gtlBreakpointListInstruction : @gtlInstruction
+{
+}
+
+override method @gtlBreakpointListInstruction execute
+  ?!@gtlContext        context
+  ?!@gtlData    unused vars
+  ?!@library    unused lib
+  ?!@string     unused outputString
+{
+  [context listBreakpoints]
+}
+
+#-----------------------------------------------------------------------------*
+# Debugger instruction : delete breakpoint
+#-----------------------------------------------------------------------------*
+class @gtlBreakpointDeleteInstruction : @gtlInstruction
+{
+  @lbigint numToDelete
+}
+
+override method @gtlBreakpointDeleteInstruction execute
+  ?!@gtlContext        context
+  ?!@gtlData    unused vars
+  ?!@library    unused lib
+  ?!@string     unused outputString
+{
+  [!?context deleteBreakpoint !numToDelete]
+}
+
+#-----------------------------------------------------------------------------*
+# Debugger instruction : here
+#-----------------------------------------------------------------------------*
+class @gtlHereInstruction : @gtlInstruction
+{
+}
+
+override method @gtlHereInstruction execute
+  ?!@gtlContext        context
+  ?!@gtlData    unused vars
+  ?!@library    unused lib
+  ?!@string     unused outputString
+{
+  [context hereWeAre]
+}
+
+#-----------------------------------------------------------------------------*
+# Debugger instruction : help
+#-----------------------------------------------------------------------------*
+class @gtlHelpInstruction : @gtlInstruction
+{
+}
+
+override method @gtlHelpInstruction execute
+  ?!@gtlContext unused context
+  ?!@gtlData    unused vars
+  ?!@library    unused lib
+  ?!@string     unused outputString
+{
+  message "Available commands:\n"
+  message "  break <filename>:<line>        : set a breakpoint\n"
+  message "  break                          : lists the breakpoints\n"
+  message "  break not <num>                : delete breakpoint at index <num>\n"
+  message "  cont                           : continue execution until the next breakpoint or the end\n"
+  message "  display <variable>             : display variable <variable>\n"
+  message "  do <command>                   : do a command each time a step is done\n"
+  message "  do                             : list the do commands\n"
+  message "  do not <num>                   : delete the do command at index <num>\n"
+  message "  here                           : lists instructions +/- 5 around current one\n"
+  message "  let <variable> := <expression> : compute <expression> and set <variable> to the result\n"
+  message "  print <expression>             : prints the <expression>\n"
+  message "  step                           : step one instruction\n"
+  message "  unlet <variable>               : delete <variable>\n"
+  message "  variables                      : display all variables in scope\n"
+  message "  <return>                       : step one instruction\n"
 }

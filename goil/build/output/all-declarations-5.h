@@ -1211,6 +1211,29 @@ void extensionMethod_execute (const class GALGAS_gtlInstructionList inObject,
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
+//                                       Extension getter '@gtlContext breakOn'                                        *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typedef class GALGAS_bool (*enterExtensionGetter_gtlContext_breakOn) (const class cPtr_gtlContext * inObject,
+                                                                      class GALGAS_gtlInstruction inArgument0,
+                                                                      C_Compiler * inCompiler
+                                                                      COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterExtensionGetter_breakOn (const int32_t inClassIndex,
+                                   enterExtensionGetter_gtlContext_breakOn inGetter) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_bool callExtensionGetter_breakOn (const cPtr_gtlContext * inObject,
+                                               GALGAS_gtlInstruction in_instruction,
+                                               class C_Compiler * inCompiler
+                                               COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //                                     Extension getter '@gtlContext breakOnNext'                                      *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -1370,26 +1393,70 @@ void callExtensionMethod_executeStepDoList (const class cPtr_gtlContext * inObje
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                               Extension method '@gtlInstruction displayWithLocation'                                *
+//                                  Extension setter '@gtlContext popInstructionList'                                  *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-typedef void (*extensionMethodSignature_gtlInstruction_displayWithLocation) (const class cPtr_gtlInstruction * inObject,
-                                                                             const class GALGAS_debuggerContext constinArgument0,
-                                                                             class C_Compiler * inCompiler
-                                                                             COMMA_LOCATION_ARGS) ;
+typedef void (*extensionSetterSignature_gtlContext_popInstructionList) (class cPtr_gtlContext * inObject,
+                                                                        class C_Compiler * inCompiler
+                                                                        COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void enterExtensionMethod_displayWithLocation (const int32_t inClassIndex,
-                                               extensionMethodSignature_gtlInstruction_displayWithLocation inMethod) ;
+void enterExtensionSetter_popInstructionList (const int32_t inClassIndex,
+                                              extensionSetterSignature_gtlContext_popInstructionList inModifier) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void callExtensionMethod_displayWithLocation (const class cPtr_gtlInstruction * inObject,
-                                              const GALGAS_debuggerContext constin_context,
+void callExtensionSetter_popInstructionList (class cPtr_gtlContext * inObject,
+                                             C_Compiler * inCompiler
+                                             COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                 Extension setter '@gtlContext pushInstructionList'                                  *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typedef void (*extensionSetterSignature_gtlContext_pushInstructionList) (class cPtr_gtlContext * inObject,
+                                                                         const class GALGAS_gtlInstructionList constinArgument0,
+                                                                         class C_Compiler * inCompiler
+                                                                         COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterExtensionSetter_pushInstructionList (const int32_t inClassIndex,
+                                               extensionSetterSignature_gtlContext_pushInstructionList inModifier) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void callExtensionSetter_pushInstructionList (class cPtr_gtlContext * inObject,
+                                              const GALGAS_gtlInstructionList constin_instructionList,
                                               C_Compiler * inCompiler
                                               COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                    Extension setter '@gtlContext setBreakOnNext'                                    *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typedef void (*extensionSetterSignature_gtlContext_setBreakOnNext) (class cPtr_gtlContext * inObject,
+                                                                    class GALGAS_bool inArgument0,
+                                                                    class C_Compiler * inCompiler
+                                                                    COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterExtensionSetter_setBreakOnNext (const int32_t inClassIndex,
+                                          extensionSetterSignature_gtlContext_setBreakOnNext inModifier) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void callExtensionSetter_setBreakOnNext (class cPtr_gtlContext * inObject,
+                                         GALGAS_bool in_break,
+                                         C_Compiler * inCompiler
+                                         COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
@@ -1413,6 +1480,29 @@ void callExtensionSetter_setLoopOnCommand (class cPtr_gtlContext * inObject,
                                            GALGAS_bool in_loopOnCommand,
                                            C_Compiler * inCompiler
                                            COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                               Extension setter '@gtlContext setNextInstructionIndex'                                *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typedef void (*extensionSetterSignature_gtlContext_setNextInstructionIndex) (class cPtr_gtlContext * inObject,
+                                                                             class GALGAS_uint inArgument0,
+                                                                             class C_Compiler * inCompiler
+                                                                             COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterExtensionSetter_setNextInstructionIndex (const int32_t inClassIndex,
+                                                   extensionSetterSignature_gtlContext_setNextInstructionIndex inModifier) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void callExtensionSetter_setNextInstructionIndex (class cPtr_gtlContext * inObject,
+                                                  GALGAS_uint in_index,
+                                                  C_Compiler * inCompiler
+                                                  COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
@@ -1684,183 +1774,5 @@ void callExtensionMethod_displayLong (const class cPtr_gtlVariablesInstruction *
                                       const GALGAS_gtlData constin_vars,
                                       C_Compiler * inCompiler
                                       COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                          Extension getter '@gtlVarPath stringRepresentation' (as function)                          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_string extensionGetter_stringRepresentation (const class GALGAS_gtlVarPath & inObject,
-                                                          class C_Compiler * inCompiler
-                                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            Abstract extension getter '@gtlVarItem stringRepresentation'                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_string (*enterExtensionGetter_gtlVarItem_stringRepresentation) (const class cPtr_gtlVarItem * inObject,
-                                                                                     const class GALGAS_string & constinArgument0,
-                                                                                     class C_Compiler * inCompiler
-                                                                                     COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_stringRepresentation (const int32_t inClassIndex,
-                                                enterExtensionGetter_gtlVarItem_stringRepresentation inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_string callExtensionGetter_stringRepresentation (const class cPtr_gtlVarItem * inObject,
-                                                              const GALGAS_string & constin_concatString,
-                                                              C_Compiler * inCompiler
-                                                              COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                      Extension getter '@gtlExpressionList stringRepresentation' (as function)                       *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_string extensionGetter_stringRepresentation (const class GALGAS_gtlExpressionList & inObject,
-                                                          class C_Compiler * inCompiler
-                                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                           Abstract extension getter '@gtlExpression stringRepresentation'                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_string (*enterExtensionGetter_gtlExpression_stringRepresentation) (const class cPtr_gtlExpression * inObject,
-                                                                                        class C_Compiler * inCompiler
-                                                                                        COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_stringRepresentation (const int32_t inClassIndex,
-                                                enterExtensionGetter_gtlExpression_stringRepresentation inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_string callExtensionGetter_stringRepresentation (const class cPtr_gtlExpression * inObject,
-                                                              C_Compiler * inCompiler
-                                                              COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                        Extension getter '@gtlExpressionMap mapRepresentation' (as function)                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_string extensionGetter_mapRepresentation (const class GALGAS_gtlExpressionMap & inObject,
-                                                       class C_Compiler * inCompiler
-                                                       COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       Extension getter '@gtlExpressionMap structRepresentation' (as function)                       *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_string extensionGetter_structRepresentation (const class GALGAS_gtlExpressionMap & inObject,
-                                                          class C_Compiler * inCompiler
-                                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       Extension getter '@gtlArgumentList stringRepresentation' (as function)                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_string extensionGetter_stringRepresentation (const class GALGAS_gtlArgumentList & inObject,
-                                                          class C_Compiler * inCompiler
-                                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                        Extension getter '@sortingKeyList stringRepresentation' (as function)                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_string extensionGetter_stringRepresentation (const class GALGAS_sortingKeyList & inObject,
-                                                          class C_Compiler * inCompiler
-                                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            Extension getter '@lsint stringRepresentation' (as function)                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_string extensionGetter_stringRepresentation (const class GALGAS_lsint & inObject,
-                                                          class C_Compiler * inCompiler
-                                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  Extension getter '@gtlInstruction shortLocation'                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_string (*enterExtensionGetter_gtlInstruction_shortLocation) (const class cPtr_gtlInstruction * inObject,
-                                                                                  C_Compiler * inCompiler
-                                                                                  COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_shortLocation (const int32_t inClassIndex,
-                                         enterExtensionGetter_gtlInstruction_shortLocation inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_string callExtensionGetter_shortLocation (const cPtr_gtlInstruction * inObject,
-                                                       class C_Compiler * inCompiler
-                                                       COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Extension method '@gtlInstruction display'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_gtlInstruction_display) (const class cPtr_gtlInstruction * inObject,
-                                                                 class C_Compiler * inCompiler
-                                                                 COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_display (const int32_t inClassIndex,
-                                   extensionMethodSignature_gtlInstruction_display inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_display (const class cPtr_gtlInstruction * inObject,
-                                  C_Compiler * inCompiler
-                                  COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                             Extension getter '@enumValues mergeWithEnum' (as function)                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_enumValues extensionGetter_mergeWithEnum (const class GALGAS_enumValues & inObject,
-                                                       const class GALGAS_enumValues & constinArgument0,
-                                                       class C_Compiler * inCompiler
-                                                       COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//          Extension getter '@implementationObjectMap mergeImplementationObjectAttributesWith' (as function)          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_implementationObjectMap extensionGetter_mergeImplementationObjectAttributesWith (const class GALGAS_implementationObjectMap & inObject,
-                                                                                              const class GALGAS_implementationObjectMap & constinArgument0,
-                                                                                              class C_Compiler * inCompiler
-                                                                                              COMMA_LOCATION_ARGS) ;
 
 #endif

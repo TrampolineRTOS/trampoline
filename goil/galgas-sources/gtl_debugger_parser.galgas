@@ -43,6 +43,11 @@ rule <gtl_debugger_command>
       !.here
       !""
     }
+  elsif "help" == command then
+    instruction = @gtlHelpInstruction.new {
+      !.here
+      !""
+    }    
   else
     error .here : "Illegal command: " + command : instruction
   end
@@ -57,6 +62,64 @@ rule <gtl_debugger_command>
     !.here
     !""
   }
+}
+
+#-----------------------------------------------------------------------------*
+rule <gtl_debugger_command>
+  !@gtlInstruction instruction
+{
+  $break$
+  select
+    $not$
+    $signed_literal_integer_bigint$ ?let @lbigint index
+    instruction = @gtlBreakpointDeleteInstruction.new {
+      !.here
+      !""
+      !index
+    }
+  or
+    select 
+      $identifier$ ?let @lstring fileName
+      $.$
+      $identifier$ ?let @lstring fileExtension
+      $:$
+      $signed_literal_integer_bigint$ ?let @lbigint lineNum
+      instruction = @gtlBreakpointInstruction.new {
+        !.here
+        !""
+        ![fileName string] + "." + fileExtension
+        ![lineNum bigint]
+      }
+    or
+      $signed_literal_integer_bigint$ ?let @lbigint lineNum
+      instruction = @gtlBreakpointInstruction.new {
+        !.here
+        !""
+        !""
+        ![lineNum bigint]
+      }
+    end
+  or
+    $string$ ?let @lstring fileNameAndLineNum
+    @stringlist components = [[fileNameAndLineNum string] componentsSeparatedByString !":"]
+    if [components length] == 2 then
+      @string fileName = [components mValueAtIndex !0]
+      @string lineNum = [components mValueAtIndex !1]
+      instruction = @gtlBreakpointInstruction.new {
+        !.here
+        !""
+        !fileName
+        ![lineNum decimalUnsignedNumber]
+      }
+    else
+      error .here : "Illegal breakpoint location" : instruction
+    end
+  or
+    instruction = @gtlBreakpointListInstruction.new {
+      !.here
+      !""
+    }
+  end  
 }
 
 #-----------------------------------------------------------------------------*
@@ -268,6 +331,17 @@ rule <gtl_step_do_command>
     !""
     !true
     !expression
+  }
+}
+
+#-----------------------------------------------------------------------------*
+rule <gtl_step_do_command>
+  !@gtlInstruction instruction
+{
+  $here$
+  instruction = @gtlHereInstruction.new {
+    !.here
+    !""
   }
 }
 

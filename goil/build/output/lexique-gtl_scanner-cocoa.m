@@ -91,7 +91,7 @@ static NSArray * kTemplateDefinitionArray_gtl_5F_scanner ;
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const BOOL kEndOfScriptInTemplateArray_gtl_5F_scanner [111] = {
+static const BOOL kEndOfScriptInTemplateArray_gtl_5F_scanner [112] = {
   NO /* identifier */,
   NO /* literal_enum */,
   NO /* literal_double */,
@@ -158,6 +158,7 @@ static const BOOL kEndOfScriptInTemplateArray_gtl_5F_scanner [111] = {
   NO /* setter */,
   NO /* libraries */,
   NO /* input */,
+  NO /* break */,
   NO /* * */,
   NO /* | */,
   NO /* , */,
@@ -212,7 +213,7 @@ static const BOOL kEndOfScriptInTemplateArray_gtl_5F_scanner [111] = {
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const C_cocoa_lexique_table_entry ktable_for_gtl_5F_scanner_goilTemplateKeyWordList [55] = {
+static const C_cocoa_lexique_table_entry ktable_for_gtl_5F_scanner_goilTemplateKeyWordList [56] = {
   {"by", gtl_scanner_1_by},
   {"do", gtl_scanner_1_do},
   {"if", gtl_scanner_1_if},
@@ -239,6 +240,7 @@ static const C_cocoa_lexique_table_entry ktable_for_gtl_5F_scanner_goilTemplateK
   {"then", gtl_scanner_1_then},
   {"true", gtl_scanner_1_true},
   {"after", gtl_scanner_1_after},
+  {"break", gtl_scanner_1_break},
   {"elsif", gtl_scanner_1_elsif},
   {"error", gtl_scanner_1_error},
   {"false", gtl_scanner_1_false},
@@ -271,7 +273,7 @@ static const C_cocoa_lexique_table_entry ktable_for_gtl_5F_scanner_goilTemplateK
 } ;
 
 static NSInteger search_into_gtl_5F_scanner_goilTemplateKeyWordList (NSString * inSearchedString) {
-  return searchStringInTable (inSearchedString, ktable_for_gtl_5F_scanner_goilTemplateKeyWordList, 55) ;
+  return searchStringInTable (inSearchedString, ktable_for_gtl_5F_scanner_goilTemplateKeyWordList, 56) ;
 }
 
 
@@ -778,7 +780,7 @@ static NSInteger search_into_gtl_5F_scanner_goilTemplateKeyWordList (NSString * 
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (NSUInteger) terminalVocabularyCount {
-  return 111 ;
+  return 112 ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -808,7 +810,7 @@ static NSInteger search_into_gtl_5F_scanner_goilTemplateKeyWordList (NSString * 
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (NSUInteger) styleIndexForTerminal: (NSInteger) inTerminal {
-  static const NSUInteger kTerminalSymbolStyles [112] = {0,
+  static const NSUInteger kTerminalSymbolStyles [113] = {0,
     0 /* gtl_scanner_1_identifier */,
     0 /* gtl_scanner_1_literal_5F_enum */,
     5 /* gtl_scanner_1_literal_5F_double */,
@@ -875,6 +877,7 @@ static NSInteger search_into_gtl_5F_scanner_goilTemplateKeyWordList (NSString * 
     1 /* gtl_scanner_1_setter */,
     1 /* gtl_scanner_1_libraries */,
     1 /* gtl_scanner_1_input */,
+    1 /* gtl_scanner_1_break */,
     2 /* gtl_scanner_1__2A_ */,
     2 /* gtl_scanner_1__7C_ */,
     2 /* gtl_scanner_1__2C_ */,
@@ -931,7 +934,7 @@ static NSInteger search_into_gtl_5F_scanner_goilTemplateKeyWordList (NSString * 
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (BOOL) atomicSelectionForToken: (NSUInteger) inTokenIndex {
-  static const BOOL kTerminalAtomicSelection [112] = {NO,
+  static const BOOL kTerminalAtomicSelection [113] = {NO,
     YES /* gtl_scanner_1_identifier */,
     YES /* gtl_scanner_1_literal_5F_enum */,
     YES /* gtl_scanner_1_literal_5F_double */,
@@ -998,6 +1001,7 @@ static NSInteger search_into_gtl_5F_scanner_goilTemplateKeyWordList (NSString * 
     YES /* gtl_scanner_1_setter */,
     YES /* gtl_scanner_1_libraries */,
     YES /* gtl_scanner_1_input */,
+    YES /* gtl_scanner_1_break */,
     YES /* gtl_scanner_1__2A_ */,
     YES /* gtl_scanner_1__7C_ */,
     YES /* gtl_scanner_1__2C_ */,

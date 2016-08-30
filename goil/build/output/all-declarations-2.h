@@ -279,7 +279,12 @@ class GALGAS_debuggerContext : public AC_GALGAS_class {
                                                                 const class GALGAS_string & inOperand8,
                                                                 const class GALGAS_string & inOperand9,
                                                                 const class GALGAS_string & inOperand10,
-                                                                const class GALGAS_gtlInstructionList & inOperand11
+                                                                const class GALGAS_gtlInstructionList & inOperand11,
+                                                                const class GALGAS_gtlBreakpointList & inOperand12,
+                                                                const class GALGAS_uint & inOperand13,
+                                                                const class GALGAS_uint & inOperand14,
+                                                                const class GALGAS_gtlInstructionList & inOperand15,
+                                                                const class GALGAS_gtlInstructionListContextStack & inOperand16
                                                                 COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Comparison
@@ -298,8 +303,14 @@ class GALGAS_debuggerContext : public AC_GALGAS_class {
   public : VIRTUAL_IN_DEBUG void setter_setInstructionFace (class GALGAS_string inArgument0
                                                             COMMA_LOCATION_ARGS) ;
 
+  public : VIRTUAL_IN_DEBUG void setter_setInstructionWindow (class GALGAS_uint inArgument0
+                                                              COMMA_LOCATION_ARGS) ;
+
   public : VIRTUAL_IN_DEBUG void setter_setLoopOnCommand (class GALGAS_bool inArgument0
                                                           COMMA_LOCATION_ARGS) ;
+
+  public : VIRTUAL_IN_DEBUG void setter_setNextInstructionIndex (class GALGAS_uint inArgument0
+                                                                 COMMA_LOCATION_ARGS) ;
 
   public : VIRTUAL_IN_DEBUG void setter_setOutputColor (class GALGAS_string inArgument0
                                                         COMMA_LOCATION_ARGS) ;
@@ -326,6 +337,10 @@ class GALGAS_debuggerContext : public AC_GALGAS_class {
 //--------------------------------- Getters
   public : VIRTUAL_IN_DEBUG class GALGAS_bool getter_breakOnNext (LOCATION_ARGS) const ;
 
+  public : VIRTUAL_IN_DEBUG class GALGAS_gtlBreakpointList getter_breakpoints (LOCATION_ARGS) const ;
+
+  public : VIRTUAL_IN_DEBUG class GALGAS_gtlInstructionListContextStack getter_contextStack (LOCATION_ARGS) const ;
+
   public : VIRTUAL_IN_DEBUG class GALGAS_bool getter_debugActive (LOCATION_ARGS) const ;
 
   public : VIRTUAL_IN_DEBUG class GALGAS_gtlInstructionList getter_doList (LOCATION_ARGS) const ;
@@ -334,7 +349,13 @@ class GALGAS_debuggerContext : public AC_GALGAS_class {
 
   public : VIRTUAL_IN_DEBUG class GALGAS_string getter_instructionFace (LOCATION_ARGS) const ;
 
+  public : VIRTUAL_IN_DEBUG class GALGAS_gtlInstructionList getter_instructionList (LOCATION_ARGS) const ;
+
+  public : VIRTUAL_IN_DEBUG class GALGAS_uint getter_instructionWindow (LOCATION_ARGS) const ;
+
   public : VIRTUAL_IN_DEBUG class GALGAS_bool getter_loopOnCommand (LOCATION_ARGS) const ;
+
+  public : VIRTUAL_IN_DEBUG class GALGAS_uint getter_nextInstructionIndex (LOCATION_ARGS) const ;
 
   public : VIRTUAL_IN_DEBUG class GALGAS_string getter_outputColor (LOCATION_ARGS) const ;
 
@@ -379,6 +400,11 @@ class cPtr_debuggerContext : public acPtr_class {
   public : GALGAS_string mAttribute_warningColor ;
   public : GALGAS_string mAttribute_warningFace ;
   public : GALGAS_gtlInstructionList mAttribute_doList ;
+  public : GALGAS_gtlBreakpointList mAttribute_breakpoints ;
+  public : GALGAS_uint mAttribute_instructionWindow ;
+  public : GALGAS_uint mAttribute_nextInstructionIndex ;
+  public : GALGAS_gtlInstructionList mAttribute_instructionList ;
+  public : GALGAS_gtlInstructionListContextStack mAttribute_contextStack ;
 
 //--- Constructor
   public : cPtr_debuggerContext (const GALGAS_bool & in_debugActive,
@@ -392,7 +418,12 @@ class cPtr_debuggerContext : public acPtr_class {
                                  const GALGAS_string & in_outputFace,
                                  const GALGAS_string & in_warningColor,
                                  const GALGAS_string & in_warningFace,
-                                 const GALGAS_gtlInstructionList & in_doList
+                                 const GALGAS_gtlInstructionList & in_doList,
+                                 const GALGAS_gtlBreakpointList & in_breakpoints,
+                                 const GALGAS_uint & in_instructionWindow,
+                                 const GALGAS_uint & in_nextInstructionIndex,
+                                 const GALGAS_gtlInstructionList & in_instructionList,
+                                 const GALGAS_gtlInstructionListContextStack & in_contextStack
                                  COMMA_LOCATION_ARGS) ;
 
 //--- Duplication
@@ -422,6 +453,13 @@ class cPtr_debuggerContext : public acPtr_class {
   public : VIRTUAL_IN_DEBUG GALGAS_string getter_warningFace (LOCATION_ARGS) const ;
   public : VIRTUAL_IN_DEBUG void setter_setWarningFace (GALGAS_string inValue COMMA_LOCATION_ARGS) ;
   public : VIRTUAL_IN_DEBUG GALGAS_gtlInstructionList getter_doList (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_gtlBreakpointList getter_breakpoints (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_uint getter_instructionWindow (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setInstructionWindow (GALGAS_uint inValue COMMA_LOCATION_ARGS) ;
+  public : VIRTUAL_IN_DEBUG GALGAS_uint getter_nextInstructionIndex (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setNextInstructionIndex (GALGAS_uint inValue COMMA_LOCATION_ARGS) ;
+  public : VIRTUAL_IN_DEBUG GALGAS_gtlInstructionList getter_instructionList (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_gtlInstructionListContextStack getter_contextStack (LOCATION_ARGS) const ;
 //--- Description
   public : virtual void description (C_String & ioString,
                                      const int32_t inIndentation) const ;

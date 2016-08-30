@@ -58,9 +58,14 @@ method @gtlInstructionList execute
   ?!@string     outputString
 {
   if [context debugActive] then
-    for () in self do
-      if [context breakOnNext] then
-        [instruction displayWithLocation ![context debuggerContext]]
+    [!?context pushInstructionList !self]
+    @uint lastErrorCount = .errorCount
+    for () in self do (index)
+      @bool errorCountIncreased = (@uint.errorCount - lastErrorCount) > 0
+      if [context breakOnNext] | [context breakOn !instruction] | errorCountIncreased then
+        [!?context setBreakOnNext !true]
+        [!?context setNextInstructionIndex !index]
+#        [instruction displayWithLocation ![context debuggerContext]]
         [context executeStepDoList !?context !?vars !?lib !?outputString]
         [!?context setLoopOnCommand !true]
         loop (@uint.max)
@@ -84,8 +89,10 @@ method @gtlInstructionList execute
         while [context loopOnCommand] do
         end
       end
+      lastErrorCount = .errorCount
       [instruction execute !?context !?vars !?lib !?outputString]
     end
+    [!?context popInstructionList]
   else
     for () in self do
       if @uint.errorCount == 0 then
