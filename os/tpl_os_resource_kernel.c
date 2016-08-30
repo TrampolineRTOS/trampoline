@@ -193,7 +193,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
         TRACE_ISR_CHANGE_PRIORITY((tpl_proc_id)TPL_KERN_REF(kern).running_id)
       }
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
-/*    tpl_start_resource_monitor((tpl_proc_id)tpl_kern.running_id, res_id); */
+/*    tpl_start_resource_monitor((tpl_proc_id)TPL_KERN_REF(kern).running_id, res_id); */
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
     }
   }
@@ -275,7 +275,7 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
       TRACE_RES_RELEASED(res_id)
       tpl_schedule_from_running(CORE_ID_OR_NOTHING(core_id));
 # if WITH_AUTOSAR_TIMING_PROTECTION == YES
-/*    tpl_stop_resource_monitor((tpl_proc_id)tpl_kern.running_id, res_id); */
+/*    tpl_stop_resource_monitor((tpl_proc_id)TPL_KERN(core_id).running_id, res_id); */
 # endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 
       LOCAL_SWITCH_CONTEXT(core_id)

@@ -40,10 +40,11 @@
 FUNC(void, OS_CODE) tpl_trace_task_execute(
   CONST(TaskType, AUTOMATIC) new_executed_task_id)
 {
+  GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
   VAR(tpl_status, AUTOMATIC) new_executed_task_old_status;
   VAR(tpl_priority, AUTOMATIC) new_executed_task_prio;
 
-  if(tpl_kern.s_running->type != 0x2)
+  if(TPL_KERN_REF(kern).s_running->type != 0x2)
     {
 /* This function is called just before the scheduling process,
     so we can get the status of the task before it changes.*/
@@ -108,10 +109,11 @@ FUNC(void, OS_CODE) tpl_trace_task_terminate(
 FUNC(void, OS_CODE) tpl_trace_task_activate(
   CONST(TaskType, AUTOMATIC) task_id)
 {
+  GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
   VAR(tpl_status, AUTOMATIC) task_old_status;
   VAR(tpl_priority, AUTOMATIC) task_prio;
 
-  if(tpl_kern.s_running->type != 0x2)
+  if(TPL_KERN_REF(kern).s_running->type != 0x2)
   {
     tpl_trace_get_date();
 
@@ -131,10 +133,11 @@ FUNC(void, OS_CODE) tpl_trace_task_activate(
 FUNC(void, OS_CODE) tpl_trace_task_wait(
   CONST(TaskType, AUTOMATIC) waiting_task_id)
 {
+  GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
   VAR(tpl_status, AUTOMATIC) waiting_task_status;
   VAR(tpl_priority, AUTOMATIC) waiting_task_prio;
 
-  if(tpl_kern.s_running->type != 0x2)
+  if(TPL_KERN_REF(kern).s_running->type != 0x2)
   {
     tpl_trace_get_date();
 
@@ -153,10 +156,11 @@ FUNC(void, OS_CODE) tpl_trace_task_released(
   CONST(TaskType, AUTOMATIC) released_task_id, CONST(tpl_event_mask, AUTOMATIC)
 event_id)
 {
+  GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
   VAR(tpl_status, AUTOMATIC) released_task_status;
   VAR(tpl_priority, AUTOMATIC) released_task_prio;
 
-  if(tpl_kern.s_running->type != 0x2)
+  if(TPL_KERN_REF(kern).s_running->type != 0x2)
   {
     tpl_trace_get_date();
 
@@ -175,12 +179,13 @@ event_id)
 FUNC(void, OS_CODE) tpl_trace_task_change_priority(
   CONST(TaskType, AUTOMATIC) priority_changing_task_id)
 {
+  GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
   VAR(tpl_priority, AUTOMATIC) priority_changing_task_new_prio;
 
-    if(tpl_kern.s_running->type != 0x2)
+  if(TPL_KERN_REF(kern).s_running->type != 0x2)
   {
     tpl_trace_get_date();
-    priority_changing_task_new_prio = tpl_dyn_proc_table[tpl_kern.running_id]->priority;
+    priority_changing_task_new_prio = tpl_dyn_proc_table[TPL_KERN_REF(kern).running_id]->priority;
 
     EVENT_BEGIN(TASK_CHANGE_PRIORITY)
     EVENT_VALUE(priority_changing_task_id)
@@ -228,9 +233,10 @@ FUNC(void, OS_CODE) tpl_trace_res_released(
 FUNC(void, OS_CODE) tpl_trace_isr_run(
   CONST(tpl_isr_id, AUTOMATIC) running_isr_id)
 {
+  GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
   VAR(tpl_priority, AUTOMATIC) running_isr_prio;
 
-  if (tpl_kern.s_running->type == 0x2)
+  if (TPL_KERN_REF(kern).s_running->type == 0x2)
   {
     tpl_trace_get_date();
     running_isr_prio = tpl_dyn_proc_table[running_isr_id]->priority;
@@ -304,14 +310,14 @@ FUNC(void, OS_CODE) tpl_trace_isr_activate(
 FUNC(void, OS_CODE) tpl_trace_isr_change_priority(
   CONST(tpl_isr_id, AUTOMATIC) priority_changing_isr_id)
 {
-
+  GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
   VAR(tpl_priority, AUTOMATIC) priority_changing_isr_new_prio;
 
-  if(tpl_kern.s_running->type == 0x2)
+  if(TPL_KERN_REF(kern).s_running->type == 0x2)
   {
 
     tpl_trace_get_date();
-    priority_changing_isr_new_prio = tpl_dyn_proc_table[tpl_kern.running_id]->priority;
+    priority_changing_isr_new_prio = tpl_dyn_proc_table[TPL_KERN_REF(kern).running_id]->priority;
 
     EVENT_BEGIN(TASK_CHANGE_PRIORITY)
     EVENT_VALUE(priority_changing_isr_id)

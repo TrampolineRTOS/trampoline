@@ -306,7 +306,7 @@ FUNC(StatusType, OS_CODE) tpl_get_task_id_service(
 
   /*  get the task id from the task descriptor. If the id is less
    *  than TASK_COUNT-1.
-   *  tpl_kern.running_id is uint32 (tpl_os_kernel.h) (always >= 0)
+   *  TPL_KERN(core_id).running_id is uint32 (tpl_os_kernel.h) (always >= 0)
    *  INVALID_TASK is returned         */
   IF_NO_EXTENDED_ERROR(result)
   {

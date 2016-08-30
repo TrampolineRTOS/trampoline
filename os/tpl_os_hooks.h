@@ -28,9 +28,12 @@
 
 #include "tpl_os_types.h"
 
-#if WITH_MEMORY_PROTECTION == YES
+#if WITH_MEMORY_PROTECTION == YES && NUMBER_OF_CORES == 1
 #define SET_RUNNING_TRUSTED   tpl_kern.running_trusted = 1;
 #define RESET_RUNNING_TRUSTED tpl_kern.running_trusted = 0;
+#elif WITH_MEMORY_PROTECTION == YES && NUMBER_OF_CORES > 1
+#define SET_RUNNING_TRUSTED   tpl_kern[tpl_get_core_id()]->running_trusted = 1;
+#define RESET_RUNNING_TRUSTED tpl_kern[tpl_get_core_id()]->running_trusted = 0;
 #else /* WITH_MEMORY_PROTECTION != YES */
 #define SET_RUNNING_TRUSTED
 #define RESET_RUNNING_TRUSTED

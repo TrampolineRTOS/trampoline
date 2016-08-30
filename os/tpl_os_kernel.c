@@ -758,7 +758,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(CORE_ID_OR_VOID(core_id))
   VAR(uint8, AUTOMATIC) need_switch = NO_NEED_SWITCH;
 
   DOW_DO(print_kern("before tpl_schedule_from_running"));
-  DOW_ASSERT((uint32)READY_LIST(read_list)[1].key > 0)
+  DOW_ASSERT((uint32)READY_LIST(ready_list)[1].key > 0)
 
 #if WITH_STACK_MONITORING == YES
   tpl_check_stack((tpl_proc_id)TPL_KERN_REF(kern).elected_id);
@@ -1309,7 +1309,7 @@ FUNC(void, OS_CODE) tpl_call_terminate_isr2_service(void)
  * tpl_multi_schedule
  *
  * Does as many as rescheduling as indicated by need_schedule member of
- * tpl_kern structures
+ * TPL_KERN structures
  */
 FUNC(void, OS_CODE)tpl_multi_schedule(void)
 {
@@ -1317,7 +1317,7 @@ FUNC(void, OS_CODE)tpl_multi_schedule(void)
 
   for (core = 0; core < NUMBER_OF_CORES; core++)
   {
-    if (tpl_kern[core]->need_schedule)
+    if (TPL_KERN(core).need_schedule)
     {
       tpl_schedule_from_running(core);
     }

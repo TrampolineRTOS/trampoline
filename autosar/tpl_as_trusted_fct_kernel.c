@@ -40,6 +40,8 @@ FUNC(tpl_status, OS_CODE) tpl_call_trusted_function_service(
   CONST(tpl_tf_id, AUTOMATIC)               fct_idx,
   CONSTP2VAR(void, AUTOMATIC, OS_APPL_DATA) fct_param)
 {
+  GET_CURRENT_CORE_ID(core_id)
+  GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
   VAR(tpl_status, AUTOMATIC) result = E_OK;
 
 #if (TRUSTED_FCT_COUNT > 0)
@@ -47,11 +49,11 @@ FUNC(tpl_status, OS_CODE) tpl_call_trusted_function_service(
   {
     CONST(tpl_trusted_fct, AUTOMATIC) tf = tpl_trusted_fct_table[fct_idx];
 #   if WITH_OSAPPLICATION == YES
-    tpl_kern.running->trusted_counter++;
+    TPL_KERN_REF(kern).running->trusted_counter++;
 #   endif
     tf(fct_idx, fct_param);
 #   if WITH_OSAPPLICATION == YES
-    tpl_kern.running->trusted_counter--;
+    TPL_KERN_REF(kern).running->trusted_counter--;
 #   endif
   }
   else
