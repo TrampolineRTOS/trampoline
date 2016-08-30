@@ -53,7 +53,7 @@ TPL_VLE_OFF
 #endif
 
 #if (TPL_USE_DECREMENTER == YES)
-TPL_EXTERN(tpl_call_counter_tick_decrementer)
+TPL_EXTERN(tpl_dec_table)
 
 /****************************************************************************/
 TPL_GLOBAL(tpl_init_dec)
@@ -130,7 +130,7 @@ tpl_dec_handler:
   se_mtar     r11,r5
   se_mtar     r12,r6
   mfspr       r6,spr_PIR        /* get the core number, *4 to have the index in table of uint32 */
-  e_slwi      r6,r6,2
+  se_slwi     r6,2
   e_lis       r5,TPL_HIG(TPL_EXTERN_REF(tpl_current_date))
   e_add16i    r5,TPL_LOW(TPL_EXTERN_REF(tpl_current_date))
   se_add      r5,r6
@@ -140,7 +140,7 @@ tpl_dec_handler:
 
 #if WITH_MULTICORE == YES
   mfspr       r6,spr_PIR        /* get the core number, *4 to have the index in table of uint32 */
-  e_slwi      r6,r6,2
+  se_slwi     r6,2
 #endif
   e_lis       r5,TPL_HIG(TPL_EXTERN_REF(tpl_kern))
   e_add16i    r5,TPL_LOW(TPL_EXTERN_REF(tpl_kern))
@@ -175,7 +175,13 @@ tpl_dec_handler:
   se_subi     r1,8
 
   /* call the counter_tick function */
-  e_bl        TPL_EXTERN_REF(tpl_call_counter_tick_decrementer)
+  mfspr       r6,spr_PIR
+  se_slwi     r6,2
+  e_lis       r5,TPL_HIG(TPL_EXTERN_REF(tpl_dec_table))
+  e_add16i    r5,TPL_LOW(TPL_EXTERN_REF(tpl_dec_table))
+  lwzx        r5,r5,r6
+  mtlr        r5
+  se_blrl
 
   /*
    * restore all volatile registers

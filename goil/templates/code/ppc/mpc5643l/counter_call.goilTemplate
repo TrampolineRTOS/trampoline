@@ -82,7 +82,7 @@ end foreach
       if application::CORE == core_id then
         foreach counter_name in exists application::COUNTER default(@( )) do
           let counter := counter_map[counter_name::VALUE]
-          if counter::TYPE == "HARDWARE" then
+          if counter::TYPE == "HARDWARE" & counter::HANDLER == "tick" then
             let interrupt := interrupt_map[counter::SOURCE]
             let used_interrupts[counter::SOURCE] := interrupt
           end if

@@ -76,6 +76,7 @@ extern FUNC(void, OS_CODE) tpl_init_isr_prio(void);
 extern FUNC(void, OS_CODE) tpl_init_mp(void);
 #endif
 #if (TPL_USE_DECREMENTER == YES)
+extern CONST(tpl_it_handler, OS_CONST) tpl_dec_table[NUMBER_OF_CORES];
 extern FUNC(void, OS_CODE) tpl_init_dec(void);
 #endif
 
@@ -195,9 +196,16 @@ FUNC(void, OS_CODE) tpl_init_context(
 
 FUNC(void, OS_CODE) tpl_init_core(void)
 {
+  GET_CURRENT_CORE_ID(core)
   tpl_init_regs();
-#if (TPL_USE_DECREMENTER == YES)
+#if (TPL_USE_DECREMENTER == YES) && (NUMBER_OF_CORES == 1)
   tpl_init_dec();
+#elif (TPL_USE_DECREMENTER == YES) && (NUMBER_OF_CORES > 1)
+  /* Enable the decrementer only if this core has a dec handler */
+  if(tpl_dec_table[core] != NULL)
+  {
+    tpl_init_dec();
+  }
 #endif
 #if WITH_MEMORY_PROTECTION == YES
   tpl_init_mp();

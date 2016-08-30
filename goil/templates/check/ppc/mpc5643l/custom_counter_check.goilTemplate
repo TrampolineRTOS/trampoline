@@ -57,37 +57,42 @@ end foreach
 
 # -----------------------------------------------------------------------------
 # ERROR
-# Maximum one watchdog
-#
-let found_watchdog := false
-foreach counter in HARDWARECOUNTERS do
-  if counter::HANDLER == "watchdog" then
-    if found_watchdog then
-      error counter::NAME : "Only one watchdog can be defined."
-    end if
-    let found_watchdog := true
-  end if
-end foreach
-
-# -----------------------------------------------------------------------------
-# ERROR
-# The watchdog must use a pit channel
+# The watchdog must use a pit channel or the decrementer
 #
 
 foreach counter in HARDWARECOUNTERS do
   if counter::HANDLER == "watchdog"
+    & counter::SOURCE != "decrementer"
     & counter::SOURCE != "pit_ch0"
     & counter::SOURCE != "pit_ch1"
     & counter::SOURCE != "pit_ch2"
     & counter::SOURCE != "pit_ch3" then
     error counter::NAME : "Watchdog must use a pit channel. Possible values : "
-                        + "pit_ch0, pit_ch1, pit_ch2, pit_ch3"
+                        + "pit_ch0, pit_ch1, pit_ch2, pit_ch3, decrementer"
   end if
 end foreach
 
 # -----------------------------------------------------------------------------
 # ERROR
-# If the watchdog is enabled, OS::TIMINGPROTECTION should be too
+# Watchdog must not have any other Counter on its source
+#
+foreach counter in HARDWARECOUNTERS do
+  if counter::HANDLER == "watchdog" then
+    foreach other_counter in HARDWARECOUNTERS do
+      if counter::NAME != other_counter::NAME
+       & counter::SOURCE == other_counter::SOURCE
+       & counter::SOURCE != "decrementer" then
+         error other_counter::SOURCE : "This Source is reserved for a "
+                                     + "watchdog " + counter::NAME
+      end if
+    end foreach
+  end if
+end foreach
+
+
+# -----------------------------------------------------------------------------
+# ERROR
+# If the watchdog is enabled, OS::TIMINGPROTECTION must be too
 #
 
 let watchdog_enabled := false
@@ -123,18 +128,4 @@ foreach counter in HARDWARECOUNTERS do
     let pit_channel_list[counter::SOURCE] := counter
   end if
 end foreach
-
-# -----------------------------------------------------------------------------
-# WARNING
-# Decrementer not implemented in multicore
-#
-
-if OS::NUMBER_OF_CORES > 1 then
-  foreach counter in HARDWARECOUNTERS do
-    if counter::SOURCE == "decrementer" then
-      warning counter::SOURCE : "Decrementer, used by " + counter::NAME + ", "
-                              + " is not tested in multicore."
-    end if
-  end foreach
-end if
 

@@ -48,7 +48,8 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
       foreach counter_name in exists application::COUNTER default (@( )) do
         let counter := counter_map[counter_name::VALUE]
         if counter::SOURCE != "decrementer"
-         & counter::TYPE == "HARDWARE" then
+         & counter::TYPE == "HARDWARE"
+         & counter::HANDLER == "tick" then
           let interrupt := interrupt_map[counter::SOURCE]
           let used_interrupts[counter::SOURCE] := interrupt
         end if
@@ -180,6 +181,55 @@ CONSTP2CONST(tpl_it_vector_entry, OS_CONST, OS_CONST) tpl_it_table[% !OS::NUMBER
 };
 %
 end if
+
+###############################################################################
+#   tpl_dec_table This table contains the handler to call for each core that
+#   uses the decrementer
+let dec_map := @[]
+let counter_map   := mapof COUNTER by NAME
+
+loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+  foreach application in APPLICATION do
+    if application::CORE == core_id then
+      foreach counter_name in exists application::COUNTER default (@( )) do
+        let counter := counter_map[counter_name::VALUE]
+        if counter::SOURCE == "decrementer"
+         & counter::TYPE == "HARDWARE" then
+          let dec_map[[core_id string]] := counter
+        end if
+      end foreach
+    end if
+  end foreach
+end loop
+
+if dec_map != @[] then
+%
+CONST(tpl_it_handler, OS_CONST) tpl_dec_table[% !OS::NUMBER_OF_CORES %] = {
+%
+  loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+    if exists dec_map[[core_id string]] then
+      let counter:= dec_map[[core_id string]]
+      if counter::HANDLER == "watchdog" then
+%  (tpl_it_handler)tpl_watchdog_handler%
+      else
+        if OS::NUMBER_OF_CORES == 1 then
+%  (tpl_it_handler)tpl_call_counter_tick_% !counter::SOURCE
+        else
+%  (tpl_it_handler)tpl_call_counter_tick_% !counter::SOURCE %_% !core_id
+        end if
+      end if
+    else
+%  NULL%
+    end if
+  between%,
+%
+  end loop
+%
+};
+%
+end if
+
+
 %
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"

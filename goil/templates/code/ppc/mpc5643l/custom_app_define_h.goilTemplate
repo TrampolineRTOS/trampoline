@@ -15,6 +15,7 @@ let channel_map["pit_ch0"] := "TPL_PIT_0"
 let channel_map["pit_ch1"] := "TPL_PIT_1"
 let channel_map["pit_ch2"] := "TPL_PIT_2"
 let channel_map["pit_ch3"] := "TPL_PIT_3"
+let channel_map["decrementer"] := "TPL_DECREMENTER"
 
 # Count only counters used in applications
 let used_counters := @( )
@@ -51,7 +52,8 @@ end foreach
 #define TPL_PIT_1       1
 #define TPL_PIT_2       2
 #define TPL_PIT_3       3
-#define TPL_NO_TIMER    4
+#define TPL_DECREMENTER 4
+#define TPL_NO_TIMER    5
 
 /*-----------------------------------------------------------------------------
  * PIT Configuration

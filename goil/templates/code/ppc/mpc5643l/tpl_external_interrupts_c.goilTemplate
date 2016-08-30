@@ -203,7 +203,9 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
     if application::CORE == core_id then
       foreach counter_name in exists application::COUNTER default (@( )) do
         let counter := counter_map[counter_name::VALUE]
-        if counter::SOURCE != "decrementer" & counter::TYPE == "HARDWARE" then
+        if counter::SOURCE != "decrementer"
+         & counter::TYPE == "HARDWARE"
+         & counter::HANDLER == "tick" then
           let interrupt := interrupt_map[counter::SOURCE]
           let used_interrupts[counter::SOURCE] := interrupt
         end if
