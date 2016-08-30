@@ -41,7 +41,7 @@
 #include "tpl_machine_interface.h"
 #include "tpl_as_protec_hook.h"
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
 
 #define OS_START_SEC_VAR_NOINIT_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -302,5 +302,5 @@ FUNC(tpl_bool, OS_CODE) tpl_watchdog_expiration(void)
 #include "tpl_memmap.h"
 
 #else /* defined WITH_AUTOSAR_TIMING_PROTECTION */
-volatile static u8 nothing;
+/* volatile static u8 nothing; */
 #endif /* !defined WITH_AUTOSAR_TIMING_PROTECTION */
