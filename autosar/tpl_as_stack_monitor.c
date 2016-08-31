@@ -46,7 +46,7 @@ FUNC(void, OS_CODE) tpl_check_stack (
  * OS068 and OS396
  */
 #if (SCALABILITY_CLASS == 1) || (SCALABILITY_CLASS == 2)
-    tpl_shutdown_os_service(E_OS_STACKFAULT);
+    tpl_call_shutdown_os(E_OS_STACKFAULT);
 #else
     tpl_call_protection_hook(E_OS_STACKFAULT);
 #endif

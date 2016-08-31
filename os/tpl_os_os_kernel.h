@@ -38,6 +38,9 @@ FUNC(tpl_application_mode, OS_CODE) tpl_get_active_application_mode_service(
 FUNC(void, OS_CODE) tpl_start_os_service(
   CONST(tpl_application_mode, AUTOMATIC) mode);
 
+FUNC(void, OS_CODE) tpl_call_shutdown_os(
+    CONST(tpl_status, AUTOMATIC) error);
+
 FUNC(void, OS_CODE) tpl_shutdown_os_service(
     CONST(tpl_status, AUTOMATIC) error);
 

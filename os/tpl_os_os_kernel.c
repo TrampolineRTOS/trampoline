@@ -172,6 +172,27 @@ FUNC(void, OS_CODE) tpl_start_os_service(
   UNLOCK_KERNEL()
 }
 
+FUNC(void, OS_CODE) tpl_call_shutdown_os(
+  CONST(tpl_status, AUTOMATIC) error  /*@unused@*/)
+{
+  GET_CURRENT_CORE_ID(core_id)
+  /*
+   * Call the OS Application shutdown hooks if needed
+   */
+  CALL_OSAPPLICATION_SHUTDOWN_HOOKS()
+
+  CALL_SHUTDOWN_HOOK(error)
+
+#if SPINLOCK_COUNT > 0
+  RELEASE_ALL_SPINLOCKS(core_id);
+#endif
+
+  TRACE_TPL_TERMINATE()
+
+  /* architecture dependant shutdown. */
+  tpl_shutdown();
+}
+
 FUNC(void, OS_CODE) tpl_shutdown_os_service(
   CONST(tpl_status, AUTOMATIC) error  /*@unused@*/)
 {
@@ -194,21 +215,7 @@ FUNC(void, OS_CODE) tpl_shutdown_os_service(
     /*  store information for error hook routine */
     STORE_SERVICE(OSServiceId_ShutdownOS)
 
-    /*
-     * Call the OS Application shutdown hooks if needed
-     */
-    CALL_OSAPPLICATION_SHUTDOWN_HOOKS()
-
-    CALL_SHUTDOWN_HOOK(error)
-
-#if SPINLOCK_COUNT > 0
-    RELEASE_ALL_SPINLOCKS(core_id);
-#endif
-
-    TRACE_TPL_TERMINATE()
-
-    /* architecture dependant shutdown. */
-    tpl_shutdown();
+    tpl_call_shutdown_os(error);
   }
 
   /*  unlock the kernel */

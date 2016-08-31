@@ -69,7 +69,7 @@ FUNC(void, OS_CODE) tpl_call_protection_hook(VAR(tpl_status, AUTOMATIC) error)
    */
   if ((E_OS_PROTECTION_ARRIVAL == error)  && !((PRO_IGNORE == result) || (PRO_SHUTDOWN == result)))
   {
-    tpl_shutdown_os_service(error);
+    tpl_call_shutdown_os(error);
   }
   
   switch (result)
@@ -107,7 +107,7 @@ FUNC(void, OS_CODE) tpl_call_protection_hook(VAR(tpl_status, AUTOMATIC) error)
          * if no Task or OsIsr is running then no OS Application is running
          * so the os is shutdown
          */
-        tpl_shutdown_os_service(error);
+        tpl_call_shutdown_os(error);
       }
       break;
     case PRO_TERMINATEAPPL:
@@ -118,7 +118,7 @@ FUNC(void, OS_CODE) tpl_call_protection_hook(VAR(tpl_status, AUTOMATIC) error)
        * According to requirement OS244, if no OS Application
        * is configured, the os is shutdown
        */
-      tpl_shutdown_os_service(error);
+      tpl_call_shutdown_os(error);
 #endif
       break;
     case PRO_TERMINATEAPPL_RESTART:
@@ -129,11 +129,11 @@ FUNC(void, OS_CODE) tpl_call_protection_hook(VAR(tpl_status, AUTOMATIC) error)
        * According to requirement OS244, if no OS Application
        * is configured, the os is shutdown
        */
-      tpl_shutdown_os_service(error);
+      tpl_call_shutdown_os(error);
 #endif
       break;
     case PRO_SHUTDOWN:
-      tpl_shutdown_os_service(error);
+      tpl_call_shutdown_os(error);
       break;
     case PRO_IGNORE:
       /*
@@ -143,7 +143,7 @@ FUNC(void, OS_CODE) tpl_call_protection_hook(VAR(tpl_status, AUTOMATIC) error)
        */
       if (E_OS_PROTECTION_ARRIVAL != error)
       {
-        tpl_shutdown_os_service(error);
+        tpl_call_shutdown_os(error);
       }
       break;
     default:
@@ -151,7 +151,7 @@ FUNC(void, OS_CODE) tpl_call_protection_hook(VAR(tpl_status, AUTOMATIC) error)
        * if the ProtectionHook does return a wrong result,
        * we shut down the os ! well done !
        */
-      tpl_shutdown_os_service(error);
+      tpl_call_shutdown_os(error);
       break;
   }
 #else /* WITH_PROTECTION_HOOK */
@@ -159,7 +159,7 @@ FUNC(void, OS_CODE) tpl_call_protection_hook(VAR(tpl_status, AUTOMATIC) error)
    * OS107: If no ProtectionHook() is configured and a protection error occurs,
    * the Operating System shall call ShutdownOS().
    */
-  tpl_shutdown_os_service(error);
+  tpl_call_shutdown_os(error);
 #endif /* WITH_PROTECTION_HOOK */
 }
 
