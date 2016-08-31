@@ -49,7 +49,7 @@ tpl_timing_protection timeprotect_% !task::NAME % = {
     /* date of the last successful activation */        0,                      
     /* first instance marker */                         TRUE, 
     /* set of watchdogs */                              { 
-    /* execution budget watchdog */                       {FALSE, 0, 0}, 
+    /* execution budget watchdog */                       {TRUE, 0, % !task::TIMING_PROTECTION_S::EXECUTIONBUDGET %}, 
     /* resource lock -- to modify */                      {FALSE, 0, 0},
     /* allinterrupt lock watchdog */                      {FALSE, 0, 0},
     /* osinterrupt lock watchdog */                       {FALSE, 0, 0}
