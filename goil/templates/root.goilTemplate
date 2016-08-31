@@ -30,7 +30,7 @@ import "vectors"
 let NEEDED_VERSION := "3.0.4"
 
 if version() != NEEDED_VERSION then
-  error here : "Goil version " + NEEDED_VERSION + "required"
+  error here : "Goil version " + NEEDED_VERSION + " required"
 end if
 
 #------------------------------------------------------------------------------*
