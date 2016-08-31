@@ -321,10 +321,11 @@ FUNC(void, OS_CODE) tpl_fill_stack_pattern(void)
  *
  *
  */
-FUNC(void, OS_CODE) tpl_set_watchdog(
+FUNC(void, OS_CODE) tpl_set_tpwatchdog(
   VAR(tpl_time, AUTOMATIC) delay)
 {
-  tpl_load_pit(TPL_WDG_TIMER, TPL_PIT_VALUE(delay));
+  GET_CURRENT_CORE_ID(core_id)
+  tpl_load_pit(TPL_WDG_TIMER, TPL_PIT_VALUE(delay - GET_CURRENT_DATE(core_id)));
 }
 
 
@@ -333,7 +334,7 @@ FUNC(void, OS_CODE) tpl_set_watchdog(
  *
  *
  */
-FUNC(void, OS_CODE) tpl_cancel_watchdog(void)
+FUNC(void, OS_CODE) tpl_cancel_tpwatchdog(void)
 {
   tpl_stop_pit(TPL_WDG_TIMER);
 }
@@ -344,10 +345,23 @@ FUNC(void, OS_CODE) tpl_cancel_watchdog(void)
  *
  * @return the current date
  *
- * FIXME : Only works when using the decrementer
+ * FIXME : Only works when using one timer per core
  *
  */
 FUNC(tpl_time, OS_CODE) tpl_get_local_current_date(void)
+{
+  GET_CURRENT_CORE_ID(core_id)
+
+  return GET_CURRENT_DATE(core_id);
+}
+
+/**
+ * Pit channels uses relative adresses, so this should always return 0
+ *
+ * @return watchdog start date
+ *
+ */
+FUNC(tpl_time, OS_CODE) tpl_get_tptimer(void)
 {
   GET_CURRENT_CORE_ID(core_id)
 

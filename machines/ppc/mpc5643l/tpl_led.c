@@ -44,7 +44,9 @@
 #define LED3    54
 #define LED4    55
 
-#if WITH_DEBUG
+#if (((defined DEBUG_OS_MCU_IN_SUPERVISOR_MODE) \
+       || (WITH_MEMORY_PROTECTION == NO))       \
+    && (WITH_DEBUG == YES))
 
 #define API_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"

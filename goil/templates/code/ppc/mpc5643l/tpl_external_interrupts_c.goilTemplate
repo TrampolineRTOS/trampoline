@@ -155,7 +155,8 @@ let channel_map["pit_ch3"] := "TPL_PIT_3"
 # Get a list of used pit channels (with no duplicates)
 let used_pit_channels := @( )
 foreach counter in HARDWARECOUNTERS do
-  if counter::SOURCE != "decrementer" then
+  if counter::SOURCE != "decrementer"
+   & counter::HANDLER == "tick" then
     let used_pit_channels[counter::SOURCE] := counter
   end if
 end foreach

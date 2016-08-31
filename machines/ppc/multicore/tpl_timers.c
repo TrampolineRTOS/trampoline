@@ -71,7 +71,7 @@ FUNC(void, OS_CODE) tpl_init_pit(void)
 }
 
 
-#if 0 /* We're using the generated function tpl_load_pits for now */
+#if 1 /* We're using the generated function tpl_load_pits for now */
 /**
  * tpl_load_pit loads the given pit channel with a value and starts the channel
  *
