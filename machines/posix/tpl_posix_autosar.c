@@ -67,7 +67,7 @@ FUNC(void, OS_CODE) tpl_set_tpwatchdog (
     struct itimerval watchdog;
     tpl_time offset;
 
-    offset = delay - tpl_get_tptimer();
+    offset = delay;
 
     /* configure and start the watchdog */
     watchdog.it_interval.tv_sec = 0;

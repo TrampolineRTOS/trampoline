@@ -218,7 +218,7 @@ FUNC(tpl_bool, OS_CODE) tpl_tp_on_start(
         /* Set an expiry point when the shortest remaining budget will reach 0 */
         tpl_tp_set_watchdog_id(min_id, proc_id);
 
-        tpl_set_tpwatchdog(now + tp->watchdogs[min_id].remaining);
+        tpl_set_tpwatchdog(tp->watchdogs[min_id].remaining);
     }
     return TRUE;
 }

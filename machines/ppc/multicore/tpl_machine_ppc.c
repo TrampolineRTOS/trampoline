@@ -325,7 +325,7 @@ FUNC(void, OS_CODE) tpl_set_tpwatchdog(
   VAR(tpl_time, AUTOMATIC) delay)
 {
   GET_CURRENT_CORE_ID(core_id)
-  TPL_SET_TPWATCHDOG(core_id, delay - GET_CURRENT_DATE(core_id));
+  TPL_SET_TPWATCHDOG(core_id, delay);
 }
 
 
