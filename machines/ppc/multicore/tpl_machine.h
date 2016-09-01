@@ -190,4 +190,21 @@ extern VAR(uint32, OS_VAR) tpl_current_date[NUMBER_OF_CORES];
 #define GET_KERNEL_STACK_BOTTOM(core_id)   tpl_kernel_stack_bottom[0]
 #endif
 
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
+extern CONSTP2FUNC(void, OS_CONST, tpl_wdg_table[NUMBER_OF_CORES * 2])();
+# if WITH_MULTICORE == YES
+#define TPL_SET_TPWATCHDOG(core_id, ticks) (*tpl_wdg_table[core_id*2])(ticks)
+#define TPL_CANCEL_TPWATCHDOG(core_id) (*tpl_wdg_table[core_id*2 + 1])()
+# else
+#define TPL_SET_TPWATCHDOG(core_id, ticks) (*tpl_wdg_table[0])(ticks)
+#define TPL_CANCEL_TPWATCHDOG(core_id) (*tpl_wdg_table[1])()
+#endif
+#endif
+
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
 #endif /* TPL_MACHINE_PPC_H */

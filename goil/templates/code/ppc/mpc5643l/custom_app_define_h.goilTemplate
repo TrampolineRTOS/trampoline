@@ -30,18 +30,12 @@ foreach app in APPLICATION do
 end foreach
 
 let number_of_pit_used := 0
-let watchdog_frequency := 0
-let watchdog_channel    := ""
 foreach counter in used_counters do
   if counter::SOURCE == "pit_ch0"
     | counter::SOURCE == "pit_ch1"
     | counter::SOURCE == "pit_ch2"
     | counter::SOURCE == "pit_ch3" then
     let number_of_pit_used := number_of_pit_used + 1
-  end if
-  if counter::HANDLER == "watchdog" then
-    let watchdog_frequency := counter::FREQUENCY
-    let watchdog_channel   := channel_map[counter::SOURCE]
   end if
 end foreach
 %
@@ -64,17 +58,6 @@ end foreach
  * Decrementer Configuration
  */
 #define TPL_USE_DECREMENTER     % !yesNo(exists used_counters["decrementer"]) %
-
-/*-----------------------------------------------------------------------------
- * Watchdog Configuration
- */
-%if watchdog_channel != "" then
-%#define TPL_WATCHDOG_RATIO      %!watchdog_frequency%
-#define TPL_WDG_TIMER           %!watchdog_channel
-else
-%#define TPL_WATCHDOG_RATIO      0
-#define TPL_WDG_TIMER           TPL_NO_TIMER%
-end if%
 
 /*-----------------------------------------------------------------------------
  * Enable multicore

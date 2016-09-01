@@ -325,6 +325,98 @@ FUNC(tpl_bool, OS_CODE) tpl_intercore_handler_% !interrupt::NAME %(void)
 }
 %
 end foreach
+
+###############################################################################
+#   tpl_watchdog_handler
+#
+
+let counter_map   := mapof COUNTER by NAME
+let interrupt_map := mapof INTERRUPT by NAME
+
+let channel_map := @( )
+let channel_map["pit_ch0"] := "TPL_PIT_0"
+let channel_map["pit_ch1"] := "TPL_PIT_1"
+let channel_map["pit_ch2"] := "TPL_PIT_2"
+let channel_map["pit_ch3"] := "TPL_PIT_3"
+
+loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+  let wdg_counters := @( )
+  foreach application in APPLICATION do
+    if application::CORE == core_id then
+      foreach counter_name in exists application::COUNTER default (@( )) do
+        let counter := counter_map[counter_name::VALUE]
+        if counter::SOURCE != "decrementer"
+         & counter::TYPE == "HARDWARE"
+         & counter::HANDLER == "watchdog" then
+          let wdg_counters[counter::SOURCE] := counter
+        end if
+      end foreach
+    end if
+  end foreach
+
+  foreach counter in wdg_counters do
+    let channel := channel_map[counter::SOURCE]
+    if OS::NUMBER_OF_CORES > 1 then
+%
+FUNC(tpl_bool, OS_CODE) tpl_watchdog_handler_% !counter::SOURCE%_% !core_id %(void)%
+    else
+%
+FUNC(tpl_bool, OS_CODE) tpl_watchdog_handler_% !counter::SOURCE%(void)%
+    end if
+%
+{
+  /* stops the channel and disable interrupts */
+  PIT_CR(% !channel %) = (PIT_CR(% !channel %)) & ~(PIT_CR_TEN | PIT_CR_TIE);
+
+  /* Clear interrupt flag */
+  PIT_FR(% !channel %) = PIT_FR_TIF;
+
+  /* Call TimingProtection expiration function */
+  tpl_watchdog_expiration();
+
+  /* return true to restore cpu priority */
+  return TRUE;
+}
+%
+
+###############################################################################
+#   watchdog set/clear functions
+#
+
+%
+FUNC(void, OS_CODE) tpl_set_tpwatchdog_% !counter::SOURCE%(
+  VAR(tpl_time, AUTOMATIC) delay)
+{%
+    if counter::SOURCE != "decrementer" then
+      let channel := channel_map[counter::SOURCE]%
+  /* Load the value */
+  PIT_LVR(% !channel %) = % !counter::FREQUENCY % * delay;
+  PIT_FR(% !channel %) = PIT_FR_TIF;
+  PIT_CR(% !channel %) = PIT_CR_TEN | PIT_CR_TIE;%
+    else%
+  /* TODO */%
+    end if
+%
+}
+
+FUNC(void, OS_CODE) tpl_cancel_tpwatchdog_% !counter::SOURCE%(void)
+{%
+    if counter::SOURCE != "decrementer" then
+      let channel := channel_map[counter::SOURCE]%
+  /* stops the channel and disable interrupts */
+  PIT_CR(% !channel %) = (PIT_CR(% !channel %)) & ~(PIT_CR_TEN | PIT_CR_TIE);
+
+  /* Clear interrupt flag */
+  PIT_FR(% !channel %) = PIT_FR_TIF;%
+    else%
+  /* TODO */%
+    end if
+%
+}
+%
+  end foreach
+end loop
+
 %
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

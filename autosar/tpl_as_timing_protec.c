@@ -46,8 +46,17 @@
 #define OS_START_SEC_VAR_NOINIT_UNSPECIFIED
 #include "tpl_memmap.h"
 
+#if NUMBER_OF_CORES > 1
+VAR(unsigned int, OS_VAR) tpl_tp_watchdog_id[NUMBER_OF_CORES];
+VAR(tpl_proc_id, OS_VAR) tpl_tp_watchdog_owner[NUMBER_OF_CORES];
+#define GET_TP_WATCHDOG_ID(core_id) tpl_tp_watchdog_id[core_id]
+#define GET_TP_WATCHDOG_OWNER(core_id) tpl_tp_watchdog_owner[core_id]
+#else
 VAR(unsigned int, OS_VAR) tpl_tp_watchdog_id;
 VAR(tpl_proc_id, OS_VAR) tpl_tp_watchdog_owner;
+#define GET_TP_WATCHDOG_ID(core_id) tpl_tp_watchdog_id
+#define GET_TP_WATCHDOG_OWNER(core_id) tpl_tp_watchdog_owner
+#endif
 
 #define OS_STOP_SEC_VAR_NOINIT_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -55,27 +64,23 @@ VAR(tpl_proc_id, OS_VAR) tpl_tp_watchdog_owner;
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-#define OS_STOP_SEC_CODE
-#include "tpl_memmap.h"
-
-#define OS_START_SEC_CODE
-#include "tpl_memmap.h"
-
-void tpl_tp_set_watchdog_id(unsigned int id)
+void tpl_tp_set_watchdog_id(unsigned int id,
+                            CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
+    GET_PROC_CORE_ID(proc_id, core_id)
     /* Id shall be between 0 and 3. Let's check this */
     DOW_ASSERT(0 <= id && id <= 3);
-    tpl_tp_watchdog_id = id;
-    /* FIXME : Multicorize and test this */
-    tpl_tp_watchdog_owner = tpl_kern.running_id;
+    GET_TP_WATCHDOG_ID(core_id) = id;
+    GET_TP_WATCHDOG_OWNER(core_id) = proc_id;
     return ;
 }
 
-unsigned int tpl_tp_get_watchdog_id()
+unsigned int tpl_tp_get_watchdog_id(CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
+    GET_PROC_CORE_ID(proc_id, core_id)
     /* tpl_tp_watchdog_id shall be between 0 and 3. Let's check this */
-    DOW_ASSERT(0 <= tpl_tp_watchdog_id && tpl_tp_watchdog_id <= 3);
-    return tpl_tp_watchdog_id;
+    DOW_ASSERT(0 <= GET_TP_WATCHDOG_ID(core_id) && GET_TP_WATCHDOG_ID(core_id) <= 3);
+    return GET_TP_WATCHDOG_ID(core_id);
 }
 
 /**
@@ -165,7 +170,7 @@ FUNC(tpl_bool, OS_CODE) tpl_tp_on_terminate_or_wait(
         /* *LOCK watchdogs shall be inactive, therefore, the active watchdog 
          * shall be EXECUTIONBUDGET. Let's check this 
          */
-        DOW_ASSERT(tpl_tp_get_watchdog_id() == EXECUTIONBUDGET);
+        DOW_ASSERT(tpl_tp_get_watchdog_id(proc_id) == EXECUTIONBUDGET);
 
         /* If the watchdog is active, cancel it */ 
         if(tp->watchdogs[EXECUTIONBUDGET].is_active == TRUE)
@@ -211,7 +216,7 @@ FUNC(tpl_bool, OS_CODE) tpl_tp_on_start(
         }
         
         /* Set an expiry point when the shortest remaining budget will reach 0 */
-        tpl_tp_set_watchdog_id(min_id);
+        tpl_tp_set_watchdog_id(min_id, proc_id);
 
         tpl_set_tpwatchdog(now + tp->watchdogs[min_id].remaining);
     }
@@ -266,8 +271,9 @@ FUNC(tpl_bool, OS_CODE) tpl_tp_on_preempt(
  */
 FUNC(tpl_bool, OS_CODE) tpl_watchdog_expiration(void)
 {
+    GET_CURRENT_CORE_ID(core_id)
     CONSTP2VAR(tpl_timing_protection, AUTOMATIC, OS_APPL_DATA)  
-        tp = tpl_stat_proc_table[tpl_tp_watchdog_owner]->timing_protection;
+        tp = tpl_stat_proc_table[GET_TP_WATCHDOG_OWNER(core_id)]->timing_protection;
     VAR(unsigned int, AUTOMATIC) error_code = E_OS_PROTECTION_LOCKED;
     VAR(unsigned int, AUTOMATIC) cpt = 0;
     VAR(tpl_bool, AUTOMATIC) at_least_one = FALSE;
@@ -289,7 +295,7 @@ FUNC(tpl_bool, OS_CODE) tpl_watchdog_expiration(void)
     if (at_least_one == TRUE)
     {
         /* change the error code from E_OS_PROTECTION_LOCKED to E_OS_PROTECTION_TIME if needed */
-        if (tpl_tp_get_watchdog_id() == EXECUTIONBUDGET)
+        if (tpl_tp_get_watchdog_id(GET_TP_WATCHDOG_OWNER(core_id)) == EXECUTIONBUDGET)
         {
             error_code = E_OS_PROTECTION_TIME;
         }

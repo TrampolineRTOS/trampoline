@@ -71,7 +71,7 @@ FUNC(void, OS_CODE) tpl_init_pit(void)
 }
 
 
-#if 1 /* We're using the generated function tpl_load_pits for now */
+#if 0 /* We're using the generated function tpl_load_pits for now */
 /**
  * tpl_load_pit loads the given pit channel with a value and starts the channel
  *
@@ -90,8 +90,6 @@ FUNC(void, OS_CODE) tpl_load_pit(
   /* start the channel and enable interrupt */
   PIT_CR(chan) = PIT_CR_TEN | PIT_CR_TIE;
 }
-#endif
-
 
 /**
  * tpl_start_pit starts a given pit channel
@@ -121,7 +119,6 @@ FUNC(void, OS_CODE) tpl_stop_pit(
   PIT_FR(chan) = PIT_FR_TIF;
 }
 
-
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
 /**
  * tpl_watchdog_handler handler function for timing protection called by pit interrupt
@@ -141,6 +138,7 @@ FUNC(tpl_bool, OS_CODE) tpl_watchdog_handler(void)
   return TRUE;
 }
 #endif
+#endif /* unused */
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
