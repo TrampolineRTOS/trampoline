@@ -59,6 +59,45 @@ func %once white       ->@string white     { white     = "\u001B[97m" }
 func %once endc        ->@string endc      { endc      = "\u001B[0m"  }
 
 #=============================================================================*
+# loadCommandFile loads a command file if it exists and executes the commands
+#-----------------------------------------------------------------------------*
+method @string loadCommandFile
+  ?!@gtlContext context
+  ?!@gtlData    vars
+  ?!@library    lib
+{
+  # Look for a .gtlinit file
+  if [self fileExists] then
+    message "loading file " + self + "\n"
+    @stringlist commands = [@string.stringWithContentsOfFile{ !self }
+      componentsSeparatedByString !"\n"]
+
+    @string whatInFile = ""
+    for (input) in commands do
+      whatInFile += [input stringByTrimmingWhiteSpaces]
+    end
+      
+    if whatInFile != "" then
+      for (input) in commands do
+        if [input stringByTrimmingWhiteSpaces] != "" then
+          grammar gtl_debugger_grammar on ( input, "Debugger command" )
+            ?@gtlInstruction command
+          message [[context debuggerContext] instructionColor]
+                + [[context debuggerContext] instructionFace]
+          [command display]
+          message endc()
+          message "\n"
+          @string result = ""
+          [command execute !?context !?vars !?lib !?result]
+        end
+      end
+    else
+      message "No command in " + self + " file\n"
+    end
+  end 
+}
+
+#=============================================================================*
 # @@debuggerContext is used to store the debugging context
 #-----------------------------------------------------------------------------*
 class @debuggerContext
@@ -112,6 +151,12 @@ setter @debuggerContext deleteStepDoInstruction
     message warningColor + warningFace
     message "no do command at this index: " + [numToDelete bigint] + "\n"
   end
+}
+
+#-----------------------------------------------------------------------------*
+setter @debuggerContext deleteAllStepDoInstructions
+{
+  doList = .emptyList
 }
 
 #-----------------------------------------------------------------------------*
@@ -189,6 +234,12 @@ setter @debuggerContext deleteBreakpoint
 }
 
 #-----------------------------------------------------------------------------*
+setter @debuggerContext deleteAllBreakpoints
+{
+  breakpoints = .emptyList
+}
+
+#-----------------------------------------------------------------------------*
 setter @debuggerContext setWatchpoint
   ?let @gtlExpression watchExpression
 {
@@ -233,6 +284,12 @@ setter @debuggerContext deleteWatchpoint
     message warningColor + warningFace
     message "no watchpoint at this index: " + [numToDelete bigint] + "\n"
   end
+}
+
+#-----------------------------------------------------------------------------*
+setter @debuggerContext deleteAllWatchpoints
+{
+  watchpoints = .emptyList
 }
 
 #-----------------------------------------------------------------------------*
@@ -438,6 +495,12 @@ setter @gtlContext deleteStepDoInstruction
 }
 
 #-----------------------------------------------------------------------------*
+setter @gtlContext deleteAllStepDoInstructions
+{
+  [!?debuggerContext deleteAllStepDoInstructions]
+}
+
+#-----------------------------------------------------------------------------*
 method @gtlContext listStepDoInstructions
 {
   [debuggerContext listStepDoInstructions]
@@ -479,6 +542,12 @@ setter @gtlContext deleteBreakpoint
 }
 
 #-----------------------------------------------------------------------------*
+setter @gtlContext deleteAllBreakpoints
+{
+  [!?debuggerContext deleteAllBreakpoints]
+}
+
+#-----------------------------------------------------------------------------*
 setter @gtlContext setWatchpoint
   ?let @gtlExpression watchExpression
 {
@@ -496,6 +565,12 @@ setter @gtlContext deleteWatchpoint
   ?let @lbigint numToDelete
 {
   [!?debuggerContext deleteWatchpoint !numToDelete]
+}
+
+#-----------------------------------------------------------------------------*
+setter @gtlContext deleteAllWatchpoints
+{
+  [!?debuggerContext deleteAllWatchpoints]
 }
 
 #-----------------------------------------------------------------------------*
@@ -1061,10 +1136,10 @@ method @gtlInstruction displayWithLocation
 }
 
 #=============================================================================*
-method @gtlInstruction display
-{
-  message "[Display not available]"
-}
+abstract method @gtlInstruction display
+#{
+#  message "[Display not available]"
+#}
 
 #-----------------------------------------------------------------------------*
 override method @gtlLetUnconstructedInstruction display
@@ -1393,6 +1468,11 @@ override method @gtlStepInstruction execute
   [!?context setLoopOnCommand !false]
 }
 
+override method @gtlStepInstruction display
+{
+  message "step"
+}
+
 #-----------------------------------------------------------------------------*
 # Debugger instruction : do <instruction>
 #-----------------------------------------------------------------------------*
@@ -1410,8 +1490,14 @@ override method @gtlDoInstInstruction execute
   [!?context appendInstructionToStepDo !instructionToDo]
 }
 
+override method @gtlDoInstInstruction display
+{
+  message "do "
+  [instructionToDo display]
+}
+
 #-----------------------------------------------------------------------------*
-# Debugger instruction : do no <num>
+# Debugger instruction : do not <num>
 #-----------------------------------------------------------------------------*
 class @gtlDoNotInstruction : @gtlInstruction
 {
@@ -1425,6 +1511,32 @@ override method @gtlDoNotInstruction execute
   ?!@string     unused outputString
 {
   [!?context deleteStepDoInstruction !numToDelete]
+}
+
+override method @gtlDoNotInstruction display
+{
+  message "do not " + [numToDelete bigint]
+}
+
+#-----------------------------------------------------------------------------*
+# Debugger instruction : do not all
+#-----------------------------------------------------------------------------*
+class @gtlDoNotAllInstruction : @gtlInstruction
+{
+}
+
+override method @gtlDoNotAllInstruction execute
+  ?!@gtlContext        context
+  ?!@gtlData    unused vars
+  ?!@library    unused lib
+  ?!@string     unused outputString
+{
+  [!?context deleteAllStepDoInstructions]
+}
+
+override method @gtlDoNotAllInstruction display
+{
+  message "do not all"
 }
 
 #-----------------------------------------------------------------------------*
@@ -1443,6 +1555,11 @@ override method @gtlDoInstruction execute
   [context listStepDoInstructions]
 }
 
+override method @gtlDoInstruction display
+{
+  message "do"
+}
+
 #-----------------------------------------------------------------------------*
 # Debugger instruction : continue
 #-----------------------------------------------------------------------------*
@@ -1458,6 +1575,11 @@ override method @gtlContinueInstruction execute
 {
   [!?context setBreakOnNext !false]
   [!?context setLoopOnCommand !false]
+}
+
+override method @gtlContinueInstruction display
+{
+  message "cont"
 }
 
 #-----------------------------------------------------------------------------*
@@ -1494,6 +1616,11 @@ override method @gtlBreakpointInstruction execute
   end
 }
 
+override method @gtlBreakpointInstruction display
+{
+  message "break " + fileName + ":" + lineNum
+}
+
 #-----------------------------------------------------------------------------*
 # Debugger instruction : list breakpoints
 #-----------------------------------------------------------------------------*
@@ -1508,6 +1635,11 @@ override method @gtlBreakpointListInstruction execute
   ?!@string     unused outputString
 {
   [context listBreakpoints]
+}
+
+override method @gtlBreakpointListInstruction display
+{
+  message "break"
 }
 
 #-----------------------------------------------------------------------------*
@@ -1527,6 +1659,32 @@ override method @gtlBreakpointDeleteInstruction execute
   [!?context deleteBreakpoint !numToDelete]
 }
 
+override method @gtlBreakpointDeleteInstruction display
+{
+  message "break not " + [numToDelete bigint]
+}
+
+#-----------------------------------------------------------------------------*
+# Debugger instruction : delete all breakpoint
+#-----------------------------------------------------------------------------*
+class @gtlBreakpointDeleteAllInstruction : @gtlInstruction
+{
+}
+
+override method @gtlBreakpointDeleteAllInstruction execute
+  ?!@gtlContext        context
+  ?!@gtlData    unused vars
+  ?!@library    unused lib
+  ?!@string     unused outputString
+{
+  [!?context deleteAllBreakpoints]
+}
+
+override method @gtlBreakpointDeleteAllInstruction display
+{
+  message "break not all"
+}
+
 #-----------------------------------------------------------------------------*
 # Debugger instruction : add a watchpoint
 #-----------------------------------------------------------------------------*
@@ -1544,6 +1702,11 @@ override method @gtlWatchpointInstruction execute
   [!?context setWatchpoint !watchExpression]
 }
 
+override method @gtlWatchpointInstruction display
+{
+  message "watch ( " + [watchExpression stringRepresentation] + " )"
+}
+
 #-----------------------------------------------------------------------------*
 # Debugger instruction : list breakpoints
 #-----------------------------------------------------------------------------*
@@ -1558,6 +1721,11 @@ override method @gtlWatchpointListInstruction execute
   ?!@string     unused outputString
 {
   [context listWatchpoints]
+}
+
+override method @gtlWatchpointListInstruction display
+{
+  message "watch"
 }
 
 #-----------------------------------------------------------------------------*
@@ -1577,6 +1745,32 @@ override method @gtlWatchpointDeleteInstruction execute
   [!?context deleteWatchpoint !numToDelete]
 }
 
+override method @gtlWatchpointDeleteInstruction display
+{
+  message "watch not " + [numToDelete bigint]
+}
+
+#-----------------------------------------------------------------------------*
+# Debugger instruction : delete all watchpoints
+#-----------------------------------------------------------------------------*
+class @gtlWatchpointDeleteAllInstruction : @gtlInstruction
+{
+}
+
+override method @gtlWatchpointDeleteAllInstruction execute
+  ?!@gtlContext        context
+  ?!@gtlData    unused vars
+  ?!@library    unused lib
+  ?!@string     unused outputString
+{
+  [!?context deleteAllWatchpoints]
+}
+
+override method @gtlWatchpointDeleteAllInstruction display
+{
+  message "watch not all"
+}
+
 #-----------------------------------------------------------------------------*
 # Debugger instruction : list
 #-----------------------------------------------------------------------------*
@@ -1594,6 +1788,11 @@ override method @gtlListInstruction execute
   [context hereWeAre !window]
 }
 
+override method @gtlListInstruction display
+{
+  message "list " + window
+}
+
 #-----------------------------------------------------------------------------*
 # Debugger instruction : hist
 #-----------------------------------------------------------------------------*
@@ -1608,6 +1807,33 @@ override method @gtlHistoryInstruction execute
   ?!@string     unused outputString
 {
   [[[context debuggerContext] commandInput] listHistory]
+}
+
+override method @gtlHistoryInstruction display
+{
+  message "hist"
+}
+
+#-----------------------------------------------------------------------------*
+# Debugger instruction : load <filename>
+#-----------------------------------------------------------------------------*
+class @gtlLoadInstruction : @gtlInstruction
+{
+  @string fileName
+}
+
+override method @gtlLoadInstruction execute
+  ?!@gtlContext        context
+  ?!@gtlData           vars
+  ?!@library           lib
+  ?!@string     unused outputString
+{
+  [fileName loadCommandFile !?context !?vars !?lib]
+}
+
+override method @gtlLoadInstruction display
+{
+  message "load \"" + fileName + "\""
 }
 
 #-----------------------------------------------------------------------------*
@@ -1628,13 +1854,18 @@ override method @gtlHelpInstruction execute
   message "  break <line>                   : set a breakpoint at <line> in the current file\n"
   message "  break                          : lists the breakpoints\n"
   message "  break not <num>                : delete breakpoint at index <num>\n"
+  message "  break not all                  : delete all breakpoints\n"
   message "  cont                           : continue execution until the next breakpoint or the end\n"
   message "  display <variable>             : display variable <variable>\n"
   message "  do <command>                   : do a command each time a step is done\n"
   message "  do                             : list the do commands\n"
   message "  do not <num>                   : delete the do command at index <num>\n"
+  message "  do not all                     : delete all the do commands\n"
+  message "  hist                           : display the command history\n"
   message "  list                           : lists instructions +/- 5 around current one\n"
+  message "  list <num>                     : lists instructions +/- <num> around current one\n"
   message "  let <variable> := <expression> : compute <expression> and set <variable> to the result\n"
+  message "  load <filename>                : load commands from file <filename>\n"
   message "  print <expression>             : prints the <expression>\n"
   message "  step                           : step one instruction\n"
   message "  unlet <variable>               : delete <variable>\n"
@@ -1642,5 +1873,12 @@ override method @gtlHelpInstruction execute
   message "  watch (<expression>)           : set a watchpoint matching the boolean <expression>\n"
   message "  watch                          : lists the watchpoints\n"
   message "  watch not <num>                : delete watchpoint at index <num>\n"
+  message "  watch not all                  : delete all watchpoints\n"
   message "  <return>                       : step one instruction\n"
 }
+
+override method @gtlHelpInstruction display
+{
+  message "help"
+}
+

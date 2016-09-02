@@ -85,12 +85,13 @@
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const C_cocoa_lexique_table_entry ktable_for_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList [37] = {
+static const C_cocoa_lexique_table_entry ktable_for_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList [39] = {
   {"by", gtl_debugger_scanner_1_by},
   {"do", gtl_debugger_scanner_1_do},
   {"if", gtl_debugger_scanner_1_if},
   {"no", gtl_debugger_scanner_1_no},
   {"or", gtl_debugger_scanner_1_or},
+  {"all", gtl_debugger_scanner_1_all},
   {"end", gtl_debugger_scanner_1_end},
   {"let", gtl_debugger_scanner_1_let},
   {"mod", gtl_debugger_scanner_1_mod},
@@ -101,6 +102,7 @@ static const C_cocoa_lexique_table_entry ktable_for_gtl_5F_debugger_5F_scanner_g
   {"help", gtl_debugger_scanner_1_help},
   {"hist", gtl_debugger_scanner_1_hist},
   {"list", gtl_debugger_scanner_1_list},
+  {"load", gtl_debugger_scanner_1_load},
   {"sort", gtl_debugger_scanner_1_sort},
   {"step", gtl_debugger_scanner_1_step},
   {"then", gtl_debugger_scanner_1_then},
@@ -126,7 +128,7 @@ static const C_cocoa_lexique_table_entry ktable_for_gtl_5F_debugger_5F_scanner_g
 } ;
 
 static NSInteger search_into_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList (NSString * inSearchedString) {
-  return searchStringInTable (inSearchedString, ktable_for_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList, 37) ;
+  return searchStringInTable (inSearchedString, ktable_for_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList, 39) ;
 }
 
 
@@ -612,7 +614,7 @@ static NSInteger search_into_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList 
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (NSUInteger) terminalVocabularyCount {
-  return 93 ;
+  return 95 ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -642,7 +644,7 @@ static NSInteger search_into_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList 
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (NSUInteger) styleIndexForTerminal: (NSInteger) inTerminal {
-  static const NSUInteger kTerminalSymbolStyles [94] = {0,
+  static const NSUInteger kTerminalSymbolStyles [96] = {0,
     0 /* gtl_debugger_scanner_1_identifier */,
     0 /* gtl_debugger_scanner_1_literal_5F_enum */,
     5 /* gtl_debugger_scanner_1_literal_5F_double */,
@@ -691,6 +693,8 @@ static NSInteger search_into_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList 
     1 /* gtl_debugger_scanner_1_else */,
     1 /* gtl_debugger_scanner_1_elsif */,
     1 /* gtl_debugger_scanner_1_hist */,
+    1 /* gtl_debugger_scanner_1_all */,
+    1 /* gtl_debugger_scanner_1_load */,
     2 /* gtl_debugger_scanner_1__2A_ */,
     2 /* gtl_debugger_scanner_1__7C_ */,
     2 /* gtl_debugger_scanner_1__2C_ */,
@@ -747,7 +751,7 @@ static NSInteger search_into_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList 
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (BOOL) atomicSelectionForToken: (NSUInteger) inTokenIndex {
-  static const BOOL kTerminalAtomicSelection [94] = {NO,
+  static const BOOL kTerminalAtomicSelection [96] = {NO,
     YES /* gtl_debugger_scanner_1_identifier */,
     YES /* gtl_debugger_scanner_1_literal_5F_enum */,
     YES /* gtl_debugger_scanner_1_literal_5F_double */,
@@ -796,6 +800,8 @@ static NSInteger search_into_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList 
     YES /* gtl_debugger_scanner_1_else */,
     YES /* gtl_debugger_scanner_1_elsif */,
     YES /* gtl_debugger_scanner_1_hist */,
+    YES /* gtl_debugger_scanner_1_all */,
+    YES /* gtl_debugger_scanner_1_load */,
     YES /* gtl_debugger_scanner_1__2A_ */,
     YES /* gtl_debugger_scanner_1__7C_ */,
     YES /* gtl_debugger_scanner_1__2C_ */,

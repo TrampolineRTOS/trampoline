@@ -52,7 +52,7 @@ list goilTemplateKeyWordList style keywordsStyle error message "the '%K' keyword
   "list", "import", "listof", "let", "mapof", "mod", "no", "not", "or",
   "print", "sort", "step", "true", "typeof", "yes", "variables", "unlet", 
   "libraries", "break", "watch", "by", "end", "cont", "continue", "help",
-  "if", "then", "else", "elsif", "hist"
+  "if", "then", "else", "elsif", "hist", "all", "load"
 }
 
 rule 'a'->'z' |  'A'->'Z' {

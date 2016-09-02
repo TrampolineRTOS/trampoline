@@ -14178,6 +14178,57 @@ GALGAS_gtlInputStatementInstruction GALGAS_gtlInputStatementInstruction::extract
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
+//                                     Extension method '@string loadCommandFile'                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+void extensionMethod_loadCommandFile (const GALGAS_string inObject,
+                                      GALGAS_gtlContext & ioArgument_context,
+                                      GALGAS_gtlData & ioArgument_vars,
+                                      GALGAS_library & ioArgument_lib,
+                                      C_Compiler * inCompiler
+                                      COMMA_UNUSED_LOCATION_ARGS) {
+  const GALGAS_string temp_0 = inObject ;
+  const enumGalgasBool test_1 = temp_0.getter_fileExists (SOURCE_FILE ("gtl_debugger.galgas", 70)).boolEnum () ;
+  if (kBoolTrue == test_1) {
+    const GALGAS_string temp_2 = inObject ;
+    inCompiler->printMessage (GALGAS_string ("loading file ").add_operation (temp_2, inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 71)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 71))  COMMA_SOURCE_FILE ("gtl_debugger.galgas", 71)) ;
+    const GALGAS_string temp_3 = inObject ;
+    GALGAS_stringlist var_commands_2683 = GALGAS_string::constructor_stringWithContentsOfFile (temp_3, inCompiler  COMMA_SOURCE_FILE ("gtl_debugger.galgas", 72)).getter_componentsSeparatedByString (GALGAS_string ("\n") COMMA_SOURCE_FILE ("gtl_debugger.galgas", 73)) ;
+    GALGAS_string var_whatInFile_2793 = GALGAS_string::makeEmptyString () ;
+    cEnumerator_stringlist enumerator_2826 (var_commands_2683, kEnumeration_up) ;
+    while (enumerator_2826.hasCurrentObject ()) {
+      var_whatInFile_2793.plusAssign_operation(enumerator_2826.current_mValue (HERE).getter_stringByTrimmingWhiteSpaces (SOURCE_FILE ("gtl_debugger.galgas", 77)), inCompiler  COMMA_SOURCE_FILE ("gtl_debugger.galgas", 77)) ;
+      enumerator_2826.gotoNextObject () ;
+    }
+    const enumGalgasBool test_4 = GALGAS_bool (kIsNotEqual, var_whatInFile_2793.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+    if (kBoolTrue == test_4) {
+      cEnumerator_stringlist enumerator_2959 (var_commands_2683, kEnumeration_up) ;
+      while (enumerator_2959.hasCurrentObject ()) {
+        const enumGalgasBool test_5 = GALGAS_bool (kIsNotEqual, enumerator_2959.current_mValue (HERE).getter_stringByTrimmingWhiteSpaces (SOURCE_FILE ("gtl_debugger.galgas", 82)).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+        if (kBoolTrue == test_5) {
+          GALGAS_gtlInstruction var_command_3129 ;
+          var_command_3129.drop () ;
+          cGrammar_gtl_5F_debugger_5F_grammar::_performSourceStringParsing_ (inCompiler, enumerator_2959.current_mValue (HERE), GALGAS_string ("Debugger command"), var_command_3129  COMMA_SOURCE_FILE ("gtl_debugger.galgas", 83)) ;
+          inCompiler->printMessage (ioArgument_context.getter_debuggerContext (SOURCE_FILE ("gtl_debugger.galgas", 85)).getter_instructionColor (SOURCE_FILE ("gtl_debugger.galgas", 85)).add_operation (ioArgument_context.getter_debuggerContext (SOURCE_FILE ("gtl_debugger.galgas", 86)).getter_instructionFace (SOURCE_FILE ("gtl_debugger.galgas", 86)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 85))  COMMA_SOURCE_FILE ("gtl_debugger.galgas", 85)) ;
+          callExtensionMethod_display ((const cPtr_gtlInstruction *) var_command_3129.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 87)) ;
+          inCompiler->printMessage (function_endc (inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 88))  COMMA_SOURCE_FILE ("gtl_debugger.galgas", 88)) ;
+          inCompiler->printMessage (GALGAS_string ("\n")  COMMA_SOURCE_FILE ("gtl_debugger.galgas", 89)) ;
+          GALGAS_string var_result_3355 = GALGAS_string::makeEmptyString () ;
+          callExtensionMethod_execute ((const cPtr_gtlInstruction *) var_command_3129.ptr (), ioArgument_context, ioArgument_vars, ioArgument_lib, var_result_3355, inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 91)) ;
+        }
+        enumerator_2959.gotoNextObject () ;
+      }
+    }else if (kBoolFalse == test_4) {
+      const GALGAS_string temp_6 = inObject ;
+      inCompiler->printMessage (GALGAS_string ("No command in ").add_operation (temp_6, inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 95)).add_operation (GALGAS_string (" file\n"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 95))  COMMA_SOURCE_FILE ("gtl_debugger.galgas", 95)) ;
+    }
+  }
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //                                   Class for element of '@gtlBreakpointList' list                                    *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*

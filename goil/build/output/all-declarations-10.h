@@ -11,6 +11,62 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
+//                                           Function 'attributeAllowsAuto'                                            *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_bool function_attributeAllowsAuto (const class GALGAS_impType & constinArgument0,
+                                                class C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                            Routine 'verifyAllAttributes'                                            *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+void routine_verifyAllAttributes (const class GALGAS_implementation constinArgument0,
+                                  const class GALGAS_objectsMap constinArgument1,
+                                  class C_Compiler * inCompiler
+                                  COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                                 Function 'osObject'                                                 *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_objectAttributes function_osObject (const class GALGAS_objectsMap & constinArgument0,
+                                                 class C_Compiler * inCompiler
+                                                 COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                           Function 'objectForKindAndName'                                           *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_objectAttributes function_objectForKindAndName (const class GALGAS_objectsMap & constinArgument0,
+                                                             const class GALGAS_string & constinArgument1,
+                                                             const class GALGAS_string & constinArgument2,
+                                                             class C_Compiler * inCompiler
+                                                             COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                          Routine 'setObjectForKindAndName'                                          *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+void routine_setObjectForKindAndName (class GALGAS_objectsMap & ioArgument0,
+                                      const class GALGAS_string constinArgument1,
+                                      const class GALGAS_string constinArgument2,
+                                      const class GALGAS_objectAttributes constinArgument3,
+                                      class C_Compiler * inCompiler
+                                      COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //                                              Function 'objectsForKind'                                              *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*

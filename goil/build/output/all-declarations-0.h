@@ -10656,6 +10656,8 @@ class C_Lexique_gtl_5F_debugger_5F_scanner : public C_Lexique {
    kToken_else,
    kToken_elsif,
    kToken_hist,
+   kToken_all,
+   kToken_load,
    kToken__2A_,
    kToken__7C_,
    kToken__2C_,
@@ -10743,7 +10745,7 @@ class C_Lexique_gtl_5F_debugger_5F_scanner : public C_Lexique {
   protected : virtual C_String getMessageForTerminal (const int16_t inTerminalSymbol) const ;
 
 //--- Get terminal count
-  public : virtual int16_t terminalVocabularyCount (void) const { return 93 ; }
+  public : virtual int16_t terminalVocabularyCount (void) const { return 95 ; }
 
 //--- Get Token String
   public : virtual C_String getCurrentTokenString (const cToken * inTokenPtr) const ;
@@ -11116,10 +11118,10 @@ class cParser_gtl_5F_debugger_5F_parser {
 
   protected : void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i10_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
-  protected : void rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i11_ (GALGAS_gtlInstruction & outArgument0,
-                                                                                     C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+  protected : void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i11_ (GALGAS_gtlInstruction & outArgument0,
+                                                                                   C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
-  protected : void rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i11_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+  protected : void rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i11_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
   protected : void rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i12_ (GALGAS_gtlInstruction & outArgument0,
                                                                                      C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
@@ -11141,10 +11143,15 @@ class cParser_gtl_5F_debugger_5F_parser {
 
   protected : void rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i15_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
-  protected : void rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_5F_list_i16_ (GALGAS_gtlInstructionList & outArgument0,
+  protected : void rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i16_ (GALGAS_gtlInstruction & outArgument0,
+                                                                                     C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
+  protected : void rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i16_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+
+  protected : void rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_5F_list_i17_ (GALGAS_gtlInstructionList & outArgument0,
                                                                                              C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
-  protected : void rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_5F_list_i16_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
+  protected : void rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_5F_list_i17_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inLexique) ;
 
 
 
@@ -11168,6 +11175,14 @@ class cParser_gtl_5F_debugger_5F_parser {
   protected : virtual int32_t select_gtl_5F_debugger_5F_parser_8 (C_Lexique_gtl_5F_debugger_5F_scanner *) = 0 ;
 
   protected : virtual int32_t select_gtl_5F_debugger_5F_parser_9 (C_Lexique_gtl_5F_debugger_5F_scanner *) = 0 ;
+
+  protected : virtual int32_t select_gtl_5F_debugger_5F_parser_10 (C_Lexique_gtl_5F_debugger_5F_scanner *) = 0 ;
+
+  protected : virtual int32_t select_gtl_5F_debugger_5F_parser_11 (C_Lexique_gtl_5F_debugger_5F_scanner *) = 0 ;
+
+  protected : virtual int32_t select_gtl_5F_debugger_5F_parser_12 (C_Lexique_gtl_5F_debugger_5F_scanner *) = 0 ;
+
+  protected : virtual int32_t select_gtl_5F_debugger_5F_parser_13 (C_Lexique_gtl_5F_debugger_5F_scanner *) = 0 ;
 
 
 } ;
@@ -11301,6 +11316,14 @@ class cGrammar_gtl_5F_debugger_5F_grammar : public cParser_gtl_5F_debugger_5F_pa
   public : virtual int32_t select_gtl_5F_debugger_5F_parser_8 (C_Lexique_gtl_5F_debugger_5F_scanner *) ;
 
   public : virtual int32_t select_gtl_5F_debugger_5F_parser_9 (C_Lexique_gtl_5F_debugger_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_debugger_5F_parser_10 (C_Lexique_gtl_5F_debugger_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_debugger_5F_parser_11 (C_Lexique_gtl_5F_debugger_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_debugger_5F_parser_12 (C_Lexique_gtl_5F_debugger_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_debugger_5F_parser_13 (C_Lexique_gtl_5F_debugger_5F_scanner *) ;
 
   public : virtual int32_t select_gtl_5F_debugger_5F_expression_5F_parser_0 (C_Lexique_gtl_5F_debugger_5F_scanner *) ;
 
@@ -13198,6 +13221,40 @@ class cPtr_gtlInputStatementInstruction : public cPtr_gtlInstruction {
   public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
 
 } ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                     Extension method '@string loadCommandFile'                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+void extensionMethod_loadCommandFile (const class GALGAS_string inObject,
+                                      class GALGAS_gtlContext & io_context,
+                                      class GALGAS_gtlData & io_vars,
+                                      class GALGAS_library & io_lib,
+                                      class C_Compiler * inCompiler
+                                      COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                 Abstract extension method '@gtlInstruction display'                                 *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typedef void (*extensionMethodSignature_gtlInstruction_display) (const class cPtr_gtlInstruction * inObject,
+                                                                 class C_Compiler * inCompiler
+                                                                 COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterExtensionMethod_display (const int32_t inClassIndex,
+                                   extensionMethodSignature_gtlInstruction_display inMethod) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void callExtensionMethod_display (const class cPtr_gtlInstruction * inObject,
+                                  C_Compiler * inCompiler
+                                  COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *

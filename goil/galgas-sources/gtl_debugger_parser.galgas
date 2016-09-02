@@ -74,6 +74,24 @@ rule <gtl_debugger_command>
 rule <gtl_debugger_command>
   !@gtlInstruction instruction
 {
+  $load$
+  @lstring fileName
+  select
+    $identifier$ ?fileName
+  or
+    $string$ ?fileName
+  end
+  instruction = @gtlLoadInstruction.new {
+    !.here
+    !""
+    !fileName
+  }
+}
+
+#-----------------------------------------------------------------------------*
+rule <gtl_debugger_command>
+  !@gtlInstruction instruction
+{
   $hist$
   instruction = @gtlHistoryInstruction.new {
     !.here
@@ -88,12 +106,20 @@ rule <gtl_debugger_command>
   $break$
   select
     $not$
-    $signed_literal_integer_bigint$ ?let @lbigint index
-    instruction = @gtlBreakpointDeleteInstruction.new {
-      !.here
-      !""
-      !index
-    }
+    select
+      $signed_literal_integer_bigint$ ?let @lbigint index
+      instruction = @gtlBreakpointDeleteInstruction.new {
+        !.here
+        !""
+        !index
+      }
+    or
+      $all$
+      instruction = @gtlBreakpointDeleteAllInstruction.new {
+        !.here
+        !""
+      }      
+    end
   or
     select 
       $identifier$ ?let @lstring fileName
@@ -146,12 +172,20 @@ rule <gtl_debugger_command>
   $watch$
   select
     $not$
-    $signed_literal_integer_bigint$ ?let @lbigint index
-    instruction = @gtlWatchpointDeleteInstruction.new {
-      !.here
-      !""
-      !index
-    }
+    select
+      $signed_literal_integer_bigint$ ?let @lbigint index
+      instruction = @gtlWatchpointDeleteInstruction.new {
+        !.here
+        !""
+        !index
+      }
+    or
+      $all$
+      instruction = @gtlWatchpointDeleteAllInstruction.new {
+        !.here
+        !""
+      }      
+    end
   or
     $($
     <gtl_expression> ?let @gtlExpression watchExpression
@@ -184,12 +218,20 @@ rule <gtl_debugger_command>
     }
   or
     $not$
-    $signed_literal_integer_bigint$ ?let @lbigint num
-    instruction = @gtlDoNotInstruction.new {
-      !.here
-      !""
-      !num
-    }
+    select
+      $signed_literal_integer_bigint$ ?let @lbigint num
+      instruction = @gtlDoNotInstruction.new {
+        !.here
+        !""
+        !num
+      }
+    or
+      $all$
+      instruction = @gtlDoNotAllInstruction.new {
+        !.here
+        !""
+      }      
+    end
   or
     instruction = @gtlDoInstruction.new {
       !.here

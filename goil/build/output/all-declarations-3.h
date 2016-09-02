@@ -11,6 +11,54 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
+//                                     Extension getter '@gtlExpression location'                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typedef class GALGAS_location (*enterExtensionGetter_gtlExpression_location) (const class cPtr_gtlExpression * inObject,
+                                                                              C_Compiler * inCompiler
+                                                                              COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterExtensionGetter_location (const int32_t inClassIndex,
+                                    enterExtensionGetter_gtlExpression_location inGetter) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_location callExtensionGetter_location (const cPtr_gtlExpression * inObject,
+                                                    class C_Compiler * inCompiler
+                                                    COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                   Abstract extension getter '@gtlExpression eval'                                   *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typedef class GALGAS_gtlData (*enterExtensionGetter_gtlExpression_eval) (const class cPtr_gtlExpression * inObject,
+                                                                         const class GALGAS_gtlContext & constinArgument0,
+                                                                         const class GALGAS_gtlData & constinArgument1,
+                                                                         const class GALGAS_library & constinArgument2,
+                                                                         class C_Compiler * inCompiler
+                                                                         COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterExtensionGetter_eval (const int32_t inClassIndex,
+                                enterExtensionGetter_gtlExpression_eval inMethod) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_gtlData callExtensionGetter_eval (const class cPtr_gtlExpression * inObject,
+                                               const GALGAS_gtlContext & constin_context,
+                                               const GALGAS_gtlData & constin_vars,
+                                               const GALGAS_library & constin_lib,
+                                               C_Compiler * inCompiler
+                                               COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //                                     Abstract extension getter '@gtlData string'                                     *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -1690,205 +1738,6 @@ class cPtr_gtlForeachStatementInstruction : public cPtr_gtlInstruction {
   public : VIRTUAL_IN_DEBUG GALGAS_gtlInstructionList getter_beforeList (LOCATION_ARGS) const ;
   public : VIRTUAL_IN_DEBUG GALGAS_gtlInstructionList getter_betweenList (LOCATION_ARGS) const ;
   public : VIRTUAL_IN_DEBUG GALGAS_gtlInstructionList getter_afterList (LOCATION_ARGS) const ;
-  public : VIRTUAL_IN_DEBUG GALGAS_gtlInstructionList getter_doList (LOCATION_ARGS) const ;
-//--- Description
-  public : virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const ;
-
-  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
-
-  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
-
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                           Extension method '@gtlForeachStatementInstruction iterateOnMap'                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_gtlForeachStatementInstruction_iterateOnMap) (const class cPtr_gtlForeachStatementInstruction * inObject,
-                                                                                      class GALGAS_gtlContext & ioArgument0,
-                                                                                      class GALGAS_gtlData & ioArgument1,
-                                                                                      class GALGAS_library & ioArgument2,
-                                                                                      class GALGAS_string & ioArgument3,
-                                                                                      const class GALGAS_gtlMap constinArgument4,
-                                                                                      class C_Compiler * inCompiler
-                                                                                      COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_iterateOnMap (const int32_t inClassIndex,
-                                        extensionMethodSignature_gtlForeachStatementInstruction_iterateOnMap inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_iterateOnMap (const class cPtr_gtlForeachStatementInstruction * inObject,
-                                       GALGAS_gtlContext & io_context,
-                                       GALGAS_gtlData & io_vars,
-                                       GALGAS_library & io_lib,
-                                       GALGAS_string & io_outputString,
-                                       const GALGAS_gtlMap constin_iterableMap,
-                                       C_Compiler * inCompiler
-                                       COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                          Extension method '@gtlForeachStatementInstruction iterateOnList'                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_gtlForeachStatementInstruction_iterateOnList) (const class cPtr_gtlForeachStatementInstruction * inObject,
-                                                                                       class GALGAS_gtlContext & ioArgument0,
-                                                                                       class GALGAS_gtlData & ioArgument1,
-                                                                                       class GALGAS_library & ioArgument2,
-                                                                                       class GALGAS_string & ioArgument3,
-                                                                                       const class GALGAS_gtlList constinArgument4,
-                                                                                       class C_Compiler * inCompiler
-                                                                                       COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_iterateOnList (const int32_t inClassIndex,
-                                         extensionMethodSignature_gtlForeachStatementInstruction_iterateOnList inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_iterateOnList (const class cPtr_gtlForeachStatementInstruction * inObject,
-                                        GALGAS_gtlContext & io_context,
-                                        GALGAS_gtlData & io_vars,
-                                        GALGAS_library & io_lib,
-                                        GALGAS_string & io_outputString,
-                                        const GALGAS_gtlList constin_iterableList,
-                                        C_Compiler * inCompiler
-                                        COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                           Extension method '@gtlForeachStatementInstruction iterateOnSet'                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_gtlForeachStatementInstruction_iterateOnSet) (const class cPtr_gtlForeachStatementInstruction * inObject,
-                                                                                      class GALGAS_gtlContext & ioArgument0,
-                                                                                      class GALGAS_gtlData & ioArgument1,
-                                                                                      class GALGAS_library & ioArgument2,
-                                                                                      class GALGAS_string & ioArgument3,
-                                                                                      const class GALGAS_gtlSet constinArgument4,
-                                                                                      class C_Compiler * inCompiler
-                                                                                      COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_iterateOnSet (const int32_t inClassIndex,
-                                        extensionMethodSignature_gtlForeachStatementInstruction_iterateOnSet inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_iterateOnSet (const class cPtr_gtlForeachStatementInstruction * inObject,
-                                       GALGAS_gtlContext & io_context,
-                                       GALGAS_gtlData & io_vars,
-                                       GALGAS_library & io_lib,
-                                       GALGAS_string & io_outputString,
-                                       const GALGAS_gtlSet constin_iterableSet,
-                                       C_Compiler * inCompiler
-                                       COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                          @gtlForStatementInstruction class                                          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlForStatementInstruction : public GALGAS_gtlInstruction {
-//--- Constructor
-  public : GALGAS_gtlForStatementInstruction (void) ;
-
-//--------------------------------- Default GALGAS constructor
-  public : static GALGAS_gtlForStatementInstruction constructor_default (LOCATION_ARGS) ;
-
-//---
-  public : inline const class cPtr_gtlForStatementInstruction * ptr (void) const { return (const cPtr_gtlForStatementInstruction *) mObjectPtr ; }
-
-//--------------------------------- Constructor from pointer
-  public : GALGAS_gtlForStatementInstruction (const cPtr_gtlForStatementInstruction * inSourcePtr) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public : static GALGAS_gtlForStatementInstruction extractObject (const GALGAS_object & inObject,
-                                                                   C_Compiler * inCompiler
-                                                                   COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public : static class GALGAS_gtlForStatementInstruction constructor_new (const class GALGAS_location & inOperand0,
-                                                                           const class GALGAS_string & inOperand1,
-                                                                           const class GALGAS_lstring & inOperand2,
-                                                                           const class GALGAS_gtlExpressionList & inOperand3,
-                                                                           const class GALGAS_gtlInstructionList & inOperand4,
-                                                                           const class GALGAS_gtlInstructionList & inOperand5
-                                                                           COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const GALGAS_gtlForStatementInstruction & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-  public : VIRTUAL_IN_DEBUG class GALGAS_gtlInstructionList getter_betweenList (LOCATION_ARGS) const ;
-
-  public : VIRTUAL_IN_DEBUG class GALGAS_gtlInstructionList getter_doList (LOCATION_ARGS) const ;
-
-  public : VIRTUAL_IN_DEBUG class GALGAS_lstring getter_identifier (LOCATION_ARGS) const ;
-
-  public : VIRTUAL_IN_DEBUG class GALGAS_gtlExpressionList getter_iterable (LOCATION_ARGS) const ;
-
-
-//--------------------------------- Introspection
-  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_gtlForStatementInstruction class
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlForStatementInstruction ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 Pointer class for @gtlForStatementInstruction class                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cPtr_gtlForStatementInstruction : public cPtr_gtlInstruction {
-//--- Attributes
-  public : GALGAS_lstring mAttribute_identifier ;
-  public : GALGAS_gtlExpressionList mAttribute_iterable ;
-  public : GALGAS_gtlInstructionList mAttribute_betweenList ;
-  public : GALGAS_gtlInstructionList mAttribute_doList ;
-
-//--- Constructor
-  public : cPtr_gtlForStatementInstruction (const GALGAS_location & in_where,
-                                            const GALGAS_string & in_signature,
-                                            const GALGAS_lstring & in_identifier,
-                                            const GALGAS_gtlExpressionList & in_iterable,
-                                            const GALGAS_gtlInstructionList & in_betweenList,
-                                            const GALGAS_gtlInstructionList & in_doList
-                                            COMMA_LOCATION_ARGS) ;
-
-//--- Duplication
-  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
-
-//--- Attribute accessors
-  public : VIRTUAL_IN_DEBUG GALGAS_lstring getter_identifier (LOCATION_ARGS) const ;
-  public : VIRTUAL_IN_DEBUG GALGAS_gtlExpressionList getter_iterable (LOCATION_ARGS) const ;
-  public : VIRTUAL_IN_DEBUG GALGAS_gtlInstructionList getter_betweenList (LOCATION_ARGS) const ;
   public : VIRTUAL_IN_DEBUG GALGAS_gtlInstructionList getter_doList (LOCATION_ARGS) const ;
 //--- Description
   public : virtual void description (C_String & ioString,

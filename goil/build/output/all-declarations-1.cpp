@@ -387,12 +387,12 @@ GALGAS_string extensionGetter_stringRepresentation (const GALGAS_gtlVarPath & in
                                                     COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_string result_result ; // Returned variable
   const GALGAS_gtlVarPath temp_0 = inObject ;
-  result_result = callExtensionGetter_stringRepresentation ((const cPtr_gtlVarItem *) temp_0.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 578)).ptr (), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 578)) ;
+  result_result = callExtensionGetter_stringRepresentation ((const cPtr_gtlVarItem *) temp_0.getter_itemAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 653)).ptr (), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 653)) ;
   const GALGAS_gtlVarPath temp_1 = inObject ;
-  cEnumerator_gtlVarPath enumerator_17651 (temp_1.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 579)), kEnumeration_up) ;
-  while (enumerator_17651.hasCurrentObject ()) {
-    result_result.plusAssign_operation(callExtensionGetter_stringRepresentation ((const cPtr_gtlVarItem *) enumerator_17651.current_item (HERE).ptr (), GALGAS_string ("::"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 580)), inCompiler  COMMA_SOURCE_FILE ("gtl_debugger.galgas", 580)) ;
-    enumerator_17651.gotoNextObject () ;
+  cEnumerator_gtlVarPath enumerator_19938 (temp_1.getter_subListFromIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 654)), kEnumeration_up) ;
+  while (enumerator_19938.hasCurrentObject ()) {
+    result_result.plusAssign_operation(callExtensionGetter_stringRepresentation ((const cPtr_gtlVarItem *) enumerator_19938.current_item (HERE).ptr (), GALGAS_string ("::"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 655)), inCompiler  COMMA_SOURCE_FILE ("gtl_debugger.galgas", 655)) ;
+    enumerator_19938.gotoNextObject () ;
   }
 //---
   return result_result ;
@@ -474,13 +474,13 @@ GALGAS_string extensionGetter_stringRepresentation (const GALGAS_gtlExpressionLi
   GALGAS_string result_result ; // Returned variable
   result_result = GALGAS_string::makeEmptyString () ;
   const GALGAS_gtlExpressionList temp_0 = inObject ;
-  cEnumerator_gtlExpressionList enumerator_30190 (temp_0, kEnumeration_up) ;
-  while (enumerator_30190.hasCurrentObject ()) {
-    result_result = result_result.add_operation (callExtensionGetter_stringRepresentation ((const cPtr_gtlExpression *) enumerator_30190.current_expression (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 982)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 982)) ;
-    if (enumerator_30190.hasNextObject ()) {
-      result_result = result_result.add_operation (GALGAS_string (", "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 984)) ;
+  cEnumerator_gtlExpressionList enumerator_32477 (temp_0, kEnumeration_up) ;
+  while (enumerator_32477.hasCurrentObject ()) {
+    result_result = result_result.add_operation (callExtensionGetter_stringRepresentation ((const cPtr_gtlExpression *) enumerator_32477.current_expression (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1057)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1057)) ;
+    if (enumerator_32477.hasNextObject ()) {
+      result_result = result_result.add_operation (GALGAS_string (", "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1059)) ;
     }
-    enumerator_30190.gotoNextObject () ;
+    enumerator_32477.gotoNextObject () ;
   }
 //---
   return result_result ;
@@ -501,13 +501,13 @@ GALGAS_string extensionGetter_mapRepresentation (const GALGAS_gtlExpressionMap &
   GALGAS_string result_result ; // Returned variable
   result_result = GALGAS_string::makeEmptyString () ;
   const GALGAS_gtlExpressionMap temp_0 = inObject ;
-  cEnumerator_gtlExpressionMap enumerator_30484 (temp_0, kEnumeration_up) ;
-  while (enumerator_30484.hasCurrentObject ()) {
-    result_result = result_result.add_operation (GALGAS_string ("\""), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 994)).add_operation (enumerator_30484.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_debugger.galgas", 994)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 994)).add_operation (GALGAS_string ("\": "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 994)).add_operation (callExtensionGetter_stringRepresentation ((const cPtr_gtlExpression *) enumerator_30484.current_expression (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 994)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 994)) ;
-    if (enumerator_30484.hasNextObject ()) {
-      result_result = result_result.add_operation (GALGAS_string (", "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 996)) ;
+  cEnumerator_gtlExpressionMap enumerator_32771 (temp_0, kEnumeration_up) ;
+  while (enumerator_32771.hasCurrentObject ()) {
+    result_result = result_result.add_operation (GALGAS_string ("\""), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1069)).add_operation (enumerator_32771.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_debugger.galgas", 1069)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1069)).add_operation (GALGAS_string ("\": "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1069)).add_operation (callExtensionGetter_stringRepresentation ((const cPtr_gtlExpression *) enumerator_32771.current_expression (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1069)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1069)) ;
+    if (enumerator_32771.hasNextObject ()) {
+      result_result = result_result.add_operation (GALGAS_string (", "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1071)) ;
     }
-    enumerator_30484.gotoNextObject () ;
+    enumerator_32771.gotoNextObject () ;
   }
 //---
   return result_result ;
@@ -528,13 +528,13 @@ GALGAS_string extensionGetter_structRepresentation (const GALGAS_gtlExpressionMa
   GALGAS_string result_result ; // Returned variable
   result_result = GALGAS_string::makeEmptyString () ;
   const GALGAS_gtlExpressionMap temp_0 = inObject ;
-  cEnumerator_gtlExpressionMap enumerator_30803 (temp_0, kEnumeration_up) ;
-  while (enumerator_30803.hasCurrentObject ()) {
-    result_result = result_result.add_operation (enumerator_30803.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_debugger.galgas", 1006)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1006)).add_operation (GALGAS_string (": "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1006)).add_operation (callExtensionGetter_stringRepresentation ((const cPtr_gtlExpression *) enumerator_30803.current_expression (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1006)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1006)) ;
-    if (enumerator_30803.hasNextObject ()) {
-      result_result = result_result.add_operation (GALGAS_string (", "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1008)) ;
+  cEnumerator_gtlExpressionMap enumerator_33090 (temp_0, kEnumeration_up) ;
+  while (enumerator_33090.hasCurrentObject ()) {
+    result_result = result_result.add_operation (enumerator_33090.current_lkey (HERE).getter_string (SOURCE_FILE ("gtl_debugger.galgas", 1081)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1081)).add_operation (GALGAS_string (": "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1081)).add_operation (callExtensionGetter_stringRepresentation ((const cPtr_gtlExpression *) enumerator_33090.current_expression (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1081)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1081)) ;
+    if (enumerator_33090.hasNextObject ()) {
+      result_result = result_result.add_operation (GALGAS_string (", "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1083)) ;
     }
-    enumerator_30803.gotoNextObject () ;
+    enumerator_33090.gotoNextObject () ;
   }
 //---
   return result_result ;
@@ -555,17 +555,17 @@ GALGAS_string extensionGetter_stringRepresentation (const GALGAS_gtlArgumentList
   GALGAS_string result_result ; // Returned variable
   result_result = GALGAS_string::makeEmptyString () ;
   const GALGAS_gtlArgumentList temp_0 = inObject ;
-  cEnumerator_gtlArgumentList enumerator_31113 (temp_0, kEnumeration_up) ;
-  while (enumerator_31113.hasCurrentObject ()) {
-    result_result = result_result.add_operation (enumerator_31113.current_name (HERE).getter_string (SOURCE_FILE ("gtl_debugger.galgas", 1018)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1018)) ;
-    const enumGalgasBool test_1 = enumerator_31113.current_typed (HERE).boolEnum () ;
+  cEnumerator_gtlArgumentList enumerator_33400 (temp_0, kEnumeration_up) ;
+  while (enumerator_33400.hasCurrentObject ()) {
+    result_result = result_result.add_operation (enumerator_33400.current_name (HERE).getter_string (SOURCE_FILE ("gtl_debugger.galgas", 1093)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1093)) ;
+    const enumGalgasBool test_1 = enumerator_33400.current_typed (HERE).boolEnum () ;
     if (kBoolTrue == test_1) {
-      result_result = result_result.add_operation (GALGAS_string (" : @"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1020)).add_operation (extensionGetter_typeName (enumerator_31113.current_type (HERE), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1020)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1020)) ;
+      result_result = result_result.add_operation (GALGAS_string (" : @"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1095)).add_operation (extensionGetter_typeName (enumerator_33400.current_type (HERE), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1095)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1095)) ;
     }
-    if (enumerator_31113.hasNextObject ()) {
-      result_result = result_result.add_operation (GALGAS_string (", "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1023)) ;
+    if (enumerator_33400.hasNextObject ()) {
+      result_result = result_result.add_operation (GALGAS_string (", "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1098)) ;
     }
-    enumerator_31113.gotoNextObject () ;
+    enumerator_33400.gotoNextObject () ;
   }
 //---
   return result_result ;
@@ -586,13 +586,13 @@ GALGAS_string extensionGetter_stringRepresentation (const GALGAS_sortingKeyList 
   GALGAS_string result_result ; // Returned variable
   result_result = GALGAS_string::makeEmptyString () ;
   const GALGAS_sortingKeyList temp_0 = inObject ;
-  cEnumerator_sortingKeyList enumerator_31636 (temp_0, kEnumeration_up) ;
-  while (enumerator_31636.hasCurrentObject ()) {
-    result_result = result_result.add_operation (enumerator_31636.current_key (HERE).getter_string (SOURCE_FILE ("gtl_debugger.galgas", 1040)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1040)).add_operation (GALGAS_string (" "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1040)).add_operation (extensionGetter_stringRepresentation (enumerator_31636.current_order (HERE), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1040)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1040)) ;
-    if (enumerator_31636.hasNextObject ()) {
+  cEnumerator_sortingKeyList enumerator_33923 (temp_0, kEnumeration_up) ;
+  while (enumerator_33923.hasCurrentObject ()) {
+    result_result = result_result.add_operation (enumerator_33923.current_key (HERE).getter_string (SOURCE_FILE ("gtl_debugger.galgas", 1115)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1115)).add_operation (GALGAS_string (" "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1115)).add_operation (extensionGetter_stringRepresentation (enumerator_33923.current_order (HERE), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1115)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1115)) ;
+    if (enumerator_33923.hasNextObject ()) {
       result_result = GALGAS_string (", ") ;
     }
-    enumerator_31636.gotoNextObject () ;
+    enumerator_33923.gotoNextObject () ;
   }
 //---
   return result_result ;
@@ -658,7 +658,7 @@ static GALGAS_string extensionGetter_gtlInstruction_shortLocation (const cPtr_gt
   GALGAS_string result_result ; // Returned variable
   const cPtr_gtlInstruction * object = inObject ;
   macroValidSharedObject (object, cPtr_gtlInstruction) ;
-  result_result = object->mAttribute_where.getter_file (inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1050)).getter_lastPathComponent (SOURCE_FILE ("gtl_debugger.galgas", 1050)).add_operation (GALGAS_string (":"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1050)).add_operation (object->mAttribute_where.getter_line (inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1050)).getter_string (SOURCE_FILE ("gtl_debugger.galgas", 1050)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1050)) ;
+  result_result = object->mAttribute_where.getter_file (inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1125)).getter_lastPathComponent (SOURCE_FILE ("gtl_debugger.galgas", 1125)).add_operation (GALGAS_string (":"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1125)).add_operation (object->mAttribute_where.getter_line (inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1125)).getter_string (SOURCE_FILE ("gtl_debugger.galgas", 1125)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1125)) ;
 //---
   return result_result ;
 }
@@ -738,11 +738,11 @@ static void extensionMethod_gtlInstruction_displayWithLocation (const cPtr_gtlIn
   const cPtr_gtlInstruction * object = inObject ;
   macroValidSharedObject (object, cPtr_gtlInstruction) ;
   const GALGAS_gtlInstruction temp_0 = object ;
-  inCompiler->printMessage (callExtensionGetter_shortLocation ((const cPtr_gtlInstruction *) temp_0.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1057)).add_operation (GALGAS_string (" > "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1057))  COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1057)) ;
-  inCompiler->printMessage (constinArgument_context.getter_instructionColor (SOURCE_FILE ("gtl_debugger.galgas", 1058)).add_operation (constinArgument_context.getter_instructionFace (SOURCE_FILE ("gtl_debugger.galgas", 1058)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1058))  COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1058)) ;
+  inCompiler->printMessage (callExtensionGetter_shortLocation ((const cPtr_gtlInstruction *) temp_0.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1132)).add_operation (GALGAS_string (" > "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1132))  COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1132)) ;
+  inCompiler->printMessage (constinArgument_context.getter_instructionColor (SOURCE_FILE ("gtl_debugger.galgas", 1133)).add_operation (constinArgument_context.getter_instructionFace (SOURCE_FILE ("gtl_debugger.galgas", 1133)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1133))  COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1133)) ;
   const GALGAS_gtlInstruction temp_1 = object ;
-  callExtensionMethod_display ((const cPtr_gtlInstruction *) temp_1.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1059)) ;
-  inCompiler->printMessage (function_endc (inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1060)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1060))  COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1060)) ;
+  callExtensionMethod_display ((const cPtr_gtlInstruction *) temp_1.ptr (), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1134)) ;
+  inCompiler->printMessage (function_endc (inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1135)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1135))  COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1135)) ;
 }
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -764,7 +764,7 @@ C_PrologueEpilogue gMethod_gtlInstruction_displayWithLocation (defineExtensionMe
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                                     Extension method '@gtlInstruction display'                                      *
+//                                 Abstract extension method '@gtlInstruction display'                                 *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -779,9 +779,22 @@ void enterExtensionMethod_display (const int32_t inClassIndex,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
+static void freeExtensionMethod_gtlInstruction_display (void) {
+  gExtensionMethodTable_gtlInstruction_display.free () ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_PrologueEpilogue gMethod_gtlInstruction_display (NULL,
+                                                   freeExtensionMethod_gtlInstruction_display) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
 void callExtensionMethod_display (const cPtr_gtlInstruction * inObject,
                                   C_Compiler * inCompiler
                                   COMMA_LOCATION_ARGS) {
+//--- Drop output arguments
+//--- Find method
   if (NULL != inObject) {
     macroValidSharedObject (inObject, cPtr_gtlInstruction) ;
     const C_galgas_type_descriptor * info = inObject->classDescriptor () ;
@@ -791,14 +804,14 @@ void callExtensionMethod_display (const cPtr_gtlInstruction * inObject,
       f = gExtensionMethodTable_gtlInstruction_display (classIndex COMMA_HERE) ;
     }
     if (NULL == f) {
-       const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
-       while ((NULL == f) && (NULL != p)) {
-         if (p->mSlotID < gExtensionMethodTable_gtlInstruction_display.count ()) {
-           f = gExtensionMethodTable_gtlInstruction_display (p->mSlotID COMMA_HERE) ;
-         }
-         p = p->mSuperclassDescriptor ;
-       }
-       gExtensionMethodTable_gtlInstruction_display.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
+      const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
+      while ((NULL == f) && (NULL != p)) {
+        if (p->mSlotID < gExtensionMethodTable_gtlInstruction_display.count ()) {
+          f = gExtensionMethodTable_gtlInstruction_display (p->mSlotID COMMA_HERE) ;
+        }
+        p = p->mSuperclassDescriptor ;
+      }
+      gExtensionMethodTable_gtlInstruction_display.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
     }
     if (NULL == f) {
       fatalError ("FATAL CATEGORY METHOD CALL ERROR", __FILE__, __LINE__) ;
@@ -807,31 +820,6 @@ void callExtensionMethod_display (const cPtr_gtlInstruction * inObject,
     }
   }
 }
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void extensionMethod_gtlInstruction_display (const cPtr_gtlInstruction * /* inObject */,
-                                                    C_Compiler * inCompiler
-                                                    COMMA_UNUSED_LOCATION_ARGS) {
-  inCompiler->printMessage (GALGAS_string ("[Display not available]")  COMMA_SOURCE_FILE ("gtl_debugger.galgas", 1066)) ;
-}
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void defineExtensionMethod_gtlInstruction_display (void) {
-  enterExtensionMethod_display (kTypeDescriptor_GALGAS_gtlInstruction.mSlotID,
-                                extensionMethod_gtlInstruction_display) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void freeExtensionMethod_gtlInstruction_display (void) {
-  gExtensionMethodTable_gtlInstruction_display.free () ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-C_PrologueEpilogue gMethod_gtlInstruction_display (defineExtensionMethod_gtlInstruction_display,
-                                                   freeExtensionMethod_gtlInstruction_display) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
@@ -1223,6 +1211,152 @@ GALGAS_gtlDoInstInstruction GALGAS_gtlDoInstInstruction::extractObject (const GA
       result = *p ;
     }else{
       inCompiler->castError ("gtlDoInstInstruction", p->dynamicTypeDescriptor () COMMA_THERE) ;
+    }  
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//   Object comparison                                                                                                 *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typeComparisonResult cPtr_gtlDoNotAllInstruction::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
+  typeComparisonResult result = kOperandEqual ;
+  const cPtr_gtlDoNotAllInstruction * p = (const cPtr_gtlDoNotAllInstruction *) inOperandPtr ;
+  macroValidSharedObject (p, cPtr_gtlDoNotAllInstruction) ;
+  if (kOperandEqual == result) {
+    result = mAttribute_where.objectCompare (p->mAttribute_where) ;
+  }
+  if (kOperandEqual == result) {
+    result = mAttribute_signature.objectCompare (p->mAttribute_signature) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+
+typeComparisonResult GALGAS_gtlDoNotAllInstruction::objectCompare (const GALGAS_gtlDoNotAllInstruction & inOperand) const {
+  typeComparisonResult result = kOperandNotValid ;
+  if (isValid () && inOperand.isValid ()) {
+    const int32_t mySlot = mObjectPtr->classDescriptor ()->mSlotID ;
+    const int32_t operandSlot = inOperand.mObjectPtr->classDescriptor ()->mSlotID ;
+    if (mySlot < operandSlot) {
+      result = kFirstOperandLowerThanSecond ;
+    }else if (mySlot > operandSlot) {
+      result = kFirstOperandGreaterThanSecond ;
+    }else{
+      result = mObjectPtr->dynamicObjectCompare (inOperand.mObjectPtr) ;
+    }
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlDoNotAllInstruction::GALGAS_gtlDoNotAllInstruction (void) :
+GALGAS_gtlInstruction () {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlDoNotAllInstruction GALGAS_gtlDoNotAllInstruction::constructor_default (LOCATION_ARGS) {
+  return GALGAS_gtlDoNotAllInstruction::constructor_new (GALGAS_location::constructor_nowhere (HERE),
+                                                         GALGAS_string::constructor_default (HERE)
+                                                         COMMA_THERE) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlDoNotAllInstruction::GALGAS_gtlDoNotAllInstruction (const cPtr_gtlDoNotAllInstruction * inSourcePtr) :
+GALGAS_gtlInstruction (inSourcePtr) {
+  macroNullOrValidSharedObject (inSourcePtr, cPtr_gtlDoNotAllInstruction) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlDoNotAllInstruction GALGAS_gtlDoNotAllInstruction::constructor_new (const GALGAS_location & inAttribute_where,
+                                                                              const GALGAS_string & inAttribute_signature
+                                                                              COMMA_LOCATION_ARGS) {
+  GALGAS_gtlDoNotAllInstruction result ;
+  if (inAttribute_where.isValid () && inAttribute_signature.isValid ()) {
+    macroMyNew (result.mObjectPtr, cPtr_gtlDoNotAllInstruction (inAttribute_where, inAttribute_signature COMMA_THERE)) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                   Pointer class for @gtlDoNotAllInstruction class                                   *
+//---------------------------------------------------------------------------------------------------------------------*
+
+cPtr_gtlDoNotAllInstruction::cPtr_gtlDoNotAllInstruction (const GALGAS_location & in_where,
+                                                          const GALGAS_string & in_signature
+                                                          COMMA_LOCATION_ARGS) :
+cPtr_gtlInstruction (in_where, in_signature COMMA_THERE) {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor * cPtr_gtlDoNotAllInstruction::classDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_gtlDoNotAllInstruction ;
+}
+
+void cPtr_gtlDoNotAllInstruction::description (C_String & ioString,
+                                               const int32_t inIndentation) const {
+  ioString << "[@gtlDoNotAllInstruction:" ;
+  mAttribute_where.description (ioString, inIndentation+1) ;
+  ioString << ", " ;
+  mAttribute_signature.description (ioString, inIndentation+1) ;
+  ioString << "]" ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+acPtr_class * cPtr_gtlDoNotAllInstruction::duplicate (LOCATION_ARGS) const {
+  acPtr_class * ptr = NULL ;
+  macroMyNew (ptr, cPtr_gtlDoNotAllInstruction (mAttribute_where, mAttribute_signature COMMA_THERE)) ;
+  return ptr ;
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                            @gtlDoNotAllInstruction type                                             *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor
+kTypeDescriptor_GALGAS_gtlDoNotAllInstruction ("gtlDoNotAllInstruction",
+                                               & kTypeDescriptor_GALGAS_gtlInstruction) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor * GALGAS_gtlDoNotAllInstruction::staticTypeDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_gtlDoNotAllInstruction ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+AC_GALGAS_root * GALGAS_gtlDoNotAllInstruction::clonedObject (void) const {
+  AC_GALGAS_root * result = NULL ;
+  if (isValid ()) {
+    macroMyNew (result, GALGAS_gtlDoNotAllInstruction (*this)) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlDoNotAllInstruction GALGAS_gtlDoNotAllInstruction::extractObject (const GALGAS_object & inObject,
+                                                                            C_Compiler * inCompiler
+                                                                            COMMA_LOCATION_ARGS) {
+  GALGAS_gtlDoNotAllInstruction result ;
+  const GALGAS_gtlDoNotAllInstruction * p = (const GALGAS_gtlDoNotAllInstruction *) inObject.embeddedObject () ;
+  if (NULL != p) {
+    if (NULL != dynamic_cast <const GALGAS_gtlDoNotAllInstruction *> (p)) {
+      result = *p ;
+    }else{
+      inCompiler->castError ("gtlDoNotAllInstruction", p->dynamicTypeDescriptor () COMMA_THERE) ;
     }  
   }
   return result ;
@@ -2043,6 +2177,152 @@ GALGAS_gtlBreakpointDeleteInstruction GALGAS_gtlBreakpointDeleteInstruction::ext
 //   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
+typeComparisonResult cPtr_gtlBreakpointDeleteAllInstruction::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
+  typeComparisonResult result = kOperandEqual ;
+  const cPtr_gtlBreakpointDeleteAllInstruction * p = (const cPtr_gtlBreakpointDeleteAllInstruction *) inOperandPtr ;
+  macroValidSharedObject (p, cPtr_gtlBreakpointDeleteAllInstruction) ;
+  if (kOperandEqual == result) {
+    result = mAttribute_where.objectCompare (p->mAttribute_where) ;
+  }
+  if (kOperandEqual == result) {
+    result = mAttribute_signature.objectCompare (p->mAttribute_signature) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+
+typeComparisonResult GALGAS_gtlBreakpointDeleteAllInstruction::objectCompare (const GALGAS_gtlBreakpointDeleteAllInstruction & inOperand) const {
+  typeComparisonResult result = kOperandNotValid ;
+  if (isValid () && inOperand.isValid ()) {
+    const int32_t mySlot = mObjectPtr->classDescriptor ()->mSlotID ;
+    const int32_t operandSlot = inOperand.mObjectPtr->classDescriptor ()->mSlotID ;
+    if (mySlot < operandSlot) {
+      result = kFirstOperandLowerThanSecond ;
+    }else if (mySlot > operandSlot) {
+      result = kFirstOperandGreaterThanSecond ;
+    }else{
+      result = mObjectPtr->dynamicObjectCompare (inOperand.mObjectPtr) ;
+    }
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlBreakpointDeleteAllInstruction::GALGAS_gtlBreakpointDeleteAllInstruction (void) :
+GALGAS_gtlInstruction () {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlBreakpointDeleteAllInstruction GALGAS_gtlBreakpointDeleteAllInstruction::constructor_default (LOCATION_ARGS) {
+  return GALGAS_gtlBreakpointDeleteAllInstruction::constructor_new (GALGAS_location::constructor_nowhere (HERE),
+                                                                    GALGAS_string::constructor_default (HERE)
+                                                                    COMMA_THERE) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlBreakpointDeleteAllInstruction::GALGAS_gtlBreakpointDeleteAllInstruction (const cPtr_gtlBreakpointDeleteAllInstruction * inSourcePtr) :
+GALGAS_gtlInstruction (inSourcePtr) {
+  macroNullOrValidSharedObject (inSourcePtr, cPtr_gtlBreakpointDeleteAllInstruction) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlBreakpointDeleteAllInstruction GALGAS_gtlBreakpointDeleteAllInstruction::constructor_new (const GALGAS_location & inAttribute_where,
+                                                                                                    const GALGAS_string & inAttribute_signature
+                                                                                                    COMMA_LOCATION_ARGS) {
+  GALGAS_gtlBreakpointDeleteAllInstruction result ;
+  if (inAttribute_where.isValid () && inAttribute_signature.isValid ()) {
+    macroMyNew (result.mObjectPtr, cPtr_gtlBreakpointDeleteAllInstruction (inAttribute_where, inAttribute_signature COMMA_THERE)) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                             Pointer class for @gtlBreakpointDeleteAllInstruction class                              *
+//---------------------------------------------------------------------------------------------------------------------*
+
+cPtr_gtlBreakpointDeleteAllInstruction::cPtr_gtlBreakpointDeleteAllInstruction (const GALGAS_location & in_where,
+                                                                                const GALGAS_string & in_signature
+                                                                                COMMA_LOCATION_ARGS) :
+cPtr_gtlInstruction (in_where, in_signature COMMA_THERE) {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor * cPtr_gtlBreakpointDeleteAllInstruction::classDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_gtlBreakpointDeleteAllInstruction ;
+}
+
+void cPtr_gtlBreakpointDeleteAllInstruction::description (C_String & ioString,
+                                                          const int32_t inIndentation) const {
+  ioString << "[@gtlBreakpointDeleteAllInstruction:" ;
+  mAttribute_where.description (ioString, inIndentation+1) ;
+  ioString << ", " ;
+  mAttribute_signature.description (ioString, inIndentation+1) ;
+  ioString << "]" ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+acPtr_class * cPtr_gtlBreakpointDeleteAllInstruction::duplicate (LOCATION_ARGS) const {
+  acPtr_class * ptr = NULL ;
+  macroMyNew (ptr, cPtr_gtlBreakpointDeleteAllInstruction (mAttribute_where, mAttribute_signature COMMA_THERE)) ;
+  return ptr ;
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                       @gtlBreakpointDeleteAllInstruction type                                       *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor
+kTypeDescriptor_GALGAS_gtlBreakpointDeleteAllInstruction ("gtlBreakpointDeleteAllInstruction",
+                                                          & kTypeDescriptor_GALGAS_gtlInstruction) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor * GALGAS_gtlBreakpointDeleteAllInstruction::staticTypeDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_gtlBreakpointDeleteAllInstruction ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+AC_GALGAS_root * GALGAS_gtlBreakpointDeleteAllInstruction::clonedObject (void) const {
+  AC_GALGAS_root * result = NULL ;
+  if (isValid ()) {
+    macroMyNew (result, GALGAS_gtlBreakpointDeleteAllInstruction (*this)) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlBreakpointDeleteAllInstruction GALGAS_gtlBreakpointDeleteAllInstruction::extractObject (const GALGAS_object & inObject,
+                                                                                                  C_Compiler * inCompiler
+                                                                                                  COMMA_LOCATION_ARGS) {
+  GALGAS_gtlBreakpointDeleteAllInstruction result ;
+  const GALGAS_gtlBreakpointDeleteAllInstruction * p = (const GALGAS_gtlBreakpointDeleteAllInstruction *) inObject.embeddedObject () ;
+  if (NULL != p) {
+    if (NULL != dynamic_cast <const GALGAS_gtlBreakpointDeleteAllInstruction *> (p)) {
+      result = *p ;
+    }else{
+      inCompiler->castError ("gtlBreakpointDeleteAllInstruction", p->dynamicTypeDescriptor () COMMA_THERE) ;
+    }  
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//   Object comparison                                                                                                 *
+//---------------------------------------------------------------------------------------------------------------------*
+
 typeComparisonResult cPtr_gtlWatchpointListInstruction::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
   typeComparisonResult result = kOperandEqual ;
   const cPtr_gtlWatchpointListInstruction * p = (const cPtr_gtlWatchpointListInstruction *) inOperandPtr ;
@@ -2362,6 +2642,152 @@ GALGAS_gtlWatchpointDeleteInstruction GALGAS_gtlWatchpointDeleteInstruction::ext
 //   Object comparison                                                                                                 *
 //---------------------------------------------------------------------------------------------------------------------*
 
+typeComparisonResult cPtr_gtlWatchpointDeleteAllInstruction::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
+  typeComparisonResult result = kOperandEqual ;
+  const cPtr_gtlWatchpointDeleteAllInstruction * p = (const cPtr_gtlWatchpointDeleteAllInstruction *) inOperandPtr ;
+  macroValidSharedObject (p, cPtr_gtlWatchpointDeleteAllInstruction) ;
+  if (kOperandEqual == result) {
+    result = mAttribute_where.objectCompare (p->mAttribute_where) ;
+  }
+  if (kOperandEqual == result) {
+    result = mAttribute_signature.objectCompare (p->mAttribute_signature) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+
+typeComparisonResult GALGAS_gtlWatchpointDeleteAllInstruction::objectCompare (const GALGAS_gtlWatchpointDeleteAllInstruction & inOperand) const {
+  typeComparisonResult result = kOperandNotValid ;
+  if (isValid () && inOperand.isValid ()) {
+    const int32_t mySlot = mObjectPtr->classDescriptor ()->mSlotID ;
+    const int32_t operandSlot = inOperand.mObjectPtr->classDescriptor ()->mSlotID ;
+    if (mySlot < operandSlot) {
+      result = kFirstOperandLowerThanSecond ;
+    }else if (mySlot > operandSlot) {
+      result = kFirstOperandGreaterThanSecond ;
+    }else{
+      result = mObjectPtr->dynamicObjectCompare (inOperand.mObjectPtr) ;
+    }
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlWatchpointDeleteAllInstruction::GALGAS_gtlWatchpointDeleteAllInstruction (void) :
+GALGAS_gtlInstruction () {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlWatchpointDeleteAllInstruction GALGAS_gtlWatchpointDeleteAllInstruction::constructor_default (LOCATION_ARGS) {
+  return GALGAS_gtlWatchpointDeleteAllInstruction::constructor_new (GALGAS_location::constructor_nowhere (HERE),
+                                                                    GALGAS_string::constructor_default (HERE)
+                                                                    COMMA_THERE) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlWatchpointDeleteAllInstruction::GALGAS_gtlWatchpointDeleteAllInstruction (const cPtr_gtlWatchpointDeleteAllInstruction * inSourcePtr) :
+GALGAS_gtlInstruction (inSourcePtr) {
+  macroNullOrValidSharedObject (inSourcePtr, cPtr_gtlWatchpointDeleteAllInstruction) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlWatchpointDeleteAllInstruction GALGAS_gtlWatchpointDeleteAllInstruction::constructor_new (const GALGAS_location & inAttribute_where,
+                                                                                                    const GALGAS_string & inAttribute_signature
+                                                                                                    COMMA_LOCATION_ARGS) {
+  GALGAS_gtlWatchpointDeleteAllInstruction result ;
+  if (inAttribute_where.isValid () && inAttribute_signature.isValid ()) {
+    macroMyNew (result.mObjectPtr, cPtr_gtlWatchpointDeleteAllInstruction (inAttribute_where, inAttribute_signature COMMA_THERE)) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                             Pointer class for @gtlWatchpointDeleteAllInstruction class                              *
+//---------------------------------------------------------------------------------------------------------------------*
+
+cPtr_gtlWatchpointDeleteAllInstruction::cPtr_gtlWatchpointDeleteAllInstruction (const GALGAS_location & in_where,
+                                                                                const GALGAS_string & in_signature
+                                                                                COMMA_LOCATION_ARGS) :
+cPtr_gtlInstruction (in_where, in_signature COMMA_THERE) {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor * cPtr_gtlWatchpointDeleteAllInstruction::classDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_gtlWatchpointDeleteAllInstruction ;
+}
+
+void cPtr_gtlWatchpointDeleteAllInstruction::description (C_String & ioString,
+                                                          const int32_t inIndentation) const {
+  ioString << "[@gtlWatchpointDeleteAllInstruction:" ;
+  mAttribute_where.description (ioString, inIndentation+1) ;
+  ioString << ", " ;
+  mAttribute_signature.description (ioString, inIndentation+1) ;
+  ioString << "]" ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+acPtr_class * cPtr_gtlWatchpointDeleteAllInstruction::duplicate (LOCATION_ARGS) const {
+  acPtr_class * ptr = NULL ;
+  macroMyNew (ptr, cPtr_gtlWatchpointDeleteAllInstruction (mAttribute_where, mAttribute_signature COMMA_THERE)) ;
+  return ptr ;
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                       @gtlWatchpointDeleteAllInstruction type                                       *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor
+kTypeDescriptor_GALGAS_gtlWatchpointDeleteAllInstruction ("gtlWatchpointDeleteAllInstruction",
+                                                          & kTypeDescriptor_GALGAS_gtlInstruction) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor * GALGAS_gtlWatchpointDeleteAllInstruction::staticTypeDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_gtlWatchpointDeleteAllInstruction ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+AC_GALGAS_root * GALGAS_gtlWatchpointDeleteAllInstruction::clonedObject (void) const {
+  AC_GALGAS_root * result = NULL ;
+  if (isValid ()) {
+    macroMyNew (result, GALGAS_gtlWatchpointDeleteAllInstruction (*this)) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlWatchpointDeleteAllInstruction GALGAS_gtlWatchpointDeleteAllInstruction::extractObject (const GALGAS_object & inObject,
+                                                                                                  C_Compiler * inCompiler
+                                                                                                  COMMA_LOCATION_ARGS) {
+  GALGAS_gtlWatchpointDeleteAllInstruction result ;
+  const GALGAS_gtlWatchpointDeleteAllInstruction * p = (const GALGAS_gtlWatchpointDeleteAllInstruction *) inObject.embeddedObject () ;
+  if (NULL != p) {
+    if (NULL != dynamic_cast <const GALGAS_gtlWatchpointDeleteAllInstruction *> (p)) {
+      result = *p ;
+    }else{
+      inCompiler->castError ("gtlWatchpointDeleteAllInstruction", p->dynamicTypeDescriptor () COMMA_THERE) ;
+    }  
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//   Object comparison                                                                                                 *
+//---------------------------------------------------------------------------------------------------------------------*
+
 typeComparisonResult cPtr_gtlListInstruction::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
   typeComparisonResult result = kOperandEqual ;
   const cPtr_gtlListInstruction * p = (const cPtr_gtlListInstruction *) inOperandPtr ;
@@ -2672,6 +3098,179 @@ GALGAS_gtlHistoryInstruction GALGAS_gtlHistoryInstruction::extractObject (const 
       result = *p ;
     }else{
       inCompiler->castError ("gtlHistoryInstruction", p->dynamicTypeDescriptor () COMMA_THERE) ;
+    }  
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//   Object comparison                                                                                                 *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typeComparisonResult cPtr_gtlLoadInstruction::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
+  typeComparisonResult result = kOperandEqual ;
+  const cPtr_gtlLoadInstruction * p = (const cPtr_gtlLoadInstruction *) inOperandPtr ;
+  macroValidSharedObject (p, cPtr_gtlLoadInstruction) ;
+  if (kOperandEqual == result) {
+    result = mAttribute_where.objectCompare (p->mAttribute_where) ;
+  }
+  if (kOperandEqual == result) {
+    result = mAttribute_signature.objectCompare (p->mAttribute_signature) ;
+  }
+  if (kOperandEqual == result) {
+    result = mAttribute_fileName.objectCompare (p->mAttribute_fileName) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+
+typeComparisonResult GALGAS_gtlLoadInstruction::objectCompare (const GALGAS_gtlLoadInstruction & inOperand) const {
+  typeComparisonResult result = kOperandNotValid ;
+  if (isValid () && inOperand.isValid ()) {
+    const int32_t mySlot = mObjectPtr->classDescriptor ()->mSlotID ;
+    const int32_t operandSlot = inOperand.mObjectPtr->classDescriptor ()->mSlotID ;
+    if (mySlot < operandSlot) {
+      result = kFirstOperandLowerThanSecond ;
+    }else if (mySlot > operandSlot) {
+      result = kFirstOperandGreaterThanSecond ;
+    }else{
+      result = mObjectPtr->dynamicObjectCompare (inOperand.mObjectPtr) ;
+    }
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlLoadInstruction::GALGAS_gtlLoadInstruction (void) :
+GALGAS_gtlInstruction () {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlLoadInstruction GALGAS_gtlLoadInstruction::constructor_default (LOCATION_ARGS) {
+  return GALGAS_gtlLoadInstruction::constructor_new (GALGAS_location::constructor_nowhere (HERE),
+                                                     GALGAS_string::constructor_default (HERE),
+                                                     GALGAS_string::constructor_default (HERE)
+                                                     COMMA_THERE) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlLoadInstruction::GALGAS_gtlLoadInstruction (const cPtr_gtlLoadInstruction * inSourcePtr) :
+GALGAS_gtlInstruction (inSourcePtr) {
+  macroNullOrValidSharedObject (inSourcePtr, cPtr_gtlLoadInstruction) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlLoadInstruction GALGAS_gtlLoadInstruction::constructor_new (const GALGAS_location & inAttribute_where,
+                                                                      const GALGAS_string & inAttribute_signature,
+                                                                      const GALGAS_string & inAttribute_fileName
+                                                                      COMMA_LOCATION_ARGS) {
+  GALGAS_gtlLoadInstruction result ;
+  if (inAttribute_where.isValid () && inAttribute_signature.isValid () && inAttribute_fileName.isValid ()) {
+    macroMyNew (result.mObjectPtr, cPtr_gtlLoadInstruction (inAttribute_where, inAttribute_signature, inAttribute_fileName COMMA_THERE)) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_string GALGAS_gtlLoadInstruction::getter_fileName (UNUSED_LOCATION_ARGS) const {
+  GALGAS_string result ;
+  if (NULL != mObjectPtr) {
+    const cPtr_gtlLoadInstruction * p = (const cPtr_gtlLoadInstruction *) mObjectPtr ;
+    macroValidSharedObject (p, cPtr_gtlLoadInstruction) ;
+    result = p->mAttribute_fileName ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_string cPtr_gtlLoadInstruction::getter_fileName (UNUSED_LOCATION_ARGS) const {
+  return mAttribute_fileName ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                     Pointer class for @gtlLoadInstruction class                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+cPtr_gtlLoadInstruction::cPtr_gtlLoadInstruction (const GALGAS_location & in_where,
+                                                  const GALGAS_string & in_signature,
+                                                  const GALGAS_string & in_fileName
+                                                  COMMA_LOCATION_ARGS) :
+cPtr_gtlInstruction (in_where, in_signature COMMA_THERE),
+mAttribute_fileName (in_fileName) {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor * cPtr_gtlLoadInstruction::classDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_gtlLoadInstruction ;
+}
+
+void cPtr_gtlLoadInstruction::description (C_String & ioString,
+                                           const int32_t inIndentation) const {
+  ioString << "[@gtlLoadInstruction:" ;
+  mAttribute_where.description (ioString, inIndentation+1) ;
+  ioString << ", " ;
+  mAttribute_signature.description (ioString, inIndentation+1) ;
+  ioString << ", " ;
+  mAttribute_fileName.description (ioString, inIndentation+1) ;
+  ioString << "]" ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+acPtr_class * cPtr_gtlLoadInstruction::duplicate (LOCATION_ARGS) const {
+  acPtr_class * ptr = NULL ;
+  macroMyNew (ptr, cPtr_gtlLoadInstruction (mAttribute_where, mAttribute_signature, mAttribute_fileName COMMA_THERE)) ;
+  return ptr ;
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                              @gtlLoadInstruction type                                               *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor
+kTypeDescriptor_GALGAS_gtlLoadInstruction ("gtlLoadInstruction",
+                                           & kTypeDescriptor_GALGAS_gtlInstruction) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor * GALGAS_gtlLoadInstruction::staticTypeDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_gtlLoadInstruction ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+AC_GALGAS_root * GALGAS_gtlLoadInstruction::clonedObject (void) const {
+  AC_GALGAS_root * result = NULL ;
+  if (isValid ()) {
+    macroMyNew (result, GALGAS_gtlLoadInstruction (*this)) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_gtlLoadInstruction GALGAS_gtlLoadInstruction::extractObject (const GALGAS_object & inObject,
+                                                                    C_Compiler * inCompiler
+                                                                    COMMA_LOCATION_ARGS) {
+  GALGAS_gtlLoadInstruction result ;
+  const GALGAS_gtlLoadInstruction * p = (const GALGAS_gtlLoadInstruction *) inObject.embeddedObject () ;
+  if (NULL != p) {
+    if (NULL != dynamic_cast <const GALGAS_gtlLoadInstruction *> (p)) {
+      result = *p ;
+    }else{
+      inCompiler->castError ("gtlLoadInstruction", p->dynamicTypeDescriptor () COMMA_THERE) ;
     }  
   }
   return result ;
@@ -3388,6 +3987,12 @@ static const char * gSyntaxErrorMessage_gtl_5F_debugger_5F_scanner_elsif = "the 
 //--- Syntax error message for terminal '$hist$' :
 static const char * gSyntaxErrorMessage_gtl_5F_debugger_5F_scanner_hist = "the 'hist' keyword" ;
 
+//--- Syntax error message for terminal '$all$' :
+static const char * gSyntaxErrorMessage_gtl_5F_debugger_5F_scanner_all = "the 'all' keyword" ;
+
+//--- Syntax error message for terminal '$load$' :
+static const char * gSyntaxErrorMessage_gtl_5F_debugger_5F_scanner_load = "the 'load' keyword" ;
+
 //--- Syntax error message for terminal '$*$' :
 static const char * gSyntaxErrorMessage_gtl_5F_debugger_5F_scanner__2A_ = "the '*' delimitor" ;
 
@@ -3528,7 +4133,7 @@ static const char * gSyntaxErrorMessage_gtl_5F_debugger_5F_scanner__40__21_ = "t
 //---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_Lexique_gtl_5F_debugger_5F_scanner::getMessageForTerminal (const int16_t inTerminalIndex) const {
-  static const char * syntaxErrorMessageArray [94] = {kEndOfSourceLexicalErrorMessage,
+  static const char * syntaxErrorMessageArray [96] = {kEndOfSourceLexicalErrorMessage,
     gSyntaxErrorMessage_gtl_5F_debugger_5F_scanner_identifier,
     gSyntaxErrorMessage_gtl_5F_debugger_5F_scanner_literal_5F_enum,
     gSyntaxErrorMessage_gtl_5F_debugger_5F_scanner_literal_5F_double,
@@ -3577,6 +4182,8 @@ C_String C_Lexique_gtl_5F_debugger_5F_scanner::getMessageForTerminal (const int1
     gSyntaxErrorMessage_gtl_5F_debugger_5F_scanner_else,
     gSyntaxErrorMessage_gtl_5F_debugger_5F_scanner_elsif,
     gSyntaxErrorMessage_gtl_5F_debugger_5F_scanner_hist,
+    gSyntaxErrorMessage_gtl_5F_debugger_5F_scanner_all,
+    gSyntaxErrorMessage_gtl_5F_debugger_5F_scanner_load,
     gSyntaxErrorMessage_gtl_5F_debugger_5F_scanner__2A_,
     gSyntaxErrorMessage_gtl_5F_debugger_5F_scanner__7C_,
     gSyntaxErrorMessage_gtl_5F_debugger_5F_scanner__2C_,
@@ -3921,6 +4528,14 @@ static const utf32 kUnicodeString_gtl_5F_debugger_5F_scanner__5E__3D_ [] = {
   TO_UNICODE (0)
 } ;
 
+//--- Unicode string for '$all$'
+static const utf32 kUnicodeString_gtl_5F_debugger_5F_scanner_all [] = {
+  TO_UNICODE ('a'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('l'),
+  TO_UNICODE (0)
+} ;
+
 //--- Unicode string for '$break$'
 static const utf32 kUnicodeString_gtl_5F_debugger_5F_scanner_break [] = {
   TO_UNICODE ('b'),
@@ -4141,6 +4756,15 @@ static const utf32 kUnicodeString_gtl_5F_debugger_5F_scanner_listof [] = {
   TO_UNICODE ('t'),
   TO_UNICODE ('o'),
   TO_UNICODE ('f'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$load$'
+static const utf32 kUnicodeString_gtl_5F_debugger_5F_scanner_load [] = {
+  TO_UNICODE ('l'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('d'),
   TO_UNICODE (0)
 } ;
 
@@ -4385,7 +5009,7 @@ int16_t C_Lexique_gtl_5F_debugger_5F_scanner::search_into_galgasDelimitorsList (
 //             Key words table 'goilTemplateKeyWordList'                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const int32_t ktable_size_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList = 37 ;
+static const int32_t ktable_size_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList = 39 ;
 
 static const C_unicode_lexique_table_entry ktable_for_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList [ktable_size_gtl_5F_debugger_5F_scanner_goilTemplateKeyWordList] = {
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_debugger_5F_scanner_by, 2, C_Lexique_gtl_5F_debugger_5F_scanner::kToken_by),
@@ -4393,6 +5017,7 @@ static const C_unicode_lexique_table_entry ktable_for_gtl_5F_debugger_5F_scanner
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_debugger_5F_scanner_if, 2, C_Lexique_gtl_5F_debugger_5F_scanner::kToken_if),
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_debugger_5F_scanner_no, 2, C_Lexique_gtl_5F_debugger_5F_scanner::kToken_no),
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_debugger_5F_scanner_or, 2, C_Lexique_gtl_5F_debugger_5F_scanner::kToken_or),
+  C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_debugger_5F_scanner_all, 3, C_Lexique_gtl_5F_debugger_5F_scanner::kToken_all),
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_debugger_5F_scanner_end, 3, C_Lexique_gtl_5F_debugger_5F_scanner::kToken_end),
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_debugger_5F_scanner_let, 3, C_Lexique_gtl_5F_debugger_5F_scanner::kToken_let),
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_debugger_5F_scanner_mod, 3, C_Lexique_gtl_5F_debugger_5F_scanner::kToken_mod),
@@ -4403,6 +5028,7 @@ static const C_unicode_lexique_table_entry ktable_for_gtl_5F_debugger_5F_scanner
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_debugger_5F_scanner_help, 4, C_Lexique_gtl_5F_debugger_5F_scanner::kToken_help),
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_debugger_5F_scanner_hist, 4, C_Lexique_gtl_5F_debugger_5F_scanner::kToken_hist),
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_debugger_5F_scanner_list, 4, C_Lexique_gtl_5F_debugger_5F_scanner::kToken_list),
+  C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_debugger_5F_scanner_load, 4, C_Lexique_gtl_5F_debugger_5F_scanner::kToken_load),
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_debugger_5F_scanner_sort, 4, C_Lexique_gtl_5F_debugger_5F_scanner::kToken_sort),
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_debugger_5F_scanner_step, 4, C_Lexique_gtl_5F_debugger_5F_scanner::kToken_step),
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_debugger_5F_scanner_then, 4, C_Lexique_gtl_5F_debugger_5F_scanner::kToken_then),
@@ -4696,6 +5322,16 @@ C_String C_Lexique_gtl_5F_debugger_5F_scanner::getCurrentTokenString (const cTok
     case kToken_hist:
       s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
       s.appendCString ("hist") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_all:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("all") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken_load:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("load") ;
       s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
       break ;
     case kToken__2A_:
@@ -5707,6 +6343,8 @@ GALGAS_stringlist C_Lexique_gtl_5F_debugger_5F_scanner::symbols (LOCATION_ARGS) 
   result.addAssign_operation (GALGAS_string ("else") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string ("elsif") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string ("hist") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("all") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("load") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string ("*") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string ("|") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string (",") COMMA_THERE) ;
@@ -5823,6 +6461,7 @@ static void getKeywordsForIdentifier_gtl_5F_debugger_5F_scanner (const C_String 
     ioList.addObject ("if") ;
     ioList.addObject ("no") ;
     ioList.addObject ("or") ;
+    ioList.addObject ("all") ;
     ioList.addObject ("end") ;
     ioList.addObject ("let") ;
     ioList.addObject ("mod") ;
@@ -5833,6 +6472,7 @@ static void getKeywordsForIdentifier_gtl_5F_debugger_5F_scanner (const C_String 
     ioList.addObject ("help") ;
     ioList.addObject ("hist") ;
     ioList.addObject ("list") ;
+    ioList.addObject ("load") ;
     ioList.addObject ("sort") ;
     ioList.addObject ("step") ;
     ioList.addObject ("then") ;
@@ -5870,7 +6510,7 @@ __attribute__ ((unused)) (getKeywordLists_gtl_5F_debugger_5F_scanner, getKeyword
 //---------------------------------------------------------------------------------------------------------------------*
 
 uint32_t C_Lexique_gtl_5F_debugger_5F_scanner::styleIndexForTerminal (const int32_t inTerminalIndex) const {
-  static const uint32_t kTerminalSymbolStyles [94] = {0,
+  static const uint32_t kTerminalSymbolStyles [96] = {0,
     0 /* gtl_debugger_scanner_1_identifier */,
     0 /* gtl_debugger_scanner_1_literal_5F_enum */,
     5 /* gtl_debugger_scanner_1_literal_5F_double */,
@@ -5919,6 +6559,8 @@ uint32_t C_Lexique_gtl_5F_debugger_5F_scanner::styleIndexForTerminal (const int3
     1 /* gtl_debugger_scanner_1_else */,
     1 /* gtl_debugger_scanner_1_elsif */,
     1 /* gtl_debugger_scanner_1_hist */,
+    1 /* gtl_debugger_scanner_1_all */,
+    1 /* gtl_debugger_scanner_1_load */,
     2 /* gtl_debugger_scanner_1__2A_ */,
     2 /* gtl_debugger_scanner_1__7C_ */,
     2 /* gtl_debugger_scanner_1__2C_ */,
@@ -6064,14 +6706,37 @@ void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_de
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i3_ (GALGAS_gtlInstruction & outArgument_instruction,
                                                                                                        C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
   outArgument_instruction.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_hist) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 77)) ;
-  outArgument_instruction = GALGAS_gtlHistoryInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 79)), GALGAS_string::makeEmptyString ()  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 78)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_load) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 77)) ;
+  GALGAS_lstring var_fileName_1774 ;
+  switch (select_gtl_5F_debugger_5F_parser_1 (inCompiler)) {
+  case 1: {
+    var_fileName_1774 = inCompiler->synthetizedAttribute_tokenString () ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 80)) ;
+  } break ;
+  case 2: {
+    var_fileName_1774 = inCompiler->synthetizedAttribute_a_5F_string () ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_string) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 82)) ;
+  } break ;
+  default:
+    break ;
+  }
+  outArgument_instruction = GALGAS_gtlLoadInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 85)), GALGAS_string::makeEmptyString (), var_fileName_1774.getter_string (SOURCE_FILE ("gtl_debugger_parser.galgas", 87))  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 84)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i3_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_hist) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 77)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_load) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 77)) ;
+  switch (select_gtl_5F_debugger_5F_parser_1 (inCompiler)) {
+  case 1: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 80)) ;
+  } break ;
+  case 2: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_string) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 82)) ;
+  } break ;
+  default:
+    break ;
+  }
   inCompiler->resetTemplateString () ;
 }
 
@@ -6080,92 +6745,14 @@ void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_de
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i4_ (GALGAS_gtlInstruction & outArgument_instruction,
                                                                                                        C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
   outArgument_instruction.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_break) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 88)) ;
-  switch (select_gtl_5F_debugger_5F_parser_1 (inCompiler)) {
-  case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_not) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 90)) ;
-    GALGAS_lbigint var_index_2051 = inCompiler->synthetizedAttribute_intValue () ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 91)) ;
-    outArgument_instruction = GALGAS_gtlBreakpointDeleteInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 93)), GALGAS_string::makeEmptyString (), var_index_2051  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 92)) ;
-  } break ;
-  case 2: {
-    switch (select_gtl_5F_debugger_5F_parser_2 (inCompiler)) {
-    case 1: {
-      GALGAS_lstring var_fileName_2208 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 99)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__2E_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 100)) ;
-      GALGAS_lstring var_fileExtension_2265 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 101)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__3A_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 102)) ;
-      GALGAS_lbigint var_lineNum_2335 = inCompiler->synthetizedAttribute_intValue () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 103)) ;
-      outArgument_instruction = GALGAS_gtlBreakpointInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 105)), GALGAS_string::makeEmptyString (), var_fileName_2208.getter_string (SOURCE_FILE ("gtl_debugger_parser.galgas", 107)).add_operation (GALGAS_string ("."), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 107)).add_operation (var_fileExtension_2265.getter_string (SOURCE_FILE ("gtl_debugger_parser.galgas", 107)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 107)), var_lineNum_2335.getter_bigint (SOURCE_FILE ("gtl_debugger_parser.galgas", 108)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 108))  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 104)) ;
-    } break ;
-    case 2: {
-      GALGAS_lbigint var_lineNum_2564 = inCompiler->synthetizedAttribute_intValue () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 111)) ;
-      outArgument_instruction = GALGAS_gtlBreakpointInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 113)), GALGAS_string::makeEmptyString (), GALGAS_string::makeEmptyString (), var_lineNum_2564.getter_bigint (SOURCE_FILE ("gtl_debugger_parser.galgas", 116)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 116))  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 112)) ;
-    } break ;
-    default:
-      break ;
-    }
-  } break ;
-  case 3: {
-    GALGAS_lstring var_fileNameAndLineNum_2748 = inCompiler->synthetizedAttribute_a_5F_string () ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_string) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 120)) ;
-    GALGAS_stringlist var_components_2775 = var_fileNameAndLineNum_2748.getter_string (SOURCE_FILE ("gtl_debugger_parser.galgas", 121)).getter_componentsSeparatedByString (GALGAS_string (":") COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 121)) ;
-    const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, var_components_2775.getter_length (SOURCE_FILE ("gtl_debugger_parser.galgas", 122)).objectCompare (GALGAS_uint ((uint32_t) 2U))).boolEnum () ;
-    if (kBoolTrue == test_0) {
-      GALGAS_string var_fileName_2900 = var_components_2775.getter_mValueAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 123)) ;
-      GALGAS_string var_lineNum_2954 = var_components_2775.getter_mValueAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 124)) ;
-      outArgument_instruction = GALGAS_gtlBreakpointInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 126)), GALGAS_string::makeEmptyString (), var_fileName_2900, var_lineNum_2954.getter_decimalUnsignedNumber (inCompiler COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 129))  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 125)) ;
-    }else if (kBoolFalse == test_0) {
-      TC_Array <C_FixItDescription> fixItArray1 ;
-      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 132)), GALGAS_string ("Illegal breakpoint location"), fixItArray1  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 132)) ;
-      outArgument_instruction.drop () ; // Release error dropped variable
-    }
-  } break ;
-  case 4: {
-    outArgument_instruction = GALGAS_gtlBreakpointListInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 136)), GALGAS_string::makeEmptyString ()  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 135)) ;
-  } break ;
-  default:
-    break ;
-  }
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_hist) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 95)) ;
+  outArgument_instruction = GALGAS_gtlHistoryInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 97)), GALGAS_string::makeEmptyString ()  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 96)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i4_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_break) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 88)) ;
-  switch (select_gtl_5F_debugger_5F_parser_1 (inCompiler)) {
-  case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_not) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 90)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 91)) ;
-  } break ;
-  case 2: {
-    switch (select_gtl_5F_debugger_5F_parser_2 (inCompiler)) {
-    case 1: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 99)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__2E_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 100)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 101)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__3A_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 102)) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 103)) ;
-    } break ;
-    case 2: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 111)) ;
-    } break ;
-    default:
-      break ;
-    }
-  } break ;
-  case 3: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_string) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 120)) ;
-  } break ;
-  case 4: {
-  } break ;
-  default:
-    break ;
-  }
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_hist) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 95)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -6174,23 +6761,63 @@ void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_de
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i5_ (GALGAS_gtlInstruction & outArgument_instruction,
                                                                                                        C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
   outArgument_instruction.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_watch) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 146)) ;
-  switch (select_gtl_5F_debugger_5F_parser_3 (inCompiler)) {
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_break) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 106)) ;
+  switch (select_gtl_5F_debugger_5F_parser_2 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_not) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 148)) ;
-    GALGAS_lbigint var_index_3538 = inCompiler->synthetizedAttribute_intValue () ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 149)) ;
-    outArgument_instruction = GALGAS_gtlWatchpointDeleteInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 151)), GALGAS_string::makeEmptyString (), var_index_3538  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 150)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_not) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 108)) ;
+    switch (select_gtl_5F_debugger_5F_parser_3 (inCompiler)) {
+    case 1: {
+      GALGAS_lbigint var_index_2386 = inCompiler->synthetizedAttribute_intValue () ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 110)) ;
+      outArgument_instruction = GALGAS_gtlBreakpointDeleteInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 112)), GALGAS_string::makeEmptyString (), var_index_2386  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 111)) ;
+    } break ;
+    case 2: {
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_all) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 117)) ;
+      outArgument_instruction = GALGAS_gtlBreakpointDeleteAllInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 119)), GALGAS_string::makeEmptyString ()  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 118)) ;
+    } break ;
+    default:
+      break ;
+    }
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__28_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 156)) ;
-    GALGAS_gtlExpression var_watchExpression_3706 ;
-    nt_gtl_5F_expression_ (var_watchExpression_3706, inCompiler) ;
-    outArgument_instruction = GALGAS_gtlWatchpointInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 159)), GALGAS_string::makeEmptyString (), var_watchExpression_3706  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 158)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__29_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 163)) ;
+    switch (select_gtl_5F_debugger_5F_parser_4 (inCompiler)) {
+    case 1: {
+      GALGAS_lstring var_fileName_2682 = inCompiler->synthetizedAttribute_tokenString () ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 125)) ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__2E_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 126)) ;
+      GALGAS_lstring var_fileExtension_2739 = inCompiler->synthetizedAttribute_tokenString () ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 127)) ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__3A_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 128)) ;
+      GALGAS_lbigint var_lineNum_2809 = inCompiler->synthetizedAttribute_intValue () ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 129)) ;
+      outArgument_instruction = GALGAS_gtlBreakpointInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 131)), GALGAS_string::makeEmptyString (), var_fileName_2682.getter_string (SOURCE_FILE ("gtl_debugger_parser.galgas", 133)).add_operation (GALGAS_string ("."), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 133)).add_operation (var_fileExtension_2739.getter_string (SOURCE_FILE ("gtl_debugger_parser.galgas", 133)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 133)), var_lineNum_2809.getter_bigint (SOURCE_FILE ("gtl_debugger_parser.galgas", 134)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 134))  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 130)) ;
+    } break ;
+    case 2: {
+      GALGAS_lbigint var_lineNum_3038 = inCompiler->synthetizedAttribute_intValue () ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 137)) ;
+      outArgument_instruction = GALGAS_gtlBreakpointInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 139)), GALGAS_string::makeEmptyString (), GALGAS_string::makeEmptyString (), var_lineNum_3038.getter_bigint (SOURCE_FILE ("gtl_debugger_parser.galgas", 142)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 142))  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 138)) ;
+    } break ;
+    default:
+      break ;
+    }
   } break ;
   case 3: {
-    outArgument_instruction = GALGAS_gtlWatchpointListInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 166)), GALGAS_string::makeEmptyString ()  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 165)) ;
+    GALGAS_lstring var_fileNameAndLineNum_3222 = inCompiler->synthetizedAttribute_a_5F_string () ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_string) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 146)) ;
+    GALGAS_stringlist var_components_3249 = var_fileNameAndLineNum_3222.getter_string (SOURCE_FILE ("gtl_debugger_parser.galgas", 147)).getter_componentsSeparatedByString (GALGAS_string (":") COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 147)) ;
+    const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, var_components_3249.getter_length (SOURCE_FILE ("gtl_debugger_parser.galgas", 148)).objectCompare (GALGAS_uint ((uint32_t) 2U))).boolEnum () ;
+    if (kBoolTrue == test_0) {
+      GALGAS_string var_fileName_3374 = var_components_3249.getter_mValueAtIndex (GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 149)) ;
+      GALGAS_string var_lineNum_3428 = var_components_3249.getter_mValueAtIndex (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 150)) ;
+      outArgument_instruction = GALGAS_gtlBreakpointInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 152)), GALGAS_string::makeEmptyString (), var_fileName_3374, var_lineNum_3428.getter_decimalUnsignedNumber (inCompiler COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 155))  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 151)) ;
+    }else if (kBoolFalse == test_0) {
+      TC_Array <C_FixItDescription> fixItArray1 ;
+      inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 158)), GALGAS_string ("Illegal breakpoint location"), fixItArray1  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 158)) ;
+      outArgument_instruction.drop () ; // Release error dropped variable
+    }
+  } break ;
+  case 4: {
+    outArgument_instruction = GALGAS_gtlBreakpointListInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 162)), GALGAS_string::makeEmptyString ()  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 161)) ;
   } break ;
   default:
     break ;
@@ -6200,18 +6827,41 @@ void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_de
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i5_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_watch) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 146)) ;
-  switch (select_gtl_5F_debugger_5F_parser_3 (inCompiler)) {
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_break) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 106)) ;
+  switch (select_gtl_5F_debugger_5F_parser_2 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_not) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 148)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 149)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_not) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 108)) ;
+    switch (select_gtl_5F_debugger_5F_parser_3 (inCompiler)) {
+    case 1: {
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 110)) ;
+    } break ;
+    case 2: {
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_all) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 117)) ;
+    } break ;
+    default:
+      break ;
+    }
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__28_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 156)) ;
-    nt_gtl_5F_expression_parse (inCompiler) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__29_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 163)) ;
+    switch (select_gtl_5F_debugger_5F_parser_4 (inCompiler)) {
+    case 1: {
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 125)) ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__2E_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 126)) ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 127)) ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__3A_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 128)) ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 129)) ;
+    } break ;
+    case 2: {
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 137)) ;
+    } break ;
+    default:
+      break ;
+    }
   } break ;
   case 3: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_string) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 146)) ;
+  } break ;
+  case 4: {
   } break ;
   default:
     break ;
@@ -6224,21 +6874,33 @@ void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_de
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i6_ (GALGAS_gtlInstruction & outArgument_instruction,
                                                                                                        C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
   outArgument_instruction.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_do) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 177)) ;
-  switch (select_gtl_5F_debugger_5F_parser_4 (inCompiler)) {
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_watch) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 172)) ;
+  switch (select_gtl_5F_debugger_5F_parser_5 (inCompiler)) {
   case 1: {
-    GALGAS_gtlInstruction var_instructionToStepDo_4138 ;
-    nt_gtl_5F_step_5F_do_5F_command_ (var_instructionToStepDo_4138, inCompiler) ;
-    outArgument_instruction = GALGAS_gtlDoInstInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 181)), GALGAS_string::makeEmptyString (), var_instructionToStepDo_4138  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 180)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_not) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 174)) ;
+    switch (select_gtl_5F_debugger_5F_parser_6 (inCompiler)) {
+    case 1: {
+      GALGAS_lbigint var_index_4025 = inCompiler->synthetizedAttribute_intValue () ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 176)) ;
+      outArgument_instruction = GALGAS_gtlWatchpointDeleteInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 178)), GALGAS_string::makeEmptyString (), var_index_4025  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 177)) ;
+    } break ;
+    case 2: {
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_all) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 183)) ;
+      outArgument_instruction = GALGAS_gtlWatchpointDeleteAllInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 185)), GALGAS_string::makeEmptyString ()  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 184)) ;
+    } break ;
+    default:
+      break ;
+    }
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_not) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 186)) ;
-    GALGAS_lbigint var_num_4309 = inCompiler->synthetizedAttribute_intValue () ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 187)) ;
-    outArgument_instruction = GALGAS_gtlDoNotInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 189)), GALGAS_string::makeEmptyString (), var_num_4309  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 188)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__28_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 190)) ;
+    GALGAS_gtlExpression var_watchExpression_4332 ;
+    nt_gtl_5F_expression_ (var_watchExpression_4332, inCompiler) ;
+    outArgument_instruction = GALGAS_gtlWatchpointInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 193)), GALGAS_string::makeEmptyString (), var_watchExpression_4332  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 192)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__29_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 197)) ;
   } break ;
   case 3: {
-    outArgument_instruction = GALGAS_gtlDoInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 195)), GALGAS_string::makeEmptyString ()  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 194)) ;
+    outArgument_instruction = GALGAS_gtlWatchpointListInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 200)), GALGAS_string::makeEmptyString ()  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 199)) ;
   } break ;
   default:
     break ;
@@ -6248,14 +6910,25 @@ void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_de
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i6_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_do) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 177)) ;
-  switch (select_gtl_5F_debugger_5F_parser_4 (inCompiler)) {
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_watch) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 172)) ;
+  switch (select_gtl_5F_debugger_5F_parser_5 (inCompiler)) {
   case 1: {
-    nt_gtl_5F_step_5F_do_5F_command_parse (inCompiler) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_not) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 174)) ;
+    switch (select_gtl_5F_debugger_5F_parser_6 (inCompiler)) {
+    case 1: {
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 176)) ;
+    } break ;
+    case 2: {
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_all) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 183)) ;
+    } break ;
+    default:
+      break ;
+    }
   } break ;
   case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_not) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 186)) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 187)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__28_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 190)) ;
+    nt_gtl_5F_expression_parse (inCompiler) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__29_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 197)) ;
   } break ;
   case 3: {
   } break ;
@@ -6270,12 +6943,63 @@ void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_de
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i7_ (GALGAS_gtlInstruction & outArgument_instruction,
                                                                                                        C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
   outArgument_instruction.drop () ; // Release 'out' argument
-  outArgument_instruction = GALGAS_gtlStepInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 206)), GALGAS_string::makeEmptyString ()  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 205)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_do) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 211)) ;
+  switch (select_gtl_5F_debugger_5F_parser_7 (inCompiler)) {
+  case 1: {
+    GALGAS_gtlInstruction var_instructionToStepDo_4764 ;
+    nt_gtl_5F_step_5F_do_5F_command_ (var_instructionToStepDo_4764, inCompiler) ;
+    outArgument_instruction = GALGAS_gtlDoInstInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 215)), GALGAS_string::makeEmptyString (), var_instructionToStepDo_4764  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 214)) ;
+  } break ;
+  case 2: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_not) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 220)) ;
+    switch (select_gtl_5F_debugger_5F_parser_8 (inCompiler)) {
+    case 1: {
+      GALGAS_lbigint var_num_4948 = inCompiler->synthetizedAttribute_intValue () ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 222)) ;
+      outArgument_instruction = GALGAS_gtlDoNotInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 224)), GALGAS_string::makeEmptyString (), var_num_4948  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 223)) ;
+    } break ;
+    case 2: {
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_all) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 229)) ;
+      outArgument_instruction = GALGAS_gtlDoNotAllInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 231)), GALGAS_string::makeEmptyString ()  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 230)) ;
+    } break ;
+    default:
+      break ;
+    }
+  } break ;
+  case 3: {
+    outArgument_instruction = GALGAS_gtlDoInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 237)), GALGAS_string::makeEmptyString ()  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 236)) ;
+  } break ;
+  default:
+    break ;
+  }
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i7_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_do) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 211)) ;
+  switch (select_gtl_5F_debugger_5F_parser_7 (inCompiler)) {
+  case 1: {
+    nt_gtl_5F_step_5F_do_5F_command_parse (inCompiler) ;
+  } break ;
+  case 2: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_not) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 220)) ;
+    switch (select_gtl_5F_debugger_5F_parser_8 (inCompiler)) {
+    case 1: {
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 222)) ;
+    } break ;
+    case 2: {
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_all) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 229)) ;
+    } break ;
+    default:
+      break ;
+    }
+  } break ;
+  case 3: {
+  } break ;
+  default:
+    break ;
+  }
   inCompiler->resetTemplateString () ;
 }
 
@@ -6284,139 +7008,12 @@ void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_de
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i8_ (GALGAS_gtlInstruction & outArgument_instruction,
                                                                                                        C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
   outArgument_instruction.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_let) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 215)) ;
-  GALGAS_gtlVarPath var_variable_4880 ;
-  nt_gtl_5F_variable_ (var_variable_4880, inCompiler) ;
-  switch (select_gtl_5F_debugger_5F_parser_5 (inCompiler)) {
-  case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__3A__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 218)) ;
-    GALGAS_gtlExpression var_expression_4946 ;
-    nt_gtl_5F_expression_ (var_expression_4946, inCompiler) ;
-    outArgument_instruction = GALGAS_gtlLetInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 221)), GALGAS_string::makeEmptyString (), var_variable_4880, var_expression_4946  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 220)) ;
-  } break ;
-  case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__2B__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 227)) ;
-    GALGAS_gtlExpression var_expression_5116 ;
-    nt_gtl_5F_expression_ (var_expression_5116, inCompiler) ;
-    outArgument_instruction = GALGAS_gtlLetAddInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 230)), GALGAS_string::makeEmptyString (), var_variable_4880, var_expression_5116  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 229)) ;
-  } break ;
-  case 3: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__2D__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 236)) ;
-    GALGAS_gtlExpression var_expression_5288 ;
-    nt_gtl_5F_expression_ (var_expression_5288, inCompiler) ;
-    outArgument_instruction = GALGAS_gtlLetSubstractInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 239)), GALGAS_string::makeEmptyString (), var_variable_4880, var_expression_5288  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 238)) ;
-  } break ;
-  case 4: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__2A__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 245)) ;
-    GALGAS_gtlExpression var_expression_5466 ;
-    nt_gtl_5F_expression_ (var_expression_5466, inCompiler) ;
-    outArgument_instruction = GALGAS_gtlLetMultiplyInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 248)), GALGAS_string::makeEmptyString (), var_variable_4880, var_expression_5466  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 247)) ;
-  } break ;
-  case 5: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__2F__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 254)) ;
-    GALGAS_gtlExpression var_expression_5643 ;
-    nt_gtl_5F_expression_ (var_expression_5643, inCompiler) ;
-    outArgument_instruction = GALGAS_gtlLetDivideInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 257)), GALGAS_string::makeEmptyString (), var_variable_4880, var_expression_5643  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 256)) ;
-  } break ;
-  case 6: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_mod_3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 263)) ;
-    GALGAS_gtlExpression var_expression_5820 ;
-    nt_gtl_5F_expression_ (var_expression_5820, inCompiler) ;
-    outArgument_instruction = GALGAS_gtlLetModuloInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 266)), GALGAS_string::makeEmptyString (), var_variable_4880, var_expression_5820  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 265)) ;
-  } break ;
-  case 7: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__3C__3C__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 272)) ;
-    GALGAS_gtlExpression var_expression_5996 ;
-    nt_gtl_5F_expression_ (var_expression_5996, inCompiler) ;
-    outArgument_instruction = GALGAS_gtlLetShiftLeftInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 275)), GALGAS_string::makeEmptyString (), var_variable_4880, var_expression_5996  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 274)) ;
-  } break ;
-  case 8: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__3E__3E__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 281)) ;
-    GALGAS_gtlExpression var_expression_6175 ;
-    nt_gtl_5F_expression_ (var_expression_6175, inCompiler) ;
-    outArgument_instruction = GALGAS_gtlLetShiftRightInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 284)), GALGAS_string::makeEmptyString (), var_variable_4880, var_expression_6175  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 283)) ;
-  } break ;
-  case 9: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__26__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 290)) ;
-    GALGAS_gtlExpression var_expression_6354 ;
-    nt_gtl_5F_expression_ (var_expression_6354, inCompiler) ;
-    outArgument_instruction = GALGAS_gtlLetAndInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 293)), GALGAS_string::makeEmptyString (), var_variable_4880, var_expression_6354  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 292)) ;
-  } break ;
-  case 10: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__7C__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 299)) ;
-    GALGAS_gtlExpression var_expression_6526 ;
-    nt_gtl_5F_expression_ (var_expression_6526, inCompiler) ;
-    outArgument_instruction = GALGAS_gtlLetOrInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 302)), GALGAS_string::makeEmptyString (), var_variable_4880, var_expression_6526  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 301)) ;
-  } break ;
-  case 11: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__5E__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 308)) ;
-    GALGAS_gtlExpression var_expression_6697 ;
-    nt_gtl_5F_expression_ (var_expression_6697, inCompiler) ;
-    outArgument_instruction = GALGAS_gtlLetXorInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 311)), GALGAS_string::makeEmptyString (), var_variable_4880, var_expression_6697  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 310)) ;
-  } break ;
-  case 12: {
-    outArgument_instruction = GALGAS_gtlLetUnconstructedInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 318)), GALGAS_string::makeEmptyString (), var_variable_4880  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 317)) ;
-  } break ;
-  default:
-    break ;
-  }
+  outArgument_instruction = GALGAS_gtlStepInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 248)), GALGAS_string::makeEmptyString ()  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 247)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i8_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_let) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 215)) ;
-  nt_gtl_5F_variable_parse (inCompiler) ;
-  switch (select_gtl_5F_debugger_5F_parser_5 (inCompiler)) {
-  case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__3A__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 218)) ;
-    nt_gtl_5F_expression_parse (inCompiler) ;
-  } break ;
-  case 2: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__2B__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 227)) ;
-    nt_gtl_5F_expression_parse (inCompiler) ;
-  } break ;
-  case 3: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__2D__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 236)) ;
-    nt_gtl_5F_expression_parse (inCompiler) ;
-  } break ;
-  case 4: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__2A__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 245)) ;
-    nt_gtl_5F_expression_parse (inCompiler) ;
-  } break ;
-  case 5: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__2F__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 254)) ;
-    nt_gtl_5F_expression_parse (inCompiler) ;
-  } break ;
-  case 6: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_mod_3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 263)) ;
-    nt_gtl_5F_expression_parse (inCompiler) ;
-  } break ;
-  case 7: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__3C__3C__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 272)) ;
-    nt_gtl_5F_expression_parse (inCompiler) ;
-  } break ;
-  case 8: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__3E__3E__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 281)) ;
-    nt_gtl_5F_expression_parse (inCompiler) ;
-  } break ;
-  case 9: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__26__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 290)) ;
-    nt_gtl_5F_expression_parse (inCompiler) ;
-  } break ;
-  case 10: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__7C__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 299)) ;
-    nt_gtl_5F_expression_parse (inCompiler) ;
-  } break ;
-  case 11: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__5E__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 308)) ;
-    nt_gtl_5F_expression_parse (inCompiler) ;
-  } break ;
-  case 12: {
-  } break ;
-  default:
-    break ;
-  }
   inCompiler->resetTemplateString () ;
 }
 
@@ -6425,17 +7022,139 @@ void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_de
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i9_ (GALGAS_gtlInstruction & outArgument_instruction,
                                                                                                        C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
   outArgument_instruction.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_unlet) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 329)) ;
-  GALGAS_gtlVarPath var_variable_7111 ;
-  nt_gtl_5F_variable_ (var_variable_7111, inCompiler) ;
-  outArgument_instruction = GALGAS_gtlUnletInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 332)), GALGAS_string::makeEmptyString (), var_variable_7111  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 331)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_let) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 257)) ;
+  GALGAS_gtlVarPath var_variable_5647 ;
+  nt_gtl_5F_variable_ (var_variable_5647, inCompiler) ;
+  switch (select_gtl_5F_debugger_5F_parser_9 (inCompiler)) {
+  case 1: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__3A__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 260)) ;
+    GALGAS_gtlExpression var_expression_5713 ;
+    nt_gtl_5F_expression_ (var_expression_5713, inCompiler) ;
+    outArgument_instruction = GALGAS_gtlLetInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 263)), GALGAS_string::makeEmptyString (), var_variable_5647, var_expression_5713  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 262)) ;
+  } break ;
+  case 2: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__2B__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 269)) ;
+    GALGAS_gtlExpression var_expression_5883 ;
+    nt_gtl_5F_expression_ (var_expression_5883, inCompiler) ;
+    outArgument_instruction = GALGAS_gtlLetAddInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 272)), GALGAS_string::makeEmptyString (), var_variable_5647, var_expression_5883  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 271)) ;
+  } break ;
+  case 3: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__2D__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 278)) ;
+    GALGAS_gtlExpression var_expression_6055 ;
+    nt_gtl_5F_expression_ (var_expression_6055, inCompiler) ;
+    outArgument_instruction = GALGAS_gtlLetSubstractInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 281)), GALGAS_string::makeEmptyString (), var_variable_5647, var_expression_6055  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 280)) ;
+  } break ;
+  case 4: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__2A__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 287)) ;
+    GALGAS_gtlExpression var_expression_6233 ;
+    nt_gtl_5F_expression_ (var_expression_6233, inCompiler) ;
+    outArgument_instruction = GALGAS_gtlLetMultiplyInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 290)), GALGAS_string::makeEmptyString (), var_variable_5647, var_expression_6233  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 289)) ;
+  } break ;
+  case 5: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__2F__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 296)) ;
+    GALGAS_gtlExpression var_expression_6410 ;
+    nt_gtl_5F_expression_ (var_expression_6410, inCompiler) ;
+    outArgument_instruction = GALGAS_gtlLetDivideInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 299)), GALGAS_string::makeEmptyString (), var_variable_5647, var_expression_6410  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 298)) ;
+  } break ;
+  case 6: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_mod_3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 305)) ;
+    GALGAS_gtlExpression var_expression_6587 ;
+    nt_gtl_5F_expression_ (var_expression_6587, inCompiler) ;
+    outArgument_instruction = GALGAS_gtlLetModuloInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 308)), GALGAS_string::makeEmptyString (), var_variable_5647, var_expression_6587  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 307)) ;
+  } break ;
+  case 7: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__3C__3C__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 314)) ;
+    GALGAS_gtlExpression var_expression_6763 ;
+    nt_gtl_5F_expression_ (var_expression_6763, inCompiler) ;
+    outArgument_instruction = GALGAS_gtlLetShiftLeftInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 317)), GALGAS_string::makeEmptyString (), var_variable_5647, var_expression_6763  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 316)) ;
+  } break ;
+  case 8: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__3E__3E__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 323)) ;
+    GALGAS_gtlExpression var_expression_6942 ;
+    nt_gtl_5F_expression_ (var_expression_6942, inCompiler) ;
+    outArgument_instruction = GALGAS_gtlLetShiftRightInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 326)), GALGAS_string::makeEmptyString (), var_variable_5647, var_expression_6942  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 325)) ;
+  } break ;
+  case 9: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__26__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 332)) ;
+    GALGAS_gtlExpression var_expression_7121 ;
+    nt_gtl_5F_expression_ (var_expression_7121, inCompiler) ;
+    outArgument_instruction = GALGAS_gtlLetAndInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 335)), GALGAS_string::makeEmptyString (), var_variable_5647, var_expression_7121  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 334)) ;
+  } break ;
+  case 10: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__7C__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 341)) ;
+    GALGAS_gtlExpression var_expression_7293 ;
+    nt_gtl_5F_expression_ (var_expression_7293, inCompiler) ;
+    outArgument_instruction = GALGAS_gtlLetOrInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 344)), GALGAS_string::makeEmptyString (), var_variable_5647, var_expression_7293  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 343)) ;
+  } break ;
+  case 11: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__5E__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 350)) ;
+    GALGAS_gtlExpression var_expression_7464 ;
+    nt_gtl_5F_expression_ (var_expression_7464, inCompiler) ;
+    outArgument_instruction = GALGAS_gtlLetXorInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 353)), GALGAS_string::makeEmptyString (), var_variable_5647, var_expression_7464  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 352)) ;
+  } break ;
+  case 12: {
+    outArgument_instruction = GALGAS_gtlLetUnconstructedInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 360)), GALGAS_string::makeEmptyString (), var_variable_5647  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 359)) ;
+  } break ;
+  default:
+    break ;
+  }
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i9_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_unlet) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 329)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_let) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 257)) ;
   nt_gtl_5F_variable_parse (inCompiler) ;
+  switch (select_gtl_5F_debugger_5F_parser_9 (inCompiler)) {
+  case 1: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__3A__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 260)) ;
+    nt_gtl_5F_expression_parse (inCompiler) ;
+  } break ;
+  case 2: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__2B__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 269)) ;
+    nt_gtl_5F_expression_parse (inCompiler) ;
+  } break ;
+  case 3: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__2D__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 278)) ;
+    nt_gtl_5F_expression_parse (inCompiler) ;
+  } break ;
+  case 4: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__2A__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 287)) ;
+    nt_gtl_5F_expression_parse (inCompiler) ;
+  } break ;
+  case 5: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__2F__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 296)) ;
+    nt_gtl_5F_expression_parse (inCompiler) ;
+  } break ;
+  case 6: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_mod_3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 305)) ;
+    nt_gtl_5F_expression_parse (inCompiler) ;
+  } break ;
+  case 7: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__3C__3C__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 314)) ;
+    nt_gtl_5F_expression_parse (inCompiler) ;
+  } break ;
+  case 8: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__3E__3E__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 323)) ;
+    nt_gtl_5F_expression_parse (inCompiler) ;
+  } break ;
+  case 9: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__26__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 332)) ;
+    nt_gtl_5F_expression_parse (inCompiler) ;
+  } break ;
+  case 10: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__7C__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 341)) ;
+    nt_gtl_5F_expression_parse (inCompiler) ;
+  } break ;
+  case 11: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken__5E__3D_) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 350)) ;
+    nt_gtl_5F_expression_parse (inCompiler) ;
+  } break ;
+  case 12: {
+  } break ;
+  default:
+    break ;
+  }
   inCompiler->resetTemplateString () ;
 }
 
@@ -6444,29 +7163,32 @@ void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_de
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i10_ (GALGAS_gtlInstruction & outArgument_instruction,
                                                                                                         C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
   outArgument_instruction.drop () ; // Release 'out' argument
-  nt_gtl_5F_step_5F_do_5F_command_ (outArgument_instruction, inCompiler) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_unlet) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 371)) ;
+  GALGAS_gtlVarPath var_variable_7878 ;
+  nt_gtl_5F_variable_ (var_variable_7878, inCompiler) ;
+  outArgument_instruction = GALGAS_gtlUnletInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 374)), GALGAS_string::makeEmptyString (), var_variable_7878  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 373)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i10_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
-  nt_gtl_5F_step_5F_do_5F_command_parse (inCompiler) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_unlet) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 371)) ;
+  nt_gtl_5F_variable_parse (inCompiler) ;
   inCompiler->resetTemplateString () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i11_ (GALGAS_gtlInstruction & outArgument_instruction,
-                                                                                                          C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
+void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i11_ (GALGAS_gtlInstruction & outArgument_instruction,
+                                                                                                        C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
   outArgument_instruction.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_variables) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 349)) ;
-  outArgument_instruction = GALGAS_gtlVariablesInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 351)), GALGAS_string::makeEmptyString (), GALGAS_bool (true)  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 350)) ;
+  nt_gtl_5F_step_5F_do_5F_command_ (outArgument_instruction, inCompiler) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i11_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_variables) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 349)) ;
+void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_debugger_5F_command_i11_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
+  nt_gtl_5F_step_5F_do_5F_command_parse (inCompiler) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -6475,17 +7197,14 @@ void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_st
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i12_ (GALGAS_gtlInstruction & outArgument_instruction,
                                                                                                           C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
   outArgument_instruction.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_display) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 361)) ;
-  GALGAS_gtlVarPath var_variable_7803 ;
-  nt_gtl_5F_variable_ (var_variable_7803, inCompiler) ;
-  outArgument_instruction = GALGAS_gtlDisplayStatementInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 364)), GALGAS_string::makeEmptyString (), var_variable_7803  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 363)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_variables) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 391)) ;
+  outArgument_instruction = GALGAS_gtlVariablesInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 393)), GALGAS_string::makeEmptyString (), GALGAS_bool (true)  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 392)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i12_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_display) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 361)) ;
-  nt_gtl_5F_variable_parse (inCompiler) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_variables) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 391)) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -6494,17 +7213,17 @@ void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_st
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i13_ (GALGAS_gtlInstruction & outArgument_instruction,
                                                                                                           C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
   outArgument_instruction.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_print) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 374)) ;
-  GALGAS_gtlExpression var_expression_8096 ;
-  nt_gtl_5F_expression_ (var_expression_8096, inCompiler) ;
-  outArgument_instruction = GALGAS_gtlPrintStatementInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 377)), GALGAS_string::makeEmptyString (), GALGAS_bool (true), var_expression_8096  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 376)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_display) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 403)) ;
+  GALGAS_gtlVarPath var_variable_8570 ;
+  nt_gtl_5F_variable_ (var_variable_8570, inCompiler) ;
+  outArgument_instruction = GALGAS_gtlDisplayStatementInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 406)), GALGAS_string::makeEmptyString (), var_variable_8570  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 405)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i13_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_print) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 374)) ;
-  nt_gtl_5F_expression_parse (inCompiler) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_display) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 403)) ;
+  nt_gtl_5F_variable_parse (inCompiler) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -6513,39 +7232,17 @@ void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_st
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i14_ (GALGAS_gtlInstruction & outArgument_instruction,
                                                                                                           C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
   outArgument_instruction.drop () ; // Release 'out' argument
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_list) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 388)) ;
-  GALGAS_uint var_window_8364 = GALGAS_uint ((uint32_t) 5U) ;
-  switch (select_gtl_5F_debugger_5F_parser_6 (inCompiler)) {
-  case 1: {
-    GALGAS_lbigint var_num_8432 = inCompiler->synthetizedAttribute_intValue () ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 391)) ;
-    var_window_8364 = var_num_8432.getter_bigint (SOURCE_FILE ("gtl_debugger_parser.galgas", 392)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 392)) ;
-    const enumGalgasBool test_0 = GALGAS_bool (kIsStrictSup, var_window_8364.objectCompare (GALGAS_uint ((uint32_t) 10U))).boolEnum () ;
-    if (kBoolTrue == test_0) {
-      var_window_8364 = GALGAS_uint ((uint32_t) 10U) ;
-    }
-  } break ;
-  case 2: {
-  } break ;
-  default:
-    break ;
-  }
-  outArgument_instruction = GALGAS_gtlListInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 397)), GALGAS_string::makeEmptyString (), var_window_8364  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 396)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_print) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 416)) ;
+  GALGAS_gtlExpression var_expression_8863 ;
+  nt_gtl_5F_expression_ (var_expression_8863, inCompiler) ;
+  outArgument_instruction = GALGAS_gtlPrintStatementInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 419)), GALGAS_string::makeEmptyString (), GALGAS_bool (true), var_expression_8863  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 418)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i14_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_list) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 388)) ;
-  switch (select_gtl_5F_debugger_5F_parser_6 (inCompiler)) {
-  case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 391)) ;
-  } break ;
-  case 2: {
-  } break ;
-  default:
-    break ;
-  }
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_print) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 416)) ;
+  nt_gtl_5F_expression_parse (inCompiler) ;
   inCompiler->resetTemplateString () ;
 }
 
@@ -6554,63 +7251,104 @@ void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_st
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i15_ (GALGAS_gtlInstruction & outArgument_instruction,
                                                                                                           C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
   outArgument_instruction.drop () ; // Release 'out' argument
-  GALGAS_gtlThenElsifStatementList var_thenElsifList_8918 = GALGAS_gtlThenElsifStatementList::constructor_emptyList (SOURCE_FILE ("gtl_debugger_parser.galgas", 409)) ;
-  GALGAS_gtlInstructionList var_elseList_8962 = GALGAS_gtlInstructionList::constructor_emptyList (SOURCE_FILE ("gtl_debugger_parser.galgas", 410)) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_if) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 412)) ;
-  GALGAS_location var_where_9001 = GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 412)) ;
-  bool repeatFlag_0 = true ;
-  while (repeatFlag_0) {
-    GALGAS_gtlExpression var_condition_9065 ;
-    nt_gtl_5F_expression_ (var_condition_9065, inCompiler) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_then) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 415)) ;
-    GALGAS_gtlInstructionList var_instructionList_9144 ;
-    nt_gtl_5F_step_5F_do_5F_command_5F_list_ (var_instructionList_9144, inCompiler) ;
-    var_thenElsifList_8918.addAssign_operation (var_condition_9065, var_instructionList_9144  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 418)) ;
-    switch (select_gtl_5F_debugger_5F_parser_7 (inCompiler)) {
-    case 2: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_elsif) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 420)) ;
-    } break ;
-    default:
-      repeatFlag_0 = false ;
-      break ;
-    }
-  }
-  switch (select_gtl_5F_debugger_5F_parser_8 (inCompiler)) {
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_list) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 430)) ;
+  GALGAS_uint var_window_9131 = GALGAS_uint ((uint32_t) 5U) ;
+  switch (select_gtl_5F_debugger_5F_parser_10 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_else) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 424)) ;
-    nt_gtl_5F_step_5F_do_5F_command_5F_list_ (var_elseList_8962, inCompiler) ;
+    GALGAS_lbigint var_num_9199 = inCompiler->synthetizedAttribute_intValue () ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 433)) ;
+    var_window_9131 = var_num_9199.getter_bigint (SOURCE_FILE ("gtl_debugger_parser.galgas", 434)).getter_uint (inCompiler COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 434)) ;
+    const enumGalgasBool test_0 = GALGAS_bool (kIsStrictSup, var_window_9131.objectCompare (GALGAS_uint ((uint32_t) 10U))).boolEnum () ;
+    if (kBoolTrue == test_0) {
+      var_window_9131 = GALGAS_uint ((uint32_t) 10U) ;
+    }
   } break ;
   case 2: {
   } break ;
   default:
     break ;
   }
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_end) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 428)) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_if) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 429)) ;
-  outArgument_instruction = GALGAS_gtlIfStatementInstruction::constructor_new (var_where_9001, function_signature (var_where_9001, inCompiler COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 432)), var_thenElsifList_8918, var_elseList_8962  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 431)) ;
+  outArgument_instruction = GALGAS_gtlListInstruction::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 439)), GALGAS_string::makeEmptyString (), var_window_9131  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 438)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i15_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_if) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 412)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_list) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 430)) ;
+  switch (select_gtl_5F_debugger_5F_parser_10 (inCompiler)) {
+  case 1: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_signed_5F_literal_5F_integer_5F_bigint) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 433)) ;
+  } break ;
+  case 2: {
+  } break ;
+  default:
+    break ;
+  }
+  inCompiler->resetTemplateString () ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i16_ (GALGAS_gtlInstruction & outArgument_instruction,
+                                                                                                          C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
+  outArgument_instruction.drop () ; // Release 'out' argument
+  GALGAS_gtlThenElsifStatementList var_thenElsifList_9685 = GALGAS_gtlThenElsifStatementList::constructor_emptyList (SOURCE_FILE ("gtl_debugger_parser.galgas", 451)) ;
+  GALGAS_gtlInstructionList var_elseList_9729 = GALGAS_gtlInstructionList::constructor_emptyList (SOURCE_FILE ("gtl_debugger_parser.galgas", 452)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_if) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 454)) ;
+  GALGAS_location var_where_9768 = GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 454)) ;
   bool repeatFlag_0 = true ;
   while (repeatFlag_0) {
-    nt_gtl_5F_expression_parse (inCompiler) ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_then) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 415)) ;
-    nt_gtl_5F_step_5F_do_5F_command_5F_list_parse (inCompiler) ;
-    switch (select_gtl_5F_debugger_5F_parser_7 (inCompiler)) {
+    GALGAS_gtlExpression var_condition_9832 ;
+    nt_gtl_5F_expression_ (var_condition_9832, inCompiler) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_then) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 457)) ;
+    GALGAS_gtlInstructionList var_instructionList_9911 ;
+    nt_gtl_5F_step_5F_do_5F_command_5F_list_ (var_instructionList_9911, inCompiler) ;
+    var_thenElsifList_9685.addAssign_operation (var_condition_9832, var_instructionList_9911  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 460)) ;
+    switch (select_gtl_5F_debugger_5F_parser_11 (inCompiler)) {
     case 2: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_elsif) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 420)) ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_elsif) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 462)) ;
     } break ;
     default:
       repeatFlag_0 = false ;
       break ;
     }
   }
-  switch (select_gtl_5F_debugger_5F_parser_8 (inCompiler)) {
+  switch (select_gtl_5F_debugger_5F_parser_12 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_else) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 424)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_else) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 466)) ;
+    nt_gtl_5F_step_5F_do_5F_command_5F_list_ (var_elseList_9729, inCompiler) ;
+  } break ;
+  case 2: {
+  } break ;
+  default:
+    break ;
+  }
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_end) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 470)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_if) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 471)) ;
+  outArgument_instruction = GALGAS_gtlIfStatementInstruction::constructor_new (var_where_9768, function_signature (var_where_9768, inCompiler COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 474)), var_thenElsifList_9685, var_elseList_9729  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 473)) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_i16_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_if) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 454)) ;
+  bool repeatFlag_0 = true ;
+  while (repeatFlag_0) {
+    nt_gtl_5F_expression_parse (inCompiler) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_then) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 457)) ;
+    nt_gtl_5F_step_5F_do_5F_command_5F_list_parse (inCompiler) ;
+    switch (select_gtl_5F_debugger_5F_parser_11 (inCompiler)) {
+    case 2: {
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_elsif) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 462)) ;
+    } break ;
+    default:
+      repeatFlag_0 = false ;
+      break ;
+    }
+  }
+  switch (select_gtl_5F_debugger_5F_parser_12 (inCompiler)) {
+  case 1: {
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_else) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 466)) ;
     nt_gtl_5F_step_5F_do_5F_command_5F_list_parse (inCompiler) ;
   } break ;
   case 2: {
@@ -6618,24 +7356,24 @@ void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_st
   default:
     break ;
   }
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_end) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 428)) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_if) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 429)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_end) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 470)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_debugger_5F_scanner::kToken_if) COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 471)) ;
   inCompiler->resetTemplateString () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_5F_list_i16_ (GALGAS_gtlInstructionList & outArgument_instructionList,
+void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_5F_list_i17_ (GALGAS_gtlInstructionList & outArgument_instructionList,
                                                                                                                   C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
   outArgument_instructionList.drop () ; // Release 'out' argument
-  outArgument_instructionList = GALGAS_gtlInstructionList::constructor_emptyList (SOURCE_FILE ("gtl_debugger_parser.galgas", 442)) ;
+  outArgument_instructionList = GALGAS_gtlInstructionList::constructor_emptyList (SOURCE_FILE ("gtl_debugger_parser.galgas", 484)) ;
   bool repeatFlag_0 = true ;
   while (repeatFlag_0) {
-    switch (select_gtl_5F_debugger_5F_parser_9 (inCompiler)) {
+    switch (select_gtl_5F_debugger_5F_parser_13 (inCompiler)) {
     case 2: {
-      GALGAS_gtlInstruction var_instruction_9853 ;
-      nt_gtl_5F_step_5F_do_5F_command_ (var_instruction_9853, inCompiler) ;
-      outArgument_instructionList.addAssign_operation (var_instruction_9853  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 447)) ;
+      GALGAS_gtlInstruction var_instruction_10620 ;
+      nt_gtl_5F_step_5F_do_5F_command_ (var_instruction_10620, inCompiler) ;
+      outArgument_instructionList.addAssign_operation (var_instruction_10620  COMMA_SOURCE_FILE ("gtl_debugger_parser.galgas", 489)) ;
     } break ;
     default:
       repeatFlag_0 = false ;
@@ -6646,10 +7384,10 @@ void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_st
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_5F_list_i16_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
+void cParser_gtl_5F_debugger_5F_parser::rule_gtl_5F_debugger_5F_parser_gtl_5F_step_5F_do_5F_command_5F_list_i17_parse (C_Lexique_gtl_5F_debugger_5F_scanner * inCompiler) {
   bool repeatFlag_0 = true ;
   while (repeatFlag_0) {
-    switch (select_gtl_5F_debugger_5F_parser_9 (inCompiler)) {
+    switch (select_gtl_5F_debugger_5F_parser_13 (inCompiler)) {
     case 2: {
       nt_gtl_5F_step_5F_do_5F_command_parse (inCompiler) ;
     } break ;
@@ -13893,947 +14631,6 @@ GALGAS_uint_36__34_AttributeMinMax GALGAS_uint_36__34_AttributeMinMax::extractOb
       result = *p ;
     }else{
       inCompiler->castError ("uint64AttributeMinMax", p->dynamicTypeDescriptor () COMMA_THERE) ;
-    }  
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typeComparisonResult cPtr_sint_33__32_AttributeMinMax::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
-  typeComparisonResult result = kOperandEqual ;
-  const cPtr_sint_33__32_AttributeMinMax * p = (const cPtr_sint_33__32_AttributeMinMax *) inOperandPtr ;
-  macroValidSharedObject (p, cPtr_sint_33__32_AttributeMinMax) ;
-  if (kOperandEqual == result) {
-    result = mAttribute_location.objectCompare (p->mAttribute_location) ;
-  }
-  if (kOperandEqual == result) {
-    result = mAttribute_min.objectCompare (p->mAttribute_min) ;
-  }
-  if (kOperandEqual == result) {
-    result = mAttribute_max.objectCompare (p->mAttribute_max) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-
-typeComparisonResult GALGAS_sint_33__32_AttributeMinMax::objectCompare (const GALGAS_sint_33__32_AttributeMinMax & inOperand) const {
-  typeComparisonResult result = kOperandNotValid ;
-  if (isValid () && inOperand.isValid ()) {
-    const int32_t mySlot = mObjectPtr->classDescriptor ()->mSlotID ;
-    const int32_t operandSlot = inOperand.mObjectPtr->classDescriptor ()->mSlotID ;
-    if (mySlot < operandSlot) {
-      result = kFirstOperandLowerThanSecond ;
-    }else if (mySlot > operandSlot) {
-      result = kFirstOperandGreaterThanSecond ;
-    }else{
-      result = mObjectPtr->dynamicObjectCompare (inOperand.mObjectPtr) ;
-    }
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_sint_33__32_AttributeMinMax::GALGAS_sint_33__32_AttributeMinMax (void) :
-GALGAS_attributeRange () {
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_sint_33__32_AttributeMinMax GALGAS_sint_33__32_AttributeMinMax::constructor_default (LOCATION_ARGS) {
-  return GALGAS_sint_33__32_AttributeMinMax::constructor_new (GALGAS_location::constructor_nowhere (HERE),
-                                                              GALGAS_sint::constructor_default (HERE),
-                                                              GALGAS_sint::constructor_default (HERE)
-                                                              COMMA_THERE) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_sint_33__32_AttributeMinMax::GALGAS_sint_33__32_AttributeMinMax (const cPtr_sint_33__32_AttributeMinMax * inSourcePtr) :
-GALGAS_attributeRange (inSourcePtr) {
-  macroNullOrValidSharedObject (inSourcePtr, cPtr_sint_33__32_AttributeMinMax) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_sint_33__32_AttributeMinMax GALGAS_sint_33__32_AttributeMinMax::constructor_new (const GALGAS_location & inAttribute_location,
-                                                                                        const GALGAS_sint & inAttribute_min,
-                                                                                        const GALGAS_sint & inAttribute_max
-                                                                                        COMMA_LOCATION_ARGS) {
-  GALGAS_sint_33__32_AttributeMinMax result ;
-  if (inAttribute_location.isValid () && inAttribute_min.isValid () && inAttribute_max.isValid ()) {
-    macroMyNew (result.mObjectPtr, cPtr_sint_33__32_AttributeMinMax (inAttribute_location, inAttribute_min, inAttribute_max COMMA_THERE)) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_sint GALGAS_sint_33__32_AttributeMinMax::getter_min (UNUSED_LOCATION_ARGS) const {
-  GALGAS_sint result ;
-  if (NULL != mObjectPtr) {
-    const cPtr_sint_33__32_AttributeMinMax * p = (const cPtr_sint_33__32_AttributeMinMax *) mObjectPtr ;
-    macroValidSharedObject (p, cPtr_sint_33__32_AttributeMinMax) ;
-    result = p->mAttribute_min ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_sint cPtr_sint_33__32_AttributeMinMax::getter_min (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_min ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_sint GALGAS_sint_33__32_AttributeMinMax::getter_max (UNUSED_LOCATION_ARGS) const {
-  GALGAS_sint result ;
-  if (NULL != mObjectPtr) {
-    const cPtr_sint_33__32_AttributeMinMax * p = (const cPtr_sint_33__32_AttributeMinMax *) mObjectPtr ;
-    macroValidSharedObject (p, cPtr_sint_33__32_AttributeMinMax) ;
-    result = p->mAttribute_max ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_sint cPtr_sint_33__32_AttributeMinMax::getter_max (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_max ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                   Pointer class for @sint32AttributeMinMax class                                    *
-//---------------------------------------------------------------------------------------------------------------------*
-
-cPtr_sint_33__32_AttributeMinMax::cPtr_sint_33__32_AttributeMinMax (const GALGAS_location & in_location,
-                                                                    const GALGAS_sint & in_min,
-                                                                    const GALGAS_sint & in_max
-                                                                    COMMA_LOCATION_ARGS) :
-cPtr_attributeRange (in_location COMMA_THERE),
-mAttribute_min (in_min),
-mAttribute_max (in_max) {
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-const C_galgas_type_descriptor * cPtr_sint_33__32_AttributeMinMax::classDescriptor (void) const {
-  return & kTypeDescriptor_GALGAS_sint_33__32_AttributeMinMax ;
-}
-
-void cPtr_sint_33__32_AttributeMinMax::description (C_String & ioString,
-                                                    const int32_t inIndentation) const {
-  ioString << "[@sint32AttributeMinMax:" ;
-  mAttribute_location.description (ioString, inIndentation+1) ;
-  ioString << ", " ;
-  mAttribute_min.description (ioString, inIndentation+1) ;
-  ioString << ", " ;
-  mAttribute_max.description (ioString, inIndentation+1) ;
-  ioString << "]" ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-acPtr_class * cPtr_sint_33__32_AttributeMinMax::duplicate (LOCATION_ARGS) const {
-  acPtr_class * ptr = NULL ;
-  macroMyNew (ptr, cPtr_sint_33__32_AttributeMinMax (mAttribute_location, mAttribute_min, mAttribute_max COMMA_THERE)) ;
-  return ptr ;
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                             @sint32AttributeMinMax type                                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-const C_galgas_type_descriptor
-kTypeDescriptor_GALGAS_sint_33__32_AttributeMinMax ("sint32AttributeMinMax",
-                                                    & kTypeDescriptor_GALGAS_attributeRange) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-const C_galgas_type_descriptor * GALGAS_sint_33__32_AttributeMinMax::staticTypeDescriptor (void) const {
-  return & kTypeDescriptor_GALGAS_sint_33__32_AttributeMinMax ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-AC_GALGAS_root * GALGAS_sint_33__32_AttributeMinMax::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
-  if (isValid ()) {
-    macroMyNew (result, GALGAS_sint_33__32_AttributeMinMax (*this)) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_sint_33__32_AttributeMinMax GALGAS_sint_33__32_AttributeMinMax::extractObject (const GALGAS_object & inObject,
-                                                                                      C_Compiler * inCompiler
-                                                                                      COMMA_LOCATION_ARGS) {
-  GALGAS_sint_33__32_AttributeMinMax result ;
-  const GALGAS_sint_33__32_AttributeMinMax * p = (const GALGAS_sint_33__32_AttributeMinMax *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_sint_33__32_AttributeMinMax *> (p)) {
-      result = *p ;
-    }else{
-      inCompiler->castError ("sint32AttributeMinMax", p->dynamicTypeDescriptor () COMMA_THERE) ;
-    }  
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typeComparisonResult cPtr_sint_36__34_AttributeMinMax::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
-  typeComparisonResult result = kOperandEqual ;
-  const cPtr_sint_36__34_AttributeMinMax * p = (const cPtr_sint_36__34_AttributeMinMax *) inOperandPtr ;
-  macroValidSharedObject (p, cPtr_sint_36__34_AttributeMinMax) ;
-  if (kOperandEqual == result) {
-    result = mAttribute_location.objectCompare (p->mAttribute_location) ;
-  }
-  if (kOperandEqual == result) {
-    result = mAttribute_min.objectCompare (p->mAttribute_min) ;
-  }
-  if (kOperandEqual == result) {
-    result = mAttribute_max.objectCompare (p->mAttribute_max) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-
-typeComparisonResult GALGAS_sint_36__34_AttributeMinMax::objectCompare (const GALGAS_sint_36__34_AttributeMinMax & inOperand) const {
-  typeComparisonResult result = kOperandNotValid ;
-  if (isValid () && inOperand.isValid ()) {
-    const int32_t mySlot = mObjectPtr->classDescriptor ()->mSlotID ;
-    const int32_t operandSlot = inOperand.mObjectPtr->classDescriptor ()->mSlotID ;
-    if (mySlot < operandSlot) {
-      result = kFirstOperandLowerThanSecond ;
-    }else if (mySlot > operandSlot) {
-      result = kFirstOperandGreaterThanSecond ;
-    }else{
-      result = mObjectPtr->dynamicObjectCompare (inOperand.mObjectPtr) ;
-    }
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_sint_36__34_AttributeMinMax::GALGAS_sint_36__34_AttributeMinMax (void) :
-GALGAS_attributeRange () {
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_sint_36__34_AttributeMinMax GALGAS_sint_36__34_AttributeMinMax::constructor_default (LOCATION_ARGS) {
-  return GALGAS_sint_36__34_AttributeMinMax::constructor_new (GALGAS_location::constructor_nowhere (HERE),
-                                                              GALGAS_sint_36__34_::constructor_default (HERE),
-                                                              GALGAS_sint_36__34_::constructor_default (HERE)
-                                                              COMMA_THERE) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_sint_36__34_AttributeMinMax::GALGAS_sint_36__34_AttributeMinMax (const cPtr_sint_36__34_AttributeMinMax * inSourcePtr) :
-GALGAS_attributeRange (inSourcePtr) {
-  macroNullOrValidSharedObject (inSourcePtr, cPtr_sint_36__34_AttributeMinMax) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_sint_36__34_AttributeMinMax GALGAS_sint_36__34_AttributeMinMax::constructor_new (const GALGAS_location & inAttribute_location,
-                                                                                        const GALGAS_sint_36__34_ & inAttribute_min,
-                                                                                        const GALGAS_sint_36__34_ & inAttribute_max
-                                                                                        COMMA_LOCATION_ARGS) {
-  GALGAS_sint_36__34_AttributeMinMax result ;
-  if (inAttribute_location.isValid () && inAttribute_min.isValid () && inAttribute_max.isValid ()) {
-    macroMyNew (result.mObjectPtr, cPtr_sint_36__34_AttributeMinMax (inAttribute_location, inAttribute_min, inAttribute_max COMMA_THERE)) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_sint_36__34_ GALGAS_sint_36__34_AttributeMinMax::getter_min (UNUSED_LOCATION_ARGS) const {
-  GALGAS_sint_36__34_ result ;
-  if (NULL != mObjectPtr) {
-    const cPtr_sint_36__34_AttributeMinMax * p = (const cPtr_sint_36__34_AttributeMinMax *) mObjectPtr ;
-    macroValidSharedObject (p, cPtr_sint_36__34_AttributeMinMax) ;
-    result = p->mAttribute_min ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_sint_36__34_ cPtr_sint_36__34_AttributeMinMax::getter_min (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_min ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_sint_36__34_ GALGAS_sint_36__34_AttributeMinMax::getter_max (UNUSED_LOCATION_ARGS) const {
-  GALGAS_sint_36__34_ result ;
-  if (NULL != mObjectPtr) {
-    const cPtr_sint_36__34_AttributeMinMax * p = (const cPtr_sint_36__34_AttributeMinMax *) mObjectPtr ;
-    macroValidSharedObject (p, cPtr_sint_36__34_AttributeMinMax) ;
-    result = p->mAttribute_max ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_sint_36__34_ cPtr_sint_36__34_AttributeMinMax::getter_max (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_max ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                   Pointer class for @sint64AttributeMinMax class                                    *
-//---------------------------------------------------------------------------------------------------------------------*
-
-cPtr_sint_36__34_AttributeMinMax::cPtr_sint_36__34_AttributeMinMax (const GALGAS_location & in_location,
-                                                                    const GALGAS_sint_36__34_ & in_min,
-                                                                    const GALGAS_sint_36__34_ & in_max
-                                                                    COMMA_LOCATION_ARGS) :
-cPtr_attributeRange (in_location COMMA_THERE),
-mAttribute_min (in_min),
-mAttribute_max (in_max) {
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-const C_galgas_type_descriptor * cPtr_sint_36__34_AttributeMinMax::classDescriptor (void) const {
-  return & kTypeDescriptor_GALGAS_sint_36__34_AttributeMinMax ;
-}
-
-void cPtr_sint_36__34_AttributeMinMax::description (C_String & ioString,
-                                                    const int32_t inIndentation) const {
-  ioString << "[@sint64AttributeMinMax:" ;
-  mAttribute_location.description (ioString, inIndentation+1) ;
-  ioString << ", " ;
-  mAttribute_min.description (ioString, inIndentation+1) ;
-  ioString << ", " ;
-  mAttribute_max.description (ioString, inIndentation+1) ;
-  ioString << "]" ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-acPtr_class * cPtr_sint_36__34_AttributeMinMax::duplicate (LOCATION_ARGS) const {
-  acPtr_class * ptr = NULL ;
-  macroMyNew (ptr, cPtr_sint_36__34_AttributeMinMax (mAttribute_location, mAttribute_min, mAttribute_max COMMA_THERE)) ;
-  return ptr ;
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                             @sint64AttributeMinMax type                                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-const C_galgas_type_descriptor
-kTypeDescriptor_GALGAS_sint_36__34_AttributeMinMax ("sint64AttributeMinMax",
-                                                    & kTypeDescriptor_GALGAS_attributeRange) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-const C_galgas_type_descriptor * GALGAS_sint_36__34_AttributeMinMax::staticTypeDescriptor (void) const {
-  return & kTypeDescriptor_GALGAS_sint_36__34_AttributeMinMax ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-AC_GALGAS_root * GALGAS_sint_36__34_AttributeMinMax::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
-  if (isValid ()) {
-    macroMyNew (result, GALGAS_sint_36__34_AttributeMinMax (*this)) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_sint_36__34_AttributeMinMax GALGAS_sint_36__34_AttributeMinMax::extractObject (const GALGAS_object & inObject,
-                                                                                      C_Compiler * inCompiler
-                                                                                      COMMA_LOCATION_ARGS) {
-  GALGAS_sint_36__34_AttributeMinMax result ;
-  const GALGAS_sint_36__34_AttributeMinMax * p = (const GALGAS_sint_36__34_AttributeMinMax *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_sint_36__34_AttributeMinMax *> (p)) {
-      result = *p ;
-    }else{
-      inCompiler->castError ("sint64AttributeMinMax", p->dynamicTypeDescriptor () COMMA_THERE) ;
-    }  
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typeComparisonResult cPtr_floatAttributeMinMax::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
-  typeComparisonResult result = kOperandEqual ;
-  const cPtr_floatAttributeMinMax * p = (const cPtr_floatAttributeMinMax *) inOperandPtr ;
-  macroValidSharedObject (p, cPtr_floatAttributeMinMax) ;
-  if (kOperandEqual == result) {
-    result = mAttribute_location.objectCompare (p->mAttribute_location) ;
-  }
-  if (kOperandEqual == result) {
-    result = mAttribute_min.objectCompare (p->mAttribute_min) ;
-  }
-  if (kOperandEqual == result) {
-    result = mAttribute_max.objectCompare (p->mAttribute_max) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-
-typeComparisonResult GALGAS_floatAttributeMinMax::objectCompare (const GALGAS_floatAttributeMinMax & inOperand) const {
-  typeComparisonResult result = kOperandNotValid ;
-  if (isValid () && inOperand.isValid ()) {
-    const int32_t mySlot = mObjectPtr->classDescriptor ()->mSlotID ;
-    const int32_t operandSlot = inOperand.mObjectPtr->classDescriptor ()->mSlotID ;
-    if (mySlot < operandSlot) {
-      result = kFirstOperandLowerThanSecond ;
-    }else if (mySlot > operandSlot) {
-      result = kFirstOperandGreaterThanSecond ;
-    }else{
-      result = mObjectPtr->dynamicObjectCompare (inOperand.mObjectPtr) ;
-    }
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_floatAttributeMinMax::GALGAS_floatAttributeMinMax (void) :
-GALGAS_attributeRange () {
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_floatAttributeMinMax GALGAS_floatAttributeMinMax::constructor_default (LOCATION_ARGS) {
-  return GALGAS_floatAttributeMinMax::constructor_new (GALGAS_location::constructor_nowhere (HERE),
-                                                       GALGAS_double::constructor_default (HERE),
-                                                       GALGAS_double::constructor_default (HERE)
-                                                       COMMA_THERE) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_floatAttributeMinMax::GALGAS_floatAttributeMinMax (const cPtr_floatAttributeMinMax * inSourcePtr) :
-GALGAS_attributeRange (inSourcePtr) {
-  macroNullOrValidSharedObject (inSourcePtr, cPtr_floatAttributeMinMax) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_floatAttributeMinMax GALGAS_floatAttributeMinMax::constructor_new (const GALGAS_location & inAttribute_location,
-                                                                          const GALGAS_double & inAttribute_min,
-                                                                          const GALGAS_double & inAttribute_max
-                                                                          COMMA_LOCATION_ARGS) {
-  GALGAS_floatAttributeMinMax result ;
-  if (inAttribute_location.isValid () && inAttribute_min.isValid () && inAttribute_max.isValid ()) {
-    macroMyNew (result.mObjectPtr, cPtr_floatAttributeMinMax (inAttribute_location, inAttribute_min, inAttribute_max COMMA_THERE)) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_double GALGAS_floatAttributeMinMax::getter_min (UNUSED_LOCATION_ARGS) const {
-  GALGAS_double result ;
-  if (NULL != mObjectPtr) {
-    const cPtr_floatAttributeMinMax * p = (const cPtr_floatAttributeMinMax *) mObjectPtr ;
-    macroValidSharedObject (p, cPtr_floatAttributeMinMax) ;
-    result = p->mAttribute_min ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_double cPtr_floatAttributeMinMax::getter_min (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_min ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_double GALGAS_floatAttributeMinMax::getter_max (UNUSED_LOCATION_ARGS) const {
-  GALGAS_double result ;
-  if (NULL != mObjectPtr) {
-    const cPtr_floatAttributeMinMax * p = (const cPtr_floatAttributeMinMax *) mObjectPtr ;
-    macroValidSharedObject (p, cPtr_floatAttributeMinMax) ;
-    result = p->mAttribute_max ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_double cPtr_floatAttributeMinMax::getter_max (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_max ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                    Pointer class for @floatAttributeMinMax class                                    *
-//---------------------------------------------------------------------------------------------------------------------*
-
-cPtr_floatAttributeMinMax::cPtr_floatAttributeMinMax (const GALGAS_location & in_location,
-                                                      const GALGAS_double & in_min,
-                                                      const GALGAS_double & in_max
-                                                      COMMA_LOCATION_ARGS) :
-cPtr_attributeRange (in_location COMMA_THERE),
-mAttribute_min (in_min),
-mAttribute_max (in_max) {
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-const C_galgas_type_descriptor * cPtr_floatAttributeMinMax::classDescriptor (void) const {
-  return & kTypeDescriptor_GALGAS_floatAttributeMinMax ;
-}
-
-void cPtr_floatAttributeMinMax::description (C_String & ioString,
-                                             const int32_t inIndentation) const {
-  ioString << "[@floatAttributeMinMax:" ;
-  mAttribute_location.description (ioString, inIndentation+1) ;
-  ioString << ", " ;
-  mAttribute_min.description (ioString, inIndentation+1) ;
-  ioString << ", " ;
-  mAttribute_max.description (ioString, inIndentation+1) ;
-  ioString << "]" ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-acPtr_class * cPtr_floatAttributeMinMax::duplicate (LOCATION_ARGS) const {
-  acPtr_class * ptr = NULL ;
-  macroMyNew (ptr, cPtr_floatAttributeMinMax (mAttribute_location, mAttribute_min, mAttribute_max COMMA_THERE)) ;
-  return ptr ;
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                             @floatAttributeMinMax type                                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-const C_galgas_type_descriptor
-kTypeDescriptor_GALGAS_floatAttributeMinMax ("floatAttributeMinMax",
-                                             & kTypeDescriptor_GALGAS_attributeRange) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-const C_galgas_type_descriptor * GALGAS_floatAttributeMinMax::staticTypeDescriptor (void) const {
-  return & kTypeDescriptor_GALGAS_floatAttributeMinMax ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-AC_GALGAS_root * GALGAS_floatAttributeMinMax::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
-  if (isValid ()) {
-    macroMyNew (result, GALGAS_floatAttributeMinMax (*this)) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_floatAttributeMinMax GALGAS_floatAttributeMinMax::extractObject (const GALGAS_object & inObject,
-                                                                        C_Compiler * inCompiler
-                                                                        COMMA_LOCATION_ARGS) {
-  GALGAS_floatAttributeMinMax result ;
-  const GALGAS_floatAttributeMinMax * p = (const GALGAS_floatAttributeMinMax *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_floatAttributeMinMax *> (p)) {
-      result = *p ;
-    }else{
-      inCompiler->castError ("floatAttributeMinMax", p->dynamicTypeDescriptor () COMMA_THERE) ;
-    }  
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                      Class for element of '@locationList' list                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cCollectionElement_locationList : public cCollectionElement {
-  public : GALGAS_locationList_2D_element mObject ;
-
-//--- Constructor
-  public : cCollectionElement_locationList (const GALGAS_location & in_location
-                                            COMMA_LOCATION_ARGS) ;
-
-//--- Virtual method for comparing elements
-  public : virtual typeComparisonResult compare (const cCollectionElement * inOperand) const ;
-
-//--- Virtual method that checks that all attributes are valid
-  public : virtual bool isValid (void) const ;
-
-//--- Virtual method that returns a copy of current object
-  public : virtual cCollectionElement * copy (void) ;
-
-//--- Description
-  public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-cCollectionElement_locationList::cCollectionElement_locationList (const GALGAS_location & in_location
-                                                                  COMMA_LOCATION_ARGS) :
-cCollectionElement (THERE),
-mObject (in_location) {
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-bool cCollectionElement_locationList::isValid (void) const {
-  return mObject.isValid () ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-cCollectionElement * cCollectionElement_locationList::copy (void) {
-  cCollectionElement * result = NULL ;
-  macroMyNew (result, cCollectionElement_locationList (mObject.mAttribute_location COMMA_HERE)) ;
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void cCollectionElement_locationList::description (C_String & ioString, const int32_t inIndentation) const {
-  ioString << "\n" ;
-  ioString.writeStringMultiple ("| ", inIndentation) ;
-  ioString << "location" ":" ;
-  mObject.mAttribute_location.description (ioString, inIndentation) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-typeComparisonResult cCollectionElement_locationList::compare (const cCollectionElement * inOperand) const {
-  cCollectionElement_locationList * operand = (cCollectionElement_locationList *) inOperand ;
-  macroValidSharedObject (operand, cCollectionElement_locationList) ;
-  return mObject.objectCompare (operand->mObject) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_locationList::GALGAS_locationList (void) :
-AC_GALGAS_list () {
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_locationList::GALGAS_locationList (cSharedList * inSharedListPtr) :
-AC_GALGAS_list (inSharedListPtr) {
-  if (NULL == inSharedListPtr) {
-    createNewEmptyList (HERE) ;
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_locationList GALGAS_locationList::constructor_emptyList (LOCATION_ARGS) {
-  GALGAS_locationList result ;
-  result.createNewEmptyList (THERE) ;
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_locationList GALGAS_locationList::constructor_listWithValue (const GALGAS_location & inOperand0
-                                                                    COMMA_LOCATION_ARGS) {
-  GALGAS_locationList result ;
-  if (inOperand0.isValid ()) {
-    result.createNewEmptyList (THERE) ;
-    capCollectionElement attributes ;
-    GALGAS_locationList::makeAttributesFromObjects (attributes, inOperand0 COMMA_THERE) ;
-    result.addObject (attributes) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void GALGAS_locationList::makeAttributesFromObjects (capCollectionElement & outAttributes,
-                                                     const GALGAS_location & in_location
-                                                     COMMA_LOCATION_ARGS) {
-  cCollectionElement_locationList * p = NULL ;
-  macroMyNew (p, cCollectionElement_locationList (in_location COMMA_THERE)) ;
-  outAttributes.setPointer (p) ;
-  macroDetachSharedObject (p) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void GALGAS_locationList::addAssign_operation (const GALGAS_location & inOperand0
-                                               COMMA_LOCATION_ARGS) {
-  if (isValid () && inOperand0.isValid ()) {
-    cCollectionElement * p = NULL ;
-    macroMyNew (p, cCollectionElement_locationList (inOperand0 COMMA_THERE)) ;
-    capCollectionElement attributes ;
-    attributes.setPointer (p) ;
-    macroDetachSharedObject (p) ;
-    addObject (attributes) ;
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void GALGAS_locationList::setter_insertAtIndex (const GALGAS_location inOperand0,
-                                                const GALGAS_uint inInsertionIndex,
-                                                C_Compiler * inCompiler
-                                                COMMA_LOCATION_ARGS) {
-  if (isValid () && inInsertionIndex.isValid () && inOperand0.isValid ()) {
-    cCollectionElement * p = NULL ;
-    macroMyNew (p, cCollectionElement_locationList (inOperand0 COMMA_THERE)) ;
-    capCollectionElement attributes ;
-    attributes.setPointer (p) ;
-    macroDetachSharedObject (p) ;
-    addObjectAtIndex (attributes, inInsertionIndex.uintValue (), inCompiler COMMA_THERE) ;
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void GALGAS_locationList::setter_removeAtIndex (GALGAS_location & outOperand0,
-                                                const GALGAS_uint inRemoveIndex,
-                                                C_Compiler * inCompiler
-                                                COMMA_LOCATION_ARGS) {
-  if (isValid () && inRemoveIndex.isValid ()) {
-    capCollectionElement attributes ;
-    removeObjectAtIndex (attributes, inRemoveIndex.uintValue (), inCompiler COMMA_THERE) ;
-    cCollectionElement_locationList * p = (cCollectionElement_locationList *) attributes.ptr () ;
-    if (NULL == p) {
-      outOperand0.drop () ;
-    }else{
-      macroValidSharedObject (p, cCollectionElement_locationList) ;
-      outOperand0 = p->mObject.mAttribute_location ;
-    }
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void GALGAS_locationList::setter_popFirst (GALGAS_location & outOperand0,
-                                           C_Compiler * inCompiler
-                                           COMMA_LOCATION_ARGS) {
-  capCollectionElement attributes ;
-  removeFirstObject (attributes, inCompiler COMMA_THERE) ;
-  cCollectionElement_locationList * p = (cCollectionElement_locationList *) attributes.ptr () ;
-  if (NULL == p) {
-    outOperand0.drop () ;
-  }else{
-    macroValidSharedObject (p, cCollectionElement_locationList) ;
-    outOperand0 = p->mObject.mAttribute_location ;
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void GALGAS_locationList::setter_popLast (GALGAS_location & outOperand0,
-                                          C_Compiler * inCompiler
-                                          COMMA_LOCATION_ARGS) {
-  capCollectionElement attributes ;
-  removeLastObject (attributes, inCompiler COMMA_THERE) ;
-  cCollectionElement_locationList * p = (cCollectionElement_locationList *) attributes.ptr () ;
-  if (NULL == p) {
-    outOperand0.drop () ;
-  }else{
-    macroValidSharedObject (p, cCollectionElement_locationList) ;
-    outOperand0 = p->mObject.mAttribute_location ;
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void GALGAS_locationList::method_first (GALGAS_location & outOperand0,
-                                        C_Compiler * inCompiler
-                                        COMMA_LOCATION_ARGS) const {
-  capCollectionElement attributes ;
-  readFirst (attributes, inCompiler COMMA_THERE) ;
-  cCollectionElement_locationList * p = (cCollectionElement_locationList *) attributes.ptr () ;
-  if (NULL == p) {
-    outOperand0.drop () ;
-  }else{
-    macroValidSharedObject (p, cCollectionElement_locationList) ;
-    outOperand0 = p->mObject.mAttribute_location ;
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void GALGAS_locationList::method_last (GALGAS_location & outOperand0,
-                                       C_Compiler * inCompiler
-                                       COMMA_LOCATION_ARGS) const {
-  capCollectionElement attributes ;
-  readLast (attributes, inCompiler COMMA_THERE) ;
-  cCollectionElement_locationList * p = (cCollectionElement_locationList *) attributes.ptr () ;
-  if (NULL == p) {
-    outOperand0.drop () ;
-  }else{
-    macroValidSharedObject (p, cCollectionElement_locationList) ;
-    outOperand0 = p->mObject.mAttribute_location ;
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_locationList GALGAS_locationList::add_operation (const GALGAS_locationList & inOperand,
-                                                        C_Compiler * /* inCompiler */
-                                                        COMMA_UNUSED_LOCATION_ARGS) const {
-  GALGAS_locationList result ;
-  if (isValid () && inOperand.isValid ()) {
-    result = *this ;
-    result.appendList (inOperand) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_locationList GALGAS_locationList::getter_subListWithRange (const GALGAS_range & inRange,
-                                                                  C_Compiler * inCompiler
-                                                                  COMMA_LOCATION_ARGS) const {
-  GALGAS_locationList result = GALGAS_locationList::constructor_emptyList (THERE) ;
-  subListWithRange (result, inRange, inCompiler COMMA_THERE) ;
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_locationList GALGAS_locationList::getter_subListFromIndex (const GALGAS_uint & inIndex,
-                                                                  C_Compiler * inCompiler
-                                                                  COMMA_LOCATION_ARGS) const {
-  GALGAS_locationList result = GALGAS_locationList::constructor_emptyList (THERE) ;
-  subListFromIndex (result, inIndex, inCompiler COMMA_THERE) ;
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_locationList GALGAS_locationList::getter_subListToIndex (const GALGAS_uint & inIndex,
-                                                                C_Compiler * inCompiler
-                                                                COMMA_LOCATION_ARGS) const {
-  GALGAS_locationList result = GALGAS_locationList::constructor_emptyList (THERE) ;
-  subListToIndex (result, inIndex, inCompiler COMMA_THERE) ;
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void GALGAS_locationList::plusAssign_operation (const GALGAS_locationList inOperand,
-                                                C_Compiler * /* inCompiler */
-                                                COMMA_UNUSED_LOCATION_ARGS) {
-  appendList (inOperand) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_location GALGAS_locationList::getter_locationAtIndex (const GALGAS_uint & inIndex,
-                                                             C_Compiler * inCompiler
-                                                             COMMA_LOCATION_ARGS) const {
-  capCollectionElement attributes = readObjectAtIndex (inIndex, inCompiler COMMA_THERE) ;
-  cCollectionElement_locationList * p = (cCollectionElement_locationList *) attributes.ptr () ;
-  GALGAS_location result ;
-  if (NULL != p) {
-    macroValidSharedObject (p, cCollectionElement_locationList) ;
-    result = p->mObject.mAttribute_location ;
-  }
-  return result ;
-}
-
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-cEnumerator_locationList::cEnumerator_locationList (const GALGAS_locationList & inEnumeratedObject,
-                                                    const typeEnumerationOrder inOrder) :
-cGenericAbstractEnumerator () {
-  inEnumeratedObject.populateEnumerationArray (mEnumerationArray, inOrder) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_locationList_2D_element cEnumerator_locationList::current (LOCATION_ARGS) const {
-  const cCollectionElement_locationList * p = (const cCollectionElement_locationList *) currentObjectPtr (THERE) ;
-  macroValidSharedObject (p, cCollectionElement_locationList) ;
-  return p->mObject ;
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_location cEnumerator_locationList::current_location (LOCATION_ARGS) const {
-  const cCollectionElement_locationList * p = (const cCollectionElement_locationList *) currentObjectPtr (THERE) ;
-  macroValidSharedObject (p, cCollectionElement_locationList) ;
-  return p->mObject.mAttribute_location ;
-}
-
-
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                                 @locationList type                                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-const C_galgas_type_descriptor
-kTypeDescriptor_GALGAS_locationList ("locationList",
-                                     NULL) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-const C_galgas_type_descriptor * GALGAS_locationList::staticTypeDescriptor (void) const {
-  return & kTypeDescriptor_GALGAS_locationList ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-AC_GALGAS_root * GALGAS_locationList::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
-  if (isValid ()) {
-    macroMyNew (result, GALGAS_locationList (*this)) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_locationList GALGAS_locationList::extractObject (const GALGAS_object & inObject,
-                                                        C_Compiler * inCompiler
-                                                        COMMA_LOCATION_ARGS) {
-  GALGAS_locationList result ;
-  const GALGAS_locationList * p = (const GALGAS_locationList *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_locationList *> (p)) {
-      result = *p ;
-    }else{
-      inCompiler->castError ("locationList", p->dynamicTypeDescriptor () COMMA_THERE) ;
     }  
   }
   return result ;

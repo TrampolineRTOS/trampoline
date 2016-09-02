@@ -194,40 +194,4 @@ class GALGAS_bigint function_max_33__32_bitsUnsignedInt (class C_Compiler * inCo
 class GALGAS_bigint function_max_33__32_bitsSignedInt (class C_Compiler * inCompiler
                                                        COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                            Function 'min32bitsSignedInt'                                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_bigint function_min_33__32_bitsSignedInt (class C_Compiler * inCompiler
-                                                       COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                           Function 'max64bitsUnsignedInt'                                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_bigint function_max_36__34_bitsUnsignedInt (class C_Compiler * inCompiler
-                                                         COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                            Function 'max64bitsSignedInt'                                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_bigint function_max_36__34_bitsSignedInt (class C_Compiler * inCompiler
-                                                       COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                            Function 'min64bitsSignedInt'                                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_bigint function_min_36__34_bitsSignedInt (class C_Compiler * inCompiler
-                                                       COMMA_LOCATION_ARGS) ;
-
 #endif
