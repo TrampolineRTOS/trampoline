@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2002, ..., 2010 Pierre Molinaro.                                                                     *
+//  Copyright (C) 2002, ..., 2016 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -28,6 +28,13 @@
 
 #include <ctype.h>
 
+#if COMPILE_FOR_WINDOWS == 0
+  #include <termios.h>
+  #include <string.h>
+  #include <unistd.h>
+  #include <sys/ioctl.h>
+#endif
+
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_char::GALGAS_char (void) :
@@ -41,6 +48,94 @@ mCharValue (TO_UNICODE (0)) {
 GALGAS_char GALGAS_char::constructor_default (UNUSED_LOCATION_ARGS) {
   return GALGAS_char (TO_UNICODE (0)) ;
 }
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+#if COMPILE_FOR_WINDOWS == 1
+  GALGAS_char GALGAS_char::constructor_unicodeCharacterFromRawKeyboard (UNUSED_LOCATION_ARGS) {
+    return GALGAS_char (TO_UNICODE (0)) ;
+  }
+#endif
+
+//----------------------------------------------------------------------------------------------------------------------
+
+#if COMPILE_FOR_WINDOWS == 0
+  static void waitForRawInput (void) {
+    bool waiting = true ;
+    while (waiting) {
+      usleep (10000) ; // 10 ms
+      int bytesAvailable = 0 ;
+      ioctl (STDIN_FILENO, FIONREAD, & bytesAvailable) ;
+      waiting = bytesAvailable == 0 ;
+    }
+  }
+#endif
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+#if COMPILE_FOR_WINDOWS == 0
+  GALGAS_char GALGAS_char::constructor_unicodeCharacterFromRawKeyboard (UNUSED_LOCATION_ARGS) {
+  //--- Save current configuration
+    struct termios termios_orig ;
+    tcgetattr (STDIN_FILENO, &termios_orig) ;
+  //--- Set new configuration
+    struct termios raw ;
+    tcgetattr (STDIN_FILENO, &raw) ;
+    cfmakeraw (& raw) ;
+    raw.c_oflag = OPOST | OCRNL ;
+    raw.c_iflag = 0 ;
+    raw.c_lflag = ISIG ;
+    tcsetattr (STDIN_FILENO, TCSANOW, & raw);
+  //--- Wait for input character
+    waitForRawInput () ;
+  //--- Get character
+    uint8_t c = '\0' ;
+    read (STDIN_FILENO, & c, 1) ;
+  //--- ASCII ?
+    uint32_t unicodeChar = c ;
+    if ((unicodeChar & 0xE0) == 0xC0) { // 2 bytes
+      unicodeChar &= 0x1F ;
+      unicodeChar <<= 6 ;
+      waitForRawInput () ;
+      read (STDIN_FILENO, & c, 1) ;
+      c &= 0x3F ;
+      unicodeChar |= c ;
+    }else if ((unicodeChar & 0xF0) == 0xE0) { // 3 bytes
+      unicodeChar &= 0x0F ;
+      unicodeChar <<= 6 ;
+      waitForRawInput () ;
+      read (STDIN_FILENO, & c, 1) ;
+      c &= 0x3F ;
+      unicodeChar |= c ;
+      unicodeChar <<= 6 ;
+      waitForRawInput () ;
+      read (STDIN_FILENO, & c, 1) ;
+      c &= 0x3F ;
+      unicodeChar |= c ;
+    }else if ((unicodeChar & 0xF8) == 0xF0) { // 4 bytes
+      unicodeChar &= 0x0F ;
+      unicodeChar <<= 6 ;
+      waitForRawInput () ;
+      read (STDIN_FILENO, & c, 1) ;
+      c &= 0x3F ;
+      unicodeChar |= c ;
+      unicodeChar <<= 6 ;
+      waitForRawInput () ;
+      read (STDIN_FILENO, & c, 1) ;
+      c &= 0x3F ;
+      unicodeChar |= c ;
+      unicodeChar <<= 6 ;
+      waitForRawInput () ;
+      read (STDIN_FILENO, & c, 1) ;
+      c &= 0x3F ;
+      unicodeChar |= c ;
+    }
+  //--- Restore configuration
+    tcsetattr (STDIN_FILENO, TCSANOW, &termios_orig) ;
+  //--- Return input character
+    return GALGAS_char (TO_UNICODE (unicodeChar)) ;
+  }
+#endif
 
 //---------------------------------------------------------------------------------------------------------------------*
 

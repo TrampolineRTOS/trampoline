@@ -10,1965 +10,380 @@
 #include "all-declarations-5.h"
 
 //---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                          Extension getter '@gtlVarPath stringRepresentation' (as function)                          *
-//                                                                                                                     *
+//  GRAMMAR gtl_module_grammar
 //---------------------------------------------------------------------------------------------------------------------*
 
-class GALGAS_string extensionGetter_stringRepresentation (const class GALGAS_gtlVarPath & inObject,
-                                                          class C_Compiler * inCompiler
-                                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            Abstract extension getter '@gtlVarItem stringRepresentation'                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_string (*enterExtensionGetter_gtlVarItem_stringRepresentation) (const class cPtr_gtlVarItem * inObject,
-                                                                                     const class GALGAS_string & constinArgument0,
-                                                                                     class C_Compiler * inCompiler
-                                                                                     COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_stringRepresentation (const int32_t inClassIndex,
-                                                enterExtensionGetter_gtlVarItem_stringRepresentation inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_string callExtensionGetter_stringRepresentation (const class cPtr_gtlVarItem * inObject,
-                                                              const GALGAS_string & constin_concatString,
-                                                              C_Compiler * inCompiler
-                                                              COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                      Extension getter '@gtlExpressionList stringRepresentation' (as function)                       *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_string extensionGetter_stringRepresentation (const class GALGAS_gtlExpressionList & inObject,
-                                                          class C_Compiler * inCompiler
-                                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                           Abstract extension getter '@gtlExpression stringRepresentation'                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_string (*enterExtensionGetter_gtlExpression_stringRepresentation) (const class cPtr_gtlExpression * inObject,
-                                                                                        class C_Compiler * inCompiler
-                                                                                        COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_stringRepresentation (const int32_t inClassIndex,
-                                                enterExtensionGetter_gtlExpression_stringRepresentation inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_string callExtensionGetter_stringRepresentation (const class cPtr_gtlExpression * inObject,
-                                                              C_Compiler * inCompiler
-                                                              COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                        Extension getter '@gtlExpressionMap mapRepresentation' (as function)                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_string extensionGetter_mapRepresentation (const class GALGAS_gtlExpressionMap & inObject,
-                                                       class C_Compiler * inCompiler
-                                                       COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       Extension getter '@gtlExpressionMap structRepresentation' (as function)                       *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_string extensionGetter_structRepresentation (const class GALGAS_gtlExpressionMap & inObject,
-                                                          class C_Compiler * inCompiler
-                                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                       Extension getter '@gtlArgumentList stringRepresentation' (as function)                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_string extensionGetter_stringRepresentation (const class GALGAS_gtlArgumentList & inObject,
-                                                          class C_Compiler * inCompiler
-                                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                        Extension getter '@sortingKeyList stringRepresentation' (as function)                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_string extensionGetter_stringRepresentation (const class GALGAS_sortingKeyList & inObject,
-                                                          class C_Compiler * inCompiler
-                                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            Extension getter '@lsint stringRepresentation' (as function)                             *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_string extensionGetter_stringRepresentation (const class GALGAS_lsint & inObject,
-                                                          class C_Compiler * inCompiler
-                                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  Extension getter '@gtlInstruction shortLocation'                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_string (*enterExtensionGetter_gtlInstruction_shortLocation) (const class cPtr_gtlInstruction * inObject,
-                                                                                  C_Compiler * inCompiler
-                                                                                  COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_shortLocation (const int32_t inClassIndex,
-                                         enterExtensionGetter_gtlInstruction_shortLocation inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_string callExtensionGetter_shortLocation (const cPtr_gtlInstruction * inObject,
-                                                       class C_Compiler * inCompiler
-                                                       COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               Extension method '@gtlInstruction displayWithLocation'                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_gtlInstruction_displayWithLocation) (const class cPtr_gtlInstruction * inObject,
-                                                                             const class GALGAS_debuggerContext constinArgument0,
-                                                                             class C_Compiler * inCompiler
-                                                                             COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_displayWithLocation (const int32_t inClassIndex,
-                                               extensionMethodSignature_gtlInstruction_displayWithLocation inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_displayWithLocation (const class cPtr_gtlInstruction * inObject,
-                                              const GALGAS_debuggerContext constin_context,
-                                              C_Compiler * inCompiler
-                                              COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Extension method '@gtlInstruction display'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_gtlInstruction_display) (const class cPtr_gtlInstruction * inObject,
-                                                                 class C_Compiler * inCompiler
-                                                                 COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_display (const int32_t inClassIndex,
-                                   extensionMethodSignature_gtlInstruction_display inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_display (const class cPtr_gtlInstruction * inObject,
-                                  C_Compiler * inCompiler
-                                  COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                             Extension getter '@enumValues mergeWithEnum' (as function)                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_enumValues extensionGetter_mergeWithEnum (const class GALGAS_enumValues & inObject,
-                                                       const class GALGAS_enumValues & constinArgument0,
-                                                       class C_Compiler * inCompiler
-                                                       COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//          Extension getter '@implementationObjectMap mergeImplementationObjectAttributesWith' (as function)          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_implementationObjectMap extensionGetter_mergeImplementationObjectAttributesWith (const class GALGAS_implementationObjectMap & inObject,
-                                                                                              const class GALGAS_implementationObjectMap & constinArgument0,
-                                                                                              class C_Compiler * inCompiler
-                                                                                              COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Extension getter '@implementation hasLKey'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_bool (*enterExtensionGetter_implementation_hasLKey) (const class cPtr_implementation * inObject,
-                                                                          const class GALGAS_lstring & constinArgument0,
-                                                                          C_Compiler * inCompiler
-                                                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_hasLKey (const int32_t inClassIndex,
-                                   enterExtensionGetter_implementation_hasLKey inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_bool callExtensionGetter_hasLKey (const cPtr_implementation * inObject,
-                                               const GALGAS_lstring & constin_key,
-                                               class C_Compiler * inCompiler
-                                               COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 Extension method '@implementation checkTypeForKind'                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_implementation_checkTypeForKind) (const class cPtr_implementation * inObject,
-                                                                          const class GALGAS_string constinArgument0,
-                                                                          const class GALGAS_string constinArgument1,
-                                                                          const class GALGAS_dataType constinArgument2,
-                                                                          class C_Compiler * inCompiler
-                                                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_checkTypeForKind (const int32_t inClassIndex,
-                                            extensionMethodSignature_implementation_checkTypeForKind inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_checkTypeForKind (const class cPtr_implementation * inObject,
-                                           const GALGAS_string constin_objKind,
-                                           const GALGAS_string constin_attributeName,
-                                           const GALGAS_dataType constin_expectedType,
-                                           C_Compiler * inCompiler
-                                           COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                Extension method '@impType checkAttributeReferences'                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_impType_checkAttributeReferences) (const class cPtr_impType * inObject,
-                                                                           const class GALGAS_implementation constinArgument0,
-                                                                           class C_Compiler * inCompiler
-                                                                           COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_checkAttributeReferences (const int32_t inClassIndex,
-                                                    extensionMethodSignature_impType_checkAttributeReferences inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_checkAttributeReferences (const class cPtr_impType * inObject,
-                                                   const GALGAS_implementation constin_imp,
-                                                   C_Compiler * inCompiler
+class cGrammar_gtl_5F_module_5F_grammar : public cParser_gtl_5F_module_5F_parser,
+                                          public cParser_gtl_5F_instruction_5F_parser,
+                                          public cParser_gtl_5F_expression_5F_parser {
+//------------------------------------- 'gtl_argument_list' non terminal
+//--- 'parse' label
+  public : virtual void nt_gtl_5F_argument_5F_list_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_gtl_5F_argument_5F_list_ (GALGAS_gtlArgumentList & outArgument0,
+                                                     C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//------------------------------------- 'gtl_expression' non terminal
+//--- 'parse' label
+  public : virtual void nt_gtl_5F_expression_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_gtl_5F_expression_ (GALGAS_gtlExpression & outArgument0,
+                                               C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//------------------------------------- 'gtl_factor' non terminal
+//--- 'parse' label
+  public : virtual void nt_gtl_5F_factor_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_gtl_5F_factor_ (GALGAS_gtlExpression & outArgument0,
+                                           C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//------------------------------------- 'gtl_function' non terminal
+//--- 'parse' label
+  public : virtual void nt_gtl_5F_function_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_gtl_5F_function_ (GALGAS_gtlFunction & outArgument0,
+                                             C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//------------------------------------- 'gtl_getter' non terminal
+//--- 'parse' label
+  public : virtual void nt_gtl_5F_getter_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_gtl_5F_getter_ (GALGAS_gtlGetter & outArgument0,
+                                           C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//------------------------------------- 'gtl_import' non terminal
+//--- 'parse' label
+  public : virtual void nt_gtl_5F_import_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_gtl_5F_import_ (GALGAS_gtlContext inArgument0,
+                                           GALGAS_library & ioArgument1,
+                                           C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//------------------------------------- 'gtl_instruction' non terminal
+//--- 'parse' label
+  public : virtual void nt_gtl_5F_instruction_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_gtl_5F_instruction_ (GALGAS_gtlInstruction & outArgument0,
+                                                C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//------------------------------------- 'gtl_instruction_list' non terminal
+//--- 'parse' label
+  public : virtual void nt_gtl_5F_instruction_5F_list_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_gtl_5F_instruction_5F_list_ (GALGAS_gtlInstructionList & outArgument0,
+                                                        C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//------------------------------------- 'gtl_module_start_symbol' non terminal
+//--- 'parse' label
+  public : virtual void nt_gtl_5F_module_5F_start_5F_symbol_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_gtl_5F_module_5F_start_5F_symbol_ (GALGAS_gtlContext inArgument0,
+                                                              GALGAS_library & ioArgument1,
+                                                              C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//--- Start symbol
+  public : static void _performSourceFileParsing_ (C_Compiler * inCompiler,
+                                                   GALGAS_lstring inFileName,
+                                                   GALGAS_gtlContext inArgument0,
+                                                   GALGAS_library & ioArgument1
                                                    COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 Abstract extension getter '@impType mergeWithType'                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_impType (*enterExtensionGetter_impType_mergeWithType) (const class cPtr_impType * inObject,
-                                                                            class GALGAS_impType inArgument0,
-                                                                            class C_Compiler * inCompiler
-                                                                            COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_mergeWithType (const int32_t inClassIndex,
-                                         enterExtensionGetter_impType_mergeWithType inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_impType callExtensionGetter_mergeWithType (const class cPtr_impType * inObject,
-                                                        GALGAS_impType in_typeToMerge,
-                                                        C_Compiler * inCompiler
-                                                        COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    Extension getter '@objectAttributes fieldMap'                                    *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_gtlData (*enterExtensionGetter_objectAttributes_fieldMap) (const class cPtr_objectAttributes * inObject,
-                                                                                C_Compiler * inCompiler
-                                                                                COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_fieldMap (const int32_t inClassIndex,
-                                    enterExtensionGetter_objectAttributes_fieldMap inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlData callExtensionGetter_fieldMap (const cPtr_objectAttributes * inObject,
-                                                   class C_Compiler * inCompiler
-                                                   COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                          Extension method '@object_t set'                                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_object_5F_t_set) (const class cPtr_object_5F_t * inObject,
-                                                          const class GALGAS_lstring constinArgument0,
-                                                          class GALGAS_gtlData & ioArgument1,
-                                                          class C_Compiler * inCompiler
-                                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_set (const int32_t inClassIndex,
-                               extensionMethodSignature_object_5F_t_set inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_set (const class cPtr_object_5F_t * inObject,
-                              const GALGAS_lstring constin_name,
-                              GALGAS_gtlData & io_result,
-                              C_Compiler * inCompiler
-                              COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  Extension getter '@string trimLeft' (as function)                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_string extensionGetter_trimLeft (const class GALGAS_string & inObject,
-                                              class C_Compiler * inCompiler
-                                              COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 Extension getter '@string trimRight' (as function)                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_string extensionGetter_trimRight (const class GALGAS_string & inObject,
-                                               class C_Compiler * inCompiler
-                                               COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                             Extension method '@implementationObject verifyApplication'                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_implementationObject_verifyApplication) (const class cPtr_implementationObject * inObject,
-                                                                                 const class GALGAS_objectKind constinArgument0,
-                                                                                 class C_Compiler * inCompiler
-                                                                                 COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_verifyApplication (const int32_t inClassIndex,
-                                             extensionMethodSignature_implementationObject_verifyApplication inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_verifyApplication (const class cPtr_implementationObject * inObject,
-                                            const GALGAS_objectKind constin_objectsOfKind,
-                                            C_Compiler * inCompiler
-                                            COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                             Extension method '@objectAttributes verifyCrossReferences'                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_objectAttributes_verifyCrossReferences) (const class cPtr_objectAttributes * inObject,
-                                                                                 const class GALGAS_objectsMap constinArgument0,
-                                                                                 const class GALGAS_implementationObjectMap constinArgument1,
-                                                                                 class C_Compiler * inCompiler
-                                                                                 COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_verifyCrossReferences (const int32_t inClassIndex,
-                                                 extensionMethodSignature_objectAttributes_verifyCrossReferences inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_verifyCrossReferences (const class cPtr_objectAttributes * inObject,
-                                                const GALGAS_objectsMap constin_allObjects,
-                                                const GALGAS_implementationObjectMap constin_attributes,
-                                                C_Compiler * inCompiler
-                                                COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 Extension method '@object_t verifyCrossReferences'                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_object_5F_t_verifyCrossReferences) (const class cPtr_object_5F_t * inObject,
-                                                                            const class GALGAS_objectsMap constinArgument0,
-                                                                            const class GALGAS_impType constinArgument1,
-                                                                            class C_Compiler * inCompiler
-                                                                            COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_verifyCrossReferences (const int32_t inClassIndex,
-                                                 extensionMethodSignature_object_5F_t_verifyCrossReferences inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_verifyCrossReferences (const class cPtr_object_5F_t * inObject,
-                                                const GALGAS_objectsMap constin_allObjects,
-                                                const GALGAS_impType constin_type,
-                                                C_Compiler * inCompiler
-                                                COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                       Extension method '@gtlTemplate execute'                                       *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_gtlTemplate_execute) (const class cPtr_gtlTemplate * inObject,
-                                                              class GALGAS_gtlContext & ioArgument0,
-                                                              class GALGAS_gtlData & ioArgument1,
-                                                              class GALGAS_library & ioArgument2,
-                                                              class GALGAS_string & ioArgument3,
-                                                              class C_Compiler * inCompiler
-                                                              COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_execute (const int32_t inClassIndex,
-                                   extensionMethodSignature_gtlTemplate_execute inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_execute (const class cPtr_gtlTemplate * inObject,
-                                  GALGAS_gtlContext & io_context,
-                                  GALGAS_gtlData & io_vars,
-                                  GALGAS_library & io_lib,
-                                  GALGAS_string & io_outputString,
-                                  C_Compiler * inCompiler
-                                  COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Extension getter '@library functionExists'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_bool (*enterExtensionGetter_library_functionExists) (const class cPtr_library * inObject,
-                                                                          const class GALGAS_lstring & constinArgument0,
-                                                                          C_Compiler * inCompiler
-                                                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_functionExists (const int32_t inClassIndex,
-                                          enterExtensionGetter_library_functionExists inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_bool callExtensionGetter_functionExists (const cPtr_library * inObject,
-                                                      const GALGAS_lstring & constin_name,
-                                                      class C_Compiler * inCompiler
-                                                      COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                       Extension getter '@library getFunction'                                       *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_gtlFunction (*enterExtensionGetter_library_getFunction) (const class cPtr_library * inObject,
-                                                                              const class GALGAS_lstring & constinArgument0,
-                                                                              C_Compiler * inCompiler
-                                                                              COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_getFunction (const int32_t inClassIndex,
-                                       enterExtensionGetter_library_getFunction inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlFunction callExtensionGetter_getFunction (const cPtr_library * inObject,
-                                                          const GALGAS_lstring & constin_name,
-                                                          class C_Compiler * inCompiler
-                                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                      Extension getter '@library getterExists'                                       *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_bool (*enterExtensionGetter_library_getterExists) (const class cPtr_library * inObject,
-                                                                        const class GALGAS_string & constinArgument0,
-                                                                        const class GALGAS_lstring & constinArgument1,
-                                                                        C_Compiler * inCompiler
-                                                                        COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_getterExists (const int32_t inClassIndex,
-                                        enterExtensionGetter_library_getterExists inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_bool callExtensionGetter_getterExists (const cPtr_library * inObject,
-                                                    const GALGAS_string & constin_type,
-                                                    const GALGAS_lstring & constin_name,
-                                                    class C_Compiler * inCompiler
-                                                    COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        Extension getter '@library getGetter'                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_gtlGetter (*enterExtensionGetter_library_getGetter) (const class cPtr_library * inObject,
-                                                                          const class GALGAS_string & constinArgument0,
-                                                                          const class GALGAS_lstring & constinArgument1,
-                                                                          C_Compiler * inCompiler
-                                                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_getGetter (const int32_t inClassIndex,
-                                     enterExtensionGetter_library_getGetter inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlGetter callExtensionGetter_getGetter (const cPtr_library * inObject,
-                                                      const GALGAS_string & constin_type,
-                                                      const GALGAS_lstring & constin_name,
-                                                      class C_Compiler * inCompiler
-                                                      COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                      Extension getter '@library setterExists'                                       *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_bool (*enterExtensionGetter_library_setterExists) (const class cPtr_library * inObject,
-                                                                        const class GALGAS_string & constinArgument0,
-                                                                        const class GALGAS_lstring & constinArgument1,
-                                                                        C_Compiler * inCompiler
-                                                                        COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_setterExists (const int32_t inClassIndex,
-                                        enterExtensionGetter_library_setterExists inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_bool callExtensionGetter_setterExists (const cPtr_library * inObject,
-                                                    const GALGAS_string & constin_type,
-                                                    const GALGAS_lstring & constin_name,
-                                                    class C_Compiler * inCompiler
-                                                    COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        Extension getter '@library getSetter'                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_gtlSetter (*enterExtensionGetter_library_getSetter) (const class cPtr_library * inObject,
-                                                                          const class GALGAS_string & constinArgument0,
-                                                                          const class GALGAS_lstring & constinArgument1,
-                                                                          C_Compiler * inCompiler
-                                                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_getSetter (const int32_t inClassIndex,
-                                     enterExtensionGetter_library_getSetter inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlSetter callExtensionGetter_getSetter (const cPtr_library * inObject,
-                                                      const GALGAS_string & constin_type,
-                                                      const GALGAS_lstring & constin_name,
-                                                      class C_Compiler * inCompiler
-                                                      COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                       Extension setter '@library getTemplate'                                       *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionSetterSignature_library_getTemplate) (class cPtr_library * inObject,
-                                                              const class GALGAS_gtlContext constinArgument0,
-                                                              class GALGAS_lstring inArgument1,
-                                                              class GALGAS_bool inArgument2,
-                                                              class GALGAS_library & ioArgument3,
-                                                              class GALGAS_bool & outArgument4,
-                                                              class GALGAS_gtlTemplate & outArgument5,
-                                                              class C_Compiler * inCompiler
-                                                              COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionSetter_getTemplate (const int32_t inClassIndex,
-                                       extensionSetterSignature_library_getTemplate inModifier) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionSetter_getTemplate (class cPtr_library * inObject,
-                                      const GALGAS_gtlContext constin_context,
-                                      GALGAS_lstring in_path,
-                                      GALGAS_bool in_ifExists,
-                                      GALGAS_library & io_lib,
-                                      GALGAS_bool & out_found,
-                                      GALGAS_gtlTemplate & out_result,
-                                      C_Compiler * inCompiler
-                                      COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                   Extension getter '@gtlVarItemField lstringPath'                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_lstring (*enterExtensionGetter_gtlVarItemField_lstringPath) (const class cPtr_gtlVarItemField * inObject,
-                                                                                  C_Compiler * inCompiler
-                                                                                  COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_lstringPath (const int32_t inClassIndex,
-                                       enterExtensionGetter_gtlVarItemField_lstringPath inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_lstring callExtensionGetter_lstringPath (const cPtr_gtlVarItemField * inObject,
-                                                      class C_Compiler * inCompiler
-                                                      COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Extension getter '@gtlExpression location'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_location (*enterExtensionGetter_gtlExpression_location) (const class cPtr_gtlExpression * inObject,
-                                                                              C_Compiler * inCompiler
-                                                                              COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_location (const int32_t inClassIndex,
-                                    enterExtensionGetter_gtlExpression_location inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_location callExtensionGetter_location (const cPtr_gtlExpression * inObject,
-                                                    class C_Compiler * inCompiler
-                                                    COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                   Abstract extension getter '@gtlExpression eval'                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_gtlData (*enterExtensionGetter_gtlExpression_eval) (const class cPtr_gtlExpression * inObject,
-                                                                         const class GALGAS_gtlData & constinArgument0,
-                                                                         const class GALGAS_library & constinArgument1,
-                                                                         class C_Compiler * inCompiler
-                                                                         COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_eval (const int32_t inClassIndex,
-                                enterExtensionGetter_gtlExpression_eval inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlData callExtensionGetter_eval (const class cPtr_gtlExpression * inObject,
-                                               const GALGAS_gtlData & constin_vars,
-                                               const GALGAS_library & constin_lib,
-                                               C_Compiler * inCompiler
-                                               COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Abstract extension getter '@gtlData string'                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_string (*enterExtensionGetter_gtlData_string) (const class cPtr_gtlData * inObject,
-                                                                    class C_Compiler * inCompiler
-                                                                    COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_string (const int32_t inClassIndex,
-                                  enterExtensionGetter_gtlData_string inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_string callExtensionGetter_string (const class cPtr_gtlData * inObject,
-                                                C_Compiler * inCompiler
-                                                COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    Abstract extension getter '@gtlData lstring'                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_lstring (*enterExtensionGetter_gtlData_lstring) (const class cPtr_gtlData * inObject,
-                                                                      class C_Compiler * inCompiler
-                                                                      COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_lstring (const int32_t inClassIndex,
-                                   enterExtensionGetter_gtlData_lstring inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_lstring callExtensionGetter_lstring (const class cPtr_gtlData * inObject,
-                                                  C_Compiler * inCompiler
-                                                  COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                      Abstract extension getter '@gtlData int'                                       *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_bigint (*enterExtensionGetter_gtlData_int) (const class cPtr_gtlData * inObject,
-                                                                 class C_Compiler * inCompiler
-                                                                 COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_int (const int32_t inClassIndex,
-                               enterExtensionGetter_gtlData_int inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_bigint callExtensionGetter_int (const class cPtr_gtlData * inObject,
-                                             C_Compiler * inCompiler
-                                             COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Abstract extension getter '@gtlData float'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_double (*enterExtensionGetter_gtlData_float) (const class cPtr_gtlData * inObject,
-                                                                   class C_Compiler * inCompiler
-                                                                   COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_float (const int32_t inClassIndex,
-                                 enterExtensionGetter_gtlData_float inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_double callExtensionGetter_float (const class cPtr_gtlData * inObject,
-                                               C_Compiler * inCompiler
-                                               COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Abstract extension getter '@gtlData plusOp'                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_gtlData (*enterExtensionGetter_gtlData_plusOp) (const class cPtr_gtlData * inObject,
-                                                                     class C_Compiler * inCompiler
-                                                                     COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_plusOp (const int32_t inClassIndex,
-                                  enterExtensionGetter_gtlData_plusOp inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlData callExtensionGetter_plusOp (const class cPtr_gtlData * inObject,
-                                                 C_Compiler * inCompiler
-                                                 COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    Abstract extension getter '@gtlData minusOp'                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_gtlData (*enterExtensionGetter_gtlData_minusOp) (const class cPtr_gtlData * inObject,
-                                                                      class C_Compiler * inCompiler
-                                                                      COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_minusOp (const int32_t inClassIndex,
-                                   enterExtensionGetter_gtlData_minusOp inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlData callExtensionGetter_minusOp (const class cPtr_gtlData * inObject,
-                                                  C_Compiler * inCompiler
-                                                  COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Abstract extension getter '@gtlData notOp'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_gtlData (*enterExtensionGetter_gtlData_notOp) (const class cPtr_gtlData * inObject,
-                                                                    class C_Compiler * inCompiler
-                                                                    COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_notOp (const int32_t inClassIndex,
-                                 enterExtensionGetter_gtlData_notOp inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlData callExtensionGetter_notOp (const class cPtr_gtlData * inObject,
-                                                C_Compiler * inCompiler
-                                                COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Abstract extension getter '@gtlData addOp'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_gtlData (*enterExtensionGetter_gtlData_addOp) (const class cPtr_gtlData * inObject,
-                                                                    const class GALGAS_gtlData & constinArgument0,
-                                                                    class C_Compiler * inCompiler
-                                                                    COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_addOp (const int32_t inClassIndex,
-                                 enterExtensionGetter_gtlData_addOp inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlData callExtensionGetter_addOp (const class cPtr_gtlData * inObject,
-                                                const GALGAS_gtlData & constin_right,
-                                                C_Compiler * inCompiler
-                                                COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Abstract extension getter '@gtlData subOp'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_gtlData (*enterExtensionGetter_gtlData_subOp) (const class cPtr_gtlData * inObject,
-                                                                    const class GALGAS_gtlData & constinArgument0,
-                                                                    class C_Compiler * inCompiler
-                                                                    COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_subOp (const int32_t inClassIndex,
-                                 enterExtensionGetter_gtlData_subOp inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlData callExtensionGetter_subOp (const class cPtr_gtlData * inObject,
-                                                const GALGAS_gtlData & constin_right,
-                                                C_Compiler * inCompiler
-                                                COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Abstract extension getter '@gtlData mulOp'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_gtlData (*enterExtensionGetter_gtlData_mulOp) (const class cPtr_gtlData * inObject,
-                                                                    const class GALGAS_gtlData & constinArgument0,
-                                                                    class C_Compiler * inCompiler
-                                                                    COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_mulOp (const int32_t inClassIndex,
-                                 enterExtensionGetter_gtlData_mulOp inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlData callExtensionGetter_mulOp (const class cPtr_gtlData * inObject,
-                                                const GALGAS_gtlData & constin_right,
-                                                C_Compiler * inCompiler
-                                                COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Abstract extension getter '@gtlData divOp'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_gtlData (*enterExtensionGetter_gtlData_divOp) (const class cPtr_gtlData * inObject,
-                                                                    const class GALGAS_gtlData & constinArgument0,
-                                                                    class C_Compiler * inCompiler
-                                                                    COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_divOp (const int32_t inClassIndex,
-                                 enterExtensionGetter_gtlData_divOp inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlData callExtensionGetter_divOp (const class cPtr_gtlData * inObject,
-                                                const GALGAS_gtlData & constin_right,
-                                                C_Compiler * inCompiler
-                                                COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Abstract extension getter '@gtlData modOp'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_gtlData (*enterExtensionGetter_gtlData_modOp) (const class cPtr_gtlData * inObject,
-                                                                    const class GALGAS_gtlData & constinArgument0,
-                                                                    class C_Compiler * inCompiler
-                                                                    COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_modOp (const int32_t inClassIndex,
-                                 enterExtensionGetter_gtlData_modOp inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlData callExtensionGetter_modOp (const class cPtr_gtlData * inObject,
-                                                const GALGAS_gtlData & constin_right,
-                                                C_Compiler * inCompiler
-                                                COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Abstract extension getter '@gtlData andOp'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_gtlData (*enterExtensionGetter_gtlData_andOp) (const class cPtr_gtlData * inObject,
-                                                                    const class GALGAS_gtlData & constinArgument0,
-                                                                    class C_Compiler * inCompiler
-                                                                    COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_andOp (const int32_t inClassIndex,
-                                 enterExtensionGetter_gtlData_andOp inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlData callExtensionGetter_andOp (const class cPtr_gtlData * inObject,
-                                                const GALGAS_gtlData & constin_right,
-                                                C_Compiler * inCompiler
-                                                COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                      Abstract extension getter '@gtlData orOp'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_gtlData (*enterExtensionGetter_gtlData_orOp) (const class cPtr_gtlData * inObject,
-                                                                   const class GALGAS_gtlData & constinArgument0,
-                                                                   class C_Compiler * inCompiler
-                                                                   COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_orOp (const int32_t inClassIndex,
-                                enterExtensionGetter_gtlData_orOp inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlData callExtensionGetter_orOp (const class cPtr_gtlData * inObject,
-                                               const GALGAS_gtlData & constin_right,
-                                               C_Compiler * inCompiler
-                                               COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Abstract extension getter '@gtlData xorOp'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_gtlData (*enterExtensionGetter_gtlData_xorOp) (const class cPtr_gtlData * inObject,
-                                                                    const class GALGAS_gtlData & constinArgument0,
-                                                                    class C_Compiler * inCompiler
-                                                                    COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_xorOp (const int32_t inClassIndex,
-                                 enterExtensionGetter_gtlData_xorOp inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlData callExtensionGetter_xorOp (const class cPtr_gtlData * inObject,
-                                                const GALGAS_gtlData & constin_right,
-                                                C_Compiler * inCompiler
-                                                COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                      Abstract extension getter '@gtlData slOp'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_gtlData (*enterExtensionGetter_gtlData_slOp) (const class cPtr_gtlData * inObject,
-                                                                   const class GALGAS_gtlData & constinArgument0,
-                                                                   class C_Compiler * inCompiler
-                                                                   COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_slOp (const int32_t inClassIndex,
-                                enterExtensionGetter_gtlData_slOp inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlData callExtensionGetter_slOp (const class cPtr_gtlData * inObject,
-                                               const GALGAS_gtlData & constin_right,
-                                               C_Compiler * inCompiler
-                                               COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                      Abstract extension getter '@gtlData srOp'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_gtlData (*enterExtensionGetter_gtlData_srOp) (const class cPtr_gtlData * inObject,
-                                                                   const class GALGAS_gtlData & constinArgument0,
-                                                                   class C_Compiler * inCompiler
-                                                                   COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_srOp (const int32_t inClassIndex,
-                                enterExtensionGetter_gtlData_srOp inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlData callExtensionGetter_srOp (const class cPtr_gtlData * inObject,
-                                               const GALGAS_gtlData & constin_right,
-                                               C_Compiler * inCompiler
-                                               COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Abstract extension getter '@gtlData neqOp'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_gtlData (*enterExtensionGetter_gtlData_neqOp) (const class cPtr_gtlData * inObject,
-                                                                    const class GALGAS_gtlData & constinArgument0,
-                                                                    class C_Compiler * inCompiler
-                                                                    COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_neqOp (const int32_t inClassIndex,
-                                 enterExtensionGetter_gtlData_neqOp inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlData callExtensionGetter_neqOp (const class cPtr_gtlData * inObject,
-                                                const GALGAS_gtlData & constin_right,
-                                                C_Compiler * inCompiler
-                                                COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                      Abstract extension getter '@gtlData eqOp'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_gtlData (*enterExtensionGetter_gtlData_eqOp) (const class cPtr_gtlData * inObject,
-                                                                   const class GALGAS_gtlData & constinArgument0,
-                                                                   class C_Compiler * inCompiler
-                                                                   COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_eqOp (const int32_t inClassIndex,
-                                enterExtensionGetter_gtlData_eqOp inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlData callExtensionGetter_eqOp (const class cPtr_gtlData * inObject,
-                                               const GALGAS_gtlData & constin_right,
-                                               C_Compiler * inCompiler
-                                               COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                      Abstract extension getter '@gtlData leOp'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_gtlData (*enterExtensionGetter_gtlData_leOp) (const class cPtr_gtlData * inObject,
-                                                                   const class GALGAS_gtlData & constinArgument0,
-                                                                   class C_Compiler * inCompiler
-                                                                   COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_leOp (const int32_t inClassIndex,
-                                enterExtensionGetter_gtlData_leOp inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlData callExtensionGetter_leOp (const class cPtr_gtlData * inObject,
-                                               const GALGAS_gtlData & constin_right,
-                                               C_Compiler * inCompiler
-                                               COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                      Abstract extension getter '@gtlData geOp'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_gtlData (*enterExtensionGetter_gtlData_geOp) (const class cPtr_gtlData * inObject,
-                                                                   const class GALGAS_gtlData & constinArgument0,
-                                                                   class C_Compiler * inCompiler
-                                                                   COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_geOp (const int32_t inClassIndex,
-                                enterExtensionGetter_gtlData_geOp inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlData callExtensionGetter_geOp (const class cPtr_gtlData * inObject,
-                                               const GALGAS_gtlData & constin_right,
-                                               C_Compiler * inCompiler
-                                               COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                   Abstract extension method '@gtlData addMyValue'                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_gtlData_addMyValue) (const class cPtr_gtlData * inObject,
-                                                             class GALGAS_objectlist & ioArgument0,
-                                                             class C_Compiler * inCompiler
-                                                             COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_addMyValue (const int32_t inClassIndex,
-                                      extensionMethodSignature_gtlData_addMyValue inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_addMyValue (const class cPtr_gtlData * inObject,
-                                     GALGAS_objectlist & io_objectList,
-                                     C_Compiler * inCompiler
-                                     COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 Abstract extension getter '@gtlData performGetter'                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_gtlData (*enterExtensionGetter_gtlData_performGetter) (const class cPtr_gtlData * inObject,
-                                                                            const class GALGAS_lstring & constinArgument0,
-                                                                            const class GALGAS_gtlDataList & constinArgument1,
-                                                                            const class GALGAS_library & constinArgument2,
-                                                                            class C_Compiler * inCompiler
-                                                                            COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_performGetter (const int32_t inClassIndex,
-                                         enterExtensionGetter_gtlData_performGetter inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlData callExtensionGetter_performGetter (const class cPtr_gtlData * inObject,
-                                                        const GALGAS_lstring & constin_methodName,
-                                                        const GALGAS_gtlDataList & constin_arguments,
-                                                        const GALGAS_library & constin_lib,
-                                                        C_Compiler * inCompiler
-                                                        COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 Abstract extension setter '@gtlData performSetter'                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionSetterSignature_gtlData_performSetter) (class cPtr_gtlData * inObject,
-                                                                const class GALGAS_lstring constinArgument0,
-                                                                const class GALGAS_gtlDataList constinArgument1,
-                                                                const class GALGAS_library constinArgument2,
-                                                                class C_Compiler * inCompiler
-                                                                COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionSetter_performSetter (const int32_t inClassIndex,
-                                         extensionSetterSignature_gtlData_performSetter inModifier) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionSetter_performSetter (class cPtr_gtlData * inObject,
-                                        const GALGAS_lstring constin_methodName,
-                                        const GALGAS_gtlDataList constin_arguments,
-                                        const GALGAS_library constin_lib,
-                                        C_Compiler * inCompiler
-                                        COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                       Extension method '@gtlData structField'                                       *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_gtlData_structField) (const class cPtr_gtlData * inObject,
-                                                              const class GALGAS_lstring constinArgument0,
-                                                              class GALGAS_gtlData & outArgument1,
-                                                              class C_Compiler * inCompiler
-                                                              COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_structField (const int32_t inClassIndex,
-                                       extensionMethodSignature_gtlData_structField inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_structField (const class cPtr_gtlData * inObject,
-                                      const GALGAS_lstring constin_name,
-                                      GALGAS_gtlData & out_result,
-                                      C_Compiler * inCompiler
-                                      COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                       Extension getter '@gtlData resultField'                                       *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_gtlData (*enterExtensionGetter_gtlData_resultField) (const class cPtr_gtlData * inObject,
-                                                                          const class GALGAS_lstring & constinArgument0,
-                                                                          C_Compiler * inCompiler
-                                                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_resultField (const int32_t inClassIndex,
-                                       enterExtensionGetter_gtlData_resultField inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlData callExtensionGetter_resultField (const cPtr_gtlData * inObject,
-                                                      const GALGAS_lstring & constin_name,
-                                                      class C_Compiler * inCompiler
-                                                      COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  Extension setter '@gtlData setStructFieldAtLevel'                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionSetterSignature_gtlData_setStructFieldAtLevel) (class cPtr_gtlData * inObject,
-                                                                        const class GALGAS_lstring constinArgument0,
-                                                                        const class GALGAS_gtlData constinArgument1,
-                                                                        const class GALGAS_uint constinArgument2,
-                                                                        class C_Compiler * inCompiler
-                                                                        COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionSetter_setStructFieldAtLevel (const int32_t inClassIndex,
-                                                 extensionSetterSignature_gtlData_setStructFieldAtLevel inModifier) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionSetter_setStructFieldAtLevel (class cPtr_gtlData * inObject,
-                                                const GALGAS_lstring constin_name,
-                                                const GALGAS_gtlData constin_data,
-                                                const GALGAS_uint constin_level,
-                                                C_Compiler * inCompiler
-                                                COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    Extension setter '@gtlData deleteStructField'                                    *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionSetterSignature_gtlData_deleteStructField) (class cPtr_gtlData * inObject,
-                                                                    const class GALGAS_lstring constinArgument0,
-                                                                    class C_Compiler * inCompiler
-                                                                    COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionSetter_deleteStructField (const int32_t inClassIndex,
-                                             extensionSetterSignature_gtlData_deleteStructField inModifier) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionSetter_deleteStructField (class cPtr_gtlData * inObject,
-                                            const GALGAS_lstring constin_name,
-                                            C_Compiler * inCompiler
-                                            COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Extension getter '@gtlData hasStructField'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_bool (*enterExtensionGetter_gtlData_hasStructField) (const class cPtr_gtlData * inObject,
-                                                                          const class GALGAS_lstring & constinArgument0,
-                                                                          C_Compiler * inCompiler
-                                                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_hasStructField (const int32_t inClassIndex,
-                                          enterExtensionGetter_gtlData_hasStructField inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_bool callExtensionGetter_hasStructField (const cPtr_gtlData * inObject,
-                                                      const GALGAS_lstring & constin_name,
-                                                      class C_Compiler * inCompiler
-                                                      COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                       Extension getter '@gtlData overrideMap'                                       *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_gtlStruct (*enterExtensionGetter_gtlData_overrideMap) (const class cPtr_gtlData * inObject,
-                                                                            C_Compiler * inCompiler
-                                                                            COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_overrideMap (const int32_t inClassIndex,
-                                       enterExtensionGetter_gtlData_overrideMap inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlStruct callExtensionGetter_overrideMap (const cPtr_gtlData * inObject,
-                                                        class C_Compiler * inCompiler
-                                                        COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                      Extension getter '@gtlData overriddenMap'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_gtlStruct (*enterExtensionGetter_gtlData_overriddenMap) (const class cPtr_gtlData * inObject,
-                                                                              C_Compiler * inCompiler
-                                                                              COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_overriddenMap (const int32_t inClassIndex,
-                                         enterExtensionGetter_gtlData_overriddenMap inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlStruct callExtensionGetter_overriddenMap (const cPtr_gtlData * inObject,
-                                                          class C_Compiler * inCompiler
-                                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                         Extension method '@gtlData mapItem'                                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_gtlData_mapItem) (const class cPtr_gtlData * inObject,
-                                                          const class GALGAS_lstring constinArgument0,
-                                                          class GALGAS_gtlData & outArgument1,
-                                                          class C_Compiler * inCompiler
-                                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_mapItem (const int32_t inClassIndex,
-                                   extensionMethodSignature_gtlData_mapItem inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_mapItem (const class cPtr_gtlData * inObject,
-                                  const GALGAS_lstring constin_name,
-                                  GALGAS_gtlData & out_result,
-                                  C_Compiler * inCompiler
-                                  COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                       Extension getter '@gtlData hasMapItem'                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_bool (*enterExtensionGetter_gtlData_hasMapItem) (const class cPtr_gtlData * inObject,
-                                                                      const class GALGAS_lstring & constinArgument0,
-                                                                      C_Compiler * inCompiler
-                                                                      COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_hasMapItem (const int32_t inClassIndex,
-                                      enterExtensionGetter_gtlData_hasMapItem inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_bool callExtensionGetter_hasMapItem (const cPtr_gtlData * inObject,
-                                                  const GALGAS_lstring & constin_name,
-                                                  class C_Compiler * inCompiler
-                                                  COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                       Extension setter '@gtlData setMapItem'                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionSetterSignature_gtlData_setMapItem) (class cPtr_gtlData * inObject,
-                                                             const class GALGAS_lstring constinArgument0,
-                                                             const class GALGAS_gtlData constinArgument1,
-                                                             class C_Compiler * inCompiler
-                                                             COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionSetter_setMapItem (const int32_t inClassIndex,
-                                      extensionSetterSignature_gtlData_setMapItem inModifier) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionSetter_setMapItem (class cPtr_gtlData * inObject,
-                                     const GALGAS_lstring constin_name,
-                                     const GALGAS_gtlData constin_data,
-                                     C_Compiler * inCompiler
-                                     COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                      Extension setter '@gtlData deleteMapItem'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionSetterSignature_gtlData_deleteMapItem) (class cPtr_gtlData * inObject,
-                                                                const class GALGAS_lstring constinArgument0,
-                                                                class C_Compiler * inCompiler
-                                                                COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionSetter_deleteMapItem (const int32_t inClassIndex,
-                                         extensionSetterSignature_gtlData_deleteMapItem inModifier) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionSetter_deleteMapItem (class cPtr_gtlData * inObject,
-                                        const GALGAS_lstring constin_name,
-                                        C_Compiler * inCompiler
-                                        COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                       Extension method '@gtlData itemAtIndex'                                       *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_gtlData_itemAtIndex) (const class cPtr_gtlData * inObject,
-                                                              class GALGAS_gtlData & outArgument0,
-                                                              const class GALGAS_gtlInt constinArgument1,
-                                                              class C_Compiler * inCompiler
-                                                              COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_itemAtIndex (const int32_t inClassIndex,
-                                       extensionMethodSignature_gtlData_itemAtIndex inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_itemAtIndex (const class cPtr_gtlData * inObject,
-                                      GALGAS_gtlData & out_result,
-                                      const GALGAS_gtlInt constin_index,
-                                      C_Compiler * inCompiler
-                                      COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Extension getter '@gtlData hasItemAtIndex'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_bool (*enterExtensionGetter_gtlData_hasItemAtIndex) (const class cPtr_gtlData * inObject,
-                                                                          const class GALGAS_gtlInt & constinArgument0,
-                                                                          C_Compiler * inCompiler
-                                                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_hasItemAtIndex (const int32_t inClassIndex,
-                                          enterExtensionGetter_gtlData_hasItemAtIndex inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_bool callExtensionGetter_hasItemAtIndex (const cPtr_gtlData * inObject,
-                                                      const GALGAS_gtlInt & constin_index,
-                                                      class C_Compiler * inCompiler
-                                                      COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Extension setter '@gtlData setItemAtIndex'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionSetterSignature_gtlData_setItemAtIndex) (class cPtr_gtlData * inObject,
-                                                                 const class GALGAS_gtlData constinArgument0,
-                                                                 const class GALGAS_gtlInt constinArgument1,
-                                                                 class C_Compiler * inCompiler
-                                                                 COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionSetter_setItemAtIndex (const int32_t inClassIndex,
-                                          extensionSetterSignature_gtlData_setItemAtIndex inModifier) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionSetter_setItemAtIndex (class cPtr_gtlData * inObject,
-                                         const GALGAS_gtlData constin_data,
-                                         const GALGAS_gtlInt constin_index,
-                                         C_Compiler * inCompiler
-                                         COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    Extension setter '@gtlData deleteItemAtIndex'                                    *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionSetterSignature_gtlData_deleteItemAtIndex) (class cPtr_gtlData * inObject,
-                                                                    const class GALGAS_gtlInt constinArgument0,
-                                                                    class C_Compiler * inCompiler
-                                                                    COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionSetter_deleteItemAtIndex (const int32_t inClassIndex,
-                                             extensionSetterSignature_gtlData_deleteItemAtIndex inModifier) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionSetter_deleteItemAtIndex (class cPtr_gtlData * inObject,
-                                            const GALGAS_gtlInt constin_index,
-                                            C_Compiler * inCompiler
-                                            COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                       Extension setter '@gtlData appendItem'                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionSetterSignature_gtlData_appendItem) (class cPtr_gtlData * inObject,
-                                                             const class GALGAS_gtlData constinArgument0,
-                                                             class C_Compiler * inCompiler
-                                                             COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionSetter_appendItem (const int32_t inClassIndex,
-                                      extensionSetterSignature_gtlData_appendItem inModifier) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionSetter_appendItem (class cPtr_gtlData * inObject,
-                                     const GALGAS_gtlData constin_item,
-                                     C_Compiler * inCompiler
-                                     COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               Extension method '@gtlExecutableEntity checkArguments'                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_gtlExecutableEntity_checkArguments) (const class cPtr_gtlExecutableEntity * inObject,
-                                                                             const class GALGAS_location constinArgument0,
-                                                                             const class GALGAS_gtlDataList constinArgument1,
-                                                                             class GALGAS_gtlData & outArgument2,
-                                                                             class GALGAS_bool & outArgument3,
-                                                                             class C_Compiler * inCompiler
-                                                                             COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_checkArguments (const int32_t inClassIndex,
-                                          extensionMethodSignature_gtlExecutableEntity_checkArguments inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_checkArguments (const class cPtr_gtlExecutableEntity * inObject,
-                                         const GALGAS_location constin_fromLocation,
-                                         const GALGAS_gtlDataList constin_actualArguments,
-                                         GALGAS_gtlData & out_entityVariableMap,
-                                         GALGAS_bool & out_result,
-                                         C_Compiler * inCompiler
-                                         COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        Extension method '@gtlProcedure call'                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_gtlProcedure_call) (const class cPtr_gtlProcedure * inObject,
-                                                            class GALGAS_gtlContext & ioArgument0,
-                                                            class GALGAS_library & ioArgument1,
-                                                            class GALGAS_string & ioArgument2,
-                                                            const class GALGAS_location constinArgument3,
-                                                            const class GALGAS_gtlDataList constinArgument4,
-                                                            class C_Compiler * inCompiler
-                                                            COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_call (const int32_t inClassIndex,
-                                extensionMethodSignature_gtlProcedure_call inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_call (const class cPtr_gtlProcedure * inObject,
-                               GALGAS_gtlContext & io_context,
-                               GALGAS_library & io_lib,
-                               GALGAS_string & io_outputString,
-                               const GALGAS_location constin_fromLocation,
-                               const GALGAS_gtlDataList constin_actualArguments,
-                               C_Compiler * inCompiler
-                               COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        Extension getter '@gtlFunction call'                                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_gtlData (*enterExtensionGetter_gtlFunction_call) (const class cPtr_gtlFunction * inObject,
-                                                                       const class GALGAS_location & constinArgument0,
-                                                                       class GALGAS_library inArgument1,
-                                                                       const class GALGAS_gtlDataList & constinArgument2,
-                                                                       C_Compiler * inCompiler
-                                                                       COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_call (const int32_t inClassIndex,
-                                enterExtensionGetter_gtlFunction_call inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlData callExtensionGetter_call (const cPtr_gtlFunction * inObject,
-                                               const GALGAS_location & constin_fromLocation,
-                                               GALGAS_library in_lib,
-                                               const GALGAS_gtlDataList & constin_actualArguments,
-                                               class C_Compiler * inCompiler
-                                               COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                      Extension getter '@gtlGetter callGetter'                                       *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_gtlData (*enterExtensionGetter_gtlGetter_callGetter) (const class cPtr_gtlGetter * inObject,
-                                                                           const class GALGAS_location & constinArgument0,
-                                                                           class GALGAS_library inArgument1,
-                                                                           const class GALGAS_gtlData & constinArgument2,
-                                                                           const class GALGAS_gtlDataList & constinArgument3,
-                                                                           C_Compiler * inCompiler
-                                                                           COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_callGetter (const int32_t inClassIndex,
-                                      enterExtensionGetter_gtlGetter_callGetter inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlData callExtensionGetter_callGetter (const cPtr_gtlGetter * inObject,
-                                                     const GALGAS_location & constin_fromLocation,
-                                                     GALGAS_library in_lib,
-                                                     const GALGAS_gtlData & constin_target,
-                                                     const GALGAS_gtlDataList & constin_actualArguments,
-                                                     class C_Compiler * inCompiler
+  public : static void _performSourceStringParsing_ (C_Compiler * inCompiler,
+                                                     GALGAS_string inSourceString,
+                                                     GALGAS_string inNameString,
+                                                     GALGAS_gtlContext inArgument0,
+                                                     GALGAS_library & ioArgument1
                                                      COMMA_LOCATION_ARGS) ;
 
+//--- Indexing
+  public : static void performIndexing (C_Compiler * inCompiler,
+                                        const C_String & inSourceFilePath) ;
+
+//--- Only lexical analysis
+  public : static void performOnlyLexicalAnalysis (C_Compiler * inCompiler,
+                                                   const C_String & inSourceFilePath) ;
+
+//--- Only syntax analysis
+  public : static void performOnlySyntaxAnalysis (C_Compiler * inCompiler,
+                                                  const C_String & inSourceFilePath) ;
+
+//------------------------------------- 'gtl_relation_factor' non terminal
+//--- 'parse' label
+  public : virtual void nt_gtl_5F_relation_5F_factor_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_gtl_5F_relation_5F_factor_ (GALGAS_gtlExpression & outArgument0,
+                                                       C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//------------------------------------- 'gtl_relation_term' non terminal
+//--- 'parse' label
+  public : virtual void nt_gtl_5F_relation_5F_term_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_gtl_5F_relation_5F_term_ (GALGAS_gtlExpression & outArgument0,
+                                                     C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//------------------------------------- 'gtl_setter' non terminal
+//--- 'parse' label
+  public : virtual void nt_gtl_5F_setter_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_gtl_5F_setter_ (GALGAS_gtlSetter & outArgument0,
+                                           C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//------------------------------------- 'gtl_simple_expression' non terminal
+//--- 'parse' label
+  public : virtual void nt_gtl_5F_simple_5F_expression_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_gtl_5F_simple_5F_expression_ (GALGAS_gtlExpression & outArgument0,
+                                                         C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//------------------------------------- 'gtl_simple_instruction' non terminal
+//--- 'parse' label
+  public : virtual void nt_gtl_5F_simple_5F_instruction_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_gtl_5F_simple_5F_instruction_ (GALGAS_gtlInstruction & outArgument0,
+                                                          C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//------------------------------------- 'gtl_sorting_order' non terminal
+//--- 'parse' label
+  public : virtual void nt_gtl_5F_sorting_5F_order_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_gtl_5F_sorting_5F_order_ (GALGAS_lsint & outArgument0,
+                                                     C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//------------------------------------- 'gtl_term' non terminal
+//--- 'parse' label
+  public : virtual void nt_gtl_5F_term_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_gtl_5F_term_ (GALGAS_gtlExpression & outArgument0,
+                                         C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//------------------------------------- 'gtl_variable' non terminal
+//--- 'parse' label
+  public : virtual void nt_gtl_5F_variable_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_gtl_5F_variable_ (GALGAS_gtlVarPath & outArgument0,
+                                             C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//------------------------------------- 'gtl_variable_or_here' non terminal
+//--- 'parse' label
+  public : virtual void nt_gtl_5F_variable_5F_or_5F_here_parse (C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_gtl_5F_variable_5F_or_5F_here_ (GALGAS_gtlVarPath & outArgument0,
+                                                           GALGAS_bool & outArgument1,
+                                                           C_Lexique_gtl_5F_scanner * inCompiler) ;
+
+  public : virtual int32_t select_gtl_5F_module_5F_parser_0 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_module_5F_parser_1 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_module_5F_parser_2 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_module_5F_parser_3 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_module_5F_parser_4 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_module_5F_parser_5 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_module_5F_parser_6 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_module_5F_parser_7 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_module_5F_parser_8 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_module_5F_parser_9 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_module_5F_parser_10 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_module_5F_parser_11 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_module_5F_parser_12 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_module_5F_parser_13 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_module_5F_parser_14 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_module_5F_parser_15 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_module_5F_parser_16 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_module_5F_parser_17 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_instruction_5F_parser_0 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_instruction_5F_parser_1 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_instruction_5F_parser_2 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_instruction_5F_parser_3 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_instruction_5F_parser_4 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_instruction_5F_parser_5 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_instruction_5F_parser_6 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_0 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_1 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_2 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_3 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_4 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_5 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_6 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_7 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_8 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_9 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_10 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_11 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_12 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_13 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_14 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_15 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_16 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_17 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_18 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_19 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_20 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_21 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_22 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_23 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_24 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_25 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_26 (C_Lexique_gtl_5F_scanner *) ;
+
+  public : virtual int32_t select_gtl_5F_expression_5F_parser_27 (C_Lexique_gtl_5F_scanner *) ;
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                                      Extension method '@gtlSetter callSetter'                                       *
+//                              Extension setter '@gtlContext appendInstructionToStepDo'                               *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-typedef void (*extensionMethodSignature_gtlSetter_callSetter) (const class cPtr_gtlSetter * inObject,
-                                                               const class GALGAS_location constinArgument0,
-                                                               class GALGAS_library inArgument1,
-                                                               class GALGAS_gtlData & ioArgument2,
-                                                               const class GALGAS_gtlDataList constinArgument3,
-                                                               class C_Compiler * inCompiler
-                                                               COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_callSetter (const int32_t inClassIndex,
-                                      extensionMethodSignature_gtlSetter_callSetter inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_callSetter (const class cPtr_gtlSetter * inObject,
-                                     const GALGAS_location constin_fromLocation,
-                                     GALGAS_library in_lib,
-                                     GALGAS_gtlData & io_target,
-                                     const GALGAS_gtlDataList constin_actualArguments,
-                                     C_Compiler * inCompiler
-                                     COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                           Extension method '@gtlForeachStatementInstruction iterateOnMap'                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_gtlForeachStatementInstruction_iterateOnMap) (const class cPtr_gtlForeachStatementInstruction * inObject,
-                                                                                      class GALGAS_gtlContext & ioArgument0,
-                                                                                      class GALGAS_gtlData & ioArgument1,
-                                                                                      class GALGAS_library & ioArgument2,
-                                                                                      class GALGAS_string & ioArgument3,
-                                                                                      const class GALGAS_gtlMap constinArgument4,
-                                                                                      class C_Compiler * inCompiler
-                                                                                      COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_iterateOnMap (const int32_t inClassIndex,
-                                        extensionMethodSignature_gtlForeachStatementInstruction_iterateOnMap inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_iterateOnMap (const class cPtr_gtlForeachStatementInstruction * inObject,
-                                       GALGAS_gtlContext & io_context,
-                                       GALGAS_gtlData & io_vars,
-                                       GALGAS_library & io_lib,
-                                       GALGAS_string & io_outputString,
-                                       const GALGAS_gtlMap constin_iterableMap,
-                                       C_Compiler * inCompiler
-                                       COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                          Extension method '@gtlForeachStatementInstruction iterateOnList'                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_gtlForeachStatementInstruction_iterateOnList) (const class cPtr_gtlForeachStatementInstruction * inObject,
-                                                                                       class GALGAS_gtlContext & ioArgument0,
-                                                                                       class GALGAS_gtlData & ioArgument1,
-                                                                                       class GALGAS_library & ioArgument2,
-                                                                                       class GALGAS_string & ioArgument3,
-                                                                                       const class GALGAS_gtlList constinArgument4,
-                                                                                       class C_Compiler * inCompiler
-                                                                                       COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_iterateOnList (const int32_t inClassIndex,
-                                         extensionMethodSignature_gtlForeachStatementInstruction_iterateOnList inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_iterateOnList (const class cPtr_gtlForeachStatementInstruction * inObject,
-                                        GALGAS_gtlContext & io_context,
-                                        GALGAS_gtlData & io_vars,
-                                        GALGAS_library & io_lib,
-                                        GALGAS_string & io_outputString,
-                                        const GALGAS_gtlList constin_iterableList,
-                                        C_Compiler * inCompiler
-                                        COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                           Extension method '@gtlForeachStatementInstruction iterateOnSet'                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_gtlForeachStatementInstruction_iterateOnSet) (const class cPtr_gtlForeachStatementInstruction * inObject,
-                                                                                      class GALGAS_gtlContext & ioArgument0,
-                                                                                      class GALGAS_gtlData & ioArgument1,
-                                                                                      class GALGAS_library & ioArgument2,
-                                                                                      class GALGAS_string & ioArgument3,
-                                                                                      const class GALGAS_gtlSet constinArgument4,
-                                                                                      class C_Compiler * inCompiler
-                                                                                      COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_iterateOnSet (const int32_t inClassIndex,
-                                        extensionMethodSignature_gtlForeachStatementInstruction_iterateOnSet inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_iterateOnSet (const class cPtr_gtlForeachStatementInstruction * inObject,
-                                       GALGAS_gtlContext & io_context,
-                                       GALGAS_gtlData & io_vars,
-                                       GALGAS_library & io_lib,
-                                       GALGAS_string & io_outputString,
-                                       const GALGAS_gtlSet constin_iterableSet,
-                                       C_Compiler * inCompiler
-                                       COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                            Extension setter '@debuggerContext appendInstructionToStepDo'                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionSetterSignature_debuggerContext_appendInstructionToStepDo) (class cPtr_debuggerContext * inObject,
-                                                                                    class GALGAS_gtlInstruction inArgument0,
-                                                                                    class C_Compiler * inCompiler
-                                                                                    COMMA_LOCATION_ARGS) ;
+typedef void (*extensionSetterSignature_gtlContext_appendInstructionToStepDo) (class cPtr_gtlContext * inObject,
+                                                                               class GALGAS_gtlInstruction inArgument0,
+                                                                               class C_Compiler * inCompiler
+                                                                               COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void enterExtensionSetter_appendInstructionToStepDo (const int32_t inClassIndex,
-                                                     extensionSetterSignature_debuggerContext_appendInstructionToStepDo inModifier) ;
+                                                     extensionSetterSignature_gtlContext_appendInstructionToStepDo inModifier) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void callExtensionSetter_appendInstructionToStepDo (class cPtr_debuggerContext * inObject,
+void callExtensionSetter_appendInstructionToStepDo (class cPtr_gtlContext * inObject,
                                                     GALGAS_gtlInstruction in_instruction,
                                                     C_Compiler * inCompiler
                                                     COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                             Extension setter '@debuggerContext deleteStepDoInstruction'                             *
+//                               Extension setter '@gtlContext deleteStepDoInstruction'                                *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-typedef void (*extensionSetterSignature_debuggerContext_deleteStepDoInstruction) (class cPtr_debuggerContext * inObject,
-                                                                                  const class GALGAS_lbigint constinArgument0,
-                                                                                  class C_Compiler * inCompiler
-                                                                                  COMMA_LOCATION_ARGS) ;
+typedef void (*extensionSetterSignature_gtlContext_deleteStepDoInstruction) (class cPtr_gtlContext * inObject,
+                                                                             const class GALGAS_lbigint constinArgument0,
+                                                                             class C_Compiler * inCompiler
+                                                                             COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void enterExtensionSetter_deleteStepDoInstruction (const int32_t inClassIndex,
-                                                   extensionSetterSignature_debuggerContext_deleteStepDoInstruction inModifier) ;
+                                                   extensionSetterSignature_gtlContext_deleteStepDoInstruction inModifier) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void callExtensionSetter_deleteStepDoInstruction (class cPtr_debuggerContext * inObject,
+void callExtensionSetter_deleteStepDoInstruction (class cPtr_gtlContext * inObject,
                                                   const GALGAS_lbigint constin_numToDelete,
                                                   C_Compiler * inCompiler
                                                   COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                             Extension method '@debuggerContext listStepDoInstructions'                              *
+//                                Extension method '@gtlContext listStepDoInstructions'                                *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-typedef void (*extensionMethodSignature_debuggerContext_listStepDoInstructions) (const class cPtr_debuggerContext * inObject,
-                                                                                 class C_Compiler * inCompiler
-                                                                                 COMMA_LOCATION_ARGS) ;
+typedef void (*extensionMethodSignature_gtlContext_listStepDoInstructions) (const class cPtr_gtlContext * inObject,
+                                                                            class C_Compiler * inCompiler
+                                                                            COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void enterExtensionMethod_listStepDoInstructions (const int32_t inClassIndex,
-                                                  extensionMethodSignature_debuggerContext_listStepDoInstructions inMethod) ;
+                                                  extensionMethodSignature_gtlContext_listStepDoInstructions inMethod) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void callExtensionMethod_listStepDoInstructions (const class cPtr_debuggerContext * inObject,
+void callExtensionMethod_listStepDoInstructions (const class cPtr_gtlContext * inObject,
                                                  C_Compiler * inCompiler
                                                  COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                                  Extension setter '@debuggerContext setBreakpoint'                                  *
+//                                    Extension setter '@gtlContext setBreakpoint'                                     *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-typedef void (*extensionSetterSignature_debuggerContext_setBreakpoint) (class cPtr_debuggerContext * inObject,
-                                                                        const class GALGAS_string constinArgument0,
-                                                                        const class GALGAS_uint constinArgument1,
-                                                                        class C_Compiler * inCompiler
-                                                                        COMMA_LOCATION_ARGS) ;
+typedef void (*extensionSetterSignature_gtlContext_setBreakpoint) (class cPtr_gtlContext * inObject,
+                                                                   const class GALGAS_string constinArgument0,
+                                                                   const class GALGAS_uint constinArgument1,
+                                                                   class C_Compiler * inCompiler
+                                                                   COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void enterExtensionSetter_setBreakpoint (const int32_t inClassIndex,
-                                         extensionSetterSignature_debuggerContext_setBreakpoint inModifier) ;
+                                         extensionSetterSignature_gtlContext_setBreakpoint inModifier) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void callExtensionSetter_setBreakpoint (class cPtr_debuggerContext * inObject,
+void callExtensionSetter_setBreakpoint (class cPtr_gtlContext * inObject,
                                         const GALGAS_string constin_fileName,
                                         const GALGAS_uint constin_lineNum,
                                         C_Compiler * inCompiler
@@ -1976,331 +391,745 @@ void callExtensionSetter_setBreakpoint (class cPtr_debuggerContext * inObject,
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                                 Extension method '@debuggerContext listBreakpoints'                                 *
+//                                   Extension method '@gtlContext listBreakpoints'                                    *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-typedef void (*extensionMethodSignature_debuggerContext_listBreakpoints) (const class cPtr_debuggerContext * inObject,
-                                                                          class C_Compiler * inCompiler
-                                                                          COMMA_LOCATION_ARGS) ;
+typedef void (*extensionMethodSignature_gtlContext_listBreakpoints) (const class cPtr_gtlContext * inObject,
+                                                                     class C_Compiler * inCompiler
+                                                                     COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void enterExtensionMethod_listBreakpoints (const int32_t inClassIndex,
-                                           extensionMethodSignature_debuggerContext_listBreakpoints inMethod) ;
+                                           extensionMethodSignature_gtlContext_listBreakpoints inMethod) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void callExtensionMethod_listBreakpoints (const class cPtr_debuggerContext * inObject,
+void callExtensionMethod_listBreakpoints (const class cPtr_gtlContext * inObject,
                                           C_Compiler * inCompiler
                                           COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                                Extension setter '@debuggerContext deleteBreakpoint'                                 *
+//                                   Extension setter '@gtlContext deleteBreakpoint'                                   *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-typedef void (*extensionSetterSignature_debuggerContext_deleteBreakpoint) (class cPtr_debuggerContext * inObject,
-                                                                           const class GALGAS_lbigint constinArgument0,
-                                                                           class C_Compiler * inCompiler
-                                                                           COMMA_LOCATION_ARGS) ;
+typedef void (*extensionSetterSignature_gtlContext_deleteBreakpoint) (class cPtr_gtlContext * inObject,
+                                                                      const class GALGAS_lbigint constinArgument0,
+                                                                      class C_Compiler * inCompiler
+                                                                      COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void enterExtensionSetter_deleteBreakpoint (const int32_t inClassIndex,
-                                            extensionSetterSignature_debuggerContext_deleteBreakpoint inModifier) ;
+                                            extensionSetterSignature_gtlContext_deleteBreakpoint inModifier) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void callExtensionSetter_deleteBreakpoint (class cPtr_debuggerContext * inObject,
+void callExtensionSetter_deleteBreakpoint (class cPtr_gtlContext * inObject,
                                            const GALGAS_lbigint constin_numToDelete,
                                            C_Compiler * inCompiler
                                            COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                                     Extension getter '@debuggerContext breakOn'                                     *
+//                                    Extension setter '@gtlContext setWatchpoint'                                     *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-typedef class GALGAS_bool (*enterExtensionGetter_debuggerContext_breakOn) (const class cPtr_debuggerContext * inObject,
-                                                                           const class GALGAS_gtlInstruction & constinArgument0,
-                                                                           C_Compiler * inCompiler
-                                                                           COMMA_LOCATION_ARGS) ;
+typedef void (*extensionSetterSignature_gtlContext_setWatchpoint) (class cPtr_gtlContext * inObject,
+                                                                   const class GALGAS_gtlExpression constinArgument0,
+                                                                   class C_Compiler * inCompiler
+                                                                   COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void enterExtensionGetter_breakOn (const int32_t inClassIndex,
-                                   enterExtensionGetter_debuggerContext_breakOn inGetter) ;
+void enterExtensionSetter_setWatchpoint (const int32_t inClassIndex,
+                                         extensionSetterSignature_gtlContext_setWatchpoint inModifier) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-class GALGAS_bool callExtensionGetter_breakOn (const cPtr_debuggerContext * inObject,
-                                               const GALGAS_gtlInstruction & constin_instruction,
-                                               class C_Compiler * inCompiler
-                                               COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    Extension method '@debuggerContext hereWeAre'                                    *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_debuggerContext_hereWeAre) (const class cPtr_debuggerContext * inObject,
-                                                                    class C_Compiler * inCompiler
-                                                                    COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_hereWeAre (const int32_t inClassIndex,
-                                     extensionMethodSignature_debuggerContext_hereWeAre inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_hereWeAre (const class cPtr_debuggerContext * inObject,
-                                    C_Compiler * inCompiler
-                                    COMMA_LOCATION_ARGS) ;
+void callExtensionSetter_setWatchpoint (class cPtr_gtlContext * inObject,
+                                        const GALGAS_gtlExpression constin_watchExpression,
+                                        C_Compiler * inCompiler
+                                        COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                               Extension setter '@debuggerContext pushInstructionList'                               *
+//                                   Extension method '@gtlContext listWatchpoints'                                    *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-typedef void (*extensionSetterSignature_debuggerContext_pushInstructionList) (class cPtr_debuggerContext * inObject,
-                                                                              const class GALGAS_gtlInstructionList constinArgument0,
-                                                                              class C_Compiler * inCompiler
-                                                                              COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionSetter_pushInstructionList (const int32_t inClassIndex,
-                                               extensionSetterSignature_debuggerContext_pushInstructionList inModifier) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionSetter_pushInstructionList (class cPtr_debuggerContext * inObject,
-                                              const GALGAS_gtlInstructionList constin_instructions,
-                                              C_Compiler * inCompiler
-                                              COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               Extension setter '@debuggerContext popInstructionList'                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionSetterSignature_debuggerContext_popInstructionList) (class cPtr_debuggerContext * inObject,
-                                                                             class C_Compiler * inCompiler
-                                                                             COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionSetter_popInstructionList (const int32_t inClassIndex,
-                                              extensionSetterSignature_debuggerContext_popInstructionList inModifier) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionSetter_popInstructionList (class cPtr_debuggerContext * inObject,
-                                             C_Compiler * inCompiler
-                                             COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                              Abstract extension getter '@gtlData stringRepresentation'                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_string (*enterExtensionGetter_gtlData_stringRepresentation) (const class cPtr_gtlData * inObject,
-                                                                                  class C_Compiler * inCompiler
-                                                                                  COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_stringRepresentation (const int32_t inClassIndex,
-                                                enterExtensionGetter_gtlData_stringRepresentation inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_string callExtensionGetter_stringRepresentation (const class cPtr_gtlData * inObject,
-                                                              C_Compiler * inCompiler
-                                                              COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                          Extension getter '@applicationDefinition applicationWithDefaults'                          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_applicationDefinition (*enterExtensionGetter_applicationDefinition_applicationWithDefaults) (const class cPtr_applicationDefinition * inObject,
-                                                                                                                  const class GALGAS_implementation & constinArgument0,
-                                                                                                                  C_Compiler * inCompiler
-                                                                                                                  COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_applicationWithDefaults (const int32_t inClassIndex,
-                                                   enterExtensionGetter_applicationDefinition_applicationWithDefaults inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_applicationDefinition callExtensionGetter_applicationWithDefaults (const cPtr_applicationDefinition * inObject,
-                                                                                const GALGAS_implementation & constin_imp,
-                                                                                class C_Compiler * inCompiler
-                                                                                COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    Extension method '@impType verifyApplication'                                    *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_impType_verifyApplication) (const class cPtr_impType * inObject,
-                                                                    const class GALGAS_objectAttributes constinArgument0,
-                                                                    class C_Compiler * inCompiler
-                                                                    COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_verifyApplication (const int32_t inClassIndex,
-                                             extensionMethodSignature_impType_verifyApplication inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_verifyApplication (const class cPtr_impType * inObject,
-                                            const GALGAS_objectAttributes constin_attrs,
-                                            C_Compiler * inCompiler
-                                            COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                   Extension method '@impType verifyMultipleType'                                    *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_impType_verifyMultipleType) (const class cPtr_impType * inObject,
-                                                                     const class GALGAS_object_5F_t constinArgument0,
+typedef void (*extensionMethodSignature_gtlContext_listWatchpoints) (const class cPtr_gtlContext * inObject,
                                                                      class C_Compiler * inCompiler
                                                                      COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void enterExtensionMethod_verifyMultipleType (const int32_t inClassIndex,
-                                              extensionMethodSignature_impType_verifyMultipleType inMethod) ;
+void enterExtensionMethod_listWatchpoints (const int32_t inClassIndex,
+                                           extensionMethodSignature_gtlContext_listWatchpoints inMethod) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void callExtensionMethod_verifyMultipleType (const class cPtr_impType * inObject,
-                                             const GALGAS_object_5F_t constin_attr,
-                                             C_Compiler * inCompiler
-                                             COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                       Extension method '@impType verifyType'                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_impType_verifyType) (const class cPtr_impType * inObject,
-                                                             const class GALGAS_object_5F_t constinArgument0,
-                                                             class C_Compiler * inCompiler
-                                                             COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_verifyType (const int32_t inClassIndex,
-                                      extensionMethodSignature_impType_verifyType inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_verifyType (const class cPtr_impType * inObject,
-                                     const GALGAS_object_5F_t constin_attr,
-                                     C_Compiler * inCompiler
-                                     COMMA_LOCATION_ARGS) ;
+void callExtensionMethod_listWatchpoints (const class cPtr_gtlContext * inObject,
+                                          C_Compiler * inCompiler
+                                          COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                                Extension method '@objectsMap verifyCrossReferences'                                 *
+//                                   Extension setter '@gtlContext deleteWatchpoint'                                   *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-void extensionMethod_verifyCrossReferences (const class GALGAS_objectsMap inObject,
-                                            const class GALGAS_implementation constin_imp,
-                                            class C_Compiler * inCompiler
-                                            COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                Extension method '@objectKind verifyCrossReferences'                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_objectKind_verifyCrossReferences) (const class cPtr_objectKind * inObject,
-                                                                           const class GALGAS_objectsMap constinArgument0,
-                                                                           const class GALGAS_implementationObject constinArgument1,
-                                                                           class C_Compiler * inCompiler
-                                                                           COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_verifyCrossReferences (const int32_t inClassIndex,
-                                                 extensionMethodSignature_objectKind_verifyCrossReferences inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_verifyCrossReferences (const class cPtr_objectKind * inObject,
-                                                const GALGAS_objectsMap constin_allObjects,
-                                                const GALGAS_implementationObject constin_obj,
-                                                C_Compiler * inCompiler
-                                                COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                   Extension setter '@gtlContext addInputVariable'                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionSetterSignature_gtlContext_addInputVariable) (class cPtr_gtlContext * inObject,
-                                                                      class GALGAS_gtlData inArgument0,
+typedef void (*extensionSetterSignature_gtlContext_deleteWatchpoint) (class cPtr_gtlContext * inObject,
+                                                                      const class GALGAS_lbigint constinArgument0,
                                                                       class C_Compiler * inCompiler
                                                                       COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void enterExtensionSetter_addInputVariable (const int32_t inClassIndex,
-                                            extensionSetterSignature_gtlContext_addInputVariable inModifier) ;
+void enterExtensionSetter_deleteWatchpoint (const int32_t inClassIndex,
+                                            extensionSetterSignature_gtlContext_deleteWatchpoint inModifier) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void callExtensionSetter_addInputVariable (class cPtr_gtlContext * inObject,
-                                           GALGAS_gtlData in_inputVariable,
+void callExtensionSetter_deleteWatchpoint (class cPtr_gtlContext * inObject,
+                                           const GALGAS_lbigint constin_numToDelete,
                                            C_Compiler * inCompiler
                                            COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                                   Extension setter '@gtlContext popFirstInputArg'                                   *
+//                                      Extension method '@gtlContext hereWeAre'                                       *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-typedef void (*extensionSetterSignature_gtlContext_popFirstInputArg) (class cPtr_gtlContext * inObject,
-                                                                      class GALGAS_location inArgument0,
-                                                                      class GALGAS_gtlData & outArgument1,
-                                                                      class C_Compiler * inCompiler
-                                                                      COMMA_LOCATION_ARGS) ;
+typedef void (*extensionMethodSignature_gtlContext_hereWeAre) (const class cPtr_gtlContext * inObject,
+                                                               const class GALGAS_uint constinArgument0,
+                                                               class C_Compiler * inCompiler
+                                                               COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void enterExtensionSetter_popFirstInputArg (const int32_t inClassIndex,
-                                            extensionSetterSignature_gtlContext_popFirstInputArg inModifier) ;
+void enterExtensionMethod_hereWeAre (const int32_t inClassIndex,
+                                     extensionMethodSignature_gtlContext_hereWeAre inMethod) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void callExtensionSetter_popFirstInputArg (class cPtr_gtlContext * inObject,
-                                           GALGAS_location in_where,
-                                           GALGAS_gtlData & out_result,
-                                           C_Compiler * inCompiler
+void callExtensionMethod_hereWeAre (const class cPtr_gtlContext * inObject,
+                                    const GALGAS_uint constin_window,
+                                    C_Compiler * inCompiler
+                                    COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                              Extension setter '@gtlContext setExecuteDebuggerCommand'                               *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typedef void (*extensionSetterSignature_gtlContext_setExecuteDebuggerCommand) (class cPtr_gtlContext * inObject,
+                                                                               class GALGAS_bool inArgument0,
+                                                                               class C_Compiler * inCompiler
+                                                                               COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterExtensionSetter_setExecuteDebuggerCommand (const int32_t inClassIndex,
+                                                     extensionSetterSignature_gtlContext_setExecuteDebuggerCommand inModifier) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void callExtensionSetter_setExecuteDebuggerCommand (class cPtr_gtlContext * inObject,
+                                                    GALGAS_bool in_debuggerCommand,
+                                                    C_Compiler * inCompiler
+                                                    COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                                   Function 'arch'                                                   *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_string function_arch (class C_Compiler * inCompiler
+                                   COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                                  Function 'board'                                                   *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_string function_board (class C_Compiler * inCompiler
+                                    COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                                   Function 'chip'                                                   *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_string function_chip (class C_Compiler * inCompiler
+                                   COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                               Function 'projectName'                                                *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_string function_projectName (class C_Compiler * inCompiler
+                                          COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                              Function 'targetPathList'                                              *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_list function_targetPathList (class C_Compiler * inCompiler
                                            COMMA_LOCATION_ARGS) ;
 
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                                 @goilContext class                                                  *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_goilContext : public GALGAS_gtlContext {
+//--- Constructor
+  public : GALGAS_goilContext (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public : static GALGAS_goilContext constructor_default (LOCATION_ARGS) ;
+
+//---
+  public : inline const class cPtr_goilContext * ptr (void) const { return (const cPtr_goilContext *) mObjectPtr ; }
+
+//--------------------------------- Constructor from pointer
+  public : GALGAS_goilContext (const cPtr_goilContext * inSourcePtr) ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
+
+//--------------------------------- Object extraction
+  public : static GALGAS_goilContext extractObject (const GALGAS_object & inObject,
+                                                    C_Compiler * inCompiler
+                                                    COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public : static class GALGAS_goilContext constructor_new (const class GALGAS_lstring & inOperand0,
+                                                            const class GALGAS_string & inOperand1,
+                                                            const class GALGAS_string & inOperand2,
+                                                            const class GALGAS_string & inOperand3,
+                                                            const class GALGAS_stringlist & inOperand4,
+                                                            const class GALGAS_gtlDataList & inOperand5,
+                                                            const class GALGAS_debuggerContext & inOperand6
+                                                            COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public : typeComparisonResult objectCompare (const GALGAS_goilContext & inOperand) const ;
+
+//--------------------------------- Setters
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+
+//--------------------------------- Introspection
+  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+ 
+} ; // End of GALGAS_goilContext class
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_goilContext ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                        Pointer class for @goilContext class                                         *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class cPtr_goilContext : public cPtr_gtlContext {
+//--- Attributes
+
+//--- Constructor
+  public : cPtr_goilContext (const GALGAS_lstring & in_prefix,
+                             const GALGAS_string & in_path,
+                             const GALGAS_string & in_templateDirectory,
+                             const GALGAS_string & in_templateExtension,
+                             const GALGAS_stringlist & in_importPath,
+                             const GALGAS_gtlDataList & in_inputVars,
+                             const GALGAS_debuggerContext & in_debuggerContext
+                             COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
+
+//--- Attribute accessors
+//--- Description
+  public : virtual void description (C_String & ioString,
+                                     const int32_t inIndentation) const ;
+
+  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
+
+  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
+
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//  GRAMMAR goil_grammar
+//---------------------------------------------------------------------------------------------------------------------*
+
+class cGrammar_goil_5F_grammar : public cParser_goil_5F_syntax,
+                                 public cParser_implementation_5F_parser {
+//------------------------------------- 'OIL_version' non terminal
+//--- 'parse' label
+  public : virtual void nt_OIL_5F_version_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_OIL_5F_version_ (GALGAS_lstring & outArgument0,
+                                            GALGAS_lstring & outArgument1,
+                                            C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'application_definition' non terminal
+//--- 'parse' label
+  public : virtual void nt_application_5F_definition_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_application_5F_definition_ (const GALGAS_implementation inArgument0,
+                                                       GALGAS_applicationDefinition & ioArgument1,
+                                                       GALGAS_string & ioArgument2,
+                                                       const GALGAS_bool inArgument3,
+                                                       C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'boolean' non terminal
+//--- 'parse' label
+  public : virtual void nt_boolean_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_boolean_ (GALGAS_lbool & outArgument0,
+                                     C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'boolean_options' non terminal
+//--- 'parse' label
+  public : virtual void nt_boolean_5F_options_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_boolean_5F_options_ (GALGAS_lstring & outArgument0,
+                                                GALGAS_impType & outArgument1,
+                                                C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'description' non terminal
+//--- 'parse' label
+  public : virtual void nt_description_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_description_ (GALGAS_lstring & outArgument0,
+                                         C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'enum_item' non terminal
+//--- 'parse' label
+  public : virtual void nt_enum_5F_item_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_enum_5F_item_ (GALGAS_enumValues & ioArgument0,
+                                          C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'enum_options' non terminal
+//--- 'parse' label
+  public : virtual void nt_enum_5F_options_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_enum_5F_options_ (GALGAS_lstring & outArgument0,
+                                             GALGAS_impType & outArgument1,
+                                             C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'file' non terminal
+//--- 'parse' label
+  public : virtual void nt_file_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_file_ (GALGAS_implementation & ioArgument0,
+                                  GALGAS_applicationDefinition & ioArgument1,
+                                  GALGAS_string & ioArgument2,
+                                  const GALGAS_bool inArgument3,
+                                  C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'identifier_or_attribute' non terminal
+//--- 'parse' label
+  public : virtual void nt_identifier_5F_or_5F_attribute_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_identifier_5F_or_5F_attribute_ (GALGAS_lstring & outArgument0,
+                                                           C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'identifier_or_enum_value' non terminal
+//--- 'parse' label
+  public : virtual void nt_identifier_5F_or_5F_enum_5F_value_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_identifier_5F_or_5F_enum_5F_value_ (GALGAS_lstring & outArgument0,
+                                                               C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'implementation_definition' non terminal
+//--- 'parse' label
+  public : virtual void nt_implementation_5F_definition_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_implementation_5F_definition_ (GALGAS_implementation & ioArgument0,
+                                                          C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'implementation_list' non terminal
+//--- 'parse' label
+  public : virtual void nt_implementation_5F_list_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_implementation_5F_list_ (GALGAS_implementationObjectMap & ioArgument0,
+                                                    C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'implementation_object_list' non terminal
+//--- 'parse' label
+  public : virtual void nt_implementation_5F_object_5F_list_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_implementation_5F_object_5F_list_ (GALGAS_implementation & ioArgument0,
+                                                              C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'implementation_objects' non terminal
+//--- 'parse' label
+  public : virtual void nt_implementation_5F_objects_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_implementation_5F_objects_ (GALGAS_implementation & ioArgument0,
+                                                       C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'implementation_type' non terminal
+//--- 'parse' label
+  public : virtual void nt_implementation_5F_type_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_implementation_5F_type_ (GALGAS_lstring & outArgument0,
+                                                    GALGAS_impType & outArgument1,
+                                                    C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'include_cpu_level' non terminal
+//--- 'parse' label
+  public : virtual void nt_include_5F_cpu_5F_level_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_include_5F_cpu_5F_level_ (const GALGAS_implementation inArgument0,
+                                                     GALGAS_objectsMap & ioArgument1,
+                                                     GALGAS_string & ioArgument2,
+                                                     const GALGAS_bool inArgument3,
+                                                     C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'include_file_level' non terminal
+//--- 'parse' label
+  public : virtual void nt_include_5F_file_5F_level_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_include_5F_file_5F_level_ (GALGAS_implementation & ioArgument0,
+                                                      GALGAS_applicationDefinition & ioArgument1,
+                                                      GALGAS_string & ioArgument2,
+                                                      const GALGAS_bool inArgument3,
+                                                      C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'include_implementation_level' non terminal
+//--- 'parse' label
+  public : virtual void nt_include_5F_implementation_5F_level_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_include_5F_implementation_5F_level_ (GALGAS_implementation & ioArgument0,
+                                                                C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'include_object_level' non terminal
+//--- 'parse' label
+  public : virtual void nt_include_5F_object_5F_level_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_include_5F_object_5F_level_ (const GALGAS_implementationObjectMap inArgument0,
+                                                        GALGAS_objectAttributes & ioArgument1,
+                                                        C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'include_type_level' non terminal
+//--- 'parse' label
+  public : virtual void nt_include_5F_type_5F_level_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_include_5F_type_5F_level_ (GALGAS_implementationObjectMap & ioArgument0,
+                                                      C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'int_or_float' non terminal
+//--- 'parse' label
+  public : virtual void nt_int_5F_or_5F_float_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_int_5F_or_5F_float_ (GALGAS_object_5F_t & outArgument0,
+                                                const GALGAS_dataType inArgument1,
+                                                C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'multiple' non terminal
+//--- 'parse' label
+  public : virtual void nt_multiple_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_multiple_ (GALGAS_bool & outArgument0,
+                                      C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'number_options' non terminal
+//--- 'parse' label
+  public : virtual void nt_number_5F_options_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_number_5F_options_ (GALGAS_lstring & outArgument0,
+                                               GALGAS_impType & outArgument1,
+                                               const GALGAS_dataType inArgument2,
+                                               C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'object_definition_list' non terminal
+//--- 'parse' label
+  public : virtual void nt_object_5F_definition_5F_list_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_object_5F_definition_5F_list_ (const GALGAS_implementation inArgument0,
+                                                          GALGAS_objectsMap & ioArgument1,
+                                                          GALGAS_string & ioArgument2,
+                                                          const GALGAS_bool inArgument3,
+                                                          C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'objref_option' non terminal
+//--- 'parse' label
+  public : virtual void nt_objref_5F_option_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_objref_5F_option_ (GALGAS_lstring & outArgument0,
+                                              GALGAS_impType & outArgument1,
+                                              GALGAS_lstring inArgument2,
+                                              C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'oil_declaration' non terminal
+//--- 'parse' label
+  public : virtual void nt_oil_5F_declaration_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_oil_5F_declaration_ (const GALGAS_implementationObjectMap inArgument0,
+                                                GALGAS_objectAttributes & ioArgument1,
+                                                C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'oil_declaration_list' non terminal
+//--- 'parse' label
+  public : virtual void nt_oil_5F_declaration_5F_list_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_oil_5F_declaration_5F_list_ (const GALGAS_implementationObjectMap inArgument0,
+                                                        GALGAS_objectAttributes & ioArgument1,
+                                                        C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'range' non terminal
+//--- 'parse' label
+  public : virtual void nt_range_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_range_ (GALGAS_attributeRange & outArgument0,
+                                   const GALGAS_dataType inArgument1,
+                                   C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'range_content' non terminal
+//--- 'parse' label
+  public : virtual void nt_range_5F_content_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_range_5F_content_ (GALGAS_attributeRange & outArgument0,
+                                              const GALGAS_dataType inArgument1,
+                                              C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'set_followup' non terminal
+//--- 'parse' label
+  public : virtual void nt_set_5F_followup_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_set_5F_followup_ (GALGAS_numberList & ioArgument0,
+                                             const GALGAS_dataType inArgument1,
+                                             C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'sign' non terminal
+//--- 'parse' label
+  public : virtual void nt_sign_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_sign_ (GALGAS_bool & outArgument0,
+                                  C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'start' non terminal
+//--- 'parse' label
+  public : virtual void nt_start_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_start_ (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//--- Start symbol
+  public : static void _performSourceFileParsing_ (C_Compiler * inCompiler,
+                                                   GALGAS_lstring inFileName
+                                                   COMMA_LOCATION_ARGS) ;
+
+  public : static void _performSourceStringParsing_ (C_Compiler * inCompiler,
+                                                     GALGAS_string inSourceString,
+                                                     GALGAS_string inNameString
+                                                     COMMA_LOCATION_ARGS) ;
+
+//--- Indexing
+  public : static void performIndexing (C_Compiler * inCompiler,
+                                        const C_String & inSourceFilePath) ;
+
+//--- Only lexical analysis
+  public : static void performOnlyLexicalAnalysis (C_Compiler * inCompiler,
+                                                   const C_String & inSourceFilePath) ;
+
+//--- Only syntax analysis
+  public : static void performOnlySyntaxAnalysis (C_Compiler * inCompiler,
+                                                  const C_String & inSourceFilePath) ;
+
+//------------------------------------- 'string_options' non terminal
+//--- 'parse' label
+  public : virtual void nt_string_5F_options_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_string_5F_options_ (GALGAS_lstring & outArgument0,
+                                               GALGAS_impType & outArgument1,
+                                               C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'struct_options' non terminal
+//--- 'parse' label
+  public : virtual void nt_struct_5F_options_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_struct_5F_options_ (GALGAS_lstring & outArgument0,
+                                               GALGAS_impType & outArgument1,
+                                               C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'type_options' non terminal
+//--- 'parse' label
+  public : virtual void nt_type_5F_options_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_type_5F_options_ (GALGAS_lstring & outArgument0,
+                                             GALGAS_impType & outArgument1,
+                                             const GALGAS_dataType inArgument2,
+                                             C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//------------------------------------- 'with_auto' non terminal
+//--- 'parse' label
+  public : virtual void nt_with_5F_auto_parse (C_Lexique_goil_5F_lexique * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_with_5F_auto_ (GALGAS_bool & outArgument0,
+                                          C_Lexique_goil_5F_lexique * inCompiler) ;
+
+  public : virtual int32_t select_goil_5F_syntax_0 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_goil_5F_syntax_1 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_goil_5F_syntax_2 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_goil_5F_syntax_3 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_goil_5F_syntax_4 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_goil_5F_syntax_5 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_goil_5F_syntax_6 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_goil_5F_syntax_7 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_goil_5F_syntax_8 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_goil_5F_syntax_9 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_goil_5F_syntax_10 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_goil_5F_syntax_11 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_goil_5F_syntax_12 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_goil_5F_syntax_13 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_goil_5F_syntax_14 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_goil_5F_syntax_15 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_goil_5F_syntax_16 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_goil_5F_syntax_17 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_implementation_5F_parser_0 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_implementation_5F_parser_1 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_implementation_5F_parser_2 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_implementation_5F_parser_3 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_implementation_5F_parser_4 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_implementation_5F_parser_5 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_implementation_5F_parser_6 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_implementation_5F_parser_7 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_implementation_5F_parser_8 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_implementation_5F_parser_9 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_implementation_5F_parser_10 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_implementation_5F_parser_11 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_implementation_5F_parser_12 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_implementation_5F_parser_13 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_implementation_5F_parser_14 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_implementation_5F_parser_15 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_implementation_5F_parser_16 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_implementation_5F_parser_17 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_implementation_5F_parser_18 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_implementation_5F_parser_19 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_implementation_5F_parser_20 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_implementation_5F_parser_21 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_implementation_5F_parser_22 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_implementation_5F_parser_23 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_implementation_5F_parser_24 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_implementation_5F_parser_25 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_implementation_5F_parser_26 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_implementation_5F_parser_27 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_implementation_5F_parser_28 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_implementation_5F_parser_29 (C_Lexique_goil_5F_lexique *) ;
+
+  public : virtual int32_t select_implementation_5F_parser_30 (C_Lexique_goil_5F_lexique *) ;
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
 #endif

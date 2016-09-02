@@ -102,9 +102,10 @@ class @gtlFunction : @gtlExecutableEntity
 }
 
 getter @gtlFunction call
-  ? let @location    fromLocation
-  ?     @library     lib
-  ? let @gtlDataList actualArguments
+  ?let @location    fromLocation
+  ?    @gtlContext  context
+  ?    @library     lib
+  ?let @gtlDataList actualArguments
   ->@gtlData        result
 {
   [self checkArguments
@@ -114,9 +115,8 @@ getter @gtlFunction call
     !@gtlUnconstructed.new{ ![returnVariable location] !emptylstring() }
   ]
   if ok then
-    @gtlContext functionContext = emptyContext()
     @string outputString = ""
-    [instructions execute !?functionContext !?funcVariableMap !?lib !?outputString]
+    [instructions execute !?context !?funcVariableMap !?lib !?outputString]
     result = [funcVariableMap resultField !returnVariable]
   else
    error fromLocation : "function call failed" : result
@@ -131,6 +131,7 @@ class @gtlGetter : @gtlFunction
 
 getter @gtlGetter callGetter
   ?let @location     fromLocation
+  ?    @gtlContext   context
   ?    @library      lib
   ?let @gtlData      target
   ?let @gtlDataList  actualArguments
@@ -147,9 +148,8 @@ getter @gtlGetter callGetter
       !.new { !"self" !fromLocation }
       !target
     ]
-    @gtlContext getterContext = emptyContext()
     @string outputString = ""
-    [instructions execute !?getterContext !?getterVariableMap !?lib !?outputString]
+    [instructions execute !?context !?getterVariableMap !?lib !?outputString]
     result = [getterVariableMap resultField !returnVariable]
   else
    error fromLocation : "getter call failed" : result
@@ -170,6 +170,7 @@ class @gtlSetter : @gtlExecutableEntity
 
 method @gtlSetter callSetter
   ?let @location     fromLocation
+  ?    @gtlContext   context
   ?    @library      lib
   ?!   @gtlData      target
   ?let @gtlDataList  actualArguments
@@ -182,9 +183,8 @@ method @gtlSetter callSetter
       !selfName
       !target
     ]
-    @gtlContext setterContext = emptyContext()
     @string outputString = ""
-    [instructions execute !?setterContext !?setterVariableMap !?lib !?outputString]
+    [instructions execute !?context !?setterVariableMap !?lib !?outputString]
     [setterVariableMap structField !selfName ?target]
   else
    error fromLocation : "setter call failed"

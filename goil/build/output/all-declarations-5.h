@@ -10,1769 +10,366 @@
 #include "all-declarations-4.h"
 
 //---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                                  @gtlModule class                                                   *
-//                                                                                                                     *
+//  GRAMMAR options_grammar
 //---------------------------------------------------------------------------------------------------------------------*
 
-class GALGAS_gtlModule : public AC_GALGAS_class {
-//--- Constructor
-  public : GALGAS_gtlModule (void) ;
+class cGrammar_options_5F_grammar : public cParser_options_5F_parser {
+//------------------------------------- 'list_option_value' non terminal
+//--- 'parse' label
+  public : virtual void nt_list_5F_option_5F_value_parse (C_Lexique_options_5F_scanner * inCompiler) ;
 
-//--------------------------------- Default GALGAS constructor
-  public : static GALGAS_gtlModule constructor_default (LOCATION_ARGS) ;
+//----------- '' label
+  public : virtual void nt_list_5F_option_5F_value_ (GALGAS_gtlData & outArgument0,
+                                                     C_Lexique_options_5F_scanner * inCompiler) ;
 
-//---
-  public : inline const class cPtr_gtlModule * ptr (void) const { return (const cPtr_gtlModule *) mObjectPtr ; }
+//------------------------------------- 'option_item' non terminal
+//--- 'parse' label
+  public : virtual void nt_option_5F_item_parse (C_Lexique_options_5F_scanner * inCompiler) ;
 
-//--------------------------------- Constructor from pointer
-  public : GALGAS_gtlModule (const cPtr_gtlModule * inSourcePtr) ;
+//----------- '' label
+  public : virtual void nt_option_5F_item_ (GALGAS_gtlData & ioArgument0,
+                                            C_Lexique_options_5F_scanner * inCompiler) ;
 
-//-- Start of generic part --*
+//------------------------------------- 'option_parser_start' non terminal
+//--- 'parse' label
+  public : virtual void nt_option_5F_parser_5F_start_parse (C_Lexique_options_5F_scanner * inCompiler) ;
 
-//--------------------------------- Object cloning
-  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
+//----------- '' label
+  public : virtual void nt_option_5F_parser_5F_start_ (GALGAS_gtlData & outArgument0,
+                                                       C_Lexique_options_5F_scanner * inCompiler) ;
 
-//--------------------------------- Object extraction
-  public : static GALGAS_gtlModule extractObject (const GALGAS_object & inObject,
-                                                  C_Compiler * inCompiler
-                                                  COMMA_LOCATION_ARGS) ;
+//--- Start symbol
+  public : static void _performSourceFileParsing_ (C_Compiler * inCompiler,
+                                                   GALGAS_lstring inFileName,
+                                                   GALGAS_gtlData & outArgument0
+                                                   COMMA_LOCATION_ARGS) ;
 
-//--------------------------------- GALGAS constructors
-  public : static class GALGAS_gtlModule constructor_new (const class GALGAS_lstring & inOperand0,
-                                                          const class GALGAS_gtlProcMap & inOperand1,
-                                                          const class GALGAS_gtlFuncMap & inOperand2
-                                                          COMMA_LOCATION_ARGS) ;
+  public : static void _performSourceStringParsing_ (C_Compiler * inCompiler,
+                                                     GALGAS_string inSourceString,
+                                                     GALGAS_string inNameString,
+                                                     GALGAS_gtlData & outArgument0
+                                                     COMMA_LOCATION_ARGS) ;
 
-//--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const GALGAS_gtlModule & inOperand) const ;
+//--- Indexing
+  public : static void performIndexing (C_Compiler * inCompiler,
+                                        const C_String & inSourceFilePath) ;
 
-//--------------------------------- Setters
+//--- Only lexical analysis
+  public : static void performOnlyLexicalAnalysis (C_Compiler * inCompiler,
+                                                   const C_String & inSourceFilePath) ;
 
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
+//--- Only syntax analysis
+  public : static void performOnlySyntaxAnalysis (C_Compiler * inCompiler,
+                                                  const C_String & inSourceFilePath) ;
 
-//--------------------------------- Getters
-  public : VIRTUAL_IN_DEBUG class GALGAS_gtlFuncMap getter_functions (LOCATION_ARGS) const ;
+//------------------------------------- 'option_value' non terminal
+//--- 'parse' label
+  public : virtual void nt_option_5F_value_parse (C_Lexique_options_5F_scanner * inCompiler) ;
 
-  public : VIRTUAL_IN_DEBUG class GALGAS_lstring getter_name (LOCATION_ARGS) const ;
+//----------- '' label
+  public : virtual void nt_option_5F_value_ (GALGAS_gtlData & outArgument0,
+                                             C_Lexique_options_5F_scanner * inCompiler) ;
 
-  public : VIRTUAL_IN_DEBUG class GALGAS_gtlProcMap getter_procedures (LOCATION_ARGS) const ;
+  public : virtual int32_t select_options_5F_parser_0 (C_Lexique_options_5F_scanner *) ;
 
+  public : virtual int32_t select_options_5F_parser_1 (C_Lexique_options_5F_scanner *) ;
 
-//--------------------------------- Introspection
-  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_gtlModule class
+  public : virtual int32_t select_options_5F_parser_2 (C_Lexique_options_5F_scanner *) ;
 
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlModule ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                         Pointer class for @gtlModule class                                          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cPtr_gtlModule : public acPtr_class {
-//--- Attributes
-  public : GALGAS_lstring mAttribute_name ;
-  public : GALGAS_gtlProcMap mAttribute_procedures ;
-  public : GALGAS_gtlFuncMap mAttribute_functions ;
-
-//--- Constructor
-  public : cPtr_gtlModule (const GALGAS_lstring & in_name,
-                           const GALGAS_gtlProcMap & in_procedures,
-                           const GALGAS_gtlFuncMap & in_functions
-                           COMMA_LOCATION_ARGS) ;
-
-//--- Duplication
-  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
-
-//--- Attribute accessors
-  public : VIRTUAL_IN_DEBUG GALGAS_lstring getter_name (LOCATION_ARGS) const ;
-  public : VIRTUAL_IN_DEBUG GALGAS_gtlProcMap getter_procedures (LOCATION_ARGS) const ;
-  public : VIRTUAL_IN_DEBUG GALGAS_gtlFuncMap getter_functions (LOCATION_ARGS) const ;
-//--- Description
-  public : virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const ;
-
-  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
-
-  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
-
+  public : virtual int32_t select_options_5F_parser_3 (C_Lexique_options_5F_scanner *) ;
 } ;
 
 //---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        Pointer class for @gtlTemplate class                                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cPtr_gtlTemplate : public acPtr_class {
-//--- Attributes
-  public : GALGAS_string mAttribute_path ;
-  public : GALGAS_gtlInstructionList mAttribute_program ;
-
-//--- Constructor
-  public : cPtr_gtlTemplate (const GALGAS_string & in_path,
-                             const GALGAS_gtlInstructionList & in_program
-                             COMMA_LOCATION_ARGS) ;
-
-//--- Duplication
-  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
-
-//--- Attribute accessors
-  public : VIRTUAL_IN_DEBUG GALGAS_string getter_path (LOCATION_ARGS) const ;
-  public : VIRTUAL_IN_DEBUG GALGAS_gtlInstructionList getter_program (LOCATION_ARGS) const ;
-//--- Description
-  public : virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const ;
-
-  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
-
-  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
-
-} ;
-
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                                                  @bool_5F_t class                                                   *
+//                                    Extension setter '@gtlContext addModulePath'                                     *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-class GALGAS_bool_5F_t : public GALGAS_object_5F_t {
-//--- Constructor
-  public : GALGAS_bool_5F_t (void) ;
-
-//--------------------------------- Default GALGAS constructor
-  public : static GALGAS_bool_5F_t constructor_default (LOCATION_ARGS) ;
-
-//---
-  public : inline const class cPtr_bool_5F_t * ptr (void) const { return (const cPtr_bool_5F_t *) mObjectPtr ; }
-
-//--------------------------------- Constructor from pointer
-  public : GALGAS_bool_5F_t (const cPtr_bool_5F_t * inSourcePtr) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public : static GALGAS_bool_5F_t extractObject (const GALGAS_object & inObject,
-                                                  C_Compiler * inCompiler
-                                                  COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public : static class GALGAS_bool_5F_t constructor_new (const class GALGAS_lstring & inOperand0,
-                                                          const class GALGAS_location & inOperand1,
-                                                          const class GALGAS_bool & inOperand2
-                                                          COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const GALGAS_bool_5F_t & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-  public : VIRTUAL_IN_DEBUG class GALGAS_bool getter_value (LOCATION_ARGS) const ;
-
-
-//--------------------------------- Introspection
-  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_bool_5F_t class
-
+typedef void (*extensionSetterSignature_gtlContext_addModulePath) (class cPtr_gtlContext * inObject,
+                                                                   const class GALGAS_string constinArgument0,
+                                                                   const class GALGAS_string constinArgument1,
+                                                                   class C_Compiler * inCompiler
+                                                                   COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_bool_5F_t ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                           Pointer class for @bool_t class                                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cPtr_bool_5F_t : public cPtr_object_5F_t {
-//--- Attributes
-  public : GALGAS_bool mAttribute_value ;
-
-//--- Constructor
-  public : cPtr_bool_5F_t (const GALGAS_lstring & in_oil_5F_desc,
-                           const GALGAS_location & in_location,
-                           const GALGAS_bool & in_value
-                           COMMA_LOCATION_ARGS) ;
-
-//--- Duplication
-  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
-
-//--- Attribute accessors
-  public : VIRTUAL_IN_DEBUG GALGAS_bool getter_value (LOCATION_ARGS) const ;
-//--- Description
-  public : virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const ;
-
-  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
-
-  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
-
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                              @void_5F_bool_5F_t class                                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_void_5F_bool_5F_t : public GALGAS_bool_5F_t {
-//--- Constructor
-  public : GALGAS_void_5F_bool_5F_t (void) ;
-
-//--------------------------------- Default GALGAS constructor
-  public : static GALGAS_void_5F_bool_5F_t constructor_default (LOCATION_ARGS) ;
-
-//---
-  public : inline const class cPtr_void_5F_bool_5F_t * ptr (void) const { return (const cPtr_void_5F_bool_5F_t *) mObjectPtr ; }
-
-//--------------------------------- Constructor from pointer
-  public : GALGAS_void_5F_bool_5F_t (const cPtr_void_5F_bool_5F_t * inSourcePtr) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public : static GALGAS_void_5F_bool_5F_t extractObject (const GALGAS_object & inObject,
-                                                          C_Compiler * inCompiler
-                                                          COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public : static class GALGAS_void_5F_bool_5F_t constructor_new (const class GALGAS_lstring & inOperand0,
-                                                                  const class GALGAS_location & inOperand1,
-                                                                  const class GALGAS_bool & inOperand2
-                                                                  COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const GALGAS_void_5F_bool_5F_t & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-
-//--------------------------------- Introspection
-  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_void_5F_bool_5F_t class
-
+void enterExtensionSetter_addModulePath (const int32_t inClassIndex,
+                                         extensionSetterSignature_gtlContext_addModulePath inModifier) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_void_5F_bool_5F_t ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        Pointer class for @void_bool_t class                                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cPtr_void_5F_bool_5F_t : public cPtr_bool_5F_t {
-//--- Attributes
-
-//--- Constructor
-  public : cPtr_void_5F_bool_5F_t (const GALGAS_lstring & in_oil_5F_desc,
-                                   const GALGAS_location & in_location,
-                                   const GALGAS_bool & in_value
-                                   COMMA_LOCATION_ARGS) ;
-
-//--- Duplication
-  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
-
-//--- Attribute accessors
-//--- Description
-  public : virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const ;
-
-  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
-
-  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
-
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                            @void_5F_float_5F_class class                                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_void_5F_float_5F_class : public GALGAS_float_5F_class {
-//--- Constructor
-  public : GALGAS_void_5F_float_5F_class (void) ;
-
-//--------------------------------- Default GALGAS constructor
-  public : static GALGAS_void_5F_float_5F_class constructor_default (LOCATION_ARGS) ;
-
-//---
-  public : inline const class cPtr_void_5F_float_5F_class * ptr (void) const { return (const cPtr_void_5F_float_5F_class *) mObjectPtr ; }
-
-//--------------------------------- Constructor from pointer
-  public : GALGAS_void_5F_float_5F_class (const cPtr_void_5F_float_5F_class * inSourcePtr) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public : static GALGAS_void_5F_float_5F_class extractObject (const GALGAS_object & inObject,
-                                                               C_Compiler * inCompiler
-                                                               COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public : static class GALGAS_void_5F_float_5F_class constructor_new (const class GALGAS_lstring & inOperand0,
-                                                                       const class GALGAS_location & inOperand1,
-                                                                       const class GALGAS_double & inOperand2
-                                                                       COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const GALGAS_void_5F_float_5F_class & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-
-//--------------------------------- Introspection
-  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_void_5F_float_5F_class class
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_void_5F_float_5F_class ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                      Pointer class for @void_float_class class                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cPtr_void_5F_float_5F_class : public cPtr_float_5F_class {
-//--- Attributes
-
-//--- Constructor
-  public : cPtr_void_5F_float_5F_class (const GALGAS_lstring & in_oil_5F_desc,
-                                        const GALGAS_location & in_location,
-                                        const GALGAS_double & in_value
+void callExtensionSetter_addModulePath (class cPtr_gtlContext * inObject,
+                                        const GALGAS_string constin_rootPath,
+                                        const GALGAS_string constin_modulePath,
+                                        C_Compiler * inCompiler
                                         COMMA_LOCATION_ARGS) ;
 
-//--- Duplication
-  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
-
-//--- Attribute accessors
-//--- Description
-  public : virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const ;
-
-  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
-
-  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
-
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        @void_5F_sint_33__32__5F_class class                                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_void_5F_sint_33__32__5F_class : public GALGAS_sint_33__32__5F_class {
-//--- Constructor
-  public : GALGAS_void_5F_sint_33__32__5F_class (void) ;
-
-//--------------------------------- Default GALGAS constructor
-  public : static GALGAS_void_5F_sint_33__32__5F_class constructor_default (LOCATION_ARGS) ;
-
-//---
-  public : inline const class cPtr_void_5F_sint_33__32__5F_class * ptr (void) const { return (const cPtr_void_5F_sint_33__32__5F_class *) mObjectPtr ; }
-
-//--------------------------------- Constructor from pointer
-  public : GALGAS_void_5F_sint_33__32__5F_class (const cPtr_void_5F_sint_33__32__5F_class * inSourcePtr) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public : static GALGAS_void_5F_sint_33__32__5F_class extractObject (const GALGAS_object & inObject,
-                                                                      C_Compiler * inCompiler
-                                                                      COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public : static class GALGAS_void_5F_sint_33__32__5F_class constructor_new (const class GALGAS_lstring & inOperand0,
-                                                                              const class GALGAS_location & inOperand1,
-                                                                              const class GALGAS_sint & inOperand2
-                                                                              COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const GALGAS_void_5F_sint_33__32__5F_class & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-
-//--------------------------------- Introspection
-  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_void_5F_sint_33__32__5F_class class
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_void_5F_sint_33__32__5F_class ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Pointer class for @void_sint32_class class                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cPtr_void_5F_sint_33__32__5F_class : public cPtr_sint_33__32__5F_class {
-//--- Attributes
-
-//--- Constructor
-  public : cPtr_void_5F_sint_33__32__5F_class (const GALGAS_lstring & in_oil_5F_desc,
-                                               const GALGAS_location & in_location,
-                                               const GALGAS_sint & in_value
-                                               COMMA_LOCATION_ARGS) ;
-
-//--- Duplication
-  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
-
-//--- Attribute accessors
-//--- Description
-  public : virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const ;
-
-  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
-
-  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
-
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        @void_5F_sint_36__34__5F_class class                                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_void_5F_sint_36__34__5F_class : public GALGAS_sint_36__34__5F_class {
-//--- Constructor
-  public : GALGAS_void_5F_sint_36__34__5F_class (void) ;
-
-//--------------------------------- Default GALGAS constructor
-  public : static GALGAS_void_5F_sint_36__34__5F_class constructor_default (LOCATION_ARGS) ;
-
-//---
-  public : inline const class cPtr_void_5F_sint_36__34__5F_class * ptr (void) const { return (const cPtr_void_5F_sint_36__34__5F_class *) mObjectPtr ; }
-
-//--------------------------------- Constructor from pointer
-  public : GALGAS_void_5F_sint_36__34__5F_class (const cPtr_void_5F_sint_36__34__5F_class * inSourcePtr) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public : static GALGAS_void_5F_sint_36__34__5F_class extractObject (const GALGAS_object & inObject,
-                                                                      C_Compiler * inCompiler
-                                                                      COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public : static class GALGAS_void_5F_sint_36__34__5F_class constructor_new (const class GALGAS_lstring & inOperand0,
-                                                                              const class GALGAS_location & inOperand1,
-                                                                              const class GALGAS_sint_36__34_ & inOperand2
-                                                                              COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const GALGAS_void_5F_sint_36__34__5F_class & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-
-//--------------------------------- Introspection
-  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_void_5F_sint_36__34__5F_class class
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_void_5F_sint_36__34__5F_class ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Pointer class for @void_sint64_class class                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cPtr_void_5F_sint_36__34__5F_class : public cPtr_sint_36__34__5F_class {
-//--- Attributes
-
-//--- Constructor
-  public : cPtr_void_5F_sint_36__34__5F_class (const GALGAS_lstring & in_oil_5F_desc,
-                                               const GALGAS_location & in_location,
-                                               const GALGAS_sint_36__34_ & in_value
-                                               COMMA_LOCATION_ARGS) ;
-
-//--- Duplication
-  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
-
-//--- Attribute accessors
-//--- Description
-  public : virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const ;
-
-  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
-
-  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
-
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                           @void_5F_string_5F_class class                                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_void_5F_string_5F_class : public GALGAS_string_5F_class {
-//--- Constructor
-  public : GALGAS_void_5F_string_5F_class (void) ;
-
-//--------------------------------- Default GALGAS constructor
-  public : static GALGAS_void_5F_string_5F_class constructor_default (LOCATION_ARGS) ;
-
-//---
-  public : inline const class cPtr_void_5F_string_5F_class * ptr (void) const { return (const cPtr_void_5F_string_5F_class *) mObjectPtr ; }
-
-//--------------------------------- Constructor from pointer
-  public : GALGAS_void_5F_string_5F_class (const cPtr_void_5F_string_5F_class * inSourcePtr) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public : static GALGAS_void_5F_string_5F_class extractObject (const GALGAS_object & inObject,
-                                                                C_Compiler * inCompiler
-                                                                COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public : static class GALGAS_void_5F_string_5F_class constructor_new (const class GALGAS_lstring & inOperand0,
-                                                                        const class GALGAS_location & inOperand1,
-                                                                        const class GALGAS_string & inOperand2
-                                                                        COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const GALGAS_void_5F_string_5F_class & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-
-//--------------------------------- Introspection
-  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_void_5F_string_5F_class class
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_void_5F_string_5F_class ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Pointer class for @void_string_class class                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cPtr_void_5F_string_5F_class : public cPtr_string_5F_class {
-//--- Attributes
-
-//--- Constructor
-  public : cPtr_void_5F_string_5F_class (const GALGAS_lstring & in_oil_5F_desc,
-                                         const GALGAS_location & in_location,
-                                         const GALGAS_string & in_value
-                                         COMMA_LOCATION_ARGS) ;
-
-//--- Duplication
-  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
-
-//--- Attribute accessors
-//--- Description
-  public : virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const ;
-
-  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
-
-  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
-
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        @void_5F_uint_33__32__5F_class class                                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_void_5F_uint_33__32__5F_class : public GALGAS_uint_33__32__5F_class {
-//--- Constructor
-  public : GALGAS_void_5F_uint_33__32__5F_class (void) ;
-
-//--------------------------------- Default GALGAS constructor
-  public : static GALGAS_void_5F_uint_33__32__5F_class constructor_default (LOCATION_ARGS) ;
-
-//---
-  public : inline const class cPtr_void_5F_uint_33__32__5F_class * ptr (void) const { return (const cPtr_void_5F_uint_33__32__5F_class *) mObjectPtr ; }
-
-//--------------------------------- Constructor from pointer
-  public : GALGAS_void_5F_uint_33__32__5F_class (const cPtr_void_5F_uint_33__32__5F_class * inSourcePtr) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public : static GALGAS_void_5F_uint_33__32__5F_class extractObject (const GALGAS_object & inObject,
-                                                                      C_Compiler * inCompiler
-                                                                      COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public : static class GALGAS_void_5F_uint_33__32__5F_class constructor_new (const class GALGAS_lstring & inOperand0,
-                                                                              const class GALGAS_location & inOperand1,
-                                                                              const class GALGAS_uint & inOperand2
-                                                                              COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const GALGAS_void_5F_uint_33__32__5F_class & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-
-//--------------------------------- Introspection
-  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_void_5F_uint_33__32__5F_class class
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_void_5F_uint_33__32__5F_class ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Pointer class for @void_uint32_class class                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cPtr_void_5F_uint_33__32__5F_class : public cPtr_uint_33__32__5F_class {
-//--- Attributes
-
-//--- Constructor
-  public : cPtr_void_5F_uint_33__32__5F_class (const GALGAS_lstring & in_oil_5F_desc,
-                                               const GALGAS_location & in_location,
-                                               const GALGAS_uint & in_value
-                                               COMMA_LOCATION_ARGS) ;
-
-//--- Duplication
-  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
-
-//--- Attribute accessors
-//--- Description
-  public : virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const ;
-
-  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
-
-  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
-
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        @void_5F_uint_36__34__5F_class class                                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_void_5F_uint_36__34__5F_class : public GALGAS_uint_36__34__5F_class {
-//--- Constructor
-  public : GALGAS_void_5F_uint_36__34__5F_class (void) ;
-
-//--------------------------------- Default GALGAS constructor
-  public : static GALGAS_void_5F_uint_36__34__5F_class constructor_default (LOCATION_ARGS) ;
-
-//---
-  public : inline const class cPtr_void_5F_uint_36__34__5F_class * ptr (void) const { return (const cPtr_void_5F_uint_36__34__5F_class *) mObjectPtr ; }
-
-//--------------------------------- Constructor from pointer
-  public : GALGAS_void_5F_uint_36__34__5F_class (const cPtr_void_5F_uint_36__34__5F_class * inSourcePtr) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public : static GALGAS_void_5F_uint_36__34__5F_class extractObject (const GALGAS_object & inObject,
-                                                                      C_Compiler * inCompiler
-                                                                      COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- GALGAS constructors
-  public : static class GALGAS_void_5F_uint_36__34__5F_class constructor_new (const class GALGAS_lstring & inOperand0,
-                                                                              const class GALGAS_location & inOperand1,
-                                                                              const class GALGAS_uint_36__34_ & inOperand2
-                                                                              COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const GALGAS_void_5F_uint_36__34__5F_class & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-
-//--------------------------------- Introspection
-  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_void_5F_uint_36__34__5F_class class
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_void_5F_uint_36__34__5F_class ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Pointer class for @void_uint64_class class                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cPtr_void_5F_uint_36__34__5F_class : public cPtr_uint_36__34__5F_class {
-//--- Attributes
-
-//--- Constructor
-  public : cPtr_void_5F_uint_36__34__5F_class (const GALGAS_lstring & in_oil_5F_desc,
-                                               const GALGAS_location & in_location,
-                                               const GALGAS_uint_36__34_ & in_value
-                                               COMMA_LOCATION_ARGS) ;
-
-//--- Duplication
-  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
-
-//--- Attribute accessors
-//--- Description
-  public : virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const ;
-
-  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
-
-  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
-
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                                  @oil_5F_obj class                                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_oil_5F_obj : public AC_GALGAS_class {
-//--- Constructor
-  public : GALGAS_oil_5F_obj (void) ;
-
-//---
-  public : inline const class cPtr_oil_5F_obj * ptr (void) const { return (const cPtr_oil_5F_obj *) mObjectPtr ; }
-
-//--------------------------------- Constructor from pointer
-  public : GALGAS_oil_5F_obj (const cPtr_oil_5F_obj * inSourcePtr) ;
-
-//-- Start of generic part --*
-
-//--------------------------------- Object cloning
-  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
-
-//--------------------------------- Object extraction
-  public : static GALGAS_oil_5F_obj extractObject (const GALGAS_object & inObject,
-                                                   C_Compiler * inCompiler
-                                                   COMMA_LOCATION_ARGS) ;
-
-//--------------------------------- Comparison
-  public : typeComparisonResult objectCompare (const GALGAS_oil_5F_obj & inOperand) const ;
-
-//--------------------------------- Setters
-
-//--------------------------------- Instance Methods
-//--------------------------------- Class Methods
-
-//--------------------------------- Getters
-  public : VIRTUAL_IN_DEBUG class GALGAS_lstring getter_desc (LOCATION_ARGS) const ;
-
-
-//--------------------------------- Introspection
-  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
- 
-} ; // End of GALGAS_oil_5F_obj class
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_oil_5F_obj ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                          Pointer class for @oil_obj class                                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class cPtr_oil_5F_obj : public acPtr_class {
-//--- Attributes
-  public : GALGAS_lstring mAttribute_desc ;
-
-//--- Constructor
-  public : cPtr_oil_5F_obj (const GALGAS_lstring & in_desc
-                            COMMA_LOCATION_ARGS) ;
-
-//--- Attribute accessors
-  public : VIRTUAL_IN_DEBUG GALGAS_lstring getter_desc (LOCATION_ARGS) const ;
-//--- Description
-  public : virtual void description (C_String & ioString,
-                                     const int32_t inIndentation) const = 0 ;
-
-  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const = 0 ;
-
-  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const = 0 ;
-
-} ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    Extension setter '@gtlVarMap replaceOrCreate'                                    *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-void extensionSetter_replaceOrCreate (class GALGAS_gtlVarMap & ioObject,
-                                      const class GALGAS_lstring constin_key,
-                                      const class GALGAS_gtlData constin_data,
-                                      class C_Compiler * inCompiler
-                                      COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                Extension setter '@gtlVarMap replaceOrCreateAtLevel'                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-void extensionSetter_replaceOrCreateAtLevel (class GALGAS_gtlVarMap & ioObject,
-                                             const class GALGAS_lstring constin_key,
-                                             const class GALGAS_gtlData constin_data,
-                                             const class GALGAS_uint constin_level,
-                                             class C_Compiler * inCompiler
-                                             COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                   Extension setter '@gtlTemplateMap getTemplate'                                    *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-void extensionSetter_getTemplate (class GALGAS_gtlTemplateMap & ioObject,
-                                  const class GALGAS_gtlContext constin_context,
-                                  class GALGAS_lstring in_path,
-                                  class GALGAS_bool in_ifExists,
-                                  class GALGAS_library & io_lib,
-                                  class GALGAS_bool & out_found,
-                                  class GALGAS_gtlTemplate & out_result,
-                                  class C_Compiler * inCompiler
-                                  COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 Abstract extension getter '@gtlVarItem stringPath'                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_string (*enterExtensionGetter_gtlVarItem_stringPath) (const class cPtr_gtlVarItem * inObject,
-                                                                           const class GALGAS_gtlData & constinArgument0,
-                                                                           const class GALGAS_library & constinArgument1,
-                                                                           class C_Compiler * inCompiler
-                                                                           COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_stringPath (const int32_t inClassIndex,
-                                      enterExtensionGetter_gtlVarItem_stringPath inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_string callExtensionGetter_stringPath (const class cPtr_gtlVarItem * inObject,
-                                                    const GALGAS_gtlData & constin_vars,
-                                                    const GALGAS_library & constin_lib,
-                                                    C_Compiler * inCompiler
-                                                    COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  Abstract extension getter '@gtlVarItem location'                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_location (*enterExtensionGetter_gtlVarItem_location) (const class cPtr_gtlVarItem * inObject,
-                                                                           class C_Compiler * inCompiler
-                                                                           COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_location (const int32_t inClassIndex,
-                                    enterExtensionGetter_gtlVarItem_location inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_location callExtensionGetter_location (const class cPtr_gtlVarItem * inObject,
-                                                    C_Compiler * inCompiler
-                                                    COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                Abstract extension method '@gtlVarItem setInContext'                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_gtlVarItem_setInContext) (const class cPtr_gtlVarItem * inObject,
-                                                                  class GALGAS_gtlData & ioArgument0,
-                                                                  const class GALGAS_gtlData constinArgument1,
-                                                                  const class GALGAS_library constinArgument2,
-                                                                  const class GALGAS_gtlVarPath constinArgument3,
-                                                                  const class GALGAS_gtlData constinArgument4,
-                                                                  class C_Compiler * inCompiler
-                                                                  COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_setInContext (const int32_t inClassIndex,
-                                        extensionMethodSignature_gtlVarItem_setInContext inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_setInContext (const class cPtr_gtlVarItem * inObject,
-                                       GALGAS_gtlData & io_context,
-                                       const GALGAS_gtlData constin_vars,
-                                       const GALGAS_library constin_lib,
-                                       const GALGAS_gtlVarPath constin_path,
-                                       const GALGAS_gtlData constin_newData,
-                                       C_Compiler * inCompiler
-                                       COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                Abstract extension getter '@gtlVarItem getInContext'                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_gtlData (*enterExtensionGetter_gtlVarItem_getInContext) (const class cPtr_gtlVarItem * inObject,
-                                                                              const class GALGAS_gtlData & constinArgument0,
-                                                                              const class GALGAS_gtlData & constinArgument1,
-                                                                              const class GALGAS_library & constinArgument2,
-                                                                              const class GALGAS_gtlVarPath & constinArgument3,
-                                                                              class C_Compiler * inCompiler
-                                                                              COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_getInContext (const int32_t inClassIndex,
-                                        enterExtensionGetter_gtlVarItem_getInContext inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlData callExtensionGetter_getInContext (const class cPtr_gtlVarItem * inObject,
-                                                       const GALGAS_gtlData & constin_context,
-                                                       const GALGAS_gtlData & constin_vars,
-                                                       const GALGAS_library & constin_lib,
-                                                       const GALGAS_gtlVarPath & constin_path,
-                                                       C_Compiler * inCompiler
-                                                       COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               Abstract extension getter '@gtlVarItem existsInContext'                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_bool (*enterExtensionGetter_gtlVarItem_existsInContext) (const class cPtr_gtlVarItem * inObject,
-                                                                              const class GALGAS_gtlData & constinArgument0,
-                                                                              const class GALGAS_gtlData & constinArgument1,
-                                                                              const class GALGAS_library & constinArgument2,
-                                                                              const class GALGAS_gtlVarPath & constinArgument3,
-                                                                              class C_Compiler * inCompiler
-                                                                              COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_existsInContext (const int32_t inClassIndex,
-                                           enterExtensionGetter_gtlVarItem_existsInContext inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_bool callExtensionGetter_existsInContext (const class cPtr_gtlVarItem * inObject,
-                                                       const GALGAS_gtlData & constin_context,
-                                                       const GALGAS_gtlData & constin_vars,
-                                                       const GALGAS_library & constin_lib,
-                                                       const GALGAS_gtlVarPath & constin_path,
-                                                       C_Compiler * inCompiler
-                                                       COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               Abstract extension method '@gtlVarItem deleteInContext'                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_gtlVarItem_deleteInContext) (const class cPtr_gtlVarItem * inObject,
-                                                                     class GALGAS_gtlData & ioArgument0,
-                                                                     const class GALGAS_gtlData constinArgument1,
-                                                                     const class GALGAS_library constinArgument2,
-                                                                     const class GALGAS_gtlVarPath constinArgument3,
-                                                                     class C_Compiler * inCompiler
-                                                                     COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_deleteInContext (const int32_t inClassIndex,
-                                           extensionMethodSignature_gtlVarItem_deleteInContext inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_deleteInContext (const class cPtr_gtlVarItem * inObject,
-                                          GALGAS_gtlData & io_context,
-                                          const GALGAS_gtlData constin_vars,
-                                          const GALGAS_library constin_lib,
-                                          const GALGAS_gtlVarPath constin_path,
-                                          C_Compiler * inCompiler
-                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               Extension getter '@gtlVarPath stringPath' (as function)                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_string extensionGetter_stringPath (const class GALGAS_gtlVarPath & inObject,
-                                                const class GALGAS_gtlData & constinArgument0,
-                                                const class GALGAS_library & constinArgument1,
-                                                class C_Compiler * inCompiler
-                                                COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                         Extension method '@gtlVarPath set'                                          *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-void extensionMethod_set (const class GALGAS_gtlVarPath inObject,
-                          class GALGAS_gtlData & io_vars,
-                          const class GALGAS_library constin_lib,
-                          const class GALGAS_gtlData constin_data,
-                          class C_Compiler * inCompiler
-                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  Extension getter '@gtlVarPath get' (as function)                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_gtlData extensionGetter_get (const class GALGAS_gtlVarPath & inObject,
-                                          const class GALGAS_gtlData & constinArgument0,
-                                          const class GALGAS_library & constinArgument1,
-                                          class C_Compiler * inCompiler
-                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 Extension getter '@gtlVarPath exists' (as function)                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_bool extensionGetter_exists (const class GALGAS_gtlVarPath & inObject,
-                                          const class GALGAS_gtlData & constinArgument0,
-                                          const class GALGAS_library & constinArgument1,
-                                          class C_Compiler * inCompiler
-                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        Extension method '@gtlVarPath delete'                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-void extensionMethod_delete (const class GALGAS_gtlVarPath inObject,
-                             class GALGAS_gtlData & io_vars,
-                             const class GALGAS_library constin_lib,
-                             class C_Compiler * inCompiler
-                             COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                Extension getter '@gtlVarPath location' (as function)                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_location extensionGetter_location (const class GALGAS_gtlVarPath & inObject,
-                                                class C_Compiler * inCompiler
-                                                COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  Extension getter '@string gtlType' (as function)                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_type extensionGetter_gtlType (const class GALGAS_string & inObject,
-                                           const class GALGAS_location & constinArgument0,
-                                           class C_Compiler * inCompiler
-                                           COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Extension getter '@gtlInstruction location'                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_location (*enterExtensionGetter_gtlInstruction_location) (const class cPtr_gtlInstruction * inObject,
-                                                                               C_Compiler * inCompiler
-                                                                               COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_location (const int32_t inClassIndex,
-                                    enterExtensionGetter_gtlInstruction_location inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_location callExtensionGetter_location (const cPtr_gtlInstruction * inObject,
-                                                    class C_Compiler * inCompiler
-                                                    COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                   Extension method '@gtlInstructionList execute'                                    *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-void extensionMethod_execute (const class GALGAS_gtlInstructionList inObject,
-                              class GALGAS_gtlContext & io_context,
-                              class GALGAS_gtlData & io_vars,
-                              class GALGAS_library & io_lib,
-                              class GALGAS_string & io_outputString,
-                              class C_Compiler * inCompiler
-                              COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                       Extension getter '@gtlContext breakOn'                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_bool (*enterExtensionGetter_gtlContext_breakOn) (const class cPtr_gtlContext * inObject,
-                                                                      class GALGAS_gtlInstruction inArgument0,
-                                                                      C_Compiler * inCompiler
-                                                                      COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_breakOn (const int32_t inClassIndex,
-                                   enterExtensionGetter_gtlContext_breakOn inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_bool callExtensionGetter_breakOn (const cPtr_gtlContext * inObject,
-                                               GALGAS_gtlInstruction in_instruction,
-                                               class C_Compiler * inCompiler
-                                               COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Extension getter '@gtlContext breakOnNext'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_bool (*enterExtensionGetter_gtlContext_breakOnNext) (const class cPtr_gtlContext * inObject,
-                                                                          C_Compiler * inCompiler
-                                                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_breakOnNext (const int32_t inClassIndex,
-                                       enterExtensionGetter_gtlContext_breakOnNext inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_bool callExtensionGetter_breakOnNext (const cPtr_gtlContext * inObject,
-                                                   class C_Compiler * inCompiler
-                                                   COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Extension getter '@gtlContext debugActive'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_bool (*enterExtensionGetter_gtlContext_debugActive) (const class cPtr_gtlContext * inObject,
-                                                                          C_Compiler * inCompiler
-                                                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_debugActive (const int32_t inClassIndex,
-                                       enterExtensionGetter_gtlContext_debugActive inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_bool callExtensionGetter_debugActive (const cPtr_gtlContext * inObject,
-                                                   class C_Compiler * inCompiler
-                                                   COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    Extension getter '@gtlContext loopOnCommand'                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_bool (*enterExtensionGetter_gtlContext_loopOnCommand) (const class cPtr_gtlContext * inObject,
-                                                                            C_Compiler * inCompiler
-                                                                            COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_loopOnCommand (const int32_t inClassIndex,
-                                         enterExtensionGetter_gtlContext_loopOnCommand inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_bool callExtensionGetter_loopOnCommand (const cPtr_gtlContext * inObject,
-                                                     class C_Compiler * inCompiler
-                                                     COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Extension getter '@gtlContext outputStyle'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_string (*enterExtensionGetter_gtlContext_outputStyle) (const class cPtr_gtlContext * inObject,
-                                                                            C_Compiler * inCompiler
-                                                                            COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_outputStyle (const int32_t inClassIndex,
-                                       enterExtensionGetter_gtlContext_outputStyle inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_string callExtensionGetter_outputStyle (const cPtr_gtlContext * inObject,
-                                                     class C_Compiler * inCompiler
-                                                     COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Extension getter '@gtlContext promptStyle'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_string (*enterExtensionGetter_gtlContext_promptStyle) (const class cPtr_gtlContext * inObject,
-                                                                            C_Compiler * inCompiler
-                                                                            COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_promptStyle (const int32_t inClassIndex,
-                                       enterExtensionGetter_gtlContext_promptStyle inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_string callExtensionGetter_promptStyle (const cPtr_gtlContext * inObject,
-                                                     class C_Compiler * inCompiler
-                                                     COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                              Extension getter '@gtlInstruction mayExecuteWithoutError'                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_bool (*enterExtensionGetter_gtlInstruction_mayExecuteWithoutError) (const class cPtr_gtlInstruction * inObject,
-                                                                                         const class GALGAS_gtlData & constinArgument0,
-                                                                                         const class GALGAS_library & constinArgument1,
-                                                                                         C_Compiler * inCompiler
-                                                                                         COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_mayExecuteWithoutError (const int32_t inClassIndex,
-                                                  enterExtensionGetter_gtlInstruction_mayExecuteWithoutError inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_bool callExtensionGetter_mayExecuteWithoutError (const cPtr_gtlInstruction * inObject,
-                                                              const GALGAS_gtlData & constin_context,
-                                                              const GALGAS_library & constin_lib,
-                                                              class C_Compiler * inCompiler
-                                                              COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  Extension method '@gtlContext executeStepDoList'                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_gtlContext_executeStepDoList) (const class cPtr_gtlContext * inObject,
-                                                                       class GALGAS_gtlContext & ioArgument0,
-                                                                       class GALGAS_gtlData & ioArgument1,
-                                                                       class GALGAS_library & ioArgument2,
-                                                                       class GALGAS_string & ioArgument3,
-                                                                       class C_Compiler * inCompiler
-                                                                       COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_executeStepDoList (const int32_t inClassIndex,
-                                             extensionMethodSignature_gtlContext_executeStepDoList inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_executeStepDoList (const class cPtr_gtlContext * inObject,
-                                            GALGAS_gtlContext & io_context,
-                                            GALGAS_gtlData & io_vars,
-                                            GALGAS_library & io_lib,
-                                            GALGAS_string & io_outputString,
-                                            C_Compiler * inCompiler
-                                            COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  Extension setter '@gtlContext popInstructionList'                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionSetterSignature_gtlContext_popInstructionList) (class cPtr_gtlContext * inObject,
-                                                                        class C_Compiler * inCompiler
-                                                                        COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionSetter_popInstructionList (const int32_t inClassIndex,
-                                              extensionSetterSignature_gtlContext_popInstructionList inModifier) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionSetter_popInstructionList (class cPtr_gtlContext * inObject,
-                                             C_Compiler * inCompiler
-                                             COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 Extension setter '@gtlContext pushInstructionList'                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionSetterSignature_gtlContext_pushInstructionList) (class cPtr_gtlContext * inObject,
-                                                                         const class GALGAS_gtlInstructionList constinArgument0,
-                                                                         class C_Compiler * inCompiler
-                                                                         COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionSetter_pushInstructionList (const int32_t inClassIndex,
-                                               extensionSetterSignature_gtlContext_pushInstructionList inModifier) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionSetter_pushInstructionList (class cPtr_gtlContext * inObject,
-                                              const GALGAS_gtlInstructionList constin_instructionList,
-                                              C_Compiler * inCompiler
-                                              COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    Extension setter '@gtlContext setBreakOnNext'                                    *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionSetterSignature_gtlContext_setBreakOnNext) (class cPtr_gtlContext * inObject,
-                                                                    class GALGAS_bool inArgument0,
-                                                                    class C_Compiler * inCompiler
-                                                                    COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionSetter_setBreakOnNext (const int32_t inClassIndex,
-                                          extensionSetterSignature_gtlContext_setBreakOnNext inModifier) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionSetter_setBreakOnNext (class cPtr_gtlContext * inObject,
-                                         GALGAS_bool in_break,
-                                         C_Compiler * inCompiler
-                                         COMMA_LOCATION_ARGS) ;
-
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                                   Extension setter '@gtlContext setLoopOnCommand'                                   *
+//                                   Extension setter '@gtlContext addInputVariable'                                   *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-typedef void (*extensionSetterSignature_gtlContext_setLoopOnCommand) (class cPtr_gtlContext * inObject,
-                                                                      class GALGAS_bool inArgument0,
+typedef void (*extensionSetterSignature_gtlContext_addInputVariable) (class cPtr_gtlContext * inObject,
+                                                                      class GALGAS_gtlData inArgument0,
                                                                       class C_Compiler * inCompiler
                                                                       COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void enterExtensionSetter_setLoopOnCommand (const int32_t inClassIndex,
-                                            extensionSetterSignature_gtlContext_setLoopOnCommand inModifier) ;
+void enterExtensionSetter_addInputVariable (const int32_t inClassIndex,
+                                            extensionSetterSignature_gtlContext_addInputVariable inModifier) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void callExtensionSetter_setLoopOnCommand (class cPtr_gtlContext * inObject,
-                                           GALGAS_bool in_loopOnCommand,
+void callExtensionSetter_addInputVariable (class cPtr_gtlContext * inObject,
+                                           GALGAS_gtlData in_inputVariable,
                                            C_Compiler * inCompiler
                                            COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                               Extension setter '@gtlContext setNextInstructionIndex'                                *
+//                                   Extension setter '@gtlContext popFirstInputArg'                                   *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-typedef void (*extensionSetterSignature_gtlContext_setNextInstructionIndex) (class cPtr_gtlContext * inObject,
-                                                                             class GALGAS_uint inArgument0,
-                                                                             class C_Compiler * inCompiler
-                                                                             COMMA_LOCATION_ARGS) ;
+typedef void (*extensionSetterSignature_gtlContext_popFirstInputArg) (class cPtr_gtlContext * inObject,
+                                                                      class GALGAS_location inArgument0,
+                                                                      class GALGAS_gtlData & outArgument1,
+                                                                      class C_Compiler * inCompiler
+                                                                      COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void enterExtensionSetter_setNextInstructionIndex (const int32_t inClassIndex,
-                                                   extensionSetterSignature_gtlContext_setNextInstructionIndex inModifier) ;
+void enterExtensionSetter_popFirstInputArg (const int32_t inClassIndex,
+                                            extensionSetterSignature_gtlContext_popFirstInputArg inModifier) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void callExtensionSetter_setNextInstructionIndex (class cPtr_gtlContext * inObject,
-                                                  GALGAS_uint in_index,
-                                                  C_Compiler * inCompiler
-                                                  COMMA_LOCATION_ARGS) ;
+void callExtensionSetter_popFirstInputArg (class cPtr_gtlContext * inObject,
+                                           GALGAS_location in_where,
+                                           GALGAS_gtlData & out_result,
+                                           C_Compiler * inCompiler
+                                           COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                           Abstract extension getter '@gtlAbstractSortInstruction compare'                           *
+//                                      Extension getter '@gtlContext fullPrefix'                                      *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-typedef class GALGAS_sint (*enterExtensionGetter_gtlAbstractSortInstruction_compare) (const class cPtr_gtlAbstractSortInstruction * inObject,
-                                                                                      const class GALGAS_gtlData & constinArgument0,
-                                                                                      const class GALGAS_gtlData & constinArgument1,
-                                                                                      class C_Compiler * inCompiler
+typedef class GALGAS_lstring (*enterExtensionGetter_gtlContext_fullPrefix) (const class cPtr_gtlContext * inObject,
+                                                                            const class GALGAS_gtlData & constinArgument0,
+                                                                            C_Compiler * inCompiler
+                                                                            COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterExtensionGetter_fullPrefix (const int32_t inClassIndex,
+                                      enterExtensionGetter_gtlContext_fullPrefix inGetter) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_lstring callExtensionGetter_fullPrefix (const cPtr_gtlContext * inObject,
+                                                     const GALGAS_gtlData & constin_vars,
+                                                     class C_Compiler * inCompiler
+                                                     COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                 Extension getter '@gtlContext fullTemplateFileName'                                 *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typedef class GALGAS_lstring (*enterExtensionGetter_gtlContext_fullTemplateFileName) (const class cPtr_gtlContext * inObject,
+                                                                                      class GALGAS_gtlContext inArgument0,
+                                                                                      class GALGAS_gtlData inArgument1,
+                                                                                      class GALGAS_lstring inArgument2,
+                                                                                      C_Compiler * inCompiler
                                                                                       COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void enterExtensionGetter_compare (const int32_t inClassIndex,
-                                   enterExtensionGetter_gtlAbstractSortInstruction_compare inMethod) ;
+void enterExtensionGetter_fullTemplateFileName (const int32_t inClassIndex,
+                                                enterExtensionGetter_gtlContext_fullTemplateFileName inGetter) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-class GALGAS_sint callExtensionGetter_compare (const class cPtr_gtlAbstractSortInstruction * inObject,
-                                               const GALGAS_gtlData & constin_s_31_,
-                                               const GALGAS_gtlData & constin_s_32_,
-                                               C_Compiler * inCompiler
-                                               COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 Extension method '@gtlAbstractSortInstruction swap'                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_gtlAbstractSortInstruction_swap) (const class cPtr_gtlAbstractSortInstruction * inObject,
-                                                                          class GALGAS_list & ioArgument0,
-                                                                          const class GALGAS_uint constinArgument1,
-                                                                          const class GALGAS_uint constinArgument2,
-                                                                          class C_Compiler * inCompiler
-                                                                          COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_swap (const int32_t inClassIndex,
-                                extensionMethodSignature_gtlAbstractSortInstruction_swap inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_swap (const class cPtr_gtlAbstractSortInstruction * inObject,
-                               GALGAS_list & io_aList,
-                               const GALGAS_uint constin_index_31_,
-                               const GALGAS_uint constin_index_32_,
-                               C_Compiler * inCompiler
-                               COMMA_LOCATION_ARGS) ;
+class GALGAS_lstring callExtensionGetter_fullTemplateFileName (const cPtr_gtlContext * inObject,
+                                                               GALGAS_gtlContext in_context,
+                                                               GALGAS_gtlData in_vars,
+                                                               GALGAS_lstring in_simpleName,
+                                                               class C_Compiler * inCompiler
+                                                               COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                              Extension method '@gtlAbstractSortInstruction partition'                               *
+//                                            Function 'pathWithExtension'                                             *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-typedef void (*extensionMethodSignature_gtlAbstractSortInstruction_partition) (const class cPtr_gtlAbstractSortInstruction * inObject,
-                                                                               class GALGAS_list & ioArgument0,
-                                                                               const class GALGAS_uint constinArgument1,
-                                                                               const class GALGAS_uint constinArgument2,
-                                                                               class GALGAS_uint & ioArgument3,
-                                                                               class C_Compiler * inCompiler
-                                                                               COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_partition (const int32_t inClassIndex,
-                                     extensionMethodSignature_gtlAbstractSortInstruction_partition inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_partition (const class cPtr_gtlAbstractSortInstruction * inObject,
-                                    GALGAS_list & io_aList,
-                                    const GALGAS_uint constin_min,
-                                    const GALGAS_uint constin_max,
-                                    GALGAS_uint & io_pivotIndex,
-                                    C_Compiler * inCompiler
-                                    COMMA_LOCATION_ARGS) ;
+class GALGAS_string function_pathWithExtension (class GALGAS_gtlContext inArgument0,
+                                                class GALGAS_string inArgument1,
+                                                class C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                                 Extension method '@gtlAbstractSortInstruction sort'                                 *
+//                                    Parser class 'gtl_module_parser' declaration                                     *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-typedef void (*extensionMethodSignature_gtlAbstractSortInstruction_sort) (const class cPtr_gtlAbstractSortInstruction * inObject,
-                                                                          class GALGAS_list & ioArgument0,
-                                                                          const class GALGAS_uint constinArgument1,
-                                                                          const class GALGAS_uint constinArgument2,
-                                                                          class C_Compiler * inCompiler
-                                                                          COMMA_LOCATION_ARGS) ;
+class cParser_gtl_5F_module_5F_parser {
+//--- Virtual destructor
+  public : virtual ~ cParser_gtl_5F_module_5F_parser (void) {}
 
-//---------------------------------------------------------------------------------------------------------------------*
+//--- Non terminal declarations
+  protected : virtual void nt_gtl_5F_argument_5F_list_ (class GALGAS_gtlArgumentList & outArgument0,
+                                                        class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
-void enterExtensionMethod_sort (const int32_t inClassIndex,
-                                extensionMethodSignature_gtlAbstractSortInstruction_sort inMethod) ;
+  protected : virtual void nt_gtl_5F_argument_5F_list_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+  protected : virtual void nt_gtl_5F_expression_ (class GALGAS_gtlExpression & outArgument0,
+                                                  class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
-void callExtensionMethod_sort (const class cPtr_gtlAbstractSortInstruction * inObject,
-                               GALGAS_list & io_aList,
-                               const GALGAS_uint constin_min,
-                               const GALGAS_uint constin_max,
-                               C_Compiler * inCompiler
-                               COMMA_LOCATION_ARGS) ;
+  protected : virtual void nt_gtl_5F_expression_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                        Extension getter '@gtlSortStatementStructInstruction compareElements'                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+  protected : virtual void nt_gtl_5F_function_ (class GALGAS_gtlFunction & outArgument0,
+                                                class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
-typedef class GALGAS_sint (*enterExtensionGetter_gtlSortStatementStructInstruction_compareElements) (const class cPtr_gtlSortStatementStructInstruction * inObject,
-                                                                                                     const class GALGAS_gtlData & constinArgument0,
-                                                                                                     const class GALGAS_gtlData & constinArgument1,
-                                                                                                     class GALGAS_sortingKeyList inArgument2,
-                                                                                                     C_Compiler * inCompiler
-                                                                                                     COMMA_LOCATION_ARGS) ;
+  protected : virtual void nt_gtl_5F_function_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+  protected : virtual void nt_gtl_5F_getter_ (class GALGAS_gtlGetter & outArgument0,
+                                              class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
-void enterExtensionGetter_compareElements (const int32_t inClassIndex,
-                                           enterExtensionGetter_gtlSortStatementStructInstruction_compareElements inGetter) ;
+  protected : virtual void nt_gtl_5F_getter_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+  protected : virtual void nt_gtl_5F_import_ (class GALGAS_gtlContext inArgument0,
+                                              class GALGAS_library & ioArgument1,
+                                              class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
-class GALGAS_sint callExtensionGetter_compareElements (const cPtr_gtlSortStatementStructInstruction * inObject,
-                                                       const GALGAS_gtlData & constin_s_31_,
-                                                       const GALGAS_gtlData & constin_s_32_,
-                                                       GALGAS_sortingKeyList in_keyList,
-                                                       class C_Compiler * inCompiler
-                                                       COMMA_LOCATION_ARGS) ;
+  protected : virtual void nt_gtl_5F_import_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                      Abstract extension getter '@gtlData bool'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+  protected : virtual void nt_gtl_5F_instruction_ (class GALGAS_gtlInstruction & outArgument0,
+                                                   class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
-typedef class GALGAS_bool (*enterExtensionGetter_gtlData_bool) (const class cPtr_gtlData * inObject,
-                                                                class C_Compiler * inCompiler
-                                                                COMMA_LOCATION_ARGS) ;
+  protected : virtual void nt_gtl_5F_instruction_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+  protected : virtual void nt_gtl_5F_instruction_5F_list_ (class GALGAS_gtlInstructionList & outArgument0,
+                                                           class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
-void enterExtensionGetter_bool (const int32_t inClassIndex,
-                                enterExtensionGetter_gtlData_bool inMethod) ;
+  protected : virtual void nt_gtl_5F_instruction_5F_list_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+  protected : virtual void nt_gtl_5F_module_5F_start_5F_symbol_ (class GALGAS_gtlContext inArgument0,
+                                                                 class GALGAS_library & ioArgument1,
+                                                                 class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
-class GALGAS_bool callExtensionGetter_bool (const class cPtr_gtlData * inObject,
-                                            C_Compiler * inCompiler
-                                            COMMA_LOCATION_ARGS) ;
+  protected : virtual void nt_gtl_5F_module_5F_start_5F_symbol_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                      Abstract extension getter '@gtlData gtOp'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+  protected : virtual void nt_gtl_5F_setter_ (class GALGAS_gtlSetter & outArgument0,
+                                              class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
-typedef class GALGAS_gtlData (*enterExtensionGetter_gtlData_gtOp) (const class cPtr_gtlData * inObject,
-                                                                   const class GALGAS_gtlData & constinArgument0,
-                                                                   class C_Compiler * inCompiler
-                                                                   COMMA_LOCATION_ARGS) ;
+  protected : virtual void nt_gtl_5F_setter_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+  protected : virtual void nt_gtl_5F_simple_5F_instruction_ (class GALGAS_gtlInstruction & outArgument0,
+                                                             class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
-void enterExtensionGetter_gtOp (const int32_t inClassIndex,
-                                enterExtensionGetter_gtlData_gtOp inMethod) ;
+  protected : virtual void nt_gtl_5F_simple_5F_instruction_parse (class C_Lexique_gtl_5F_scanner * inLexique) = 0 ;
 
-//---------------------------------------------------------------------------------------------------------------------*
 
-class GALGAS_gtlData callExtensionGetter_gtOp (const class cPtr_gtlData * inObject,
-                                               const GALGAS_gtlData & constin_right,
-                                               C_Compiler * inCompiler
-                                               COMMA_LOCATION_ARGS) ;
+//--- Rule declarations
+  protected : void rule_gtl_5F_module_5F_parser_gtl_5F_instruction_5F_list_i0_ (GALGAS_gtlInstructionList & outArgument0,
+                                                                                C_Lexique_gtl_5F_scanner * inLexique) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                      Abstract extension getter '@gtlData ltOp'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+  protected : void rule_gtl_5F_module_5F_parser_gtl_5F_instruction_5F_list_i0_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
-typedef class GALGAS_gtlData (*enterExtensionGetter_gtlData_ltOp) (const class cPtr_gtlData * inObject,
-                                                                   const class GALGAS_gtlData & constinArgument0,
-                                                                   class C_Compiler * inCompiler
-                                                                   COMMA_LOCATION_ARGS) ;
+  protected : void rule_gtl_5F_module_5F_parser_gtl_5F_module_5F_start_5F_symbol_i1_ (GALGAS_gtlContext inArgument0,
+                                                                                      GALGAS_library & ioArgument1,
+                                                                                      C_Lexique_gtl_5F_scanner * inLexique) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+  protected : void rule_gtl_5F_module_5F_parser_gtl_5F_module_5F_start_5F_symbol_i1_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
-void enterExtensionGetter_ltOp (const int32_t inClassIndex,
-                                enterExtensionGetter_gtlData_ltOp inMethod) ;
+  protected : void rule_gtl_5F_module_5F_parser_gtl_5F_function_i2_ (GALGAS_gtlFunction & outArgument0,
+                                                                     C_Lexique_gtl_5F_scanner * inLexique) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+  protected : void rule_gtl_5F_module_5F_parser_gtl_5F_function_i2_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
-class GALGAS_gtlData callExtensionGetter_ltOp (const class cPtr_gtlData * inObject,
-                                               const GALGAS_gtlData & constin_right,
-                                               C_Compiler * inCompiler
-                                               COMMA_LOCATION_ARGS) ;
+  protected : void rule_gtl_5F_module_5F_parser_gtl_5F_getter_i3_ (GALGAS_gtlGetter & outArgument0,
+                                                                   C_Lexique_gtl_5F_scanner * inLexique) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                              Extension method '@gtlVariablesInstruction displayShort'                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+  protected : void rule_gtl_5F_module_5F_parser_gtl_5F_getter_i3_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
-typedef void (*extensionMethodSignature_gtlVariablesInstruction_displayShort) (const class cPtr_gtlVariablesInstruction * inObject,
-                                                                               const class GALGAS_gtlData constinArgument0,
-                                                                               class C_Compiler * inCompiler
-                                                                               COMMA_LOCATION_ARGS) ;
+  protected : void rule_gtl_5F_module_5F_parser_gtl_5F_setter_i4_ (GALGAS_gtlSetter & outArgument0,
+                                                                   C_Lexique_gtl_5F_scanner * inLexique) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+  protected : void rule_gtl_5F_module_5F_parser_gtl_5F_setter_i4_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
-void enterExtensionMethod_displayShort (const int32_t inClassIndex,
-                                        extensionMethodSignature_gtlVariablesInstruction_displayShort inMethod) ;
+  protected : void rule_gtl_5F_module_5F_parser_gtl_5F_instruction_i5_ (GALGAS_gtlInstruction & outArgument0,
+                                                                        C_Lexique_gtl_5F_scanner * inLexique) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+  protected : void rule_gtl_5F_module_5F_parser_gtl_5F_instruction_i5_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
-void callExtensionMethod_displayShort (const class cPtr_gtlVariablesInstruction * inObject,
-                                       const GALGAS_gtlData constin_vars,
-                                       C_Compiler * inCompiler
-                                       COMMA_LOCATION_ARGS) ;
+  protected : void rule_gtl_5F_module_5F_parser_gtl_5F_instruction_i6_ (GALGAS_gtlInstruction & outArgument0,
+                                                                        C_Lexique_gtl_5F_scanner * inLexique) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                      Abstract extension getter '@gtlData desc'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+  protected : void rule_gtl_5F_module_5F_parser_gtl_5F_instruction_i6_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
-typedef class GALGAS_string (*enterExtensionGetter_gtlData_desc) (const class cPtr_gtlData * inObject,
-                                                                  const class GALGAS_uint & constinArgument0,
-                                                                  class C_Compiler * inCompiler
-                                                                  COMMA_LOCATION_ARGS) ;
+  protected : void rule_gtl_5F_module_5F_parser_gtl_5F_instruction_i7_ (GALGAS_gtlInstruction & outArgument0,
+                                                                        C_Lexique_gtl_5F_scanner * inLexique) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+  protected : void rule_gtl_5F_module_5F_parser_gtl_5F_instruction_i7_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
-void enterExtensionGetter_desc (const int32_t inClassIndex,
-                                enterExtensionGetter_gtlData_desc inMethod) ;
+  protected : void rule_gtl_5F_module_5F_parser_gtl_5F_instruction_i8_ (GALGAS_gtlInstruction & outArgument0,
+                                                                        C_Lexique_gtl_5F_scanner * inLexique) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+  protected : void rule_gtl_5F_module_5F_parser_gtl_5F_instruction_i8_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
-class GALGAS_string callExtensionGetter_desc (const class cPtr_gtlData * inObject,
-                                              const GALGAS_uint & constin_tab,
-                                              C_Compiler * inCompiler
-                                              COMMA_LOCATION_ARGS) ;
+  protected : void rule_gtl_5F_module_5F_parser_gtl_5F_instruction_i9_ (GALGAS_gtlInstruction & outArgument0,
+                                                                        C_Lexique_gtl_5F_scanner * inLexique) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               Extension method '@gtlVariablesInstruction displayLong'                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
+  protected : void rule_gtl_5F_module_5F_parser_gtl_5F_instruction_i9_parse (C_Lexique_gtl_5F_scanner * inLexique) ;
 
-typedef void (*extensionMethodSignature_gtlVariablesInstruction_displayLong) (const class cPtr_gtlVariablesInstruction * inObject,
-                                                                              const class GALGAS_gtlData constinArgument0,
-                                                                              class C_Compiler * inCompiler
-                                                                              COMMA_LOCATION_ARGS) ;
 
-//---------------------------------------------------------------------------------------------------------------------*
 
-void enterExtensionMethod_displayLong (const int32_t inClassIndex,
-                                       extensionMethodSignature_gtlVariablesInstruction_displayLong inMethod) ;
+//--- Select methods
+  protected : virtual int32_t select_gtl_5F_module_5F_parser_0 (C_Lexique_gtl_5F_scanner *) = 0 ;
 
-//---------------------------------------------------------------------------------------------------------------------*
+  protected : virtual int32_t select_gtl_5F_module_5F_parser_1 (C_Lexique_gtl_5F_scanner *) = 0 ;
 
-void callExtensionMethod_displayLong (const class cPtr_gtlVariablesInstruction * inObject,
-                                      const GALGAS_gtlData constin_vars,
-                                      C_Compiler * inCompiler
-                                      COMMA_LOCATION_ARGS) ;
+  protected : virtual int32_t select_gtl_5F_module_5F_parser_2 (C_Lexique_gtl_5F_scanner *) = 0 ;
+
+  protected : virtual int32_t select_gtl_5F_module_5F_parser_3 (C_Lexique_gtl_5F_scanner *) = 0 ;
+
+  protected : virtual int32_t select_gtl_5F_module_5F_parser_4 (C_Lexique_gtl_5F_scanner *) = 0 ;
+
+  protected : virtual int32_t select_gtl_5F_module_5F_parser_5 (C_Lexique_gtl_5F_scanner *) = 0 ;
+
+  protected : virtual int32_t select_gtl_5F_module_5F_parser_6 (C_Lexique_gtl_5F_scanner *) = 0 ;
+
+  protected : virtual int32_t select_gtl_5F_module_5F_parser_7 (C_Lexique_gtl_5F_scanner *) = 0 ;
+
+  protected : virtual int32_t select_gtl_5F_module_5F_parser_8 (C_Lexique_gtl_5F_scanner *) = 0 ;
+
+  protected : virtual int32_t select_gtl_5F_module_5F_parser_9 (C_Lexique_gtl_5F_scanner *) = 0 ;
+
+  protected : virtual int32_t select_gtl_5F_module_5F_parser_10 (C_Lexique_gtl_5F_scanner *) = 0 ;
+
+  protected : virtual int32_t select_gtl_5F_module_5F_parser_11 (C_Lexique_gtl_5F_scanner *) = 0 ;
+
+  protected : virtual int32_t select_gtl_5F_module_5F_parser_12 (C_Lexique_gtl_5F_scanner *) = 0 ;
+
+  protected : virtual int32_t select_gtl_5F_module_5F_parser_13 (C_Lexique_gtl_5F_scanner *) = 0 ;
+
+  protected : virtual int32_t select_gtl_5F_module_5F_parser_14 (C_Lexique_gtl_5F_scanner *) = 0 ;
+
+  protected : virtual int32_t select_gtl_5F_module_5F_parser_15 (C_Lexique_gtl_5F_scanner *) = 0 ;
+
+  protected : virtual int32_t select_gtl_5F_module_5F_parser_16 (C_Lexique_gtl_5F_scanner *) = 0 ;
+
+  protected : virtual int32_t select_gtl_5F_module_5F_parser_17 (C_Lexique_gtl_5F_scanner *) = 0 ;
+
+
+} ;
 
 #endif

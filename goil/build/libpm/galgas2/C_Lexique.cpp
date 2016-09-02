@@ -327,7 +327,7 @@ int32_t C_Lexique::findTemplateDelimiterIndex (const cTemplateDelimiter inTempla
 
 void C_Lexique::performLexicalAnalysis (void) {
   if (executionModeIsLexicalAnalysisOnly ()) {
-    co << "*** PERFORM LEXICAL ANALYSIS ONLY (--mode=lexical-analysis option) ***\n" ;
+    co << "*** PERFORM LEXICAL ANALYSIS ONLY (--mode=lexical-only option) ***\n" ;
   }
   bool loop = true ;
   while (loop) {

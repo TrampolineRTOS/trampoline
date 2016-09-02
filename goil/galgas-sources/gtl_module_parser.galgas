@@ -52,18 +52,10 @@ rule <gtl_instruction_list>
     <gtl_instruction> ?@gtlInstruction instruction
     instructionList += !instruction
     @string templateString = @string.retrieveAndResetTemplateString
-#    if templateString != "" then
-#      instructionList +=
-#        !@gtlTemplateStringInstruction.new{ !.here !signature(!.here) !templateString }
-#    end
   while
     <gtl_simple_instruction> ?@gtlInstruction instruction
     instructionList += !instruction
     @string templateString = @string.retrieveAndResetTemplateString
-#    if templateString != "" then
-#      instructionList +=
-#        !@gtlTemplateStringInstruction.new{ !.here !signature(!.here) !templateString }
-#    end
   end
 }
 
