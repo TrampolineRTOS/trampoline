@@ -33,6 +33,7 @@
 TPL_EXTERN(tpl_register_r2)
 TPL_EXTERN(tpl_register_r13)
 TPL_EXTERN(tpl_msr_start_value)
+TPL_EXTERN(tpl_release_kernel_lock)
 
 TPL_GLOBAL(tpl_init_regs)
 TPL_GLOBAL(tpl_shutdown)
@@ -95,6 +96,10 @@ TPL_GLOBAL_REF(tpl_shutdown):
   se_not    r6
   se_and    r5,r6
   mtmsr     r5
+#if WITH_MULTICORE == YES
+  /* Unlock the kernel */
+  e_bl      TPL_EXTERN_REF(tpl_release_kernel_lock)
+#endif
 infinite_loop:
   se_b     infinite_loop
 /* ------------ NO VLE ------------------------------------------------------*/
@@ -105,6 +110,10 @@ infinite_loop:
   not   r6,r6
   and   r5,r5,r6
   mtmsr r5
+#if WITH_MULTICORE == YES
+  /* Unlock the kernel */
+  bl        TPL_EXTERN_REF(tpl_release_kernel_lock)
+#endif
 infinite_loop:
   b     infinite_loop
 #endif

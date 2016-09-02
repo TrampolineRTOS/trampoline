@@ -19,12 +19,6 @@ let INTERCORE_INTERRUPT := exists INTERCORE_INTERRUPT default (@( ))
 #   handlers declaration
 #
 
-# Watchdog
-if OS::TIMINGPROTECTION then
-%extern FUNC(tpl_bool, OS_CODE) tpl_watchdog_handler(void);
-%
-end if
-
 # ISR
 foreach isr in ISRS do
 %FUNC(tpl_bool, OS_CODE) tpl_isr_handler_% !isr::NAME %(void);
@@ -37,27 +31,31 @@ foreach interrupt in INTERCORE_INTERRUPT do
 %
 end foreach
 
-# Tick
+# Tick & Watchdog
 let counter_map   := mapof COUNTER by NAME
 let interrupt_map := mapof INTERRUPT by NAME
 
 loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
-  let used_interrupts := @( )
+  let tick_sources := @( )
+  let watchdog_sources := @( )
   foreach application in APPLICATION do
     if application::CORE == core_id then
       foreach counter_name in exists application::COUNTER default (@( )) do
         let counter := counter_map[counter_name::VALUE]
         if counter::SOURCE != "decrementer"
-         & counter::TYPE == "HARDWARE"
-         & counter::HANDLER == "tick" then
+         & counter::TYPE == "HARDWARE" then
           let interrupt := interrupt_map[counter::SOURCE]
-          let used_interrupts[counter::SOURCE] := interrupt
+          if counter::HANDLER == "tick" then
+            let tick_sources[counter::SOURCE] := interrupt
+          elsif counter::HANDLER == "watchdog" then
+            let watchdog_sources[counter::SOURCE] := interrupt
+          end if
         end if
       end foreach
     end if
   end foreach
 
-  foreach interrupt in used_interrupts do
+  foreach interrupt in tick_sources do
     if OS::NUMBER_OF_CORES > 1 then
 %FUNC(tpl_bool, OS_CODE) tpl_tick_handler_% !interrupt::NAME%_% !core_id %(void);
 %
@@ -66,6 +64,20 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
 %
     end if
   end foreach
+
+  if OS::TIMINGPROTECTION then
+    foreach interrupt in watchdog_sources do
+      if OS::NUMBER_OF_CORES > 1 then
+
+%FUNC(tpl_bool, OS_CODE) tpl_watchdog_handler_% !interrupt::NAME%_% !core_id %(void);
+%
+      else
+%FUNC(tpl_bool, OS_CODE) tpl_watchdog_handler_% !interrupt::NAME%(void);
+%
+      end if
+    end foreach
+  end if
+
 end loop
 
 ###############################################################################
@@ -110,7 +122,7 @@ CONST(tpl_it_vector_entry, OS_CONST) tpl_it_table_%!core_id%[% !INTERRUPT_COUNT:
           if int_interrupt::CORE == core_id
              & int_interrupt::SOURCE == interrupt::NAME
              & not entryFound then
-              %  { (tpl_it_handler)tpl_intercore_handler_% !int_interrupt::NAME %,(void *)NULL}%
+%  { (tpl_it_handler)tpl_intercore_handler_% !int_interrupt::NAME %,(void *)NULL}%
             let entryFound := true
           end if
         end foreach
@@ -121,13 +133,18 @@ CONST(tpl_it_vector_entry, OS_CONST) tpl_it_table_%!core_id%[% !INTERRUPT_COUNT:
            & counter::TYPE == "HARDWARE"
            & not entryFound then
             if counter::HANDLER == "watchdog" then
-              %  { (tpl_it_handler)tpl_watchdog_handler, (void *)NULL }%
+              if OS::NUMBER_OF_CORES > 1 then
+%  { (tpl_it_handler)tpl_watchdog_handler_% !interrupt::NAME %_%!core_id%, (void *)NULL }%
+              else
+%  { (tpl_it_handler)tpl_watchdog_handler_% !interrupt::NAME %, (void *)NULL }%
+              end if
               let entryFound := true
-            elsif OS::NUMBER_OF_CORES > 1 then
-              %  { (tpl_it_handler)tpl_tick_handler_% !interrupt::NAME %_%!core_id%, (void *)NULL }%
-              let entryFound := true
-            else # Monocore
-              %  { (tpl_it_handler)tpl_tick_handler_% !interrupt::NAME %, (void *)NULL }%
+            elsif counter::HANDLER == "tick" then
+              if OS::NUMBER_OF_CORES > 1 then
+%  { (tpl_it_handler)tpl_tick_handler_% !interrupt::NAME %_%!core_id%, (void *)NULL }%
+              else
+%  { (tpl_it_handler)tpl_tick_handler_% !interrupt::NAME %, (void *)NULL }%
+              end if
               let entryFound := true
             end if
           end if
@@ -210,8 +227,8 @@ CONST(tpl_it_handler, OS_CONST) tpl_dec_table[% !OS::NUMBER_OF_CORES %] = {
     if exists dec_map[[core_id string]] then
       let counter:= dec_map[[core_id string]]
       if counter::HANDLER == "watchdog" then
-%  (tpl_it_handler)tpl_watchdog_handler%
-      else
+%  (tpl_it_handler)tpl_watchdog_expiration%
+      elsif counter::HANDLER == "tick" then
         if OS::NUMBER_OF_CORES == 1 then
 %  (tpl_it_handler)tpl_call_counter_tick_% !counter::SOURCE
         else
@@ -229,7 +246,54 @@ CONST(tpl_it_handler, OS_CONST) tpl_dec_table[% !OS::NUMBER_OF_CORES %] = {
 %
 end if
 
+###############################################################################
+#   tpl_wdg_table This table contains the functions for the watchdog
+#   control for each cores
+let wdg_map := @[]
+let counter_map   := mapof COUNTER by NAME
 
+loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+  foreach application in APPLICATION do
+    if application::CORE == core_id then
+      foreach counter_name in exists application::COUNTER default (@( )) do
+        let counter := counter_map[counter_name::VALUE]
+        if counter::HANDLER == "watchdog"
+         & counter::TYPE == "HARDWARE" then
+          let wdg_map[[core_id string]] := counter
+        end if
+      end foreach
+    end if
+  end foreach
+end loop
+
+if wdg_map != @[] then
+
+  loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+    if exists wdg_map[[core_id string]] then
+      let counter:= wdg_map[[core_id string]]
+%FUNC(void, OS_CODE) tpl_set_tpwatchdog_% !counter::SOURCE %(
+  VAR(tpl_time, AUTOMATIC) delay);
+FUNC(void, OS_CODE) tpl_cancel_tpwatchdog_% !counter::SOURCE %();%
+    end if
+  end loop
+%
+CONSTP2FUNC(void, OS_CONST, tpl_wdg_table[% !OS::NUMBER_OF_CORES * 2%])() = {
+%
+  loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+    if exists wdg_map[[core_id string]] then
+      let counter:= wdg_map[[core_id string]]
+%  tpl_set_tpwatchdog_% !counter::SOURCE %,
+  tpl_cancel_tpwatchdog_% !counter::SOURCE %%
+    else
+%  NULL%
+    end if
+  between%,
+%
+  end loop
+%
+};
+%
+end if
 %
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"

@@ -45,8 +45,6 @@ extern FUNC(void, OS_CODE) tpl_init_pit(void);
 extern FUNC(void, OS_CODE) tpl_load_pit(
   VAR(uint8, AUTOMATIC) pit,
   VAR(uint32, AUTOMATIC) ticks);
-#endif
-
 /* Generated in goil */
 extern FUNC(void, OS_CODE) tpl_load_pits(void);
 
@@ -62,6 +60,8 @@ extern FUNC(tpl_bool, OS_CODE)  tpl_call_counter_tick();
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
 extern FUNC(tpl_bool, OS_CODE) tpl_watchdog_handler(void);
 #endif
+#endif
+
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

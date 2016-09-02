@@ -325,7 +325,7 @@ FUNC(void, OS_CODE) tpl_set_tpwatchdog(
   VAR(tpl_time, AUTOMATIC) delay)
 {
   GET_CURRENT_CORE_ID(core_id)
-  tpl_load_pit(TPL_WDG_TIMER, TPL_PIT_VALUE(delay - GET_CURRENT_DATE(core_id)));
+  TPL_SET_TPWATCHDOG(core_id, delay);
 }
 
 
@@ -336,9 +336,22 @@ FUNC(void, OS_CODE) tpl_set_tpwatchdog(
  */
 FUNC(void, OS_CODE) tpl_cancel_tpwatchdog(void)
 {
-  tpl_stop_pit(TPL_WDG_TIMER);
+  GET_CURRENT_CORE_ID(core_id)
+  TPL_CANCEL_TPWATCHDOG(core_id);
 }
 
+/**
+ * tpl_get_tptimer
+ *
+ * @return the current date
+ *
+ * FIXME : Should take core_id as a parameter
+ */
+FUNC(tpl_time, OS_CODE) tpl_get_tptimer(void)
+{
+  GET_CURRENT_CORE_ID(core_id)
+  return GET_CURRENT_DATE(core_id);
+}
 
 /**
  * tpl_get_local_current_date returns the current date in number of ticks
@@ -351,25 +364,10 @@ FUNC(void, OS_CODE) tpl_cancel_tpwatchdog(void)
 FUNC(tpl_time, OS_CODE) tpl_get_local_current_date(void)
 {
   GET_CURRENT_CORE_ID(core_id)
-
-  return GET_CURRENT_DATE(core_id);
-}
-
-/**
- * Pit channels uses relative adresses, so this should always return 0
- *
- * @return watchdog start date
- *
- */
-FUNC(tpl_time, OS_CODE) tpl_get_tptimer(void)
-{
-  GET_CURRENT_CORE_ID(core_id)
-
   return GET_CURRENT_DATE(core_id);
 }
 
 #endif
-
 
 #if WITH_MULTICORE == YES
 
