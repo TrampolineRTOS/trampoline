@@ -213,8 +213,8 @@ rule '0'->'9'{
           convertStringToDouble ( !number !?floatNumber error unableToConvertToDouble)
           send $float_number$
       end
-      default
-        send $uint_number$
+    default
+      send $uint_number$
   end
 }
 
