@@ -24,6 +24,8 @@
 #
 #---------------------------------------------------------------------------*
 
+# 3.0.6    Updated to GTL 3.0.6. Debugger with command files and load command
+# 3.0.5    Updated to GTL 3.0.5. Debugger with history and line editing
 # 3.0.4    Updated to GTL 3.0.4. Debugger usable
 # 3.0.3    Updated to GTL 3.0.3. Debugger in progress
 # 3.0.2    Bug fix in GTL, lazy copy bug from galgas
@@ -43,7 +45,7 @@
 #          string
 # 2.1.20   Added -o and -r options to goil
 
-project (3:0:4) -> "goil" {
+project (3:0:6) -> "goil" {
 
   %makefile-macosx
   %makefile-unix
@@ -59,6 +61,7 @@ project (3:0:4) -> "goil" {
 #---------------------------------------------------------------------------*
 # GTL
 #---------------------------------------------------------------------------*
+  "galgas-sources/gtl_interface.galgas"
   "galgas-sources/gtl_types.galgas"
   "galgas-sources/gtl_expressions.galgas"
   "galgas-sources/gtl_data_types.galgas"
@@ -74,8 +77,11 @@ project (3:0:4) -> "goil" {
   "galgas-sources/gtl_functions.galgas"
   "galgas-sources/gtl_options.galgas"
   "galgas-sources/gtl_debugger.galgas"
-  "galgas-sources/gtl_debugger_parser.galgas"
+  "galgas-sources/gtl_debugger_input.galgas"
+  "galgas-sources/gtl_debugger_scanner.galgas"
   "galgas-sources/gtl_debugger_grammar.galgas"
+  "galgas-sources/gtl_debugger_parser.galgas"
+  "galgas-sources/gtl_debugger_expression_parser.galgas"
 
 
 #---------------------------------------------------------------------------*

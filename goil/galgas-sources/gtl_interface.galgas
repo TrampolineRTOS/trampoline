@@ -33,11 +33,13 @@ func invokeGTL
 ->@string    result                 # output string
 {  
   result = ""
+  @library    lib = emptyLib()
   
   if [option gtl_options.debug value] then
     message "Starting debugger, type help for command list\n"
-  end 
- 
+    [".gtlinit" loadCommandFile !?context !?vars !?lib]
+  end
+  
   # Build a template instruction
   @gtlTemplateInstruction rootTemplateInstruction = .new {
     !.here
@@ -54,8 +56,6 @@ func invokeGTL
   }
   
   # Execute the template
-  @library    lib = emptyLib()
-
   [rootTemplateInstruction execute
     !?context
     !?vars

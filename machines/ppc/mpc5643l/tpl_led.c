@@ -42,7 +42,20 @@
 #define LED1    52
 #define LED2    53
 #define LED3    54
-#define LED4    55
+#define LED4    55 /* XXX : Used by Nexus Port */
+
+#define BUTTONS_COUNT  4
+
+/*
+ * BUT0 => GPIO48
+ * BUT1 => GPIO49
+ * BUT2 => GPIO50
+ * BUT3 => GPIO51
+ */
+#define BUT1    48
+#define BUT2    49
+#define BUT3    50
+#define BUT4    51
 
 #if (((defined DEBUG_OS_MCU_IN_SUPERVISOR_MODE) \
        || (WITH_MEMORY_PROTECTION == NO))       \
@@ -51,6 +64,7 @@
 #define API_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 STATIC CONST(uint8, OS_CONST) led_tab[LED_COUNT] = {LED1, LED2, LED3, LED4};
+STATIC CONST(uint8, OS_CONST) button_tab[LED_COUNT] = {BUT1, BUT2, BUT3, BUT4};
 #define API_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
@@ -68,10 +82,26 @@ void initLed()
     }
 }
 
+void initButton()
+{
+    int i;
+    for(i = 0; i < BUTTONS_COUNT; i++)
+    {
+        int but_id = button_tab[i];
+        SIUL.PCR[but_id] = 0x104;  // set inputs
+    }
+}
+
 void setLed(unsigned int id, unsigned int state)
 {
     int led_id = led_tab[id % LED_COUNT];
     SIUL.GPDO[led_id] = state ? 0 : 1;
+}
+
+int readButton(unsigned int id)
+{
+    int but_id = button_tab[id % BUTTONS_COUNT];
+    return SIUL.GPDI[but_id];
 }
 
 #define API_STOP_SEC_CODE

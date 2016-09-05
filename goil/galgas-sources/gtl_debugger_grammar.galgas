@@ -26,14 +26,11 @@
 
 grammar gtl_debugger_grammar "LL1" {
   syntax gtl_debugger_parser
-  syntax gtl_expression_parser
+  syntax gtl_debugger_expression_parser
 
   
    <gtl_debugger_command>
      !@gtlInstruction instruction
-
-  unused <gtl_variable_or_here>
-  unused <gtl_argument_list>
 }
 
 #---------------------------------------------------------------------------*

@@ -9,6 +9,11 @@
 			<key>orderHint</key>
 			<integer>3</integer>
 		</dict>
+		<key>Cocoa goil 4.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
 		<key>Cocoa goil.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -43,6 +48,11 @@
 			<true/>
 		</dict>
 		<key>472EC9115B10C292EF8BC986</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>48FAC1B4A0F97AA554886EC8</key>
 		<dict>
 			<key>primary</key>
 			<true/>

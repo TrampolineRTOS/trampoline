@@ -737,23 +737,23 @@ proc generate_all
       if target != "" then
 
           # Build a template instruction
-          @gtlTemplateInstruction rootTemplateInstruction = .new {
-            !.here
-            !""
-            !emptylstring()
-            !@gtlTerminal.new {
-              !.here
-              !@gtlString.new { 
-                !.here 
-                !lstring(!"root template filename") 
-                ![option goil_options.root value]
-              }
-            }
-            !false       # should always exist
-            !true        # global template
-            !.emptyList  # no argument
-            !.emptyList  # no instruction if not found
-          }
+#          @gtlTemplateInstruction rootTemplateInstruction = .new {
+#            !.here
+#            !""
+#            !emptylstring()
+#            !@gtlTerminal.new {
+#              !.here
+#              !@gtlString.new { 
+#                !.here 
+#                !lstring(!"root template filename") 
+#                ![option goil_options.root value]
+#              }
+#            }
+#            !false       # should always exist
+#            !true        # global template
+#            !.emptyList  # no argument
+#            !.emptyList  # no instruction if not found
+#          }
                     
           @gtlContext context = emptyGoilContext()
           [!?context setTemplateDirectory
@@ -771,14 +771,22 @@ proc generate_all
           ]
                     
           @library    lib = emptyLib()
-          @string     goilLog = ""
+          @string     goilLog = invokeGTL (
+            !@gtlString.new { 
+                !.here 
+                !lstring(!"root template filename") 
+                ![option goil_options.root value]
+             }
+            !context
+            !cfg
+          )
           
-          [rootTemplateInstruction execute
-            !?context
-            !?cfg
-            !?lib
-            !?goilLog
-          ]
+#          [rootTemplateInstruction execute
+#            !?context
+#            !?cfg
+#            !?lib
+#            !?goilLog
+#          ]
 
           if [option goil_options.generate_log value] then
             [goilLog writeToFile !"goil.log"]

@@ -780,13 +780,13 @@ C_String C_FileManager::currentDirectory (void) {
 //---------------------------------------------------------------------------------------------------------------------*
 
 bool C_FileManager::makeDirectoryIfDoesNotExist (const C_String & inDirectoryPath) {
-  const C_String s = inDirectoryPath.stringByStandardizingPath () ;
-  bool ok = directoryExists (s) ;
-  // co << "TEST '" << s << "' '" << inDirectoryPath << "' " << (ok ? "yes" : "no") << "\n" ;
+  const C_String directoryPath = absolutePathFromCurrentDirectory (inDirectoryPath) ;
+  bool ok = directoryExists (directoryPath) ;
+  // co << "TEST '" << s << "' '" << directoryPath << "' " << (ok ? "yes" : "no") << "\n" ;
   if (! ok) {
-    ok = makeDirectoryIfDoesNotExist (inDirectoryPath.stringByDeletingLastPathComponent ()) ;
-    if (ok && !directoryExists (inDirectoryPath)) { // Special case when the path contains ../
-      const C_String nativePath = nativePathWithUnixPath (inDirectoryPath) ;
+    ok = makeDirectoryIfDoesNotExist (directoryPath.stringByDeletingLastPathComponent ()) ;
+    if (ok && !directoryExists (directoryPath)) { // Special case when the path contains ../
+      const C_String nativePath = nativePathWithUnixPath (directoryPath) ;
     //--- Create directory (mkdir returns 0 if creation is ok)
       #if COMPILE_FOR_WINDOWS == 1
         const int result = ::mkdir (nativePath.cString (HERE)) ;

@@ -12,7 +12,7 @@ C_CONST_FLAGS = (
                  " +debug"      # debug flags
                  " +warn"       # enable warnings
                  " -p -ku"      # keep unused static
-                 " -v"          # verbose
+#                " -v"          # verbose
                  " -no"         # FIXME : Optimizer disabled
                  " +modv"       # VLE Mode
 #                 " +rev"        # bitfields MSB to LSB
@@ -104,9 +104,9 @@ def asm_call(args):
     command_assemble = command_assemble + " -o " + "".join(args.o)
     command_assemble = command_assemble + " " + temp_file
 
-    print("##### PREPROC : \n" + command_preproc)
-    print("##### CORRECT : \n" + command_rmv_comments)
-    print("##### ASSEMBL : \n" + command_assemble)
+#    print("##### PREPROC : \n" + command_preproc)
+#    print("##### CORRECT : \n" + command_rmv_comments)
+#    print("##### ASSEMBL : \n" + command_assemble)
 
     process = subprocess.Popen([command_preproc], universal_newlines=True, shell=True)
     process.wait()

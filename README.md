@@ -61,12 +61,13 @@ Some examples have been added (check examples):
 * ppc: 2 examples for MPC5643L
   * **blink_1c**. Blinks a LED using an alarm and a task.
   * **blink_2c**. Blinks two leds using two synchronized cores with one task and one alarm per core.
+  * **button_2c**. Waits for a button input to light a led. Switch it off using Timing Protection watchdog. Multicore example.
 
 More examples are coming.
 
 ## Precompiled binaries of goil, the OIL compiler
 
-Updated to version 3.0.4
+Updated to version 3.0.6
 
 * Mac OS X: [goil-mac-os-x.zip](http://trampoline.rts-software.org/bin/goil-mac-os-x.zip)
 * Mac OS X Cocoa Application with editor: [CocoaGoil.app.zip](http://trampoline.rts-software.org/bin/CocoaGoil.app.zip)

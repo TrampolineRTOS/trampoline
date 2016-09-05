@@ -24,7 +24,7 @@
 #
 #-----------------------------------------------------------------------------*
 
-syntax gtl_debugger_parser (gtl_scanner) {
+syntax gtl_debugger_parser (gtl_debugger_scanner) {
 
 #-----------------------------------------------------------------------------*
 rule <gtl_expression>
@@ -37,20 +37,26 @@ rule <gtl_variable>
 rule <gtl_debugger_command>
   !@gtlInstruction instruction
 {
-  $identifier$ ?let @lstring command
-  if "c" == command | "cont" == command | "continue" == command then
-    instruction = @gtlContinueInstruction.new {
-      !.here
-      !""
-    }
-  elsif "help" == command then
-    instruction = @gtlHelpInstruction.new {
-      !.here
-      !""
-    }    
-  else
-    error .here : "Illegal command: " + command : instruction
+  select
+    $cont$
+  or
+    $continue$
   end
+  instruction = @gtlContinueInstruction.new {
+    !.here
+    !""
+  }
+}
+
+#-----------------------------------------------------------------------------*
+rule <gtl_debugger_command>
+  !@gtlInstruction instruction
+{
+  $help$
+  instruction = @gtlHelpInstruction.new {
+    !.here
+    !""
+  }    
 }
 
 #-----------------------------------------------------------------------------*
@@ -68,15 +74,52 @@ rule <gtl_debugger_command>
 rule <gtl_debugger_command>
   !@gtlInstruction instruction
 {
+  $load$
+  @lstring fileName
+  select
+    $identifier$ ?fileName
+  or
+    $string$ ?fileName
+  end
+  instruction = @gtlLoadInstruction.new {
+    !.here
+    !""
+    !fileName
+  }
+}
+
+#-----------------------------------------------------------------------------*
+rule <gtl_debugger_command>
+  !@gtlInstruction instruction
+{
+  $hist$
+  instruction = @gtlHistoryInstruction.new {
+    !.here
+    !""
+  }
+}
+
+#-----------------------------------------------------------------------------*
+rule <gtl_debugger_command>
+  !@gtlInstruction instruction
+{
   $break$
   select
     $not$
-    $signed_literal_integer_bigint$ ?let @lbigint index
-    instruction = @gtlBreakpointDeleteInstruction.new {
-      !.here
-      !""
-      !index
-    }
+    select
+      $signed_literal_integer_bigint$ ?let @lbigint index
+      instruction = @gtlBreakpointDeleteInstruction.new {
+        !.here
+        !""
+        !index
+      }
+    or
+      $all$
+      instruction = @gtlBreakpointDeleteAllInstruction.new {
+        !.here
+        !""
+      }      
+    end
   or
     select 
       $identifier$ ?let @lstring fileName
@@ -126,6 +169,44 @@ rule <gtl_debugger_command>
 rule <gtl_debugger_command>
   !@gtlInstruction instruction
 {
+  $watch$
+  select
+    $not$
+    select
+      $signed_literal_integer_bigint$ ?let @lbigint index
+      instruction = @gtlWatchpointDeleteInstruction.new {
+        !.here
+        !""
+        !index
+      }
+    or
+      $all$
+      instruction = @gtlWatchpointDeleteAllInstruction.new {
+        !.here
+        !""
+      }      
+    end
+  or
+    $($
+    <gtl_expression> ?let @gtlExpression watchExpression
+    instruction = @gtlWatchpointInstruction.new {
+      !.here
+      !""
+      !watchExpression
+    }
+    $)$
+  or
+    instruction = @gtlWatchpointListInstruction.new {
+      !.here
+      !""
+    }
+  end  
+}
+
+#-----------------------------------------------------------------------------*
+rule <gtl_debugger_command>
+  !@gtlInstruction instruction
+{
   
   $do$
   select
@@ -137,12 +218,20 @@ rule <gtl_debugger_command>
     }
   or
     $not$
-    $signed_literal_integer_bigint$ ?let @lbigint num
-    instruction = @gtlDoNotInstruction.new {
-      !.here
-      !""
-      !num
-    }
+    select
+      $signed_literal_integer_bigint$ ?let @lbigint num
+      instruction = @gtlDoNotInstruction.new {
+        !.here
+        !""
+        !num
+      }
+    or
+      $all$
+      instruction = @gtlDoNotAllInstruction.new {
+        !.here
+        !""
+      }      
+    end
   or
     instruction = @gtlDoInstruction.new {
       !.here
@@ -338,11 +427,67 @@ rule <gtl_step_do_command>
 rule <gtl_step_do_command>
   !@gtlInstruction instruction
 {
-  $here$
-  instruction = @gtlHereInstruction.new {
+  $list$
+  @uint window = 5
+  select 
+    $signed_literal_integer_bigint$ ?let @lbigint num
+    window = [[num bigint] uint]
+    if window > 10 then window = 10 end
+  or
+  end
+  instruction = @gtlListInstruction.new {
     !.here
     !""
+    !window
   }
+}
+
+#-----------------------------------------------------------------------------*
+# if ... elsif ... else ... end if instruction in a module
+#-----------------------------------------------------------------------------*
+rule <gtl_step_do_command>
+  !@gtlInstruction instruction
+{
+  @gtlThenElsifStatementList thenElsifList = .emptyList
+  @gtlInstructionList elseList = .emptyList
+  
+  $if$ @location where = .here
+  repeat
+    <gtl_expression> ?@gtlExpression condition
+    $then$
+    <gtl_step_do_command_list> ?@gtlInstructionList instructionList
+    
+    thenElsifList += !condition !instructionList
+  while
+    $elsif$
+  end
+#--- else
+  select
+    $else$
+    <gtl_step_do_command_list> ?elseList
+  or end
+#---
+  $end$
+  $if$
+  
+  instruction = @gtlIfStatementInstruction.new {
+    !where !signature(!where) !thenElsifList !elseList
+  }
+}
+
+#-----------------------------------------------------------------------------*
+# Instruction list in a setter, getter or function or any control instruction
+#-----------------------------------------------------------------------------*
+rule <gtl_step_do_command_list>
+  !@gtlInstructionList instructionList
+{
+  instructionList = .emptyList
+
+  repeat
+  while
+    <gtl_step_do_command> ?@gtlInstruction instruction
+    instructionList += !instruction
+  end
 }
 
 }

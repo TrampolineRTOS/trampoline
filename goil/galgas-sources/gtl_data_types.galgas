@@ -223,12 +223,14 @@ list @gtlTypedArgumentList {
 abstract getter @gtlData performGetter
   ?let @lstring     methodName
   ?let @gtlDataList arguments
+  ?let @gtlContext  context
   ?let @library     lib
   ->@gtlData       
 
 abstract setter @gtlData performSetter
   ?let @lstring     methodName
   ?let @gtlDataList arguments
+  ?let @gtlContext  context
   ?let @library     lib
 
 method @gtlData structField
@@ -454,6 +456,7 @@ override method @gtlUnconstructed addMyValue ?!@objectlist unused objectList
 override getter @gtlUnconstructed performGetter
   ?let @lstring     methodName
   ?let @gtlDataList arguments
+  ?let @gtlContext  context
   ?let @library     lib
   ->@gtlData        result
 {
@@ -475,6 +478,7 @@ override getter @gtlUnconstructed performGetter
   elsif [lib getterExists !"unconstructed" !methodName] then
     result = [[lib getGetter !"unconstructed" !methodName] callGetter
       ![methodName location]
+      !context
       !lib
       !self
       !arguments
@@ -490,6 +494,7 @@ override getter @gtlUnconstructed performGetter
 override setter @gtlUnconstructed performSetter
   ?let @lstring     methodName
   ?let @gtlDataList arguments
+  ?let @gtlContext  context
   ?let @library     lib
 {
   if "setDescription" == methodName then
@@ -504,6 +509,7 @@ override setter @gtlUnconstructed performSetter
     @gtlData copy = self
     [[lib getSetter !"unconstructed" !methodName] callSetter
       ![methodName location]
+      !context
       !lib
       !?copy
       !arguments
@@ -629,6 +635,7 @@ override method @gtlType addMyValue ?!@objectlist objectList
 override getter @gtlType performGetter
   ?let @lstring     methodName
   ?let @gtlDataList arguments
+  ?let @gtlContext  context
   ?let @library     lib
   ->@gtlData        result
 {
@@ -655,6 +662,7 @@ override getter @gtlType performGetter
   elsif [lib getterExists !"type" !methodName] then
     result = [[lib getGetter !"type" !methodName] callGetter
       ![methodName location]
+      !context
       !lib
       !self
       !arguments
@@ -668,9 +676,10 @@ override getter @gtlType performGetter
 # Performs a setter on a @gtlType
 #-----------------------------------------------------------------------------*
 override setter @gtlType performSetter
-  ?let @lstring            methodName
-  ?let @gtlDataList        arguments
-  ?let @library            lib
+  ?let @lstring     methodName
+  ?let @gtlDataList arguments
+  ?let @gtlContext  context
+  ?let @library     lib
 {
   if "setDescription" == methodName then
     argumentsCheck(!methodName !stringArgument() !arguments)
@@ -684,6 +693,7 @@ override setter @gtlType performSetter
     @gtlData copy = self
     [[lib getSetter !"type" !methodName] callSetter
       ![methodName location]
+      !context
       !lib
       !?copy
       !arguments
@@ -817,6 +827,7 @@ override method @gtlEnum addMyValue ?!@objectlist unused objectList
 override getter @gtlEnum performGetter
   ?let @lstring     methodName
   ?let @gtlDataList arguments
+  ?let @gtlContext  context
   ?let @library     lib
   ->@gtlData        result
 {
@@ -843,6 +854,7 @@ override getter @gtlEnum performGetter
   elsif [lib getterExists !"enum" !methodName] then
     result = [[lib getGetter !"enum" !methodName] callGetter
       ![methodName location]
+      !context
       !lib
       !self
       !arguments
@@ -858,6 +870,7 @@ override getter @gtlEnum performGetter
 override setter @gtlEnum performSetter
   ?let @lstring     methodName
   ?let @gtlDataList arguments
+  ?let @gtlContext  context
   ?let @library     lib
 {
   if "setDescription" == methodName then
@@ -872,6 +885,7 @@ override setter @gtlEnum performSetter
     @gtlData copy = self
     [[lib getSetter !"enum" !methodName] callSetter
       ![methodName location]
+      !context
       !lib
       !?copy
       !arguments
@@ -1055,6 +1069,7 @@ override method @gtlChar addMyValue ?!@objectlist objectList
 override getter @gtlChar performGetter
   ?let @lstring     methodName
   ?let @gtlDataList arguments
+  ?let @gtlContext  context
   ?let @library     lib
   ->@gtlData        result
 {
@@ -1116,6 +1131,7 @@ override getter @gtlChar performGetter
   elsif [lib getterExists !"char" !methodName] then
     result = [[lib getGetter !"char" !methodName] callGetter
       ![methodName location]
+      !context
       !lib
       !self
       !arguments
@@ -1131,6 +1147,7 @@ override getter @gtlChar performGetter
 override setter @gtlChar performSetter
   ?let @lstring     methodName
   ?let @gtlDataList arguments
+  ?let @gtlContext  context
   ?let @library     lib
 {
   if "setDescription" == methodName then
@@ -1145,6 +1162,7 @@ override setter @gtlChar performSetter
     @gtlData copy = self
     [[lib getSetter !"char" !methodName] callSetter
       ![methodName location]
+      !context
       !lib
       !?copy
       !arguments
@@ -1412,6 +1430,7 @@ override method @gtlInt addMyValue ?!@objectlist objectList
 override getter @gtlInt performGetter
   ?let @lstring     methodName
   ?let @gtlDataList arguments
+  ?let @gtlContext  context
   ?let @library     lib
   ->@gtlData        result
 {
@@ -1578,6 +1597,7 @@ override getter @gtlInt performGetter
   elsif [lib getterExists !"int" !methodName] then
     result = [[lib getGetter !"int" !methodName] callGetter
       ![methodName location]
+      !context
       !lib
       !self
       !arguments
@@ -1593,6 +1613,7 @@ override getter @gtlInt performGetter
 override setter @gtlInt performSetter
   ?let @lstring     methodName
   ?let @gtlDataList arguments
+  ?let @gtlContext  context
   ?let @library     lib
 {
   if    [methodName string] == "setBitAtIndex" then
@@ -1618,6 +1639,7 @@ override setter @gtlInt performSetter
     @gtlData copy = self
     [[lib getSetter !"int" !methodName] callSetter
       ![methodName location]
+      !context
       !lib
       !?copy
       !arguments
@@ -1831,6 +1853,7 @@ override method @gtlFloat addMyValue ?!@objectlist objectList
 override getter @gtlFloat performGetter
   ?let @lstring     methodName
   ?let @gtlDataList arguments
+  ?let @gtlContext  context
   ?let @library     lib
   ->@gtlData        result
 {
@@ -1923,6 +1946,7 @@ override getter @gtlFloat performGetter
   elsif [lib getterExists !"float" !methodName] then
     result = [[lib getGetter !"float" !methodName] callGetter
       ![methodName location]
+      !context
       !lib
       !self
       !arguments
@@ -1938,6 +1962,7 @@ override getter @gtlFloat performGetter
 override setter @gtlFloat performSetter
   ?let @lstring     methodName
   ?let @gtlDataList arguments
+  ?let @gtlContext  context
   ?let @library     lib
 {
   if "setDescription" == methodName then
@@ -1952,6 +1977,7 @@ override setter @gtlFloat performSetter
     @gtlData copy = self
     [[lib getSetter !"float" !methodName] callSetter
       ![methodName location]
+      !context
       !lib
       !?copy
       !arguments
@@ -2141,6 +2167,7 @@ override method @gtlString addMyValue ?!@objectlist objectList
 override getter @gtlString performGetter
   ?let @lstring     methodName
   ?let @gtlDataList arguments
+  ?let @gtlContext  context
   ?let @library     lib
   ->@gtlData        result
 {
@@ -2406,6 +2433,7 @@ override getter @gtlString performGetter
   elsif [lib getterExists !"string" !methodName] then
     result = [[lib getGetter !"string" !methodName] callGetter
       ![methodName location]
+      !context
       !lib
       !self
       !arguments
@@ -2422,6 +2450,7 @@ override getter @gtlString performGetter
 override setter @gtlString performSetter
   ?let @lstring     methodName
   ?let @gtlDataList arguments
+  ?let @gtlContext  context
   ?let @library     lib
 {
   if    "setDescription" == methodName then
@@ -2442,6 +2471,7 @@ override setter @gtlString performSetter
     @gtlData copy = self
     [[lib getSetter !"string" !methodName] callSetter
       ![methodName location]
+      !context
       !lib
       !?copy
       !arguments
@@ -2649,6 +2679,7 @@ override method @gtlBool addMyValue ?!@objectlist objectList
 override getter @gtlBool performGetter
   ?let @lstring     methodName
   ?let @gtlDataList arguments
+  ?let @gtlContext  context
   ?let @library     lib
   ->@gtlData        result
 {
@@ -2712,6 +2743,7 @@ override getter @gtlBool performGetter
   elsif [lib getterExists !"bool" !methodName] then
     result = [[lib getGetter !"bool" !methodName] callGetter
       ![methodName location]
+      !context
       !lib
       !self
       !arguments
@@ -2728,6 +2760,7 @@ override getter @gtlBool performGetter
 override setter @gtlBool performSetter
   ?let @lstring     methodName
   ?let @gtlDataList arguments
+  ?let @gtlContext  context
   ?let @library     lib
 {
   if "setDescription" == methodName then
@@ -2742,6 +2775,7 @@ override setter @gtlBool performSetter
     @gtlData copy = self
     [[lib getSetter !"bool" !methodName] callSetter
       ![methodName location]
+      !context
       !lib
       !?copy
       !arguments
@@ -2951,6 +2985,7 @@ override method @gtlSet addMyValue ?!@objectlist objectList
 override getter @gtlSet performGetter
   ?let @lstring     methodName
   ?let @gtlDataList arguments
+  ?let @gtlContext  context
   ?let @library     lib
   ->@gtlData        result
 {
@@ -2988,6 +3023,7 @@ override getter @gtlSet performGetter
   elsif [lib getterExists !"set" !methodName] then
     result = [[lib getGetter !"set" !methodName] callGetter
       ![methodName location]
+      !context
       !lib
       !self
       !arguments
@@ -3004,6 +3040,7 @@ override getter @gtlSet performGetter
 override setter @gtlSet performSetter
   ?let @lstring     methodName
   ?let @gtlDataList arguments
+  ?let @gtlContext  context
   ?let @library     lib
 {
   if "setDescription" == methodName then
@@ -3028,6 +3065,7 @@ override setter @gtlSet performSetter
     @gtlData copy = self
     [[lib getSetter !"set" !methodName] callSetter
       ![methodName location]
+      !context
       !lib
       !?copy
       !arguments
@@ -3206,6 +3244,7 @@ override method @gtlStruct addMyValue ?!@objectlist objectList
 override getter @gtlStruct performGetter
   ?let @lstring     methodName
   ?let @gtlDataList arguments
+  ?let @gtlContext  context
   ?let @library     lib
   ->@gtlData        result
 {
@@ -3234,6 +3273,7 @@ override getter @gtlStruct performGetter
   elsif [lib getterExists !"struct" !methodName] then
     result = [[lib getGetter !"struct" !methodName] callGetter
       ![methodName location]
+      !context
       !lib
       !self
       !arguments
@@ -3250,6 +3290,7 @@ override getter @gtlStruct performGetter
 override setter @gtlStruct performSetter
   ?let @lstring     methodName
   ?let @gtlDataList arguments
+  ?let @gtlContext  context
   ?let @library     lib
 {
   if "setDescription" == methodName then
@@ -3264,6 +3305,7 @@ override setter @gtlStruct performSetter
     @gtlData copy = self
     [[lib getSetter !"struct" !methodName] callSetter
       ![methodName location]
+      !context
       !lib
       !?copy
       !arguments
@@ -3510,6 +3552,7 @@ override method @gtlList addMyValue ?!@objectlist objectList
 override getter @gtlList performGetter
   ?let @lstring     methodName
   ?let @gtlDataList arguments
+  ?let @gtlContext  context
   ?let @library     lib
   ->@gtlData        result
 {
@@ -3575,7 +3618,7 @@ override getter @gtlList performGetter
       }
     end
   elsif "mapBy"                  == methodName then
-    argumentsCheck(!methodName !stringArgument() !arguments)
+    argumentsCheck(!methodName !anyArgument() !arguments)
     @lstring key = [[arguments dataAtIndex !0] lstring]
     @gtlVarMap resultMap = .emptyMap
     for (item) in [self value] do (index)
@@ -3645,6 +3688,7 @@ override getter @gtlList performGetter
   elsif [lib getterExists !"list" !methodName] then
     result = [[lib getGetter !"list" !methodName] callGetter
       ![methodName location]
+      !context
       !lib
       !self
       !arguments
@@ -3661,6 +3705,7 @@ override getter @gtlList performGetter
 override setter @gtlList performSetter
   ?let @lstring     methodName
   ?let @gtlDataList arguments
+  ?let @gtlContext  context
   ?let @library     lib
 {
   if "setDescription" == methodName then
@@ -3685,6 +3730,7 @@ override setter @gtlList performSetter
     @gtlData copy = self
     [[lib getSetter !"list" !methodName] callSetter
       ![methodName location]
+      !context
       !lib
       !?copy
       !arguments
@@ -3909,6 +3955,7 @@ override method @gtlMap addMyValue ?!@objectlist objectList
 override getter @gtlMap performGetter
   ?let @lstring     methodName
   ?let @gtlDataList arguments
+  ?let @gtlContext  context
   ?let @library     lib
   ->@gtlData        result
 {
@@ -3944,6 +3991,7 @@ override getter @gtlMap performGetter
   elsif [lib getterExists !"map" !methodName] then
     result = [[lib getGetter !"map" !methodName] callGetter
       ![methodName location]
+      !context
       !lib
       !self
       !arguments
@@ -3960,6 +4008,7 @@ override getter @gtlMap performGetter
 override setter @gtlMap performSetter
   ?let @lstring     methodName
   ?let @gtlDataList arguments
+  ?let @gtlContext  context
   ?let @library     lib
 {
   if "setDescription" == methodName then
@@ -3974,6 +4023,7 @@ override setter @gtlMap performSetter
     @gtlData copy = self
     [[lib getSetter !"map" !methodName] callSetter
       ![methodName location]
+      !context
       !lib
       !?copy
       !arguments

@@ -11,232 +11,244 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                                      Extension getter '@gtlContext fullPrefix'                                      *
+//                                                Function 'invokeGTL'                                                 *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-typedef class GALGAS_lstring (*enterExtensionGetter_gtlContext_fullPrefix) (const class cPtr_gtlContext * inObject,
-                                                                            const class GALGAS_gtlData & constinArgument0,
-                                                                            C_Compiler * inCompiler
-                                                                            COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_fullPrefix (const int32_t inClassIndex,
-                                      enterExtensionGetter_gtlContext_fullPrefix inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_lstring callExtensionGetter_fullPrefix (const cPtr_gtlContext * inObject,
-                                                     const GALGAS_gtlData & constin_vars,
-                                                     class C_Compiler * inCompiler
-                                                     COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                 Extension getter '@gtlContext fullTemplateFileName'                                 *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef class GALGAS_lstring (*enterExtensionGetter_gtlContext_fullTemplateFileName) (const class cPtr_gtlContext * inObject,
-                                                                                      class GALGAS_gtlContext inArgument0,
-                                                                                      class GALGAS_gtlData inArgument1,
-                                                                                      class GALGAS_lstring inArgument2,
-                                                                                      C_Compiler * inCompiler
-                                                                                      COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_fullTemplateFileName (const int32_t inClassIndex,
-                                                enterExtensionGetter_gtlContext_fullTemplateFileName inGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-class GALGAS_lstring callExtensionGetter_fullTemplateFileName (const cPtr_gtlContext * inObject,
-                                                               GALGAS_gtlContext in_context,
-                                                               GALGAS_gtlData in_vars,
-                                                               GALGAS_lstring in_simpleName,
-                                                               class C_Compiler * inCompiler
-                                                               COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Extension setter '@gtlContext setDebugger'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionSetterSignature_gtlContext_setDebugger) (class cPtr_gtlContext * inObject,
-                                                                 class GALGAS_bool inArgument0,
-                                                                 class C_Compiler * inCompiler
-                                                                 COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionSetter_setDebugger (const int32_t inClassIndex,
-                                       extensionSetterSignature_gtlContext_setDebugger inModifier) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionSetter_setDebugger (class cPtr_gtlContext * inObject,
-                                      GALGAS_bool in_debugOn,
-                                      C_Compiler * inCompiler
-                                      COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                              Extension setter '@gtlContext appendInstructionToStepDo'                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionSetterSignature_gtlContext_appendInstructionToStepDo) (class cPtr_gtlContext * inObject,
-                                                                               class GALGAS_gtlInstruction inArgument0,
-                                                                               class C_Compiler * inCompiler
-                                                                               COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionSetter_appendInstructionToStepDo (const int32_t inClassIndex,
-                                                     extensionSetterSignature_gtlContext_appendInstructionToStepDo inModifier) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionSetter_appendInstructionToStepDo (class cPtr_gtlContext * inObject,
-                                                    GALGAS_gtlInstruction in_instruction,
-                                                    C_Compiler * inCompiler
-                                                    COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                               Extension setter '@gtlContext deleteStepDoInstruction'                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionSetterSignature_gtlContext_deleteStepDoInstruction) (class cPtr_gtlContext * inObject,
-                                                                             const class GALGAS_lbigint constinArgument0,
-                                                                             class C_Compiler * inCompiler
-                                                                             COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionSetter_deleteStepDoInstruction (const int32_t inClassIndex,
-                                                   extensionSetterSignature_gtlContext_deleteStepDoInstruction inModifier) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionSetter_deleteStepDoInstruction (class cPtr_gtlContext * inObject,
-                                                  const GALGAS_lbigint constin_numToDelete,
-                                                  C_Compiler * inCompiler
-                                                  COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                Extension method '@gtlContext listStepDoInstructions'                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionMethodSignature_gtlContext_listStepDoInstructions) (const class cPtr_gtlContext * inObject,
-                                                                            class C_Compiler * inCompiler
-                                                                            COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_listStepDoInstructions (const int32_t inClassIndex,
-                                                  extensionMethodSignature_gtlContext_listStepDoInstructions inMethod) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionMethod_listStepDoInstructions (const class cPtr_gtlContext * inObject,
-                                                 C_Compiler * inCompiler
-                                                 COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                    Extension setter '@gtlContext setBreakpoint'                                     *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typedef void (*extensionSetterSignature_gtlContext_setBreakpoint) (class cPtr_gtlContext * inObject,
-                                                                   const class GALGAS_string constinArgument0,
-                                                                   const class GALGAS_uint constinArgument1,
-                                                                   class C_Compiler * inCompiler
-                                                                   COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionSetter_setBreakpoint (const int32_t inClassIndex,
-                                         extensionSetterSignature_gtlContext_setBreakpoint inModifier) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionSetter_setBreakpoint (class cPtr_gtlContext * inObject,
-                                        const GALGAS_string constin_fileName,
-                                        const GALGAS_uint constin_lineNum,
-                                        C_Compiler * inCompiler
+class GALGAS_string function_invokeGTL (class GALGAS_gtlString inArgument0,
+                                        class GALGAS_gtlContext inArgument1,
+                                        class GALGAS_gtlData inArgument2,
+                                        class C_Compiler * inCompiler
                                         COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                                   Extension method '@gtlContext listBreakpoints'                                    *
+//                                                 Function 'emptyLib'                                                 *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-typedef void (*extensionMethodSignature_gtlContext_listBreakpoints) (const class cPtr_gtlContext * inObject,
-                                                                     class C_Compiler * inCompiler
-                                                                     COMMA_LOCATION_ARGS) ;
+class GALGAS_library function_emptyLib (class C_Compiler * inCompiler
+                                        COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_listBreakpoints (const int32_t inClassIndex,
-                                           extensionMethodSignature_gtlContext_listBreakpoints inMethod) ;
-
+//                                                                                                                     *
+//                                            Function 'emptyVarContainer'                                             *
+//                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-void callExtensionMethod_listBreakpoints (const class cPtr_gtlContext * inObject,
-                                          C_Compiler * inCompiler
+class GALGAS_gtlData function_emptyVarContainer (class C_Compiler * inCompiler
+                                                 COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                            Function 'lstringToGtlString'                                            *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_gtlString function_lstringToGtlString (class GALGAS_lstring inArgument0,
+                                                    class C_Compiler * inCompiler
+                                                    COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                            Function 'stringToGtlString'                                             *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_gtlString function_stringToGtlString (class GALGAS_string inArgument0,
+                                                   class C_Compiler * inCompiler
+                                                   COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                               Function 'emptyContext'                                               *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_gtlContext function_emptyContext (class C_Compiler * inCompiler
+                                               COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                           Function 'defaultDebugSettings'                                           *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_debuggerContext function_defaultDebugSettings (class C_Compiler * inCompiler
+                                                            COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                              Function 'wantGtlStruct'                                               *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_gtlData function_wantGtlStruct (class GALGAS_gtlData inArgument0,
+                                             class C_Compiler * inCompiler
+                                             COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                                Function 'wantGtlMap'                                                *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_gtlData function_wantGtlMap (class GALGAS_gtlData inArgument0,
+                                          class C_Compiler * inCompiler
                                           COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                                   Extension setter '@gtlContext deleteBreakpoint'                                   *
+//                                               Function 'wantGtlList'                                                *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-typedef void (*extensionSetterSignature_gtlContext_deleteBreakpoint) (class cPtr_gtlContext * inObject,
-                                                                      const class GALGAS_lbigint constinArgument0,
-                                                                      class C_Compiler * inCompiler
-                                                                      COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionSetter_deleteBreakpoint (const int32_t inClassIndex,
-                                            extensionSetterSignature_gtlContext_deleteBreakpoint inModifier) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionSetter_deleteBreakpoint (class cPtr_gtlContext * inObject,
-                                           const GALGAS_lbigint constin_numToDelete,
-                                           C_Compiler * inCompiler
+class GALGAS_gtlData function_wantGtlList (class GALGAS_gtlData inArgument0,
+                                           class C_Compiler * inCompiler
                                            COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                                      Extension method '@gtlContext hereWeAre'                                       *
+//                                            Routine 'checkArgumentError'                                             *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-typedef void (*extensionMethodSignature_gtlContext_hereWeAre) (const class cPtr_gtlContext * inObject,
-                                                               class C_Compiler * inCompiler
-                                                               COMMA_LOCATION_ARGS) ;
+void routine_checkArgumentError (const class GALGAS_lstring constinArgument0,
+                                 const class GALGAS_type constinArgument1,
+                                 const class GALGAS_gtlData constinArgument2,
+                                 const class GALGAS_uint constinArgument3,
+                                 class C_Compiler * inCompiler
+                                 COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionMethod_hereWeAre (const int32_t inClassIndex,
-                                     extensionMethodSignature_gtlContext_hereWeAre inMethod) ;
-
+//                                                                                                                     *
+//                                           Function 'validateReturnValue'                                            *
+//                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-void callExtensionMethod_hereWeAre (const class cPtr_gtlContext * inObject,
-                                    C_Compiler * inCompiler
-                                    COMMA_LOCATION_ARGS) ;
+class GALGAS_gtlData function_validateReturnValue (const class GALGAS_lstring & constinArgument0,
+                                                   const class GALGAS_object & constinArgument1,
+                                                   class C_Compiler * inCompiler
+                                                   COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                                Function 'noArgument'                                                *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_gtlTypedArgumentList function_noArgument (class C_Compiler * inCompiler
+                                                       COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                               Function 'intArgument'                                                *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_gtlTypedArgumentList function_intArgument (class C_Compiler * inCompiler
+                                                        COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                               Function 'charArgument'                                               *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_gtlTypedArgumentList function_charArgument (class C_Compiler * inCompiler
+                                                         COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                            Function 'charCharArguments'                                             *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_gtlTypedArgumentList function_charCharArguments (class C_Compiler * inCompiler
+                                                              COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                             Function 'charIntArguments'                                             *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_gtlTypedArgumentList function_charIntArguments (class C_Compiler * inCompiler
+                                                             COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                              Function 'floatArgument'                                               *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_gtlTypedArgumentList function_floatArgument (class C_Compiler * inCompiler
+                                                          COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                              Function 'stringArgument'                                              *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_gtlTypedArgumentList function_stringArgument (class C_Compiler * inCompiler
+                                                           COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                           Function 'stringStringArgument'                                           *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_gtlTypedArgumentList function_stringStringArgument (class C_Compiler * inCompiler
+                                                                 COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                             Function 'boolIntArguments'                                             *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_gtlTypedArgumentList function_boolIntArguments (class C_Compiler * inCompiler
+                                                             COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                             Function 'intIntArguments'                                              *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_gtlTypedArgumentList function_intIntArguments (class C_Compiler * inCompiler
+                                                            COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                             Function 'intAnyArguments'                                              *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_gtlTypedArgumentList function_intAnyArguments (class C_Compiler * inCompiler
+                                                            COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                               Function 'anyArgument'                                                *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_gtlTypedArgumentList function_anyArgument (class C_Compiler * inCompiler
+                                                        COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                              Routine 'argumentsCheck'                                               *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+void routine_argumentsCheck (const class GALGAS_lstring constinArgument0,
+                             class GALGAS_gtlTypedArgumentList inArgument1,
+                             class GALGAS_gtlDataList inArgument2,
+                             class C_Compiler * inCompiler
+                             COMMA_LOCATION_ARGS) ;
 
 #endif
