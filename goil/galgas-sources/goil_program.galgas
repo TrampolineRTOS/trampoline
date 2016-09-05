@@ -42,6 +42,17 @@
   case . "goilTemplate" message "a Goil template file" ?sourceFilePath:@lstring unused inSourceFile {
   }
 
+  case . "arxml" message "an AUTOSAR arxml configuration file"
+    ?sourceFilePath:@lstring inSourceFile
+  {
+    checkTemplatesPath()
+    grammar arxml_grammar in inSourceFile
+      ?@arxmlNode root
+      !true
+      !true
+    [root print !0]
+  }
+
 #  when . "epc" message "a XML source file" ??@lstring inSourceFile {
 #    @xmlNodeList root_nodes;
 #    grammar xml_parsing_grammar in inSourceFile

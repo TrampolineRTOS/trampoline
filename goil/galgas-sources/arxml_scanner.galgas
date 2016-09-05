@@ -1,118 +1,120 @@
-template lexique xml_parsing_lexique :
+template lexique arxml_scanner {
 
-template "<" feature preserved ... "" ;
+template "<" %preserved ... ""
 
-replace "&amp;" -> "&" ;
-replace "&lt;" -> "<" ;
-replace "&gt;" -> ">" ;
-replace "&quot;" -> "\"" ;
-replace "&apos;" -> "'" ;
-replace "&#" ... ";" : codePointToUnicode ;
+replace "&amp;" -> "&"
+replace "&lt;" -> "<"
+replace "&gt;" -> ">"
+replace "&quot;" -> "\""
+replace "&apos;" -> "'"
+replace "&#" ... ";" : codePointToUnicode
 
-style delimitersStyle -> "Delimiter:" ;
-style nameStyle -> "Name:" ;
-style attributeValue -> "Attribute value:" ;
-style commentStyle -> "Comment:" ;
-style textStyle -> "Text:" ;
+style delimitersStyle -> "Delimiter" 
+style nameStyle -> "Name" 
+style attributeValue -> "Attribute value" 
+style commentStyle -> "Comment" 
+style textStyle -> "Text" 
 
-@string tokenString ;
+@string tokenString
 
 #-------------------------- comment  --------------------
 
-$comment$ ! tokenString error message "a comment" style commentStyle feature templateEndMark ;
+$comment$ ! tokenString style commentStyle %templateEndMark error message "a comment"
 
-message incorrectCommentError : "incorrect XML comment" ;
+message incorrectCommentError : "incorrect XML comment"
 
-rule "<!--" :
+rule "<!--" {
   repeat
   while "&amp;" :
-    enterCharacterIntoString !?tokenString !'&';
+    enterCharacterIntoString ( !?tokenString !'&' )
   while "&lt;" :
-    enterCharacterIntoString !?tokenString !'<';
+    enterCharacterIntoString ( !?tokenString !'<' )
   while "&gt;" :
-    enterCharacterIntoString !?tokenString !'>';
+    enterCharacterIntoString ( !?tokenString !'>' )
   while "&quot;" :
-    enterCharacterIntoString !?tokenString !'"';
+    enterCharacterIntoString ( !?tokenString !'"' )
   while "&apos;" :
-    enterCharacterIntoString !?tokenString !''';
+    enterCharacterIntoString ( !?tokenString !''' )
   while '\u0001' -> ',' | '.' -> '\U0010FFFF' :
-    enterCharacterIntoString !?tokenString !*;
+    enterCharacterIntoString ( !?tokenString !* )
   while ~ "-->" error incorrectCommentError :
-    enterCharacterIntoString !?tokenString !'-';
-  end repeat ;
-  send $comment$ ;
-end rule ;
+    enterCharacterIntoString ( !?tokenString !'-' )
+  end
+  send $comment$
+}
 
 # ----------------------------- Delimiters ---------------------------------------
-list xmlDelimitorsList error message "the '%K' delimitor" style delimitersStyle :
+list xmlDelimitorsList style delimitersStyle error message "the '%K' delimitor"
+{
   "<",
   "<?",
-  ">" feature templateEndMark,
-  "?>" feature templateEndMark,
-  "/>" feature templateEndMark,
+  ">" %templateEndMark,
+  "?>" %templateEndMark,
+  "/>" %templateEndMark,
   "</",
-  "=" ;
+  "="
+}
 
-rule list xmlDelimitorsList ;
+rule list xmlDelimitorsList
 
 #-------------------------- name  --------------------
 
-$name$ ! tokenString error message "a name" style nameStyle ;
+$name$ ! tokenString style nameStyle error message "a name"
 
-rule isUnicodeLetter :
+rule isUnicodeLetter {
   repeat
-    enterCharacterIntoString !?tokenString !* ;
-  while isUnicodeLetter | '0'->'9' | '-' :
-  end repeat ;
-  send $name$ ;
-end rule ;
+    enterCharacterIntoString ( !?tokenString !* )
+  while isUnicodeLetter | '0'->'9' | '-' | ':' :
+  end
+  send $name$
+}
 
 #-------------------------- Attribute value  --------------------
 
-$value$ ! tokenString error message "an attribute value" style attributeValue ;
+$value$ ! tokenString style attributeValue error message "an attribute value"
 
-message incorrectAttributeEnd : "attribute value should be enclosed between apostrophes (') or quotation marks (\")" ;
+message incorrectAttributeEnd : "attribute value should be enclosed between apostrophes (') or quotation marks (\")"
 
-rule '"' :
+rule '"' {
   repeat
   while "&amp;" :
-    enterCharacterIntoString !?tokenString !'&';
+    enterCharacterIntoString ( !?tokenString !'&' )
   while "&lt;" :
-    enterCharacterIntoString !?tokenString !'<';
+    enterCharacterIntoString ( !?tokenString !'<' )
   while "&gt;" :
-    enterCharacterIntoString !?tokenString !'>';
+    enterCharacterIntoString ( !?tokenString !'>' )
   while "&quot;" :
-    enterCharacterIntoString !?tokenString !'"';
+    enterCharacterIntoString ( !?tokenString !'"' )
   while "&apos;" :
-    enterCharacterIntoString !?tokenString !''';
+    enterCharacterIntoString ( !?tokenString !''' )
   while ~ "\"" error incorrectAttributeEnd :
-    enterCharacterIntoString !?tokenString !*;
-  end repeat ;
-  send $value$ ;
-end rule ;
+    enterCharacterIntoString ( !?tokenString !* )
+  end
+  send $value$
+}
 
-rule ''' :
+rule ''' {
   repeat
   while "&amp;" :
-    enterCharacterIntoString !?tokenString !'&';
+    enterCharacterIntoString ( !?tokenString !'&' )
   while "&lt;" :
-    enterCharacterIntoString !?tokenString !'<';
+    enterCharacterIntoString ( !?tokenString !'<' )
   while "&gt;" :
-    enterCharacterIntoString !?tokenString !'>';
+    enterCharacterIntoString ( !?tokenString !'>' )
   while "&quot;" :
-    enterCharacterIntoString !?tokenString !'"';
+    enterCharacterIntoString ( !?tokenString !'"' )
   while "&apos;" :
-    enterCharacterIntoString !?tokenString !''';
+    enterCharacterIntoString ( !?tokenString !''' )
   while ~ "'" error incorrectAttributeEnd :
-    enterCharacterIntoString !?tokenString !*;
-  end repeat ;
-  send $value$ ;
-end rule ;
+    enterCharacterIntoString ( !?tokenString !* )
+  end
+  send $value$
+}
 
 # --------------------- separators -----------------------------------------
-rule '\u0001' -> ' ' :
-end rule ;
+rule '\u0001' -> ' ' {
+}
 
 #----------------------------------------------------------------------------*
 
-end lexique ;
+}

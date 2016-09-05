@@ -63,7 +63,7 @@ GALGAS_char GALGAS_char::constructor_default (UNUSED_LOCATION_ARGS) {
   static void waitForRawInput (void) {
     bool waiting = true ;
     while (waiting) {
-      usleep (10000) ; // 10 ms
+      usleep (50000) ; // 50 ms
       int bytesAvailable = 0 ;
       ioctl (STDIN_FILENO, FIONREAD, & bytesAvailable) ;
       waiting = bytesAvailable == 0 ;

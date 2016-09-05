@@ -1,0 +1,83 @@
+map @arxmlAttributeMap {
+  @lstring value
+  insert insertKey error message "the '%K' attribute has been already declared"
+  search searchKey error message "the '%K' attribute is not declared"
+}
+
+method @arxmlAttributeMap print
+  ?let @uint unused indentation
+{
+  for (key value) in self
+  before
+    message " ( "
+  do
+    message [key string] + " = " + value
+  between
+    message " , "
+  after
+    message " )"
+  end
+}
+
+list @arxmlNodeList {
+  @arxmlNode node
+}
+
+method @arxmlNodeList print
+  ?let @uint indentation
+{
+  for (subNode) in self do
+    [subNode print !indentation + 4]
+  end
+}
+
+abstract class @arxmlNode {}
+
+abstract method @arxmlNode print
+  ?let @uint indentation
+
+class @arxmlElementNode : @arxmlNode {
+  @lstring           name
+  @arxmlAttributeMap attributes
+  @arxmlNodeList     enclosedNodes
+}
+
+override method @arxmlElementNode print
+  ?let @uint indentation
+{
+  let @string indent = .stringWithSequenceOfCharacters { !' ' !indentation }
+  message indent
+  message "NODE \"" + name + "\" "
+  [attributes print !indentation]
+  message "\n"
+  [enclosedNodes print !indentation]
+}
+
+class @arxmlCommentNode : @arxmlNode {
+  @lstring           comment
+}
+
+override method @arxmlCommentNode print
+  ?let @uint indentation
+{
+  let @string indent = .stringWithSequenceOfCharacters { !' ' !indentation }
+  message indent
+  message "COMMENT \"" + comment + "\"\n"
+}
+
+
+class @arxmlTextNode : @arxmlNode {
+  @lstring           text
+}
+
+override method @arxmlTextNode print
+  ?let @uint indentation
+{
+  let @string indent = .stringWithSequenceOfCharacters { !' ' !indentation }
+  message indent
+  message "TEXT \"" + text + "\"\n"
+}
+
+class @arxmlDocument {
+  
+}

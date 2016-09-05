@@ -1487,4 +1487,77 @@ class cGrammar_goil_5F_grammar : public cParser_goil_5F_syntax,
 } ;
 
 //---------------------------------------------------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//  GRAMMAR arxml_grammar
+//---------------------------------------------------------------------------------------------------------------------*
+
+class cGrammar_arxml_5F_grammar : public cParser_arxml_5F_parser {
+//------------------------------------- 'arxml_start_symbol' non terminal
+//--- 'parse' label
+  public : virtual void nt_arxml_5F_start_5F_symbol_parse (C_Lexique_arxml_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_arxml_5F_start_5F_symbol_ (GALGAS_arxmlNode & outArgument0,
+                                                      const GALGAS_bool inArgument1,
+                                                      const GALGAS_bool inArgument2,
+                                                      C_Lexique_arxml_5F_scanner * inCompiler) ;
+
+//--- Start symbol
+  public : static void _performSourceFileParsing_ (C_Compiler * inCompiler,
+                                                   GALGAS_lstring inFileName,
+                                                   GALGAS_arxmlNode & outArgument0,
+                                                   const GALGAS_bool inArgument1,
+                                                   const GALGAS_bool inArgument2
+                                                   COMMA_LOCATION_ARGS) ;
+
+  public : static void _performSourceStringParsing_ (C_Compiler * inCompiler,
+                                                     GALGAS_string inSourceString,
+                                                     GALGAS_string inNameString,
+                                                     GALGAS_arxmlNode & outArgument0,
+                                                     const GALGAS_bool inArgument1,
+                                                     const GALGAS_bool inArgument2
+                                                     COMMA_LOCATION_ARGS) ;
+
+//--- Indexing
+  public : static void performIndexing (C_Compiler * inCompiler,
+                                        const C_String & inSourceFilePath) ;
+
+//--- Only lexical analysis
+  public : static void performOnlyLexicalAnalysis (C_Compiler * inCompiler,
+                                                   const C_String & inSourceFilePath) ;
+
+//--- Only syntax analysis
+  public : static void performOnlySyntaxAnalysis (C_Compiler * inCompiler,
+                                                  const C_String & inSourceFilePath) ;
+
+//------------------------------------- 'element' non terminal
+//--- 'parse' label
+  public : virtual void nt_element_parse (C_Lexique_arxml_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_element_ (GALGAS_arxmlNodeList & ioArgument0,
+                                     const GALGAS_bool inArgument1,
+                                     const GALGAS_bool inArgument2,
+                                     C_Lexique_arxml_5F_scanner * inCompiler) ;
+
+//------------------------------------- 'element_list' non terminal
+//--- 'parse' label
+  public : virtual void nt_element_5F_list_parse (C_Lexique_arxml_5F_scanner * inCompiler) ;
+
+//----------- '' label
+  public : virtual void nt_element_5F_list_ (GALGAS_arxmlNodeList & ioArgument0,
+                                             const GALGAS_bool inArgument1,
+                                             const GALGAS_bool inArgument2,
+                                             C_Lexique_arxml_5F_scanner * inCompiler) ;
+
+  public : virtual int32_t select_arxml_5F_parser_0 (C_Lexique_arxml_5F_scanner *) ;
+
+  public : virtual int32_t select_arxml_5F_parser_1 (C_Lexique_arxml_5F_scanner *) ;
+
+  public : virtual int32_t select_arxml_5F_parser_2 (C_Lexique_arxml_5F_scanner *) ;
+
+  public : virtual int32_t select_arxml_5F_parser_3 (C_Lexique_arxml_5F_scanner *) ;
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
 #endif

@@ -10255,6 +10255,1633 @@ void cParser_options_5F_parser::rule_options_5F_parser_list_5F_option_5F_value_i
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//     L E X I Q U E                                                                                                   *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+#include "strings/unicode_character_cpp.h"
+#include "galgas2/scanner_actions.h"
+#include "galgas2/cLexiqueIntrospection.h"
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+cTokenFor_arxml_5F_scanner::cTokenFor_arxml_5F_scanner (void) :
+mLexicalAttribute_tokenString () {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_Lexique_arxml_5F_scanner::C_Lexique_arxml_5F_scanner (C_Compiler * inCallerCompiler,
+                                                        const C_String & inDependencyFileExtension,
+                                                        const C_String & inDependencyFilePath,
+                                                        const C_String & inSourceFileName
+                                                        COMMA_LOCATION_ARGS) :
+C_Lexique (inCallerCompiler, inDependencyFileExtension, inDependencyFilePath, inSourceFileName COMMA_THERE),
+mMatchedTemplateDelimiterIndex (-1) {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_Lexique_arxml_5F_scanner::C_Lexique_arxml_5F_scanner (C_Compiler * inCallerCompiler,
+                                                        const C_String & inSourceString,
+                                                        const C_String & inStringForError
+                                                        COMMA_LOCATION_ARGS) :
+C_Lexique (inCallerCompiler, inSourceString, inStringForError COMMA_THERE),
+mMatchedTemplateDelimiterIndex (-1) {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                 I N D E X I N G    D I R E C T O R Y                                                                *
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_String C_Lexique_arxml_5F_scanner::indexingDirectory (void) const {
+  return "" ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                        Lexical error message list                                                                   *
+//---------------------------------------------------------------------------------------------------------------------*
+
+static const char * gLexicalMessage_arxml_5F_scanner_incorrectAttributeEnd = "attribute value should be enclosed between apostrophes (') or quotation marks (\")" ;
+
+static const char * gLexicalMessage_arxml_5F_scanner_incorrectCommentError = "incorrect XML comment" ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//          Syntax error messages, for every terminal symbol                                                           *
+//---------------------------------------------------------------------------------------------------------------------*
+
+//--- Syntax error message for terminal '$comment$' :
+static const char * gSyntaxErrorMessage_arxml_5F_scanner_comment = "a comment" ;
+
+//--- Syntax error message for terminal '$name$' :
+static const char * gSyntaxErrorMessage_arxml_5F_scanner_name = "a name" ;
+
+//--- Syntax error message for terminal '$value$' :
+static const char * gSyntaxErrorMessage_arxml_5F_scanner_value = "an attribute value" ;
+
+//--- Syntax error message for terminal '$<$' :
+static const char * gSyntaxErrorMessage_arxml_5F_scanner__3C_ = "the '<' delimitor" ;
+
+//--- Syntax error message for terminal '$<?$' :
+static const char * gSyntaxErrorMessage_arxml_5F_scanner__3C__3F_ = "the '<\?' delimitor" ;
+
+//--- Syntax error message for terminal '$>$' :
+static const char * gSyntaxErrorMessage_arxml_5F_scanner__3E_ = "the '>' delimitor" ;
+
+//--- Syntax error message for terminal '$?>$' :
+static const char * gSyntaxErrorMessage_arxml_5F_scanner__3F__3E_ = "the '\?>' delimitor" ;
+
+//--- Syntax error message for terminal '$/>$' :
+static const char * gSyntaxErrorMessage_arxml_5F_scanner__2F__3E_ = "the '/>' delimitor" ;
+
+//--- Syntax error message for terminal '$</$' :
+static const char * gSyntaxErrorMessage_arxml_5F_scanner__3C__2F_ = "the '</' delimitor" ;
+
+//--- Syntax error message for terminal '$=$' :
+static const char * gSyntaxErrorMessage_arxml_5F_scanner__3D_ = "the '=' delimitor" ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                getMessageForTerminal                                                                                *
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_String C_Lexique_arxml_5F_scanner::getMessageForTerminal (const int16_t inTerminalIndex) const {
+  static const char * syntaxErrorMessageArray [11] = {kEndOfSourceLexicalErrorMessage,
+    gSyntaxErrorMessage_arxml_5F_scanner_comment,
+    gSyntaxErrorMessage_arxml_5F_scanner_name,
+    gSyntaxErrorMessage_arxml_5F_scanner_value,
+    gSyntaxErrorMessage_arxml_5F_scanner__3C_,
+    gSyntaxErrorMessage_arxml_5F_scanner__3C__3F_,
+    gSyntaxErrorMessage_arxml_5F_scanner__3E_,
+    gSyntaxErrorMessage_arxml_5F_scanner__3F__3E_,
+    gSyntaxErrorMessage_arxml_5F_scanner__2F__3E_,
+    gSyntaxErrorMessage_arxml_5F_scanner__3C__2F_,
+    gSyntaxErrorMessage_arxml_5F_scanner__3D_} ;
+  return syntaxErrorMessageArray [inTerminalIndex] ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                      U N I C O D E    S T R I N G S                                                                 *
+//---------------------------------------------------------------------------------------------------------------------*
+
+//--- Unicode string for '$_22_$'
+static const utf32 kUnicodeString_arxml_5F_scanner__22_ [] = {
+  TO_UNICODE ('\"'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_26_$'
+static const utf32 kUnicodeString_arxml_5F_scanner__26_ [] = {
+  TO_UNICODE ('&'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_26__23_$'
+static const utf32 kUnicodeString_arxml_5F_scanner__26__23_ [] = {
+  TO_UNICODE ('&'),
+  TO_UNICODE ('#'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_26_amp_3B_$'
+static const utf32 kUnicodeString_arxml_5F_scanner__26_amp_3B_ [] = {
+  TO_UNICODE ('&'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('m'),
+  TO_UNICODE ('p'),
+  TO_UNICODE (';'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_26_apos_3B_$'
+static const utf32 kUnicodeString_arxml_5F_scanner__26_apos_3B_ [] = {
+  TO_UNICODE ('&'),
+  TO_UNICODE ('a'),
+  TO_UNICODE ('p'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('s'),
+  TO_UNICODE (';'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_26_gt_3B_$'
+static const utf32 kUnicodeString_arxml_5F_scanner__26_gt_3B_ [] = {
+  TO_UNICODE ('&'),
+  TO_UNICODE ('g'),
+  TO_UNICODE ('t'),
+  TO_UNICODE (';'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_26_lt_3B_$'
+static const utf32 kUnicodeString_arxml_5F_scanner__26_lt_3B_ [] = {
+  TO_UNICODE ('&'),
+  TO_UNICODE ('l'),
+  TO_UNICODE ('t'),
+  TO_UNICODE (';'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_26_quot_3B_$'
+static const utf32 kUnicodeString_arxml_5F_scanner__26_quot_3B_ [] = {
+  TO_UNICODE ('&'),
+  TO_UNICODE ('q'),
+  TO_UNICODE ('u'),
+  TO_UNICODE ('o'),
+  TO_UNICODE ('t'),
+  TO_UNICODE (';'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_27_$'
+static const utf32 kUnicodeString_arxml_5F_scanner__27_ [] = {
+  TO_UNICODE ('\''),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_2D__2D__3E_$'
+static const utf32 kUnicodeString_arxml_5F_scanner__2D__2D__3E_ [] = {
+  TO_UNICODE ('-'),
+  TO_UNICODE ('-'),
+  TO_UNICODE ('>'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_2F__3E_$'
+static const utf32 kUnicodeString_arxml_5F_scanner__2F__3E_ [] = {
+  TO_UNICODE ('/'),
+  TO_UNICODE ('>'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_3B_$'
+static const utf32 kUnicodeString_arxml_5F_scanner__3B_ [] = {
+  TO_UNICODE (';'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_3C_$'
+static const utf32 kUnicodeString_arxml_5F_scanner__3C_ [] = {
+  TO_UNICODE ('<'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_3C__21__2D__2D_$'
+static const utf32 kUnicodeString_arxml_5F_scanner__3C__21__2D__2D_ [] = {
+  TO_UNICODE ('<'),
+  TO_UNICODE ('!'),
+  TO_UNICODE ('-'),
+  TO_UNICODE ('-'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_3C__2F_$'
+static const utf32 kUnicodeString_arxml_5F_scanner__3C__2F_ [] = {
+  TO_UNICODE ('<'),
+  TO_UNICODE ('/'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_3C__3F_$'
+static const utf32 kUnicodeString_arxml_5F_scanner__3C__3F_ [] = {
+  TO_UNICODE ('<'),
+  TO_UNICODE ('\?'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_3D_$'
+static const utf32 kUnicodeString_arxml_5F_scanner__3D_ [] = {
+  TO_UNICODE ('='),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_3E_$'
+static const utf32 kUnicodeString_arxml_5F_scanner__3E_ [] = {
+  TO_UNICODE ('>'),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_3F__3E_$'
+static const utf32 kUnicodeString_arxml_5F_scanner__3F__3E_ [] = {
+  TO_UNICODE ('\?'),
+  TO_UNICODE ('>'),
+  TO_UNICODE (0)
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//             Key words table 'xmlDelimitorsList'                            *
+//---------------------------------------------------------------------------------------------------------------------*
+
+static const int32_t ktable_size_arxml_5F_scanner_xmlDelimitorsList = 7 ;
+
+static const C_unicode_lexique_table_entry ktable_for_arxml_5F_scanner_xmlDelimitorsList [ktable_size_arxml_5F_scanner_xmlDelimitorsList] = {
+  C_unicode_lexique_table_entry (kUnicodeString_arxml_5F_scanner__3C_, 1, C_Lexique_arxml_5F_scanner::kToken__3C_),
+  C_unicode_lexique_table_entry (kUnicodeString_arxml_5F_scanner__3D_, 1, C_Lexique_arxml_5F_scanner::kToken__3D_),
+  C_unicode_lexique_table_entry (kUnicodeString_arxml_5F_scanner__3E_, 1, C_Lexique_arxml_5F_scanner::kToken__3E_),
+  C_unicode_lexique_table_entry (kUnicodeString_arxml_5F_scanner__2F__3E_, 2, C_Lexique_arxml_5F_scanner::kToken__2F__3E_),
+  C_unicode_lexique_table_entry (kUnicodeString_arxml_5F_scanner__3C__2F_, 2, C_Lexique_arxml_5F_scanner::kToken__3C__2F_),
+  C_unicode_lexique_table_entry (kUnicodeString_arxml_5F_scanner__3C__3F_, 2, C_Lexique_arxml_5F_scanner::kToken__3C__3F_),
+  C_unicode_lexique_table_entry (kUnicodeString_arxml_5F_scanner__3F__3E_, 2, C_Lexique_arxml_5F_scanner::kToken__3F__3E_)
+} ;
+
+int16_t C_Lexique_arxml_5F_scanner::search_into_xmlDelimitorsList (const C_String & inSearchedString) {
+  return searchInList (inSearchedString, ktable_for_arxml_5F_scanner_xmlDelimitorsList, ktable_size_arxml_5F_scanner_xmlDelimitorsList) ;
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                          getCurrentTokenString                                                                      *
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_String C_Lexique_arxml_5F_scanner::getCurrentTokenString (const cToken * inTokenPtr) const {
+  const cTokenFor_arxml_5F_scanner * ptr = (const cTokenFor_arxml_5F_scanner *) inTokenPtr ;
+  C_String s ;
+  if (ptr == NULL) {
+    s.appendCString("$$") ;
+  }else{
+    switch (ptr->mTokenCode) {
+    case kToken_:
+      s.appendCString("$$") ;
+      break ;
+    case kToken_comment:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("comment") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendUnicodeCharacter (TO_UNICODE (' ') COMMA_HERE) ;
+      s.appendCLiteralStringConstant (ptr->mLexicalAttribute_tokenString) ;
+      break ;
+    case kToken_name:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("name") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendUnicodeCharacter (TO_UNICODE (' ') COMMA_HERE) ;
+      s.appendCLiteralStringConstant (ptr->mLexicalAttribute_tokenString) ;
+      break ;
+    case kToken_value:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("value") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendUnicodeCharacter (TO_UNICODE (' ') COMMA_HERE) ;
+      s.appendCLiteralStringConstant (ptr->mLexicalAttribute_tokenString) ;
+      break ;
+    case kToken__3C_:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("<") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken__3C__3F_:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("<\?") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken__3E_:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString (">") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken__3F__3E_:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("\?>") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken__2F__3E_:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("/>") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken__3C__2F_:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("</") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    case kToken__3D_:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("=") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
+    default:
+      break ;
+    }
+  }
+  return s ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                           Template Delimiters                                                                       *
+//---------------------------------------------------------------------------------------------------------------------*
+
+static const cTemplateDelimiter kTemplateDefinitionArray [1] = {
+  cTemplateDelimiter (kUnicodeString_arxml_5F_scanner__3C_, 1, NULL, 0, NULL, false)
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                           Template Replacements                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+static const cTemplateDelimiter kTemplateReplacementArray [6] = {
+  cTemplateDelimiter (kUnicodeString_arxml_5F_scanner__26_amp_3B_, 5, kUnicodeString_arxml_5F_scanner__26_, 1, NULL, true),
+  cTemplateDelimiter (kUnicodeString_arxml_5F_scanner__26_lt_3B_, 4, kUnicodeString_arxml_5F_scanner__3C_, 1, NULL, true),
+  cTemplateDelimiter (kUnicodeString_arxml_5F_scanner__26_gt_3B_, 4, kUnicodeString_arxml_5F_scanner__3E_, 1, NULL, true),
+  cTemplateDelimiter (kUnicodeString_arxml_5F_scanner__26_quot_3B_, 6, kUnicodeString_arxml_5F_scanner__22_, 1, NULL, true),
+  cTemplateDelimiter (kUnicodeString_arxml_5F_scanner__26_apos_3B_, 6, kUnicodeString_arxml_5F_scanner__27_, 1, NULL, true),
+  cTemplateDelimiter (kUnicodeString_arxml_5F_scanner__26__23_, 2, kUnicodeString_arxml_5F_scanner__3B_, 1, scanner_routine_codePointToUnicode, true)
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//            Terminal Symbols as end of script in template mark                                                       *
+//---------------------------------------------------------------------------------------------------------------------*
+
+static const bool kEndOfScriptInTemplateArray [10] = {
+  true /* comment */,
+  false /* name */,
+  false /* value */,
+  false /* < */,
+  false /* <? */,
+  true /* > */,
+  true /* ?> */,
+  true /* /> */,
+  false /* </ */,
+  false /* = */
+} ;
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+//               P A R S E    L E X I C A L    T O K E N                                                               *
+//---------------------------------------------------------------------------------------------------------------------*
+
+bool C_Lexique_arxml_5F_scanner::parseLexicalToken (void) {
+  cTokenFor_arxml_5F_scanner token ;
+  mLoop = true ;
+  token.mTokenCode = -1 ;
+  while ((token.mTokenCode < 0) && (UNICODE_VALUE (mCurrentChar) != '\0')) {
+    if ((mMatchedTemplateDelimiterIndex >= 0)
+     && (kTemplateDefinitionArray [mMatchedTemplateDelimiterIndex].mEndStringLength > 0)
+     && (UNICODE_VALUE (mCurrentChar) != '\0')) {
+      const bool foundEndDelimitor = testForInputUTF32String (kTemplateDefinitionArray [mMatchedTemplateDelimiterIndex].mEndString,
+                                                              kTemplateDefinitionArray [mMatchedTemplateDelimiterIndex].mEndStringLength,
+                                                              true) ;
+      if (foundEndDelimitor) {
+        mMatchedTemplateDelimiterIndex = -1 ;
+      }
+    }
+    while ((mMatchedTemplateDelimiterIndex < 0) && (UNICODE_VALUE (mCurrentChar) != '\0')) {
+      int32_t replacementIndex = 0 ;
+      while (replacementIndex >= 0) {
+        replacementIndex = findTemplateDelimiterIndex (kTemplateReplacementArray, 6) ;
+        if (replacementIndex >= 0) {
+          if (kTemplateReplacementArray [replacementIndex].mReplacementFunction == NULL) {
+            token.mTemplateStringBeforeToken << kTemplateReplacementArray [replacementIndex].mEndString ;
+          }else{
+            C_String s ;
+            while (notTestForInputUTF32String (kTemplateReplacementArray [replacementIndex].mEndString,
+                                               kTemplateReplacementArray [replacementIndex].mEndStringLength,
+                                               kEndOfSourceLexicalErrorMessage
+                                               COMMA_HERE)) {
+              s.appendUnicodeCharacter (previousChar () COMMA_HERE) ;
+            }
+            kTemplateReplacementArray [replacementIndex].mReplacementFunction (*this, s, token.mTemplateStringBeforeToken) ;
+          }
+        }
+      }
+      mMatchedTemplateDelimiterIndex = findTemplateDelimiterIndex (kTemplateDefinitionArray, 1) ;
+      if (mMatchedTemplateDelimiterIndex < 0) {
+        token.mTemplateStringBeforeToken.appendUnicodeCharacter (mCurrentChar COMMA_HERE) ;
+        advance () ;
+      }
+    }
+    if ((mMatchedTemplateDelimiterIndex >= 0) && (UNICODE_VALUE (mCurrentChar) != '\0')) {
+    token.mLexicalAttribute_tokenString.setLengthToZero () ;
+    mTokenStartLocation = mCurrentLocation ;
+    try{
+        if (testForInputUTF32String (kUnicodeString_arxml_5F_scanner__3C__21__2D__2D_, 4, true)) {
+          do {
+            if (testForInputUTF32String (kUnicodeString_arxml_5F_scanner__26_amp_3B_, 5, true)) {
+              ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('&')) ;
+            }else if (testForInputUTF32String (kUnicodeString_arxml_5F_scanner__26_lt_3B_, 4, true)) {
+              ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('<')) ;
+            }else if (testForInputUTF32String (kUnicodeString_arxml_5F_scanner__26_gt_3B_, 4, true)) {
+              ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('>')) ;
+            }else if (testForInputUTF32String (kUnicodeString_arxml_5F_scanner__26_quot_3B_, 6, true)) {
+              ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('\"')) ;
+            }else if (testForInputUTF32String (kUnicodeString_arxml_5F_scanner__26_apos_3B_, 6, true)) {
+              ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('\'')) ;
+            }else if (testForInputUTF32CharRange (TO_UNICODE (1), TO_UNICODE (',')) || testForInputUTF32CharRange (TO_UNICODE ('.'), TO_UNICODE (1114111))) {
+              ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, previousChar ()) ;
+            }else if (notTestForInputUTF32String (kUnicodeString_arxml_5F_scanner__2D__2D__3E_, 3, gLexicalMessage_arxml_5F_scanner_incorrectCommentError COMMA_LINE_AND_SOURCE_FILE)) {
+              ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('-')) ;
+            }else{
+              mLoop = false ;
+            }
+          }while (mLoop) ;
+          mLoop = true ;
+          token.mTokenCode = kToken_comment ;
+          enterToken (token) ;
+        }else if (testForInputUTF32String (kUnicodeString_arxml_5F_scanner__3F__3E_, 2, true)) {
+          token.mTokenCode = kToken__3F__3E_ ;
+          enterToken (token) ;
+        }else if (testForInputUTF32String (kUnicodeString_arxml_5F_scanner__3C__3F_, 2, true)) {
+          token.mTokenCode = kToken__3C__3F_ ;
+          enterToken (token) ;
+        }else if (testForInputUTF32String (kUnicodeString_arxml_5F_scanner__3C__2F_, 2, true)) {
+          token.mTokenCode = kToken__3C__2F_ ;
+          enterToken (token) ;
+        }else if (testForInputUTF32String (kUnicodeString_arxml_5F_scanner__2F__3E_, 2, true)) {
+          token.mTokenCode = kToken__2F__3E_ ;
+          enterToken (token) ;
+        }else if (testForInputUTF32String (kUnicodeString_arxml_5F_scanner__3E_, 1, true)) {
+          token.mTokenCode = kToken__3E_ ;
+          enterToken (token) ;
+        }else if (testForInputUTF32String (kUnicodeString_arxml_5F_scanner__3D_, 1, true)) {
+          token.mTokenCode = kToken__3D_ ;
+          enterToken (token) ;
+        }else if (testForInputUTF32String (kUnicodeString_arxml_5F_scanner__3C_, 1, true)) {
+          token.mTokenCode = kToken__3C_ ;
+          enterToken (token) ;
+        }else if (testForCharWithFunction (isUnicodeLetter)) {
+          do {
+            ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, previousChar ()) ;
+            if (testForCharWithFunction (isUnicodeLetter) || testForInputUTF32CharRange (TO_UNICODE ('0'), TO_UNICODE ('9')) || testForInputUTF32Char (TO_UNICODE ('-')) || testForInputUTF32Char (TO_UNICODE (':'))) {
+            }else{
+              mLoop = false ;
+            }
+          }while (mLoop) ;
+          mLoop = true ;
+          token.mTokenCode = kToken_name ;
+          enterToken (token) ;
+        }else if (testForInputUTF32Char (TO_UNICODE ('\"'))) {
+          do {
+            if (testForInputUTF32String (kUnicodeString_arxml_5F_scanner__26_amp_3B_, 5, true)) {
+              ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('&')) ;
+            }else if (testForInputUTF32String (kUnicodeString_arxml_5F_scanner__26_lt_3B_, 4, true)) {
+              ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('<')) ;
+            }else if (testForInputUTF32String (kUnicodeString_arxml_5F_scanner__26_gt_3B_, 4, true)) {
+              ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('>')) ;
+            }else if (testForInputUTF32String (kUnicodeString_arxml_5F_scanner__26_quot_3B_, 6, true)) {
+              ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('\"')) ;
+            }else if (testForInputUTF32String (kUnicodeString_arxml_5F_scanner__26_apos_3B_, 6, true)) {
+              ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('\'')) ;
+            }else if (notTestForInputUTF32String (kUnicodeString_arxml_5F_scanner__22_, 1, gLexicalMessage_arxml_5F_scanner_incorrectAttributeEnd COMMA_LINE_AND_SOURCE_FILE)) {
+              ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, previousChar ()) ;
+            }else{
+              mLoop = false ;
+            }
+          }while (mLoop) ;
+          mLoop = true ;
+          token.mTokenCode = kToken_value ;
+          enterToken (token) ;
+        }else if (testForInputUTF32Char (TO_UNICODE ('\''))) {
+          do {
+            if (testForInputUTF32String (kUnicodeString_arxml_5F_scanner__26_amp_3B_, 5, true)) {
+              ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('&')) ;
+            }else if (testForInputUTF32String (kUnicodeString_arxml_5F_scanner__26_lt_3B_, 4, true)) {
+              ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('<')) ;
+            }else if (testForInputUTF32String (kUnicodeString_arxml_5F_scanner__26_gt_3B_, 4, true)) {
+              ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('>')) ;
+            }else if (testForInputUTF32String (kUnicodeString_arxml_5F_scanner__26_quot_3B_, 6, true)) {
+              ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('\"')) ;
+            }else if (testForInputUTF32String (kUnicodeString_arxml_5F_scanner__26_apos_3B_, 6, true)) {
+              ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, TO_UNICODE ('\'')) ;
+            }else if (notTestForInputUTF32String (kUnicodeString_arxml_5F_scanner__27_, 1, gLexicalMessage_arxml_5F_scanner_incorrectAttributeEnd COMMA_LINE_AND_SOURCE_FILE)) {
+              ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, previousChar ()) ;
+            }else{
+              mLoop = false ;
+            }
+          }while (mLoop) ;
+          mLoop = true ;
+          token.mTokenCode = kToken_value ;
+          enterToken (token) ;
+        }else if (testForInputUTF32CharRange (TO_UNICODE (1), TO_UNICODE (' '))) {
+        }else if (testForInputUTF32Char (TO_UNICODE ('\0'))) { // End of source text ? 
+          token.mTokenCode = kToken_ ; // Empty string code
+        }else{ // Unknown input character
+          unknownCharacterLexicalError (LINE_AND_SOURCE_FILE) ;
+        }
+      }catch (const C_lexicalErrorException &) {
+        token.mTokenCode = -1 ; // No token
+        advance () ; // ... go throught unknown character
+      }
+    }
+    if ((token.mTokenCode > 0) && kEndOfScriptInTemplateArray [token.mTokenCode - 1]) {
+      mMatchedTemplateDelimiterIndex = -1 ;
+    }
+  
+  }
+  if (UNICODE_VALUE (mCurrentChar) == '\0') { // && (token.mTemplateStringBeforeToken.length () > 0)) {
+    token.mTokenCode = 0 ;
+    enterToken (token) ;
+  }
+  return token.mTokenCode > 0 ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                         E N T E R    T O K E N                                                                      *
+//---------------------------------------------------------------------------------------------------------------------*
+
+void C_Lexique_arxml_5F_scanner::enterToken (cTokenFor_arxml_5F_scanner & ioToken) {
+  cTokenFor_arxml_5F_scanner * ptr = NULL ;
+  macroMyNew (ptr, cTokenFor_arxml_5F_scanner ()) ;
+  ptr->mTokenCode = ioToken.mTokenCode ;
+  ptr->mStartLocation = mTokenStartLocation ;
+  ptr->mEndLocation = mTokenEndLocation ;
+  ptr->mTemplateStringBeforeToken = ioToken.mTemplateStringBeforeToken ;
+  ioToken.mTemplateStringBeforeToken = "" ;
+  ptr->mLexicalAttribute_tokenString = ioToken.mLexicalAttribute_tokenString ;
+  enterTokenFromPointer (ptr) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//               A T T R I B U T E   A C C E S S                                                                       *
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_String C_Lexique_arxml_5F_scanner::attributeValue_tokenString (void) const {
+  cTokenFor_arxml_5F_scanner * ptr = (cTokenFor_arxml_5F_scanner *) mCurrentTokenPtr ;
+  return ptr->mLexicalAttribute_tokenString ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//         A S S I G N    F R O M    A T T R I B U T E                                                                 *
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_lstring C_Lexique_arxml_5F_scanner::synthetizedAttribute_tokenString (void) const {
+  cTokenFor_arxml_5F_scanner * ptr = (cTokenFor_arxml_5F_scanner *) mCurrentTokenPtr ;
+  macroValidSharedObject (ptr, cTokenFor_arxml_5F_scanner) ;
+  GALGAS_location currentLocation (ptr->mStartLocation, ptr->mEndLocation, sourceText ()) ;
+  GALGAS_string value (ptr->mLexicalAttribute_tokenString) ;
+  GALGAS_lstring result (value, currentLocation) ;
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                         I N T R O S P E C T I O N                                                                   *
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_stringlist C_Lexique_arxml_5F_scanner::symbols (LOCATION_ARGS) {
+  GALGAS_stringlist result = GALGAS_stringlist::constructor_emptyList (THERE) ;
+  result.addAssign_operation (GALGAS_string ("comment") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("name") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("value") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("<") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("<\?") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string (">") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("\?>") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("/>") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("</") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("=") COMMA_THERE) ;
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void getKeywordLists_arxml_5F_scanner (TC_UniqueArray <C_String> & ioList) {
+  ioList.addObject ("arxml_scanner:xmlDelimitorsList") ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void getKeywordsForIdentifier_arxml_5F_scanner (const C_String & inIdentifier,
+                                                       bool & ioFound,
+                                                       TC_UniqueArray <C_String> & ioList) {
+  if (inIdentifier == "arxml_scanner:xmlDelimitorsList") {
+    ioFound = true ;
+    ioList.addObject ("<") ;
+    ioList.addObject ("=") ;
+    ioList.addObject (">") ;
+    ioList.addObject ("/>") ;
+    ioList.addObject ("</") ;
+    ioList.addObject ("<\?") ;
+    ioList.addObject ("\?>") ;
+    ioList.sortArrayUsingCompareMethod() ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+static cLexiqueIntrospection lexiqueIntrospection_arxml_5F_scanner
+__attribute__ ((used))
+__attribute__ ((unused)) (getKeywordLists_arxml_5F_scanner, getKeywordsForIdentifier_arxml_5F_scanner) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//   S T Y L E   I N D E X    F O R    T E R M I N A L                                                                 *
+//---------------------------------------------------------------------------------------------------------------------*
+
+uint32_t C_Lexique_arxml_5F_scanner::styleIndexForTerminal (const int32_t inTerminalIndex) const {
+  static const uint32_t kTerminalSymbolStyles [11] = {0,
+    4 /* arxml_scanner_1_comment */,
+    2 /* arxml_scanner_1_name */,
+    3 /* arxml_scanner_1_value */,
+    1 /* arxml_scanner_1__3C_ */,
+    1 /* arxml_scanner_1__3C__3F_ */,
+    1 /* arxml_scanner_1__3E_ */,
+    1 /* arxml_scanner_1__3F__3E_ */,
+    1 /* arxml_scanner_1__2F__3E_ */,
+    1 /* arxml_scanner_1__3C__2F_ */,
+    1 /* arxml_scanner_1__3D_ */
+  } ;
+  return (inTerminalIndex >= 0) ? kTerminalSymbolStyles [inTerminalIndex] : 0 ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//   S T Y L E   N A M E    F O R    S T Y L E    I N D E X                                                            *
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_String C_Lexique_arxml_5F_scanner::styleNameForIndex (const uint32_t inStyleIndex) const {
+  C_String result ;
+  if (inStyleIndex < 6) {
+    static const char * kStyleArray [6] = {
+      "",
+      "delimitersStyle",
+      "nameStyle",
+      "attributeValue",
+      "commentStyle",
+      "textStyle"
+    } ;
+    result = kStyleArray [inStyleIndex] ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+cMapElement_arxmlAttributeMap::cMapElement_arxmlAttributeMap (const GALGAS_lstring & inKey,
+                                                              const GALGAS_lstring & in_value
+                                                              COMMA_LOCATION_ARGS) :
+cMapElement (inKey COMMA_THERE),
+mAttribute_value (in_value) {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+bool cMapElement_arxmlAttributeMap::isValid (void) const {
+  return mAttribute_lkey.isValid () && mAttribute_value.isValid () ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+cMapElement * cMapElement_arxmlAttributeMap::copy (void) {
+  cMapElement * result = NULL ;
+  macroMyNew (result, cMapElement_arxmlAttributeMap (mAttribute_lkey, mAttribute_value COMMA_HERE)) ;
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void cMapElement_arxmlAttributeMap::description (C_String & ioString, const int32_t inIndentation) const {
+  ioString << "\n" ;
+  ioString.writeStringMultiple ("| ", inIndentation) ;
+  ioString << "value" ":" ;
+  mAttribute_value.description (ioString, inIndentation) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+typeComparisonResult cMapElement_arxmlAttributeMap::compare (const cCollectionElement * inOperand) const {
+  cMapElement_arxmlAttributeMap * operand = (cMapElement_arxmlAttributeMap *) inOperand ;
+  typeComparisonResult result = mAttribute_lkey.objectCompare (operand->mAttribute_lkey) ;
+  if (kOperandEqual == result) {
+    result = mAttribute_value.objectCompare (operand->mAttribute_value) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlAttributeMap::GALGAS_arxmlAttributeMap (void) :
+AC_GALGAS_map () {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlAttributeMap::GALGAS_arxmlAttributeMap (const GALGAS_arxmlAttributeMap & inSource) :
+AC_GALGAS_map (inSource) {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlAttributeMap & GALGAS_arxmlAttributeMap::operator = (const GALGAS_arxmlAttributeMap & inSource) {
+  * ((AC_GALGAS_map *) this) = inSource ;
+  return * this ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlAttributeMap GALGAS_arxmlAttributeMap::constructor_emptyMap (LOCATION_ARGS) {
+  GALGAS_arxmlAttributeMap result ;
+  result.makeNewEmptyMap (THERE) ;
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlAttributeMap GALGAS_arxmlAttributeMap::constructor_mapWithMapToOverride (const GALGAS_arxmlAttributeMap & inMapToOverride
+                                                                                     COMMA_LOCATION_ARGS) {
+  GALGAS_arxmlAttributeMap result ;
+  result.makeNewEmptyMapWithMapToOverride (inMapToOverride COMMA_THERE) ;
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlAttributeMap GALGAS_arxmlAttributeMap::getter_overriddenMap (C_Compiler * inCompiler
+                                                                         COMMA_LOCATION_ARGS) const {
+  GALGAS_arxmlAttributeMap result ;
+  getOverridenMap (result, inCompiler COMMA_THERE) ;
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_arxmlAttributeMap::addAssign_operation (const GALGAS_lstring & inKey,
+                                                    const GALGAS_lstring & inArgument0,
+                                                    C_Compiler * inCompiler
+                                                    COMMA_LOCATION_ARGS) {
+  cMapElement_arxmlAttributeMap * p = NULL ;
+  macroMyNew (p, cMapElement_arxmlAttributeMap (inKey, inArgument0 COMMA_HERE)) ;
+  capCollectionElement attributes ;
+  attributes.setPointer (p) ;
+  macroDetachSharedObject (p) ;
+  const char * kInsertErrorMessage = "@arxmlAttributeMap insert error: '%K' already in map" ;
+  const char * kShadowErrorMessage = "" ;
+  performInsert (attributes, inCompiler, kInsertErrorMessage, kShadowErrorMessage COMMA_THERE) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_arxmlAttributeMap::setter_insertKey (GALGAS_lstring inKey,
+                                                 GALGAS_lstring inArgument0,
+                                                 C_Compiler * inCompiler
+                                                 COMMA_LOCATION_ARGS) {
+  cMapElement_arxmlAttributeMap * p = NULL ;
+  macroMyNew (p, cMapElement_arxmlAttributeMap (inKey, inArgument0 COMMA_HERE)) ;
+  capCollectionElement attributes ;
+  attributes.setPointer (p) ;
+  macroDetachSharedObject (p) ;
+  const char * kInsertErrorMessage = "the '%K' attribute has been already declared" ;
+  const char * kShadowErrorMessage = "" ;
+  performInsert (attributes, inCompiler, kInsertErrorMessage, kShadowErrorMessage COMMA_THERE) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+const char * kSearchErrorMessage_arxmlAttributeMap_searchKey = "the '%K' attribute is not declared" ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_arxmlAttributeMap::method_searchKey (GALGAS_lstring inKey,
+                                                 GALGAS_lstring & outArgument0,
+                                                 C_Compiler * inCompiler
+                                                 COMMA_LOCATION_ARGS) const {
+  const cMapElement_arxmlAttributeMap * p = (const cMapElement_arxmlAttributeMap *) performSearch (inKey,
+                                                                                                     inCompiler,
+                                                                                                     kSearchErrorMessage_arxmlAttributeMap_searchKey
+                                                                                                     COMMA_THERE) ;
+  if (NULL == p) {
+    outArgument0.drop () ;
+  }else{
+    macroValidSharedObject (p, cMapElement_arxmlAttributeMap) ;
+    outArgument0 = p->mAttribute_value ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_lstring GALGAS_arxmlAttributeMap::getter_valueForKey (const GALGAS_string & inKey,
+                                                             C_Compiler * inCompiler
+                                                             COMMA_LOCATION_ARGS) const {
+  const cCollectionElement * attributes = searchForReadingAttribute (inKey, inCompiler COMMA_THERE) ;
+  const cMapElement_arxmlAttributeMap * p = (const cMapElement_arxmlAttributeMap *) attributes ;
+  GALGAS_lstring result ;
+  if (NULL != p) {
+    macroValidSharedObject (p, cMapElement_arxmlAttributeMap) ;
+    result = p->mAttribute_value ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_arxmlAttributeMap::setter_setValueForKey (GALGAS_lstring inAttributeValue,
+                                                      GALGAS_string inKey,
+                                                      C_Compiler * inCompiler
+                                                      COMMA_LOCATION_ARGS) {
+  cCollectionElement * attributes = searchForReadWriteAttribute (inKey, inCompiler COMMA_THERE) ;
+  cMapElement_arxmlAttributeMap * p = (cMapElement_arxmlAttributeMap *) attributes ;
+  if (NULL != p) {
+    macroValidSharedObject (p, cMapElement_arxmlAttributeMap) ;
+    p->mAttribute_value = inAttributeValue ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+cMapElement_arxmlAttributeMap * GALGAS_arxmlAttributeMap::readWriteAccessForWithInstruction (C_Compiler * inCompiler,
+                                                                                             const GALGAS_string & inKey
+                                                                                             COMMA_LOCATION_ARGS) {
+  cMapElement_arxmlAttributeMap * result = (cMapElement_arxmlAttributeMap *) searchForReadWriteAttribute (inKey, inCompiler COMMA_THERE) ;
+  macroNullOrValidSharedObject (result, cMapElement_arxmlAttributeMap) ;
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+cEnumerator_arxmlAttributeMap::cEnumerator_arxmlAttributeMap (const GALGAS_arxmlAttributeMap & inEnumeratedObject,
+                                                              const typeEnumerationOrder inOrder) :
+cGenericAbstractEnumerator () {
+  inEnumeratedObject.populateEnumerationArray (mEnumerationArray, inOrder) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlAttributeMap_2D_element cEnumerator_arxmlAttributeMap::current (LOCATION_ARGS) const {
+  const cMapElement_arxmlAttributeMap * p = (const cMapElement_arxmlAttributeMap *) currentObjectPtr (THERE) ;
+  macroValidSharedObject (p, cMapElement_arxmlAttributeMap) ;
+  return GALGAS_arxmlAttributeMap_2D_element (p->mAttribute_lkey, p->mAttribute_value) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_lstring cEnumerator_arxmlAttributeMap::current_lkey (LOCATION_ARGS) const {
+  const cMapElement * p = (const cMapElement *) currentObjectPtr (THERE) ;
+  macroValidSharedObject (p, cMapElement) ;
+  return p->mAttribute_lkey ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_lstring cEnumerator_arxmlAttributeMap::current_value (LOCATION_ARGS) const {
+  const cMapElement_arxmlAttributeMap * p = (const cMapElement_arxmlAttributeMap *) currentObjectPtr (THERE) ;
+  macroValidSharedObject (p, cMapElement_arxmlAttributeMap) ;
+  return p->mAttribute_value ;
+}
+
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                               @arxmlAttributeMap type                                               *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor
+kTypeDescriptor_GALGAS_arxmlAttributeMap ("arxmlAttributeMap",
+                                          NULL) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor * GALGAS_arxmlAttributeMap::staticTypeDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_arxmlAttributeMap ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+AC_GALGAS_root * GALGAS_arxmlAttributeMap::clonedObject (void) const {
+  AC_GALGAS_root * result = NULL ;
+  if (isValid ()) {
+    macroMyNew (result, GALGAS_arxmlAttributeMap (*this)) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlAttributeMap GALGAS_arxmlAttributeMap::extractObject (const GALGAS_object & inObject,
+                                                                  C_Compiler * inCompiler
+                                                                  COMMA_LOCATION_ARGS) {
+  GALGAS_arxmlAttributeMap result ;
+  const GALGAS_arxmlAttributeMap * p = (const GALGAS_arxmlAttributeMap *) inObject.embeddedObject () ;
+  if (NULL != p) {
+    if (NULL != dynamic_cast <const GALGAS_arxmlAttributeMap *> (p)) {
+      result = *p ;
+    }else{
+      inCompiler->castError ("arxmlAttributeMap", p->dynamicTypeDescriptor () COMMA_THERE) ;
+    }  
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                     Extension method '@arxmlAttributeMap print'                                     *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+void extensionMethod_print (const GALGAS_arxmlAttributeMap inObject,
+                            const GALGAS_uint /* constinArgument_indentation */,
+                            C_Compiler * inCompiler
+                            COMMA_UNUSED_LOCATION_ARGS) {
+  const GALGAS_arxmlAttributeMap temp_0 = inObject ;
+  cEnumerator_arxmlAttributeMap enumerator_285 (temp_0, kEnumeration_up) ;
+  const bool bool_1 = true ;
+  if (enumerator_285.hasCurrentObject () && bool_1) {
+    inCompiler->printMessage (GALGAS_string (" ( ")  COMMA_SOURCE_FILE ("arxml_types.galgas", 12)) ;
+    while (enumerator_285.hasCurrentObject () && bool_1) {
+      inCompiler->printMessage (enumerator_285.current_lkey (HERE).getter_string (SOURCE_FILE ("arxml_types.galgas", 14)).add_operation (GALGAS_string (" = "), inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 14)).add_operation (enumerator_285.current_value (HERE).getter_string (SOURCE_FILE ("arxml_types.galgas", 14)), inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 14))  COMMA_SOURCE_FILE ("arxml_types.galgas", 14)) ;
+      enumerator_285.gotoNextObject () ;
+      if (enumerator_285.hasCurrentObject () && bool_1) {
+        inCompiler->printMessage (GALGAS_string (" , ")  COMMA_SOURCE_FILE ("arxml_types.galgas", 16)) ;
+      }
+    }
+    inCompiler->printMessage (GALGAS_string (" )")  COMMA_SOURCE_FILE ("arxml_types.galgas", 18)) ;
+  }
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                     Class for element of '@arxmlNodeList' list                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class cCollectionElement_arxmlNodeList : public cCollectionElement {
+  public : GALGAS_arxmlNodeList_2D_element mObject ;
+
+//--- Constructor
+  public : cCollectionElement_arxmlNodeList (const GALGAS_arxmlNode & in_node
+                                             COMMA_LOCATION_ARGS) ;
+
+//--- Virtual method for comparing elements
+  public : virtual typeComparisonResult compare (const cCollectionElement * inOperand) const ;
+
+//--- Virtual method that checks that all attributes are valid
+  public : virtual bool isValid (void) const ;
+
+//--- Virtual method that returns a copy of current object
+  public : virtual cCollectionElement * copy (void) ;
+
+//--- Description
+  public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+cCollectionElement_arxmlNodeList::cCollectionElement_arxmlNodeList (const GALGAS_arxmlNode & in_node
+                                                                    COMMA_LOCATION_ARGS) :
+cCollectionElement (THERE),
+mObject (in_node) {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+bool cCollectionElement_arxmlNodeList::isValid (void) const {
+  return mObject.isValid () ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+cCollectionElement * cCollectionElement_arxmlNodeList::copy (void) {
+  cCollectionElement * result = NULL ;
+  macroMyNew (result, cCollectionElement_arxmlNodeList (mObject.mAttribute_node COMMA_HERE)) ;
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void cCollectionElement_arxmlNodeList::description (C_String & ioString, const int32_t inIndentation) const {
+  ioString << "\n" ;
+  ioString.writeStringMultiple ("| ", inIndentation) ;
+  ioString << "node" ":" ;
+  mObject.mAttribute_node.description (ioString, inIndentation) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+typeComparisonResult cCollectionElement_arxmlNodeList::compare (const cCollectionElement * inOperand) const {
+  cCollectionElement_arxmlNodeList * operand = (cCollectionElement_arxmlNodeList *) inOperand ;
+  macroValidSharedObject (operand, cCollectionElement_arxmlNodeList) ;
+  return mObject.objectCompare (operand->mObject) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlNodeList::GALGAS_arxmlNodeList (void) :
+AC_GALGAS_list () {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlNodeList::GALGAS_arxmlNodeList (cSharedList * inSharedListPtr) :
+AC_GALGAS_list (inSharedListPtr) {
+  if (NULL == inSharedListPtr) {
+    createNewEmptyList (HERE) ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlNodeList GALGAS_arxmlNodeList::constructor_emptyList (LOCATION_ARGS) {
+  GALGAS_arxmlNodeList result ;
+  result.createNewEmptyList (THERE) ;
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlNodeList GALGAS_arxmlNodeList::constructor_listWithValue (const GALGAS_arxmlNode & inOperand0
+                                                                      COMMA_LOCATION_ARGS) {
+  GALGAS_arxmlNodeList result ;
+  if (inOperand0.isValid ()) {
+    result.createNewEmptyList (THERE) ;
+    capCollectionElement attributes ;
+    GALGAS_arxmlNodeList::makeAttributesFromObjects (attributes, inOperand0 COMMA_THERE) ;
+    result.addObject (attributes) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_arxmlNodeList::makeAttributesFromObjects (capCollectionElement & outAttributes,
+                                                      const GALGAS_arxmlNode & in_node
+                                                      COMMA_LOCATION_ARGS) {
+  cCollectionElement_arxmlNodeList * p = NULL ;
+  macroMyNew (p, cCollectionElement_arxmlNodeList (in_node COMMA_THERE)) ;
+  outAttributes.setPointer (p) ;
+  macroDetachSharedObject (p) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_arxmlNodeList::addAssign_operation (const GALGAS_arxmlNode & inOperand0
+                                                COMMA_LOCATION_ARGS) {
+  if (isValid () && inOperand0.isValid ()) {
+    cCollectionElement * p = NULL ;
+    macroMyNew (p, cCollectionElement_arxmlNodeList (inOperand0 COMMA_THERE)) ;
+    capCollectionElement attributes ;
+    attributes.setPointer (p) ;
+    macroDetachSharedObject (p) ;
+    addObject (attributes) ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_arxmlNodeList::setter_insertAtIndex (const GALGAS_arxmlNode inOperand0,
+                                                 const GALGAS_uint inInsertionIndex,
+                                                 C_Compiler * inCompiler
+                                                 COMMA_LOCATION_ARGS) {
+  if (isValid () && inInsertionIndex.isValid () && inOperand0.isValid ()) {
+    cCollectionElement * p = NULL ;
+    macroMyNew (p, cCollectionElement_arxmlNodeList (inOperand0 COMMA_THERE)) ;
+    capCollectionElement attributes ;
+    attributes.setPointer (p) ;
+    macroDetachSharedObject (p) ;
+    addObjectAtIndex (attributes, inInsertionIndex.uintValue (), inCompiler COMMA_THERE) ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_arxmlNodeList::setter_removeAtIndex (GALGAS_arxmlNode & outOperand0,
+                                                 const GALGAS_uint inRemoveIndex,
+                                                 C_Compiler * inCompiler
+                                                 COMMA_LOCATION_ARGS) {
+  if (isValid () && inRemoveIndex.isValid ()) {
+    capCollectionElement attributes ;
+    removeObjectAtIndex (attributes, inRemoveIndex.uintValue (), inCompiler COMMA_THERE) ;
+    cCollectionElement_arxmlNodeList * p = (cCollectionElement_arxmlNodeList *) attributes.ptr () ;
+    if (NULL == p) {
+      outOperand0.drop () ;
+    }else{
+      macroValidSharedObject (p, cCollectionElement_arxmlNodeList) ;
+      outOperand0 = p->mObject.mAttribute_node ;
+    }
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_arxmlNodeList::setter_popFirst (GALGAS_arxmlNode & outOperand0,
+                                            C_Compiler * inCompiler
+                                            COMMA_LOCATION_ARGS) {
+  capCollectionElement attributes ;
+  removeFirstObject (attributes, inCompiler COMMA_THERE) ;
+  cCollectionElement_arxmlNodeList * p = (cCollectionElement_arxmlNodeList *) attributes.ptr () ;
+  if (NULL == p) {
+    outOperand0.drop () ;
+  }else{
+    macroValidSharedObject (p, cCollectionElement_arxmlNodeList) ;
+    outOperand0 = p->mObject.mAttribute_node ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_arxmlNodeList::setter_popLast (GALGAS_arxmlNode & outOperand0,
+                                           C_Compiler * inCompiler
+                                           COMMA_LOCATION_ARGS) {
+  capCollectionElement attributes ;
+  removeLastObject (attributes, inCompiler COMMA_THERE) ;
+  cCollectionElement_arxmlNodeList * p = (cCollectionElement_arxmlNodeList *) attributes.ptr () ;
+  if (NULL == p) {
+    outOperand0.drop () ;
+  }else{
+    macroValidSharedObject (p, cCollectionElement_arxmlNodeList) ;
+    outOperand0 = p->mObject.mAttribute_node ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_arxmlNodeList::method_first (GALGAS_arxmlNode & outOperand0,
+                                         C_Compiler * inCompiler
+                                         COMMA_LOCATION_ARGS) const {
+  capCollectionElement attributes ;
+  readFirst (attributes, inCompiler COMMA_THERE) ;
+  cCollectionElement_arxmlNodeList * p = (cCollectionElement_arxmlNodeList *) attributes.ptr () ;
+  if (NULL == p) {
+    outOperand0.drop () ;
+  }else{
+    macroValidSharedObject (p, cCollectionElement_arxmlNodeList) ;
+    outOperand0 = p->mObject.mAttribute_node ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_arxmlNodeList::method_last (GALGAS_arxmlNode & outOperand0,
+                                        C_Compiler * inCompiler
+                                        COMMA_LOCATION_ARGS) const {
+  capCollectionElement attributes ;
+  readLast (attributes, inCompiler COMMA_THERE) ;
+  cCollectionElement_arxmlNodeList * p = (cCollectionElement_arxmlNodeList *) attributes.ptr () ;
+  if (NULL == p) {
+    outOperand0.drop () ;
+  }else{
+    macroValidSharedObject (p, cCollectionElement_arxmlNodeList) ;
+    outOperand0 = p->mObject.mAttribute_node ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlNodeList GALGAS_arxmlNodeList::add_operation (const GALGAS_arxmlNodeList & inOperand,
+                                                          C_Compiler * /* inCompiler */
+                                                          COMMA_UNUSED_LOCATION_ARGS) const {
+  GALGAS_arxmlNodeList result ;
+  if (isValid () && inOperand.isValid ()) {
+    result = *this ;
+    result.appendList (inOperand) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlNodeList GALGAS_arxmlNodeList::getter_subListWithRange (const GALGAS_range & inRange,
+                                                                    C_Compiler * inCompiler
+                                                                    COMMA_LOCATION_ARGS) const {
+  GALGAS_arxmlNodeList result = GALGAS_arxmlNodeList::constructor_emptyList (THERE) ;
+  subListWithRange (result, inRange, inCompiler COMMA_THERE) ;
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlNodeList GALGAS_arxmlNodeList::getter_subListFromIndex (const GALGAS_uint & inIndex,
+                                                                    C_Compiler * inCompiler
+                                                                    COMMA_LOCATION_ARGS) const {
+  GALGAS_arxmlNodeList result = GALGAS_arxmlNodeList::constructor_emptyList (THERE) ;
+  subListFromIndex (result, inIndex, inCompiler COMMA_THERE) ;
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlNodeList GALGAS_arxmlNodeList::getter_subListToIndex (const GALGAS_uint & inIndex,
+                                                                  C_Compiler * inCompiler
+                                                                  COMMA_LOCATION_ARGS) const {
+  GALGAS_arxmlNodeList result = GALGAS_arxmlNodeList::constructor_emptyList (THERE) ;
+  subListToIndex (result, inIndex, inCompiler COMMA_THERE) ;
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_arxmlNodeList::plusAssign_operation (const GALGAS_arxmlNodeList inOperand,
+                                                 C_Compiler * /* inCompiler */
+                                                 COMMA_UNUSED_LOCATION_ARGS) {
+  appendList (inOperand) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlNode GALGAS_arxmlNodeList::getter_nodeAtIndex (const GALGAS_uint & inIndex,
+                                                           C_Compiler * inCompiler
+                                                           COMMA_LOCATION_ARGS) const {
+  capCollectionElement attributes = readObjectAtIndex (inIndex, inCompiler COMMA_THERE) ;
+  cCollectionElement_arxmlNodeList * p = (cCollectionElement_arxmlNodeList *) attributes.ptr () ;
+  GALGAS_arxmlNode result ;
+  if (NULL != p) {
+    macroValidSharedObject (p, cCollectionElement_arxmlNodeList) ;
+    result = p->mObject.mAttribute_node ;
+  }
+  return result ;
+}
+
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+cEnumerator_arxmlNodeList::cEnumerator_arxmlNodeList (const GALGAS_arxmlNodeList & inEnumeratedObject,
+                                                      const typeEnumerationOrder inOrder) :
+cGenericAbstractEnumerator () {
+  inEnumeratedObject.populateEnumerationArray (mEnumerationArray, inOrder) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlNodeList_2D_element cEnumerator_arxmlNodeList::current (LOCATION_ARGS) const {
+  const cCollectionElement_arxmlNodeList * p = (const cCollectionElement_arxmlNodeList *) currentObjectPtr (THERE) ;
+  macroValidSharedObject (p, cCollectionElement_arxmlNodeList) ;
+  return p->mObject ;
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlNode cEnumerator_arxmlNodeList::current_node (LOCATION_ARGS) const {
+  const cCollectionElement_arxmlNodeList * p = (const cCollectionElement_arxmlNodeList *) currentObjectPtr (THERE) ;
+  macroValidSharedObject (p, cCollectionElement_arxmlNodeList) ;
+  return p->mObject.mAttribute_node ;
+}
+
+
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                                 @arxmlNodeList type                                                 *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor
+kTypeDescriptor_GALGAS_arxmlNodeList ("arxmlNodeList",
+                                      NULL) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor * GALGAS_arxmlNodeList::staticTypeDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_arxmlNodeList ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+AC_GALGAS_root * GALGAS_arxmlNodeList::clonedObject (void) const {
+  AC_GALGAS_root * result = NULL ;
+  if (isValid ()) {
+    macroMyNew (result, GALGAS_arxmlNodeList (*this)) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlNodeList GALGAS_arxmlNodeList::extractObject (const GALGAS_object & inObject,
+                                                          C_Compiler * inCompiler
+                                                          COMMA_LOCATION_ARGS) {
+  GALGAS_arxmlNodeList result ;
+  const GALGAS_arxmlNodeList * p = (const GALGAS_arxmlNodeList *) inObject.embeddedObject () ;
+  if (NULL != p) {
+    if (NULL != dynamic_cast <const GALGAS_arxmlNodeList *> (p)) {
+      result = *p ;
+    }else{
+      inCompiler->castError ("arxmlNodeList", p->dynamicTypeDescriptor () COMMA_THERE) ;
+    }  
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//   Object comparison                                                                                                 *
+//---------------------------------------------------------------------------------------------------------------------*
+
+
+
+typeComparisonResult GALGAS_arxmlNode::objectCompare (const GALGAS_arxmlNode & inOperand) const {
+  typeComparisonResult result = kOperandNotValid ;
+  if (isValid () && inOperand.isValid ()) {
+    const int32_t mySlot = mObjectPtr->classDescriptor ()->mSlotID ;
+    const int32_t operandSlot = inOperand.mObjectPtr->classDescriptor ()->mSlotID ;
+    if (mySlot < operandSlot) {
+      result = kFirstOperandLowerThanSecond ;
+    }else if (mySlot > operandSlot) {
+      result = kFirstOperandGreaterThanSecond ;
+    }else{
+      result = mObjectPtr->dynamicObjectCompare (inOperand.mObjectPtr) ;
+    }
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlNode::GALGAS_arxmlNode (void) :
+AC_GALGAS_class () {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlNode::GALGAS_arxmlNode (const cPtr_arxmlNode * inSourcePtr) :
+AC_GALGAS_class (inSourcePtr) {
+  macroNullOrValidSharedObject (inSourcePtr, cPtr_arxmlNode) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                         Pointer class for @arxmlNode class                                          *
+//---------------------------------------------------------------------------------------------------------------------*
+
+cPtr_arxmlNode::cPtr_arxmlNode (LOCATION_ARGS) :
+acPtr_class (THERE) {
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                                   @arxmlNode type                                                   *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor
+kTypeDescriptor_GALGAS_arxmlNode ("arxmlNode",
+                                  NULL) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor * GALGAS_arxmlNode::staticTypeDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_arxmlNode ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+AC_GALGAS_root * GALGAS_arxmlNode::clonedObject (void) const {
+  AC_GALGAS_root * result = NULL ;
+  if (isValid ()) {
+    macroMyNew (result, GALGAS_arxmlNode (*this)) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlNode GALGAS_arxmlNode::extractObject (const GALGAS_object & inObject,
+                                                  C_Compiler * inCompiler
+                                                  COMMA_LOCATION_ARGS) {
+  GALGAS_arxmlNode result ;
+  const GALGAS_arxmlNode * p = (const GALGAS_arxmlNode *) inObject.embeddedObject () ;
+  if (NULL != p) {
+    if (NULL != dynamic_cast <const GALGAS_arxmlNode *> (p)) {
+      result = *p ;
+    }else{
+      inCompiler->castError ("arxmlNode", p->dynamicTypeDescriptor () COMMA_THERE) ;
+    }  
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                       Extension method '@arxmlNodeList print'                                       *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+void extensionMethod_print (const GALGAS_arxmlNodeList inObject,
+                            const GALGAS_uint constinArgument_indentation,
+                            C_Compiler * inCompiler
+                            COMMA_UNUSED_LOCATION_ARGS) {
+  const GALGAS_arxmlNodeList temp_0 = inObject ;
+  cEnumerator_arxmlNodeList enumerator_542 (temp_0, kEnumeration_up) ;
+  while (enumerator_542.hasCurrentObject ()) {
+    callExtensionMethod_print ((const cPtr_arxmlNode *) enumerator_542.current_node (HERE).ptr (), constinArgument_indentation.add_operation (GALGAS_uint ((uint32_t) 4U), inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 30)), inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 30)) ;
+    enumerator_542.gotoNextObject () ;
+  }
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                    Abstract extension method '@arxmlNode print'                                     *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+static TC_UniqueArray <extensionMethodSignature_arxmlNode_print> gExtensionMethodTable_arxmlNode_print ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterExtensionMethod_print (const int32_t inClassIndex,
+                                 extensionMethodSignature_arxmlNode_print inMethod) {
+  gExtensionMethodTable_arxmlNode_print.forceObjectAtIndex (inClassIndex, inMethod, NULL COMMA_HERE) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+static void freeExtensionMethod_arxmlNode_print (void) {
+  gExtensionMethodTable_arxmlNode_print.free () ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_PrologueEpilogue gMethod_arxmlNode_print (NULL,
+                                            freeExtensionMethod_arxmlNode_print) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void callExtensionMethod_print (const cPtr_arxmlNode * inObject,
+                                const GALGAS_uint constin_indentation,
+                                C_Compiler * inCompiler
+                                COMMA_LOCATION_ARGS) {
+//--- Drop output arguments
+//--- Find method
+  if (NULL != inObject) {
+    macroValidSharedObject (inObject, cPtr_arxmlNode) ;
+    const C_galgas_type_descriptor * info = inObject->classDescriptor () ;
+    const int32_t classIndex = info->mSlotID ;
+    extensionMethodSignature_arxmlNode_print f = NULL ;
+    if (classIndex < gExtensionMethodTable_arxmlNode_print.count ()) {
+      f = gExtensionMethodTable_arxmlNode_print (classIndex COMMA_HERE) ;
+    }
+    if (NULL == f) {
+      const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
+      while ((NULL == f) && (NULL != p)) {
+        if (p->mSlotID < gExtensionMethodTable_arxmlNode_print.count ()) {
+          f = gExtensionMethodTable_arxmlNode_print (p->mSlotID COMMA_HERE) ;
+        }
+        p = p->mSuperclassDescriptor ;
+      }
+      gExtensionMethodTable_arxmlNode_print.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
+    }
+    if (NULL == f) {
+      fatalError ("FATAL CATEGORY METHOD CALL ERROR", __FILE__, __LINE__) ;
+    }else{
+      f (inObject, constin_indentation, inCompiler COMMA_THERE) ;
+    }
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//   Object comparison                                                                                                 *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typeComparisonResult cPtr_arxmlDocument::dynamicObjectCompare (const acPtr_class * /* inOperandPtr */) const {
+  return kOperandEqual ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+
+typeComparisonResult GALGAS_arxmlDocument::objectCompare (const GALGAS_arxmlDocument & inOperand) const {
+  typeComparisonResult result = kOperandNotValid ;
+  if (isValid () && inOperand.isValid ()) {
+    const int32_t mySlot = mObjectPtr->classDescriptor ()->mSlotID ;
+    const int32_t operandSlot = inOperand.mObjectPtr->classDescriptor ()->mSlotID ;
+    if (mySlot < operandSlot) {
+      result = kFirstOperandLowerThanSecond ;
+    }else if (mySlot > operandSlot) {
+      result = kFirstOperandGreaterThanSecond ;
+    }else{
+      result = mObjectPtr->dynamicObjectCompare (inOperand.mObjectPtr) ;
+    }
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlDocument::GALGAS_arxmlDocument (void) :
+AC_GALGAS_class () {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlDocument GALGAS_arxmlDocument::constructor_default (LOCATION_ARGS) {
+  return GALGAS_arxmlDocument::constructor_new (THERE) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlDocument::GALGAS_arxmlDocument (const cPtr_arxmlDocument * inSourcePtr) :
+AC_GALGAS_class (inSourcePtr) {
+  macroNullOrValidSharedObject (inSourcePtr, cPtr_arxmlDocument) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlDocument GALGAS_arxmlDocument::constructor_new (LOCATION_ARGS) {
+  GALGAS_arxmlDocument result ;
+  macroMyNew (result.mObjectPtr, cPtr_arxmlDocument (THERE)) ;
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                       Pointer class for @arxmlDocument class                                        *
+//---------------------------------------------------------------------------------------------------------------------*
+
+cPtr_arxmlDocument::cPtr_arxmlDocument (LOCATION_ARGS) :
+acPtr_class (THERE) {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor * cPtr_arxmlDocument::classDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_arxmlDocument ;
+}
+
+void cPtr_arxmlDocument::description (C_String & ioString,
+                                      const int32_t /* inIndentation */) const {
+  ioString << "[@arxmlDocument]" ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+acPtr_class * cPtr_arxmlDocument::duplicate (LOCATION_ARGS) const {
+  acPtr_class * ptr = NULL ;
+  macroMyNew (ptr, cPtr_arxmlDocument (THERE)) ;
+  return ptr ;
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                                 @arxmlDocument type                                                 *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor
+kTypeDescriptor_GALGAS_arxmlDocument ("arxmlDocument",
+                                      NULL) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor * GALGAS_arxmlDocument::staticTypeDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_arxmlDocument ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+AC_GALGAS_root * GALGAS_arxmlDocument::clonedObject (void) const {
+  AC_GALGAS_root * result = NULL ;
+  if (isValid ()) {
+    macroMyNew (result, GALGAS_arxmlDocument (*this)) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlDocument GALGAS_arxmlDocument::extractObject (const GALGAS_object & inObject,
+                                                          C_Compiler * inCompiler
+                                                          COMMA_LOCATION_ARGS) {
+  GALGAS_arxmlDocument result ;
+  const GALGAS_arxmlDocument * p = (const GALGAS_arxmlDocument *) inObject.embeddedObject () ;
+  if (NULL != p) {
+    if (NULL != dynamic_cast <const GALGAS_arxmlDocument *> (p)) {
+      result = *p ;
+    }else{
+      inCompiler->castError ("arxmlDocument", p->dynamicTypeDescriptor () COMMA_THERE) ;
+    }  
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlVarPath_2D_element::GALGAS_gtlVarPath_2D_element (void) :
 mAttribute_item () {
@@ -11653,6 +13280,120 @@ GALGAS_locationList_2D_element GALGAS_locationList_2D_element::extractObject (co
       result = *p ;
     }else{
       inCompiler->castError ("locationList-element", p->dynamicTypeDescriptor () COMMA_THERE) ;
+    }  
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlNodeList_2D_element::GALGAS_arxmlNodeList_2D_element (void) :
+mAttribute_node () {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlNodeList_2D_element::~ GALGAS_arxmlNodeList_2D_element (void) {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlNodeList_2D_element::GALGAS_arxmlNodeList_2D_element (const GALGAS_arxmlNode & inOperand0) :
+mAttribute_node (inOperand0) {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlNodeList_2D_element GALGAS_arxmlNodeList_2D_element::constructor_new (const GALGAS_arxmlNode & inOperand0 
+                                                                                  COMMA_UNUSED_LOCATION_ARGS) {
+  GALGAS_arxmlNodeList_2D_element result ;
+  if (inOperand0.isValid ()) {
+    result = GALGAS_arxmlNodeList_2D_element (inOperand0) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+typeComparisonResult GALGAS_arxmlNodeList_2D_element::objectCompare (const GALGAS_arxmlNodeList_2D_element & inOperand) const {
+   typeComparisonResult result = kOperandEqual ;
+  if (result == kOperandEqual) {
+    result = mAttribute_node.objectCompare (inOperand.mAttribute_node) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+bool GALGAS_arxmlNodeList_2D_element::isValid (void) const {
+  return mAttribute_node.isValid () ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_arxmlNodeList_2D_element::drop (void) {
+  mAttribute_node.drop () ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_arxmlNodeList_2D_element::description (C_String & ioString,
+                                                   const int32_t inIndentation) const {
+  ioString << "<struct @arxmlNodeList-element:" ;
+  if (! isValid ()) {
+    ioString << " not built" ;
+  }else{
+    mAttribute_node.description (ioString, inIndentation+1) ;
+  }
+  ioString << ">" ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlNode GALGAS_arxmlNodeList_2D_element::getter_node (UNUSED_LOCATION_ARGS) const {
+  return mAttribute_node ;
+}
+
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                             @arxmlNodeList-element type                                             *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor
+kTypeDescriptor_GALGAS_arxmlNodeList_2D_element ("arxmlNodeList-element",
+                                                 NULL) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor * GALGAS_arxmlNodeList_2D_element::staticTypeDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_arxmlNodeList_2D_element ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+AC_GALGAS_root * GALGAS_arxmlNodeList_2D_element::clonedObject (void) const {
+  AC_GALGAS_root * result = NULL ;
+  if (isValid ()) {
+    macroMyNew (result, GALGAS_arxmlNodeList_2D_element (*this)) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_arxmlNodeList_2D_element GALGAS_arxmlNodeList_2D_element::extractObject (const GALGAS_object & inObject,
+                                                                                C_Compiler * inCompiler
+                                                                                COMMA_LOCATION_ARGS) {
+  GALGAS_arxmlNodeList_2D_element result ;
+  const GALGAS_arxmlNodeList_2D_element * p = (const GALGAS_arxmlNodeList_2D_element *) inObject.embeddedObject () ;
+  if (NULL != p) {
+    if (NULL != dynamic_cast <const GALGAS_arxmlNodeList_2D_element *> (p)) {
+      result = *p ;
+    }else{
+      inCompiler->castError ("arxmlNodeList-element", p->dynamicTypeDescriptor () COMMA_THERE) ;
     }  
   }
   return result ;
@@ -13345,1557 +15086,6 @@ GALGAS_library GALGAS_library::extractObject (const GALGAS_object & inObject,
       result = *p ;
     }else{
       inCompiler->castError ("library", p->dynamicTypeDescriptor () COMMA_THERE) ;
-    }  
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                     Extension getter '@library functionExists'                                      *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-static TC_UniqueArray <enterExtensionGetter_library_functionExists> gExtensionGetterTable_library_functionExists ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_functionExists (const int32_t inClassIndex,
-                                          enterExtensionGetter_library_functionExists inGetter) {
-  gExtensionGetterTable_library_functionExists.forceObjectAtIndex (inClassIndex, inGetter, NULL COMMA_HERE) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_bool callExtensionGetter_functionExists (const cPtr_library * inObject,
-                                                const GALGAS_lstring & in_name,
-                                                C_Compiler * inCompiler
-                                                COMMA_LOCATION_ARGS) {
-  GALGAS_bool result ;
-//--- Find Reader
-  if (NULL != inObject) {
-    macroValidSharedObject (inObject, cPtr_library) ;
-    const C_galgas_type_descriptor * info = inObject->classDescriptor () ;
-    const int32_t classIndex = info->mSlotID ;
-    enterExtensionGetter_library_functionExists f = NULL ;
-    if (classIndex < gExtensionGetterTable_library_functionExists.count ()) {
-      f = gExtensionGetterTable_library_functionExists (classIndex COMMA_HERE) ;
-    }
-    if (NULL == f) {
-       const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
-       while ((NULL == f) && (NULL != p)) {
-         if (p->mSlotID < gExtensionGetterTable_library_functionExists.count ()) {
-           f = gExtensionGetterTable_library_functionExists (p->mSlotID COMMA_HERE) ;
-         }
-         p = p->mSuperclassDescriptor ;
-       }
-       gExtensionGetterTable_library_functionExists.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
-    }
-    if (NULL == f) {
-      fatalError ("FATAL CATEGORY READER CALL ERROR", __FILE__, __LINE__) ;
-    }else{
-      result = f (inObject, in_name, inCompiler COMMA_THERE) ;
-    }
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static GALGAS_bool extensionGetter_library_functionExists (const cPtr_library * inObject,
-                                                           const GALGAS_lstring & constinArgument_name,
-                                                           C_Compiler * /* inCompiler */
-                                                           COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_bool result_exists ; // Returned variable
-  const cPtr_library * object = inObject ;
-  macroValidSharedObject (object, cPtr_library) ;
-  result_exists = object->mAttribute_funcMap.getter_hasKey (constinArgument_name.getter_string (SOURCE_FILE ("gtl_types.galgas", 286)) COMMA_SOURCE_FILE ("gtl_types.galgas", 286)) ;
-//---
-  return result_exists ;
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void defineExtensionGetter_library_functionExists (void) {
-  enterExtensionGetter_functionExists (kTypeDescriptor_GALGAS_library.mSlotID,
-                                       extensionGetter_library_functionExists) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void freeExtensionGetter_library_functionExists (void) {
-  gExtensionGetterTable_library_functionExists.free () ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-C_PrologueEpilogue gGetter_library_functionExists (defineExtensionGetter_library_functionExists,
-                                                   freeExtensionGetter_library_functionExists) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                       Extension getter '@library getFunction'                                       *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-static TC_UniqueArray <enterExtensionGetter_library_getFunction> gExtensionGetterTable_library_getFunction ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_getFunction (const int32_t inClassIndex,
-                                       enterExtensionGetter_library_getFunction inGetter) {
-  gExtensionGetterTable_library_getFunction.forceObjectAtIndex (inClassIndex, inGetter, NULL COMMA_HERE) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_gtlFunction callExtensionGetter_getFunction (const cPtr_library * inObject,
-                                                    const GALGAS_lstring & in_name,
-                                                    C_Compiler * inCompiler
-                                                    COMMA_LOCATION_ARGS) {
-  GALGAS_gtlFunction result ;
-//--- Find Reader
-  if (NULL != inObject) {
-    macroValidSharedObject (inObject, cPtr_library) ;
-    const C_galgas_type_descriptor * info = inObject->classDescriptor () ;
-    const int32_t classIndex = info->mSlotID ;
-    enterExtensionGetter_library_getFunction f = NULL ;
-    if (classIndex < gExtensionGetterTable_library_getFunction.count ()) {
-      f = gExtensionGetterTable_library_getFunction (classIndex COMMA_HERE) ;
-    }
-    if (NULL == f) {
-       const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
-       while ((NULL == f) && (NULL != p)) {
-         if (p->mSlotID < gExtensionGetterTable_library_getFunction.count ()) {
-           f = gExtensionGetterTable_library_getFunction (p->mSlotID COMMA_HERE) ;
-         }
-         p = p->mSuperclassDescriptor ;
-       }
-       gExtensionGetterTable_library_getFunction.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
-    }
-    if (NULL == f) {
-      fatalError ("FATAL CATEGORY READER CALL ERROR", __FILE__, __LINE__) ;
-    }else{
-      result = f (inObject, in_name, inCompiler COMMA_THERE) ;
-    }
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static GALGAS_gtlFunction extensionGetter_library_getFunction (const cPtr_library * inObject,
-                                                               const GALGAS_lstring & constinArgument_name,
-                                                               C_Compiler * inCompiler
-                                                               COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_gtlFunction result_aFunction ; // Returned variable
-  const cPtr_library * object = inObject ;
-  macroValidSharedObject (object, cPtr_library) ;
-  object->mAttribute_funcMap.method_get (constinArgument_name, result_aFunction, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 293)) ;
-//---
-  return result_aFunction ;
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void defineExtensionGetter_library_getFunction (void) {
-  enterExtensionGetter_getFunction (kTypeDescriptor_GALGAS_library.mSlotID,
-                                    extensionGetter_library_getFunction) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void freeExtensionGetter_library_getFunction (void) {
-  gExtensionGetterTable_library_getFunction.free () ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-C_PrologueEpilogue gGetter_library_getFunction (defineExtensionGetter_library_getFunction,
-                                                freeExtensionGetter_library_getFunction) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                       Extension setter '@library putFunction'                                       *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-static TC_UniqueArray <extensionSetterSignature_library_putFunction> gExtensionModifierTable_library_putFunction ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionSetter_putFunction (const int32_t inClassIndex,
-                                       extensionSetterSignature_library_putFunction inModifier) {
-  gExtensionModifierTable_library_putFunction.forceObjectAtIndex (inClassIndex, inModifier, NULL COMMA_HERE) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionSetter_putFunction (cPtr_library * inObject,
-                                      const GALGAS_lstring constin_name,
-                                      const GALGAS_gtlFunction constin_aFunction,
-                                      C_Compiler * inCompiler
-                                      COMMA_LOCATION_ARGS) {
-//--- Drop output arguments
-//--- Find setter
-  if (NULL != inObject) {
-    macroValidSharedObject (inObject, cPtr_library) ;
-    const C_galgas_type_descriptor * info = inObject->classDescriptor () ;
-    const int32_t classIndex = info->mSlotID ;
-    extensionSetterSignature_library_putFunction f = NULL ;
-    if (classIndex < gExtensionModifierTable_library_putFunction.count ()) {
-      f = gExtensionModifierTable_library_putFunction (classIndex COMMA_HERE) ;
-    }
-    if (NULL == f) {
-       const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
-       while ((NULL == f) && (NULL != p)) {
-         if (p->mSlotID < gExtensionModifierTable_library_putFunction.count ()) {
-           f = gExtensionModifierTable_library_putFunction (p->mSlotID COMMA_HERE) ;
-         }
-         p = p->mSuperclassDescriptor ;
-       }
-       gExtensionModifierTable_library_putFunction.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
-    }
-    f (inObject, constin_name, constin_aFunction, inCompiler COMMA_THERE) ;
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void extensionSetter_library_putFunction (cPtr_library * inObject,
-                                                 const GALGAS_lstring constinArgument_name,
-                                                 const GALGAS_gtlFunction constinArgument_aFunction,
-                                                 C_Compiler * inCompiler
-                                                 COMMA_UNUSED_LOCATION_ARGS) {
-  cPtr_library * object = inObject ;
-  macroValidSharedObject (object, cPtr_library) ;
-  {
-  object->mAttribute_funcMap.setter_put (constinArgument_name, constinArgument_aFunction, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 300)) ;
-  }
-}
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void defineExtensionSetter_library_putFunction (void) {
-  enterExtensionSetter_putFunction (kTypeDescriptor_GALGAS_library.mSlotID,
-                                    extensionSetter_library_putFunction) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void freeExtensionModifier_library_putFunction (void) {
-  gExtensionModifierTable_library_putFunction.free () ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-C_PrologueEpilogue gSetter_library_putFunction (defineExtensionSetter_library_putFunction,
-                                                freeExtensionModifier_library_putFunction) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                      Extension getter '@library getterExists'                                       *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-static TC_UniqueArray <enterExtensionGetter_library_getterExists> gExtensionGetterTable_library_getterExists ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_getterExists (const int32_t inClassIndex,
-                                        enterExtensionGetter_library_getterExists inGetter) {
-  gExtensionGetterTable_library_getterExists.forceObjectAtIndex (inClassIndex, inGetter, NULL COMMA_HERE) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_bool callExtensionGetter_getterExists (const cPtr_library * inObject,
-                                              const GALGAS_string & in_type,
-                                              const GALGAS_lstring & in_name,
-                                              C_Compiler * inCompiler
-                                              COMMA_LOCATION_ARGS) {
-  GALGAS_bool result ;
-//--- Find Reader
-  if (NULL != inObject) {
-    macroValidSharedObject (inObject, cPtr_library) ;
-    const C_galgas_type_descriptor * info = inObject->classDescriptor () ;
-    const int32_t classIndex = info->mSlotID ;
-    enterExtensionGetter_library_getterExists f = NULL ;
-    if (classIndex < gExtensionGetterTable_library_getterExists.count ()) {
-      f = gExtensionGetterTable_library_getterExists (classIndex COMMA_HERE) ;
-    }
-    if (NULL == f) {
-       const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
-       while ((NULL == f) && (NULL != p)) {
-         if (p->mSlotID < gExtensionGetterTable_library_getterExists.count ()) {
-           f = gExtensionGetterTable_library_getterExists (p->mSlotID COMMA_HERE) ;
-         }
-         p = p->mSuperclassDescriptor ;
-       }
-       gExtensionGetterTable_library_getterExists.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
-    }
-    if (NULL == f) {
-      fatalError ("FATAL CATEGORY READER CALL ERROR", __FILE__, __LINE__) ;
-    }else{
-      result = f (inObject, in_type, in_name, inCompiler COMMA_THERE) ;
-    }
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static GALGAS_bool extensionGetter_library_getterExists (const cPtr_library * inObject,
-                                                         const GALGAS_string & constinArgument_type,
-                                                         const GALGAS_lstring & constinArgument_name,
-                                                         C_Compiler * inCompiler
-                                                         COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_bool result_exists ; // Returned variable
-  const cPtr_library * object = inObject ;
-  macroValidSharedObject (object, cPtr_library) ;
-  result_exists = object->mAttribute_getterMap.getter_hasKey (constinArgument_type.add_operation (constinArgument_name.getter_string (SOURCE_FILE ("gtl_types.galgas", 308)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 308)) COMMA_SOURCE_FILE ("gtl_types.galgas", 308)) ;
-//---
-  return result_exists ;
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void defineExtensionGetter_library_getterExists (void) {
-  enterExtensionGetter_getterExists (kTypeDescriptor_GALGAS_library.mSlotID,
-                                     extensionGetter_library_getterExists) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void freeExtensionGetter_library_getterExists (void) {
-  gExtensionGetterTable_library_getterExists.free () ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-C_PrologueEpilogue gGetter_library_getterExists (defineExtensionGetter_library_getterExists,
-                                                 freeExtensionGetter_library_getterExists) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        Extension getter '@library getGetter'                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-static TC_UniqueArray <enterExtensionGetter_library_getGetter> gExtensionGetterTable_library_getGetter ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_getGetter (const int32_t inClassIndex,
-                                     enterExtensionGetter_library_getGetter inGetter) {
-  gExtensionGetterTable_library_getGetter.forceObjectAtIndex (inClassIndex, inGetter, NULL COMMA_HERE) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_gtlGetter callExtensionGetter_getGetter (const cPtr_library * inObject,
-                                                const GALGAS_string & in_type,
-                                                const GALGAS_lstring & in_name,
-                                                C_Compiler * inCompiler
-                                                COMMA_LOCATION_ARGS) {
-  GALGAS_gtlGetter result ;
-//--- Find Reader
-  if (NULL != inObject) {
-    macroValidSharedObject (inObject, cPtr_library) ;
-    const C_galgas_type_descriptor * info = inObject->classDescriptor () ;
-    const int32_t classIndex = info->mSlotID ;
-    enterExtensionGetter_library_getGetter f = NULL ;
-    if (classIndex < gExtensionGetterTable_library_getGetter.count ()) {
-      f = gExtensionGetterTable_library_getGetter (classIndex COMMA_HERE) ;
-    }
-    if (NULL == f) {
-       const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
-       while ((NULL == f) && (NULL != p)) {
-         if (p->mSlotID < gExtensionGetterTable_library_getGetter.count ()) {
-           f = gExtensionGetterTable_library_getGetter (p->mSlotID COMMA_HERE) ;
-         }
-         p = p->mSuperclassDescriptor ;
-       }
-       gExtensionGetterTable_library_getGetter.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
-    }
-    if (NULL == f) {
-      fatalError ("FATAL CATEGORY READER CALL ERROR", __FILE__, __LINE__) ;
-    }else{
-      result = f (inObject, in_type, in_name, inCompiler COMMA_THERE) ;
-    }
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static GALGAS_gtlGetter extensionGetter_library_getGetter (const cPtr_library * inObject,
-                                                           const GALGAS_string & constinArgument_type,
-                                                           const GALGAS_lstring & constinArgument_name,
-                                                           C_Compiler * inCompiler
-                                                           COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_gtlGetter result_aGetter ; // Returned variable
-  const cPtr_library * object = inObject ;
-  macroValidSharedObject (object, cPtr_library) ;
-  object->mAttribute_getterMap.method_get (GALGAS_lstring::constructor_new (constinArgument_type.add_operation (constinArgument_name.getter_string (SOURCE_FILE ("gtl_types.galgas", 316)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 316)), constinArgument_name.getter_location (SOURCE_FILE ("gtl_types.galgas", 316))  COMMA_SOURCE_FILE ("gtl_types.galgas", 316)), result_aGetter, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 316)) ;
-//---
-  return result_aGetter ;
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void defineExtensionGetter_library_getGetter (void) {
-  enterExtensionGetter_getGetter (kTypeDescriptor_GALGAS_library.mSlotID,
-                                  extensionGetter_library_getGetter) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void freeExtensionGetter_library_getGetter (void) {
-  gExtensionGetterTable_library_getGetter.free () ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-C_PrologueEpilogue gGetter_library_getGetter (defineExtensionGetter_library_getGetter,
-                                              freeExtensionGetter_library_getGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        Extension setter '@library putGetter'                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-static TC_UniqueArray <extensionSetterSignature_library_putGetter> gExtensionModifierTable_library_putGetter ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionSetter_putGetter (const int32_t inClassIndex,
-                                     extensionSetterSignature_library_putGetter inModifier) {
-  gExtensionModifierTable_library_putGetter.forceObjectAtIndex (inClassIndex, inModifier, NULL COMMA_HERE) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionSetter_putGetter (cPtr_library * inObject,
-                                    const GALGAS_lstring constin_name,
-                                    const GALGAS_gtlGetter constin_aGetter,
-                                    C_Compiler * inCompiler
-                                    COMMA_LOCATION_ARGS) {
-//--- Drop output arguments
-//--- Find setter
-  if (NULL != inObject) {
-    macroValidSharedObject (inObject, cPtr_library) ;
-    const C_galgas_type_descriptor * info = inObject->classDescriptor () ;
-    const int32_t classIndex = info->mSlotID ;
-    extensionSetterSignature_library_putGetter f = NULL ;
-    if (classIndex < gExtensionModifierTable_library_putGetter.count ()) {
-      f = gExtensionModifierTable_library_putGetter (classIndex COMMA_HERE) ;
-    }
-    if (NULL == f) {
-       const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
-       while ((NULL == f) && (NULL != p)) {
-         if (p->mSlotID < gExtensionModifierTable_library_putGetter.count ()) {
-           f = gExtensionModifierTable_library_putGetter (p->mSlotID COMMA_HERE) ;
-         }
-         p = p->mSuperclassDescriptor ;
-       }
-       gExtensionModifierTable_library_putGetter.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
-    }
-    f (inObject, constin_name, constin_aGetter, inCompiler COMMA_THERE) ;
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void extensionSetter_library_putGetter (cPtr_library * inObject,
-                                               const GALGAS_lstring constinArgument_name,
-                                               const GALGAS_gtlGetter constinArgument_aGetter,
-                                               C_Compiler * inCompiler
-                                               COMMA_UNUSED_LOCATION_ARGS) {
-  cPtr_library * object = inObject ;
-  macroValidSharedObject (object, cPtr_library) ;
-  {
-  object->mAttribute_getterMap.setter_put (constinArgument_name, constinArgument_aGetter, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 323)) ;
-  }
-}
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void defineExtensionSetter_library_putGetter (void) {
-  enterExtensionSetter_putGetter (kTypeDescriptor_GALGAS_library.mSlotID,
-                                  extensionSetter_library_putGetter) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void freeExtensionModifier_library_putGetter (void) {
-  gExtensionModifierTable_library_putGetter.free () ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-C_PrologueEpilogue gSetter_library_putGetter (defineExtensionSetter_library_putGetter,
-                                              freeExtensionModifier_library_putGetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                      Extension getter '@library setterExists'                                       *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-static TC_UniqueArray <enterExtensionGetter_library_setterExists> gExtensionGetterTable_library_setterExists ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_setterExists (const int32_t inClassIndex,
-                                        enterExtensionGetter_library_setterExists inGetter) {
-  gExtensionGetterTable_library_setterExists.forceObjectAtIndex (inClassIndex, inGetter, NULL COMMA_HERE) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_bool callExtensionGetter_setterExists (const cPtr_library * inObject,
-                                              const GALGAS_string & in_type,
-                                              const GALGAS_lstring & in_name,
-                                              C_Compiler * inCompiler
-                                              COMMA_LOCATION_ARGS) {
-  GALGAS_bool result ;
-//--- Find Reader
-  if (NULL != inObject) {
-    macroValidSharedObject (inObject, cPtr_library) ;
-    const C_galgas_type_descriptor * info = inObject->classDescriptor () ;
-    const int32_t classIndex = info->mSlotID ;
-    enterExtensionGetter_library_setterExists f = NULL ;
-    if (classIndex < gExtensionGetterTable_library_setterExists.count ()) {
-      f = gExtensionGetterTable_library_setterExists (classIndex COMMA_HERE) ;
-    }
-    if (NULL == f) {
-       const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
-       while ((NULL == f) && (NULL != p)) {
-         if (p->mSlotID < gExtensionGetterTable_library_setterExists.count ()) {
-           f = gExtensionGetterTable_library_setterExists (p->mSlotID COMMA_HERE) ;
-         }
-         p = p->mSuperclassDescriptor ;
-       }
-       gExtensionGetterTable_library_setterExists.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
-    }
-    if (NULL == f) {
-      fatalError ("FATAL CATEGORY READER CALL ERROR", __FILE__, __LINE__) ;
-    }else{
-      result = f (inObject, in_type, in_name, inCompiler COMMA_THERE) ;
-    }
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static GALGAS_bool extensionGetter_library_setterExists (const cPtr_library * inObject,
-                                                         const GALGAS_string & constinArgument_type,
-                                                         const GALGAS_lstring & constinArgument_name,
-                                                         C_Compiler * inCompiler
-                                                         COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_bool result_exists ; // Returned variable
-  const cPtr_library * object = inObject ;
-  macroValidSharedObject (object, cPtr_library) ;
-  result_exists = object->mAttribute_setterMap.getter_hasKey (constinArgument_type.add_operation (constinArgument_name.getter_string (SOURCE_FILE ("gtl_types.galgas", 331)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 331)) COMMA_SOURCE_FILE ("gtl_types.galgas", 331)) ;
-//---
-  return result_exists ;
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void defineExtensionGetter_library_setterExists (void) {
-  enterExtensionGetter_setterExists (kTypeDescriptor_GALGAS_library.mSlotID,
-                                     extensionGetter_library_setterExists) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void freeExtensionGetter_library_setterExists (void) {
-  gExtensionGetterTable_library_setterExists.free () ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-C_PrologueEpilogue gGetter_library_setterExists (defineExtensionGetter_library_setterExists,
-                                                 freeExtensionGetter_library_setterExists) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        Extension getter '@library getSetter'                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-static TC_UniqueArray <enterExtensionGetter_library_getSetter> gExtensionGetterTable_library_getSetter ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_getSetter (const int32_t inClassIndex,
-                                     enterExtensionGetter_library_getSetter inGetter) {
-  gExtensionGetterTable_library_getSetter.forceObjectAtIndex (inClassIndex, inGetter, NULL COMMA_HERE) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_gtlSetter callExtensionGetter_getSetter (const cPtr_library * inObject,
-                                                const GALGAS_string & in_type,
-                                                const GALGAS_lstring & in_name,
-                                                C_Compiler * inCompiler
-                                                COMMA_LOCATION_ARGS) {
-  GALGAS_gtlSetter result ;
-//--- Find Reader
-  if (NULL != inObject) {
-    macroValidSharedObject (inObject, cPtr_library) ;
-    const C_galgas_type_descriptor * info = inObject->classDescriptor () ;
-    const int32_t classIndex = info->mSlotID ;
-    enterExtensionGetter_library_getSetter f = NULL ;
-    if (classIndex < gExtensionGetterTable_library_getSetter.count ()) {
-      f = gExtensionGetterTable_library_getSetter (classIndex COMMA_HERE) ;
-    }
-    if (NULL == f) {
-       const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
-       while ((NULL == f) && (NULL != p)) {
-         if (p->mSlotID < gExtensionGetterTable_library_getSetter.count ()) {
-           f = gExtensionGetterTable_library_getSetter (p->mSlotID COMMA_HERE) ;
-         }
-         p = p->mSuperclassDescriptor ;
-       }
-       gExtensionGetterTable_library_getSetter.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
-    }
-    if (NULL == f) {
-      fatalError ("FATAL CATEGORY READER CALL ERROR", __FILE__, __LINE__) ;
-    }else{
-      result = f (inObject, in_type, in_name, inCompiler COMMA_THERE) ;
-    }
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static GALGAS_gtlSetter extensionGetter_library_getSetter (const cPtr_library * inObject,
-                                                           const GALGAS_string & constinArgument_type,
-                                                           const GALGAS_lstring & constinArgument_name,
-                                                           C_Compiler * inCompiler
-                                                           COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_gtlSetter result_aSetter ; // Returned variable
-  const cPtr_library * object = inObject ;
-  macroValidSharedObject (object, cPtr_library) ;
-  object->mAttribute_setterMap.method_get (GALGAS_lstring::constructor_new (constinArgument_type.add_operation (constinArgument_name.getter_string (SOURCE_FILE ("gtl_types.galgas", 339)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 339)), constinArgument_name.getter_location (SOURCE_FILE ("gtl_types.galgas", 339))  COMMA_SOURCE_FILE ("gtl_types.galgas", 339)), result_aSetter, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 339)) ;
-//---
-  return result_aSetter ;
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void defineExtensionGetter_library_getSetter (void) {
-  enterExtensionGetter_getSetter (kTypeDescriptor_GALGAS_library.mSlotID,
-                                  extensionGetter_library_getSetter) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void freeExtensionGetter_library_getSetter (void) {
-  gExtensionGetterTable_library_getSetter.free () ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-C_PrologueEpilogue gGetter_library_getSetter (defineExtensionGetter_library_getSetter,
-                                              freeExtensionGetter_library_getSetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        Extension setter '@library putSetter'                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-static TC_UniqueArray <extensionSetterSignature_library_putSetter> gExtensionModifierTable_library_putSetter ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionSetter_putSetter (const int32_t inClassIndex,
-                                     extensionSetterSignature_library_putSetter inModifier) {
-  gExtensionModifierTable_library_putSetter.forceObjectAtIndex (inClassIndex, inModifier, NULL COMMA_HERE) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionSetter_putSetter (cPtr_library * inObject,
-                                    const GALGAS_lstring constin_name,
-                                    const GALGAS_gtlSetter constin_aSetter,
-                                    C_Compiler * inCompiler
-                                    COMMA_LOCATION_ARGS) {
-//--- Drop output arguments
-//--- Find setter
-  if (NULL != inObject) {
-    macroValidSharedObject (inObject, cPtr_library) ;
-    const C_galgas_type_descriptor * info = inObject->classDescriptor () ;
-    const int32_t classIndex = info->mSlotID ;
-    extensionSetterSignature_library_putSetter f = NULL ;
-    if (classIndex < gExtensionModifierTable_library_putSetter.count ()) {
-      f = gExtensionModifierTable_library_putSetter (classIndex COMMA_HERE) ;
-    }
-    if (NULL == f) {
-       const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
-       while ((NULL == f) && (NULL != p)) {
-         if (p->mSlotID < gExtensionModifierTable_library_putSetter.count ()) {
-           f = gExtensionModifierTable_library_putSetter (p->mSlotID COMMA_HERE) ;
-         }
-         p = p->mSuperclassDescriptor ;
-       }
-       gExtensionModifierTable_library_putSetter.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
-    }
-    f (inObject, constin_name, constin_aSetter, inCompiler COMMA_THERE) ;
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void extensionSetter_library_putSetter (cPtr_library * inObject,
-                                               const GALGAS_lstring constinArgument_name,
-                                               const GALGAS_gtlSetter constinArgument_aSetter,
-                                               C_Compiler * inCompiler
-                                               COMMA_UNUSED_LOCATION_ARGS) {
-  cPtr_library * object = inObject ;
-  macroValidSharedObject (object, cPtr_library) ;
-  {
-  object->mAttribute_setterMap.setter_put (constinArgument_name, constinArgument_aSetter, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 346)) ;
-  }
-}
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void defineExtensionSetter_library_putSetter (void) {
-  enterExtensionSetter_putSetter (kTypeDescriptor_GALGAS_library.mSlotID,
-                                  extensionSetter_library_putSetter) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void freeExtensionModifier_library_putSetter (void) {
-  gExtensionModifierTable_library_putSetter.free () ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-C_PrologueEpilogue gSetter_library_putSetter (defineExtensionSetter_library_putSetter,
-                                              freeExtensionModifier_library_putSetter) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        Extension getter '@library hasImport'                                        *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-static TC_UniqueArray <enterExtensionGetter_library_hasImport> gExtensionGetterTable_library_hasImport ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_hasImport (const int32_t inClassIndex,
-                                     enterExtensionGetter_library_hasImport inGetter) {
-  gExtensionGetterTable_library_hasImport.forceObjectAtIndex (inClassIndex, inGetter, NULL COMMA_HERE) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_bool callExtensionGetter_hasImport (const cPtr_library * inObject,
-                                           const GALGAS_string & in_importPath,
-                                           C_Compiler * inCompiler
-                                           COMMA_LOCATION_ARGS) {
-  GALGAS_bool result ;
-//--- Find Reader
-  if (NULL != inObject) {
-    macroValidSharedObject (inObject, cPtr_library) ;
-    const C_galgas_type_descriptor * info = inObject->classDescriptor () ;
-    const int32_t classIndex = info->mSlotID ;
-    enterExtensionGetter_library_hasImport f = NULL ;
-    if (classIndex < gExtensionGetterTable_library_hasImport.count ()) {
-      f = gExtensionGetterTable_library_hasImport (classIndex COMMA_HERE) ;
-    }
-    if (NULL == f) {
-       const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
-       while ((NULL == f) && (NULL != p)) {
-         if (p->mSlotID < gExtensionGetterTable_library_hasImport.count ()) {
-           f = gExtensionGetterTable_library_hasImport (p->mSlotID COMMA_HERE) ;
-         }
-         p = p->mSuperclassDescriptor ;
-       }
-       gExtensionGetterTable_library_hasImport.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
-    }
-    if (NULL == f) {
-      fatalError ("FATAL CATEGORY READER CALL ERROR", __FILE__, __LINE__) ;
-    }else{
-      result = f (inObject, in_importPath, inCompiler COMMA_THERE) ;
-    }
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static GALGAS_bool extensionGetter_library_hasImport (const cPtr_library * inObject,
-                                                      const GALGAS_string & constinArgument_importPath,
-                                                      C_Compiler * /* inCompiler */
-                                                      COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_bool result_result ; // Returned variable
-  const cPtr_library * object = inObject ;
-  macroValidSharedObject (object, cPtr_library) ;
-  result_result = object->mAttribute_doneImports.getter_hasKey (constinArgument_importPath COMMA_SOURCE_FILE ("gtl_types.galgas", 353)) ;
-//---
-  return result_result ;
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void defineExtensionGetter_library_hasImport (void) {
-  enterExtensionGetter_hasImport (kTypeDescriptor_GALGAS_library.mSlotID,
-                                  extensionGetter_library_hasImport) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void freeExtensionGetter_library_hasImport (void) {
-  gExtensionGetterTable_library_hasImport.free () ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-C_PrologueEpilogue gGetter_library_hasImport (defineExtensionGetter_library_hasImport,
-                                              freeExtensionGetter_library_hasImport) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        Extension setter '@library doImport'                                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-static TC_UniqueArray <extensionSetterSignature_library_doImport> gExtensionModifierTable_library_doImport ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionSetter_doImport (const int32_t inClassIndex,
-                                    extensionSetterSignature_library_doImport inModifier) {
-  gExtensionModifierTable_library_doImport.forceObjectAtIndex (inClassIndex, inModifier, NULL COMMA_HERE) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionSetter_doImport (cPtr_library * inObject,
-                                   const GALGAS_string constin_importPath,
-                                   C_Compiler * inCompiler
-                                   COMMA_LOCATION_ARGS) {
-//--- Drop output arguments
-//--- Find setter
-  if (NULL != inObject) {
-    macroValidSharedObject (inObject, cPtr_library) ;
-    const C_galgas_type_descriptor * info = inObject->classDescriptor () ;
-    const int32_t classIndex = info->mSlotID ;
-    extensionSetterSignature_library_doImport f = NULL ;
-    if (classIndex < gExtensionModifierTable_library_doImport.count ()) {
-      f = gExtensionModifierTable_library_doImport (classIndex COMMA_HERE) ;
-    }
-    if (NULL == f) {
-       const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
-       while ((NULL == f) && (NULL != p)) {
-         if (p->mSlotID < gExtensionModifierTable_library_doImport.count ()) {
-           f = gExtensionModifierTable_library_doImport (p->mSlotID COMMA_HERE) ;
-         }
-         p = p->mSuperclassDescriptor ;
-       }
-       gExtensionModifierTable_library_doImport.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
-    }
-    f (inObject, constin_importPath, inCompiler COMMA_THERE) ;
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void extensionSetter_library_doImport (cPtr_library * inObject,
-                                              const GALGAS_string constinArgument_importPath,
-                                              C_Compiler * /* inCompiler */
-                                              COMMA_UNUSED_LOCATION_ARGS) {
-  cPtr_library * object = inObject ;
-  macroValidSharedObject (object, cPtr_library) ;
-  object->mAttribute_doneImports.addAssign_operation (constinArgument_importPath  COMMA_SOURCE_FILE ("gtl_types.galgas", 359)) ;
-}
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void defineExtensionSetter_library_doImport (void) {
-  enterExtensionSetter_doImport (kTypeDescriptor_GALGAS_library.mSlotID,
-                                 extensionSetter_library_doImport) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void freeExtensionModifier_library_doImport (void) {
-  gExtensionModifierTable_library_doImport.free () ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-C_PrologueEpilogue gSetter_library_doImport (defineExtensionSetter_library_doImport,
-                                             freeExtensionModifier_library_doImport) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                       Extension setter '@library getTemplate'                                       *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-static TC_UniqueArray <extensionSetterSignature_library_getTemplate> gExtensionModifierTable_library_getTemplate ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionSetter_getTemplate (const int32_t inClassIndex,
-                                       extensionSetterSignature_library_getTemplate inModifier) {
-  gExtensionModifierTable_library_getTemplate.forceObjectAtIndex (inClassIndex, inModifier, NULL COMMA_HERE) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void callExtensionSetter_getTemplate (cPtr_library * inObject,
-                                      const GALGAS_gtlContext constin_context,
-                                      GALGAS_lstring in_path,
-                                      GALGAS_bool in_ifExists,
-                                      GALGAS_library & io_lib,
-                                      GALGAS_bool & out_found,
-                                      GALGAS_gtlTemplate & out_result,
-                                      C_Compiler * inCompiler
-                                      COMMA_LOCATION_ARGS) {
-//--- Drop output arguments
-  out_found.drop () ;
-  out_result.drop () ;
-//--- Find setter
-  if (NULL != inObject) {
-    macroValidSharedObject (inObject, cPtr_library) ;
-    const C_galgas_type_descriptor * info = inObject->classDescriptor () ;
-    const int32_t classIndex = info->mSlotID ;
-    extensionSetterSignature_library_getTemplate f = NULL ;
-    if (classIndex < gExtensionModifierTable_library_getTemplate.count ()) {
-      f = gExtensionModifierTable_library_getTemplate (classIndex COMMA_HERE) ;
-    }
-    if (NULL == f) {
-       const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
-       while ((NULL == f) && (NULL != p)) {
-         if (p->mSlotID < gExtensionModifierTable_library_getTemplate.count ()) {
-           f = gExtensionModifierTable_library_getTemplate (p->mSlotID COMMA_HERE) ;
-         }
-         p = p->mSuperclassDescriptor ;
-       }
-       gExtensionModifierTable_library_getTemplate.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
-    }
-    f (inObject, constin_context, in_path, in_ifExists, io_lib, out_found, out_result, inCompiler COMMA_THERE) ;
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void extensionSetter_library_getTemplate (cPtr_library * inObject,
-                                                 const GALGAS_gtlContext constinArgument_context,
-                                                 GALGAS_lstring inArgument_path,
-                                                 GALGAS_bool inArgument_ifExists,
-                                                 GALGAS_library & ioArgument_lib,
-                                                 GALGAS_bool & outArgument_found,
-                                                 GALGAS_gtlTemplate & outArgument_result,
-                                                 C_Compiler * inCompiler
-                                                 COMMA_UNUSED_LOCATION_ARGS) {
-  cPtr_library * object = inObject ;
-  macroValidSharedObject (object, cPtr_library) ;
-  {
-  extensionSetter_getTemplate (object->mAttribute_templateMap, constinArgument_context, inArgument_path, inArgument_ifExists, ioArgument_lib, outArgument_found, outArgument_result, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 371)) ;
-  }
-}
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void defineExtensionSetter_library_getTemplate (void) {
-  enterExtensionSetter_getTemplate (kTypeDescriptor_GALGAS_library.mSlotID,
-                                    extensionSetter_library_getTemplate) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void freeExtensionModifier_library_getTemplate (void) {
-  gExtensionModifierTable_library_getTemplate.free () ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-C_PrologueEpilogue gSetter_library_getTemplate (defineExtensionSetter_library_getTemplate,
-                                                freeExtensionModifier_library_getTemplate) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typeComparisonResult cPtr_gtlVarItemField::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
-  typeComparisonResult result = kOperandEqual ;
-  const cPtr_gtlVarItemField * p = (const cPtr_gtlVarItemField *) inOperandPtr ;
-  macroValidSharedObject (p, cPtr_gtlVarItemField) ;
-  if (kOperandEqual == result) {
-    result = mAttribute_field.objectCompare (p->mAttribute_field) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-
-typeComparisonResult GALGAS_gtlVarItemField::objectCompare (const GALGAS_gtlVarItemField & inOperand) const {
-  typeComparisonResult result = kOperandNotValid ;
-  if (isValid () && inOperand.isValid ()) {
-    const int32_t mySlot = mObjectPtr->classDescriptor ()->mSlotID ;
-    const int32_t operandSlot = inOperand.mObjectPtr->classDescriptor ()->mSlotID ;
-    if (mySlot < operandSlot) {
-      result = kFirstOperandLowerThanSecond ;
-    }else if (mySlot > operandSlot) {
-      result = kFirstOperandGreaterThanSecond ;
-    }else{
-      result = mObjectPtr->dynamicObjectCompare (inOperand.mObjectPtr) ;
-    }
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_gtlVarItemField::GALGAS_gtlVarItemField (void) :
-GALGAS_gtlVarItem () {
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_gtlVarItemField GALGAS_gtlVarItemField::constructor_default (LOCATION_ARGS) {
-  return GALGAS_gtlVarItemField::constructor_new (GALGAS_lstring::constructor_default (HERE)
-                                                  COMMA_THERE) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_gtlVarItemField::GALGAS_gtlVarItemField (const cPtr_gtlVarItemField * inSourcePtr) :
-GALGAS_gtlVarItem (inSourcePtr) {
-  macroNullOrValidSharedObject (inSourcePtr, cPtr_gtlVarItemField) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_gtlVarItemField GALGAS_gtlVarItemField::constructor_new (const GALGAS_lstring & inAttribute_field
-                                                                COMMA_LOCATION_ARGS) {
-  GALGAS_gtlVarItemField result ;
-  if (inAttribute_field.isValid ()) {
-    macroMyNew (result.mObjectPtr, cPtr_gtlVarItemField (inAttribute_field COMMA_THERE)) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_lstring GALGAS_gtlVarItemField::getter_field (UNUSED_LOCATION_ARGS) const {
-  GALGAS_lstring result ;
-  if (NULL != mObjectPtr) {
-    const cPtr_gtlVarItemField * p = (const cPtr_gtlVarItemField *) mObjectPtr ;
-    macroValidSharedObject (p, cPtr_gtlVarItemField) ;
-    result = p->mAttribute_field ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_lstring cPtr_gtlVarItemField::getter_field (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_field ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                      Pointer class for @gtlVarItemField class                                       *
-//---------------------------------------------------------------------------------------------------------------------*
-
-cPtr_gtlVarItemField::cPtr_gtlVarItemField (const GALGAS_lstring & in_field
-                                            COMMA_LOCATION_ARGS) :
-cPtr_gtlVarItem (THERE),
-mAttribute_field (in_field) {
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-const C_galgas_type_descriptor * cPtr_gtlVarItemField::classDescriptor (void) const {
-  return & kTypeDescriptor_GALGAS_gtlVarItemField ;
-}
-
-void cPtr_gtlVarItemField::description (C_String & ioString,
-                                        const int32_t inIndentation) const {
-  ioString << "[@gtlVarItemField:" ;
-  mAttribute_field.description (ioString, inIndentation+1) ;
-  ioString << "]" ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-acPtr_class * cPtr_gtlVarItemField::duplicate (LOCATION_ARGS) const {
-  acPtr_class * ptr = NULL ;
-  macroMyNew (ptr, cPtr_gtlVarItemField (mAttribute_field COMMA_THERE)) ;
-  return ptr ;
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                                @gtlVarItemField type                                                *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-const C_galgas_type_descriptor
-kTypeDescriptor_GALGAS_gtlVarItemField ("gtlVarItemField",
-                                        & kTypeDescriptor_GALGAS_gtlVarItem) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-const C_galgas_type_descriptor * GALGAS_gtlVarItemField::staticTypeDescriptor (void) const {
-  return & kTypeDescriptor_GALGAS_gtlVarItemField ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-AC_GALGAS_root * GALGAS_gtlVarItemField::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
-  if (isValid ()) {
-    macroMyNew (result, GALGAS_gtlVarItemField (*this)) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_gtlVarItemField GALGAS_gtlVarItemField::extractObject (const GALGAS_object & inObject,
-                                                              C_Compiler * inCompiler
-                                                              COMMA_LOCATION_ARGS) {
-  GALGAS_gtlVarItemField result ;
-  const GALGAS_gtlVarItemField * p = (const GALGAS_gtlVarItemField *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_gtlVarItemField *> (p)) {
-      result = *p ;
-    }else{
-      inCompiler->castError ("gtlVarItemField", p->dynamicTypeDescriptor () COMMA_THERE) ;
-    }  
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                   Extension getter '@gtlVarItemField lstringPath'                                   *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-static TC_UniqueArray <enterExtensionGetter_gtlVarItemField_lstringPath> gExtensionGetterTable_gtlVarItemField_lstringPath ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void enterExtensionGetter_lstringPath (const int32_t inClassIndex,
-                                       enterExtensionGetter_gtlVarItemField_lstringPath inGetter) {
-  gExtensionGetterTable_gtlVarItemField_lstringPath.forceObjectAtIndex (inClassIndex, inGetter, NULL COMMA_HERE) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_lstring callExtensionGetter_lstringPath (const cPtr_gtlVarItemField * inObject,
-                                                C_Compiler * inCompiler
-                                                COMMA_LOCATION_ARGS) {
-  GALGAS_lstring result ;
-//--- Find Reader
-  if (NULL != inObject) {
-    macroValidSharedObject (inObject, cPtr_gtlVarItemField) ;
-    const C_galgas_type_descriptor * info = inObject->classDescriptor () ;
-    const int32_t classIndex = info->mSlotID ;
-    enterExtensionGetter_gtlVarItemField_lstringPath f = NULL ;
-    if (classIndex < gExtensionGetterTable_gtlVarItemField_lstringPath.count ()) {
-      f = gExtensionGetterTable_gtlVarItemField_lstringPath (classIndex COMMA_HERE) ;
-    }
-    if (NULL == f) {
-       const C_galgas_type_descriptor * p = info->mSuperclassDescriptor ;
-       while ((NULL == f) && (NULL != p)) {
-         if (p->mSlotID < gExtensionGetterTable_gtlVarItemField_lstringPath.count ()) {
-           f = gExtensionGetterTable_gtlVarItemField_lstringPath (p->mSlotID COMMA_HERE) ;
-         }
-         p = p->mSuperclassDescriptor ;
-       }
-       gExtensionGetterTable_gtlVarItemField_lstringPath.forceObjectAtIndex (classIndex, f, NULL COMMA_HERE) ;
-    }
-    if (NULL == f) {
-      fatalError ("FATAL CATEGORY READER CALL ERROR", __FILE__, __LINE__) ;
-    }else{
-      result = f (inObject, inCompiler COMMA_THERE) ;
-    }
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static GALGAS_lstring extensionGetter_gtlVarItemField_lstringPath (const cPtr_gtlVarItemField * inObject,
-                                                                   C_Compiler * /* inCompiler */
-                                                                   COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_lstring result_result ; // Returned variable
-  const cPtr_gtlVarItemField * object = inObject ;
-  macroValidSharedObject (object, cPtr_gtlVarItemField) ;
-  result_result = object->mAttribute_field ;
-//---
-  return result_result ;
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void defineExtensionGetter_gtlVarItemField_lstringPath (void) {
-  enterExtensionGetter_lstringPath (kTypeDescriptor_GALGAS_gtlVarItemField.mSlotID,
-                                    extensionGetter_gtlVarItemField_lstringPath) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void freeExtensionGetter_gtlVarItemField_lstringPath (void) {
-  gExtensionGetterTable_gtlVarItemField_lstringPath.free () ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-C_PrologueEpilogue gGetter_gtlVarItemField_lstringPath (defineExtensionGetter_gtlVarItemField_lstringPath,
-                                                        freeExtensionGetter_gtlVarItemField_lstringPath) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typeComparisonResult cPtr_gtlVarItemCollection::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
-  typeComparisonResult result = kOperandEqual ;
-  const cPtr_gtlVarItemCollection * p = (const cPtr_gtlVarItemCollection *) inOperandPtr ;
-  macroValidSharedObject (p, cPtr_gtlVarItemCollection) ;
-  if (kOperandEqual == result) {
-    result = mAttribute_field.objectCompare (p->mAttribute_field) ;
-  }
-  if (kOperandEqual == result) {
-    result = mAttribute_key.objectCompare (p->mAttribute_key) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-
-typeComparisonResult GALGAS_gtlVarItemCollection::objectCompare (const GALGAS_gtlVarItemCollection & inOperand) const {
-  typeComparisonResult result = kOperandNotValid ;
-  if (isValid () && inOperand.isValid ()) {
-    const int32_t mySlot = mObjectPtr->classDescriptor ()->mSlotID ;
-    const int32_t operandSlot = inOperand.mObjectPtr->classDescriptor ()->mSlotID ;
-    if (mySlot < operandSlot) {
-      result = kFirstOperandLowerThanSecond ;
-    }else if (mySlot > operandSlot) {
-      result = kFirstOperandGreaterThanSecond ;
-    }else{
-      result = mObjectPtr->dynamicObjectCompare (inOperand.mObjectPtr) ;
-    }
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_gtlVarItemCollection::GALGAS_gtlVarItemCollection (void) :
-GALGAS_gtlVarItemField () {
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_gtlVarItemCollection::GALGAS_gtlVarItemCollection (const cPtr_gtlVarItemCollection * inSourcePtr) :
-GALGAS_gtlVarItemField (inSourcePtr) {
-  macroNullOrValidSharedObject (inSourcePtr, cPtr_gtlVarItemCollection) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_gtlVarItemCollection GALGAS_gtlVarItemCollection::constructor_new (const GALGAS_lstring & inAttribute_field,
-                                                                          const GALGAS_gtlExpression & inAttribute_key
-                                                                          COMMA_LOCATION_ARGS) {
-  GALGAS_gtlVarItemCollection result ;
-  if (inAttribute_field.isValid () && inAttribute_key.isValid ()) {
-    macroMyNew (result.mObjectPtr, cPtr_gtlVarItemCollection (inAttribute_field, inAttribute_key COMMA_THERE)) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_gtlExpression GALGAS_gtlVarItemCollection::getter_key (UNUSED_LOCATION_ARGS) const {
-  GALGAS_gtlExpression result ;
-  if (NULL != mObjectPtr) {
-    const cPtr_gtlVarItemCollection * p = (const cPtr_gtlVarItemCollection *) mObjectPtr ;
-    macroValidSharedObject (p, cPtr_gtlVarItemCollection) ;
-    result = p->mAttribute_key ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_gtlExpression cPtr_gtlVarItemCollection::getter_key (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_key ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                    Pointer class for @gtlVarItemCollection class                                    *
-//---------------------------------------------------------------------------------------------------------------------*
-
-cPtr_gtlVarItemCollection::cPtr_gtlVarItemCollection (const GALGAS_lstring & in_field,
-                                                      const GALGAS_gtlExpression & in_key
-                                                      COMMA_LOCATION_ARGS) :
-cPtr_gtlVarItemField (in_field COMMA_THERE),
-mAttribute_key (in_key) {
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-const C_galgas_type_descriptor * cPtr_gtlVarItemCollection::classDescriptor (void) const {
-  return & kTypeDescriptor_GALGAS_gtlVarItemCollection ;
-}
-
-void cPtr_gtlVarItemCollection::description (C_String & ioString,
-                                             const int32_t inIndentation) const {
-  ioString << "[@gtlVarItemCollection:" ;
-  mAttribute_field.description (ioString, inIndentation+1) ;
-  ioString << ", " ;
-  mAttribute_key.description (ioString, inIndentation+1) ;
-  ioString << "]" ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-acPtr_class * cPtr_gtlVarItemCollection::duplicate (LOCATION_ARGS) const {
-  acPtr_class * ptr = NULL ;
-  macroMyNew (ptr, cPtr_gtlVarItemCollection (mAttribute_field, mAttribute_key COMMA_THERE)) ;
-  return ptr ;
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                             @gtlVarItemCollection type                                              *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-const C_galgas_type_descriptor
-kTypeDescriptor_GALGAS_gtlVarItemCollection ("gtlVarItemCollection",
-                                             & kTypeDescriptor_GALGAS_gtlVarItemField) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-const C_galgas_type_descriptor * GALGAS_gtlVarItemCollection::staticTypeDescriptor (void) const {
-  return & kTypeDescriptor_GALGAS_gtlVarItemCollection ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-AC_GALGAS_root * GALGAS_gtlVarItemCollection::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
-  if (isValid ()) {
-    macroMyNew (result, GALGAS_gtlVarItemCollection (*this)) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_gtlVarItemCollection GALGAS_gtlVarItemCollection::extractObject (const GALGAS_object & inObject,
-                                                                        C_Compiler * inCompiler
-                                                                        COMMA_LOCATION_ARGS) {
-  GALGAS_gtlVarItemCollection result ;
-  const GALGAS_gtlVarItemCollection * p = (const GALGAS_gtlVarItemCollection *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_gtlVarItemCollection *> (p)) {
-      result = *p ;
-    }else{
-      inCompiler->castError ("gtlVarItemCollection", p->dynamicTypeDescriptor () COMMA_THERE) ;
-    }  
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-//   Object comparison                                                                                                 *
-//---------------------------------------------------------------------------------------------------------------------*
-
-typeComparisonResult cPtr_gtlVarItemSubCollection::dynamicObjectCompare (const acPtr_class * inOperandPtr) const {
-  typeComparisonResult result = kOperandEqual ;
-  const cPtr_gtlVarItemSubCollection * p = (const cPtr_gtlVarItemSubCollection *) inOperandPtr ;
-  macroValidSharedObject (p, cPtr_gtlVarItemSubCollection) ;
-  if (kOperandEqual == result) {
-    result = mAttribute_subCollectionlocation.objectCompare (p->mAttribute_subCollectionlocation) ;
-  }
-  if (kOperandEqual == result) {
-    result = mAttribute_key.objectCompare (p->mAttribute_key) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-
-typeComparisonResult GALGAS_gtlVarItemSubCollection::objectCompare (const GALGAS_gtlVarItemSubCollection & inOperand) const {
-  typeComparisonResult result = kOperandNotValid ;
-  if (isValid () && inOperand.isValid ()) {
-    const int32_t mySlot = mObjectPtr->classDescriptor ()->mSlotID ;
-    const int32_t operandSlot = inOperand.mObjectPtr->classDescriptor ()->mSlotID ;
-    if (mySlot < operandSlot) {
-      result = kFirstOperandLowerThanSecond ;
-    }else if (mySlot > operandSlot) {
-      result = kFirstOperandGreaterThanSecond ;
-    }else{
-      result = mObjectPtr->dynamicObjectCompare (inOperand.mObjectPtr) ;
-    }
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_gtlVarItemSubCollection::GALGAS_gtlVarItemSubCollection (void) :
-GALGAS_gtlVarItem () {
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_gtlVarItemSubCollection::GALGAS_gtlVarItemSubCollection (const cPtr_gtlVarItemSubCollection * inSourcePtr) :
-GALGAS_gtlVarItem (inSourcePtr) {
-  macroNullOrValidSharedObject (inSourcePtr, cPtr_gtlVarItemSubCollection) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_gtlVarItemSubCollection GALGAS_gtlVarItemSubCollection::constructor_new (const GALGAS_location & inAttribute_subCollectionlocation,
-                                                                                const GALGAS_gtlExpression & inAttribute_key
-                                                                                COMMA_LOCATION_ARGS) {
-  GALGAS_gtlVarItemSubCollection result ;
-  if (inAttribute_subCollectionlocation.isValid () && inAttribute_key.isValid ()) {
-    macroMyNew (result.mObjectPtr, cPtr_gtlVarItemSubCollection (inAttribute_subCollectionlocation, inAttribute_key COMMA_THERE)) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_location GALGAS_gtlVarItemSubCollection::getter_subCollectionlocation (UNUSED_LOCATION_ARGS) const {
-  GALGAS_location result ;
-  if (NULL != mObjectPtr) {
-    const cPtr_gtlVarItemSubCollection * p = (const cPtr_gtlVarItemSubCollection *) mObjectPtr ;
-    macroValidSharedObject (p, cPtr_gtlVarItemSubCollection) ;
-    result = p->mAttribute_subCollectionlocation ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_location cPtr_gtlVarItemSubCollection::getter_subCollectionlocation (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_subCollectionlocation ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_gtlExpression GALGAS_gtlVarItemSubCollection::getter_key (UNUSED_LOCATION_ARGS) const {
-  GALGAS_gtlExpression result ;
-  if (NULL != mObjectPtr) {
-    const cPtr_gtlVarItemSubCollection * p = (const cPtr_gtlVarItemSubCollection *) mObjectPtr ;
-    macroValidSharedObject (p, cPtr_gtlVarItemSubCollection) ;
-    result = p->mAttribute_key ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_gtlExpression cPtr_gtlVarItemSubCollection::getter_key (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_key ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                  Pointer class for @gtlVarItemSubCollection class                                   *
-//---------------------------------------------------------------------------------------------------------------------*
-
-cPtr_gtlVarItemSubCollection::cPtr_gtlVarItemSubCollection (const GALGAS_location & in_subCollectionlocation,
-                                                            const GALGAS_gtlExpression & in_key
-                                                            COMMA_LOCATION_ARGS) :
-cPtr_gtlVarItem (THERE),
-mAttribute_subCollectionlocation (in_subCollectionlocation),
-mAttribute_key (in_key) {
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-const C_galgas_type_descriptor * cPtr_gtlVarItemSubCollection::classDescriptor (void) const {
-  return & kTypeDescriptor_GALGAS_gtlVarItemSubCollection ;
-}
-
-void cPtr_gtlVarItemSubCollection::description (C_String & ioString,
-                                                const int32_t inIndentation) const {
-  ioString << "[@gtlVarItemSubCollection:" ;
-  mAttribute_subCollectionlocation.description (ioString, inIndentation+1) ;
-  ioString << ", " ;
-  mAttribute_key.description (ioString, inIndentation+1) ;
-  ioString << "]" ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-acPtr_class * cPtr_gtlVarItemSubCollection::duplicate (LOCATION_ARGS) const {
-  acPtr_class * ptr = NULL ;
-  macroMyNew (ptr, cPtr_gtlVarItemSubCollection (mAttribute_subCollectionlocation, mAttribute_key COMMA_THERE)) ;
-  return ptr ;
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                            @gtlVarItemSubCollection type                                            *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-const C_galgas_type_descriptor
-kTypeDescriptor_GALGAS_gtlVarItemSubCollection ("gtlVarItemSubCollection",
-                                                & kTypeDescriptor_GALGAS_gtlVarItem) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-const C_galgas_type_descriptor * GALGAS_gtlVarItemSubCollection::staticTypeDescriptor (void) const {
-  return & kTypeDescriptor_GALGAS_gtlVarItemSubCollection ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-AC_GALGAS_root * GALGAS_gtlVarItemSubCollection::clonedObject (void) const {
-  AC_GALGAS_root * result = NULL ;
-  if (isValid ()) {
-    macroMyNew (result, GALGAS_gtlVarItemSubCollection (*this)) ;
-  }
-  return result ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_gtlVarItemSubCollection GALGAS_gtlVarItemSubCollection::extractObject (const GALGAS_object & inObject,
-                                                                              C_Compiler * inCompiler
-                                                                              COMMA_LOCATION_ARGS) {
-  GALGAS_gtlVarItemSubCollection result ;
-  const GALGAS_gtlVarItemSubCollection * p = (const GALGAS_gtlVarItemSubCollection *) inObject.embeddedObject () ;
-  if (NULL != p) {
-    if (NULL != dynamic_cast <const GALGAS_gtlVarItemSubCollection *> (p)) {
-      result = *p ;
-    }else{
-      inCompiler->castError ("gtlVarItemSubCollection", p->dynamicTypeDescriptor () COMMA_THERE) ;
     }  
   }
   return result ;

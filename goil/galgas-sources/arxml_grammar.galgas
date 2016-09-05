@@ -28,8 +28,7 @@ grammar arxml_grammar "LL1" {
   syntax arxml_parser
   
   <arxml_start_symbol>
-    !@xmlNodeList outRootNodes
-    ?let @bool inIncludeComments
-    ?let @bool inDoNotCondenseWhiteSpaces
-    ?let@bool inPrintDuringParsing
+    !@arxmlNode     outRootNodes
+    ?let @bool      inIncludeComments
+    ?let @bool      inDoNotCondenseWhiteSpaces
 }

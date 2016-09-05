@@ -11,6 +11,592 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
+//                                        @void_5F_uint_36__34__5F_class class                                         *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_void_5F_uint_36__34__5F_class : public GALGAS_uint_36__34__5F_class {
+//--- Constructor
+  public : GALGAS_void_5F_uint_36__34__5F_class (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public : static GALGAS_void_5F_uint_36__34__5F_class constructor_default (LOCATION_ARGS) ;
+
+//---
+  public : inline const class cPtr_void_5F_uint_36__34__5F_class * ptr (void) const { return (const cPtr_void_5F_uint_36__34__5F_class *) mObjectPtr ; }
+
+//--------------------------------- Constructor from pointer
+  public : GALGAS_void_5F_uint_36__34__5F_class (const cPtr_void_5F_uint_36__34__5F_class * inSourcePtr) ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
+
+//--------------------------------- Object extraction
+  public : static GALGAS_void_5F_uint_36__34__5F_class extractObject (const GALGAS_object & inObject,
+                                                                      C_Compiler * inCompiler
+                                                                      COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public : static class GALGAS_void_5F_uint_36__34__5F_class constructor_new (const class GALGAS_lstring & inOperand0,
+                                                                              const class GALGAS_location & inOperand1,
+                                                                              const class GALGAS_uint_36__34_ & inOperand2
+                                                                              COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public : typeComparisonResult objectCompare (const GALGAS_void_5F_uint_36__34__5F_class & inOperand) const ;
+
+//--------------------------------- Setters
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+
+//--------------------------------- Introspection
+  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+ 
+} ; // End of GALGAS_void_5F_uint_36__34__5F_class class
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_void_5F_uint_36__34__5F_class ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                     Pointer class for @void_uint64_class class                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class cPtr_void_5F_uint_36__34__5F_class : public cPtr_uint_36__34__5F_class {
+//--- Attributes
+
+//--- Constructor
+  public : cPtr_void_5F_uint_36__34__5F_class (const GALGAS_lstring & in_oil_5F_desc,
+                                               const GALGAS_location & in_location,
+                                               const GALGAS_uint_36__34_ & in_value
+                                               COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
+
+//--- Attribute accessors
+//--- Description
+  public : virtual void description (C_String & ioString,
+                                     const int32_t inIndentation) const ;
+
+  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
+
+  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
+
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                        @void_5F_sint_36__34__5F_class class                                         *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_void_5F_sint_36__34__5F_class : public GALGAS_sint_36__34__5F_class {
+//--- Constructor
+  public : GALGAS_void_5F_sint_36__34__5F_class (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public : static GALGAS_void_5F_sint_36__34__5F_class constructor_default (LOCATION_ARGS) ;
+
+//---
+  public : inline const class cPtr_void_5F_sint_36__34__5F_class * ptr (void) const { return (const cPtr_void_5F_sint_36__34__5F_class *) mObjectPtr ; }
+
+//--------------------------------- Constructor from pointer
+  public : GALGAS_void_5F_sint_36__34__5F_class (const cPtr_void_5F_sint_36__34__5F_class * inSourcePtr) ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
+
+//--------------------------------- Object extraction
+  public : static GALGAS_void_5F_sint_36__34__5F_class extractObject (const GALGAS_object & inObject,
+                                                                      C_Compiler * inCompiler
+                                                                      COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public : static class GALGAS_void_5F_sint_36__34__5F_class constructor_new (const class GALGAS_lstring & inOperand0,
+                                                                              const class GALGAS_location & inOperand1,
+                                                                              const class GALGAS_sint_36__34_ & inOperand2
+                                                                              COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public : typeComparisonResult objectCompare (const GALGAS_void_5F_sint_36__34__5F_class & inOperand) const ;
+
+//--------------------------------- Setters
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+
+//--------------------------------- Introspection
+  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+ 
+} ; // End of GALGAS_void_5F_sint_36__34__5F_class class
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_void_5F_sint_36__34__5F_class ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                     Pointer class for @void_sint64_class class                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class cPtr_void_5F_sint_36__34__5F_class : public cPtr_sint_36__34__5F_class {
+//--- Attributes
+
+//--- Constructor
+  public : cPtr_void_5F_sint_36__34__5F_class (const GALGAS_lstring & in_oil_5F_desc,
+                                               const GALGAS_location & in_location,
+                                               const GALGAS_sint_36__34_ & in_value
+                                               COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
+
+//--- Attribute accessors
+//--- Description
+  public : virtual void description (C_String & ioString,
+                                     const int32_t inIndentation) const ;
+
+  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
+
+  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
+
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                            @void_5F_float_5F_class class                                            *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_void_5F_float_5F_class : public GALGAS_float_5F_class {
+//--- Constructor
+  public : GALGAS_void_5F_float_5F_class (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public : static GALGAS_void_5F_float_5F_class constructor_default (LOCATION_ARGS) ;
+
+//---
+  public : inline const class cPtr_void_5F_float_5F_class * ptr (void) const { return (const cPtr_void_5F_float_5F_class *) mObjectPtr ; }
+
+//--------------------------------- Constructor from pointer
+  public : GALGAS_void_5F_float_5F_class (const cPtr_void_5F_float_5F_class * inSourcePtr) ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
+
+//--------------------------------- Object extraction
+  public : static GALGAS_void_5F_float_5F_class extractObject (const GALGAS_object & inObject,
+                                                               C_Compiler * inCompiler
+                                                               COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public : static class GALGAS_void_5F_float_5F_class constructor_new (const class GALGAS_lstring & inOperand0,
+                                                                       const class GALGAS_location & inOperand1,
+                                                                       const class GALGAS_double & inOperand2
+                                                                       COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public : typeComparisonResult objectCompare (const GALGAS_void_5F_float_5F_class & inOperand) const ;
+
+//--------------------------------- Setters
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+
+//--------------------------------- Introspection
+  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+ 
+} ; // End of GALGAS_void_5F_float_5F_class class
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_void_5F_float_5F_class ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                      Pointer class for @void_float_class class                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class cPtr_void_5F_float_5F_class : public cPtr_float_5F_class {
+//--- Attributes
+
+//--- Constructor
+  public : cPtr_void_5F_float_5F_class (const GALGAS_lstring & in_oil_5F_desc,
+                                        const GALGAS_location & in_location,
+                                        const GALGAS_double & in_value
+                                        COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
+
+//--- Attribute accessors
+//--- Description
+  public : virtual void description (C_String & ioString,
+                                     const int32_t inIndentation) const ;
+
+  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
+
+  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
+
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                           @void_5F_string_5F_class class                                            *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_void_5F_string_5F_class : public GALGAS_string_5F_class {
+//--- Constructor
+  public : GALGAS_void_5F_string_5F_class (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public : static GALGAS_void_5F_string_5F_class constructor_default (LOCATION_ARGS) ;
+
+//---
+  public : inline const class cPtr_void_5F_string_5F_class * ptr (void) const { return (const cPtr_void_5F_string_5F_class *) mObjectPtr ; }
+
+//--------------------------------- Constructor from pointer
+  public : GALGAS_void_5F_string_5F_class (const cPtr_void_5F_string_5F_class * inSourcePtr) ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
+
+//--------------------------------- Object extraction
+  public : static GALGAS_void_5F_string_5F_class extractObject (const GALGAS_object & inObject,
+                                                                C_Compiler * inCompiler
+                                                                COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public : static class GALGAS_void_5F_string_5F_class constructor_new (const class GALGAS_lstring & inOperand0,
+                                                                        const class GALGAS_location & inOperand1,
+                                                                        const class GALGAS_string & inOperand2
+                                                                        COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public : typeComparisonResult objectCompare (const GALGAS_void_5F_string_5F_class & inOperand) const ;
+
+//--------------------------------- Setters
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+
+//--------------------------------- Introspection
+  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+ 
+} ; // End of GALGAS_void_5F_string_5F_class class
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_void_5F_string_5F_class ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                     Pointer class for @void_string_class class                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class cPtr_void_5F_string_5F_class : public cPtr_string_5F_class {
+//--- Attributes
+
+//--- Constructor
+  public : cPtr_void_5F_string_5F_class (const GALGAS_lstring & in_oil_5F_desc,
+                                         const GALGAS_location & in_location,
+                                         const GALGAS_string & in_value
+                                         COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
+
+//--- Attribute accessors
+//--- Description
+  public : virtual void description (C_String & ioString,
+                                     const int32_t inIndentation) const ;
+
+  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
+
+  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
+
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                              @void_5F_bool_5F_t class                                               *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_void_5F_bool_5F_t : public GALGAS_bool_5F_t {
+//--- Constructor
+  public : GALGAS_void_5F_bool_5F_t (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public : static GALGAS_void_5F_bool_5F_t constructor_default (LOCATION_ARGS) ;
+
+//---
+  public : inline const class cPtr_void_5F_bool_5F_t * ptr (void) const { return (const cPtr_void_5F_bool_5F_t *) mObjectPtr ; }
+
+//--------------------------------- Constructor from pointer
+  public : GALGAS_void_5F_bool_5F_t (const cPtr_void_5F_bool_5F_t * inSourcePtr) ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
+
+//--------------------------------- Object extraction
+  public : static GALGAS_void_5F_bool_5F_t extractObject (const GALGAS_object & inObject,
+                                                          C_Compiler * inCompiler
+                                                          COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public : static class GALGAS_void_5F_bool_5F_t constructor_new (const class GALGAS_lstring & inOperand0,
+                                                                  const class GALGAS_location & inOperand1,
+                                                                  const class GALGAS_bool & inOperand2
+                                                                  COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public : typeComparisonResult objectCompare (const GALGAS_void_5F_bool_5F_t & inOperand) const ;
+
+//--------------------------------- Setters
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+
+//--------------------------------- Introspection
+  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+ 
+} ; // End of GALGAS_void_5F_bool_5F_t class
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_void_5F_bool_5F_t ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                        Pointer class for @void_bool_t class                                         *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class cPtr_void_5F_bool_5F_t : public cPtr_bool_5F_t {
+//--- Attributes
+
+//--- Constructor
+  public : cPtr_void_5F_bool_5F_t (const GALGAS_lstring & in_oil_5F_desc,
+                                   const GALGAS_location & in_location,
+                                   const GALGAS_bool & in_value
+                                   COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
+
+//--- Attribute accessors
+//--- Description
+  public : virtual void description (C_String & ioString,
+                                     const int32_t inIndentation) const ;
+
+  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
+
+  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
+
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                                  @oil_5F_obj class                                                  *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_oil_5F_obj : public AC_GALGAS_class {
+//--- Constructor
+  public : GALGAS_oil_5F_obj (void) ;
+
+//---
+  public : inline const class cPtr_oil_5F_obj * ptr (void) const { return (const cPtr_oil_5F_obj *) mObjectPtr ; }
+
+//--------------------------------- Constructor from pointer
+  public : GALGAS_oil_5F_obj (const cPtr_oil_5F_obj * inSourcePtr) ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
+
+//--------------------------------- Object extraction
+  public : static GALGAS_oil_5F_obj extractObject (const GALGAS_object & inObject,
+                                                   C_Compiler * inCompiler
+                                                   COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public : typeComparisonResult objectCompare (const GALGAS_oil_5F_obj & inOperand) const ;
+
+//--------------------------------- Setters
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+  public : VIRTUAL_IN_DEBUG class GALGAS_lstring getter_desc (LOCATION_ARGS) const ;
+
+
+//--------------------------------- Introspection
+  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+ 
+} ; // End of GALGAS_oil_5F_obj class
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_oil_5F_obj ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                          Pointer class for @oil_obj class                                           *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class cPtr_oil_5F_obj : public acPtr_class {
+//--- Attributes
+  public : GALGAS_lstring mAttribute_desc ;
+
+//--- Constructor
+  public : cPtr_oil_5F_obj (const GALGAS_lstring & in_desc
+                            COMMA_LOCATION_ARGS) ;
+
+//--- Attribute accessors
+  public : VIRTUAL_IN_DEBUG GALGAS_lstring getter_desc (LOCATION_ARGS) const ;
+//--- Description
+  public : virtual void description (C_String & ioString,
+                                     const int32_t inIndentation) const = 0 ;
+
+  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const = 0 ;
+
+  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const = 0 ;
+
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                          Extension getter '@applicationDefinition applicationWithDefaults'                          *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typedef class GALGAS_applicationDefinition (*enterExtensionGetter_applicationDefinition_applicationWithDefaults) (const class cPtr_applicationDefinition * inObject,
+                                                                                                                  const class GALGAS_implementation & constinArgument0,
+                                                                                                                  C_Compiler * inCompiler
+                                                                                                                  COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterExtensionGetter_applicationWithDefaults (const int32_t inClassIndex,
+                                                   enterExtensionGetter_applicationDefinition_applicationWithDefaults inGetter) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_applicationDefinition callExtensionGetter_applicationWithDefaults (const cPtr_applicationDefinition * inObject,
+                                                                                const GALGAS_implementation & constin_imp,
+                                                                                class C_Compiler * inCompiler
+                                                                                COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                    Extension method '@impType verifyApplication'                                    *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typedef void (*extensionMethodSignature_impType_verifyApplication) (const class cPtr_impType * inObject,
+                                                                    const class GALGAS_objectAttributes constinArgument0,
+                                                                    class C_Compiler * inCompiler
+                                                                    COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterExtensionMethod_verifyApplication (const int32_t inClassIndex,
+                                             extensionMethodSignature_impType_verifyApplication inMethod) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void callExtensionMethod_verifyApplication (const class cPtr_impType * inObject,
+                                            const GALGAS_objectAttributes constin_attrs,
+                                            C_Compiler * inCompiler
+                                            COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                   Extension method '@impType verifyMultipleType'                                    *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typedef void (*extensionMethodSignature_impType_verifyMultipleType) (const class cPtr_impType * inObject,
+                                                                     const class GALGAS_object_5F_t constinArgument0,
+                                                                     class C_Compiler * inCompiler
+                                                                     COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterExtensionMethod_verifyMultipleType (const int32_t inClassIndex,
+                                              extensionMethodSignature_impType_verifyMultipleType inMethod) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void callExtensionMethod_verifyMultipleType (const class cPtr_impType * inObject,
+                                             const GALGAS_object_5F_t constin_attr,
+                                             C_Compiler * inCompiler
+                                             COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                       Extension method '@impType verifyType'                                        *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typedef void (*extensionMethodSignature_impType_verifyType) (const class cPtr_impType * inObject,
+                                                             const class GALGAS_object_5F_t constinArgument0,
+                                                             class C_Compiler * inCompiler
+                                                             COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterExtensionMethod_verifyType (const int32_t inClassIndex,
+                                      extensionMethodSignature_impType_verifyType inMethod) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void callExtensionMethod_verifyType (const class cPtr_impType * inObject,
+                                     const GALGAS_object_5F_t constin_attr,
+                                     C_Compiler * inCompiler
+                                     COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //                                Extension method '@objectsMap verifyCrossReferences'                                 *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -1086,4 +1672,355 @@ class cGrammar_options_5F_grammar : public cParser_options_5F_parser {
 } ;
 
 //---------------------------------------------------------------------------------------------------------------------*
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                       Parser class 'arxml_parser' declaration                                       *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class cParser_arxml_5F_parser {
+//--- Virtual destructor
+  public : virtual ~ cParser_arxml_5F_parser (void) {}
+
+//--- Non terminal declarations
+  protected : virtual void nt_arxml_5F_start_5F_symbol_ (class GALGAS_arxmlNode & outArgument0,
+                                                         const class GALGAS_bool constinArgument1,
+                                                         const class GALGAS_bool constinArgument2,
+                                                         class C_Lexique_arxml_5F_scanner * inLexique) = 0 ;
+
+  protected : virtual void nt_arxml_5F_start_5F_symbol_parse (class C_Lexique_arxml_5F_scanner * inLexique) = 0 ;
+
+  protected : virtual void nt_element_ (class GALGAS_arxmlNodeList & ioArgument0,
+                                        const class GALGAS_bool constinArgument1,
+                                        const class GALGAS_bool constinArgument2,
+                                        class C_Lexique_arxml_5F_scanner * inLexique) = 0 ;
+
+  protected : virtual void nt_element_parse (class C_Lexique_arxml_5F_scanner * inLexique) = 0 ;
+
+  protected : virtual void nt_element_5F_list_ (class GALGAS_arxmlNodeList & ioArgument0,
+                                                const class GALGAS_bool constinArgument1,
+                                                const class GALGAS_bool constinArgument2,
+                                                class C_Lexique_arxml_5F_scanner * inLexique) = 0 ;
+
+  protected : virtual void nt_element_5F_list_parse (class C_Lexique_arxml_5F_scanner * inLexique) = 0 ;
+
+
+//--- Rule declarations
+  protected : void rule_arxml_5F_parser_arxml_5F_start_5F_symbol_i0_ (GALGAS_arxmlNode & outArgument0,
+                                                                      const GALGAS_bool constinArgument1,
+                                                                      const GALGAS_bool constinArgument2,
+                                                                      C_Lexique_arxml_5F_scanner * inLexique) ;
+
+  protected : void rule_arxml_5F_parser_arxml_5F_start_5F_symbol_i0_parse (C_Lexique_arxml_5F_scanner * inLexique) ;
+
+  protected : void rule_arxml_5F_parser_element_5F_list_i1_ (GALGAS_arxmlNodeList & ioArgument0,
+                                                             const GALGAS_bool constinArgument1,
+                                                             const GALGAS_bool constinArgument2,
+                                                             C_Lexique_arxml_5F_scanner * inLexique) ;
+
+  protected : void rule_arxml_5F_parser_element_5F_list_i1_parse (C_Lexique_arxml_5F_scanner * inLexique) ;
+
+  protected : void rule_arxml_5F_parser_element_i2_ (GALGAS_arxmlNodeList & ioArgument0,
+                                                     const GALGAS_bool constinArgument1,
+                                                     const GALGAS_bool constinArgument2,
+                                                     C_Lexique_arxml_5F_scanner * inLexique) ;
+
+  protected : void rule_arxml_5F_parser_element_i2_parse (C_Lexique_arxml_5F_scanner * inLexique) ;
+
+  protected : void rule_arxml_5F_parser_element_i3_ (GALGAS_arxmlNodeList & ioArgument0,
+                                                     const GALGAS_bool constinArgument1,
+                                                     const GALGAS_bool constinArgument2,
+                                                     C_Lexique_arxml_5F_scanner * inLexique) ;
+
+  protected : void rule_arxml_5F_parser_element_i3_parse (C_Lexique_arxml_5F_scanner * inLexique) ;
+
+
+
+//--- Select methods
+  protected : virtual int32_t select_arxml_5F_parser_0 (C_Lexique_arxml_5F_scanner *) = 0 ;
+
+  protected : virtual int32_t select_arxml_5F_parser_1 (C_Lexique_arxml_5F_scanner *) = 0 ;
+
+  protected : virtual int32_t select_arxml_5F_parser_2 (C_Lexique_arxml_5F_scanner *) = 0 ;
+
+  protected : virtual int32_t select_arxml_5F_parser_3 (C_Lexique_arxml_5F_scanner *) = 0 ;
+
+
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                               @arxmlCommentNode class                                               *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_arxmlCommentNode : public GALGAS_arxmlNode {
+//--- Constructor
+  public : GALGAS_arxmlCommentNode (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public : static GALGAS_arxmlCommentNode constructor_default (LOCATION_ARGS) ;
+
+//---
+  public : inline const class cPtr_arxmlCommentNode * ptr (void) const { return (const cPtr_arxmlCommentNode *) mObjectPtr ; }
+
+//--------------------------------- Constructor from pointer
+  public : GALGAS_arxmlCommentNode (const cPtr_arxmlCommentNode * inSourcePtr) ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
+
+//--------------------------------- Object extraction
+  public : static GALGAS_arxmlCommentNode extractObject (const GALGAS_object & inObject,
+                                                         C_Compiler * inCompiler
+                                                         COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public : static class GALGAS_arxmlCommentNode constructor_new (const class GALGAS_lstring & inOperand0
+                                                                 COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public : typeComparisonResult objectCompare (const GALGAS_arxmlCommentNode & inOperand) const ;
+
+//--------------------------------- Setters
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+  public : VIRTUAL_IN_DEBUG class GALGAS_lstring getter_comment (LOCATION_ARGS) const ;
+
+
+//--------------------------------- Introspection
+  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+ 
+} ; // End of GALGAS_arxmlCommentNode class
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlCommentNode ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                      Pointer class for @arxmlCommentNode class                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class cPtr_arxmlCommentNode : public cPtr_arxmlNode {
+//--- Attributes
+  public : GALGAS_lstring mAttribute_comment ;
+
+//--- Constructor
+  public : cPtr_arxmlCommentNode (const GALGAS_lstring & in_comment
+                                  COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
+
+//--- Attribute accessors
+  public : VIRTUAL_IN_DEBUG GALGAS_lstring getter_comment (LOCATION_ARGS) const ;
+//--- Description
+  public : virtual void description (C_String & ioString,
+                                     const int32_t inIndentation) const ;
+
+  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
+
+  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
+
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                               @arxmlElementNode class                                               *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_arxmlElementNode : public GALGAS_arxmlNode {
+//--- Constructor
+  public : GALGAS_arxmlElementNode (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public : static GALGAS_arxmlElementNode constructor_default (LOCATION_ARGS) ;
+
+//---
+  public : inline const class cPtr_arxmlElementNode * ptr (void) const { return (const cPtr_arxmlElementNode *) mObjectPtr ; }
+
+//--------------------------------- Constructor from pointer
+  public : GALGAS_arxmlElementNode (const cPtr_arxmlElementNode * inSourcePtr) ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
+
+//--------------------------------- Object extraction
+  public : static GALGAS_arxmlElementNode extractObject (const GALGAS_object & inObject,
+                                                         C_Compiler * inCompiler
+                                                         COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public : static class GALGAS_arxmlElementNode constructor_new (const class GALGAS_lstring & inOperand0,
+                                                                 const class GALGAS_arxmlAttributeMap & inOperand1,
+                                                                 const class GALGAS_arxmlNodeList & inOperand2
+                                                                 COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public : typeComparisonResult objectCompare (const GALGAS_arxmlElementNode & inOperand) const ;
+
+//--------------------------------- Setters
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+  public : VIRTUAL_IN_DEBUG class GALGAS_arxmlAttributeMap getter_attributes (LOCATION_ARGS) const ;
+
+  public : VIRTUAL_IN_DEBUG class GALGAS_arxmlNodeList getter_enclosedNodes (LOCATION_ARGS) const ;
+
+  public : VIRTUAL_IN_DEBUG class GALGAS_lstring getter_name (LOCATION_ARGS) const ;
+
+
+//--------------------------------- Introspection
+  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+ 
+} ; // End of GALGAS_arxmlElementNode class
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlElementNode ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                      Pointer class for @arxmlElementNode class                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class cPtr_arxmlElementNode : public cPtr_arxmlNode {
+//--- Attributes
+  public : GALGAS_lstring mAttribute_name ;
+  public : GALGAS_arxmlAttributeMap mAttribute_attributes ;
+  public : GALGAS_arxmlNodeList mAttribute_enclosedNodes ;
+
+//--- Constructor
+  public : cPtr_arxmlElementNode (const GALGAS_lstring & in_name,
+                                  const GALGAS_arxmlAttributeMap & in_attributes,
+                                  const GALGAS_arxmlNodeList & in_enclosedNodes
+                                  COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
+
+//--- Attribute accessors
+  public : VIRTUAL_IN_DEBUG GALGAS_lstring getter_name (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_arxmlAttributeMap getter_attributes (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_arxmlNodeList getter_enclosedNodes (LOCATION_ARGS) const ;
+//--- Description
+  public : virtual void description (C_String & ioString,
+                                     const int32_t inIndentation) const ;
+
+  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
+
+  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
+
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                                  Routine 'addText'                                                  *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+void routine_addText (class GALGAS_arxmlNodeList & ioArgument0,
+                      const class GALGAS_bool constinArgument1,
+                      class C_Compiler * inCompiler
+                      COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                                @arxmlTextNode class                                                 *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_arxmlTextNode : public GALGAS_arxmlNode {
+//--- Constructor
+  public : GALGAS_arxmlTextNode (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public : static GALGAS_arxmlTextNode constructor_default (LOCATION_ARGS) ;
+
+//---
+  public : inline const class cPtr_arxmlTextNode * ptr (void) const { return (const cPtr_arxmlTextNode *) mObjectPtr ; }
+
+//--------------------------------- Constructor from pointer
+  public : GALGAS_arxmlTextNode (const cPtr_arxmlTextNode * inSourcePtr) ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
+
+//--------------------------------- Object extraction
+  public : static GALGAS_arxmlTextNode extractObject (const GALGAS_object & inObject,
+                                                      C_Compiler * inCompiler
+                                                      COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public : static class GALGAS_arxmlTextNode constructor_new (const class GALGAS_lstring & inOperand0
+                                                              COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Comparison
+  public : typeComparisonResult objectCompare (const GALGAS_arxmlTextNode & inOperand) const ;
+
+//--------------------------------- Setters
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+  public : VIRTUAL_IN_DEBUG class GALGAS_lstring getter_text (LOCATION_ARGS) const ;
+
+
+//--------------------------------- Introspection
+  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+ 
+} ; // End of GALGAS_arxmlTextNode class
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlTextNode ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                       Pointer class for @arxmlTextNode class                                        *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class cPtr_arxmlTextNode : public cPtr_arxmlNode {
+//--- Attributes
+  public : GALGAS_lstring mAttribute_text ;
+
+//--- Constructor
+  public : cPtr_arxmlTextNode (const GALGAS_lstring & in_text
+                               COMMA_LOCATION_ARGS) ;
+
+//--- Duplication
+  public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
+
+//--- Attribute accessors
+  public : VIRTUAL_IN_DEBUG GALGAS_lstring getter_text (LOCATION_ARGS) const ;
+//--- Description
+  public : virtual void description (C_String & ioString,
+                                     const int32_t inIndentation) const ;
+
+  public : virtual typeComparisonResult dynamicObjectCompare (const acPtr_class * inOperandPtr) const ;
+
+  public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
+
+} ;
+
 #endif

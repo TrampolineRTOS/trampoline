@@ -127,7 +127,7 @@ project (3:0:6) -> "goil" {
   "galgas-sources/arxml_grammar.galgas"
   "galgas-sources/arxml_parser.galgas"
   "galgas-sources/arxml_scanner.galgas"
-  
+  "galgas-sources/arxml_types.galgas"
 #
 # Cocoa GOIL
 #
