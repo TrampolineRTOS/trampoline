@@ -62,44 +62,76 @@ foreach objList in objForIRQ do
   foreach obj in objList do
     if obj::KIND == "ISR" then
       if obj::CATEGORY == 1 then
-%  extern FUNC(void, OS_CODE) % !obj::NAME %_function(void);
+%extern FUNC(void, OS_CODE) % !obj::NAME %_function(void);
 %
       end if
       if obj::ACK then
-%  extern FUNC(void, OS_CODE) %!objList_KEY%_ClearFlag(void);
+%extern FUNC(void, OS_CODE) %!objList_KEY%_ClearFlag(void);
 %
       end if
     end if
   end foreach
 end foreach
 
+let indexISR2 := 0
 foreach objList in objForIRQ do
   let objList_KEY := KEY
 %
 FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
 {
 %
-  let indexISR2 := 0
+  # ISR1
+%  /* ISR1s */
+%  
   foreach obj in objList do
     if obj::KIND == "ISR" then
-# ISR 1
       if obj::CATEGORY == 1 then
+%  % !obj::NAME %_function();
 %
-  % !obj::NAME %_function();
-%
-      else
-        if obj::CATEGORY == 2 then
-# ISR2
-%
-  tpl_central_interrupt_handler(% !([TASKS length] + indexISR2) %);
-%
-          let indexISR2 := indexISR2 + 1
-        else
-          error obj::CATEGORY : "This interrupt category ".obj::CATEGORY." does not exist"
-        end if
       end if
     end if
   end foreach
+  
+  # ISR2 and COUNTER
+  # Test for ISR2
+%  /* ISR2s */
+%  
+  let thereAreISR2 := false
+  foreach obj in objList do
+    if obj::KIND == "ISR" then
+      if obj::CATEGORY == 2 then
+        let thereAreISR2 := true
+      end if
+    end if
+  end foreach
+  
+  if thereAreISR2 then
+    foreach obj in objList
+      before
+%  GET_CURRENT_CORE_ID(core_id)
+
+#if WITH_STACK_MONITORING == YES
+  GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
+  tpl_check_stack((tpl_proc_id)TPL_KERN_REF(kern).running_id);
+#endif /* WITH_AUTOSAR_STACK_MONITORING */
+
+%
+      do
+      if (obj::KIND == "ISR" & obj::CATEGORY == 2) then
+%  tpl_activate_isr(% !indexISR2 %);
+%
+        let indexISR2 := indexISR2 + 1
+      end if
+      after
+%  tpl_schedule_from_running(CORE_ID_OR_NOTHING(core_id));
+  LOCAL_SWITCH_CONTEXT(core_id)
+%    
+    end foreach
+  end if
+
+  # COUNTER
+%  /* COUNTERs */
+%  
   foreach objCounter in counterForIRQ do
     let objCounter_KEY := KEY
     if objCounter_KEY == objList_KEY then
@@ -107,6 +139,12 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
 %
     end if
   end foreach
+  
+  # ACK
+%  /* ACK */
+%
+  # If there is at least one ISR2 then ack of IRQ must be done when the ISR2 is done
+  # that is to say the ack must be done when calling tpl_terminate_isr2_service
   let ackDone := false
   foreach obj in objList do
     if not ackDone then
@@ -117,8 +155,7 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
       end if
     end if
   end foreach
-%
-}
+%}
 %
 end foreach
 %
