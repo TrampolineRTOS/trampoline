@@ -52,8 +52,13 @@ GALGAS_char GALGAS_char::constructor_default (UNUSED_LOCATION_ARGS) {
 //---------------------------------------------------------------------------------------------------------------------*
 
 #if COMPILE_FOR_WINDOWS == 1
-  GALGAS_char GALGAS_char::constructor_unicodeCharacterFromRawKeyboard (UNUSED_LOCATION_ARGS) {
-    return GALGAS_char (TO_UNICODE (0)) ;
+  GALGAS_char GALGAS_char::constructor_unicodeCharacterFromRawKeyboard (C_Compiler * inCompiler
+                                                                        COMMA_LOCATION_ARGS) {
+    inCompiler->onTheFlyRunTimeError (
+      "@char unicodeCharacterFromRawKeyboard constructor is not implemented for Windows"
+      COMMA_THERE
+    ) ;
+    return GALGAS_char () ; // Poison value
   }
 #endif
 
@@ -63,10 +68,12 @@ GALGAS_char GALGAS_char::constructor_default (UNUSED_LOCATION_ARGS) {
   static void waitForRawInput (void) {
     bool waiting = true ;
     while (waiting) {
-      usleep (50000) ; // 50 ms
       int bytesAvailable = 0 ;
       ioctl (STDIN_FILENO, FIONREAD, & bytesAvailable) ;
       waiting = bytesAvailable == 0 ;
+      if (waiting) {
+        usleep (10000) ; // 10 ms
+      }
     }
   }
 #endif
@@ -74,7 +81,8 @@ GALGAS_char GALGAS_char::constructor_default (UNUSED_LOCATION_ARGS) {
 //---------------------------------------------------------------------------------------------------------------------*
 
 #if COMPILE_FOR_WINDOWS == 0
-  GALGAS_char GALGAS_char::constructor_unicodeCharacterFromRawKeyboard (UNUSED_LOCATION_ARGS) {
+  GALGAS_char GALGAS_char::constructor_unicodeCharacterFromRawKeyboard (C_Compiler * /* inCompiler */
+                                                                        COMMA_UNUSED_LOCATION_ARGS) {
   //--- Save current configuration
     struct termios termios_orig ;
     tcgetattr (STDIN_FILENO, &termios_orig) ;

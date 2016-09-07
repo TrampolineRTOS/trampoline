@@ -510,7 +510,7 @@ class cPtr_oil_5F_obj : public acPtr_class {
 //---------------------------------------------------------------------------------------------------------------------*
 
 typedef class GALGAS_applicationDefinition (*enterExtensionGetter_applicationDefinition_applicationWithDefaults) (const class cPtr_applicationDefinition * inObject,
-                                                                                                                  const class GALGAS_implementation & constinArgument0,
+                                                                                                                  const class GALGAS_implementation constinArgument0,
                                                                                                                   C_Compiler * inCompiler
                                                                                                                   COMMA_LOCATION_ARGS) ;
 
@@ -522,7 +522,7 @@ void enterExtensionGetter_applicationWithDefaults (const int32_t inClassIndex,
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_applicationDefinition callExtensionGetter_applicationWithDefaults (const cPtr_applicationDefinition * inObject,
-                                                                                const GALGAS_implementation & constin_imp,
+                                                                                const GALGAS_implementation constin_imp,
                                                                                 class C_Compiler * inCompiler
                                                                                 COMMA_LOCATION_ARGS) ;
 

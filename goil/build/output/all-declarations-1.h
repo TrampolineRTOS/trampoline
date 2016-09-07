@@ -26,7 +26,7 @@ class GALGAS_string extensionGetter_stringRepresentation (const class GALGAS_gtl
 //---------------------------------------------------------------------------------------------------------------------*
 
 typedef class GALGAS_string (*enterExtensionGetter_gtlVarItem_stringRepresentation) (const class cPtr_gtlVarItem * inObject,
-                                                                                     const class GALGAS_string & constinArgument0,
+                                                                                     const class GALGAS_string constinArgument0,
                                                                                      class C_Compiler * inCompiler
                                                                                      COMMA_LOCATION_ARGS) ;
 
@@ -38,7 +38,7 @@ void enterExtensionGetter_stringRepresentation (const int32_t inClassIndex,
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_string callExtensionGetter_stringRepresentation (const class cPtr_gtlVarItem * inObject,
-                                                              const GALGAS_string & constin_concatString,
+                                                              const GALGAS_string constin_concatString,
                                                               C_Compiler * inCompiler
                                                               COMMA_LOCATION_ARGS) ;
 
@@ -1445,29 +1445,6 @@ class cPtr_gtlHelpInstruction : public cPtr_gtlInstruction {
   public : virtual const C_galgas_type_descriptor * classDescriptor (void) const ;
 
 } ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  Extension setter '@string deleteCharacterAtIndex'                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-void extensionSetter_deleteCharacterAtIndex (class GALGAS_string & ioObject,
-                                             const class GALGAS_uint constin_index,
-                                             class C_Compiler * inCompiler
-                                             COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  Extension setter '@string insertCharacterAtIndex'                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-void extensionSetter_insertCharacterAtIndex (class GALGAS_string & ioObject,
-                                             const class GALGAS_char constin_char,
-                                             const class GALGAS_uint constin_index,
-                                             class C_Compiler * inCompiler
-                                             COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *

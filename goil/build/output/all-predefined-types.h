@@ -182,6 +182,16 @@ class GALGAS_string : public AC_GALGAS_root
                                                         C_Compiler * inCompiler
                                                         COMMA_LOCATION_ARGS) ;
 
+  public : VIRTUAL_IN_DEBUG void setter_insertCharacterAtIndex (class GALGAS_char constinArgument0,
+                                                                class GALGAS_uint constinArgument1,
+                                                                C_Compiler * inCompiler
+                                                                COMMA_LOCATION_ARGS) ;
+
+  public : VIRTUAL_IN_DEBUG void setter_removeCharacterAtIndex (class GALGAS_char & outArgument0,
+                                                                class GALGAS_uint constinArgument1,
+                                                                C_Compiler * inCompiler
+                                                                COMMA_LOCATION_ARGS) ;
+
   public : VIRTUAL_IN_DEBUG void setter_setCapacity (class GALGAS_uint constinArgument0,
                                                      C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) ;
@@ -306,6 +316,8 @@ class GALGAS_string : public AC_GALGAS_root
   public : VIRTUAL_IN_DEBUG class GALGAS_bool getter_doesEnvironmentVariableExist (LOCATION_ARGS) const ;
 
   public : VIRTUAL_IN_DEBUG class GALGAS_bool getter_fileExists (LOCATION_ARGS) const ;
+
+  public : VIRTUAL_IN_DEBUG class GALGAS_string getter_fileNameRepresentation (LOCATION_ARGS) const ;
 
   public : VIRTUAL_IN_DEBUG class GALGAS_char getter_firstCharacterOrNul (LOCATION_ARGS) const ;
 
@@ -766,7 +778,8 @@ class GALGAS_char : public AC_GALGAS_root {
 //--------------------------------- GALGAS constructors
   public : static class GALGAS_char constructor_replacementCharacter (LOCATION_ARGS) ;
 
-  public : static class GALGAS_char constructor_unicodeCharacterFromRawKeyboard (LOCATION_ARGS) ;
+  public : static class GALGAS_char constructor_unicodeCharacterFromRawKeyboard (C_Compiler * inCompiler
+                                                                                 COMMA_LOCATION_ARGS) ;
 
   public : static class GALGAS_char constructor_unicodeCharacterWithUnsigned (const class GALGAS_uint & inOperand0
                                                                               COMMA_LOCATION_ARGS) ;

@@ -430,7 +430,7 @@ C_PrologueEpilogue gGetter_gtlVarItem_stringRepresentation (NULL,
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_string callExtensionGetter_stringRepresentation (const cPtr_gtlVarItem * inObject,
-                                                        const GALGAS_string & in_concatString,
+                                                        const GALGAS_string in_concatString,
                                                         C_Compiler * inCompiler
                                                         COMMA_LOCATION_ARGS) {
   GALGAS_string result ;
@@ -839,9 +839,9 @@ void enterExtensionGetter_mayExecuteWithoutError (const int32_t inClassIndex,
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_bool callExtensionGetter_mayExecuteWithoutError (const cPtr_gtlInstruction * inObject,
-                                                        const GALGAS_gtlContext & in_exeContext,
-                                                        const GALGAS_gtlData & in_context,
-                                                        const GALGAS_library & in_lib,
+                                                        const GALGAS_gtlContext in_exeContext,
+                                                        const GALGAS_gtlData in_context,
+                                                        const GALGAS_library in_lib,
                                                         C_Compiler * inCompiler
                                                         COMMA_LOCATION_ARGS) {
   GALGAS_bool result ;
@@ -876,9 +876,9 @@ GALGAS_bool callExtensionGetter_mayExecuteWithoutError (const cPtr_gtlInstructio
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_bool extensionGetter_gtlInstruction_mayExecuteWithoutError (const cPtr_gtlInstruction * /* inObject */,
-                                                                          const GALGAS_gtlContext & /* constinArgument_exeContext */,
-                                                                          const GALGAS_gtlData & /* constinArgument_context */,
-                                                                          const GALGAS_library & /* constinArgument_lib */,
+                                                                          const GALGAS_gtlContext /* constinArgument_exeContext */,
+                                                                          const GALGAS_gtlData /* constinArgument_context */,
+                                                                          const GALGAS_library /* constinArgument_lib */,
                                                                           C_Compiler * /* inCompiler */
                                                                           COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_bool result_may ; // Returned variable
@@ -3424,49 +3424,6 @@ GALGAS_gtlHelpInstruction GALGAS_gtlHelpInstruction::extractObject (const GALGAS
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                                  Extension method '@string deleteCharacterAtIndex'                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-void extensionSetter_deleteCharacterAtIndex (GALGAS_string & ioObject,
-                                             const GALGAS_uint constinArgument_index,
-                                             C_Compiler * inCompiler
-                                             COMMA_UNUSED_LOCATION_ARGS) {
-  const GALGAS_string temp_0 = ioObject ;
-  const enumGalgasBool test_1 = GALGAS_bool (kIsStrictInf, constinArgument_index.objectCompare (temp_0.getter_length (SOURCE_FILE ("gtl_debugger_input.galgas", 35)))).boolEnum () ;
-  if (kBoolTrue == test_1) {
-    const GALGAS_string temp_2 = ioObject ;
-    const GALGAS_string temp_3 = ioObject ;
-    const GALGAS_string temp_4 = ioObject ;
-    ioObject = temp_2.getter_leftSubString (constinArgument_index COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 36)).add_operation (temp_3.getter_rightSubString (temp_4.getter_length (SOURCE_FILE ("gtl_debugger_input.galgas", 37)).substract_operation (constinArgument_index, inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 37)).substract_operation (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 37)) COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 37)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 36)) ;
-  }
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                  Extension method '@string insertCharacterAtIndex'                                  *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-void extensionSetter_insertCharacterAtIndex (GALGAS_string & ioObject,
-                                             const GALGAS_char constinArgument_char,
-                                             const GALGAS_uint constinArgument_index,
-                                             C_Compiler * inCompiler
-                                             COMMA_UNUSED_LOCATION_ARGS) {
-  const GALGAS_string temp_0 = ioObject ;
-  const enumGalgasBool test_1 = GALGAS_bool (kIsStrictInf, constinArgument_index.objectCompare (temp_0.getter_length (SOURCE_FILE ("gtl_debugger_input.galgas", 45)))).boolEnum () ;
-  if (kBoolTrue == test_1) {
-    const GALGAS_string temp_2 = ioObject ;
-    const GALGAS_string temp_3 = ioObject ;
-    const GALGAS_string temp_4 = ioObject ;
-    ioObject = temp_2.getter_leftSubString (constinArgument_index COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 46)).add_operation (constinArgument_char.getter_string (SOURCE_FILE ("gtl_debugger_input.galgas", 46)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 46)).add_operation (temp_3.getter_rightSubString (temp_4.getter_length (SOURCE_FILE ("gtl_debugger_input.galgas", 48)).substract_operation (constinArgument_index, inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 48)) COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 48)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 47)) ;
-  }
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
 //                                  Extension setter '@debugCommandInput getCommand'                                   *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -3520,132 +3477,133 @@ static void extensionSetter_debugCommandInput_getCommand (cPtr_debugCommandInput
   cPtr_debugCommandInput * object = inObject ;
   macroValidSharedObject (object, cPtr_debugCommandInput) ;
   outArgument_command = GALGAS_string::makeEmptyString () ;
-  GALGAS_string var_savedCommand_1272 = GALGAS_string::makeEmptyString () ;
-  GALGAS_uint var_historyIndex_1298 = GALGAS_uint ((uint32_t) 0U) ;
-  GALGAS_char var_inputChar_1320 = GALGAS_char (TO_UNICODE (13)) ;
-  GALGAS_uint var_cursorPos_1345 = GALGAS_uint ((uint32_t) 0U) ;
-  GALGAS_uint var_escapeState_1369 = GALGAS_uint ((uint32_t) 0U) ;
-  if (GALGAS_uint::constructor_max (SOURCE_FILE ("gtl_debugger_input.galgas", 62)).isValid ()) {
-    uint32_t variant_1383 = GALGAS_uint::constructor_max (SOURCE_FILE ("gtl_debugger_input.galgas", 62)).uintValue () ;
-    bool loop_1383 = true ;
-    while (loop_1383) {
-        var_inputChar_1320 = GALGAS_char::constructor_unicodeCharacterFromRawKeyboard (SOURCE_FILE ("gtl_debugger_input.galgas", 63)) ;
-      loop_1383 = GALGAS_bool (kIsNotEqual, var_inputChar_1320.objectCompare (GALGAS_char (TO_UNICODE (13)))).isValid () ;
-      if (loop_1383) {
-        loop_1383 = GALGAS_bool (kIsNotEqual, var_inputChar_1320.objectCompare (GALGAS_char (TO_UNICODE (13)))).boolValue () ;
+  GALGAS_string var_savedCommand_844 = GALGAS_string::makeEmptyString () ;
+  GALGAS_uint var_historyIndex_870 = GALGAS_uint ((uint32_t) 0U) ;
+  GALGAS_char var_inputChar_892 = GALGAS_char (TO_UNICODE (13)) ;
+  GALGAS_uint var_cursorPos_917 = GALGAS_uint ((uint32_t) 0U) ;
+  GALGAS_uint var_escapeState_941 = GALGAS_uint ((uint32_t) 0U) ;
+  if (GALGAS_uint::constructor_max (SOURCE_FILE ("gtl_debugger_input.galgas", 42)).isValid ()) {
+    uint32_t variant_955 = GALGAS_uint::constructor_max (SOURCE_FILE ("gtl_debugger_input.galgas", 42)).uintValue () ;
+    bool loop_955 = true ;
+    while (loop_955) {
+        var_inputChar_892 = GALGAS_char::constructor_unicodeCharacterFromRawKeyboard (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 43)) ;
+      loop_955 = GALGAS_bool (kIsNotEqual, var_inputChar_892.objectCompare (GALGAS_char (TO_UNICODE (13)))).isValid () ;
+      if (loop_955) {
+        loop_955 = GALGAS_bool (kIsNotEqual, var_inputChar_892.objectCompare (GALGAS_char (TO_UNICODE (13)))).boolValue () ;
       }
-      if (loop_1383 && (0 == variant_1383)) {
-        loop_1383 = false ;
-        inCompiler->loopRunTimeVariantError (SOURCE_FILE ("gtl_debugger_input.galgas", 62)) ;
+      if (loop_955 && (0 == variant_955)) {
+        loop_955 = false ;
+        inCompiler->loopRunTimeVariantError (SOURCE_FILE ("gtl_debugger_input.galgas", 42)) ;
       }
-      if (loop_1383) {
-        variant_1383 -- ;
-        const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, var_escapeState_1369.objectCompare (GALGAS_uint ((uint32_t) 1U))).operator_and (GALGAS_bool (kIsEqual, var_inputChar_1320.getter_uint (SOURCE_FILE ("gtl_debugger_input.galgas", 65)).objectCompare (GALGAS_uint ((uint32_t) 91U))) COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 65)).boolEnum () ;
+      if (loop_955) {
+        variant_955 -- ;
+        const enumGalgasBool test_0 = GALGAS_bool (kIsEqual, var_escapeState_941.objectCompare (GALGAS_uint ((uint32_t) 1U))).operator_and (GALGAS_bool (kIsEqual, var_inputChar_892.getter_uint (SOURCE_FILE ("gtl_debugger_input.galgas", 45)).objectCompare (GALGAS_uint ((uint32_t) 91U))) COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 45)).boolEnum () ;
         if (kBoolTrue == test_0) {
-          var_escapeState_1369 = GALGAS_uint ((uint32_t) 2U) ;
+          var_escapeState_941 = GALGAS_uint ((uint32_t) 2U) ;
         }else if (kBoolFalse == test_0) {
-          const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, var_escapeState_1369.objectCompare (GALGAS_uint ((uint32_t) 2U))).boolEnum () ;
+          const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, var_escapeState_941.objectCompare (GALGAS_uint ((uint32_t) 2U))).boolEnum () ;
           if (kBoolTrue == test_1) {
-            const enumGalgasBool test_2 = GALGAS_bool (kIsEqual, var_inputChar_1320.getter_uint (SOURCE_FILE ("gtl_debugger_input.galgas", 69)).objectCompare (GALGAS_uint ((uint32_t) 68U))).boolEnum () ;
+            const enumGalgasBool test_2 = GALGAS_bool (kIsEqual, var_inputChar_892.getter_uint (SOURCE_FILE ("gtl_debugger_input.galgas", 49)).objectCompare (GALGAS_uint ((uint32_t) 68U))).boolEnum () ;
             if (kBoolTrue == test_2) {
-              const enumGalgasBool test_3 = GALGAS_bool (kIsStrictSup, var_cursorPos_1345.objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+              const enumGalgasBool test_3 = GALGAS_bool (kIsStrictSup, var_cursorPos_917.objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
               if (kBoolTrue == test_3) {
-                var_cursorPos_1345.decrement_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 72)) ;
-                inCompiler->printMessage (GALGAS_string ("\x1B""[1D")  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 73)) ;
+                var_cursorPos_917.decrement_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 52)) ;
+                inCompiler->printMessage (GALGAS_string ("\x1B""[1D")  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 53)) ;
               }
             }else if (kBoolFalse == test_2) {
-              const enumGalgasBool test_4 = GALGAS_bool (kIsEqual, var_inputChar_1320.getter_uint (SOURCE_FILE ("gtl_debugger_input.galgas", 75)).objectCompare (GALGAS_uint ((uint32_t) 67U))).boolEnum () ;
+              const enumGalgasBool test_4 = GALGAS_bool (kIsEqual, var_inputChar_892.getter_uint (SOURCE_FILE ("gtl_debugger_input.galgas", 55)).objectCompare (GALGAS_uint ((uint32_t) 67U))).boolEnum () ;
               if (kBoolTrue == test_4) {
-                const enumGalgasBool test_5 = GALGAS_bool (kIsStrictInf, var_cursorPos_1345.objectCompare (outArgument_command.getter_length (SOURCE_FILE ("gtl_debugger_input.galgas", 77)))).boolEnum () ;
+                const enumGalgasBool test_5 = GALGAS_bool (kIsStrictInf, var_cursorPos_917.objectCompare (outArgument_command.getter_length (SOURCE_FILE ("gtl_debugger_input.galgas", 57)))).boolEnum () ;
                 if (kBoolTrue == test_5) {
-                  var_cursorPos_1345.increment_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 78)) ;
-                  inCompiler->printMessage (GALGAS_string ("\x1B""[1C")  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 79)) ;
+                  var_cursorPos_917.increment_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 58)) ;
+                  inCompiler->printMessage (GALGAS_string ("\x1B""[1C")  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 59)) ;
                 }
               }else if (kBoolFalse == test_4) {
-                const enumGalgasBool test_6 = GALGAS_bool (kIsEqual, var_inputChar_1320.getter_uint (SOURCE_FILE ("gtl_debugger_input.galgas", 81)).objectCompare (GALGAS_uint ((uint32_t) 65U))).boolEnum () ;
+                const enumGalgasBool test_6 = GALGAS_bool (kIsEqual, var_inputChar_892.getter_uint (SOURCE_FILE ("gtl_debugger_input.galgas", 61)).objectCompare (GALGAS_uint ((uint32_t) 65U))).boolEnum () ;
                 if (kBoolTrue == test_6) {
-                  const enumGalgasBool test_7 = GALGAS_bool (kIsEqual, var_historyIndex_1298.objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+                  const enumGalgasBool test_7 = GALGAS_bool (kIsEqual, var_historyIndex_870.objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
                   if (kBoolTrue == test_7) {
-                    var_savedCommand_1272 = outArgument_command ;
+                    var_savedCommand_844 = outArgument_command ;
                   }
-                  const enumGalgasBool test_8 = GALGAS_bool (kIsStrictInf, var_historyIndex_1298.objectCompare (object->mAttribute_history.getter_length (SOURCE_FILE ("gtl_debugger_input.galgas", 86)))).boolEnum () ;
+                  const enumGalgasBool test_8 = GALGAS_bool (kIsStrictInf, var_historyIndex_870.objectCompare (object->mAttribute_history.getter_length (SOURCE_FILE ("gtl_debugger_input.galgas", 66)))).boolEnum () ;
                   if (kBoolTrue == test_8) {
-                    const enumGalgasBool test_9 = GALGAS_bool (kIsStrictSup, var_cursorPos_1345.objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+                    const enumGalgasBool test_9 = GALGAS_bool (kIsStrictSup, var_cursorPos_917.objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
                     if (kBoolTrue == test_9) {
-                      inCompiler->printMessage (GALGAS_string ("\x1B""[").add_operation (var_cursorPos_1345.getter_string (SOURCE_FILE ("gtl_debugger_input.galgas", 88)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 88)).add_operation (GALGAS_string ("D"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 88))  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 88)) ;
+                      inCompiler->printMessage (GALGAS_string ("\x1B""[").add_operation (var_cursorPos_917.getter_string (SOURCE_FILE ("gtl_debugger_input.galgas", 68)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 68)).add_operation (GALGAS_string ("D"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 68))  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 68)) ;
                     }
-                    inCompiler->printMessage (GALGAS_string ("\x1B""[K")  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 90)) ;
-                    outArgument_command = object->mAttribute_history.getter_mValueAtIndex (var_historyIndex_1298, inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 91)) ;
-                    inCompiler->printMessage (outArgument_command  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 92)) ;
-                    var_cursorPos_1345 = outArgument_command.getter_length (SOURCE_FILE ("gtl_debugger_input.galgas", 93)) ;
-                    var_historyIndex_1298.increment_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 94)) ;
+                    inCompiler->printMessage (GALGAS_string ("\x1B""[K")  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 70)) ;
+                    outArgument_command = object->mAttribute_history.getter_mValueAtIndex (var_historyIndex_870, inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 71)) ;
+                    inCompiler->printMessage (outArgument_command  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 72)) ;
+                    var_cursorPos_917 = outArgument_command.getter_length (SOURCE_FILE ("gtl_debugger_input.galgas", 73)) ;
+                    var_historyIndex_870.increment_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 74)) ;
                   }
                 }else if (kBoolFalse == test_6) {
-                  const enumGalgasBool test_10 = GALGAS_bool (kIsEqual, var_inputChar_1320.getter_uint (SOURCE_FILE ("gtl_debugger_input.galgas", 96)).objectCompare (GALGAS_uint ((uint32_t) 66U))).boolEnum () ;
+                  const enumGalgasBool test_10 = GALGAS_bool (kIsEqual, var_inputChar_892.getter_uint (SOURCE_FILE ("gtl_debugger_input.galgas", 76)).objectCompare (GALGAS_uint ((uint32_t) 66U))).boolEnum () ;
                   if (kBoolTrue == test_10) {
-                    const enumGalgasBool test_11 = GALGAS_bool (kIsStrictSup, var_historyIndex_1298.objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+                    const enumGalgasBool test_11 = GALGAS_bool (kIsStrictSup, var_historyIndex_870.objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
                     if (kBoolTrue == test_11) {
-                      const enumGalgasBool test_12 = GALGAS_bool (kIsStrictSup, var_cursorPos_1345.objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+                      const enumGalgasBool test_12 = GALGAS_bool (kIsStrictSup, var_cursorPos_917.objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
                       if (kBoolTrue == test_12) {
-                        inCompiler->printMessage (GALGAS_string ("\x1B""[").add_operation (var_cursorPos_1345.getter_string (SOURCE_FILE ("gtl_debugger_input.galgas", 100)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 100)).add_operation (GALGAS_string ("D"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 100))  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 100)) ;
+                        inCompiler->printMessage (GALGAS_string ("\x1B""[").add_operation (var_cursorPos_917.getter_string (SOURCE_FILE ("gtl_debugger_input.galgas", 80)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 80)).add_operation (GALGAS_string ("D"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 80))  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 80)) ;
                       }
-                      inCompiler->printMessage (GALGAS_string ("\x1B""[K")  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 102)) ;
-                      var_historyIndex_1298.decrement_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 103)) ;
-                      const enumGalgasBool test_13 = GALGAS_bool (kIsEqual, var_historyIndex_1298.objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+                      inCompiler->printMessage (GALGAS_string ("\x1B""[K")  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 82)) ;
+                      var_historyIndex_870.decrement_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 83)) ;
+                      const enumGalgasBool test_13 = GALGAS_bool (kIsEqual, var_historyIndex_870.objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
                       if (kBoolTrue == test_13) {
-                        outArgument_command = var_savedCommand_1272 ;
+                        outArgument_command = var_savedCommand_844 ;
                       }else if (kBoolFalse == test_13) {
-                        outArgument_command = object->mAttribute_history.getter_mValueAtIndex (var_historyIndex_1298.substract_operation (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 107)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 107)) ;
+                        outArgument_command = object->mAttribute_history.getter_mValueAtIndex (var_historyIndex_870.substract_operation (GALGAS_uint ((uint32_t) 1U), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 87)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 87)) ;
                       }
-                      inCompiler->printMessage (outArgument_command  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 109)) ;
-                      var_cursorPos_1345 = outArgument_command.getter_length (SOURCE_FILE ("gtl_debugger_input.galgas", 110)) ;
+                      inCompiler->printMessage (outArgument_command  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 89)) ;
+                      var_cursorPos_917 = outArgument_command.getter_length (SOURCE_FILE ("gtl_debugger_input.galgas", 90)) ;
                     }
                   }
                 }
               }
             }
-            var_escapeState_1369 = GALGAS_uint ((uint32_t) 0U) ;
+            var_escapeState_941 = GALGAS_uint ((uint32_t) 0U) ;
           }else if (kBoolFalse == test_1) {
-            const enumGalgasBool test_14 = GALGAS_bool (kIsEqual, var_inputChar_1320.getter_uint (SOURCE_FILE ("gtl_debugger_input.galgas", 115)).objectCompare (GALGAS_uint ((uint32_t) 127U))).boolEnum () ;
+            const enumGalgasBool test_14 = GALGAS_bool (kIsEqual, var_inputChar_892.getter_uint (SOURCE_FILE ("gtl_debugger_input.galgas", 95)).objectCompare (GALGAS_uint ((uint32_t) 127U))).boolEnum () ;
             if (kBoolTrue == test_14) {
-              const enumGalgasBool test_15 = GALGAS_bool (kIsStrictSup, var_cursorPos_1345.objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+              const enumGalgasBool test_15 = GALGAS_bool (kIsStrictSup, var_cursorPos_917.objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
               if (kBoolTrue == test_15) {
-                var_cursorPos_1345.decrement_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 118)) ;
+                var_cursorPos_917.decrement_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 98)) ;
                 {
-                extensionSetter_deleteCharacterAtIndex (outArgument_command, var_cursorPos_1345, inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 119)) ;
+                GALGAS_char joker_2684 ; // Joker input parameter
+                outArgument_command.setter_removeCharacterAtIndex (joker_2684, var_cursorPos_917, inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 99)) ;
                 }
-                inCompiler->printMessage (GALGAS_string ("\x1B""[1D\x1B""[K")  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 120)) ;
-                GALGAS_uint var_remainingChars_3191 = outArgument_command.getter_length (SOURCE_FILE ("gtl_debugger_input.galgas", 121)).substract_operation (var_cursorPos_1345, inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 121)) ;
-                const enumGalgasBool test_16 = GALGAS_bool (kIsStrictSup, var_remainingChars_3191.objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+                inCompiler->printMessage (GALGAS_string ("\x1B""[1D\x1B""[K")  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 100)) ;
+                GALGAS_uint var_remainingChars_2766 = outArgument_command.getter_length (SOURCE_FILE ("gtl_debugger_input.galgas", 101)).substract_operation (var_cursorPos_917, inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 101)) ;
+                const enumGalgasBool test_16 = GALGAS_bool (kIsStrictSup, var_remainingChars_2766.objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
                 if (kBoolTrue == test_16) {
-                  inCompiler->printMessage (outArgument_command.getter_rightSubString (var_remainingChars_3191 COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 123))  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 123)) ;
-                  inCompiler->printMessage (GALGAS_string ("\x1B""[").add_operation (var_remainingChars_3191.getter_string (SOURCE_FILE ("gtl_debugger_input.galgas", 124)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 124)).add_operation (GALGAS_string ("D"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 124))  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 124)) ;
+                  inCompiler->printMessage (outArgument_command.getter_rightSubString (var_remainingChars_2766 COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 103))  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 103)) ;
+                  inCompiler->printMessage (GALGAS_string ("\x1B""[").add_operation (var_remainingChars_2766.getter_string (SOURCE_FILE ("gtl_debugger_input.galgas", 104)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 104)).add_operation (GALGAS_string ("D"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 104))  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 104)) ;
                 }
               }
-              inCompiler->printMessage (var_inputChar_1320.getter_string (SOURCE_FILE ("gtl_debugger_input.galgas", 127))  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 127)) ;
+              inCompiler->printMessage (var_inputChar_892.getter_string (SOURCE_FILE ("gtl_debugger_input.galgas", 107))  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 107)) ;
             }else if (kBoolFalse == test_14) {
-              const enumGalgasBool test_17 = GALGAS_bool (kIsEqual, var_inputChar_1320.getter_uint (SOURCE_FILE ("gtl_debugger_input.galgas", 128)).objectCompare (GALGAS_uint ((uint32_t) 27U))).boolEnum () ;
+              const enumGalgasBool test_17 = GALGAS_bool (kIsEqual, var_inputChar_892.getter_uint (SOURCE_FILE ("gtl_debugger_input.galgas", 108)).objectCompare (GALGAS_uint ((uint32_t) 27U))).boolEnum () ;
               if (kBoolTrue == test_17) {
-                var_escapeState_1369 = GALGAS_uint ((uint32_t) 1U) ;
+                var_escapeState_941 = GALGAS_uint ((uint32_t) 1U) ;
               }else if (kBoolFalse == test_17) {
-                const enumGalgasBool test_18 = GALGAS_bool (kIsNotEqual, var_inputChar_1320.objectCompare (GALGAS_char (TO_UNICODE (0)))).boolEnum () ;
+                const enumGalgasBool test_18 = GALGAS_bool (kIsNotEqual, var_inputChar_892.objectCompare (GALGAS_char (TO_UNICODE (0)))).boolEnum () ;
                 if (kBoolTrue == test_18) {
-                  const enumGalgasBool test_19 = GALGAS_bool (kIsEqual, var_cursorPos_1345.objectCompare (outArgument_command.getter_length (SOURCE_FILE ("gtl_debugger_input.galgas", 132)))).boolEnum () ;
+                  const enumGalgasBool test_19 = GALGAS_bool (kIsEqual, var_cursorPos_917.objectCompare (outArgument_command.getter_length (SOURCE_FILE ("gtl_debugger_input.galgas", 112)))).boolEnum () ;
                   if (kBoolTrue == test_19) {
-                    outArgument_command = outArgument_command.add_operation (var_inputChar_1320.getter_string (SOURCE_FILE ("gtl_debugger_input.galgas", 133)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 133)) ;
-                    inCompiler->printMessage (var_inputChar_1320.getter_string (SOURCE_FILE ("gtl_debugger_input.galgas", 134))  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 134)) ;
-                    var_cursorPos_1345.increment_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 135)) ;
+                    outArgument_command = outArgument_command.add_operation (var_inputChar_892.getter_string (SOURCE_FILE ("gtl_debugger_input.galgas", 113)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 113)) ;
+                    inCompiler->printMessage (var_inputChar_892.getter_string (SOURCE_FILE ("gtl_debugger_input.galgas", 114))  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 114)) ;
+                    var_cursorPos_917.increment_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 115)) ;
                   }else if (kBoolFalse == test_19) {
                     {
-                    extensionSetter_insertCharacterAtIndex (outArgument_command, var_inputChar_1320, var_cursorPos_1345, inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 137)) ;
+                    outArgument_command.setter_insertCharacterAtIndex (var_inputChar_892, var_cursorPos_917, inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 117)) ;
                     }
-                    inCompiler->printMessage (var_inputChar_1320.getter_string (SOURCE_FILE ("gtl_debugger_input.galgas", 138))  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 138)) ;
-                    var_cursorPos_1345.increment_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 139)) ;
-                    GALGAS_uint var_remainingChars_3871 = outArgument_command.getter_length (SOURCE_FILE ("gtl_debugger_input.galgas", 140)).substract_operation (var_cursorPos_1345, inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 140)) ;
-                    const enumGalgasBool test_20 = GALGAS_bool (kIsStrictSup, var_remainingChars_3871.objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+                    inCompiler->printMessage (var_inputChar_892.getter_string (SOURCE_FILE ("gtl_debugger_input.galgas", 118))  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 118)) ;
+                    var_cursorPos_917.increment_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 119)) ;
+                    GALGAS_uint var_remainingChars_3446 = outArgument_command.getter_length (SOURCE_FILE ("gtl_debugger_input.galgas", 120)).substract_operation (var_cursorPos_917, inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 120)) ;
+                    const enumGalgasBool test_20 = GALGAS_bool (kIsStrictSup, var_remainingChars_3446.objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
                     if (kBoolTrue == test_20) {
-                      inCompiler->printMessage (outArgument_command.getter_rightSubString (var_remainingChars_3871 COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 142))  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 142)) ;
-                      inCompiler->printMessage (GALGAS_string ("\x1B""[").add_operation (var_remainingChars_3871.getter_string (SOURCE_FILE ("gtl_debugger_input.galgas", 143)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 143)).add_operation (GALGAS_string ("D"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 143))  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 143)) ;
+                      inCompiler->printMessage (outArgument_command.getter_rightSubString (var_remainingChars_3446 COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 122))  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 122)) ;
+                      inCompiler->printMessage (GALGAS_string ("\x1B""[").add_operation (var_remainingChars_3446.getter_string (SOURCE_FILE ("gtl_debugger_input.galgas", 123)), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 123)).add_operation (GALGAS_string ("D"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 123))  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 123)) ;
                     }
                   }
                 }
@@ -3656,11 +3614,11 @@ static void extensionSetter_debugCommandInput_getCommand (cPtr_debugCommandInput
       }
     }
   }
-  inCompiler->printMessage (GALGAS_string ("\n")  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 163)) ;
-  const enumGalgasBool test_21 = GALGAS_bool (kIsNotEqual, outArgument_command.getter_stringByTrimmingWhiteSpaces (SOURCE_FILE ("gtl_debugger_input.galgas", 164)).objectCompare (GALGAS_string ("hist"))).boolEnum () ;
+  inCompiler->printMessage (GALGAS_string ("\n")  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 143)) ;
+  const enumGalgasBool test_21 = GALGAS_bool (kIsNotEqual, outArgument_command.getter_stringByTrimmingWhiteSpaces (SOURCE_FILE ("gtl_debugger_input.galgas", 144)).objectCompare (GALGAS_string ("hist"))).boolEnum () ;
   if (kBoolTrue == test_21) {
     {
-    object->mAttribute_history.setter_insertAtIndex (outArgument_command, GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 165)) ;
+    object->mAttribute_history.setter_insertAtIndex (outArgument_command, GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 145)) ;
     }
   }
 }
@@ -3735,18 +3693,18 @@ static void extensionMethod_debugCommandInput_listHistory (const cPtr_debugComma
                                                            COMMA_UNUSED_LOCATION_ARGS) {
   const cPtr_debugCommandInput * object = inObject ;
   macroValidSharedObject (object, cPtr_debugCommandInput) ;
-  const enumGalgasBool test_0 = GALGAS_bool (kIsStrictSup, object->mAttribute_history.getter_length (SOURCE_FILE ("gtl_debugger_input.galgas", 171)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
+  const enumGalgasBool test_0 = GALGAS_bool (kIsStrictSup, object->mAttribute_history.getter_length (SOURCE_FILE ("gtl_debugger_input.galgas", 151)).objectCompare (GALGAS_uint ((uint32_t) 0U))).boolEnum () ;
   if (kBoolTrue == test_0) {
-    inCompiler->printMessage (GALGAS_string ("Command history:\n")  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 172)) ;
-    cEnumerator_stringlist enumerator_4757 (object->mAttribute_history, kEnumeration_up) ;
-    GALGAS_uint index_4739 ((uint32_t) 0) ;
-    while (enumerator_4757.hasCurrentObject ()) {
-      inCompiler->printMessage (index_4739.getter_string (SOURCE_FILE ("gtl_debugger_input.galgas", 174)).getter_stringByLeftPadding (GALGAS_uint ((uint32_t) 4U), GALGAS_char (TO_UNICODE (32)) COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 174)).add_operation (GALGAS_string (": "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 174)).add_operation (enumerator_4757.current_mValue (HERE), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 174)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 174))  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 174)) ;
-      enumerator_4757.gotoNextObject () ;
-      index_4739.increment_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 173)) ;
+    inCompiler->printMessage (GALGAS_string ("Command history:\n")  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 152)) ;
+    cEnumerator_stringlist enumerator_4332 (object->mAttribute_history, kEnumeration_up) ;
+    GALGAS_uint index_4314 ((uint32_t) 0) ;
+    while (enumerator_4332.hasCurrentObject ()) {
+      inCompiler->printMessage (index_4314.getter_string (SOURCE_FILE ("gtl_debugger_input.galgas", 154)).getter_stringByLeftPadding (GALGAS_uint ((uint32_t) 4U), GALGAS_char (TO_UNICODE (32)) COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 154)).add_operation (GALGAS_string (": "), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 154)).add_operation (enumerator_4332.current_mValue (HERE), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 154)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 154))  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 154)) ;
+      enumerator_4332.gotoNextObject () ;
+      index_4314.increment_operation (inCompiler  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 153)) ;
     }
   }else if (kBoolFalse == test_0) {
-    inCompiler->printMessage (GALGAS_string ("Command history empty.\n")  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 177)) ;
+    inCompiler->printMessage (GALGAS_string ("Command history empty.\n")  COMMA_SOURCE_FILE ("gtl_debugger_input.galgas", 157)) ;
   }
 }
 //---------------------------------------------------------------------------------------------------------------------*

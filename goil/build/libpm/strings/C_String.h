@@ -160,6 +160,7 @@ class C_String : public AC_OutputStream {
 //--- Get a representation that contains only letters, digits or '_', so that it is a valid C identifier
   public : C_String identifierRepresentation (void) const ; // Preserves ASCII letters
   public : C_String nameRepresentation (void) const ; // Preserves ASCII letters, digits and '_'
+  public : C_String fileNameRepresentation (void) const ; // Preserves ASCII lowercase letters, digits and '_'
   public : C_String assemblerRepresentation (void) const ; // Preserves ASCII letters, digits, '_', '.' and '$'
   public : C_String decodedStringFromRepresentation (bool & outOk) const ; // Reverses the above representations
 

@@ -1339,7 +1339,7 @@ void enterExtensionGetter_applicationWithDefaults (const int32_t inClassIndex,
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_applicationDefinition callExtensionGetter_applicationWithDefaults (const cPtr_applicationDefinition * inObject,
-                                                                          const GALGAS_implementation & in_imp,
+                                                                          const GALGAS_implementation in_imp,
                                                                           C_Compiler * inCompiler
                                                                           COMMA_LOCATION_ARGS) {
   GALGAS_applicationDefinition result ;
@@ -1374,7 +1374,7 @@ GALGAS_applicationDefinition callExtensionGetter_applicationWithDefaults (const 
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_applicationDefinition extensionGetter_applicationDefinition_applicationWithDefaults (const cPtr_applicationDefinition * inObject,
-                                                                                                   const GALGAS_implementation & /* constinArgument_imp */,
+                                                                                                   const GALGAS_implementation /* constinArgument_imp */,
                                                                                                    C_Compiler * /* inCompiler */
                                                                                                    COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_applicationDefinition result_result ; // Returned variable

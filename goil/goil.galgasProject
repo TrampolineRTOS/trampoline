@@ -24,6 +24,7 @@
 #
 #---------------------------------------------------------------------------*
 
+# 3.0.7    Updated to GTL 3.0.7. Updated to GALGAS 3.2.7
 # 3.0.6    Updated to GTL 3.0.6. Debugger with command files and load command
 # 3.0.5    Updated to GTL 3.0.5. Debugger with history and line editing
 # 3.0.4    Updated to GTL 3.0.4. Debugger usable
@@ -45,7 +46,7 @@
 #          string
 # 2.1.20   Added -o and -r options to goil
 
-project (3:0:6) -> "goil" {
+project (3:0:7) -> "goil" {
 
   %makefile-macosx
   %makefile-unix

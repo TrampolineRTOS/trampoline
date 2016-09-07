@@ -2010,7 +2010,7 @@ void enterExtensionGetter_hasKey (const int32_t inClassIndex,
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_bool callExtensionGetter_hasKey (const cPtr_implementation * inObject,
-                                        const GALGAS_string & in_key,
+                                        const GALGAS_string in_key,
                                         C_Compiler * inCompiler
                                         COMMA_LOCATION_ARGS) {
   GALGAS_bool result ;
@@ -2045,7 +2045,7 @@ GALGAS_bool callExtensionGetter_hasKey (const cPtr_implementation * inObject,
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_bool extensionGetter_implementation_hasKey (const cPtr_implementation * inObject,
-                                                          const GALGAS_string & constinArgument_key,
+                                                          const GALGAS_string constinArgument_key,
                                                           C_Compiler * /* inCompiler */
                                                           COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_bool result_result ; // Returned variable
@@ -2093,7 +2093,7 @@ void enterExtensionGetter_hasLKey (const int32_t inClassIndex,
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_bool callExtensionGetter_hasLKey (const cPtr_implementation * inObject,
-                                         const GALGAS_lstring & in_key,
+                                         const GALGAS_lstring in_key,
                                          C_Compiler * inCompiler
                                          COMMA_LOCATION_ARGS) {
   GALGAS_bool result ;
@@ -2128,7 +2128,7 @@ GALGAS_bool callExtensionGetter_hasLKey (const cPtr_implementation * inObject,
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_bool extensionGetter_implementation_hasLKey (const cPtr_implementation * inObject,
-                                                           const GALGAS_lstring & constinArgument_key,
+                                                           const GALGAS_lstring constinArgument_key,
                                                            C_Compiler * /* inCompiler */
                                                            COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_bool result_result ; // Returned variable
@@ -2176,7 +2176,7 @@ void enterExtensionGetter_impObject (const int32_t inClassIndex,
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_implementationObject callExtensionGetter_impObject (const cPtr_implementation * inObject,
-                                                           const GALGAS_string & in_objKind,
+                                                           const GALGAS_string in_objKind,
                                                            C_Compiler * inCompiler
                                                            COMMA_LOCATION_ARGS) {
   GALGAS_implementationObject result ;
@@ -2211,7 +2211,7 @@ GALGAS_implementationObject callExtensionGetter_impObject (const cPtr_implementa
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_implementationObject extensionGetter_implementation_impObject (const cPtr_implementation * inObject,
-                                                                             const GALGAS_string & constinArgument_objKind,
+                                                                             const GALGAS_string constinArgument_objKind,
                                                                              C_Compiler * inCompiler
                                                                              COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_implementationObject result_obj ; // Returned variable

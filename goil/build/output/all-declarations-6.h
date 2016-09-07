@@ -89,7 +89,7 @@ void callExtensionSetter_popFirstInputArg (class cPtr_gtlContext * inObject,
 //---------------------------------------------------------------------------------------------------------------------*
 
 typedef class GALGAS_lstring (*enterExtensionGetter_gtlContext_fullPrefix) (const class cPtr_gtlContext * inObject,
-                                                                            const class GALGAS_gtlData & constinArgument0,
+                                                                            const class GALGAS_gtlData constinArgument0,
                                                                             C_Compiler * inCompiler
                                                                             COMMA_LOCATION_ARGS) ;
 
@@ -101,7 +101,7 @@ void enterExtensionGetter_fullPrefix (const int32_t inClassIndex,
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_lstring callExtensionGetter_fullPrefix (const cPtr_gtlContext * inObject,
-                                                     const GALGAS_gtlData & constin_vars,
+                                                     const GALGAS_gtlData constin_vars,
                                                      class C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) ;
 

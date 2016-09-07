@@ -3690,9 +3690,9 @@ C_PrologueEpilogue gGetter_gtlVarItemField_location (defineExtensionGetter_gtlVa
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_string extensionGetter_gtlVarItemField_stringPath (const cPtr_gtlVarItem * inObject,
-                                                                 const GALGAS_gtlContext & /* constinArgument_exeContext */,
-                                                                 const GALGAS_gtlData & /* constinArgument_vars */,
-                                                                 const GALGAS_library & /* constinArgument_lib */,
+                                                                 const GALGAS_gtlContext /* constinArgument_exeContext */,
+                                                                 const GALGAS_gtlData /* constinArgument_vars */,
+                                                                 const GALGAS_library /* constinArgument_lib */,
                                                                  C_Compiler * /* inCompiler */
                                                                  COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_string result_result ; // Returned variable
@@ -3770,11 +3770,11 @@ C_PrologueEpilogue gMethod_gtlVarItemField_setInContext (defineExtensionMethod_g
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlVarItemField_getInContext (const cPtr_gtlVarItem * inObject,
-                                                                    const GALGAS_gtlContext & constinArgument_exeContext,
-                                                                    const GALGAS_gtlData & constinArgument_context,
-                                                                    const GALGAS_gtlData & constinArgument_vars,
-                                                                    const GALGAS_library & constinArgument_lib,
-                                                                    const GALGAS_gtlVarPath & constinArgument_path,
+                                                                    const GALGAS_gtlContext constinArgument_exeContext,
+                                                                    const GALGAS_gtlData constinArgument_context,
+                                                                    const GALGAS_gtlData constinArgument_vars,
+                                                                    const GALGAS_library constinArgument_lib,
+                                                                    const GALGAS_gtlVarPath constinArgument_path,
                                                                     C_Compiler * inCompiler
                                                                     COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -3811,11 +3811,11 @@ C_PrologueEpilogue gGetter_gtlVarItemField_getInContext (defineExtensionGetter_g
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_bool extensionGetter_gtlVarItemField_existsInContext (const cPtr_gtlVarItem * inObject,
-                                                                    const GALGAS_gtlContext & constinArgument_exeContext,
-                                                                    const GALGAS_gtlData & constinArgument_context,
-                                                                    const GALGAS_gtlData & constinArgument_vars,
-                                                                    const GALGAS_library & constinArgument_lib,
-                                                                    const GALGAS_gtlVarPath & constinArgument_path,
+                                                                    const GALGAS_gtlContext constinArgument_exeContext,
+                                                                    const GALGAS_gtlData constinArgument_context,
+                                                                    const GALGAS_gtlData constinArgument_vars,
+                                                                    const GALGAS_library constinArgument_lib,
+                                                                    const GALGAS_gtlVarPath constinArgument_path,
                                                                     C_Compiler * inCompiler
                                                                     COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_bool result_result ; // Returned variable
@@ -3906,9 +3906,9 @@ C_PrologueEpilogue gMethod_gtlVarItemField_deleteInContext (defineExtensionMetho
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_string extensionGetter_gtlVarItemCollection_stringPath (const cPtr_gtlVarItem * inObject,
-                                                                      const GALGAS_gtlContext & constinArgument_exeContext,
-                                                                      const GALGAS_gtlData & constinArgument_vars,
-                                                                      const GALGAS_library & constinArgument_lib,
+                                                                      const GALGAS_gtlContext constinArgument_exeContext,
+                                                                      const GALGAS_gtlData constinArgument_vars,
+                                                                      const GALGAS_library constinArgument_lib,
                                                                       C_Compiler * inCompiler
                                                                       COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_string result_result ; // Returned variable
@@ -4041,11 +4041,11 @@ C_PrologueEpilogue gMethod_gtlVarItemCollection_setInContext (defineExtensionMet
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlVarItemCollection_getInContext (const cPtr_gtlVarItem * inObject,
-                                                                         const GALGAS_gtlContext & constinArgument_exeContext,
-                                                                         const GALGAS_gtlData & constinArgument_context,
-                                                                         const GALGAS_gtlData & constinArgument_vars,
-                                                                         const GALGAS_library & constinArgument_lib,
-                                                                         const GALGAS_gtlVarPath & constinArgument_path,
+                                                                         const GALGAS_gtlContext constinArgument_exeContext,
+                                                                         const GALGAS_gtlData constinArgument_context,
+                                                                         const GALGAS_gtlData constinArgument_vars,
+                                                                         const GALGAS_library constinArgument_lib,
+                                                                         const GALGAS_gtlVarPath constinArgument_path,
                                                                          C_Compiler * inCompiler
                                                                          COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -4103,11 +4103,11 @@ C_PrologueEpilogue gGetter_gtlVarItemCollection_getInContext (defineExtensionGet
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_bool extensionGetter_gtlVarItemCollection_existsInContext (const cPtr_gtlVarItem * inObject,
-                                                                         const GALGAS_gtlContext & constinArgument_exeContext,
-                                                                         const GALGAS_gtlData & constinArgument_context,
-                                                                         const GALGAS_gtlData & constinArgument_vars,
-                                                                         const GALGAS_library & constinArgument_lib,
-                                                                         const GALGAS_gtlVarPath & constinArgument_path,
+                                                                         const GALGAS_gtlContext constinArgument_exeContext,
+                                                                         const GALGAS_gtlData constinArgument_context,
+                                                                         const GALGAS_gtlData constinArgument_vars,
+                                                                         const GALGAS_library constinArgument_lib,
+                                                                         const GALGAS_gtlVarPath constinArgument_path,
                                                                          C_Compiler * inCompiler
                                                                          COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_bool result_result ; // Returned variable
@@ -4308,9 +4308,9 @@ C_PrologueEpilogue gGetter_gtlVarItemSubCollection_location (defineExtensionGett
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_string extensionGetter_gtlVarItemSubCollection_stringPath (const cPtr_gtlVarItem * inObject,
-                                                                         const GALGAS_gtlContext & constinArgument_exeContext,
-                                                                         const GALGAS_gtlData & constinArgument_vars,
-                                                                         const GALGAS_library & constinArgument_lib,
+                                                                         const GALGAS_gtlContext constinArgument_exeContext,
+                                                                         const GALGAS_gtlData constinArgument_vars,
+                                                                         const GALGAS_library constinArgument_lib,
                                                                          C_Compiler * inCompiler
                                                                          COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_string result_result ; // Returned variable
@@ -4427,11 +4427,11 @@ C_PrologueEpilogue gMethod_gtlVarItemSubCollection_setInContext (defineExtension
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlVarItemSubCollection_getInContext (const cPtr_gtlVarItem * inObject,
-                                                                            const GALGAS_gtlContext & constinArgument_exeContext,
-                                                                            const GALGAS_gtlData & constinArgument_context,
-                                                                            const GALGAS_gtlData & constinArgument_vars,
-                                                                            const GALGAS_library & constinArgument_lib,
-                                                                            const GALGAS_gtlVarPath & constinArgument_path,
+                                                                            const GALGAS_gtlContext constinArgument_exeContext,
+                                                                            const GALGAS_gtlData constinArgument_context,
+                                                                            const GALGAS_gtlData constinArgument_vars,
+                                                                            const GALGAS_library constinArgument_lib,
+                                                                            const GALGAS_gtlVarPath constinArgument_path,
                                                                             C_Compiler * inCompiler
                                                                             COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -4487,11 +4487,11 @@ C_PrologueEpilogue gGetter_gtlVarItemSubCollection_getInContext (defineExtension
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_bool extensionGetter_gtlVarItemSubCollection_existsInContext (const cPtr_gtlVarItem * inObject,
-                                                                            const GALGAS_gtlContext & constinArgument_exeContext,
-                                                                            const GALGAS_gtlData & constinArgument_context,
-                                                                            const GALGAS_gtlData & constinArgument_vars,
-                                                                            const GALGAS_library & constinArgument_lib,
-                                                                            const GALGAS_gtlVarPath & constinArgument_path,
+                                                                            const GALGAS_gtlContext constinArgument_exeContext,
+                                                                            const GALGAS_gtlData constinArgument_context,
+                                                                            const GALGAS_gtlData constinArgument_vars,
+                                                                            const GALGAS_library constinArgument_lib,
+                                                                            const GALGAS_gtlVarPath constinArgument_path,
                                                                             C_Compiler * inCompiler
                                                                             COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_bool result_result ; // Returned variable
@@ -4636,9 +4636,9 @@ C_PrologueEpilogue gMethod_gtlVarItemSubCollection_deleteInContext (defineExtens
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlTerminal_eval (const cPtr_gtlExpression * inObject,
-                                                        const GALGAS_gtlContext & /* constinArgument_context */,
-                                                        const GALGAS_gtlData & /* constinArgument_vars */,
-                                                        const GALGAS_library & /* constinArgument_lib */,
+                                                        const GALGAS_gtlContext /* constinArgument_context */,
+                                                        const GALGAS_gtlData /* constinArgument_vars */,
+                                                        const GALGAS_library /* constinArgument_lib */,
                                                         C_Compiler * /* inCompiler */
                                                         COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -4668,9 +4668,9 @@ C_PrologueEpilogue gGetter_gtlTerminal_eval (defineExtensionGetter_gtlTerminal_e
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlVarRef_eval (const cPtr_gtlExpression * inObject,
-                                                      const GALGAS_gtlContext & constinArgument_context,
-                                                      const GALGAS_gtlData & constinArgument_vars,
-                                                      const GALGAS_library & constinArgument_lib,
+                                                      const GALGAS_gtlContext constinArgument_context,
+                                                      const GALGAS_gtlData constinArgument_vars,
+                                                      const GALGAS_library constinArgument_lib,
                                                       C_Compiler * inCompiler
                                                       COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -4703,9 +4703,9 @@ C_PrologueEpilogue gGetter_gtlVarRef_eval (defineExtensionGetter_gtlVarRef_eval,
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlParenthesizedExpression_eval (const cPtr_gtlExpression * inObject,
-                                                                       const GALGAS_gtlContext & constinArgument_context,
-                                                                       const GALGAS_gtlData & constinArgument_vars,
-                                                                       const GALGAS_library & constinArgument_lib,
+                                                                       const GALGAS_gtlContext constinArgument_context,
+                                                                       const GALGAS_gtlData constinArgument_vars,
+                                                                       const GALGAS_library constinArgument_lib,
                                                                        C_Compiler * inCompiler
                                                                        COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -4738,9 +4738,9 @@ C_PrologueEpilogue gGetter_gtlParenthesizedExpression_eval (defineExtensionGette
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlMinusExpression_eval (const cPtr_gtlExpression * inObject,
-                                                               const GALGAS_gtlContext & constinArgument_context,
-                                                               const GALGAS_gtlData & constinArgument_vars,
-                                                               const GALGAS_library & constinArgument_lib,
+                                                               const GALGAS_gtlContext constinArgument_context,
+                                                               const GALGAS_gtlData constinArgument_vars,
+                                                               const GALGAS_library constinArgument_lib,
                                                                C_Compiler * inCompiler
                                                                COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -4770,9 +4770,9 @@ C_PrologueEpilogue gGetter_gtlMinusExpression_eval (defineExtensionGetter_gtlMin
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlPlusExpression_eval (const cPtr_gtlExpression * inObject,
-                                                              const GALGAS_gtlContext & constinArgument_context,
-                                                              const GALGAS_gtlData & constinArgument_vars,
-                                                              const GALGAS_library & constinArgument_lib,
+                                                              const GALGAS_gtlContext constinArgument_context,
+                                                              const GALGAS_gtlData constinArgument_vars,
+                                                              const GALGAS_library constinArgument_lib,
                                                               C_Compiler * inCompiler
                                                               COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -4802,9 +4802,9 @@ C_PrologueEpilogue gGetter_gtlPlusExpression_eval (defineExtensionGetter_gtlPlus
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlNotExpression_eval (const cPtr_gtlExpression * inObject,
-                                                             const GALGAS_gtlContext & constinArgument_context,
-                                                             const GALGAS_gtlData & constinArgument_vars,
-                                                             const GALGAS_library & constinArgument_lib,
+                                                             const GALGAS_gtlContext constinArgument_context,
+                                                             const GALGAS_gtlData constinArgument_vars,
+                                                             const GALGAS_library constinArgument_lib,
                                                              C_Compiler * inCompiler
                                                              COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -4834,9 +4834,9 @@ C_PrologueEpilogue gGetter_gtlNotExpression_eval (defineExtensionGetter_gtlNotEx
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlAddExpression_eval (const cPtr_gtlExpression * inObject,
-                                                             const GALGAS_gtlContext & constinArgument_context,
-                                                             const GALGAS_gtlData & constinArgument_vars,
-                                                             const GALGAS_library & constinArgument_lib,
+                                                             const GALGAS_gtlContext constinArgument_context,
+                                                             const GALGAS_gtlData constinArgument_vars,
+                                                             const GALGAS_library constinArgument_lib,
                                                              C_Compiler * inCompiler
                                                              COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -4866,9 +4866,9 @@ C_PrologueEpilogue gGetter_gtlAddExpression_eval (defineExtensionGetter_gtlAddEx
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlSubstractExpression_eval (const cPtr_gtlExpression * inObject,
-                                                                   const GALGAS_gtlContext & constinArgument_context,
-                                                                   const GALGAS_gtlData & constinArgument_vars,
-                                                                   const GALGAS_library & constinArgument_lib,
+                                                                   const GALGAS_gtlContext constinArgument_context,
+                                                                   const GALGAS_gtlData constinArgument_vars,
+                                                                   const GALGAS_library constinArgument_lib,
                                                                    C_Compiler * inCompiler
                                                                    COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -4898,9 +4898,9 @@ C_PrologueEpilogue gGetter_gtlSubstractExpression_eval (defineExtensionGetter_gt
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlMultiplyExpression_eval (const cPtr_gtlExpression * inObject,
-                                                                  const GALGAS_gtlContext & constinArgument_context,
-                                                                  const GALGAS_gtlData & constinArgument_vars,
-                                                                  const GALGAS_library & constinArgument_lib,
+                                                                  const GALGAS_gtlContext constinArgument_context,
+                                                                  const GALGAS_gtlData constinArgument_vars,
+                                                                  const GALGAS_library constinArgument_lib,
                                                                   C_Compiler * inCompiler
                                                                   COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -4930,9 +4930,9 @@ C_PrologueEpilogue gGetter_gtlMultiplyExpression_eval (defineExtensionGetter_gtl
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlDivideExpression_eval (const cPtr_gtlExpression * inObject,
-                                                                const GALGAS_gtlContext & constinArgument_context,
-                                                                const GALGAS_gtlData & constinArgument_vars,
-                                                                const GALGAS_library & constinArgument_lib,
+                                                                const GALGAS_gtlContext constinArgument_context,
+                                                                const GALGAS_gtlData constinArgument_vars,
+                                                                const GALGAS_library constinArgument_lib,
                                                                 C_Compiler * inCompiler
                                                                 COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -4962,9 +4962,9 @@ C_PrologueEpilogue gGetter_gtlDivideExpression_eval (defineExtensionGetter_gtlDi
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlModulusExpression_eval (const cPtr_gtlExpression * inObject,
-                                                                 const GALGAS_gtlContext & constinArgument_context,
-                                                                 const GALGAS_gtlData & constinArgument_vars,
-                                                                 const GALGAS_library & constinArgument_lib,
+                                                                 const GALGAS_gtlContext constinArgument_context,
+                                                                 const GALGAS_gtlData constinArgument_vars,
+                                                                 const GALGAS_library constinArgument_lib,
                                                                  C_Compiler * inCompiler
                                                                  COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -4994,9 +4994,9 @@ C_PrologueEpilogue gGetter_gtlModulusExpression_eval (defineExtensionGetter_gtlM
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlAndExpression_eval (const cPtr_gtlExpression * inObject,
-                                                             const GALGAS_gtlContext & constinArgument_context,
-                                                             const GALGAS_gtlData & constinArgument_vars,
-                                                             const GALGAS_library & constinArgument_lib,
+                                                             const GALGAS_gtlContext constinArgument_context,
+                                                             const GALGAS_gtlData constinArgument_vars,
+                                                             const GALGAS_library constinArgument_lib,
                                                              C_Compiler * inCompiler
                                                              COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -5026,9 +5026,9 @@ C_PrologueEpilogue gGetter_gtlAndExpression_eval (defineExtensionGetter_gtlAndEx
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlOrExpression_eval (const cPtr_gtlExpression * inObject,
-                                                            const GALGAS_gtlContext & constinArgument_context,
-                                                            const GALGAS_gtlData & constinArgument_vars,
-                                                            const GALGAS_library & constinArgument_lib,
+                                                            const GALGAS_gtlContext constinArgument_context,
+                                                            const GALGAS_gtlData constinArgument_vars,
+                                                            const GALGAS_library constinArgument_lib,
                                                             C_Compiler * inCompiler
                                                             COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -5058,9 +5058,9 @@ C_PrologueEpilogue gGetter_gtlOrExpression_eval (defineExtensionGetter_gtlOrExpr
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlXorExpression_eval (const cPtr_gtlExpression * inObject,
-                                                             const GALGAS_gtlContext & constinArgument_context,
-                                                             const GALGAS_gtlData & constinArgument_vars,
-                                                             const GALGAS_library & constinArgument_lib,
+                                                             const GALGAS_gtlContext constinArgument_context,
+                                                             const GALGAS_gtlData constinArgument_vars,
+                                                             const GALGAS_library constinArgument_lib,
                                                              C_Compiler * inCompiler
                                                              COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -5090,9 +5090,9 @@ C_PrologueEpilogue gGetter_gtlXorExpression_eval (defineExtensionGetter_gtlXorEx
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlShiftLeftExpression_eval (const cPtr_gtlExpression * inObject,
-                                                                   const GALGAS_gtlContext & constinArgument_context,
-                                                                   const GALGAS_gtlData & constinArgument_vars,
-                                                                   const GALGAS_library & constinArgument_lib,
+                                                                   const GALGAS_gtlContext constinArgument_context,
+                                                                   const GALGAS_gtlData constinArgument_vars,
+                                                                   const GALGAS_library constinArgument_lib,
                                                                    C_Compiler * inCompiler
                                                                    COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -5122,9 +5122,9 @@ C_PrologueEpilogue gGetter_gtlShiftLeftExpression_eval (defineExtensionGetter_gt
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlShiftRightExpression_eval (const cPtr_gtlExpression * inObject,
-                                                                    const GALGAS_gtlContext & constinArgument_context,
-                                                                    const GALGAS_gtlData & constinArgument_vars,
-                                                                    const GALGAS_library & constinArgument_lib,
+                                                                    const GALGAS_gtlContext constinArgument_context,
+                                                                    const GALGAS_gtlData constinArgument_vars,
+                                                                    const GALGAS_library constinArgument_lib,
                                                                     C_Compiler * inCompiler
                                                                     COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -5154,9 +5154,9 @@ C_PrologueEpilogue gGetter_gtlShiftRightExpression_eval (defineExtensionGetter_g
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlNotEqualExpression_eval (const cPtr_gtlExpression * inObject,
-                                                                  const GALGAS_gtlContext & constinArgument_context,
-                                                                  const GALGAS_gtlData & constinArgument_vars,
-                                                                  const GALGAS_library & constinArgument_lib,
+                                                                  const GALGAS_gtlContext constinArgument_context,
+                                                                  const GALGAS_gtlData constinArgument_vars,
+                                                                  const GALGAS_library constinArgument_lib,
                                                                   C_Compiler * inCompiler
                                                                   COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -5186,9 +5186,9 @@ C_PrologueEpilogue gGetter_gtlNotEqualExpression_eval (defineExtensionGetter_gtl
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlEqualExpression_eval (const cPtr_gtlExpression * inObject,
-                                                               const GALGAS_gtlContext & constinArgument_context,
-                                                               const GALGAS_gtlData & constinArgument_vars,
-                                                               const GALGAS_library & constinArgument_lib,
+                                                               const GALGAS_gtlContext constinArgument_context,
+                                                               const GALGAS_gtlData constinArgument_vars,
+                                                               const GALGAS_library constinArgument_lib,
                                                                C_Compiler * inCompiler
                                                                COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -5218,9 +5218,9 @@ C_PrologueEpilogue gGetter_gtlEqualExpression_eval (defineExtensionGetter_gtlEqu
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlLowerThanExpression_eval (const cPtr_gtlExpression * inObject,
-                                                                   const GALGAS_gtlContext & constinArgument_context,
-                                                                   const GALGAS_gtlData & constinArgument_vars,
-                                                                   const GALGAS_library & constinArgument_lib,
+                                                                   const GALGAS_gtlContext constinArgument_context,
+                                                                   const GALGAS_gtlData constinArgument_vars,
+                                                                   const GALGAS_library constinArgument_lib,
                                                                    C_Compiler * inCompiler
                                                                    COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -5250,9 +5250,9 @@ C_PrologueEpilogue gGetter_gtlLowerThanExpression_eval (defineExtensionGetter_gt
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlLowerOrEqualExpression_eval (const cPtr_gtlExpression * inObject,
-                                                                      const GALGAS_gtlContext & constinArgument_context,
-                                                                      const GALGAS_gtlData & constinArgument_vars,
-                                                                      const GALGAS_library & constinArgument_lib,
+                                                                      const GALGAS_gtlContext constinArgument_context,
+                                                                      const GALGAS_gtlData constinArgument_vars,
+                                                                      const GALGAS_library constinArgument_lib,
                                                                       C_Compiler * inCompiler
                                                                       COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -5282,9 +5282,9 @@ C_PrologueEpilogue gGetter_gtlLowerOrEqualExpression_eval (defineExtensionGetter
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlGreaterThanExpression_eval (const cPtr_gtlExpression * inObject,
-                                                                     const GALGAS_gtlContext & constinArgument_context,
-                                                                     const GALGAS_gtlData & constinArgument_vars,
-                                                                     const GALGAS_library & constinArgument_lib,
+                                                                     const GALGAS_gtlContext constinArgument_context,
+                                                                     const GALGAS_gtlData constinArgument_vars,
+                                                                     const GALGAS_library constinArgument_lib,
                                                                      C_Compiler * inCompiler
                                                                      COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -5314,9 +5314,9 @@ C_PrologueEpilogue gGetter_gtlGreaterThanExpression_eval (defineExtensionGetter_
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlGreaterOrEqualExpression_eval (const cPtr_gtlExpression * inObject,
-                                                                        const GALGAS_gtlContext & constinArgument_context,
-                                                                        const GALGAS_gtlData & constinArgument_vars,
-                                                                        const GALGAS_library & constinArgument_lib,
+                                                                        const GALGAS_gtlContext constinArgument_context,
+                                                                        const GALGAS_gtlData constinArgument_vars,
+                                                                        const GALGAS_library constinArgument_lib,
                                                                         C_Compiler * inCompiler
                                                                         COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -5346,9 +5346,9 @@ C_PrologueEpilogue gGetter_gtlGreaterOrEqualExpression_eval (defineExtensionGett
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlGetterCallExpression_eval (const cPtr_gtlExpression * inObject,
-                                                                    const GALGAS_gtlContext & constinArgument_context,
-                                                                    const GALGAS_gtlData & constinArgument_vars,
-                                                                    const GALGAS_library & constinArgument_lib,
+                                                                    const GALGAS_gtlContext constinArgument_context,
+                                                                    const GALGAS_gtlData constinArgument_vars,
+                                                                    const GALGAS_library constinArgument_lib,
                                                                     C_Compiler * inCompiler
                                                                     COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -5487,9 +5487,9 @@ C_galgas_function_descriptor functionDescriptor_validateReturnValue ("validateRe
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlFunctionCallExpression_eval (const cPtr_gtlExpression * inObject,
-                                                                      const GALGAS_gtlContext & constinArgument_context,
-                                                                      const GALGAS_gtlData & constinArgument_vars,
-                                                                      const GALGAS_library & constinArgument_lib,
+                                                                      const GALGAS_gtlContext constinArgument_context,
+                                                                      const GALGAS_gtlData constinArgument_vars,
+                                                                      const GALGAS_library constinArgument_lib,
                                                                       C_Compiler * inCompiler
                                                                       COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -5581,9 +5581,9 @@ C_PrologueEpilogue gGetter_gtlFunctionCallExpression_eval (defineExtensionGetter
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlExistsExpression_eval (const cPtr_gtlExpression * inObject,
-                                                                const GALGAS_gtlContext & constinArgument_context,
-                                                                const GALGAS_gtlData & constinArgument_vars,
-                                                                const GALGAS_library & constinArgument_lib,
+                                                                const GALGAS_gtlContext constinArgument_context,
+                                                                const GALGAS_gtlData constinArgument_vars,
+                                                                const GALGAS_library constinArgument_lib,
                                                                 C_Compiler * inCompiler
                                                                 COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -5613,9 +5613,9 @@ C_PrologueEpilogue gGetter_gtlExistsExpression_eval (defineExtensionGetter_gtlEx
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlExistsDefaultExpression_eval (const cPtr_gtlExpression * inObject,
-                                                                       const GALGAS_gtlContext & constinArgument_context,
-                                                                       const GALGAS_gtlData & constinArgument_vars,
-                                                                       const GALGAS_library & constinArgument_lib,
+                                                                       const GALGAS_gtlContext constinArgument_context,
+                                                                       const GALGAS_gtlData constinArgument_vars,
+                                                                       const GALGAS_library constinArgument_lib,
                                                                        C_Compiler * inCompiler
                                                                        COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -5650,9 +5650,9 @@ C_PrologueEpilogue gGetter_gtlExistsDefaultExpression_eval (defineExtensionGette
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlTypeOfExpression_eval (const cPtr_gtlExpression * inObject,
-                                                                const GALGAS_gtlContext & constinArgument_context,
-                                                                const GALGAS_gtlData & constinArgument_vars,
-                                                                const GALGAS_library & constinArgument_lib,
+                                                                const GALGAS_gtlContext constinArgument_context,
+                                                                const GALGAS_gtlData constinArgument_vars,
+                                                                const GALGAS_library constinArgument_lib,
                                                                 C_Compiler * inCompiler
                                                                 COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -5683,9 +5683,9 @@ C_PrologueEpilogue gGetter_gtlTypeOfExpression_eval (defineExtensionGetter_gtlTy
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlMapOfStructExpression_eval (const cPtr_gtlExpression * inObject,
-                                                                     const GALGAS_gtlContext & constinArgument_context,
-                                                                     const GALGAS_gtlData & constinArgument_vars,
-                                                                     const GALGAS_library & constinArgument_lib,
+                                                                     const GALGAS_gtlContext constinArgument_context,
+                                                                     const GALGAS_gtlData constinArgument_vars,
+                                                                     const GALGAS_library constinArgument_lib,
                                                                      C_Compiler * inCompiler
                                                                      COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -5725,9 +5725,9 @@ C_PrologueEpilogue gGetter_gtlMapOfStructExpression_eval (defineExtensionGetter_
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlMapOfListExpression_eval (const cPtr_gtlExpression * inObject,
-                                                                   const GALGAS_gtlContext & constinArgument_context,
-                                                                   const GALGAS_gtlData & constinArgument_vars,
-                                                                   const GALGAS_library & constinArgument_lib,
+                                                                   const GALGAS_gtlContext constinArgument_context,
+                                                                   const GALGAS_gtlData constinArgument_vars,
+                                                                   const GALGAS_library constinArgument_lib,
                                                                    C_Compiler * inCompiler
                                                                    COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -5793,9 +5793,9 @@ C_PrologueEpilogue gGetter_gtlMapOfListExpression_eval (defineExtensionGetter_gt
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlListOfExpression_eval (const cPtr_gtlExpression * inObject,
-                                                                const GALGAS_gtlContext & constinArgument_context,
-                                                                const GALGAS_gtlData & constinArgument_vars,
-                                                                const GALGAS_library & constinArgument_lib,
+                                                                const GALGAS_gtlContext constinArgument_context,
+                                                                const GALGAS_gtlData constinArgument_vars,
+                                                                const GALGAS_library constinArgument_lib,
                                                                 C_Compiler * inCompiler
                                                                 COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -5841,9 +5841,9 @@ C_PrologueEpilogue gGetter_gtlListOfExpression_eval (defineExtensionGetter_gtlLi
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlLiteralStructExpression_eval (const cPtr_gtlExpression * inObject,
-                                                                       const GALGAS_gtlContext & constinArgument_context,
-                                                                       const GALGAS_gtlData & constinArgument_vars,
-                                                                       const GALGAS_library & constinArgument_lib,
+                                                                       const GALGAS_gtlContext constinArgument_context,
+                                                                       const GALGAS_gtlData constinArgument_vars,
+                                                                       const GALGAS_library constinArgument_lib,
                                                                        C_Compiler * inCompiler
                                                                        COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -5881,9 +5881,9 @@ C_PrologueEpilogue gGetter_gtlLiteralStructExpression_eval (defineExtensionGette
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlLiteralMapExpression_eval (const cPtr_gtlExpression * inObject,
-                                                                    const GALGAS_gtlContext & constinArgument_context,
-                                                                    const GALGAS_gtlData & constinArgument_vars,
-                                                                    const GALGAS_library & constinArgument_lib,
+                                                                    const GALGAS_gtlContext constinArgument_context,
+                                                                    const GALGAS_gtlData constinArgument_vars,
+                                                                    const GALGAS_library constinArgument_lib,
                                                                     C_Compiler * inCompiler
                                                                     COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -5921,9 +5921,9 @@ C_PrologueEpilogue gGetter_gtlLiteralMapExpression_eval (defineExtensionGetter_g
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlLiteralListExpression_eval (const cPtr_gtlExpression * inObject,
-                                                                     const GALGAS_gtlContext & constinArgument_context,
-                                                                     const GALGAS_gtlData & constinArgument_vars,
-                                                                     const GALGAS_library & constinArgument_lib,
+                                                                     const GALGAS_gtlContext constinArgument_context,
+                                                                     const GALGAS_gtlData constinArgument_vars,
+                                                                     const GALGAS_library constinArgument_lib,
                                                                      C_Compiler * inCompiler
                                                                      COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -5959,9 +5959,9 @@ C_PrologueEpilogue gGetter_gtlLiteralListExpression_eval (defineExtensionGetter_
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlLiteralSetExpression_eval (const cPtr_gtlExpression * inObject,
-                                                                    const GALGAS_gtlContext & constinArgument_context,
-                                                                    const GALGAS_gtlData & constinArgument_vars,
-                                                                    const GALGAS_library & constinArgument_lib,
+                                                                    const GALGAS_gtlContext constinArgument_context,
+                                                                    const GALGAS_gtlData constinArgument_vars,
+                                                                    const GALGAS_library constinArgument_lib,
                                                                     C_Compiler * inCompiler
                                                                     COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -6995,7 +6995,7 @@ C_galgas_function_descriptor functionDescriptor_lstring ("lstring",
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_string extensionGetter_gtlUnconstructed_desc (const cPtr_gtlData * /* inObject */,
-                                                            const GALGAS_uint & constinArgument_tab,
+                                                            const GALGAS_uint constinArgument_tab,
                                                             C_Compiler * inCompiler
                                                             COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_string result_result ; // Returned variable
@@ -7271,7 +7271,7 @@ C_PrologueEpilogue gGetter_gtlUnconstructed_notOp (defineExtensionGetter_gtlUnco
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlUnconstructed_addOp (const cPtr_gtlData * inObject,
-                                                              const GALGAS_gtlData & /* constinArgument_right */,
+                                                              const GALGAS_gtlData /* constinArgument_right */,
                                                               C_Compiler * inCompiler
                                                               COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -7303,7 +7303,7 @@ C_PrologueEpilogue gGetter_gtlUnconstructed_addOp (defineExtensionGetter_gtlUnco
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlUnconstructed_subOp (const cPtr_gtlData * inObject,
-                                                              const GALGAS_gtlData & /* constinArgument_right */,
+                                                              const GALGAS_gtlData /* constinArgument_right */,
                                                               C_Compiler * inCompiler
                                                               COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -7335,7 +7335,7 @@ C_PrologueEpilogue gGetter_gtlUnconstructed_subOp (defineExtensionGetter_gtlUnco
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlUnconstructed_mulOp (const cPtr_gtlData * inObject,
-                                                              const GALGAS_gtlData & /* constinArgument_right */,
+                                                              const GALGAS_gtlData /* constinArgument_right */,
                                                               C_Compiler * inCompiler
                                                               COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -7367,7 +7367,7 @@ C_PrologueEpilogue gGetter_gtlUnconstructed_mulOp (defineExtensionGetter_gtlUnco
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlUnconstructed_divOp (const cPtr_gtlData * inObject,
-                                                              const GALGAS_gtlData & /* constinArgument_right */,
+                                                              const GALGAS_gtlData /* constinArgument_right */,
                                                               C_Compiler * inCompiler
                                                               COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -7399,7 +7399,7 @@ C_PrologueEpilogue gGetter_gtlUnconstructed_divOp (defineExtensionGetter_gtlUnco
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlUnconstructed_modOp (const cPtr_gtlData * inObject,
-                                                              const GALGAS_gtlData & /* constinArgument_right */,
+                                                              const GALGAS_gtlData /* constinArgument_right */,
                                                               C_Compiler * inCompiler
                                                               COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -7431,7 +7431,7 @@ C_PrologueEpilogue gGetter_gtlUnconstructed_modOp (defineExtensionGetter_gtlUnco
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlUnconstructed_andOp (const cPtr_gtlData * inObject,
-                                                              const GALGAS_gtlData & /* constinArgument_right */,
+                                                              const GALGAS_gtlData /* constinArgument_right */,
                                                               C_Compiler * inCompiler
                                                               COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -7463,7 +7463,7 @@ C_PrologueEpilogue gGetter_gtlUnconstructed_andOp (defineExtensionGetter_gtlUnco
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlUnconstructed_orOp (const cPtr_gtlData * inObject,
-                                                             const GALGAS_gtlData & /* constinArgument_right */,
+                                                             const GALGAS_gtlData /* constinArgument_right */,
                                                              C_Compiler * inCompiler
                                                              COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -7495,7 +7495,7 @@ C_PrologueEpilogue gGetter_gtlUnconstructed_orOp (defineExtensionGetter_gtlUncon
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlUnconstructed_xorOp (const cPtr_gtlData * inObject,
-                                                              const GALGAS_gtlData & /* constinArgument_right */,
+                                                              const GALGAS_gtlData /* constinArgument_right */,
                                                               C_Compiler * inCompiler
                                                               COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -7527,7 +7527,7 @@ C_PrologueEpilogue gGetter_gtlUnconstructed_xorOp (defineExtensionGetter_gtlUnco
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlUnconstructed_slOp (const cPtr_gtlData * inObject,
-                                                             const GALGAS_gtlData & /* constinArgument_right */,
+                                                             const GALGAS_gtlData /* constinArgument_right */,
                                                              C_Compiler * inCompiler
                                                              COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -7559,7 +7559,7 @@ C_PrologueEpilogue gGetter_gtlUnconstructed_slOp (defineExtensionGetter_gtlUncon
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlUnconstructed_srOp (const cPtr_gtlData * inObject,
-                                                             const GALGAS_gtlData & /* constinArgument_right */,
+                                                             const GALGAS_gtlData /* constinArgument_right */,
                                                              C_Compiler * inCompiler
                                                              COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -7591,7 +7591,7 @@ C_PrologueEpilogue gGetter_gtlUnconstructed_srOp (defineExtensionGetter_gtlUncon
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlUnconstructed_neqOp (const cPtr_gtlData * inObject,
-                                                              const GALGAS_gtlData & /* constinArgument_right */,
+                                                              const GALGAS_gtlData /* constinArgument_right */,
                                                               C_Compiler * inCompiler
                                                               COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -7623,7 +7623,7 @@ C_PrologueEpilogue gGetter_gtlUnconstructed_neqOp (defineExtensionGetter_gtlUnco
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlUnconstructed_eqOp (const cPtr_gtlData * inObject,
-                                                             const GALGAS_gtlData & /* constinArgument_right */,
+                                                             const GALGAS_gtlData /* constinArgument_right */,
                                                              C_Compiler * inCompiler
                                                              COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -7655,7 +7655,7 @@ C_PrologueEpilogue gGetter_gtlUnconstructed_eqOp (defineExtensionGetter_gtlUncon
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlUnconstructed_gtOp (const cPtr_gtlData * inObject,
-                                                             const GALGAS_gtlData & /* constinArgument_right */,
+                                                             const GALGAS_gtlData /* constinArgument_right */,
                                                              C_Compiler * inCompiler
                                                              COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -7687,7 +7687,7 @@ C_PrologueEpilogue gGetter_gtlUnconstructed_gtOp (defineExtensionGetter_gtlUncon
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlUnconstructed_geOp (const cPtr_gtlData * inObject,
-                                                             const GALGAS_gtlData & /* constinArgument_right */,
+                                                             const GALGAS_gtlData /* constinArgument_right */,
                                                              C_Compiler * inCompiler
                                                              COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -7719,7 +7719,7 @@ C_PrologueEpilogue gGetter_gtlUnconstructed_geOp (defineExtensionGetter_gtlUncon
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlUnconstructed_ltOp (const cPtr_gtlData * inObject,
-                                                             const GALGAS_gtlData & /* constinArgument_right */,
+                                                             const GALGAS_gtlData /* constinArgument_right */,
                                                              C_Compiler * inCompiler
                                                              COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -7751,7 +7751,7 @@ C_PrologueEpilogue gGetter_gtlUnconstructed_ltOp (defineExtensionGetter_gtlUncon
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlUnconstructed_leOp (const cPtr_gtlData * inObject,
-                                                             const GALGAS_gtlData & /* constinArgument_right */,
+                                                             const GALGAS_gtlData /* constinArgument_right */,
                                                              C_Compiler * inCompiler
                                                              COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -7841,10 +7841,10 @@ C_PrologueEpilogue gMethod_gtlUnconstructed_addMyValue (defineExtensionMethod_gt
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlUnconstructed_performGetter (const cPtr_gtlData * inObject,
-                                                                      const GALGAS_lstring & constinArgument_methodName,
-                                                                      const GALGAS_gtlDataList & constinArgument_arguments,
-                                                                      const GALGAS_gtlContext & constinArgument_context,
-                                                                      const GALGAS_library & constinArgument_lib,
+                                                                      const GALGAS_lstring constinArgument_methodName,
+                                                                      const GALGAS_gtlDataList constinArgument_arguments,
+                                                                      const GALGAS_gtlContext constinArgument_context,
+                                                                      const GALGAS_library constinArgument_lib,
                                                                       C_Compiler * inCompiler
                                                                       COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -7973,7 +7973,7 @@ C_PrologueEpilogue gSetter_gtlUnconstructed_performSetter (defineExtensionSetter
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_string extensionGetter_gtlType_desc (const cPtr_gtlData * inObject,
-                                                   const GALGAS_uint & constinArgument_tab,
+                                                   const GALGAS_uint constinArgument_tab,
                                                    C_Compiler * inCompiler
                                                    COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_string result_result ; // Returned variable
@@ -8247,7 +8247,7 @@ C_PrologueEpilogue gGetter_gtlType_notOp (defineExtensionGetter_gtlType_notOp, N
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlType_addOp (const cPtr_gtlData * inObject,
-                                                     const GALGAS_gtlData & /* constinArgument_right */,
+                                                     const GALGAS_gtlData /* constinArgument_right */,
                                                      C_Compiler * inCompiler
                                                      COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -8279,7 +8279,7 @@ C_PrologueEpilogue gGetter_gtlType_addOp (defineExtensionGetter_gtlType_addOp, N
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlType_subOp (const cPtr_gtlData * inObject,
-                                                     const GALGAS_gtlData & /* constinArgument_right */,
+                                                     const GALGAS_gtlData /* constinArgument_right */,
                                                      C_Compiler * inCompiler
                                                      COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -8311,7 +8311,7 @@ C_PrologueEpilogue gGetter_gtlType_subOp (defineExtensionGetter_gtlType_subOp, N
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlType_mulOp (const cPtr_gtlData * inObject,
-                                                     const GALGAS_gtlData & /* constinArgument_right */,
+                                                     const GALGAS_gtlData /* constinArgument_right */,
                                                      C_Compiler * inCompiler
                                                      COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -8343,7 +8343,7 @@ C_PrologueEpilogue gGetter_gtlType_mulOp (defineExtensionGetter_gtlType_mulOp, N
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlType_divOp (const cPtr_gtlData * inObject,
-                                                     const GALGAS_gtlData & /* constinArgument_right */,
+                                                     const GALGAS_gtlData /* constinArgument_right */,
                                                      C_Compiler * inCompiler
                                                      COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -8375,7 +8375,7 @@ C_PrologueEpilogue gGetter_gtlType_divOp (defineExtensionGetter_gtlType_divOp, N
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlType_modOp (const cPtr_gtlData * inObject,
-                                                     const GALGAS_gtlData & /* constinArgument_right */,
+                                                     const GALGAS_gtlData /* constinArgument_right */,
                                                      C_Compiler * inCompiler
                                                      COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -8407,7 +8407,7 @@ C_PrologueEpilogue gGetter_gtlType_modOp (defineExtensionGetter_gtlType_modOp, N
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlType_andOp (const cPtr_gtlData * inObject,
-                                                     const GALGAS_gtlData & /* constinArgument_right */,
+                                                     const GALGAS_gtlData /* constinArgument_right */,
                                                      C_Compiler * inCompiler
                                                      COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -8439,7 +8439,7 @@ C_PrologueEpilogue gGetter_gtlType_andOp (defineExtensionGetter_gtlType_andOp, N
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlType_orOp (const cPtr_gtlData * inObject,
-                                                    const GALGAS_gtlData & /* constinArgument_right */,
+                                                    const GALGAS_gtlData /* constinArgument_right */,
                                                     C_Compiler * inCompiler
                                                     COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -8471,7 +8471,7 @@ C_PrologueEpilogue gGetter_gtlType_orOp (defineExtensionGetter_gtlType_orOp, NUL
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlType_xorOp (const cPtr_gtlData * inObject,
-                                                     const GALGAS_gtlData & /* constinArgument_right */,
+                                                     const GALGAS_gtlData /* constinArgument_right */,
                                                      C_Compiler * inCompiler
                                                      COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -8503,7 +8503,7 @@ C_PrologueEpilogue gGetter_gtlType_xorOp (defineExtensionGetter_gtlType_xorOp, N
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlType_slOp (const cPtr_gtlData * inObject,
-                                                    const GALGAS_gtlData & /* constinArgument_right */,
+                                                    const GALGAS_gtlData /* constinArgument_right */,
                                                     C_Compiler * inCompiler
                                                     COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -8535,7 +8535,7 @@ C_PrologueEpilogue gGetter_gtlType_slOp (defineExtensionGetter_gtlType_slOp, NUL
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlType_srOp (const cPtr_gtlData * inObject,
-                                                    const GALGAS_gtlData & /* constinArgument_right */,
+                                                    const GALGAS_gtlData /* constinArgument_right */,
                                                     C_Compiler * inCompiler
                                                     COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -8567,7 +8567,7 @@ C_PrologueEpilogue gGetter_gtlType_srOp (defineExtensionGetter_gtlType_srOp, NUL
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlType_neqOp (const cPtr_gtlData * inObject,
-                                                     const GALGAS_gtlData & constinArgument_right,
+                                                     const GALGAS_gtlData constinArgument_right,
                                                      C_Compiler * inCompiler
                                                      COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -8612,7 +8612,7 @@ C_PrologueEpilogue gGetter_gtlType_neqOp (defineExtensionGetter_gtlType_neqOp, N
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlType_eqOp (const cPtr_gtlData * inObject,
-                                                    const GALGAS_gtlData & constinArgument_right,
+                                                    const GALGAS_gtlData constinArgument_right,
                                                     C_Compiler * inCompiler
                                                     COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -8657,7 +8657,7 @@ C_PrologueEpilogue gGetter_gtlType_eqOp (defineExtensionGetter_gtlType_eqOp, NUL
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlType_gtOp (const cPtr_gtlData * inObject,
-                                                    const GALGAS_gtlData & /* constinArgument_right */,
+                                                    const GALGAS_gtlData /* constinArgument_right */,
                                                     C_Compiler * inCompiler
                                                     COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -8689,7 +8689,7 @@ C_PrologueEpilogue gGetter_gtlType_gtOp (defineExtensionGetter_gtlType_gtOp, NUL
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlType_geOp (const cPtr_gtlData * inObject,
-                                                    const GALGAS_gtlData & /* constinArgument_right */,
+                                                    const GALGAS_gtlData /* constinArgument_right */,
                                                     C_Compiler * inCompiler
                                                     COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -8721,7 +8721,7 @@ C_PrologueEpilogue gGetter_gtlType_geOp (defineExtensionGetter_gtlType_geOp, NUL
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlType_ltOp (const cPtr_gtlData * inObject,
-                                                    const GALGAS_gtlData & /* constinArgument_right */,
+                                                    const GALGAS_gtlData /* constinArgument_right */,
                                                     C_Compiler * inCompiler
                                                     COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -8753,7 +8753,7 @@ C_PrologueEpilogue gGetter_gtlType_ltOp (defineExtensionGetter_gtlType_ltOp, NUL
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlType_leOp (const cPtr_gtlData * inObject,
-                                                    const GALGAS_gtlData & /* constinArgument_right */,
+                                                    const GALGAS_gtlData /* constinArgument_right */,
                                                     C_Compiler * inCompiler
                                                     COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -8838,10 +8838,10 @@ C_PrologueEpilogue gMethod_gtlType_addMyValue (defineExtensionMethod_gtlType_add
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlType_performGetter (const cPtr_gtlData * inObject,
-                                                             const GALGAS_lstring & constinArgument_methodName,
-                                                             const GALGAS_gtlDataList & constinArgument_arguments,
-                                                             const GALGAS_gtlContext & constinArgument_context,
-                                                             const GALGAS_library & constinArgument_lib,
+                                                             const GALGAS_lstring constinArgument_methodName,
+                                                             const GALGAS_gtlDataList constinArgument_arguments,
+                                                             const GALGAS_gtlContext constinArgument_context,
+                                                             const GALGAS_library constinArgument_lib,
                                                              C_Compiler * inCompiler
                                                              COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -8988,7 +8988,7 @@ C_PrologueEpilogue gSetter_gtlType_performSetter (defineExtensionSetter_gtlType_
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_string extensionGetter_gtlEnum_desc (const cPtr_gtlData * inObject,
-                                                   const GALGAS_uint & constinArgument_tab,
+                                                   const GALGAS_uint constinArgument_tab,
                                                    C_Compiler * inCompiler
                                                    COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_string result_result ; // Returned variable
@@ -9262,7 +9262,7 @@ C_PrologueEpilogue gGetter_gtlEnum_notOp (defineExtensionGetter_gtlEnum_notOp, N
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlEnum_addOp (const cPtr_gtlData * inObject,
-                                                     const GALGAS_gtlData & /* constinArgument_right */,
+                                                     const GALGAS_gtlData /* constinArgument_right */,
                                                      C_Compiler * inCompiler
                                                      COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -9294,7 +9294,7 @@ C_PrologueEpilogue gGetter_gtlEnum_addOp (defineExtensionGetter_gtlEnum_addOp, N
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlEnum_subOp (const cPtr_gtlData * inObject,
-                                                     const GALGAS_gtlData & /* constinArgument_right */,
+                                                     const GALGAS_gtlData /* constinArgument_right */,
                                                      C_Compiler * inCompiler
                                                      COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -9326,7 +9326,7 @@ C_PrologueEpilogue gGetter_gtlEnum_subOp (defineExtensionGetter_gtlEnum_subOp, N
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlEnum_mulOp (const cPtr_gtlData * inObject,
-                                                     const GALGAS_gtlData & /* constinArgument_right */,
+                                                     const GALGAS_gtlData /* constinArgument_right */,
                                                      C_Compiler * inCompiler
                                                      COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -9358,7 +9358,7 @@ C_PrologueEpilogue gGetter_gtlEnum_mulOp (defineExtensionGetter_gtlEnum_mulOp, N
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlEnum_divOp (const cPtr_gtlData * inObject,
-                                                     const GALGAS_gtlData & /* constinArgument_right */,
+                                                     const GALGAS_gtlData /* constinArgument_right */,
                                                      C_Compiler * inCompiler
                                                      COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -9390,7 +9390,7 @@ C_PrologueEpilogue gGetter_gtlEnum_divOp (defineExtensionGetter_gtlEnum_divOp, N
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlEnum_modOp (const cPtr_gtlData * inObject,
-                                                     const GALGAS_gtlData & /* constinArgument_right */,
+                                                     const GALGAS_gtlData /* constinArgument_right */,
                                                      C_Compiler * inCompiler
                                                      COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -9422,7 +9422,7 @@ C_PrologueEpilogue gGetter_gtlEnum_modOp (defineExtensionGetter_gtlEnum_modOp, N
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlEnum_andOp (const cPtr_gtlData * inObject,
-                                                     const GALGAS_gtlData & /* constinArgument_right */,
+                                                     const GALGAS_gtlData /* constinArgument_right */,
                                                      C_Compiler * inCompiler
                                                      COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -9454,7 +9454,7 @@ C_PrologueEpilogue gGetter_gtlEnum_andOp (defineExtensionGetter_gtlEnum_andOp, N
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlEnum_orOp (const cPtr_gtlData * inObject,
-                                                    const GALGAS_gtlData & /* constinArgument_right */,
+                                                    const GALGAS_gtlData /* constinArgument_right */,
                                                     C_Compiler * inCompiler
                                                     COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -9486,7 +9486,7 @@ C_PrologueEpilogue gGetter_gtlEnum_orOp (defineExtensionGetter_gtlEnum_orOp, NUL
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlEnum_xorOp (const cPtr_gtlData * inObject,
-                                                     const GALGAS_gtlData & /* constinArgument_right */,
+                                                     const GALGAS_gtlData /* constinArgument_right */,
                                                      C_Compiler * inCompiler
                                                      COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -9518,7 +9518,7 @@ C_PrologueEpilogue gGetter_gtlEnum_xorOp (defineExtensionGetter_gtlEnum_xorOp, N
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlEnum_slOp (const cPtr_gtlData * inObject,
-                                                    const GALGAS_gtlData & /* constinArgument_right */,
+                                                    const GALGAS_gtlData /* constinArgument_right */,
                                                     C_Compiler * inCompiler
                                                     COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -9550,7 +9550,7 @@ C_PrologueEpilogue gGetter_gtlEnum_slOp (defineExtensionGetter_gtlEnum_slOp, NUL
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlEnum_srOp (const cPtr_gtlData * inObject,
-                                                    const GALGAS_gtlData & /* constinArgument_right */,
+                                                    const GALGAS_gtlData /* constinArgument_right */,
                                                     C_Compiler * inCompiler
                                                     COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -9582,7 +9582,7 @@ C_PrologueEpilogue gGetter_gtlEnum_srOp (defineExtensionGetter_gtlEnum_srOp, NUL
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlEnum_neqOp (const cPtr_gtlData * inObject,
-                                                     const GALGAS_gtlData & constinArgument_right,
+                                                     const GALGAS_gtlData constinArgument_right,
                                                      C_Compiler * inCompiler
                                                      COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -9627,7 +9627,7 @@ C_PrologueEpilogue gGetter_gtlEnum_neqOp (defineExtensionGetter_gtlEnum_neqOp, N
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlEnum_eqOp (const cPtr_gtlData * inObject,
-                                                    const GALGAS_gtlData & constinArgument_right,
+                                                    const GALGAS_gtlData constinArgument_right,
                                                     C_Compiler * inCompiler
                                                     COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -9672,7 +9672,7 @@ C_PrologueEpilogue gGetter_gtlEnum_eqOp (defineExtensionGetter_gtlEnum_eqOp, NUL
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlEnum_gtOp (const cPtr_gtlData * inObject,
-                                                    const GALGAS_gtlData & /* constinArgument_right */,
+                                                    const GALGAS_gtlData /* constinArgument_right */,
                                                     C_Compiler * inCompiler
                                                     COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -9704,7 +9704,7 @@ C_PrologueEpilogue gGetter_gtlEnum_gtOp (defineExtensionGetter_gtlEnum_gtOp, NUL
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlEnum_geOp (const cPtr_gtlData * inObject,
-                                                    const GALGAS_gtlData & /* constinArgument_right */,
+                                                    const GALGAS_gtlData /* constinArgument_right */,
                                                     C_Compiler * inCompiler
                                                     COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -9736,7 +9736,7 @@ C_PrologueEpilogue gGetter_gtlEnum_geOp (defineExtensionGetter_gtlEnum_geOp, NUL
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlEnum_ltOp (const cPtr_gtlData * inObject,
-                                                    const GALGAS_gtlData & /* constinArgument_right */,
+                                                    const GALGAS_gtlData /* constinArgument_right */,
                                                     C_Compiler * inCompiler
                                                     COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -9768,7 +9768,7 @@ C_PrologueEpilogue gGetter_gtlEnum_ltOp (defineExtensionGetter_gtlEnum_ltOp, NUL
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlEnum_leOp (const cPtr_gtlData * inObject,
-                                                    const GALGAS_gtlData & /* constinArgument_right */,
+                                                    const GALGAS_gtlData /* constinArgument_right */,
                                                     C_Compiler * inCompiler
                                                     COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -9858,10 +9858,10 @@ C_PrologueEpilogue gMethod_gtlEnum_addMyValue (defineExtensionMethod_gtlEnum_add
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlEnum_performGetter (const cPtr_gtlData * inObject,
-                                                             const GALGAS_lstring & constinArgument_methodName,
-                                                             const GALGAS_gtlDataList & constinArgument_arguments,
-                                                             const GALGAS_gtlContext & constinArgument_context,
-                                                             const GALGAS_library & constinArgument_lib,
+                                                             const GALGAS_lstring constinArgument_methodName,
+                                                             const GALGAS_gtlDataList constinArgument_arguments,
+                                                             const GALGAS_gtlContext constinArgument_context,
+                                                             const GALGAS_library constinArgument_lib,
                                                              C_Compiler * inCompiler
                                                              COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -10008,7 +10008,7 @@ C_PrologueEpilogue gSetter_gtlEnum_performSetter (defineExtensionSetter_gtlEnum_
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_string extensionGetter_gtlChar_desc (const cPtr_gtlData * inObject,
-                                                   const GALGAS_uint & constinArgument_tab,
+                                                   const GALGAS_uint constinArgument_tab,
                                                    C_Compiler * inCompiler
                                                    COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_string result_result ; // Returned variable
@@ -10280,7 +10280,7 @@ C_PrologueEpilogue gGetter_gtlChar_notOp (defineExtensionGetter_gtlChar_notOp, N
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlChar_addOp (const cPtr_gtlData * inObject,
-                                                     const GALGAS_gtlData & /* constinArgument_right */,
+                                                     const GALGAS_gtlData /* constinArgument_right */,
                                                      C_Compiler * inCompiler
                                                      COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -10312,7 +10312,7 @@ C_PrologueEpilogue gGetter_gtlChar_addOp (defineExtensionGetter_gtlChar_addOp, N
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlChar_subOp (const cPtr_gtlData * inObject,
-                                                     const GALGAS_gtlData & /* constinArgument_right */,
+                                                     const GALGAS_gtlData /* constinArgument_right */,
                                                      C_Compiler * inCompiler
                                                      COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -10344,7 +10344,7 @@ C_PrologueEpilogue gGetter_gtlChar_subOp (defineExtensionGetter_gtlChar_subOp, N
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlChar_mulOp (const cPtr_gtlData * inObject,
-                                                     const GALGAS_gtlData & /* constinArgument_right */,
+                                                     const GALGAS_gtlData /* constinArgument_right */,
                                                      C_Compiler * inCompiler
                                                      COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -10376,7 +10376,7 @@ C_PrologueEpilogue gGetter_gtlChar_mulOp (defineExtensionGetter_gtlChar_mulOp, N
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlChar_divOp (const cPtr_gtlData * inObject,
-                                                     const GALGAS_gtlData & /* constinArgument_right */,
+                                                     const GALGAS_gtlData /* constinArgument_right */,
                                                      C_Compiler * inCompiler
                                                      COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -10408,7 +10408,7 @@ C_PrologueEpilogue gGetter_gtlChar_divOp (defineExtensionGetter_gtlChar_divOp, N
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlChar_modOp (const cPtr_gtlData * inObject,
-                                                     const GALGAS_gtlData & /* constinArgument_right */,
+                                                     const GALGAS_gtlData /* constinArgument_right */,
                                                      C_Compiler * inCompiler
                                                      COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -10440,7 +10440,7 @@ C_PrologueEpilogue gGetter_gtlChar_modOp (defineExtensionGetter_gtlChar_modOp, N
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlChar_andOp (const cPtr_gtlData * inObject,
-                                                     const GALGAS_gtlData & /* constinArgument_right */,
+                                                     const GALGAS_gtlData /* constinArgument_right */,
                                                      C_Compiler * inCompiler
                                                      COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -10472,7 +10472,7 @@ C_PrologueEpilogue gGetter_gtlChar_andOp (defineExtensionGetter_gtlChar_andOp, N
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlChar_orOp (const cPtr_gtlData * inObject,
-                                                    const GALGAS_gtlData & /* constinArgument_right */,
+                                                    const GALGAS_gtlData /* constinArgument_right */,
                                                     C_Compiler * inCompiler
                                                     COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -10504,7 +10504,7 @@ C_PrologueEpilogue gGetter_gtlChar_orOp (defineExtensionGetter_gtlChar_orOp, NUL
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlChar_xorOp (const cPtr_gtlData * inObject,
-                                                     const GALGAS_gtlData & /* constinArgument_right */,
+                                                     const GALGAS_gtlData /* constinArgument_right */,
                                                      C_Compiler * inCompiler
                                                      COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -10536,7 +10536,7 @@ C_PrologueEpilogue gGetter_gtlChar_xorOp (defineExtensionGetter_gtlChar_xorOp, N
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlChar_slOp (const cPtr_gtlData * inObject,
-                                                    const GALGAS_gtlData & /* constinArgument_right */,
+                                                    const GALGAS_gtlData /* constinArgument_right */,
                                                     C_Compiler * inCompiler
                                                     COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -10568,7 +10568,7 @@ C_PrologueEpilogue gGetter_gtlChar_slOp (defineExtensionGetter_gtlChar_slOp, NUL
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlChar_srOp (const cPtr_gtlData * inObject,
-                                                    const GALGAS_gtlData & /* constinArgument_right */,
+                                                    const GALGAS_gtlData /* constinArgument_right */,
                                                     C_Compiler * inCompiler
                                                     COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -10600,7 +10600,7 @@ C_PrologueEpilogue gGetter_gtlChar_srOp (defineExtensionGetter_gtlChar_srOp, NUL
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlChar_neqOp (const cPtr_gtlData * inObject,
-                                                     const GALGAS_gtlData & constinArgument_right,
+                                                     const GALGAS_gtlData constinArgument_right,
                                                      C_Compiler * inCompiler
                                                      COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -10645,7 +10645,7 @@ C_PrologueEpilogue gGetter_gtlChar_neqOp (defineExtensionGetter_gtlChar_neqOp, N
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlChar_eqOp (const cPtr_gtlData * inObject,
-                                                    const GALGAS_gtlData & constinArgument_right,
+                                                    const GALGAS_gtlData constinArgument_right,
                                                     C_Compiler * inCompiler
                                                     COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable
@@ -10690,7 +10690,7 @@ C_PrologueEpilogue gGetter_gtlChar_eqOp (defineExtensionGetter_gtlChar_eqOp, NUL
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_gtlData extensionGetter_gtlChar_gtOp (const cPtr_gtlData * inObject,
-                                                    const GALGAS_gtlData & constinArgument_right,
+                                                    const GALGAS_gtlData constinArgument_right,
                                                     C_Compiler * inCompiler
                                                     COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_gtlData result_result ; // Returned variable

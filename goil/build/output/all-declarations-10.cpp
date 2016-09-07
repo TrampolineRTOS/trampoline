@@ -4023,7 +4023,7 @@ void routine_generate_5F_mask_5F_type (GALGAS_uint_36__34_ inArgument_count,
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_lstring extensionGetter_goilContext_fullPrefix (const cPtr_gtlContext * inObject,
-                                                              const GALGAS_gtlData & constinArgument_vars,
+                                                              const GALGAS_gtlData constinArgument_vars,
                                                               C_Compiler * inCompiler
                                                               COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_lstring result_full ; // Returned variable
@@ -4335,7 +4335,7 @@ static const char * kSourceFileHelpMessages [] = {
 //---------------------------------------------------------------------------------------------------------------------*
 
 const char * projectVersionString (void) {
-  return "3.0.6" ;
+  return "3.0.7" ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*

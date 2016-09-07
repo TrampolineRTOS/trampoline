@@ -5208,7 +5208,7 @@ void enterExtensionGetter_breakOn (const int32_t inClassIndex,
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_bool callExtensionGetter_breakOn (const cPtr_debuggerContext * inObject,
-                                         const GALGAS_gtlInstruction & in_instruction,
+                                         const GALGAS_gtlInstruction in_instruction,
                                          C_Compiler * inCompiler
                                          COMMA_LOCATION_ARGS) {
   GALGAS_bool result ;
@@ -5243,7 +5243,7 @@ GALGAS_bool callExtensionGetter_breakOn (const cPtr_debuggerContext * inObject,
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_bool extensionGetter_debuggerContext_breakOn (const cPtr_debuggerContext * inObject,
-                                                            const GALGAS_gtlInstruction & constinArgument_instruction,
+                                                            const GALGAS_gtlInstruction constinArgument_instruction,
                                                             C_Compiler * /* inCompiler */
                                                             COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_bool result_breakOn ; // Returned variable
@@ -5299,9 +5299,9 @@ void enterExtensionGetter_watchOn (const int32_t inClassIndex,
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_bool callExtensionGetter_watchOn (const cPtr_debuggerContext * inObject,
-                                         const GALGAS_gtlContext & in_context,
-                                         const GALGAS_gtlData & in_vars,
-                                         const GALGAS_library & in_lib,
+                                         const GALGAS_gtlContext in_context,
+                                         const GALGAS_gtlData in_vars,
+                                         const GALGAS_library in_lib,
                                          C_Compiler * inCompiler
                                          COMMA_LOCATION_ARGS) {
   GALGAS_bool result ;
@@ -5336,9 +5336,9 @@ GALGAS_bool callExtensionGetter_watchOn (const cPtr_debuggerContext * inObject,
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_bool extensionGetter_debuggerContext_watchOn (const cPtr_debuggerContext * inObject,
-                                                            const GALGAS_gtlContext & constinArgument_context,
-                                                            const GALGAS_gtlData & constinArgument_vars,
-                                                            const GALGAS_library & constinArgument_lib,
+                                                            const GALGAS_gtlContext constinArgument_context,
+                                                            const GALGAS_gtlData constinArgument_vars,
+                                                            const GALGAS_library constinArgument_lib,
                                                             C_Compiler * inCompiler
                                                             COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_bool result_watchOn ; // Returned variable
@@ -10648,7 +10648,7 @@ void enterExtensionGetter_mergeImplementationObjectWith (const int32_t inClassIn
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_implementationObject callExtensionGetter_mergeImplementationObjectWith (const cPtr_implementationObject * inObject,
-                                                                               const GALGAS_implementationObject & in_objToMerge,
+                                                                               const GALGAS_implementationObject in_objToMerge,
                                                                                C_Compiler * inCompiler
                                                                                COMMA_LOCATION_ARGS) {
   GALGAS_implementationObject result ;
@@ -10683,7 +10683,7 @@ GALGAS_implementationObject callExtensionGetter_mergeImplementationObjectWith (c
 //---------------------------------------------------------------------------------------------------------------------*
 
 static GALGAS_implementationObject extensionGetter_implementationObject_mergeImplementationObjectWith (const cPtr_implementationObject * inObject,
-                                                                                                       const GALGAS_implementationObject & constinArgument_objToMerge,
+                                                                                                       const GALGAS_implementationObject constinArgument_objToMerge,
                                                                                                        C_Compiler * inCompiler
                                                                                                        COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_implementationObject result_mergedObj ; // Returned variable

@@ -3,7 +3,7 @@
 
 //--- END OF USER ZONE 1
 
-#import "lexique-gtl_debugger_scanner-cocoa.h"
+#import "lexique-gtl-5F-debugger-5F-scanner-cocoa.h"
 #import "PMDebug.h"
 
 //---------------------------------------------------------------------------------------------------------------------*

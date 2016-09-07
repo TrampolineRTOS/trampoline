@@ -29,26 +29,6 @@ class @debugCommandInput
   @stringlist history
 }
 
-setter @string deleteCharacterAtIndex
-  ?let @uint index
-{
-  if index < [self length] then
-    self = [self leftSubString !index]
-         + [self rightSubString ![self length] - index - 1]
-  end
-}
-
-setter @string insertCharacterAtIndex
-  ?let @char char
-  ?let @uint index
-{
-  if index < [self length] then
-    self = [self leftSubString !index]
-         + char
-         + [self rightSubString ![self length] - index]
-  end
-}
-
 setter @debugCommandInput getCommand
   !@string command
 {
@@ -116,7 +96,7 @@ setter @debugCommandInput getCommand
         # delete key
         if cursorPos > 0 then
           cursorPos--
-          [!?command deleteCharacterAtIndex !cursorPos]
+          [!?command removeCharacterAtIndex ?* !cursorPos]
           message "\u001B[1D\u001B[K"
           @uint remainingChars = [command length] - cursorPos
           if remainingChars > 0 then
