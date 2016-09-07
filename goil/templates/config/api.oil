@@ -13,6 +13,7 @@ CPU api {
     SYSCALL GetAlarmBase {
       KERNEL = tpl_get_alarm_base_service;
       LOCK_KERNEL = TRUE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:    No error (Standard & Extended)\n"
           "E_OS_ID: <alarm_id> is invalid (Extended)";
