@@ -18,10 +18,6 @@ CPU armv6m {
     PATH = "cortex/armv6m";
     CFILE = "sys_handlers.c";
   };
-
-  STDLIBVARIANT cortex_armv6_m {
-    KIND = "armv6-m";
-  };
 };
 
 

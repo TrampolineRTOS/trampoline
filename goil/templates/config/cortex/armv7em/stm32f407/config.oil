@@ -1,8 +1,4 @@
 CPU stm32f407 {
-    STDLIBVARIANT cortex_armv7em_stm32f407 {
-      KIND = "armv7e-m";
-    };
-    
     LIBRARY gpt {
       PATH = "cortex/armv7em/stm32f407/STM32F4xx_StdPeriph_Driver/src";
       CHEADER = "stm32f4xx_tim.h";

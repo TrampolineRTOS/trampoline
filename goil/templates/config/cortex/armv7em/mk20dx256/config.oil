@@ -6,10 +6,6 @@
 
 CPU mk20dx256 {
 
-  STDLIBVARIANT cortex_armv7em_mk20dx256 {
-    KIND = "armv7e-m";
-  };
-  
   PLATFORM_FILES cortex_armv7em_mk20dx256 {
     PATH = "cortex/armv7em/mk20dx256";
     CFILE = "tpl_machine_mk20dx256.c";
