@@ -1,8 +1,4 @@
 CPU SmartFusion2 {
-    STDLIBVARIANT cortex_armv7m_sf2 {
-      KIND = "armv7-m";
-    };
-    
     LIBRARY gpio {
       PATH = "cortex/armv7m/SmartFusion2/drivers/mss_gpio";
       CHEADER = "mss_gpio.h";

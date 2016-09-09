@@ -4,10 +4,6 @@ CPU avrArduino {
     PATH = "avr/arduino/hardware/variants/mega";
   };
   
-  STDLIBVARIANT gccAvrKind {
-    KIND = "avr6";
-  };
-  
   BUILDOPTIONS buildOptionsForArduino {
     COMMONFLAGS = "-Os -Wall -DF_CPU=16000000 -mmcu=atmega2560"; //CFLAGS + CPPFLAGS
     ASFLAGS = "-DF_CPU=16000000 -mmcu=atmega2560";

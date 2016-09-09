@@ -2,7 +2,7 @@
 #include "api_ioc.oil"
 
 CPU api {
-  /* 
+  /*
    * OSEK Alarms
    */
   APICONFIG alarm {
@@ -25,6 +25,7 @@ CPU api {
     SYSCALL GetAlarm {
       KERNEL = tpl_get_alarm_service;
       LOCK_KERNEL = TRUE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:        No error (Standard & Extended)\n"
           "E_OS_NOFUNC: Alarm <alarm_id> is not in use (Standard & Extended)\n"
@@ -37,6 +38,7 @@ CPU api {
     SYSCALL SetRelAlarm {
       KERNEL = tpl_set_rel_alarm_service;
       LOCK_KERNEL = TRUE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:        No error (Standard & Extended)\n"
           "E_OS_NOFUNC: Alarm <alarm_id> is already in use (Standard & Extended)\n"
@@ -55,6 +57,7 @@ CPU api {
     SYSCALL SetAbsAlarm  {
       KERNEL = tpl_set_abs_alarm_service;
       LOCK_KERNEL = TRUE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:        No error (Standard & Extended)\n"
           "E_OS_NOFUNC: Alarm <alarm_id> is already in use (Standard & Extended)\n"
@@ -73,6 +76,7 @@ CPU api {
     SYSCALL CancelAlarm {
       KERNEL = tpl_cancel_alarm_service;
       LOCK_KERNEL = TRUE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:        No error (Standard & Extended)\n"
           "E_OS_NOFUNC: Alarm <alarm_id> is not in use (Standard & Extended)\n"
@@ -81,7 +85,7 @@ CPU api {
         : "The identifier of the alarm";
     } : "CancelAlarm cancels a started alarm.\nSee page 65 of the OSEK OS 2.2.3 specification.";
   };
-  
+
   /*
    * OSEK tasks
    */
@@ -93,6 +97,7 @@ CPU api {
     SYSCALL ActivateTask {
       KERNEL = tpl_activate_task_service;
       LOCK_KERNEL = TRUE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:       No error (Standard & Extended)\n"
           "E_OS_LIMIT: Too many activations of <task_id> (Standard & Extended)\n"
@@ -103,6 +108,7 @@ CPU api {
     SYSCALL TerminateTask {
       KERNEL = tpl_terminate_task_service;
       LOCK_KERNEL = TRUE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OS_RESOURCE: The calling task still occupies a resource (Extended)\n"
           "E_OS_CALLEVEL: Call at interrupt level (Extended)";
@@ -110,6 +116,7 @@ CPU api {
     SYSCALL ChainTask {
       KERNEL = tpl_chain_task_service;
       LOCK_KERNEL = TRUE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OS_LIMIT:    Too many activations of <task_id> (Standard & Extended)\n"
           "E_OS_ID:       <task_id> is invalid (Extended)\n"
@@ -121,6 +128,7 @@ CPU api {
     SYSCALL Schedule {
       KERNEL = tpl_schedule_service;
       LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:          No error (Standard & Extended)\n"
           "E_OS_RESOURCE: The calling task still occupies a resource (Extended)\n"
@@ -129,6 +137,7 @@ CPU api {
     SYSCALL GetTaskID {
       KERNEL = tpl_get_task_id_service;
       LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK: No error (Standard & Extended)";
       ARGUMENT task_id { KIND = VAR; TYPE = TaskRefType; }
@@ -137,6 +146,7 @@ CPU api {
     SYSCALL GetTaskState {
       KERNEL = tpl_get_task_state_service;
       LOCK_KERNEL = TRUE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:        No error (Standard & Extended)\n"
           "E_OS_ID:     <alarm_id> is invalid (Extended)";
@@ -149,9 +159,10 @@ CPU api {
       HIDDEN = TRUE;
       KERNEL = tpl_call_terminate_task_service;
       LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = FALSE;
     } : "Used internally as return address of tasks, should not be called by the user";
   };
-  
+
   /*
    * OSEK interrupts
    */
@@ -163,39 +174,46 @@ CPU api {
     SYSCALL EnableAllInterrupts  {
       KERNEL = tpl_enable_all_interrupts_service;
       LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = TRUE;
     }  : "This service restores the state saved by DisableAllInterrupts.";
     SYSCALL DisableAllInterrupts {
       KERNEL = tpl_disable_all_interrupts_service;
       LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = TRUE;
     }  : "This service disables all interrupts for which the hardware"
         "supports disabling. The state before is saved for the"
         "EnableAllInterrupts call.";
     SYSCALL ResumeAllInterrupts  {
       KERNEL = tpl_resume_all_interrupts_service;
       LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = TRUE;
     }  : "This service restores the recognition status of all interrupts"
         "saved by the SuspendAllInterrupts service.";
     SYSCALL SuspendAllInterrupts {
       KERNEL = tpl_suspend_all_interrupts_service;
       LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = TRUE;
     }  : "This service saves the recognition status of all interrupts and"
         "disables all interrupts for which the hardware supports disabling.";
     SYSCALL ResumeOSInterrupts   {
       KERNEL = tpl_resume_os_interrupts_service;
       LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = TRUE;
     }  : "This service restores the recognition status of interrupts saved"
         "by the SuspendOSInterrupts service.";
     SYSCALL SuspendOSInterrupts  {
       KERNEL = tpl_suspend_os_interrupts_service;
       LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = TRUE;
     }  : "This service saves the recognition status of interrupts of category 2"
         "and disables the recognition of these interrupts.";
     SYSCALL CallTerminateISR2    {
       KERNEL = tpl_call_terminate_isr2_service;
       LOCK_KERNEL = TRUE;
+      CALLABLE_BY_ISR1 = FALSE;
     };
   };
-  
+
   /*
    * OSEK resources
    */
@@ -207,6 +225,7 @@ CPU api {
     SYSCALL GetResource {
       KERNEL = tpl_get_resource_service;
       LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:    No error (Standard & Extended)\n"
           "E_OS_ID: <res_id> is invalid (Extended)";
@@ -217,6 +236,7 @@ CPU api {
     SYSCALL ReleaseResource {
       KERNEL = tpl_release_resource_service;
       LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:        No error (Standard & Extended)\n"
           "E_OS_ID:     <res_id> is invalid (Extended)\n"
@@ -228,7 +248,7 @@ CPU api {
     } : "Release resource res_id. The priority of the caller returns to the priority it had"
         "before getting the resource";
   };
-  
+
   /*
    * OSEK events
    */
@@ -240,6 +260,7 @@ CPU api {
     SYSCALL SetEvent {
       KERNEL = tpl_set_event_service;
       LOCK_KERNEL = TRUE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:        No error (Standard & Extended)\n"
           "E_OS_ID:     <task_id> is invalid (Extended)\n"
@@ -255,6 +276,7 @@ CPU api {
     SYSCALL ClearEvent {
       KERNEL = tpl_clear_event_service;
       LOCK_KERNEL = TRUE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:          No error (Standard & Extended)\n"
           "E_OS_ACCESS:   The calling task is not an extended task (Extended)\n"
@@ -266,6 +288,7 @@ CPU api {
     SYSCALL GetEvent {
       KERNEL = tpl_get_event_service;
       LOCK_KERNEL = TRUE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:        No error (Standard & Extended)\n"
           "E_OS_ID:     <task_id> is invalid (Extended)\n"
@@ -283,6 +306,7 @@ CPU api {
     SYSCALL WaitEvent {
       KERNEL = tpl_wait_event_service;
       LOCK_KERNEL = TRUE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:          No error (Standard & Extended)\n"
           "E_OS_ACCESS:   The calling task is not an extended task (Extended)\n"
@@ -293,7 +317,7 @@ CPU api {
     } : "The state of the calling task is set to waiting, unless at least one"
         "of the events specified in <event> has already been set.";
   };
-  
+
   /*
    * OSEK os
    */
@@ -306,6 +330,7 @@ CPU api {
     SYSCALL GetActiveApplicationMode {
       KERNEL = tpl_get_active_application_mode_service;
       LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = AppModeType
         : "The active application mode";
     } : "This service returns the current application mode. It may be used to write mode dependent code.";
@@ -313,19 +338,21 @@ CPU api {
       ACTUAL = tpl_start_os;
       KERNEL = tpl_start_os_service;
       LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = FALSE;
       ARGUMENT mode { KIND = CONST; TYPE = AppModeType; }
         : "The application mode";
     } : "The user can call this system service to start the operating system in a specific mode.";
     SYSCALL ShutdownOS {
       KERNEL = tpl_shutdown_os_service;
       LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = FALSE;
       ARGUMENT error { KIND = CONST; TYPE = StatusType; }
         : "The error that occured";
     } : "The user can call this system service to abort the overall system (e.g. emergency off)."
         "The operating system also calls this function internally, if it has reached an undefined"
         "internal state and is no longer ready to run.";
   };
-  
+
   /*
    * OSEK com
    */
@@ -343,6 +370,7 @@ CPU api {
     SYSCALL SendMessage      {
       KERNEL = tpl_send_message_service;
       LOCK_KERNEL = TRUE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:     No error (Standard & Extended)\n"
           "E_COM_ID: mess_id is not a message identifier or refers"
@@ -356,6 +384,7 @@ CPU api {
     SYSCALL ReceiveMessage   {
       KERNEL = tpl_receive_message_service;
       LOCK_KERNEL = TRUE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:        No error (Standard & Extended). Data are available"
           "and returned to the application successfully\n"
@@ -377,6 +406,7 @@ CPU api {
     SYSCALL SendZeroMessage  {
       KERNEL = tpl_send_zero_message_service;
       LOCK_KERNEL = TRUE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:     No error (Standard & Extended).\n"
           "E_COM_ID: <mess_id> is not a message identifier or does not refer"
@@ -387,6 +417,7 @@ CPU api {
     SYSCALL GetMessageStatus {
       KERNEL = tpl_get_message_status_service;
       LOCK_KERNEL = TRUE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_COM_ID:    <mess_id> is not a message identifier or does not refer"
           "to a queued message (Extended).\n"
@@ -398,7 +429,7 @@ CPU api {
         : "The message identifier";
     } : "The service GetMessageStatus returns the current status of the message object <mess_id>";
   };
-  
+
   /*
    * AUTOSAR Software counters
    */
@@ -410,6 +441,7 @@ CPU api {
     SYSCALL IncrementCounter {
       KERNEL = tpl_increment_counter_service;
       LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:    no error (Standard & Extended). Requirements OS286 and OS321\n"
           "E_OS_ID: <counter_id> is not valid (Extended). Requirement OS285";
@@ -419,6 +451,7 @@ CPU api {
     SYSCALL GetCounterValue {
       KERNEL = tpl_get_counter_value_service;
       LOCK_KERNEL = TRUE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK        no error (Standard & Extended). Requirement OS377\n"
           "E_OS_ID     <counter_id> is invalid (Extended). Eequirement OS376";
@@ -430,6 +463,7 @@ CPU api {
     SYSCALL GetElapsedCounterValue {
       KERNEL = tpl_get_elapsed_counter_value_service;
       LOCK_KERNEL = TRUE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK        no error (Standard & Extended). Requirement OS382\n"
           "E_OS_VALUE  the <previous_value> parameter is larger than the maxallowedvalue"
@@ -440,10 +474,10 @@ CPU api {
       ARGUMENT previous_value { KIND = CONST; TYPE = TickRefType; }
         : "reference to the variable where a previous value is stored";
       ARGUMENT value          { KIND = CONST; TYPE = TickRefType; }
-        : "reference to the variable where is value is returned";  
+        : "reference to the variable where is value is returned";
     } : "Get the elapsed value of a counter.";
-  }; 
-  
+  };
+
   /*
    * AUTOSAR Schedule Tables
    */
@@ -455,6 +489,7 @@ CPU api {
     SYSCALL StartScheduleTableRel {
       KERNEL = tpl_start_schedule_table_rel_service;
       LOCK_KERNEL = TRUE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:       no error (Standard & Extended). Requirement OS278.\n"
           "E_OS_ID:    <sched_table_id> is not valid (Extended). Requirement OS275.\n"
@@ -470,6 +505,7 @@ CPU api {
     SYSCALL StartScheduleTableAbs {
       KERNEL = tpl_start_schedule_table_abs_service;
       LOCK_KERNEL = TRUE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         :  "E_OK:       no error (Standard & Extended). Requirement OS351.\n"
            "E_OS_ID:    <sched_table_id> is not valid (Extended). Requirement OS348.\n"
@@ -485,6 +521,7 @@ CPU api {
     SYSCALL StopScheduleTable {
       KERNEL = tpl_stop_schedule_table_service;
       LOCK_KERNEL = TRUE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:        no error (Standard & Extended). Requirement OS281.\n"
           "E_OS_ID:     <sched_table_id> is not valid (Extended). Requirement OS279.\n"
@@ -495,6 +532,7 @@ CPU api {
     SYSCALL NextScheduleTable {
       KERNEL = tpl_next_schedule_table_service;
       LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:        no error (Standard & Extended). Requirement OS284.\n"
           "E_OS_ID:     <current_sd_id> or <next_sd_id> are not valid (Extended). Requirement OS282.\n"
@@ -510,6 +548,7 @@ CPU api {
     SYSCALL GetScheduleTableStatus {
       KERNEL = tpl_get_schedule_table_status_service;
       LOCK_KERNEL = TRUE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:        no error (Standard & Extended). Requirements OS289, OS353, OS354, OS290 and OS291.\n"
           "E_OS_ID:     <sched_table_id> is not valid (Extended). Requirement OS293.";
@@ -519,7 +558,7 @@ CPU api {
         : "reference to a variable where the status is returned.";
     } : "Get the status of a schedule table";
   };
-  
+
   /*
    * AUTOSAR Global Time
    */
@@ -530,6 +569,7 @@ CPU api {
     SYSCALL StartScheduleTableSynchron {
       KERNEL = tpl_start_schedule_table_synchron_service;
       LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:       No error.\n"
           "E_OS_ID:    invalid schedule table id, or the schedule table"
@@ -541,6 +581,7 @@ CPU api {
     SYSCALL SyncScheduleTable {
       KERNEL = tpl_sync_schedule_table_service;
       LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:       No error.\n"
           "E_OS_STATE: The schedule table is not waiting or running.\n"
@@ -554,6 +595,7 @@ CPU api {
     SYSCALL SetScheduleTableAsync {
       KERNEL = tpl_set_schedule_table_async_service;
       LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:       No error.\n"
           "E_OS_ID:    Invalid schedule table id, or the schedule table"
@@ -562,7 +604,7 @@ CPU api {
         : "identifier of the schedule table.";
     } : "Set a schedule table asynchronous to global time.";
   };
-  
+
   /*
    * AUTOSAR ISRs
    */
@@ -574,12 +616,13 @@ CPU api {
     SYSCALL GetISRID {
       KERNEL = tpl_get_isr_id_service;
       LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = ISRType
         : "Identifier of the currently running ISR or"
           "INVALID_ISR when called from outside a running ISR.";
     } : "Get the ID of the currently running ISR.";
   };
-  
+
   /*
    * AUTOSAR OS Applications
    */
@@ -591,12 +634,14 @@ CPU api {
     SYSCALL GetApplicationID {
       KERNEL = tpl_get_application_id_service;
       LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = ApplicationType
         : "the application ID (OS261) or INVALID_OSAPPLICATION (OS262).";
     } : "Get the application ID to which the current process belongs to.";
     SYSCALL TerminateApplication {
       KERNEL = tpl_terminate_application_service;
       LOCK_KERNEL = TRUE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:          called from allowed context (OS287).\n"
           "E_OS_CALLEVEL: wrong context (OS288).\n"
@@ -609,6 +654,7 @@ CPU api {
     SYSCALL GetApplicationState {
       KERNEL = tpl_get_application_state_service;
       LOCK_KERNEL = TRUE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:          no errors.\n"
           "E_OS_CALLEVEL: wrong context (OS288).\n"
@@ -621,6 +667,7 @@ CPU api {
     SYSCALL AllowAccess {
       KERNEL = tpl_allow_access_service;
       LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:          no errors.\n"
           "E_OS_STATE: OsAPplication of the aller is in the wrong state.\n";
@@ -628,6 +675,7 @@ CPU api {
     SYSCALL CheckObjectAccess {
       KERNEL = tpl_check_object_access_service;
       LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = ObjectAccessType
         : "ACCESS if the ApplID has access to the object NO_ACCESS otherwise.";
       ARGUMENT app_id { KIND = CONST; TYPE = ApplicationType; }
@@ -640,6 +688,7 @@ CPU api {
     SYSCALL CheckObjectOwnership {
       KERNEL = tpl_check_object_ownership_service;
       LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = ApplicationType
         : "the application ID (OS273) or INVALID_OSAPPLICATION (OS274, OS319).";
       ARGUMENT obj_type { KIND = CONST; TYPE = ObjectTypeType; }
@@ -653,7 +702,7 @@ CPU api {
       VALUE = "INVALID_OSAPPLICATION_ID";
     } : "Invalid OS Application identifier.";
   };
-  
+
   /*
    * AUTOSAR Multicore
    */
@@ -665,12 +714,14 @@ CPU api {
     SYSCALL GetCoreID {
       KERNEL = tpl_get_core_id_service;
       LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = CoreIdType
         : "The unique ID of the core running the caller.";
     } : "GetCoreID returns the id of the core running the caller";
     SYSCALL StartCore {
       KERNEL = tpl_start_core_service;
       LOCK_KERNEL = TRUE;
+      CALLABLE_BY_ISR1 = FALSE;
       ARGUMENT core_id { KIND = CONST; TYPE = CoreIdType; }
         : "The core to start.";
       ARGUMENT status { KIND = CONSTP2VAR; TYPE = StatusType; }
@@ -683,6 +734,7 @@ CPU api {
     SYSCALL StartNonAutosarCore {
       KERNEL = tpl_start_non_autosar_core_service;
       LOCK_KERNEL = TRUE;
+      CALLABLE_BY_ISR1 = FALSE;
       ARGUMENT core_id { KIND = CONST; TYPE = CoreIdType; }
         : "The core to start.";
       ARGUMENT status { KIND = CONSTP2VAR; TYPE = StatusType; }
@@ -694,18 +746,22 @@ CPU api {
     SYSCALL ShutdownAllCores {
       KERNEL = tpl_shutdown_all_cores_service;
       LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = FALSE;
       ARGUMENT error { KIND = CONST; TYPE = StatusType; }
         : "The shutdown error code.";
     } : "ShutdownAllCores shutdown all the running cores";
     SYSCALL GetNumberOfActivatedCores {
       KERNEL = tpl_get_number_of_activated_cores_service;
       LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = uint32
         : "The number of cores activated by the StartCore service.";
     } : "GetNumberOfActivatedCores returns the number of activated cores"
         "from 1 to the number of configured cores.";
     SYSCALL GetCoreStatus {
       KERNEL = tpl_get_core_status_service;
+      LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:    No error, the core status was successfully written"
           "in <core_status> (standard & extended).\n"
@@ -731,6 +787,7 @@ CPU api {
     SYSCALL GetSpinlock {
       KERNEL = tpl_get_spinlock_service;
       LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:                        no error"
           "E_OS_ID:                     SpinLockId is not valid (EXTENDED status only)\n"
@@ -743,6 +800,7 @@ CPU api {
     SYSCALL ReleaseSpinlock {
       KERNEL = tpl_release_spinlock_service;
       LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:                        no error"
           "E_OS_ID:                     SpinLockId is not valid (EXTENDED status only)\n"
@@ -755,6 +813,7 @@ CPU api {
     SYSCALL TryToGetSpinlock {
       KERNEL = tpl_try_to_get_spinlock_service;
       LOCK_KERNEL = FALSE;
+      CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:                        no error"
           "E_OS_ID:                     SpinLockId is not valid (EXTENDED status only)\n"
@@ -767,5 +826,3 @@ CPU api {
     } : "Test availability of a Spinlock";
   };
 };
-
-

@@ -266,10 +266,6 @@ end foreach
 
 %
 
-%
-if exists OS::BUILD_S::SYSTEM_S::GUESSLIBPATH default (true) then
-  let stdlibVariant := exists STDLIBVARIANT::KIND default ("")
-%
 #----------------------------------------------------------------------
 #--- Try to detect automatically the location of libc and libgcc
 #--- This supposes the compiler has a (something)-gcc name
@@ -285,18 +281,16 @@ if "gcc" in compiler:
     compilerToolChainPath = os.path.dirname(os.path.dirname(compilerFullPath))
     #--- Get the version of the compiler, [:-1] removes the carriage return
     compilerVersion = subprocess.check_output([compiler, '-dumpversion'])[:-1]
-    #--- Build the libc path
-    libcPath = compilerToolChainPath + '/' + compilerPrefix + '/lib%
-      if stdlibVariant != "" then %/% !stdlibVariant end if%'
-    #--- Build the libgcc path
-    libgccPath = compilerToolChainPath + '/lib/gcc/' + compilerPrefix + '/' + bytesdecode(compilerVersion)%
-      if stdlibVariant != "" then % + '/% !stdlibVariant %'% end if %
+    #--- Build the libc and libgcc paths
+    procLibc  =subprocess.Popen([compilerFullPath,"-print-file-name=libc.a"]+cflags,stdout=subprocess.PIPE)
+    procLibgcc=subprocess.Popen([compilerFullPath,"-print-libgcc-file-name"]+cflags,stdout=subprocess.PIPE)
+    procLibc.wait()
+    procLibgcc.wait()
+    libcPath = os.path.dirname(procLibc.stdout.readline().strip())
+    libgccPath = os.path.dirname(procLibgcc.stdout.readline().strip())
     #--- Add both to linker flags
     ldflags += ['-L' + libcPath, '-lc']
     ldflags += ['-L' + libgccPath, '-lgcc']
-%
-end if
-%
 #----------------------------------------------------------------------
 #--- Build the source files list
 #----------------------------------------------------------------------
