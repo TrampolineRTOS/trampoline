@@ -117,7 +117,7 @@ FUNC(void, OS_CODE) tpl_init_external_interrupts()
 {%
 
 # look for EXTIx_IRQ interrupt sources in COUNTERS and ISR
-let ITOBJ := COUNTER + ISR
+let ITOBJ := COUNTER | ISR
 
 # Check subattributes are defined for EXTIxxx it sources
 # This should be done by goil according to the IMPLEMENTATION but currently
@@ -158,15 +158,15 @@ foreach obj in ITOBJ do
       if ok then
         let EIC_num := pin2Eic[obj::SOURCE_S::PIN]::EICNUM
         #check that the EIC num have not been configured before
-        if exists pin2EicDone[EIC_num] then
-          let str := "pins "+obj::SOURCE_S::PIN+" and "+pin2EicDone[EIC_num]+
+        if exists pin2EicDone[[EIC_num string]] then
+          let str := "pins "+obj::SOURCE_S::PIN+" and "+pin2EicDone[[EIC_num string]]+
                       " uses EIC entry :"+EIC_num
           error obj::SOURCE_S::PIN : str
           let ok := false
         end if
       end if
       if ok then #Ok, can generate code
-        let pin2EicDone[EIC_num] := obj::SOURCE_S::PIN
+        let pin2EicDone[[EIC_num string]] := obj::SOURCE_S::PIN
         %\n	//config %!obj::SOURCE_S::PIN% with EIC %!EIC_num%\n%
         
         #external interrupt config:
