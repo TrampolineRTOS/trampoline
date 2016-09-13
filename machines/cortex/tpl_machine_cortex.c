@@ -49,6 +49,7 @@ extern FUNC(void, OS_CODE) CallTerminateTask(void);
  * Kernel entry counter
  */
 volatile VAR (uint32, OS_VAR) nested_kernel_entrance_counter;
+volatile VAR (uint32, OS_VAR) service_call_from_isr1;
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
@@ -69,8 +70,10 @@ FUNC (void, OS_CODE) tpl_init_machine_generic (void)
 FUNC (void, OS_CODE) tpl_init_machine_specific (void)
 {
   nested_kernel_entrance_counter = 0;
+  service_call_from_isr1 = 0;
   tpl_set_systick_timer();
 	tpl_init_external_interrupts();
+  NVIC_SetPriority(SVCall_IRQn, 6);
   /*
    * Switch to use PSP, unprivileged state
    */

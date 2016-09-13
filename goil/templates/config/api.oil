@@ -714,7 +714,7 @@ CPU api {
     SYSCALL GetCoreID {
       KERNEL = tpl_get_core_id_service;
       LOCK_KERNEL = FALSE;
-      CALLABLE_BY_ISR1 = FALSE;
+      CALLABLE_BY_ISR1 = TRUE;
       RETURN_TYPE = CoreIdType
         : "The unique ID of the core running the caller.";
     } : "GetCoreID returns the id of the core running the caller";

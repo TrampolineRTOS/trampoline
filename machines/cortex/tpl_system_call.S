@@ -186,7 +186,7 @@ tpl_sc_handler:
 	 * Shall be less than SYSCALL_COUNT
 	 */
 	cmp r3, #SYSCALL_COUNT
-	bhs invalid_service_id
+	bhs tpl_sc_handler_invalid_service_id
 
 	sub sp, sp, #KS_FOOTPRINT		/* Make space on top of kernel stack. */
     mov r12,r6						/* save r6 to r12 so that we can work 
@@ -245,13 +245,13 @@ tpl_sc_handler:
 	ldr r6, [r5, #KS_KERN_PTR]						/* load the tpl_kern base address */
 	ldrb r6, [r6, #TPL_KERN_OFFSET_NEED_SWITCH]
 	cmp r6, #NO_NEED_SWITCH
-	beq no_context_switch
+	beq tpl_sc_handler_no_context_switch
 
 	/* do not switch context if nested kernel entrance */
 	ldr r6, =nested_kernel_entrance_counter
 	ldr r4, [r6]
 	cmp r4, #1
-	bhi no_context_switch
+	bhi tpl_sc_handler_no_context_switch
 
 	/* __4__SWITCH_CONTEXT
 	 * We are going to switch context.
@@ -262,7 +262,7 @@ tpl_sc_handler:
 	ldrb r6, [r6, #TPL_KERN_OFFSET_NEED_SWITCH]
     movs r4, #NEED_SAVE								/* tst cannot use immediat in armv6. */
 	tst r6, r4
-	beq no_save_old_context
+	beq tpl_sc_handler_no_save_old_context
 	movs r0, #1	/* set save parameter to 1 */
 
 	/*
@@ -272,14 +272,14 @@ tpl_sc_handler:
 	ldr r6, [r6, #TPL_KERN_OFFSET_S_RUNNING]
 	bl tpl_save_context
 
-no_save_old_context:
+tpl_sc_handler_no_save_old_context:
 #if WITH_MEMORY_PROTECTION == YES
   /*
    * set up the memory protection for the process that just got the CPU
    */
 #endif
 
-call_tpl_run_elected:
+tpl_sc_handler_call_tpl_run_elected:
 	/* First call tpl_run_elected with the value of tpl_kern.need_switch
 	 * and get the value of the elected task.
 	 * tpl_kern.need_switch (stored into r3) is copied into r0
@@ -297,8 +297,8 @@ call_tpl_run_elected:
     /********************************************
      * KERNEL EXIT WITHOUT CONTEXT SWITCH STAGE *
      ********************************************/
-invalid_service_id:  /* currently, if invalid service id is specified, we do nothing */
-no_context_switch:
+tpl_sc_handler_invalid_service_id:  /* currently, if invalid service id is specified, we do nothing */
+tpl_sc_handler_no_context_switch:
 	/*
  	 * Reset the tpl_need_switch variable to NO_NEED_SWITCH
  	 */

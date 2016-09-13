@@ -33,20 +33,41 @@
  * service ids
  */
 %
-let system_call_count := 0
+# Build a map of system calls with key NAME and fields ID_PREFIX, CALLABLE_BY_ISR1
+# Build a list of system calls sorted by CALLABLE_BY_ISR1
+let mapOfApi := @[ ]
+let listOfApiFunc := @( )
 foreach api_sec in APIUSED do
-  foreach api in api_sec::SYSCALL do
+  foreach api_func in api_sec::SYSCALL do
+    let key := api_func::NAME
+    let currentApi::ID_PREFIX := api_sec::ID_PREFIX
+    let currentApi::CALLABLE_BY_ISR1 := api_func::CALLABLE_BY_ISR1
+    let listOfApiFunc += api_func
+    if not exists mapOfApi[key] then
+      let mapOfApi[key] := currentApi
+    end if
+  end foreach
+end foreach
+
+sort listOfApiFunc by CALLABLE_BY_ISR1 >
+
+let system_call_count := 0
+let system_call_isr1_count := 0
+foreach api_func in listOfApiFunc do
+  let key := api_func::NAME
 %
 /**
- * @def % !api_sec::ID_PREFIX %ServiceId_% !api::NAME %
+ * @def % !mapOfApi[key]::ID_PREFIX %ServiceId_% !key %
  *
  * @see #SERVICE_CALL_DESCRIPTOR
- * @see #% !api::NAME %
+ * @see #% !key %
  */
-#define % !api_sec::ID_PREFIX %ServiceId_% !api::NAME %    % !system_call_count %
+#define % !mapOfApi[key]::ID_PREFIX %ServiceId_% !key %    % !system_call_count %
 %
-    let system_call_count := system_call_count + 1
-  end foreach
+  let system_call_count += 1
+  if mapOfApi[key]::CALLABLE_BY_ISR1 then
+    let system_call_isr1_count += 1
+  end if
 end foreach
 %
 /**
@@ -54,7 +75,8 @@ end foreach
  *
  * Number of system calls
  */
-#define SYSCALL_COUNT    % !system_call_count %
+#define SYSCALL_COUNT      % !system_call_count %
+#define SYSCALL_COUNT_ISR1 % !system_call_isr1_count %
 
 #endif
 

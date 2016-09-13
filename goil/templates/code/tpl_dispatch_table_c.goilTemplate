@@ -32,6 +32,14 @@ foreach api_sec in APIUSED do
 #include "% !file::VALUE %.h"%
   end foreach
 end foreach
+# Build a list of system calls sorted by CALLABLE_BY_ISR1
+let listOfApiFunc := @( )
+foreach api_sec in APIUSED do
+  foreach api_func in api_sec::SYSCALL do
+    let listOfApiFunc += api_func
+  end foreach
+end foreach
+sort listOfApiFunc by CALLABLE_BY_ISR1 >
 %
 
 #define OS_START_SEC_CONST_UNSPECIFIED
@@ -40,12 +48,8 @@ CONST(tpl_system_call, OS_CONST) tpl_dispatch_table[SYSCALL_COUNT] = {
 /* os services */
 %
 
-foreach api_sec in APIUSED do
-  foreach api_func in api_sec::SYSCALL do
+foreach api_func in listOfApiFunc do
 %    (tpl_system_call) % !api_func::KERNEL 
-  between %,
-%
-  end foreach
   between %,
 %
 end foreach

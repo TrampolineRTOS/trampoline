@@ -56,12 +56,13 @@ end foreach
 
 #------------------------------------------------------------------------------*
 
+let thereAreISR1 := false
 foreach objList in objForIRQ do
   let objList_KEY := KEY
-  let indexISR2 := 0
   foreach obj in objList do
     if obj::KIND == "ISR" then
-      if obj::CATEGORY == 1 then
+      if obj::CATEGORY == 1 & not thereAreISR1 then
+        let thereAreISR1 := true
 %extern FUNC(void, OS_CODE) % !obj::NAME %_function(void);
 %
       end if
@@ -73,6 +74,10 @@ foreach objList in objForIRQ do
   end foreach
 end foreach
 
+%
+extern volatile VAR (uint32, OS_VAR) service_call_from_isr1;
+%
+
 let indexISR2 := 0
 foreach objList in objForIRQ do
   let objList_KEY := KEY
@@ -82,11 +87,13 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
 %
   # ISR1
 %  /* ISR1s */
-%  
+%
   foreach obj in objList do
     if obj::KIND == "ISR" then
       if obj::CATEGORY == 1 then
-%  % !obj::NAME %_function();
+%  service_call_from_isr1++;
+  % !obj::NAME %_function();
+  service_call_from_isr1--;
 %
       end if
     end if
@@ -96,16 +103,16 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
   # Test for ISR2
 %  /* ISR2s */
 %  
-  let thereAreISR2 := false
+  let thereAreISR2forThisObjList := false
   foreach obj in objList do
     if obj::KIND == "ISR" then
       if obj::CATEGORY == 2 then
-        let thereAreISR2 := true
+        let thereAreISR2forThisObjList := true
       end if
     end if
   end foreach
   
-  if thereAreISR2 then
+  if thereAreISR2forThisObjList then
     foreach obj in objList
       before
 %  GET_CURRENT_CORE_ID(core_id)
