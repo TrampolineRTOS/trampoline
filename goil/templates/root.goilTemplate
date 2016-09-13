@@ -767,23 +767,29 @@ end foreach
 # ready list (heap) per core
 #
 let CORES := @[]
+loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+    let CORES[[core_id string]]::TASKS := @()
+    let CORES[[core_id string]]::ISRS := @()
+end loop
+
 if [APPLICATION length] > 0 then
   let task_map := mapof TASKS by NAME
   let isr_map := mapof ISRS2 by NAME
+
   foreach app in APPLICATION do
     let core := [exists app::CORE default (0) string]
-    let CORES[core]::TASKS := @()
-    let CORES[core]::ISRS := @()
     foreach task_name in exists app::TASK default ( @() ) do
       let CORES[core]::TASKS += task_map[task_name::VALUE]
     end foreach
     foreach isr_name in exists app::ISR default ( @() ) do
-      let CORES[core]::ISRS += isr_map[isr_name::VALUE]
+      if exists isr_map[isr_name::VALUE] then
+        let CORES[core]::ISRS += isr_map[isr_name::VALUE]
+      end if
     end foreach
   end foreach
 else
   let CORES["0"]::TASKS := TASKS
-  let CORES["0"]::ISRS := ISRS
+  let CORES["0"]::ISRS := ISRS2
 end if
 
 #------------------------------------------------------------------------------*
@@ -1173,9 +1179,18 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
     if not exists app::COUNTER then let app::COUNTER := @() end if
     if not exists app::IOC then let app::IOC := @() end if
 
+    let isr_map := mapof ISRS2 by NAME
+
     # vectors for process access
-    let process_of_app := app::TASK | app::ISR
-    
+    let process_of_app := app::TASK
+
+    # Add ISR
+    foreach isr in app::ISR do
+      if exists isr_map[isr::VALUE] then
+        let process_of_app += isr
+      end if
+    end foreach
+
 #    display app::TASK
 #    display app::ISR
 #    display process_of_app
