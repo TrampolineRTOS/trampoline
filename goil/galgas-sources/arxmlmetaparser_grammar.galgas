@@ -1,0 +1,33 @@
+#---------------------------------------------------------------------------*
+#
+#  @file arxmlmetaparser_grammar.galgas
+#
+#  @section desc File description
+#
+#  Grammar for AUTOSAR's arxml's meta-data parsing.
+#
+#  @section copyright Copyright
+#
+#  Goil OIL compiler, part of Trampoline RTOS
+#
+#  Trampoline is copyright (c) CNRS, University of Nantes,
+#  Ecole Centrale de Nantes
+#  Trampoline is protected by the French intellectual property law.
+#
+#  This software is distributed under the GNU Public Licence V2.
+#  Check the LICENSE file in the root directory of Trampoline
+#
+#  $Date$
+#  $Rev$
+#  $Author$
+#  $URL$
+#
+#---------------------------------------------------------------------------*
+
+grammar arxmlmetaparser_grammar "LL1" {
+  syntax arxmlmetaparser_syntax
+  <arxmlmetaparser_start_symbol>
+    !@arxmlMetaTypeMap classMap
+    ?@bool create_class_file
+}
+

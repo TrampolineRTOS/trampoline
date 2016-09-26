@@ -1,10 +1,10 @@
 #---------------------------------------------------------------------------*
 #
-#  @file arxml_scanner.galgas
+#  @file arxmlmetaparser_scanner.galgas
 #
 #  @section desc File description
 #
-#  Scanner for arxml parsing.
+#  Scanner for AUTOSAR's arxml's meta-data parsing.
 #
 #  @section copyright Copyright
 #
@@ -24,7 +24,7 @@
 #
 #---------------------------------------------------------------------------*
 
-template lexique arxml_scanner {
+template lexique arxmlmetaparser_scanner {
 
 template "<" %preserved ... ""
 
@@ -66,14 +66,17 @@ rule "<!--" {
   while ~ "-->" error incorrectCommentError :
     enterCharacterIntoString ( !?tokenString !'-' )
   end
-  send $comment$
+#  send $comment$
+  drop $comment$
 }
 
 # ----------------------------- Delimiters ---------------------------------------
 list xmlDelimitorsList style delimitersStyle error message "the '%K' delimitor"
 {
   "<",
-  "<?",
+  "<xsd:",
+  "</xsd:",
+  "<?xml",
   ">" %templateEndMark,
   "?>" %templateEndMark,
   "/>" %templateEndMark,
@@ -85,19 +88,19 @@ rule list xmlDelimitorsList
 
 #-------------------------- name  --------------------
 
-$name$ ! tokenString style nameStyle error message "a name"
+$xmlTag$ ! tokenString style nameStyle error message "a name"
 
 rule isUnicodeLetter {
   repeat
     enterCharacterIntoString ( !?tokenString !* )
   while isUnicodeLetter | '0'->'9' | '-' | ':' :
   end
-  send $name$
+  send search tokenString in keyWordList default $xmlTag$
 }
 
 #-------------------------- Attribute value  --------------------
 
-$value$ ! tokenString style attributeValue error message "an attribute value"
+$xmlTagValue$ ! tokenString style attributeValue error message "an attribute value"
 
 message incorrectAttributeEnd : "attribute value should be enclosed between apostrophes (') or quotation marks (\")"
 
@@ -116,7 +119,7 @@ rule '"' {
   while ~ "\"" error incorrectAttributeEnd :
     enterCharacterIntoString ( !?tokenString !* )
   end
-  send $value$
+  send $xmlTagValue$
 }
 
 rule ''' {
@@ -134,13 +137,100 @@ rule ''' {
   while ~ "'" error incorrectAttributeEnd :
     enterCharacterIntoString ( !?tokenString !* )
   end
-  send $value$
+  send $xmlTagValue$
 }
 
 # --------------------- separators -----------------------------------------
 rule '\u0001' -> ' ' {
 }
 
+
+# --------------------- keywords -----------------------------------------
+
+style keywordsStyle -> "Keywords"
+
+$identifier$ ! tokenString style textStyle error message "an identifier"
+
+#--- This is the keyword list
+list keyWordList style keywordsStyle error message "the '%K' keyword" {
+#### Xsd tag possible values
+  "group",
+  "annotation",
+  "appinfo",
+  "attribute",
+  "attributeGroup",
+  "choice",
+  "complexType",
+  "documentation",
+  "element",
+  "enumeration",
+  "extension",
+  "import",
+  "maxLength",
+  "pattern",
+  "restriction",
+  "schema",
+  "sequence",
+  "simpleContent",
+  "simpleType",
+  "whiteSpace",
+#### Attributes possible values
+  "abstract",
+  "attributeFormDefault",
+  "attributeRef",
+  "base",
+  "category",
+  "CATEGORY",
+  "color",
+  "customType",
+  "elementFormDefault",
+  "encoding",
+  "enforceMinMultiplicity",
+  "globalElement",
+  "id",
+  "latestBindingTime",
+  "maxOccurs",
+  "minOccurs",
+  "mixed",
+  "name",
+  "namePlural",
+  "namespace",
+  "noteType",
+  "nsPrefix",
+  "qualifiedName",
+  "recommendedPackage",
+  "ref",
+  "roleElement",
+  "roleWrapperElement",
+  "schemaLocation",
+  "sequenceOffset",
+  "source",
+  "Splitkey",
+  "Status",
+  "StatusRevisionBegin",
+  "targetNamespace",
+  "type",
+  "typeElement",
+  "typeWrapperElement",
+  "use",
+  "value",
+  "version",
+  "xmlns:AR",
+  "xmlns:xsd",
+#### DEBUG
+  "TODO"
+}
+
+rule '\u0001' -> '\u003B' | '\u003D' -> '\U0010FFFF'
+{
+  repeat
+    enterCharacterIntoString (!?tokenString !*)
+  while '\u0001' -> '\u003B' | '\u003D' -> '\U0010FFFF' :
+  end
+  send search tokenString in keyWordList default $identifier$
+}
+
 #----------------------------------------------------------------------------*
 
 }
+

@@ -1,0 +1,437 @@
+#---------------------------------------------------------------------------*
+#
+#  @file arxmlmetaparser_semantics.galgas
+#
+#  @section desc File description
+#
+#  Semantics for AUTOSAR's arxml's meta-data parsing.
+#
+#  @section copyright Copyright
+#
+#  Goil OIL compiler, part of Trampoline RTOS
+#
+#  Trampoline is copyright (c) CNRS, University of Nantes,
+#  Ecole Centrale de Nantes
+#  Trampoline is protected by the French intellectual property law.
+#
+#  This software is distributed under the GNU Public Licence V2.
+#  Check the LICENSE file in the root directory of Trampoline
+#
+#  $Date$
+#  $Rev$
+#  $Author$
+#  $URL$
+#
+#---------------------------------------------------------------------------*
+
+map @arxmlMetaTypeMap{
+  @arxmlMetaType mType
+
+  insert insertKey error message "the %K class has already been declared"
+  search searchKey error message "the %K class has not yet been defined"
+  remove removeKey error message "the %K class does not exists"
+}
+setter @arxmlMetaTypeMap addClassElement
+  ?@lstring className
+  ?@arxmlMetaElement mElement
+{
+  @arxmlMetaType modifiedClass
+  [!?self removeKey !className ?modifiedClass]
+  if modifiedClass is == @arxmlMetaClass then
+    @arxmlMetaClass cModifiedClass = modifiedClass as @arxmlMetaClass
+    [!?cModifiedClass addElement !mElement]
+    [!?self insertKey !className !cModifiedClass]
+  else
+    error .here : "Trying to add an Element to a type that is not a class."
+  end
+}
+setter @arxmlMetaTypeMap addClassAttribute
+  ?@lstring className
+  ?@arxmlMetaAttribute mAttribute
+{
+  @arxmlMetaType modifiedClass
+  [!?self removeKey !className ?modifiedClass]
+  if modifiedClass is == @arxmlMetaClass then
+    @arxmlMetaClass cModifiedClass = modifiedClass as @arxmlMetaClass
+    [!?cModifiedClass addAttribute !mAttribute]
+    [!?self insertKey !className !cModifiedClass]
+  else
+    error .here : "Trying to add an Attribute to a type that is not a class."
+  end
+}
+setter @arxmlMetaTypeMap updateLegacyParameters
+  ?@lstring className
+  ?@arxmlMetaElementList lElement
+  ?@arxmlMetaAttributeList lAttribute
+{
+  @arxmlMetaType modifiedClass
+  [!?self removeKey !className ?modifiedClass]
+  if modifiedClass is == @arxmlMetaClass then
+    @arxmlMetaClass cModifiedClass = modifiedClass as @arxmlMetaClass
+    [!?cModifiedClass legacyUpdate !lElement !lAttribute]
+    [!?self insertKey !className !cModifiedClass]
+  else
+    error .here : "Trying to add an Element to a type that is not a class."
+  end
+}
+method @arxmlMetaTypeMap display
+  ?!@string ioString
+{
+  for () in self do
+    [mType display !self !?ioString]
+  end
+}
+
+graph @arxmlMetaClassGraph(@lstringlist)
+{
+  insert addNode error message "the %K class has already been declared"
+}
+
+abstract class @arxmlMetaType
+{
+}
+abstract method @arxmlMetaType display
+  ?@arxmlMetaTypeMap classMap
+  ?!@string ioString
+
+list @arxmlMetaClasslist
+{
+  @arxmlMetaClass lClass
+}
+class @arxmlMetaClass : @arxmlMetaType
+{
+  @lstring name
+  @bool isAbstract
+  @arxmlMetaElementList lElement
+  @arxmlMetaElementList lElementLegacy
+  @arxmlMetaAttributeList lAttribute
+  @arxmlMetaAttributeList lAttributeLegacy
+  @lstring desc
+}
+setter @arxmlMetaClass legacyAddParameters
+  ?!@arxmlMetaTypeMap classMap
+  ?@lstringlist successors
+{
+  # Foreach successor, get the element in the map and update its lists
+  for(@lstring successor) in successors do
+    [!?classMap updateLegacyParameters
+      !successor
+      !lElement
+      !lAttribute]
+  end
+}
+setter @arxmlMetaClass legacyUpdate
+  ?@arxmlMetaElementList iElement
+  ?@arxmlMetaAttributeList iAttribute
+{
+  lElementLegacy += iElement
+  lAttributeLegacy += iAttribute
+}
+override method @arxmlMetaClass display
+  ?@arxmlMetaTypeMap classMap
+  ?!@string ioString
+{
+  @string svgString = ""
+  let @string classNameRepr = name.string
+  #let @string classNameRepr = name.string [name.string nameRepresentation]
+  #### Display the class header description
+  svgString += "############################################################\n"
+  svgString += "# " + name + "\n"
+  svgString += "# <" + desc + ">\n"
+  svgString += "#\n"
+
+  #### Display a List version of the class
+  svgString += "list @" + classNameRepr + "list\n{\n"
+  svgString += "  @"+ classNameRepr + " elem\n"
+  svgString += "}\n"
+
+  #### Add the abstract keyword if the class is abstract
+  if isAbstract then
+    svgString += "abstract "
+  end
+
+  #### Class definition
+  svgString += "class @" + classNameRepr +"\n{\n"
+
+  #### Class Elements
+  for (eElement) in lElementLegacy do
+    let @string elemTypeRepr = [eElement type].string
+    let @string elemNameRepr = [eElement name].string
+#    let @string elemTypeRepr = [[eElement type].string nameRepresentation]
+#    let @string elemNameRepr = [[eElement name].string nameRepresentation]
+
+    if [eElement type].string == "" then
+      warning .here : "Missing element's type : " + elemNameRepr
+    end
+
+    # Check if the type is a simplified one
+    [classMap searchKey ![eElement type] ?var @arxmlMetaType elemKey]
+    if elemKey is == @arxmlMetaSimpletype then
+      @arxmlMetaSimpletype elemSimpletype = elemKey as @arxmlMetaSimpletype
+      if [[elemSimpletype type] isRestrictionSimple] then
+        # Primary type
+        switch [elemSimpletype base]
+          case restrictionString :
+            svgString += "  @lstring"
+          case restrictionUint   :
+            svgString += "  @luint"
+          case restrictionDouble  :
+            svgString += "  @ldouble"
+          case restrictionUndef :
+            error .here : "Undefined type for " + [eElement name]
+                        + " simpleType."
+        end
+      else
+        # Other type
+        svgString += "  @" + elemTypeRepr
+      end
+    else
+      # Other type
+      svgString += "  @" + elemTypeRepr
+    end
+
+    # Is it a list ?
+    if [eElement minOccurs].string != [eElement maxOccurs].string
+    || [eElement minOccurs].string != "1" then
+      # 0 or * Elements
+      svgString += "list"
+    end
+
+    # Add the name and we're done
+    svgString += " elem" + elemNameRepr + "\n"
+  end
+
+  #### Class Attributes
+  for (eAttribute) in lAttributeLegacy do
+    let @string attrTypeRepr = [eAttribute type].string
+    let @string attrNameRepr = [eAttribute name].string
+    #let @string attrTypeRepr = [[eAttribute type].string nameRepresentation]
+    #let @string attrNameRepr = [[eAttribute name].string nameRepresentation]
+
+    if [eAttribute type].string != "" then
+  #    warning .here : "Missing attribute's type : " + attrNameRepr
+    end
+
+    [classMap searchKey ![eAttribute type] ?var @arxmlMetaType attrKey]
+
+    # Get the type :
+    # The type may be either a primary type (uint, string, ...), or a
+    # structure/enum/class.
+    if attrKey is == @arxmlMetaSimpletype then
+      @arxmlMetaSimpletype attrSimpletype = attrKey as @arxmlMetaSimpletype
+      if [[attrSimpletype type] isRestrictionSimple] then
+        # Primary type
+        switch [attrSimpletype base]
+          case restrictionString :
+            svgString += "  @lstring"
+          case restrictionUint   :
+            svgString += "  @luint"
+          case restrictionDouble  :
+            svgString += "  @ldouble"
+          case restrictionUndef :
+            error .here : "Undefined type for " + [eAttribute name]
+                        + " simpleType."
+        end
+      else
+        # Other type
+        svgString += "  @" + attrTypeRepr
+      end
+    else
+      error .here : "This error should never happen."
+    end
+
+    # Is it a list ?
+    if [eAttribute use].string == ""
+    || [eAttribute use].string == "optional" then
+      svgString += "list"
+    end
+
+    # Add the name and we're done
+    svgString += " attr" + attrNameRepr + "\n"
+  end
+
+  svgString += "}\n\n"
+  ioString = ioString + svgString
+}
+setter @arxmlMetaClass addElement
+  ?@arxmlMetaElement mElement
+{
+  @bool exists = false
+  for (@arxmlMetaElement eElement) in lElement do
+    if [eElement name].string == [mElement name].string
+    && [eElement type].string == [mElement type].string then
+      exists = true
+    end
+  end
+  if not exists then
+    lElement += !mElement
+  end
+}
+setter @arxmlMetaClass addAttribute
+  ?@arxmlMetaAttribute mAttribute
+{
+  @bool exists = false
+  for (@arxmlMetaAttribute eAttribute) in lAttribute do
+    if [eAttribute name].string == [mAttribute name].string
+    && [eAttribute type].string == [mAttribute type].string then
+      exists = true
+    end
+  end
+  if not exists then
+    lAttribute += !mAttribute
+  end
+}
+setter @arxmlMetaClass setDescription
+  ?@lstring iDesc
+{
+  desc = iDesc
+}
+getter @arxmlMetaClass hasElement
+  ?@string eleName
+  -> @bool oFound
+{
+  @bool found = false
+
+  for (@arxmlMetaElement currentElement) in lElementLegacy
+  while not found do
+    if eleName == [currentElement name].string then
+      found = true
+    end
+  end
+
+  oFound = found
+}
+getter @arxmlMetaClass hasAttribute
+  ?@string attrName
+  -> @bool oFound
+{
+  @bool found = false
+
+  for (@arxmlMetaAttribute currentAttribute) in lAttributeLegacy
+  while not found do
+    if attrName == [currentAttribute name].string then
+      found = true
+    end
+  end
+
+  oFound = found
+}
+
+list @arxmlMetaElementList
+{
+  @arxmlMetaElement lElement
+}
+class @arxmlMetaElement
+{
+  @lstring name
+  @lstring type
+  @lstring minOccurs
+  @lstring maxOccurs
+  @lstring prefix
+}
+getter @arxmlMetaElementList string
+  -> @string outString
+{
+  outString = ""
+  for (@arxmlMetaElement mElement) in self do
+    outString += "\"" + [mElement name].string + "\""
+  between
+    outString += " ; "
+  end
+}
+
+list @arxmlMetaAttributeList
+{
+  @arxmlMetaAttribute lAttribute
+}
+class @arxmlMetaAttribute
+{
+  @lstring name
+  @lstring type
+  @lstring prefix
+  @lstring use
+}
+getter @arxmlMetaAttributeList string
+  -> @string outString
+{
+  outString = ""
+  for (@arxmlMetaAttribute mAttribute) in self do
+    outString += "\"" + [mAttribute name].string + "\""
+  between
+    outString += " ; "
+  end
+}
+
+enum @restrictionType
+{
+  case restrictionSimple    # Convert to a defined type (uint, lstring...)
+  case restrictionEnum      # Convert to an enumeration
+  case restrictionOther     # Convert to a Struct
+  case restrictionUnused    # Should not happen
+}
+enum @restrictionBaseType
+{
+  case restrictionString    # Convert to a lstring
+  case restrictionUint      # Convert to an lunsigned int
+  case restrictionDouble    # Convert to a ldouble
+  case restrictionUndef     # Error while parsing
+}
+class @arxmlMetaSimpletype : @arxmlMetaType
+{
+  @lstring name
+  @restrictionType type
+  @restrictionBaseType base
+  @lstringlist values
+}
+override method @arxmlMetaSimpletype display
+  ?@arxmlMetaTypeMap unused classMap
+  ?!@string ioString
+{
+  @string svgString = ""
+  let @string typeNameRepr = name.string
+  #let @string typeNameRepr = [name.string nameRepresentation]
+  #### Display the simple type header
+  svgString += "############################################################\n"
+  svgString += "# " + name + "\n"
+
+  switch type
+    case restrictionSimple :
+      # No declaration. Directly displayed by the class depending of the type
+    case restrictionEnum   :
+      #### Display a List version of the class
+      svgString += "list @" + typeNameRepr + "list\n{\n"
+      svgString += "  @"+ typeNameRepr + " elem\n"
+      svgString += "}\n"
+
+      svgString += "enum @" + typeNameRepr + "\n"
+      svgString += "{\n"
+      for (value) in values do
+        let @string valueRepr = value.string
+        #let @string valueRepr = [value.string nameRepresentation]
+        svgString += "  case case" + valueRepr + "\n"
+      end
+      svgString += "}\n"
+    case restrictionOther  :
+      error .here : "TODO"
+    case restrictionUnused :
+      error .here : "This error should never happen."
+  end
+
+  ioString = ioString + svgString
+}
+setter @arxmlMetaSimpletype setType
+  ?@restrictionType iType
+{
+  type = iType
+}
+setter @arxmlMetaSimpletype setBase
+  ?@restrictionBaseType iBase
+{
+  base = iBase
+}
+setter @arxmlMetaSimpletype addValue
+  ?@lstring value
+{
+  values += !value
+}
+

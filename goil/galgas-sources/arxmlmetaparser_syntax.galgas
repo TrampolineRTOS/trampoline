@@ -1,0 +1,1217 @@
+#---------------------------------------------------------------------------*
+#
+#  @file arxmlmetaparser_syntax.galgas
+#
+#  @section desc File description
+#
+#  Syntax for AUTOSAR's arxml's meta-data parsing.
+#
+#  @section copyright Copyright
+#
+#  Goil OIL compiler, part of Trampoline RTOS
+#
+#  Trampoline is copyright (c) CNRS, University of Nantes,
+#  Ecole Centrale de Nantes
+#  Trampoline is protected by the French intellectual property law.
+#
+#  This software is distributed under the GNU Public Licence V2.
+#  Check the LICENSE file in the root directory of Trampoline
+#
+#  $Date$
+#  $Rev$
+#  $Author$
+#  $URL$
+#
+#---------------------------------------------------------------------------*
+
+syntax arxmlmetaparser_syntax (arxmlmetaparser_scanner) {
+
+#------------------------------------------------------------------------------
+
+rule <arxmlmetaparser_start_symbol>
+  !@arxmlMetaTypeMap iClassMap
+  ?@bool create_class_file
+{
+  @arxmlMetaTypeMap classMap = {}
+  @arxmlMetaClassGraph classGraph = .emptyGraph
+
+# Parse the file and fill the maps
+  <xml_header>
+  <xsd_schema> !?classMap !?classGraph
+
+# Add parameters following the Legacy of each classes
+  fillLegacy(!?classMap !?classGraph)
+
+# Compute debug files if requested
+  if create_class_file then
+    # Class file
+    @string classString = ""
+    [classMap display !?classString]
+    [classString writeToFile !"arxml_ecuc_classes.galgas"]
+
+    # Graph file
+    @string graphString = [classGraph graphviz]
+    [graphString writeToFile !"arxml_ecuc_graph.dot"]
+  end
+
+# Set outputs
+  iClassMap = classMap
+}
+
+rule <xml_header>
+{
+  $<?xml$
+  <xsd_ignore_attributes>
+  $?>$
+}
+
+###############################################################################
+## xsd_annotation
+##
+rule <xsd_annotation>
+  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassGraph classGraph
+  ?@lstring parentClass
+{
+  <xsd_ignore_attributes>
+  select $>$
+    repeat
+    while $<xsd:$
+      select $appinfo$
+        <xsd_appinfo> !?classMap !?classGraph !parentClass
+      or $documentation$
+        <xsd_documentation> !?classMap !?classGraph !parentClass
+      end
+    end
+    # End marker
+    $</xsd:$
+    $annotation$
+    $>$
+  or $/>$
+  end
+}
+
+###############################################################################
+## xsd_appinfo
+##
+rule <xsd_appinfo>
+  ?!@arxmlMetaTypeMap unused classMap
+  ?!@arxmlMetaClassGraph unused classGraph
+  ?@lstring unused parentClass
+{
+  <xsd_ignore_attributes>
+  select $>$
+    # End marker
+    $</xsd:$
+    $appinfo$
+    $>$
+  or $/>$
+  end
+}
+###############################################################################
+## xsd_attribute
+##
+rule <xsd_attribute>
+  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassGraph classGraph
+  ?@lstring parentClass
+{
+  lstringhere(?@lstring attributeType !"")
+  lstringhere(?@lstring attributeName !"")
+  lstringhere(?@lstring attributeRef  !"")
+  lstringhere(?@lstring attributePrefix  !"")
+  lstringhere(?@lstring attributeUse  !"")
+
+  repeat
+  while $ref$
+    # Unsed to signal a whitespace will be present after. Unused
+    $=$
+    $xmlTagValue$ ?attributeRef
+  while $type$
+    @lstring fullType
+    $=$
+    $xmlTagValue$ ?fullType
+    # The Type is either "Prefix:Type" or "Type"
+    if [fullType.string containsCharacter !':'] then
+      @stringlist parsed = [fullType.string componentsSeparatedByString !":"]
+      @string parsedString
+      [parsed first ?parsedString]
+      attributePrefix.string = parsedString
+      attributePrefix.location = fullType.location
+      [parsed last ?parsedString]
+      attributeType.string = parsedString
+      attributeType.location = fullType.location
+    else
+      attributeType = fullType
+    end
+  while $name$
+    $=$
+    $xmlTagValue$ ?attributeName
+    attributeName.string = [attributeName.string stringByReplacingStringByString !"<" !""]
+    attributeName.string = [attributeName.string stringByReplacingStringByString !">" !""]
+  while $use$
+    $=$
+    $xmlTagValue$ ?attributeUse
+  end
+
+  if attributeName.string != "" then
+    @arxmlMetaAttribute newAttribute = @arxmlMetaAttribute.new{
+                                                       !attributeName
+                                                       !attributeType
+                                                       !attributePrefix
+                                                       !attributeUse
+                                                      }
+    [!?classMap addClassAttribute !parentClass !newAttribute]
+  end
+
+  select $>$
+    repeat
+    while $<xsd:$
+      select $annotation$
+        <xsd_annotation> !?classMap !?classGraph !parentClass
+      or $simpleType$
+        <xsd_simpleType> !?classMap !?classGraph !parentClass
+      end
+    end
+    # End marker
+    $</xsd:$
+    $attribute$
+    $>$
+  or $/>$
+  end
+}
+
+###############################################################################
+## xsd_attributeGroup
+##
+rule <xsd_attributeGroup>
+  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassGraph classGraph
+  ?@lstring parentClass
+{
+  # Parse the attributes
+  @lstring className
+  @lstring nextParentClass
+  select $name$
+    # The class does not exists => create it
+    $=$
+    $xmlTagValue$ ?className            # Get the classname from the file
+    className.string = [className.string stringByReplacingStringByString !"<" !""]
+    className.string = [className.string stringByReplacingStringByString !">" !""]
+    lstringhere(?@lstring desc !"")     # The description is filled later
+
+    if not [classMap hasKey !className] then
+      @arxmlMetaClass newClass = @arxmlMetaClass.new{
+                                                     !className
+                                                     !true
+                                                     !{} !{}
+                                                     !{} !{}
+                                                     !desc
+                                                    }
+      [!?classMap insertKey !className !newClass]
+      [!?classGraph addNode !className !className]
+    end
+
+    nextParentClass = className
+  or $ref$
+    $=$
+    $xmlTagValue$ ?let @lstring fullClassName
+    className = fullClassName
+    # The Type is either "Prefix:Type" or "Type"
+    if [fullClassName.string containsCharacter !':'] then
+      @stringlist parsed = [fullClassName.string componentsSeparatedByString !":"]
+      [parsed last ?let @string parsedString]
+      className.string = parsedString
+    end
+
+    # Add to the Graph
+    if parentClass.string != className.string then
+      [!?classGraph addEdge !className !parentClass]
+    end
+
+    nextParentClass = parentClass
+  end
+
+  select $>$
+    repeat
+    while $<xsd:$
+      select $annotation$
+        <xsd_annotation> !?classMap !?classGraph !nextParentClass
+      or $attribute$
+        <xsd_attribute> !?classMap !?classGraph !nextParentClass
+      or $attributeGroup$
+        <xsd_attributeGroup> !?classMap !?classGraph !nextParentClass
+      or $choice$
+        <xsd_choice> !?classMap !?classGraph !nextParentClass
+      or $sequence$
+        <xsd_sequence> !?classMap !?classGraph !nextParentClass
+      end
+    end
+    # End marker
+    $</xsd:$
+    $attributeGroup$
+    $>$
+  or $/>$
+  end
+}
+
+###############################################################################
+## xsd_choice
+##
+rule <xsd_choice>
+  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassGraph classGraph
+  ?@lstring parentClass
+{
+  <xsd_ignore_attributes>
+  select $>$
+    repeat
+    while $<xsd:$
+      select $annotation$
+        <xsd_annotation> !?classMap !?classGraph !parentClass
+      or $choice$
+        <xsd_choice> !?classMap !?classGraph !parentClass
+      or $sequence$
+        <xsd_sequence> !?classMap !?classGraph !parentClass
+      or $element$
+        <xsd_element> !?classMap !?classGraph !parentClass
+      or $group$
+        <xsd_group> !?classMap !?classGraph !parentClass
+      end
+    end
+    # End marker
+    $</xsd:$
+    $choice$
+    $>$
+  or $/>$
+  end
+}
+
+###############################################################################
+## xsd_complexType
+##
+rule <xsd_complexType>
+  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassGraph classGraph
+  ?@lstring parentClass
+{
+  lstringhere(?@lstring complexAbstract !"")
+  lstringhere(?@lstring complexMixed !"")
+  lstringhere(?@lstring complexName !"")
+
+  repeat
+  while $abstract$
+    $=$
+    $xmlTagValue$ ?complexAbstract
+  while $mixed$
+    $=$
+    $xmlTagValue$ ?complexMixed
+  while $name$
+    $=$
+    $xmlTagValue$ ?complexName
+    complexName.string = [complexName.string stringByReplacingStringByString !"<" !""]
+    complexName.string = [complexName.string stringByReplacingStringByString !">" !""]
+  end
+
+  if complexName.string == "" then
+    # The complexType node is inside an element node
+    # => We have to create this element's class
+    complexName = parentClass
+  end
+
+  if not [classMap hasKey !complexName] then
+    lstringhere(?@lstring desc !"")
+    @arxmlMetaClass newClass = @arxmlMetaClass.new{
+                                                   !complexName
+                                                   !false
+                                                   !{} !{}
+                                                   !{} !{}
+                                                   !desc
+                                                  }
+    [!?classMap insertKey !complexName !newClass]
+    [!?classGraph addNode !complexName !complexName]
+  end
+
+  select $>$
+    repeat
+    while $<xsd:$
+      select $annotation$
+        <xsd_annotation> !?classMap !?classGraph !complexName
+      or $attribute$
+        <xsd_attribute> !?classMap !?classGraph !complexName
+      or $attributeGroup$
+        <xsd_attributeGroup> !?classMap !?classGraph !complexName
+      or $choice$
+        <xsd_choice> !?classMap !?classGraph !complexName
+      or $sequence$
+        <xsd_sequence> !?classMap !?classGraph !complexName
+      or $group$
+        <xsd_group> !?classMap !?classGraph !complexName
+      or $simpleContent$
+        <xsd_simpleContent> !?classMap !?classGraph !complexName
+      end
+    end
+    # End marker
+    $</xsd:$
+    $complexType$
+    $>$
+  or $/>$
+  end
+}
+
+###############################################################################
+## xsd_documentation
+##
+rule <xsd_documentation>
+  ?!@arxmlMetaTypeMap unused classMap
+  ?!@arxmlMetaClassGraph unused classGraph
+  ?@lstring unused parentClass
+{
+  <xsd_ignore_attributes>
+  select $>$
+    # TODO : Get the description between '>' and '<'
+    # End marker
+    $</xsd:$
+    $documentation$
+    $>$
+  or $/>$
+  end
+}
+
+###############################################################################
+## xsd_element
+##
+rule <xsd_element>
+  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassGraph classGraph
+  ?@lstring parentClass
+{
+  @arxmlMetaElement newElement
+  lstringhere(?@lstring elementType !"")
+  lstringhere(?@lstring elementName !"")
+  lstringhere(?@lstring elementMin  !"")
+  lstringhere(?@lstring elementMax  !"")
+  lstringhere(?@lstring elementPrefix  !"")
+
+  repeat
+  while $maxOccurs$
+    $=$
+    $xmlTagValue$ ?elementMax
+  while $minOccurs$
+    $=$
+    $xmlTagValue$ ?elementMin
+  while $type$
+    @lstring fullType
+    $=$
+    $xmlTagValue$ ?fullType
+    # The Type is either "Prefix:Type" or "Type"
+    if [fullType.string containsCharacter !':'] then
+      @stringlist parsed = [fullType.string componentsSeparatedByString !":"]
+      @string parsedString
+      [parsed first ?parsedString]
+      elementPrefix.string = parsedString
+      elementPrefix.location = fullType.location
+      [parsed last ?parsedString]
+      elementType.string = parsedString
+      elementType.location = fullType.location
+    else
+      elementType = fullType
+    end
+  while $name$
+    $=$
+    $xmlTagValue$ ?elementName
+    elementName.string = [elementName.string stringByReplacingStringByString !"<" !""]
+    elementName.string = [elementName.string stringByReplacingStringByString !">" !""]
+  end
+
+  if elementName.string == "" then
+    error .here : "An xsd:element must have a name."
+  end
+
+  if elementType.string == "" then
+    elementType = elementName
+#  else
+#    [!?classGraph addEdge !elementType !elementName]
+  end
+
+  if not [classMap hasKey !elementName] then
+    lstringhere(?@lstring desc !"")
+    @arxmlMetaClass newClass = @arxmlMetaClass.new{
+                                                   !elementName
+                                                   !false
+                                                   !{} !{}
+                                                   !{} !{}
+                                                   !desc
+                                                  }
+    [!?classMap insertKey !elementName !newClass]
+    [!?classGraph addNode !elementName !elementName]
+  end
+
+  newElement = @arxmlMetaElement.new{!elementName
+                                 !elementType
+                                 !elementMin
+                                 !elementMax
+                                 !elementPrefix
+                                }
+  [!?classMap addClassElement !parentClass !newElement]
+
+  select $>$
+    repeat
+    while $<xsd:$
+      select $annotation$
+        <xsd_annotation> !?classMap !?classGraph !elementName
+      or $complexType$
+        <xsd_complexType> !?classMap !?classGraph !elementName
+      or $simpleType$
+        <xsd_simpleType> !?classMap !?classGraph !elementName
+      end
+    end
+    # End marker
+    $</xsd:$
+    $element$
+    $>$
+  or $/>$
+  end
+}
+
+###############################################################################
+## xsd_enumeration
+##
+rule <xsd_enumeration>
+  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassGraph classGraph
+  ?@lstring parentClass
+  ?!@arxmlMetaSimpletype restriction
+{
+  $value$
+  $=$
+  $xmlTagValue$ ?let @lstring enumValue
+  [!?restriction addValue !enumValue]
+
+  select $>$
+    repeat
+    while $<xsd:$
+      $annotation$
+      <xsd_annotation> !?classMap !?classGraph !parentClass
+    end
+    # End marker
+    $</xsd:$
+    $enumeration$
+    $>$
+  or $/>$
+  end
+}
+
+###############################################################################
+## xsd_extension
+##
+rule <xsd_extension>
+  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassGraph classGraph
+  ?@lstring parentClass
+{
+  <xsd_ignore_attributes>
+
+  select $>$
+    repeat
+    while $<xsd:$
+      select $annotation$
+        <xsd_annotation> !?classMap !?classGraph !parentClass
+      or $attribute$
+        <xsd_attribute> !?classMap !?classGraph !parentClass
+      or $attributeGroup$
+        <xsd_attributeGroup> !?classMap !?classGraph !parentClass
+      or $choice$
+        <xsd_choice> !?classMap !?classGraph !parentClass
+      or $sequence$
+        <xsd_sequence> !?classMap !?classGraph !parentClass
+      or $group$
+        <xsd_group> !?classMap !?classGraph !parentClass
+      end
+    end
+    # End marker
+    $</xsd:$
+    $extension$
+    $>$
+  or $/>$
+  end
+}
+
+###############################################################################
+## xsd_group
+##
+rule <xsd_group>
+  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassGraph classGraph
+  ?@lstring parentClass
+{
+  # Parse the attributes
+  @lstring className
+  @lstring nextParentClass
+  select $name$
+    # The class does not exists => create it
+    $=$
+    $xmlTagValue$ ?className            # Get the classname from the file
+    className.string = [className.string stringByReplacingStringByString !"<" !""]
+    className.string = [className.string stringByReplacingStringByString !">" !""]
+    lstringhere(?@lstring desc !"")     # The description is filled later
+
+    if not [classMap hasKey !className] then
+      @arxmlMetaClass newClass = @arxmlMetaClass.new{
+                                                     !className
+                                                     !false
+                                                     !{} !{}
+                                                     !{} !{}
+                                                     !desc
+                                                    }
+      [!?classMap insertKey !className !newClass]
+      [!?classGraph addNode !className !className]
+    end
+
+    nextParentClass = className
+  or $ref$
+    $=$
+    $xmlTagValue$ ?let @lstring fullClassName
+    className = fullClassName
+    # The Type is either "Prefix:Type" or "Type"
+    if [fullClassName.string containsCharacter !':'] then
+      @stringlist parsed = [fullClassName.string componentsSeparatedByString !":"]
+      [parsed last ?let @string parsedString]
+      className.string = parsedString
+    end
+
+    # Add to the Graph
+    if parentClass.string != className.string then
+      [!?classGraph addEdge !className !parentClass]
+    end
+
+    nextParentClass = parentClass
+  end
+
+  # End of the attributes
+  select $>$
+    repeat
+    while $<xsd:$
+      select $annotation$
+        <xsd_annotation> !?classMap !?classGraph !nextParentClass
+      or $choice$
+        <xsd_choice> !?classMap !?classGraph !nextParentClass
+      or $sequence$
+        <xsd_sequence> !?classMap !?classGraph !nextParentClass
+      or $element$
+        <xsd_element> !?classMap !?classGraph !nextParentClass
+      end
+    end
+    # End marker
+    $</xsd:$
+    $group$
+    $>$
+  or $/>$
+  end
+}
+###############################################################################
+## xsd_import
+##
+rule <xsd_import>
+  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassGraph classGraph
+  ?@lstring parentClass
+{
+  <xsd_ignore_attributes>
+  select $>$
+    repeat
+    while $<xsd:$
+      $annotation$
+      <xsd_annotation> !?classMap !?classGraph !parentClass
+    end
+    # End marker
+    $</xsd:$
+    $annotation$
+    $>$
+  or $/>$
+  end
+}
+
+###############################################################################
+## xsd_restriction
+##
+rule <xsd_restriction>
+  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassGraph classGraph
+  ?@lstring parentClass
+  ?!@arxmlMetaSimpletype restriction
+{
+  lstringhere(?@lstring baseType !"")
+  @lstringlist valuesifenum = {}
+
+  $base$
+  $=$
+  $xmlTagValue$ ?baseType
+
+  if "xsd:string"  == baseType.string
+  || "xsd:NMTOKEN" == baseType.string
+  || "xsd:NMTOKENS" == baseType.string then
+    [!?restriction setBase !.restrictionString]
+    [!?restriction setType !.restrictionSimple]
+  elsif "xsd:unsignedInt" == baseType.string then
+    [!?restriction setBase !.restrictionUint]
+    [!?restriction setType !.restrictionSimple]
+  elsif "xsd:double" == baseType.string then
+    [!?restriction setBase !.restrictionDouble]
+    [!?restriction setType !.restrictionSimple]
+  else
+    error .here : "Undefined/unimplemented base type " + baseType.string
+  end
+
+  select $>$
+    repeat
+    while $<xsd:$
+      select $annotation$
+        <xsd_annotation> !?classMap !?classGraph !parentClass
+      or $attribute$
+        $TODO$
+        <xsd_attribute> !?classMap !?classGraph !parentClass
+        [!?restriction setType !.restrictionUnused]
+      or $attributeGroup$
+        $TODO$
+        <xsd_attributeGroup> !?classMap !?classGraph !parentClass
+        [!?restriction setType !.restrictionUnused]
+      or $choice$
+        $TODO$
+        <xsd_choice> !?classMap !?classGraph !parentClass
+        [!?restriction setType !.restrictionUnused]
+      or $sequence$
+        $TODO$
+        <xsd_sequence> !?classMap !?classGraph !parentClass
+        [!?restriction setType !.restrictionUnused]
+      or $group$
+        $TODO$
+        <xsd_group> !?classMap !?classGraph !parentClass
+        [!?restriction setType !.restrictionUnused]
+      or $simpleType$
+        <xsd_simpleType> !?classMap !?classGraph !parentClass
+        [!?restriction setType !.restrictionUnused]
+      or $whiteSpace$
+        # Asks a string to keep the whitespaces. Ignored.
+        if not [[restriction type] isRestrictionSimple]
+        && not [[restriction base] isRestrictionString] then
+          error .here : "Pattern condition to something not a string."
+        end
+        <xsd_whiteSpace> !?classMap !?classGraph !parentClass
+      or $maxLength$
+        # Gives a limit to a string. Ignored
+        if not [[restriction type] isRestrictionSimple]
+        && not [[restriction base] isRestrictionString] then
+          error .here : "Pattern condition to something not a string."
+        end
+        <xsd_maxLength> !?classMap !?classGraph !parentClass
+      or $pattern$
+        # Gives a condition to a string. Ignored.
+        if not [[restriction type] isRestrictionSimple]
+        && not [[restriction base] isRestrictionString] then
+          error .here : "Pattern condition to something not a string."
+        end
+        <xsd_pattern> !?classMap !?classGraph !parentClass
+      or $enumeration$
+        if not [[restriction type] isRestrictionEnum]
+        && not [[restriction type] isRestrictionSimple] then
+          error .here : "Multiple type in a same restriction."
+        end
+        if not [[restriction base] isRestrictionString] then
+          error .here : "Enumeration while restriction base not set to string."
+        end
+        <xsd_enumeration> !?classMap !?classGraph !parentClass !?restriction
+        [!?restriction setType !.restrictionEnum]
+      end
+    end
+    # End marker
+    $</xsd:$
+    $restriction$
+    $>$
+  or $/>$
+  end
+}
+
+###############################################################################
+## xsd_schema
+##
+rule <xsd_schema>
+  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassGraph classGraph
+{
+  $<xsd:$
+  $schema$
+  <xsd_ignore_attributes>
+  $>$
+
+  # We create here the root class. It is required because AUTOSAR defines
+  # a global variable for its main node "AUTOSAR". Basically we're going to put
+  # only the AUTOSAR node in this root class and give the root class definition
+  # as an output at the end of the parsing.
+  lstringhere(?@lstring rootClassName !"root")
+  lstringhere(?@lstring desc !"Root class containing the main AUTOSAR node")
+
+  @arxmlMetaClass rootClass = @arxmlMetaClass.new{
+                                                  !rootClassName
+                                                  !false
+                                                  !{} !{}
+                                                  !{} !{}
+                                                  !desc
+                                                 }
+  [!?classMap insertKey !rootClassName !rootClass]
+  [!?classGraph addNode !rootClassName !rootClassName]
+
+  repeat
+  while $<xsd:$
+    select $annotation$     #TODO see xsd:documentation
+      <xsd_annotation> !?classMap !?classGraph !rootClassName
+    or $attribute$
+      <xsd_attribute> !?classMap !?classGraph !rootClassName
+    or $attributeGroup$
+      <xsd_attributeGroup> !?classMap !?classGraph !rootClassName
+    or $complexType$
+      <xsd_complexType> !?classMap !?classGraph !rootClassName
+    or $element$
+      <xsd_element> !?classMap !?classGraph !rootClassName
+    or $group$
+      <xsd_group> !?classMap !?classGraph !rootClassName
+    or $import$             #Unused
+      <xsd_import> !?classMap !?classGraph !rootClassName
+    or $simpleType$
+      <xsd_simpleType> !?classMap !?classGraph !rootClassName
+    end
+  end
+
+  # End marker
+  $</xsd:$
+  $schema$
+  $>$
+
+}
+
+###############################################################################
+## xsd_sequence
+##
+rule <xsd_sequence>
+  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassGraph classGraph
+  ?@lstring parentClass
+{
+  select $>$
+    repeat
+    while $<xsd:$
+      select $annotation$
+        <xsd_annotation> !?classMap !?classGraph !parentClass
+      or $choice$
+        <xsd_choice> !?classMap !?classGraph !parentClass
+      or $sequence$
+        <xsd_sequence> !?classMap !?classGraph !parentClass
+      or $element$
+        <xsd_element> !?classMap !?classGraph !parentClass
+      or $group$
+        <xsd_group> !?classMap !?classGraph !parentClass
+      end
+    end
+    # End marker
+    $</xsd:$
+    $sequence$
+    $>$
+  or $/>$
+  end
+}
+
+###############################################################################
+## xsd_simpleContent
+## restriction is never called by the simpleContent in AUTOSAR
+rule <xsd_simpleContent>
+  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassGraph classGraph
+  ?@lstring parentClass
+{
+  #lstringhere(?@lstring typeName !"")
+  #@arxmlMetaSimpletype restriction = @arxmlMetaSimpletype.new{
+  #                                                    !typeName
+  #                                                    !.restrictionUnused
+  #                                                    !.restrictionUndef
+  #                                                    !{}
+  #                                                   }
+
+  select $>$
+    repeat
+    while $<xsd:$
+      select $annotation$
+        <xsd_annotation> !?classMap !?classGraph !parentClass
+      or $extension$
+        <xsd_extension> !?classMap !?classGraph !parentClass
+  #    or $restriction$
+  #      <xsd_restriction> !?classMap !?classGraph !parentClass !?restriction
+      end
+    end
+    # End marker
+    $</xsd:$
+    $simpleContent$
+    $>$
+  or $/>$
+  end
+}
+
+###############################################################################
+## xsd_simpleType
+##
+rule <xsd_simpleType>
+  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassGraph classGraph
+  ?@lstring parentClass
+{
+  # TODO : The case when the simpletype is not called by xsd:schema is not
+  #        treated (never happens in AUTOSAR).
+  lstringhere(?@lstring typeName !"")
+
+  repeat
+  while $name$
+    $=$
+    $xmlTagValue$ ?typeName
+    typeName.string = [typeName.string stringByReplacingStringByString !"<" !""]
+    typeName.string = [typeName.string stringByReplacingStringByString !">" !""]
+  end
+
+  if parentClass.string == "root" && typeName.string == "" then
+    error .here : "The name attribute is required if the simpleType element is"
+                + " a child of the schema element"
+  end
+
+  @arxmlMetaSimpletype restriction = @arxmlMetaSimpletype.new{
+                                                      !typeName
+                                                      !.restrictionUnused
+                                                      !.restrictionUndef
+                                                      !{}
+                                                     }
+
+  #if not [classMap hasKey !typeName] then
+  #  lstringhere(?@lstring desc !"")
+  #  @arxmlMetaClass newClass = @arxmlMetaClass.new{
+  #                                                 !typeName
+  #                                                 !false
+  #                                                 !{} !{}
+  #                                                 !{} !{}
+  #                                                 !desc
+  #                                                }
+  #  [!?classMap insertKey !typeName !newClass]
+  #  [!?classGraph addNode !typeName !typeName]
+  #end
+
+  select $>$
+    repeat
+    while $<xsd:$
+      select $annotation$
+        <xsd_annotation> !?classMap !?classGraph !parentClass
+      or $restriction$
+        <xsd_restriction> !?classMap !?classGraph !parentClass !?restriction
+      end
+    end
+    # End marker
+    $</xsd:$
+    $simpleType$
+    $>$
+  or $/>$
+  end
+
+  [!?classMap insertKey !typeName !restriction]
+  #[!?classGraph addNode !typeName !typeName]
+}
+
+###############################################################################
+## xsd_maxLength
+##        This forces the string to have a character number limit
+##        It is actually ignored.
+rule <xsd_maxLength>
+  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassGraph classGraph
+  ?@lstring parentClass
+{
+  <xsd_ignore_attributes>
+  select $>$
+    repeat
+    while $<xsd:$
+      $annotation$
+      <xsd_annotation> !?classMap !?classGraph !parentClass
+    end
+    # End marker
+    $</xsd:$
+    $maxLength$
+    $>$
+  or $/>$
+  end
+}
+
+###############################################################################
+## xsd_pattern
+##        This forces a pattern for a string.
+##        Ex : Forces ADDRESS--SIMPLE's string to be written as "0x[0-9][a-z]"
+##        It is actually ignored.
+rule <xsd_pattern>
+  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassGraph classGraph
+  ?@lstring parentClass
+{
+  <xsd_ignore_attributes>
+  select $>$
+    repeat
+    while $<xsd:$
+      $annotation$
+      <xsd_annotation> !?classMap !?classGraph !parentClass
+    end
+    # End marker
+    $</xsd:$
+    $pattern$
+    $>$
+  or $/>$
+  end
+}
+
+###############################################################################
+## xsd_whiteSpace
+##        This forces the string to not ignore the white spaces
+##        It is actually ignored.
+rule <xsd_whiteSpace>
+  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassGraph classGraph
+  ?@lstring parentClass
+{
+  <xsd_ignore_attributes>
+  select $>$
+    repeat
+    while $<xsd:$
+      $annotation$
+      <xsd_annotation> !?classMap !?classGraph !parentClass
+    end
+    # End marker
+    $</xsd:$
+    $whiteSpace$
+    $>$
+  or $/>$
+  end
+}
+
+rule <xsd_ignore_attributes>
+{
+  repeat
+  while $abstract$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $attributeFormDefault$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $attributeRef$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $base$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $category$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $CATEGORY$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $color$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $customType$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $elementFormDefault$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $encoding$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $enforceMinMultiplicity$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $globalElement$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $id$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $latestBindingTime$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $maxOccurs$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $minOccurs$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $mixed$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $name$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $namePlural$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $namespace$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $noteType$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $nsPrefix$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $qualifiedName$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $recommendedPackage$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $ref$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $roleElement$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $roleWrapperElement$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $schemaLocation$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $sequenceOffset$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $source$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $Splitkey$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $Status$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $StatusRevisionBegin$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $targetNamespace$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $type$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $typeElement$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $typeWrapperElement$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $use$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $value$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $version$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $xmlns:AR$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  while $xmlns:xsd$
+    @lstring attributeValue
+    $=$
+    $xmlTagValue$ ?attributeValue
+  end
+}
+
+#------------------------------------------------------------------------------
+
+}
+
+proc lstringhere
+  !@lstring string
+  ?@string  value
+{
+  string = @lstring.new{!value !@location.here{}}
+}
+
+proc fillLegacy
+  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassGraph classGraph
+{
+  @lstringlist sortedInfoList
+  @lstringlist sortedKeyList
+  @lstringlist unsortedInfoList
+  @lstringlist unsortedKeyList
+
+  # Sort the graph topologically
+  [classGraph depthFirstTopologicalSort ?sortedInfoList ?sortedKeyList
+                              ?unsortedInfoList ?unsortedKeyList]
+
+#  @uint undefNodeCount = [classGraph undefinedNodeCount]
+#  @stringlist undefNodeKey = [classGraph undefinedNodeKeyList]
+#  message "\n##### Undef node count : " + [unsortedInfoList length] + "\n"
+#  for (@string lBug) in undefNodeKey do
+#    message "#" + lBug + "\n"
+#  end
+
+  for (@lstring lClassName) in sortedInfoList do
+    @arxmlMetaType lClasst
+    [classMap searchKey !lClassName ?lClasst]
+    if lClasst is == @arxmlMetaClass then
+      @arxmlMetaClass lClass = lClasst as @arxmlMetaClass
+      # Get successors
+      @lstringlist fromList = {}
+      [!?fromList insertAtIndex ![lClass name] !0]
+      @stringset empty = .emptySet
+      @lstringlist successorList = [classGraph accessibleNodesFrom !fromList !empty]
+
+      # Add this class's elements and attributes to each of the successors class
+      [!?lClass legacyAddParameters !?classMap !successorList]
+    end
+  end
+}
+

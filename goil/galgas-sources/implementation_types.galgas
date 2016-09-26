@@ -56,6 +56,23 @@ getter @dataType oilType -> @string result {
   end
 }
 
+getter @dataType arxmlType -> @string result {
+  switch self
+  case void : result = "TPL-VOID-DEF"
+  case uint32Number : result = "ECUC-INTEGER-PARAM-DEF"
+  case sint32Number : result = "ECUC-INTEGER-PARAM-DEF"
+  case uint64Number : result = "ECUC-INTEGER-PARAM-DEF"
+  case sint64Number : result = "ECUC-INTEGER-PARAM-DEF"
+  case floatNumber : result = "ECUC-FLOAT-PARAM-DEF"
+  case string : result = "ECUC-STRING-PARAM-DEF"
+  case enumeration : result = "ECUC-ENUMERATION-PARAM-DEF"
+  case boolean : result = "ECUC-BOOLEAN-PARAM-DEF"
+  case identifier : result = "TPL-IDENTIFIER-DEF"
+  case objectType : result = "ECUC-REFERENCE-DEF"
+  case structType : result = "ECUC-PARAM-CONF-CONTAINER-DEF"
+  end
+}
+
 list @uint32List { @location location @uint value }
 list @uint64List { @location location @uint64 value }
 list @sint32List { @location location @sint value }

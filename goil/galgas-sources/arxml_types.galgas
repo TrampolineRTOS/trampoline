@@ -1,3 +1,34 @@
+#---------------------------------------------------------------------------*
+#
+#  @file arxml_types.galgas
+#
+#  @section desc File description
+#
+#  Types for arxml parsing.
+#
+#  @section copyright Copyright
+#
+#  Goil OIL compiler, part of Trampoline RTOS
+#
+#  Trampoline is copyright (c) CNRS, University of Nantes,
+#  Ecole Centrale de Nantes
+#  Trampoline is protected by the French intellectual property law.
+#
+#  This software is distributed under the GNU Public Licence V2.
+#  Check the LICENSE file in the root directory of Trampoline
+#
+#  $Date$
+#  $Rev$
+#  $Author$
+#  $URL$
+#
+#---------------------------------------------------------------------------*
+
+
+###############################################################################
+# arxmlAttributeMap
+#
+
 map @arxmlAttributeMap {
   @lstring value
   insert insertKey error message "the '%K' attribute has been already declared"
@@ -19,6 +50,10 @@ method @arxmlAttributeMap print
   end
 }
 
+###############################################################################
+# arxmlNodeList
+#
+
 list @arxmlNodeList {
   @arxmlNode node
 }
@@ -31,10 +66,99 @@ method @arxmlNodeList print
   end
 }
 
+method @arxmlNodeList getElementsFromName
+  ?let @string nodeName
+  ?!@arxmlElementList nodeList
+{
+  for (subNode) in self do
+    [subNode getElementsFromName !nodeName !?nodeList]
+  end
+}
+
+method @arxmlNodeList getSubElementsFromName
+  ?let @string nodeName
+  ?!@arxmlElementList nodeList
+{
+  for (subNode) in self do
+    [subNode getSubElementsFromName !nodeName !?nodeList]
+  end
+}
+
+method @arxmlNodeList getProperty
+  ?let @string nodeName
+  ?!@lstring value
+  ?!@bool found
+{
+  for (subNode) in self
+  while not found
+  do
+    [subNode getProperty !nodeName !?value !?found]
+  end
+}
+
+###############################################################################
+# arxmlElementList
+#
+
+list @arxmlElementList {
+  @arxmlElementNode node
+}
+
+method @arxmlElementList getElementsFromName
+  ?let @string nodeName
+  ?!@arxmlElementList nodeList
+{
+  for (subNode) in self do
+    [subNode getElementsFromName !nodeName !?nodeList]
+  end
+}
+
+method @arxmlElementList getSubElementsFromName
+  ?let @string nodeName
+  ?!@arxmlElementList nodeList
+{
+  for (subNode) in self do
+    [subNode getSubElementsFromName !nodeName !?nodeList]
+  end
+}
+
+method @arxmlElementList getProperty
+  ?let @string nodeName
+  ?!@lstring value
+  ?!@bool found
+{
+  for (subNode) in self
+  while not found
+  do
+    [subNode getProperty !nodeName !?value !?found]
+  end
+}
+
+###############################################################################
+# arxmlNode
+#
+
 abstract class @arxmlNode {}
 
 abstract method @arxmlNode print
   ?let @uint indentation
+
+abstract method @arxmlNode getElementsFromName
+  ?let @string nodeName
+  ?!@arxmlElementList nodeList
+
+abstract method @arxmlNode getSubElementsFromName
+  ?let @string nodeName
+  ?!@arxmlElementList nodeList
+
+abstract method @arxmlNode getProperty
+  ?let @string nodeName
+  ?!@lstring value
+  ?!@bool found
+
+###############################################################################
+# arxmlElementNode
+#
 
 class @arxmlElementNode : @arxmlNode {
   @lstring           name
@@ -53,6 +177,100 @@ override method @arxmlElementNode print
   [enclosedNodes print !indentation]
 }
 
+override method @arxmlElementNode getElementsFromName
+  ?let @string nodeName
+  ?!@arxmlElementList nodeList
+{
+  if nodeName == name then
+    nodeList += !self
+  end
+
+  [enclosedNodes getElementsFromName !nodeName !?nodeList]
+}
+
+override method @arxmlElementNode getSubElementsFromName
+  ?let @string nodeName
+  ?!@arxmlElementList nodeList
+{
+  for (@arxmlNode currentNode) in enclosedNodes do
+    if currentNode is == @arxmlElementNode then
+      @arxmlElementNode currentElement = currentNode as @arxmlElementNode
+      if [currentElement name].string == nodeName then
+        nodeList += !currentElement
+      end
+    end
+  end
+}
+
+method @arxmlElementNode getSubElements
+  !@arxmlElementList nodeList
+{
+  nodeList = {}
+
+  for (@arxmlNode currentNode) in enclosedNodes do
+    if currentNode is == @arxmlElementNode then
+      @arxmlElementNode currentElement = currentNode as @arxmlElementNode
+      nodeList += !currentElement
+    end
+  end
+}
+
+override method @arxmlElementNode getProperty
+  ?let @string nodeName
+  ?!@lstring value
+  ?!@bool found
+{
+  if nodeName == name then
+    [self getText !?value !?found]
+  end
+
+  if not found then
+    for (subnode) in enclosedNodes
+    while not found
+    do
+      [subnode getProperty !nodeName !?value !?found]
+    end
+  end
+}
+
+method @arxmlElementNode getText
+  ?!@lstring value
+  ?!@bool found
+{
+  for (subnode) in enclosedNodes
+  while not found
+  do
+    if subnode is == @arxmlTextNode then
+      @arxmlTextNode textnode = subnode as @arxmlTextNode
+      [textnode getText ?value]
+      found = true
+    end
+  end
+}
+
+method @arxmlElementNode getAttributes
+  ?!@arxmlAttributeMap outAttributes
+{
+  outAttributes = attributes
+}
+
+method @arxmlElementNode getAttribute
+  ?@string attributeName
+  !@lstring outAttribute
+{
+   [attributes searchKey !lstringWith(!attributeName) ?outAttribute]
+}
+
+method @arxmlElementNode getName
+  !@lstring outName
+{
+  outName = name
+}
+
+###############################################################################
+# arxmlCommentNode
+#
+
 class @arxmlCommentNode : @arxmlNode {
   @lstring           comment
 }
@@ -65,6 +283,28 @@ override method @arxmlCommentNode print
   message "COMMENT \"" + comment + "\"\n"
 }
 
+override method @arxmlCommentNode getElementsFromName
+  ?let @string unused nodeName
+  ?!@arxmlElementList unused nodeList
+{
+}
+
+override method @arxmlCommentNode getSubElementsFromName
+  ?let @string unused nodeName
+  ?!@arxmlElementList unused nodeList
+{
+}
+
+override method @arxmlCommentNode getProperty
+  ?let @string unused nodeName
+  ?!@lstring unused value
+  ?!@bool unused found
+{
+}
+
+###############################################################################
+# arxmlTextNode
+#
 
 class @arxmlTextNode : @arxmlNode {
   @lstring           text
@@ -78,6 +318,154 @@ override method @arxmlTextNode print
   message "TEXT \"" + text + "\"\n"
 }
 
-class @arxmlDocument {
-  
+override method @arxmlTextNode getElementsFromName
+  ?let @string unused nodeName
+  ?!@arxmlElementList unused nodeList
+{
 }
+
+override method @arxmlTextNode getSubElementsFromName
+  ?let @string unused nodeName
+  ?!@arxmlElementList unused nodeList
+{
+}
+
+override method @arxmlTextNode getProperty
+  ?let @string unused nodeName
+  ?!@lstring unused value
+  ?!@bool unused found
+{
+}
+
+method @arxmlTextNode getText
+  !@lstring outText
+{
+  outText = text
+}
+
+###############################################################################
+# arxmlDocument
+#
+
+class @arxmlDocument {
+
+}
+
+###############################################################################
+###############################################################################
+###############################################################################
+
+###############################################################################
+# arxmlElementValue
+#
+map @arxmlElementValueMap
+{
+  @arxmlElementValueList values
+  insert insertKey error message "the '%K' element has been already declared"
+  search searchKey error message "the '%K' element is not declared"
+  remove removeKey error message "the '%K' element does not exists"
+}
+list @arxmlElementValueList
+{
+  @arxmlElementValue value
+}
+class @arxmlElementValue
+{
+  @lstring type
+  @lstring text
+  @arxmlElementValueMap elements
+  @arxmlAttributeMap attributes
+}
+setter @arxmlElementValue insertElement
+  ?@lstring key
+  ?@arxmlElementValue element
+{
+  # Get the key's list
+  @arxmlElementValueList keyList
+  if [elements hasKey !key] then
+    [!?elements removeKey !key ?keyList]
+  else
+    keyList = {}
+  end
+  keyList += !element
+  [!?elements insertKey !key !keyList]
+}
+
+method @arxmlElementValue getElementsByPath
+  ?@stringlist path
+  ?!@arxmlElementValueList outElements
+{
+  if [path length] == 0 then
+    outElements += !self
+  else
+    @stringlist pathCopy = path
+    @string nextInPathName
+    @arxmlElementValueList nextInPathElems
+    [!?pathCopy popFirst ?nextInPathName]
+    [self getElements !nextInPathName ?nextInPathElems]
+    for(@arxmlElementValue nextElem) in nextInPathElems do
+      [nextElem getElementsByPath !pathCopy !?outElements]
+    end
+  end
+}
+
+method @arxmlElementValue getElements
+  ?@string elementName
+  !@arxmlElementValueList outElements
+{
+  @lstring key = .new{!elementName !.nowhere}
+  if [elements hasKey !key] then
+    [elements searchKey !key ?outElements]
+  else
+    outElements = {}
+  end
+}
+
+method @arxmlElementValue getElement
+  ?@string elementName
+  !@arxmlElementValue outElement
+{
+  @arxmlElementValueList foundElements
+  [self getElements !elementName ?foundElements]
+  if [foundElements length] != 1 then
+    error .here : "Found " + [[foundElements length] string] + " elements"
+                + " while searching for exactly one " + elementName
+                + " in " + type : outElement
+  else
+    [foundElements first ?outElement]
+  end
+}
+
+getter @arxmlElementValue hasElement
+  ?@string elementName
+  -> @bool outBool
+{
+  @arxmlElementValueList foundElements
+  [self getElements !elementName ?foundElements]
+  if [foundElements length] != 0 then
+    outBool = true
+  else
+    outBool = false
+  end
+}
+
+getter @arxmlElementValue getTextFromElement
+  ?@string elementName
+  -> @lstring outText
+{
+  @arxmlElementValue textElement
+  [self getElement !elementName ?textElement]
+  outText = [textElement text]
+}
+
+getter @arxmlElementValue getAttributeValueFromElement
+  ?@string elementName
+  ?@string attributeName
+  -> @lstring outText
+{
+  @arxmlElementValue textElement
+  [self getElement !elementName ?textElement]
+  @lstring attributeNamelString = .new{!attributeName !.nowhere}
+  [[textElement attributes] searchKey !attributeNamelString ?outText]
+}
+

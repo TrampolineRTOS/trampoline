@@ -33,6 +33,14 @@ rule <arxml_start_symbol>
   ?let @bool      includeComments
   ?let @bool      doNotCondenseWhiteSpaces
 {
+  @implementation imp  = @implementation. new { !@implementationMap. emptyMap}
+  @applicationDefinition application = emptyApplicationDefinition()
+  @string fileIncludeList = ""
+  @bool debug = false
+
+###############################################################################
+# Parse the arxml file
+#
   @string s = .retrieveAndResetTemplateString
   if [s length] > 0 then
     error .here : "No character is allowed before XML header"
@@ -40,10 +48,10 @@ rule <arxml_start_symbol>
 #--- XML header
   $<?$
   $name$ ?let @lstring name
-  
+
   @arxmlAttributeMap attributes = .emptyMap
   repeat
-  while 
+  while
     $name$ ?let @lstring attributeName
     $=$
     $value$ ?let @lstring attributeValue
@@ -56,12 +64,114 @@ rule <arxml_start_symbol>
     !?nodes
     !includeComments
     !doNotCondenseWhiteSpaces
-    
+
   rootNode = @arxmlElementNode.new {
     !name
     !attributes
     !nodes
   }
+
+  #log rootNode
+
+###############################################################################
+# Get the AUTOSAR Version
+#
+  @lstring autosarVersion = lstringWith(!"")
+  @lstring autosarDescription = lstringWith(!"")
+  getAutosarVersion(!rootNode ?autosarVersion ?autosarDescription)
+
+  if autosarVersion.string == "" then
+    error .here : "[TPS_ECUC_06005][TPS_ECUC_08053] : Missing AUTOSAR version"
+  end
+
+  [!?application setVersion !autosarVersion]
+  [!?application setVersionDescription !autosarDescription]
+
+  #log autosarVersion
+  #log autosarDescription
+
+###############################################################################
+# Parse the corresponding AUTOSAR meta-data file
+#
+  @string autosarVersionNoDot = [autosarVersion
+                                stringByReplacingStringByString
+                                !"." !"-"]
+  @string autosarMetaFile = "AUTOSAR_" + autosarVersionNoDot + ".xsd"
+  @string filePath = templates_directory(!"arxmlMeta") + autosarMetaFile
+  @arxmlMetaTypeMap classMap
+
+  if not [filePath fileExists] then
+    error .here : "The corresponding metafile " + filePath + " does not"
+      + " exists. The Metamodel can be found here : "
+      + "http://www.autosar.org/specification -> Methodology and Templates -> "
+      + "Templates -> AUTOSAR_MMOD_XMLSchema.zip."
+  end
+
+  grammar arxmlmetaparser_grammar in lstringWith(!filePath) ?classMap !debug
+
+###############################################################################
+# Fill the internal classes and check the arxml coherence with the meta-file
+#
+  @arxmlElementValue rootValue
+  nodeToClass(!rootNode !?classMap ?rootValue)
+
+  # log rootValue
+
+###############################################################################
+# Arxml implementation definition
+#
+# XXX : We can parse the file AUTOSAR_MOD_ECUConfigurationParameters.arxml (can
+# be found in + "http://www.autosar.org/specification -> Methodology and
+# Templates -> " + "Templates") to get AUTOSAR's implementation definition.
+# Currently we're using the OIL configuration files to get the Implementation.
+
+  includeConfigs(!?imp !?application !?fileIncludeList !autosarVersion.string)
+
+  # log imp
+
+###############################################################################
+# Fill the implementation structure (Arxml -> Oil here)
+#
+  displayOil(!"\nOIL_VERSION = \"" + autosarVersion + "\";\n\n")
+
+  convertToOil(!?imp !?application !rootValue)
+
+###############################################################################
+# Checkings & Generations
+#
+    # semantics constraint checking
+    # per object static verification
+  #  checkImplementation !imp;
+
+  #  log imp
+
+    [imp checkObjectReferences]
+
+    if @uint. errorCount == 0 then
+      setDefaults ( !imp !?application)
+    end
+
+  #  log application
+  #  log imp;
+  #  log application;
+
+    if @uint. errorCount == 0 then
+      verifyAll ( !imp !application)
+    end
+    if @uint. errorCount == 0 then
+      @gtlData templateData = [application templateData !imp]
+  #    addStringValue !?templateData !lstringWith[!"PROJECT"] ![projectName[] lastPathComponent];
+
+      generate_all ( !templateData)
+    end
+
+    fileIncludeList = [@string.stringWithSourceFilePath lastPathComponent] + ":" + fileIncludeList + "\n"
+    @string oilDepFileName = [@string.stringWithSourceFilePath stringByDeletingLastPathComponent]
+      + "/build/" + [@string.stringWithSourceFilePath lastPathComponent] + ".dep"  
+    #message "Writing dependancies to " + oilDepFileName + "\n";
+    [fileIncludeList writeToFile !oilDepFileName]
+    message fileIncludeList
+
 }
 
 #----------------------------------------------------------------------------*
@@ -75,13 +185,13 @@ rule <element_list>
   while
 
     addText ( !?nodes !doNotCondenseWhiteSpaces )
-    
+
     <element>
       !?nodes
       !includeComments
       !doNotCondenseWhiteSpaces
-    
-  end 
+
+  end
 }
 
 #----------------------------------------------------------------------------*
@@ -108,7 +218,7 @@ rule <element>
   $name$ ?let @lstring name
   @arxmlAttributeMap attributeMap = .emptyMap
   repeat
-  while 
+  while
     $name$ ?let @lstring attributeName
     $=$
     $value$ ?let @lstring attributeValue
@@ -135,7 +245,7 @@ rule <element>
     end
     $>$
   end
-    
+
   nodes += !@arxmlElementNode.new {
     !name
     !attributeMap
@@ -148,6 +258,207 @@ rule <element>
 }
 
 #----------------------------------------------------------------------------*
+
+proc getAutosarVersion
+  ?@arxmlNode     rootNode
+  !@lstring       iAutosarVersion
+  !@lstring       iAutosarDescription
+{
+  @lstring autosarVersion = lstringWith(!"")
+  @lstring autosarDescription = lstringWith(!"")
+
+  # Get AUTOSAR version from one of the AUTOSAR's ADMIN-DATA node
+  @arxmlElementList autosarNodes = .emptyList
+  [rootNode getSubElementsFromName !"AUTOSAR" !?autosarNodes]
+  if [autosarNodes length] == 0 then
+    error .here : "[TPS_GST_00077] : Missing root AUTOSAR node."
+  end
+
+  @arxmlElementList adminDataNodes = .emptyList
+  [autosarNodes getSubElementsFromName !"ADMIN-DATA" !?adminDataNodes]
+  if [adminDataNodes length] == 0 then
+    error .here : "[TPS_ECUC_06004] : Missing AUTOSAR's ADMIN-DATA node."
+  end
+
+  @arxmlElementList revisions = .emptyList
+  [adminDataNodes getElementsFromName !"DOC-REVISION" !?revisions]
+  if [adminDataNodes length] == 0 then
+    error .here : "Missing AUTOSAR'S ADMIN-DATA's DOC-REVISION NODE"
+  end
+
+  @bool version_found = false
+  @bool issued_by_found = false
+  @lstring issued_by = lstringWith(!"")
+
+  for (@arxmlElementNode revision) in revisions
+  while not version_found do
+    issued_by_found = false
+    [revision getProperty !"ISSUED-BY" !?issued_by !?issued_by_found]
+    if issued_by_found && issued_by.string == "AUTOSAR" then
+      @bool description_found = false
+      [revision getProperty !"REVISION-LABEL" !?autosarVersion !?version_found]
+      [revision getProperty !"DATE" !?autosarDescription !?description_found ]
+    end
+  end
+
+  iAutosarVersion = autosarVersion
+  iAutosarDescription = autosarDescription
+}
+
+###############################################################################
+# Includes the config files
+#
+proc includeConfigs
+  ?!@implementation imp
+  ?!@applicationDefinition application
+  ?!@string fileIncludeList
+  ?@string version
+{
+    @string config_file_name = [option goil_options.config value]
+    @stringlist configFiles = allTemplateFilePaths(!"config"
+                                                   !config_file_name+".oil")
+
+    # files are stored from the deepest to the shallowest and we should go from
+    # the shallowest to the deepest.
+    for > (@string file) in configFiles do
+      grammar goil_file_level_include in lstringWith(!file)
+                                              !?imp !?application
+                                              !?fileIncludeList !false
+    end
+
+    # then look for config files suffixed by the OIL version
+    @stringlist configVersionFiles = allTemplateFilePaths(!"config"
+                                              !config_file_name+version+".oil")
+
+    for > (@string file) in configVersionFiles do
+      grammar goil_file_level_include in lstringWith(!file)
+                                              !?imp !?application
+                                              !?fileIncludeList !false
+    end
+}
+
+proc nodeToClass
+  ?@arxmlNode     rootNode
+  ?!@arxmlMetaTypeMap classMap
+  !@arxmlElementValue rootValue
+{
+  @arxmlElementList autosarNodes = .emptyList
+  [rootNode getSubElementsFromName !"AUTOSAR" !?autosarNodes]
+  if [autosarNodes length] == 0 then
+    error .here : "[TPS_GST_00077] : Missing root AUTOSAR node."
+  end
+  if [autosarNodes length] > 1 then
+    error .here : "[TPS_GST_00077] : Too many AUTOSAR nodes."
+  end
+
+  #@arxmlElementValue elementValue
+  @arxmlElementNode autosarNode
+  [autosarNodes first ?autosarNode]
+  nodeToClassRes(!autosarNode !classMap ?rootValue)
+}
+
+proc nodeToClassRes
+  ?@arxmlElementNode currentElement
+  ?@arxmlMetaTypeMap classMap
+  !@arxmlElementValue elementValue
+{
+  # Get the node's Class
+  @arxmlMetaType currentType
+  [classMap searchKey ![currentElement name] ?currentType]
+  # It must be a class
+  @arxmlMetaClass currentClass = currentType as @arxmlMetaClass
+
+  # Get the subText if any
+  @bool textFound = false
+  @lstring text = .new{!"" !.nowhere}
+  [currentElement getText !?text !?textFound]
+
+  # Create the Element Class
+  @lstring type = [currentClass name]
+  elementValue = @arxmlElementValue.new{
+                                        !type
+                                        !text
+                                        !.emptyMap
+                                        ![currentElement attributes]
+                                       }
+
+  # Check Element existence
+  [currentElement getSubElements ?@arxmlElementList subElements]
+  for (@arxmlElementNode subElement) in subElements do
+    if not [currentClass hasElement ![subElement name].string] then
+      error [subElement name] : "The element " + [subElement name].string
+                  + " does not belong to the "
+                  + [currentElement name].string + " element."
+                  + "Possible elements are : " + [currentClass lElementLegacy]
+    end
+  end
+
+  # Check Attributes existence (except for root AUTOSAR node that may contain
+  # anything)
+  if [currentElement name].string != "AUTOSAR" then
+    for () in [currentElement attributes] do
+      if not [currentClass hasAttribute !lkey.string] then
+        error lkey : "The attribute " + lkey.string + " does not belong to the "
+                   + [currentElement name].string + " element. Possible "
+                   + "attributes are : " + [currentClass lAttributeLegacy]
+      end
+    end
+  end
+
+  # Create Element values. Check if there is enough elements.
+  for (@arxmlMetaElement eElement) in [currentClass lElementLegacy] do
+    @arxmlElementList subElements = {}
+
+    [currentElement getSubElementsFromName ![eElement name].string
+                                           !?subElements]
+
+    ##### Test if the number of elements of this kind is correct
+    # FIXME: Both defaults values should be 1. However, because of the "choice"
+    # xsd's tags that contains the minOccurs and maxOccurs of subelements, we
+    # cannot fullfill the length test when minOccurs and maxOccurs are not
+    # clearly written in the Element. We need an Union structure in Galgas to
+    # complete the xsd_choice tag with it to correct this test.
+    @uint minOccurs = 0
+    @uint maxOccurs = 1
+    # Get the minOccurs if declared in the meta file
+    if [eElement minOccurs].string != ""
+    && [[eElement minOccurs].string isDecimalUnsignedNumber] then
+      minOccurs = [[eElement minOccurs].string decimalUnsignedNumber]
+    end
+    # Test the minimum
+    if [subElements length] < minOccurs then
+      error [eElement name] : "Missing element " + [eElement name].string + "."
+                  + " Minimum : " + minOccurs + "."
+                  + " Found " + [subElements length]
+    end
+
+    # If noted as "unbounded", do not test the maximum
+    # FIXME : Remove the void string test after correcting the previous "fixme"
+    if [eElement maxOccurs].string != "unbounded"
+    && [eElement maxOccurs].string != "" then
+      # Get the maxOccurs if declared in the meta file
+      if [eElement maxOccurs].string != ""
+      && [[eElement maxOccurs].string isDecimalUnsignedNumber] then
+        maxOccurs = [[eElement maxOccurs].string decimalUnsignedNumber]
+      end
+      # Test the maximum
+      if [subElements length] > maxOccurs then
+        @arxmlElementNode subElement
+        [subElements last ?subElement]
+        error [subElement name] : "Too many node " + [eElement name].string
+                    + ". Minimum : " + minOccurs + " ; Maximum : " + maxOccurs
+                    + ". Found " + [subElements length]
+      end
+    end
+
+    # Finally add the Element
+    for (@arxmlElementNode subElement) in subElements do
+      @arxmlElementValue subElementValue
+      nodeToClassRes(!subElement !classMap ?subElementValue)
+      [!?elementValue insertElement ![subElement name] !subElementValue]
+    end
+  end
+}
 
 proc addText
   ?!@arxmlNodeList nodes
@@ -162,8 +473,595 @@ proc addText
     else
       ls = .new { !trimmedString !.here }
     end
-    
+
     nodes += !@arxmlTextNode.new { !ls }
+  end
+}
+
+proc convertToOil
+  ?!@implementation imp
+  ?!@applicationDefinition application
+  ?@arxmlElementValue rootValue
+{
+  let @lstring emptyPath = .new {!"" !.nowhere}
+
+  # Get first Packages Node
+  @arxmlElementValueList packages = {}
+  @stringlist packagesPath = {}
+  packagesPath += !"AR-PACKAGES"
+  packagesPath += !"AR-PACKAGE"
+  [rootValue getElementsByPath !packagesPath !?packages]
+
+  ##### Implementation
+  for(@arxmlElementValue package) in packages do
+    parsePackageImplementation(!?imp !?application !package !emptyPath)
+  end
+
+  ##### OS
+  # Fill the object structure
+  for(@arxmlElementValue package) in packages do
+    parsePackageOS(!?imp !?application !package !emptyPath)
+  end
+}
+
+##############################################################################
+# Parsing of Implementation packages
+
+proc parsePackageImplementation
+  ?!@implementation unused imp
+  ?!@applicationDefinition unused application
+  ?@arxmlElementValue unused packageElement
+  ?@lstring unused parentPath
+{
+#  # Get packageName
+#  @lstring packageName = [packageElement getTextFromElement !"SHORT-NAME"]
+#
+#  # Compute the new element path
+#  @lstring currentPath = .new{![parentPath string] + "/" + [packageName string]
+#                              ![packageName location]}
+#
+#  # Get the direct subnodes that correspond to an implementation
+#  # TODO
+#
+#  # Recursive call if there is another package inside
+#  @arxmlElementValueList packages = {}
+#  @stringlist packagesPath = {}
+#  packagesPath += !"AR-PACKAGES"
+#  packagesPath += !"AR-PACKAGE"
+#  [packageElement getElementsByPath !packagesPath !?packages]
+#  for(@arxmlElementValue package) in packages do
+#    parsePackageOS(!?imp !?application !package !currentPath)
+#  end
+}
+
+##############################################################################
+# Parsing of OS package
+
+proc parsePackageOS
+  ?!@implementation imp
+  ?!@applicationDefinition application
+  ?@arxmlElementValue packageElement
+  ?@lstring parentPath
+{
+  # Get packageName
+  @lstring packageName = [packageElement getTextFromElement !"SHORT-NAME"]
+
+  # Compute the new element path
+  @lstring currentPath = .new{![parentPath string] + "/" + [packageName string]
+                              ![packageName location]}
+
+  # Get the direct subnodes that correspond to an appliation definition
+  @arxmlElementValueList definitions = {}
+  @stringlist definitionPath = {}
+  definitionPath += !"ELEMENTS"
+  definitionPath += !"ECUC-MODULE-CONFIGURATION-VALUES"
+  [packageElement getElementsByPath !definitionPath !?definitions]
+  for(@arxmlElementValue definition) in definitions do
+    parseDefinitionCPU(!?imp !?application !definition !currentPath)
+  end
+
+  # Recursive call if there is another package inside
+  @arxmlElementValueList packages = {}
+  @stringlist packagesPath = {}
+  packagesPath += !"AR-PACKAGES"
+  packagesPath += !"AR-PACKAGE"
+  [packageElement getElementsByPath !packagesPath !?packages]
+  for(@arxmlElementValue package) in packages do
+    parsePackageOS(!?imp !?application !package !currentPath)
+  end
+}
+
+proc parseDefinitionCPU
+  ?!@implementation imp
+  ?!@applicationDefinition application
+  ?@arxmlElementValue packageElement
+  ?@lstring unused parentPath
+{
+  # Get CPU Name
+  @lstring cpuName = [packageElement getTextFromElement !"SHORT-NAME"]
+
+  # Get the module reference name
+  @lstring currentPath = [packageElement getTextFromElement !"DEFINITION-REF"]
+
+  # Get defined application objects
+  @objectsMap objects = [application objects]
+
+  # Get the subdefinitions
+  @arxmlElementValueList subDefs = {}
+  @stringlist subDefsPath = {}
+  subDefsPath += !"CONTAINERS"
+  subDefsPath += !"ECUC-CONTAINER-VALUE"
+  [packageElement getElementsByPath !subDefsPath !?subDefs]
+
+  displayOil(!"\nCPU " + cpuName + "\n{\n")
+
+  for(@arxmlElementValue subDefinition) in subDefs do
+    parseObjectDefinition(!?imp !?objects !subDefinition !currentPath)
+  end
+
+  # Set the CPU variables
+  [!?application setName !cpuName]
+  [!?application setObjects !objects]
+
+  displayOil(!"}; /* END CPU " + [cpuName string] + " */\n")
+}
+
+proc parseObjectDefinition
+  ?!@implementation imp
+  ?!@objectsMap objects
+  ?@arxmlElementValue packageElement
+  ?@lstring parentPath
+{
+  # Get the object's oil kind
+  @lstring currentPath = [packageElement getTextFromElement !"DEFINITION-REF"]
+  oilEquivalentName(!parentPath !currentPath ?@lstring objectKind)
+
+  # Test multiplicity
+  @implementationObject impObjOfKind = [imp impObject ![objectKind string]]
+  @objectKind objectsForKind = @objectKind. new { !@objectKindMap. emptyMap}
+  testObjectMultiplicity(!?objects !objectKind !impObjOfKind !objectsForKind)
+
+  # Get Object name
+  @lstring objectName = [packageElement getTextFromElement !"SHORT-NAME"]
+
+  # XXX : Comment this
+  @objectAttributes object = emptyObject()
+  @objectKindMap objectsKind = [objectsForKind objects]
+  if [objectsKind hasKey ![objectName string]] then
+    [!?objectsKind del !objectName ?object]
+  end
+
+  # Get the description if it exists
+  @lstring oil_desc
+  if [packageElement hasElement !"DESC"] then
+    oil_desc = [packageElement getTextFromElement !"DESC"]
+  else
+    oil_desc = .new{!"" !.nowhere}
+  end
+
+  displayOil(!"  " + [objectKind string] +" "+ [objectName string] + "\n  {\n")
+
+  # Parse contained elements
+  containerElementsReading(![impObjOfKind attributes]
+                           !?object
+                           !packageElement
+                           !currentPath)
+
+  displayOil(!"  } : \"" + [oil_desc string] + "\";\n")
+
+  # XXX : Comment this
+  @identifierMap attributes = [object objectParams]
+  if not [attributes hasKey !"NAME"] then
+    [!?attributes put !@lstring. new { !"NAME" ![objectName location]}
+                      !@stringAttribute. new { !oil_desc
+                                               ![objectName location]
+                                               ![objectName string]}]
+    [!?object setObjectParams !attributes]
+  end
+  [!?objectsKind put !objectName !object]
+  [!?objectsForKind setObjects !objectsKind]
+  [!?objects put !objectKind !objectsForKind]
+}
+
+proc containerElementsReading
+  ?let @implementationObjectMap types
+  ?!@objectAttributes identifiers
+  ?@arxmlElementValue currentElement
+  ?@lstring currentPath
+{
+  # Insert Text parameters (Strings, Enumerations, Booleans true/false)
+  @arxmlElementValueList textParameters = {}
+  @stringlist textParametersPath = {}
+  textParametersPath += !"PARAMETER-VALUES"
+  textParametersPath += !"ECUC-NUMERICAL-PARAM-VALUE"
+  [currentElement getElementsByPath !textParametersPath !?textParameters]
+
+  # Insert Numerical parameters (Integers, Floats, Booleans 1/0)
+  @arxmlElementValueList numParameters = {}
+  @stringlist numParametersPath = {}
+  numParametersPath += !"PARAMETER-VALUES"
+  numParametersPath += !"ECUC-TEXTUAL-PARAM-VALUE"
+  [currentElement getElementsByPath !numParametersPath !?numParameters]
+
+  # Insert References parameters ()
+  @arxmlElementValueList refParameters = {}
+  @stringlist refParametersPath = {}
+  refParametersPath += !"REFERENCE-VALUES"
+  refParametersPath += !"ECUC-REFERENCE-VALUE"
+  [currentElement getElementsByPath !refParametersPath !?refParameters]
+
+  # Insert References parameters ()
+  @arxmlElementValueList structParameters = {}
+  @stringlist structParametersPath = {}
+  structParametersPath += !"SUB-CONTAINERS"
+  structParametersPath += !"ECUC-CONTAINER-VALUE"
+  [currentElement getElementsByPath !structParametersPath !?structParameters]
+
+  # Concatenate the lists
+  @arxmlElementValueList allParameters = numParameters
+                                       + textParameters
+                                       + refParameters
+                                       + structParameters
+
+  # Create each parameters
+  for(@arxmlElementValue parameter) in allParameters do
+    parseParameter(!types !?identifiers !parameter !currentPath)
+  end
+}
+
+proc parseParameter
+  ?let @implementationObjectMap types
+  ?!@objectAttributes identifiers
+  ?@arxmlElementValue parameter
+  ?@lstring parentPath
+{
+  # Get parameter type
+  @object_t val
+  @lstring parameterPath = [parameter getTextFromElement !"DEFINITION-REF"]
+  oilEquivalentName(!parentPath !parameterPath ?@lstring parameterType)
+
+  # Test type existence
+  @bool typeOk = false
+  @impType type = @impVoid. new { !{!@location.here }
+                                  !@dataType.
+                                  void !emptyLString()
+                                  !false
+                                  !{} }
+  # Get parameter value's type
+  @lstring valueType = [parameter getAttributeValueFromElement
+                        !"DEFINITION-REF"
+                        !"DEST"]
+
+  # TODO ? : Get the description somewhere
+  @lstring oil_desc = .new{!"" !.nowhere}
+
+  #############################################################################
+  # Get the parameter's oil value
+  #
+  @bool isAuto = false
+  @lstring parameterValue
+  if [parameter hasElement !"VALUE"] then
+    # -------------------------------------------------------------------------
+    # <=> String, Int, Bool, Float, Enum
+    # -------------------------------------------------------------------------
+    parameterValue = [parameter getTextFromElement !"VALUE"]
+  elsif [parameter hasElement !"VALUE-REF"] then
+    # -------------------------------------------------------------------------
+    # <=> Identifier, Object
+    # -------------------------------------------------------------------------
+    parameterValue = [parameter getTextFromElement !"VALUE-REF"]
+    # We want only the name of the reference that is the last path component
+    parameterValue.string = [[parameterValue string] lastPathComponent]
+    # Remove the "Ref" or "Refs" flag in the parameterType
+    if [[parameterType string] rightSubString !3] == "REF" then
+      parameterType.string = [parameterType leftSubString
+                              ![parameterType length] - 3]
+    elsif [[parameterType string] rightSubString !4] == "REFS" then
+      parameterType.string = [parameterType leftSubString
+                              ![parameterType length] - 4]
+    else
+      error parameterValue : "An object reference must end with REF or REFS"
+    end
+  elsif [parameter hasElement !"IS-AUTO-VALUE"] then
+    # -------------------------------------------------------------------------
+    # <=> AUTO symbol
+    # -------------------------------------------------------------------------
+    parameterValue = [parameter getTextFromElement !"IS-AUTO-VALUE"]
+    if [parameterValue string] == "TRUE" || [parameterValue string] == "1" then
+      isAuto = true
+    end
+  elsif [parameter hasElement !"PARAMETER-VALUES"]
+     || [parameter hasElement !"REFERENCE-VALUES"] then
+    # -------------------------------------------------------------------------
+    # <=> STRUCT
+    # -------------------------------------------------------------------------
+    parameterValue = [parameter getTextFromElement !"SHORT-NAME"]
+  else
+    error parameterType : "No value has been found." : parameterValue
+  end
+
+  # Test and get implementation's type
+  if [types hasKey ![parameterType string]] then
+    [types get !parameterType ?type]
+    typeOk = true
+    # Test if the definition type matches the implementation type
+    testTypeError(![type type] !valueType)
+  else
+# XXX - Warning : Unused Parameters added to the config.oil file to avoid this
+    error parameterType : [parameterType string] + " is not declared in the "
+                        + "IMPLEMENTATION."
+  end
+
+  displayOil(!"    " + parameterType)
+
+  var subTypes = @implementationObjectMap.emptyMap {}
+  @objectAttributes subAttributes = emptyObject()
+
+  #############################################################################
+  # Fill the val parameter depending of the type
+  #
+  if isAuto then
+    # -------------------------------------------------------------------------
+    # AUTO
+    # -------------------------------------------------------------------------
+    displayOil(!" = AUTO;")
+    if [type autoAllowed] then
+        val = @auto.new { !oil_desc !@location.here}
+    else
+      error @location.here : "AUTO is not allowed": val
+    end
+
+  elsif [valueType string] == "ECUC-ENUMERATION-PARAM-DEF" then
+    # -------------------------------------------------------------------------
+    # ENUMERATION
+    # -------------------------------------------------------------------------
+    @impEnumType enumType = type as @impEnumType
+    if [[enumType valuesMap] hasKey ![parameterValue string]] then
+      [[enumType valuesMap] get !parameterValue ?subTypes]
+    else
+      error parameterValue : [parameterValue string] + " ENUM value "
+            + "for " + parameterType + " undeclared.\nOne of the following"
+            + "values are expected :\n" + valueList(![enumType valuesMap])
+    end
+
+    displayOil(!" = " + [parameterValue string])
+    if [subTypes count] != 0 then
+      displayOil(!"\n    {\n")
+      containerElementsReading(!subTypes !?subAttributes
+                               !parameter !parentPath)
+      displayOil(!"    }")
+    end
+    displayOil(!";")
+
+    val = @enumAttribute.new {!oil_desc
+                              ![parameterValue location]
+                              ![parameterValue string]
+                              !subAttributes}
+
+  elsif [valueType string] == "ECUC-BOOLEAN-PARAM-DEF" then
+    # -------------------------------------------------------------------------
+    # BOOLEAN
+    # -------------------------------------------------------------------------
+    @impBoolType boolType = type as @impBoolType
+    @bool booleanValue
+    if [parameterValue.string uppercaseString] == "TRUE"
+    || parameterValue.string == "1" then
+      subTypes = [boolType trueSubAttributes]
+      booleanValue = true
+    elsif [parameterValue.string uppercaseString] == "FALSE"
+    || parameterValue.string == "0" then
+      subTypes = [boolType falseSubAttributes]
+      booleanValue = false
+    else
+      booleanValue = false
+      error parameterValue : "A Boolean must be 'true', 'false', '0' or '1'"
+    end
+
+    displayOil(!" = " + [[booleanValue cString] uppercaseString])
+    if [subTypes count] != 0 then
+      displayOil(!"\n    {\n")
+      containerElementsReading(!subTypes !?subAttributes
+                               !parameter !parentPath)
+      displayOil(!"    }")
+    end
+    displayOil(!";")
+
+    val = @boolAttribute.new {!oil_desc
+                              ![parameterType location]
+                              !booleanValue
+                              !subAttributes}
+
+  elsif [valueType string] == "ECUC-INTEGER-PARAM-DEF" then
+    # -------------------------------------------------------------------------
+    # INTEGER
+    # -------------------------------------------------------------------------
+    @bool sign = false
+    if [parameterValue characterAtIndex !0] == '-' then
+      sign = true
+      parameterValue.string = [parameterValue subStringFromIndex !1]
+    elsif [parameterValue characterAtIndex !0] == '+' then
+      parameterValue.string = [parameterValue subStringFromIndex !1]
+    end
+
+    @luint64 integerValue = .new {
+                               ![[parameterValue string] decimalUnsignedNumber]
+                               ![parameterValue location]}
+
+    displayOil(!" = " + [integerValue string] + ";")
+
+    val = checkAndGetIntegerNumber(!oil_desc ![type type] !integerValue !sign)
+
+  elsif [valueType string] == "ECUC-FLOAT-PARAM-DEF" then
+    # -------------------------------------------------------------------------
+    # FLOAT
+    # -------------------------------------------------------------------------
+    @bool sign = false
+    if [parameterValue characterAtIndex !0] == '-' then
+      sign = true
+      parameterValue.string = [parameterValue subStringFromIndex !1]
+    elsif [parameterValue characterAtIndex !0] == '+' then
+      parameterValue.string = [parameterValue subStringFromIndex !1]
+    end
+
+    @ldouble floatValue = .new {
+                               ![[parameterValue string] doubleNumber]
+                               ![parameterValue location]}
+
+    displayOil(!" = " + [floatValue string] + ";")
+
+    val = checkAndGetFloatNumber(!oil_desc ![type type] !floatValue !sign)
+
+  elsif [valueType string] == "ECUC-STRING-PARAM-DEF" then
+    # -------------------------------------------------------------------------
+    # STRING
+    # -------------------------------------------------------------------------
+    displayOil(!" = \"" + [parameterValue string] + "\";")
+
+    val = @stringAttribute.new {!oil_desc
+                                ![parameterValue location]
+                                ![parameterValue string]}
+
+  elsif [valueType string] == "ECUC-REFERENCE-DEF" then
+    # -------------------------------------------------------------------------
+    # OBJECT REFERENCE
+    # -------------------------------------------------------------------------
+    displayOil(!" = " + [parameterValue string] + ";")
+
+    val = @objectRefAttribute.new {!oil_desc
+                                   ![parameterValue location]
+                                   !parameterValue}
+
+  elsif [valueType string] == "TPL-IDENTIFIER-DEF" then
+    # -------------------------------------------------------------------------
+    # IDENTIFIER
+    # -------------------------------------------------------------------------
+    displayOil(!" = " + [parameterValue string] + ";")
+
+    val = @string_class.new {!oil_desc
+                             ![parameterValue location]
+                             ![parameterValue string]}
+
+  elsif [valueType string] == "ECUC-PARAM-CONF-CONTAINER-DEF" then
+    # -------------------------------------------------------------------------
+    # STRUCTURES
+    # -------------------------------------------------------------------------
+    @impStructType structType = type as @impStructType
+    subTypes = [structType structAttributes]
+
+    displayOil(!" " + [parameterValue string] + "\n    {\n")
+    containerElementsReading(!subTypes !?subAttributes
+                             !parameter !parentPath)
+    displayOil(!"    };")
+
+    val = @structAttribute.new {!oil_desc
+                                ![parameterValue location]
+                                !parameterValue
+                                !subAttributes}
+  else
+    # -------------------------------------------------------------------------
+    # UNKNOWN TYPE
+    # -------------------------------------------------------------------------
+    error valueType : "Undefined valueType " + valueType : val
+    typeOk = false
+  end
+
+  displayOil(!"      /* ARXML Type :" + valueType + " */\n")
+
+  #############################################################################
+  # TODO : Comment this
+  #
+  @identifierMap idfs= [identifiers objectParams]
+  if [type multiple] then
+    if [idfs hasKey ![parameterType string]] then
+      @object_t attributeList
+      # the multiple identifier has been already encountered
+      # get the list
+      [!?idfs del !parameterType ?attributeList]
+      cast attributeList
+      case == @multipleAttribute multiAttribute :
+        @identifierList aList = [multiAttribute items]
+        aList += !val
+        val = @multipleAttribute. new { !emptyLString()
+                                        ![multiAttribute location]
+                                        !aList}
+      else end
+    else
+      val = @multipleAttribute. new { !emptyLString()
+                                      ![val location]
+                                      !@identifierList. listWithValue { !val}}
+    end
+  end
+
+  # Finaly insert the val in the identifiers
+  if typeOk then
+    [!?idfs put !parameterType !val]
+  end
+  [!?identifiers setObjectParams !idfs]
+}
+
+proc testTypeError
+  ?@dataType type
+  ?@lstring valueType
+{
+  if [type arxmlType] != valueType.string then
+    error valueType : "Expected oil type " + [type oilType] + "."
+                    + " Found " + valueType.string + ".\n"
+                    + " Fix : Replace it with " + [type arxmlType]
+  end
+}
+
+proc testObjectMultiplicity
+ ?!@objectsMap objects
+ ?@lstring objectKind
+ ?@implementationObject impObjOfKind
+ ?@objectKind objectsForKind
+{
+  if [objects hasKey ![objectKind string]] then
+    # An object of this kind already exists. This is permitted only
+    # if the implementation declares the object may be instantiated
+    # multiple time
+    #@lbool multiple = [impObjOfKind multiple]
+    if [[impObjOfKind multiple] bool] == false then
+      error @location.here: "object "+objectKind+" may not have multiple instance"
+    end
+    [!?objects del !objectKind ?objectsForKind]
+  end
+}
+
+proc oilEquivalentName
+  ?@lstring parentPath
+  ?@lstring currentPath
+  !@lstring outName
+{
+  @lstring objectKind = .new {![currentPath lastPathComponent]
+                              ![currentPath location]}
+  @string lastParent = [parentPath lastPathComponent]
+
+  # XXX : I'm not sure if "OsOS" is the only module that do not follow this
+  #       writting convention.
+  if lastParent == "OsOS" then
+    lastParent = "Os"
+  end
+
+  @uint lastParentLength = [lastParent length]
+  if [objectKind.string leftSubString !lastParentLength] == lastParent then
+    objectKind.string = [objectKind.string subStringFromIndex !lastParentLength]
+    objectKind.string = [objectKind.string uppercaseString]
+    outName = objectKind
+  else
+    error objectKind : "An object must be named by its Parent.\n "
+        + "Ex : If Task object has Os parent, then the DEFINITION-REF must be "
+        + "(...)/Os/OsTask.\n"
+        + "Fix : Add \"" + lastParent + "\" to the name of your property."
+        : outName
+  end
+}
+
+proc displayOil
+  ?@string string
+{
+  if [option goil_options.arxmlDisplayOil value] then
+    message string
   end
 }
 
