@@ -428,10 +428,21 @@ rule <xsd_element>
     error .here : "An xsd:element must have a name."
   end
 
+  # TODO : We currently don't support the "xsd_choice" statement, so we're not
+  # checking the number of elements inside a choice element by setting the min
+  # to 0 and max to unbounded if not referenced (instead of 1 as required from
+  # xsd).
+  if elementMax.string == "" then
+    lstringhere(?elementMax !"unbounded")
+  end
+  if elementMin.string == "" then
+    lstringhere(?elementMin !"0")
+  end
+
   if elementType.string == "" then
     elementType = elementName
-#  else
-#    [!?classGraph addEdge !elementType !elementName]
+  else
+    [!?classGraph addEdge !elementType !elementName]
   end
 
   if not [classMap hasKey !elementName] then
@@ -887,26 +898,26 @@ rule <xsd_simpleType>
                                                       !{}
                                                      }
 
-  #if not [classMap hasKey !typeName] then
-  #  lstringhere(?@lstring desc !"")
-  #  @arxmlMetaClass newClass = @arxmlMetaClass.new{
-  #                                                 !typeName
-  #                                                 !false
-  #                                                 !{} !{}
-  #                                                 !{} !{}
-  #                                                 !desc
-  #                                                }
-  #  [!?classMap insertKey !typeName !newClass]
-  #  [!?classGraph addNode !typeName !typeName]
-  #end
+  if not [classMap hasKey !typeName] then
+    lstringhere(?@lstring desc !"")
+    @arxmlMetaClass newClass = @arxmlMetaClass.new{
+                                                   !typeName
+                                                   !false
+                                                   !{} !{}
+                                                   !{} !{}
+                                                   !desc
+                                                  }
+    [!?classMap insertKey !typeName !newClass]
+    [!?classGraph addNode !typeName !typeName]
+  end
 
   select $>$
     repeat
     while $<xsd:$
       select $annotation$
-        <xsd_annotation> !?classMap !?classGraph !parentClass
+        <xsd_annotation> !?classMap !?classGraph !typeName
       or $restriction$
-        <xsd_restriction> !?classMap !?classGraph !parentClass !?restriction
+        <xsd_restriction> !?classMap !?classGraph !typeName !?restriction
       end
     end
     # End marker
@@ -916,7 +927,7 @@ rule <xsd_simpleType>
   or $/>$
   end
 
-  [!?classMap insertKey !typeName !restriction]
+  #[!?classMap insertKey !typeName !restriction]
   #[!?classGraph addNode !typeName !typeName]
 }
 
@@ -1182,23 +1193,24 @@ proc fillLegacy
   ?!@arxmlMetaTypeMap classMap
   ?!@arxmlMetaClassGraph classGraph
 {
-  @lstringlist sortedInfoList
-  @lstringlist sortedKeyList
-  @lstringlist unsortedInfoList
-  @lstringlist unsortedKeyList
+  #@lstringlist sortedInfoList
+  #@lstringlist sortedKeyList
+  #@lstringlist unsortedInfoList
+  #@lstringlist unsortedKeyList
 
   # Sort the graph topologically
-  [classGraph depthFirstTopologicalSort ?sortedInfoList ?sortedKeyList
-                              ?unsortedInfoList ?unsortedKeyList]
+  #[classGraph depthFirstTopologicalSort ?sortedInfoList ?sortedKeyList
+  #                            ?unsortedInfoList ?unsortedKeyList]
 
-#  @uint undefNodeCount = [classGraph undefinedNodeCount]
-#  @stringlist undefNodeKey = [classGraph undefinedNodeKeyList]
-#  message "\n##### Undef node count : " + [unsortedInfoList length] + "\n"
-#  for (@string lBug) in undefNodeKey do
-#    message "#" + lBug + "\n"
-#  end
+  #message "\n##### Undef node count : " + [classGraph undefinedNodeCount] +"\n"
 
-  for (@lstring lClassName) in sortedInfoList do
+  #for (@lstring unsortedKey) in unsortedKeyList do
+  #  message "#" + [unsortedKey string] + "\n"
+  #end
+  @stringlist sortedInfoList = [classGraph keyList]
+
+  for (@string sClassName) in sortedInfoList do
+    lstringhere(?@lstring lClassName !sClassName)
     @arxmlMetaType lClasst
     [classMap searchKey !lClassName ?lClasst]
     if lClasst is == @arxmlMetaClass then
@@ -1213,5 +1225,20 @@ proc fillLegacy
       [!?lClass legacyAddParameters !?classMap !successorList]
     end
   end
+#  for (@lstring lClassName) in unsortedInfoList do
+#    @arxmlMetaType lClasst
+#    [classMap searchKey !lClassName ?lClasst]
+#    if lClasst is == @arxmlMetaClass then
+#      @arxmlMetaClass lClass = lClasst as @arxmlMetaClass
+#      # Get successors
+#      @lstringlist fromList = {}
+#      [!?fromList insertAtIndex ![lClass name] !0]
+#      @stringset empty = .emptySet
+#      @lstringlist successorList = [classGraph accessibleNodesFrom !fromList !empty]
+#
+#      # Add this class's elements and attributes to each of the successors class
+#      [!?lClass legacyAddParameters !?classMap !successorList]
+#    end
+#  end
 }
 

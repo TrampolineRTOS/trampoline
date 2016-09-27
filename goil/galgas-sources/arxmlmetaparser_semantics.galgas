@@ -237,7 +237,8 @@ override method @arxmlMetaClass display
         svgString += "  @" + attrTypeRepr
       end
     else
-      error .here : "This error should never happen."
+      svgString += "  @" + attrTypeRepr + " " + attrNameRepr + " #TODO\n"
+      #error [eAttribute name] : "TODO : Create element map and get it."
     end
 
     # Is it a list ?
@@ -412,9 +413,9 @@ override method @arxmlMetaSimpletype display
       end
       svgString += "}\n"
     case restrictionOther  :
-      error .here : "TODO"
+      error name : "TODO : Fall into restrictionOther statement"
     case restrictionUnused :
-      error .here : "This error should never happen."
+      error name : "TODO : Fall into restrictionUnused statement."
   end
 
   ioString = ioString + svgString

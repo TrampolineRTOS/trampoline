@@ -458,6 +458,27 @@ getter @arxmlElementValue getTextFromElement
   outText = [textElement text]
 }
 
+method @arxmlElementValue getAllTextsInSelf
+  ?@string separator
+  ?!@lstring outString
+{
+  if [text string] != "" then
+    if [outString string] != "" then
+      outString.string += separator
+    end
+    if [outString location] == .nowhere then
+      outString.location = [text location]
+    end
+    outString.string += [text string]
+  end
+
+  for () in elements do
+    for () in values do
+      [value getAllTextsInSelf !separator !?outString]
+    end
+  end
+}
+
 getter @arxmlElementValue getAttributeValueFromElement
   ?@string elementName
   ?@string attributeName
