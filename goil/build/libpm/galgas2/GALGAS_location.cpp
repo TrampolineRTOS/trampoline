@@ -29,7 +29,7 @@ GALGAS_location::GALGAS_location (void) :
 AC_GALGAS_root (),
 mStartLocationInSource (),
 mEndLocationInSource (),
-mSourceText (NULL),
+mSourceText (),
 mIsValid (false) {
 }
 
@@ -37,46 +37,17 @@ mIsValid (false) {
 
 GALGAS_location::GALGAS_location (const C_LocationInSource & inStartLocationInSource,
                                   const C_LocationInSource & inEndLocationInSource,
-                                  C_SourceTextInString * inSourceText) :
+                                  const C_SourceTextInString & inSourceText) :
 AC_GALGAS_root (),
 mStartLocationInSource (inStartLocationInSource),
 mEndLocationInSource (inEndLocationInSource),
-mSourceText (NULL),
+mSourceText (inSourceText),
 mIsValid (true) {
-  macroAssignSharedObject (mSourceText, inSourceText) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_location::~GALGAS_location (void) {
-  macroDetachSharedObject (mSourceText) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_location::GALGAS_location (const GALGAS_location & inSource) :
-AC_GALGAS_root (),
-mStartLocationInSource (inSource.mStartLocationInSource),
-mEndLocationInSource (inSource.mEndLocationInSource),
-mSourceText (NULL),
-mIsValid (inSource.mIsValid) {
-  macroAssignSharedObject (mSourceText, inSource.mSourceText) ;
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-GALGAS_location & GALGAS_location::operator = (const GALGAS_location & inSource) {
-  mStartLocationInSource = inSource.mStartLocationInSource ;
-  mEndLocationInSource = inSource.mEndLocationInSource ;
-  mIsValid = inSource.mIsValid ;
-  macroAssignSharedObject (mSourceText, inSource.mSourceText) ;
-  return * this ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_location::drop (void) {
-  macroDetachSharedObject (mSourceText) ;
   mIsValid = false ;
 }
 
@@ -105,7 +76,7 @@ GALGAS_location GALGAS_location::constructor_next (C_Compiler * inCompiler
 //---------------------------------------------------------------------------------------------------------------------*
 
 bool GALGAS_location::isValidAndNotNowhere (void) const {
-  return mIsValid && (NULL != mSourceText) ;
+  return mIsValid && mSourceText.isValid () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -113,7 +84,7 @@ bool GALGAS_location::isValidAndNotNowhere (void) const {
 GALGAS_bool GALGAS_location::getter_isNowhere (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
   if (mIsValid) {
-    result = GALGAS_bool (NULL == mSourceText) ;
+    result = GALGAS_bool (!mSourceText.isValid ()) ;
   }
   return result ;
 }
@@ -128,13 +99,7 @@ typeComparisonResult GALGAS_location::objectCompare (const GALGAS_location & inO
       r = mEndLocationInSource.index () - inOperand.mEndLocationInSource.index () ;
     }
     if (r == 0) {
-      if ((NULL != mSourceText) && (NULL != inOperand.mSourceText)) {
-        r = mSourceText->mSourceString.compare (inOperand.mSourceText->mSourceString) ;
-      }else if ((NULL != mSourceText) && (NULL == inOperand.mSourceText)) {
-        r = 1 ;
-      }else if ((NULL == mSourceText) && (NULL != inOperand.mSourceText)) {
-        r = -1 ;
-      }
+      r = mSourceText.sourceString ().compare (inOperand.mSourceText.sourceString ()) ;
     }
     if (r < 0) {
       result = kFirstOperandLowerThanSecond ;
@@ -153,10 +118,10 @@ void GALGAS_location::description (C_String & ioString,
                                    const int32_t /* inIndentation */) const {
   ioString << "<@location:" ;
   if (isValid ()) {
-    if (NULL == mSourceText) {
+    if (!mSourceText.isValid ()) {
       ioString << "nowhere" ;
     }else{
-      ioString << "'" << mSourceText->sourceFilePath () << "'" ;
+      ioString << "'" << mSourceText.sourceFilePath () << "'" ;
     }
     ioString << ":" << cStringWithSigned (mStartLocationInSource.lineNumber ())
              << ":" << cStringWithSigned (mStartLocationInSource.columnNumber ()) ;
@@ -172,11 +137,11 @@ GALGAS_string GALGAS_location::getter_locationString (C_Compiler * inCompiler
                                                       COMMA_LOCATION_ARGS) const {
   GALGAS_string result ;
   if (isValid ()) {
-    if (NULL == mSourceText) {
+    if (!mSourceText.isValid ()) {
       inCompiler->onTheFlyRunTimeError ("'locationString' reader cannot be called on a nowhere @location object" COMMA_THERE) ;
     }else{
       C_String s ;
-      s << "file '" << mSourceText->sourceFilePath ()
+      s << "file '" << mSourceText.sourceFilePath ()
         << "', line " << cStringWithSigned (mEndLocationInSource.lineNumber ())
         << ":" << cStringWithSigned (mEndLocationInSource.columnNumber ()) ;  
       result = GALGAS_string (s) ;
@@ -192,10 +157,10 @@ GALGAS_string GALGAS_location::getter_file (C_Compiler * inCompiler
                                             COMMA_LOCATION_ARGS) const {
   GALGAS_string result ;
   if (isValid ()) {
-    if (NULL == mSourceText) {
+    if (!mSourceText.isValid ()) {
       inCompiler->onTheFlyRunTimeError ("'file' reader cannot be called on a nowhere @location object" COMMA_THERE) ;
     }else{
-      result = GALGAS_string (mSourceText->sourceFilePath ()) ;
+      result = GALGAS_string (mSourceText.sourceFilePath ()) ;
     }
   }
   return result ;
@@ -207,7 +172,7 @@ GALGAS_uint GALGAS_location::getter_locationIndex (C_Compiler * inCompiler
                                                    COMMA_LOCATION_ARGS) const {
   GALGAS_uint result ;
   if (isValid ()) {
-    if (NULL == mSourceText) {
+    if (!mSourceText.isValid ()) {
       inCompiler->onTheFlyRunTimeError ("'locationIndex' reader cannot be called on a nowhere @location object" COMMA_THERE) ;
     }else{
       result = GALGAS_uint ((uint32_t) mEndLocationInSource.index ()) ;
@@ -222,7 +187,7 @@ GALGAS_uint GALGAS_location::getter_column (C_Compiler * inCompiler
                                             COMMA_LOCATION_ARGS) const {
   GALGAS_uint result ;
   if (isValid ()) {
-    if (NULL == mSourceText) {
+    if (!mSourceText.isValid ()) {
       inCompiler->onTheFlyRunTimeError ("'column' reader cannot be called on a nowhere @location object" COMMA_THERE) ;
     }else{
       result = GALGAS_uint ((uint32_t) mEndLocationInSource.columnNumber ()) ;
@@ -237,7 +202,7 @@ GALGAS_uint GALGAS_location::getter_line (C_Compiler * inCompiler
                                           COMMA_LOCATION_ARGS) const {
   GALGAS_uint result ;
   if (isValid ()) {
-    if (NULL == mSourceText) {
+    if (!mSourceText.isValid ()) {
       inCompiler->onTheFlyRunTimeError ("'line' reader cannot be called on a nowhere @location object" COMMA_THERE) ;
     }else{
       result = GALGAS_uint ((uint32_t) mEndLocationInSource.lineNumber ()) ;

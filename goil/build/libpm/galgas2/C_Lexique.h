@@ -44,8 +44,6 @@ class cIndexingDictionary ;
 class C_Lexique : public C_Compiler {
 //--- Constructors and destructor
   public : C_Lexique (C_Compiler * inCallerCompiler,
-                      const C_String & inDependencyFileExtension,
-                      const C_String & inDependencyFilePath,
                       const C_String & inSourceFileName
                       COMMA_LOCATION_ARGS) ;
 
@@ -73,7 +71,7 @@ class C_Lexique : public C_Compiler {
 //--- Template String
   protected : int32_t findTemplateDelimiterIndex (const cTemplateDelimiter inTemplateDelimiterArray [],
                                                    const int32_t inTemplateDelimiterArrayLength) ;
-  
+
 //--- Token list
   private : cToken * mFirstToken ;
   private : cToken * mLastToken ;
@@ -117,8 +115,7 @@ class C_Lexique : public C_Compiler {
 
   public : void exitProduction (void) ;
 
-//--- Protected attribute used for handling lexical loops
-//    (in parseLexicalToken methods in inherited classes)
+//--- Protected attribute used for handling lexical loops (in parseLexicalToken methods in inherited classes)
   protected : bool mLoop ;
 
 //--- Reset Scanner for performing second pass
@@ -137,10 +134,6 @@ class C_Lexique : public C_Compiler {
   public : void lexicalError (const C_String & inLexicalErrorMessage
                               COMMA_LOCATION_ARGS) ;
 
-  public : void lexicalErrorAtLocation (const C_String & inLexicalErrorMessage,
-                                        const C_LocationInSource & inErrorLocation
-                                        COMMA_LOCATION_ARGS) ;
-
 //--- Signal a lexical warning
   protected : void lexicalWarning (const C_String & messageAlerte COMMA_LOCATION_ARGS) ;
 
@@ -155,8 +148,8 @@ class C_Lexique : public C_Compiler {
 //--- Static method for searching a string in an ordered list
 //    returns -1 if not found, and associated code if found
   protected : static int16_t searchInList (const C_String & inString,
-                                            const C_unicode_lexique_table_entry inTable [],
-                                            const int16_t inTableSize) ;
+                                           const C_unicode_lexique_table_entry inTable [],
+                                           const int16_t inTableSize) ;
 
 //--- Get Token String
   public : virtual C_String getCurrentTokenString (const cToken * inTokenPtr) const = 0 ;

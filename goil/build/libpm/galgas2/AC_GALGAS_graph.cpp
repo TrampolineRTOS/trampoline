@@ -194,7 +194,7 @@ mAttributes (inNode->mAttributes),
 mDefinitionLocation (inNode->mDefinitionLocation),
 mReferenceLocationArray (),
 mIsDefined (inNode->mIsDefined) {
-  mReferenceLocationArray.makeRoom (inNode->mReferenceLocationArray.count ()) ;
+  mReferenceLocationArray.setCapacity (inNode->mReferenceLocationArray.count ()) ;
   for (int32_t i=0 ; i<inNode->mReferenceLocationArray.count () ; i++) {
     mReferenceLocationArray.addObject (inNode->mReferenceLocationArray (i COMMA_HERE)) ;
   }

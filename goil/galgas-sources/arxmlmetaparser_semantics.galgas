@@ -24,57 +24,42 @@
 #
 #---------------------------------------------------------------------------*
 
-map @arxmlMetaTypeMap{
-  @arxmlMetaType mType
+map @arxmlMetaClassMap{
+  @arxmlMetaClass mType
 
   insert insertKey error message "the %K class has already been declared"
   search searchKey error message "the %K class has not yet been defined"
   remove removeKey error message "the %K class does not exists"
 }
-setter @arxmlMetaTypeMap addClassElement
+setter @arxmlMetaClassMap addClassElement
   ?@lstring className
   ?@arxmlMetaElement mElement
 {
-  @arxmlMetaType modifiedClass
+  @arxmlMetaClass modifiedClass
   [!?self removeKey !className ?modifiedClass]
-  if modifiedClass is == @arxmlMetaClass then
-    @arxmlMetaClass cModifiedClass = modifiedClass as @arxmlMetaClass
-    [!?cModifiedClass addElement !mElement]
-    [!?self insertKey !className !cModifiedClass]
-  else
-    error .here : "Trying to add an Element to a type that is not a class."
-  end
+  [!?modifiedClass addElement !mElement]
+  [!?self insertKey !className !modifiedClass]
 }
-setter @arxmlMetaTypeMap addClassAttribute
+setter @arxmlMetaClassMap addClassAttribute
   ?@lstring className
   ?@arxmlMetaAttribute mAttribute
 {
-  @arxmlMetaType modifiedClass
+  @arxmlMetaClass modifiedClass
   [!?self removeKey !className ?modifiedClass]
-  if modifiedClass is == @arxmlMetaClass then
-    @arxmlMetaClass cModifiedClass = modifiedClass as @arxmlMetaClass
-    [!?cModifiedClass addAttribute !mAttribute]
-    [!?self insertKey !className !cModifiedClass]
-  else
-    error .here : "Trying to add an Attribute to a type that is not a class."
-  end
+  [!?modifiedClass addAttribute !mAttribute]
+  [!?self insertKey !className !modifiedClass]
 }
-setter @arxmlMetaTypeMap updateLegacyParameters
+setter @arxmlMetaClassMap updateLegacyParameters
   ?@lstring className
   ?@arxmlMetaElementList lElement
   ?@arxmlMetaAttributeList lAttribute
 {
-  @arxmlMetaType modifiedClass
+  @arxmlMetaClass modifiedClass
   [!?self removeKey !className ?modifiedClass]
-  if modifiedClass is == @arxmlMetaClass then
-    @arxmlMetaClass cModifiedClass = modifiedClass as @arxmlMetaClass
-    [!?cModifiedClass legacyUpdate !lElement !lAttribute]
-    [!?self insertKey !className !cModifiedClass]
-  else
-    error .here : "Trying to add an Element to a type that is not a class."
-  end
+  [!?modifiedClass legacyUpdate !lElement !lAttribute]
+  [!?self insertKey !className !modifiedClass]
 }
-method @arxmlMetaTypeMap display
+method @arxmlMetaClassMap display
   ?!@string ioString
 {
   for () in self do
@@ -87,18 +72,11 @@ graph @arxmlMetaClassGraph(@lstringlist)
   insert addNode error message "the %K class has already been declared"
 }
 
-abstract class @arxmlMetaType
-{
-}
-abstract method @arxmlMetaType display
-  ?@arxmlMetaTypeMap classMap
-  ?!@string ioString
-
 list @arxmlMetaClasslist
 {
   @arxmlMetaClass lClass
 }
-class @arxmlMetaClass : @arxmlMetaType
+class @arxmlMetaClass
 {
   @lstring name
   @bool isAbstract
@@ -109,7 +87,7 @@ class @arxmlMetaClass : @arxmlMetaType
   @lstring desc
 }
 setter @arxmlMetaClass legacyAddParameters
-  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassMap classMap
   ?@lstringlist successors
 {
   # Foreach successor, get the element in the map and update its lists
@@ -127,8 +105,8 @@ setter @arxmlMetaClass legacyUpdate
   lElementLegacy += iElement
   lAttributeLegacy += iAttribute
 }
-override method @arxmlMetaClass display
-  ?@arxmlMetaTypeMap classMap
+method @arxmlMetaClass display
+  ?@arxmlMetaClassMap classMap
   ?!@string ioString
 {
   @string svgString = ""
@@ -165,30 +143,30 @@ override method @arxmlMetaClass display
     end
 
     # Check if the type is a simplified one
-    [classMap searchKey ![eElement type] ?var @arxmlMetaType elemKey]
-    if elemKey is == @arxmlMetaSimpletype then
-      @arxmlMetaSimpletype elemSimpletype = elemKey as @arxmlMetaSimpletype
-      if [[elemSimpletype type] isRestrictionSimple] then
-        # Primary type
-        switch [elemSimpletype base]
-          case restrictionString :
-            svgString += "  @lstring"
-          case restrictionUint   :
-            svgString += "  @luint"
-          case restrictionDouble  :
-            svgString += "  @ldouble"
-          case restrictionUndef :
-            error .here : "Undefined type for " + [eElement name]
-                        + " simpleType."
-        end
-      else
-        # Other type
-        svgString += "  @" + elemTypeRepr
-      end
-    else
-      # Other type
+    [classMap searchKey ![eElement type] ?var @arxmlMetaClass elemKey]
+    #if elemKey is == @arxmlMetaSimpletype then
+    #  @arxmlMetaSimpletype elemSimpletype = elemKey as @arxmlMetaSimpletype
+    #  if [[elemSimpletype type] isRestrictionSimple] then
+    #    # Primary type
+    #    switch [elemSimpletype base]
+    #      case restrictionString :
+    #        svgString += "  @lstring"
+    #      case restrictionUint   :
+    #        svgString += "  @luint"
+    #      case restrictionDouble  :
+    #        svgString += "  @ldouble"
+    #      case restrictionUndef :
+    #        error .here : "Undefined type for " + [eElement name]
+    #                    + " simpleType."
+    #    end
+    #  else
+    #    # Other type
+    #    svgString += "  @" + elemTypeRepr
+    #  end
+    #else
+    #  # Other type
       svgString += "  @" + elemTypeRepr
-    end
+    #end
 
     # Is it a list ?
     if [eElement minOccurs].string != [eElement maxOccurs].string
@@ -212,34 +190,34 @@ override method @arxmlMetaClass display
   #    warning .here : "Missing attribute's type : " + attrNameRepr
     end
 
-    [classMap searchKey ![eAttribute type] ?var @arxmlMetaType attrKey]
+    [classMap searchKey ![eAttribute type] ?var @arxmlMetaClass attrKey]
 
     # Get the type :
     # The type may be either a primary type (uint, string, ...), or a
     # structure/enum/class.
-    if attrKey is == @arxmlMetaSimpletype then
-      @arxmlMetaSimpletype attrSimpletype = attrKey as @arxmlMetaSimpletype
-      if [[attrSimpletype type] isRestrictionSimple] then
-        # Primary type
-        switch [attrSimpletype base]
-          case restrictionString :
-            svgString += "  @lstring"
-          case restrictionUint   :
-            svgString += "  @luint"
-          case restrictionDouble  :
-            svgString += "  @ldouble"
-          case restrictionUndef :
-            error .here : "Undefined type for " + [eAttribute name]
-                        + " simpleType."
-        end
-      else
-        # Other type
-        svgString += "  @" + attrTypeRepr
-      end
-    else
-      svgString += "  @" + attrTypeRepr + " " + attrNameRepr + " #TODO\n"
+    #if attrKey is == @arxmlMetaSimpletype then
+    #  @arxmlMetaSimpletype attrSimpletype = attrKey as @arxmlMetaSimpletype
+    #  if [[attrSimpletype type] isRestrictionSimple] then
+    #    # Primary type
+    #    switch [attrSimpletype base]
+    #      case restrictionString :
+    #        svgString += "  @lstring"
+    #      case restrictionUint   :
+    #        svgString += "  @luint"
+    #      case restrictionDouble  :
+    #        svgString += "  @ldouble"
+    #      case restrictionUndef :
+    #        error .here : "Undefined type for " + [eAttribute name]
+    #                    + " simpleType."
+    #    end
+    #  else
+    #    # Other type
+    #    svgString += "  @" + attrTypeRepr
+    #  end
+    #else
+      svgString += "  @" + attrTypeRepr + " " + attrNameRepr + "\n"
       #error [eAttribute name] : "TODO : Create element map and get it."
-    end
+    #end
 
     # Is it a list ?
     if [eAttribute use].string == ""
@@ -377,15 +355,15 @@ enum @restrictionBaseType
   case restrictionDouble    # Convert to a ldouble
   case restrictionUndef     # Error while parsing
 }
-class @arxmlMetaSimpletype : @arxmlMetaType
+class @arxmlMetaSimpletype
 {
   @lstring name
   @restrictionType type
   @restrictionBaseType base
   @lstringlist values
 }
-override method @arxmlMetaSimpletype display
-  ?@arxmlMetaTypeMap unused classMap
+method @arxmlMetaSimpletype display
+  ?@arxmlMetaClassMap unused classMap
   ?!@string ioString
 {
   @string svgString = ""

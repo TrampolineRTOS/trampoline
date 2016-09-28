@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 1996, ..., 2010 Pierre Molinaro.                                                                     *
+//  Copyright (C) 1996, ..., 2016 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -29,36 +29,80 @@
 #include "utilities/C_SharedObject.h"
 
 //---------------------------------------------------------------------------------------------------------------------*
-
-class C_LocationInSource ;
-
-//---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
 //                 Classes for handling source text                                                                    *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-class C_SourceTextInString : public C_SharedObject {
+class cSourceTextInString : public C_SharedObject {
+//--- Constructor
+  public : cSourceTextInString (const C_String & inSourceString,
+                                const C_String & inFilePath,
+                                const bool inShowSourceOnDetailledErrorMessage
+                                COMMA_LOCATION_ARGS) :
+  C_SharedObject (THERE),
+  mFilePath (inFilePath),
+  mSourceString (inSourceString),
+  mShowSourceOnDetailledErrorMessage (inShowSourceOnDetailledErrorMessage) {
+  }
+  
+  public : C_String mFilePath ;
+  public : C_String mSourceString ;
+  public : bool mShowSourceOnDetailledErrorMessage ;
+
+//--- No copy
+  private : cSourceTextInString (const cSourceTextInString &) ;
+  private : cSourceTextInString & operator = (const cSourceTextInString &) ;
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+class C_SourceTextInString {
+//--- Default constructor
+  public : C_SourceTextInString (void) ;
+
 //--- Constructor
   public : C_SourceTextInString (const C_String & inSourceString,
                                  const C_String & inFilePath,
-                                 const bool inShowSourceOnDetailledErrorMessage
-                                 COMMA_LOCATION_ARGS) ;
+                                 const bool inShowSourceOnDetailledErrorMessage) ;
 
+//--- Default constructor
+  public : ~ C_SourceTextInString (void) ;
+
+//--- Handle copy
+  public : C_SourceTextInString (const C_SourceTextInString & inSource) ;
+  public : C_SourceTextInString & operator = (const C_SourceTextInString & inSource) ;
+  
 //--- Source file Name
-  private : const C_String mFilePath ;
+  private : cSourceTextInString * mObject ;
 
   public : inline C_String sourceFilePath (void) const {
-    return mFilePath ;
+    return (mObject == NULL) ? "" : mObject->mFilePath ;
   }
-//--- Source text
-  public : const C_String mSourceString ;
-  private : const bool mShowSourceOnDetailledErrorMessage ;
 
-  public : int32_t sourceLength (void) const ;
-  public : utf32 readCharOrNul (const int32_t inIndex COMMA_LOCATION_ARGS) const ;
-  public : const utf32 * temporaryUTF32StringAtIndex (const int32_t inIndex, const int32_t inRequiredLength COMMA_LOCATION_ARGS) const ;
-  public : C_String getLineForLocation (const C_LocationInSource & inLocation) const ;
+//--- Source text
+  public : inline C_String sourceString (void) const {
+    return (mObject == NULL) ? "" : mObject->mSourceString ;
+  }
+
+  public : inline bool isValid (void) const {
+    return mObject != NULL ;
+  }
+
+  public : int32_t sourceLength (void) const {
+    return (mObject == NULL) ? 0 : mObject->mSourceString.length () ;
+  }
+
+  public : utf32 readCharOrNul (const int32_t inIndex COMMA_LOCATION_ARGS) const {
+    return (mObject == NULL) ? TO_UNICODE (0) : mObject->mSourceString.readCharOrNul (inIndex COMMA_THERE) ;
+  }
+
+  public : const utf32 * temporaryUTF32StringAtIndex (const int32_t inIndex COMMA_LOCATION_ARGS) const {
+    return (mObject == NULL) ? NULL : & (mObject->mSourceString.utf32String (THERE)) [inIndex] ;
+  }
+
+  public : C_String getLineForLocation (const class C_LocationInSource & inLocation) const ;
+
   public : void appendSourceContents (C_String & ioMessage) const ;
 } ;
 

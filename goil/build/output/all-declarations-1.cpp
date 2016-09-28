@@ -3751,11 +3751,9 @@ mLexicalAttribute_uint_33__32_value () {
 //---------------------------------------------------------------------------------------------------------------------*
 
 C_Lexique_gtl_5F_debugger_5F_scanner::C_Lexique_gtl_5F_debugger_5F_scanner (C_Compiler * inCallerCompiler,
-                                                                            const C_String & inDependencyFileExtension,
-                                                                            const C_String & inDependencyFilePath,
                                                                             const C_String & inSourceFileName
                                                                             COMMA_LOCATION_ARGS) :
-C_Lexique (inCallerCompiler, inDependencyFileExtension, inDependencyFilePath, inSourceFileName COMMA_THERE) {
+C_Lexique (inCallerCompiler, inSourceFileName COMMA_THERE) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -6063,13 +6061,15 @@ bool C_Lexique_gtl_5F_debugger_5F_scanner::parseLexicalToken (void) {
         token.mTokenCode = kToken_ ; // Empty string code
       }else{ // Unknown input character
         unknownCharacterLexicalError (LINE_AND_SOURCE_FILE) ;
+        token.mTokenCode = -1 ; // No token
+        advance () ; // ... go throught unknown character
       }
     }catch (const C_lexicalErrorException &) {
       token.mTokenCode = -1 ; // No token
       advance () ; // ... go throught unknown character
     }
   }
-  if (UNICODE_VALUE (mCurrentChar) == '\0') { // && (token.mTemplateStringBeforeToken.length () > 0)) {
+  if (UNICODE_VALUE (mCurrentChar) == '\0') {
     token.mTokenCode = 0 ;
     enterToken (token) ;
   }
@@ -8773,11 +8773,9 @@ mLexicalAttribute_number () {
 //---------------------------------------------------------------------------------------------------------------------*
 
 C_Lexique_goil_5F_lexique::C_Lexique_goil_5F_lexique (C_Compiler * inCallerCompiler,
-                                                      const C_String & inDependencyFileExtension,
-                                                      const C_String & inDependencyFilePath,
                                                       const C_String & inSourceFileName
                                                       COMMA_LOCATION_ARGS) :
-C_Lexique (inCallerCompiler, inDependencyFileExtension, inDependencyFilePath, inSourceFileName COMMA_THERE) {
+C_Lexique (inCallerCompiler, inSourceFileName COMMA_THERE) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -9918,13 +9916,15 @@ bool C_Lexique_goil_5F_lexique::parseLexicalToken (void) {
         token.mTokenCode = kToken_ ; // Empty string code
       }else{ // Unknown input character
         unknownCharacterLexicalError (LINE_AND_SOURCE_FILE) ;
+        token.mTokenCode = -1 ; // No token
+        advance () ; // ... go throught unknown character
       }
     }catch (const C_lexicalErrorException &) {
       token.mTokenCode = -1 ; // No token
       advance () ; // ... go throught unknown character
     }
   }
-  if (UNICODE_VALUE (mCurrentChar) == '\0') { // && (token.mTemplateStringBeforeToken.length () > 0)) {
+  if (UNICODE_VALUE (mCurrentChar) == '\0') {
     token.mTokenCode = 0 ;
     enterToken (token) ;
   }
@@ -10584,6 +10584,88 @@ GALGAS_string extensionGetter_oilType (const GALGAS_dataType & inObject,
   case GALGAS_dataType::kEnum_structType:
     {
       result_result = GALGAS_string ("STRUCT") ;
+    }
+    break ;
+  }
+//---
+  return result_result ;
+}
+
+
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                       Extension Getter '@dataType arxmlType'                                        *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_string extensionGetter_arxmlType (const GALGAS_dataType & inObject,
+                                         C_Compiler * /* inCompiler */
+                                         COMMA_UNUSED_LOCATION_ARGS) {
+  GALGAS_string result_result ; // Returned variable
+  const GALGAS_dataType temp_0 = inObject ;
+  switch (temp_0.enumValue ()) {
+  case GALGAS_dataType::kNotBuilt:
+    break ;
+  case GALGAS_dataType::kEnum_void:
+    {
+      result_result = GALGAS_string ("TPL-VOID-DEF") ;
+    }
+    break ;
+  case GALGAS_dataType::kEnum_uint_33__32_Number:
+    {
+      result_result = GALGAS_string ("ECUC-INTEGER-PARAM-DEF") ;
+    }
+    break ;
+  case GALGAS_dataType::kEnum_sint_33__32_Number:
+    {
+      result_result = GALGAS_string ("ECUC-INTEGER-PARAM-DEF") ;
+    }
+    break ;
+  case GALGAS_dataType::kEnum_uint_36__34_Number:
+    {
+      result_result = GALGAS_string ("ECUC-INTEGER-PARAM-DEF") ;
+    }
+    break ;
+  case GALGAS_dataType::kEnum_sint_36__34_Number:
+    {
+      result_result = GALGAS_string ("ECUC-INTEGER-PARAM-DEF") ;
+    }
+    break ;
+  case GALGAS_dataType::kEnum_floatNumber:
+    {
+      result_result = GALGAS_string ("ECUC-FLOAT-PARAM-DEF") ;
+    }
+    break ;
+  case GALGAS_dataType::kEnum_string:
+    {
+      result_result = GALGAS_string ("ECUC-STRING-PARAM-DEF") ;
+    }
+    break ;
+  case GALGAS_dataType::kEnum_enumeration:
+    {
+      result_result = GALGAS_string ("ECUC-ENUMERATION-PARAM-DEF") ;
+    }
+    break ;
+  case GALGAS_dataType::kEnum_boolean:
+    {
+      result_result = GALGAS_string ("ECUC-BOOLEAN-PARAM-DEF") ;
+    }
+    break ;
+  case GALGAS_dataType::kEnum_identifier:
+    {
+      result_result = GALGAS_string ("TPL-IDENTIFIER-DEF") ;
+    }
+    break ;
+  case GALGAS_dataType::kEnum_objectType:
+    {
+      result_result = GALGAS_string ("ECUC-REFERENCE-DEF") ;
+    }
+    break ;
+  case GALGAS_dataType::kEnum_structType:
+    {
+      result_result = GALGAS_string ("ECUC-PARAM-CONF-CONTAINER-DEF") ;
     }
     break ;
   }

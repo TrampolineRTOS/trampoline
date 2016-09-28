@@ -56,6 +56,7 @@ class C_FileManager {
   public : static C_String stringWithContentOfFile (const C_String & inFilePath,
                                                     PMTextFileEncoding & outTextFileEncoding,
                                                     bool & outOk) ;
+
 //--- Write string to file
   public : static bool writeStringToFile (const C_String & inString,
                                           const C_String & inFilePath) ;
@@ -116,6 +117,9 @@ class C_FileManager {
 
 //--- File modification time
   public : static C_DateTime fileModificationTime (const C_String & inFilePath) ;
+
+//--- File size
+  public : static uint64_t fileSize (const C_String & inFilePath) ;
 } ;
 
 //---------------------------------------------------------------------------------------------------------------------*

@@ -2791,8 +2791,6 @@ class cTokenFor_goil_5F_lexique : public cToken {
 class C_Lexique_goil_5F_lexique : public C_Lexique {
 //--- Constructors
   public : C_Lexique_goil_5F_lexique (C_Compiler * inCallerCompiler,
-                       const C_String & inDependencyFileExtension,
-                       const C_String & inDependencyFilePath,
                        const C_String & inSourceFileName
                        COMMA_LOCATION_ARGS) ;
 
@@ -3045,6 +3043,16 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_dataType ;
 class GALGAS_string extensionGetter_oilType (const class GALGAS_dataType & inObject,
                                              class C_Compiler * inCompiler
                                              COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                Extension getter '@dataType arxmlType' (as function)                                 *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_string extensionGetter_arxmlType (const class GALGAS_dataType & inObject,
+                                               class C_Compiler * inCompiler
+                                               COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *

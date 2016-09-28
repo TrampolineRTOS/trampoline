@@ -1409,12 +1409,11 @@ void cBuildArrayForSet::action (const bool inValuesArray [],
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void C_BDD::
-getBoolArray (TC_UniqueArray <bool> & outArray,
-              const uint32_t inMaxValues,
-              const uint32_t inBitSize) const {
+void C_BDD::getBoolArray (TC_UniqueArray <bool> & outArray,
+                          const uint32_t inMaxValues,
+                          const uint32_t inBitSize) const {
   outArray.setCountToZero () ;
-  outArray.makeRoom ((int32_t) inMaxValues) ;
+  outArray.setCapacity ((int32_t) inMaxValues) ;
   outArray.addObjects ((int32_t) inMaxValues, false) ;
   cBuildArrayForSet s (outArray) ;
   traverseBDDvalues (s, inBitSize) ;
@@ -1428,7 +1427,7 @@ getBoolArray (TC_UniqueArray <bool> & outArray,
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//   U P D A T E   R E L A T I O N                                             *
+//   U P D A T E   R E L A T I O N                                                                                     *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -1644,7 +1643,7 @@ void C_BDD::getArray2 (TC_UniqueArray <TC_UniqueArray <uint64_t> > & outArray,
                        const uint32_t inBitSize1,
                        const uint32_t inBitSize2) const {
   outArray.setCountToZero () ;
-  outArray.makeRoomUsingSwap ((int32_t) inMaxValueCount) ;
+  outArray.setCapacityUsingSwap ((int32_t) inMaxValueCount) ;
   for (uint32_t i=0 ; i<inMaxValueCount ; i++) {
     outArray.addDefaultObjectUsingSwap () ;
   }

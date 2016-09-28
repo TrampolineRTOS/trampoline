@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 1997, ..., 2014 Pierre Molinaro.                                                                     *
+//  Copyright (C) 1997, ..., 2016 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -30,6 +30,7 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
@@ -897,6 +898,21 @@ C_String C_String::stringByDeletingTailFromString (const C_String & inSearchedSt
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
+//   endsWithString                                                                                                    *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+bool C_String::endsWithString (const C_String & inString) const {
+  const int32_t offset = length () - inString.length () ;
+  bool result = offset >= 0 ;
+  for (int32_t i=0 ; (i<inString.length ()) && result ; i++) {
+    result = this->operator () (i + offset COMMA_HERE) == inString (i COMMA_HERE) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //   S U B S T I T U T E    C H A R A C T E R    B Y    S T R I N G                                                    *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -938,7 +954,7 @@ C_String C_String::stringByReplacingCharacterByString (const utf32 inCharacter,
 //---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_String::stringByReplacingStringByString (const C_String inSearchedString,
-                                                    const C_String & inReplacementString,
+                                                    const C_String inReplacementString,
                                                     uint32_t & outReplacementCount,
                                                     bool & outOk) const {
   C_String result ;
@@ -969,6 +985,15 @@ C_String C_String::stringByReplacingStringByString (const C_String inSearchedStr
     //printf ("RESULT STRING: '%s'\n", result.cString (HERE)) ;
   }
   return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_String C_String::stringByReplacingStringByString (const C_String inSearchedString,
+                                                    const C_String inReplacementString) const {
+  uint32_t unusedReplacementCount = 0 ;
+  bool unusedOk = true ;
+  return stringByReplacingStringByString (inSearchedString, inReplacementString, unusedReplacementCount, unusedOk) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -1165,6 +1190,77 @@ C_String C_String::stringWithRepeatedCharacter (const utf32 inRepeatedCharacter,
     result.appendUnicodeCharacter (inRepeatedCharacter COMMA_HERE) ;
   }
   return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void C_String::convertToDouble (double & outDoubleValue,
+                                bool & outOk) const {
+  outDoubleValue = 0.0 ; // strtod (mString.cString (HERE)) ;
+  int32_t idx = 0 ;
+//--- Sign
+  bool positive = true ;
+  if (idx < length ()) {
+    const utf32 c = this->operator () (idx COMMA_HERE) ;
+    if (UNICODE_VALUE (c) == '-') {
+      positive = false ;
+      idx ++ ;
+    }else if (UNICODE_VALUE (c) == '+') {
+      idx ++ ;
+    }
+  }
+//--- Mantissa
+  while ((idx < length ()) && isdigit ((int) UNICODE_VALUE (this->operator () (idx COMMA_HERE)))) {
+    outDoubleValue *= 10.0 ;
+    outDoubleValue += (double) (UNICODE_VALUE (this->operator () (idx COMMA_HERE)) - '0') ;
+    idx ++ ;
+  }
+//--- Fractional part
+  double divisor = 1.0 ;
+  if ((idx < length ()) && (UNICODE_VALUE (this->operator () (idx COMMA_HERE)) == '.')) { // Dot
+    idx ++ ;
+    while ((idx < length ()) && isdigit ((int) UNICODE_VALUE (this->operator () (idx COMMA_HERE)))) {
+      divisor *= 10.0 ;
+      outDoubleValue *= 10.0 ;
+      outDoubleValue += (double) (UNICODE_VALUE (this->operator () (idx COMMA_HERE)) - '0') ;
+      idx ++ ;
+    }
+  }
+  outDoubleValue /= divisor ;
+//--- Exponent ?
+  if (idx < length ()) {
+    switch (UNICODE_VALUE (this->operator () (idx COMMA_HERE))) {
+    case 'E' : case 'e' : case 'd' : case 'D' : {
+      idx ++ ;
+    //--- Exponent sign
+      bool exponentIsPositive = true ;
+      if (idx < length ()) {
+        const utf32 c = this->operator () (idx COMMA_HERE) ;
+        if (UNICODE_VALUE (c) == '-') {
+          exponentIsPositive = false ;
+          idx ++ ;
+        }else if (UNICODE_VALUE (c) == '+') {
+          idx ++ ;
+        }
+      }
+      double exponentValue = 0.0 ;
+      while ((idx < length ()) && isdigit ((int) UNICODE_VALUE (this->operator () (idx COMMA_HERE)))) {
+        exponentValue *= 10.0 ;
+        exponentValue += (double) (UNICODE_VALUE (this->operator () (idx COMMA_HERE)) - '0') ;
+        idx ++ ;
+      }
+      outDoubleValue *= ::pow (10.0, exponentIsPositive ? exponentValue : - exponentValue) ;
+    }
+    break ;
+    default :
+    break ;
+    }
+  }
+  if (!positive) {
+    outDoubleValue = - outDoubleValue ;
+  }
+//--- Reached end of string ?
+  outOk = idx == length () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -1539,7 +1635,12 @@ C_String C_String::lastPathComponentWithoutExtension (void) const {
 C_String C_String::md5 (void) const {
   C_String result ;
   uint8_t digest [16] ;
-  ::md5 ((uint8_t *) cString (HERE), (uint32_t) length (), digest);
+  MD5_CTX context ;
+  MD5_Init (&context) ;
+  MD5_Update(&context, (uint8_t *) cString (HERE), (uint32_t) length ()) ;
+  MD5_Final (digest, &context);
+
+//  ::md5 ((uint8_t *) cString (HERE), (uint32_t) length (), digest);
   char s [10] ;
   for (uint32_t i=0 ; i<16 ; i++) {
     sprintf (s, "%02X", digest [i]) ;

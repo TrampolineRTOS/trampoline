@@ -32,10 +32,9 @@ static C_galgas_class_inspector * gClassListRoot = NULL ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-C_galgas_class_inspector::
-C_galgas_class_inspector (const std::type_info * inClassID,
-                          const std::type_info * inSuperClassID,
-                          const char * inClassMessage) :
+C_galgas_class_inspector::C_galgas_class_inspector (const std::type_info * inClassID,
+                                                    const std::type_info * inSuperClassID,
+                                                    const char * inClassMessage) :
 mNextClass (gClassListRoot),
 mClassID (inClassID),
 mSuperClassID (inSuperClassID),

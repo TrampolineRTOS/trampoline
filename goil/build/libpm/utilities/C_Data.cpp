@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2012, ..., 2012 Pierre Molinaro.                                                                     *
+//  Copyright (C) 2012, ..., 2016 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -21,6 +21,11 @@
 //---------------------------------------------------------------------------------------------------------------------*
 
 #include "utilities/C_Data.h"
+#include "strings/unicode_character_base.h"
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+#include <string.h>
 
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -49,6 +54,12 @@ C_Data::~C_Data (void) {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
+void C_Data::setCapacity (const int32_t inNewCapacity) {
+  mBinaryData.setCapacity (inNewCapacity) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
 void C_Data::appendData (const C_Data & inData) {
   for (int32_t i=0 ; i<inData.mBinaryData.count () ; i++) {
     mBinaryData.addObject (inData.mBinaryData (i COMMA_HERE)) ;
@@ -59,6 +70,39 @@ void C_Data::appendData (const C_Data & inData) {
 
 void C_Data::appendByte (const uint8_t inByte) {
   mBinaryData.addObject (inByte) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void C_Data::appendString (const C_String & inString) {
+  const utf32 * ptr = inString.utf32String (HERE) ;
+  for (int32_t i=0 ; i<inString.length () ; i++) {
+    appendUTF32Character (ptr [i]) ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void C_Data::appendUTF32Character (const utf32 inUnicodeChar) {
+  uint32_t codePoint = UNICODE_VALUE (inUnicodeChar) ;
+  if (codePoint > UNICODE_VALUE (UNICODE_MAX_LEGAL_UTF32_CHARACTER)) {
+    codePoint = UNICODE_VALUE (UNICODE_REPLACEMENT_CHARACTER) ;
+  }
+  if (codePoint < 0x80) {
+    appendByte ((uint8_t) (codePoint & 255)) ;
+  }else if (codePoint < 0x0800) {
+    appendByte ((uint8_t) (((codePoint >> 6) | 0xC0) & 255)) ;
+    appendByte ((uint8_t) ((codePoint & 0x3F) | 0x80)) ;
+  }else if (codePoint < 0x10000) {
+    appendByte ((uint8_t) (((codePoint >> 12) | 0xE0) & 255)) ;
+    appendByte ((uint8_t) (((codePoint >> 6) & 0x3F) | 0x80)) ;
+    appendByte ((uint8_t) ((codePoint & 0x3F) | 0x80)) ;
+  }else{
+    appendByte ((uint8_t) (((codePoint >> 18) | 0xF0) & 255)) ;
+    appendByte ((uint8_t) (((codePoint >> 12) & 0x3F) | 0x80)) ;
+    appendByte ((uint8_t) (((codePoint >> 6) & 0x3F) | 0x80)) ;
+    appendByte ((uint8_t) ((codePoint & 0x3F) | 0x80)) ;
+  }
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -92,29 +136,30 @@ int32_t C_Data::compareWithData (const C_Data & inData) const {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void C_Data::removeLengthFromStart (const uint32_t inLength) {
-  mBinaryData.removeObjectsAtIndex ((int32_t) inLength, 0 COMMA_HERE) ;
+void C_Data::removeLengthFromStart (const uint32_t inLength COMMA_LOCATION_ARGS) {
+  mBinaryData.removeObjectsAtIndex ((int32_t) inLength, 0 COMMA_THERE) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void C_Data::removeLastByte (LOCATION_ARGS) {
+  mBinaryData.removeObjectsAtIndex (1, mBinaryData.count () - 1 COMMA_THERE) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 bool C_Data::operator == (const C_Data & inData) const {
   bool equal = length () == inData.length () ;
-  for (int32_t i=0 ; (i<length ()) && equal ; i++) {
-    equal = this->operator () (i COMMA_HERE) == inData (i COMMA_HERE) ;  
-  }  
+  if (equal) {
+    equal = ::memcmp (mBinaryData.unsafeArrayPointer(), inData.mBinaryData.unsafeArrayPointer(), (size_t) length ()) == 0 ;
+  }
   return equal ;
-
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 bool C_Data::operator != (const C_Data & inData) const {
-  bool equal = length () == inData.length () ;
-  for (int32_t i=0 ; (i<length ()) && equal ; i++) {
-    equal = this->operator () (i COMMA_HERE) == inData (i COMMA_HERE) ;  
-  }  
-  return ! equal ;
+  return ! ((*this) == inData) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*

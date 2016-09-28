@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 1996, ..., 2010 Pierre Molinaro.                                                                     *
+//  Copyright (C) 1996, ..., 2016 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -25,70 +25,73 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-C_SourceTextInString::
-C_SourceTextInString (const C_String & inSourceString,
-                      const C_String & inFilePath,
-                      const bool inShowSourceOnDetailledErrorMessage
-                      COMMA_LOCATION_ARGS) :
-C_SharedObject (THERE),
-mFilePath (inFilePath),
-mSourceString (inSourceString),
-mShowSourceOnDetailledErrorMessage (inShowSourceOnDetailledErrorMessage) {
+C_SourceTextInString::C_SourceTextInString (void) :
+mObject (NULL) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-int32_t C_SourceTextInString::sourceLength (void) const {
-  return mSourceString.length () ;
+C_SourceTextInString::C_SourceTextInString (const C_String & inSourceString,
+                                            const C_String & inFilePath,
+                                            const bool inShowSourceOnDetailledErrorMessage) :
+mObject (NULL) {
+  macroMyNew (mObject, cSourceTextInString (inSourceString, inFilePath, inShowSourceOnDetailledErrorMessage COMMA_HERE)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-utf32 C_SourceTextInString::readCharOrNul (const int32_t inIndex COMMA_LOCATION_ARGS) const {
-  return mSourceString.readCharOrNul (inIndex COMMA_THERE) ;
+C_SourceTextInString::~ C_SourceTextInString (void) {
+  macroDetachSharedObject (mObject) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-const utf32 * C_SourceTextInString::
-temporaryUTF32StringAtIndex (const int32_t inIndex,
-                             const int32_t /* inRequiredLength */
-                             COMMA_LOCATION_ARGS) const {
-  return & (mSourceString.utf32String (THERE)) [inIndex] ;
+C_SourceTextInString::C_SourceTextInString (const C_SourceTextInString & inSource) :
+mObject (NULL) {
+  macroAssignSharedObject (mObject, inSource.mObject) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-C_String C_SourceTextInString::
-getLineForLocation (const C_LocationInSource & inLocation) const {
-  const int32_t sourceTextLength = mSourceString.length () ;
-  int32_t index = 0 ;
-  int32_t currentLine = 1 ;
-  if (sourceTextLength > 0) {
-    while (currentLine < inLocation.lineNumber ()) {
-      if (UNICODE_VALUE (mSourceString.readCharOrNul (index COMMA_HERE)) == '\n') {
-        currentLine ++ ;
-      }
-      index ++ ;
-    }
+C_SourceTextInString & C_SourceTextInString::operator = (const C_SourceTextInString & inSource) {
+  if (this != & inSource) {
+    macroAssignSharedObject (mObject, inSource.mObject) ;
   }
-//--- Get error line text
+  return *this ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+C_String C_SourceTextInString::getLineForLocation (const C_LocationInSource & inLocation) const {
   C_String errorLine ;
-  for (int32_t i=index ; (i<sourceTextLength) && (UNICODE_VALUE (mSourceString.readCharOrNul (i COMMA_HERE)) != '\n') ; i++) {
-    const utf32 character = mSourceString (i COMMA_HERE) ;
-    errorLine.appendUnicodeCharacter (character COMMA_HERE) ;
+  if (NULL != mObject) {
+    const int32_t sourceTextLength = mObject->mSourceString.length () ;
+    int32_t index = 0 ;
+    int32_t currentLine = 1 ;
+    if (sourceTextLength > 0) {
+      while (currentLine < inLocation.lineNumber ()) {
+        if (UNICODE_VALUE (mObject->mSourceString.readCharOrNul (index COMMA_HERE)) == '\n') {
+          currentLine ++ ;
+        }
+        index ++ ;
+      }
+    }
+  //--- Get error line text
+    for (int32_t i=index ; (i<sourceTextLength) && (UNICODE_VALUE (mObject->mSourceString.readCharOrNul (i COMMA_HERE)) != '\n') ; i++) {
+      const utf32 character = mObject->mSourceString (i COMMA_HERE) ;
+      errorLine.appendUnicodeCharacter (character COMMA_HERE) ;
+    }
   }
   return errorLine ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void C_SourceTextInString::
-appendSourceContents (C_String & ioMessage) const {
-  if (mShowSourceOnDetailledErrorMessage) {
-    const bool insertCarriageReturn = (mSourceString.length () > 0) && (UNICODE_VALUE (mSourceString.lastCharacter (HERE)) != '\n')  ;
+void C_SourceTextInString::appendSourceContents (C_String & ioMessage) const {
+  if ((NULL != mObject) && mObject->mShowSourceOnDetailledErrorMessage) {
+    const bool insertCarriageReturn = (mObject->mSourceString.length () > 0) && (UNICODE_VALUE (mObject->mSourceString.lastCharacter (HERE)) != '\n')  ;
     ioMessage << "-- SOURCE STRING (--verbose option) --\n"
-              << mSourceString
+              << mObject->mSourceString
               << (insertCarriageReturn ? "\n" : "")
               << "-------------------------------------------------------\n" ;
   }

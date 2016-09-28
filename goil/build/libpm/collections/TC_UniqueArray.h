@@ -87,9 +87,9 @@ template <typename TYPE> class TC_UniqueArray {
 //--- Get allocated capacity
   public : inline int32_t capacity (void) const { return mCapacity ; }
 
-//--- Methods for making room
-  public : void makeRoom (const int32_t inNewCapacity) ;
-  public : void makeRoomUsingSwap (const int32_t inNewCapacity) ;
+//--- Methods for setting capacity
+  public : void setCapacity (const int32_t inNewCapacity) ;
+  public : void setCapacityUsingSwap (const int32_t inNewCapacity) ;
   
 //--- Allocation with provided data
   public : void setDataFromPointer (TYPE * & ioDataPtr,
@@ -407,7 +407,7 @@ template <typename TYPE> void TC_UniqueArray <TYPE>::copyTo (TC_UniqueArray <TYP
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-template <typename TYPE> void TC_UniqueArray <TYPE>::makeRoom (const int32_t inNewCapacity) {
+template <typename TYPE> void TC_UniqueArray <TYPE>::setCapacity (const int32_t inNewCapacity) {
   if (mCapacity < inNewCapacity) {
     int32_t newCapacity = (mCapacity > 32) ? mCapacity : 32 ;
     while (newCapacity < inNewCapacity) {
@@ -457,11 +457,11 @@ template <typename TYPE> void TC_UniqueArray <TYPE>::forceObjectAtIndex (const i
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//   Method for making room using swap function                                                                        *
+//   Method for setting capacity using swap function                                                                   *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-template <typename TYPE> void TC_UniqueArray <TYPE>::makeRoomUsingSwap (const int32_t inNewCapacity) {
+template <typename TYPE> void TC_UniqueArray <TYPE>::setCapacityUsingSwap (const int32_t inNewCapacity) {
   if (mCapacity < inNewCapacity) {
     int32_t newCapacity = (mCapacity > 32) ? mCapacity : 32 ;
     while (newCapacity < inNewCapacity) {
@@ -497,7 +497,7 @@ template <typename TYPE> void TC_UniqueArray <TYPE>::free (void) {
 
 template <typename TYPE> void TC_UniqueArray <TYPE>::addObject (const TYPE & inValue) {
   if (mCount >= mCapacity) {
-    makeRoom (mCount + 1) ;
+    setCapacity (mCount + 1) ;
   }
   mArray [mCount] = inValue ;
   mCount ++ ;
@@ -529,7 +529,7 @@ template <typename TYPE> void TC_UniqueArray <TYPE>::addObjectInOrderedArray (co
   }
 //--- Insert in not found
   if (! found) {
-    makeRoom (mCount + 1) ;
+    setCapacity (mCount + 1) ;
     idx += r < 0 ;
     for (int32_t i=mCount ; i>idx ; i--) {
       mArray [i] = mArray [i - 1] ;
@@ -558,7 +558,7 @@ template <typename TYPE> void TC_UniqueArray <TYPE>::addObjectIfUnique (const TY
     found = mArray [i] == inValue ;
   }
   if (! found) {
-    makeRoom (mCount + 1) ;
+    setCapacity (mCount + 1) ;
     mArray [mCount] = inValue ;
     mCount ++ ;
   }
@@ -573,7 +573,7 @@ template <typename TYPE> void TC_UniqueArray <TYPE>::addObjectIfUnique (const TY
 template <typename TYPE> void TC_UniqueArray <TYPE>::addObjects (const int32_t inCount, const TYPE & inValue) {
   if (inCount > 0) {
     const int32_t newCount = mCount + inCount ;
-    makeRoom (newCount) ;
+    setCapacity (newCount) ;
     for (int32_t i=mCount ; i<newCount ; i++) {
       mArray [i] = inValue ;
     }
@@ -588,7 +588,7 @@ template <typename TYPE> void TC_UniqueArray <TYPE>::addObjects (const int32_t i
 //---------------------------------------------------------------------------------------------------------------------*
 
 template <typename TYPE> void TC_UniqueArray <TYPE>::addObjectUsingSwap (TYPE & ioValue) {
-  makeRoomUsingSwap (mCount + 1) ;
+  setCapacityUsingSwap (mCount + 1) ;
   swap (mArray [mCount], ioValue) ;
   mCount ++ ;
 }
@@ -600,7 +600,7 @@ template <typename TYPE> void TC_UniqueArray <TYPE>::addObjectUsingSwap (TYPE & 
 //---------------------------------------------------------------------------------------------------------------------*
 
 template <typename TYPE> void TC_UniqueArray <TYPE>::addDefaultObjectUsingSwap (void) {
-  makeRoomUsingSwap (mCount + 1) ;
+  setCapacityUsingSwap (mCount + 1) ;
   TYPE value ;
   swap (mArray [mCount], value) ;
   mCount ++ ;
@@ -614,7 +614,7 @@ template <typename TYPE> void TC_UniqueArray <TYPE>::addDefaultObjectUsingSwap (
 
 template <typename TYPE> void TC_UniqueArray <TYPE>::addObjectsUsingClear (const int32_t inObjectCount) {
   if (inObjectCount > 0) {
-    makeRoom (mCount + inObjectCount) ;
+    setCapacity (mCount + inObjectCount) ;
     for (int32_t i=0 ; i<mCount ; i++) {
       mArray [i + mCount].clear () ;
     }
@@ -631,7 +631,7 @@ template <typename TYPE> void TC_UniqueArray <TYPE>::addObjectsUsingClear (const
 template <typename TYPE> void TC_UniqueArray <TYPE>::
 addObjectsFromArray (const TC_UniqueArray <TYPE> &  inObjectArray) {
   if (inObjectArray.mCount > 0) {
-    makeRoom (mCount + inObjectArray.mCount) ;
+    setCapacity (mCount + inObjectArray.mCount) ;
     for (int32_t i=0 ; i<inObjectArray.mCount ; i++) {
       mArray [mCount + i] = inObjectArray.mArray [i] ;
     }
@@ -665,7 +665,7 @@ insertObjectAtIndex (const TYPE & inValue, const int32_t inIndex COMMA_LOCATION_
   #ifndef DO_NOT_GENERATE_CHECKINGS
     checkIndexForInsertion (inIndex COMMA_THERE) ;
   #endif
-  makeRoom (mCount + 1) ;
+  setCapacity (mCount + 1) ;
   for (int32_t i=mCount ; i>inIndex ; i--) {
     mArray [i] = mArray [i-1] ;
   }
@@ -686,7 +686,7 @@ insertObjectsAtIndex (const int32_t inCount, const TYPE & inValue,
     #ifndef DO_NOT_GENERATE_CHECKINGS
       checkIndexForInsertion (inStartingIndex COMMA_THERE) ;
     #endif
-    makeRoom (mCount + inCount) ;
+    setCapacity (mCount + inCount) ;
     for (int32_t i=mCount+inCount-1 ; i>=(inStartingIndex + inCount) ; i--) {
       mArray [i] = mArray [i-inCount] ;
     }
@@ -708,7 +708,7 @@ insertObjectUsingSwap (TYPE & ioValue, const int32_t inIndex COMMA_LOCATION_ARGS
   #ifndef DO_NOT_GENERATE_CHECKINGS
     checkIndexForInsertion (inIndex COMMA_THERE) ;
   #endif
-  makeRoom (mCount + 1) ;
+  setCapacity (mCount + 1) ;
   for (int32_t i=mCount ; i>inIndex ; i--) {
     swap (mArray [i], mArray [i-1]) ;
   }
@@ -729,7 +729,7 @@ insertObjectsUsingExchangeAndClear (const int32_t inCount,
     #ifndef DO_NOT_GENERATE_CHECKINGS
       checkIndexForInsertion (inStartingIndex COMMA_THERE) ;
     #endif
-    makeRoom (mCount + inCount) ;
+    setCapacity (mCount + inCount) ;
     for (int32_t i=mCount+inCount-1 ; i>=(inStartingIndex + inCount) ; i--) {
       swap (mArray [i], mArray [i-inCount]) ;
     }
@@ -932,7 +932,7 @@ subArrayUsingFunction (bool (* inFunction) (const TYPE & inObject),
                        TC_UniqueArray <TYPE> & outResult) const {
   outResult.clear () ;
   if (inFunction != NULL) {
-    outResult.makeRoom (mCount) ;
+    outResult.setCapacity (mCount) ;
     for (int32_t i=0 ; i<mCount ; i++) {
       if (inFunction (mArray [i])) {
         outResult.addObject (mArray [i]) ;
@@ -1353,7 +1353,7 @@ intersectionWithArray (const TC_UniqueArray <TYPE> & inOperand,
                        TC_UniqueArray <TYPE> & outResult) const {
 //--- Empty destination array
   outResult.clear () ;
-  outResult.makeRoom (mCount) ;
+  outResult.setCapacity (mCount) ;
 //--- loop throught array
   for (int32_t i=0 ; i<mCount ; i++) {
     bool accept = true ;
@@ -1383,7 +1383,7 @@ multiSetIntersectionWithArray (const TC_UniqueArray <TYPE> & inOperand,
                                TC_UniqueArray <TYPE> & outResult) const {
 //--- Empty destination array
   outResult.clear () ;
-  outResult.makeRoom (mCount) ;
+  outResult.setCapacity (mCount) ;
 //--- Build counted set for current object
   TC_UniqueArray <TYPE> set (mCount COMMA_HERE) ;
   TC_UniqueArray <int32_t> setCount (mCount COMMA_HERE) ;
@@ -1423,7 +1423,7 @@ template <typename TYPE> void TC_UniqueArray <TYPE>::unionWithArray (const TC_Un
                                                                      TC_UniqueArray <TYPE> & outResult) const {
 //--- Empty destination array
   outResult.clear () ;
-  outResult.makeRoom (mCount + inOperand.mCount) ;
+  outResult.setCapacity (mCount + inOperand.mCount) ;
 //--- Copy current object
   for (int32_t i=0 ; i<mCount ; i++) {
     outResult.addObject (mArray [i]) ;

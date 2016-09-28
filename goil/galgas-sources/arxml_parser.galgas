@@ -84,7 +84,15 @@ rule <arxml_start_symbol>
     error .here : "[TPS_ECUC_06005][TPS_ECUC_08053] : Missing AUTOSAR version"
   end
 
-  [!?application setVersion !autosarVersion]
+  # Only use the two major numbers of the version for the application
+  @stringlist autosarVlist = [autosarVersion componentsSeparatedByString !"."]
+  [!?autosarVlist popFirst ?@string versionFirst]
+  [!?autosarVlist popFirst ?@string versionSecond]
+  @lstring autosarShortVersion = .new{!versionFirst + "." + versionSecond
+                                      ![autosarVersion location]}
+  displayOil(!"\nOIL_VERSION = \"" + autosarShortVersion + "\";\n\n")
+
+  [!?application setVersion !autosarShortVersion]
   [!?application setVersionDescription !autosarDescription]
 
   #log autosarVersion
@@ -98,7 +106,7 @@ rule <arxml_start_symbol>
                                 !"." !"-"]
   @string autosarMetaFile = "AUTOSAR_" + autosarVersionNoDot + ".xsd"
   @string filePath = templates_directory(!"arxmlMeta") + autosarMetaFile
-  @arxmlMetaTypeMap classMap
+  @arxmlMetaClassMap classMap
 
   if not [filePath fileExists] then
     error .here : "The corresponding metafile " + filePath + " does not"
@@ -120,20 +128,18 @@ rule <arxml_start_symbol>
 ###############################################################################
 # Arxml implementation definition
 #
-# XXX : We can parse the file AUTOSAR_MOD_ECUConfigurationParameters.arxml (can
-# be found in + "http://www.autosar.org/specification -> Methodology and
+# NOTE : We can parse the file AUTOSAR_MOD_ECUConfigurationParameters.arxml
+# (can be found in + "http://www.autosar.org/specification -> Methodology and
 # Templates -> " + "Templates") to get AUTOSAR's implementation definition.
 # Currently we're using the OIL configuration files to get the Implementation.
 
-  includeConfigs(!?imp !?application !?fileIncludeList !autosarVersion.string)
+  includeConfigs(!?imp !?application !?fileIncludeList !autosarShortVersion)
 
   # log imp
 
 ###############################################################################
 # Fill the implementation structure (Arxml -> Oil here)
 #
-  displayOil(!"\nOIL_VERSION = \"" + autosarVersion + "\";\n\n")
-
   convertToOil(!?imp !?application !rootValue)
 
 ###############################################################################
@@ -312,7 +318,7 @@ proc includeConfigs
   ?!@implementation imp
   ?!@applicationDefinition application
   ?!@string fileIncludeList
-  ?@string version
+  ?@lstring version
 {
     @string config_file_name = [option goil_options.config value]
     @stringlist configFiles = allTemplateFilePaths(!"config"
@@ -328,7 +334,7 @@ proc includeConfigs
 
     # then look for config files suffixed by the OIL version
     @stringlist configVersionFiles = allTemplateFilePaths(!"config"
-                                              !config_file_name+version+".oil")
+                                  !config_file_name + [version string] +".oil")
 
     for > (@string file) in configVersionFiles do
       grammar goil_file_level_include in lstringWith(!file)
@@ -339,7 +345,7 @@ proc includeConfigs
 
 proc nodeToClass
   ?@arxmlNode     rootNode
-  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassMap classMap
   !@arxmlElementValue rootValue
 {
   @arxmlElementList autosarNodes = .emptyList
@@ -359,14 +365,12 @@ proc nodeToClass
 
 proc nodeToClassRes
   ?@arxmlElementNode currentElement
-  ?@arxmlMetaTypeMap classMap
+  ?@arxmlMetaClassMap classMap
   !@arxmlElementValue elementValue
 {
   # Get the node's Class
-  @arxmlMetaType currentType
-  [classMap searchKey ![currentElement name] ?currentType]
-  # It must be a class
-  @arxmlMetaClass currentClass = currentType as @arxmlMetaClass
+  @arxmlMetaClass currentClass
+  [classMap searchKey ![currentElement name] ?currentClass]
 
   # Get the subText if any
   @bool textFound = false
@@ -1465,18 +1469,7 @@ proc arxmlDefinitionObject
   # Test multiplicity
   @implementationObject impObjOfKind = [imp impObject ![objectKind string]]
   @objectKind objectsForKind = @objectKind. new { !@objectKindMap. emptyMap}
-  # XXX : Why is objects not changed inside this function call ?
-  #testObjectMultiplicity(!?objects !objectKind !impObjOfKind !objectsForKind)
-  if [objects hasKey ![objectKind string]] then
-    # An object of this kind already exists. This is permitted only
-    # if the implementation declares the object may be instantiated
-    # multiple time
-    #@lbool multiple = [impObjOfKind multiple]
-    if [[impObjOfKind multiple] bool] == false then
-      error @location.here: "object "+objectKind+" may not have multiple instance"
-    end
-    [!?objects del !objectKind ?objectsForKind]
-  end
+  testObjectMultiplicity(!?objects !objectKind !impObjOfKind !?objectsForKind)
 
   # Get Object name
   @lstring objectName = [currentElement getTextFromElement !"SHORT-NAME"]
@@ -1612,15 +1605,7 @@ proc arxmlDefinitionParameter
       parameterType.string = [parameterType leftSubString
                               ![parameterType length] - 4]
     else
-      error parameterValue : "An object reference must end with REF or REFS"
-    end
-  elsif [parameter hasElement !"IS-AUTO-VALUE"] then
-    # -------------------------------------------------------------------------
-    # <=> AUTO symbol
-    # -------------------------------------------------------------------------
-    parameterValue = [parameter getTextFromElement !"IS-AUTO-VALUE"]
-    if [parameterValue string] == "TRUE" || [parameterValue string] == "1" then
-      isAuto = true
+      error parameterType : "An object reference must end with REF or REFS"
     end
   elsif [parameter hasElement !"PARAMETER-VALUES"]
      || [parameter hasElement !"REFERENCE-VALUES"] then
@@ -1628,6 +1613,15 @@ proc arxmlDefinitionParameter
     # <=> STRUCT
     # -------------------------------------------------------------------------
     parameterValue = [parameter getTextFromElement !"SHORT-NAME"]
+  elsif [parameter hasElement !"IS-AUTO-VALUE"] then
+    # -------------------------------------------------------------------------
+    # <=> AUTO symbol
+    # -------------------------------------------------------------------------
+    parameterValue = [parameter getTextFromElement !"IS-AUTO-VALUE"]
+    if [[parameterValue string] uppercaseString] == "TRUE"
+    || [parameterValue string] == "1" then
+      isAuto = true
+    end
   else
     error parameterType : "No value has been found." : parameterValue
   end
@@ -1658,7 +1652,7 @@ proc arxmlDefinitionParameter
     # -------------------------------------------------------------------------
     displayOil(!" = AUTO;")
     if [type autoAllowed] then
-        val = @auto.new { !oil_desc !@location.here}
+        val = @auto.new { !oil_desc ![parameterValue location]}
     else
       error @location.here : "AUTO is not allowed": val
     end
@@ -1858,7 +1852,7 @@ proc testObjectMultiplicity
  ?!@objectsMap objects
  ?@lstring objectKind
  ?@implementationObject impObjOfKind
- ?@objectKind objectsForKind
+ ?!@objectKind objectsForKind
 {
   if [objects hasKey ![objectKind string]] then
     # An object of this kind already exists. This is permitted only

@@ -35,15 +35,14 @@ mSourceText () {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-C_LocationInSource::C_LocationInSource (const C_SourceTextInString * inSourceText,
+C_LocationInSource::C_LocationInSource (const C_SourceTextInString & inSourceText,
                                         const int32_t inIndex,
                                         const int32_t inLine,
                                         const int32_t inColumn) :
 mIndex (inIndex),
 mLineNumber (inLine),
 mColumnNumber (inColumn),
-mSourceText (NULL) {
-  macroAssignSharedObject (mSourceText, inSourceText) ;
+mSourceText (inSourceText) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -52,8 +51,7 @@ C_LocationInSource::C_LocationInSource (const C_LocationInSource & inObject) :
 mIndex (inObject.mIndex),
 mLineNumber (inObject.mLineNumber),
 mColumnNumber (inObject.mColumnNumber),
-mSourceText (NULL) {
-  macroAssignSharedObject (mSourceText, inObject.mSourceText) ;
+mSourceText (inObject.mSourceText) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -63,7 +61,7 @@ C_LocationInSource & C_LocationInSource::operator = (const C_LocationInSource & 
     mIndex = inObject.mIndex ;
     mLineNumber = inObject.mLineNumber ;
     mColumnNumber = inObject.mColumnNumber ;
-    macroAssignSharedObject (mSourceText, inObject.mSourceText) ;
+    mSourceText = inObject.mSourceText ;
   }
   return *this ;
 }
@@ -90,27 +88,22 @@ void C_LocationInSource::resetLocation (void) {
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void C_LocationInSource::resetWithSourceText (const C_SourceTextInString * inSourceText) {
+void C_LocationInSource::resetWithSourceText (const C_SourceTextInString & inSourceText) {
   mIndex = 0 ;
   mLineNumber = 1 ;
   mColumnNumber = 1 ;
-  macroAssignSharedObject (mSourceText, inSourceText) ;
+  mSourceText = inSourceText ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_LocationInSource::sourceFilePath (void) const {
-  C_String result ;
-  if (NULL != mSourceText) {
-    result = mSourceText->sourceFilePath () ;
-  }
-  return result ;
+  return mSourceText.sourceFilePath () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 C_LocationInSource::~C_LocationInSource (void) {
-  macroDetachSharedObject (mSourceText) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*

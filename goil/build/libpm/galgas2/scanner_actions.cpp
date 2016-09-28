@@ -34,7 +34,7 @@
 //---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
-  #define LINE_AND_SOURCE_FILE_FOR_SCANNER_ACTIONS , inLexique.sourceText ()->sourceFilePath ().cString (HERE), inLexique.lineNumber ()
+  #define LINE_AND_SOURCE_FILE_FOR_SCANNER_ACTIONS , inLexique.sourceText ().sourceFilePath ().cString (HERE), inLexique.lineNumber ()
 #else
   #define LINE_AND_SOURCE_FILE_FOR_SCANNER_ACTIONS
 #endif

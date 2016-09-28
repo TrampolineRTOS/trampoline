@@ -3220,8 +3220,6 @@ class cTokenFor_gtl_5F_scanner : public cToken {
 class C_Lexique_gtl_5F_scanner : public C_Lexique {
 //--- Constructors
   public : C_Lexique_gtl_5F_scanner (C_Compiler * inCallerCompiler,
-                       const C_String & inDependencyFileExtension,
-                       const C_String & inDependencyFilePath,
                        const C_String & inSourceFileName
                        COMMA_LOCATION_ARGS) ;
 
@@ -10584,8 +10582,6 @@ class cTokenFor_gtl_5F_debugger_5F_scanner : public cToken {
 class C_Lexique_gtl_5F_debugger_5F_scanner : public C_Lexique {
 //--- Constructors
   public : C_Lexique_gtl_5F_debugger_5F_scanner (C_Compiler * inCallerCompiler,
-                       const C_String & inDependencyFileExtension,
-                       const C_String & inDependencyFilePath,
                        const C_String & inSourceFileName
                        COMMA_LOCATION_ARGS) ;
 

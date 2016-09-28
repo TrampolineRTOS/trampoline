@@ -274,7 +274,7 @@ void GALGAS_data::method_writeToFileWhenDifferentContents (GALGAS_string inFileP
           }
         }
       }else{
-        ggs_printWarning (NULL, C_IssueWithFixIt (), C_String ("Need to write '") + inFilePath.stringValue () + "'.\n" COMMA_HERE) ;
+        ggs_printWarning (C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to write '") + inFilePath.stringValue () + "'.\n" COMMA_HERE) ;
       }
     }
   }
@@ -290,7 +290,7 @@ void GALGAS_data::method_writeToFile (GALGAS_string inFilePath,
     if (filePath.length () == 0) {
       inCompiler->onTheFlyRunTimeError ("'@data writeToFile' modifier invoked with empty file path argument" COMMA_THERE) ;
     }else if (! C_Compiler::performGeneration ()) {
-      ggs_printWarning (NULL, C_IssueWithFixIt (), C_String ("Need to write '") + filePath + "'.\n" COMMA_HERE) ;
+      ggs_printWarning (C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to write '") + filePath + "'.\n" COMMA_HERE) ;
     }else{
       const bool fileAlreadyExists = C_FileManager::fileExistsAtPath (filePath) ;
       const bool verboseOptionOn = verboseOutput () ;
@@ -327,7 +327,7 @@ void GALGAS_data::method_writeToExecutableFile (GALGAS_string inFilePath,
     if (filePath.length () == 0) {
       inCompiler->onTheFlyRunTimeError ("'@data writeToFile' modifier invoked with empty file path argument" COMMA_THERE) ;
     }else if (! C_Compiler::performGeneration ()) {
-      ggs_printWarning (NULL, C_IssueWithFixIt (), C_String ("Need to write '") + filePath + "'.\n" COMMA_HERE) ;
+      ggs_printWarning (C_SourceTextInString (), C_IssueWithFixIt (), C_String ("Need to write '") + filePath + "'.\n" COMMA_HERE) ;
     }else{
       const bool fileAlreadyExists = C_FileManager::fileExistsAtPath (filePath) ;
       const bool verboseOptionOn = verboseOutput () ;

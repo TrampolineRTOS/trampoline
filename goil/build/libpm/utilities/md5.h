@@ -1,67 +1,47 @@
-/* $Id: md5.h,v 1.3 2006-01-02 18:16:26 quentin Exp $ */
-
 /*
- * Implementation of the md5 algorithm described in RFC1321
- * Copyright (C) 2005 Quentin Carbonneaux <crazyjoke@free.fr>
- * 
- * This file is part of md5sum.
+ * This is an OpenSSL-compatible implementation of the RSA Data Security, Inc.
+ * MD5 Message-Digest Algorithm (RFC 1321).
  *
- * md5sum is a free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Softawre Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Homepage:
+ * http://openwall.info/wiki/people/solar/software/public-domain-source-code/md5
  *
- * md5sum is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
+ * Author:
+ * Alexander Peslyak, better known as Solar Designer <solar at openwall.com>
  *
- * You should hav received a copy of the GNU General Public License
- * along with md5sum; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * This software was written by Alexander Peslyak in 2001.  No copyright is
+ * claimed, and the software is hereby placed in the public domain.
+ * In case this attempt to disclaim copyright and place the software in the
+ * public domain is deemed null and void, then the software is
+ * Copyright (c) 2001 Alexander Peslyak and it is hereby released to the
+ * general public under the following terms:
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted.
+ *
+ * There's ABSOLUTELY NO WARRANTY, express or implied.
+ *
+ * See md5.c for more information.
  */
 
-#ifndef MD5_H
-#define MD5_H
+#ifndef MD5_ROUTINES_DEFINED
+#define MD5_ROUTINES_DEFINED
+//#ifdef HAVE_OPENSSL
+//#include <openssl/md5.h>
+//#elif !defined(_MD5_H)
+//#define _MD5_H
 
-#include <assert.h>
-#include <stdlib.h>
+/* Any 32-bit or wider unsigned integer data type will do */
+typedef unsigned int MD5_u32plus;
 
-/* WARNING :
- * This implementation is using 32 bits long values for sizes
- */
-typedef unsigned int md5_size;
+typedef struct {
+	MD5_u32plus lo, hi;
+	MD5_u32plus a, b, c, d;
+	unsigned char buffer[64];
+	MD5_u32plus block[16];
+} MD5_CTX;
 
-/* MD5 context */
-struct md5_ctx {
-  struct {
-    unsigned int A, B, C, D; /* registers */
-  } regs;
-  unsigned char *buf;
-  md5_size size;
-  md5_size bits;
-};
+void MD5_Init (MD5_CTX *ctx);
+void MD5_Update (MD5_CTX *ctx, const void *data, unsigned long size);
+void MD5_Final (unsigned char *result, MD5_CTX *ctx);
 
-/* Size of the MD5 buffer */
-#define MD5_BUFFER ((md5_size) 1024)
-
-/* Basic md5 functions */
-#define F(x,y,z) ((x & y) | (~x & z))
-#define G(x,y,z) ((x & z) | (~z & y))
-#define H(x,y,z) (x ^ y ^ z)
-#define I(x,y,z) (y ^ (x | ~z))
-
-/* Rotate left 32 bits values (words) */
-#define ROTATE_LEFT(w,s) ((w << s) | ((w & 0xFFFFFFFF) >> (32 - s)))
-
-#define FF(a,b,c,d,x,s,t) (a = b + ROTATE_LEFT((a + F(b,c,d) + x + t), s))
-#define GG(a,b,c,d,x,s,t) (a = b + ROTATE_LEFT((a + G(b,c,d) + x + t), s))
-#define HH(a,b,c,d,x,s,t) (a = b + ROTATE_LEFT((a + H(b,c,d) + x + t), s))
-#define II(a,b,c,d,x,s,t) (a = b + ROTATE_LEFT((a + I(b,c,d) + x + t), s))
-
-unsigned char *md5 (unsigned char *, md5_size, unsigned char *);
-void md5_init (struct md5_ctx *);
-void md5_update (struct md5_ctx *context);
-void md5_final (unsigned char *digest, struct md5_ctx *context);
-
-#endif /* MD5_H */
+#endif

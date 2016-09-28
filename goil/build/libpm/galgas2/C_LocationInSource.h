@@ -26,10 +26,10 @@
 //---------------------------------------------------------------------------------------------------------------------*
 
 #include "utilities/M_machine.h"
+#include "galgas2/C_SourceTextInString.h"
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-class C_SourceTextInString ;
 class C_String ;
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -42,7 +42,7 @@ class C_LocationInSource {
   private : int32_t mIndex ;
   private : int32_t mLineNumber ;
   private : int32_t mColumnNumber ;
-  private : const C_SourceTextInString * mSourceText ;
+  private : C_SourceTextInString mSourceText ;
 
 //---  
   public : C_LocationInSource (void) ;
@@ -52,7 +52,7 @@ class C_LocationInSource {
 
   public : C_LocationInSource & operator = (const C_LocationInSource & inObject) ;
 
-  public : C_LocationInSource (const C_SourceTextInString * inSourceText,
+  public : C_LocationInSource (const C_SourceTextInString & inSourceText,
                                const int32_t inIndex,
                                const int32_t inLine,
                                const int32_t inColumn) ;
@@ -61,7 +61,7 @@ class C_LocationInSource {
 
   public : void resetLocation (void) ;
 
-  public : void resetWithSourceText (const C_SourceTextInString * inSourceText) ;
+  public : void resetWithSourceText (const C_SourceTextInString & inSourceText) ;
 
   public : inline int32_t index (void) const { return mIndex ; }
 

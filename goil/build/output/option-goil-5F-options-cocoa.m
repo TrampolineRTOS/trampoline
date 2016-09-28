@@ -16,6 +16,15 @@ void enterOptionsFor_goil_5F_options (NSMutableArray * ioBoolOptionArray,
   OC_GGS_CommandLineOption * option ;
   option = [[OC_GGS_CommandLineOption alloc]
     initWithDomainName:@"goil_options"
+    identifier:@"arxmlDisplayOil"
+    commandChar:0
+    commandString:@"arxmlPrintOil"
+    comment:@"Display an Oil version while parsing an arxml file"
+    defaultValue:@""
+  ] ;
+  [ioBoolOptionArray addObject:option] ;
+  option = [[OC_GGS_CommandLineOption alloc]
+    initWithDomainName:@"goil_options"
     identifier:@"generate_log"
     commandChar:108
     commandString:@"logfile"

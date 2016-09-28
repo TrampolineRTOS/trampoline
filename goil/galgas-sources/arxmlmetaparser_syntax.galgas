@@ -29,10 +29,10 @@ syntax arxmlmetaparser_syntax (arxmlmetaparser_scanner) {
 #------------------------------------------------------------------------------
 
 rule <arxmlmetaparser_start_symbol>
-  !@arxmlMetaTypeMap iClassMap
+  !@arxmlMetaClassMap iClassMap
   ?@bool create_class_file
 {
-  @arxmlMetaTypeMap classMap = {}
+  @arxmlMetaClassMap classMap = {}
   @arxmlMetaClassGraph classGraph = .emptyGraph
 
 # Parse the file and fill the maps
@@ -66,10 +66,14 @@ rule <xml_header>
 }
 
 ###############################################################################
+# Good link to understand the xml's xsd's format :
+# http://www.w3schools.com/xml/schema_elements_ref.asp
+
+###############################################################################
 ## xsd_annotation
 ##
 rule <xsd_annotation>
-  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassMap classMap
   ?!@arxmlMetaClassGraph classGraph
   ?@lstring parentClass
 {
@@ -95,7 +99,7 @@ rule <xsd_annotation>
 ## xsd_appinfo
 ##
 rule <xsd_appinfo>
-  ?!@arxmlMetaTypeMap unused classMap
+  ?!@arxmlMetaClassMap unused classMap
   ?!@arxmlMetaClassGraph unused classGraph
   ?@lstring unused parentClass
 {
@@ -112,7 +116,7 @@ rule <xsd_appinfo>
 ## xsd_attribute
 ##
 rule <xsd_attribute>
-  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassMap classMap
   ?!@arxmlMetaClassGraph classGraph
   ?@lstring parentClass
 {
@@ -185,7 +189,7 @@ rule <xsd_attribute>
 ## xsd_attributeGroup
 ##
 rule <xsd_attributeGroup>
-  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassMap classMap
   ?!@arxmlMetaClassGraph classGraph
   ?@lstring parentClass
 {
@@ -259,7 +263,7 @@ rule <xsd_attributeGroup>
 ## xsd_choice
 ##
 rule <xsd_choice>
-  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassMap classMap
   ?!@arxmlMetaClassGraph classGraph
   ?@lstring parentClass
 {
@@ -291,7 +295,7 @@ rule <xsd_choice>
 ## xsd_complexType
 ##
 rule <xsd_complexType>
-  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassMap classMap
   ?!@arxmlMetaClassGraph classGraph
   ?@lstring parentClass
 {
@@ -363,7 +367,7 @@ rule <xsd_complexType>
 ## xsd_documentation
 ##
 rule <xsd_documentation>
-  ?!@arxmlMetaTypeMap unused classMap
+  ?!@arxmlMetaClassMap unused classMap
   ?!@arxmlMetaClassGraph unused classGraph
   ?@lstring unused parentClass
 {
@@ -382,7 +386,7 @@ rule <xsd_documentation>
 ## xsd_element
 ##
 rule <xsd_element>
-  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassMap classMap
   ?!@arxmlMetaClassGraph classGraph
   ?@lstring parentClass
 {
@@ -489,7 +493,7 @@ rule <xsd_element>
 ## xsd_enumeration
 ##
 rule <xsd_enumeration>
-  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassMap classMap
   ?!@arxmlMetaClassGraph classGraph
   ?@lstring parentClass
   ?!@arxmlMetaSimpletype restriction
@@ -517,7 +521,7 @@ rule <xsd_enumeration>
 ## xsd_extension
 ##
 rule <xsd_extension>
-  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassMap classMap
   ?!@arxmlMetaClassGraph classGraph
   ?@lstring parentClass
 {
@@ -552,7 +556,7 @@ rule <xsd_extension>
 ## xsd_group
 ##
 rule <xsd_group>
-  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassMap classMap
   ?!@arxmlMetaClassGraph classGraph
   ?@lstring parentClass
 {
@@ -624,7 +628,7 @@ rule <xsd_group>
 ## xsd_import
 ##
 rule <xsd_import>
-  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassMap classMap
   ?!@arxmlMetaClassGraph classGraph
   ?@lstring parentClass
 {
@@ -647,7 +651,7 @@ rule <xsd_import>
 ## xsd_restriction
 ##
 rule <xsd_restriction>
-  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassMap classMap
   ?!@arxmlMetaClassGraph classGraph
   ?@lstring parentClass
   ?!@arxmlMetaSimpletype restriction
@@ -747,7 +751,7 @@ rule <xsd_restriction>
 ## xsd_schema
 ##
 rule <xsd_schema>
-  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassMap classMap
   ?!@arxmlMetaClassGraph classGraph
 {
   $<xsd:$
@@ -804,7 +808,7 @@ rule <xsd_schema>
 ## xsd_sequence
 ##
 rule <xsd_sequence>
-  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassMap classMap
   ?!@arxmlMetaClassGraph classGraph
   ?@lstring parentClass
 {
@@ -835,7 +839,7 @@ rule <xsd_sequence>
 ## xsd_simpleContent
 ## restriction is never called by the simpleContent in AUTOSAR
 rule <xsd_simpleContent>
-  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassMap classMap
   ?!@arxmlMetaClassGraph classGraph
   ?@lstring parentClass
 {
@@ -870,7 +874,7 @@ rule <xsd_simpleContent>
 ## xsd_simpleType
 ##
 rule <xsd_simpleType>
-  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassMap classMap
   ?!@arxmlMetaClassGraph classGraph
   ?@lstring parentClass
 {
@@ -936,7 +940,7 @@ rule <xsd_simpleType>
 ##        This forces the string to have a character number limit
 ##        It is actually ignored.
 rule <xsd_maxLength>
-  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassMap classMap
   ?!@arxmlMetaClassGraph classGraph
   ?@lstring parentClass
 {
@@ -961,7 +965,7 @@ rule <xsd_maxLength>
 ##        Ex : Forces ADDRESS--SIMPLE's string to be written as "0x[0-9][a-z]"
 ##        It is actually ignored.
 rule <xsd_pattern>
-  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassMap classMap
   ?!@arxmlMetaClassGraph classGraph
   ?@lstring parentClass
 {
@@ -985,7 +989,7 @@ rule <xsd_pattern>
 ##        This forces the string to not ignore the white spaces
 ##        It is actually ignored.
 rule <xsd_whiteSpace>
-  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassMap classMap
   ?!@arxmlMetaClassGraph classGraph
   ?@lstring parentClass
 {
@@ -1190,55 +1194,24 @@ proc lstringhere
 }
 
 proc fillLegacy
-  ?!@arxmlMetaTypeMap classMap
+  ?!@arxmlMetaClassMap classMap
   ?!@arxmlMetaClassGraph classGraph
 {
-  #@lstringlist sortedInfoList
-  #@lstringlist sortedKeyList
-  #@lstringlist unsortedInfoList
-  #@lstringlist unsortedKeyList
-
-  # Sort the graph topologically
-  #[classGraph depthFirstTopologicalSort ?sortedInfoList ?sortedKeyList
-  #                            ?unsortedInfoList ?unsortedKeyList]
-
-  #message "\n##### Undef node count : " + [classGraph undefinedNodeCount] +"\n"
-
-  #for (@lstring unsortedKey) in unsortedKeyList do
-  #  message "#" + [unsortedKey string] + "\n"
-  #end
   @stringlist sortedInfoList = [classGraph keyList]
 
   for (@string sClassName) in sortedInfoList do
     lstringhere(?@lstring lClassName !sClassName)
-    @arxmlMetaType lClasst
-    [classMap searchKey !lClassName ?lClasst]
-    if lClasst is == @arxmlMetaClass then
-      @arxmlMetaClass lClass = lClasst as @arxmlMetaClass
-      # Get successors
-      @lstringlist fromList = {}
-      [!?fromList insertAtIndex ![lClass name] !0]
-      @stringset empty = .emptySet
-      @lstringlist successorList = [classGraph accessibleNodesFrom !fromList !empty]
+    @arxmlMetaClass lClass
+    [classMap searchKey !lClassName ?lClass]
 
-      # Add this class's elements and attributes to each of the successors class
-      [!?lClass legacyAddParameters !?classMap !successorList]
-    end
+    # Get successors
+    @lstringlist fromList = {}
+    [!?fromList insertAtIndex ![lClass name] !0]
+    @stringset empty = .emptySet
+    @lstringlist successorList = [classGraph accessibleNodesFrom !fromList !empty]
+
+    # Add this class's elements and attributes to each of the successors class
+    [!?lClass legacyAddParameters !?classMap !successorList]
   end
-#  for (@lstring lClassName) in unsortedInfoList do
-#    @arxmlMetaType lClasst
-#    [classMap searchKey !lClassName ?lClasst]
-#    if lClasst is == @arxmlMetaClass then
-#      @arxmlMetaClass lClass = lClasst as @arxmlMetaClass
-#      # Get successors
-#      @lstringlist fromList = {}
-#      [!?fromList insertAtIndex ![lClass name] !0]
-#      @stringset empty = .emptySet
-#      @lstringlist successorList = [classGraph accessibleNodesFrom !fromList !empty]
-#
-#      # Add this class's elements and attributes to each of the successors class
-#      [!?lClass legacyAddParameters !?classMap !successorList]
-#    end
-#  end
 }
 

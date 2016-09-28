@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 1997, ..., 2014 Pierre Molinaro.                                                                     *
+//  Copyright (C) 1997, ..., 2016 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -201,9 +201,12 @@ class C_String : public AC_OutputStream {
 
 //--- Substitute 'inSearchedString' by 'inReplacementString'
   public : C_String stringByReplacingStringByString (const C_String inSearchedString,
-                                                     const C_String & inReplacementString,
+                                                     const C_String inReplacementString,
                                                      uint32_t & outReplacementCount,
                                                      bool & outOk) const ;
+
+  public : C_String stringByReplacingStringByString (const C_String inSearchedString,
+                                                     const C_String inReplacementString) const ;
 
 //--- Get character last occurrence (returns -1 if not found)
   public : int32_t lastOccurrenceIndexOfChar (const utf32 inChar) const ;
@@ -271,6 +274,9 @@ class C_String : public AC_OutputStream {
 //--- Return string, with all letters in lower case
   public : C_String lowercaseString (void) const ;
 
+//--- Check if the receiver ends with inString
+  public : bool endsWithString (const C_String & inString) const ;
+
 //--- Return reversed string
   public : C_String reversedString (void) const ;
   public : void reverseStringInPlace (void) ;
@@ -286,6 +292,10 @@ class C_String : public AC_OutputStream {
 //    - first, convert Windows Path to Unix Path (on windows only)
 //    - Reduce empty components and references to the current directory (that is, the sequences "//" and "/./") to single path separators
   public : C_String stringByStandardizingPath (void) const ;
+
+//--- Convert string to double
+  public : void convertToDouble (double & outDoubleValue,
+                                 bool & outOk) const ;
 
 //---------------- Virtual output stream methods --------------
   protected : virtual void performActualCharArrayOutput (const char * inCharArray,
@@ -317,7 +327,7 @@ class C_String : public AC_OutputStream {
 
 const size_t kTextReadExceptionStringMaxLength = 1000 ;
 
-class C_TextReadException : public ::std::  exception {
+class C_TextReadException : public ::std::exception {
   public : C_TextReadException (const char * inFileName) ;
 
   private : char mErrorMessage [kTextReadExceptionStringMaxLength + 1] ;

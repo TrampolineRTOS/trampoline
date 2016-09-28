@@ -24,6 +24,7 @@
 #
 #---------------------------------------------------------------------------*
 
+# 3.1.0    Updated to GTL 3.1.0. Arxml parsing
 # 3.0.7    Updated to GTL 3.0.7. Updated to GALGAS 3.2.7
 # 3.0.6    Updated to GTL 3.0.6. Debugger with command files and load command
 # 3.0.5    Updated to GTL 3.0.5. Debugger with history and line editing
@@ -46,7 +47,7 @@
 #          string
 # 2.1.20   Added -o and -r options to goil
 
-project (3:0:7) -> "goil" {
+project (3:1:0) -> "goil" {
 
   %makefile-macosx
   %makefile-unix
@@ -112,7 +113,7 @@ project (3:0:7) -> "goil" {
 # Code generation
 #
   "galgas-sources/goil_code_generation.galgas"
-  
+
   "galgas-sources/goil_grammar.galgas"
   "galgas-sources/goil_object_level_include.galgas"
   "galgas-sources/goil_file_level_include.galgas"
@@ -121,7 +122,7 @@ project (3:0:7) -> "goil" {
   "galgas-sources/goil_type_level_include.galgas"
   "galgas-sources/options_grammar.galgas"
   "galgas-sources/goil_program.galgas"
-  
+
 #---------------------------------------------------------------------------*
 # ARXML parsing
 #---------------------------------------------------------------------------*
@@ -130,10 +131,17 @@ project (3:0:7) -> "goil" {
   "galgas-sources/arxml_scanner.galgas"
   "galgas-sources/arxml_types.galgas"
 #
+# xsd Meta-parser
+#
+  "galgas-sources/arxmlmetaparser_scanner.galgas"
+  "galgas-sources/arxmlmetaparser_semantics.galgas"
+  "galgas-sources/arxmlmetaparser_syntax.galgas"
+  "galgas-sources/arxmlmetaparser_grammar.galgas"
+
 # Cocoa GOIL
 #
   "galgas-sources/cocoaGOIL.galgas"
-  
+
 }
 # vim:ft=ggs:ts=4:sw=4
 

@@ -46,11 +46,16 @@ class C_Data {
 
   public : const uint8_t * unsafeDataPointer (void) const { return mBinaryData.unsafeArrayPointer () ; }
 
+//--- Capacity
+  public : void setCapacity (const int32_t inNewCapacity) ;
+
 //--- Free
   public : void free (void) ;
 
 //--- Append data
   public : void appendData (const C_Data & inData) ;
+  public : void appendString (const class C_String & inString) ;
+  public : void appendUTF32Character (const utf32 inUnicodeChar) ;
   
 //---
   public : uint8_t operator () (const int32_t inIndex
@@ -69,9 +74,12 @@ class C_Data {
   public : int32_t compareWithData (const C_Data & inData) const ;
 
 //---
-  public : void removeLengthFromStart (const uint32_t inLength) ;
+  public : void removeLengthFromStart (const uint32_t inLength COMMA_LOCATION_ARGS) ;
 
-//--- 
+//---
+  public : void removeLastByte (LOCATION_ARGS) ;
+
+//---
   public : bool operator == (const C_Data & inData) const ;
   public : bool operator != (const C_Data & inData) const ;
 } ;

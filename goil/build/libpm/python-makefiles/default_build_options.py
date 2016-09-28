@@ -9,6 +9,7 @@
 
 def allCompilerOptions (platformOptions):
   result = platformOptions
+#  result.append ("-std=c++11")
   result.append ("-Wall")
   result.append ("-Werror")
   result.append ("-Wreturn-type")

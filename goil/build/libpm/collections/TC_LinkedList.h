@@ -211,7 +211,7 @@ void TC_LinkedList <TYPE>::mergeListAtBottom (TC_LinkedList <TYPE> & ioList) {
 template <typename TYPE>
 void TC_LinkedList <TYPE>::copyIntoArray (TC_UniqueArray <TYPE> & outArray) {
   outArray.free () ;
-  outArray.makeRoom (mCount) ;
+  outArray.setCapacity (mCount) ;
   cElement * p = mTopItem ;
   while (p != NULL) {
     outArray.addObject (p->mInfo) ;
