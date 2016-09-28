@@ -28,7 +28,7 @@
 #
 
 if OS::NUMBER_OF_CORES < 2 then
-  error here : "Spinlocks cannot be defined in multicore"
+  error here : "Spinlocks cannot be defined in monocore"
 end if
 
 # -----------------------------------------------------------------------------
