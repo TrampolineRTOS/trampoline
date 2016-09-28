@@ -1,0 +1,96 @@
+//first compilation:
+//goil --target=posix  --templates=../../../goil/templates/ periodic.oil
+
+OIL_VERSION = "4.0";
+
+IMPLEMENTATION trampoline {
+
+    /* This fix the default STACKSIZE of tasks */
+    TASK {
+        UINT32 STACKSIZE = 32768 ;
+    } ;
+
+    /* This fix the default STACKSIZE of ISRs */
+    ISR {
+        UINT32 STACKSIZE = 32768 ;
+    } ;
+};
+
+CPU only_one_periodic_task {
+  OS config {
+    NUMBER_OF_CORES = 1;
+    STATUS = EXTENDED;
+    BUILD = TRUE {
+      APP_SRC = "ioc.c";
+      TRAMPOLINE_BASE_PATH = "../../..";
+      APP_NAME = "ioc_exe";
+      LINKER = "gcc";
+    };
+  };
+
+  APPLICATION receiver_application {
+    TASK = receiver;
+    ALARM = check_every_seconds;
+    COUNTER = SystemCounter_App0;
+  };
+
+  APPLICATION sender_application {
+    TASK = sender;
+    ALARM = please_send_a_message;
+    COUNTER = SystemCounter_App1;
+  };
+
+  APPMODE std {};
+
+  COUNTER SystemCounter_App0
+  {
+  };
+
+  COUNTER SystemCounter_App1
+  {
+  };
+
+  ALARM check_every_seconds {
+    COUNTER = SystemCounter_App0;
+    ACTION = ACTIVATETASK { TASK = receiver; };
+    AUTOSTART = TRUE { APPMODE = std; ALARMTIME = 100; CYCLETIME = 100; };
+  };
+
+  ALARM please_send_a_message {
+    COUNTER = SystemCounter_App1;
+    ACTION = ACTIVATETASK { TASK = sender; };
+    AUTOSTART = TRUE { APPMODE = std; ALARMTIME = 350; CYCLETIME = 300; };
+  };
+
+  TASK receiver {
+    PRIORITY = 1;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+
+  TASK sender {
+    PRIORITY = 2;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+
+  IOC my_ioc_name {
+    DATATYPENAME uint32 {
+        DATATYPEPROPERTY = DATA;
+    };
+    SEMANTICS = QUEUED {
+        BUFFER_LENGTH = 5;
+    };
+//    SEMANTICS = LAST_IS_BEST {
+//      INIT_VALUE_SYMBOL = AUTO;
+//    };
+    RECEIVER rcv {
+        RCV_OSAPPLICATION = receiver_application;
+    };
+    SENDER snd {
+        SND_OSAPPLICATION = sender_application;
+    };
+  };
+};
