@@ -27,7 +27,7 @@
 grammar arxmlmetaparser_grammar "LL1" {
   syntax arxmlmetaparser_syntax
   <arxmlmetaparser_start_symbol>
-    !@arxmlMetaTypeMap classMap
+    !@arxmlMetaClassMap classMap
     ?@bool create_class_file
 }
 

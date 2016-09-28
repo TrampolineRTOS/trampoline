@@ -50,7 +50,7 @@
       ?@arxmlNode root
       !true
       !true
-    [root print !0]
+#    [root print !0]
   }
 
 #  when . "epc" message "a XML source file" ??@lstring inSourceFile {
