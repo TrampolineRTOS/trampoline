@@ -41,6 +41,18 @@ CPU button_2c {
       COPIER    = "undefcop";
       SYSTEM    = PYTHON;
     };
+    TIMINGPROTECTION_WATCHDOG watchdog_core00
+    {
+      CORE = 0;
+      SOURCE = pit_ch1;
+      FREQUENCY = 120000;
+    };
+    TIMINGPROTECTION_WATCHDOG watchdog_core11
+    {
+      CORE = 1;
+      SOURCE = pit_ch2;
+      FREQUENCY = 120000;
+    };
     STACKMONITORING = FALSE;
     STATUS          = STANDARD;
     USEVLE          = TRUE;
@@ -65,7 +77,6 @@ CPU button_2c {
     TASK = t1_app1;
     TASK = blink;
     COUNTER = Core0_counter0;
-    COUNTER = watchdog_core0;
     ALARM = alarm_blink;
     CORE = 0;
   };
@@ -73,7 +84,6 @@ CPU button_2c {
   APPLICATION application2 {
     TASK = t1_app2;
     COUNTER = Core1_counter0;
-    COUNTER = watchdog_core1;
     CORE = 1;
   };
 
@@ -85,7 +95,6 @@ CPU button_2c {
     MAXALLOWEDVALUE = 65535;
     MINCYCLE = 1;
     SOURCE = pit_ch0; /* We have to use the pit to synch the cores */
-    HANDLER = tick;
   };
 
   COUNTER Core1_counter0 {
@@ -93,23 +102,6 @@ CPU button_2c {
     MAXALLOWEDVALUE = 65535;
     MINCYCLE = 1;
     SOURCE = pit_ch0; /* We use the same pit channel so both alarms are synched */
-    HANDLER = tick;
-  };
-
-  COUNTER watchdog_core0 {
-    TICKSPERBASE = 1;
-    MAXALLOWEDVALUE = 65535;
-    MINCYCLE = 1;
-    SOURCE = pit_ch1; /* We use the same pit channel so both alarms are synched */
-    HANDLER = watchdog;
-  };
-
-  COUNTER watchdog_core1 {
-    TICKSPERBASE = 1;
-    MAXALLOWEDVALUE = 65535;
-    MINCYCLE = 1;
-    SOURCE = pit_ch2; /* We use the same pit channel so both alarms are synched */
-    HANDLER = watchdog;
   };
 
   /* ==========================================================================

@@ -3,10 +3,6 @@ IMPLEMENTATION mpc5643l {
   /* Add the source and the handler of the counter */
   COUNTER [] {
     IDENTIFIER SOURCE;
-    ENUM [
-        tick,
-        watchdog
-    ] HANDLER;
     UINT32 FREQUENCY = 120000; /* Default : 120000000Hz = 1ms */
   };
 
@@ -18,6 +14,12 @@ IMPLEMENTATION mpc5643l {
   OS [] {
     BOOLEAN USEVLE;
     BOOLEAN HASFLOAT = TRUE;
+    STRUCT
+    {
+      UINT32 CORE;
+      IDENTIFIER SOURCE;
+      UINT32 FREQUENCY = 120000;
+    } TIMINGPROTECTION_WATCHDOG [];
   };
 
   TASK [] {
