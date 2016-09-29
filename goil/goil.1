@@ -1,18 +1,19 @@
 .\" Manpage for goil
 .\" Contact Jean-Luc.Bechennec@irccyn.ec-nantes.fr for errors or typos
-.TH GOIL 1 "07 December 2014" "2.1.8" "goil man page"
+.TH GOIL 1 "29 September 2016" "3.1.0" "goil man page"
 .SH NAME
 \fBgoil\fP \- verify and compile an .oil file
 .SH SYNOPSIS
-\fBgoil\fP [\fB--output-concrete-syntax-tree\fP] [\fB--trace\fP] [\fB-v\fP] [\fB--verbose\fP] [\fB--log-file-read\fP] [\fB--no-file-generation\fP] [\fB--Werror\fP] [\fB--help\fP] [\fB--version\fP] [\fB--no-color\fP] [\fB-l\fP] [\fB--logfile\fP] [\fB--warn-multiple\fP] [\fB--max-errors\fP=number] [\fB--max-warnings\fP=number] [\fB--mode\fP=string] [\fB-c\fP=string] [\fB--config\fP=string] [\fB-p\fP=string] [\fB--project\fP=string] [\fB-t\fP=string] [\fB--target\fP=string] [\fB--templates\fP=string] file...
+\fBgoil\fP [\fB--output-concrete-syntax-tree\fP] [\fB--trace\fP] [\fB--quiet\fP/\fB-q\fP] [\fB--log-file-read\fP] [\fB--no-file-generation\fP] [\fB--Werror\fP] [\fB--help\fP] [\fB--version\fP] [\fB--no-color\fP] [\fB-l\fP/\fB--logfile\fP] [\fB--warn-multiple\fP] [\fB--arxmlPrintOil\fP] [\fB--warn-deprecated\fP] [\fB--debug\fP] [\fB--max-errors\fP=number] [\fB--max-warnings\fP=number] [\fB--mode\fP=string] [\fB-c\fP=string/\fB--config\fP=string]  [\fB-p\fP=string/\fB--project\fP=string] [\fB-r\fP=string/\fB--root\fP=string] [\fB-o\fP=string/\fB--option\fP=string] [\fB-t\fP=string/\fB--target\fP=string] [\fB--templates\fP=string] file
 .SH DESCRIPTION
-goil is the OIL (Osek Implementation Language) compiler for Trampoline RTOS.
+goil is the OIL (Osek Implementation Language) compiler and ARXML (Autosar XML) compiler for Trampoline RTOS.
+
 goil reads an input file describing the application and outputs the
 corresponding C language data and code.
 
 .SH OPTIONS
 
-.IP \fB--help\fP 
+.IP \fB--help\fP
 Print a summary of options.
 
 .IP \fB--version\fP
@@ -27,7 +28,7 @@ Set the target platform. A target platform is a subpath of the machines or
 the templates/code directory. For example thumb2/cortex-m4/STM32F4-Discovery
 is a target platforms. The first element is the instruction set of the platform.
 In our exemple, the arm thumb2 instruction set. The second element is the
-micro-controller core, cortex-m4 here. The third one is the board, here the 
+micro-controller core, cortex-m4 here. The third one is the board, here the
 Discovery board from ST Microelectronics. goil uses the
 appropriate templates along the same path in the subdirectories of the
 \fItemplates\fP directory and in the \fImachines\fP directory.
@@ -47,7 +48,7 @@ directory.
 
 .IP \fB-p\fP=\fIstring\fP,\ \fB--project\fP=\fIstring\fP
 Set the project directory where goil outputs the resulting files.
-By default the project directory is located in the current directory and has 
+By default the project directory is located in the current directory and has
 the same name as the OIL file minus the .oil extension.
 
 .IP \fB--warn-multiple\fP
@@ -58,14 +59,29 @@ implementation object is extended, goil uses the the last defined multiplicity.
 If the multiplicity is not the same as in the previous declaration, goil emits
 a warning if this option is used.
 
+.IP \fB-r\fP=\fIstring\fP,\ \fB--root\fP=\fIstring\fP
+Specify the file name for the root template. Default value: root.
+
+.IP \fB-o\fP=\fIstring\fP,\ \fB--option\fP=\fIstring\fP
+Pass options to the templates.
+
+.IP \fB--arxmlPrintOil\fP
+Print a more readable OIL equivalentcy or the parsed arxml file on the standard output.
+
+.IP \fB--warn-deprecated\fP
+Output a warning for each deprecated statement found in the templates.
+
+.IP \fB--debug\fP
+Run the template interpreter in debug mode.
+
 .IP \fB--output-concrete-syntax-tree\fP
 Generate the concrete syntax tree, in .dot format (suitable for Graphviz)
 
 .IP \fB--trace\fP
 Output a trace file
 
-.IP \fB-v\fP,\ \fB--verbose\fP
-Verbose Output
+.IP \fB-q\fP,\ \fB--quiet\fP
+Quiet Output
 
 .IP \fB--log-file-read\fP
 Log every file read
@@ -74,7 +90,7 @@ Log every file read
 Do not generate any file
 
 .IP \fB--Werror\fP
-Treat warnings as errors 
+Treat warnings as errors
 
 .IP \fB--no-color\fP
 Do not issue colored messages
@@ -86,7 +102,7 @@ Stop after the given number of errors has been reached (default value: 10000)
 Stop after the given number of warnings has been reached (default value: 10000)
 
 .IP \fB--mode\fP=string
-'lexical-only' or 'syntax-only' (default value: '')
+\fIlexical-only\fP or \fIsyntax-only\fP or \fIlatex\fP.
 
 
 .SH AUTHORS
