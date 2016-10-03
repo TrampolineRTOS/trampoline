@@ -436,6 +436,17 @@ abstract class @impType {
   @lstringlist    descs     # description of the attribute
 }
 
+getter @impType getDefaultValue
+  ->@object_t outDefaultValue
+{
+  outDefaultValue = @void.new{!emptyLString() !.nowhere}
+}
+setter @impType setDefaultValue
+  ?@object_t inDefaultValue
+{
+}
+
+
 abstract getter @impType mergeWithType
   ?@impType unused typeToMerge
   ->@impType
@@ -489,6 +500,17 @@ override getter @impVoid mergeWithType
 class @impAutoDefaultType : @impType {
   @bool     withAuto    # true if AUTO allowed
   @object_t defaultValue
+}
+
+override getter @impAutoDefaultType getDefaultValue
+  ->@object_t outDefaultValue
+{
+  outDefaultValue = defaultValue
+}
+override setter @impAutoDefaultType setDefaultValue
+  ?@object_t inDefaultValue
+{
+  defaultValue = inDefaultValue
 }
 
 override getter @impAutoDefaultType mergeWithType

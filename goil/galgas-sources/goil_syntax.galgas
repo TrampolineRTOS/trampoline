@@ -413,7 +413,21 @@ rule <oil_declaration>
         val = @multipleAttribute. new { !emptyLString() ![multiAttribute location] !aList}
       else end
     else
-      val = @multipleAttribute. new { !emptyLString() ![val location] !@identifierList. listWithValue { !val}}
+      @identifierList aList = .emptyList
+      # Get the type's default value
+      @object_t defaultValue = [type getDefaultValue]
+
+      # If it's a list, get it
+      cast defaultValue
+      case == @multipleAttribute multiAttribute :
+        aList = [multiAttribute items]
+      else end
+
+      # The created list either contains the default list + current value, or
+      # the current value only (if there is no default list)
+      aList += !val
+
+      val = @multipleAttribute. new { !emptyLString() ![val location] !aList}
     end
   end
   if typeOk then
