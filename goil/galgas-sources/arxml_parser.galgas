@@ -1349,14 +1349,24 @@ proc arxmlDefinitionObject
   # Test multiplicity
   @implementationObject impObjOfKind = [imp impObject ![objectKind string]]
   @objectKind objectsForKind = @objectKind. new { !@objectKindMap. emptyMap}
-  testObjectMultiplicity(!?objects !objectKind !impObjOfKind !?objectsForKind)
+  if [objects hasKey ![objectKind string]] then
+    [!?objects del !objectKind ?objectsForKind]
+  end
 
   # Get Object name
   @lstring objectName = [currentElement getTextFromElement !"SHORT-NAME"]
 
-  # XXX : Comment this
+  # Get already defined objects
   @objectAttributes object = emptyObject()
   @objectKindMap objectsKind = [objectsForKind objects]
+  if [[impObjOfKind multiple] bool] == false then
+    # The object cannot be instanciated multiple time, it's stored in the
+    # object list not with its name as a key but its kind, thus we'll always
+    # modify this uniq object each time we encounter it.
+    objectName = objectKind
+  end
+
+  # If the object has already been defined, get it
   if [objectsKind hasKey ![objectName string]] then
     [!?objectsKind del !objectName ?object]
   end
@@ -1513,7 +1523,6 @@ proc arxmlDefinitionParameter
     # Test if the definition type matches the implementation type
     testTypeError(![type type] !valueType)
   else
-# XXX - Warning : Unused Parameters added to the config.oil file to avoid this
     error parameterType : [parameterType string] + " is not declared in the "
                         + "IMPLEMENTATION."
   end
@@ -1716,6 +1725,13 @@ proc arxmlDefinitionParameter
 
       val = @multipleAttribute. new { !emptyLString() ![val location] !aList}
     end
+      if [idfs hasKey ![parameterType string]] then
+        # The key already exists, we must merge the existing identifier with the
+        # new one
+        @object_t existingObject
+        [!?idfs del !parameterType ?existingObject]
+        [!?val mergeSubAttributes !existingObject]
+      end
   end
 
   # Finaly insert the val in the identifiers
@@ -1737,24 +1753,6 @@ proc testTypeError
     error valueType : "Expected oil type " + [type oilType] + "."
                     + " Found " + valueType.string + ".\n"
                     + " Fix : Replace it with " + [type arxmlType]
-  end
-}
-
-proc testObjectMultiplicity
- ?!@objectsMap objects
- ?@lstring objectKind
- ?@implementationObject impObjOfKind
- ?!@objectKind objectsForKind
-{
-  if [objects hasKey ![objectKind string]] then
-    # An object of this kind already exists. This is permitted only
-    # if the implementation declares the object may be instantiated
-    # multiple time
-    #@lbool multiple = [impObjOfKind multiple]
-    if [[impObjOfKind multiple] bool] == false then
-      error @location.here: "object "+objectKind+" may not have multiple instance"
-    end
-    [!?objects del !objectKind ?objectsForKind]
   end
 }
 

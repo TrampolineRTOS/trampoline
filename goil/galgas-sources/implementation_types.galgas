@@ -442,7 +442,7 @@ getter @impType getDefaultValue
   outDefaultValue = @void.new{!emptyLString() !.nowhere}
 }
 setter @impType setDefaultValue
-  ?@object_t inDefaultValue
+  ?@object_t unused inDefaultValue
 {
 }
 

@@ -37,6 +37,11 @@ abstract class @object_t {
 #  end method ;
 }
 
+setter @object_t mergeSubAttributes
+  ?@object_t unused withObject
+{
+}
+
 map @identifierMap {
     @object_t value
     insert put error message "%K is duplicated in %L"
@@ -46,6 +51,22 @@ map @identifierMap {
 
 class @objectAttributes {
   @identifierMap objectParams %setter
+}
+
+setter @objectAttributes mergeAttributes
+  ?@objectAttributes withAttributes
+{
+  for(@lstring key @object_t withObject) in [withAttributes objectParams] do
+    if [objectParams hasKey !key] then
+      # The identifier already exists => merge
+      [!?objectParams del !key ?@object_t object]
+      [!?object mergeSubAttributes !withObject]
+      [!?objectParams put !key !object]
+    else
+      # The identifier does not exists => put
+      [!?objectParams put !key !withObject]
+    end
+  end
 }
 
 func emptyObject -> @objectAttributes result {
@@ -62,6 +83,15 @@ class @auto : @object_t {}
 
 class @multipleAttribute : @object_t {
   @identifierList items
+}
+
+override setter @multipleAttribute mergeSubAttributes
+  ?@object_t withObject
+{
+  cast withObject
+  case == @multipleAttribute multipleObject :
+    items += [multipleObject items]
+  else end
 }
 
 func multipleAttributeOrError
@@ -81,6 +111,16 @@ class @boolAttribute : @object_t {
   @bool value
   @objectAttributes subAttributes %setter
 }
+override setter @boolAttribute mergeSubAttributes
+  ?@object_t withObject
+{
+  cast withObject
+  case == @boolAttribute boolObject :
+    if value == [boolObject value] then
+      [!?subAttributes mergeAttributes ![boolObject subAttributes]]
+    end
+  else end
+}
 
 func boolAttributeOrError
   ?@object_t t
@@ -98,6 +138,16 @@ func boolAttributeOrError
 class @enumAttribute : @object_t {
   @string value
   @objectAttributes subAttributes
+}
+override setter @enumAttribute mergeSubAttributes
+  ?@object_t withObject
+{
+  cast withObject
+  case == @enumAttribute enumObject :
+    if value == [enumObject value] then
+      [!?subAttributes mergeAttributes ![enumObject subAttributes]]
+    end
+  else end
 }
 
 class @objectRefAttribute : @object_t {
@@ -263,7 +313,16 @@ class @structAttribute : @object_t {
   @lstring structName
   @objectAttributes subAttributes
 }
-
+override setter @structAttribute mergeSubAttributes
+  ?@object_t withObject
+{
+  cast withObject
+  case == @structAttribute structObject :
+    if [structName string] == [[structObject structName] string] then
+      [!?subAttributes mergeAttributes ![structObject subAttributes]]
+    end
+  else end
+}
 
 class @bool_t : @object_t {
   @bool   value
