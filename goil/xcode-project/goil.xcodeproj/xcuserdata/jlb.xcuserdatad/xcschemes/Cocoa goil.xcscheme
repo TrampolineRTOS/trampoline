@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0730"
+   LastUpgradeVersion = "0800"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CD97183B2E40BC464231C962"
-               BuildableName = "goil"
-               BlueprintName = "goil tool"
+               BlueprintIdentifier = "08FC6938F52CB96F7E087941"
+               BuildableName = "CocoaGoil.app"
+               BlueprintName = "Cocoa goil"
                ReferencedContainer = "container:goil.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -32,9 +32,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "CD97183B2E40BC464231C962"
-            BuildableName = "goil"
-            BlueprintName = "goil tool"
+            BlueprintIdentifier = "08FC6938F52CB96F7E087941"
+            BuildableName = "CocoaGoil.app"
+            BlueprintName = "Cocoa goil"
             ReferencedContainer = "container:goil.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -55,9 +55,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "CD97183B2E40BC464231C962"
-            BuildableName = "goil"
-            BlueprintName = "goil tool"
+            BlueprintIdentifier = "08FC6938F52CB96F7E087941"
+            BuildableName = "CocoaGoil.app"
+            BlueprintName = "Cocoa goil"
             ReferencedContainer = "container:goil.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -74,9 +74,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "CD97183B2E40BC464231C962"
-            BuildableName = "goil"
-            BlueprintName = "goil tool"
+            BlueprintIdentifier = "08FC6938F52CB96F7E087941"
+            BuildableName = "CocoaGoil.app"
+            BlueprintName = "Cocoa goil"
             ReferencedContainer = "container:goil.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

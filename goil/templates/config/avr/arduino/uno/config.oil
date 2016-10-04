@@ -6,20 +6,34 @@ CPU avrArduino {
   
   BUILDOPTIONS buildOptionsForArduino {
     COMMONFLAGS = "-Os -Wall -DF_CPU=16000000 -mmcu=atmega328p"; //CFLAGS + CPPFLAGS
+    COMMONFLAGS = "-ffunction-sections"; // Each function is put in its own section. Required to deleted unused code
+    COMMONFLAGS = "-fdata-sections";    // Each data is put in its own section. Required to deleted unused data
     ASFLAGS = "-DF_CPU=16000000 -mmcu=atmega328p";
     LDFLAGS = "-DF_CPU=16000000 -mmcu=atmega328p";
+    LDFLAGS = "-Wl,--gc-sections"; // Remove unused sections. Works with -ffunction-sections and -fdata-sections, see above
   };
 
 };
 
 CPU arduino {
 
+  POSTBUILD all {
+    COMMAND buildbin {
+      TYPE = COPIER;
+      INPUT = TARGET;
+      OUTPUT = ".hex";
+      PREOPTION = "-O ihex";
+    };
+  };
+
   POSTCOMMAND flash {
     COMMAND flash {
       MESSAGE = "Flashing";
       COMMAND = "avrdude";
-      INPUT = TARGET { EXT = ""; };
-      PREOPTION = "-c arduino -p m328p -P/dev/ttyUSB0 -U flash:w:";
+      INPUT = TARGET { EXT = ".hex"; };
+      PREOPTION = "-c arduino -p m328p";
+      PREOPT = ENVAR { NAME = "AVRDUDE_PORT"; OPT = "-P"; };
+      PREOPT = LITERAL { VALUE = "flash:w:"; OPT = "-U"; };
     };
   };
 }; 
