@@ -611,7 +611,6 @@ if make.errorCount() == 0:%
     end foreach%
     commandLine = "% !commandLine %"%
     foreach opt in exists cmd::PREOPT default ( @() ) do
-      display opt
       if opt::VALUE == "ENVAR" then%
     if os.environ.get('% !opt::VALUE_S::NAME %') != None:
       commandLine += "% !opt::VALUE_S::OPT %" + os.environ['% !opt::VALUE_S::NAME %'] + " "
