@@ -479,10 +479,10 @@ class @impVoid : @impType {
 }
 
 override getter @impVoid mergeWithType
-  ?@impType unused typeToMerge
+  ?@impType typeToMerge
   ->@impType mergedType
 {
-  mergedType = self
+  mergedType = typeToMerge
 }
 
 
@@ -492,10 +492,10 @@ class @impAutoDefaultType : @impType {
 }
 
 override getter @impAutoDefaultType mergeWithType
-  ?@impType unused typeToMerge
+  ?@impType typeToMerge
   ->@impType mergedType
 {
-  mergedType = self
+  mergedType = typeToMerge
 }
 
 override getter @impAutoDefaultType autoAllowed -> @bool result {
@@ -548,7 +548,7 @@ override getter @refType mergeWithType
     !name
     !multiple
     !descs + [typeToMerge descs]
-    !ref
+    ![castTypeToMerge ref]
   }
 }
 
@@ -647,7 +647,7 @@ override getter @impBoolType mergeWithType
     !multiple
     !descs + [typeToMerge descs]
     !withAuto
-    !defaultValue
+    ![castTypeToMerge defaultValue]
     !mergedTrueAttributes
     !mergedFalseAttributes
   }
@@ -738,7 +738,7 @@ override getter @impEnumType mergeWithType
     !multiple
     !descs + [typeToMerge descs]
     !withAuto
-    !defaultValue
+    ![castTypeToMerge defaultValue]
     ![valuesMap mergeWithEnum ![castTypeToMerge valuesMap]]
   }
 }

@@ -176,7 +176,7 @@ rule <arxml_start_symbol>
       + "/build/" + [@string.stringWithSourceFilePath lastPathComponent] + ".dep"  
     #message "Writing dependancies to " + oilDepFileName + "\n";
     [fileIncludeList writeToFile !oilDepFileName]
-    message fileIncludeList
+    #message fileIncludeList
 
 }
 
