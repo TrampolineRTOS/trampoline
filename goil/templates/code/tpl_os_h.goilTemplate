@@ -124,8 +124,10 @@ DeclareTask(% !task::NAME %);%
 end foreach
 
 foreach resource in RESOURCE do
+  if resource::RESOURCEPROPERTY == "STANDARD" then
 %
 DeclareResource(% !resource::NAME %);%
+  end if
 end foreach
 
 foreach alarm in ALARM do
