@@ -297,6 +297,18 @@ class C_String : public AC_OutputStream {
   public : void convertToDouble (double & outDoubleValue,
                                  bool & outOk) const ;
 
+  public : void convertToUInt32 (uint32_t & outResult,
+                                 bool & outOk) const ;
+
+  public : void convertToSInt32 (int32_t & outResult,
+                                 bool & outOk) const ;
+
+  public : void convertToUInt64 (uint64_t & outResult,
+                                 bool & outOk) const ;
+
+  public : void convertToSInt64 (int64_t & outResult,
+                                 bool & outOk) const ;
+
 //---------------- Virtual output stream methods --------------
   protected : virtual void performActualCharArrayOutput (const char * inCharArray,
                                                          const int32_t inArrayCount) ;

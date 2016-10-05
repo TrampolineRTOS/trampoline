@@ -139,9 +139,9 @@ void GALGAS_arxmlMetaClassMap::method_searchKey (GALGAS_lstring inKey,
                                                  C_Compiler * inCompiler
                                                  COMMA_LOCATION_ARGS) const {
   const cMapElement_arxmlMetaClassMap * p = (const cMapElement_arxmlMetaClassMap *) performSearch (inKey,
-                                                                                                     inCompiler,
-                                                                                                     kSearchErrorMessage_arxmlMetaClassMap_searchKey
-                                                                                                     COMMA_THERE) ;
+                                                                                                   inCompiler,
+                                                                                                   kSearchErrorMessage_arxmlMetaClassMap_searchKey
+                                                                                                   COMMA_THERE) ;
   if (NULL == p) {
     outArgument0.drop () ;
   }else{
@@ -160,7 +160,9 @@ void GALGAS_arxmlMetaClassMap::setter_removeKey (GALGAS_lstring inKey,
   capCollectionElement attributes ;
   performRemove (inKey, attributes, inCompiler, kRemoveErrorMessage COMMA_THERE) ;
   cMapElement_arxmlMetaClassMap * p = (cMapElement_arxmlMetaClassMap *) attributes.ptr () ;
-  if (NULL != p) {
+  if (NULL == p) {
+    outArgument0.drop () ;
+  }else{
     macroValidSharedObject (p, cMapElement_arxmlMetaClassMap) ;
     outArgument0 = p->mAttribute_mType ;
   }

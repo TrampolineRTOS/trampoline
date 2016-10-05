@@ -8154,26 +8154,26 @@ static const int16_t gProductions_goil_grammar [] = {
 // At index 30 : <object_definition_list>, in file 'goil_syntax.ggs', line 184
 , NONTERMINAL (40) // <select_goil_5F_syntax_4>
 , END_PRODUCTION
-// At index 32 : <boolean>, in file 'goil_syntax.ggs', line 230
+// At index 32 : <boolean>, in file 'goil_syntax.ggs', line 234
 , NONTERMINAL (41) // <select_goil_5F_syntax_5>
 , END_PRODUCTION
-// At index 34 : <oil_declaration_list>, in file 'goil_syntax.ggs', line 240
+// At index 34 : <oil_declaration_list>, in file 'goil_syntax.ggs', line 244
 , NONTERMINAL (42) // <select_goil_5F_syntax_6>
 , END_PRODUCTION
-// At index 36 : <oil_declaration>, in file 'goil_syntax.ggs', line 252
+// At index 36 : <oil_declaration>, in file 'goil_syntax.ggs', line 256
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , NONTERMINAL (43) // <select_goil_5F_syntax_7>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3B_) // $;$
 , END_PRODUCTION
-// At index 40 : <include_file_level>, in file 'goil_syntax.ggs', line 425
+// At index 40 : <include_file_level>, in file 'goil_syntax.ggs', line 451
 , NONTERMINAL (48) // <select_goil_5F_syntax_12>
 , NONTERMINAL (49) // <select_goil_5F_syntax_13>
 , END_PRODUCTION
-// At index 43 : <include_cpu_level>, in file 'goil_syntax.ggs', line 449
+// At index 43 : <include_cpu_level>, in file 'goil_syntax.ggs', line 475
 , NONTERMINAL (50) // <select_goil_5F_syntax_14>
 , NONTERMINAL (51) // <select_goil_5F_syntax_15>
 , END_PRODUCTION
-// At index 46 : <include_object_level>, in file 'goil_syntax.ggs', line 473
+// At index 46 : <include_object_level>, in file 'goil_syntax.ggs', line 499
 , NONTERMINAL (52) // <select_goil_5F_syntax_16>
 , NONTERMINAL (53) // <select_goil_5F_syntax_17>
 , END_PRODUCTION
@@ -8198,38 +8198,38 @@ static const int16_t gProductions_goil_grammar [] = {
 // At index 63 : <implementation_list>, in file 'implementation_parser.ggs', line 183
 , NONTERMINAL (60) // <select_implementation_5F_parser_6>
 , END_PRODUCTION
-// At index 65 : <implementation_type>, in file 'implementation_parser.ggs', line 212
+// At index 65 : <implementation_type>, in file 'implementation_parser.ggs', line 261
 , NONTERMINAL (61) // <select_implementation_5F_parser_7>
 , END_PRODUCTION
-// At index 67 : <struct_options>, in file 'implementation_parser.ggs', line 240
+// At index 67 : <struct_options>, in file 'implementation_parser.ggs', line 289
 , NONTERMINAL (62) // <select_implementation_5F_parser_8>
 , NONTERMINAL (34) // <identifier_or_attribute>
 , NONTERMINAL (33) // <multiple>
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 72 : <objref_option>, in file 'implementation_parser.ggs', line 257
+// At index 72 : <objref_option>, in file 'implementation_parser.ggs', line 306
 , NONTERMINAL (34) // <identifier_or_attribute>
 , NONTERMINAL (33) // <multiple>
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 76 : <string_options>, in file 'implementation_parser.ggs', line 275
+// At index 76 : <string_options>, in file 'implementation_parser.ggs', line 324
 , NONTERMINAL (28) // <with_auto>
 , NONTERMINAL (34) // <identifier_or_attribute>
 , NONTERMINAL (33) // <multiple>
 , NONTERMINAL (63) // <select_implementation_5F_parser_9>
 , END_PRODUCTION
-// At index 81 : <boolean_options>, in file 'implementation_parser.ggs', line 307
+// At index 81 : <boolean_options>, in file 'implementation_parser.ggs', line 361
 , NONTERMINAL (28) // <with_auto>
 , NONTERMINAL (65) // <select_implementation_5F_parser_11>
 , NONTERMINAL (34) // <identifier_or_attribute>
 , NONTERMINAL (33) // <multiple>
 , NONTERMINAL (68) // <select_implementation_5F_parser_14>
 , END_PRODUCTION
-// At index 87 : <enum_item>, in file 'implementation_parser.ggs', line 352
+// At index 87 : <enum_item>, in file 'implementation_parser.ggs', line 406
 , NONTERMINAL (35) // <identifier_or_enum_value>
 , NONTERMINAL (69) // <select_implementation_5F_parser_15>
 , END_PRODUCTION
-// At index 90 : <enum_options>, in file 'implementation_parser.ggs', line 365
+// At index 90 : <enum_options>, in file 'implementation_parser.ggs', line 419
 , NONTERMINAL (28) // <with_auto>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__5B_) // $[$
 , NONTERMINAL (24) // <enum_item>
@@ -8239,43 +8239,43 @@ static const int16_t gProductions_goil_grammar [] = {
 , NONTERMINAL (33) // <multiple>
 , NONTERMINAL (71) // <select_implementation_5F_parser_17>
 , END_PRODUCTION
-// At index 99 : <number_options>, in file 'implementation_parser.ggs', line 407
+// At index 99 : <number_options>, in file 'implementation_parser.ggs', line 466
 , NONTERMINAL (28) // <with_auto>
 , NONTERMINAL (32) // <range>
 , NONTERMINAL (34) // <identifier_or_attribute>
 , NONTERMINAL (33) // <multiple>
 , NONTERMINAL (73) // <select_implementation_5F_parser_19>
 , END_PRODUCTION
-// At index 105 : <type_options>, in file 'implementation_parser.ggs', line 441
+// At index 105 : <type_options>, in file 'implementation_parser.ggs', line 505
 , NONTERMINAL (28) // <with_auto>
 , NONTERMINAL (34) // <identifier_or_attribute>
 , NONTERMINAL (33) // <multiple>
 , NONTERMINAL (75) // <select_implementation_5F_parser_21>
 , END_PRODUCTION
-// At index 110 : <with_auto>, in file 'implementation_parser.ggs', line 475
+// At index 110 : <with_auto>, in file 'implementation_parser.ggs', line 544
 , NONTERMINAL (77) // <select_implementation_5F_parser_23>
 , END_PRODUCTION
-// At index 112 : <int_or_float>, in file 'implementation_parser.ggs', line 484
+// At index 112 : <int_or_float>, in file 'implementation_parser.ggs', line 553
 , NONTERMINAL (3) // <sign>
 , NONTERMINAL (78) // <select_implementation_5F_parser_24>
 , END_PRODUCTION
-// At index 115 : <set_followup>, in file 'implementation_parser.ggs', line 502
+// At index 115 : <set_followup>, in file 'implementation_parser.ggs', line 571
 , NONTERMINAL (79) // <select_implementation_5F_parser_25>
 , END_PRODUCTION
-// At index 117 : <range_content>, in file 'implementation_parser.ggs', line 514
+// At index 117 : <range_content>, in file 'implementation_parser.ggs', line 583
 , NONTERMINAL (3) // <sign>
 , NONTERMINAL (80) // <select_implementation_5F_parser_26>
 , END_PRODUCTION
-// At index 120 : <range>, in file 'implementation_parser.ggs', line 554
+// At index 120 : <range>, in file 'implementation_parser.ggs', line 623
 , NONTERMINAL (83) // <select_implementation_5F_parser_29>
 , END_PRODUCTION
-// At index 122 : <multiple>, in file 'implementation_parser.ggs', line 564
+// At index 122 : <multiple>, in file 'implementation_parser.ggs', line 633
 , NONTERMINAL (84) // <select_implementation_5F_parser_30>
 , END_PRODUCTION
-// At index 124 : <identifier_or_attribute>, in file 'implementation_parser.ggs', line 574
+// At index 124 : <identifier_or_attribute>, in file 'implementation_parser.ggs', line 643
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , END_PRODUCTION
-// At index 126 : <identifier_or_enum_value>, in file 'implementation_parser.ggs', line 579
+// At index 126 : <identifier_or_enum_value>, in file 'implementation_parser.ggs', line 648
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , END_PRODUCTION
 //---- Added productions from 'select' and 'repeat' instructions
@@ -8330,111 +8330,111 @@ static const int16_t gProductions_goil_grammar [] = {
 , NONTERMINAL (12) // <include_cpu_level>
 , NONTERMINAL (40) // <select_goil_5F_syntax_4>
 , END_PRODUCTION
-// At index 165 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 231
+// At index 165 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 235
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_TRUE) // $TRUE$
 , END_PRODUCTION
-// At index 167 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 231
+// At index 167 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 235
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_FALSE) // $FALSE$
 , END_PRODUCTION
-// At index 169 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 244
+// At index 169 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 248
 , END_PRODUCTION
-// At index 170 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 244
+// At index 170 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 248
 , NONTERMINAL (10) // <oil_declaration>
 , NONTERMINAL (42) // <select_goil_5F_syntax_6>
 , END_PRODUCTION
-// At index 173 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 244
+// At index 173 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 248
 , NONTERMINAL (13) // <include_object_level>
 , NONTERMINAL (42) // <select_goil_5F_syntax_6>
 , END_PRODUCTION
-// At index 176 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 269
+// At index 176 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 273
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3D_) // $=$
 , NONTERMINAL (44) // <select_goil_5F_syntax_8>
 , END_PRODUCTION
-// At index 179 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 269
+// At index 179 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 273
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) // ${$
 , NONTERMINAL (9) // <oil_declaration_list>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) // $}$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 185 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
+// At index 185 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 275
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , NONTERMINAL (45) // <select_goil_5F_syntax_9>
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 189 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
+// At index 189 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 275
 , NONTERMINAL (3) // <sign>
 , NONTERMINAL (46) // <select_goil_5F_syntax_10>
 , END_PRODUCTION
-// At index 192 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
+// At index 192 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 275
 , NONTERMINAL (8) // <boolean>
 , NONTERMINAL (47) // <select_goil_5F_syntax_11>
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 196 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
+// At index 196 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 275
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) // $string$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 199 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
+// At index 199 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 275
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_AUTO) // $AUTO$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 202 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 292
+// At index 202 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 296
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) // ${$
 , NONTERMINAL (9) // <oil_declaration_list>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) // $}$
 , END_PRODUCTION
-// At index 206 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 292
+// At index 206 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 296
 , END_PRODUCTION
-// At index 207 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 309
+// At index 207 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 313
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_uint_5F_number) // $uint_number$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 210 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 309
+// At index 210 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 313
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_float_5F_number) // $float_number$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 213 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 340
+// At index 213 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 344
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) // ${$
 , NONTERMINAL (9) // <oil_declaration_list>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) // $}$
 , END_PRODUCTION
-// At index 217 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 340
+// At index 217 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 344
 , END_PRODUCTION
-// At index 218 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 432
+// At index 218 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 458
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_include) // $include$
 , END_PRODUCTION
-// At index 220 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 432
+// At index 220 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 458
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_includeifexists) // $includeifexists$
 , END_PRODUCTION
-// At index 222 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 438
+// At index 222 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 464
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_g_5F_string) // $g_string$
 , END_PRODUCTION
-// At index 224 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 438
+// At index 224 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 464
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) // $string$
 , END_PRODUCTION
-// At index 226 : <select_goil_5F_syntax_14>, in file 'goil_syntax.ggs', line 456
+// At index 226 : <select_goil_5F_syntax_14>, in file 'goil_syntax.ggs', line 482
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_include) // $include$
 , END_PRODUCTION
-// At index 228 : <select_goil_5F_syntax_14>, in file 'goil_syntax.ggs', line 456
+// At index 228 : <select_goil_5F_syntax_14>, in file 'goil_syntax.ggs', line 482
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_includeifexists) // $includeifexists$
 , END_PRODUCTION
-// At index 230 : <select_goil_5F_syntax_15>, in file 'goil_syntax.ggs', line 462
+// At index 230 : <select_goil_5F_syntax_15>, in file 'goil_syntax.ggs', line 488
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_g_5F_string) // $g_string$
 , END_PRODUCTION
-// At index 232 : <select_goil_5F_syntax_15>, in file 'goil_syntax.ggs', line 462
+// At index 232 : <select_goil_5F_syntax_15>, in file 'goil_syntax.ggs', line 488
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) // $string$
 , END_PRODUCTION
-// At index 234 : <select_goil_5F_syntax_16>, in file 'goil_syntax.ggs', line 478
+// At index 234 : <select_goil_5F_syntax_16>, in file 'goil_syntax.ggs', line 504
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_include) // $include$
 , END_PRODUCTION
-// At index 236 : <select_goil_5F_syntax_16>, in file 'goil_syntax.ggs', line 478
+// At index 236 : <select_goil_5F_syntax_16>, in file 'goil_syntax.ggs', line 504
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_includeifexists) // $includeifexists$
 , END_PRODUCTION
-// At index 238 : <select_goil_5F_syntax_17>, in file 'goil_syntax.ggs', line 484
+// At index 238 : <select_goil_5F_syntax_17>, in file 'goil_syntax.ggs', line 510
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_g_5F_string) // $g_string$
 , END_PRODUCTION
-// At index 240 : <select_goil_5F_syntax_17>, in file 'goil_syntax.ggs', line 484
+// At index 240 : <select_goil_5F_syntax_17>, in file 'goil_syntax.ggs', line 510
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) // $string$
 , END_PRODUCTION
 // At index 242 : <select_implementation_5F_parser_0>, in file 'implementation_parser.ggs', line 65
@@ -8489,77 +8489,77 @@ static const int16_t gProductions_goil_grammar [] = {
 , NONTERMINAL (16) // <include_type_level>
 , NONTERMINAL (60) // <select_implementation_5F_parser_6>
 , END_PRODUCTION
-// At index 278 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 215
+// At index 278 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 264
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_UINT_33__32_) // $UINT32$
 , NONTERMINAL (26) // <number_options>
 , END_PRODUCTION
-// At index 281 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 215
+// At index 281 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 264
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_INT_33__32_) // $INT32$
 , NONTERMINAL (26) // <number_options>
 , END_PRODUCTION
-// At index 284 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 215
+// At index 284 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 264
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_UINT_36__34_) // $UINT64$
 , NONTERMINAL (26) // <number_options>
 , END_PRODUCTION
-// At index 287 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 215
+// At index 287 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 264
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_INT_36__34_) // $INT64$
 , NONTERMINAL (26) // <number_options>
 , END_PRODUCTION
-// At index 290 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 215
+// At index 290 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 264
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_FLOAT) // $FLOAT$
 , NONTERMINAL (26) // <number_options>
 , END_PRODUCTION
-// At index 293 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 215
+// At index 293 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 264
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_ENUM) // $ENUM$
 , NONTERMINAL (25) // <enum_options>
 , END_PRODUCTION
-// At index 296 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 215
+// At index 296 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 264
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_BOOLEAN) // $BOOLEAN$
 , NONTERMINAL (23) // <boolean_options>
 , END_PRODUCTION
-// At index 299 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 215
+// At index 299 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 264
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_STRING) // $STRING$
 , NONTERMINAL (22) // <string_options>
 , END_PRODUCTION
-// At index 302 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 215
+// At index 302 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 264
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_IDENTIFIER) // $IDENTIFIER$
 , NONTERMINAL (27) // <type_options>
 , END_PRODUCTION
-// At index 305 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 215
+// At index 305 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 264
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_STRUCT) // $STRUCT$
 , NONTERMINAL (20) // <struct_options>
 , END_PRODUCTION
-// At index 308 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 215
+// At index 308 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 264
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , NONTERMINAL (21) // <objref_option>
 , END_PRODUCTION
-// At index 311 : <select_implementation_5F_parser_8>, in file 'implementation_parser.ggs', line 244
+// At index 311 : <select_implementation_5F_parser_8>, in file 'implementation_parser.ggs', line 293
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) // ${$
 , NONTERMINAL (18) // <implementation_list>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) // $}$
 , END_PRODUCTION
-// At index 315 : <select_implementation_5F_parser_8>, in file 'implementation_parser.ggs', line 244
+// At index 315 : <select_implementation_5F_parser_8>, in file 'implementation_parser.ggs', line 293
 , END_PRODUCTION
-// At index 316 : <select_implementation_5F_parser_9>, in file 'implementation_parser.ggs', line 285
+// At index 316 : <select_implementation_5F_parser_9>, in file 'implementation_parser.ggs', line 334
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3D_) // $=$
 , NONTERMINAL (64) // <select_implementation_5F_parser_10>
 , END_PRODUCTION
-// At index 319 : <select_implementation_5F_parser_9>, in file 'implementation_parser.ggs', line 285
+// At index 319 : <select_implementation_5F_parser_9>, in file 'implementation_parser.ggs', line 334
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 321 : <select_implementation_5F_parser_10>, in file 'implementation_parser.ggs', line 287
+// At index 321 : <select_implementation_5F_parser_10>, in file 'implementation_parser.ggs', line 336
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_string) // $string$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 324 : <select_implementation_5F_parser_10>, in file 'implementation_parser.ggs', line 287
+// At index 324 : <select_implementation_5F_parser_10>, in file 'implementation_parser.ggs', line 336
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_AUTO) // $AUTO$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 327 : <select_implementation_5F_parser_10>, in file 'implementation_parser.ggs', line 287
+// At index 327 : <select_implementation_5F_parser_10>, in file 'implementation_parser.ggs', line 336
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_NO_5F_DEFAULT) // $NO_DEFAULT$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 330 : <select_implementation_5F_parser_11>, in file 'implementation_parser.ggs', line 314
+// At index 330 : <select_implementation_5F_parser_11>, in file 'implementation_parser.ggs', line 368
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__5B_) // $[$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_TRUE) // $TRUE$
 , NONTERMINAL (66) // <select_implementation_5F_parser_12>
@@ -8568,158 +8568,158 @@ static const int16_t gProductions_goil_grammar [] = {
 , NONTERMINAL (67) // <select_implementation_5F_parser_13>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__5D_) // $]$
 , END_PRODUCTION
-// At index 338 : <select_implementation_5F_parser_11>, in file 'implementation_parser.ggs', line 314
+// At index 338 : <select_implementation_5F_parser_11>, in file 'implementation_parser.ggs', line 368
 , END_PRODUCTION
-// At index 339 : <select_implementation_5F_parser_12>, in file 'implementation_parser.ggs', line 317
+// At index 339 : <select_implementation_5F_parser_12>, in file 'implementation_parser.ggs', line 371
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) // ${$
 , NONTERMINAL (18) // <implementation_list>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) // $}$
 , END_PRODUCTION
-// At index 343 : <select_implementation_5F_parser_12>, in file 'implementation_parser.ggs', line 317
+// At index 343 : <select_implementation_5F_parser_12>, in file 'implementation_parser.ggs', line 371
 , END_PRODUCTION
-// At index 344 : <select_implementation_5F_parser_13>, in file 'implementation_parser.ggs', line 326
+// At index 344 : <select_implementation_5F_parser_13>, in file 'implementation_parser.ggs', line 380
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) // ${$
 , NONTERMINAL (18) // <implementation_list>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) // $}$
 , END_PRODUCTION
-// At index 348 : <select_implementation_5F_parser_13>, in file 'implementation_parser.ggs', line 326
+// At index 348 : <select_implementation_5F_parser_13>, in file 'implementation_parser.ggs', line 380
 , END_PRODUCTION
-// At index 349 : <select_implementation_5F_parser_14>, in file 'implementation_parser.ggs', line 340
+// At index 349 : <select_implementation_5F_parser_14>, in file 'implementation_parser.ggs', line 394
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3D_) // $=$
 , NONTERMINAL (8) // <boolean>
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 353 : <select_implementation_5F_parser_14>, in file 'implementation_parser.ggs', line 340
+// At index 353 : <select_implementation_5F_parser_14>, in file 'implementation_parser.ggs', line 394
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 355 : <select_implementation_5F_parser_15>, in file 'implementation_parser.ggs', line 357
+// At index 355 : <select_implementation_5F_parser_15>, in file 'implementation_parser.ggs', line 411
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7B_) // ${$
 , NONTERMINAL (18) // <implementation_list>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__7D_) // $}$
 , END_PRODUCTION
-// At index 359 : <select_implementation_5F_parser_15>, in file 'implementation_parser.ggs', line 357
+// At index 359 : <select_implementation_5F_parser_15>, in file 'implementation_parser.ggs', line 411
 , END_PRODUCTION
-// At index 360 : <select_implementation_5F_parser_16>, in file 'implementation_parser.ggs', line 373
+// At index 360 : <select_implementation_5F_parser_16>, in file 'implementation_parser.ggs', line 427
 , END_PRODUCTION
-// At index 361 : <select_implementation_5F_parser_16>, in file 'implementation_parser.ggs', line 373
+// At index 361 : <select_implementation_5F_parser_16>, in file 'implementation_parser.ggs', line 427
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__2C_) // $,$
 , NONTERMINAL (24) // <enum_item>
 , NONTERMINAL (70) // <select_implementation_5F_parser_16>
 , END_PRODUCTION
-// At index 365 : <select_implementation_5F_parser_17>, in file 'implementation_parser.ggs', line 383
+// At index 365 : <select_implementation_5F_parser_17>, in file 'implementation_parser.ggs', line 437
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3D_) // $=$
 , NONTERMINAL (72) // <select_implementation_5F_parser_18>
 , END_PRODUCTION
-// At index 368 : <select_implementation_5F_parser_17>, in file 'implementation_parser.ggs', line 383
+// At index 368 : <select_implementation_5F_parser_17>, in file 'implementation_parser.ggs', line 437
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 370 : <select_implementation_5F_parser_18>, in file 'implementation_parser.ggs', line 385
+// At index 370 : <select_implementation_5F_parser_18>, in file 'implementation_parser.ggs', line 439
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_idf) // $idf$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 373 : <select_implementation_5F_parser_18>, in file 'implementation_parser.ggs', line 385
+// At index 373 : <select_implementation_5F_parser_18>, in file 'implementation_parser.ggs', line 439
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_AUTO) // $AUTO$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 376 : <select_implementation_5F_parser_18>, in file 'implementation_parser.ggs', line 385
+// At index 376 : <select_implementation_5F_parser_18>, in file 'implementation_parser.ggs', line 439
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_NO_5F_DEFAULT) // $NO_DEFAULT$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 379 : <select_implementation_5F_parser_19>, in file 'implementation_parser.ggs', line 420
+// At index 379 : <select_implementation_5F_parser_19>, in file 'implementation_parser.ggs', line 479
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3D_) // $=$
 , NONTERMINAL (74) // <select_implementation_5F_parser_20>
 , END_PRODUCTION
-// At index 382 : <select_implementation_5F_parser_19>, in file 'implementation_parser.ggs', line 420
+// At index 382 : <select_implementation_5F_parser_19>, in file 'implementation_parser.ggs', line 479
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 384 : <select_implementation_5F_parser_20>, in file 'implementation_parser.ggs', line 422
+// At index 384 : <select_implementation_5F_parser_20>, in file 'implementation_parser.ggs', line 481
 , NONTERMINAL (29) // <int_or_float>
 , END_PRODUCTION
-// At index 386 : <select_implementation_5F_parser_20>, in file 'implementation_parser.ggs', line 422
+// At index 386 : <select_implementation_5F_parser_20>, in file 'implementation_parser.ggs', line 481
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_NO_5F_DEFAULT) // $NO_DEFAULT$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 389 : <select_implementation_5F_parser_20>, in file 'implementation_parser.ggs', line 422
+// At index 389 : <select_implementation_5F_parser_20>, in file 'implementation_parser.ggs', line 481
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_AUTO) // $AUTO$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 392 : <select_implementation_5F_parser_21>, in file 'implementation_parser.ggs', line 452
+// At index 392 : <select_implementation_5F_parser_21>, in file 'implementation_parser.ggs', line 516
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__3D_) // $=$
 , NONTERMINAL (76) // <select_implementation_5F_parser_22>
 , END_PRODUCTION
-// At index 395 : <select_implementation_5F_parser_21>, in file 'implementation_parser.ggs', line 452
+// At index 395 : <select_implementation_5F_parser_21>, in file 'implementation_parser.ggs', line 516
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 397 : <select_implementation_5F_parser_22>, in file 'implementation_parser.ggs', line 454
+// At index 397 : <select_implementation_5F_parser_22>, in file 'implementation_parser.ggs', line 518
 , NONTERMINAL (34) // <identifier_or_attribute>
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 400 : <select_implementation_5F_parser_22>, in file 'implementation_parser.ggs', line 454
+// At index 400 : <select_implementation_5F_parser_22>, in file 'implementation_parser.ggs', line 518
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_NO_5F_DEFAULT) // $NO_DEFAULT$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 403 : <select_implementation_5F_parser_22>, in file 'implementation_parser.ggs', line 454
+// At index 403 : <select_implementation_5F_parser_22>, in file 'implementation_parser.ggs', line 518
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_AUTO) // $AUTO$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 406 : <select_implementation_5F_parser_23>, in file 'implementation_parser.ggs', line 477
+// At index 406 : <select_implementation_5F_parser_23>, in file 'implementation_parser.ggs', line 546
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_WITH_5F_AUTO) // $WITH_AUTO$
 , END_PRODUCTION
-// At index 408 : <select_implementation_5F_parser_23>, in file 'implementation_parser.ggs', line 477
+// At index 408 : <select_implementation_5F_parser_23>, in file 'implementation_parser.ggs', line 546
 , END_PRODUCTION
-// At index 409 : <select_implementation_5F_parser_24>, in file 'implementation_parser.ggs', line 489
+// At index 409 : <select_implementation_5F_parser_24>, in file 'implementation_parser.ggs', line 558
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_uint_5F_number) // $uint_number$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 412 : <select_implementation_5F_parser_24>, in file 'implementation_parser.ggs', line 489
+// At index 412 : <select_implementation_5F_parser_24>, in file 'implementation_parser.ggs', line 558
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_float_5F_number) // $float_number$
 , NONTERMINAL (4) // <description>
 , END_PRODUCTION
-// At index 415 : <select_implementation_5F_parser_25>, in file 'implementation_parser.ggs', line 505
+// At index 415 : <select_implementation_5F_parser_25>, in file 'implementation_parser.ggs', line 574
 , END_PRODUCTION
-// At index 416 : <select_implementation_5F_parser_25>, in file 'implementation_parser.ggs', line 505
+// At index 416 : <select_implementation_5F_parser_25>, in file 'implementation_parser.ggs', line 574
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__2C_) // $,$
 , NONTERMINAL (29) // <int_or_float>
 , NONTERMINAL (79) // <select_implementation_5F_parser_25>
 , END_PRODUCTION
-// At index 420 : <select_implementation_5F_parser_26>, in file 'implementation_parser.ggs', line 521
+// At index 420 : <select_implementation_5F_parser_26>, in file 'implementation_parser.ggs', line 590
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_set_5F_start_5F_uint_5F_number) // $set_start_uint_number$
 , NONTERMINAL (29) // <int_or_float>
 , END_PRODUCTION
-// At index 423 : <select_implementation_5F_parser_26>, in file 'implementation_parser.ggs', line 521
+// At index 423 : <select_implementation_5F_parser_26>, in file 'implementation_parser.ggs', line 590
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_uint_5F_number) // $uint_number$
 , NONTERMINAL (81) // <select_implementation_5F_parser_27>
 , END_PRODUCTION
-// At index 426 : <select_implementation_5F_parser_26>, in file 'implementation_parser.ggs', line 521
+// At index 426 : <select_implementation_5F_parser_26>, in file 'implementation_parser.ggs', line 590
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken_float_5F_number) // $float_number$
 , NONTERMINAL (82) // <select_implementation_5F_parser_28>
 , END_PRODUCTION
-// At index 429 : <select_implementation_5F_parser_27>, in file 'implementation_parser.ggs', line 531
+// At index 429 : <select_implementation_5F_parser_27>, in file 'implementation_parser.ggs', line 600
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__2E__2E_) // $..$
 , NONTERMINAL (29) // <int_or_float>
 , END_PRODUCTION
-// At index 432 : <select_implementation_5F_parser_27>, in file 'implementation_parser.ggs', line 531
+// At index 432 : <select_implementation_5F_parser_27>, in file 'implementation_parser.ggs', line 600
 , NONTERMINAL (30) // <set_followup>
 , END_PRODUCTION
-// At index 434 : <select_implementation_5F_parser_28>, in file 'implementation_parser.ggs', line 543
+// At index 434 : <select_implementation_5F_parser_28>, in file 'implementation_parser.ggs', line 612
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__2E__2E_) // $..$
 , NONTERMINAL (29) // <int_or_float>
 , END_PRODUCTION
-// At index 437 : <select_implementation_5F_parser_28>, in file 'implementation_parser.ggs', line 543
+// At index 437 : <select_implementation_5F_parser_28>, in file 'implementation_parser.ggs', line 612
 , NONTERMINAL (30) // <set_followup>
 , END_PRODUCTION
-// At index 439 : <select_implementation_5F_parser_29>, in file 'implementation_parser.ggs', line 557
+// At index 439 : <select_implementation_5F_parser_29>, in file 'implementation_parser.ggs', line 626
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__5B_) // $[$
 , NONTERMINAL (31) // <range_content>
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__5D_) // $]$
 , END_PRODUCTION
-// At index 443 : <select_implementation_5F_parser_29>, in file 'implementation_parser.ggs', line 557
+// At index 443 : <select_implementation_5F_parser_29>, in file 'implementation_parser.ggs', line 626
 , END_PRODUCTION
-// At index 444 : <select_implementation_5F_parser_30>, in file 'implementation_parser.ggs', line 566
+// At index 444 : <select_implementation_5F_parser_30>, in file 'implementation_parser.ggs', line 635
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__5B_) // $[$
 , TERMINAL (C_Lexique_goil_5F_lexique::kToken__5D_) // $]$
 , END_PRODUCTION
-// At index 447 : <select_implementation_5F_parser_30>, in file 'implementation_parser.ggs', line 566
+// At index 447 : <select_implementation_5F_parser_30>, in file 'implementation_parser.ggs', line 635
 , END_PRODUCTION
 // At index 448 : <>, in file '.ggs', line 0
 , NONTERMINAL (1) // <start>
@@ -8909,34 +8909,34 @@ static const int16_t gProductionIndexes_goil_grammar [159] = {
 16, // index 5 : <OIL_version>, in file 'goil_syntax.ggs', line 163
 22, // index 6 : <application_definition>, in file 'goil_syntax.ggs', line 170
 30, // index 7 : <object_definition_list>, in file 'goil_syntax.ggs', line 184
-32, // index 8 : <boolean>, in file 'goil_syntax.ggs', line 230
-34, // index 9 : <oil_declaration_list>, in file 'goil_syntax.ggs', line 240
-36, // index 10 : <oil_declaration>, in file 'goil_syntax.ggs', line 252
-40, // index 11 : <include_file_level>, in file 'goil_syntax.ggs', line 425
-43, // index 12 : <include_cpu_level>, in file 'goil_syntax.ggs', line 449
-46, // index 13 : <include_object_level>, in file 'goil_syntax.ggs', line 473
+32, // index 8 : <boolean>, in file 'goil_syntax.ggs', line 234
+34, // index 9 : <oil_declaration_list>, in file 'goil_syntax.ggs', line 244
+36, // index 10 : <oil_declaration>, in file 'goil_syntax.ggs', line 256
+40, // index 11 : <include_file_level>, in file 'goil_syntax.ggs', line 451
+43, // index 12 : <include_cpu_level>, in file 'goil_syntax.ggs', line 475
+46, // index 13 : <include_object_level>, in file 'goil_syntax.ggs', line 499
 49, // index 14 : <implementation_object_list>, in file 'implementation_parser.ggs', line 62
 51, // index 15 : <include_implementation_level>, in file 'implementation_parser.ggs', line 71
 54, // index 16 : <include_type_level>, in file 'implementation_parser.ggs', line 92
 57, // index 17 : <implementation_objects>, in file 'implementation_parser.ggs', line 135
 63, // index 18 : <implementation_list>, in file 'implementation_parser.ggs', line 183
-65, // index 19 : <implementation_type>, in file 'implementation_parser.ggs', line 212
-67, // index 20 : <struct_options>, in file 'implementation_parser.ggs', line 240
-72, // index 21 : <objref_option>, in file 'implementation_parser.ggs', line 257
-76, // index 22 : <string_options>, in file 'implementation_parser.ggs', line 275
-81, // index 23 : <boolean_options>, in file 'implementation_parser.ggs', line 307
-87, // index 24 : <enum_item>, in file 'implementation_parser.ggs', line 352
-90, // index 25 : <enum_options>, in file 'implementation_parser.ggs', line 365
-99, // index 26 : <number_options>, in file 'implementation_parser.ggs', line 407
-105, // index 27 : <type_options>, in file 'implementation_parser.ggs', line 441
-110, // index 28 : <with_auto>, in file 'implementation_parser.ggs', line 475
-112, // index 29 : <int_or_float>, in file 'implementation_parser.ggs', line 484
-115, // index 30 : <set_followup>, in file 'implementation_parser.ggs', line 502
-117, // index 31 : <range_content>, in file 'implementation_parser.ggs', line 514
-120, // index 32 : <range>, in file 'implementation_parser.ggs', line 554
-122, // index 33 : <multiple>, in file 'implementation_parser.ggs', line 564
-124, // index 34 : <identifier_or_attribute>, in file 'implementation_parser.ggs', line 574
-126, // index 35 : <identifier_or_enum_value>, in file 'implementation_parser.ggs', line 579
+65, // index 19 : <implementation_type>, in file 'implementation_parser.ggs', line 261
+67, // index 20 : <struct_options>, in file 'implementation_parser.ggs', line 289
+72, // index 21 : <objref_option>, in file 'implementation_parser.ggs', line 306
+76, // index 22 : <string_options>, in file 'implementation_parser.ggs', line 324
+81, // index 23 : <boolean_options>, in file 'implementation_parser.ggs', line 361
+87, // index 24 : <enum_item>, in file 'implementation_parser.ggs', line 406
+90, // index 25 : <enum_options>, in file 'implementation_parser.ggs', line 419
+99, // index 26 : <number_options>, in file 'implementation_parser.ggs', line 466
+105, // index 27 : <type_options>, in file 'implementation_parser.ggs', line 505
+110, // index 28 : <with_auto>, in file 'implementation_parser.ggs', line 544
+112, // index 29 : <int_or_float>, in file 'implementation_parser.ggs', line 553
+115, // index 30 : <set_followup>, in file 'implementation_parser.ggs', line 571
+117, // index 31 : <range_content>, in file 'implementation_parser.ggs', line 583
+120, // index 32 : <range>, in file 'implementation_parser.ggs', line 623
+122, // index 33 : <multiple>, in file 'implementation_parser.ggs', line 633
+124, // index 34 : <identifier_or_attribute>, in file 'implementation_parser.ggs', line 643
+126, // index 35 : <identifier_or_enum_value>, in file 'implementation_parser.ggs', line 648
 128, // index 36 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 119
 129, // index 37 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 119
 132, // index 38 : <select_goil_5F_syntax_0>, in file 'goil_syntax.ggs', line 119
@@ -8951,36 +8951,36 @@ static const int16_t gProductionIndexes_goil_grammar [159] = {
 152, // index 47 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 190
 153, // index 48 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 190
 162, // index 49 : <select_goil_5F_syntax_4>, in file 'goil_syntax.ggs', line 190
-165, // index 50 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 231
-167, // index 51 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 231
-169, // index 52 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 244
-170, // index 53 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 244
-173, // index 54 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 244
-176, // index 55 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 269
-179, // index 56 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 269
-185, // index 57 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
-189, // index 58 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
-192, // index 59 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
-196, // index 60 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
-199, // index 61 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 271
-202, // index 62 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 292
-206, // index 63 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 292
-207, // index 64 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 309
-210, // index 65 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 309
-213, // index 66 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 340
-217, // index 67 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 340
-218, // index 68 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 432
-220, // index 69 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 432
-222, // index 70 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 438
-224, // index 71 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 438
-226, // index 72 : <select_goil_5F_syntax_14>, in file 'goil_syntax.ggs', line 456
-228, // index 73 : <select_goil_5F_syntax_14>, in file 'goil_syntax.ggs', line 456
-230, // index 74 : <select_goil_5F_syntax_15>, in file 'goil_syntax.ggs', line 462
-232, // index 75 : <select_goil_5F_syntax_15>, in file 'goil_syntax.ggs', line 462
-234, // index 76 : <select_goil_5F_syntax_16>, in file 'goil_syntax.ggs', line 478
-236, // index 77 : <select_goil_5F_syntax_16>, in file 'goil_syntax.ggs', line 478
-238, // index 78 : <select_goil_5F_syntax_17>, in file 'goil_syntax.ggs', line 484
-240, // index 79 : <select_goil_5F_syntax_17>, in file 'goil_syntax.ggs', line 484
+165, // index 50 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 235
+167, // index 51 : <select_goil_5F_syntax_5>, in file 'goil_syntax.ggs', line 235
+169, // index 52 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 248
+170, // index 53 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 248
+173, // index 54 : <select_goil_5F_syntax_6>, in file 'goil_syntax.ggs', line 248
+176, // index 55 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 273
+179, // index 56 : <select_goil_5F_syntax_7>, in file 'goil_syntax.ggs', line 273
+185, // index 57 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 275
+189, // index 58 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 275
+192, // index 59 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 275
+196, // index 60 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 275
+199, // index 61 : <select_goil_5F_syntax_8>, in file 'goil_syntax.ggs', line 275
+202, // index 62 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 296
+206, // index 63 : <select_goil_5F_syntax_9>, in file 'goil_syntax.ggs', line 296
+207, // index 64 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 313
+210, // index 65 : <select_goil_5F_syntax_10>, in file 'goil_syntax.ggs', line 313
+213, // index 66 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 344
+217, // index 67 : <select_goil_5F_syntax_11>, in file 'goil_syntax.ggs', line 344
+218, // index 68 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 458
+220, // index 69 : <select_goil_5F_syntax_12>, in file 'goil_syntax.ggs', line 458
+222, // index 70 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 464
+224, // index 71 : <select_goil_5F_syntax_13>, in file 'goil_syntax.ggs', line 464
+226, // index 72 : <select_goil_5F_syntax_14>, in file 'goil_syntax.ggs', line 482
+228, // index 73 : <select_goil_5F_syntax_14>, in file 'goil_syntax.ggs', line 482
+230, // index 74 : <select_goil_5F_syntax_15>, in file 'goil_syntax.ggs', line 488
+232, // index 75 : <select_goil_5F_syntax_15>, in file 'goil_syntax.ggs', line 488
+234, // index 76 : <select_goil_5F_syntax_16>, in file 'goil_syntax.ggs', line 504
+236, // index 77 : <select_goil_5F_syntax_16>, in file 'goil_syntax.ggs', line 504
+238, // index 78 : <select_goil_5F_syntax_17>, in file 'goil_syntax.ggs', line 510
+240, // index 79 : <select_goil_5F_syntax_17>, in file 'goil_syntax.ggs', line 510
 242, // index 80 : <select_implementation_5F_parser_0>, in file 'implementation_parser.ggs', line 65
 243, // index 81 : <select_implementation_5F_parser_0>, in file 'implementation_parser.ggs', line 65
 247, // index 82 : <select_implementation_5F_parser_0>, in file 'implementation_parser.ggs', line 65
@@ -8997,68 +8997,68 @@ static const int16_t gProductionIndexes_goil_grammar [159] = {
 270, // index 93 : <select_implementation_5F_parser_6>, in file 'implementation_parser.ggs', line 186
 271, // index 94 : <select_implementation_5F_parser_6>, in file 'implementation_parser.ggs', line 186
 275, // index 95 : <select_implementation_5F_parser_6>, in file 'implementation_parser.ggs', line 186
-278, // index 96 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 215
-281, // index 97 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 215
-284, // index 98 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 215
-287, // index 99 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 215
-290, // index 100 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 215
-293, // index 101 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 215
-296, // index 102 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 215
-299, // index 103 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 215
-302, // index 104 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 215
-305, // index 105 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 215
-308, // index 106 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 215
-311, // index 107 : <select_implementation_5F_parser_8>, in file 'implementation_parser.ggs', line 244
-315, // index 108 : <select_implementation_5F_parser_8>, in file 'implementation_parser.ggs', line 244
-316, // index 109 : <select_implementation_5F_parser_9>, in file 'implementation_parser.ggs', line 285
-319, // index 110 : <select_implementation_5F_parser_9>, in file 'implementation_parser.ggs', line 285
-321, // index 111 : <select_implementation_5F_parser_10>, in file 'implementation_parser.ggs', line 287
-324, // index 112 : <select_implementation_5F_parser_10>, in file 'implementation_parser.ggs', line 287
-327, // index 113 : <select_implementation_5F_parser_10>, in file 'implementation_parser.ggs', line 287
-330, // index 114 : <select_implementation_5F_parser_11>, in file 'implementation_parser.ggs', line 314
-338, // index 115 : <select_implementation_5F_parser_11>, in file 'implementation_parser.ggs', line 314
-339, // index 116 : <select_implementation_5F_parser_12>, in file 'implementation_parser.ggs', line 317
-343, // index 117 : <select_implementation_5F_parser_12>, in file 'implementation_parser.ggs', line 317
-344, // index 118 : <select_implementation_5F_parser_13>, in file 'implementation_parser.ggs', line 326
-348, // index 119 : <select_implementation_5F_parser_13>, in file 'implementation_parser.ggs', line 326
-349, // index 120 : <select_implementation_5F_parser_14>, in file 'implementation_parser.ggs', line 340
-353, // index 121 : <select_implementation_5F_parser_14>, in file 'implementation_parser.ggs', line 340
-355, // index 122 : <select_implementation_5F_parser_15>, in file 'implementation_parser.ggs', line 357
-359, // index 123 : <select_implementation_5F_parser_15>, in file 'implementation_parser.ggs', line 357
-360, // index 124 : <select_implementation_5F_parser_16>, in file 'implementation_parser.ggs', line 373
-361, // index 125 : <select_implementation_5F_parser_16>, in file 'implementation_parser.ggs', line 373
-365, // index 126 : <select_implementation_5F_parser_17>, in file 'implementation_parser.ggs', line 383
-368, // index 127 : <select_implementation_5F_parser_17>, in file 'implementation_parser.ggs', line 383
-370, // index 128 : <select_implementation_5F_parser_18>, in file 'implementation_parser.ggs', line 385
-373, // index 129 : <select_implementation_5F_parser_18>, in file 'implementation_parser.ggs', line 385
-376, // index 130 : <select_implementation_5F_parser_18>, in file 'implementation_parser.ggs', line 385
-379, // index 131 : <select_implementation_5F_parser_19>, in file 'implementation_parser.ggs', line 420
-382, // index 132 : <select_implementation_5F_parser_19>, in file 'implementation_parser.ggs', line 420
-384, // index 133 : <select_implementation_5F_parser_20>, in file 'implementation_parser.ggs', line 422
-386, // index 134 : <select_implementation_5F_parser_20>, in file 'implementation_parser.ggs', line 422
-389, // index 135 : <select_implementation_5F_parser_20>, in file 'implementation_parser.ggs', line 422
-392, // index 136 : <select_implementation_5F_parser_21>, in file 'implementation_parser.ggs', line 452
-395, // index 137 : <select_implementation_5F_parser_21>, in file 'implementation_parser.ggs', line 452
-397, // index 138 : <select_implementation_5F_parser_22>, in file 'implementation_parser.ggs', line 454
-400, // index 139 : <select_implementation_5F_parser_22>, in file 'implementation_parser.ggs', line 454
-403, // index 140 : <select_implementation_5F_parser_22>, in file 'implementation_parser.ggs', line 454
-406, // index 141 : <select_implementation_5F_parser_23>, in file 'implementation_parser.ggs', line 477
-408, // index 142 : <select_implementation_5F_parser_23>, in file 'implementation_parser.ggs', line 477
-409, // index 143 : <select_implementation_5F_parser_24>, in file 'implementation_parser.ggs', line 489
-412, // index 144 : <select_implementation_5F_parser_24>, in file 'implementation_parser.ggs', line 489
-415, // index 145 : <select_implementation_5F_parser_25>, in file 'implementation_parser.ggs', line 505
-416, // index 146 : <select_implementation_5F_parser_25>, in file 'implementation_parser.ggs', line 505
-420, // index 147 : <select_implementation_5F_parser_26>, in file 'implementation_parser.ggs', line 521
-423, // index 148 : <select_implementation_5F_parser_26>, in file 'implementation_parser.ggs', line 521
-426, // index 149 : <select_implementation_5F_parser_26>, in file 'implementation_parser.ggs', line 521
-429, // index 150 : <select_implementation_5F_parser_27>, in file 'implementation_parser.ggs', line 531
-432, // index 151 : <select_implementation_5F_parser_27>, in file 'implementation_parser.ggs', line 531
-434, // index 152 : <select_implementation_5F_parser_28>, in file 'implementation_parser.ggs', line 543
-437, // index 153 : <select_implementation_5F_parser_28>, in file 'implementation_parser.ggs', line 543
-439, // index 154 : <select_implementation_5F_parser_29>, in file 'implementation_parser.ggs', line 557
-443, // index 155 : <select_implementation_5F_parser_29>, in file 'implementation_parser.ggs', line 557
-444, // index 156 : <select_implementation_5F_parser_30>, in file 'implementation_parser.ggs', line 566
-447, // index 157 : <select_implementation_5F_parser_30>, in file 'implementation_parser.ggs', line 566
+278, // index 96 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 264
+281, // index 97 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 264
+284, // index 98 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 264
+287, // index 99 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 264
+290, // index 100 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 264
+293, // index 101 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 264
+296, // index 102 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 264
+299, // index 103 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 264
+302, // index 104 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 264
+305, // index 105 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 264
+308, // index 106 : <select_implementation_5F_parser_7>, in file 'implementation_parser.ggs', line 264
+311, // index 107 : <select_implementation_5F_parser_8>, in file 'implementation_parser.ggs', line 293
+315, // index 108 : <select_implementation_5F_parser_8>, in file 'implementation_parser.ggs', line 293
+316, // index 109 : <select_implementation_5F_parser_9>, in file 'implementation_parser.ggs', line 334
+319, // index 110 : <select_implementation_5F_parser_9>, in file 'implementation_parser.ggs', line 334
+321, // index 111 : <select_implementation_5F_parser_10>, in file 'implementation_parser.ggs', line 336
+324, // index 112 : <select_implementation_5F_parser_10>, in file 'implementation_parser.ggs', line 336
+327, // index 113 : <select_implementation_5F_parser_10>, in file 'implementation_parser.ggs', line 336
+330, // index 114 : <select_implementation_5F_parser_11>, in file 'implementation_parser.ggs', line 368
+338, // index 115 : <select_implementation_5F_parser_11>, in file 'implementation_parser.ggs', line 368
+339, // index 116 : <select_implementation_5F_parser_12>, in file 'implementation_parser.ggs', line 371
+343, // index 117 : <select_implementation_5F_parser_12>, in file 'implementation_parser.ggs', line 371
+344, // index 118 : <select_implementation_5F_parser_13>, in file 'implementation_parser.ggs', line 380
+348, // index 119 : <select_implementation_5F_parser_13>, in file 'implementation_parser.ggs', line 380
+349, // index 120 : <select_implementation_5F_parser_14>, in file 'implementation_parser.ggs', line 394
+353, // index 121 : <select_implementation_5F_parser_14>, in file 'implementation_parser.ggs', line 394
+355, // index 122 : <select_implementation_5F_parser_15>, in file 'implementation_parser.ggs', line 411
+359, // index 123 : <select_implementation_5F_parser_15>, in file 'implementation_parser.ggs', line 411
+360, // index 124 : <select_implementation_5F_parser_16>, in file 'implementation_parser.ggs', line 427
+361, // index 125 : <select_implementation_5F_parser_16>, in file 'implementation_parser.ggs', line 427
+365, // index 126 : <select_implementation_5F_parser_17>, in file 'implementation_parser.ggs', line 437
+368, // index 127 : <select_implementation_5F_parser_17>, in file 'implementation_parser.ggs', line 437
+370, // index 128 : <select_implementation_5F_parser_18>, in file 'implementation_parser.ggs', line 439
+373, // index 129 : <select_implementation_5F_parser_18>, in file 'implementation_parser.ggs', line 439
+376, // index 130 : <select_implementation_5F_parser_18>, in file 'implementation_parser.ggs', line 439
+379, // index 131 : <select_implementation_5F_parser_19>, in file 'implementation_parser.ggs', line 479
+382, // index 132 : <select_implementation_5F_parser_19>, in file 'implementation_parser.ggs', line 479
+384, // index 133 : <select_implementation_5F_parser_20>, in file 'implementation_parser.ggs', line 481
+386, // index 134 : <select_implementation_5F_parser_20>, in file 'implementation_parser.ggs', line 481
+389, // index 135 : <select_implementation_5F_parser_20>, in file 'implementation_parser.ggs', line 481
+392, // index 136 : <select_implementation_5F_parser_21>, in file 'implementation_parser.ggs', line 516
+395, // index 137 : <select_implementation_5F_parser_21>, in file 'implementation_parser.ggs', line 516
+397, // index 138 : <select_implementation_5F_parser_22>, in file 'implementation_parser.ggs', line 518
+400, // index 139 : <select_implementation_5F_parser_22>, in file 'implementation_parser.ggs', line 518
+403, // index 140 : <select_implementation_5F_parser_22>, in file 'implementation_parser.ggs', line 518
+406, // index 141 : <select_implementation_5F_parser_23>, in file 'implementation_parser.ggs', line 546
+408, // index 142 : <select_implementation_5F_parser_23>, in file 'implementation_parser.ggs', line 546
+409, // index 143 : <select_implementation_5F_parser_24>, in file 'implementation_parser.ggs', line 558
+412, // index 144 : <select_implementation_5F_parser_24>, in file 'implementation_parser.ggs', line 558
+415, // index 145 : <select_implementation_5F_parser_25>, in file 'implementation_parser.ggs', line 574
+416, // index 146 : <select_implementation_5F_parser_25>, in file 'implementation_parser.ggs', line 574
+420, // index 147 : <select_implementation_5F_parser_26>, in file 'implementation_parser.ggs', line 590
+423, // index 148 : <select_implementation_5F_parser_26>, in file 'implementation_parser.ggs', line 590
+426, // index 149 : <select_implementation_5F_parser_26>, in file 'implementation_parser.ggs', line 590
+429, // index 150 : <select_implementation_5F_parser_27>, in file 'implementation_parser.ggs', line 600
+432, // index 151 : <select_implementation_5F_parser_27>, in file 'implementation_parser.ggs', line 600
+434, // index 152 : <select_implementation_5F_parser_28>, in file 'implementation_parser.ggs', line 612
+437, // index 153 : <select_implementation_5F_parser_28>, in file 'implementation_parser.ggs', line 612
+439, // index 154 : <select_implementation_5F_parser_29>, in file 'implementation_parser.ggs', line 626
+443, // index 155 : <select_implementation_5F_parser_29>, in file 'implementation_parser.ggs', line 626
+444, // index 156 : <select_implementation_5F_parser_30>, in file 'implementation_parser.ggs', line 635
+447, // index 157 : <select_implementation_5F_parser_30>, in file 'implementation_parser.ggs', line 635
 448 // index 158 : <>, in file '.ggs', line 0
 } ;
 

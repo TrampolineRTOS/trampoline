@@ -1991,6 +1991,52 @@ class cPtr_objectAttributes : public acPtr_class {
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
+//                                Extension setter '@objectAttributes mergeAttributes'                                 *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typedef void (*extensionSetterSignature_objectAttributes_mergeAttributes) (class cPtr_objectAttributes * inObject,
+                                                                           class GALGAS_objectAttributes inArgument0,
+                                                                           class C_Compiler * inCompiler
+                                                                           COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterExtensionSetter_mergeAttributes (const int32_t inClassIndex,
+                                           extensionSetterSignature_objectAttributes_mergeAttributes inModifier) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void callExtensionSetter_mergeAttributes (class cPtr_objectAttributes * inObject,
+                                          GALGAS_objectAttributes in_withAttributes,
+                                          C_Compiler * inCompiler
+                                          COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                   Extension setter '@object_t mergeSubAttributes'                                   *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typedef void (*extensionSetterSignature_object_5F_t_mergeSubAttributes) (class cPtr_object_5F_t * inObject,
+                                                                         class GALGAS_object_5F_t inArgument0,
+                                                                         class C_Compiler * inCompiler
+                                                                         COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterExtensionSetter_mergeSubAttributes (const int32_t inClassIndex,
+                                              extensionSetterSignature_object_5F_t_mergeSubAttributes inModifier) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void callExtensionSetter_mergeSubAttributes (class cPtr_object_5F_t * inObject,
+                                             GALGAS_object_5F_t in_withObject,
+                                             C_Compiler * inCompiler
+                                             COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //                                                @identifierList list                                                 *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -5985,6 +6031,27 @@ void enterExtensionGetter_autoAllowed (const int32_t inClassIndex,
 class GALGAS_bool callExtensionGetter_autoAllowed (const cPtr_impType * inObject,
                                                    class C_Compiler * inCompiler
                                                    COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                     Extension getter '@impType getDefaultValue'                                     *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+typedef class GALGAS_object_5F_t (*enterExtensionGetter_impType_getDefaultValue) (const class cPtr_impType * inObject,
+                                                                                  C_Compiler * inCompiler
+                                                                                  COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void enterExtensionGetter_getDefaultValue (const int32_t inClassIndex,
+                                           enterExtensionGetter_impType_getDefaultValue inGetter) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_object_5F_t callExtensionGetter_getDefaultValue (const cPtr_impType * inObject,
+                                                              class C_Compiler * inCompiler
+                                                              COMMA_LOCATION_ARGS) ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //  GRAMMAR goil_cpu_level_include
