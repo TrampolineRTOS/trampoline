@@ -34,13 +34,7 @@
 
 OIL_VERSION = "2.5" : "autosar_mp_s3" ;
 
-/* ----------------------------------------
- * Depending on your achitecture
- * TODO : this (included) oil architecture
- * dependant will be in the templates
- * directory.
- ---------------------------------------  */
-#include "../architecture_ppc.oil"
+#include <arch.oil>
 
 CPU test {
         

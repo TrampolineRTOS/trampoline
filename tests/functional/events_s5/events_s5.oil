@@ -34,6 +34,8 @@
 
 OIL_VERSION = "2.5" : "events_s5";
 
+#include <arch.oil>
+
 IMPLEMENTATION trampoline {
   OS {
     ENUM [EXTENDED] STATUS;
@@ -54,13 +56,8 @@ CPU test {
       APP_SRC = "task3_instance.c";
       APP_SRC = "task5_instance.c";
       APP_SRC = "isr1_instance.c";
-      APP_SRC = "../config.c";
       TRAMPOLINE_BASE_PATH = "../../..";
       APP_NAME = "events_s5_exe";
-      CFLAGS = "-I../../embUnit";
-      CFLAGS  = "-Werror -Wall -pedantic";
-      CFLAGS  = "-Wmissing-field-initializers";
-      LDFLAGS = "-L../../lib -lembUnit";
     };
     SHUTDOWNHOOK = TRUE;
   };

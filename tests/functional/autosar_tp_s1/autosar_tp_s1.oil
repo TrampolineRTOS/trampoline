@@ -34,6 +34,8 @@
 
 OIL_VERSION = "3.1" : "autosar_st_s1" ;
 
+#include <arch.oil>
+
 IMPLEMENTATION trampoline {
 
     OS {
@@ -62,10 +64,6 @@ CPU test {
             APP_SRC = "protection_instance2.c";
             TRAMPOLINE_BASE_PATH = "../../..";
             APP_NAME = "autosar_tp_s1_exe";
-            CFLAGS = "-I../../embUnit";
-            CFLAGS  = "-Wall -pedantic -std=c99";
-            CFLAGS  = "-Wmissing-field-initializers";
-            LDFLAGS = "-L../../lib -lembUnit";
         };
         SHUTDOWNHOOK = TRUE;
         ERRORHOOK = TRUE;

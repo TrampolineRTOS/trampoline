@@ -34,6 +34,8 @@
 
 OIL_VERSION = "2.5" : "interrupts_s4";
 
+#include <arch.oil>
+
 IMPLEMENTATION trampoline {
   TASK {
     UINT32 STACKSIZE = 32768;
@@ -51,13 +53,8 @@ CPU test {
       APP_SRC = "isr1_instance2.c";
       APP_SRC = "callback1_instance.c";
       APP_SRC = "callback2_instance.c";
-      APP_SRC = "../config.c";
       TRAMPOLINE_BASE_PATH = "../../..";
       APP_NAME = "interrupts_s4_full_exe";
-      CFLAGS = "-I../../embUnit";
-      CFLAGS  = "-Werror -Wall -pedantic";
-      CFLAGS  = "-Wmissing-field-initializers";
-      LDFLAGS = "-L../../lib -lembUnit";
     };
     SHUTDOWNHOOK = TRUE;
   };

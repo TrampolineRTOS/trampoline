@@ -34,6 +34,8 @@
 
 OIL_VERSION = "2.5" : "autosar_st_s4" ;
 
+#include <arch.oil>
+
 IMPLEMENTATION trampoline {
 
  OS {
@@ -55,7 +57,6 @@ IMPLEMENTATION trampoline {
     OS config {
         STATUS = EXTENDED;
         APP_SRC = "autosar_tp_s4.c";
-        APP_SRC = "../config.c";
         APP_SRC = "task1_instance.c";
         APP_SRC = "isr1_instance1.c";
         APP_SRC = "isr1_instance2.c";
@@ -66,10 +67,6 @@ IMPLEMENTATION trampoline {
         APP_SRC = "protection_instance2.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "autosar_tp_s4_exe";
-        CFLAGS = "-I../../embUnit";
-        CFLAGS  = "-Wall -pedantic";
-        CFLAGS  = "-Wmissing-field-initializers";
-        LDFLAGS = "-L../../lib -lembUnit";
         SHUTDOWNHOOK = TRUE;
         ERRORHOOK = TRUE;
         USEGETSERVICEID = TRUE;

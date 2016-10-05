@@ -34,6 +34,8 @@
 
 OIL_VERSION = "2.5" : "tasks_s12";
 
+#include <arch.oil>
+
 IMPLEMENTATION trampoline {
   TASK {
     UINT32 STACKSIZE = 32768;
@@ -55,10 +57,6 @@ CPU test {
       APP_SRC = "task3_instance3.c";
       TRAMPOLINE_BASE_PATH = "../../..";
       APP_NAME = "tasks_s12_non_exe";
-      CFLAGS = "-I../../embUnit";
-      CFLAGS  = "-Werror -Wall -pedantic";
-      CFLAGS  = "-Wmissing-field-initializers";
-      LDFLAGS = "-L../../lib -lembUnit";
     };
     SHUTDOWNHOOK = TRUE;
   };

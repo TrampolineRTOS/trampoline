@@ -34,6 +34,8 @@
 
 OIL_VERSION = "2.5" : "com_internal_s4";
 
+#include <arch.oil>
+
 IMPLEMENTATION trampoline {
   TASK {
     UINT32 STACKSIZE = 32768;
@@ -55,13 +57,8 @@ CPU test {
       APP_SRC = "task3_instance.c";
       APP_SRC = "task4_instance.c";
       APP_SRC = "comcallback_instance.c";
-      APP_SRC = "../config.c";
       TRAMPOLINE_BASE_PATH = "../../..";
       APP_NAME = "com_internal_s4_exe";  
-      CFLAGS = "-I../../embUnit";
-      CFLAGS  = "-Werror -Wall -pedantic";
-      CFLAGS  = "-Wmissing-field-initializers";
-      LDFLAGS = "-L../../lib -lembUnit";
     };
   };
 
