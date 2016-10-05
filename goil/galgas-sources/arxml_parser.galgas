@@ -426,8 +426,8 @@ proc nodeToClassRes
     end
     # Test the minimum
     if [subElements length] < minOccurs then
-      error [eElement name] : "Missing element " + [eElement name].string + "."
-                  + " Minimum : " + minOccurs + "."
+      error [currentElement name] : "Missing element " + [eElement name].string
+                  + ". Minimum : " + minOccurs + "."
                   + " Found " + [subElements length]
     end
 
@@ -443,7 +443,7 @@ proc nodeToClassRes
       if [subElements length] > maxOccurs then
         @arxmlElementNode subElement
         [subElements last ?subElement]
-        error [subElement name] : "Too many node " + [eElement name].string
+        error [currentElement name] : "Too many node " + [eElement name].string
                     + ". Minimum : " + minOccurs + " ; Maximum : " + maxOccurs
                     + ". Found " + [subElements length]
       end
@@ -649,7 +649,7 @@ proc arxmlImplementationContainer
     @impType type
     arxmlImplementationContainerNumber(?attributeName
                                        ?type
-                                       !@dataType.sint64Number
+                                       !@dataType.uint64Number # sint64 too
                                        !parameter
                                        !parentPath)
     arxmlInsertObjectAttribute(!?objectAttributes !attributeName !type)
@@ -800,15 +800,15 @@ proc arxmlImplementationContainer
 proc arxmlImplementationContainerNumber
   !@lstring objectName
   !@impType options
-  ?let @dataType type
+  ?let @dataType iType
   ?@arxmlElementValue parameter
   ?@lstring unused parentPath
 {
-  displayOil(!"    " + [type oilType])
+  # We still don't know if the type is sint or uint until we parse MIN and MAX
+  @dataType type = iType
 
   # Get the name
   arxmlGetName(!parameter ?objectName)
-  displayOil(!"  " + [objectName string])
 
   # Get the multiplicity
   arxmlGetMultiplicity(!parameter !objectName ?@lbool multiple)
@@ -826,6 +826,8 @@ proc arxmlImplementationContainerNumber
   if [parameter hasElement !"MIN"] && [parameter hasElement !"MAX"] then
     @lstring min = [parameter getTextFromElement !"MIN"]
     @lstring max = [parameter getTextFromElement !"MAX"]
+    @string minSignString = ""
+    @string maxSignString = ""
 
     if [[max string] uppercaseString] == "INF" then
       max.string = [@sint64.max string]
@@ -834,30 +836,32 @@ proc arxmlImplementationContainerNumber
     arxmlPopSign(!?min ?@bool minSign)
     arxmlPopSign(!?max ?@bool maxSign)
 
+    # Deduce if the type is sint or uint from the sign
+    if minSign then
+      minSignString = "-"
+      type = @dataType.sint64Number
+    end
+    if maxSign then
+      maxSignString = "-"
+      type = @dataType.sint64Number
+    end
+    displayOil(!"    " + [type oilType])
+    displayOil(!"  " + [objectName string])
+
     @object_t start
     @object_t stop
 
-    if type == @dataType.sint64Number then
-      # FIXME : We need a Galgas function to get an uint64 or bigint number
-      # from a string. Here we use a double cast to get our 64bit unsigned,
-      # thus loosing precision
-      @uint64 limitedMaxVal = [[[max string] doubleNumber] uint64]
-      if limitedMaxVal > [@sint64.max uint64] then
-        limitedMaxVal = [@sint64.max uint64]
-      end
-      @uint64 limitedMinVal = [[[min string] doubleNumber] uint64]
-      if limitedMinVal > [@sint64.max uint64] then
-        limitedMinVal = [@sint64.max uint64]
-      end
+    if type == @dataType.uint64Number || type == @dataType.sint64Number then
       @luint64 minVal = .new {
-                              !limitedMinVal
+                              ![[min string] decimalUnsigned64Number]
                               ![min location]
                              }
       @luint64 maxVal = .new {
-                              !limitedMaxVal
+                              ![[max string] decimalUnsigned64Number]
                               ![max location]
                              }
-      displayOil(!"[" + [minVal string] + " .. " + [maxVal string] + "]")
+      displayOil(!"[" + minSignString + [minVal string]
+                + " .. " + maxSignString + [maxVal string] + "]")
       start = checkAndGetIntegerNumber(!emptyLString() !type !minVal !minSign)
       stop = checkAndGetIntegerNumber(!emptyLString() !type !maxVal !maxSign)
     elsif type == @dataType.floatNumber then
@@ -877,6 +881,8 @@ proc arxmlImplementationContainerNumber
     end
     range = buildRange(!type !start !stop)
   else
+    displayOil(!"    " + [type oilType])
+    displayOil(!"  " + [objectName string])
     range = @noRange.new{![objectName location]}
   end
 
@@ -889,7 +895,7 @@ proc arxmlImplementationContainerNumber
     arxmlPopSign(!?value ?@bool sign)
 
     # Compute the default value depending of the type of the parameter
-    if type == @dataType.sint64Number then
+    if type == @dataType.uint64Number || type == @dataType.sint64Number then
       @luint64 integerValue = .new {
                                  ![[value string] decimalUnsignedNumber]
                                  ![value location]}
