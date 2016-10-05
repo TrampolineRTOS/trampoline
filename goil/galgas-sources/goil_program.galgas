@@ -50,20 +50,8 @@
       ?@arxmlNode root
       !true
       !true
-#    [root print !0]
+    [root print !0]
   }
-
-#  when . "epc" message "a XML source file" ??@lstring inSourceFile {
-#    @xmlNodeList root_nodes;
-#    grammar xml_parsing_grammar in inSourceFile
-#      ?root_nodes
-#      !false
-#      !true
-#      !false;
-#
-#    @root_obj cpu := transform_xml_to_goil(!root_nodes);
-#  }
-#
 
 #--- Epilogue routine
   after {

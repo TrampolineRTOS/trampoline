@@ -57,6 +57,7 @@ end foreach
 
 foreach api in APIUSED do
 %
+
 /*--------------------------------------------------------------------------*
  * % !api::NAME % system calls.
  * corresponding kernel implementation is in files%
@@ -102,6 +103,55 @@ FUNC(% !exists sc::RETURN_TYPE default("void") %, % !api::ID_PREFIX %_CODE) % !s
 %   end if
   end foreach
 end foreach
+
+
+#---------------------------------------------------------------------------*
+# Add the declaration of TASKS, RESOURCES, ALARMS, EVENT, MESSAGES and so on
+#---------------------------------------------------------------------------*
+%
+
+/*
+ * Objects declared in the OIL/ARXML file
+ */%
+foreach appmode in APPMODE do
+%
+DeclareApplicationMode(% !appmode::NAME %);%
+end foreach
+
+foreach task in TASK do
+%
+DeclareTask(% !task::NAME %);%
+end foreach
+
+foreach resource in RESOURCE do
+%
+DeclareResource(% !resource::NAME %);%
+end foreach
+
+foreach alarm in ALARM do
+%
+DeclareAlarm(% !alarm::NAME %);%
+end foreach
+
+foreach event in EVENT do
+%
+DeclareEvent(% !event::NAME %);%
+end foreach
+
+foreach message in MESSAGE do
+%
+DeclareMessage(% !message::NAME %);%
+end foreach
+
+foreach application in APPLICATION do
+%
+DeclareApplication(% !application::NAME %);%
+end foreach
+
+foreach scheduletable in SCHEDULETABLE do
+%
+DeclareScheduleTable(% !scheduletable::NAME %);%
+end foreach
 %
 
 #ifdef __cplusplus
@@ -143,6 +193,7 @@ if [TRANSACTION length] > 0 then
     %
   end foreach
 end if
+
 %
 /* TPL_OS_H */
 #endif

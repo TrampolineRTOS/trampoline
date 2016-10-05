@@ -9445,7 +9445,6 @@ static const char * kSourceFileExtensions [] = {
   "OIL",
   "goilTemplate",
   "arxml",
-  "xsd",
   NULL
 } ;    
 
@@ -9456,7 +9455,6 @@ static const char * kSourceFileHelpMessages [] = {
   "an '.OIL' source file",
   "a Goil template file",
   "an AUTOSAR arxml configuration file",
-  "an AUTOSAR metamodel file",
   NULL
 } ;    
 
@@ -9551,18 +9549,7 @@ static void routine_programRule_5F__33_ (const GALGAS_lstring constinArgument_in
   GALGAS_arxmlNode var_root_1353 ;
   var_root_1353.drop () ;
   cGrammar_arxml_5F_grammar::_performSourceFileParsing_ (inCompiler, constinArgument_inSourceFile, var_root_1353, GALGAS_bool (true), GALGAS_bool (true)  COMMA_SOURCE_FILE ("goil_program.galgas", 49)) ;
-}
-
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                               Routine 'programRule_4'                                               *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-static void routine_programRule_5F__34_ (const GALGAS_lstring /* constinArgument_inSourceFile */,
-                                         C_Compiler * /* inCompiler */
-                                         COMMA_UNUSED_LOCATION_ARGS) {
+  callExtensionMethod_print ((const cPtr_arxmlNode *) var_root_1353.ptr (), GALGAS_uint ((uint32_t) 0U), inCompiler COMMA_SOURCE_FILE ("goil_program.galgas", 53)) ;
 }
 
 
@@ -9660,24 +9647,6 @@ int mainForLIBPM (int inArgc, const char * inArgv []) {
           switch (executionMode ()) {
           case kExecutionModeNormal :
             routine_programRule_5F__33_ (sourceFilePath, commonLexique COMMA_HERE) ;
-            break ;
-          case kExecutionModeLexicalAnalysisOnly :
-            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=lexical-only\" option: no grammar in program RULE" COMMA_HERE) ;
-            break ;
-          case kExecutionModeSyntaxAnalysisOnly :
-            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=syntax-only\" option: no grammar in program RULE" COMMA_HERE) ;
-            break ;
-          case kExecutionModeIndexing :
-            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=indexing\" option: no grammar in program RULE" COMMA_HERE) ;
-            break ;
-          case kExecutionModeLatex :
-            commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=latex\" option: no grammar in program RULE" COMMA_HERE) ;
-            break ;
-          }
-        }else if (fileExtension == "xsd") {
-          switch (executionMode ()) {
-          case kExecutionModeNormal :
-            routine_programRule_5F__34_ (sourceFilePath, commonLexique COMMA_HERE) ;
             break ;
           case kExecutionModeLexicalAnalysisOnly :
             commonLexique->onTheFlyRunTimeError ("Cannot handle \"--mode=lexical-only\" option: no grammar in program RULE" COMMA_HERE) ;

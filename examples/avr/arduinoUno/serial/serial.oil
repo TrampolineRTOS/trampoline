@@ -29,6 +29,7 @@ CPU test {
       COMPILER = "avr-gcc";
       LINKER = "avr-gcc";
       ASSEMBLER = "avr-gcc";
+      COPIER = "avr-objcopy";
       SYSTEM = PYTHON;
     };
     SYSTEM_CALL = TRUE;

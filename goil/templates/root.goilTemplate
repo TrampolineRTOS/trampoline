@@ -66,6 +66,7 @@ let OS::NUMBER_OF_CORES := exists OS::NUMBER_OF_CORES default (1)
 # build an empty list when the list does not exist. This simplify
 # further processing because existence test is not necessary
 #
+let APPMODE := exists APPMODE default (@())
 let TASK := exists TASK default (@())
 let ISR := exists ISR default (@())
 let EVENT := exists EVENT default (@())

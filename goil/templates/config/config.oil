@@ -132,6 +132,10 @@ IMPLEMENTATION trampoline_common {
       STRING WITH_AUTO OUTPUT;
       STRING PREOPTION[];
       STRING POSTOPTION[];
+      ENUM [
+       LITERAL { STRING VALUE; STRING OPT; },
+       ENVAR { STRING NAME; STRING OPT; }
+      ] PREOPT[];
     } COMMAND[];
   };
 
