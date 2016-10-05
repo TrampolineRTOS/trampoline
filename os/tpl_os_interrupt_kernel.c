@@ -389,6 +389,47 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(
   }
 }
 
+/*
+ * The central interrupt handler is called by the interrupt handler
+ * with the id of the interrupt (usually its priority) as parameter
+ * tpl_central_interrupt_handler saves the context of the interrupted
+ * task / interrupt handler, switches to the context of the handler
+ * and calls the handler
+ */
+FUNC(void, OS_CODE) tpl_fast_central_interrupt_handler(
+  CONST(uint16, AUTOMATIC) isr_id)
+{
+  P2CONST(tpl_isr_static, AUTOMATIC, OS_APPL_DATA) isr;
+  GET_CURRENT_CORE_ID(core_id)
+
+#if WITH_STACK_MONITORING == YES
+    GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
+    tpl_check_stack((tpl_proc_id)TPL_KERN_REF(kern).running_id);
+#endif /* WITH_AUTOSAR_STACK_MONITORING */
+
+  /*
+   * Is there a handler for this id ?
+   * ie the id has been counted in the table and there
+   * is a tpl_isr available
+   */
+#if WITH_OS_EXTENDED == YES
+  if ((isr_id >= TASK_COUNT) && (isr_id < (TASK_COUNT + ISR_COUNT)))
+#endif
+  {
+    tpl_it_nesting++;
+
+    isr = tpl_isr_stat_table[isr_id - TASK_COUNT];
+    tpl_activate_isr(isr->isr_id);
+
+    tpl_it_nesting--;
+
+    if (tpl_it_nesting == 0)
+    {
+      tpl_schedule_from_running(CORE_ID_OR_NOTHING(core_id));
+      LOCAL_SWITCH_CONTEXT(core_id)
+    }
+  }
+}
 
 /*
  * The central interrupt handler is called by the interrupt handler

@@ -98,11 +98,11 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
       end if
     end if
   end foreach
-  
+
   # ISR2 and COUNTER
   # Test for ISR2
 %  /* ISR2s */
-%  
+%
   let thereAreISR2forThisObjList := false
   foreach obj in objList do
     if obj::KIND == "ISR" then
@@ -111,7 +111,7 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
       end if
     end if
   end foreach
-  
+
   if thereAreISR2forThisObjList then
     foreach obj in objList
       before
@@ -125,20 +125,16 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
 %
       do
       if (obj::KIND == "ISR" & obj::CATEGORY == 2) then
-%  tpl_activate_isr(% !indexISR2 %);
+%  tpl_fast_central_interrupt_handler(% !indexISR2 %);
 %
         let indexISR2 := indexISR2 + 1
       end if
-      after
-%  tpl_schedule_from_running(CORE_ID_OR_NOTHING(core_id));
-  LOCAL_SWITCH_CONTEXT(core_id)
-%    
     end foreach
   end if
 
   # COUNTER
 %  /* COUNTERs */
-%  
+%
   foreach objCounter in counterForIRQ do
     let objCounter_KEY := KEY
     if objCounter_KEY == objList_KEY then
@@ -146,7 +142,7 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
 %
     end if
   end foreach
-  
+
   # ACK
 %  /* ACK */
 %

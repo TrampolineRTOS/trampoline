@@ -143,6 +143,16 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void);
 FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(uint16, AUTOMATIC) id);
 
 /**
+ * This is the fast dispatcher of interrupts. It should be called by
+ * the root interrupt handler with an ISR identifier
+ * This dispatcher does not look for many isr connected to the id.
+ * It activates only one isr.
+ *
+ * @param interrupt service routine identifier
+ */
+FUNC(void, OS_CODE) tpl_fast_central_interrupt_handler(CONST(uint16, AUTOMATIC) id);
+
+/**
  * This is the dispatcher of interrupts. It should be called by
  * the root interrupt handler with an ISR identifier. VP2 version.
  *
