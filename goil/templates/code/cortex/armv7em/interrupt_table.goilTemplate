@@ -125,7 +125,7 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
 %
       do
       if (obj::KIND == "ISR" & obj::CATEGORY == 2) then
-%  tpl_fast_central_interrupt_handler(% !indexISR2 %);
+%  tpl_fast_central_interrupt_handler(% !([TASKS length] + indexISR2) %);
 %
         let indexISR2 := indexISR2 + 1
       end if
