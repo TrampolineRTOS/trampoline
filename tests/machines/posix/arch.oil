@@ -1,0 +1,73 @@
+/**
+ * @file arch.oil
+ *
+ * @section desc File description
+ *
+ * Trampoline Test Suite : Machine dependant oil configuration
+ *
+ * @section copyright Copyright
+ *
+ * Trampoline Test Suite
+ *
+ * Trampoline Test Suite is copyright (c) IRCCyN 2005-2007
+ * Trampoline Test Suite is protected by the French intellectual property law.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; version 2
+ * of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @section infos File informations
+ *
+ * $Date$
+ * $Rev$
+ * $Author$
+ * $URL$
+ */
+
+/*  XXX : WARNING
+ *        This file is included from an oil file located in one of the
+ *        tests' directory. In that case, relative paths are from the test's
+ *        directory !
+ */
+
+IMPLEMENTATION archPosix
+{
+  TASK {
+    UINT32 STACKSIZE = 32768;
+    UINT32 PRIORITY = 1;
+  };
+
+};
+
+CPU archPosixDefault
+{
+  OS defaultOS
+  {
+    BUILD = TRUE
+    {
+      COMPILER = "gcc";
+      ASSEMBLER = "gcc";
+      LINKER = "gcc";
+      CFLAGS = "-Werror -Wall -pedantic";
+      CFLAGS = "-Wmissing-field-initializers";
+      CFLAGS = "-I../../embUnit";
+      LDFLAGS = "-L../../lib -lembUnit";
+      APP_SRC = "../../machines/posix/config.c";
+      SYSTEM = MAKE;
+    };
+  };
+};
+
+
+
+

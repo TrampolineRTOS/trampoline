@@ -39,14 +39,29 @@ end if
 # Other tests
 #
 
+if OS::TIMINGPROTECTION then
+  template custom_timingprotection_check
+end if
+
 if OS::NUMBER_OF_CORES > 1 then
   template custom_intercoreInterrupt_check
 end if
 
-template custom_counter_check
-template custom_isr_check
-template custom_task_check
-template custom_interrupt_check
+if [COUNTER length] > 0 then
+  template custom_counter_check
+end if
+
+if [ISR length] > 0 then
+  template custom_isr_check
+end if
+
+if [TASK length] > 0 then
+  template custom_task_check
+end if
+
+if [INTERRUPT length] > 0 then
+  template custom_interrupt_check
+end if
 
 %
 

@@ -1,0 +1,81 @@
+running goil_events_s1
+CHECKPATH/goil_events_s1/goil_events_s1.oil:113:27: warning: Event Task1_Event8 uses more than one bit
+CHECKPATH/goil_events_s1/goil_events_s1.oil:139:27: error: event Task2_Event1 MASK conflicts
+CHECKPATH/goil_events_s1/goil_events_s1.oil:140:27: error: with MASK of event Task2_Event2
+CHECKPATH/goil_events_s1/goil_events_s1.oil:140:27: error: event Task2_Event2 MASK conflicts
+CHECKPATH/goil_events_s1/goil_events_s1.oil:139:27: error: with MASK of event Task2_Event1
+CHECKPATH/goil_events_s1/goil_events_s1.oil:123:28: error: Event Task1_Event18 uses more than 32 bits
+1 warning, 5 errors.
+running goil_autosar_alarm_s1
+CHECKPATH/goil_autosar_alarm_s1/goil_autosar_alarm_s1.oil:90:13: error: OS285 - It is impossible to increment a hardware counter (Hardware_Counter is not a software counter).
+CHECKPATH/goil_autosar_alarm_s1/goil_autosar_alarm_s1.oil:82:10: error: An alarm can't set an Event to a basic task (Task t1 is a basic task).
+No warning, 2 errors.
+running goil_autosar_st_s1
+CHECKPATH/goil_autosar_st_s1/goil_autosar_st_s1.oil:87:18: error: PERIODIC attribute already defined for Schedule Table sched2
+CHECKPATH/goil_autosar_st_s1/goil_autosar_st_s1.oil:86:19: error: Was previously define here
+CHECKPATH/goil_autosar_st_s1/goil_autosar_st_s1.oil:89:25: error: OS404 - OFFSET is missing for expiry point sched2_ep1
+CHECKPATH/goil_autosar_st_s1/goil_autosar_st_s1.oil:98:11: error: OS409 - COUNTER attribute already defined for Schedule Table sched3
+CHECKPATH/goil_autosar_st_s1/goil_autosar_st_s1.oil:96:28: error: Was previously define here
+CHECKPATH/goil_autosar_st_s1/goil_autosar_st_s1.oil:114:13: error: OS442 - OFFSET Redefinition
+CHECKPATH/goil_autosar_st_s1/goil_autosar_st_s1.oil:113:13: error: was defined here
+CHECKPATH/goil_autosar_st_s1/goil_autosar_st_s1.oil:77:21: error: OS401 - no EXPIRY_POINT found for SCHEDULETABLE sched1
+CHECKPATH/goil_autosar_st_s1/goil_autosar_st_s1.oil:82:21: error: OS401 - no EXPIRY_POINT found for SCHEDULETABLE sched2
+CHECKPATH/goil_autosar_st_s1/goil_autosar_st_s1.oil:102:25: error: OS407 - no ACTION found for EXPIRY_POINT sched3_ep1
+CHECKPATH/goil_autosar_st_s1/goil_autosar_st_s1.oil:78:11: error: OS409 - Counter is not defined in sched1 !
+No warning, 11 errors.
+running goil_autosar_st_s2
+CHECKPATH/goil_autosar_st_s2/goil_autosar_st_s2.oil:91:13: error: OS443 - OFFSET of first expiry point is lower than MINCYCLE of the driving counter and not equal to 0.
+CHECKPATH/goil_autosar_st_s2/goil_autosar_st_s2.oil:97:13: error: OS408 - Delay between expiry point number 1 and 2 is lower than MINCYCLE of the driving counter
+CHECKPATH/goil_autosar_st_s2/goil_autosar_st_s2.oil:116:13: error: OS444 - Final delay should be within MINCYCLE and MAXALLOWEDVALUE of the driving counter
+CHECKPATH/goil_autosar_st_s2/goil_autosar_st_s2.oil:148:14: error: OS443 - OFFSET of first expiry point is greater than MAXALLOWEDVALUE of the driving counter
+CHECKPATH/goil_autosar_st_s2/goil_autosar_st_s2.oil:154:14: error: OS408 - Delay between expiry point number 1 and 2 is greater than MAXALLOWEDVALUE of the driving counter
+CHECKPATH/goil_autosar_st_s2/goil_autosar_st_s2.oil:154:14: error: OS444 - Final delay should be within MINCYCLE and MAXALLOWEDVALUE of the driving counter
+No warning, 6 errors.
+running goil_autosar_st_s3
+CHECKPATH/goil_autosar_st_s3/goil_autosar_st_s3.oil:91:13: error: OS443 - OFFSET of first expiry point is lower than MINCYCLE of the driving counter and not equal to 0.
+CHECKPATH/goil_autosar_st_s3/goil_autosar_st_s3.oil:97:13: error: OS408 - Delay between expiry point number 1 and 2 is lower than MINCYCLE of the driving counter
+CHECKPATH/goil_autosar_st_s3/goil_autosar_st_s3.oil:97:13: error: OS427 - Final delay can be equal to 0 only for single-shot schedule table and sched2 is a repeating one
+CHECKPATH/goil_autosar_st_s3/goil_autosar_st_s3.oil:116:13: error: OS444 - Final delay should be within MINCYCLE and MAXALLOWEDVALUE of the driving counter
+CHECKPATH/goil_autosar_st_s3/goil_autosar_st_s3.oil:148:14: error: OS443 - OFFSET of first expiry point is greater than MAXALLOWEDVALUE of the driving counter
+CHECKPATH/goil_autosar_st_s3/goil_autosar_st_s3.oil:154:14: error: OS408 - Delay between expiry point number 1 and 2 is greater than MAXALLOWEDVALUE of the driving counter
+CHECKPATH/goil_autosar_st_s3/goil_autosar_st_s3.oil:154:14: error: OS444 - Final delay should be within MINCYCLE and MAXALLOWEDVALUE of the driving counter
+No warning, 7 errors.
+running goil_autosar_st_s4
+CHECKPATH/goil_autosar_st_s4/goil_autosar_st_s4.oil:96:26: error: OS349 - sched_abs_3 autostart's offset is greater than MAXALLOWEDVALUE of the driving counter.
+CHECKPATH/goil_autosar_st_s4/goil_autosar_st_s4.oil:109:26: error: OS332 - sched_rel_1 autostart's offset is equal to 0.
+CHECKPATH/goil_autosar_st_s4/goil_autosar_st_s4.oil:135:26: error: OS276 - sched_rel_3 autostart's offset is greater than MAXALLOWEDVALUE of the driving counter minus the Initial Offset.
+No warning, 3 errors.
+running goil_autosar_st_s5
+CHECKPATH/goil_autosar_st_s5/goil_autosar_st_s5.oil:87:18: error: An action can't set an Event to a basic task (Task t1 is a basic task).
+No warning, 1 error.
+running goil_autosar_sts_s1
+CHECKPATH/goil_autosar_sts_s1/goil_autosar_sts_s1.oil:76:19: error: A synchronized schedule table shall be repeating otherwise, synchronisation can't be done.
+CHECKPATH/goil_autosar_sts_s1/goil_autosar_sts_s1.oil:72:55: error: OS430 - An IMPLICIT schedule table should be started in Absolute mode only
+CHECKPATH/goil_autosar_sts_s1/goil_autosar_sts_s1.oil:78:14: error: OS429 - An IMPLICIT schedule table should have a duration equal to OSMAXALLOWEDVALUE + 1 (11) of its counter.
+CHECKPATH/goil_autosar_sts_s1/goil_autosar_sts_s1.oil:87:42: error: OS430 - An IMPLICIT schedule table should be started in Absolute mode only
+No warning, 4 errors.
+running goil_autosar_sts_s2
+CHECKPATH/goil_autosar_sts_s2/goil_autosar_sts_s2.oil:135:3: error: PRECISION attribute is missing 
+CHECKPATH/goil_autosar_sts_s2/goil_autosar_sts_s2.oil:77:19: error: A synchronized schedule table shall be repeating otherwise, synchronisation can't be done.
+CHECKPATH/goil_autosar_sts_s2/goil_autosar_sts_s2.oil:74:18: error: OS438 - An explicit schedule table shall have a precision in the range 0 to duration.
+CHECKPATH/goil_autosar_sts_s2/goil_autosar_sts_s2.oil:94:15: error: OS436 - In expiry point at offset = 7, MaxRetard (4) should be inferior to the previous delay (5) minus MINCYCLE of the counter (2).
+CHECKPATH/goil_autosar_sts_s2/goil_autosar_sts_s2.oil:94:15: error: OS437 - In expiry point at offset = 7, MaxAdvance (5) should be inferior to duration (9) minus the previous delay(5).
+CHECKPATH/goil_autosar_sts_s2/goil_autosar_sts_s2.oil:100:21: error: OS436 - In first expiry point, MaxRetard (3) should be inferior to the previous delay (4) minus MINCYCLE of the counter (2).
+CHECKPATH/goil_autosar_sts_s2/goil_autosar_sts_s2.oil:100:21: error: OS437 - In first expiry point, MaxAdvance (8) should be inferior to duration (9) minus the first delay(2).
+CHECKPATH/goil_autosar_sts_s2/goil_autosar_sts_s2.oil:134:16: error: Internal error, PRECISION has a wrong datatype
+CHECKPATH/goil_autosar_sts_s2/goil_autosar_sts_s2.oil:138:14: error: OS431 - An EXPLICIT schedule table shouldn't have a duration greater than OSMAXALLOWEVALUE + 1 (9) of its counter.
+No warning, 9 errors.
+running goil_autosar_app_s1
+CHECKPATH/goil_autosar_app_s1/goil_autosar_app_s1.oil:73:17: error: OS445 - An application should have at least one Task OR ISR2.
+No warning, 1 error.
+running goil_autosar_app_s2
+CHECKPATH/goil_autosar_app_s2/goil_autosar_app_s2.oil:89:13: error: Counter Software_Counter2 doesn't belong to the same application of alarm Alarm1
+CHECKPATH/goil_autosar_app_s2/goil_autosar_app_s2.oil:104:13: error: Task t2 doesn't belong to the same application of alarm Alarm2
+CHECKPATH/goil_autosar_app_s2/goil_autosar_app_s2.oil:119:13: error: Task t2 doesn't belong to the same application of alarm Alarm3
+CHECKPATH/goil_autosar_app_s2/goil_autosar_app_s2.oil:136:13: error: Counter Software_Counter2 doesn't belong to the same application of alarm Alarm4
+CHECKPATH/goil_autosar_app_s2/goil_autosar_app_s2.oil:151:21: error: Counter Software_Counter2 doesn't belong to the same application of schedule table sched1
+CHECKPATH/goil_autosar_app_s2/goil_autosar_app_s2.oil:178:21: error: Task t2 doesn't belong to the same application of schedule table sched2
+CHECKPATH/goil_autosar_app_s2/goil_autosar_app_s2.oil:178:21: error: Task t3 doesn't belong to the same application of schedule table sched2
+CHECKPATH/goil_autosar_app_s2/goil_autosar_app_s2.oil:220:21: error: Task t3 doesn't belong to the same application of schedule table sched3
+CHECKPATH/goil_autosar_app_s2/goil_autosar_app_s2.oil:220:21: error: Task t2 doesn't belong to the same application of schedule table sched3
+No warning, 9 errors.

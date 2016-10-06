@@ -34,23 +34,15 @@
 
 OIL_VERSION = "2.5" : "autosar_mp_s4" ;
 
-/* ----------------------------------------
- * Depending on your achitecture
- * TODO : this (included) oil architecture
- * dependant will be in the templates
- * directory.
- ---------------------------------------  */
-#include "../architecture_arm.oil"
+#include <arch.oil>
 
 CPU test {
-        
     OS config {
         STATUS = STANDARD;
 		 APP_SRC = "autosar_mp_s4.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "autosar_mp_s4_exe";
     } ;
-    
     APPMODE std {};
 
     TASK t1_app_nontrusted1 {
@@ -70,13 +62,12 @@ CPU test {
 	APPLICATION app_nontrusted1 {
        TRUSTED = FALSE;
 		TASK = t1_app_nontrusted1;
-	};	
+	};
 	APPLICATION app_trusted1 {
        TRUSTED = TRUE;
 		TASK = t1_app_trusted1;
-	};	
+	};
     EVENT Event1 { MASK = AUTO; };
-    
 };
 
 

@@ -193,17 +193,17 @@ rule <object_definition_list>
     @implementationObject impObjOfKind = [imp impObject ![objectKind string]]   
     @objectKind objectsForKind = @objectKind. new { !@objectKindMap. emptyMap}
     if [objects hasKey ![objectKind string]] then
-      # An object of this kind already exists. This is permitted only
-      # if the implementation declares the object may be instantiated
-      # multiple time
-      if [[impObjOfKind multiple] bool] == false then
-        error @location.here: "object "+objectKind+" may not have multiple instance"
-      end
       [!?objects del !objectKind ?objectsForKind]
     end
-    $idf$ ?let @lstring objectName
+    $idf$ ?var @lstring objectName
     @objectAttributes object = emptyObject()
     @objectKindMap objectsKind = [objectsForKind objects]
+    if [[impObjOfKind multiple] bool] == false then
+      # The object cannot be instanciated multiple time, it's stored in the
+      # object list not with its name as a key but its kind, thus we'll always
+      # modify this uniq object each time we encounter it.
+      objectName = objectKind
+    end
     if [objectsKind hasKey ![objectName string]] then
       [!?objectsKind del !objectName ?object]
     end
@@ -214,7 +214,11 @@ rule <object_definition_list>
     $;$
     @identifierMap attributes = [object objectParams]
     if not [attributes hasKey !"NAME"] then
-      [!?attributes put !@lstring. new { !"NAME" ![objectName location]} !@stringAttribute. new { !oil_desc ![objectName location] ![objectName string]}]
+      [!?attributes put !@lstring.new{!"NAME"
+                                      ![objectName location]}
+                        !@stringAttribute.new{!oil_desc
+                                              ![objectName location]
+                                              ![objectName string]}]
       [!?object setObjectParams !attributes]
     end
     [!?objectsKind put !objectName !object]
@@ -413,7 +417,29 @@ rule <oil_declaration>
         val = @multipleAttribute. new { !emptyLString() ![multiAttribute location] !aList}
       else end
     else
-      val = @multipleAttribute. new { !emptyLString() ![val location] !@identifierList. listWithValue { !val}}
+      @identifierList aList = .emptyList
+      # Get the type's default value
+      @object_t defaultValue = [type getDefaultValue]
+
+      # If it's a list, get it
+      cast defaultValue
+      case == @multipleAttribute multiAttribute :
+        aList = [multiAttribute items]
+      else end
+
+      # The created list either contains the default list + current value, or
+      # the current value only (if there is no default list)
+      aList += !val
+
+      val = @multipleAttribute. new { !emptyLString() ![val location] !aList}
+    end
+  else
+    if [idfs hasKey ![idf string]] then
+      # The key already exists, we must merge the existing identifier with the
+      # new one
+      @object_t existingObject
+      [!?idfs del !idf ?existingObject]
+      [!?val mergeSubAttributes !existingObject]
     end
   end
   if typeOk then

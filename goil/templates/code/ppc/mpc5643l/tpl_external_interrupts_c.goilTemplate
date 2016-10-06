@@ -155,8 +155,7 @@ let channel_map["pit_ch3"] := "TPL_PIT_3"
 # Get a list of used pit channels (with no duplicates)
 let used_pit_channels := @( )
 foreach counter in HARDWARECOUNTERS do
-  if counter::SOURCE != "decrementer"
-   & counter::HANDLER == "tick" then
+  if counter::SOURCE != "decrementer" then
     let used_pit_channels[counter::SOURCE] := counter
   end if
 end foreach
@@ -205,8 +204,7 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
       foreach counter_name in exists application::COUNTER default (@( )) do
         let counter := counter_map[counter_name::VALUE]
         if counter::SOURCE != "decrementer"
-         & counter::TYPE == "HARDWARE"
-         & counter::HANDLER == "tick" then
+         & counter::TYPE == "HARDWARE" then
           let interrupt := interrupt_map[counter::SOURCE]
           let used_interrupts[counter::SOURCE] := interrupt
         end if
@@ -329,6 +327,7 @@ end foreach
 ###############################################################################
 #   tpl_watchdog_handler
 #
+if OS::TIMINGPROTECTION then
 
 let counter_map   := mapof COUNTER by NAME
 let interrupt_map := mapof INTERRUPT by NAME
@@ -341,16 +340,9 @@ let channel_map["pit_ch3"] := "TPL_PIT_3"
 
 loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
   let wdg_counters := @( )
-  foreach application in APPLICATION do
-    if application::CORE == core_id then
-      foreach counter_name in exists application::COUNTER default (@( )) do
-        let counter := counter_map[counter_name::VALUE]
-        if counter::SOURCE != "decrementer"
-         & counter::TYPE == "HARDWARE"
-         & counter::HANDLER == "watchdog" then
-          let wdg_counters[counter::SOURCE] := counter
-        end if
-      end foreach
+  foreach watchdog in OS::TIMINGPROTECTION_WATCHDOG do
+    if watchdog::CORE == core_id & watchdog::SOURCE != "decrementer" then
+      let wdg_counters += watchdog
     end if
   end foreach
 
@@ -416,6 +408,7 @@ FUNC(void, OS_CODE) tpl_cancel_tpwatchdog_% !counter::SOURCE%(void)
 %
   end foreach
 end loop
+end if # TIMING PROTECTION
 
 %
 #define OS_STOP_SEC_CODE

@@ -4,6 +4,9 @@
 # further processing because existence test is not necessary
 
 let INTERCORE_INTERRUPT := exists INTERCORE_INTERRUPT default (@( ))
+let OS::TIMINGPROTECTION_WATCHDOG := exists OS::TIMINGPROTECTION_WATCHDOG
+                                     default (@())
+
 %
 /*-----------------------------------------------------------------------------
  * Interrupt specific structures
@@ -31,13 +34,12 @@ foreach interrupt in INTERCORE_INTERRUPT do
 %
 end foreach
 
-# Tick & Watchdog
+# Tick
 let counter_map   := mapof COUNTER by NAME
 let interrupt_map := mapof INTERRUPT by NAME
 
 loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
   let tick_sources := @( )
-  let watchdog_sources := @( )
   foreach application in APPLICATION do
     if application::CORE == core_id then
       foreach counter_name in exists application::COUNTER default (@( )) do
@@ -45,11 +47,7 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
         if counter::SOURCE != "decrementer"
          & counter::TYPE == "HARDWARE" then
           let interrupt := interrupt_map[counter::SOURCE]
-          if counter::HANDLER == "tick" then
-            let tick_sources[counter::SOURCE] := interrupt
-          elsif counter::HANDLER == "watchdog" then
-            let watchdog_sources[counter::SOURCE] := interrupt
-          end if
+          let tick_sources[counter::SOURCE] := interrupt
         end if
       end foreach
     end if
@@ -65,7 +63,17 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
     end if
   end foreach
 
+# Watchdog
+
   if OS::TIMINGPROTECTION then
+    let watchdog_sources := @( )
+    foreach watchdog in OS::TIMINGPROTECTION_WATCHDOG do
+      if watchdog::CORE == core_id then
+        let interrupt := interrupt_map[watchdog::SOURCE]
+        let watchdog_sources[watchdog::SOURCE] := interrupt
+      end if
+    end foreach
+
     foreach interrupt in watchdog_sources do
       if OS::NUMBER_OF_CORES > 1 then
 
@@ -87,7 +95,7 @@ end loop
 let counter_map   := mapof COUNTER by NAME
 loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
 
-  ###### Get used counters and isrs
+  ###### Get used counters
   let used_counters := @( )
   foreach application in APPLICATION do
     if application::CORE == core_id then
@@ -96,7 +104,13 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
         let counter := counter_map[counter_name::VALUE]
         let used_counters[counter::NAME] := counter
       end foreach
+    end if
+  end foreach
 
+  let used_watchdogs := @( )
+  foreach watchdog in OS::TIMINGPROTECTION_WATCHDOG do
+    if watchdog::CORE == core_id then
+      let used_watchdogs[watchdog::NAME] := watchdog
     end if
   end foreach
 
@@ -127,26 +141,30 @@ CONST(tpl_it_vector_entry, OS_CONST) tpl_it_table_%!core_id%[% !INTERRUPT_COUNT:
           end if
         end foreach
 
+        ########## Watchdog Checking
+        foreach watchdog in used_watchdogs do
+          if watchdog::SOURCE == interrupt::NAME
+           & not entryFound then
+            if OS::NUMBER_OF_CORES > 1 then
+%  { (tpl_it_handler)tpl_watchdog_handler_% !interrupt::NAME %_%!core_id%, (void *)NULL }%
+            else
+%  { (tpl_it_handler)tpl_watchdog_handler_% !interrupt::NAME %, (void *)NULL }%
+            end if
+            let entryFound := true
+          end if
+        end foreach
+
         ########## Counter Interrupt Checking
         foreach counter in used_counters do
           if counter::SOURCE == interrupt::NAME
            & counter::TYPE == "HARDWARE"
            & not entryFound then
-            if counter::HANDLER == "watchdog" then
-              if OS::NUMBER_OF_CORES > 1 then
-%  { (tpl_it_handler)tpl_watchdog_handler_% !interrupt::NAME %_%!core_id%, (void *)NULL }%
-              else
-%  { (tpl_it_handler)tpl_watchdog_handler_% !interrupt::NAME %, (void *)NULL }%
-              end if
-              let entryFound := true
-            elsif counter::HANDLER == "tick" then
-              if OS::NUMBER_OF_CORES > 1 then
+            if OS::NUMBER_OF_CORES > 1 then
 %  { (tpl_it_handler)tpl_tick_handler_% !interrupt::NAME %_%!core_id%, (void *)NULL }%
-              else
+            else
 %  { (tpl_it_handler)tpl_tick_handler_% !interrupt::NAME %, (void *)NULL }%
-              end if
-              let entryFound := true
             end if
+            let entryFound := true
           end if
         end foreach
 
@@ -212,9 +230,16 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
         let counter := counter_map[counter_name::VALUE]
         if counter::SOURCE == "decrementer"
          & counter::TYPE == "HARDWARE" then
-          let dec_map[[core_id string]] := counter
+          let dec_map[[core_id string]] := "tick"
         end if
       end foreach
+    end if
+  end foreach
+
+  foreach watchdog in OS::TIMINGPROTECTION_WATCHDOG do
+    if watchdog::CORE == core_id
+     & watchdog::SOURCE == "decrementer" then
+      let dec_map[[core_id string]] := "watchdog"
     end if
   end foreach
 end loop
@@ -225,14 +250,14 @@ CONST(tpl_it_handler, OS_CONST) tpl_dec_table[% !OS::NUMBER_OF_CORES %] = {
 %
   loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
     if exists dec_map[[core_id string]] then
-      let counter:= dec_map[[core_id string]]
-      if counter::HANDLER == "watchdog" then
+      let handler := dec_map[[core_id string]]
+      if handler == "watchdog" then
 %  (tpl_it_handler)tpl_watchdog_expiration%
-      elsif counter::HANDLER == "tick" then
+      elsif handler == "tick" then
         if OS::NUMBER_OF_CORES == 1 then
-%  (tpl_it_handler)tpl_call_counter_tick_% !counter::SOURCE
+%  (tpl_it_handler)tpl_call_counter_tick_decrementer %
         else
-%  (tpl_it_handler)tpl_call_counter_tick_% !counter::SOURCE %_% !core_id
+%  (tpl_it_handler)tpl_call_counter_tick_decrementer_% !core_id
         end if
       end if
     else
@@ -249,41 +274,36 @@ end if
 ###############################################################################
 #   tpl_wdg_table This table contains the functions for the watchdog
 #   control for each cores
-let wdg_map := @[]
+let watchdog_sources := @[]
 let counter_map   := mapof COUNTER by NAME
 
 loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
-  foreach application in APPLICATION do
-    if application::CORE == core_id then
-      foreach counter_name in exists application::COUNTER default (@( )) do
-        let counter := counter_map[counter_name::VALUE]
-        if counter::HANDLER == "watchdog"
-         & counter::TYPE == "HARDWARE" then
-          let wdg_map[[core_id string]] := counter
-        end if
-      end foreach
+  foreach watchdog in OS::TIMINGPROTECTION_WATCHDOG do
+    if watchdog::CORE == core_id then
+      let watchdog_sources[[core_id string]] := watchdog::SOURCE
     end if
   end foreach
 end loop
 
-if wdg_map != @[] then
+if watchdog_sources != @[] then
 
   loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
-    if exists wdg_map[[core_id string]] then
-      let counter:= wdg_map[[core_id string]]
-%FUNC(void, OS_CODE) tpl_set_tpwatchdog_% !counter::SOURCE %(
+    if exists watchdog_sources[[core_id string]] then
+      let source := watchdog_sources[[core_id string]]
+%FUNC(void, OS_CODE) tpl_set_tpwatchdog_% !source%(
   VAR(tpl_time, AUTOMATIC) delay);
-FUNC(void, OS_CODE) tpl_cancel_tpwatchdog_% !counter::SOURCE %();%
+FUNC(void, OS_CODE) tpl_cancel_tpwatchdog_% !source %();
+%
     end if
   end loop
 %
 CONSTP2FUNC(void, OS_CONST, tpl_wdg_table[% !OS::NUMBER_OF_CORES * 2%])() = {
 %
   loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
-    if exists wdg_map[[core_id string]] then
-      let counter:= wdg_map[[core_id string]]
-%  tpl_set_tpwatchdog_% !counter::SOURCE %,
-  tpl_cancel_tpwatchdog_% !counter::SOURCE %%
+    if exists watchdog_sources[[core_id string]] then
+      let source := watchdog_sources[[core_id string]]
+%  tpl_set_tpwatchdog_% !source %,
+  tpl_cancel_tpwatchdog_% !source %%
     else
 %  NULL%
     end if

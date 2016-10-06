@@ -83,7 +83,6 @@ CPU blink {
     MAXALLOWEDVALUE = 65535;
     MINCYCLE = 1;
     SOURCE = pit_ch0; /* We have to use the pit to synch the cores */
-    HANDLER = tick;
   };
 
   COUNTER Core1_counter0 {
@@ -91,7 +90,6 @@ CPU blink {
     MAXALLOWEDVALUE = 65535;
     MINCYCLE = 1;
     SOURCE = pit_ch0; /* We use the same pit channel so both alarms are synched */
-    HANDLER = tick;
   };
 
   /* ==========================================================================

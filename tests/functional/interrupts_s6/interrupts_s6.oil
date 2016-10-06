@@ -34,6 +34,8 @@
 
 OIL_VERSION = "2.5" : "interrupts_s6";
 
+#include <arch.oil>
+
 IMPLEMENTATION trampoline {
   OS {
     ENUM [EXTENDED] STATUS;
@@ -69,13 +71,8 @@ CPU test {
       APP_SRC = "error_instance16.c";
       APP_SRC = "error_instance17.c";
       APP_SRC = "error_instance18.c";
-      APP_SRC = "../config.c";
       TRAMPOLINE_BASE_PATH = "../../..";
       APP_NAME = "interrupts_s6_exe";
-      CFLAGS = "-I../../embUnit";
-      CFLAGS  = "-Werror -Wall -pedantic";
-      CFLAGS  = "-Wmissing-field-initializers";
-      LDFLAGS = "-L../../lib -lembUnit";
     };
     SHUTDOWNHOOK = TRUE;
     ERRORHOOK = TRUE;

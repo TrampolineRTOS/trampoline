@@ -537,9 +537,9 @@ void GALGAS_gtlVarMap::method_get (GALGAS_lstring inKey,
                                    C_Compiler * inCompiler
                                    COMMA_LOCATION_ARGS) const {
   const cMapElement_gtlVarMap * p = (const cMapElement_gtlVarMap *) performSearch (inKey,
-                                                                                     inCompiler,
-                                                                                     kSearchErrorMessage_gtlVarMap_get
-                                                                                     COMMA_THERE) ;
+                                                                                   inCompiler,
+                                                                                   kSearchErrorMessage_gtlVarMap_get
+                                                                                   COMMA_THERE) ;
   if (NULL == p) {
     outArgument0.drop () ;
   }else{
@@ -559,9 +559,9 @@ void GALGAS_gtlVarMap::method_getResult (GALGAS_lstring inKey,
                                          C_Compiler * inCompiler
                                          COMMA_LOCATION_ARGS) const {
   const cMapElement_gtlVarMap * p = (const cMapElement_gtlVarMap *) performSearch (inKey,
-                                                                                     inCompiler,
-                                                                                     kSearchErrorMessage_gtlVarMap_getResult
-                                                                                     COMMA_THERE) ;
+                                                                                   inCompiler,
+                                                                                   kSearchErrorMessage_gtlVarMap_getResult
+                                                                                   COMMA_THERE) ;
   if (NULL == p) {
     outArgument0.drop () ;
   }else{
@@ -580,7 +580,9 @@ void GALGAS_gtlVarMap::setter_del (GALGAS_lstring inKey,
   capCollectionElement attributes ;
   performRemove (inKey, attributes, inCompiler, kRemoveErrorMessage COMMA_THERE) ;
   cMapElement_gtlVarMap * p = (cMapElement_gtlVarMap *) attributes.ptr () ;
-  if (NULL != p) {
+  if (NULL == p) {
+    outArgument0.drop () ;
+  }else{
     macroValidSharedObject (p, cMapElement_gtlVarMap) ;
     outArgument0 = p->mAttribute_value ;
   }
@@ -884,9 +886,9 @@ void GALGAS_gtlExpressionMap::method_get (GALGAS_lstring inKey,
                                           C_Compiler * inCompiler
                                           COMMA_LOCATION_ARGS) const {
   const cMapElement_gtlExpressionMap * p = (const cMapElement_gtlExpressionMap *) performSearch (inKey,
-                                                                                                   inCompiler,
-                                                                                                   kSearchErrorMessage_gtlExpressionMap_get
-                                                                                                   COMMA_THERE) ;
+                                                                                                 inCompiler,
+                                                                                                 kSearchErrorMessage_gtlExpressionMap_get
+                                                                                                 COMMA_THERE) ;
   if (NULL == p) {
     outArgument0.drop () ;
   }else{
@@ -905,7 +907,9 @@ void GALGAS_gtlExpressionMap::setter_del (GALGAS_lstring inKey,
   capCollectionElement attributes ;
   performRemove (inKey, attributes, inCompiler, kRemoveErrorMessage COMMA_THERE) ;
   cMapElement_gtlExpressionMap * p = (cMapElement_gtlExpressionMap *) attributes.ptr () ;
-  if (NULL != p) {
+  if (NULL == p) {
+    outArgument0.drop () ;
+  }else{
     macroValidSharedObject (p, cMapElement_gtlExpressionMap) ;
     outArgument0 = p->mAttribute_expression ;
   }
@@ -1537,9 +1541,9 @@ void GALGAS_gtlTemplateMap::method_get (GALGAS_lstring inKey,
                                         C_Compiler * inCompiler
                                         COMMA_LOCATION_ARGS) const {
   const cMapElement_gtlTemplateMap * p = (const cMapElement_gtlTemplateMap *) performSearch (inKey,
-                                                                                               inCompiler,
-                                                                                               kSearchErrorMessage_gtlTemplateMap_get
-                                                                                               COMMA_THERE) ;
+                                                                                             inCompiler,
+                                                                                             kSearchErrorMessage_gtlTemplateMap_get
+                                                                                             COMMA_THERE) ;
   if (NULL == p) {
     outArgument0.drop () ;
   }else{
@@ -1844,9 +1848,9 @@ void GALGAS_gtlFuncMap::method_get (GALGAS_lstring inKey,
                                     C_Compiler * inCompiler
                                     COMMA_LOCATION_ARGS) const {
   const cMapElement_gtlFuncMap * p = (const cMapElement_gtlFuncMap *) performSearch (inKey,
-                                                                                       inCompiler,
-                                                                                       kSearchErrorMessage_gtlFuncMap_get
-                                                                                       COMMA_THERE) ;
+                                                                                     inCompiler,
+                                                                                     kSearchErrorMessage_gtlFuncMap_get
+                                                                                     COMMA_THERE) ;
   if (NULL == p) {
     outArgument0.drop () ;
   }else{
@@ -2102,9 +2106,9 @@ void GALGAS_gtlGetterMap::method_get (GALGAS_lstring inKey,
                                       C_Compiler * inCompiler
                                       COMMA_LOCATION_ARGS) const {
   const cMapElement_gtlGetterMap * p = (const cMapElement_gtlGetterMap *) performSearch (inKey,
-                                                                                           inCompiler,
-                                                                                           kSearchErrorMessage_gtlGetterMap_get
-                                                                                           COMMA_THERE) ;
+                                                                                         inCompiler,
+                                                                                         kSearchErrorMessage_gtlGetterMap_get
+                                                                                         COMMA_THERE) ;
   if (NULL == p) {
     outArgument0.drop () ;
   }else{
@@ -2360,9 +2364,9 @@ void GALGAS_gtlSetterMap::method_get (GALGAS_lstring inKey,
                                       C_Compiler * inCompiler
                                       COMMA_LOCATION_ARGS) const {
   const cMapElement_gtlSetterMap * p = (const cMapElement_gtlSetterMap *) performSearch (inKey,
-                                                                                           inCompiler,
-                                                                                           kSearchErrorMessage_gtlSetterMap_get
-                                                                                           COMMA_THERE) ;
+                                                                                         inCompiler,
+                                                                                         kSearchErrorMessage_gtlSetterMap_get
+                                                                                         COMMA_THERE) ;
   if (NULL == p) {
     outArgument0.drop () ;
   }else{
@@ -8789,9 +8793,9 @@ void GALGAS_gtlProcMap::method_get (GALGAS_lstring inKey,
                                     C_Compiler * inCompiler
                                     COMMA_LOCATION_ARGS) const {
   const cMapElement_gtlProcMap * p = (const cMapElement_gtlProcMap *) performSearch (inKey,
-                                                                                       inCompiler,
-                                                                                       kSearchErrorMessage_gtlProcMap_get
-                                                                                       COMMA_THERE) ;
+                                                                                     inCompiler,
+                                                                                     kSearchErrorMessage_gtlProcMap_get
+                                                                                     COMMA_THERE) ;
   if (NULL == p) {
     outArgument0.drop () ;
   }else{

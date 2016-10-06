@@ -338,10 +338,6 @@
                   <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/ARRoot/Os/OsCounter/OsCounterMinCycle</DEFINITION-REF>
                   <VALUE>1</VALUE>
                 </ECUC-NUMERICAL-PARAM-VALUE>
-                <ECUC-TEXTUAL-PARAM-VALUE>
-                  <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/ARRoot/Os/OsCounter/OsCounterHandler</DEFINITION-REF>
-                  <VALUE>tick</VALUE>
-                </ECUC-TEXTUAL-PARAM-VALUE>
               </PARAMETER-VALUES>
             </ECUC-CONTAINER-VALUE>
 <!--
@@ -371,10 +367,6 @@
                   <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/ARRoot/Os/OsCounter/OsCounterMinCycle</DEFINITION-REF>
                   <VALUE>1</VALUE>
                 </ECUC-NUMERICAL-PARAM-VALUE>
-                <ECUC-TEXTUAL-PARAM-VALUE>
-                  <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/ARRoot/Os/OsCounter/OsCounterHandler</DEFINITION-REF>
-                  <VALUE>tick</VALUE>
-                </ECUC-TEXTUAL-PARAM-VALUE>
               </PARAMETER-VALUES>
             </ECUC-CONTAINER-VALUE>
 <!--

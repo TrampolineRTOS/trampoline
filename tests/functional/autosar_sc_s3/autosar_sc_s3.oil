@@ -34,6 +34,8 @@
 
 OIL_VERSION = "3.1" : "autosar_sc_s3";
 
+#include <arch.oil>
+
 IMPLEMENTATION trampoline {
   OS {
     ENUM [EXTENDED] STATUS;
@@ -56,13 +58,8 @@ CPU test {
       APP_SRC = "error_instance4.c";
       APP_SRC = "error_instance5.c";
       APP_SRC = "error_instance6.c";
-      APP_SRC = "../config.c";
       TRAMPOLINE_BASE_PATH = "../../..";
       APP_NAME = "autosar_sc_s3_exe";
-      CFLAGS = "-I../../embUnit";
-      CFLAGS  = "-Werror -Wall -pedantic";
-      CFLAGS  = "-Wmissing-field-initializers";
-      LDFLAGS = "-L../../lib -lembUnit";
     };
     SHUTDOWNHOOK = TRUE;
     ERRORHOOK = TRUE;

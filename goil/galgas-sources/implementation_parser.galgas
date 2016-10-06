@@ -191,9 +191,58 @@ rule <implementation_list>
     if [objectAttributes hasKey ![attributeName string]] then
       @impType previousType
       [objectAttributes get !attributeName ?previousType]
-      
+
 #      message "*** New definition "+[attributeName string]+"\n";
-      
+      if [previousType multiple] then
+        # Case where we have to append two default multiple attributes
+        # Done only if at least one of the values is a multipleAttribute
+        @object_t previousDefaultValue = [previousType getDefaultValue]
+        @object_t defaultValue = [type getDefaultValue]
+        @bool oneIsMultiple = false
+        if previousDefaultValue is == @multipleAttribute then
+          oneIsMultiple = true
+        elsif defaultValue is == @multipleAttribute then
+          oneIsMultiple = true
+        end
+
+        if oneIsMultiple then
+          # We have to append the previous default value list to the current.
+          # message "Adding element to " + [[previousType name] string] + "\n"
+          @identifierList aList = .emptyList
+          @lstring desc = emptyLString()
+          @location location = .nowhere
+
+          # Previous list first
+          cast previousDefaultValue
+          case == @multipleAttribute multiAttribute :
+            aList = [multiAttribute items]
+            desc = [multiAttribute oil_desc]
+            location = [multiAttribute location]
+          else end
+
+          # Then append the second
+          cast defaultValue
+          case == @multipleAttribute multiAttribute :
+            aList += [multiAttribute items]
+            if [desc string] == "" then
+              desc = [multiAttribute oil_desc]
+            end
+            if location == .nowhere then
+              location = [multiAttribute location]
+            end
+          else end
+
+          # Create the new default value
+          @object_t newDefault = @multipleAttribute.new{!desc !location !aList}
+
+          # Replace the previous type
+          [!?type setDefaultValue !newDefault]
+
+          [!?objectAttributes del !attributeName ?*]
+          [!?objectAttributes put !attributeName !type]
+        end
+      end
+
       if checkNewTypeWithinPreviousType(!attributeName !previousType !type) then
 #        message "*** OK "+[attributeName string]+"\n";
 #        log type;
@@ -287,7 +336,12 @@ rule <string_options>
     select
       $string$ ?var @lstring stringValue
       <description> ?oil_desc
-      defaultValue = @stringAttribute. new { !oil_desc ![stringValue location] ![stringValue string]}
+      @object_t val = @stringAttribute. new { !oil_desc ![stringValue location] ![stringValue string]}
+      if multiple then
+        defaultValue = @multipleAttribute.new { !oil_desc ![stringValue location] !@identifierList.listWithValue{!val}}
+      else
+        defaultValue = val
+      end
     or
       $AUTO$
       <description> ?oil_desc
@@ -386,7 +440,12 @@ rule <enum_options>
       @lstring stringValue
       $idf$ ?stringValue
       <description> ?oil_desc
-      defaultValue = @enumAttribute. new { !oil_desc ![stringValue location] ![stringValue string] !@objectAttributes. new { !@identifierMap. emptyMap}}
+      @object_t val = @enumAttribute. new { !oil_desc ![stringValue location] ![stringValue string] !@objectAttributes. new { !@identifierMap. emptyMap}}
+      if multiple then
+        defaultValue = @multipleAttribute.new { !oil_desc ![stringValue location] !@identifierList.listWithValue{!val}}
+      else
+        defaultValue = val
+      end
     or
       $AUTO$
       <description> ?oil_desc
@@ -420,8 +479,13 @@ rule <number_options>
   select
     $=$
     select
-      <int_or_float> ?defaultValue !type
-      oil_desc = [defaultValue oil_desc]
+      <int_or_float> ?@object_t val !type
+      oil_desc = [val oil_desc]
+      if multiple then
+        defaultValue = @multipleAttribute.new { !oil_desc ![val location] !@identifierList.listWithValue{!val}}
+      else
+        defaultValue = val
+      end
     or
       $NO_DEFAULT$
       <description> ?oil_desc
@@ -455,7 +519,12 @@ rule <type_options>
       @lstring ident
       <identifier_or_attribute> ?ident
       <description> ?oil_desc
-      defaultValue = @stringAttribute. new { !oil_desc !@location.here ![ident string]}
+      @object_t val = @stringAttribute. new { !oil_desc !@location.here ![ident string]}
+      if multiple then
+        defaultValue = @multipleAttribute.new { !oil_desc ![val location] !@identifierList.listWithValue{!val}}
+      else
+        defaultValue = val
+      end
     or
       $NO_DEFAULT$
       <description> ?oil_desc

@@ -1,5 +1,7 @@
 OIL_VERSION = "4.0";
 
+#include <arch.oil>
+
 IMPLEMENTATION trampoline {
 
     /* This fix the default STACKSIZE of tasks */
@@ -30,15 +32,6 @@ CPU tp1 {
           TRAMPOLINE_BASE_PATH = "../../..";
           /* The name of the executable file */
           APP_NAME = "ioc_s3_exe";
-        /*
-         * The flags given to the C compiler.
-         * -Wall means "emit all warnings"
-         */
-         CFLAGS = "-I../../embUnit -I.";
-          /*CFLAGS  = "-Werror -Wall -pedantic";*/
-          CFLAGS  = "-Wall -pedantic";
-          CFLAGS  = "-Wmissing-field-initializers";
-          LDFLAGS = "-L../../lib -lembUnit";
         };
         PRETASKHOOK = FALSE; 
         POSTTASKHOOK = FALSE;  

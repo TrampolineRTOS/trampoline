@@ -1,0 +1,109 @@
+%
+# @file custom_check.goilTemplate
+#
+# @section desc File description
+#
+# Custom checking for MPC5643L - TIMING PROTECTION
+#
+# @section copyright Copyright
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN
+# Trampoline is protected by the French intellectual property law.
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# @section infos File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+# -----------------------------------------------------------------------------
+# ERROR
+# The watchdog must use a pit channel or the decrementer
+#
+
+foreach watchdog in OS::TIMINGPROTECTION_WATCHDOG do
+  if watchdog::SOURCE != "decrementer"
+   & watchdog::SOURCE != "pit_ch0"
+   & watchdog::SOURCE != "pit_ch1"
+   & watchdog::SOURCE != "pit_ch2"
+   & watchdog::SOURCE != "pit_ch3" then
+    error watchdog::NAME : "Watchdog must use a pit channel. Possible values : "
+                        + "pit_ch0, pit_ch1, pit_ch2, pit_ch3, decrementer"
+  end if
+end foreach
+
+# -----------------------------------------------------------------------------
+# ERROR
+# Watchdog must not have any other Counter on its source
+#
+
+foreach watchdog in OS::TIMINGPROTECTION_WATCHDOG do
+  foreach counter in HARDWARECOUNTERS do
+    if watchdog::NAME != counter::NAME
+     & watchdog::SOURCE == counter::SOURCE
+     & watchdog::SOURCE != "decrementer" then
+       error counter::SOURCE : "This Source is reserved for the "
+                                   + "watchdog \"" + watchdog::NAME + "\""
+    end if
+  end foreach
+end foreach
+
+
+# -----------------------------------------------------------------------------
+# ERROR
+# Each core that has a timing protected task/isr must have a watchdog
+#
+let task_map := mapof TASK by NAME
+let isr_map := mapof ISRS by NAME
+
+loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+  let has_tp := false
+  let protected_task
+  let has_wdg := false
+
+  # Get if the core has a task/isr timing protected
+  foreach application in APPLICATIONS do
+    if application::CORE == core_id then
+      foreach apptask in application::TASK do
+        let task := task_map[apptask::VALUE]
+        let task_tp := task::TIMING_PROTECTION
+        if task_tp then
+          let has_tp := true
+          let protected_task := task
+        end if
+      end foreach
+      foreach appisr in application::ISR do
+        let isr := isr_map[appisr::VALUE]
+        let isr_tp := isr::TIMING_PROTECTION
+        if isr_tp then
+          let has_tp := true
+        end if
+      end foreach
+    end if
+  end foreach
+
+  # Get if the core has a wdg timer
+  foreach watchdog in OS::TIMINGPROTECTION_WATCHDOG do
+    if watchdog::CORE == core_id then
+      let has_wdg := true
+    end if
+  end foreach
+
+  # Error checking
+  if has_tp & not has_wdg then
+    error protected_task::TIMING_PROTECTION :
+          "The core " + [core_id string] + " has a timing protected "
+          + "task/isr but no watchdog has been defined for this core.\n"
+          + "Fix : Define a watchdog under OS::TIMINGPROTECTION_WATCHDOG."
+  end if
+
+end loop
+
+%
+

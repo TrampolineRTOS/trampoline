@@ -34,6 +34,8 @@
 
 OIL_VERSION = "2.5" : "tasks_s1" ;
 
+#include <arch.oil>
+
 IMPLEMENTATION trampoline {
 
   OS {
@@ -41,7 +43,6 @@ IMPLEMENTATION trampoline {
   };
  
   TASK {
-    UINT32 STACKSIZE = 32768 ;
     UINT32 [1..10] PRIORITY = 1 ;
   };
 };
@@ -55,13 +56,8 @@ CPU test {
       APP_SRC = "task1_instance.c";
       APP_SRC = "task2_instance.c";
       APP_SRC = "isr1_instance.c";
-      APP_SRC = "../config.c";
       TRAMPOLINE_BASE_PATH = "../../..";
       APP_NAME = "tasks_s1_full_exe";
-      CFLAGS = " -g -I../../embUnit";
-      CFLAGS  = "-Werror -Wall -pedantic";
-      CFLAGS  = "-Wmissing-field-initializers";
-      LDFLAGS = "-g -L../../lib -lembUnit";
     };
     SHUTDOWNHOOK = TRUE;
   };
@@ -84,7 +80,6 @@ CPU test {
   
   ISR isr1 {
     CATEGORY = 2;
-    STACKSIZE = 32768;
     PRIORITY = 1;
     SOURCE = SIGTERM;
   };

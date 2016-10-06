@@ -34,6 +34,8 @@
 
 OIL_VERSION = "2.5" : "resources_s1";
 
+#include <arch.oil>
+
 IMPLEMENTATION trampoline {
   OS {
     ENUM [EXTENDED] STATUS;
@@ -51,13 +53,8 @@ CPU test {
       APP_SRC = "resources_s1.c";
       APP_SRC = "task1_instance.c";
       APP_SRC = "task2_instance.c";
-      APP_SRC = "../config.c";
       TRAMPOLINE_BASE_PATH = "../../..";
       APP_NAME = "resources_s1_full_exe";
-      CFLAGS = "-I../../embUnit";
-      CFLAGS  = "-Werror -Wall -pedantic";
-      CFLAGS  = "-Wmissing-field-initializers";
-      LDFLAGS = "-L../../lib -lembUnit";
     };
     SHUTDOWNHOOK = TRUE;
   };

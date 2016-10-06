@@ -176,7 +176,7 @@ rule <arxml_start_symbol>
       + "/build/" + [@string.stringWithSourceFilePath lastPathComponent] + ".dep"  
     #message "Writing dependancies to " + oilDepFileName + "\n";
     [fileIncludeList writeToFile !oilDepFileName]
-    message fileIncludeList
+    #message fileIncludeList
 
 }
 
@@ -426,8 +426,8 @@ proc nodeToClassRes
     end
     # Test the minimum
     if [subElements length] < minOccurs then
-      error [eElement name] : "Missing element " + [eElement name].string + "."
-                  + " Minimum : " + minOccurs + "."
+      error [currentElement name] : "Missing element " + [eElement name].string
+                  + ". Minimum : " + minOccurs + "."
                   + " Found " + [subElements length]
     end
 
@@ -443,7 +443,7 @@ proc nodeToClassRes
       if [subElements length] > maxOccurs then
         @arxmlElementNode subElement
         [subElements last ?subElement]
-        error [subElement name] : "Too many node " + [eElement name].string
+        error [currentElement name] : "Too many node " + [eElement name].string
                     + ". Minimum : " + minOccurs + " ; Maximum : " + maxOccurs
                     + ". Found " + [subElements length]
       end
@@ -649,25 +649,10 @@ proc arxmlImplementationContainer
     @impType type
     arxmlImplementationContainerNumber(?attributeName
                                        ?type
-                                       !@dataType.sint64Number
+                                       !@dataType.uint64Number # sint64 too
                                        !parameter
                                        !parentPath)
-    #arxmlInsertObjectAttribute(!?objectAttributes !attributeName !type)
-    if [objectAttributes hasKey ![attributeName string]] then
-      @impType previousType
-      [objectAttributes get !attributeName ?previousType]
-
-      #    message "*** New definition "+[attributeName string]+"\n";
-
-      if checkNewTypeWithinPreviousType(!attributeName !previousType !type) then
-        #      message "*** OK "+[attributeName string]+"\n";
-        #      log type;
-        [!?objectAttributes del !attributeName ?*]
-        [!?objectAttributes put !attributeName !type]
-      end
-    else
-      [!?objectAttributes put !attributeName !type]
-    end
+    arxmlInsertObjectAttribute(!?objectAttributes !attributeName !type)
   end
 
   # -------------------------------------------------------------------------
@@ -687,22 +672,7 @@ proc arxmlImplementationContainer
                                        !@dataType.floatNumber
                                        !parameter
                                        !parentPath)
-    #arxmlInsertObjectAttribute(!?objectAttributes !attributeName !type)
-    if [objectAttributes hasKey ![attributeName string]] then
-      @impType previousType
-      [objectAttributes get !attributeName ?previousType]
-
-      #    message "*** New definition "+[attributeName string]+"\n";
-
-      if checkNewTypeWithinPreviousType(!attributeName !previousType !type) then
-        #      message "*** OK "+[attributeName string]+"\n";
-        #      log type;
-        [!?objectAttributes del !attributeName ?*]
-        [!?objectAttributes put !attributeName !type]
-      end
-    else
-      [!?objectAttributes put !attributeName !type]
-    end
+    arxmlInsertObjectAttribute(!?objectAttributes !attributeName !type)
   end
 
   # -------------------------------------------------------------------------
@@ -722,22 +692,7 @@ proc arxmlImplementationContainer
                                        !@dataType.string
                                        !parameter
                                        !parentPath)
-    #arxmlInsertObjectAttribute(!?objectAttributes !attributeName !type)
-    if [objectAttributes hasKey ![attributeName string]] then
-      @impType previousType
-      [objectAttributes get !attributeName ?previousType]
-
-      #    message "*** New definition "+[attributeName string]+"\n";
-
-      if checkNewTypeWithinPreviousType(!attributeName !previousType !type) then
-        #      message "*** OK "+[attributeName string]+"\n";
-        #      log type;
-        [!?objectAttributes del !attributeName ?*]
-        [!?objectAttributes put !attributeName !type]
-      end
-    else
-      [!?objectAttributes put !attributeName !type]
-    end
+    arxmlInsertObjectAttribute(!?objectAttributes !attributeName !type)
   end
 
   # -------------------------------------------------------------------------
@@ -757,22 +712,7 @@ proc arxmlImplementationContainer
                                         !@dataType.boolean
                                         !parameter
                                         !parentPath)
-    #arxmlInsertObjectAttribute(!?objectAttributes !attributeName !type)
-    if [objectAttributes hasKey ![attributeName string]] then
-      @impType previousType
-      [objectAttributes get !attributeName ?previousType]
-
-      #    message "*** New definition "+[attributeName string]+"\n";
-
-      if checkNewTypeWithinPreviousType(!attributeName !previousType !type) then
-        #      message "*** OK "+[attributeName string]+"\n";
-        #      log type;
-        [!?objectAttributes del !attributeName ?*]
-        [!?objectAttributes put !attributeName !type]
-      end
-    else
-      [!?objectAttributes put !attributeName !type]
-    end
+    arxmlInsertObjectAttribute(!?objectAttributes !attributeName !type)
   end
 
   # -------------------------------------------------------------------------
@@ -792,22 +732,7 @@ proc arxmlImplementationContainer
                                             !@dataType.enumeration
                                             !parameter
                                             !parentPath)
-    #arxmlInsertObjectAttribute(!?objectAttributes !attributeName !type)
-    if [objectAttributes hasKey ![attributeName string]] then
-      @impType previousType
-      [objectAttributes get !attributeName ?previousType]
-
-      #    message "*** New definition "+[attributeName string]+"\n";
-
-      if checkNewTypeWithinPreviousType(!attributeName !previousType !type) then
-        #      message "*** OK "+[attributeName string]+"\n";
-        #      log type;
-        [!?objectAttributes del !attributeName ?*]
-        [!?objectAttributes put !attributeName !type]
-      end
-    else
-      [!?objectAttributes put !attributeName !type]
-    end
+    arxmlInsertObjectAttribute(!?objectAttributes !attributeName !type)
   end
 
   # -------------------------------------------------------------------------
@@ -827,22 +752,7 @@ proc arxmlImplementationContainer
                                           !@dataType.structType
                                           !parameter
                                           !parentPath)
-    #arxmlInsertObjectAttribute(!?objectAttributes !attributeName !type)
-    if [objectAttributes hasKey ![attributeName string]] then
-      @impType previousType
-      [objectAttributes get !attributeName ?previousType]
-
-      #    message "*** New definition "+[attributeName string]+"\n";
-
-      if checkNewTypeWithinPreviousType(!attributeName !previousType !type) then
-        #      message "*** OK "+[attributeName string]+"\n";
-        #      log type;
-        [!?objectAttributes del !attributeName ?*]
-        [!?objectAttributes put !attributeName !type]
-      end
-    else
-      [!?objectAttributes put !attributeName !type]
-    end
+    arxmlInsertObjectAttribute(!?objectAttributes !attributeName !type)
   end
 
   # -------------------------------------------------------------------------
@@ -862,22 +772,7 @@ proc arxmlImplementationContainer
                                            !@dataType.identifier
                                            !parameter
                                            !parentPath)
-    #arxmlInsertObjectAttribute(!?objectAttributes !attributeName !type)
-    if [objectAttributes hasKey ![attributeName string]] then
-      @impType previousType
-      [objectAttributes get !attributeName ?previousType]
-
-      #    message "*** New definition "+[attributeName string]+"\n";
-
-      if checkNewTypeWithinPreviousType(!attributeName !previousType !type) then
-        #      message "*** OK "+[attributeName string]+"\n";
-        #      log type;
-        [!?objectAttributes del !attributeName ?*]
-        [!?objectAttributes put !attributeName !type]
-      end
-    else
-      [!?objectAttributes put !attributeName !type]
-    end
+    arxmlInsertObjectAttribute(!?objectAttributes !attributeName !type)
   end
 
   # -------------------------------------------------------------------------
@@ -897,22 +792,7 @@ proc arxmlImplementationContainer
                                           !@dataType.objectType
                                           !parameter
                                           !parentPath)
-    #arxmlInsertObjectAttribute(!?objectAttributes !attributeName !type)
-    if [objectAttributes hasKey ![attributeName string]] then
-      @impType previousType
-      [objectAttributes get !attributeName ?previousType]
-
-      #    message "*** New definition "+[attributeName string]+"\n";
-
-      if checkNewTypeWithinPreviousType(!attributeName !previousType !type) then
-        #      message "*** OK "+[attributeName string]+"\n";
-        #      log type;
-        [!?objectAttributes del !attributeName ?*]
-        [!?objectAttributes put !attributeName !type]
-      end
-    else
-      [!?objectAttributes put !attributeName !type]
-    end
+    arxmlInsertObjectAttribute(!?objectAttributes !attributeName !type)
   end
 
 }
@@ -920,15 +800,15 @@ proc arxmlImplementationContainer
 proc arxmlImplementationContainerNumber
   !@lstring objectName
   !@impType options
-  ?let @dataType type
+  ?let @dataType iType
   ?@arxmlElementValue parameter
   ?@lstring unused parentPath
 {
-  displayOil(!"    " + [type oilType])
+  # We still don't know if the type is sint or uint until we parse MIN and MAX
+  @dataType type = iType
 
   # Get the name
   arxmlGetName(!parameter ?objectName)
-  displayOil(!"  " + [objectName string])
 
   # Get the multiplicity
   arxmlGetMultiplicity(!parameter !objectName ?@lbool multiple)
@@ -946,6 +826,8 @@ proc arxmlImplementationContainerNumber
   if [parameter hasElement !"MIN"] && [parameter hasElement !"MAX"] then
     @lstring min = [parameter getTextFromElement !"MIN"]
     @lstring max = [parameter getTextFromElement !"MAX"]
+    @string minSignString = ""
+    @string maxSignString = ""
 
     if [[max string] uppercaseString] == "INF" then
       max.string = [@sint64.max string]
@@ -954,30 +836,32 @@ proc arxmlImplementationContainerNumber
     arxmlPopSign(!?min ?@bool minSign)
     arxmlPopSign(!?max ?@bool maxSign)
 
+    # Deduce if the type is sint or uint from the sign
+    if minSign then
+      minSignString = "-"
+      type = @dataType.sint64Number
+    end
+    if maxSign then
+      maxSignString = "-"
+      type = @dataType.sint64Number
+    end
+    displayOil(!"    " + [type oilType])
+    displayOil(!"  " + [objectName string])
+
     @object_t start
     @object_t stop
 
-    if type == @dataType.sint64Number then
-      # FIXME : We need a Galgas function to get an uint64 or bigint number
-      # from a string. Here we use a double cast to get our 64bit unsigned,
-      # thus loosing precision
-      @uint64 limitedMaxVal = [[[max string] doubleNumber] uint64]
-      if limitedMaxVal > [@sint64.max uint64] then
-        limitedMaxVal = [@sint64.max uint64]
-      end
-      @uint64 limitedMinVal = [[[min string] doubleNumber] uint64]
-      if limitedMinVal > [@sint64.max uint64] then
-        limitedMinVal = [@sint64.max uint64]
-      end
+    if type == @dataType.uint64Number || type == @dataType.sint64Number then
       @luint64 minVal = .new {
-                              !limitedMinVal
+                              ![[min string] decimalUnsigned64Number]
                               ![min location]
                              }
       @luint64 maxVal = .new {
-                              !limitedMaxVal
+                              ![[max string] decimalUnsigned64Number]
                               ![max location]
                              }
-      displayOil(!"[" + [minVal string] + " .. " + [maxVal string] + "]")
+      displayOil(!"[" + minSignString + [minVal string]
+                + " .. " + maxSignString + [maxVal string] + "]")
       start = checkAndGetIntegerNumber(!emptyLString() !type !minVal !minSign)
       stop = checkAndGetIntegerNumber(!emptyLString() !type !maxVal !maxSign)
     elsif type == @dataType.floatNumber then
@@ -997,6 +881,8 @@ proc arxmlImplementationContainerNumber
     end
     range = buildRange(!type !start !stop)
   else
+    displayOil(!"    " + [type oilType])
+    displayOil(!"  " + [objectName string])
     range = @noRange.new{![objectName location]}
   end
 
@@ -1009,7 +895,7 @@ proc arxmlImplementationContainerNumber
     arxmlPopSign(!?value ?@bool sign)
 
     # Compute the default value depending of the type of the parameter
-    if type == @dataType.sint64Number then
+    if type == @dataType.uint64Number || type == @dataType.sint64Number then
       @luint64 integerValue = .new {
                                  ![[value string] decimalUnsignedNumber]
                                  ![value location]}
@@ -1469,14 +1355,24 @@ proc arxmlDefinitionObject
   # Test multiplicity
   @implementationObject impObjOfKind = [imp impObject ![objectKind string]]
   @objectKind objectsForKind = @objectKind. new { !@objectKindMap. emptyMap}
-  testObjectMultiplicity(!?objects !objectKind !impObjOfKind !?objectsForKind)
+  if [objects hasKey ![objectKind string]] then
+    [!?objects del !objectKind ?objectsForKind]
+  end
 
   # Get Object name
   @lstring objectName = [currentElement getTextFromElement !"SHORT-NAME"]
 
-  # XXX : Comment this
+  # Get already defined objects
   @objectAttributes object = emptyObject()
   @objectKindMap objectsKind = [objectsForKind objects]
+  if [[impObjOfKind multiple] bool] == false then
+    # The object cannot be instanciated multiple time, it's stored in the
+    # object list not with its name as a key but its kind, thus we'll always
+    # modify this uniq object each time we encounter it.
+    objectName = objectKind
+  end
+
+  # If the object has already been defined, get it
   if [objectsKind hasKey ![objectName string]] then
     [!?objectsKind del !objectName ?object]
   end
@@ -1633,7 +1529,6 @@ proc arxmlDefinitionParameter
     # Test if the definition type matches the implementation type
     testTypeError(![type type] !valueType)
   else
-# XXX - Warning : Unused Parameters added to the config.oil file to avoid this
     error parameterType : [parameterType string] + " is not declared in the "
                         + "IMPLEMENTATION."
   end
@@ -1802,7 +1697,7 @@ proc arxmlDefinitionParameter
   displayOil(!"      /* ARXML Type :" + valueType + " */\n")
 
   #############################################################################
-  # TODO : Comment this
+  # Multiple Attribute case
   #
   @identifierMap idfs= [identifiers objectParams]
   if [type multiple] then
@@ -1820,10 +1715,29 @@ proc arxmlDefinitionParameter
                                         !aList}
       else end
     else
-      val = @multipleAttribute. new { !emptyLString()
-                                      ![val location]
-                                      !@identifierList. listWithValue { !val}}
+      @identifierList aList = .emptyList
+      # Get the type's default value
+      @object_t defaultValue = [type getDefaultValue]
+
+      # If it's a list, get it
+      cast defaultValue
+      case == @multipleAttribute multiAttribute :
+        aList = [multiAttribute items]
+      else end
+
+      # The created list either contains the default list + current value, or
+      # the current value only (if there is no default list)
+      aList += !val
+
+      val = @multipleAttribute. new { !emptyLString() ![val location] !aList}
     end
+      if [idfs hasKey ![parameterType string]] then
+        # The key already exists, we must merge the existing identifier with the
+        # new one
+        @object_t existingObject
+        [!?idfs del !parameterType ?existingObject]
+        [!?val mergeSubAttributes !existingObject]
+      end
   end
 
   # Finaly insert the val in the identifiers
@@ -1845,24 +1759,6 @@ proc testTypeError
     error valueType : "Expected oil type " + [type oilType] + "."
                     + " Found " + valueType.string + ".\n"
                     + " Fix : Replace it with " + [type arxmlType]
-  end
-}
-
-proc testObjectMultiplicity
- ?!@objectsMap objects
- ?@lstring objectKind
- ?@implementationObject impObjOfKind
- ?!@objectKind objectsForKind
-{
-  if [objects hasKey ![objectKind string]] then
-    # An object of this kind already exists. This is permitted only
-    # if the implementation declares the object may be instantiated
-    # multiple time
-    #@lbool multiple = [impObjOfKind multiple]
-    if [[impObjOfKind multiple] bool] == false then
-      error @location.here: "object "+objectKind+" may not have multiple instance"
-    end
-    [!?objects del !objectKind ?objectsForKind]
   end
 }
 
@@ -2011,11 +1907,60 @@ proc arxmlInsertObjectAttribute
     @impType previousType
     [objectAttributes get !attributeName ?previousType]
 
-#    message "*** New definition "+[attributeName string]+"\n";
+    #    message "*** New definition "+[attributeName string]+"\n";
+    if [previousType multiple] then
+      # Case where we have to append two default multiple attributes
+      # Done only if at least one of the values is a multipleAttribute
+      @object_t previousDefaultValue = [previousType getDefaultValue]
+      @object_t defaultValue = [type getDefaultValue]
+      @bool oneIsMultiple = false
+      if previousDefaultValue is == @multipleAttribute then
+        oneIsMultiple = true
+      elsif defaultValue is == @multipleAttribute then
+        oneIsMultiple = true
+      end
+
+      if oneIsMultiple then
+        # We have to append the previous default value list to the current.
+        # message "Adding element to " + [[previousType name] string] + "\n"
+        @identifierList aList = .emptyList
+        @lstring desc = emptyLString()
+        @location location = .nowhere
+
+        # Previous list first
+        cast previousDefaultValue
+        case == @multipleAttribute multiAttribute :
+          aList = [multiAttribute items]
+          desc = [multiAttribute oil_desc]
+          location = [multiAttribute location]
+        else end
+
+        # Then append the second
+        cast defaultValue
+        case == @multipleAttribute multiAttribute :
+          aList += [multiAttribute items]
+          if [desc string] == "" then
+            desc = [multiAttribute oil_desc]
+          end
+          if location == .nowhere then
+            location = [multiAttribute location]
+          end
+        else end
+
+        # Create the new default value
+        @object_t newDefault = @multipleAttribute.new{!desc !location !aList}
+
+        # Replace the previous type
+        [!?type setDefaultValue !newDefault]
+
+        [!?objectAttributes del !attributeName ?*]
+        [!?objectAttributes put !attributeName !type]
+      end
+    end
 
     if checkNewTypeWithinPreviousType(!attributeName !previousType !type) then
-#      message "*** OK "+[attributeName string]+"\n";
-#      log type;
+      #      message "*** OK "+[attributeName string]+"\n";
+      #      log type;
       [!?objectAttributes del !attributeName ?*]
       [!?objectAttributes put !attributeName !type]
     end

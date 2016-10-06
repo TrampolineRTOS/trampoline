@@ -874,6 +874,18 @@ void routine_arxmlImplementationContainerStructure (class GALGAS_lstring & outAr
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
+//                                        Routine 'arxmlInsertObjectAttribute'                                         *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+void routine_arxmlInsertObjectAttribute (class GALGAS_implementationObjectMap & ioArgument0,
+                                         class GALGAS_lstring inArgument1,
+                                         class GALGAS_impType inArgument2,
+                                         class C_Compiler * inCompiler
+                                         COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //                                               Routine 'arxmlGetName'                                                *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -958,19 +970,6 @@ void routine_oilEquivalentName (class GALGAS_lstring inArgument0,
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//                                          Routine 'testObjectMultiplicity'                                           *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-void routine_testObjectMultiplicity (class GALGAS_objectsMap & ioArgument0,
-                                     class GALGAS_lstring inArgument1,
-                                     class GALGAS_implementationObject inArgument2,
-                                     class GALGAS_objectKind & ioArgument3,
-                                     class C_Compiler * inCompiler
-                                     COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
 //                                         Routine 'arxmlDefinitionParameter'                                          *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
@@ -992,17 +991,5 @@ void routine_testTypeError (class GALGAS_dataType inArgument0,
                             class GALGAS_lstring inArgument1,
                             class C_Compiler * inCompiler
                             COMMA_LOCATION_ARGS) ;
-
-//---------------------------------------------------------------------------------------------------------------------*
-//                                                                                                                     *
-//                                        Routine 'arxmlInsertObjectAttribute'                                         *
-//                                                                                                                     *
-//---------------------------------------------------------------------------------------------------------------------*
-
-void routine_arxmlInsertObjectAttribute (class GALGAS_implementationObjectMap & ioArgument0,
-                                         class GALGAS_lstring inArgument1,
-                                         class GALGAS_impType inArgument2,
-                                         class C_Compiler * inCompiler
-                                         COMMA_LOCATION_ARGS) ;
 
 #endif
