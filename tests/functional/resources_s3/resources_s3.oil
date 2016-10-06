@@ -38,7 +38,6 @@ OIL_VERSION = "2.5" : "resources_s3";
 
 IMPLEMENTATION trampoline {
   TASK {
-    UINT32 STACKSIZE = 32768;
     UINT32 [1..10] PRIORITY = 1;
   };
 };

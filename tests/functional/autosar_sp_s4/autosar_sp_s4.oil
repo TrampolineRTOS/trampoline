@@ -43,7 +43,6 @@ IMPLEMENTATION trampoline {
   };
  
   TASK {
-    UINT32 STACKSIZE = 32768;
     UINT32 [1..10] PRIORITY = 1;
   };
 };
@@ -79,7 +78,6 @@ CPU test {
     CATEGORY = 2;
     SOURCE = SIGTERM;
     PRIORITY = 1;
-    STACKSIZE = 32768;
     RESOURCE = Resource1;
     RESOURCE = Resource2;
   };
@@ -87,7 +85,6 @@ CPU test {
     CATEGORY = 2;
     SOURCE = SIGUSR2;
     PRIORITY = 2;
-    STACKSIZE = 32768;
     RESOURCE = Resource1;
     RESOURCE = Resource2;
   };
@@ -95,7 +92,6 @@ CPU test {
     CATEGORY = 2;
     SOURCE = SIGPIPE;
     PRIORITY = 3;
-    STACKSIZE = 32768;
   };
   RESOURCE Resource1 {
     RESOURCEPROPERTY = STANDARD;

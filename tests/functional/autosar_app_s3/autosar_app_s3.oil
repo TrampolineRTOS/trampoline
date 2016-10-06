@@ -43,7 +43,6 @@ IMPLEMENTATION trampoline {
   };
  
   TASK {
-    UINT32 STACKSIZE = 32768;
     UINT32 [1..10] PRIORITY = 1;
   };
 };
@@ -82,7 +81,6 @@ CPU test {
     CATEGORY = 2;
     PRIORITY = 1;
     SOURCE = SIGTERM;
-    STACKSIZE = 32768;
   };  
  
   COUNTER Software_Counter {

@@ -43,7 +43,6 @@ IMPLEMENTATION trampoline {
   };
  
   TASK {
-    UINT32 STACKSIZE = 32768 ;
     UINT32 [1..10] PRIORITY = 1 ;
   };
 };
@@ -81,7 +80,6 @@ CPU test {
 
   ISR isr1 {
     CATEGORY = 2;
-    STACKSIZE = 32768;
     PRIORITY = 1;
     SOURCE = SIGTERM;
   };

@@ -38,7 +38,6 @@ OIL_VERSION = "2.5" : "tasks_s14";
 
 IMPLEMENTATION trampoline {
   TASK {
-    UINT32 STACKSIZE = 32768;
     UINT32 [1..16] PRIORITY = 1;
   };
 };

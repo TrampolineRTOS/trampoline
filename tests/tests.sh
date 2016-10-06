@@ -93,10 +93,6 @@ TPL_GOILV2_TEMPLATES_DIR="$TPL_DIR/goilv2/templates"
 FUNCTIONAL_DIR="$SCRIPT_DIR/functional"
 # Output results file
 FUNCTIONAL_RESULTS="$SCRIPT_DIR/functional_results.log"
-# Expected results. The file functional_results_expected.log in the target's
-# arch directory is prioritized if it exists.
-DEFAULT_FUNCTIONAL_RESULTS_EXPECTED="$FUNCTIONAL_DIR/functional_results_expected.log"
-FUNCTIONAL_RESULTS_EXPECTED=
 # Tests to make. The file functional_testSequence.txt in the target's
 # arch directory is prioritized if it exists.
 DEFAULT_FUNCTIONAL_TEST_SEQUENCE="$FUNCTIONAL_DIR/functional_testSequences.txt"
@@ -175,24 +171,6 @@ print_help()
 }
 
 # ----------------------------------------------------------------------------
-# functional_test_check_success
-#
-# Check the successfulness of the functional tests.
-functional_test_check_success()
-{
-  echo "Comparing : $FUNCTIONAL_RESULTS"
-  echo "With      : $FUNCTIONAL_RESULTS_EXPECTED"
-  differences=$(diff -y $FUNCTIONAL_RESULTS_EXPECTED $FUNCTIONAL_RESULTS | wc -l)
-  if [ $differences -eq 0 ]
-  then
-    echo "Functional tests Succeed!!"
-  else
-    echo "Functional tests FAILED with $differences differences..."
-    echo "Results are stored in $FUNCTIONAL_RESULTS"
-  fi
-}
-
-# ----------------------------------------------------------------------------
 # goil_test_check_success
 #
 # Check the successfulness of the goil tests.
@@ -234,12 +212,15 @@ functional_test()
     exit 1
   fi
 
-  total_tests=$(cat $FUNCTIONAL_TEST_SEQUENCE | grep "^\s*[^# ]")
-  total_tests_count=$(echo "$total_tests" | wc -l)
-  current_tests_count=0
+  tests_list=$(cat $FUNCTIONAL_TEST_SEQUENCE | grep "^\s*[^# ]")
+  total_tests_count=$(echo "$tests_list" | wc -l)
+  total_failed_tests=0
+  failed_tests_list=""
 
+  echo "===================================================================="
+  echo "= Begin functional tests"
   # Build and execute all the tests
-  for i in $total_tests
+  for i in $tests_list
   do
     TEST_DIR="$FUNCTIONAL_DIR/${i}"
     current_tests_count=$(($current_tests_count + 1))
@@ -281,7 +262,9 @@ functional_test()
       err=$(arch_compile $TEST_DIR 2>&1)
     else
       echo "$err" | tee -a $FUNCTIONAL_RESULTS
-      echo "...\nfailure during Goil Generation.\n" | tee -a $FUNCTIONAL_RESULTS
+      echo "  failure during Goil Generation.\n" | tee -a $FUNCTIONAL_RESULTS
+      total_failed_tests=$(($total_failed_tests + 1))
+      failed_tests_list="$failed_tests_list\n$i"
       continue
     fi
 
@@ -289,10 +272,13 @@ functional_test()
     # TODO : Get execution's retval
     if [ -e ${i}_exe ]
     then
-      arch_execute ./${i}_exe >> $FUNCTIONAL_RESULTS
+      output=$(arch_execute ./${i}_exe)
+      retval=$?
     else
       echo "$err" | tee -a $FUNCTIONAL_RESULTS
-      echo "...\nfailure during Compilation.\n" | tee -a $FUNCTIONAL_RESULTS
+      echo "  failure during Compilation.\n" | tee -a $FUNCTIONAL_RESULTS
+      total_failed_tests=$(($total_failed_tests + 1))
+      failed_tests_list="$failed_tests_list\n$i"
       continue
     fi
 
@@ -300,14 +286,37 @@ functional_test()
     # case of segmentation faults in posix for instance)
     if [ $? -ne 0 ]
     then
-      echo "...\nfailure during Execution.\n" | tee -a $FUNCTIONAL_RESULTS
+      echo "  failure during Execution : Retval != 0" | tee -a $FUNCTIONAL_RESULTS
+      total_failed_tests=$(($total_failed_tests + 1))
+      failed_tests_list="$failed_tests_list\n$i"
       continue
     fi
 
-    cd $SCRIPT_DIR
+    # Compare results with expected ones
+    if [ ! -e $TEST_DIR/expected.txt ]; then
+      echo "  failure : missing test's expected results" | tee -a $FUNCTIONAL_RESULTS
+      total_failed_tests=$(($total_failed_tests + 1))
+      failed_tests_list="$failed_tests_list\n$i"
+      continue
+    fi
+    expected=$(cat $TEST_DIR/expected.txt)
+    if [ "$expected" != "$output" ]; then
+      echo "  failure during Execution : Bad results" | tee -a $FUNCTIONAL_RESULTS
+      echo "$output" | tee -a $FUNCTIONAL_RESULTS
+      total_failed_tests=$(($total_failed_tests + 1))
+      failed_tests_list="$failed_tests_list\n$i"
+      continue
+    fi
 
+    # Test succeded !
   done
-  echo "Functional tests done."
+  cd $SCRIPT_DIR
+
+  echo "===================================================================="
+  echo "= Functional tests results"
+  echo "= Log file : $FUNCTIONAL_RESULTS"
+  echo "= Total failed tests : $total_failed_tests"
+  echo "= Failed tests : $failed_tests_list"
 }
 
 # ----------------------------------------------------------------------------
@@ -318,12 +327,14 @@ goil_test()
   # Create an empty log file
   > $GOIL_RESULTS
 
-  total_tests=$(cat $GOIL_TEST_SEQUENCE | grep "^\s*[^# ]")
-  total_tests_count=$(echo "$total_tests" | wc -l)
+  tests_list=$(cat $GOIL_TEST_SEQUENCE | grep "^\s*[^# ]")
+  total_tests_count=$(echo "$tests_list" | wc -l)
   current_tests_count=0
 
+  echo "===================================================================="
+  echo "= Begin goil tests"
   # Build and execute all the tests
-  for i in $total_tests
+  for i in $tests_list
   do
     TEST_DIR="$GOIL_DIR/${i}"
     current_tests_count=$(($current_tests_count + 1))
@@ -472,7 +483,6 @@ if [ $test_goil -eq 1 ] || [ $test_functional -eq 1 ]; then
   EMBUNIT_ARCH_SOURCE=$ARCH_DIR/ArchEmb.c
   # If the following files don't exist, the default files will be considered
   FUNCTIONAL_TEST_SEQUENCE=$ARCH_DIR/functional_testSequences.txt
-  FUNCTIONAL_RESULTS_EXPECTED=$ARCH_DIR/functional_results_expected.log
   GOIL_TEST_SEQUENCE=$ARCH_DIR/GOIL_testSequences.txt
   GOIL_RESULTS_EXPECTED=$ARCH_DIR/GOIL_results_expected.log
 
@@ -497,9 +507,8 @@ if [ $test_goil -eq 1 ] || [ $test_functional -eq 1 ]; then
     GOIL_TEST_SEQUENCE=$DEFAULT_GOIL_TEST_SEQUENCE
     GOIL_RESULTS_EXPECTED=$DEFAULT_GOIL_RESULTS_EXPECTED
   fi
-  if [ ! -e $FUNCTIONAL_TEST_SEQUENCE ] || [ ! -e $FUNCTIONAL_RESULTS_EXPECTED ]; then
+  if [ ! -e $FUNCTIONAL_TEST_SEQUENCE ] ; then
     FUNCTIONAL_TEST_SEQUENCE=$DEFAULT_FUNCTIONAL_TEST_SEQUENCE
-    FUNCTIONAL_RESULTS_EXPECTED=$DEFAULT_FUNCTIONAL_RESULTS_EXPECTED
   fi
 
   # Set the previous target's variable
@@ -508,14 +517,14 @@ if [ $test_goil -eq 1 ] || [ $test_functional -eq 1 ]; then
   ## Run requested tests
   if [ $test_goil -eq 1 ] ; then
     echo "===================================================================="
-    echo "= Begin goil tests on target $target"
+    echo "= Goil tests on target $target"
     echo "= Arch directory : $ARCH_DIR"
     echo "= Test sequence : $GOIL_TEST_SEQUENCE"
     goil_test
   fi
   if [ $test_functional -eq 1 ] ; then
     echo "===================================================================="
-    echo "= Begin functional tests on target $target"
+    echo "= Functional tests on target $target"
     echo "= Arch directory : $ARCH_DIR"
     echo "= Test sequence : $FUNCTIONAL_TEST_SEQUENCE"
     functional_test
@@ -526,11 +535,6 @@ if [ $test_goil -eq 1 ] || [ $test_functional -eq 1 ]; then
     echo "===================================================================="
     echo "= Comparing results with the expected ones : GOIL tests"
     goil_test_check_success
-  fi
-  if [ $test_functional -eq 1 ] ; then
-    echo "===================================================================="
-    echo "= Comparing results with the expected ones : FUNCTIONAL tests"
-    functional_test_check_success
   fi
 fi
 
