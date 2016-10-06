@@ -3,6 +3,7 @@
 let pathList := @()
 let pathList += "../../".PROJECT
 let pathList += "../../".OS::BUILD_S::TRAMPOLINE_BASE_PATH."/os"
+let pathList += "../../".OS::BUILD_S::TRAMPOLINE_BASE_PATH."/com"
 let pathList += "../../".OS::BUILD_S::TRAMPOLINE_BASE_PATH."/ioc"
 let pathList += "../../".OS::BUILD_S::TRAMPOLINE_BASE_PATH."/debug"
 let partialTargetPath := ""
