@@ -27,22 +27,18 @@ CPU only_one_periodic_task {
     };
   };
   
-  APPMODE while {};
-  
-  COUNTER SystemCounter {
-    MAXALLOWEDVALUE = 3;
-  };
+  APPMODE stdAppmode {};
   
   ALARM one_second {
     COUNTER = SystemCounter;
     ACTION = ACTIVATETASK { TASK = my_periodic_task; };
-    AUTOSTART = TRUE { APPMODE = while; ALARMTIME = 100; CYCLETIME = 100; };
+    AUTOSTART = TRUE { APPMODE = stdAppmode; ALARMTIME = 100; CYCLETIME = 100; };
   };
   
   ALARM stopper {
     COUNTER = SystemCounter;
     ACTION = ACTIVATETASK { TASK = stop; };
-    AUTOSTART = TRUE { APPMODE = while; ALARMTIME = 1000; CYCLETIME = 0; };
+    AUTOSTART = TRUE { APPMODE = stdAppmode; ALARMTIME = 1000; CYCLETIME = 0; };
   };
     
   TASK my_periodic_task {
