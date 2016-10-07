@@ -80,7 +80,7 @@ void C_DirectedGraph::removeNode (const uint32_t inNodeIndex) {
   if (inNodeIndex < (uint32_t) mEdges.count ()) {
     mNodes.remove (inNodeIndex) ;
     const C_UIntSet targetSet = mEdges ((int32_t) inNodeIndex COMMA_HERE) ;
-    TC_Array <uint32_t> targetList ; targetSet.getValueArray (targetList) ;
+    TC_UniqueArray <uint32_t> targetList ; targetSet.getValueArray (targetList) ;
     for (int32_t i=0 ; i<targetList.count () ; i++) {
       const uint32_t targetIndex = targetList (i COMMA_HERE) ;
       mReverseEdges ((int32_t) targetIndex COMMA_HERE).remove (inNodeIndex) ;
@@ -151,7 +151,7 @@ C_String C_DirectedGraph::graphvizString (const TC_UniqueArray <C_String> & inNo
     if (isNodeDefined ((uint32_t) i)) {
       s << "  \"" << inNodeNameArray (i COMMA_HERE) << "\" [shape=rectangle] ;\n" ;
       const C_UIntSet targetSet = mEdges (i COMMA_HERE) ;
-      TC_Array <uint32_t> targetList ; targetSet.getValueArray (targetList) ;
+      TC_UniqueArray <uint32_t> targetList ; targetSet.getValueArray (targetList) ;
       for (int32_t j=0 ; j<targetList.count () ; j++) {
         const uint32_t targetIndex = targetList (j COMMA_HERE) ;
         s << "  \"" << inNodeNameArray (i COMMA_HERE) << "\" -> \"" << inNodeNameArray ((int32_t) targetIndex COMMA_HERE) << "\" ;\n" ;

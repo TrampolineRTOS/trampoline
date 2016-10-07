@@ -26,7 +26,7 @@
 //---------------------------------------------------------------------------------------------------------------------*
 
 #include "utilities/M_SourceLocation.h"
-#include "collections/TC_Array.h"
+#include "collections/TC_UniqueArray.h"
 #include "utilities/M_machine.h"
 #include "streams/C_ConsoleOut.h"
 #include "utilities/C_Data.h"

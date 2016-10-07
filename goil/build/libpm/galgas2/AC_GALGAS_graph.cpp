@@ -1032,8 +1032,7 @@ GALGAS_stringlist AC_GALGAS_graph::getter_undefinedNodeKeyList (LOCATION_ARGS) c
 
 void cSharedGraph::internalFindCircularities (cSharedList * & outInfoList,
                                               GALGAS_lstringlist & outNodeKeyList) const {
-  TC_UniqueArray <uint32_t> nodeArray ;
-  mDirectedGraph.getNodesInvolvedInCircularities (nodeArray) ;
+  TC_UniqueArray <uint32_t> nodeArray ; mDirectedGraph.getNodesInvolvedInCircularities (nodeArray) ;
 //--- Add nodes
   AC_GALGAS_list::makeNewSharedList (outInfoList COMMA_HERE) ;
   outNodeKeyList = GALGAS_lstringlist::constructor_emptyList (HERE) ;
@@ -1069,8 +1068,7 @@ void AC_GALGAS_graph::internalFindCircularities (cSharedList * & outInfoList,
 
 void cSharedGraph::internalNodesWithNoPredecessor (cSharedList * & outInfoList,
                                                    GALGAS_lstringlist & outNodeKeyList) const {
-  TC_UniqueArray <uint32_t> nodeArray ;
-  mDirectedGraph.getNodesWithNoPredecessor (nodeArray) ;
+  TC_UniqueArray <uint32_t> nodeArray ; mDirectedGraph.getNodesWithNoPredecessor (nodeArray) ;
 //--- Add nodes
   AC_GALGAS_list::makeNewSharedList (outInfoList COMMA_HERE) ;
   outNodeKeyList = GALGAS_lstringlist::constructor_emptyList (HERE) ;
@@ -1106,8 +1104,7 @@ void AC_GALGAS_graph::internalNodesWithNoPredecessor (cSharedList * & outInfoLis
 
 void cSharedGraph::internalNodesWithNoSuccessor (cSharedList * & outInfoList,
                                                  GALGAS_lstringlist & outNodeKeyList) const {
-  TC_UniqueArray <uint32_t> nodeArray ;
-  mDirectedGraph.getNodesWithNoSuccessor (nodeArray) ;
+  TC_UniqueArray <uint32_t> nodeArray ; mDirectedGraph.getNodesWithNoSuccessor (nodeArray) ;
 //--- Add nodes
   AC_GALGAS_list::makeNewSharedList (outInfoList COMMA_HERE) ;
   outNodeKeyList = GALGAS_lstringlist::constructor_emptyList (HERE) ;
@@ -1365,8 +1362,7 @@ void AC_GALGAS_graph::setter_removeEdgesToDominators (LOCATION_ARGS) {
 
 void cSharedGraph::removeEdgesToDominators (LOCATION_ARGS) {
 //--- Find start nodes
-  TC_UniqueArray <uint32_t> startNodes ;
-  mDirectedGraph.getNodesWithNoPredecessor (startNodes) ;
+  TC_UniqueArray <uint32_t> startNodes ; mDirectedGraph.getNodesWithNoPredecessor (startNodes) ;
 //--- Add a dummy start node for handling case where there several start nodes
   const uint32_t dummyNodeIndex = mDirectedGraph.unusedNodeIndex () ;
 //--- Add edges from dummy node to start nodes

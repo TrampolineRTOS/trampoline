@@ -1204,7 +1204,7 @@ void C_String::convertToUInt32 (uint32_t & outResult,
     idx ++ ;
     const uint32_t r = outResult ;
     outResult = outResult * 10 + (UNICODE_VALUE (c) - '0') ;
-    outOk = r <= outResult ;
+    outOk = (UNICODE_VALUE (c) >= '0') && (UNICODE_VALUE (c) <= '9') && (r <= outResult) ;
   }
   if (outOk) {
     outOk = idx == length () ;
@@ -1223,7 +1223,7 @@ void C_String::convertToUInt64 (uint64_t & outResult,
     idx ++ ;
     const uint64_t r = outResult ;
     outResult = outResult * 10 + (UNICODE_VALUE (c) - '0') ;
-    outOk = r <= outResult ;
+    outOk = (UNICODE_VALUE (c) >= '0') && (UNICODE_VALUE (c) <= '9') && (r <= outResult) ;
   }
   if (outOk) {
     outOk = idx == length () ;
