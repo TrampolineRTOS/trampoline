@@ -49,7 +49,7 @@ CONST(tpl_system_call, OS_CONST) tpl_dispatch_table[SYSCALL_COUNT] = {
 %
 
 foreach api_func in listOfApiFunc do
-%    (tpl_system_call) % !api_func::KERNEL 
+%    (tpl_system_call) % !api_func::KERNEL
   between %,
 %
 end foreach
@@ -64,14 +64,10 @@ if OS::NUMBER_OF_CORES > 1 then%
 CONST(tpl_bool, OS_CONST) tpl_service_lock_kernel[SYSCALL_COUNT] = {
 %
 let api_func_name := ""
-foreach api_sec in APIUSED do
-  foreach api_func in api_sec::SYSCALL do
-    let api_func_name := api_func::NAME
-    let lock_kernel := exists api_func::LOCK_KERNEL default (true)
+foreach api_func in listOfApiFunc do
+  let api_func_name := api_func::NAME
+  let lock_kernel := exists api_func::LOCK_KERNEL default (true)
 %    (tpl_bool) % !TRUEFALSE(lock_kernel) %%
-  between %,    /* % !api_func_name % */
-%
-  end foreach
   between %,    /* % !api_func_name % */
 % after   %     /* % !api_func_name % */%
 end foreach
