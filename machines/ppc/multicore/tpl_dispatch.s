@@ -88,16 +88,18 @@ TPL_SIZE(TPL_GLOBAL_REF(tpl_reentrancy_counter),(NUMBER_OF_CORES*4))
  */
 TPL_GLOBAL_REF(tpl_enter_kernel_sc):
 
+  se_mtar   r11,r5
+  se_mtar   r12,r6
 #if WITH_MEMORY_PROTECTION == YES
   /*
    * Switch to kernel mem protection scheme
    */
   se_subi   r1,4
-  mflr      r11
-  e_stw     r11,0(r1)      /* save lr on the current stack */
+  mflr      r5
+  se_stw    r5,0(r1)      /* save lr on the current stack */
   e_bl      TPL_EXTERN_REF(tpl_kernel_mp)  /* disable memory protection    */
-  e_lwz     r11,0(r1)      /* restore lr                   */
-  mtlr      r11
+  se_lwz    r5,0(r1)      /* restore lr                   */
+  mtlr      r5
   se_addi   r1,4
 #endif
 
@@ -105,8 +107,6 @@ TPL_GLOBAL_REF(tpl_enter_kernel_sc):
    * if the value is 0 before the inc, then we switch to
    * the system stack.
    */
-  se_mtar   r11,r5
-  se_mtar   r12,r6
   mfspr     r6,spr_PIR
   se_slwi   r6,2
   e_lis     r5,TPL_HIG(TPL_GLOBAL_REF(tpl_reentrancy_counter))
@@ -123,11 +123,11 @@ TPL_GLOBAL_REF(tpl_enter_kernel_sc):
    * Switch to the kernel stack
    */
   mfspr     r6,spr_PIR
-  e_slwi    r6,r6,2
+  se_slwi   r6,2
   e_lis     r5,TPL_HIG(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* get the kernel   */
   e_add16i  r5,TPL_LOW(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* stack bottom ptr */
   se_add    r5,r6
-  e_lwz     r5,0(r5)
+  se_lwz    r5,0(r5)
   e_stw     r1,KS_SP-KS_FOOTPRINT(r5)  /*  save the sp of the caller     */
   se_mr     r1,r5                      /*  set the kernel stack          */
 
@@ -144,14 +144,11 @@ no_stack_change_sc:
   mfsrr1    r5
   e_stw     r5,KS_SRR1(r1)
 
-  se_mfar   r5,r11
-  se_mfar   r6,r12
-
 #if WITH_MULTICORE == YES
   e_lis     r5,TPL_HIG(TPL_EXTERN_REF(tpl_service_lock_kernel))
   e_add16i  r5,TPL_LOW(TPL_EXTERN_REF(tpl_service_lock_kernel))
   se_add    r5,r0
-  e_lbz     r5,0(r5)
+  se_lbz    r5,0(r5)
   se_cmpi   r5,1
   se_bne    dontlock
 
@@ -160,18 +157,20 @@ no_stack_change_sc:
    * the call. If the kernel is already locked by this core, the call does
    * nothing.
    */
-  mflr      r11
-  e_stw     r11,KS_LR(r1)
+  mflr      r5
+  e_stw     r5,KS_LR(r1)
 
   /* Lock the kernel, this call is blocking */
   e_bl      TPL_EXTERN_REF(tpl_get_kernel_lock)
 
   /* Restore LR */
-  e_lwz     r11,KS_LR(r1)
-  mtlr      r11
+  e_lwz     r5,KS_LR(r1)
+  mtlr      r5
 dontlock :
 #endif
 
+  se_mfar   r5,r11
+  se_mfar   r6,r12
   se_blr
 
   FUNCTION(TPL_GLOBAL_REF(tpl_enter_kernel_sc))
@@ -189,16 +188,18 @@ TPL_SIZE(TPL_GLOBAL_REF(tpl_enter_kernel_sc),$-TPL_GLOBAL_REF(tpl_enter_kernel_s
  */
 TPL_GLOBAL_REF(tpl_enter_kernel):
 
+  se_mtar   r11,r5
+  se_mtar   r12,r6
 #if WITH_MEMORY_PROTECTION == YES
   /*
    * Switch to kernel mem protection scheme
    */
   se_subi   r1,4
-  mflr      r11
-  e_stw     r11,0(r1)      /* save lr on the current stack */
+  mflr      r5
+  se_stw    r5,0(r1)      /* save lr on the current stack */
   e_bl      TPL_EXTERN_REF(tpl_kernel_mp)  /* disable memory protection    */
-  e_lwz     r11,0(r1)      /* restore lr                   */
-  mtlr      r11
+  se_lwz    r5,0(r1)      /* restore lr                   */
+  mtlr      r5
   se_addi   r1,4
 #endif
 
@@ -206,17 +207,15 @@ TPL_GLOBAL_REF(tpl_enter_kernel):
    * if the value is 0 before the inc, then we switch to
    * the system stack.
    */
-  se_mtar   r11,r5
-  se_mtar   r12,r6
   mfspr     r6,spr_PIR
-  e_slwi    r6,r6,2
+  se_slwi   r6,2
   e_lis     r5,TPL_HIG(TPL_GLOBAL_REF(tpl_reentrancy_counter))
   e_add16i  r5,TPL_LOW(TPL_GLOBAL_REF(tpl_reentrancy_counter))
   se_add    r5,r6
   se_lwz    r6,0(r5)  /*  get the value of the counter */
-  e_cmp16i  r6,0
-  e_addi    r6,r6,1
-  e_stw     r6,0(r5)
+  se_cmpi   r6,0
+  se_addi   r6,1
+  se_stw    r6,0(r5)
 
   e_bne     no_stack_change
 
@@ -224,7 +223,7 @@ TPL_GLOBAL_REF(tpl_enter_kernel):
    * Switch to the kernel stack
    */
   mfspr     r6,spr_PIR
-  e_slwi    r6,r6,2
+  se_slwi   r6,2
   e_lis     r5,TPL_HIG(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* get the kernel   */
   e_add16i  r5,TPL_LOW(TPL_EXTERN_REF(tpl_kernel_stack_bottom))      /* stack bottom ptr */
   se_add    r5,r6
@@ -300,14 +299,14 @@ TPL_GLOBAL_REF(tpl_leave_kernel):
   se_mtar   r11,r5
   se_mtar   r12,r6
   mfspr     r6,spr_PIR
-  e_slwi    r6,r6,2
+  se_slwi   r6,2
   e_lis     r5,TPL_HIG(TPL_GLOBAL_REF(tpl_reentrancy_counter))
   e_add16i  r5,TPL_LOW(TPL_GLOBAL_REF(tpl_reentrancy_counter))
   se_add    r5,r6
-  e_lwz     r6,0(r5)     /*  get the value of the counter */
-  e_subi    r6,r6,1
-  e_stw     r6,0(r5)
-  e_cmp16i  r6,0
+  se_lwz    r6,0(r5)     /*  get the value of the counter */
+  se_subi   r6,1
+  se_stw    r6,0(r5)
+  se_cmpi   r6,0
   e_bne     no_stack_restore
 
   /*  Restore the execution context of the caller
@@ -320,24 +319,23 @@ TPL_GLOBAL_REF(tpl_leave_kernel):
    * Switch to user mem protection scheme
    */
   se_subi   r1,4
-  mflr      r11
-  e_stw     r11,0(r1)
+  mflr      r5
+  se_stw    r5,0(r1)
   e_bl      TPL_EXTERN_REF(tpl_user_mp)
-  e_lwz     r11,0(r1)
-  mtlr      r11
+  se_lwz    r5,0(r1)
+  mtlr      r5
   se_addi   r1,4
 #endif
 
 #if WITH_MULTICORE == YES
   /* Unlock the kernel, we must save LR in the stack before the call */
-  mflr      r11
-  e_stw     r11,KS_LR(r1)
-
+  se_subi   r1,4
+  mflr      r5
+  se_stw    r5,0(r1)
   e_bl      TPL_EXTERN_REF(tpl_release_kernel_lock)
-
-  /* Restore LR */
-  e_lwz     r11,KS_LR(r1)
-  mtlr      r11
+  se_lwz    r5,0(r1)
+  mtlr      r5
+  se_addi   r1,4
 #endif
 
 no_stack_restore:
