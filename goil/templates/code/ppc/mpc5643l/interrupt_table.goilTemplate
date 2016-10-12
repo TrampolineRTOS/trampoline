@@ -108,11 +108,13 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
   end foreach
 
   let used_watchdogs := @( )
-  foreach watchdog in OS::TIMINGPROTECTION_WATCHDOG do
-    if watchdog::CORE == core_id then
-      let used_watchdogs[watchdog::NAME] := watchdog
-    end if
-  end foreach
+  if OS::TIMINGPROTECTION then
+    foreach watchdog in OS::TIMINGPROTECTION_WATCHDOG do
+      if watchdog::CORE == core_id then
+        let used_watchdogs[watchdog::NAME] := watchdog
+      end if
+    end foreach
+  end if
 
   if OS::NUMBER_OF_CORES == 1 then
 %
@@ -285,7 +287,7 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
   end foreach
 end loop
 
-if watchdog_sources != @[] then
+if watchdog_sources != @[] & OS::TIMINGPROTECTION then
 
   loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
     if exists watchdog_sources[[core_id string]] then

@@ -33,15 +33,40 @@ let INTERCORE_INTERRUPT := exists INTERCORE_INTERRUPT default (@( ))
 /*=============================================================================
  * External interrupts configuration structures
  */
-% let IRQ_MAX_PRIO := 15%
+%
+let ISR_MAX_PRIO := 15
+let TICK_PRIO := 0
+let WDT_PRIO := 0
+let INTERCORE_PRIO := 0
+
+# Timing protection has highest priority
+if OS::TIMINGPROTECTION then
+  let WDT_PRIO := ISR_MAX_PRIO
+  let ISR_MAX_PRIO := ISR_MAX_PRIO - 1
+end if
+
+# Tick timers
+if [COUNTERS length] > 0 then
+  let TICK_PRIO := ISR_MAX_PRIO
+  let ISR_MAX_PRIO := ISR_MAX_PRIO - 1
+end if
+
+# Intercore
+if OS::NUMBER_OF_CORES > 1 then
+  let INTERCORE_PRIO := ISR_MAX_PRIO
+  let ISR_MAX_PRIO := ISR_MAX_PRIO - 1
+end if
+
+# ISRS will take the remaining priorities
+
+%
 /*-----------------------------------------------------------------------------
- *  IRQ priorities : - Ticks/WDT (highest priority) : % !IRQ_MAX_PRIO %
- *                   - Intercore                    : % !IRQ_MAX_PRIO - 1 %
- *                   - ISRS                         : [1, % !IRQ_MAX_PRIO - 2 %]
+ *  IRQ priorities : - Ticks                        : % !TICK_PRIO %
+ *                   - Watchdog                     : % !WDT_PRIO %
+ *                   - Intercore                    : % !INTERCORE_PRIO %
+ *                   - ISRS                         : [1, % !ISR_MAX_PRIO %]
  *                   - Unused                       : 0
  */
-#define IRQ_MAX_PRIO   % !IRQ_MAX_PRIO %
-#define IRQ_UNUSED     0
 %
 ###############################################################################
 #   tpl_init_isr_prio
@@ -100,14 +125,25 @@ sort sorted_isrs by PRIORITY <
 foreach isr in sorted_isrs do
   let interrupt := interrupt_map[isr::SOURCE]
   let prio := INDEX + 1
-  if prio > (IRQ_MAX_PRIO - 2) then
-    let prio := IRQ_MAX_PRIO
+  if prio > (ISR_MAX_PRIO - 2) then
+    let prio := ISR_MAX_PRIO
   end if
 %  TPL_INTC(%!core_id%).PSR[% !interrupt::ID %] = % !prio %; /* % !isr::SOURCE % */
 %
 end foreach
 %
-  /* Tick Counters have the maximum priority */
+  /* Timing protection watchdog */
+%
+  foreach watchdog in OS::TIMINGPROTECTION_WATCHDOG do
+    if watchdog::CORE == core_id then
+      let interrupt := interrupt_map[watchdog::SOURCE]
+      let watchdog_sources[[core_id string]] := watchdog::SOURCE
+%  TPL_INTC(%!core_id%).PSR[% !interrupt::ID %] = % !WDT_PRIO %; /* % !watchdog::NAME % */
+%
+    end if
+  end foreach
+%
+  /* Tick Counters */
 %
   let counter_map   := mapof COUNTER by NAME
 
@@ -118,13 +154,12 @@ end foreach
         if counter::SOURCE != "decrementer"
          & counter::TYPE == "HARDWARE" then
           let interrupt := interrupt_map[counter::SOURCE]
-%  TPL_INTC(%!core_id%).PSR[% !interrupt::ID %] = % !IRQ_MAX_PRIO %; /* % !counter::NAME % */
+%  TPL_INTC(%!core_id%).PSR[% !interrupt::ID %] = % !TICK_PRIO %; /* % !counter::NAME % */
 %
         end if
       end foreach
     end if
   end foreach
-
 %
   /* Intercore interrupts
    * Tick handlers do the rescheduling and ack intercores if needed, so we're
@@ -133,7 +168,7 @@ end foreach
 %
   foreach intercore_it in INTERCORE_INTERRUPT do
     if intercore_it::CORE == core_id then
-    %  TPL_INTC(%!core_id%).PSR[% !interrupt_map[intercore_it::SOURCE]::ID %] = % !IRQ_MAX_PRIO - 1%; /* % !intercore_it::NAME % */
+    %  TPL_INTC(%!core_id%).PSR[% !interrupt_map[intercore_it::SOURCE]::ID %] = % !INTERCORE_PRIO%; /* % !intercore_it::NAME % */
 %
     end if
   end foreach
