@@ -129,7 +129,7 @@ FUNC(void, OS_CODE) tpl_start_core_service(
   /* BEGIN_START_CORE_CRITICAL_SECTION() */
 
   CHECK_START_CORE_ERROR(core_id, result)
-  CHECK_OS_NOT_STARTED(tpl_get_core_id(), result)
+  CHECK_STARTCORE_OS_NOT_STARTED(tpl_get_core_id(), result)
 
   IF_NO_EXTENDED_ERROR(result)
   {

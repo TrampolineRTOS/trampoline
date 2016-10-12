@@ -1435,6 +1435,26 @@ tpl_service.parameters.id.spinlock_id = (spinlockid);
 #endif
 
 /**
+ * @def CHECK_STARTCORE_OS_NOT_STARTED
+ *
+ * Checks if the operating system is not started already.
+ *
+ * @param result error code to set if check fails
+ *
+ * @note error code is not set if it does not equal E_OK
+ */
+#if (WITH_OS_EXTENDED == YES)
+#  define CHECK_STARTCORE_OS_NOT_STARTED(a_core_id, result)               \
+    if ((result == (tpl_status)E_OK) &&                                   \
+        (tpl_current_os_state(CORE_ID_OR_NOTHING(a_core_id)) != OS_INIT)) \
+    {                                                          \
+       result = (tpl_status)E_OS_ACCESS;                       \
+    }
+#else
+#  define CHECK_STARTCORE_OS_NOT_STARTED(core_id, result)
+#endif
+
+/**
  * @def CHECK_RESOURCE_ID_ERROR
  *
  * Checks if the resouce identifier (#ResourceType) is valid.
