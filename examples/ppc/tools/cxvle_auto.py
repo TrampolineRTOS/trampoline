@@ -55,7 +55,6 @@ def c_call(args) :
     command = C_COMMAND + " " + C_CONST_FLAGS
 
     if args.gcc :
-        gcc_call(args)
         return
 
     # Verbose
@@ -66,6 +65,11 @@ def c_call(args) :
     if args.I != None :
         for include_elem in args.I:
             command = command + " -i " + "".join(include_elem)
+
+    # Includes
+    if args.D != None :
+        for define_elem in args.D:
+            command = command + " -d " + "".join(define_elem)
 
     # Output
     if args.o != None :
@@ -126,6 +130,8 @@ parser = argparse.ArgumentParser(description='gcc to cxvle command parser.')
 parser.add_argument('-c', metavar="path/to/cfile", type=str, nargs=1,
                     required=True, help='File to compile')
 parser.add_argument('-o', metavar="path/to/output", type=str, nargs=1,
+                    required=False, help='Output')
+parser.add_argument('-D', metavar="defineSymbol", type=str, nargs=1,
                     required=False, help='Output')
 parser.add_argument('-I', metavar="path/to/headers", nargs="+", action="append",
                     required=False, help='File to include')
