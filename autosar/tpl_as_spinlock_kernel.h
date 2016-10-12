@@ -109,8 +109,17 @@ extern VAR(tpl_spinlock_id, OS_VAR) tpl_taken_spinlock_counter[NUMBER_OF_CORES];
       tpl_taken_spinlock_counter[core_id]--; \
     }
 
-#define RELEASE_ALL_SPINLOCKS(core_id) \
-    tpl_taken_spinlock_counter[core_id] = 0;
+#define RELEASE_ALL_SPINLOCKS(core_id)                                        \
+    {                                                                         \
+      VAR(sint32, AUTOMATIC) tmp;                                             \
+      for(tmp = 0; tmp < tpl_taken_spinlock_counter[core_id]; tmp++)          \
+      {                                                                       \
+        P2VAR(tpl_lock, AUTOMATIC, OS_VAR) lock;                              \
+        lock = &(tpl_spinlock_table[tmp]->state);                             \
+        tpl_release_lock(lock);                                               \
+      }                                                                       \
+      tpl_taken_spinlock_counter[core_id] = 0;                                \
+    }
 
 #define GET_TAKEN_SPINLOCK(core_id, position)   \
     tpl_taken_spinlocks[core_id][position]

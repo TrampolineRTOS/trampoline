@@ -31,6 +31,9 @@
 #include "tpl_os_resource_kernel.h"
 #include "tpl_os_interrupt_kernel.h"
 #include "tpl_as_app_kernel.h"
+#if SPINLOCK_COUNT > 0
+  #include "tpl_as_spinlock_kernel.h"
+#endif
 
 #include "tpl_machine_interface.h"
 #include "tpl_trace.h"
