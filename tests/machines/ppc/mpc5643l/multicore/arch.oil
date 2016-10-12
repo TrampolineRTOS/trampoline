@@ -35,62 +35,22 @@
  */
 
 /*  XXX : WARNING
- *        This file is included from an oil file located in one of the tests.
- *        In that case, relative paths are from the test directory !
+ *        This file is included from an oil file located in one of the
+ *        tests' directory. In that case, compiler relative paths are from the
+ *        test's directory !
  */
+
+/* Include the monocore's IMPLEMENTATION */
+#include "../arch.oil"
 
 IMPLEMENTATION archMPC5643L
 {
-  /* Fixes stack sizes */
-  TASK
-  {
-    UINT32 STACKSIZE = 800;
-    UINT32 PRIORITY = 1;
-  };
+};
 
-  ISR
-  {
-    UINT32 STACKSIZE = 800;
-  };
-
-  COUNTER
-  {
-    ENUM [
-        tick,
-        watchdog
-    ] HANDLER = tick;
-    IDENTIFIER SOURCE = pit_ch0;
-  };
-
-  /* Compilation flags */
-  OS {
-    BOOLEAN [
-      TRUE {
-        ENUM [
-          elxr   { STRING SCRIPT = "script.ld"; },
-          cosmic_ld   { STRING SCRIPT = "script.lkf"; },
-          gnu_ld { STRING SCRIPT = "script.ld"; },
-          mwld   { STRING SCRIPT = "script.mcf"; }
-        ] LINKER;
-        ENUM [gcc, ghs, mwc, cosmic] COMPILER = cosmic;
-        ENUM [gnu_as, cosmic_as] ASSEMBLER = cosmic_as;
-      },
-      FALSE
-    ] MEMMAP = TRUE;
-    BOOLEAN [
-      TRUE {
-        STRING COMPILER = "../../../examples/ppc/tools/cxvle_auto.py";
-        STRING ASSEMBLER = "../../../examples/ppc/tools/cxvle_auto.py";
-        STRING LINKER = "../../../examples/ppc/tools/clnk_auto.py";
-        ENUM [
-          MAKE,
-          PYTHON { BOOLEAN GUESSLIBPATH; },
-          ATMELSTUDIO
-        ] SYSTEM = PYTHON;
-      },
-      FALSE
-    ] BUILD = TRUE;
-    BOOLEAN USEVLE = TRUE;
+CPU archMpc5643lMC
+{
+  OS defaultOS {
+    NUMBER_OF_CORES = 2;
   };
 };
 

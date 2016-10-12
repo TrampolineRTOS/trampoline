@@ -52,12 +52,55 @@
 #   $1 : file to execute
 arch_execute()
 {
-  echo "WORLD $1"
+  TESTDIR=$(pwd -P)
+  EXENAME="$(basename $TESTDIR)_exe"
+  OUTPUT=$TESTDIR/output  # The script lauterbach.cmm writes the output here
+  RETVAL=$TESTDIR/retval  # The script lauterbach.cmm writes the retval here
+
+  # Clean output if exists
+  rm -f $OUTPUT $RETVAL
+
+  # Go to Lauterbach's scripts directory
+  cd ../../machines/ppc/tools/lauterbach
+  # Send the test to trace32
+  ./sendTest.py -d $TESTDIR -e $EXENAME
+  # Go back to the test directory
+  cd $TESTDIR
+  # Get execution's return value
+  retval=""
+  while [ "$retval" = "" ]; do
+    sleep 1
+    retval=$(cat $RETVAL 2>/dev/null)
+  done
+
+  # Print output to stdout
+  cat $OUTPUT
+
+  # Print error to stderr
+  if [ $retval -eq 1 ]; then
+    echo >&2 "Segmentation Fault"
+  elif [ $retval -eq 2 ]; then
+    echo >&2 "Execution Timeout"
+  fi
+
+  # Clean outputs
+  rm -f $OUTPUT $RETVAL
+
+  exit $retval
 }
 
 arch_compile()
 {
+  TESTDIR=$(pwd -P)
+  EXENAME="$(basename $TESTDIR)_exe"
+  ELFNAME="$EXENAME.elf"
+
+  # Cosmic Software requires libraries to be enumerated in the link script...
+  echo "../../lib/libembUnit.a" >> $(basename $1)/script.lkf
+  rm $EXENAME
   ./build.py
+  # Set the elf as the executable
+  mv $ELFNAME $EXENAME
 }
 
 # TODO : Check valid function requested

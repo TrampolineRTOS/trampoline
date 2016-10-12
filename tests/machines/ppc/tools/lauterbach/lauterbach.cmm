@@ -1,0 +1,168 @@
+;
+;  Trampoline Test Suite
+;
+;  Trampoline Test Suite is copyright (c) IRCCyN 2005-2007
+;  Trampoline Test Suite is protected by the French intellectual property law.
+;
+;  This program is free software; you can redistribute it and/or
+;  modify it under the terms of the GNU General Public License
+;  as published by the Free Software Foundation; version 2
+;  of the License.
+;
+;  This program is distributed in the hope that it will be useful,
+;  but WITHOUT ANY WARRANTY; without even the implied warranty of
+;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;  GNU General Public License for more details.
+;
+;  You should have received a copy of the GNU General Public License
+;  along with this program; if not, write to the Free Software
+;  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+;
+
+;set title
+TITLE "MPC5643L's test script launcher"
+;Parameters are taken from the python script sendTest.py
+;appPath contains the test directory
+;exeName contains the name of the executable
+
+;;set some constants
+&exePath="&appPath/&exeName"    ; Path to the executable
+&output="&appPath/output"       ; Output file
+&retval="&appPath/retval"       ; File that'll contain the return value
+&srcDir="&appPath"                   ; Location of the .o files
+&libembSrcDir="&appPath/../../embUnit"
+
+
+;==============================================================================
+;       FLASH MEMORY PROGRAMMING
+
+;prepare flash programming
+DO ~~/demo/powerpc/flash/mpc5xxx.cmm PREPAREONLY
+
+;activate flash programming (unused sectors are erased)
+FLASH.ReProgram ALL /Erase
+
+;load file
+DATA.LOAD.ELF "&exePath" E:0x0--0xEFFFFF
+
+;commit data to Flash
+FLASH.ReProgram off
+
+;==============================================================================
+;       SIMULATOR CONFIG
+
+;debugger setup
+SYnch.RESet
+SYStem.RESet
+Break.Delete
+SYStem.BdmClock 4.MHz
+
+;detect processor
+SYStem.CPU MPC5643L
+SYStem.Option.WATCHDOG OFF
+
+;setup for SMP debugging
+SYStem.CONFIG.CORE 1. 1.
+CORE.ASSIGN 1 2
+
+;trace configuration
+IF POWERNEXUS()
+(
+;set port mode to MDO4 (12 MDO pins only supported by 257 MAPBGA package)
+  NEXUS.PortSize MDO4
+  Trace.METHOD Analyzer
+  Trace.AutoArm ON
+)
+ELSE IF SIMULATOR()
+(
+  SYStem.Option.DisMode VLE ; configure instruction set simulator for VLE
+)
+
+IF !SIMULATOR()
+(
+  ;enable real time memory access via NEXUS block
+  SYStem.MemAccess NEXUS
+)
+
+;halt on reset
+SYStem.Up
+
+IF POWERNEXUS()
+(
+  Trace.Init
+)
+
+;check if processor runs in DPM
+&nSSCM_STATUS_ADDR=0xC3FD8000
+&nSSCM_STATUS_LSM=0x8000
+&nSSCM_STATUS_VAL=Data.Word(ANC:&nSSCM_STATUS_ADDR)
+IF (&nSSCM_STATUS_VAL&&nSSCM_STATUS_LSM)==&nSSCM_STATUS_LSM
+(
+  PRINT %ERROR "Processor configured to LSM. Demo aborted"
+  ENDDO
+)
+
+;setup MMU for the loading of the application in RAM
+MMU.Set TLB1 0x1 0xC0000400 0x40000028 0x4000003F
+
+;clear internal SRAM
+Data.Set EA:0x40000000--0x4000FFFF %Quad 0x0
+
+;load application
+Data.LOAD.ELF "&exePath" 0x40000000--0x4000FFFF /WORD /SOURCEPATH "&srcDir/" /PATH "&libembSrcDir/"
+
+;Reset the MMU entry
+MMU.Set TLB1 0x1 0x0 0x0 0x0
+
+;set debug mode to HLL debugging
+Mode.Hll
+
+;breakpoint at the end of the program
+break.set tpl_shutdown /Program
+;breakpoint at the end of the print function
+break.set symbol.END(stdimpl_print)
+go.direct
+
+OPEN #1 &retval /Create
+OPEN #2 &output /Create
+&continue=TRUE()
+
+WHILE &continue
+(
+  ; Wait for the processor to reach a breakpoint.
+  WAIT !STATE.RUN() 5.s
+
+  IF STATE.RUN()
+  (
+    ; Execution is still going on but the timeout has been reached
+    BREAK
+    WRITE #1 "2"
+    &continue=FALSE()
+  )
+  ELSE IF Register(PC)==ADDRESS.OFFSET(sYmbol.END(stdimpl_print))-ADDRESS.INSTR.LEN(symbol.END(stdimpl_print))+1
+  (
+    ; We're in a stdimp_print. Write the outString variable to the output file
+    WRITE #2 %Continue Var.String(outString)
+    go.direct
+  )
+  ELSE IF Register(PC)==ADDRESS.OFFSET(tpl_shutdown)
+  (
+    ; tpl_shutdown has been reached. Exit success.
+    WRITE #1 "0"
+    &continue=FALSE()
+  )
+  ELSE
+  (
+    ; Processor has been stopped somewhere else. Segmentation fault.
+    WRITE #1 "1"
+    &continue=FALSE()
+  )
+)
+
+CLOSE #1
+CLOSE #2
+
+;tell the root test script the execution is done
+
+ENDDO
+

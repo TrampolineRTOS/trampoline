@@ -36,30 +36,27 @@
 
 /*  XXX : WARNING
  *        This file is included from an oil file located in one of the
- *        tests' directory. In that case, relative paths are from the test's
- *        directory !
+ *        tests' directory. In that case, compiler relative paths are from the
+ *        test's directory !
  */
 
 IMPLEMENTATION archMpc5643l
 {
   TASK
   {
-    UINT32 STACKSIZE = 800;
+    UINT32 STACKSIZE = 1400;
     UINT32 PRIORITY = 1;
   };
 
   ISR
   {
-    UINT32 STACKSIZE = 800;
+    UINT32 STACKSIZE = 1400;
   };
 
   COUNTER
   {
-    ENUM [
-        tick,
-        watchdog
-    ] HANDLER = tick;
     IDENTIFIER SOURCE = pit_ch0;
+    UINT32  FREQUENCY = 120000;
   };
 };
 
@@ -78,9 +75,13 @@ CPU archMpc5643lCosmic
       ASSEMBLER = "../../../examples/ppc/tools/cxvle_auto.py";
       LINKER = "../../../examples/ppc/tools/clnk_auto.py";
       CFLAGS = "-I../../embUnit";
+      //LDFLAGS = "-l ../../lib/libembUnit.a";
+      APP_SRC = "../../machines/ppc/mpc5643l/config.c";
       SYSTEM = PYTHON;
     };
     USEVLE = TRUE;
+    SYSTEM_CALL = TRUE;
+    DEBUG = TRUE;
   };
 };
 

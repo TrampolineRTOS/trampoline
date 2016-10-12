@@ -1,0 +1,56 @@
+;
+;please refer the installation guide for more information
+;about your configuration
+;
+;
+;uncomment the following 3 lines if you don't use already environment variables
+;changes to the actual directory names are necessary
+;OS=
+;SYS=/opt/t32
+;TMP=/usr/tmp
+
+;uncomment the following 4 lines if you use PowerTrace, PowerNexus or PowerDebugEthernet
+;with onhost driver executable (t32m*) via ethernet interface
+;the nodename t32 is only an example, please replace it with the actual node name
+;PBI=
+;NET
+;NODE=t32
+;PACKLEN=1024
+
+;uncomment the following 2 lines if you use PowerTrace, PowerNexus, PowerDebugEthernet or
+;PowerDebugInterface USB with onhost driver executable (t32m*) via USB interface
+;please refer the installation manual (file icd_quick_installation.pdf) about more details
+;concerning USB driver installation
+PBI=
+USB
+
+RCL=NETASSIST
+PORT=20000
+
+;uncomment the following 3 lines if you use an ICE or PodbusEthernetController
+;with standard hostdriver executable (t32cde) via ethernet interface
+;the nodename t32 is only an example, please replace it with the actual node name
+;LINK=NET
+;NODE=t32
+;PACKLEN=1024
+
+;uncomment the following 1 lines if you use SCSI interface (ICE)
+;LINK=SCSI
+
+;uncomment the following 3 lines if you want to use TRACE32 fonts
+;SCREEN=
+;FONT=DEC
+;FONT=SMALL
+
+;uncomment the following 2 lines if you want to use TRACE32 bitmap fonts
+;SCREEN=
+;FONTMODE=3
+
+;uncomment the following 2 lines if you use OPENWINDOWS
+;SCREEN=
+;WMGR=OW16
+
+;uncomment the following 2 lines if you use MOTIF
+;SCREEN=
+;WMGR=MOTIF16
+

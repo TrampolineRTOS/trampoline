@@ -1,9 +1,9 @@
 /**
- * @file ArchEmb.c
+ * @file watchdog.oil
  *
  * @section desc File description
  *
- * Trampoline Test Suite : Machine dependant embUnit functions
+ * Trampoline Test Suite : Machine dependant oil configuration
  *
  * @section copyright Copyright
  *
@@ -34,50 +34,23 @@
  * $URL$
  */
 
-static int stdimpl_strcpy(char* out, const char* in)
-{
-  int length = 0;
-  while(*out++=*in++) length++;
-  return length;
-}
-
-static void stdimpl_sprintf(char* out, const char* string, char** va_args)
-{
-  char current;
-
-  while(current = *string++)
-  {
-    if(current != '%')
-    {
-      *out++ = current;
-    }
-    else
-    {
-      current = *string++;
-      switch(current)
-      {
-        case 's':
-          out += stdimpl_strcpy(out, *va_args);
-          va_args = (char **)((int*)va_args + 1);
-          break;
-        default :
-          out += stdimpl_strcpy(out, "<undef>");
-          break;
-      }
-    }
-  }
-  *out = '\0';
-}
-
-/*
- *  The outString is rode by the lauterbach.cmm script at the end of the
- *  function.
+/*  XXX : WARNING
+ *        This file is included from an oil file located in one of the
+ *        tests' directory. In that case, compiler relative paths are from the
+ *        test's directory !
  */
-void stdimpl_print(const char* string, ...)
+
+/* Machine dependant watchdog declaration */
+
+CPU watchdogMpc5643l
 {
-  char outString[50];
-  char **va_args = &string + 1;
-  stdimpl_sprintf(outString, string, va_args);
-  return;
-}
+  OS defaultOS {
+    TIMINGPROTECTION_WATCHDOG watchdog
+    {
+      CORE = 0;
+      SOURCE = pit_ch1;
+      FREQUENCY = 120000;
+    };
+  };
+};
 

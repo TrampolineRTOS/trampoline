@@ -59,6 +59,11 @@ RSYNC_EXCLUDE="--exclude .git
                --exclude documentation
                --exclude goil
                --exclude examples"
+# Compilation timeout
+REMOTE_BUILD_TIMEOUT=""
+
+# Get object files too
+GET_BUILD=false
 
 # -----------------------------------------------------------------------------
 # Arch
@@ -122,6 +127,7 @@ GOIL_TEST_SEQUENCE=
 arch_execute()
 {
   $SHELL_ARCH_SCRIPT arch_execute $@
+  exit $?
 }
 
 arch_compile()
@@ -142,14 +148,18 @@ arch_remote_compile()
   REMOTE_ARCH_SCRIPT="$REMOTE_TPL_DIR/$ARCH_SCRIPT_PATH_FROM_TPL_DIR"
 
   # Synchronise files with the server
-  rsync -az $TPL_DIR/ $RSYNC_EXCLUDE $server:$REMOTE_TPL_DIR
+  rsync --delete -az $TPL_DIR/ $RSYNC_EXCLUDE $server:$REMOTE_TPL_DIR
 
   # Remote Compile
   ssh $server "cd $REMOTE_TEST_DIR;
-                  $REMOTE_ARCH_SCRIPT arch_compile $@;" &
+               $REMOTE_BUILD_TIMEOUT $REMOTE_ARCH_SCRIPT arch_compile $@;"
 
-  # Get executable
-  scp $server:$REMOTE_TEST_DIR/${i}_exe .
+  # Get produced files
+  scp -q $server:$REMOTE_TEST_DIR/${i}_exe .
+  # Get builds
+  if $GETBUILD ; then
+    scp -rq $server:$REMOTE_TEST_DIR/build .
+  fi
 }
 
 # =============================================================================
@@ -199,13 +209,8 @@ functional_test()
   # Make embUnit
   echo "===================================================================="
   echo "= Make embunit"
-  if [ ! $(echo $target | grep "posix") = "" ]; then
-    make -C $EMBUNIT_DIR
-    retval=$?
-  else
-    make -C $EMBUNIT_DIR ARCH_CUSTOM_SOURCE=$EMBUNIT_ARCH_SOURCE
-    retval=$?
-  fi
+  make -C $EMBUNIT_DIR -I $ARCH_DIR ARCH_CUSTOM_SOURCE=$EMBUNIT_ARCH_SOURCE
+  retval=$?
 
   if [ ! $retval -eq 0 ]; then
     (>&2 echo "${C_RED}Fatal Error: Compilation of libemb failed.$C_NOC")
@@ -231,6 +236,13 @@ functional_test()
     # display running test sequence on the standard output for the user and
     # in the log file to better understand failed tests
     echo "> [$current_tests_count/$total_tests_count] : $i" | tee -a $FUNCTIONAL_RESULTS
+
+    # if a previous run of the test has already diagnosticated this test as
+    # successful, ignore it
+    if [ -e .success ]; then
+        echo "  Already succeded. Clean to retest." | tee -a $FUNCTIONAL_RESULTS
+        continue
+    fi
 
     # remove the executable file in order to know if the make succeeded.
     rm -rf ./${i}_exe
@@ -269,10 +281,9 @@ functional_test()
     fi
 
     # if compilation succeed (Executable has been created) -> execute
-    # TODO : Get execution's retval
     if [ -e ${i}_exe ]
     then
-      output=$(arch_execute ./${i}_exe)
+      err=$(arch_execute ./${i}_exe 2>&1 > tmp)
       retval=$?
     else
       echo "$err" | tee -a $FUNCTIONAL_RESULTS
@@ -284,11 +295,13 @@ functional_test()
 
     # if execution failed (Return value != 0), print an error (can happen in
     # case of segmentation faults in posix for instance)
-    if [ $? -ne 0 ]
+    if [ ! $retval -eq 0 ]
     then
+      echo "$err" | tee -a $FUNCTIONAL_RESULTS
       echo "  failure during Execution : Retval != 0" | tee -a $FUNCTIONAL_RESULTS
       total_failed_tests=$(($total_failed_tests + 1))
       failed_tests_list="$failed_tests_list\n$i"
+      rm tmp
       continue
     fi
 
@@ -297,18 +310,25 @@ functional_test()
       echo "  failure : missing test's expected results" | tee -a $FUNCTIONAL_RESULTS
       total_failed_tests=$(($total_failed_tests + 1))
       failed_tests_list="$failed_tests_list\n$i"
+      rm tmp
       continue
     fi
     expected=$(cat $TEST_DIR/expected.txt)
+    output=$(cat tmp)
+    rm tmp
     if [ "$expected" != "$output" ]; then
       echo "  failure during Execution : Bad results" | tee -a $FUNCTIONAL_RESULTS
       echo "$output" | tee -a $FUNCTIONAL_RESULTS
+      echo "  expected :" | tee -a $FUNCTIONAL_RESULTS
+      echo "$expected" | tee -a $FUNCTIONAL_RESULTS
       total_failed_tests=$(($total_failed_tests + 1))
       failed_tests_list="$failed_tests_list\n$i"
       continue
     fi
 
-    # Test succeded !
+    # Test succeded ! Create a file to ignore this test next time we launch the
+    # tests without cleaning
+    > .success
   done
   cd $SCRIPT_DIR
 
@@ -316,7 +336,9 @@ functional_test()
   echo "= Functional tests results"
   echo "= Log file : $FUNCTIONAL_RESULTS"
   echo "= Total failed tests : $total_failed_tests"
-  echo "= Failed tests : $failed_tests_list"
+  if [ $total_failed_tests -ne 0 ]; then
+    echo "= Failed tests : $failed_tests_list"
+  fi
 }
 
 # ----------------------------------------------------------------------------
@@ -373,20 +395,20 @@ OPTIND=1
 # Parameters default values
 target=$DEFAULTTARGET
 server=$DEFAULTSERVER
-test_functional=0
-test_goil=0
-clean=0
+test_functional=false
+test_goil=false
+clean=false
 
 # Parameters reading
 while getopts "t:r:fgach" OPT; do
   case "$OPT" in
     t) target=$OPTARG;;
     r) server=$OPTARG;;
-    f) test_functional=1;;
-    g) test_goil=1;;
-    a) test_functional=1;
-       test_goil=1;;
-    c) clean=1;;
+    f) test_functional=true;;
+    g) test_goil=true;;
+    a) test_functional=true;
+       test_goil=true;;
+    c) clean=true;;
     h) print_help;
        exit 0;;
     *) echo "Unknown parameter or wrong number of arguments";
@@ -402,7 +424,8 @@ if [ $# -eq 1 ]; then
 fi
 
 # If the target is different from the last tested target, clean before testing
-if [ -e $PREVIOUS_TARGET ] && [ $clean -eq 0 ]; then
+if [ -e $PREVIOUS_TARGET ] && (! $clean ) && ( $test_functional || $test_goil )
+then
   if [ ! $(cat $PREVIOUS_TARGET) = $target ]; then
     if $AUTO_CLEAN; then
       clean=1
@@ -419,19 +442,19 @@ fi
 if [ ! "$server" = "" ]; then
   if [ "$REMOTE_TPL_DIR" = "" ]; then
     echo "${C_RED}Fatal Error: Requested a server compilation but server's"\
-         " trampoline directory is not set !$C_NOC"
+         "trampoline directory is not set !$C_NOC"
     exit 1
   fi
 fi
 
 # =============================================================================
-# Main
+# Targets
 #
 
 # ----------------------------------------------------------------------------
 # Clean target
 #
-if [ $clean -eq 1 ] ; then
+if $clean ; then
 
   ## Common files
   # Delete embUnit's objects and librairy
@@ -453,8 +476,9 @@ if [ $clean -eq 1 ] ; then
     rm -rf ${i}/make.py
     rm -rf ${i}/build.py
     rm -rf ${i}/$(basename $i)_exe
-    rm -rf ${i}/$(basename $i)
+    rm -rf ${i}/$(basename $i)/
     rm -rf ${i}/goil.log
+    rm -rf ${i}/.success
   done
   # Files' builds
   for i in $(echo $GOIL_DIR/*/); do
@@ -474,7 +498,7 @@ fi
 # ----------------------------------------------------------------------------
 # Run Goil/Functional tests
 #
-if [ $test_goil -eq 1 ] || [ $test_functional -eq 1 ]; then
+if $test_goil || $test_functional ; then
   ## Set architecture dependants variables
   ARCH_DIR=$MACHINES_DIR/$target
   # Needed
@@ -515,14 +539,14 @@ if [ $test_goil -eq 1 ] || [ $test_functional -eq 1 ]; then
   echo $target > $PREVIOUS_TARGET
 
   ## Run requested tests
-  if [ $test_goil -eq 1 ] ; then
+  if $test_goil ; then
     echo "===================================================================="
     echo "= Goil tests on target $target"
     echo "= Arch directory : $ARCH_DIR"
     echo "= Test sequence : $GOIL_TEST_SEQUENCE"
     goil_test
   fi
-  if [ $test_functional -eq 1 ] ; then
+  if $test_functional ; then
     echo "===================================================================="
     echo "= Functional tests on target $target"
     echo "= Arch directory : $ARCH_DIR"
@@ -531,7 +555,7 @@ if [ $test_goil -eq 1 ] || [ $test_functional -eq 1 ]; then
   fi
 
   ## Check tests' successfulness
-  if [ $test_goil -eq 1 ] ; then
+  if $test_goil ; then
     echo "===================================================================="
     echo "= Comparing results with the expected ones : GOIL tests"
     goil_test_check_success
@@ -541,7 +565,7 @@ fi
 # ----------------------------------------------------------------------------
 # Default : print help
 #
-if [ $clean -eq 0 ] && [ $test_functional -eq 0 ] && [ $test_goil -eq 0 ]; then
+if ! ( $clean || $test_functional || $test_goil ) ; then
     print_help
 fi
 

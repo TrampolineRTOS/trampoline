@@ -55,3 +55,4 @@
 # We're just gonna call the monocore's arch.sh here
 
 $(dirname $0)/../arch.sh $@
+
