@@ -28,6 +28,7 @@
 #include "stm32f4xx.h"
 #include "stm32f4_discovery.h"
 #include "tpl_compiler.h"
+#include "stm32f4xx_tim.h"
 
 extern void tpl_primary_syscall_handler(void);
 
@@ -128,4 +129,11 @@ FUNC(void, OS_CODE)PendSV_Handler(void)
  ******************************************************************************/
 void SysTick_ClearFlag(void)
 {
+}
+
+FUNC(void, OS_CODE) TIM2_IRQ_ClearFlag(void) {
+ 	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
+   {
+     TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
+   }
 }

@@ -50,14 +50,6 @@ FUNC(int, OS_APPL_CODE) main(void)
   return 0;
 }
 
-FUNC(void, OS_CODE) TIM2_IRQ_ClearFlag()
-{
-  if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
-  {
-    TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
-  }
-}
-
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
@@ -99,4 +91,3 @@ FUNC(void, OS_CODE) assert_failed(uint8_t* file, uint32_t line)
 }
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
-

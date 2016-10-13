@@ -70,6 +70,11 @@ foreach objList in objForIRQ do
 %extern FUNC(void, OS_CODE) %!objList_KEY%_ClearFlag(void);
 %
       end if
+    elsif obj::KIND == "COUNTER" then
+      if obj::ACK then
+%extern FUNC(void, OS_CODE) %!objList_KEY%_ClearFlag(void);
+%
+      end if      
     end if
   end foreach
 end foreach

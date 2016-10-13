@@ -1,10 +1,10 @@
 CPU stm32f407 {
     LIBRARY gpt {
-      PATH = "cortex/armv7em/stm32f407/STM32F4xx_StdPeriph_Driver/src";
+      PATH = "cortex/armv7em/stm32f407/STM32F4xx_StdPeriph_Driver";
       CHEADER = "stm32f4xx_tim.h";
       CFILE = "stm32f4xx_tim.c";
     };
-  
+
     INTERRUPT_COUNT nb_it {
       IT_TABLE_SIZE = 98;
     };
@@ -90,7 +90,7 @@ CPU stm32f407 {
     INTERRUPT CRYP_IRQ               { VECT = 95; VECTOR_TYPE = HANDLER { NAME =  "CRYP_Handler"; }; };
     INTERRUPT HASH_RNG_IRQ           { VECT = 96; VECTOR_TYPE = HANDLER { NAME =  "HASH_RNG_Handler"; }; };
     INTERRUPT FPU_IRQ                { VECT = 97; VECTOR_TYPE = HANDLER { NAME =  "FPU_Handler"; }; };
-    
+
   PLATFORM_FILES stm32f407 {
     PATH = "cortex/armv7em/stm32f407";
     CFILE = "tpl_memory_protection.c";
@@ -101,7 +101,7 @@ CPU stm32f407 {
   };
 
   PLATFORM_FILES stm32f407_std_libs_includes {
-    PATH = "cortex/armv7em/stm32f407/STM32F4xx_StdPeriph_Driver/inc";
+    PATH = "cortex/armv7em/stm32f407/STM32F4xx_StdPeriph_Driver";
   };
 
   PLATFORM_FILES stm32f407_cmsis {
@@ -109,7 +109,7 @@ CPU stm32f407 {
   };
 
   PLATFORM_FILES stm32f407_std_libs_src {
-    PATH = "cortex/armv7em/stm32f407/STM32F4xx_StdPeriph_Driver/src";
+    PATH = "cortex/armv7em/stm32f407/STM32F4xx_StdPeriph_Driver";
     CFILE = "stm32f4xx_gpio.c";
     CFILE = "stm32f4xx_rcc.c";
     CFILE = "stm32f4xx_exti.c";
