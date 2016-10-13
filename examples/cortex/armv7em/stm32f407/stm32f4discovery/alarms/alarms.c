@@ -29,7 +29,15 @@ TASK(read_button)
 #include "tpl_memmap.h"
 TASK(blink)
 {
+  uint32 volatile time;
+
   ledToggle(GREEN);
+
+  time = millis();
+  if (time > 10000) {
+    ledOn(ORANGE);
+  }
+
   TerminateTask();
 }
 #define APP_Task_blink_STOP_SEC_CODE
@@ -59,4 +67,3 @@ FUNC(void, OS_CODE) assert_failed(uint8_t* file, uint32_t line)
 }
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
-
