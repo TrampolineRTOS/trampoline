@@ -3,8 +3,8 @@ if exists proc::STACKSIZE then
 
   let use_float := false
   if exists OS::HASFLOAT default (false) then
-    foreach isr in ISRS do
-      if isr::USEFLOAT then
+    foreach sisr in ISRS do
+      if sisr::USEFLOAT then
         let use_float := true
       end if
     end foreach
