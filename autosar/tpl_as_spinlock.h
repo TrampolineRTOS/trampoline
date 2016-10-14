@@ -60,6 +60,13 @@ typedef tpl_spinlock_id  SpinlockIdType;
  */
 typedef tpl_try_to_get_spinlock_type  TryToGetSpinlockType;
 
+/*
+ * Trampoline extra
+ * GetSpinlock_IE : GetSpinlock with Interrupts Enabled
+ */
+FUNC(tpl_status, OS_CODE) GetSpinlock_IE(
+    VAR(tpl_spinlock_id, AUTOMATIC) spinlock_id);
+
 /* TPL_AS_SPINLOCK_H */
 #endif
 

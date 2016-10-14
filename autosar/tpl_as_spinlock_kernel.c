@@ -210,8 +210,32 @@ FUNC(tpl_status, OS_CODE) tpl_try_to_get_spinlock_service(
   return result;
 }
 
-
 #define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+#include "Os.h"
+
+#define API_START_SEC_CODE
+#include "tpl_memmap.h"
+
+/*
+ * Trampoline extra
+ * GetSpinlock_IE : GetSpinlock with Interrupts Enabled
+ */
+FUNC(tpl_status, OS_CODE) GetSpinlock_IE(
+    VAR(tpl_spinlock_id, AUTOMATIC) spinlock_id)
+{
+  VAR(tpl_status, AUTOMATIC)  result = E_OK;
+  VAR(TryToGetSpinlockType, AUTOMATIC) success;
+
+  do {
+    TryToGetSpinlock(spinlock_id, &success);
+  } while((result == E_OK) && (success == TRYTOGETSPINLOCK_NOSUCCESS));
+
+  return result;
+}
+
+#define API_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
 /* End of file tpl_as_counter_kernel.c */
