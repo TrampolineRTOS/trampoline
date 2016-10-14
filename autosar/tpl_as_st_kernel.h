@@ -284,6 +284,12 @@ extern FUNC(void, OS_CODE) tpl_sync_sched_table(
  * see paragraph 8.4.8 page 55 of
  * AUTOSAR/Specification of the Operating System v2.0.1
  */
+#if SCHEDTABLE_COUNT > 0
+FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_rel(
+    VAR(tpl_schedtable_id, AUTOMATIC)   sched_table_id,
+    VAR(tpl_tick, AUTOMATIC)            offset
+);
+#endif
 FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_rel_service(
     VAR(tpl_schedtable_id, AUTOMATIC)   sched_table_id,
     VAR(tpl_tick, AUTOMATIC)            offset
@@ -310,6 +316,12 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_rel_service(
  * see paragraph 8.4.9 page 55 of
  * AUTOSAR/Specification of the Operating System v2.0.1
  */
+#if SCHEDTABLE_COUNT > 0
+FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_abs(
+    VAR(tpl_schedtable_id, AUTOMATIC)   sched_table_id,
+    VAR(tpl_tick, AUTOMATIC)            tick_val
+);
+#endif
 FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_abs_service(
     VAR(tpl_schedtable_id, AUTOMATIC)   sched_table_id,
     VAR(tpl_tick, AUTOMATIC)            tick_val
@@ -328,6 +340,11 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_abs_service(
  * @retval  E_OK        no error
  *
  */
+#if SCHEDTABLE_COUNT > 0
+FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_synchron(
+    VAR(tpl_schedtable_id, AUTOMATIC)   sched_table_id
+);
+#endif
 FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_synchron_service(
     VAR(tpl_schedtable_id, AUTOMATIC)   sched_table_id
 );
