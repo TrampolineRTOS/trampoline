@@ -1202,14 +1202,14 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
         if (auto_time_obj->state == (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART_RELATIVE)
         {
           auto_time_obj->state = SCHEDULETABLE_STOPPED;
-          result = tpl_start_schedule_table_rel_service(i, auto_time_obj->date);
+          result = tpl_start_schedule_table_rel(i, auto_time_obj->date);
         }
         else
         {
           if (auto_time_obj->state == (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART_ABSOLUTE)
           {
             auto_time_obj->state = SCHEDULETABLE_STOPPED;
-            result = tpl_start_schedule_table_abs_service(i, auto_time_obj->date);
+            result = tpl_start_schedule_table_abs(i, auto_time_obj->date);
           }
 #if AUTOSAR_SC == 2 || AUTOSAR_SC == 4
           else
@@ -1217,7 +1217,7 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
             if (auto_time_obj->state == (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART_SYNCHRON)
             {
               auto_time_obj->state = SCHEDULETABLE_STOPPED;
-              result = tpl_start_schedule_table_synchron_service(i);
+              result = tpl_start_schedule_table_synchron(i);
             }
           }
 #endif
