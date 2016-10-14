@@ -43,11 +43,25 @@
  * TODO       : Test not written
  */
 /* --------------------------------------------------------------------------
- *  Requirement  | Short description                  | Verified
+ *  Requirement  | Short description                  | Verification
  * --------------------------------------------------------------------------
- * SWS_Os_00612  | TerminateTask / ChainTask returns  | {1,2,3}
- *               | with E_OS_SPINLOCK if has spinlock
- * SWS_Os_00613  | Spinlocks released after tp hook   | {4}, NoTimeout
+ * SWS_Os_00632  | An Alarm can activate a task on a  | {1}, NoTimeout
+ *               | different core.
+ * SWS_Os_00633  | An Alarm can set an event on a     | {2, 9}, Notimeout
+ *               | different core.
+ * SWS_Os_00634  | Alarm processed on alarm's core    | Internal
+ * SWS_Os_00635  | Alarm callback on the alarm's core | TODO
+ *               | (SC1 only)
+ * SWS_Os_00636  | SetRelAlarm work on an alarm on a  | {5}
+ *               | different core.
+ * SWS_Os_00637  | SetAbsAlarm work on an alarm on a  | {3}
+ *               | different core.
+ * SWS_Os_00638  | CancelAlarm work on an alarm on a  | {4, 6}, NoErr
+ *               | different core.
+ * SWS_Os_00639  | GetAlarmBase work on an alarm on a | {8}
+ *               | different core.
+ * SWS_Os_00640  | GetAlarm work on an alarm on a     | {7}
+ *               | different core.
  */
 
 #include "tpl_os.h"
@@ -59,22 +73,22 @@ TestRef t2_instance(void);
 int main(void)
 {
 #if NUMBER_OF_CORES > 1
-    StatusType rv;
+  StatusType rv;
 
-    switch(GetCoreID())
-    {
-      case OS_CORE_ID_MASTER :
-        StartCore(OS_CORE_ID_1, &rv);
-        if(rv == E_OK)
-          StartOS(OSDEFAULTAPPMODE);
-        break;
-      case OS_CORE_ID_1 :
+  switch(GetCoreID())
+  {
+    case OS_CORE_ID_MASTER :
+      StartCore(OS_CORE_ID_1, &rv);
+      if(rv == E_OK)
         StartOS(OSDEFAULTAPPMODE);
-        break;
-      default :
-        /* Should not happen */
-        break;
-    }
+      break;
+    case OS_CORE_ID_1 :
+      StartOS(OSDEFAULTAPPMODE);
+      break;
+    default :
+      /* Should not happen */
+      break;
+  }
 #else
 # error "This is a multicore example. NUMBER_OF_CORES should be > 1"
 #endif
@@ -89,21 +103,15 @@ void ShutdownHook(StatusType error)
       TestRunner_end();
       break;
     case OS_CORE_ID_1 :
+      while(1);
     default :
       break;
   }
 }
 
-FUNC(ProtectionReturnType, OS_CODE) ProtectionHook(
-  VAR(StatusType, AUTOMATIC) FatalError)
-{
-  return PRO_TERMINATETASKISR; /* => Send this core to Idle function */
-}
-
 TASK(t1)
 {
   TestRunner_start();
-  ActivateTask(t2);
   TestRunner_runTest(t1_instance());
   ShutdownOS(E_OK);
 }
@@ -111,14 +119,12 @@ TASK(t1)
 TASK(t2)
 {
   TestRunner_runTest(t2_instance());
-  /* Should not happen */
-  while(1);
+  ShutdownOS(E_OK);
 }
 
-TASK(chain)
+TASK(should_not_run)
 {
-  /* Should not happen */
-  while(1);
+  addFailure("Cancel Alarm did not work !", __LINE__, __FILE__);
 }
 
 /* End of file tasks_s2/tasks_s2.c */

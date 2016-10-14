@@ -1,7 +1,9 @@
 /**
- * @file tasks_s2.oil
+ * @file softwareIT.oil
  *
  * @section desc File description
+ *
+ * Trampoline Test Suite : Machine dependant oil configuration
  *
  * @section copyright Copyright
  *
@@ -32,67 +34,28 @@
  * $URL$
  */
 
-OIL_VERSION = "4.0" : "tasks_s2" ;
+/*  XXX : WARNING
+ *        This file is included from an oil file located in one of the
+ *        tests' directory. In that case, compiler relative paths are from the
+ *        test's directory !
+ */
 
-#include <arch.oil>
+/* This defines two ISRS using software ITs */
 
-IMPLEMENTATION trampoline {
-  TASK {
-    UINT32 [1..10] PRIORITY = 1 ;
+CPU watchdogMpc5643lMulticore
+{
+  ISR softwareInterruptHandler_Core0
+  {
+    CATEGORY = 2; /* Can be modified in the test's oil file */
+    PRIORITY = 1;
+    SOURCE = IRQ0;
+  };
+  ISR softwareInterruptHandler_Core1
+  {
+    CATEGORY = 2; /* Can be modified in the test's oil file */
+    PRIORITY = 1;
+    SOURCE = IRQ0;
   };
 };
 
-CPU test {
-  OS config {
-    BUILD = TRUE {
-      APP_SRC = "mc_startOs_s1.c";
-      APP_SRC = "task1_instance.c";
-      APP_SRC = "task2_instance.c";
-      TRAMPOLINE_BASE_PATH = "../../..";
-      APP_NAME = "mc_startOs_s1_exe";
-    };
-    SHUTDOWNHOOK = TRUE;
-    STATUS=EXTENDED;
-  };
 
-  APPMODE std {};
-
-  APPLICATION MasterApplication
-  {
-    TASK = t1;
-    COUNTER = SystemCounter_core0;
-    TRUSTED = TRUE { TRUSTED_FUNCTION = t1_function; };
-    CORE = 0;
-  };
-
-  APPLICATION SlaveApplication
-  {
-    TASK = t2;
-    COUNTER = SystemCounter_core1;
-    CORE = 1;
-  };
-
-  COUNTER SystemCounter_core0
-  {
-  };
-  COUNTER SystemCounter_core1
-  {
-  };
-
-  TASK t1 {
-    AUTOSTART = TRUE { APPMODE = std; };
-    PRIORITY = 1;
-    ACTIVATION = 1;
-    SCHEDULE = NON;
-  };
-
-  TASK t2 {
-    AUTOSTART = TRUE { APPMODE = std; };
-    PRIORITY = 1;
-    ACTIVATION = 1;
-    SCHEDULE = NON;
-  };
-
-};
-
-/* End of file tasks_s2.oil */

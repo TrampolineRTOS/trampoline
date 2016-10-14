@@ -45,16 +45,14 @@
 /* --------------------------------------------------------------------------
  *  Requirement  | Short description                  | Verified
  * --------------------------------------------------------------------------
- * SWS_Os_00612  | TerminateTask / ChainTask returns  | {1,2,3}
- *               | with E_OS_SPINLOCK if has spinlock
- * SWS_Os_00613  | Spinlocks released after tp hook   | {4}, NoTimeout
+ * SWS_Os_00624  | Schedule returns E_OS_SPINLOCK if  | {1,2}
+ *               | the calling core has spinlocks
  */
 
 #include "tpl_os.h"
 #include "embUnit.h"
 
 TestRef t1_instance(void);
-TestRef t2_instance(void);
 
 int main(void)
 {
@@ -94,31 +92,11 @@ void ShutdownHook(StatusType error)
   }
 }
 
-FUNC(ProtectionReturnType, OS_CODE) ProtectionHook(
-  VAR(StatusType, AUTOMATIC) FatalError)
-{
-  return PRO_TERMINATETASKISR; /* => Send this core to Idle function */
-}
-
 TASK(t1)
 {
   TestRunner_start();
-  ActivateTask(t2);
   TestRunner_runTest(t1_instance());
   ShutdownOS(E_OK);
-}
-
-TASK(t2)
-{
-  TestRunner_runTest(t2_instance());
-  /* Should not happen */
-  while(1);
-}
-
-TASK(chain)
-{
-  /* Should not happen */
-  while(1);
 }
 
 /* End of file tasks_s2/tasks_s2.c */

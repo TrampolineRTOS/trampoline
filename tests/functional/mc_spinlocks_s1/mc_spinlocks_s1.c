@@ -43,11 +43,29 @@
  * TODO       : Test not written
  */
 /* --------------------------------------------------------------------------
- *  Requirement  | Short description                  | Verified
+ *  Requirement  | Short description                  | Verification
  * --------------------------------------------------------------------------
- * SWS_Os_00612  | TerminateTask / ChainTask returns  | {1,2,3}
- *               | with E_OS_SPINLOCK if has spinlock
- * SWS_Os_00613  | Spinlocks released after tp hook   | {4}, NoTimeout
+ * SWS_Os_00648  | OS Provides a Spinlock mechanisme  | Trivial
+ * SWS_Os_00649  | GetSpinlock service                | {9,19,20}
+ * SWS_Os_00650  | GetSpinlock callable from Tasks    | {1}
+ * SWS_Os_00651  | GetSpinlock callable from ISRS2    | {14}
+ * SWS_Os_00652  | TryToGetSpinlock service           | {7,8,11,12}
+ * SWS_Os_00653  | TTGS callable from Tasks           | {7,8}
+ * SWS_Os_00654  | TTGS callable from ISRS2           | {17,18}
+ * SWS_Os_00655  | ReleaseSpinlock service            | {4,14}
+ * SWS_Os_00656  | ReleaseSpinlock callable from Tasks| {4,14}
+ * SWS_Os_00657  | ReleaseSpinlock callable from ISRS2| {16,17,18}
+ * SWS_Os_00658  | Error if trying to get a spinlock  | {1,2}
+ *               | that already belongs to the calling|
+ *               | core from a task                   |
+ * SWS_Os_00659  | Error if trying to get a spinlock  | {14,15}
+ *               | that already belongs to the calling|
+ *               | core from an isrs2                 |
+ * SWS_Os_00660  | Define an unique order in which a  | Goil
+ *               | core can take spinlocks            |
+ * SWS_Os_00661  | Error if trying to get a spinlock  | {3,4}
+ *               | that is not the successor of a     |
+ *               | spinlock the core already occupies |
  */
 
 #include "tpl_os.h"
@@ -55,30 +73,38 @@
 
 TestRef t1_instance(void);
 TestRef t2_instance(void);
+TestRef isr_instance(void);
 
 int main(void)
 {
 #if NUMBER_OF_CORES > 1
-    StatusType rv;
+  StatusType rv;
 
-    switch(GetCoreID())
-    {
-      case OS_CORE_ID_MASTER :
-        StartCore(OS_CORE_ID_1, &rv);
-        if(rv == E_OK)
-          StartOS(OSDEFAULTAPPMODE);
-        break;
-      case OS_CORE_ID_1 :
+  switch(GetCoreID())
+  {
+    case OS_CORE_ID_MASTER :
+      StartCore(OS_CORE_ID_1, &rv);
+      if(rv == E_OK)
         StartOS(OSDEFAULTAPPMODE);
-        break;
-      default :
-        /* Should not happen */
-        break;
-    }
+      break;
+    case OS_CORE_ID_1 :
+      StartOS(OSDEFAULTAPPMODE);
+      break;
+    default :
+      /* Should not happen */
+      break;
+  }
 #else
 # error "This is a multicore example. NUMBER_OF_CORES should be > 1"
 #endif
   return 0;
+}
+
+FUNC(ProtectionReturnType, OS_CODE) ProtectionHook(
+  VAR(StatusType, AUTOMATIC) FatalError)
+{
+  sendSoftwareIt(1); /* Call the core1 ISR */
+  return PRO_TERMINATETASKISR;
 }
 
 void ShutdownHook(StatusType error)
@@ -89,21 +115,24 @@ void ShutdownHook(StatusType error)
       TestRunner_end();
       break;
     case OS_CORE_ID_1 :
+      while(1);
     default :
       break;
   }
 }
 
-FUNC(ProtectionReturnType, OS_CODE) ProtectionHook(
-  VAR(StatusType, AUTOMATIC) FatalError)
+ISR(softwareInterruptHandler_Core0)
 {
-  return PRO_TERMINATETASKISR; /* => Send this core to Idle function */
+
+}
+ISR(softwareInterruptHandler_Core1)
+{
+  TestRunner_runTest(isr_instance());
 }
 
 TASK(t1)
 {
   TestRunner_start();
-  ActivateTask(t2);
   TestRunner_runTest(t1_instance());
   ShutdownOS(E_OK);
 }
@@ -111,14 +140,7 @@ TASK(t1)
 TASK(t2)
 {
   TestRunner_runTest(t2_instance());
-  /* Should not happen */
-  while(1);
-}
-
-TASK(chain)
-{
-  /* Should not happen */
-  while(1);
+  ShutdownOS(E_OK);
 }
 
 /* End of file tasks_s2/tasks_s2.c */

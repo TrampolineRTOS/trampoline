@@ -1,8 +1,70 @@
-###### Multicore
+###############################################################################
+# Multicore
+# In accordance with AUTOSAR_SWS_OS : 7.9
+
 #multicore_spinlocks_s1
 #multicore_spinlocks_s2
+
+## 7.9.15 Start of the OS
+## [00606, 00611]
 mc_startOs_s1
+
+## 7.9.16 Task termination
+## [00612, 00613]
 mc_taskTermination_s1
+
+## 7.9.17 Termination of OS-Applications
+## [00614, 00615]
+mc_appTermination_s1
+
+## 7.9.18 Shutdown of the OS
+## [00616, 00621]
+## TODO
+
+## 7.9.19 Waiting for EVENTs
+## [00622]
+mc_events_s1
+
+## 7.9.20 Calling trusted functions
+## [00623]
+## TODO
+
+## 7.9.21 Invoking Reschedule
+## [00624]
+mc_reschedule_s1
+
+## 7.9.22 Resource Occupation
+## [00801]
+## TODO?
+
+## 7.9.23 The CoreID
+## [00625, 00628]
+mc_coreid_s1
+
+## 7.9.25 Multi-Core restrictions on COUNTERs
+## [00629, 00631]
+## OIL Checks
+## TODO
+
+## 7.9.27 ALARMs
+## [00632, 00640]
+mc_alarms_s1
+
+## 7.9.28 Schedule tables
+## [00641, 00647]
+## TODO !
+
+## 7.9.29 Spinlocks
+## [00648, 00661]
+mc_spinlocks_s1
+
+## 7.9.30 Spinlocks - Offline Checks
+## [00662, 00667]
+## OIL Checks
+
+## 7.9.31 AutoStart Objects
+## [00668, 00670]
+## TODO !
 
 ###### Not testeds
 ## Memory/Timing protection tests

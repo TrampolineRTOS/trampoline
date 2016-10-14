@@ -45,11 +45,10 @@ IMPLEMENTATION trampoline {
 CPU test {
   OS config {
     BUILD = TRUE {
-      APP_SRC = "mc_startOs_s1.c";
+      APP_SRC = "mc_coreid_s1.c";
       APP_SRC = "task1_instance.c";
-      APP_SRC = "task2_instance.c";
       TRAMPOLINE_BASE_PATH = "../../..";
-      APP_NAME = "mc_startOs_s1_exe";
+      APP_NAME = "mc_coreid_s1_exe";
     };
     SHUTDOWNHOOK = TRUE;
     STATUS=EXTENDED;
@@ -67,7 +66,6 @@ CPU test {
 
   APPLICATION SlaveApplication
   {
-    TASK = t2;
     COUNTER = SystemCounter_core1;
     CORE = 1;
   };
@@ -85,14 +83,6 @@ CPU test {
     ACTIVATION = 1;
     SCHEDULE = NON;
   };
-
-  TASK t2 {
-    AUTOSTART = TRUE { APPMODE = std; };
-    PRIORITY = 1;
-    ACTIVATION = 1;
-    SCHEDULE = NON;
-  };
-
 };
 
 /* End of file tasks_s2.oil */

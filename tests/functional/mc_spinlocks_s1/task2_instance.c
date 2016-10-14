@@ -32,28 +32,46 @@
  * $URL$
  */
 
-/*Instance of task t2*/
+/*Instance of task t1*/
 
 #include "embUnit.h"
 #include "Os.h"
 
+DeclareSpinlock(lock_task);
+DeclareSpinlock(sync);
+
 static void test_t2_instance(void)
 {
-  StatusType result_inst_1;
+  StatusType r1, r2;
+  TryToGetSpinlockType success;
 
-  addFailure("Core 1 should not be activated !", __LINE__, __FILE__);
+  /* Core 0 has the spinlock lock_task */
+  SCHEDULING_CHECK_INIT(11);
+  r1 = TryToGetSpinlock(lock_task, &success);
+  SCHEDULING_CHECK_AND_EQUAL_INT(11, E_OK, r1);
+  SCHEDULING_CHECK_INIT(12);
+  SCHEDULING_CHECK_AND_EQUAL_INT(12, TRYTOGETSPINLOCK_NOSUCCESS, success);
 
-  ShutdownOS(E_OK); /* This will release the spinlock spin0 */
+  /* Blocking call. We're waiting for the timing protection watchdog to kill us
+   * dramatically. We're using GetSpinlock_IE instead of GetSpinlock to allow
+   * the interruptions during the call.
+   */
+  SCHEDULING_CHECK_INIT(13);
+  r2 = GetSpinlock_IE(lock_task);
+  SCHEDULING_CHECK_AND_EQUAL_INT(13, E_OK, r2);
+
+  while(1);
+
+  SyncAllCores(sync);
 }
 
-/*create the test suite with all the test cases*/
-TestRef TaskManagementTest_t2_instance(void)
+TestRef t2_instance(void)
 {
   EMB_UNIT_TESTFIXTURES(fixtures) {
     new_TestFixture("test_t2_instance",test_t2_instance)
   };
-  EMB_UNIT_TESTCALLER(TaskManagementTest,"mc_startOs_sequence1",NULL,NULL,fixtures);
-  return (TestRef)&TaskManagementTest;
+  EMB_UNIT_TESTCALLER(caller,"mc_spinlocks_s1",NULL,NULL,fixtures);
+  return (TestRef)&caller;
 }
 
-/* End of file tasks_s2/task2_instance.c */
+/* End of file tasks_s2/task1_instance.c */

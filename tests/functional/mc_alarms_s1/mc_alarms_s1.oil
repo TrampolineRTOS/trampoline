@@ -45,11 +45,11 @@ IMPLEMENTATION trampoline {
 CPU test {
   OS config {
     BUILD = TRUE {
-      APP_SRC = "mc_startOs_s1.c";
+      APP_SRC = "mc_alarms_s1.c";
       APP_SRC = "task1_instance.c";
       APP_SRC = "task2_instance.c";
       TRAMPOLINE_BASE_PATH = "../../..";
-      APP_NAME = "mc_startOs_s1_exe";
+      APP_NAME = "mc_alarms_s1_exe";
     };
     SHUTDOWNHOOK = TRUE;
     STATUS=EXTENDED;
@@ -60,6 +60,10 @@ CPU test {
   APPLICATION MasterApplication
   {
     TASK = t1;
+    TASK = should_not_run;
+    ALARM = activate_task_accross_cores;
+    ALARM = set_event_accross_cores;
+    ALARM = should_not_expire;
     COUNTER = SystemCounter_core0;
     TRUSTED = TRUE { TRUSTED_FUNCTION = t1_function; };
     CORE = 0;
@@ -69,6 +73,7 @@ CPU test {
   {
     TASK = t2;
     COUNTER = SystemCounter_core1;
+    TRUSTED = TRUE { TRUSTED_FUNCTION = t2_function; };
     CORE = 1;
   };
 
@@ -79,20 +84,60 @@ CPU test {
   {
   };
 
+  SPINLOCK sync
+  {
+    ACCESSING_APPLICATION = MasterApplication;
+    ACCESSING_APPLICATION = SlaveApplication;
+  };
+
+  ALARM activate_task_accross_cores
+  {
+    AUTOSTART = FALSE;
+    ACTION = ACTIVATETASK { TASK = t2; };
+    COUNTER = SystemCounter_core0;
+  };
+
+  ALARM set_event_accross_cores
+  {
+    AUTOSTART = FALSE;
+    ACTION = SETEVENT { TASK = t2; EVENT = t2_event; };
+    COUNTER = SystemCounter_core0;
+  };
+
+  ALARM should_not_expire
+  {
+    AUTOSTART = FALSE;
+    ACTION = ACTIVATETASK { TASK = should_not_run; };
+    COUNTER = SystemCounter_core0;
+    ACCESSING_APPLICATION = SlaveApplication;
+  };
+
   TASK t1 {
     AUTOSTART = TRUE { APPMODE = std; };
     PRIORITY = 1;
     ACTIVATION = 1;
-    SCHEDULE = NON;
+    SCHEDULE = FULL;
   };
 
-  TASK t2 {
-    AUTOSTART = TRUE { APPMODE = std; };
-    PRIORITY = 1;
+  TASK should_not_run
+  {
+    AUTOSTART = FALSE;
+    PRIORITY = 2; /* Bigger priority to schedule t1 */
     ACTIVATION = 1;
     SCHEDULE = NON;
   };
 
+  EVENT t2_event
+  {
+    MASK = AUTO;
+  };
+  TASK t2 {
+    AUTOSTART = FALSE;
+    PRIORITY = 1;
+    ACTIVATION = 1;
+    SCHEDULE = NON;
+    EVENT = t2_event;
+  };
 };
 
 /* End of file tasks_s2.oil */

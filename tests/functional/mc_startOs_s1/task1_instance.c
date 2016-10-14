@@ -47,7 +47,7 @@ static void test_t1_instance(void)
 }
 
 /*create the test suite with all the test cases*/
-TestRef TaskManagementTest_seq2_t1_instance(void)
+TestRef TaskManagementTest_t1_instance(void)
 {
   EMB_UNIT_TESTFIXTURES(fixtures) {
     new_TestFixture("test_t1_instance",test_t1_instance)

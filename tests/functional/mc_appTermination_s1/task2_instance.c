@@ -37,23 +37,29 @@
 #include "embUnit.h"
 #include "Os.h"
 
+DeclareSpinlock(spin0);
+DeclareSpinlock(sync);
+
 static void test_t2_instance(void)
 {
-  StatusType result_inst_1;
+  StatusType r1, r2, r3;
 
-  addFailure("Core 1 should not be activated !", __LINE__, __FILE__);
+  SCHEDULING_CHECK_INIT(1);
+  r1 = GetSpinlock(spin0);
+  SCHEDULING_CHECK_AND_EQUAL_INT(1, E_OK, r1);
 
-  ShutdownOS(E_OK); /* This will release the spinlock spin0 */
+  SyncAllCores(sync);
+
+  while(1); /* Wait to be terminated by the task 1 */
 }
 
-/*create the test suite with all the test cases*/
-TestRef TaskManagementTest_t2_instance(void)
+TestRef t2_instance(void)
 {
   EMB_UNIT_TESTFIXTURES(fixtures) {
     new_TestFixture("test_t2_instance",test_t2_instance)
   };
-  EMB_UNIT_TESTCALLER(TaskManagementTest,"mc_startOs_sequence1",NULL,NULL,fixtures);
-  return (TestRef)&TaskManagementTest;
+  EMB_UNIT_TESTCALLER(testCall,"mc_appTermination_s1",NULL,NULL,fixtures);
+  return (TestRef)&testCall;
 }
 
 /* End of file tasks_s2/task2_instance.c */

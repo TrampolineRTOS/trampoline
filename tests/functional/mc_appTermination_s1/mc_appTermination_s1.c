@@ -45,9 +45,10 @@
 /* --------------------------------------------------------------------------
  *  Requirement  | Short description                  | Verified
  * --------------------------------------------------------------------------
- * SWS_Os_00612  | TerminateTask / ChainTask returns  | {1,2,3}
- *               | with E_OS_SPINLOCK if has spinlock
- * SWS_Os_00613  | Spinlocks released after tp hook   | {4}, NoTimeout
+ * SWS_Os_00614  | Spinlocks released if its owner's  | {1,2,3}, NoTimeout
+ *               | application has been terminated
+ * SWS_Os_00615  | TerminateApplication called in     | TODO
+ *                 parallel should return E_OK
  */
 
 #include "tpl_os.h"
@@ -94,12 +95,6 @@ void ShutdownHook(StatusType error)
   }
 }
 
-FUNC(ProtectionReturnType, OS_CODE) ProtectionHook(
-  VAR(StatusType, AUTOMATIC) FatalError)
-{
-  return PRO_TERMINATETASKISR; /* => Send this core to Idle function */
-}
-
 TASK(t1)
 {
   TestRunner_start();
@@ -111,12 +106,6 @@ TASK(t1)
 TASK(t2)
 {
   TestRunner_runTest(t2_instance());
-  /* Should not happen */
-  while(1);
-}
-
-TASK(chain)
-{
   /* Should not happen */
   while(1);
 }

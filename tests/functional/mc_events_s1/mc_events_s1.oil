@@ -45,11 +45,10 @@ IMPLEMENTATION trampoline {
 CPU test {
   OS config {
     BUILD = TRUE {
-      APP_SRC = "mc_startOs_s1.c";
+      APP_SRC = "mc_events_s1.c";
       APP_SRC = "task1_instance.c";
-      APP_SRC = "task2_instance.c";
       TRAMPOLINE_BASE_PATH = "../../..";
-      APP_NAME = "mc_startOs_s1_exe";
+      APP_NAME = "mc_events_s1_exe";
     };
     SHUTDOWNHOOK = TRUE;
     STATUS=EXTENDED;
@@ -67,9 +66,14 @@ CPU test {
 
   APPLICATION SlaveApplication
   {
-    TASK = t2;
     COUNTER = SystemCounter_core1;
     CORE = 1;
+  };
+
+  SPINLOCK spin0
+  {
+    ACCESSING_APPLICATION = MasterApplication;
+    ACCESSING_APPLICATION = SlaveApplication;
   };
 
   COUNTER SystemCounter_core0
@@ -79,20 +83,18 @@ CPU test {
   {
   };
 
+  EVENT t1_event
+  {
+    MASK = AUTO;
+  };
+
   TASK t1 {
     AUTOSTART = TRUE { APPMODE = std; };
     PRIORITY = 1;
     ACTIVATION = 1;
     SCHEDULE = NON;
+    EVENT = t1_event;
   };
-
-  TASK t2 {
-    AUTOSTART = TRUE { APPMODE = std; };
-    PRIORITY = 1;
-    ACTIVATION = 1;
-    SCHEDULE = NON;
-  };
-
 };
 
 /* End of file tasks_s2.oil */

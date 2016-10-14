@@ -62,7 +62,7 @@ static void test_t2_instance(void)
   while(1); /* Wait for the tp watchdog to be called */
 }
 
-TestRef seq2_t2_instance(void)
+TestRef t2_instance(void)
 {
   EMB_UNIT_TESTFIXTURES(fixtures) {
     new_TestFixture("test_t2_instance",test_t2_instance)

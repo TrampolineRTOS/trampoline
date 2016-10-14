@@ -285,6 +285,8 @@ functional_test()
     then
       err=$(arch_execute ./${i}_exe 2>&1 > tmp)
       retval=$?
+      output=$(cat tmp)
+      rm tmp
     else
       echo "$err" | tee -a $FUNCTIONAL_RESULTS
       echo "  failure during Compilation.\n" | tee -a $FUNCTIONAL_RESULTS
@@ -299,25 +301,26 @@ functional_test()
     then
       echo "$err" | tee -a $FUNCTIONAL_RESULTS
       echo "  failure during Execution : Retval != 0" | tee -a $FUNCTIONAL_RESULTS
+      echo "  output :" | tee -a $FUNCTIONAL_RESULTS
+      echo "$output" | tee -a $FUNCTIONAL_RESULTS
       total_failed_tests=$(($total_failed_tests + 1))
       failed_tests_list="$failed_tests_list\n$i"
-      rm tmp
       continue
     fi
 
     # Compare results with expected ones
     if [ ! -e $TEST_DIR/expected.txt ]; then
       echo "  failure : missing test's expected results" | tee -a $FUNCTIONAL_RESULTS
+      echo "  output :" | tee -a $FUNCTIONAL_RESULTS
+      echo "$output" | tee -a $FUNCTIONAL_RESULTS
       total_failed_tests=$(($total_failed_tests + 1))
       failed_tests_list="$failed_tests_list\n$i"
-      rm tmp
       continue
     fi
     expected=$(cat $TEST_DIR/expected.txt)
-    output=$(cat tmp)
-    rm tmp
     if [ "$expected" != "$output" ]; then
       echo "  failure during Execution : Bad results" | tee -a $FUNCTIONAL_RESULTS
+      echo "  output :" | tee -a $FUNCTIONAL_RESULTS
       echo "$output" | tee -a $FUNCTIONAL_RESULTS
       echo "  expected :" | tee -a $FUNCTIONAL_RESULTS
       echo "$expected" | tee -a $FUNCTIONAL_RESULTS

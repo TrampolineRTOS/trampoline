@@ -1,5 +1,5 @@
 /**
- * @file tasks_s2/task2_instance.c
+ * @file tasks_s2/task1_instance.c
  *
  * @section desc File description
  *
@@ -32,28 +32,29 @@
  * $URL$
  */
 
-/*Instance of task t2*/
+/*Instance of task t1*/
 
 #include "embUnit.h"
 #include "Os.h"
 
-static void test_t2_instance(void)
+extern int user_number_of_cores;
+
+static void test_t1_instance(void)
 {
-  StatusType result_inst_1;
+  StatusType r1, r2;
 
-  addFailure("Core 1 should not be activated !", __LINE__, __FILE__);
-
-  ShutdownOS(E_OK); /* This will release the spinlock spin0 */
+  SCHEDULING_CHECK_INIT(1);
+  r1 = GetNumberOfActivatedCores();
+  SCHEDULING_CHECK_AND_EQUAL_INT(1, user_number_of_cores, r1);
 }
 
-/*create the test suite with all the test cases*/
-TestRef TaskManagementTest_t2_instance(void)
+TestRef t1_instance(void)
 {
   EMB_UNIT_TESTFIXTURES(fixtures) {
-    new_TestFixture("test_t2_instance",test_t2_instance)
+    new_TestFixture("test_t1_instance",test_t1_instance)
   };
-  EMB_UNIT_TESTCALLER(TaskManagementTest,"mc_startOs_sequence1",NULL,NULL,fixtures);
-  return (TestRef)&TaskManagementTest;
+  EMB_UNIT_TESTCALLER(caller,"mc_coreid_s1",NULL,NULL,fixtures);
+  return (TestRef)&caller;
 }
 
-/* End of file tasks_s2/task2_instance.c */
+/* End of file tasks_s2/task1_instance.c */

@@ -1,5 +1,5 @@
 /**
- * @file tasks_s2/task2_instance.c
+ * @file tasks_s2/task1_instance.c
  *
  * @section desc File description
  *
@@ -32,28 +32,39 @@
  * $URL$
  */
 
-/*Instance of task t2*/
+/*Instance of task t1*/
 
 #include "embUnit.h"
 #include "Os.h"
 
-static void test_t2_instance(void)
+DeclareSpinlock(spin0);
+DeclareSpinlock(sync);
+
+DeclareApplication(SlaveApplication);
+
+static void test_t1_instance(void)
 {
-  StatusType result_inst_1;
+  StatusType r1, r2;
 
-  addFailure("Core 1 should not be activated !", __LINE__, __FILE__);
+  /* Wait for the core 1 to get spin0 */
+  SyncAllCores(sync);
 
-  ShutdownOS(E_OK); /* This will release the spinlock spin0 */
+  SCHEDULING_CHECK_INIT(2);
+  r1 = TerminateApplication(SlaveApplication, 0);
+  SCHEDULING_CHECK_AND_EQUAL_INT(2, E_OK, r1);
+
+  SCHEDULING_CHECK_INIT(3);
+  r2 = GetSpinlock(spin0);
+  SCHEDULING_CHECK_AND_EQUAL_INT(3, E_OK, r2);
 }
 
-/*create the test suite with all the test cases*/
-TestRef TaskManagementTest_t2_instance(void)
+TestRef t1_instance(void)
 {
   EMB_UNIT_TESTFIXTURES(fixtures) {
-    new_TestFixture("test_t2_instance",test_t2_instance)
+    new_TestFixture("test_t1_instance",test_t1_instance)
   };
-  EMB_UNIT_TESTCALLER(TaskManagementTest,"mc_startOs_sequence1",NULL,NULL,fixtures);
-  return (TestRef)&TaskManagementTest;
+  EMB_UNIT_TESTCALLER(caller,"mc_appTermination_s1",NULL,NULL,fixtures);
+  return (TestRef)&caller;
 }
 
-/* End of file tasks_s2/task2_instance.c */
+/* End of file tasks_s2/task1_instance.c */
