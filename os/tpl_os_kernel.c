@@ -54,6 +54,9 @@
 #if ((WITH_IOC == YES) && (IOC_UNQUEUED_COUNT > 0))
 # include "tpl_ioc_unqueued_kernel.h"
 #endif
+#if SPINLOCK_COUNT > 0
+# include "tpl_as_spinlock_kernel.h"
+#endif
 
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -1244,6 +1247,10 @@ FUNC(void, OS_CODE) tpl_call_terminate_task_service(void)
      * service call OR by signal_handler.
      */
   }
+
+#if SPINLOCK_COUNT > 0
+  RELEASE_ALL_SPINLOCKS(core_id);
+#endif
 
 #if RESOURCE_COUNT > 0
   /* release resources if held */

@@ -1,5 +1,5 @@
 /**
- * @file tasks_s2/task2_instance.c
+ * @file tasks_s2/task1_instance.c
  *
  * @section desc File description
  *
@@ -32,43 +32,34 @@
  * $URL$
  */
 
-/*Instance of task t2*/
+/*Instance of task t1*/
 
 #include "embUnit.h"
 #include "Os.h"
 
 DeclareSpinlock(spin0);
 DeclareSpinlock(sync);
-DeclareTask(chain);
 
-static void test_t2_instance(void)
+static void test_t1_instance(void)
 {
-  StatusType r1, r2, r3;
+  StatusType r1;
 
-  SCHEDULING_CHECK_INIT(1);
-  r1 = GetSpinlock(spin0);
-  SCHEDULING_CHECK_AND_EQUAL_INT(1, E_OK, r1);
-
-  SCHEDULING_CHECK_INIT(2);
-  r2 = TerminateTask();
-  SCHEDULING_CHECK_AND_EQUAL_INT(2, E_OS_SPINLOCK, r2);
-
-  SCHEDULING_CHECK_INIT(3);
-  r3 = ChainTask(chain);
-  SCHEDULING_CHECK_AND_EQUAL_INT(3, E_OS_SPINLOCK, r3);
-
+  /* Wait for the core 1 to get spin0 */
   SyncAllCores(sync);
 
-  while(1); /* Wait for the tp watchdog to kill this task */
+  /* Wait for the core 1's timing protection wdt to release the spinlock */
+  SCHEDULING_CHECK_INIT(2);
+  r1 = GetSpinlock(spin0);
+  SCHEDULING_CHECK_AND_EQUAL_INT(2, E_OK, r1);
 }
 
-TestRef t2_instance(void)
+TestRef t1_instance(void)
 {
   EMB_UNIT_TESTFIXTURES(fixtures) {
-    new_TestFixture("test_t2_instance",test_t2_instance)
+    new_TestFixture("test_t1_instance",test_t1_instance)
   };
-  EMB_UNIT_TESTCALLER(testCall,"mc_taskTermination_s1",NULL,NULL,fixtures);
-  return (TestRef)&testCall;
+  EMB_UNIT_TESTCALLER(caller,"mc_taskTermination_s2",NULL,NULL,fixtures);
+  return (TestRef)&caller;
 }
 
-/* End of file tasks_s2/task2_instance.c */
+/* End of file tasks_s2/task1_instance.c */

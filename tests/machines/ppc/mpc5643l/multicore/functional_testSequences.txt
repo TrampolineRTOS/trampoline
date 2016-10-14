@@ -12,6 +12,7 @@ mc_startOs_s1
 ## 7.9.16 Task termination
 ## [00612, 00613]
 mc_taskTermination_s1
+mc_taskTermination_s2
 
 ## 7.9.17 Termination of OS-Applications
 ## [00614, 00615]

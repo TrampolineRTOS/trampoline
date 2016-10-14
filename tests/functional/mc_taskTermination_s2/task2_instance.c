@@ -43,23 +43,15 @@ DeclareTask(chain);
 
 static void test_t2_instance(void)
 {
-  StatusType r1, r2, r3;
+  StatusType r1;
 
   SCHEDULING_CHECK_INIT(1);
   r1 = GetSpinlock(spin0);
   SCHEDULING_CHECK_AND_EQUAL_INT(1, E_OK, r1);
 
-  SCHEDULING_CHECK_INIT(2);
-  r2 = TerminateTask();
-  SCHEDULING_CHECK_AND_EQUAL_INT(2, E_OS_SPINLOCK, r2);
-
-  SCHEDULING_CHECK_INIT(3);
-  r3 = ChainTask(chain);
-  SCHEDULING_CHECK_AND_EQUAL_INT(3, E_OS_SPINLOCK, r3);
-
   SyncAllCores(sync);
 
-  while(1); /* Wait for the tp watchdog to kill this task */
+  /* Return to call CallTerminateTask */
 }
 
 TestRef t2_instance(void)
@@ -67,7 +59,7 @@ TestRef t2_instance(void)
   EMB_UNIT_TESTFIXTURES(fixtures) {
     new_TestFixture("test_t2_instance",test_t2_instance)
   };
-  EMB_UNIT_TESTCALLER(testCall,"mc_taskTermination_s1",NULL,NULL,fixtures);
+  EMB_UNIT_TESTCALLER(testCall,"mc_taskTermination_s2",NULL,NULL,fixtures);
   return (TestRef)&testCall;
 }
 

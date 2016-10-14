@@ -40,7 +40,8 @@
 
 #define USER_MODE 0x4000
 
-extern P2FUNC(void, OS_CODE, CallTerminateTask);
+extern FUNC(void, OS_CODE) CallTerminateTask();
+extern FUNC(void, OS_CODE) CallTerminateISR2();
 
 #define OS_START_SEC_VAR_32BIT
 #include "tpl_memmap.h"

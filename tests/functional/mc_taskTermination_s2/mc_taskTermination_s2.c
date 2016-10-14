@@ -45,9 +45,8 @@
 /* --------------------------------------------------------------------------
  *  Requirement  | Short description                  | Verified
  * --------------------------------------------------------------------------
- * SWS_Os_00612  | TerminateTask / ChainTask returns  | {1,2,3}
- *               | with E_OS_SPINLOCK if has spinlock
- * SWS_Os_00613  | Spinlocks released after tp hook   | {4}, NoTimeout
+ *  tpl extra    | CallTerminateTask releases         | {1,2}
+ *               | Spinlocks                          |
  */
 
 #include "tpl_os.h"
@@ -94,12 +93,6 @@ void ShutdownHook(StatusType error)
   }
 }
 
-FUNC(ProtectionReturnType, OS_CODE) ProtectionHook(
-  VAR(StatusType, AUTOMATIC) FatalError)
-{
-  return PRO_TERMINATETASKISR; /* => Send this core to Idle function */
-}
-
 TASK(t1)
 {
   TestRunner_start();
@@ -111,15 +104,7 @@ TASK(t1)
 TASK(t2)
 {
   TestRunner_runTest(t2_instance());
-  /* Should not happen */
-  while(1);
-}
-
-TASK(chain)
-{
-  addFailure("Chain task has been called...\n", __LINE__, __FILE__);
-  /* Should not happen */
-  while(1);
+  /* Return to call CallTerminateTask */
 }
 
 /* End of file tasks_s2/tasks_s2.c */
