@@ -1,0 +1,96 @@
+/*
+ * This configuration file adds a SOURCE attribute to ISR and COUNTER
+ * It also define a new object type: INTERRUPT
+ */
+IMPLEMENTATION arm_interrupt {
+  INTERRUPT_VECTOR [] {
+    UINT32 VECTOR_NUM;
+    BOOLEAN EXCEPTION = FALSE;
+    ENUM [
+      HANDLER { STRING NAME; },
+      REFERENCE { STRING NAME; }
+    ] VECTOR_KIND;
+  };
+  INTERRUPT_SOURCE [] {
+    UINT32 SOURCE_NUM;
+    INTERRUPT_VECTOR_TYPE VECTOR;
+    BOOLEAN ACK = TRUE;
+  };
+  ISR [] {
+    #include <interruptSources.oil>
+  };
+  COUNTER [] {
+    #include <interruptSources.oil>
+  };
+  INTERRUPT_COUNT {
+    UINT32 IT_TABLE_SIZE;
+  };
+};
+
+CPU arm_interrupt {
+  COUNTER SystemCounter {
+    SOURCE = ARM_TIMER;
+  };
+
+  PLATFORM_FILES virtv7 {
+    PATH = "virt-v7";
+/*    CFILE = "tpl_irq.S";
+    CFILE = "tpl_system_call.S";
+    CFILE = "tpl_stacks.S";
+    CFILE = "tpl_trusted_fct.S";
+    CFILE = "tpl_vector_table.s";*/
+    CFILE = "tpl_machine_arm.c";
+    CFILE = "bouchons.c";
+  };
+
+  PLATFORM_FILES virtv7_armv7ve {
+    PATH = "virt-v7/armv7ve";
+    CFILE = "arm_entry_v7.S";
+    CFILE = "arm_cache_v7.S";
+    CFILE = "arm_mmu_v7.c";
+    CFILE = "arm_heap.c";
+    CFILE = "arm_irq.c";
+    CFILE = "arm_stdio.c";
+    CFILE = "arm_string.c";
+    CFILE = "arm_math.c";
+    CFILE = "dhry_1.c";
+    CFILE = "dhry_2.c";
+    CFILE = "dhry_port.c";
+    CFILE = "arm_main.c";
+  };
+
+/*  PLATFORM_FILES virtv7_armv7ve_drivers_libfdt {
+    PATH = "virt-v7/armv7ve/libs/libfdt";
+    CFILE = "fdt_ro.c";
+    CFILE = "fdt_rw.c";
+    CFILE = "fdt_strerror.c";
+    CFILE = "fdt_support.c";
+    CFILE = "fdt_sw.c";
+    CFILE = "fdt_wip.c";
+  };
+*/
+  PLATFORM_FILES virtv7_armv7ve_drivers_pic {
+    PATH = "virt-v7/armv7ve/libs/pic";
+    CFILE = "gic.c";
+/*    CFILE = "pl190.c";*/
+  };
+
+  PLATFORM_FILES virtv7_armv7ve_drivers_serial {
+    PATH = "virt-v7/armv7ve/libs/serial";
+/*    CFILE = "imx.c";*/
+    CFILE = "pl01x.c";
+  };
+
+  PLATFORM_FILES virtv7_armv7ve_drivers_timer {
+    PATH = "virt-v7/armv7ve/libs/timer";
+    CFILE = "generic_timer.c";
+/*    CFILE = "imx_gpt.c";*/
+/*    CFILE = "sp804.c";*/
+  };
+
+  PLATFORM_FILES virtv7_armv7ve_board {
+    PATH = "virt-v7/armv7ve/board";
+    CFILE = "arm_board.c";
+  };
+
+};

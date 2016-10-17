@@ -1,0 +1,352 @@
+/**
+ * Copyright (c) 2010 Anup Patel.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ * @file firmware.ld
+ * @author Anup Patel (anup@brainfault.org)
+ * @brief Linker script for Basic Firmware
+ */
+
+OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
+OUTPUT_ARCH("arm")
+ENTRY(_start_vect)
+
+
+SECTIONS {
+/* . = TEXT_START; */
+  . = 0x41000000;
+
+ PROVIDE(_code_start = .);
+ PROVIDE(_reloc_region_start = .);
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                                    Code                                    */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
+  /* remaining .text (ie no section given) */
+  .text : {
+    *(.expvect)
+    *(.text)           /* .text sections (code) */
+    *(.text*)          /* .text* sections (code) */
+    *(.glue_7)         /* glue arm to thumb code */
+    *(.glue_7t)        /* glue thumb to arm code */
+    *(.eh_frame)
+
+    KEEP (*(.init))
+    KEEP (*(.fini))
+
+    . = ALIGN(16);
+    _etext = .;        /* define a global symbols at end of code */
+    _exit = .;
+  }
+  /*
+   * code and const of the operating system (Trampoline).
+   * this section is not accessible from an untrusted process
+   */
+
+  /* --- code of OS --- */
+  ostext : {
+/*    *(.SC_handler)*/
+/*    *(.EI_handler)*/
+    *(.osCode)
+    *(.osApiCode)  /* API functions */
+    *(.appCommonCode)
+    . = ALIGN(16);
+  }
+
+  /* --- const of OS --- */
+  osconst : {
+    *(.osConst)
+    *(.osApiConst) /* API constants */
+    . = ALIGN(16);
+  }
+
+  /*
+   * code and const of the processes of the applications ]
+   */
+  apptext : {
+    __PROGCONST_SECTION_START = .;
+    __SEG_START_APP_CODE_CONST_RGN = .;
+    /* --- Sections for application code --- */
+
+    /* --- Sections for code of tasks and ISR --- */%
+    foreach proc in PROCESSES do
+%
+      *(.% !proc::KIND %_% !proc::NAME %Code)
+%
+    end foreach
+    foreach isr in ISRS1 do
+%
+      *(.ISR_% !isr::NAME %Code)
+%
+    end foreach
+%  . = ALIGN(16);
+  }
+  
+  appconst : {
+    /* --- Sections for application const --- */
+    *(.rodata)     /* litteral strings (constants, strings, etc.) */
+    *(.rodata*)    /* litteral strings (constants, strings, etc.) */
+%
+    foreach app in APPLICATIONS do
+      for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+        for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
+%      *(.OS_APP_% !app::NAME %_SEC% !SECTION_KIND !DATA_SIZE %)
+%
+        end for
+      end for
+    end foreach
+%  . = ALIGN(16);
+  }
+
+  /*
+   * Sections for const of tasks and ISR
+   */
+  procconst : {
+%
+    foreach proc in PROCESSES do
+      for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+        for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
+%      *(.% !proc::KIND %_% !proc::NAME %_SEC% !SECTION_KIND !DATA_SIZE %)
+%
+        end for
+      end for
+    end foreach
+%
+    . = ALIGN(16);
+    __SEG_STOP_APP_CODE_CONST_RGN = . - 1;
+    __PROGCONST_SECTION_STOP = . - 1;
+  }
+
+  /* Initialized data sections goes into RAM, load LMA copy after code */
+  _sidata = .;
+
+  .data : AT ( _sidata ) {
+    _sdata = .;        /* create a global symbol at data start */
+    *(.data)           /* .data sections */
+    *(.data*)          /* .data* sections */
+    *(.osVar)
+%
+foreach proc in PROCESSES do
+%
+/* Initialized variables section of % !proc::KIND % % !proc::NAME % */
+%
+  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+    for SECTION_KIND in "_POWER_ON_INIT_" do
+%    *(.% !proc::KIND %_% !proc::NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+    end for
+  end for
+end foreach
+
+foreach app in APPLICATIONS do
+%/* Initialized variables section of OS_APP % !app::NAME % */
+%
+  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+    for SECTION_KIND in "_POWER_ON_INIT_" do
+%    *(.OS_APP_% !app::NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+    end for
+  end for
+end foreach
+%    
+    . = ALIGN(16);
+    _edata = .;
+  }
+
+  /*
+   * private data of processes
+   */
+   
+%
+
+foreach proc in PROCESSES do
+%  .% !proc::KIND %_% !proc::NAME %_SEC_VAR : {
+    . = ALIGN(__SEG_ALIGN_% !proc::KIND %_% !proc::NAME %_VAR_RGN);
+    __SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN = .;
+  /* --- Initialized variables section of % !proc::KIND % % !proc::NAME % */
+%
+  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+    for SECTION_KIND in "_NOINIT_","_FAST_","_" do
+%    *(.% !proc::KIND %_% !proc::NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+    end for
+  end for
+%     __SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN = .;
+     __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 4K ? 4K : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+     __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 1K ? 1K : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+     __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 512 ? 512 : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+     __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 256 ? 256 : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+     __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 128 ? 128 : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+     __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 64 ? 64 : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+     __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 32 ? 32 : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+     __SEG_ALIGN_% !proc::KIND %_% !proc::NAME %_VAR_RGN = __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+  }
+%
+end foreach
+%
+   
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                                Stack of processes                          */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
+%
+foreach proc in PROCESSES do %
+  /* --- Section of stack of % !proc::KIND % % !proc::NAME %  */
+  .% !proc::KIND %_% !proc::NAME %_SEC_STACK : {
+    . = ALIGN(__SEG_ALIGN_% !proc::KIND %_% !proc::NAME %_STACK_RGN);
+    __SEG_START_% !proc::KIND %_% !proc::NAME %_STACK_RGN = .;
+    *(.% !proc::KIND %_% !proc::NAME %Stack)
+    . = ALIGN(4);
+    __SEG_END_% !proc::KIND %_% !proc::NAME %_STACK_RGN = .;
+    __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_STACK_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_STACK_RGN) < 4K ? 4K : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN;
+    __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_STACK_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_STACK_RGN) < 1K ? 1K : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN;
+    __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_STACK_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_STACK_RGN) < 512 ? 512 : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN;
+    __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_STACK_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_STACK_RGN) < 256 ? 256 : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN;
+    __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_STACK_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_STACK_RGN) < 128 ? 128 : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN;
+    __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_STACK_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_STACK_RGN) < 64 ? 64 : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN;
+    __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN = (__SEG_END_% !proc::KIND %_% !proc::NAME %_STACK_RGN - __SEG_START_% !proc::KIND %_% !proc::NAME %_STACK_RGN) < 32 ? 32 : __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN;
+    __SEG_ALIGN_% !proc::KIND %_% !proc::NAME %_STACK_RGN = __SEG_SIZE_% !proc::KIND %_% !proc::NAME %_STACK_RGN;
+  }
+%
+end foreach
+%
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                                OS application data                         */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
+  /*
+   * os application data
+   */
+   appvars : {
+%
+foreach app in APPLICATIONS do
+%    . = ALIGN(__SEG_ALIGN_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN)
+    __SEG_START_OS_APP_% !app::NAME %_VAR_RGN = .;
+  /* --- Initialized variables section of OS_APP % !app::NAME % */
+%
+  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+    for SECTION_KIND in "_NOINIT_","_FAST_","_" do
+%    *(.OS_APP_% !app::NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+    end for
+  end for
+%    . = ALIGN(4);
+    __SEG_END_OS_APP_% !app::NAME %_VAR_RGN = .;
+    __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 4K ? 4K : __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+    __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 1K ? 1K : __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+    __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 512 ? 512 : __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+    __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 256 ? 256 : __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+    __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 128 ? 128 : __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+    __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 64 ? 64 : __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+    __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN = (__SEG_END_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN - __SEG_START_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN) < 32 ? 32 : __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+    __SEG_ALIGN_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN = __SEG_SIZE_OS_APP_% !proc::KIND %_% !proc::NAME %_VAR_RGN;
+%
+end foreach
+%
+  }
+  
+  
+  .rodata : {
+    *(.rodata .rodata.*)
+    . = ALIGN(16);
+    _erodata = .;
+  }
+
+  PROVIDE(_reloc_region_end = .);
+
+  PROVIDE(_zero_region_start = .);
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                          BSS (uninitialized data)                          */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+  .bss : {
+    PROVIDE(_bss_start = .);
+    *(.bss)
+    . = ALIGN(16);
+    _ebss = .;
+    PROVIDE(_bss_end = .);
+  }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                                    Heap                                    */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+  .heap : {
+    PROVIDE(_heap_start = .);
+    *(.heap)
+    . = . + 8192;
+    . = ALIGN(4);
+    PROVIDE(_heap_end = .);
+  }
+
+  PROVIDE(_zero_region_end = .);
+
+  .svc_stack : {
+    PROVIDE(_svc_stack_start = .);
+    . = . + 4096;
+    . = ALIGN(4);
+    PROVIDE(_svc_stack_end = .);
+  }
+
+  .abt_stack : {
+    PROVIDE(_abt_stack_start = .);
+    . = . + 4096;
+    . = ALIGN(4);
+    PROVIDE(_abt_stack_end = .);
+  }
+
+  .und_stack : {
+    PROVIDE(_und_stack_start = .);
+    . = . + 4096;
+    . = ALIGN(4);
+    PROVIDE(_und_stack_end = .);
+  }
+
+  .irq_stack : {
+    PROVIDE(_irq_stack_start = .);
+    . = . + 4096;
+    . = ALIGN(4);
+    PROVIDE(_irq_stack_end = .);
+  }
+
+  .fiq_stack : {
+    PROVIDE(_fiq_stack_start = .);
+    . = . + 4096;
+    . = ALIGN(4);
+    PROVIDE(_fiq_stack_end = .);
+  }
+
+  .usr_stack : {
+    PROVIDE(_usr_stack_start = .);
+    . = . + 4096;
+    . = ALIGN(4);
+    PROVIDE(_usr_stack_end = .);
+  }
+
+  PROVIDE(_code_end = .);
+}

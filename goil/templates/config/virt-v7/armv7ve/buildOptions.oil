@@ -1,0 +1,74 @@
+/*
+ * ARMv7 build options for gcc
+ */
+CPU buildOptions {
+  BUILDOPTIONS defaultBuildOptionsForARM7tdmi {
+    /*
+     * Common flags for C and C++ compiling
+     * -Wall -O2 -nostdlib -nostartfiles -ffreestanding
+     */
+/*     board_text_start = 0x41000000
+     FW_CPPFLAGS=-I. -I$(common_dir) -DTEXT_START=$(board_text_start)
+     FW_CPPFLAGS+=-DARM_ARCH_v7ve
+     FIRMWARE_CPPFLAGS=-DFIRMWARE_BOOT
+     FIRMWARE_CPPFLAGS+=-DBOARD_SMP
+     FIRMWARE_CPPFLAGS+=-DARM_SECURE_EXTN_IMPLEMENTED
+     FIRMWARE_CPPFLAGS+=-DBOARD_FDT_SUPPORT
+     FIRMWARE_CPPFLAGS+=$(board_cppflags)
+     FIRMWARE_CFLAGS=$(FIRMWARE_CPPFLAGS) $(board_cflags)
+     FW_CFLAGS=-g -Wall -Werror -nostdlib -msoft-float -marm
+     FW_CFLAGS+=-march=armv7ve $(FW_CPPFLAGS)
+*/
+//    COMMONFLAGS = "-g";                           // Produce debugging information
+    COMMONFLAGS = "-Wall";                        // All warnings on
+//    COMMONFLAGS = "-pedantic";
+    COMMONFLAGS = "-Wformat";
+    COMMONFLAGS = "-std=c99";
+    COMMONFLAGS = "-mcpu=cortex-a15";              // Compile for arm7tdmi
+    COMMONFLAGS = "-Wmissing-field-initializers"; // Struct initialized with incorrect number of fiels
+    COMMONFLAGS = "-mfloat-abi=soft";             // Floating point numbers are computed in software
+    COMMONFLAGS = "-DARM_ARCH_v7ve";
+    COMMONFLAGS = "-DFIRMWARE_BOOT";
+    COMMONFLAGS = "-DBOARD_SMP";
+    COMMONFLAGS = "-DARM_SECURE_EXTN_IMPLEMENTED";
+    COMMONFLAGS = "-DBOARD_FDT_SUPPORT";
+    COMMONFLAGS = "-nostdlib";
+    COMMONFLAGS = "-marm";
+    COMMONFLAGS = "-march=armv7ve";
+    COMMONFLAGS = "-D__ASSEMBLY__";
+    COMMONFLAGS = "-DTEXT_START=0x41000000";
+    /*
+     * C++ compiler flags
+     */
+    CPPFLAGS = "-fno-rtti";                       // No information for runtime (run time type information) - reduce exe size
+    CPPFLAGS = "-felide-constructors";            // Optimization to omit creating temporary object when used to initialize another object
+    CPPFLAGS = "-fno-threadsafe-statics";         // No thread safe init of local static variables - reduce code size
+    CPPFLAGS = "-fno-use-cxa-get-exception-ptr";  // Don't use the __cxa_get_exception_ptr runtime routine (no exception anyway)
+    CPPFLAGS = "-fno-enforce-eh-specs";           // Don't generate code to check for violation of exception specifications at runtime (no exception anyway)
+
+    /*
+     * Assembler flags
+     */
+/*     FIRMWARE_ASFLAGS=$(FIRMWARE_CPPFLAGS) $(board_asflags)
+     FW_CPPFLAGS=-I. -I$(common_dir) -DTEXT_START=$(board_text_start)
+     FW_ASFLAGS=-g -Wall -Werror -nostdlib -msoft-float -marm -D__ASSEMBLY__
+     FW_ASFLAGS+=-march=armv7ve $(FW_CPPFLAGS)
+     FW_CPPFLAGS+=-DARM_ARCH_v7ve
+*/
+
+//    ASFLAGS = "-g";                               // Produce debugging information
+    ASFLAGS = "-mcpu=cortex-a15";                 // Assemble for arm7tdmi
+    ASFLAGS = "--fatal-warnings";                 // A warning is an error
+    ASFLAGS = "-mfloat-abi=soft";                 // Floating point numbers are computed in software gcc-options-to-the-arm-mcu-fpu-datasheet
+    ASFLAGS = "-D__ASSEMBLY__";
+    ASFLAGS = "-marm";
+    ASFLAGS = "-march=armv7ve";
+    ASFLAGS = "-DARM_ARCH_v7ve";
+
+//    LDFLAGS = "-g";
+    LDFLAGS = "--fatal-warnings";                 // A warning is an error
+    LDFLAGS = "--warn-common";                    // Warn when a common symbol is combined with another common symbol
+    LDFLAGS = "--no-undefined";                   // Report unresolved symbol references
+/*    LDFLAGS = "--gc-sections";                    // Remove unused sections. Works with -ffunction-sections and -fdata-sections, see above*/
+  };
+};

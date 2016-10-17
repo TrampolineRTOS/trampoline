@@ -1,0 +1,5 @@
+			  Common basic firmware code
+
+This directory contains souce code files that are common to all boards and
+arm processors.
+

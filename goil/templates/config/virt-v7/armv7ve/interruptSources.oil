@@ -1,0 +1,43 @@
+/*
+ * Interrupt sources for the BCM2836 micro-controller
+ */
+ENUM [
+  /* ARM IRQs */
+  ARM_TIMER,              /* 0 */
+  ARM_MAILBOX,            /* 1 */
+  ARM_DOORBELL_0,         /* 2 */
+  ARM_DOORBELL_1,         /* 3 */
+  GPU0_HALTED,            /* 4 */
+  GPU1_HALTED,            /* 5 */
+  ILLEGAL_ACCESS_TYPE_1,  /* 6 */
+  ILLEGAL_ACCESS_TYPE_0,  /* 7 */
+  /* VC IRQs 0-31 */
+  /* IRQ pending source 31:0 */
+  AUX_INT,                /* 8 */
+  /* GPU IRQs 32-63 */
+  /* IRQ pending source 63:32 */
+  I2C_SPI_SLV_INT,        /* 9 */
+  PWA0,                   /* 10 */
+  PWA1,                   /* 11 */
+  SMI,                    /* 12 */
+  GPIO_INT_0,             /* 13 */
+  GPIO_INT_1,             /* 14 */
+  GPIO_INT_2,             /* 15 */
+  GPIO_INT_3,             /* 16 */
+  I2C_INT,                /* 17 */
+  SPI_INT,                /* 18 */
+  PCM_INT,                /* 19 */
+  UART_INT,               /* 20 */
+  /* Other GPU IRQs */
+  GPU_IRQ_7,              /* 21 */
+  GPU_IRQ_9,              /* 22 */
+  GPU_IRQ_10,             /* 23 */
+  GPU_IRQ_18,             /* 24 */
+  GPU_IRQ_19,             /* 25 */
+  GPU_IRQ_53,             /* 26 */
+  GPU_IRQ_54,             /* 27 */
+  GPU_IRQ_55,             /* 28 */
+  GPU_IRQ_56,             /* 29 */
+  GPU_IRQ_57,             /* 30 */
+  GPU_IRQ_62              /* 31 */
+] SOURCE;

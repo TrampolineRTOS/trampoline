@@ -1,0 +1,5 @@
+/* Specify the memory areas for stm32f407 */
+MEMORY
+{
+  MEMORY (rx)  : ORIGIN = 0x60000000, LENGTH = 0x0
+}
