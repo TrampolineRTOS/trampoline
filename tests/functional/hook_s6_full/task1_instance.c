@@ -38,20 +38,23 @@
 #include "tpl_os.h"
 
 DeclareTask(t1);
+extern int posttask_instance;
 
 /*test case:test the reaction of the system called with 
-an activation of a task*/
+ an activation of a task*/
 static void test_t1_instance(void)
 {
 	StatusType result_inst_1, result_inst_2;
+  int t1_instance = posttask_instance/2;
+  int test_start = t1_instance * 4;
 	
-	SCHEDULING_CHECK_INIT(1);
+	SCHEDULING_CHECK_INIT(test_start + 1);
 	result_inst_1 = ActivateTask(t1);
-	SCHEDULING_CHECK_AND_EQUAL_INT(3,E_OS_LIMIT , result_inst_1);	
+	SCHEDULING_CHECK_AND_EQUAL_INT(test_start + 3,E_OS_LIMIT , result_inst_1);	
 	
-	SCHEDULING_CHECK_INIT(4);
+	SCHEDULING_CHECK_INIT(test_start + 4);
 	result_inst_2 = ChainTask(t1);
-	SCHEDULING_CHECK_AND_EQUAL_INT(4,E_OK , result_inst_2);	
+	SCHEDULING_CHECK_AND_EQUAL_INT(test_start + 4,E_OK , result_inst_2);	
 	
 }
 

@@ -43,7 +43,7 @@ void tpl_send_it2(void);
  an activation of a isr*/
 static void test_posttask_instance3(void)
 {
-	SCHEDULING_CHECK_STEP(5);
+	SCHEDULING_CHECK_STEP(7);
 	
 	tpl_send_it2();
 	SuspendAllInterrupts();

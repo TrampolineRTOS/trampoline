@@ -64,6 +64,7 @@ void ErrorHook(void)
 	TestRunner_runTest(HookTest_seq6_error_instance());
 }
 
+
 void PostTaskHook(void)
 { 
 	posttask_instance++;

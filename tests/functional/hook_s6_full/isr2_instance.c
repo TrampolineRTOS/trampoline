@@ -41,7 +41,7 @@
 an activation of a isr*/
 static void test_isr2_instance(void)
 {	
-	SCHEDULING_CHECK_STEP(6);
+	SCHEDULING_CHECK_STEP(8);
 	
 }
 
