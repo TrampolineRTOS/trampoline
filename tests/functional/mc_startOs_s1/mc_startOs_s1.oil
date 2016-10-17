@@ -69,6 +69,7 @@ CPU test {
   {
     TASK = t2;
     COUNTER = SystemCounter_core1;
+    TRUSTED = TRUE { TRUSTED_FUNCTION = t2_function; };
     CORE = 1;
   };
 

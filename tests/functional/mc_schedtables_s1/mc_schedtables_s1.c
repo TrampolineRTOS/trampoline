@@ -1,5 +1,5 @@
 /**
- * @file tasks_s2/tasks_s2.c
+ * @file mc_schedtables_s1/mc_schedtables_s1.c
  *
  * @section desc File description
  *
@@ -42,26 +42,24 @@
  * Goil       : Tested by Goil's Checks section
  * TODO       : Test not written
  */
-/* --------------------------------------------------------------------------
- *  Requirement  | Short description                  | Verification
- * --------------------------------------------------------------------------
- * SWS_Os_00632  | An Alarm can activate a task on a  | {1}, NoTimeout
- *               | different core.
- * SWS_Os_00633  | An Alarm can set an event on a     | {2, 9}, Notimeout
- *               | different core.
- * SWS_Os_00634  | Alarm processed on alarm's core    | Internal
- * SWS_Os_00635  | Alarm callback on the alarm's core | TODO
- *               | (SC1 only)
- * SWS_Os_00636  | SetRelAlarm work on an alarm on a  | {5}
- *               | different core.
- * SWS_Os_00637  | SetAbsAlarm work on an alarm on a  | {3}
- *               | different core.
- * SWS_Os_00638  | CancelAlarm work on an alarm on a  | {4, 6}, NoErr
- *               | different core.
- * SWS_Os_00639  | GetAlarmBase work on an alarm on a | {8}
- *               | different core.
- * SWS_Os_00640  | GetAlarm work on an alarm on a     | {7}
- *               | different core.
+/* ----------------------------------------------------------------------------
+ *  Requirement  | Short description                  | Verification tags
+ * ----------------------------------------------------------------------------
+ * SWS_Os_00641  | A schedtable can activate tasks    | {1, 2} NoTimeout
+ *               | bound on another core
+ * SWS_Os_00642  | A schedtable can set an event      | {1, 2} NoTimeout
+ *               | bound on another core
+ * SWS_Os_00643  | Schedtable be processed on its own | Internal
+ *               | core
+ * SWS_Os_00644  | StartScheduleTableAbs can start    | {4, 8}
+ *               | schedtable on another core
+ * SWS_Os_00645  | StartScheduleTableRel can start    | {3}
+ *               | schedtable on another core
+ * SWS_Os_00646  | StopScheduleTable can stop         | {7} NoErr
+ *               | schedtable on another core
+ * SWS_Os_00647  | GetScheduleTableStatus can get the | {5, 6}
+ *               | status of a schedtable on another
+ *               | core
  */
 
 #include "tpl_os.h"
@@ -124,7 +122,7 @@ TASK(t2)
 
 TASK(should_not_run)
 {
-  addFailure("Cancel Alarm did not work !", __LINE__, __FILE__);
+  addFailure("StopScheduleTable failed !", __LINE__, __FILE__);
 }
 
-/* End of file tasks_s2/tasks_s2.c */
+/* End of file mc_schedtables_s1/mc_schedtables_s1.c */

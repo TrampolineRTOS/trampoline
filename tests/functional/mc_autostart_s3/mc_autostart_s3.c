@@ -64,6 +64,7 @@ int main(void)
   {
     case OS_CORE_ID_MASTER :
       TestRunner_start();
+      SyncAllCores_Init();
       StartCore(OS_CORE_ID_1, &rv);
       if(rv == E_OK)
         StartOS(OSDEFAULTAPPMODE);
@@ -88,11 +89,8 @@ void ShutdownHook(StatusType error)
     case OS_CORE_ID_MASTER :
       TestRunner_end();
       break;
-    case OS_CORE_ID_1 :
-      while(1); /* Core 1 waits here */
-      break;
     default :
-      /* Should not happen */
+      while(1); /* Slave cores wait here */
       break;
   }
 }

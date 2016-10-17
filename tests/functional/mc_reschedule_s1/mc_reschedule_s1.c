@@ -57,22 +57,24 @@ TestRef t1_instance(void);
 int main(void)
 {
 #if NUMBER_OF_CORES > 1
-    StatusType rv;
+  StatusType rv;
 
-    switch(GetCoreID())
-    {
-      case OS_CORE_ID_MASTER :
-        StartCore(OS_CORE_ID_1, &rv);
-        if(rv == E_OK)
-          StartOS(OSDEFAULTAPPMODE);
-        break;
-      case OS_CORE_ID_1 :
+  switch(GetCoreID())
+  {
+    case OS_CORE_ID_MASTER :
+      TestRunner_start();
+      SyncAllCores_Init();
+      StartCore(OS_CORE_ID_1, &rv);
+      if(rv == E_OK)
         StartOS(OSDEFAULTAPPMODE);
-        break;
-      default :
-        /* Should not happen */
-        break;
-    }
+      break;
+    case OS_CORE_ID_1 :
+      StartOS(OSDEFAULTAPPMODE);
+      break;
+    default :
+      /* Should not happen */
+      break;
+  }
 #else
 # error "This is a multicore example. NUMBER_OF_CORES should be > 1"
 #endif
@@ -86,15 +88,14 @@ void ShutdownHook(StatusType error)
     case OS_CORE_ID_MASTER :
       TestRunner_end();
       break;
-    case OS_CORE_ID_1 :
     default :
+      while(1); /* Slave cores wait here */
       break;
   }
 }
 
 TASK(t1)
 {
-  TestRunner_start();
   TestRunner_runTest(t1_instance());
   ShutdownOS(E_OK);
 }

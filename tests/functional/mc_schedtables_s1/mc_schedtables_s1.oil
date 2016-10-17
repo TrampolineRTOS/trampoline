@@ -1,0 +1,172 @@
+/**
+ * @file mc_schedtables_s1.oil
+ *
+ * @section desc File description
+ *
+ * @section copyright Copyright
+ *
+ * Trampoline Test Suite
+ *
+ * Trampoline Test Suite is copyright (c) IRCCyN 2005-2007
+ * Trampoline Test Suite is protected by the French intellectual property law.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; version 2
+ * of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @section infos File informations
+ *
+ * $Date$
+ * $Rev$
+ * $Author$
+ * $URL$
+ */
+
+OIL_VERSION = "4.0" : "schedtables_s1" ;
+
+#include <arch.oil>
+
+IMPLEMENTATION trampoline {
+  TASK {
+    UINT32 [1..10] PRIORITY = 1 ;
+  };
+};
+
+CPU test {
+  OS config {
+    BUILD = TRUE {
+      APP_SRC = "mc_schedtables_s1.c";
+      APP_SRC = "task1_instance.c";
+      APP_SRC = "task2_instance.c";
+      TRAMPOLINE_BASE_PATH = "../../..";
+      APP_NAME = "mc_schedtables_s1_exe";
+    };
+    SHUTDOWNHOOK = TRUE;
+    STATUS=EXTENDED;
+    SCALABILITYCLASS = SC4;
+  };
+
+  APPMODE std {};
+
+  APPLICATION MasterApplication
+  {
+    TASK = t1;
+    SCHEDULETABLE = core0_schedtable;
+    COUNTER = SystemCounter_core0;
+    TRUSTED = TRUE { TRUSTED_FUNCTION = t1_function; };
+    CORE = 0;
+  };
+  APPLICATION SlaveApplication
+  {
+    TASK = t2;
+    TASK = should_not_run;
+    SCHEDULETABLE = core1_schedtable;
+    SCHEDULETABLE = should_not_expire;
+    COUNTER = SystemCounter_core1;
+    TRUSTED = TRUE { TRUSTED_FUNCTION = t2_function; };
+    CORE = 1;
+  };
+
+  COUNTER SystemCounter_core0
+  {
+  };
+  COUNTER SystemCounter_core1
+  {
+  };
+
+  SPINLOCK sync0
+  {
+    ACCESSING_APPLICATION = MasterApplication;
+    ACCESSING_APPLICATION = SlaveApplication;
+  };
+  SPINLOCK sync1
+  {
+    ACCESSING_APPLICATION = MasterApplication;
+    ACCESSING_APPLICATION = SlaveApplication;
+  };
+
+  SCHEDULETABLE core0_schedtable
+  {
+    COUNTER = SystemCounter_core0;
+    AUTOSTART = NONE;
+    LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE;
+    PERIODIC = FALSE;
+    LENGTH = 100;
+    EXPIRY_POINT t2_expiry {
+      OFFSET = 5;
+      ACTION = ACTIVATETASK { TASK = t2;};
+    };
+    EXPIRY_POINT t2_event_expiry {
+      OFFSET = 20;
+      ACTION = SETEVENT { TASK = t2; EVENT = t2_event; };
+    };
+  };
+  SCHEDULETABLE core1_schedtable
+  {
+    COUNTER = SystemCounter_core1;
+    AUTOSTART = NONE;
+    LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE;
+    PERIODIC = FALSE;
+    LENGTH = 100;
+    EXPIRY_POINT t1_event_expiry {
+      OFFSET = 1;
+      ACTION = SETEVENT { TASK = t1; EVENT = t1_event;};
+    };
+    ACCESSING_APPLICATION = MasterApplication;
+  };
+  SCHEDULETABLE should_not_expire
+  {
+    COUNTER = SystemCounter_core1;
+    AUTOSTART = NONE;
+    LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE;
+    PERIODIC = FALSE;
+    LENGTH = 100;
+    EXPIRY_POINT should_not_run_expiry {
+      OFFSET = 5;
+      ACTION = ACTIVATETASK { TASK = should_not_run;};
+    };
+    ACCESSING_APPLICATION = MasterApplication;
+  };
+
+  EVENT t1_event
+  {
+    MASK = AUTO;
+  };
+  TASK t1 {
+    AUTOSTART = TRUE { APPMODE = std; };
+    PRIORITY = 1;
+    ACTIVATION = 1;
+    SCHEDULE = NON;
+    EVENT = t1_event;
+  };
+  EVENT t2_event
+  {
+    MASK = AUTO;
+  };
+  TASK t2 {
+    AUTOSTART = FALSE;
+    PRIORITY = 1;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    EVENT = t2_event;
+  };
+  TASK should_not_run {
+    AUTOSTART = FALSE;
+    PRIORITY = 2;
+    ACTIVATION = 1;
+    SCHEDULE = NON;
+  };
+
+};
+
+/* End of file mc_schedtables_s1.oil */

@@ -58,25 +58,26 @@
 #include "tpl_os.h"
 #include "embUnit.h"
 
-TestRef TaskManagementTest_t1_instance(void);
-TestRef TaskManagementTest_t2_instance(void);
+TestRef t1_instance(void);
+TestRef t2_instance(void);
 
 int main(void)
 {
 #if NUMBER_OF_CORES > 1
-    StatusType rv;
+  StatusType rv;
 
-    switch(GetCoreID()){
-      case OS_CORE_ID_MASTER :
-        StartOS(OSDEFAULTAPPMODE);
-        break;
-      case OS_CORE_ID_1 :
-        StartOS(OSDEFAULTAPPMODE);
-        break;
-      default :
-        /* Should not happen */
-        break;
-    }
+  switch(GetCoreID()){
+    case OS_CORE_ID_MASTER :
+      TestRunner_start();
+      StartOS(OSDEFAULTAPPMODE);
+      break;
+    case OS_CORE_ID_1 :
+      StartOS(OSDEFAULTAPPMODE);
+      break;
+    default :
+      /* Should not happen */
+      break;
+  }
 #else
 # error "This is a multicore example. NUMBER_OF_CORES should be > 1"
 #endif
@@ -85,19 +86,27 @@ int main(void)
 
 void ShutdownHook(StatusType error)
 {
-  TestRunner_end();
+  switch(GetCoreID())
+  {
+    case OS_CORE_ID_MASTER :
+      TestRunner_end();
+      break;
+    default :
+      while(1); /* Slave cores wait here */
+      break;
+  }
 }
 
 TASK(t1)
 {
-  TestRunner_start();
-  TestRunner_runTest(TaskManagementTest_t1_instance());
+  TestRunner_runTest(t1_instance());
   ShutdownOS(E_OK);
 }
 
 TASK(t2)
 {
-  TestRunner_runTest(TaskManagementTest_t2_instance());
+  TestRunner_runTest(t2_instance());
+  ShutdownOS(E_OK);
 }
 
 /* End of file tasks_s2/tasks_s2.c */

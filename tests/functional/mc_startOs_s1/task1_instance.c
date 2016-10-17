@@ -47,13 +47,13 @@ static void test_t1_instance(void)
 }
 
 /*create the test suite with all the test cases*/
-TestRef TaskManagementTest_t1_instance(void)
+TestRef t1_instance(void)
 {
   EMB_UNIT_TESTFIXTURES(fixtures) {
     new_TestFixture("test_t1_instance",test_t1_instance)
   };
-  EMB_UNIT_TESTCALLER(TaskManagementTest,"mc_startOs_sequence1",NULL,NULL,fixtures);
-  return (TestRef)&TaskManagementTest;
+  EMB_UNIT_TESTCALLER(caller,"mc_startOs_sequence1",NULL,NULL,fixtures);
+  return (TestRef)&caller;
 }
 
 /* End of file tasks_s2/task1_instance.c */

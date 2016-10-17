@@ -1,5 +1,5 @@
 /**
- * @file tasks_s2/task2_instance.c
+ * @file mc_schedtables_s1/task2_instance.c
  *
  * @section desc File description
  *
@@ -32,28 +32,34 @@
  * $URL$
  */
 
-/*Instance of task t2*/
-
 #include "embUnit.h"
 #include "Os.h"
 
+DeclareSpinlock(sync0);
+DeclareSpinlock(sync1);
+DeclareEvent(t2_event);
+
 static void test_t2_instance(void)
 {
-  StatusType result_inst_1;
+  StatusType r1;
 
-  addFailure("Core 1 should not be activated !", __LINE__, __FILE__);
+  SCHEDULING_CHECK_INIT(2);
+  r1 = WaitEvent(t2_event);
+  SCHEDULING_CHECK_AND_EQUAL_INT(2, E_OK, r1);
 
-  ShutdownOS(E_OK); /* This will release the spinlock spin0 */
+  SyncAllCores(sync0);
+
+  /* Wait for the core0 to reach the end of its tests */
+  SyncAllCores(sync1);
 }
 
-/*create the test suite with all the test cases*/
 TestRef t2_instance(void)
 {
   EMB_UNIT_TESTFIXTURES(fixtures) {
     new_TestFixture("test_t2_instance",test_t2_instance)
   };
-  EMB_UNIT_TESTCALLER(caller,"mc_startOs_sequence1",NULL,NULL,fixtures);
+  EMB_UNIT_TESTCALLER(caller,"mc_schedtables_s1",NULL,NULL,fixtures);
   return (TestRef)&caller;
 }
 
-/* End of file tasks_s2/task2_instance.c */
+/* End of file mc_schedtables_s1/task2_instance.c */

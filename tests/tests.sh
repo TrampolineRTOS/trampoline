@@ -60,7 +60,8 @@ RSYNC_EXCLUDE="--exclude .git
                --exclude goil
                --exclude examples"
 # Compilation timeout
-REMOTE_BUILD_TIMEOUT=""
+REMOTE_BUILD_TIMEOUT="timeout 6s"
+TIMEOUT_EXIT_FAILURE=124
 
 # Get object files too
 GET_BUILD=false
@@ -151,8 +152,14 @@ arch_remote_compile()
   rsync --delete -az $TPL_DIR/ $RSYNC_EXCLUDE $server:$REMOTE_TPL_DIR
 
   # Remote Compile
-  ssh $server "cd $REMOTE_TEST_DIR;
-               $REMOTE_BUILD_TIMEOUT $REMOTE_ARCH_SCRIPT arch_compile $@;"
+  retval=$TIMEOUT_EXIT_FAILURE
+  while [ $retval -eq $TIMEOUT_EXIT_FAILURE ]; do
+    out=$(ssh $server "cd $REMOTE_TEST_DIR;
+             $REMOTE_BUILD_TIMEOUT $REMOTE_ARCH_SCRIPT arch_compile $@;" 2>tmp)
+    retval=$?
+    err=$(cat tmp)
+    rm tmp
+  done
 
   # Get produced files
   scp -q $server:$REMOTE_TEST_DIR/${i}_exe .
@@ -160,6 +167,10 @@ arch_remote_compile()
   if $GETBUILD ; then
     scp -rq $server:$REMOTE_TEST_DIR/build .
   fi
+
+  # Echo outputs
+  echo "$out"
+  echo >&2 "$err"
 }
 
 # =============================================================================

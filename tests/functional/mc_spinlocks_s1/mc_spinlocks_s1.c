@@ -83,6 +83,8 @@ int main(void)
   switch(GetCoreID())
   {
     case OS_CORE_ID_MASTER :
+      TestRunner_start();
+      SyncAllCores_Init();
       StartCore(OS_CORE_ID_1, &rv);
       if(rv == E_OK)
         StartOS(OSDEFAULTAPPMODE);
@@ -114,9 +116,8 @@ void ShutdownHook(StatusType error)
     case OS_CORE_ID_MASTER :
       TestRunner_end();
       break;
-    case OS_CORE_ID_1 :
-      while(1);
     default :
+      while(1); /* Slave cores wait here */
       break;
   }
 }
@@ -132,7 +133,6 @@ ISR(softwareInterruptHandler_Core1)
 
 TASK(t1)
 {
-  TestRunner_start();
   TestRunner_runTest(t1_instance());
   ShutdownOS(E_OK);
 }

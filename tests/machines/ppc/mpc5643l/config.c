@@ -82,32 +82,52 @@ void WaitActivationOneShotAlarm(AlarmType Alarm){
  *
  * This function creates a barrier to sync all running cores.
  *
- * @param Alarm Alarm id
- *
  */
-tpl_core_id syncAllCores_maxCores = NUMBER_OF_CORES;
+tpl_core_id syncAllCores_maxCores[SPINLOCK_COUNT];
+uint8 syncAllCores_initialized = 0;
+
+void SyncAllCores_Init()
+{
+  uint8 i;
+  for(i = 0; i < SPINLOCK_COUNT; i++)
+  {
+    syncAllCores_maxCores[i] = NUMBER_OF_CORES;
+  }
+
+  syncAllCores_initialized = 1;
+}
 
 void SyncAllCores(SpinlockIdType spinlock)
 {
   StatusType retval;
+  if(!syncAllCores_initialized)
+  {
+    addFailure("SyncAllCores called without init.\n", __LINE__, __FILE__);
+    return;
+  }
+
   retval = GetSpinlock(spinlock);
   if(retval != E_OK)
   {
     addFailure("Cannot get spinlock.\n", __LINE__, __FILE__);
     return;
   }
-  syncAllCores_maxCores--;
+  syncAllCores_maxCores[spinlock] = syncAllCores_maxCores[spinlock] - 1;
   retval = ReleaseSpinlock(spinlock);
   if(retval != E_OK)
   {
     addFailure("Cannot release spinlock.\n", __LINE__, __FILE__);
     return;
   }
-  while(syncAllCores_maxCores);
+  while(syncAllCores_maxCores[spinlock]);
+}
+#else
+void SyncAllCores_Init()
+{
 }
 #endif /* (NUMBER_OF_CORES > 1) && (SPINLOCK_COUNT > 0) */
 
-void sendSoftwareIt(int to_core_id)
+void sendSoftwareIt(tpl_core_id to_core_id)
 {
   if(to_core_id == 0)
   {
@@ -115,7 +135,7 @@ void sendSoftwareIt(int to_core_id)
   }
   else
   {
-    TPL_INTC(1).SSCIR[SOFT_IRQ_CORE0] = INTC_SSCIR_SET;
+    TPL_INTC(1).SSCIR[SOFT_IRQ_CORE1] = INTC_SSCIR_SET;
   }
 }
 
