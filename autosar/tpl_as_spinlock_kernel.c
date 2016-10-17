@@ -226,10 +226,10 @@ FUNC(tpl_status, OS_CODE) GetSpinlock_IE(
     VAR(tpl_spinlock_id, AUTOMATIC) spinlock_id)
 {
   VAR(tpl_status, AUTOMATIC)  result = E_OK;
-  VAR(TryToGetSpinlockType, AUTOMATIC) success;
+  VAR(TryToGetSpinlockType, AUTOMATIC) success = TRYTOGETSPINLOCK_NOSUCCESS;
 
   do {
-    TryToGetSpinlock(spinlock_id, &success);
+    result = TryToGetSpinlock(spinlock_id, &success);
   } while((result == E_OK) && (success == TRYTOGETSPINLOCK_NOSUCCESS));
 
   return result;
