@@ -289,7 +289,7 @@ void C_Compiler::semanticErrorWith_K_message (const GALGAS_lstring & inKey,
                                               TC_UniqueArray <C_String> & ioNearestKeyArray,
                                               const char * in_K_ErrorMessage
                                               COMMA_LOCATION_ARGS) {
-  const C_String key = inKey.mAttribute_string.stringValue () ;
+  const C_String key = inKey.mProperty_string.stringValue () ;
 //--- Build error message
   C_String message ;
   bool perCentFound = false ;
@@ -311,10 +311,10 @@ void C_Compiler::semanticErrorWith_K_message (const GALGAS_lstring & inKey,
 //--- Add nearest keys, if any
   TC_Array <C_FixItDescription> fixItArray ;
   for (int32_t i=0 ; i<ioNearestKeyArray.count () ; i++) {
-    fixItArray.addObject (C_FixItDescription (kFixItReplace, ioNearestKeyArray (i COMMA_HERE))) ;
+    fixItArray.appendObject (C_FixItDescription (kFixItReplace, ioNearestKeyArray (i COMMA_HERE))) ;
   }
 //--- Emit error message
-  const GALGAS_location key_location = inKey.mAttribute_location ;
+  const GALGAS_location key_location = inKey.mProperty_location ;
   semanticErrorAtLocation (key_location, message, fixItArray COMMA_THERE) ;
 }
 
@@ -324,7 +324,7 @@ void C_Compiler::semanticErrorWith_K_L_message (const GALGAS_lstring & inKey,
                                                 const char * in_K_L_ErrorMessage,
                                                 const GALGAS_location & inExistingKeyLocation
                                                 COMMA_LOCATION_ARGS) {
-  const C_String key = inKey.mAttribute_string.stringValue () ;
+  const C_String key = inKey.mProperty_string.stringValue () ;
 //--- Build error message
   C_String message ;
   bool perCentFound = false ;
@@ -346,7 +346,7 @@ void C_Compiler::semanticErrorWith_K_L_message (const GALGAS_lstring & inKey,
     }
   }
 //--- Emit error message
-  const GALGAS_location key_location = inKey.mAttribute_location ;
+  const GALGAS_location key_location = inKey.mProperty_location ;
   semanticErrorAtLocation (key_location, message, TC_Array <C_FixItDescription> () COMMA_THERE) ;
 }
 
@@ -356,7 +356,7 @@ void C_Compiler::semanticWarningWith_K_L_message (const GALGAS_lstring & inKey,
                                                   const char * in_K_L_ErrorMessage,
                                                   const GALGAS_location & inExistingKeyLocation
                                                   COMMA_LOCATION_ARGS) {
-  const C_String key = inKey.mAttribute_string.stringValue () ;
+  const C_String key = inKey.mProperty_string.stringValue () ;
 //--- Build error message
   C_String message ;
   bool perCentFound = false ;
@@ -378,7 +378,7 @@ void C_Compiler::semanticWarningWith_K_L_message (const GALGAS_lstring & inKey,
     }
   }
 //--- Emit error message
-  const GALGAS_location key_location = inKey.mAttribute_location ;
+  const GALGAS_location key_location = inKey.mProperty_location ;
   semanticWarningAtLocation (key_location, message COMMA_THERE) ;
 }
 

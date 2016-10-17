@@ -605,7 +605,7 @@ bool C_Lexique::acceptTerminalForErrorSignaling (const int16_t inTerminal,
       #endif
       int16_t nonTerminalEntry = inDecisionTableIndexes [reachedNonterminal] ;
       if (inDecisionTable [nonTerminalEntry] < 0) { // Only one rule : call it
-        stack.addObject (programCounter) ;
+        stack.appendObject (programCounter) ;
         programCounter = inProductionIndexes [inFirstProductionIndex [reachedNonterminal]] ;
         #ifdef TRACE_LL1_PARSING
           co << "One rule: goto " << programCounter << "\n" ; co.flush () ;
@@ -625,7 +625,7 @@ bool C_Lexique::acceptTerminalForErrorSignaling (const int16_t inTerminal,
             if (found) {
               int16_t newProgramCounter = programCounter ;
               TC_Array <int16_t> newStack = stack ;
-              newStack.addObject (newProgramCounter) ;
+              newStack.appendObject (newProgramCounter) ;
               newProgramCounter = inProductionIndexes [inFirstProductionIndex [reachedNonterminal] + choice] ;
               accept = acceptTerminalForErrorSignaling (inTerminal,
                                                         inProductions,
@@ -677,10 +677,10 @@ void C_Lexique::buildExpectedTerminalsArrayOnSyntaxError (const int16_t inErrorP
   const int32_t countToCopy = inErrorStackCount - inErrorStack.count () ;
   TC_Array <int16_t> errorStack (inErrorStackCount COMMA_HERE) ;
   for (int32_t i=0 ; i<countToCopy ; i++) {
-    errorStack.addObject (inStack (i COMMA_HERE)) ;
+    errorStack.appendObject (inStack (i COMMA_HERE)) ;
   }
   for (int32_t i=inErrorStack.count () - 1 ; i>=0 ; i--) {
-    errorStack.addObject (inErrorStack (i COMMA_HERE)) ;
+    errorStack.appendObject (inErrorStack (i COMMA_HERE)) ;
   }
   #ifdef TRACE_LL1_PARSING
     co << "------ Enter 'buildExpectedTerminalsArrayOnSyntaxError'\n"
@@ -710,7 +710,7 @@ void C_Lexique::buildExpectedTerminalsArrayOnSyntaxError (const int16_t inErrorP
       const int16_t nonTerminalEntry = inDecisionTableIndexes [nonTerminal] ;
       const bool onlyOneRule = inDecisionTable [nonTerminalEntry] < 0 ;
       if (onlyOneRule) { // Go to this rule
-        errorStack.addObject ((int16_t) (programCounter + 1)) ;
+        errorStack.appendObject ((int16_t) (programCounter + 1)) ;
         programCounter = inProductionIndexes [inFirstProductionIndex [nonTerminal]] ;
         #ifdef TRACE_LL1_PARSING
           co << "Only one rule: goto " << programCounter << "\n" ;
@@ -736,14 +736,14 @@ void C_Lexique::buildExpectedTerminalsArrayOnSyntaxError (const int16_t inErrorP
   }
 //--- Decision for build expected terminals array
   if (errorStack.count () == 0) { // We reach end of productions rules
-    outExpectedTerminalsArray.addObject (0) ; // 0 is always "end_of_text" terminal symbol
+    outExpectedTerminalsArray.appendObject (0) ; // 0 is always "end_of_text" terminal symbol
     #ifdef TRACE_LL1_PARSING
       co << "add 'end of source' to outExpectedTerminalsArray\n" ;
       co.flush () ;
     #endif
   }else if (inProductions [programCounter] > 0) { // We reach a terminal symbol
     const int16_t terminalSymbol = (int16_t) (inProductions [programCounter] - 1) ;
-    outExpectedTerminalsArray.addObject (terminalSymbol) ;
+    outExpectedTerminalsArray.appendObject (terminalSymbol) ;
     #ifdef TRACE_LL1_PARSING
       C_String m = getMessageForTerminal (inProductions [programCounter]) ;
       co << "add '" << m << "' (" << inProductions [programCounter] << ") to outExpectedTerminalsArray\n" ;
@@ -768,7 +768,7 @@ void C_Lexique::buildExpectedTerminalsArrayOnSyntaxError (const int16_t inErrorP
             co << "add '" << m << "' (" << inDecisionTable [nonTerminalEntry] << ") to outExpectedTerminalsArray\n" ;
             co.flush () ;
           #endif
-          outExpectedTerminalsArray.addObject (inDecisionTable [nonTerminalEntry]) ;
+          outExpectedTerminalsArray.appendObject (inDecisionTable [nonTerminalEntry]) ;
         }
         nonTerminalEntry ++ ;
       }
@@ -874,7 +874,7 @@ bool C_Lexique::performTopDownParsing (const int16_t inProductions [],
             co << " ok (only one production)\n" ;
             co.flush () ;
           #endif
-          stack.addObject (programCounter) ;
+          stack.appendObject (programCounter) ;
           programCounter = inProductionIndexes [inFirstProductionIndex [nonTerminalToParse]] ;
           if (produceSyntaxTree) {
             uniqueProductionNameIndex ++ ;
@@ -886,7 +886,7 @@ bool C_Lexique::performTopDownParsing (const int16_t inProductions [],
                                           << cStringWithUnsigned (uniqueProductionNameIndex)
                                           << ";\n" ;
             }
-            productionUniqueNameStack.addObject (currentProductionName) ;
+            productionUniqueNameStack.appendObject (currentProductionName) ;
             currentProductionName = uniqueProductionNameIndex ;
           }
           if (executionModeIsSyntaxAnalysisOnly ()) {
@@ -919,7 +919,7 @@ bool C_Lexique::performTopDownParsing (const int16_t inProductions [],
           }
         //--- Found : call production rule
           if (found) {
-            stack.addObject (programCounter) ;
+            stack.appendObject (programCounter) ;
             programCounter = inProductionIndexes [inFirstProductionIndex [nonTerminalToParse] + choice] ;
             if (produceSyntaxTree) {
               uniqueProductionNameIndex ++ ;
@@ -932,7 +932,7 @@ bool C_Lexique::performTopDownParsing (const int16_t inProductions [],
                                             << cStringWithUnsigned (uniqueProductionNameIndex)
                                             << ";\n" ;
               }
-              productionUniqueNameStack.addObject (currentProductionName) ;
+              productionUniqueNameStack.appendObject (currentProductionName) ;
               currentProductionName = uniqueProductionNameIndex ;
             }
             if (executionModeIsSyntaxAnalysisOnly ()) {
@@ -1013,7 +1013,7 @@ bool C_Lexique::performTopDownParsing (const int16_t inProductions [],
         #endif
         programCounter = stack.lastObject (HERE) ;
         if (errorStackCount >= stack.count ()) {
-          errorStack.addObject (programCounter) ;
+          errorStack.appendObject (programCounter) ;
         }
         stack.removeLastObject (HERE) ;
         if (produceSyntaxTree) {
@@ -1111,8 +1111,8 @@ static bool acceptExpectedTerminalForBottomUpParsingError (const int16_t inExpec
         successorTable ++ ;
       }
       MF_Assert (newCurrentState >= 0, "newCurrentState (%lld) < 0", newCurrentState, 0) ;
-      stack.addObject (-1) ; // Enter any value
-      stack.addObject (newCurrentState) ; // Enter next current state
+      stack.appendObject (-1) ; // Enter any value
+      stack.appendObject (newCurrentState) ; // Enter next current state
     //--- In the state, find action corresponding to expected terminal
       const int32_t currentState = stack (stack.count () - 1 COMMA_HERE) ;
       MF_Assert (currentState >= 0, "currentState (%lld) < 0", currentState, 0) ;
@@ -1162,7 +1162,7 @@ bool C_Lexique::performBottomUpParsing (const int16_t inActionTable [],
     const bool produceSyntaxTree = gOption_galgas_5F_builtin_5F_options_outputConcreteSyntaxTree.mValue ;
     C_String syntaxTreeDescriptionString ;
     TC_Array <C_String> shiftedElementStack ;
-    shiftedElementStack.addObject ("TOP") ;
+    shiftedElementStack.appendObject ("TOP") ;
     uint32_t uniqueTerminalIndex = 0 ;
     uint32_t currentProductionName = 0 ;
     if (produceSyntaxTree) {
@@ -1171,16 +1171,16 @@ bool C_Lexique::performBottomUpParsing (const int16_t inActionTable [],
     }
   //--- Perform first pass
     TC_UniqueArray <TC_LinkedList <int16_t> > executionList (100 COMMA_HERE) ;
-    executionList.addDefaultObjectUsingSwap () ;
+    executionList.appendDefaultObjectUsingSwap () ;
 
     TC_Array <int16_t> stack (10000 COMMA_HERE) ;
-    stack.addObject (0) ; // Enter initial state
+    stack.appendObject (0) ; // Enter initial state
     int32_t errorSignalingUselessEntryOnTopOfStack = 0 ;
     TC_Array <int16_t> poppedErrors (1000 COMMA_HERE)  ;
     
     #ifdef CHECK_NEW_BOTTOM_UP_PARSING_ERROR_HANDLING
       TC_Array <int16_t> oldErrorStack (10000 COMMA_HERE) ; // used for signaling a syntax error
-      oldErrorStack.addObject (0) ; // Enter initial state
+      oldErrorStack.appendObject (0) ; // Enter initial state
     #endif
 
     cToken * currentTokenPtr = mFirstToken ;
@@ -1221,14 +1221,14 @@ bool C_Lexique::performBottomUpParsing (const int16_t inActionTable [],
       if (actionCode > 1) {
       //--- Shift action ------------------------------------
         actionCode = (int16_t) (actionCode - 2) ;
-        stack.addObject (-1) ; // Enter any value
-        stack.addObject (actionCode) ; // Enter next current state
+        stack.appendObject (-1) ; // Enter any value
+        stack.appendObject (actionCode) ; // Enter next current state
         #ifdef CHECK_NEW_BOTTOM_UP_PARSING_ERROR_HANDLING
           oldErrorStack = stack ;
         #endif
         poppedErrors.setCountToZero () ;
         errorSignalingUselessEntryOnTopOfStack = 0 ;
-        executionList.addDefaultObjectUsingSwap () ;
+        executionList.appendDefaultObjectUsingSwap () ;
       //---
         if (produceSyntaxTree) {
           C_String terminalUniqueName ;
@@ -1236,7 +1236,7 @@ bool C_Lexique::performBottomUpParsing (const int16_t inActionTable [],
           syntaxTreeDescriptionString << "  " << terminalUniqueName << " [shape=ellipse, label=" ;
           syntaxTreeDescriptionString.appendCLiteralStringConstant (getCurrentTokenString (currentTokenPtr)) ;
           syntaxTreeDescriptionString << "];\n" ;
-          shiftedElementStack.addObject (terminalUniqueName) ;
+          shiftedElementStack.appendObject (terminalUniqueName) ;
           uniqueTerminalIndex ++ ;
         }
       //--- Parse Only : print terminal symbol
@@ -1260,13 +1260,13 @@ bool C_Lexique::performBottomUpParsing (const int16_t inActionTable [],
         }
         executionList (executionListLength - reduceSize - 1 COMMA_HERE).insertAtTop (actionCode) ;
         executionList.removeLastObjects (reduceSize COMMA_HERE) ; 
-        executionList.addDefaultObjectUsingSwap () ;
+        executionList.appendDefaultObjectUsingSwap () ;
         const int32_t stackReduceSize = 2 * reduceSize ;
         for (int32_t i=0 ; i<stackReduceSize ; i++) {
           if (errorSignalingUselessEntryOnTopOfStack > 0) {
             errorSignalingUselessEntryOnTopOfStack -- ;
           }else{
-            poppedErrors.addObject (stack.lastObject (HERE)) ;
+            poppedErrors.appendObject (stack.lastObject (HERE)) ;
           }
           stack.removeLastObject (HERE) ;
         }
@@ -1291,15 +1291,15 @@ bool C_Lexique::performBottomUpParsing (const int16_t inActionTable [],
           successorTable ++ ;
         }
         MF_Assert (newCurrentState >= 0, "newCurrentState (%lld) < 0", newCurrentState, 0) ;
-        stack.addObject (-1) ; // Enter any value
-        stack.addObject (newCurrentState) ; // Enter next current state
+        stack.appendObject (-1) ; // Enter any value
+        stack.appendObject (newCurrentState) ; // Enter next current state
         errorSignalingUselessEntryOnTopOfStack += 2 ;
         if (produceSyntaxTree) {
           C_String uniqueProductionName ;
           uniqueProductionName << "NT" << cStringWithUnsigned (currentProductionName) ;
           syntaxTreeDescriptionString << "  " << uniqueProductionName
                                       << " [label=\"" << inNonTerminalSymbolNames [nonTerminal] << "\", shape=box];\n" ;
-          shiftedElementStack.addObject (uniqueProductionName) ;
+          shiftedElementStack.appendObject (uniqueProductionName) ;
           currentProductionName ++ ;
         }
         if (executionModeIsSyntaxAnalysisOnly ()) {
@@ -1325,11 +1325,11 @@ bool C_Lexique::performBottomUpParsing (const int16_t inActionTable [],
         TC_Array <int16_t> actualErrorStack (stack.count () + poppedErrors.count () COMMA_HERE) ;
         // printf ("errorSignalingUselessEntryOnTopOfStack, %d stack.count () %d\n", errorSignalingUselessEntryOnTopOfStack, stack.count ()) ;
         for (int32_t i=0 ; i<(stack.count () - errorSignalingUselessEntryOnTopOfStack) ; i++) {
-          actualErrorStack.addObject (stack (i COMMA_HERE)) ;
+          actualErrorStack.appendObject (stack (i COMMA_HERE)) ;
         }
         // printf ("poppedErrors.count () %d\n", poppedErrors.count ()) ;
         for (int32_t i=poppedErrors.count () - 1 ; i>=0 ; i--) {
-          actualErrorStack.addObject (poppedErrors (i COMMA_HERE)) ;
+          actualErrorStack.appendObject (poppedErrors (i COMMA_HERE)) ;
         }
         #ifdef CHECK_NEW_BOTTOM_UP_PARSING_ERROR_HANDLING
           if (actualErrorStack != oldErrorStack) {
@@ -1368,7 +1368,7 @@ bool C_Lexique::performBottomUpParsing (const int16_t inActionTable [],
             inProductionsTable
           ) ;
           if (terminalAccepted) {
-            expectedTerminalsArray.addObject (expectedTerminal) ;
+            expectedTerminalsArray.appendObject (expectedTerminal) ;
           }
         }
         parsingError (expectedTerminalsArray, currentToken LINE_AND_SOURCE_FILE_FOR_LEXIQUE) ;

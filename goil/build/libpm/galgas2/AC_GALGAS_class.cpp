@@ -95,7 +95,7 @@ void AC_GALGAS_class::description (C_String & ioString,
 //---------------------------------------------------------------------------------------------------------------------*
 
 void AC_GALGAS_class::insulate (LOCATION_ARGS) {
-  if (isValid () && (mObjectPtr->retainCount () > 1)) {
+  if (isValid () && !mObjectPtr->isUniquelyReferenced ()) {
     acPtr_class * p = mObjectPtr->duplicate (THERE) ;
     macroAssignSharedObject (mObjectPtr, p) ;
     macroDetachSharedObject (p) ;

@@ -336,13 +336,13 @@ void signalCastError (const C_SourceTextInString & inSourceText,
   while ((p != NULL) && ! found) {
     if (p->mClassID == inBaseClass) {
       found = true ;
-      expectedClassMessageArray.addObject (p->mClassMessage) ;
+      expectedClassMessageArray.appendObject (p->mClassMessage) ;
     }
     p = p->mNextClass ;
   }
   if (inUseKindOfClass) {
     TC_UniqueArray <const std::type_info *> classIDarray ;
-    classIDarray.addObject (inBaseClass) ;
+    classIDarray.appendObject (inBaseClass) ;
     bool loop = true ;
     while (loop) {
       loop = false ;
@@ -351,8 +351,8 @@ void signalCastError (const C_SourceTextInString & inSourceText,
         if (classIDarray.containsObjectEqualTo (p->mSuperClassID)
           && ! classIDarray.containsObjectEqualTo (p->mClassID)) {
           loop = true ;
-          classIDarray.addObject (p->mClassID) ;
-          expectedClassMessageArray.addObject (p->mClassMessage) ;
+          classIDarray.appendObject (p->mClassID) ;
+          expectedClassMessageArray.appendObject (p->mClassMessage) ;
         }
         p = p->mNextClass ;
       }

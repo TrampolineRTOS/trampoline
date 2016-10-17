@@ -70,7 +70,7 @@ uint32_t getPrimeGreaterThan (const uint32_t inValue) {
   134217757, // > 2**27
   201326611,
   402653189  // > 2**28
-} ;
+  } ;
   int32_t i = 0 ;
   bool notFound = true ;
   while (notFound && (i<ARRAY_SIZE)) {

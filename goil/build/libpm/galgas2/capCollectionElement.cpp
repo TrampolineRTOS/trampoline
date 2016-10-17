@@ -93,7 +93,7 @@ void capCollectionElement::drop (void) {
 //---------------------------------------------------------------------------------------------------------------------*
 
 void capCollectionElement::insulate (void) {
-  if ((NULL != mPtr) && (mPtr->retainCount () > 1)) {
+  if ((NULL != mPtr) && !mPtr->isUniquelyReferenced ()) {
     cCollectionElement * p = mPtr->copy () ;
     macroAssignSharedObject (mPtr, p) ;  
     macroDetachSharedObject (p) ;

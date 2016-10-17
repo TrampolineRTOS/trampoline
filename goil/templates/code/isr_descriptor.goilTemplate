@@ -14,8 +14,10 @@ FUNC(void, OS_APPL_CODE) % !isr::NAME %_function(void);
  * Target specific structures
  */
 %
+display isr
 let proc := isr
 template process_specific
+display isr
 %
 
 /*

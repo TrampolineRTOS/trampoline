@@ -244,7 +244,7 @@ GALGAS_uintlist GALGAS_bigint::getter_extract_33__32_ForUnsignedRepresentation (
     TC_UniqueArray <uint8_t> valueArray ;
     mValue.extractBytesForUnsignedRepresentation (valueArray) ;
     const int32_t paddingCount = (4 - (valueArray.count () % 4)) % 4 ;
-    valueArray.addObjects (paddingCount, 0) ;
+    valueArray.appendObjects (paddingCount, 0) ;
     result = GALGAS_uintlist::constructor_emptyList (HERE) ;
     for (int32_t i=0 ; i<valueArray.count () ; i+=4) {
       uint32_t v = valueArray (i+3 COMMA_HERE) ;
@@ -268,7 +268,7 @@ GALGAS_uintlist GALGAS_bigint::getter_extract_33__32_ForSignedRepresentation (UN
     TC_UniqueArray <uint8_t> valueArray ;
     mValue.extractBytesForSignedRepresentation (valueArray) ;
     const int32_t paddingCount = (4 - (valueArray.count () % 4)) % 4 ;
-    valueArray.addObjects (paddingCount, ((valueArray.lastObject (HERE) & 0x80) != 0) ? 0xFF : 0) ;
+    valueArray.appendObjects (paddingCount, ((valueArray.lastObject (HERE) & 0x80) != 0) ? 0xFF : 0) ;
     result = GALGAS_uintlist::constructor_emptyList (HERE) ;
     for (int32_t i=0 ; i<valueArray.count () ; i+=4) {
       uint32_t v = valueArray (i+3 COMMA_HERE) ;
@@ -292,7 +292,7 @@ GALGAS_uint_36__34_list GALGAS_bigint::getter_extract_36__34_ForUnsignedRepresen
     TC_UniqueArray <uint8_t> valueArray ;
     mValue.extractBytesForUnsignedRepresentation (valueArray) ;
     const int32_t paddingCount = (8 - (valueArray.count () % 8)) % 8 ;
-    valueArray.addObjects (paddingCount, 0) ;
+    valueArray.appendObjects (paddingCount, 0) ;
     result = GALGAS_uint_36__34_list::constructor_emptyList (HERE) ;
     for (int32_t i=0 ; i<valueArray.count () ; i+=8) {
       uint64_t v = 0 ;
@@ -314,7 +314,7 @@ GALGAS_uint_36__34_list GALGAS_bigint::getter_extract_36__34_ForSignedRepresenta
     TC_UniqueArray <uint8_t> valueArray ;
     mValue.extractBytesForSignedRepresentation (valueArray) ;
     const int32_t paddingCount = (8 - (valueArray.count () % 8)) % 8 ;
-    valueArray.addObjects (paddingCount, ((valueArray.lastObject (HERE) & 0x80) != 0) ? 0xFF : 0) ;
+    valueArray.appendObjects (paddingCount, ((valueArray.lastObject (HERE) & 0x80) != 0) ? 0xFF : 0) ;
     result = GALGAS_uint_36__34_list::constructor_emptyList (HERE) ;
     for (int32_t i=0 ; i<valueArray.count () ; i+=8) {
       uint64_t v = 0 ;

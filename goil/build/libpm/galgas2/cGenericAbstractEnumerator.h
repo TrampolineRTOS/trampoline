@@ -33,9 +33,14 @@ class cGenericAbstractEnumerator {
 //--- Private data members
   protected : capCollectionElementArray mEnumerationArray ;
   private : uint32_t mIndex ;
+  public : const typeEnumerationOrder mOrder ;
 
 //--- Constructor
-  protected : cGenericAbstractEnumerator (void) ;
+  protected : inline cGenericAbstractEnumerator (const typeEnumerationOrder inOrder) :
+  mEnumerationArray (),
+  mIndex (0),
+  mOrder (inOrder) {
+  }
 
 //--- Virtual destructor
   protected : virtual ~ cGenericAbstractEnumerator (void) ;
@@ -49,8 +54,8 @@ class cGenericAbstractEnumerator {
   public : inline bool hasNextObject (void) const { return (mIndex + 1) < mEnumerationArray.count () ; }
   public : inline void gotoNextObject (void) { mIndex ++ ; }
   public : inline void rewind (void) { mIndex = 0 ; }
-  public : inline uint32_t index (void) const { return mIndex ; }
-  public : inline void gotoIndex (const uint32_t inIndex) { mIndex = inIndex ; }
+  public : inline uint32_t index (void) const { return mIndex ; } // For Sara compatibility
+  public : inline void gotoIndex (const uint32_t inIndex) { mIndex = inIndex ; } // For Sara compatibility
   protected : const cCollectionElement * currentObjectPtr (LOCATION_ARGS) const ;
 } ;
 

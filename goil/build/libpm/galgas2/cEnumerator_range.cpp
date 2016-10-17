@@ -27,9 +27,9 @@
 cEnumerator_range::cEnumerator_range (const GALGAS_range & inEnumeratedRange,
                                       const typeEnumerationOrder inOrder) :
 mIsValid (inEnumeratedRange.isValid ()),
-mAscending (enumerationOrderValue (inOrder) == kENUMERATION_UP),
-mStart (inEnumeratedRange.mAttribute_start.uintValue ()),
-mLength (inEnumeratedRange.mAttribute_length.uintValue ()),
+mAscending (inOrder == kENUMERATION_UP),
+mStart (inEnumeratedRange.mProperty_start.uintValue ()),
+mLength (inEnumeratedRange.mProperty_length.uintValue ()),
 mCurrent (0) {
   if (mAscending) {
     mCurrent = mStart ;

@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 1994, ..., 2014 Pierre Molinaro.                                                                     *
+//  Copyright (C) 1994, ..., 2016 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -200,12 +200,11 @@
 //---------------------------------------------------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
-  static const int32_t ROOT_TABLE_SIZE = 1048583 ;
-  static cPointerDescriptor * gPointerDescriptorTreeRoot [ROOT_TABLE_SIZE] ;
+  static const uint32_t ROOT_TABLE_SIZE = 33554467 ;
+  static cPointerDescriptor * gPointerDescriptorTreeRoot [ROOT_TABLE_SIZE] ; // Initialized to array of NULL
   static int32_t gCreatedPointersCount = 0 ;
   static int32_t gPointersCurrentCount = 0 ;
-  static bool gRootInited = false ;
-#endif 
+#endif
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
@@ -271,11 +270,9 @@
     if (b->mBalance >= 0) {
       ioPtr->mBalance ++ ;
     }else{
-      // ioPtr->mBalance = ioPtr->mBalance + 1 - b->mBalance ;
       ioPtr->mBalance += 1 - b->mBalance ;
     }
     if (ioPtr->mBalance > 0) {
-   //   b->mBalance = b->mBalance + ioPtr->mBalance + 1 ;
       b->mBalance += ioPtr->mBalance + 1 ;
     }else{
       b->mBalance ++ ;
@@ -294,7 +291,6 @@
     b->mSupPtr = ioPtr;
    //--- recalculer l'equilibrage 
     if (b->mBalance > 0) {
-    //  ioPtr->mBalance = ioPtr->mBalance - b->mBalance - 1 ;
       ioPtr->mBalance -= 1 + b->mBalance ;
     }else{
       ioPtr->mBalance -- ;
@@ -302,7 +298,6 @@
     if (ioPtr->mBalance >= 0) {
       b->mBalance -- ;
     }else{
-    //  b->mBalance = b->mBalance + ioPtr->mBalance - 1 ;
       b->mBalance += ioPtr->mBalance - 1 ;
     }
     ioPtr = b ;
@@ -521,9 +516,8 @@
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static uint32_t hashCodeForPointer (const void * inPointer) {
-    const uintptr_t v = (uintptr_t) inPointer ;
- //   return (uint32_t) (((v * 2654435761) % ROOT_TABLE_SIZE) & UINT32_MAX) ;
-    return (uint32_t) ((v % ROOT_TABLE_SIZE) & UINT32_MAX) ;
+    const uint64_t v = (uint64_t) inPointer ;
+    return (uint32_t) (v % ROOT_TABLE_SIZE) ;
   }
 #endif
 
@@ -535,12 +529,6 @@
                                          COMMA_LOCATION_ARGS) {
     // printf ("*** registering pointer %p\n", p) ;
     if (NULL != inPointerToRegister) {
-      if (! gRootInited) {
-        for (int32_t i=0 ; i<ROOT_TABLE_SIZE ; i ++) {
-          gPointerDescriptorTreeRoot [i] = NULL ;
-        }
-        gRootInited = true ;
-      }
       bool ioAlreadyExists = false ;
       bool ioExtension = false ;
       cPointerDescriptor * ioPointerNewElement = NULL ;
@@ -637,8 +625,6 @@
                                  (intptr_t) nomFichierSource, inSourceFileLine, IN_SOURCE_FILE, IN_SOURCE_LINE) ;
         }
         break ;
-//      default : // Alloue hors macro
-//        break ;
       }
       myFreeRoutine (pointerToDelete) ;
       gPointersCurrentCount -- ;
@@ -695,8 +681,6 @@
       case kAllocatedByMacroMyNewPODArray :
         printf ("POD array") ;
         break ;
-//      default :
-//        break ;
       }
       printf (" | %11u | %s\n", inRoot->mSourceLine, inRoot->mSourceFileName) ;
     //---
@@ -718,12 +702,10 @@ void displayAllocatedBlocksInfo (void) {
       printf ("*** Warning: %d block information datas (instead of 0):\n", gPointersCurrentCount) ;
       printf ("  address  |   number   |     kind | source line | source file\n") ;  
     }
-    for (int32_t i=0 ; i<ROOT_TABLE_SIZE ; i++) {
+    for (uint32_t i=0 ; i<ROOT_TABLE_SIZE ; i++) {
       recursiveDisplay (gPointerDescriptorTreeRoot [i]) ;
     }
   #endif
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
-
-

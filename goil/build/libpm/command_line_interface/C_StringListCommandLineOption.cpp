@@ -64,7 +64,7 @@ void C_StringListCommandLineOption::setStringListOptionForCommandChar (const cha
     while ((p != NULL) && ! outFound) {
       outFound = inCommandString [0] == p->mCommandChar ;
       if (outFound) {
-        p->mValue.addObject (& inCommandString [2]) ;
+        p->mValue.appendObject (& inCommandString [2]) ;
       }
       p = p->mNext ;
     }
@@ -98,7 +98,7 @@ void C_StringListCommandLineOption::setStringListOptionForCommandString (const c
       outFound = (strlen (p->mCommandString) == equalSignIndex) && 
                  (strncmp (p->mCommandString, inCommandString, equalSignIndex) == 0) ;
       if (outFound) {
-        p->mValue.addObject (& inCommandString [strlen (p->mCommandString) + 1]) ;
+        p->mValue.appendObject (& inCommandString [strlen (p->mCommandString) + 1]) ;
       }
       p = p->mNext ;
     }
@@ -176,8 +176,8 @@ C_PrologueEpilogue gReleaseStringList (NULL, C_StringListCommandLineOption::rele
 void C_StringListCommandLineOption::getStringOptionNameList (TC_UniqueArray <C_String> & outArray) {
   C_StringListCommandLineOption * p = gFirstStringListOption ;
   while (p != NULL) {
-    outArray.addObject (p->mDomainName) ;
-    outArray.addObject (p->mIdentifier) ;
+    outArray.appendObject (p->mDomainName) ;
+    outArray.appendObject (p->mIdentifier) ;
     p = p->mNext ;
   }
 }

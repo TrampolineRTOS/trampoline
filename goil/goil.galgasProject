@@ -24,9 +24,10 @@
 #
 #---------------------------------------------------------------------------*
 
-# 3.1.1    Updated to GTL 3.1.1. Unique structures are concatened.
+# 3.1.2    Updated to GTL 3.0.8.
+# 3.1.1    Unique structures are concatened.
 #          Fixes default argument parsing.
-# 3.1.0    Updated to GTL 3.1.0. Arxml parsing
+# 3.1.0    Arxml parsing
 # 3.0.7    Updated to GTL 3.0.7. Updated to GALGAS 3.2.7
 # 3.0.6    Updated to GTL 3.0.6. Debugger with command files and load command
 # 3.0.5    Updated to GTL 3.0.5. Debugger with history and line editing
@@ -49,7 +50,7 @@
 #          string
 # 2.1.20   Added -o and -r options to goil
 
-project (3:1:1) -> "goil" {
+project (3:1:2) -> "goil" {
 
   %makefile-macosx
   %makefile-unix

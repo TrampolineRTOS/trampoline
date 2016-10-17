@@ -239,7 +239,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlDoInstInstructio
 
 class cPtr_gtlDoInstInstruction : public cPtr_gtlInstruction {
 //--- Attributes
-  public : GALGAS_gtlInstruction mAttribute_instructionToDo ;
+  public : GALGAS_gtlInstruction mProperty_instructionToDo ;
 
 //--- Constructor
   public : cPtr_gtlDoInstInstruction (const GALGAS_location & in_where,
@@ -576,8 +576,8 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlBreakpointInstru
 
 class cPtr_gtlBreakpointInstruction : public cPtr_gtlInstruction {
 //--- Attributes
-  public : GALGAS_string mAttribute_fileName ;
-  public : GALGAS_uint mAttribute_lineNum ;
+  public : GALGAS_string mProperty_fileName ;
+  public : GALGAS_uint mProperty_lineNum ;
 
 //--- Constructor
   public : cPtr_gtlBreakpointInstruction (const GALGAS_location & in_where,
@@ -749,7 +749,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlBreakpointDelete
 
 class cPtr_gtlBreakpointDeleteInstruction : public cPtr_gtlInstruction {
 //--- Attributes
-  public : GALGAS_lbigint mAttribute_numToDelete ;
+  public : GALGAS_lbigint mProperty_numToDelete ;
 
 //--- Constructor
   public : cPtr_gtlBreakpointDeleteInstruction (const GALGAS_location & in_where,
@@ -1001,7 +1001,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlWatchpointDelete
 
 class cPtr_gtlWatchpointDeleteInstruction : public cPtr_gtlInstruction {
 //--- Attributes
-  public : GALGAS_lbigint mAttribute_numToDelete ;
+  public : GALGAS_lbigint mProperty_numToDelete ;
 
 //--- Constructor
   public : cPtr_gtlWatchpointDeleteInstruction (const GALGAS_location & in_where,
@@ -1171,7 +1171,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlListInstruction 
 
 class cPtr_gtlListInstruction : public cPtr_gtlInstruction {
 //--- Attributes
-  public : GALGAS_uint mAttribute_window ;
+  public : GALGAS_uint mProperty_window ;
 
 //--- Constructor
   public : cPtr_gtlListInstruction (const GALGAS_location & in_where,
@@ -1341,7 +1341,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlLoadInstruction 
 
 class cPtr_gtlLoadInstruction : public cPtr_gtlInstruction {
 //--- Attributes
-  public : GALGAS_string mAttribute_fileName ;
+  public : GALGAS_string mProperty_fileName ;
 
 //--- Constructor
   public : cPtr_gtlLoadInstruction (const GALGAS_location & in_where,
@@ -1555,7 +1555,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlDoNotInstruction
 
 class cPtr_gtlDoNotInstruction : public cPtr_gtlInstruction {
 //--- Attributes
-  public : GALGAS_lbigint mAttribute_numToDelete ;
+  public : GALGAS_lbigint mProperty_numToDelete ;
 
 //--- Constructor
   public : cPtr_gtlDoNotInstruction (const GALGAS_location & in_where,
@@ -1634,7 +1634,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlAssignInstructio
 
 class cPtr_gtlAssignInstruction : public cPtr_gtlLetUnconstructedInstruction {
 //--- Attributes
-  public : GALGAS_gtlExpression mAttribute_rValue ;
+  public : GALGAS_gtlExpression mProperty_rValue ;
 
 //--- Constructor
   public : cPtr_gtlAssignInstruction (const GALGAS_location & in_where,
@@ -2633,8 +2633,8 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlPrintStatementIn
 
 class cPtr_gtlPrintStatementInstruction : public cPtr_gtlInstruction {
 //--- Attributes
-  public : GALGAS_bool mAttribute_carriageReturn ;
-  public : GALGAS_gtlExpression mAttribute_messageToPrint ;
+  public : GALGAS_bool mProperty_carriageReturn ;
+  public : GALGAS_gtlExpression mProperty_messageToPrint ;
 
 //--- Constructor
   public : cPtr_gtlPrintStatementInstruction (const GALGAS_location & in_where,
@@ -2721,7 +2721,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlWatchpointInstru
 
 class cPtr_gtlWatchpointInstruction : public cPtr_gtlInstruction {
 //--- Attributes
-  public : GALGAS_gtlExpression mAttribute_watchExpression ;
+  public : GALGAS_gtlExpression mProperty_watchExpression ;
 
 //--- Constructor
   public : cPtr_gtlWatchpointInstruction (const GALGAS_location & in_where,
@@ -3065,9 +3065,9 @@ class GALGAS_uint_33__32_List : public AC_GALGAS_list {
   public : GALGAS_uint_33__32_List (void) ;
 
 //--------------------------------- List constructor used by listmap
-  public : GALGAS_uint_33__32_List (cSharedList * inSharedListPtr) ;
+  public : GALGAS_uint_33__32_List (const capCollectionElementArray & inSharedArray) ;
 
-//--------------------------------- Element constructor used by listmap
+//--------------------------------- Element constructor
   public : static void makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                   const class GALGAS_location & in_location,
                                                   const class GALGAS_uint & in_value
@@ -3199,8 +3199,8 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_uint_33__32_List ;
 
 class GALGAS_uint_33__32_List_2D_element : public AC_GALGAS_root {
 //--------------------------------- Public data members
-  public : GALGAS_location mAttribute_location ;
-  public : GALGAS_uint mAttribute_value ;
+  public : GALGAS_location mProperty_location ;
+  public : GALGAS_uint mProperty_value ;
 
 
 //--------------------------------- Accessors
@@ -3273,9 +3273,9 @@ class GALGAS_uint_36__34_List : public AC_GALGAS_list {
   public : GALGAS_uint_36__34_List (void) ;
 
 //--------------------------------- List constructor used by listmap
-  public : GALGAS_uint_36__34_List (cSharedList * inSharedListPtr) ;
+  public : GALGAS_uint_36__34_List (const capCollectionElementArray & inSharedArray) ;
 
-//--------------------------------- Element constructor used by listmap
+//--------------------------------- Element constructor
   public : static void makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                   const class GALGAS_location & in_location,
                                                   const class GALGAS_uint_36__34_ & in_value
@@ -3407,8 +3407,8 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_uint_36__34_List ;
 
 class GALGAS_uint_36__34_List_2D_element : public AC_GALGAS_root {
 //--------------------------------- Public data members
-  public : GALGAS_location mAttribute_location ;
-  public : GALGAS_uint_36__34_ mAttribute_value ;
+  public : GALGAS_location mProperty_location ;
+  public : GALGAS_uint_36__34_ mProperty_value ;
 
 
 //--------------------------------- Accessors
@@ -3481,9 +3481,9 @@ class GALGAS_sint_33__32_List : public AC_GALGAS_list {
   public : GALGAS_sint_33__32_List (void) ;
 
 //--------------------------------- List constructor used by listmap
-  public : GALGAS_sint_33__32_List (cSharedList * inSharedListPtr) ;
+  public : GALGAS_sint_33__32_List (const capCollectionElementArray & inSharedArray) ;
 
-//--------------------------------- Element constructor used by listmap
+//--------------------------------- Element constructor
   public : static void makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                   const class GALGAS_location & in_location,
                                                   const class GALGAS_sint & in_value
@@ -3615,8 +3615,8 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_sint_33__32_List ;
 
 class GALGAS_sint_33__32_List_2D_element : public AC_GALGAS_root {
 //--------------------------------- Public data members
-  public : GALGAS_location mAttribute_location ;
-  public : GALGAS_sint mAttribute_value ;
+  public : GALGAS_location mProperty_location ;
+  public : GALGAS_sint mProperty_value ;
 
 
 //--------------------------------- Accessors
@@ -3689,9 +3689,9 @@ class GALGAS_sint_36__34_List : public AC_GALGAS_list {
   public : GALGAS_sint_36__34_List (void) ;
 
 //--------------------------------- List constructor used by listmap
-  public : GALGAS_sint_36__34_List (cSharedList * inSharedListPtr) ;
+  public : GALGAS_sint_36__34_List (const capCollectionElementArray & inSharedArray) ;
 
-//--------------------------------- Element constructor used by listmap
+//--------------------------------- Element constructor
   public : static void makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                   const class GALGAS_location & in_location,
                                                   const class GALGAS_sint_36__34_ & in_value
@@ -3823,8 +3823,8 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_sint_36__34_List ;
 
 class GALGAS_sint_36__34_List_2D_element : public AC_GALGAS_root {
 //--------------------------------- Public data members
-  public : GALGAS_location mAttribute_location ;
-  public : GALGAS_sint_36__34_ mAttribute_value ;
+  public : GALGAS_location mProperty_location ;
+  public : GALGAS_sint_36__34_ mProperty_value ;
 
 
 //--------------------------------- Accessors
@@ -3897,9 +3897,9 @@ class GALGAS_floatList : public AC_GALGAS_list {
   public : GALGAS_floatList (void) ;
 
 //--------------------------------- List constructor used by listmap
-  public : GALGAS_floatList (cSharedList * inSharedListPtr) ;
+  public : GALGAS_floatList (const capCollectionElementArray & inSharedArray) ;
 
-//--------------------------------- Element constructor used by listmap
+//--------------------------------- Element constructor
   public : static void makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                   const class GALGAS_location & in_location,
                                                   const class GALGAS_double & in_value
@@ -4031,8 +4031,8 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_floatList ;
 
 class GALGAS_floatList_2D_element : public AC_GALGAS_root {
 //--------------------------------- Public data members
-  public : GALGAS_location mAttribute_location ;
-  public : GALGAS_double mAttribute_value ;
+  public : GALGAS_location mProperty_location ;
+  public : GALGAS_double mProperty_value ;
 
 
 //--------------------------------- Accessors
@@ -4105,9 +4105,9 @@ class GALGAS_numberList : public AC_GALGAS_list {
   public : GALGAS_numberList (void) ;
 
 //--------------------------------- List constructor used by listmap
-  public : GALGAS_numberList (cSharedList * inSharedListPtr) ;
+  public : GALGAS_numberList (const capCollectionElementArray & inSharedArray) ;
 
-//--------------------------------- Element constructor used by listmap
+//--------------------------------- Element constructor
   public : static void makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                   const class GALGAS_location & in_location,
                                                   const class GALGAS_object_5F_t & in_value
@@ -4289,8 +4289,8 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_object_5F_t ;
 
 class cPtr_object_5F_t : public acPtr_class {
 //--- Attributes
-  public : GALGAS_lstring mAttribute_oil_5F_desc ;
-  public : GALGAS_location mAttribute_location ;
+  public : GALGAS_lstring mProperty_oil_5F_desc ;
+  public : GALGAS_location mProperty_location ;
 
 //--- Constructor
   public : cPtr_object_5F_t (const GALGAS_lstring & in_oil_5F_desc,
@@ -4318,8 +4318,8 @@ class cPtr_object_5F_t : public acPtr_class {
 
 class GALGAS_numberList_2D_element : public AC_GALGAS_root {
 //--------------------------------- Public data members
-  public : GALGAS_location mAttribute_location ;
-  public : GALGAS_object_5F_t mAttribute_value ;
+  public : GALGAS_location mProperty_location ;
+  public : GALGAS_object_5F_t mProperty_value ;
 
 
 //--------------------------------- Accessors
@@ -4434,7 +4434,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_attributeRange ;
 
 class cPtr_attributeRange : public acPtr_class {
 //--- Attributes
-  public : GALGAS_location mAttribute_location ;
+  public : GALGAS_location mProperty_location ;
 
 //--- Constructor
   public : cPtr_attributeRange (const GALGAS_location & in_location
@@ -4621,7 +4621,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_uint_33__32_Attribu
 
 class cPtr_uint_33__32_AttributeSet : public cPtr_attributeRange {
 //--- Attributes
-  public : GALGAS_uint_33__32_List mAttribute_valueList ;
+  public : GALGAS_uint_33__32_List mProperty_valueList ;
 
 //--- Constructor
   public : cPtr_uint_33__32_AttributeSet (const GALGAS_location & in_location,
@@ -4707,7 +4707,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_uint_36__34_Attribu
 
 class cPtr_uint_36__34_AttributeSet : public cPtr_attributeRange {
 //--- Attributes
-  public : GALGAS_uint_36__34_List mAttribute_valueList ;
+  public : GALGAS_uint_36__34_List mProperty_valueList ;
 
 //--- Constructor
   public : cPtr_uint_36__34_AttributeSet (const GALGAS_location & in_location,
@@ -4793,7 +4793,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_sint_33__32_Attribu
 
 class cPtr_sint_33__32_AttributeSet : public cPtr_attributeRange {
 //--- Attributes
-  public : GALGAS_sint_33__32_List mAttribute_valueList ;
+  public : GALGAS_sint_33__32_List mProperty_valueList ;
 
 //--- Constructor
   public : cPtr_sint_33__32_AttributeSet (const GALGAS_location & in_location,
@@ -4879,7 +4879,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_sint_36__34_Attribu
 
 class cPtr_sint_36__34_AttributeSet : public cPtr_attributeRange {
 //--- Attributes
-  public : GALGAS_sint_36__34_List mAttribute_valueList ;
+  public : GALGAS_sint_36__34_List mProperty_valueList ;
 
 //--- Constructor
   public : cPtr_sint_36__34_AttributeSet (const GALGAS_location & in_location,
@@ -4965,7 +4965,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_floatAttributeSet ;
 
 class cPtr_floatAttributeSet : public cPtr_attributeRange {
 //--- Attributes
-  public : GALGAS_floatList mAttribute_valueList ;
+  public : GALGAS_floatList mProperty_valueList ;
 
 //--- Constructor
   public : cPtr_floatAttributeSet (const GALGAS_location & in_location,
@@ -5054,8 +5054,8 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_uint_33__32_Attribu
 
 class cPtr_uint_33__32_AttributeMinMax : public cPtr_attributeRange {
 //--- Attributes
-  public : GALGAS_uint mAttribute_min ;
-  public : GALGAS_uint mAttribute_max ;
+  public : GALGAS_uint mProperty_min ;
+  public : GALGAS_uint mProperty_max ;
 
 //--- Constructor
   public : cPtr_uint_33__32_AttributeMinMax (const GALGAS_location & in_location,
@@ -5146,8 +5146,8 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_uint_36__34_Attribu
 
 class cPtr_uint_36__34_AttributeMinMax : public cPtr_attributeRange {
 //--- Attributes
-  public : GALGAS_uint_36__34_ mAttribute_min ;
-  public : GALGAS_uint_36__34_ mAttribute_max ;
+  public : GALGAS_uint_36__34_ mProperty_min ;
+  public : GALGAS_uint_36__34_ mProperty_max ;
 
 //--- Constructor
   public : cPtr_uint_36__34_AttributeMinMax (const GALGAS_location & in_location,

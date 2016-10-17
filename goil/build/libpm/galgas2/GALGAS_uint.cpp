@@ -183,8 +183,8 @@ GALGAS_bool GALGAS_uint::getter_isInRange (const GALGAS_range & inRange
                                            COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
   if (isValid () && inRange.isValid ()) {
-    const uint32_t start = inRange.mAttribute_start.uintValue () ;
-    const uint32_t end = start + inRange.mAttribute_length.uintValue () ;
+    const uint32_t start = inRange.mProperty_start.uintValue () ;
+    const uint32_t end = start + inRange.mProperty_length.uintValue () ;
     result = GALGAS_bool ((mUIntValue >= start) && (mUIntValue < end)) ;
   }
   return result ;

@@ -182,8 +182,8 @@ void C_UIntCommandLineOption::printUIntOptions (const uint32_t inDisplayLength) 
 void C_UIntCommandLineOption::getUIntOptionNameList (TC_UniqueArray <C_String> & outArray) {
   C_UIntCommandLineOption * p = gFirstIntOption ;
   while (p != NULL) {
-    outArray.addObject (p->mDomainName) ;
-    outArray.addObject (p->mIdentifier) ;
+    outArray.appendObject (p->mDomainName) ;
+    outArray.appendObject (p->mIdentifier) ;
     p = p->mNext ;
   }
 }

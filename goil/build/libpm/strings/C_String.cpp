@@ -149,7 +149,6 @@ cEmbeddedString::~cEmbeddedString (void) {
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void cEmbeddedString::checkEmbeddedString (LOCATION_ARGS) const {
-    MF_Assert (retainCount () >= 1, "retainCount () == %lld < 1", retainCount (), 0) ;
     if (mCapacity == 0) {
       MF_AssertThere (UNICODE_VALUE (mString [0]) == '\0', "mString [0] (%lld) != '\\0'",
                       (int32_t) UNICODE_VALUE (mString [0]), '\0') ;
@@ -453,7 +452,7 @@ void C_String::insulateEmbeddedString (const uint32_t inNewCapacity) const {
     macroMyNew (mEmbeddedString, cEmbeddedString (inNewCapacity COMMA_HERE)) ;
   }else{
     macroValidSharedObject (mEmbeddedString, cEmbeddedString) ;
-    if (mEmbeddedString->retainCount () == 1) {
+    if (mEmbeddedString->isUniquelyReferenced ()) {
       macroMyDeletePODArray (mEmbeddedString->mEncodedCString) ;
       mEmbeddedString->reallocEmbeddedString (inNewCapacity) ;
     }else{
@@ -478,7 +477,7 @@ void C_String::setLengthToZero (void) {
     checkString (HERE) ;
   #endif
   if (mEmbeddedString != NULL) {
-    if (mEmbeddedString->retainCount () == 1) {
+    if (mEmbeddedString->isUniquelyReferenced ()) {
       macroMyDeletePODArray (mEmbeddedString->mEncodedCString) ;
       mEmbeddedString->mLength = 0 ;
       mEmbeddedString->mString [0] = TO_UNICODE ('\0') ;
@@ -523,7 +522,7 @@ void C_String::setCapacity (const uint32_t inNewCapacity) {
   if (mEmbeddedString != NULL) {
     macroMyDeletePODArray (mEmbeddedString->mEncodedCString) ;
     if ((mEmbeddedString->mLength < inNewCapacity) && (mEmbeddedString->mCapacity < inNewCapacity)) {
-      if (mEmbeddedString->retainCount () == 1) {
+      if (mEmbeddedString->isUniquelyReferenced ()) {
         macroMyDeletePODArray (mEmbeddedString->mEncodedCString) ;
         mEmbeddedString->reallocEmbeddedString (inNewCapacity) ;
       }else{
@@ -559,7 +558,7 @@ void C_String::performActualUnicodeArrayOutput (const utf32 * inUTF32CharArray,
   if (inArrayCount > 0) {
     const int32_t kNewLength = length () + inArrayCount ;
     insulateEmbeddedString ((uint32_t) (kNewLength + 1)) ;
-    MF_Assert (mEmbeddedString->retainCount () == 1, "mEmbeddedString->retainCount () == (%lld) != 1", mEmbeddedString->retainCount () == 1, 0) ;
+    MF_Assert (mEmbeddedString->isUniquelyReferenced (), "mEmbeddedString->isUniquelyReferenced () is false", 0, 0) ;
     for (int32_t i=0 ; i<inArrayCount ; i++) {
       mEmbeddedString->mString [mEmbeddedString->mLength + (uint32_t) i] = inUTF32CharArray [i] ;
     }
@@ -719,7 +718,7 @@ void C_String::linesArray (TC_UniqueArray <C_String> & outStringArray) const {
   const int32_t currentStringLength = length () ;
   if (currentStringLength > 0) {
     int32_t index = outStringArray.count () ;
-    outStringArray.addObject (C_String ()) ;
+    outStringArray.appendObject (C_String ()) ;
     typedef enum {kAppendToCurrentLine, kGotCarriageReturn, kGotLineFeed} enumState ;
     enumState state = kAppendToCurrentLine ;
     for (int32_t i=0 ; i<currentStringLength ; i++) {
@@ -743,11 +742,11 @@ void C_String::linesArray (TC_UniqueArray <C_String> & outStringArray) const {
           state = kGotLineFeed ;
           break ;
         case '\r' : // CR
-          outStringArray.addObject (C_String ()) ;
+          outStringArray.appendObject (C_String ()) ;
           index ++ ;
           break ;
         default: // Other character
-          outStringArray.addObject (C_String ()) ;
+          outStringArray.appendObject (C_String ()) ;
           index ++ ;
           outStringArray (index COMMA_HERE).appendUnicodeCharacter (c COMMA_HERE) ;
           state = kAppendToCurrentLine ;
@@ -756,16 +755,16 @@ void C_String::linesArray (TC_UniqueArray <C_String> & outStringArray) const {
       case kGotLineFeed :
         switch (UNICODE_VALUE (c)) {
         case '\n' : // LF
-          outStringArray.addObject (C_String ()) ;
+          outStringArray.appendObject (C_String ()) ;
           index ++ ;
           break ;
         case '\r' : // CR
-          outStringArray.addObject (C_String ()) ;
+          outStringArray.appendObject (C_String ()) ;
           index ++ ;
           state = kGotCarriageReturn ;
           break ;
         default: // Other character
-          outStringArray.addObject (C_String ()) ;
+          outStringArray.appendObject (C_String ()) ;
           index ++ ;
           outStringArray (index COMMA_HERE).appendUnicodeCharacter (c COMMA_HERE) ;
           state = kAppendToCurrentLine ;
@@ -838,7 +837,7 @@ void C_String::componentsSeparatedByString (const C_String & inSeparatorString,
   outResult.setCountToZero () ;
   const utf32 * sourcePtr = utf32String (HERE) ;
   if (sourcePtr == NULL) {
-    outResult.addObject (C_String ()) ;
+    outResult.appendObject (C_String ()) ;
   }else{
     const int32_t splitStringLength = inSeparatorString.length () ;
     const utf32 * separator = inSeparatorString.utf32String (HERE) ;
@@ -847,12 +846,12 @@ void C_String::componentsSeparatedByString (const C_String & inSeparatorString,
       while (p != NULL) {
         C_String s ;
         s.genericUnicodeArrayOutput (sourcePtr, (int32_t) ((p - sourcePtr) & INT32_MAX)) ;
-        outResult.addObject (s) ;
+        outResult.appendObject (s) ;
         sourcePtr = p + splitStringLength ;
         p = ::utf32_strstr (sourcePtr, separator) ;
       }
     }
-    outResult.addObject (C_String (sourcePtr)) ;
+    outResult.appendObject (C_String (sourcePtr)) ;
   }
 }
 

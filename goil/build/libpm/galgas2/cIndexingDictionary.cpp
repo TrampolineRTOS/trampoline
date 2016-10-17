@@ -209,7 +209,7 @@ void cIndexingDictionary::addIndexedKey (const uint32_t inIndexingKind,
   entryDescriptor << cStringWithUnsigned (inTokenLengthInSource) ;
   entryDescriptor << ":" ;
   entryDescriptor << inSourceFilePath ;
-  entryNode->mDescriptorArray.addObject (entryDescriptor) ;
+  entryNode->mDescriptorArray.appendObject (entryDescriptor) ;
 }
 
 //---------------------------------------------------------------------

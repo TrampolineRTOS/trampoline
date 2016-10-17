@@ -94,7 +94,7 @@ void capSortedListElement::drop (void) {
 //---------------------------------------------------------------------------------------------------------------------*
 
 void capSortedListElement::insulate (void) {
-  if ((NULL != mPtr) && (mPtr->retainCount () > 1)) {
+  if ((NULL != mPtr) && !mPtr->isUniquelyReferenced ()) {
     cSortedListElement * p = (cSortedListElement *) mPtr->copy () ;
     macroValidSharedObject (p, cSortedListElement) ;
     macroAssignSharedObject (mPtr, p) ;  

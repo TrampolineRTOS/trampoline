@@ -99,9 +99,9 @@ mBDDStartIndexArray (),
 mVariableNameArray (),
 mVariableTypeArray () {
   macroValidSharedObjectThere (inPtr, cVariablesInRelationConfiguration) ;
-  mBDDStartIndexArray.addObjectsFromArray (inPtr->mBDDStartIndexArray) ;
-  mVariableNameArray.addObjectsFromArray (inPtr->mVariableNameArray) ;
-  mVariableTypeArray.addObjectsFromArray (inPtr->mVariableTypeArray) ;
+  mBDDStartIndexArray.appendObjectsFromArray (inPtr->mBDDStartIndexArray) ;
+  mVariableNameArray.appendObjectsFromArray (inPtr->mVariableNameArray) ;
+  mVariableTypeArray.appendObjectsFromArray (inPtr->mVariableTypeArray) ;
   #ifndef DO_NOT_GENERATE_CHECKINGS
     checkConfiguration (HERE) ;
   #endif
@@ -135,12 +135,12 @@ mVariableTypeArray () {
 void cVariablesInRelationConfiguration::addVariable (const C_String & inVariableName,
                                                      const C_RelationSingleType & inType) {
   if (mBDDStartIndexArray.count () == 0) {
-    mBDDStartIndexArray.addObject (0) ;
+    mBDDStartIndexArray.appendObject (0) ;
   }else{
-    mBDDStartIndexArray.addObject (bitCount ()) ;
+    mBDDStartIndexArray.appendObject (bitCount ()) ;
   }
-  mVariableNameArray.addObject (inVariableName) ;
-  mVariableTypeArray.addObject (inType) ;
+  mVariableNameArray.appendObject (inVariableName) ;
+  mVariableTypeArray.appendObject (inType) ;
   #ifndef DO_NOT_GENERATE_CHECKINGS
     checkConfiguration (HERE) ;
   #endif
@@ -345,7 +345,7 @@ void C_RelationConfiguration::insulate (LOCATION_ARGS) {
     macroMyNew (mVariablesPtr, cVariablesInRelationConfiguration (THERE)) ;
   }else{
     macroValidSharedObjectThere (mVariablesPtr, cVariablesInRelationConfiguration) ;
-    if (mVariablesPtr->retainCount () > 1) {
+    if (!mVariablesPtr->isUniquelyReferenced ()) {
       cVariablesInRelationConfiguration * ptr = NULL ;
       macroMyNew (ptr, cVariablesInRelationConfiguration (mVariablesPtr COMMA_THERE)) ;
       macroAssignSharedObject (mVariablesPtr, ptr) ;

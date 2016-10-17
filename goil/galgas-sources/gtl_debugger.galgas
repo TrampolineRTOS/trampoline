@@ -1862,6 +1862,7 @@ override method @gtlHelpInstruction execute
   message "  do not <num>                   : delete the do command at index <num>\n"
   message "  do not all                     : delete all the do commands\n"
   message "  hist                           : display the command history\n"
+  message "  if <expression> then ...       : same as GTL if instruction. Must be on one line though\n"
   message "  list                           : lists instructions +/- 5 around current one\n"
   message "  list <num>                     : lists instructions +/- <num> around current one\n"
   message "  let <variable> := <expression> : compute <expression> and set <variable> to the result\n"

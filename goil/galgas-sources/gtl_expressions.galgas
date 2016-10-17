@@ -1572,9 +1572,13 @@ override getter @gtlLiteralSetExpression eval
   ?let @library    lib
   -> @gtlData result
 {
-  @stringset resultSet = .emptySet
+  @lstringset resultSet = .emptyMap
   for (item) in value do
-    resultSet += ![[item eval !context !vars !lib] string]
+    @lstring itemValue = [[item eval !context !vars !lib] lstring]
+    if [resultSet hasKey !itemValue] then
+      [!?resultSet del !itemValue]
+    end
+    [!?resultSet put !itemValue]
   end
   result = @gtlSet.new { !where !emptylstring() !resultSet }
 }

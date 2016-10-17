@@ -19,9 +19,9 @@ class GALGAS_gtlDataList : public AC_GALGAS_list {
   public : GALGAS_gtlDataList (void) ;
 
 //--------------------------------- List constructor used by listmap
-  public : GALGAS_gtlDataList (cSharedList * inSharedListPtr) ;
+  public : GALGAS_gtlDataList (const capCollectionElementArray & inSharedArray) ;
 
-//--------------------------------- Element constructor used by listmap
+//--------------------------------- Element constructor
   public : static void makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                   const class GALGAS_gtlData & in_data
                                                   COMMA_LOCATION_ARGS) ;
@@ -195,8 +195,8 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlData ;
 
 class cPtr_gtlData : public acPtr_class {
 //--- Attributes
-  public : GALGAS_location mAttribute_where ;
-  public : GALGAS_lstring mAttribute_meta ;
+  public : GALGAS_location mProperty_where ;
+  public : GALGAS_lstring mProperty_meta ;
 
 //--- Constructor
   public : cPtr_gtlData (const GALGAS_location & in_where,
@@ -226,7 +226,7 @@ class cPtr_gtlData : public acPtr_class {
 
 class GALGAS_gtlDataList_2D_element : public AC_GALGAS_root {
 //--------------------------------- Public data members
-  public : GALGAS_gtlData mAttribute_data ;
+  public : GALGAS_gtlData mProperty_data ;
 
 
 //--------------------------------- Accessors
@@ -418,7 +418,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlVarMap ;
 
 class cMapElement_gtlVarMap : public cMapElement {
 //--- Map attributes
-  public : GALGAS_gtlData mAttribute_value ;
+  public : GALGAS_gtlData mProperty_value ;
 
 //--- Constructor
   public : cMapElement_gtlVarMap (const GALGAS_lstring & inKey,
@@ -446,8 +446,8 @@ class cMapElement_gtlVarMap : public cMapElement {
 
 class GALGAS_gtlVarMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Public data members
-  public : GALGAS_lstring mAttribute_lkey ;
-  public : GALGAS_gtlData mAttribute_value ;
+  public : GALGAS_lstring mProperty_lkey ;
+  public : GALGAS_gtlData mProperty_value ;
 
 
 //--------------------------------- Accessors
@@ -696,7 +696,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlExpression ;
 
 class cMapElement_gtlExpressionMap : public cMapElement {
 //--- Map attributes
-  public : GALGAS_gtlExpression mAttribute_expression ;
+  public : GALGAS_gtlExpression mProperty_expression ;
 
 //--- Constructor
   public : cMapElement_gtlExpressionMap (const GALGAS_lstring & inKey,
@@ -724,8 +724,8 @@ class cMapElement_gtlExpressionMap : public cMapElement {
 
 class GALGAS_gtlExpressionMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Public data members
-  public : GALGAS_lstring mAttribute_lkey ;
-  public : GALGAS_gtlExpression mAttribute_expression ;
+  public : GALGAS_lstring mProperty_lkey ;
+  public : GALGAS_gtlExpression mProperty_expression ;
 
 
 //--------------------------------- Accessors
@@ -795,9 +795,9 @@ class GALGAS_gtlInstructionList : public AC_GALGAS_list {
   public : GALGAS_gtlInstructionList (void) ;
 
 //--------------------------------- List constructor used by listmap
-  public : GALGAS_gtlInstructionList (cSharedList * inSharedListPtr) ;
+  public : GALGAS_gtlInstructionList (const capCollectionElementArray & inSharedArray) ;
 
-//--------------------------------- Element constructor used by listmap
+//--------------------------------- Element constructor
   public : static void makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                   const class GALGAS_gtlInstruction & in_instruction
                                                   COMMA_LOCATION_ARGS) ;
@@ -970,8 +970,8 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlInstruction ;
 
 class cPtr_gtlInstruction : public acPtr_class {
 //--- Attributes
-  public : GALGAS_location mAttribute_where ;
-  public : GALGAS_string mAttribute_signature ;
+  public : GALGAS_location mProperty_where ;
+  public : GALGAS_string mProperty_signature ;
 
 //--- Constructor
   public : cPtr_gtlInstruction (const GALGAS_location & in_where,
@@ -999,7 +999,7 @@ class cPtr_gtlInstruction : public acPtr_class {
 
 class GALGAS_gtlInstructionList_2D_element : public AC_GALGAS_root {
 //--------------------------------- Public data members
-  public : GALGAS_gtlInstruction mAttribute_instruction ;
+  public : GALGAS_gtlInstruction mProperty_instruction ;
 
 
 //--------------------------------- Accessors
@@ -1224,7 +1224,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlTemplate ;
 
 class cMapElement_gtlTemplateMap : public cMapElement {
 //--- Map attributes
-  public : GALGAS_gtlTemplate mAttribute_aTemplate ;
+  public : GALGAS_gtlTemplate mProperty_aTemplate ;
 
 //--- Constructor
   public : cMapElement_gtlTemplateMap (const GALGAS_lstring & inKey,
@@ -1252,8 +1252,8 @@ class cMapElement_gtlTemplateMap : public cMapElement {
 
 class GALGAS_gtlTemplateMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Public data members
-  public : GALGAS_lstring mAttribute_lkey ;
-  public : GALGAS_gtlTemplate mAttribute_aTemplate ;
+  public : GALGAS_lstring mProperty_lkey ;
+  public : GALGAS_gtlTemplate mProperty_aTemplate ;
 
 
 //--------------------------------- Accessors
@@ -1394,7 +1394,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_debugCommandInput ;
 
 class cPtr_debugCommandInput : public acPtr_class {
 //--- Attributes
-  public : GALGAS_stringlist mAttribute_history ;
+  public : GALGAS_stringlist mProperty_history ;
 
 //--- Constructor
   public : cPtr_debugCommandInput (const GALGAS_stringlist & in_history
@@ -1574,9 +1574,9 @@ class GALGAS_gtlBreakpointList : public AC_GALGAS_list {
   public : GALGAS_gtlBreakpointList (void) ;
 
 //--------------------------------- List constructor used by listmap
-  public : GALGAS_gtlBreakpointList (cSharedList * inSharedListPtr) ;
+  public : GALGAS_gtlBreakpointList (const capCollectionElementArray & inSharedArray) ;
 
-//--------------------------------- Element constructor used by listmap
+//--------------------------------- Element constructor
   public : static void makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                   const class GALGAS_gtlBreakpoint & in_breakpoint
                                                   COMMA_LOCATION_ARGS) ;
@@ -1697,9 +1697,9 @@ class GALGAS_gtlExpressionList : public AC_GALGAS_list {
   public : GALGAS_gtlExpressionList (void) ;
 
 //--------------------------------- List constructor used by listmap
-  public : GALGAS_gtlExpressionList (cSharedList * inSharedListPtr) ;
+  public : GALGAS_gtlExpressionList (const capCollectionElementArray & inSharedArray) ;
 
-//--------------------------------- Element constructor used by listmap
+//--------------------------------- Element constructor
   public : static void makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                   const class GALGAS_gtlExpression & in_expression
                                                   COMMA_LOCATION_ARGS) ;
@@ -1820,9 +1820,9 @@ class GALGAS_gtlInstructionListContextStack : public AC_GALGAS_list {
   public : GALGAS_gtlInstructionListContextStack (void) ;
 
 //--------------------------------- List constructor used by listmap
-  public : GALGAS_gtlInstructionListContextStack (cSharedList * inSharedListPtr) ;
+  public : GALGAS_gtlInstructionListContextStack (const capCollectionElementArray & inSharedArray) ;
 
-//--------------------------------- Element constructor used by listmap
+//--------------------------------- Element constructor
   public : static void makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                   const class GALGAS_uint & in_nextInstructionIndex,
                                                   const class GALGAS_gtlInstructionList & in_instructionList
@@ -1954,25 +1954,25 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlInstructionListC
 
 class cPtr_debuggerContext : public acPtr_class {
 //--- Attributes
-  public : GALGAS_bool mAttribute_debugActive ;
-  public : GALGAS_bool mAttribute_breakOnNext ;
-  public : GALGAS_bool mAttribute_loopOnCommand ;
-  public : GALGAS_string mAttribute_promptColor ;
-  public : GALGAS_string mAttribute_promptFace ;
-  public : GALGAS_string mAttribute_instructionColor ;
-  public : GALGAS_string mAttribute_instructionFace ;
-  public : GALGAS_string mAttribute_outputColor ;
-  public : GALGAS_string mAttribute_outputFace ;
-  public : GALGAS_string mAttribute_warningColor ;
-  public : GALGAS_string mAttribute_warningFace ;
-  public : GALGAS_bool mAttribute_executeDebuggerCommand ;
-  public : GALGAS_gtlInstructionList mAttribute_doList ;
-  public : GALGAS_gtlBreakpointList mAttribute_breakpoints ;
-  public : GALGAS_gtlExpressionList mAttribute_watchpoints ;
-  public : GALGAS_uint mAttribute_nextInstructionIndex ;
-  public : GALGAS_gtlInstructionList mAttribute_instructionList ;
-  public : GALGAS_gtlInstructionListContextStack mAttribute_contextStack ;
-  public : GALGAS_debugCommandInput mAttribute_commandInput ;
+  public : GALGAS_bool mProperty_debugActive ;
+  public : GALGAS_bool mProperty_breakOnNext ;
+  public : GALGAS_bool mProperty_loopOnCommand ;
+  public : GALGAS_string mProperty_promptColor ;
+  public : GALGAS_string mProperty_promptFace ;
+  public : GALGAS_string mProperty_instructionColor ;
+  public : GALGAS_string mProperty_instructionFace ;
+  public : GALGAS_string mProperty_outputColor ;
+  public : GALGAS_string mProperty_outputFace ;
+  public : GALGAS_string mProperty_warningColor ;
+  public : GALGAS_string mProperty_warningFace ;
+  public : GALGAS_bool mProperty_executeDebuggerCommand ;
+  public : GALGAS_gtlInstructionList mProperty_doList ;
+  public : GALGAS_gtlBreakpointList mProperty_breakpoints ;
+  public : GALGAS_gtlExpressionList mProperty_watchpoints ;
+  public : GALGAS_uint mProperty_nextInstructionIndex ;
+  public : GALGAS_gtlInstructionList mProperty_instructionList ;
+  public : GALGAS_gtlInstructionListContextStack mProperty_contextStack ;
+  public : GALGAS_debugCommandInput mProperty_commandInput ;
 
 //--- Constructor
   public : cPtr_debuggerContext (const GALGAS_bool & in_debugActive,
@@ -2141,13 +2141,13 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlContext ;
 
 class cPtr_gtlContext : public acPtr_class {
 //--- Attributes
-  public : GALGAS_lstring mAttribute_prefix ;
-  public : GALGAS_string mAttribute_path ;
-  public : GALGAS_string mAttribute_templateDirectory ;
-  public : GALGAS_string mAttribute_templateExtension ;
-  public : GALGAS_stringlist mAttribute_importPath ;
-  public : GALGAS_gtlDataList mAttribute_inputVars ;
-  public : GALGAS_debuggerContext mAttribute_debuggerContext ;
+  public : GALGAS_lstring mProperty_prefix ;
+  public : GALGAS_string mProperty_path ;
+  public : GALGAS_string mProperty_templateDirectory ;
+  public : GALGAS_string mProperty_templateExtension ;
+  public : GALGAS_stringlist mProperty_importPath ;
+  public : GALGAS_gtlDataList mProperty_inputVars ;
+  public : GALGAS_debuggerContext mProperty_debuggerContext ;
 
 //--- Constructor
   public : cPtr_gtlContext (const GALGAS_lstring & in_prefix,
@@ -2194,8 +2194,8 @@ class cPtr_gtlContext : public acPtr_class {
 
 class cPtr_gtlTemplate : public acPtr_class {
 //--- Attributes
-  public : GALGAS_string mAttribute_path ;
-  public : GALGAS_gtlInstructionList mAttribute_program ;
+  public : GALGAS_string mProperty_path ;
+  public : GALGAS_gtlInstructionList mProperty_program ;
 
 //--- Constructor
   public : cPtr_gtlTemplate (const GALGAS_string & in_path,
@@ -2360,9 +2360,9 @@ class GALGAS_gtlArgumentList : public AC_GALGAS_list {
   public : GALGAS_gtlArgumentList (void) ;
 
 //--------------------------------- List constructor used by listmap
-  public : GALGAS_gtlArgumentList (cSharedList * inSharedListPtr) ;
+  public : GALGAS_gtlArgumentList (const capCollectionElementArray & inSharedArray) ;
 
-//--------------------------------- Element constructor used by listmap
+//--------------------------------- Element constructor
   public : static void makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                   const class GALGAS_bool & in_typed,
                                                   const class GALGAS_type & in_type,
@@ -2508,10 +2508,10 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlArgumentList ;
 
 class cPtr_gtlExecutableEntity : public acPtr_class {
 //--- Attributes
-  public : GALGAS_location mAttribute_where ;
-  public : GALGAS_lstring mAttribute_name ;
-  public : GALGAS_gtlArgumentList mAttribute_formalArguments ;
-  public : GALGAS_gtlInstructionList mAttribute_instructions ;
+  public : GALGAS_location mProperty_where ;
+  public : GALGAS_lstring mProperty_name ;
+  public : GALGAS_gtlArgumentList mProperty_formalArguments ;
+  public : GALGAS_gtlInstructionList mProperty_instructions ;
 
 //--- Constructor
   public : cPtr_gtlExecutableEntity (const GALGAS_location & in_where,
@@ -2709,7 +2709,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlFuncMap ;
 
 class cMapElement_gtlFuncMap : public cMapElement {
 //--- Map attributes
-  public : GALGAS_gtlFunction mAttribute_function ;
+  public : GALGAS_gtlFunction mProperty_function ;
 
 //--- Constructor
   public : cMapElement_gtlFuncMap (const GALGAS_lstring & inKey,
@@ -2737,7 +2737,7 @@ class cMapElement_gtlFuncMap : public cMapElement {
 
 class cPtr_gtlFunction : public cPtr_gtlExecutableEntity {
 //--- Attributes
-  public : GALGAS_lstring mAttribute_returnVariable ;
+  public : GALGAS_lstring mProperty_returnVariable ;
 
 //--- Constructor
   public : cPtr_gtlFunction (const GALGAS_location & in_where,
@@ -2931,7 +2931,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlGetterMap ;
 
 class cMapElement_gtlGetterMap : public cMapElement {
 //--- Map attributes
-  public : GALGAS_gtlGetter mAttribute_theGetter ;
+  public : GALGAS_gtlGetter mProperty_theGetter ;
 
 //--- Constructor
   public : cMapElement_gtlGetterMap (const GALGAS_lstring & inKey,
@@ -3119,7 +3119,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlSetterMap ;
 
 class cMapElement_gtlSetterMap : public cMapElement {
 //--- Map attributes
-  public : GALGAS_gtlSetter mAttribute_theSetter ;
+  public : GALGAS_gtlSetter mProperty_theSetter ;
 
 //--- Constructor
   public : cMapElement_gtlSetterMap (const GALGAS_lstring & inKey,
@@ -3147,11 +3147,11 @@ class cMapElement_gtlSetterMap : public cMapElement {
 
 class cPtr_library : public acPtr_class {
 //--- Attributes
-  public : GALGAS_gtlFuncMap mAttribute_funcMap ;
-  public : GALGAS_gtlGetterMap mAttribute_getterMap ;
-  public : GALGAS_gtlSetterMap mAttribute_setterMap ;
-  public : GALGAS_gtlTemplateMap mAttribute_templateMap ;
-  public : GALGAS_stringset mAttribute_doneImports ;
+  public : GALGAS_gtlFuncMap mProperty_funcMap ;
+  public : GALGAS_gtlGetterMap mProperty_getterMap ;
+  public : GALGAS_gtlSetterMap mProperty_setterMap ;
+  public : GALGAS_gtlTemplateMap mProperty_templateMap ;
+  public : GALGAS_stringset mProperty_doneImports ;
 
 //--- Constructor
   public : cPtr_library (const GALGAS_gtlFuncMap & in_funcMap,
@@ -4336,8 +4336,8 @@ class cGrammar_gtl_5F_grammar : public cParser_gtl_5F_parser,
 
 class GALGAS_gtlFuncMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Public data members
-  public : GALGAS_lstring mAttribute_lkey ;
-  public : GALGAS_gtlFunction mAttribute_function ;
+  public : GALGAS_lstring mProperty_lkey ;
+  public : GALGAS_gtlFunction mProperty_function ;
 
 
 //--------------------------------- Accessors
@@ -4407,8 +4407,8 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlFuncMap_2D_eleme
 
 class GALGAS_gtlGetterMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Public data members
-  public : GALGAS_lstring mAttribute_lkey ;
-  public : GALGAS_gtlGetter mAttribute_theGetter ;
+  public : GALGAS_lstring mProperty_lkey ;
+  public : GALGAS_gtlGetter mProperty_theGetter ;
 
 
 //--------------------------------- Accessors
@@ -4475,8 +4475,8 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlGetterMap_2D_ele
 
 class GALGAS_gtlSetterMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Public data members
-  public : GALGAS_lstring mAttribute_lkey ;
-  public : GALGAS_gtlSetter mAttribute_theSetter ;
+  public : GALGAS_lstring mProperty_lkey ;
+  public : GALGAS_gtlSetter mProperty_theSetter ;
 
 
 //--------------------------------- Accessors
@@ -4696,9 +4696,9 @@ class GALGAS_gtlVarPath : public AC_GALGAS_list {
   public : GALGAS_gtlVarPath (void) ;
 
 //--------------------------------- List constructor used by listmap
-  public : GALGAS_gtlVarPath (cSharedList * inSharedListPtr) ;
+  public : GALGAS_gtlVarPath (const capCollectionElementArray & inSharedArray) ;
 
-//--------------------------------- Element constructor used by listmap
+//--------------------------------- Element constructor
   public : static void makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                   const class GALGAS_gtlVarItem & in_item
                                                   COMMA_LOCATION_ARGS) ;
@@ -4909,7 +4909,7 @@ void callExtensionMethod_deleteInContext (const class cPtr_gtlVarItem * inObject
 
 class GALGAS_gtlVarPath_2D_element : public AC_GALGAS_root {
 //--------------------------------- Public data members
-  public : GALGAS_gtlVarItem mAttribute_item ;
+  public : GALGAS_gtlVarItem mProperty_item ;
 
 
 //--------------------------------- Accessors
@@ -5037,7 +5037,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlVarItemField ;
 
 class cPtr_gtlVarItemField : public cPtr_gtlVarItem {
 //--- Attributes
-  public : GALGAS_lstring mAttribute_field ;
+  public : GALGAS_lstring mProperty_field ;
 
 //--- Constructor
   public : cPtr_gtlVarItemField (const GALGAS_lstring & in_field
@@ -5142,7 +5142,7 @@ class GALGAS_location extensionGetter_location (const class GALGAS_gtlVarPath & 
 
 class cPtr_gtlExpression : public acPtr_class {
 //--- Attributes
-  public : GALGAS_location mAttribute_where ;
+  public : GALGAS_location mProperty_where ;
 
 //--- Constructor
   public : cPtr_gtlExpression (const GALGAS_location & in_where
@@ -5168,7 +5168,7 @@ class cPtr_gtlExpression : public acPtr_class {
 
 class GALGAS_gtlExpressionList_2D_element : public AC_GALGAS_root {
 //--------------------------------- Public data members
-  public : GALGAS_gtlExpression mAttribute_expression ;
+  public : GALGAS_gtlExpression mProperty_expression ;
 
 
 //--------------------------------- Accessors
@@ -5299,7 +5299,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlBool ;
 
 class cPtr_gtlBool : public cPtr_gtlData {
 //--- Attributes
-  public : GALGAS_bool mAttribute_value ;
+  public : GALGAS_bool mProperty_value ;
 
 //--- Constructor
   public : cPtr_gtlBool (const GALGAS_location & in_where,
@@ -5390,7 +5390,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlChar ;
 
 class cPtr_gtlChar : public cPtr_gtlData {
 //--- Attributes
-  public : GALGAS_char mAttribute_value ;
+  public : GALGAS_char mProperty_value ;
 
 //--- Constructor
   public : cPtr_gtlChar (const GALGAS_location & in_where,
@@ -5479,7 +5479,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlEnum ;
 
 class cPtr_gtlEnum : public cPtr_gtlData {
 //--- Attributes
-  public : GALGAS_string mAttribute_value ;
+  public : GALGAS_string mProperty_value ;
 
 //--- Constructor
   public : cPtr_gtlEnum (const GALGAS_location & in_where,
@@ -5567,7 +5567,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlFloat ;
 
 class cPtr_gtlFloat : public cPtr_gtlData {
 //--- Attributes
-  public : GALGAS_double mAttribute_value ;
+  public : GALGAS_double mProperty_value ;
 
 //--- Constructor
   public : cPtr_gtlFloat (const GALGAS_location & in_where,
@@ -5658,7 +5658,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlInt ;
 
 class cPtr_gtlInt : public cPtr_gtlData {
 //--- Attributes
-  public : GALGAS_bigint mAttribute_value ;
+  public : GALGAS_bigint mProperty_value ;
 
 //--- Constructor
   public : cPtr_gtlInt (const GALGAS_location & in_where,
@@ -5750,9 +5750,9 @@ class GALGAS_list : public AC_GALGAS_list {
   public : GALGAS_list (void) ;
 
 //--------------------------------- List constructor used by listmap
-  public : GALGAS_list (cSharedList * inSharedListPtr) ;
+  public : GALGAS_list (const capCollectionElementArray & inSharedArray) ;
 
-//--------------------------------- Element constructor used by listmap
+//--------------------------------- Element constructor
   public : static void makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                   const class GALGAS_gtlData & in_value
                                                   COMMA_LOCATION_ARGS) ;
@@ -5875,7 +5875,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_list ;
 
 class cPtr_gtlList : public cPtr_gtlData {
 //--- Attributes
-  public : GALGAS_list mAttribute_value ;
+  public : GALGAS_list mProperty_value ;
 
 //--- Constructor
   public : cPtr_gtlList (const GALGAS_location & in_where,
@@ -5966,7 +5966,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlMap ;
 
 class cPtr_gtlMap : public cPtr_gtlData {
 //--- Attributes
-  public : GALGAS_gtlVarMap mAttribute_value ;
+  public : GALGAS_gtlVarMap mProperty_value ;
 
 //--- Constructor
   public : cPtr_gtlMap (const GALGAS_location & in_where,
@@ -6022,14 +6022,14 @@ class GALGAS_gtlSet : public GALGAS_gtlData {
 //--------------------------------- GALGAS constructors
   public : static class GALGAS_gtlSet constructor_new (const class GALGAS_location & inOperand0,
                                                        const class GALGAS_lstring & inOperand1,
-                                                       const class GALGAS_stringset & inOperand2
+                                                       const class GALGAS_lstringset & inOperand2
                                                        COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Comparison
   public : typeComparisonResult objectCompare (const GALGAS_gtlSet & inOperand) const ;
 
 //--------------------------------- Setters
-  public : VIRTUAL_IN_DEBUG void setter_setValue (class GALGAS_stringset inArgument0
+  public : VIRTUAL_IN_DEBUG void setter_setValue (class GALGAS_lstringset inArgument0
                                                   COMMA_LOCATION_ARGS) ;
 
 
@@ -6037,7 +6037,7 @@ class GALGAS_gtlSet : public GALGAS_gtlData {
 //--------------------------------- Class Methods
 
 //--------------------------------- Getters
-  public : VIRTUAL_IN_DEBUG class GALGAS_stringset getter_value (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG class GALGAS_lstringset getter_value (LOCATION_ARGS) const ;
 
 
 //--------------------------------- Introspection
@@ -6052,26 +6052,147 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlSet ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
+//                                                   @lstringset map                                                   *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class cMapElement_lstringset ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+extern const char * kSearchErrorMessage_lstringset_get ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_lstringset : public AC_GALGAS_map {
+//--------------------------------- Default constructor
+  public : GALGAS_lstringset (void) ;
+
+//--------------------------------- Handle copy
+  public : GALGAS_lstringset (const GALGAS_lstringset & inSource) ;
+  public : GALGAS_lstringset & operator = (const GALGAS_lstringset & inSource) ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
+
+//--------------------------------- Object extraction
+  public : static GALGAS_lstringset extractObject (const GALGAS_object & inObject,
+                                                   C_Compiler * inCompiler
+                                                   COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public : static class GALGAS_lstringset constructor_emptyMap (LOCATION_ARGS) ;
+
+  public : static class GALGAS_lstringset constructor_mapWithMapToOverride (const class GALGAS_lstringset & inOperand0
+                                                                            COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- += operator (with list of field expressions)
+  public : VIRTUAL_IN_DEBUG void addAssign_operation (const class GALGAS_lstring & inOperand0,
+                                                      C_Compiler * inCompiler
+                                                      COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Setters
+  public : VIRTUAL_IN_DEBUG void setter_del (class GALGAS_lstring constinArgument0,
+                                             C_Compiler * inCompiler
+                                             COMMA_LOCATION_ARGS) ;
+
+  public : VIRTUAL_IN_DEBUG void setter_put (class GALGAS_lstring constinArgument0,
+                                             C_Compiler * inCompiler
+                                             COMMA_LOCATION_ARGS) ;
+
+
+//--------------------------------- Instance Methods
+  public : VIRTUAL_IN_DEBUG void method_get (class GALGAS_lstring constinArgument0,
+                                             C_Compiler * inCompiler
+                                             COMMA_LOCATION_ARGS) const ;
+
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+  public : VIRTUAL_IN_DEBUG class GALGAS_lstringset getter_overriddenMap (C_Compiler * inCompiler
+                                                                          COMMA_LOCATION_ARGS) const ;
+
+
+//--------------------------------- Introspection
+  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+  public : VIRTUAL_IN_DEBUG cMapElement_lstringset * readWriteAccessForWithInstruction (C_Compiler * inCompiler,
+                                                                                        const GALGAS_string & inKey
+                                                                                        COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Friend
+
+  friend class cEnumerator_lstringset ;
+ 
+} ; // End of GALGAS_lstringset class
+
+//---------------------------------------------------------------------------------------------------------------------*
+//   Enumerator declaration                                                                                            *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class cEnumerator_lstringset : public cGenericAbstractEnumerator {
+  public : cEnumerator_lstringset (const GALGAS_lstringset & inEnumeratedObject,
+                                   const typeEnumerationOrder inOrder) ;
+
+//--- Current element access
+  public : class GALGAS_lstring current_lkey (LOCATION_ARGS) const ;
+//--- Current element access
+  public : class GALGAS_lstringset_2D_element current (LOCATION_ARGS) const ;
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_lstringset ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                       Class for element of '@lstringset' map                                        *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class cMapElement_lstringset : public cMapElement {
+//--- Map attributes
+
+//--- Constructor
+  public : cMapElement_lstringset (const GALGAS_lstring & inKey
+                                   COMMA_LOCATION_ARGS) ;
+
+//--- Virtual method for comparing elements
+  public : virtual typeComparisonResult compare (const cCollectionElement * inOperand) const ;
+
+//--- Virtual method that checks that all attributes are valid
+  public : virtual bool isValid (void) const ;
+
+//--- Virtual method that returns a copy of current object
+  public : virtual cMapElement * copy (void) ;
+
+//--- Description
+ public : virtual void description (C_String & ioString, const int32_t inIndentation) const ;
+} ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //                                           Pointer class for @gtlSet class                                           *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class cPtr_gtlSet : public cPtr_gtlData {
 //--- Attributes
-  public : GALGAS_stringset mAttribute_value ;
+  public : GALGAS_lstringset mProperty_value ;
 
 //--- Constructor
   public : cPtr_gtlSet (const GALGAS_location & in_where,
                         const GALGAS_lstring & in_meta,
-                        const GALGAS_stringset & in_value
+                        const GALGAS_lstringset & in_value
                         COMMA_LOCATION_ARGS) ;
 
 //--- Duplication
   public : virtual acPtr_class * duplicate (LOCATION_ARGS) const ;
 
 //--- Attribute accessors
-  public : VIRTUAL_IN_DEBUG GALGAS_stringset getter_value (LOCATION_ARGS) const ;
-  public : VIRTUAL_IN_DEBUG void setter_setValue (GALGAS_stringset inValue COMMA_LOCATION_ARGS) ;
+  public : VIRTUAL_IN_DEBUG GALGAS_lstringset getter_value (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setValue (GALGAS_lstringset inValue COMMA_LOCATION_ARGS) ;
 //--- Description
   public : virtual void description (C_String & ioString,
                                      const int32_t inIndentation) const ;
@@ -6147,7 +6268,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlString ;
 
 class cPtr_gtlString : public cPtr_gtlData {
 //--- Attributes
-  public : GALGAS_string mAttribute_value ;
+  public : GALGAS_string mProperty_value ;
 
 //--- Constructor
   public : cPtr_gtlString (const GALGAS_location & in_where,
@@ -6238,7 +6359,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlStruct ;
 
 class cPtr_gtlStruct : public cPtr_gtlData {
 //--- Attributes
-  public : GALGAS_gtlVarMap mAttribute_value ;
+  public : GALGAS_gtlVarMap mProperty_value ;
 
 //--- Constructor
   public : cPtr_gtlStruct (const GALGAS_location & in_where,
@@ -6324,7 +6445,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlType ;
 
 class cPtr_gtlType : public cPtr_gtlData {
 //--- Attributes
-  public : GALGAS_type mAttribute_type ;
+  public : GALGAS_type mProperty_type ;
 
 //--- Constructor
   public : cPtr_gtlType (const GALGAS_location & in_where,
@@ -6440,9 +6561,9 @@ class GALGAS_gtlTypedArgumentList : public AC_GALGAS_list {
   public : GALGAS_gtlTypedArgumentList (void) ;
 
 //--------------------------------- List constructor used by listmap
-  public : GALGAS_gtlTypedArgumentList (cSharedList * inSharedListPtr) ;
+  public : GALGAS_gtlTypedArgumentList (const capCollectionElementArray & inSharedArray) ;
 
-//--------------------------------- Element constructor used by listmap
+//--------------------------------- Element constructor
   public : static void makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                   const class GALGAS_type & in_type
                                                   COMMA_LOCATION_ARGS) ;
@@ -6560,7 +6681,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlTypedArgumentLis
 
 class GALGAS_gtlTypedArgumentList_2D_element : public AC_GALGAS_root {
 //--------------------------------- Public data members
-  public : GALGAS_type mAttribute_type ;
+  public : GALGAS_type mProperty_type ;
 
 
 //--------------------------------- Accessors
@@ -6623,7 +6744,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlTypedArgumentLis
 
 class GALGAS_list_2D_element : public AC_GALGAS_root {
 //--------------------------------- Public data members
-  public : GALGAS_gtlData mAttribute_value ;
+  public : GALGAS_gtlData mProperty_value ;
 
 
 //--------------------------------- Accessors
@@ -6680,15 +6801,81 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_list_2D_element ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
+//                                            @lstringset_2D_element struct                                            *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+class GALGAS_lstringset_2D_element : public AC_GALGAS_root {
+//--------------------------------- Public data members
+  public : GALGAS_lstring mProperty_lkey ;
+
+
+//--------------------------------- Accessors
+  public : VIRTUAL_IN_DEBUG bool isValid (void) const ;
+  public : VIRTUAL_IN_DEBUG void drop (void) ;
+
+//--------------------------------- Default GALGAS constructor
+  public : static GALGAS_lstringset_2D_element constructor_default (LOCATION_ARGS) ;
+
+//--------------------------------- Default constructor
+  public : GALGAS_lstringset_2D_element (void) ;
+
+//--------------------------------- Virtual destructor (in debug mode)
+  public : VIRTUAL_IN_DEBUG ~ GALGAS_lstringset_2D_element (void) ;
+
+//--------------------------------- Native constructor
+  public : GALGAS_lstringset_2D_element (const GALGAS_lstring & in_lkey) ;
+
+//-- Start of generic part --*
+
+//--------------------------------- Object cloning
+  protected : virtual AC_GALGAS_root * clonedObject (void) const ;
+
+//--------------------------------- Object extraction
+  public : static GALGAS_lstringset_2D_element extractObject (const GALGAS_object & inObject,
+                                                              C_Compiler * inCompiler
+                                                              COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- GALGAS constructors
+  public : static class GALGAS_lstringset_2D_element constructor_new (const class GALGAS_lstring & inOperand0
+                                                                      COMMA_LOCATION_ARGS) ;
+
+//--------------------------------- Implementation of getter 'description'
+  public : VIRTUAL_IN_DEBUG void description (C_String & ioString,
+                                              const int32_t inIndentation) const ;
+//--------------------------------- Comparison
+  public : typeComparisonResult objectCompare (const GALGAS_lstringset_2D_element & inOperand) const ;
+
+//--------------------------------- Setters
+
+//--------------------------------- Instance Methods
+//--------------------------------- Class Methods
+
+//--------------------------------- Getters
+  public : VIRTUAL_IN_DEBUG class GALGAS_lstring getter_lkey (LOCATION_ARGS) const ;
+
+
+//--------------------------------- Introspection
+  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * staticTypeDescriptor (void) const ;
+ 
+} ; // End of GALGAS_lstringset_2D_element class
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_lstringset_2D_element ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
 //                                         @gtlArgumentList_2D_element struct                                          *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
 class GALGAS_gtlArgumentList_2D_element : public AC_GALGAS_root {
 //--------------------------------- Public data members
-  public : GALGAS_bool mAttribute_typed ;
-  public : GALGAS_type mAttribute_type ;
-  public : GALGAS_lstring mAttribute_name ;
+  public : GALGAS_bool mProperty_typed ;
+  public : GALGAS_type mProperty_type ;
+  public : GALGAS_lstring mProperty_name ;
 
 
 //--------------------------------- Accessors
@@ -6919,7 +7106,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlProcedure ;
 
 class cMapElement_gtlProcMap : public cMapElement {
 //--- Map attributes
-  public : GALGAS_gtlProcedure mAttribute_procedure ;
+  public : GALGAS_gtlProcedure mProperty_procedure ;
 
 //--- Constructor
   public : cMapElement_gtlProcMap (const GALGAS_lstring & inKey,
@@ -6947,8 +7134,8 @@ class cMapElement_gtlProcMap : public cMapElement {
 
 class GALGAS_gtlProcMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Public data members
-  public : GALGAS_lstring mAttribute_lkey ;
-  public : GALGAS_gtlProcedure mAttribute_procedure ;
+  public : GALGAS_lstring mProperty_lkey ;
+  public : GALGAS_gtlProcedure mProperty_procedure ;
 
 
 //--------------------------------- Accessors
@@ -7068,8 +7255,8 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlBinaryExpression
 
 class cPtr_gtlBinaryExpression : public cPtr_gtlExpression {
 //--- Attributes
-  public : GALGAS_gtlExpression mAttribute_lSon ;
-  public : GALGAS_gtlExpression mAttribute_rSon ;
+  public : GALGAS_gtlExpression mProperty_lSon ;
+  public : GALGAS_gtlExpression mProperty_rSon ;
 
 //--- Constructor
   public : cPtr_gtlBinaryExpression (const GALGAS_location & in_where,
@@ -7478,7 +7665,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlExistsExpression
 
 class cPtr_gtlExistsExpression : public cPtr_gtlExpression {
 //--- Attributes
-  public : GALGAS_gtlVarPath mAttribute_variable ;
+  public : GALGAS_gtlVarPath mProperty_variable ;
 
 //--- Constructor
   public : cPtr_gtlExistsExpression (const GALGAS_location & in_where,
@@ -7562,7 +7749,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlExistsDefaultExp
 
 class cPtr_gtlExistsDefaultExpression : public cPtr_gtlExistsExpression {
 //--- Attributes
-  public : GALGAS_gtlExpression mAttribute_defaultValue ;
+  public : GALGAS_gtlExpression mProperty_defaultValue ;
 
 //--- Constructor
   public : cPtr_gtlExistsDefaultExpression (const GALGAS_location & in_where,
@@ -7652,8 +7839,8 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlFunctionCallExpr
 
 class cPtr_gtlFunctionCallExpression : public cPtr_gtlExpression {
 //--- Attributes
-  public : GALGAS_lstring mAttribute_functionName ;
-  public : GALGAS_gtlExpressionList mAttribute_functionArguments ;
+  public : GALGAS_lstring mProperty_functionName ;
+  public : GALGAS_gtlExpressionList mProperty_functionArguments ;
 
 //--- Constructor
   public : cPtr_gtlFunctionCallExpression (const GALGAS_location & in_where,
@@ -7744,9 +7931,9 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlGetterCallExpres
 
 class cPtr_gtlGetterCallExpression : public cPtr_gtlExpression {
 //--- Attributes
-  public : GALGAS_gtlExpression mAttribute_target ;
-  public : GALGAS_lstring mAttribute_getterName ;
-  public : GALGAS_gtlExpressionList mAttribute_arguments ;
+  public : GALGAS_gtlExpression mProperty_target ;
+  public : GALGAS_lstring mProperty_getterName ;
+  public : GALGAS_gtlExpressionList mProperty_arguments ;
 
 //--- Constructor
   public : cPtr_gtlGetterCallExpression (const GALGAS_location & in_where,
@@ -7995,7 +8182,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlListOfExpression
 
 class cPtr_gtlListOfExpression : public cPtr_gtlExpression {
 //--- Attributes
-  public : GALGAS_gtlExpression mAttribute_expression ;
+  public : GALGAS_gtlExpression mProperty_expression ;
 
 //--- Constructor
   public : cPtr_gtlListOfExpression (const GALGAS_location & in_where,
@@ -8081,7 +8268,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlLiteralListExpre
 
 class cPtr_gtlLiteralListExpression : public cPtr_gtlExpression {
 //--- Attributes
-  public : GALGAS_gtlExpressionList mAttribute_value ;
+  public : GALGAS_gtlExpressionList mProperty_value ;
 
 //--- Constructor
   public : cPtr_gtlLiteralListExpression (const GALGAS_location & in_where,
@@ -8167,7 +8354,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlLiteralMapExpres
 
 class cPtr_gtlLiteralMapExpression : public cPtr_gtlExpression {
 //--- Attributes
-  public : GALGAS_gtlExpressionMap mAttribute_value ;
+  public : GALGAS_gtlExpressionMap mProperty_value ;
 
 //--- Constructor
   public : cPtr_gtlLiteralMapExpression (const GALGAS_location & in_where,
@@ -8253,7 +8440,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlLiteralSetExpres
 
 class cPtr_gtlLiteralSetExpression : public cPtr_gtlExpression {
 //--- Attributes
-  public : GALGAS_gtlExpressionList mAttribute_value ;
+  public : GALGAS_gtlExpressionList mProperty_value ;
 
 //--- Constructor
   public : cPtr_gtlLiteralSetExpression (const GALGAS_location & in_where,
@@ -8339,7 +8526,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlLiteralStructExp
 
 class cPtr_gtlLiteralStructExpression : public cPtr_gtlExpression {
 //--- Attributes
-  public : GALGAS_gtlExpressionMap mAttribute_value ;
+  public : GALGAS_gtlExpressionMap mProperty_value ;
 
 //--- Constructor
   public : cPtr_gtlLiteralStructExpression (const GALGAS_location & in_where,
@@ -8584,7 +8771,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlMapOfStructExpre
 
 class cPtr_gtlMapOfStructExpression : public cPtr_gtlExpression {
 //--- Attributes
-  public : GALGAS_gtlExpression mAttribute_expression ;
+  public : GALGAS_gtlExpression mProperty_expression ;
 
 //--- Constructor
   public : cPtr_gtlMapOfStructExpression (const GALGAS_location & in_where,
@@ -8668,7 +8855,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlMapOfListExpress
 
 class cPtr_gtlMapOfListExpression : public cPtr_gtlMapOfStructExpression {
 //--- Attributes
-  public : GALGAS_lstring mAttribute_key ;
+  public : GALGAS_lstring mProperty_key ;
 
 //--- Constructor
   public : cPtr_gtlMapOfListExpression (const GALGAS_location & in_where,
@@ -8747,7 +8934,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlUnaryExpression 
 
 class cPtr_gtlUnaryExpression : public cPtr_gtlExpression {
 //--- Attributes
-  public : GALGAS_gtlExpression mAttribute_son ;
+  public : GALGAS_gtlExpression mProperty_son ;
 
 //--- Constructor
   public : cPtr_gtlUnaryExpression (const GALGAS_location & in_where,
@@ -9710,7 +9897,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlTerminal ;
 
 class cPtr_gtlTerminal : public cPtr_gtlExpression {
 //--- Attributes
-  public : GALGAS_gtlData mAttribute_value ;
+  public : GALGAS_gtlData mProperty_value ;
 
 //--- Constructor
   public : cPtr_gtlTerminal (const GALGAS_location & in_where,
@@ -9796,7 +9983,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlTypeOfExpression
 
 class cPtr_gtlTypeOfExpression : public cPtr_gtlExpression {
 //--- Attributes
-  public : GALGAS_gtlVarPath mAttribute_variable ;
+  public : GALGAS_gtlVarPath mProperty_variable ;
 
 //--- Constructor
   public : cPtr_gtlTypeOfExpression (const GALGAS_location & in_where,
@@ -9879,7 +10066,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlVarItemCollectio
 
 class cPtr_gtlVarItemCollection : public cPtr_gtlVarItemField {
 //--- Attributes
-  public : GALGAS_gtlExpression mAttribute_key ;
+  public : GALGAS_gtlExpression mProperty_key ;
 
 //--- Constructor
   public : cPtr_gtlVarItemCollection (const GALGAS_lstring & in_field,
@@ -9964,8 +10151,8 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlVarItemSubCollec
 
 class cPtr_gtlVarItemSubCollection : public cPtr_gtlVarItem {
 //--- Attributes
-  public : GALGAS_location mAttribute_subCollectionlocation ;
-  public : GALGAS_gtlExpression mAttribute_key ;
+  public : GALGAS_location mProperty_subCollectionlocation ;
+  public : GALGAS_gtlExpression mProperty_key ;
 
 //--- Constructor
   public : cPtr_gtlVarItemSubCollection (const GALGAS_location & in_subCollectionlocation,
@@ -10052,7 +10239,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlVarRef ;
 
 class cPtr_gtlVarRef : public cPtr_gtlExpression {
 //--- Attributes
-  public : GALGAS_gtlVarPath mAttribute_variableName ;
+  public : GALGAS_gtlVarPath mProperty_variableName ;
 
 //--- Constructor
   public : cPtr_gtlVarRef (const GALGAS_location & in_where,
@@ -11624,7 +11811,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlLetUnconstructed
 
 class cPtr_gtlLetUnconstructedInstruction : public cPtr_gtlInstruction {
 //--- Attributes
-  public : GALGAS_gtlVarPath mAttribute_lValue ;
+  public : GALGAS_gtlVarPath mProperty_lValue ;
 
 //--- Constructor
   public : cPtr_gtlLetUnconstructedInstruction (const GALGAS_location & in_where,
@@ -11796,7 +11983,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlTemplateStringIn
 
 class cPtr_gtlTemplateStringInstruction : public cPtr_gtlInstruction {
 //--- Attributes
-  public : GALGAS_string mAttribute_value ;
+  public : GALGAS_string mProperty_value ;
 
 //--- Constructor
   public : cPtr_gtlTemplateStringInstruction (const GALGAS_location & in_where,
@@ -11884,7 +12071,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlGetColumnInstruc
 
 class cPtr_gtlGetColumnInstruction : public cPtr_gtlInstruction {
 //--- Attributes
-  public : GALGAS_gtlVarPath mAttribute_destVariable ;
+  public : GALGAS_gtlVarPath mProperty_destVariable ;
 
 //--- Constructor
   public : cPtr_gtlGetColumnInstruction (const GALGAS_location & in_where,
@@ -11918,9 +12105,9 @@ class GALGAS_gtlThenElsifStatementList : public AC_GALGAS_list {
   public : GALGAS_gtlThenElsifStatementList (void) ;
 
 //--------------------------------- List constructor used by listmap
-  public : GALGAS_gtlThenElsifStatementList (cSharedList * inSharedListPtr) ;
+  public : GALGAS_gtlThenElsifStatementList (const capCollectionElementArray & inSharedArray) ;
 
-//--------------------------------- Element constructor used by listmap
+//--------------------------------- Element constructor
   public : static void makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                   const class GALGAS_gtlExpression & in_condition,
                                                   const class GALGAS_gtlInstructionList & in_instructionList
@@ -12052,8 +12239,8 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlThenElsifStateme
 
 class GALGAS_gtlThenElsifStatementList_2D_element : public AC_GALGAS_root {
 //--------------------------------- Public data members
-  public : GALGAS_gtlExpression mAttribute_condition ;
-  public : GALGAS_gtlInstructionList mAttribute_instructionList ;
+  public : GALGAS_gtlExpression mProperty_condition ;
+  public : GALGAS_gtlInstructionList mProperty_instructionList ;
 
 
 //--------------------------------- Accessors
@@ -12180,8 +12367,8 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlIfStatementInstr
 
 class cPtr_gtlIfStatementInstruction : public cPtr_gtlInstruction {
 //--- Attributes
-  public : GALGAS_gtlThenElsifStatementList mAttribute_thenElsifList ;
-  public : GALGAS_gtlInstructionList mAttribute_elseList ;
+  public : GALGAS_gtlThenElsifStatementList mProperty_thenElsifList ;
+  public : GALGAS_gtlInstructionList mProperty_elseList ;
 
 //--- Constructor
   public : cPtr_gtlIfStatementInstruction (const GALGAS_location & in_where,
@@ -12271,7 +12458,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlDisplayStatement
 
 class cPtr_gtlDisplayStatementInstruction : public cPtr_gtlInstruction {
 //--- Attributes
-  public : GALGAS_gtlVarPath mAttribute_variablePath ;
+  public : GALGAS_gtlVarPath mProperty_variablePath ;
 
 //--- Constructor
   public : cPtr_gtlDisplayStatementInstruction (const GALGAS_location & in_where,
@@ -12305,9 +12492,9 @@ class GALGAS_sortingKeyList : public AC_GALGAS_list {
   public : GALGAS_sortingKeyList (void) ;
 
 //--------------------------------- List constructor used by listmap
-  public : GALGAS_sortingKeyList (cSharedList * inSharedListPtr) ;
+  public : GALGAS_sortingKeyList (const capCollectionElementArray & inSharedArray) ;
 
-//--------------------------------- Element constructor used by listmap
+//--------------------------------- Element constructor
   public : static void makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                   const class GALGAS_lstring & in_key,
                                                   const class GALGAS_lsint & in_order
@@ -12439,8 +12626,8 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_sortingKeyList ;
 
 class GALGAS_sortingKeyList_2D_element : public AC_GALGAS_root {
 //--------------------------------- Public data members
-  public : GALGAS_lstring mAttribute_key ;
-  public : GALGAS_lsint mAttribute_order ;
+  public : GALGAS_lstring mProperty_key ;
+  public : GALGAS_lsint mProperty_order ;
 
 
 //--------------------------------- Accessors
@@ -12558,7 +12745,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlAbstractSortInst
 
 class cPtr_gtlAbstractSortInstruction : public cPtr_gtlInstruction {
 //--- Attributes
-  public : GALGAS_gtlVarPath mAttribute_variablePath ;
+  public : GALGAS_gtlVarPath mProperty_variablePath ;
 
 //--- Constructor
   public : cPtr_gtlAbstractSortInstruction (const GALGAS_location & in_where,
@@ -12752,7 +12939,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlSortStatementStr
 
 class cPtr_gtlSortStatementStructInstruction : public cPtr_gtlAbstractSortInstruction {
 //--- Attributes
-  public : GALGAS_sortingKeyList mAttribute_sortingKey ;
+  public : GALGAS_sortingKeyList mProperty_sortingKey ;
 
 //--- Constructor
   public : cPtr_gtlSortStatementStructInstruction (const GALGAS_location & in_where,
@@ -12956,7 +13143,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlVariablesInstruc
 
 class cPtr_gtlVariablesInstruction : public cPtr_gtlInstruction {
 //--- Attributes
-  public : GALGAS_bool mAttribute_shortDisplay ;
+  public : GALGAS_bool mProperty_shortDisplay ;
 
 //--- Constructor
   public : cPtr_gtlVariablesInstruction (const GALGAS_location & in_where,
@@ -13195,7 +13382,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlInputStatementIn
 
 class cPtr_gtlInputStatementInstruction : public cPtr_gtlInstruction {
 //--- Attributes
-  public : GALGAS_gtlArgumentList mAttribute_formalArguments ;
+  public : GALGAS_gtlArgumentList mProperty_formalArguments ;
 
 //--- Constructor
   public : cPtr_gtlInputStatementInstruction (const GALGAS_location & in_where,
@@ -13321,9 +13508,9 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlBreakpoint ;
 
 class cPtr_gtlBreakpoint : public acPtr_class {
 //--- Attributes
-  public : GALGAS_string mAttribute_fileName ;
-  public : GALGAS_uint mAttribute_lineNum ;
-  public : GALGAS_string mAttribute_signature ;
+  public : GALGAS_string mProperty_fileName ;
+  public : GALGAS_uint mProperty_lineNum ;
+  public : GALGAS_string mProperty_signature ;
 
 //--- Constructor
   public : cPtr_gtlBreakpoint (const GALGAS_string & in_fileName,
@@ -13356,7 +13543,7 @@ class cPtr_gtlBreakpoint : public acPtr_class {
 
 class GALGAS_gtlBreakpointList_2D_element : public AC_GALGAS_root {
 //--------------------------------- Public data members
-  public : GALGAS_gtlBreakpoint mAttribute_breakpoint ;
+  public : GALGAS_gtlBreakpoint mProperty_breakpoint ;
 
 
 //--------------------------------- Accessors
@@ -13422,8 +13609,8 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlBreakpointList_2
 
 class GALGAS_gtlInstructionListContextStack_2D_element : public AC_GALGAS_root {
 //--------------------------------- Public data members
-  public : GALGAS_uint mAttribute_nextInstructionIndex ;
-  public : GALGAS_gtlInstructionList mAttribute_instructionList ;
+  public : GALGAS_uint mProperty_nextInstructionIndex ;
+  public : GALGAS_gtlInstructionList mProperty_instructionList ;
 
 
 //--------------------------------- Accessors

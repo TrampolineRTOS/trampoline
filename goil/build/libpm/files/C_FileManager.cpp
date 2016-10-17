@@ -1099,7 +1099,7 @@ static void recursiveFindAllFilesInDirectory (const C_String & inStartSearchPath
         if (C_FileManager::directoryExists (name)) {
           recursiveFindAllFilesInDirectory (name, inExtension, outFoundFilePathes) ;
         }else if (C_FileManager::fileExistsAtPath (name) && (name.pathExtension () == inExtension)) {
-          outFoundFilePathes.addObject (name) ;
+          outFoundFilePathes.appendObject (name) ;
         }
       }
       current = readdir (dir) ;

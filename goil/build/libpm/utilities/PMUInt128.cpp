@@ -189,7 +189,7 @@ C_String PMUInt128::decimalString (void) const {
     while (! value.isZero ()) {
       uint32_t remainder = 0 ;
       value.divideBy (1000, remainder) ;
-      values.addObject (remainder) ;
+      values.appendObject (remainder) ;
     }
     result = cStringWithUnsigned (values.lastObject (HERE)) ;
     for (int32_t i=values.count () - 2 ; i>=0 ; i--) {

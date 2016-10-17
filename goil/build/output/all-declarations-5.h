@@ -202,7 +202,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_refType ;
 
 class cPtr_refType : public cPtr_impType {
 //--- Attributes
-  public : GALGAS_lstring mAttribute_ref ;
+  public : GALGAS_lstring mProperty_ref ;
 
 //--- Constructor
   public : cPtr_refType (const GALGAS_locationList & in_locations,
@@ -295,7 +295,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_impRangedType ;
 
 class cPtr_impRangedType : public cPtr_impAutoDefaultType {
 //--- Attributes
-  public : GALGAS_attributeRange mAttribute_setOrRange ;
+  public : GALGAS_attributeRange mProperty_setOrRange ;
 
 //--- Constructor
   public : cPtr_impRangedType (const GALGAS_locationList & in_locations,
@@ -411,7 +411,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_uint_33__32__5F_cla
 
 class cPtr_uint_33__32__5F_class : public cPtr_object_5F_t {
 //--- Attributes
-  public : GALGAS_uint mAttribute_value ;
+  public : GALGAS_uint mProperty_value ;
 
 //--- Constructor
   public : cPtr_uint_33__32__5F_class (const GALGAS_lstring & in_oil_5F_desc,
@@ -499,7 +499,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_sint_33__32__5F_cla
 
 class cPtr_sint_33__32__5F_class : public cPtr_object_5F_t {
 //--- Attributes
-  public : GALGAS_sint mAttribute_value ;
+  public : GALGAS_sint mProperty_value ;
 
 //--- Constructor
   public : cPtr_sint_33__32__5F_class (const GALGAS_lstring & in_oil_5F_desc,
@@ -587,7 +587,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_uint_36__34__5F_cla
 
 class cPtr_uint_36__34__5F_class : public cPtr_object_5F_t {
 //--- Attributes
-  public : GALGAS_uint_36__34_ mAttribute_value ;
+  public : GALGAS_uint_36__34_ mProperty_value ;
 
 //--- Constructor
   public : cPtr_uint_36__34__5F_class (const GALGAS_lstring & in_oil_5F_desc,
@@ -675,7 +675,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_sint_36__34__5F_cla
 
 class cPtr_sint_36__34__5F_class : public cPtr_object_5F_t {
 //--- Attributes
-  public : GALGAS_sint_36__34_ mAttribute_value ;
+  public : GALGAS_sint_36__34_ mProperty_value ;
 
 //--- Constructor
   public : cPtr_sint_36__34__5F_class (const GALGAS_lstring & in_oil_5F_desc,
@@ -763,7 +763,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_float_5F_class ;
 
 class cPtr_float_5F_class : public cPtr_object_5F_t {
 //--- Attributes
-  public : GALGAS_double mAttribute_value ;
+  public : GALGAS_double mProperty_value ;
 
 //--- Constructor
   public : cPtr_float_5F_class (const GALGAS_lstring & in_oil_5F_desc,
@@ -851,7 +851,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_bool_5F_t ;
 
 class cPtr_bool_5F_t : public cPtr_object_5F_t {
 //--- Attributes
-  public : GALGAS_bool mAttribute_value ;
+  public : GALGAS_bool mProperty_value ;
 
 //--- Constructor
   public : cPtr_bool_5F_t (const GALGAS_lstring & in_oil_5F_desc,
@@ -1518,7 +1518,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_oil_5F_obj ;
 
 class cPtr_oil_5F_obj : public acPtr_class {
 //--- Attributes
-  public : GALGAS_lstring mAttribute_desc ;
+  public : GALGAS_lstring mProperty_desc ;
 
 //--- Constructor
   public : cPtr_oil_5F_obj (const GALGAS_lstring & in_desc

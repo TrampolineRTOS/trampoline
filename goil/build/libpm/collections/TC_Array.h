@@ -109,7 +109,7 @@ template <typename TYPE> class TC_Array {
   public : const TYPE * unsafeArrayPointer (void) const ;
 
 //--- Add objects at the end of the array
-  public : void addObject (const TYPE & inValue) ; // inValue is copied
+  public : void appendObject (const TYPE & inValue) ; // inValue is copied
 
 //--- Set Count To zero
   public : void setCountToZero (void) ;
@@ -130,6 +130,34 @@ template <typename TYPE> class TC_Array {
                                   const int32_t inIndex
                                   COMMA_LOCATION_ARGS) ;
 
+//--- Insert object at index (0 <= index <= count)
+  public : void insertObjectAtIndex (const TYPE & inValue,
+                                     const int32_t inIndex
+                                     COMMA_LOCATION_ARGS) ; // inValue is copied
+
+//------------------------------------ Sorted array operations
+//--- Remove an object, suppose the array is ordered
+  public : void removeObjectFromOrderedArray (const TYPE & inKey) ;
+
+// Test is based on 'compare' method, and inValue is copied, object is added if not already in array
+  public : void appendUniqueObjectInOrderedArray (const TYPE & inKey) ;
+
+//--- Return -1 if not found
+  public : int32_t indexOfObjectInOrderedArray (const TYPE & inKey) const ;
+
+//--- Intersection
+  public : void intersectionOfOrderedArraies (const TC_Array<TYPE> & inOperand,
+                                              TC_Array<TYPE> & outResult) const ;
+
+//--- Union
+  public : void unionOfOrderedArraies (const TC_Array<TYPE> & inOperand,
+                                       TC_Array<TYPE> & outResult) const ;
+
+//--- substract
+  public : void substractOfOrderedArraies (const TC_Array<TYPE> & inSubstractedSet,
+                                           TC_Array<TYPE> & outResult) const ;
+
+//------------------------------------
 
 //--- Remove last object(s)
   public : void removeLastObject (LOCATION_ARGS) ;
@@ -273,7 +301,7 @@ template <typename TYPE> const TYPE * TC_Array <TYPE>::unsafeArrayPointer (void)
 //---------------------------------------------------------------------------------------------------------------------*
 
 template <typename TYPE> void TC_Array <TYPE>::insulate (void) {
-  if ((NULL != mSharedArray) && (mSharedArray->retainCount () > 1)) {
+  if ((NULL != mSharedArray) && !mSharedArray->isUniquelyReferenced ()) {
     cSharedArray <TYPE> * p = NULL ;
     macroMyNew (p, cSharedArray <TYPE> ()) ;
     mSharedArray->copyTo (*p) ;
@@ -284,17 +312,17 @@ template <typename TYPE> void TC_Array <TYPE>::insulate (void) {
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//   addObject (inValue is copied)                                                                                     *
+//   appendObject (inValue is copied)                                                                                     *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-template <typename TYPE> void TC_Array <TYPE>::addObject (const TYPE & inValue) {
+template <typename TYPE> void TC_Array <TYPE>::appendObject (const TYPE & inValue) {
   if (NULL == mSharedArray) {
     macroMyNew (mSharedArray, cSharedArray <TYPE> ()) ;
   }else{
     insulate () ;
   }
-  mSharedArray->addObject (inValue) ;
+  mSharedArray->appendObject (inValue) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -314,6 +342,11 @@ template <typename TYPE> void TC_Array <TYPE>::free (void) {
 //---------------------------------------------------------------------------------------------------------------------*
 
 template <typename TYPE> TYPE & TC_Array <TYPE>::operator () (const int32_t inIndex COMMA_LOCATION_ARGS) {
+  if (NULL == mSharedArray) {
+    macroMyNew (mSharedArray, cSharedArray <TYPE> ()) ;
+  }else{
+    insulate () ;
+  }
   macroValidPointer (mSharedArray) ;
   return mSharedArray->operator () (inIndex COMMA_THERE) ;
 }
@@ -456,7 +489,7 @@ template <typename TYPE> void TC_Array <TYPE>::setCapacity (const int32_t inNewC
 template <typename TYPE> void TC_Array <TYPE>::removeObjectAtIndex (const int32_t inIndex
                                                                     COMMA_LOCATION_ARGS) {
   insulate () ;
-  macroValidPointer (mSharedArray) ;
+  macroUniqueSharedObject (mSharedArray) ;
   mSharedArray->removeObjectAtIndex (inIndex COMMA_THERE) ;
 }
 
@@ -466,7 +499,7 @@ template <typename TYPE> void TC_Array <TYPE>::removeObjectsAtIndex (const int32
                                                                      const int32_t inStartingIndex
                                                                      COMMA_LOCATION_ARGS) {
   insulate () ;
-  macroValidPointer (mSharedArray) ;
+  macroUniqueSharedObject (mSharedArray) ;
   mSharedArray->removeObjectsAtIndex (inCount, inStartingIndex COMMA_THERE) ;
 }
 
@@ -480,8 +513,145 @@ template <typename TYPE> void TC_Array <TYPE>::setObjectAtIndex (const TYPE & in
                                                                  const int32_t inIndex
                                                                  COMMA_LOCATION_ARGS) {
   insulate () ;
-  macroValidPointer (mSharedArray) ;
+  macroUniqueSharedObject (mSharedArray) ;
   mSharedArray->setObjectAtIndex (inObject, inIndex COMMA_THERE) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   insertObjectAtIndex                                                                                               *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+template <typename TYPE> void TC_Array <TYPE>::insertObjectAtIndex (const TYPE & inObject,
+                                                                    const int32_t inIndex  // inValue is copied
+                                                                    COMMA_LOCATION_ARGS) {
+  if (NULL == mSharedArray) {
+    macroMyNew (mSharedArray, cSharedArray <TYPE>) ;
+  }else{
+    insulate () ;
+  }
+  macroUniqueSharedObject (mSharedArray) ;
+  mSharedArray->setObjectAtIndex (inObject, inIndex COMMA_THERE) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   appendUniqueObjectInOrderedArray                                                                                     *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+template <typename TYPE> void TC_Array <TYPE>::appendUniqueObjectInOrderedArray (const TYPE & inKey) {
+  if (NULL == mSharedArray) {
+    macroMyNew (mSharedArray, cSharedArray <TYPE>) ;
+  }else{
+    insulate () ;
+  }
+  macroUniqueSharedObject (mSharedArray) ;
+  mSharedArray->appendUniqueObjectInOrderedArray (inKey) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   removeObjectFromOrderedArray                                                                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+template <typename TYPE> void TC_Array <TYPE>::removeObjectFromOrderedArray (const TYPE & inKey) {
+  if (NULL != mSharedArray) {
+    insulate () ;
+    macroUniqueSharedObject (mSharedArray) ;
+    mSharedArray->removeObjectFromOrderedArray (inKey) ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   indexOfObjectInOrderedArray                                                                                       *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+template <typename TYPE> int32_t TC_Array <TYPE>::indexOfObjectInOrderedArray (const TYPE & inKey) const {
+  int32_t result = -1 ; // Not found
+  if (NULL != mSharedArray) {
+    macroValidPointer (mSharedArray) ;
+    result = mSharedArray->indexOfObjectInOrderedArray (inKey) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   intersectionOfOrderedArraies                                                                                      *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+template <typename TYPE> void TC_Array <TYPE>::intersectionOfOrderedArraies (const TC_Array<TYPE> & inOperand,
+                                                                             TC_Array<TYPE> & outResult) const {
+  outResult.setCountToZero () ;
+  if ((count () > 0) && (inOperand.count () > 0)) {
+    if (NULL == outResult.mSharedArray) {
+      macroMyNew (outResult.mSharedArray, cSharedArray <TYPE>) ;
+    }else{
+      outResult.insulate () ;
+    }
+    macroUniqueSharedObject (outResult.mSharedArray) ;
+    macroValidPointer (mSharedArray) ;
+    macroValidPointer (inOperand.mSharedArray) ;
+    mSharedArray->intersectionOfOrderedArraies (* (inOperand.mSharedArray), * (outResult.mSharedArray)) ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   unionOfOrderedArraies                                                                                             *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+template <typename TYPE> void TC_Array <TYPE>::unionOfOrderedArraies (const TC_Array<TYPE> & inOperand,
+                                                                      TC_Array<TYPE> & outResult) const {
+  outResult.setCountToZero () ;
+  if ((count () > 0) && (inOperand.count () == 0)) {
+    outResult = *this ;
+  }else if ((count () == 0) && (inOperand.count () > 0)) {
+    outResult = inOperand ;
+  }else if ((count () > 0) && (inOperand.count () > 0)) {
+    if (NULL == outResult.mSharedArray) {
+      macroMyNew (outResult.mSharedArray, cSharedArray <TYPE>) ;
+    }else{
+      outResult.insulate () ;
+    }
+    macroUniqueSharedObject (outResult.mSharedArray) ;
+    macroValidPointer (mSharedArray) ;
+    macroValidPointer (inOperand.mSharedArray) ;
+    mSharedArray->unionOfOrderedArraies (* (inOperand.mSharedArray), * (outResult.mSharedArray)) ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//   substractOfOrderedArraies                                                                                         *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+template <typename TYPE> void TC_Array <TYPE>::substractOfOrderedArraies (const TC_Array<TYPE> & inSubstractedSet,
+                                                                          TC_Array<TYPE> & outResult) const {
+  outResult.setCountToZero () ;
+  if (count () > 0) {
+    if (inSubstractedSet.count () == 0) {
+      outResult = *this ;
+    }else{
+      if (NULL == outResult.mSharedArray) {
+        macroMyNew (outResult.mSharedArray, cSharedArray <TYPE>) ;
+      }else{
+        outResult.insulate () ;
+      }
+      macroUniqueSharedObject (outResult.mSharedArray) ;
+      macroValidPointer (mSharedArray) ;
+      macroValidPointer (inSubstractedSet.mSharedArray) ;
+      mSharedArray->substractOfOrderedArraies (* (inSubstractedSet.mSharedArray), * (outResult.mSharedArray)) ;
+    }
+  }
 }
 
 //---------------------------------------------------------------------------------------------------------------------*

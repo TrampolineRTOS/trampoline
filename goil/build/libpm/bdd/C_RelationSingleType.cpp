@@ -114,7 +114,7 @@ C_EnumeratedTypeInRelation (const C_String & inTypeName,
                             COMMA_LOCATION_ARGS) :
 cType (inTypeName, bitCountForCount ((uint32_t) inConstantNameArray.count ()) COMMA_THERE),
 mConstantNameArray () {
-  mConstantNameArray.addObjectsFromArray (inConstantNameArray) ;
+  mConstantNameArray.appendObjectsFromArray (inConstantNameArray) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*

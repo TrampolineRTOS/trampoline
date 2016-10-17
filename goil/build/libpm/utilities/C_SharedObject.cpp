@@ -37,8 +37,10 @@ static uint32_t gCreationIndex ;
 static uint32_t gObjectCurrentCount ;
 
 //--- List of existing objects
-static C_SharedObject * gFirstObject ;
-static C_SharedObject * gLastObject ;
+#ifndef DO_NOT_GENERATE_CHECKINGS
+  static C_SharedObject * gFirstObject ;
+  static C_SharedObject * gLastObject ;
+#endif
 
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -46,42 +48,45 @@ C_SharedObject::C_SharedObject (LOCATION_ARGS) :
 #ifndef DO_NOT_GENERATE_CHECKINGS
   mCreationFile (IN_SOURCE_FILE),
   mCreationLine (IN_SOURCE_LINE),
+  mPtrToPreviousObject (NULL),
+  mPtrToNextObject (NULL),
 #endif
 mObjectIndex (gCreationIndex),
-mPtrToPreviousObject (NULL),
-mPtrToNextObject (NULL),
 mRetainCount (1) {
   gCreationIndex ++ ;
-//--- Enter current object in instance list
-  mPtrToNextObject = NULL ;
-  if (gLastObject == NULL) {
-    gFirstObject = this ;
-    mPtrToPreviousObject = NULL ;
-  }else{
-    gLastObject->mPtrToNextObject = this ;
-    mPtrToPreviousObject = gLastObject ;
-  }
-  gLastObject = this ;
-//--- Increment object count
   gObjectCurrentCount ++ ;
+//--- Enter current object in instance list
+  #ifndef DO_NOT_GENERATE_CHECKINGS
+    mPtrToNextObject = NULL ;
+    if (gLastObject == NULL) {
+      gFirstObject = this ;
+      mPtrToPreviousObject = NULL ;
+    }else{
+      gLastObject->mPtrToNextObject = this ;
+      mPtrToPreviousObject = gLastObject ;
+    }
+    gLastObject = this ;
+  #endif
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 C_SharedObject::~ C_SharedObject (void) {
 //--- Remove object from instance list
-  C_SharedObject * previousObject = mPtrToPreviousObject ;
-  C_SharedObject * nextObject = mPtrToNextObject ;
-  if (previousObject == NULL) {
-    gFirstObject = nextObject ;
-  }else{
-    previousObject->mPtrToNextObject = nextObject ;
-  }
-  if (nextObject == NULL) {
-    gLastObject = previousObject ;
-  }else{
-    nextObject->mPtrToPreviousObject = previousObject ;
-  }
+  #ifndef DO_NOT_GENERATE_CHECKINGS
+    C_SharedObject * previousObject = mPtrToPreviousObject ;
+    C_SharedObject * nextObject = mPtrToNextObject ;
+    if (previousObject == NULL) {
+      gFirstObject = nextObject ;
+    }else{
+      previousObject->mPtrToNextObject = nextObject ;
+    }
+    if (nextObject == NULL) {
+      gLastObject = previousObject ;
+    }else{
+      nextObject->mPtrToPreviousObject = previousObject ;
+    }
+  #endif
 //--- Decrement object count
   gObjectCurrentCount -- ;
 }

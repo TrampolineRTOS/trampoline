@@ -40,7 +40,7 @@ mDefinition () {
 void C_UIntSet::add (const uint32_t inNodeIndex) {
   const int32_t idx = (int32_t) (inNodeIndex >> 6) ;
   while (idx >= mDefinition.count ()) {
-    mDefinition.addObject (0) ;
+    mDefinition.appendObject (0) ;
   }
   mDefinition (idx COMMA_HERE) |= ((uint64_t) 1) << (inNodeIndex & 63) ;
   #ifndef DO_NOT_GENERATE_CHECKINGS
@@ -69,7 +69,7 @@ void C_UIntSet::getBoolValueArray (TC_UniqueArray <bool> & outBoolValueArray) co
   outBoolValueArray.setCountToZero () ;
   for (int32_t i=0 ; i<mDefinition.count () ; i++) {
     for (uint32_t j=0 ; j<64 ; j++) {
-      outBoolValueArray.addObject ((mDefinition (i COMMA_HERE) & (((uint64_t) 1) << j)) != 0) ;
+      outBoolValueArray.appendObject ((mDefinition (i COMMA_HERE) & (((uint64_t) 1) << j)) != 0) ;
     }
   }
 //---
@@ -87,7 +87,7 @@ void C_UIntSet::getValueArray (TC_UniqueArray <uint32_t> & outValueArray) const 
     for (uint32_t j=0 ; j<64 ; j++) {
       const bool exists = (mDefinition (i COMMA_HERE) & (((uint64_t) 1) << j)) != 0 ;
       if (exists) {
-        outValueArray.addObject (idx) ;
+        outValueArray.appendObject (idx) ;
       }
       idx ++ ;
     }
@@ -155,7 +155,7 @@ void C_UIntSet::operator &= (const C_UIntSet & inOther) {
 
 void C_UIntSet::operator |= (const C_UIntSet & inOther) {
   while (mDefinition.count () < inOther.mDefinition.count ()) {
-    mDefinition.addObject (0) ;
+    mDefinition.appendObject (0) ;
   }
   for (int32_t i=0 ; i<inOther.mDefinition.count () ; i++) {
     mDefinition (i COMMA_HERE) |= inOther.mDefinition (i COMMA_HERE) ;

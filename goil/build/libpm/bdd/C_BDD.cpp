@@ -633,7 +633,7 @@ void C_build_values64_array::action (const bool tableauDesValeurs [],
   for (uint32_t i=1 ; i<=inVariableCount ; i++) {
     value = (value << 1) | tableauDesValeurs [inVariableCount - i] ;
   }
-  mPtr->addObject (value) ;
+  mPtr->appendObject (value) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -679,9 +679,9 @@ void C_build_values_array::action (const bool tableauDesValeurs [],
                                    const uint32_t inVariableCount) {
   TC_Array <bool> value ;
   for (uint32_t i=0 ; i<inVariableCount ; i++) {
-    value.addObject (tableauDesValeurs [i]) ;
+    value.appendObject (tableauDesValeurs [i]) ;
   }
-  mPtr->addObject (value) ;
+  mPtr->appendObject (value) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -729,7 +729,7 @@ action (const bool tableauDesValeurs [],
   for (uint32_t i=0 ; i<inVariableCount ; i++) {
     value << cStringWithCharacter ((char) ('0' + tableauDesValeurs [i])) ;
   }
-  mPtr->addObject (value) ;
+  mPtr->appendObject (value) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -772,7 +772,7 @@ action (const bool tableauDesValeurs [],
   for (uint32_t i=inVariableCount ; i>0 ; i--) {
     value << cStringWithCharacter ((char) ('0' + tableauDesValeurs [i-1])) ;
   }
-  mPtr->addObject (value) ;
+  mPtr->appendObject (value) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -1414,7 +1414,7 @@ void C_BDD::getBoolArray (TC_UniqueArray <bool> & outArray,
                           const uint32_t inBitSize) const {
   outArray.setCountToZero () ;
   outArray.setCapacity ((int32_t) inMaxValues) ;
-  outArray.addObjects ((int32_t) inMaxValues, false) ;
+  outArray.appendObjects ((int32_t) inMaxValues, false) ;
   cBuildArrayForSet s (outArray) ;
   traverseBDDvalues (s, inBitSize) ;
 }
@@ -1633,7 +1633,7 @@ void cBuildArrayForRelation2::action (const bool inValuesArray [],
   for (int32_t j=((int32_t) inBDDbitsSize) - 1 ; j>= (int32_t) mBitsSize1 ; j--) {
     index2 = (index2 << 1) + inValuesArray [j] ;
   }
-  mArray (index1 COMMA_HERE).addObject (index2) ;
+  mArray (index1 COMMA_HERE).appendObject (index2) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -1645,7 +1645,7 @@ void C_BDD::getArray2 (TC_UniqueArray <TC_UniqueArray <uint64_t> > & outArray,
   outArray.setCountToZero () ;
   outArray.setCapacityUsingSwap ((int32_t) inMaxValueCount) ;
   for (uint32_t i=0 ; i<inMaxValueCount ; i++) {
-    outArray.addDefaultObjectUsingSwap () ;
+    outArray.appendDefaultObjectUsingSwap () ;
   }
   cBuildArrayForRelation2 s (outArray, inBitSize1) ;
   traverseBDDvalues (s, (uint32_t) (inBitSize1 + inBitSize2)) ;
@@ -1984,8 +1984,8 @@ void C_BDD::print (AC_OutputStream & outputStream,
     const int32_t variableLength = inVariablesNames (i COMMA_HERE).length () ;
     const int32_t bitCount = inBitCounts (i COMMA_HERE) ;
     const int32_t length = (variableLength > bitCount) ? variableLength : bitCount ;
-    variableNameSeparation.addObject (length - variableLength) ;
-    valuesSeparation.addObject (length - bitCount) ;
+    variableNameSeparation.appendObject (length - variableLength) ;
+    valuesSeparation.appendObject (length - bitCount) ;
   }
 //--- Print header
   for (int32_t i=0 ; i<inVariablesNames.count () ; i++) {
@@ -2080,7 +2080,7 @@ C_String C_BDD::graphvizRepresentation (void) const {
   }
   TC_UniqueArray <C_String> bitNames ;
   for (int32_t i=0 ; i<varCount ; i++) {
-    bitNames.addObject (cStringWithSigned (i)) ;
+    bitNames.appendObject (cStringWithSigned (i)) ;
   }
   return graphvizRepresentationWithNames (bitNames) ;
 }
@@ -2123,7 +2123,7 @@ internalPrintBDDInLittleEndianStringArray (const uint32_t inValue,
   const uint32_t complement = inValue & 1 ;
   if (bothBranches (gNodeArray [nodeIndex]) == 0) {
     if (complement == 1) {
-      outStringArray.addObject (ioDisplayString) ;
+      outStringArray.appendObject (ioDisplayString) ;
     }
   }else{
     const uint32_t var = gNodeArray [nodeIndex].mVariableIndex ;
@@ -2139,7 +2139,7 @@ internalPrintBDDInLittleEndianStringArray (const uint32_t inValue,
         for (uint32_t i=0 ; i<var ; i++) {
           ioDisplayString.setUnicodeCharacterAtIndex (TO_UNICODE ('X'), (int32_t) i COMMA_HERE) ;
         }
-        outStringArray.addObject (ioDisplayString) ;
+        outStringArray.appendObject (ioDisplayString) ;
       }else{
         internalPrintBDDInLittleEndianStringArray (branche0, ioDisplayString, (uint32_t) (inVariableIndex - 1), outStringArray COMMA_THERE) ;
       }
@@ -2152,7 +2152,7 @@ internalPrintBDDInLittleEndianStringArray (const uint32_t inValue,
         for (uint32_t i=0 ; i<var ; i++) {
           ioDisplayString.setUnicodeCharacterAtIndex (TO_UNICODE ('X'), (int32_t) i COMMA_HERE) ;
         }
-        outStringArray.addObject (ioDisplayString) ;
+        outStringArray.appendObject (ioDisplayString) ;
       }else{
         internalPrintBDDInLittleEndianStringArray (branche1, ioDisplayString, (uint32_t) (inVariableIndex - 1), outStringArray COMMA_THERE) ;
       }
@@ -2201,7 +2201,7 @@ internalPrintBDDInBigEndianStringArray (const uint32_t inValue,
   const uint32_t complement = inValue & 1 ;
   if (bothBranches (gNodeArray [nodeIndex]) == 0) {
     if (complement == 1) {
-      outStringArray.addObject (ioDisplayString) ;
+      outStringArray.appendObject (ioDisplayString) ;
     }
   }else{
     const uint32_t var = gNodeArray [nodeIndex].mVariableIndex ;
@@ -2217,7 +2217,7 @@ internalPrintBDDInBigEndianStringArray (const uint32_t inValue,
         for (uint32_t i=0 ; i<var ; i++) {
           ioDisplayString.setUnicodeCharacterAtIndex (TO_UNICODE ('X'), (int32_t) (inTotalVariableCountMinusOne - i) COMMA_THERE) ;
         }
-        outStringArray.addObject (ioDisplayString) ;
+        outStringArray.appendObject (ioDisplayString) ;
       }else{
         internalPrintBDDInBigEndianStringArray (branche0, ioDisplayString, (uint32_t) (inVariableIndex - 1), inTotalVariableCountMinusOne, outStringArray COMMA_THERE) ;
       }
@@ -2230,7 +2230,7 @@ internalPrintBDDInBigEndianStringArray (const uint32_t inValue,
         for (uint32_t i=0 ; i<var ; i++) {
           ioDisplayString.setUnicodeCharacterAtIndex (TO_UNICODE ('X'), (int32_t) (inTotalVariableCountMinusOne - i) COMMA_HERE) ;
         }
-        outStringArray.addObject (ioDisplayString) ;
+        outStringArray.appendObject (ioDisplayString) ;
       }else{
         internalPrintBDDInBigEndianStringArray (branche1, ioDisplayString, (uint32_t) (inVariableIndex - 1), inTotalVariableCountMinusOne, outStringArray COMMA_THERE) ;
       }
