@@ -685,7 +685,7 @@ method @gtlForeachStatementInstruction iterateOnSet
   do (index)
     [!?vars setStructField
       !variableName 
-      !@gtlString.new { !where !emptylstring() !key}
+      !@gtlString.new { !lkey !emptylstring() !lkey}
     ]
     [!?vars setStructField
       !indexName !@gtlInt.new { !where !emptylstring() ![index bigint] }

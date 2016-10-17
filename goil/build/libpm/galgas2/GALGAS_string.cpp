@@ -137,7 +137,7 @@ AC_OutputStream & operator << (AC_OutputStream & inStream,
 
 AC_OutputStream & operator << (AC_OutputStream & inStream,
                                const GALGAS_lstring & inString) {
-  inStream << inString.mAttribute_string.stringValue () ;
+  inStream << inString.mProperty_string.stringValue () ;
   return inStream ;
 }
 
@@ -321,7 +321,7 @@ GALGAS_string GALGAS_string::constructor_componentsJoinedByString (const GALGAS_
   if ((inComponents.isValid ()) && (inSeparator.isValid ())) {
     bool first = true ;
     C_String s ;
-    cEnumerator_stringlist current (inComponents, kEnumeration_up) ;
+    cEnumerator_stringlist current (inComponents, kENUMERATION_UP) ;
     while (current.hasCurrentObject ()) {
       if (first) {
         first = false ;
@@ -443,8 +443,8 @@ GALGAS_string GALGAS_string::getter_HTMLRepresentation (UNUSED_LOCATION_ARGS) co
 GALGAS_lstring GALGAS_string::getter_nowhere (LOCATION_ARGS) const {
   GALGAS_lstring result ;
   if (isValid ()) {
-    result.mAttribute_string = * this ;
-    result.mAttribute_location = GALGAS_location::constructor_nowhere (THERE) ;
+    result.mProperty_string = * this ;
+    result.mProperty_location = GALGAS_location::constructor_nowhere (THERE) ;
   }
   return result ;
 }
@@ -454,8 +454,8 @@ GALGAS_lstring GALGAS_string::getter_nowhere (LOCATION_ARGS) const {
 GALGAS_lstring GALGAS_string::getter_here (C_Compiler * inCompiler COMMA_LOCATION_ARGS) const {
   GALGAS_lstring result ;
   if (isValid ()) {
-    result.mAttribute_string = * this ;
-    result.mAttribute_location = GALGAS_location::constructor_here (inCompiler COMMA_THERE) ;
+    result.mProperty_string = * this ;
+    result.mProperty_location = GALGAS_location::constructor_here (inCompiler COMMA_THERE) ;
   }
   return result ;
 }
@@ -1131,7 +1131,7 @@ static void recursiveSearchForRegularFiles (const C_String & inUnixStartPath,
         }else if (C_FileManager::fileExistsAtPath (name)) {
           const C_String extension = name.pathExtension () ;
           bool extensionFound = false ;
-          cEnumerator_stringlist currentExtension (inExtensionList, kEnumeration_up) ;
+          cEnumerator_stringlist currentExtension (inExtensionList, kENUMERATION_UP) ;
           while (currentExtension.hasCurrentObject () && ! extensionFound) {
             extensionFound = currentExtension.current_mValue (HERE).stringValue () == extension ;
             currentExtension.gotoNextObject () ;
@@ -1186,7 +1186,7 @@ static void recursiveSearchForDirectories (const C_String & inUnixStartPath,
         //--- Look for extension
           const C_String extension = name.pathExtension () ;
           bool extensionFound = false ;
-          cEnumerator_stringlist currentExtension (inExtensionList, kEnumeration_up) ;
+          cEnumerator_stringlist currentExtension (inExtensionList, kENUMERATION_UP) ;
           while (currentExtension.hasCurrentObject () && ! extensionFound) {
             extensionFound = currentExtension.current_mValue (HERE).stringValue () == extension ;
             currentExtension.gotoNextObject () ;

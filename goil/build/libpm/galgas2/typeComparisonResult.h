@@ -115,56 +115,14 @@ bool boolValueFromComparisonKindAndComparisonResult (const typeComparisonKind in
 
 //---------------------------------------------------------------------------------------------------------------------*
 //                                                                                                                     *
-//    typeEnumerationOrder                                                   *
+//    typeEnumerationOrder                                                                                             *
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-#ifndef DO_NOT_GENERATE_CHECKINGS
-  class typeEnumerationOrder {
-    public : typedef enum {
-      kInternalEnumeration_down,
-      kInternalEnumeration_up,
-      kInternalEnumeration_enterOrder,
-      kInternalEnumeration_reverseEnterOrder
-    } enumEnumerationOrder ;
-  //--- Attribute
-    public : enumEnumerationOrder mEnumerationOrder ;
-  //--- Private constructor
-    private : typeEnumerationOrder (const enumEnumerationOrder inEnumerationOrder) ;
-  //--- Constructor (static methods)
-    public : static typeEnumerationOrder down (void) ;
-    public : static typeEnumerationOrder up (void) ;
-    public : static typeEnumerationOrder enterOrder (void) ;
-    public : static typeEnumerationOrder reverseEnterOrder (void) ;
-  } ;
-
-  #define kEnumeration_down              typeEnumerationOrder::down ()
-  #define kEnumeration_up                typeEnumerationOrder::up ()
-  #define kEnumeration_enterOrder        typeEnumerationOrder::enterOrder ()
-  #define kEnumeration_reverseEnterOrder typeEnumerationOrder::reverseEnterOrder ()
-
-  #define kENUMERATION_DOWN                typeEnumerationOrder::kInternalEnumeration_down
-  #define kENUMERATION_UP                  typeEnumerationOrder::kInternalEnumeration_up
-  #define kENUMERATION_ENTER_ORDER         typeEnumerationOrder::kInternalEnumeration_enterOrder
-  #define kENUMERATION_REVERSE_ENTER_ORDER typeEnumerationOrder::kInternalEnumeration_reverseEnterOrder
-  
-  inline typeEnumerationOrder::enumEnumerationOrder enumerationOrderValue (const typeEnumerationOrder inEnumerationOrder) {
-    return inEnumerationOrder.mEnumerationOrder ;
-  }
-#else
-  typedef enum {
-    kEnumeration_down,
-    kEnumeration_up,
-    kEnumeration_enterOrder,
-    kEnumeration_reverseEnterOrder
-  } typeEnumerationOrder ;
-  
-  #define enumerationOrderValue(x) (x)
-  #define kENUMERATION_DOWN                kEnumeration_down
-  #define kENUMERATION_UP                  kEnumeration_up
-  #define kENUMERATION_ENTER_ORDER         kEnumeration_enterOrder
-  #define kENUMERATION_REVERSE_ENTER_ORDER kEnumeration_reverseEnterOrder
-#endif
+typedef enum {
+  kENUMERATION_DOWN,
+  kENUMERATION_UP
+} typeEnumerationOrder ;
 
 //---------------------------------------------------------------------------------------------------------------------*
 

@@ -33,7 +33,7 @@
  * $Id: config.h,v 1.7 2004/02/10 16:17:07 arms22 Exp $
  *
  * Modified by Kamel Hacene for TrampolineOS. 04 oct 2016 :
- *  Corrected to prototype of stdimpl_print.
+ *  Corrects the prototype of stdimpl_print.
  */
 #ifndef __CONFIG_H__
 #define __CONFIG_H__

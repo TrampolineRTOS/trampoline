@@ -3115,12 +3115,12 @@ void cParser_arxml_5F_parser::rule_arxml_5F_parser_arxml_5F_start_5F_symbol_i0_ 
   {
   routine_getAutosarVersion (outArgument_rootNode, var_autosarVersion_1992, var_autosarDescription_2041, inCompiler  COMMA_SOURCE_FILE ("arxml_parser.galgas", 81)) ;
   }
-  const enumGalgasBool test_3 = GALGAS_bool (kIsEqual, var_autosarVersion_1992.mAttribute_string.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+  const enumGalgasBool test_3 = GALGAS_bool (kIsEqual, var_autosarVersion_1992.mProperty_string.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
   if (kBoolTrue == test_3) {
     TC_Array <C_FixItDescription> fixItArray4 ;
     inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("arxml_parser.galgas", 84)), GALGAS_string ("[TPS_ECUC_06005][TPS_ECUC_08053] : Missing AUTOSAR version"), fixItArray4  COMMA_SOURCE_FILE ("arxml_parser.galgas", 84)) ;
   }
-  GALGAS_stringlist var_autosarVlist_2349 = var_autosarVersion_1992.mAttribute_string.getter_componentsSeparatedByString (GALGAS_string (".") COMMA_SOURCE_FILE ("arxml_parser.galgas", 88)) ;
+  GALGAS_stringlist var_autosarVlist_2349 = var_autosarVersion_1992.mProperty_string.getter_componentsSeparatedByString (GALGAS_string (".") COMMA_SOURCE_FILE ("arxml_parser.galgas", 88)) ;
   GALGAS_string var_versionFirst_2450 ;
   {
   var_autosarVlist_2349.setter_popFirst (var_versionFirst_2450, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 89)) ;
@@ -3141,7 +3141,7 @@ void cParser_arxml_5F_parser::rule_arxml_5F_parser_arxml_5F_start_5F_symbol_i0_ 
   {
   var_application_1024.setter_setVersionDescription (var_autosarDescription_2041 COMMA_SOURCE_FILE ("arxml_parser.galgas", 96)) ;
   }
-  GALGAS_string var_autosarVersionNoDot_3034 = var_autosarVersion_1992.mAttribute_string.getter_stringByReplacingStringByString (GALGAS_string ("."), GALGAS_string ("-"), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 105)) ;
+  GALGAS_string var_autosarVersionNoDot_3034 = var_autosarVersion_1992.mProperty_string.getter_stringByReplacingStringByString (GALGAS_string ("."), GALGAS_string ("-"), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 105)) ;
   GALGAS_string var_autosarMetaFile_3185 = GALGAS_string ("AUTOSAR_").add_operation (var_autosarVersionNoDot_3034, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 107)).add_operation (GALGAS_string (".xsd"), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 107)) ;
   GALGAS_string var_filePath_3248 = function_templates_5F_directory (GALGAS_string ("arxmlMeta"), inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 108)).add_operation (var_autosarMetaFile_3185, inCompiler COMMA_SOURCE_FILE ("arxml_parser.galgas", 108)) ;
   GALGAS_arxmlMetaClassMap var_classMap_3332 ;
@@ -3369,13 +3369,13 @@ typeComparisonResult cPtr_arxmlElementNode::dynamicObjectCompare (const acPtr_cl
   const cPtr_arxmlElementNode * p = (const cPtr_arxmlElementNode *) inOperandPtr ;
   macroValidSharedObject (p, cPtr_arxmlElementNode) ;
   if (kOperandEqual == result) {
-    result = mAttribute_name.objectCompare (p->mAttribute_name) ;
+    result = mProperty_name.objectCompare (p->mProperty_name) ;
   }
   if (kOperandEqual == result) {
-    result = mAttribute_attributes.objectCompare (p->mAttribute_attributes) ;
+    result = mProperty_attributes.objectCompare (p->mProperty_attributes) ;
   }
   if (kOperandEqual == result) {
-    result = mAttribute_enclosedNodes.objectCompare (p->mAttribute_enclosedNodes) ;
+    result = mProperty_enclosedNodes.objectCompare (p->mProperty_enclosedNodes) ;
   }
   return result ;
 }
@@ -3441,7 +3441,7 @@ GALGAS_lstring GALGAS_arxmlElementNode::getter_name (UNUSED_LOCATION_ARGS) const
   if (NULL != mObjectPtr) {
     const cPtr_arxmlElementNode * p = (const cPtr_arxmlElementNode *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_arxmlElementNode) ;
-    result = p->mAttribute_name ;
+    result = p->mProperty_name ;
   }
   return result ;
 }
@@ -3449,7 +3449,7 @@ GALGAS_lstring GALGAS_arxmlElementNode::getter_name (UNUSED_LOCATION_ARGS) const
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstring cPtr_arxmlElementNode::getter_name (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_name ;
+  return mProperty_name ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -3459,7 +3459,7 @@ GALGAS_arxmlAttributeMap GALGAS_arxmlElementNode::getter_attributes (UNUSED_LOCA
   if (NULL != mObjectPtr) {
     const cPtr_arxmlElementNode * p = (const cPtr_arxmlElementNode *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_arxmlElementNode) ;
-    result = p->mAttribute_attributes ;
+    result = p->mProperty_attributes ;
   }
   return result ;
 }
@@ -3467,7 +3467,7 @@ GALGAS_arxmlAttributeMap GALGAS_arxmlElementNode::getter_attributes (UNUSED_LOCA
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_arxmlAttributeMap cPtr_arxmlElementNode::getter_attributes (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_attributes ;
+  return mProperty_attributes ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -3477,7 +3477,7 @@ GALGAS_arxmlNodeList GALGAS_arxmlElementNode::getter_enclosedNodes (UNUSED_LOCAT
   if (NULL != mObjectPtr) {
     const cPtr_arxmlElementNode * p = (const cPtr_arxmlElementNode *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_arxmlElementNode) ;
-    result = p->mAttribute_enclosedNodes ;
+    result = p->mProperty_enclosedNodes ;
   }
   return result ;
 }
@@ -3485,7 +3485,7 @@ GALGAS_arxmlNodeList GALGAS_arxmlElementNode::getter_enclosedNodes (UNUSED_LOCAT
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_arxmlNodeList cPtr_arxmlElementNode::getter_enclosedNodes (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_enclosedNodes ;
+  return mProperty_enclosedNodes ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -3497,9 +3497,9 @@ cPtr_arxmlElementNode::cPtr_arxmlElementNode (const GALGAS_lstring & in_name,
                                               const GALGAS_arxmlNodeList & in_enclosedNodes
                                               COMMA_LOCATION_ARGS) :
 cPtr_arxmlNode (THERE),
-mAttribute_name (in_name),
-mAttribute_attributes (in_attributes),
-mAttribute_enclosedNodes (in_enclosedNodes) {
+mProperty_name (in_name),
+mProperty_attributes (in_attributes),
+mProperty_enclosedNodes (in_enclosedNodes) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -3511,11 +3511,11 @@ const C_galgas_type_descriptor * cPtr_arxmlElementNode::classDescriptor (void) c
 void cPtr_arxmlElementNode::description (C_String & ioString,
                                          const int32_t inIndentation) const {
   ioString << "[@arxmlElementNode:" ;
-  mAttribute_name.description (ioString, inIndentation+1) ;
+  mProperty_name.description (ioString, inIndentation+1) ;
   ioString << ", " ;
-  mAttribute_attributes.description (ioString, inIndentation+1) ;
+  mProperty_attributes.description (ioString, inIndentation+1) ;
   ioString << ", " ;
-  mAttribute_enclosedNodes.description (ioString, inIndentation+1) ;
+  mProperty_enclosedNodes.description (ioString, inIndentation+1) ;
   ioString << "]" ;
 }
 
@@ -3523,7 +3523,7 @@ void cPtr_arxmlElementNode::description (C_String & ioString,
 
 acPtr_class * cPtr_arxmlElementNode::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
-  macroMyNew (ptr, cPtr_arxmlElementNode (mAttribute_name, mAttribute_attributes, mAttribute_enclosedNodes COMMA_THERE)) ;
+  macroMyNew (ptr, cPtr_arxmlElementNode (mProperty_name, mProperty_attributes, mProperty_enclosedNodes COMMA_THERE)) ;
   return ptr ;
 }
 
@@ -3628,7 +3628,7 @@ static void extensionMethod_arxmlElementNode_getSubElements (const cPtr_arxmlEle
   const cPtr_arxmlElementNode * object = inObject ;
   macroValidSharedObject (object, cPtr_arxmlElementNode) ;
   outArgument_nodeList = GALGAS_arxmlElementList::constructor_emptyList (SOURCE_FILE ("arxml_types.galgas", 208)) ;
-  cEnumerator_arxmlNodeList enumerator_4586 (object->mAttribute_enclosedNodes, kEnumeration_up) ;
+  cEnumerator_arxmlNodeList enumerator_4586 (object->mProperty_enclosedNodes, kENUMERATION_UP) ;
   while (enumerator_4586.hasCurrentObject ()) {
     const enumGalgasBool test_0 = GALGAS_bool (enumerator_4586.current_node (HERE).dynamicTypeDescriptor () == & kTypeDescriptor_GALGAS_arxmlElementNode).boolEnum () ;
     if (kBoolTrue == test_0) {
@@ -3721,7 +3721,7 @@ static void extensionMethod_arxmlElementNode_getText (const cPtr_arxmlElementNod
                                                       COMMA_UNUSED_LOCATION_ARGS) {
   const cPtr_arxmlElementNode * object = inObject ;
   macroValidSharedObject (object, cPtr_arxmlElementNode) ;
-  cEnumerator_arxmlNodeList enumerator_5194 (object->mAttribute_enclosedNodes, kEnumeration_up) ;
+  cEnumerator_arxmlNodeList enumerator_5194 (object->mProperty_enclosedNodes, kENUMERATION_UP) ;
   bool bool_0 = ioArgument_found.operator_not (SOURCE_FILE ("arxml_types.galgas", 241)).isValidAndTrue () ;
   if (enumerator_5194.hasCurrentObject () && bool_0) {
     while (enumerator_5194.hasCurrentObject () && bool_0) {
@@ -3819,7 +3819,7 @@ static void extensionMethod_arxmlElementNode_getAttributes (const cPtr_arxmlElem
                                                             COMMA_UNUSED_LOCATION_ARGS) {
   const cPtr_arxmlElementNode * object = inObject ;
   macroValidSharedObject (object, cPtr_arxmlElementNode) ;
-  ioArgument_outAttributes = object->mAttribute_attributes ;
+  ioArgument_outAttributes = object->mProperty_attributes ;
 }
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -3897,7 +3897,7 @@ static void extensionMethod_arxmlElementNode_getAttribute (const cPtr_arxmlEleme
                                                            COMMA_UNUSED_LOCATION_ARGS) {
   const cPtr_arxmlElementNode * object = inObject ;
   macroValidSharedObject (object, cPtr_arxmlElementNode) ;
-  object->mAttribute_attributes.method_searchKey (function_lstringWith (inArgument_attributeName, inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 261)), outArgument_outAttribute, inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 261)) ;
+  object->mProperty_attributes.method_searchKey (function_lstringWith (inArgument_attributeName, inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 261)), outArgument_outAttribute, inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 261)) ;
 }
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -3973,7 +3973,7 @@ static void extensionMethod_arxmlElementNode_getName (const cPtr_arxmlElementNod
                                                       COMMA_UNUSED_LOCATION_ARGS) {
   const cPtr_arxmlElementNode * object = inObject ;
   macroValidSharedObject (object, cPtr_arxmlElementNode) ;
-  outArgument_outName = object->mAttribute_name ;
+  outArgument_outName = object->mProperty_name ;
 }
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -4002,7 +4002,7 @@ typeComparisonResult cPtr_arxmlCommentNode::dynamicObjectCompare (const acPtr_cl
   const cPtr_arxmlCommentNode * p = (const cPtr_arxmlCommentNode *) inOperandPtr ;
   macroValidSharedObject (p, cPtr_arxmlCommentNode) ;
   if (kOperandEqual == result) {
-    result = mAttribute_comment.objectCompare (p->mAttribute_comment) ;
+    result = mProperty_comment.objectCompare (p->mProperty_comment) ;
   }
   return result ;
 }
@@ -4064,7 +4064,7 @@ GALGAS_lstring GALGAS_arxmlCommentNode::getter_comment (UNUSED_LOCATION_ARGS) co
   if (NULL != mObjectPtr) {
     const cPtr_arxmlCommentNode * p = (const cPtr_arxmlCommentNode *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_arxmlCommentNode) ;
-    result = p->mAttribute_comment ;
+    result = p->mProperty_comment ;
   }
   return result ;
 }
@@ -4072,7 +4072,7 @@ GALGAS_lstring GALGAS_arxmlCommentNode::getter_comment (UNUSED_LOCATION_ARGS) co
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstring cPtr_arxmlCommentNode::getter_comment (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_comment ;
+  return mProperty_comment ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -4082,7 +4082,7 @@ GALGAS_lstring cPtr_arxmlCommentNode::getter_comment (UNUSED_LOCATION_ARGS) cons
 cPtr_arxmlCommentNode::cPtr_arxmlCommentNode (const GALGAS_lstring & in_comment
                                               COMMA_LOCATION_ARGS) :
 cPtr_arxmlNode (THERE),
-mAttribute_comment (in_comment) {
+mProperty_comment (in_comment) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -4094,7 +4094,7 @@ const C_galgas_type_descriptor * cPtr_arxmlCommentNode::classDescriptor (void) c
 void cPtr_arxmlCommentNode::description (C_String & ioString,
                                          const int32_t inIndentation) const {
   ioString << "[@arxmlCommentNode:" ;
-  mAttribute_comment.description (ioString, inIndentation+1) ;
+  mProperty_comment.description (ioString, inIndentation+1) ;
   ioString << "]" ;
 }
 
@@ -4102,7 +4102,7 @@ void cPtr_arxmlCommentNode::description (C_String & ioString,
 
 acPtr_class * cPtr_arxmlCommentNode::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
-  macroMyNew (ptr, cPtr_arxmlCommentNode (mAttribute_comment COMMA_THERE)) ;
+  macroMyNew (ptr, cPtr_arxmlCommentNode (mProperty_comment COMMA_THERE)) ;
   return ptr ;
 }
 
@@ -4159,7 +4159,7 @@ typeComparisonResult cPtr_arxmlTextNode::dynamicObjectCompare (const acPtr_class
   const cPtr_arxmlTextNode * p = (const cPtr_arxmlTextNode *) inOperandPtr ;
   macroValidSharedObject (p, cPtr_arxmlTextNode) ;
   if (kOperandEqual == result) {
-    result = mAttribute_text.objectCompare (p->mAttribute_text) ;
+    result = mProperty_text.objectCompare (p->mProperty_text) ;
   }
   return result ;
 }
@@ -4221,7 +4221,7 @@ GALGAS_lstring GALGAS_arxmlTextNode::getter_text (UNUSED_LOCATION_ARGS) const {
   if (NULL != mObjectPtr) {
     const cPtr_arxmlTextNode * p = (const cPtr_arxmlTextNode *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_arxmlTextNode) ;
-    result = p->mAttribute_text ;
+    result = p->mProperty_text ;
   }
   return result ;
 }
@@ -4229,7 +4229,7 @@ GALGAS_lstring GALGAS_arxmlTextNode::getter_text (UNUSED_LOCATION_ARGS) const {
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstring cPtr_arxmlTextNode::getter_text (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_text ;
+  return mProperty_text ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -4239,7 +4239,7 @@ GALGAS_lstring cPtr_arxmlTextNode::getter_text (UNUSED_LOCATION_ARGS) const {
 cPtr_arxmlTextNode::cPtr_arxmlTextNode (const GALGAS_lstring & in_text
                                         COMMA_LOCATION_ARGS) :
 cPtr_arxmlNode (THERE),
-mAttribute_text (in_text) {
+mProperty_text (in_text) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -4251,7 +4251,7 @@ const C_galgas_type_descriptor * cPtr_arxmlTextNode::classDescriptor (void) cons
 void cPtr_arxmlTextNode::description (C_String & ioString,
                                       const int32_t inIndentation) const {
   ioString << "[@arxmlTextNode:" ;
-  mAttribute_text.description (ioString, inIndentation+1) ;
+  mProperty_text.description (ioString, inIndentation+1) ;
   ioString << "]" ;
 }
 
@@ -4259,7 +4259,7 @@ void cPtr_arxmlTextNode::description (C_String & ioString,
 
 acPtr_class * cPtr_arxmlTextNode::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
-  macroMyNew (ptr, cPtr_arxmlTextNode (mAttribute_text COMMA_THERE)) ;
+  macroMyNew (ptr, cPtr_arxmlTextNode (mProperty_text COMMA_THERE)) ;
   return ptr ;
 }
 
@@ -4363,7 +4363,7 @@ static void extensionMethod_arxmlTextNode_getText (const cPtr_arxmlTextNode * in
                                                    COMMA_UNUSED_LOCATION_ARGS) {
   const cPtr_arxmlTextNode * object = inObject ;
   macroValidSharedObject (object, cPtr_arxmlTextNode) ;
-  outArgument_outText = object->mAttribute_text ;
+  outArgument_outText = object->mProperty_text ;
 }
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -4392,16 +4392,16 @@ typeComparisonResult cPtr_arxmlElementValue::dynamicObjectCompare (const acPtr_c
   const cPtr_arxmlElementValue * p = (const cPtr_arxmlElementValue *) inOperandPtr ;
   macroValidSharedObject (p, cPtr_arxmlElementValue) ;
   if (kOperandEqual == result) {
-    result = mAttribute_type.objectCompare (p->mAttribute_type) ;
+    result = mProperty_type.objectCompare (p->mProperty_type) ;
   }
   if (kOperandEqual == result) {
-    result = mAttribute_text.objectCompare (p->mAttribute_text) ;
+    result = mProperty_text.objectCompare (p->mProperty_text) ;
   }
   if (kOperandEqual == result) {
-    result = mAttribute_elements.objectCompare (p->mAttribute_elements) ;
+    result = mProperty_elements.objectCompare (p->mProperty_elements) ;
   }
   if (kOperandEqual == result) {
-    result = mAttribute_attributes.objectCompare (p->mAttribute_attributes) ;
+    result = mProperty_attributes.objectCompare (p->mProperty_attributes) ;
   }
   return result ;
 }
@@ -4469,7 +4469,7 @@ GALGAS_lstring GALGAS_arxmlElementValue::getter_type (UNUSED_LOCATION_ARGS) cons
   if (NULL != mObjectPtr) {
     const cPtr_arxmlElementValue * p = (const cPtr_arxmlElementValue *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_arxmlElementValue) ;
-    result = p->mAttribute_type ;
+    result = p->mProperty_type ;
   }
   return result ;
 }
@@ -4477,7 +4477,7 @@ GALGAS_lstring GALGAS_arxmlElementValue::getter_type (UNUSED_LOCATION_ARGS) cons
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstring cPtr_arxmlElementValue::getter_type (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_type ;
+  return mProperty_type ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -4487,7 +4487,7 @@ GALGAS_lstring GALGAS_arxmlElementValue::getter_text (UNUSED_LOCATION_ARGS) cons
   if (NULL != mObjectPtr) {
     const cPtr_arxmlElementValue * p = (const cPtr_arxmlElementValue *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_arxmlElementValue) ;
-    result = p->mAttribute_text ;
+    result = p->mProperty_text ;
   }
   return result ;
 }
@@ -4495,7 +4495,7 @@ GALGAS_lstring GALGAS_arxmlElementValue::getter_text (UNUSED_LOCATION_ARGS) cons
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstring cPtr_arxmlElementValue::getter_text (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_text ;
+  return mProperty_text ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -4505,7 +4505,7 @@ GALGAS_arxmlElementValueMap GALGAS_arxmlElementValue::getter_elements (UNUSED_LO
   if (NULL != mObjectPtr) {
     const cPtr_arxmlElementValue * p = (const cPtr_arxmlElementValue *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_arxmlElementValue) ;
-    result = p->mAttribute_elements ;
+    result = p->mProperty_elements ;
   }
   return result ;
 }
@@ -4513,7 +4513,7 @@ GALGAS_arxmlElementValueMap GALGAS_arxmlElementValue::getter_elements (UNUSED_LO
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_arxmlElementValueMap cPtr_arxmlElementValue::getter_elements (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_elements ;
+  return mProperty_elements ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -4523,7 +4523,7 @@ GALGAS_arxmlAttributeMap GALGAS_arxmlElementValue::getter_attributes (UNUSED_LOC
   if (NULL != mObjectPtr) {
     const cPtr_arxmlElementValue * p = (const cPtr_arxmlElementValue *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_arxmlElementValue) ;
-    result = p->mAttribute_attributes ;
+    result = p->mProperty_attributes ;
   }
   return result ;
 }
@@ -4531,7 +4531,7 @@ GALGAS_arxmlAttributeMap GALGAS_arxmlElementValue::getter_attributes (UNUSED_LOC
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_arxmlAttributeMap cPtr_arxmlElementValue::getter_attributes (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_attributes ;
+  return mProperty_attributes ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -4544,10 +4544,10 @@ cPtr_arxmlElementValue::cPtr_arxmlElementValue (const GALGAS_lstring & in_type,
                                                 const GALGAS_arxmlAttributeMap & in_attributes
                                                 COMMA_LOCATION_ARGS) :
 acPtr_class (THERE),
-mAttribute_type (in_type),
-mAttribute_text (in_text),
-mAttribute_elements (in_elements),
-mAttribute_attributes (in_attributes) {
+mProperty_type (in_type),
+mProperty_text (in_text),
+mProperty_elements (in_elements),
+mProperty_attributes (in_attributes) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -4559,13 +4559,13 @@ const C_galgas_type_descriptor * cPtr_arxmlElementValue::classDescriptor (void) 
 void cPtr_arxmlElementValue::description (C_String & ioString,
                                           const int32_t inIndentation) const {
   ioString << "[@arxmlElementValue:" ;
-  mAttribute_type.description (ioString, inIndentation+1) ;
+  mProperty_type.description (ioString, inIndentation+1) ;
   ioString << ", " ;
-  mAttribute_text.description (ioString, inIndentation+1) ;
+  mProperty_text.description (ioString, inIndentation+1) ;
   ioString << ", " ;
-  mAttribute_elements.description (ioString, inIndentation+1) ;
+  mProperty_elements.description (ioString, inIndentation+1) ;
   ioString << ", " ;
-  mAttribute_attributes.description (ioString, inIndentation+1) ;
+  mProperty_attributes.description (ioString, inIndentation+1) ;
   ioString << "]" ;
 }
 
@@ -4573,7 +4573,7 @@ void cPtr_arxmlElementValue::description (C_String & ioString,
 
 acPtr_class * cPtr_arxmlElementValue::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
-  macroMyNew (ptr, cPtr_arxmlElementValue (mAttribute_type, mAttribute_text, mAttribute_elements, mAttribute_attributes COMMA_THERE)) ;
+  macroMyNew (ptr, cPtr_arxmlElementValue (mProperty_type, mProperty_text, mProperty_elements, mProperty_attributes COMMA_THERE)) ;
   return ptr ;
 }
 
@@ -4677,17 +4677,17 @@ static void extensionSetter_arxmlElementValue_insertElement (cPtr_arxmlElementVa
   cPtr_arxmlElementValue * object = inObject ;
   macroValidSharedObject (object, cPtr_arxmlElementValue) ;
   GALGAS_arxmlElementValueList var_keyList_8388 ;
-  const enumGalgasBool test_0 = object->mAttribute_elements.getter_hasKey (inArgument_key.getter_string (SOURCE_FILE ("arxml_types.galgas", 385)) COMMA_SOURCE_FILE ("arxml_types.galgas", 385)).boolEnum () ;
+  const enumGalgasBool test_0 = object->mProperty_elements.getter_hasKey (inArgument_key.getter_string (SOURCE_FILE ("arxml_types.galgas", 385)) COMMA_SOURCE_FILE ("arxml_types.galgas", 385)).boolEnum () ;
   if (kBoolTrue == test_0) {
     {
-    object->mAttribute_elements.setter_removeKey (inArgument_key, var_keyList_8388, inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 386)) ;
+    object->mProperty_elements.setter_removeKey (inArgument_key, var_keyList_8388, inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 386)) ;
     }
   }else if (kBoolFalse == test_0) {
     var_keyList_8388 = GALGAS_arxmlElementValueList::constructor_emptyList (SOURCE_FILE ("arxml_types.galgas", 388)) ;
   }
   var_keyList_8388.addAssign_operation (inArgument_element  COMMA_SOURCE_FILE ("arxml_types.galgas", 390)) ;
   {
-  object->mAttribute_elements.setter_insertKey (inArgument_key, var_keyList_8388, inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 391)) ;
+  object->mProperty_elements.setter_insertKey (inArgument_key, var_keyList_8388, inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 391)) ;
   }
 }
 //---------------------------------------------------------------------------------------------------------------------*
@@ -4778,7 +4778,7 @@ static void extensionMethod_arxmlElementValue_getElementsByPath (const cPtr_arxm
     }
     const GALGAS_arxmlElementValue temp_2 = object ;
     callExtensionMethod_getElements ((const cPtr_arxmlElementValue *) temp_2.ptr (), var_nextInPathName_8781, var_nextInPathElems_8824, inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 405)) ;
-    cEnumerator_arxmlElementValueList enumerator_8978 (var_nextInPathElems_8824, kEnumeration_up) ;
+    cEnumerator_arxmlElementValueList enumerator_8978 (var_nextInPathElems_8824, kENUMERATION_UP) ;
     while (enumerator_8978.hasCurrentObject ()) {
       callExtensionMethod_getElementsByPath ((const cPtr_arxmlElementValue *) enumerator_8978.current_value (HERE).ptr (), var_pathCopy_8747, ioArgument_outElements, inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 407)) ;
       enumerator_8978.gotoNextObject () ;
@@ -4862,9 +4862,9 @@ static void extensionMethod_arxmlElementValue_getElements (const cPtr_arxmlEleme
   const cPtr_arxmlElementValue * object = inObject ;
   macroValidSharedObject (object, cPtr_arxmlElementValue) ;
   GALGAS_lstring var_key_9173 = GALGAS_lstring::constructor_new (inArgument_elementName, GALGAS_location::constructor_nowhere (SOURCE_FILE ("arxml_types.galgas", 416))  COMMA_SOURCE_FILE ("arxml_types.galgas", 416)) ;
-  const enumGalgasBool test_0 = object->mAttribute_elements.getter_hasKey (var_key_9173.getter_string (SOURCE_FILE ("arxml_types.galgas", 417)) COMMA_SOURCE_FILE ("arxml_types.galgas", 417)).boolEnum () ;
+  const enumGalgasBool test_0 = object->mProperty_elements.getter_hasKey (var_key_9173.getter_string (SOURCE_FILE ("arxml_types.galgas", 417)) COMMA_SOURCE_FILE ("arxml_types.galgas", 417)).boolEnum () ;
   if (kBoolTrue == test_0) {
-    object->mAttribute_elements.method_searchKey (var_key_9173, outArgument_outElements, inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 418)) ;
+    object->mProperty_elements.method_searchKey (var_key_9173, outArgument_outElements, inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 418)) ;
   }else if (kBoolFalse == test_0) {
     outArgument_outElements = GALGAS_arxmlElementValueList::constructor_emptyList (SOURCE_FILE ("arxml_types.galgas", 420)) ;
   }
@@ -4951,7 +4951,7 @@ static void extensionMethod_arxmlElementValue_getElement (const cPtr_arxmlElemen
   const enumGalgasBool test_1 = GALGAS_bool (kIsNotEqual, var_foundElements_9451.getter_length (SOURCE_FILE ("arxml_types.galgas", 430)).objectCompare (GALGAS_uint ((uint32_t) 1U))).boolEnum () ;
   if (kBoolTrue == test_1) {
     TC_Array <C_FixItDescription> fixItArray2 ;
-    inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("arxml_types.galgas", 431)), GALGAS_string ("Found ").add_operation (var_foundElements_9451.getter_length (SOURCE_FILE ("arxml_types.galgas", 431)).getter_string (SOURCE_FILE ("arxml_types.galgas", 431)), inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 431)).add_operation (GALGAS_string (" elements"), inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 431)).add_operation (GALGAS_string (" while searching for exactly one "), inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 431)).add_operation (inArgument_elementName, inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 432)).add_operation (GALGAS_string (" in "), inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 432)).add_operation (object->mAttribute_type.getter_string (SOURCE_FILE ("arxml_types.galgas", 433)), inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 433)), fixItArray2  COMMA_SOURCE_FILE ("arxml_types.galgas", 431)) ;
+    inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("arxml_types.galgas", 431)), GALGAS_string ("Found ").add_operation (var_foundElements_9451.getter_length (SOURCE_FILE ("arxml_types.galgas", 431)).getter_string (SOURCE_FILE ("arxml_types.galgas", 431)), inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 431)).add_operation (GALGAS_string (" elements"), inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 431)).add_operation (GALGAS_string (" while searching for exactly one "), inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 431)).add_operation (inArgument_elementName, inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 432)).add_operation (GALGAS_string (" in "), inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 432)).add_operation (object->mProperty_type.getter_string (SOURCE_FILE ("arxml_types.galgas", 433)), inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 433)), fixItArray2  COMMA_SOURCE_FILE ("arxml_types.galgas", 431)) ;
     outArgument_outElement.drop () ; // Release error dropped variable
   }else if (kBoolFalse == test_1) {
     var_foundElements_9451.method_first (outArgument_outElement, inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 435)) ;
@@ -5209,21 +5209,21 @@ static void extensionMethod_arxmlElementValue_getAllTextsInSelf (const cPtr_arxm
                                                                  COMMA_UNUSED_LOCATION_ARGS) {
   const cPtr_arxmlElementValue * object = inObject ;
   macroValidSharedObject (object, cPtr_arxmlElementValue) ;
-  const enumGalgasBool test_0 = GALGAS_bool (kIsNotEqual, object->mAttribute_text.getter_string (SOURCE_FILE ("arxml_types.galgas", 465)).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+  const enumGalgasBool test_0 = GALGAS_bool (kIsNotEqual, object->mProperty_text.getter_string (SOURCE_FILE ("arxml_types.galgas", 465)).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
   if (kBoolTrue == test_0) {
     const enumGalgasBool test_1 = GALGAS_bool (kIsNotEqual, ioArgument_outString.getter_string (SOURCE_FILE ("arxml_types.galgas", 466)).objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
     if (kBoolTrue == test_1) {
-      ioArgument_outString.mAttribute_string.plusAssign_operation(inArgument_separator, inCompiler  COMMA_SOURCE_FILE ("arxml_types.galgas", 467)) ;
+      ioArgument_outString.mProperty_string.plusAssign_operation(inArgument_separator, inCompiler  COMMA_SOURCE_FILE ("arxml_types.galgas", 467)) ;
     }
     const enumGalgasBool test_2 = GALGAS_bool (kIsEqual, ioArgument_outString.getter_location (SOURCE_FILE ("arxml_types.galgas", 469)).objectCompare (GALGAS_location::constructor_nowhere (SOURCE_FILE ("arxml_types.galgas", 469)))).boolEnum () ;
     if (kBoolTrue == test_2) {
-      ioArgument_outString.mAttribute_location = object->mAttribute_text.getter_location (SOURCE_FILE ("arxml_types.galgas", 470)) ;
+      ioArgument_outString.mProperty_location = object->mProperty_text.getter_location (SOURCE_FILE ("arxml_types.galgas", 470)) ;
     }
-    ioArgument_outString.mAttribute_string.plusAssign_operation(object->mAttribute_text.getter_string (SOURCE_FILE ("arxml_types.galgas", 472)), inCompiler  COMMA_SOURCE_FILE ("arxml_types.galgas", 472)) ;
+    ioArgument_outString.mProperty_string.plusAssign_operation(object->mProperty_text.getter_string (SOURCE_FILE ("arxml_types.galgas", 472)), inCompiler  COMMA_SOURCE_FILE ("arxml_types.galgas", 472)) ;
   }
-  cEnumerator_arxmlElementValueMap enumerator_10610 (object->mAttribute_elements, kEnumeration_up) ;
+  cEnumerator_arxmlElementValueMap enumerator_10610 (object->mProperty_elements, kENUMERATION_UP) ;
   while (enumerator_10610.hasCurrentObject ()) {
-    cEnumerator_arxmlElementValueList enumerator_10634 (enumerator_10610.current_values (HERE), kEnumeration_up) ;
+    cEnumerator_arxmlElementValueList enumerator_10634 (enumerator_10610.current_values (HERE), kENUMERATION_UP) ;
     while (enumerator_10634.hasCurrentObject ()) {
       callExtensionMethod_getAllTextsInSelf ((const cPtr_arxmlElementValue *) enumerator_10634.current_value (HERE).ptr (), inArgument_separator, ioArgument_outString, inCompiler COMMA_SOURCE_FILE ("arxml_types.galgas", 477)) ;
       enumerator_10634.gotoNextObject () ;
@@ -5347,25 +5347,25 @@ typeComparisonResult cPtr_arxmlMetaClass::dynamicObjectCompare (const acPtr_clas
   const cPtr_arxmlMetaClass * p = (const cPtr_arxmlMetaClass *) inOperandPtr ;
   macroValidSharedObject (p, cPtr_arxmlMetaClass) ;
   if (kOperandEqual == result) {
-    result = mAttribute_name.objectCompare (p->mAttribute_name) ;
+    result = mProperty_name.objectCompare (p->mProperty_name) ;
   }
   if (kOperandEqual == result) {
-    result = mAttribute_isAbstract.objectCompare (p->mAttribute_isAbstract) ;
+    result = mProperty_isAbstract.objectCompare (p->mProperty_isAbstract) ;
   }
   if (kOperandEqual == result) {
-    result = mAttribute_lElement.objectCompare (p->mAttribute_lElement) ;
+    result = mProperty_lElement.objectCompare (p->mProperty_lElement) ;
   }
   if (kOperandEqual == result) {
-    result = mAttribute_lElementLegacy.objectCompare (p->mAttribute_lElementLegacy) ;
+    result = mProperty_lElementLegacy.objectCompare (p->mProperty_lElementLegacy) ;
   }
   if (kOperandEqual == result) {
-    result = mAttribute_lAttribute.objectCompare (p->mAttribute_lAttribute) ;
+    result = mProperty_lAttribute.objectCompare (p->mProperty_lAttribute) ;
   }
   if (kOperandEqual == result) {
-    result = mAttribute_lAttributeLegacy.objectCompare (p->mAttribute_lAttributeLegacy) ;
+    result = mProperty_lAttributeLegacy.objectCompare (p->mProperty_lAttributeLegacy) ;
   }
   if (kOperandEqual == result) {
-    result = mAttribute_desc.objectCompare (p->mAttribute_desc) ;
+    result = mProperty_desc.objectCompare (p->mProperty_desc) ;
   }
   return result ;
 }
@@ -5439,7 +5439,7 @@ GALGAS_lstring GALGAS_arxmlMetaClass::getter_name (UNUSED_LOCATION_ARGS) const {
   if (NULL != mObjectPtr) {
     const cPtr_arxmlMetaClass * p = (const cPtr_arxmlMetaClass *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_arxmlMetaClass) ;
-    result = p->mAttribute_name ;
+    result = p->mProperty_name ;
   }
   return result ;
 }
@@ -5447,7 +5447,7 @@ GALGAS_lstring GALGAS_arxmlMetaClass::getter_name (UNUSED_LOCATION_ARGS) const {
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstring cPtr_arxmlMetaClass::getter_name (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_name ;
+  return mProperty_name ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -5457,7 +5457,7 @@ GALGAS_bool GALGAS_arxmlMetaClass::getter_isAbstract (UNUSED_LOCATION_ARGS) cons
   if (NULL != mObjectPtr) {
     const cPtr_arxmlMetaClass * p = (const cPtr_arxmlMetaClass *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_arxmlMetaClass) ;
-    result = p->mAttribute_isAbstract ;
+    result = p->mProperty_isAbstract ;
   }
   return result ;
 }
@@ -5465,7 +5465,7 @@ GALGAS_bool GALGAS_arxmlMetaClass::getter_isAbstract (UNUSED_LOCATION_ARGS) cons
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_bool cPtr_arxmlMetaClass::getter_isAbstract (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_isAbstract ;
+  return mProperty_isAbstract ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -5475,7 +5475,7 @@ GALGAS_arxmlMetaElementList GALGAS_arxmlMetaClass::getter_lElement (UNUSED_LOCAT
   if (NULL != mObjectPtr) {
     const cPtr_arxmlMetaClass * p = (const cPtr_arxmlMetaClass *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_arxmlMetaClass) ;
-    result = p->mAttribute_lElement ;
+    result = p->mProperty_lElement ;
   }
   return result ;
 }
@@ -5483,7 +5483,7 @@ GALGAS_arxmlMetaElementList GALGAS_arxmlMetaClass::getter_lElement (UNUSED_LOCAT
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_arxmlMetaElementList cPtr_arxmlMetaClass::getter_lElement (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_lElement ;
+  return mProperty_lElement ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -5493,7 +5493,7 @@ GALGAS_arxmlMetaElementList GALGAS_arxmlMetaClass::getter_lElementLegacy (UNUSED
   if (NULL != mObjectPtr) {
     const cPtr_arxmlMetaClass * p = (const cPtr_arxmlMetaClass *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_arxmlMetaClass) ;
-    result = p->mAttribute_lElementLegacy ;
+    result = p->mProperty_lElementLegacy ;
   }
   return result ;
 }
@@ -5501,7 +5501,7 @@ GALGAS_arxmlMetaElementList GALGAS_arxmlMetaClass::getter_lElementLegacy (UNUSED
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_arxmlMetaElementList cPtr_arxmlMetaClass::getter_lElementLegacy (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_lElementLegacy ;
+  return mProperty_lElementLegacy ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -5511,7 +5511,7 @@ GALGAS_arxmlMetaAttributeList GALGAS_arxmlMetaClass::getter_lAttribute (UNUSED_L
   if (NULL != mObjectPtr) {
     const cPtr_arxmlMetaClass * p = (const cPtr_arxmlMetaClass *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_arxmlMetaClass) ;
-    result = p->mAttribute_lAttribute ;
+    result = p->mProperty_lAttribute ;
   }
   return result ;
 }
@@ -5519,7 +5519,7 @@ GALGAS_arxmlMetaAttributeList GALGAS_arxmlMetaClass::getter_lAttribute (UNUSED_L
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_arxmlMetaAttributeList cPtr_arxmlMetaClass::getter_lAttribute (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_lAttribute ;
+  return mProperty_lAttribute ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -5529,7 +5529,7 @@ GALGAS_arxmlMetaAttributeList GALGAS_arxmlMetaClass::getter_lAttributeLegacy (UN
   if (NULL != mObjectPtr) {
     const cPtr_arxmlMetaClass * p = (const cPtr_arxmlMetaClass *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_arxmlMetaClass) ;
-    result = p->mAttribute_lAttributeLegacy ;
+    result = p->mProperty_lAttributeLegacy ;
   }
   return result ;
 }
@@ -5537,7 +5537,7 @@ GALGAS_arxmlMetaAttributeList GALGAS_arxmlMetaClass::getter_lAttributeLegacy (UN
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_arxmlMetaAttributeList cPtr_arxmlMetaClass::getter_lAttributeLegacy (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_lAttributeLegacy ;
+  return mProperty_lAttributeLegacy ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -5547,7 +5547,7 @@ GALGAS_lstring GALGAS_arxmlMetaClass::getter_desc (UNUSED_LOCATION_ARGS) const {
   if (NULL != mObjectPtr) {
     const cPtr_arxmlMetaClass * p = (const cPtr_arxmlMetaClass *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_arxmlMetaClass) ;
-    result = p->mAttribute_desc ;
+    result = p->mProperty_desc ;
   }
   return result ;
 }
@@ -5555,7 +5555,7 @@ GALGAS_lstring GALGAS_arxmlMetaClass::getter_desc (UNUSED_LOCATION_ARGS) const {
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstring cPtr_arxmlMetaClass::getter_desc (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_desc ;
+  return mProperty_desc ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -5571,13 +5571,13 @@ cPtr_arxmlMetaClass::cPtr_arxmlMetaClass (const GALGAS_lstring & in_name,
                                           const GALGAS_lstring & in_desc
                                           COMMA_LOCATION_ARGS) :
 acPtr_class (THERE),
-mAttribute_name (in_name),
-mAttribute_isAbstract (in_isAbstract),
-mAttribute_lElement (in_lElement),
-mAttribute_lElementLegacy (in_lElementLegacy),
-mAttribute_lAttribute (in_lAttribute),
-mAttribute_lAttributeLegacy (in_lAttributeLegacy),
-mAttribute_desc (in_desc) {
+mProperty_name (in_name),
+mProperty_isAbstract (in_isAbstract),
+mProperty_lElement (in_lElement),
+mProperty_lElementLegacy (in_lElementLegacy),
+mProperty_lAttribute (in_lAttribute),
+mProperty_lAttributeLegacy (in_lAttributeLegacy),
+mProperty_desc (in_desc) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -5589,19 +5589,19 @@ const C_galgas_type_descriptor * cPtr_arxmlMetaClass::classDescriptor (void) con
 void cPtr_arxmlMetaClass::description (C_String & ioString,
                                        const int32_t inIndentation) const {
   ioString << "[@arxmlMetaClass:" ;
-  mAttribute_name.description (ioString, inIndentation+1) ;
+  mProperty_name.description (ioString, inIndentation+1) ;
   ioString << ", " ;
-  mAttribute_isAbstract.description (ioString, inIndentation+1) ;
+  mProperty_isAbstract.description (ioString, inIndentation+1) ;
   ioString << ", " ;
-  mAttribute_lElement.description (ioString, inIndentation+1) ;
+  mProperty_lElement.description (ioString, inIndentation+1) ;
   ioString << ", " ;
-  mAttribute_lElementLegacy.description (ioString, inIndentation+1) ;
+  mProperty_lElementLegacy.description (ioString, inIndentation+1) ;
   ioString << ", " ;
-  mAttribute_lAttribute.description (ioString, inIndentation+1) ;
+  mProperty_lAttribute.description (ioString, inIndentation+1) ;
   ioString << ", " ;
-  mAttribute_lAttributeLegacy.description (ioString, inIndentation+1) ;
+  mProperty_lAttributeLegacy.description (ioString, inIndentation+1) ;
   ioString << ", " ;
-  mAttribute_desc.description (ioString, inIndentation+1) ;
+  mProperty_desc.description (ioString, inIndentation+1) ;
   ioString << "]" ;
 }
 
@@ -5609,7 +5609,7 @@ void cPtr_arxmlMetaClass::description (C_String & ioString,
 
 acPtr_class * cPtr_arxmlMetaClass::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
-  macroMyNew (ptr, cPtr_arxmlMetaClass (mAttribute_name, mAttribute_isAbstract, mAttribute_lElement, mAttribute_lElementLegacy, mAttribute_lAttribute, mAttribute_lAttributeLegacy, mAttribute_desc COMMA_THERE)) ;
+  macroMyNew (ptr, cPtr_arxmlMetaClass (mProperty_name, mProperty_isAbstract, mProperty_lElement, mProperty_lElementLegacy, mProperty_lAttribute, mProperty_lAttributeLegacy, mProperty_desc COMMA_THERE)) ;
   return ptr ;
 }
 
@@ -5712,10 +5712,10 @@ static void extensionSetter_arxmlMetaClass_legacyAddParameters (cPtr_arxmlMetaCl
                                                                 COMMA_UNUSED_LOCATION_ARGS) {
   cPtr_arxmlMetaClass * object = inObject ;
   macroValidSharedObject (object, cPtr_arxmlMetaClass) ;
-  cEnumerator_lstringlist enumerator_2572 (inArgument_successors, kEnumeration_up) ;
+  cEnumerator_lstringlist enumerator_2572 (inArgument_successors, kENUMERATION_UP) ;
   while (enumerator_2572.hasCurrentObject ()) {
     {
-    extensionSetter_updateLegacyParameters (ioArgument_classMap, enumerator_2572.current_mValue (HERE), object->mAttribute_lElement, object->mAttribute_lAttribute, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 95)) ;
+    extensionSetter_updateLegacyParameters (ioArgument_classMap, enumerator_2572.current_mValue (HERE), object->mProperty_lElement, object->mProperty_lAttribute, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 95)) ;
     }
     enumerator_2572.gotoNextObject () ;
   }
@@ -5793,8 +5793,8 @@ static void extensionSetter_arxmlMetaClass_legacyUpdate (cPtr_arxmlMetaClass * i
                                                          COMMA_UNUSED_LOCATION_ARGS) {
   cPtr_arxmlMetaClass * object = inObject ;
   macroValidSharedObject (object, cPtr_arxmlMetaClass) ;
-  object->mAttribute_lElementLegacy.plusAssign_operation(inArgument_iElement, inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 105)) ;
-  object->mAttribute_lAttributeLegacy.plusAssign_operation(inArgument_iAttribute, inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 106)) ;
+  object->mProperty_lElementLegacy.plusAssign_operation(inArgument_iElement, inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 105)) ;
+  object->mProperty_lAttributeLegacy.plusAssign_operation(inArgument_iAttribute, inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 106)) ;
 }
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -5872,26 +5872,26 @@ static void extensionMethod_arxmlMetaClass_display (const cPtr_arxmlMetaClass * 
   const cPtr_arxmlMetaClass * object = inObject ;
   macroValidSharedObject (object, cPtr_arxmlMetaClass) ;
   GALGAS_string var_svgString_2953 = GALGAS_string::makeEmptyString () ;
-  GALGAS_string var_classNameRepr_2986 = object->mAttribute_name.mAttribute_string ;
+  GALGAS_string var_classNameRepr_2986 = object->mProperty_name.mProperty_string ;
   var_svgString_2953.plusAssign_operation(GALGAS_string ("############################################################\n"), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 116)) ;
-  var_svgString_2953.plusAssign_operation(GALGAS_string ("# ").add_operation (object->mAttribute_name.getter_string (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 117)), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 117)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 117)), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 117)) ;
-  var_svgString_2953.plusAssign_operation(GALGAS_string ("# <").add_operation (object->mAttribute_desc.getter_string (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 118)), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 118)).add_operation (GALGAS_string (">\n"), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 118)), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 118)) ;
+  var_svgString_2953.plusAssign_operation(GALGAS_string ("# ").add_operation (object->mProperty_name.getter_string (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 117)), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 117)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 117)), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 117)) ;
+  var_svgString_2953.plusAssign_operation(GALGAS_string ("# <").add_operation (object->mProperty_desc.getter_string (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 118)), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 118)).add_operation (GALGAS_string (">\n"), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 118)), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 118)) ;
   var_svgString_2953.plusAssign_operation(GALGAS_string ("#\n"), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 119)) ;
   var_svgString_2953.plusAssign_operation(GALGAS_string ("list @").add_operation (var_classNameRepr_2986, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 122)).add_operation (GALGAS_string ("list\n"
     "{\n"), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 122)), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 122)) ;
   var_svgString_2953.plusAssign_operation(GALGAS_string ("  @").add_operation (var_classNameRepr_2986, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 123)).add_operation (GALGAS_string (" elem\n"), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 123)), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 123)) ;
   var_svgString_2953.plusAssign_operation(GALGAS_string ("}\n"), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 124)) ;
-  const enumGalgasBool test_0 = object->mAttribute_isAbstract.boolEnum () ;
+  const enumGalgasBool test_0 = object->mProperty_isAbstract.boolEnum () ;
   if (kBoolTrue == test_0) {
     var_svgString_2953.plusAssign_operation(GALGAS_string ("abstract "), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 128)) ;
   }
   var_svgString_2953.plusAssign_operation(GALGAS_string ("class @").add_operation (var_classNameRepr_2986, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 132)).add_operation (GALGAS_string ("\n"
     "{\n"), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 132)), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 132)) ;
-  cEnumerator_arxmlMetaElementList enumerator_3705 (object->mAttribute_lElementLegacy, kEnumeration_up) ;
+  cEnumerator_arxmlMetaElementList enumerator_3705 (object->mProperty_lElementLegacy, kENUMERATION_UP) ;
   while (enumerator_3705.hasCurrentObject ()) {
-    GALGAS_string var_elemTypeRepr_3737 = enumerator_3705.current_lElement (HERE).getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 136)).mAttribute_string ;
-    GALGAS_string var_elemNameRepr_3791 = enumerator_3705.current_lElement (HERE).getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 137)).mAttribute_string ;
-    const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, enumerator_3705.current_lElement (HERE).getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 141)).mAttribute_string.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+    GALGAS_string var_elemTypeRepr_3737 = enumerator_3705.current_lElement (HERE).getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 136)).mProperty_string ;
+    GALGAS_string var_elemNameRepr_3791 = enumerator_3705.current_lElement (HERE).getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 137)).mProperty_string ;
+    const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, enumerator_3705.current_lElement (HERE).getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 141)).mProperty_string.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
     if (kBoolTrue == test_1) {
       TC_Array <C_FixItDescription> fixItArray2 ;
       inCompiler->emitSemanticWarning (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 142)), GALGAS_string ("Missing element's type : ").add_operation (var_elemNameRepr_3791, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 142)), fixItArray2  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 142)) ;
@@ -5899,9 +5899,9 @@ static void extensionMethod_arxmlMetaClass_display (const cPtr_arxmlMetaClass * 
     GALGAS_arxmlMetaClass var_elemKey_4198 ;
     inArgument_classMap.method_searchKey (enumerator_3705.current_lElement (HERE).getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 146)), var_elemKey_4198, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 146)) ;
     var_svgString_2953.plusAssign_operation(GALGAS_string ("  @").add_operation (var_elemTypeRepr_3737, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 168)), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 168)) ;
-    GALGAS_bool test_3 = GALGAS_bool (kIsNotEqual, enumerator_3705.current_lElement (HERE).getter_minOccurs (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 172)).mAttribute_string.objectCompare (enumerator_3705.current_lElement (HERE).getter_maxOccurs (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 172)).mAttribute_string)) ;
+    GALGAS_bool test_3 = GALGAS_bool (kIsNotEqual, enumerator_3705.current_lElement (HERE).getter_minOccurs (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 172)).mProperty_string.objectCompare (enumerator_3705.current_lElement (HERE).getter_maxOccurs (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 172)).mProperty_string)) ;
     if (kBoolTrue != test_3.boolEnum ()) {
-      test_3 = GALGAS_bool (kIsNotEqual, enumerator_3705.current_lElement (HERE).getter_minOccurs (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 173)).mAttribute_string.objectCompare (GALGAS_string ("1"))) ;
+      test_3 = GALGAS_bool (kIsNotEqual, enumerator_3705.current_lElement (HERE).getter_minOccurs (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 173)).mProperty_string.objectCompare (GALGAS_string ("1"))) ;
     }
     const enumGalgasBool test_4 = test_3.boolEnum () ;
     if (kBoolTrue == test_4) {
@@ -5910,19 +5910,19 @@ static void extensionMethod_arxmlMetaClass_display (const cPtr_arxmlMetaClass * 
     var_svgString_2953.plusAssign_operation(GALGAS_string (" elem").add_operation (var_elemNameRepr_3791, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 179)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 179)), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 179)) ;
     enumerator_3705.gotoNextObject () ;
   }
-  cEnumerator_arxmlMetaAttributeList enumerator_5338 (object->mAttribute_lAttributeLegacy, kEnumeration_up) ;
+  cEnumerator_arxmlMetaAttributeList enumerator_5338 (object->mProperty_lAttributeLegacy, kENUMERATION_UP) ;
   while (enumerator_5338.hasCurrentObject ()) {
-    GALGAS_string var_attrTypeRepr_5370 = enumerator_5338.current_lAttribute (HERE).getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 184)).mAttribute_string ;
-    GALGAS_string var_attrNameRepr_5426 = enumerator_5338.current_lAttribute (HERE).getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 185)).mAttribute_string ;
-    const enumGalgasBool test_5 = GALGAS_bool (kIsNotEqual, enumerator_5338.current_lAttribute (HERE).getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 189)).mAttribute_string.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+    GALGAS_string var_attrTypeRepr_5370 = enumerator_5338.current_lAttribute (HERE).getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 184)).mProperty_string ;
+    GALGAS_string var_attrNameRepr_5426 = enumerator_5338.current_lAttribute (HERE).getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 185)).mProperty_string ;
+    const enumGalgasBool test_5 = GALGAS_bool (kIsNotEqual, enumerator_5338.current_lAttribute (HERE).getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 189)).mProperty_string.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
     if (kBoolTrue == test_5) {
     }
     GALGAS_arxmlMetaClass var_attrKey_5802 ;
     inArgument_classMap.method_searchKey (enumerator_5338.current_lAttribute (HERE).getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 193)), var_attrKey_5802, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 193)) ;
     var_svgString_2953.plusAssign_operation(GALGAS_string ("  @").add_operation (var_attrTypeRepr_5370, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 218)).add_operation (GALGAS_string (" "), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 218)).add_operation (var_attrNameRepr_5426, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 218)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 218)), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 218)) ;
-    GALGAS_bool test_6 = GALGAS_bool (kIsEqual, enumerator_5338.current_lAttribute (HERE).getter_use (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 223)).mAttribute_string.objectCompare (GALGAS_string::makeEmptyString ())) ;
+    GALGAS_bool test_6 = GALGAS_bool (kIsEqual, enumerator_5338.current_lAttribute (HERE).getter_use (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 223)).mProperty_string.objectCompare (GALGAS_string::makeEmptyString ())) ;
     if (kBoolTrue != test_6.boolEnum ()) {
-      test_6 = GALGAS_bool (kIsEqual, enumerator_5338.current_lAttribute (HERE).getter_use (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 224)).mAttribute_string.objectCompare (GALGAS_string ("optional"))) ;
+      test_6 = GALGAS_bool (kIsEqual, enumerator_5338.current_lAttribute (HERE).getter_use (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 224)).mProperty_string.objectCompare (GALGAS_string ("optional"))) ;
     }
     const enumGalgasBool test_7 = test_6.boolEnum () ;
     if (kBoolTrue == test_7) {
@@ -6007,11 +6007,11 @@ static void extensionSetter_arxmlMetaClass_addElement (cPtr_arxmlMetaClass * inO
   cPtr_arxmlMetaClass * object = inObject ;
   macroValidSharedObject (object, cPtr_arxmlMetaClass) ;
   GALGAS_bool var_exists_7172 = GALGAS_bool (false) ;
-  cEnumerator_arxmlMetaElementList enumerator_7227 (object->mAttribute_lElement, kEnumeration_up) ;
+  cEnumerator_arxmlMetaElementList enumerator_7227 (object->mProperty_lElement, kENUMERATION_UP) ;
   while (enumerator_7227.hasCurrentObject ()) {
-    GALGAS_bool test_0 = GALGAS_bool (kIsEqual, enumerator_7227.current_lElement (HERE).getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 240)).mAttribute_string.objectCompare (inArgument_mElement.getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 240)).mAttribute_string)) ;
+    GALGAS_bool test_0 = GALGAS_bool (kIsEqual, enumerator_7227.current_lElement (HERE).getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 240)).mProperty_string.objectCompare (inArgument_mElement.getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 240)).mProperty_string)) ;
     if (kBoolTrue == test_0.boolEnum ()) {
-      test_0 = GALGAS_bool (kIsEqual, enumerator_7227.current_lElement (HERE).getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 241)).mAttribute_string.objectCompare (inArgument_mElement.getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 241)).mAttribute_string)) ;
+      test_0 = GALGAS_bool (kIsEqual, enumerator_7227.current_lElement (HERE).getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 241)).mProperty_string.objectCompare (inArgument_mElement.getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 241)).mProperty_string)) ;
     }
     const enumGalgasBool test_1 = test_0.boolEnum () ;
     if (kBoolTrue == test_1) {
@@ -6021,7 +6021,7 @@ static void extensionSetter_arxmlMetaClass_addElement (cPtr_arxmlMetaClass * inO
   }
   const enumGalgasBool test_2 = var_exists_7172.operator_not (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 245)).boolEnum () ;
   if (kBoolTrue == test_2) {
-    object->mAttribute_lElement.addAssign_operation (inArgument_mElement  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 246)) ;
+    object->mProperty_lElement.addAssign_operation (inArgument_mElement  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 246)) ;
   }
 }
 //---------------------------------------------------------------------------------------------------------------------*
@@ -6096,11 +6096,11 @@ static void extensionSetter_arxmlMetaClass_addAttribute (cPtr_arxmlMetaClass * i
   cPtr_arxmlMetaClass * object = inObject ;
   macroValidSharedObject (object, cPtr_arxmlMetaClass) ;
   GALGAS_bool var_exists_7523 = GALGAS_bool (false) ;
-  cEnumerator_arxmlMetaAttributeList enumerator_7584 (object->mAttribute_lAttribute, kEnumeration_up) ;
+  cEnumerator_arxmlMetaAttributeList enumerator_7584 (object->mProperty_lAttribute, kENUMERATION_UP) ;
   while (enumerator_7584.hasCurrentObject ()) {
-    GALGAS_bool test_0 = GALGAS_bool (kIsEqual, enumerator_7584.current_lAttribute (HERE).getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 254)).mAttribute_string.objectCompare (inArgument_mAttribute.getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 254)).mAttribute_string)) ;
+    GALGAS_bool test_0 = GALGAS_bool (kIsEqual, enumerator_7584.current_lAttribute (HERE).getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 254)).mProperty_string.objectCompare (inArgument_mAttribute.getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 254)).mProperty_string)) ;
     if (kBoolTrue == test_0.boolEnum ()) {
-      test_0 = GALGAS_bool (kIsEqual, enumerator_7584.current_lAttribute (HERE).getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 255)).mAttribute_string.objectCompare (inArgument_mAttribute.getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 255)).mAttribute_string)) ;
+      test_0 = GALGAS_bool (kIsEqual, enumerator_7584.current_lAttribute (HERE).getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 255)).mProperty_string.objectCompare (inArgument_mAttribute.getter_type (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 255)).mProperty_string)) ;
     }
     const enumGalgasBool test_1 = test_0.boolEnum () ;
     if (kBoolTrue == test_1) {
@@ -6110,7 +6110,7 @@ static void extensionSetter_arxmlMetaClass_addAttribute (cPtr_arxmlMetaClass * i
   }
   const enumGalgasBool test_2 = var_exists_7523.operator_not (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 259)).boolEnum () ;
   if (kBoolTrue == test_2) {
-    object->mAttribute_lAttribute.addAssign_operation (inArgument_mAttribute  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 260)) ;
+    object->mProperty_lAttribute.addAssign_operation (inArgument_mAttribute  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 260)) ;
   }
 }
 //---------------------------------------------------------------------------------------------------------------------*
@@ -6184,7 +6184,7 @@ static void extensionSetter_arxmlMetaClass_setDescription (cPtr_arxmlMetaClass *
                                                            COMMA_UNUSED_LOCATION_ARGS) {
   cPtr_arxmlMetaClass * object = inObject ;
   macroValidSharedObject (object, cPtr_arxmlMetaClass) ;
-  object->mAttribute_desc = inArgument_iDesc ;
+  object->mProperty_desc = inArgument_iDesc ;
 }
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -6264,11 +6264,11 @@ static GALGAS_bool extensionGetter_arxmlMetaClass_hasElement (const cPtr_arxmlMe
   const cPtr_arxmlMetaClass * object = inObject ;
   macroValidSharedObject (object, cPtr_arxmlMetaClass) ;
   GALGAS_bool var_found_7967 = GALGAS_bool (false) ;
-  cEnumerator_arxmlMetaElementList enumerator_8035 (object->mAttribute_lElementLegacy, kEnumeration_up) ;
+  cEnumerator_arxmlMetaElementList enumerator_8035 (object->mProperty_lElementLegacy, kENUMERATION_UP) ;
   bool bool_0 = var_found_7967.operator_not (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 275)).isValidAndTrue () ;
   if (enumerator_8035.hasCurrentObject () && bool_0) {
     while (enumerator_8035.hasCurrentObject () && bool_0) {
-      const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, inArgument_eleName.objectCompare (enumerator_8035.current_lElement (HERE).getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 276)).mAttribute_string)).boolEnum () ;
+      const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, inArgument_eleName.objectCompare (enumerator_8035.current_lElement (HERE).getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 276)).mProperty_string)).boolEnum () ;
       if (kBoolTrue == test_1) {
         var_found_7967 = GALGAS_bool (true) ;
       }
@@ -6362,11 +6362,11 @@ static GALGAS_bool extensionGetter_arxmlMetaClass_hasAttribute (const cPtr_arxml
   const cPtr_arxmlMetaClass * object = inObject ;
   macroValidSharedObject (object, cPtr_arxmlMetaClass) ;
   GALGAS_bool var_found_8251 = GALGAS_bool (false) ;
-  cEnumerator_arxmlMetaAttributeList enumerator_8325 (object->mAttribute_lAttributeLegacy, kEnumeration_up) ;
+  cEnumerator_arxmlMetaAttributeList enumerator_8325 (object->mProperty_lAttributeLegacy, kENUMERATION_UP) ;
   bool bool_0 = var_found_8251.operator_not (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 290)).isValidAndTrue () ;
   if (enumerator_8325.hasCurrentObject () && bool_0) {
     while (enumerator_8325.hasCurrentObject () && bool_0) {
-      const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, inArgument_attrName.objectCompare (enumerator_8325.current_lAttribute (HERE).getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 291)).mAttribute_string)).boolEnum () ;
+      const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, inArgument_attrName.objectCompare (enumerator_8325.current_lAttribute (HERE).getter_name (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 291)).mProperty_string)).boolEnum () ;
       if (kBoolTrue == test_1) {
         var_found_8251 = GALGAS_bool (true) ;
       }
@@ -6409,19 +6409,19 @@ typeComparisonResult cPtr_arxmlMetaElement::dynamicObjectCompare (const acPtr_cl
   const cPtr_arxmlMetaElement * p = (const cPtr_arxmlMetaElement *) inOperandPtr ;
   macroValidSharedObject (p, cPtr_arxmlMetaElement) ;
   if (kOperandEqual == result) {
-    result = mAttribute_name.objectCompare (p->mAttribute_name) ;
+    result = mProperty_name.objectCompare (p->mProperty_name) ;
   }
   if (kOperandEqual == result) {
-    result = mAttribute_type.objectCompare (p->mAttribute_type) ;
+    result = mProperty_type.objectCompare (p->mProperty_type) ;
   }
   if (kOperandEqual == result) {
-    result = mAttribute_minOccurs.objectCompare (p->mAttribute_minOccurs) ;
+    result = mProperty_minOccurs.objectCompare (p->mProperty_minOccurs) ;
   }
   if (kOperandEqual == result) {
-    result = mAttribute_maxOccurs.objectCompare (p->mAttribute_maxOccurs) ;
+    result = mProperty_maxOccurs.objectCompare (p->mProperty_maxOccurs) ;
   }
   if (kOperandEqual == result) {
-    result = mAttribute_prefix.objectCompare (p->mAttribute_prefix) ;
+    result = mProperty_prefix.objectCompare (p->mProperty_prefix) ;
   }
   return result ;
 }
@@ -6491,7 +6491,7 @@ GALGAS_lstring GALGAS_arxmlMetaElement::getter_name (UNUSED_LOCATION_ARGS) const
   if (NULL != mObjectPtr) {
     const cPtr_arxmlMetaElement * p = (const cPtr_arxmlMetaElement *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_arxmlMetaElement) ;
-    result = p->mAttribute_name ;
+    result = p->mProperty_name ;
   }
   return result ;
 }
@@ -6499,7 +6499,7 @@ GALGAS_lstring GALGAS_arxmlMetaElement::getter_name (UNUSED_LOCATION_ARGS) const
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstring cPtr_arxmlMetaElement::getter_name (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_name ;
+  return mProperty_name ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -6509,7 +6509,7 @@ GALGAS_lstring GALGAS_arxmlMetaElement::getter_type (UNUSED_LOCATION_ARGS) const
   if (NULL != mObjectPtr) {
     const cPtr_arxmlMetaElement * p = (const cPtr_arxmlMetaElement *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_arxmlMetaElement) ;
-    result = p->mAttribute_type ;
+    result = p->mProperty_type ;
   }
   return result ;
 }
@@ -6517,7 +6517,7 @@ GALGAS_lstring GALGAS_arxmlMetaElement::getter_type (UNUSED_LOCATION_ARGS) const
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstring cPtr_arxmlMetaElement::getter_type (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_type ;
+  return mProperty_type ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -6527,7 +6527,7 @@ GALGAS_lstring GALGAS_arxmlMetaElement::getter_minOccurs (UNUSED_LOCATION_ARGS) 
   if (NULL != mObjectPtr) {
     const cPtr_arxmlMetaElement * p = (const cPtr_arxmlMetaElement *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_arxmlMetaElement) ;
-    result = p->mAttribute_minOccurs ;
+    result = p->mProperty_minOccurs ;
   }
   return result ;
 }
@@ -6535,7 +6535,7 @@ GALGAS_lstring GALGAS_arxmlMetaElement::getter_minOccurs (UNUSED_LOCATION_ARGS) 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstring cPtr_arxmlMetaElement::getter_minOccurs (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_minOccurs ;
+  return mProperty_minOccurs ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -6545,7 +6545,7 @@ GALGAS_lstring GALGAS_arxmlMetaElement::getter_maxOccurs (UNUSED_LOCATION_ARGS) 
   if (NULL != mObjectPtr) {
     const cPtr_arxmlMetaElement * p = (const cPtr_arxmlMetaElement *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_arxmlMetaElement) ;
-    result = p->mAttribute_maxOccurs ;
+    result = p->mProperty_maxOccurs ;
   }
   return result ;
 }
@@ -6553,7 +6553,7 @@ GALGAS_lstring GALGAS_arxmlMetaElement::getter_maxOccurs (UNUSED_LOCATION_ARGS) 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstring cPtr_arxmlMetaElement::getter_maxOccurs (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_maxOccurs ;
+  return mProperty_maxOccurs ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -6563,7 +6563,7 @@ GALGAS_lstring GALGAS_arxmlMetaElement::getter_prefix (UNUSED_LOCATION_ARGS) con
   if (NULL != mObjectPtr) {
     const cPtr_arxmlMetaElement * p = (const cPtr_arxmlMetaElement *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_arxmlMetaElement) ;
-    result = p->mAttribute_prefix ;
+    result = p->mProperty_prefix ;
   }
   return result ;
 }
@@ -6571,7 +6571,7 @@ GALGAS_lstring GALGAS_arxmlMetaElement::getter_prefix (UNUSED_LOCATION_ARGS) con
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstring cPtr_arxmlMetaElement::getter_prefix (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_prefix ;
+  return mProperty_prefix ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -6585,11 +6585,11 @@ cPtr_arxmlMetaElement::cPtr_arxmlMetaElement (const GALGAS_lstring & in_name,
                                               const GALGAS_lstring & in_prefix
                                               COMMA_LOCATION_ARGS) :
 acPtr_class (THERE),
-mAttribute_name (in_name),
-mAttribute_type (in_type),
-mAttribute_minOccurs (in_minOccurs),
-mAttribute_maxOccurs (in_maxOccurs),
-mAttribute_prefix (in_prefix) {
+mProperty_name (in_name),
+mProperty_type (in_type),
+mProperty_minOccurs (in_minOccurs),
+mProperty_maxOccurs (in_maxOccurs),
+mProperty_prefix (in_prefix) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -6601,15 +6601,15 @@ const C_galgas_type_descriptor * cPtr_arxmlMetaElement::classDescriptor (void) c
 void cPtr_arxmlMetaElement::description (C_String & ioString,
                                          const int32_t inIndentation) const {
   ioString << "[@arxmlMetaElement:" ;
-  mAttribute_name.description (ioString, inIndentation+1) ;
+  mProperty_name.description (ioString, inIndentation+1) ;
   ioString << ", " ;
-  mAttribute_type.description (ioString, inIndentation+1) ;
+  mProperty_type.description (ioString, inIndentation+1) ;
   ioString << ", " ;
-  mAttribute_minOccurs.description (ioString, inIndentation+1) ;
+  mProperty_minOccurs.description (ioString, inIndentation+1) ;
   ioString << ", " ;
-  mAttribute_maxOccurs.description (ioString, inIndentation+1) ;
+  mProperty_maxOccurs.description (ioString, inIndentation+1) ;
   ioString << ", " ;
-  mAttribute_prefix.description (ioString, inIndentation+1) ;
+  mProperty_prefix.description (ioString, inIndentation+1) ;
   ioString << "]" ;
 }
 
@@ -6617,7 +6617,7 @@ void cPtr_arxmlMetaElement::description (C_String & ioString,
 
 acPtr_class * cPtr_arxmlMetaElement::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
-  macroMyNew (ptr, cPtr_arxmlMetaElement (mAttribute_name, mAttribute_type, mAttribute_minOccurs, mAttribute_maxOccurs, mAttribute_prefix COMMA_THERE)) ;
+  macroMyNew (ptr, cPtr_arxmlMetaElement (mProperty_name, mProperty_type, mProperty_minOccurs, mProperty_maxOccurs, mProperty_prefix COMMA_THERE)) ;
   return ptr ;
 }
 
@@ -6674,16 +6674,16 @@ typeComparisonResult cPtr_arxmlMetaAttribute::dynamicObjectCompare (const acPtr_
   const cPtr_arxmlMetaAttribute * p = (const cPtr_arxmlMetaAttribute *) inOperandPtr ;
   macroValidSharedObject (p, cPtr_arxmlMetaAttribute) ;
   if (kOperandEqual == result) {
-    result = mAttribute_name.objectCompare (p->mAttribute_name) ;
+    result = mProperty_name.objectCompare (p->mProperty_name) ;
   }
   if (kOperandEqual == result) {
-    result = mAttribute_type.objectCompare (p->mAttribute_type) ;
+    result = mProperty_type.objectCompare (p->mProperty_type) ;
   }
   if (kOperandEqual == result) {
-    result = mAttribute_prefix.objectCompare (p->mAttribute_prefix) ;
+    result = mProperty_prefix.objectCompare (p->mProperty_prefix) ;
   }
   if (kOperandEqual == result) {
-    result = mAttribute_use.objectCompare (p->mAttribute_use) ;
+    result = mProperty_use.objectCompare (p->mProperty_use) ;
   }
   return result ;
 }
@@ -6751,7 +6751,7 @@ GALGAS_lstring GALGAS_arxmlMetaAttribute::getter_name (UNUSED_LOCATION_ARGS) con
   if (NULL != mObjectPtr) {
     const cPtr_arxmlMetaAttribute * p = (const cPtr_arxmlMetaAttribute *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_arxmlMetaAttribute) ;
-    result = p->mAttribute_name ;
+    result = p->mProperty_name ;
   }
   return result ;
 }
@@ -6759,7 +6759,7 @@ GALGAS_lstring GALGAS_arxmlMetaAttribute::getter_name (UNUSED_LOCATION_ARGS) con
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstring cPtr_arxmlMetaAttribute::getter_name (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_name ;
+  return mProperty_name ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -6769,7 +6769,7 @@ GALGAS_lstring GALGAS_arxmlMetaAttribute::getter_type (UNUSED_LOCATION_ARGS) con
   if (NULL != mObjectPtr) {
     const cPtr_arxmlMetaAttribute * p = (const cPtr_arxmlMetaAttribute *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_arxmlMetaAttribute) ;
-    result = p->mAttribute_type ;
+    result = p->mProperty_type ;
   }
   return result ;
 }
@@ -6777,7 +6777,7 @@ GALGAS_lstring GALGAS_arxmlMetaAttribute::getter_type (UNUSED_LOCATION_ARGS) con
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstring cPtr_arxmlMetaAttribute::getter_type (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_type ;
+  return mProperty_type ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -6787,7 +6787,7 @@ GALGAS_lstring GALGAS_arxmlMetaAttribute::getter_prefix (UNUSED_LOCATION_ARGS) c
   if (NULL != mObjectPtr) {
     const cPtr_arxmlMetaAttribute * p = (const cPtr_arxmlMetaAttribute *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_arxmlMetaAttribute) ;
-    result = p->mAttribute_prefix ;
+    result = p->mProperty_prefix ;
   }
   return result ;
 }
@@ -6795,7 +6795,7 @@ GALGAS_lstring GALGAS_arxmlMetaAttribute::getter_prefix (UNUSED_LOCATION_ARGS) c
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstring cPtr_arxmlMetaAttribute::getter_prefix (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_prefix ;
+  return mProperty_prefix ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -6805,7 +6805,7 @@ GALGAS_lstring GALGAS_arxmlMetaAttribute::getter_use (UNUSED_LOCATION_ARGS) cons
   if (NULL != mObjectPtr) {
     const cPtr_arxmlMetaAttribute * p = (const cPtr_arxmlMetaAttribute *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_arxmlMetaAttribute) ;
-    result = p->mAttribute_use ;
+    result = p->mProperty_use ;
   }
   return result ;
 }
@@ -6813,7 +6813,7 @@ GALGAS_lstring GALGAS_arxmlMetaAttribute::getter_use (UNUSED_LOCATION_ARGS) cons
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstring cPtr_arxmlMetaAttribute::getter_use (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_use ;
+  return mProperty_use ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -6826,10 +6826,10 @@ cPtr_arxmlMetaAttribute::cPtr_arxmlMetaAttribute (const GALGAS_lstring & in_name
                                                   const GALGAS_lstring & in_use
                                                   COMMA_LOCATION_ARGS) :
 acPtr_class (THERE),
-mAttribute_name (in_name),
-mAttribute_type (in_type),
-mAttribute_prefix (in_prefix),
-mAttribute_use (in_use) {
+mProperty_name (in_name),
+mProperty_type (in_type),
+mProperty_prefix (in_prefix),
+mProperty_use (in_use) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -6841,13 +6841,13 @@ const C_galgas_type_descriptor * cPtr_arxmlMetaAttribute::classDescriptor (void)
 void cPtr_arxmlMetaAttribute::description (C_String & ioString,
                                            const int32_t inIndentation) const {
   ioString << "[@arxmlMetaAttribute:" ;
-  mAttribute_name.description (ioString, inIndentation+1) ;
+  mProperty_name.description (ioString, inIndentation+1) ;
   ioString << ", " ;
-  mAttribute_type.description (ioString, inIndentation+1) ;
+  mProperty_type.description (ioString, inIndentation+1) ;
   ioString << ", " ;
-  mAttribute_prefix.description (ioString, inIndentation+1) ;
+  mProperty_prefix.description (ioString, inIndentation+1) ;
   ioString << ", " ;
-  mAttribute_use.description (ioString, inIndentation+1) ;
+  mProperty_use.description (ioString, inIndentation+1) ;
   ioString << "]" ;
 }
 
@@ -6855,7 +6855,7 @@ void cPtr_arxmlMetaAttribute::description (C_String & ioString,
 
 acPtr_class * cPtr_arxmlMetaAttribute::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
-  macroMyNew (ptr, cPtr_arxmlMetaAttribute (mAttribute_name, mAttribute_type, mAttribute_prefix, mAttribute_use COMMA_THERE)) ;
+  macroMyNew (ptr, cPtr_arxmlMetaAttribute (mProperty_name, mProperty_type, mProperty_prefix, mProperty_use COMMA_THERE)) ;
   return ptr ;
 }
 
@@ -6912,16 +6912,16 @@ typeComparisonResult cPtr_arxmlMetaSimpletype::dynamicObjectCompare (const acPtr
   const cPtr_arxmlMetaSimpletype * p = (const cPtr_arxmlMetaSimpletype *) inOperandPtr ;
   macroValidSharedObject (p, cPtr_arxmlMetaSimpletype) ;
   if (kOperandEqual == result) {
-    result = mAttribute_name.objectCompare (p->mAttribute_name) ;
+    result = mProperty_name.objectCompare (p->mProperty_name) ;
   }
   if (kOperandEqual == result) {
-    result = mAttribute_type.objectCompare (p->mAttribute_type) ;
+    result = mProperty_type.objectCompare (p->mProperty_type) ;
   }
   if (kOperandEqual == result) {
-    result = mAttribute_base.objectCompare (p->mAttribute_base) ;
+    result = mProperty_base.objectCompare (p->mProperty_base) ;
   }
   if (kOperandEqual == result) {
-    result = mAttribute_values.objectCompare (p->mAttribute_values) ;
+    result = mProperty_values.objectCompare (p->mProperty_values) ;
   }
   return result ;
 }
@@ -6979,7 +6979,7 @@ GALGAS_lstring GALGAS_arxmlMetaSimpletype::getter_name (UNUSED_LOCATION_ARGS) co
   if (NULL != mObjectPtr) {
     const cPtr_arxmlMetaSimpletype * p = (const cPtr_arxmlMetaSimpletype *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_arxmlMetaSimpletype) ;
-    result = p->mAttribute_name ;
+    result = p->mProperty_name ;
   }
   return result ;
 }
@@ -6987,7 +6987,7 @@ GALGAS_lstring GALGAS_arxmlMetaSimpletype::getter_name (UNUSED_LOCATION_ARGS) co
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstring cPtr_arxmlMetaSimpletype::getter_name (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_name ;
+  return mProperty_name ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -6997,7 +6997,7 @@ GALGAS_restrictionType GALGAS_arxmlMetaSimpletype::getter_type (UNUSED_LOCATION_
   if (NULL != mObjectPtr) {
     const cPtr_arxmlMetaSimpletype * p = (const cPtr_arxmlMetaSimpletype *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_arxmlMetaSimpletype) ;
-    result = p->mAttribute_type ;
+    result = p->mProperty_type ;
   }
   return result ;
 }
@@ -7005,7 +7005,7 @@ GALGAS_restrictionType GALGAS_arxmlMetaSimpletype::getter_type (UNUSED_LOCATION_
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_restrictionType cPtr_arxmlMetaSimpletype::getter_type (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_type ;
+  return mProperty_type ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -7015,7 +7015,7 @@ GALGAS_restrictionBaseType GALGAS_arxmlMetaSimpletype::getter_base (UNUSED_LOCAT
   if (NULL != mObjectPtr) {
     const cPtr_arxmlMetaSimpletype * p = (const cPtr_arxmlMetaSimpletype *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_arxmlMetaSimpletype) ;
-    result = p->mAttribute_base ;
+    result = p->mProperty_base ;
   }
   return result ;
 }
@@ -7023,7 +7023,7 @@ GALGAS_restrictionBaseType GALGAS_arxmlMetaSimpletype::getter_base (UNUSED_LOCAT
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_restrictionBaseType cPtr_arxmlMetaSimpletype::getter_base (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_base ;
+  return mProperty_base ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -7033,7 +7033,7 @@ GALGAS_lstringlist GALGAS_arxmlMetaSimpletype::getter_values (UNUSED_LOCATION_AR
   if (NULL != mObjectPtr) {
     const cPtr_arxmlMetaSimpletype * p = (const cPtr_arxmlMetaSimpletype *) mObjectPtr ;
     macroValidSharedObject (p, cPtr_arxmlMetaSimpletype) ;
-    result = p->mAttribute_values ;
+    result = p->mProperty_values ;
   }
   return result ;
 }
@@ -7041,7 +7041,7 @@ GALGAS_lstringlist GALGAS_arxmlMetaSimpletype::getter_values (UNUSED_LOCATION_AR
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstringlist cPtr_arxmlMetaSimpletype::getter_values (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_values ;
+  return mProperty_values ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -7054,10 +7054,10 @@ cPtr_arxmlMetaSimpletype::cPtr_arxmlMetaSimpletype (const GALGAS_lstring & in_na
                                                     const GALGAS_lstringlist & in_values
                                                     COMMA_LOCATION_ARGS) :
 acPtr_class (THERE),
-mAttribute_name (in_name),
-mAttribute_type (in_type),
-mAttribute_base (in_base),
-mAttribute_values (in_values) {
+mProperty_name (in_name),
+mProperty_type (in_type),
+mProperty_base (in_base),
+mProperty_values (in_values) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -7069,13 +7069,13 @@ const C_galgas_type_descriptor * cPtr_arxmlMetaSimpletype::classDescriptor (void
 void cPtr_arxmlMetaSimpletype::description (C_String & ioString,
                                             const int32_t inIndentation) const {
   ioString << "[@arxmlMetaSimpletype:" ;
-  mAttribute_name.description (ioString, inIndentation+1) ;
+  mProperty_name.description (ioString, inIndentation+1) ;
   ioString << ", " ;
-  mAttribute_type.description (ioString, inIndentation+1) ;
+  mProperty_type.description (ioString, inIndentation+1) ;
   ioString << ", " ;
-  mAttribute_base.description (ioString, inIndentation+1) ;
+  mProperty_base.description (ioString, inIndentation+1) ;
   ioString << ", " ;
-  mAttribute_values.description (ioString, inIndentation+1) ;
+  mProperty_values.description (ioString, inIndentation+1) ;
   ioString << "]" ;
 }
 
@@ -7083,7 +7083,7 @@ void cPtr_arxmlMetaSimpletype::description (C_String & ioString,
 
 acPtr_class * cPtr_arxmlMetaSimpletype::duplicate (LOCATION_ARGS) const {
   acPtr_class * ptr = NULL ;
-  macroMyNew (ptr, cPtr_arxmlMetaSimpletype (mAttribute_name, mAttribute_type, mAttribute_base, mAttribute_values COMMA_THERE)) ;
+  macroMyNew (ptr, cPtr_arxmlMetaSimpletype (mProperty_name, mProperty_type, mProperty_base, mProperty_values COMMA_THERE)) ;
   return ptr ;
 }
 
@@ -7189,10 +7189,10 @@ static void extensionMethod_arxmlMetaSimpletype_display (const cPtr_arxmlMetaSim
   const cPtr_arxmlMetaSimpletype * object = inObject ;
   macroValidSharedObject (object, cPtr_arxmlMetaSimpletype) ;
   GALGAS_string var_svgString_9977 = GALGAS_string::makeEmptyString () ;
-  GALGAS_string var_typeNameRepr_10009 = object->mAttribute_name.mAttribute_string ;
+  GALGAS_string var_typeNameRepr_10009 = object->mProperty_name.mProperty_string ;
   var_svgString_9977.plusAssign_operation(GALGAS_string ("############################################################\n"), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 373)) ;
-  var_svgString_9977.plusAssign_operation(GALGAS_string ("# ").add_operation (object->mAttribute_name.getter_string (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 374)), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 374)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 374)), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 374)) ;
-  switch (object->mAttribute_type.enumValue ()) {
+  var_svgString_9977.plusAssign_operation(GALGAS_string ("# ").add_operation (object->mProperty_name.getter_string (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 374)), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 374)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 374)), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 374)) ;
+  switch (object->mProperty_type.enumValue ()) {
   case GALGAS_restrictionType::kNotBuilt:
     break ;
   case GALGAS_restrictionType::kEnum_restrictionSimple:
@@ -7207,9 +7207,9 @@ static void extensionMethod_arxmlMetaSimpletype_display (const cPtr_arxmlMetaSim
       var_svgString_9977.plusAssign_operation(GALGAS_string ("}\n"), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 383)) ;
       var_svgString_9977.plusAssign_operation(GALGAS_string ("enum @").add_operation (var_typeNameRepr_10009, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 385)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 385)), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 385)) ;
       var_svgString_9977.plusAssign_operation(GALGAS_string ("{\n"), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 386)) ;
-      cEnumerator_lstringlist enumerator_10673 (object->mAttribute_values, kEnumeration_up) ;
+      cEnumerator_lstringlist enumerator_10673 (object->mProperty_values, kENUMERATION_UP) ;
       while (enumerator_10673.hasCurrentObject ()) {
-        GALGAS_string var_valueRepr_10706 = enumerator_10673.current_mValue (HERE).mAttribute_string ;
+        GALGAS_string var_valueRepr_10706 = enumerator_10673.current_mValue (HERE).mProperty_string ;
         var_svgString_9977.plusAssign_operation(GALGAS_string ("  case case").add_operation (var_valueRepr_10706, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 390)).add_operation (GALGAS_string ("\n"), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 390)), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 390)) ;
         enumerator_10673.gotoNextObject () ;
       }
@@ -7219,13 +7219,13 @@ static void extensionMethod_arxmlMetaSimpletype_display (const cPtr_arxmlMetaSim
   case GALGAS_restrictionType::kEnum_restrictionOther:
     {
       TC_Array <C_FixItDescription> fixItArray0 ;
-      inCompiler->emitSemanticError (object->mAttribute_name.getter_location (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 394)), GALGAS_string ("TODO : Fall into restrictionOther statement"), fixItArray0  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 394)) ;
+      inCompiler->emitSemanticError (object->mProperty_name.getter_location (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 394)), GALGAS_string ("TODO : Fall into restrictionOther statement"), fixItArray0  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 394)) ;
     }
     break ;
   case GALGAS_restrictionType::kEnum_restrictionUnused:
     {
       TC_Array <C_FixItDescription> fixItArray1 ;
-      inCompiler->emitSemanticError (object->mAttribute_name.getter_location (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 396)), GALGAS_string ("TODO : Fall into restrictionUnused statement."), fixItArray1  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 396)) ;
+      inCompiler->emitSemanticError (object->mProperty_name.getter_location (SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 396)), GALGAS_string ("TODO : Fall into restrictionUnused statement."), fixItArray1  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 396)) ;
     }
     break ;
   }
@@ -7302,7 +7302,7 @@ static void extensionSetter_arxmlMetaSimpletype_setType (cPtr_arxmlMetaSimpletyp
                                                          COMMA_UNUSED_LOCATION_ARGS) {
   cPtr_arxmlMetaSimpletype * object = inObject ;
   macroValidSharedObject (object, cPtr_arxmlMetaSimpletype) ;
-  object->mAttribute_type = inArgument_iType ;
+  object->mProperty_type = inArgument_iType ;
 }
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -7375,7 +7375,7 @@ static void extensionSetter_arxmlMetaSimpletype_setBase (cPtr_arxmlMetaSimpletyp
                                                          COMMA_UNUSED_LOCATION_ARGS) {
   cPtr_arxmlMetaSimpletype * object = inObject ;
   macroValidSharedObject (object, cPtr_arxmlMetaSimpletype) ;
-  object->mAttribute_base = inArgument_iBase ;
+  object->mProperty_base = inArgument_iBase ;
 }
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -7448,7 +7448,7 @@ static void extensionSetter_arxmlMetaSimpletype_addValue (cPtr_arxmlMetaSimplety
                                                           COMMA_UNUSED_LOCATION_ARGS) {
   cPtr_arxmlMetaSimpletype * object = inObject ;
   macroValidSharedObject (object, cPtr_arxmlMetaSimpletype) ;
-  object->mAttribute_values.addAssign_operation (inArgument_value  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 414)) ;
+  object->mProperty_values.addAssign_operation (inArgument_value  COMMA_SOURCE_FILE ("arxmlmetaparser_semantics.galgas", 414)) ;
 }
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -7690,16 +7690,16 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_at
       inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 136)) ;
       var_fullType_3315 = inCompiler->synthetizedAttribute_tokenString () ;
       inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 137)) ;
-      const enumGalgasBool test_1 = var_fullType_3315.mAttribute_string.getter_containsCharacter (GALGAS_char (TO_UNICODE (58)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 139)).boolEnum () ;
+      const enumGalgasBool test_1 = var_fullType_3315.mProperty_string.getter_containsCharacter (GALGAS_char (TO_UNICODE (58)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 139)).boolEnum () ;
       if (kBoolTrue == test_1) {
-        GALGAS_stringlist var_parsed_3478 = var_fullType_3315.mAttribute_string.getter_componentsSeparatedByString (GALGAS_string (":") COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 140)) ;
+        GALGAS_stringlist var_parsed_3478 = var_fullType_3315.mProperty_string.getter_componentsSeparatedByString (GALGAS_string (":") COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 140)) ;
         GALGAS_string var_parsedString_3558 ;
         var_parsed_3478.method_first (var_parsedString_3558, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 142)) ;
-        var_attributePrefix_3100.mAttribute_string = var_parsedString_3558 ;
-        var_attributePrefix_3100.mAttribute_location = var_fullType_3315.mAttribute_location ;
+        var_attributePrefix_3100.mProperty_string = var_parsedString_3558 ;
+        var_attributePrefix_3100.mProperty_location = var_fullType_3315.mProperty_location ;
         var_parsed_3478.method_last (var_parsedString_3558, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 145)) ;
-        var_attributeType_2969.mAttribute_string = var_parsedString_3558 ;
-        var_attributeType_2969.mAttribute_location = var_fullType_3315.mAttribute_location ;
+        var_attributeType_2969.mProperty_string = var_parsedString_3558 ;
+        var_attributeType_2969.mProperty_location = var_fullType_3315.mProperty_location ;
       }else if (kBoolFalse == test_1) {
         var_attributeType_2969 = var_fullType_3315 ;
       }
@@ -7709,8 +7709,8 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_at
       inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 152)) ;
       var_attributeName_3012 = inCompiler->synthetizedAttribute_tokenString () ;
       inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 153)) ;
-      var_attributeName_3012.mAttribute_string = var_attributeName_3012.mAttribute_string.getter_stringByReplacingStringByString (GALGAS_string ("<"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 154)) ;
-      var_attributeName_3012.mAttribute_string = var_attributeName_3012.mAttribute_string.getter_stringByReplacingStringByString (GALGAS_string (">"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 155)) ;
+      var_attributeName_3012.mProperty_string = var_attributeName_3012.mProperty_string.getter_stringByReplacingStringByString (GALGAS_string ("<"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 154)) ;
+      var_attributeName_3012.mProperty_string = var_attributeName_3012.mProperty_string.getter_stringByReplacingStringByString (GALGAS_string (">"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 155)) ;
     } break ;
     case 5: {
       inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_use) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 156)) ;
@@ -7723,7 +7723,7 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_at
       break ;
     }
   }
-  const enumGalgasBool test_2 = GALGAS_bool (kIsNotEqual, var_attributeName_3012.mAttribute_string.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+  const enumGalgasBool test_2 = GALGAS_bool (kIsNotEqual, var_attributeName_3012.mProperty_string.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
   if (kBoolTrue == test_2) {
     GALGAS_arxmlMetaAttribute var_newAttribute_4234 = GALGAS_arxmlMetaAttribute::constructor_new (var_attributeName_3012, var_attributeType_2969, var_attributePrefix_3100, var_attributeUse_3143  COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 162)) ;
     {
@@ -7852,8 +7852,8 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_at
     inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 201)) ;
     var_className_5243 = inCompiler->synthetizedAttribute_tokenString () ;
     inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 202)) ;
-    var_className_5243.mAttribute_string = var_className_5243.mAttribute_string.getter_stringByReplacingStringByString (GALGAS_string ("<"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 203)) ;
-    var_className_5243.mAttribute_string = var_className_5243.mAttribute_string.getter_stringByReplacingStringByString (GALGAS_string (">"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 204)) ;
+    var_className_5243.mProperty_string = var_className_5243.mProperty_string.getter_stringByReplacingStringByString (GALGAS_string ("<"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 203)) ;
+    var_className_5243.mProperty_string = var_className_5243.mProperty_string.getter_stringByReplacingStringByString (GALGAS_string (">"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 204)) ;
     GALGAS_lstring var_desc_5610 ;
     {
     routine_lstringhere (var_desc_5610, GALGAS_string::makeEmptyString (), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 205)) ;
@@ -7876,14 +7876,14 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_at
     GALGAS_lstring var_fullClassName_6318 = inCompiler->synthetizedAttribute_tokenString () ;
     inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 222)) ;
     var_className_5243 = var_fullClassName_6318 ;
-    const enumGalgasBool test_1 = var_fullClassName_6318.mAttribute_string.getter_containsCharacter (GALGAS_char (TO_UNICODE (58)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 225)).boolEnum () ;
+    const enumGalgasBool test_1 = var_fullClassName_6318.mProperty_string.getter_containsCharacter (GALGAS_char (TO_UNICODE (58)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 225)).boolEnum () ;
     if (kBoolTrue == test_1) {
-      GALGAS_stringlist var_parsed_6480 = var_fullClassName_6318.mAttribute_string.getter_componentsSeparatedByString (GALGAS_string (":") COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 226)) ;
+      GALGAS_stringlist var_parsed_6480 = var_fullClassName_6318.mProperty_string.getter_componentsSeparatedByString (GALGAS_string (":") COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 226)) ;
       GALGAS_string var_parsedString_6583 ;
       var_parsed_6480.method_last (var_parsedString_6583, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 227)) ;
-      var_className_5243.mAttribute_string = var_parsedString_6583 ;
+      var_className_5243.mProperty_string = var_parsedString_6583 ;
     }
-    const enumGalgasBool test_2 = GALGAS_bool (kIsNotEqual, inArgument_parentClass.mAttribute_string.objectCompare (var_className_5243.mAttribute_string)).boolEnum () ;
+    const enumGalgasBool test_2 = GALGAS_bool (kIsNotEqual, inArgument_parentClass.mProperty_string.objectCompare (var_className_5243.mProperty_string)).boolEnum () ;
     if (kBoolTrue == test_2) {
       {
       ioArgument_classGraph.setter_addEdge (var_className_5243, inArgument_parentClass COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 233)) ;
@@ -8162,15 +8162,15 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_co
       inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 314)) ;
       var_complexName_8487 = inCompiler->synthetizedAttribute_tokenString () ;
       inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 315)) ;
-      var_complexName_8487.mAttribute_string = var_complexName_8487.mAttribute_string.getter_stringByReplacingStringByString (GALGAS_string ("<"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 316)) ;
-      var_complexName_8487.mAttribute_string = var_complexName_8487.mAttribute_string.getter_stringByReplacingStringByString (GALGAS_string (">"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 317)) ;
+      var_complexName_8487.mProperty_string = var_complexName_8487.mProperty_string.getter_stringByReplacingStringByString (GALGAS_string ("<"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 316)) ;
+      var_complexName_8487.mProperty_string = var_complexName_8487.mProperty_string.getter_stringByReplacingStringByString (GALGAS_string (">"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 317)) ;
     } break ;
     default:
       repeatFlag_0 = false ;
       break ;
     }
   }
-  const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, var_complexName_8487.mAttribute_string.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+  const enumGalgasBool test_1 = GALGAS_bool (kIsEqual, var_complexName_8487.mProperty_string.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
   if (kBoolTrue == test_1) {
     var_complexName_8487 = inArgument_parentClass ;
   }
@@ -8421,16 +8421,16 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_el
       inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 409)) ;
       var_fullType_11363 = inCompiler->synthetizedAttribute_tokenString () ;
       inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 410)) ;
-      const enumGalgasBool test_1 = var_fullType_11363.mAttribute_string.getter_containsCharacter (GALGAS_char (TO_UNICODE (58)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 412)).boolEnum () ;
+      const enumGalgasBool test_1 = var_fullType_11363.mProperty_string.getter_containsCharacter (GALGAS_char (TO_UNICODE (58)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 412)).boolEnum () ;
       if (kBoolTrue == test_1) {
-        GALGAS_stringlist var_parsed_11526 = var_fullType_11363.mAttribute_string.getter_componentsSeparatedByString (GALGAS_string (":") COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 413)) ;
+        GALGAS_stringlist var_parsed_11526 = var_fullType_11363.mProperty_string.getter_componentsSeparatedByString (GALGAS_string (":") COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 413)) ;
         GALGAS_string var_parsedString_11606 ;
         var_parsed_11526.method_first (var_parsedString_11606, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 415)) ;
-        var_elementPrefix_11194.mAttribute_string = var_parsedString_11606 ;
-        var_elementPrefix_11194.mAttribute_location = var_fullType_11363.mAttribute_location ;
+        var_elementPrefix_11194.mProperty_string = var_parsedString_11606 ;
+        var_elementPrefix_11194.mProperty_location = var_fullType_11363.mProperty_location ;
         var_parsed_11526.method_last (var_parsedString_11606, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 418)) ;
-        var_elementType_11028.mAttribute_string = var_parsedString_11606 ;
-        var_elementType_11028.mAttribute_location = var_fullType_11363.mAttribute_location ;
+        var_elementType_11028.mProperty_string = var_parsedString_11606 ;
+        var_elementType_11028.mProperty_location = var_fullType_11363.mProperty_location ;
       }else if (kBoolFalse == test_1) {
         var_elementType_11028 = var_fullType_11363 ;
       }
@@ -8440,32 +8440,32 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_el
       inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 425)) ;
       var_elementName_11069 = inCompiler->synthetizedAttribute_tokenString () ;
       inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 426)) ;
-      var_elementName_11069.mAttribute_string = var_elementName_11069.mAttribute_string.getter_stringByReplacingStringByString (GALGAS_string ("<"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 427)) ;
-      var_elementName_11069.mAttribute_string = var_elementName_11069.mAttribute_string.getter_stringByReplacingStringByString (GALGAS_string (">"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 428)) ;
+      var_elementName_11069.mProperty_string = var_elementName_11069.mProperty_string.getter_stringByReplacingStringByString (GALGAS_string ("<"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 427)) ;
+      var_elementName_11069.mProperty_string = var_elementName_11069.mProperty_string.getter_stringByReplacingStringByString (GALGAS_string (">"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 428)) ;
     } break ;
     default:
       repeatFlag_0 = false ;
       break ;
     }
   }
-  const enumGalgasBool test_2 = GALGAS_bool (kIsEqual, var_elementName_11069.mAttribute_string.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+  const enumGalgasBool test_2 = GALGAS_bool (kIsEqual, var_elementName_11069.mProperty_string.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
   if (kBoolTrue == test_2) {
     TC_Array <C_FixItDescription> fixItArray3 ;
     inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 432)), GALGAS_string ("An xsd:element must have a name."), fixItArray3  COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 432)) ;
   }
-  const enumGalgasBool test_4 = GALGAS_bool (kIsEqual, var_elementMax_11150.mAttribute_string.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+  const enumGalgasBool test_4 = GALGAS_bool (kIsEqual, var_elementMax_11150.mProperty_string.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
   if (kBoolTrue == test_4) {
     {
     routine_lstringhere (var_elementMax_11150, GALGAS_string ("unbounded"), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 440)) ;
     }
   }
-  const enumGalgasBool test_5 = GALGAS_bool (kIsEqual, var_elementMin_11109.mAttribute_string.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+  const enumGalgasBool test_5 = GALGAS_bool (kIsEqual, var_elementMin_11109.mProperty_string.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
   if (kBoolTrue == test_5) {
     {
     routine_lstringhere (var_elementMin_11109, GALGAS_string ("0"), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 443)) ;
     }
   }
-  const enumGalgasBool test_6 = GALGAS_bool (kIsEqual, var_elementType_11028.mAttribute_string.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+  const enumGalgasBool test_6 = GALGAS_bool (kIsEqual, var_elementType_11028.mProperty_string.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
   if (kBoolTrue == test_6) {
     var_elementType_11028 = var_elementName_11069 ;
   }else if (kBoolFalse == test_6) {
@@ -8820,8 +8820,8 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_gr
     inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 568)) ;
     var_className_15746 = inCompiler->synthetizedAttribute_tokenString () ;
     inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 569)) ;
-    var_className_15746.mAttribute_string = var_className_15746.mAttribute_string.getter_stringByReplacingStringByString (GALGAS_string ("<"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 570)) ;
-    var_className_15746.mAttribute_string = var_className_15746.mAttribute_string.getter_stringByReplacingStringByString (GALGAS_string (">"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 571)) ;
+    var_className_15746.mProperty_string = var_className_15746.mProperty_string.getter_stringByReplacingStringByString (GALGAS_string ("<"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 570)) ;
+    var_className_15746.mProperty_string = var_className_15746.mProperty_string.getter_stringByReplacingStringByString (GALGAS_string (">"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 571)) ;
     GALGAS_lstring var_desc_16113 ;
     {
     routine_lstringhere (var_desc_16113, GALGAS_string::makeEmptyString (), inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 572)) ;
@@ -8844,14 +8844,14 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_gr
     GALGAS_lstring var_fullClassName_16822 = inCompiler->synthetizedAttribute_tokenString () ;
     inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 589)) ;
     var_className_15746 = var_fullClassName_16822 ;
-    const enumGalgasBool test_1 = var_fullClassName_16822.mAttribute_string.getter_containsCharacter (GALGAS_char (TO_UNICODE (58)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 592)).boolEnum () ;
+    const enumGalgasBool test_1 = var_fullClassName_16822.mProperty_string.getter_containsCharacter (GALGAS_char (TO_UNICODE (58)) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 592)).boolEnum () ;
     if (kBoolTrue == test_1) {
-      GALGAS_stringlist var_parsed_16984 = var_fullClassName_16822.mAttribute_string.getter_componentsSeparatedByString (GALGAS_string (":") COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 593)) ;
+      GALGAS_stringlist var_parsed_16984 = var_fullClassName_16822.mProperty_string.getter_componentsSeparatedByString (GALGAS_string (":") COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 593)) ;
       GALGAS_string var_parsedString_17087 ;
       var_parsed_16984.method_last (var_parsedString_17087, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 594)) ;
-      var_className_15746.mAttribute_string = var_parsedString_17087 ;
+      var_className_15746.mProperty_string = var_parsedString_17087 ;
     }
-    const enumGalgasBool test_2 = GALGAS_bool (kIsNotEqual, inArgument_parentClass.mAttribute_string.objectCompare (var_className_15746.mAttribute_string)).boolEnum () ;
+    const enumGalgasBool test_2 = GALGAS_bool (kIsNotEqual, inArgument_parentClass.mProperty_string.objectCompare (var_className_15746.mProperty_string)).boolEnum () ;
     if (kBoolTrue == test_2) {
       {
       ioArgument_classGraph.setter_addEdge (var_className_15746, inArgument_parentClass COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 600)) ;
@@ -9056,13 +9056,13 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
   inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 663)) ;
   var_baseType_18531 = inCompiler->synthetizedAttribute_tokenString () ;
   inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 664)) ;
-  GALGAS_bool test_0 = GALGAS_bool (kIsEqual, GALGAS_string ("xsd:string").objectCompare (var_baseType_18531.mAttribute_string)) ;
+  GALGAS_bool test_0 = GALGAS_bool (kIsEqual, GALGAS_string ("xsd:string").objectCompare (var_baseType_18531.mProperty_string)) ;
   if (kBoolTrue != test_0.boolEnum ()) {
-    test_0 = GALGAS_bool (kIsEqual, GALGAS_string ("xsd:NMTOKEN").objectCompare (var_baseType_18531.mAttribute_string)) ;
+    test_0 = GALGAS_bool (kIsEqual, GALGAS_string ("xsd:NMTOKEN").objectCompare (var_baseType_18531.mProperty_string)) ;
   }
   GALGAS_bool test_1 = test_0 ;
   if (kBoolTrue != test_1.boolEnum ()) {
-    test_1 = GALGAS_bool (kIsEqual, GALGAS_string ("xsd:NMTOKENS").objectCompare (var_baseType_18531.mAttribute_string)) ;
+    test_1 = GALGAS_bool (kIsEqual, GALGAS_string ("xsd:NMTOKENS").objectCompare (var_baseType_18531.mProperty_string)) ;
   }
   const enumGalgasBool test_2 = test_1.boolEnum () ;
   if (kBoolTrue == test_2) {
@@ -9077,7 +9077,7 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
     callExtensionSetter_setType ((cPtr_arxmlMetaSimpletype *) ptr_18799, GALGAS_restrictionType::constructor_restrictionSimple (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 670)), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 670)) ;
     }
   }else if (kBoolFalse == test_2) {
-    const enumGalgasBool test_3 = GALGAS_bool (kIsEqual, GALGAS_string ("xsd:unsignedInt").objectCompare (var_baseType_18531.mAttribute_string)).boolEnum () ;
+    const enumGalgasBool test_3 = GALGAS_bool (kIsEqual, GALGAS_string ("xsd:unsignedInt").objectCompare (var_baseType_18531.mProperty_string)).boolEnum () ;
     if (kBoolTrue == test_3) {
       {
       ioArgument_restriction.insulate (HERE) ;
@@ -9090,7 +9090,7 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
       callExtensionSetter_setType ((cPtr_arxmlMetaSimpletype *) ptr_18943, GALGAS_restrictionType::constructor_restrictionSimple (SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 673)), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 673)) ;
       }
     }else if (kBoolFalse == test_3) {
-      const enumGalgasBool test_4 = GALGAS_bool (kIsEqual, GALGAS_string ("xsd:double").objectCompare (var_baseType_18531.mAttribute_string)).boolEnum () ;
+      const enumGalgasBool test_4 = GALGAS_bool (kIsEqual, GALGAS_string ("xsd:double").objectCompare (var_baseType_18531.mProperty_string)).boolEnum () ;
       if (kBoolTrue == test_4) {
         {
         ioArgument_restriction.insulate (HERE) ;
@@ -9104,7 +9104,7 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_re
         }
       }else if (kBoolFalse == test_4) {
         TC_Array <C_FixItDescription> fixItArray5 ;
-        inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 678)), GALGAS_string ("Undefined/unimplemented base type ").add_operation (var_baseType_18531.mAttribute_string, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 678)), fixItArray5  COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 678)) ;
+        inCompiler->emitSemanticError (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 678)), GALGAS_string ("Undefined/unimplemented base type ").add_operation (var_baseType_18531.mProperty_string, inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 678)), fixItArray5  COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 678)) ;
       }
     }
   }
@@ -9699,17 +9699,17 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_si
       inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken__3D_) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 887)) ;
       var_typeName_25954 = inCompiler->synthetizedAttribute_tokenString () ;
       inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_arxmlmetaparser_5F_scanner::kToken_xmlTagValue) COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 888)) ;
-      var_typeName_25954.mAttribute_string = var_typeName_25954.mAttribute_string.getter_stringByReplacingStringByString (GALGAS_string ("<"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 889)) ;
-      var_typeName_25954.mAttribute_string = var_typeName_25954.mAttribute_string.getter_stringByReplacingStringByString (GALGAS_string (">"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 890)) ;
+      var_typeName_25954.mProperty_string = var_typeName_25954.mProperty_string.getter_stringByReplacingStringByString (GALGAS_string ("<"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 889)) ;
+      var_typeName_25954.mProperty_string = var_typeName_25954.mProperty_string.getter_stringByReplacingStringByString (GALGAS_string (">"), GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("arxmlmetaparser_syntax.galgas", 890)) ;
     } break ;
     default:
       repeatFlag_0 = false ;
       break ;
     }
   }
-  GALGAS_bool test_1 = GALGAS_bool (kIsEqual, inArgument_parentClass.mAttribute_string.objectCompare (GALGAS_string ("root"))) ;
+  GALGAS_bool test_1 = GALGAS_bool (kIsEqual, inArgument_parentClass.mProperty_string.objectCompare (GALGAS_string ("root"))) ;
   if (kBoolTrue == test_1.boolEnum ()) {
-    test_1 = GALGAS_bool (kIsEqual, var_typeName_25954.mAttribute_string.objectCompare (GALGAS_string::makeEmptyString ())) ;
+    test_1 = GALGAS_bool (kIsEqual, var_typeName_25954.mProperty_string.objectCompare (GALGAS_string::makeEmptyString ())) ;
   }
   const enumGalgasBool test_2 = test_1.boolEnum () ;
   if (kBoolTrue == test_2) {
@@ -10562,7 +10562,7 @@ void cParser_arxmlmetaparser_5F_syntax::rule_arxmlmetaparser_5F_syntax_xsd_5F_ig
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlDataList_2D_element::GALGAS_gtlDataList_2D_element (void) :
-mAttribute_data () {
+mProperty_data () {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -10573,7 +10573,7 @@ GALGAS_gtlDataList_2D_element::~ GALGAS_gtlDataList_2D_element (void) {
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlDataList_2D_element::GALGAS_gtlDataList_2D_element (const GALGAS_gtlData & inOperand0) :
-mAttribute_data (inOperand0) {
+mProperty_data (inOperand0) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -10592,7 +10592,7 @@ GALGAS_gtlDataList_2D_element GALGAS_gtlDataList_2D_element::constructor_new (co
 typeComparisonResult GALGAS_gtlDataList_2D_element::objectCompare (const GALGAS_gtlDataList_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
   if (result == kOperandEqual) {
-    result = mAttribute_data.objectCompare (inOperand.mAttribute_data) ;
+    result = mProperty_data.objectCompare (inOperand.mProperty_data) ;
   }
   return result ;
 }
@@ -10600,13 +10600,13 @@ typeComparisonResult GALGAS_gtlDataList_2D_element::objectCompare (const GALGAS_
 //---------------------------------------------------------------------------------------------------------------------*
 
 bool GALGAS_gtlDataList_2D_element::isValid (void) const {
-  return mAttribute_data.isValid () ;
+  return mProperty_data.isValid () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_gtlDataList_2D_element::drop (void) {
-  mAttribute_data.drop () ;
+  mProperty_data.drop () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -10617,7 +10617,7 @@ void GALGAS_gtlDataList_2D_element::description (C_String & ioString,
   if (! isValid ()) {
     ioString << " not built" ;
   }else{
-    mAttribute_data.description (ioString, inIndentation+1) ;
+    mProperty_data.description (ioString, inIndentation+1) ;
   }
   ioString << ">" ;
 }
@@ -10625,7 +10625,7 @@ void GALGAS_gtlDataList_2D_element::description (C_String & ioString,
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlData GALGAS_gtlDataList_2D_element::getter_data (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_data ;
+  return mProperty_data ;
 }
 
 
@@ -10676,8 +10676,8 @@ GALGAS_gtlDataList_2D_element GALGAS_gtlDataList_2D_element::extractObject (cons
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlVarMap_2D_element::GALGAS_gtlVarMap_2D_element (void) :
-mAttribute_lkey (),
-mAttribute_value () {
+mProperty_lkey (),
+mProperty_value () {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -10689,8 +10689,8 @@ GALGAS_gtlVarMap_2D_element::~ GALGAS_gtlVarMap_2D_element (void) {
 
 GALGAS_gtlVarMap_2D_element::GALGAS_gtlVarMap_2D_element (const GALGAS_lstring & inOperand0,
                                                           const GALGAS_gtlData & inOperand1) :
-mAttribute_lkey (inOperand0),
-mAttribute_value (inOperand1) {
+mProperty_lkey (inOperand0),
+mProperty_value (inOperand1) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -10710,10 +10710,10 @@ GALGAS_gtlVarMap_2D_element GALGAS_gtlVarMap_2D_element::constructor_new (const 
 typeComparisonResult GALGAS_gtlVarMap_2D_element::objectCompare (const GALGAS_gtlVarMap_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
   if (result == kOperandEqual) {
-    result = mAttribute_lkey.objectCompare (inOperand.mAttribute_lkey) ;
+    result = mProperty_lkey.objectCompare (inOperand.mProperty_lkey) ;
   }
   if (result == kOperandEqual) {
-    result = mAttribute_value.objectCompare (inOperand.mAttribute_value) ;
+    result = mProperty_value.objectCompare (inOperand.mProperty_value) ;
   }
   return result ;
 }
@@ -10721,14 +10721,14 @@ typeComparisonResult GALGAS_gtlVarMap_2D_element::objectCompare (const GALGAS_gt
 //---------------------------------------------------------------------------------------------------------------------*
 
 bool GALGAS_gtlVarMap_2D_element::isValid (void) const {
-  return mAttribute_lkey.isValid () && mAttribute_value.isValid () ;
+  return mProperty_lkey.isValid () && mProperty_value.isValid () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_gtlVarMap_2D_element::drop (void) {
-  mAttribute_lkey.drop () ;
-  mAttribute_value.drop () ;
+  mProperty_lkey.drop () ;
+  mProperty_value.drop () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -10739,9 +10739,9 @@ void GALGAS_gtlVarMap_2D_element::description (C_String & ioString,
   if (! isValid ()) {
     ioString << " not built" ;
   }else{
-    mAttribute_lkey.description (ioString, inIndentation+1) ;
+    mProperty_lkey.description (ioString, inIndentation+1) ;
     ioString << ", " ;
-    mAttribute_value.description (ioString, inIndentation+1) ;
+    mProperty_value.description (ioString, inIndentation+1) ;
   }
   ioString << ">" ;
 }
@@ -10749,13 +10749,13 @@ void GALGAS_gtlVarMap_2D_element::description (C_String & ioString,
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstring GALGAS_gtlVarMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_lkey ;
+  return mProperty_lkey ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlData GALGAS_gtlVarMap_2D_element::getter_value (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_value ;
+  return mProperty_value ;
 }
 
 
@@ -10806,8 +10806,8 @@ GALGAS_gtlVarMap_2D_element GALGAS_gtlVarMap_2D_element::extractObject (const GA
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlExpressionMap_2D_element::GALGAS_gtlExpressionMap_2D_element (void) :
-mAttribute_lkey (),
-mAttribute_expression () {
+mProperty_lkey (),
+mProperty_expression () {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -10819,8 +10819,8 @@ GALGAS_gtlExpressionMap_2D_element::~ GALGAS_gtlExpressionMap_2D_element (void) 
 
 GALGAS_gtlExpressionMap_2D_element::GALGAS_gtlExpressionMap_2D_element (const GALGAS_lstring & inOperand0,
                                                                         const GALGAS_gtlExpression & inOperand1) :
-mAttribute_lkey (inOperand0),
-mAttribute_expression (inOperand1) {
+mProperty_lkey (inOperand0),
+mProperty_expression (inOperand1) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -10840,10 +10840,10 @@ GALGAS_gtlExpressionMap_2D_element GALGAS_gtlExpressionMap_2D_element::construct
 typeComparisonResult GALGAS_gtlExpressionMap_2D_element::objectCompare (const GALGAS_gtlExpressionMap_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
   if (result == kOperandEqual) {
-    result = mAttribute_lkey.objectCompare (inOperand.mAttribute_lkey) ;
+    result = mProperty_lkey.objectCompare (inOperand.mProperty_lkey) ;
   }
   if (result == kOperandEqual) {
-    result = mAttribute_expression.objectCompare (inOperand.mAttribute_expression) ;
+    result = mProperty_expression.objectCompare (inOperand.mProperty_expression) ;
   }
   return result ;
 }
@@ -10851,14 +10851,14 @@ typeComparisonResult GALGAS_gtlExpressionMap_2D_element::objectCompare (const GA
 //---------------------------------------------------------------------------------------------------------------------*
 
 bool GALGAS_gtlExpressionMap_2D_element::isValid (void) const {
-  return mAttribute_lkey.isValid () && mAttribute_expression.isValid () ;
+  return mProperty_lkey.isValid () && mProperty_expression.isValid () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_gtlExpressionMap_2D_element::drop (void) {
-  mAttribute_lkey.drop () ;
-  mAttribute_expression.drop () ;
+  mProperty_lkey.drop () ;
+  mProperty_expression.drop () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -10869,9 +10869,9 @@ void GALGAS_gtlExpressionMap_2D_element::description (C_String & ioString,
   if (! isValid ()) {
     ioString << " not built" ;
   }else{
-    mAttribute_lkey.description (ioString, inIndentation+1) ;
+    mProperty_lkey.description (ioString, inIndentation+1) ;
     ioString << ", " ;
-    mAttribute_expression.description (ioString, inIndentation+1) ;
+    mProperty_expression.description (ioString, inIndentation+1) ;
   }
   ioString << ">" ;
 }
@@ -10879,13 +10879,13 @@ void GALGAS_gtlExpressionMap_2D_element::description (C_String & ioString,
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstring GALGAS_gtlExpressionMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_lkey ;
+  return mProperty_lkey ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlExpression GALGAS_gtlExpressionMap_2D_element::getter_expression (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_expression ;
+  return mProperty_expression ;
 }
 
 
@@ -10936,8 +10936,8 @@ GALGAS_gtlExpressionMap_2D_element GALGAS_gtlExpressionMap_2D_element::extractOb
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlTemplateMap_2D_element::GALGAS_gtlTemplateMap_2D_element (void) :
-mAttribute_lkey (),
-mAttribute_aTemplate () {
+mProperty_lkey (),
+mProperty_aTemplate () {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -10949,8 +10949,8 @@ GALGAS_gtlTemplateMap_2D_element::~ GALGAS_gtlTemplateMap_2D_element (void) {
 
 GALGAS_gtlTemplateMap_2D_element::GALGAS_gtlTemplateMap_2D_element (const GALGAS_lstring & inOperand0,
                                                                     const GALGAS_gtlTemplate & inOperand1) :
-mAttribute_lkey (inOperand0),
-mAttribute_aTemplate (inOperand1) {
+mProperty_lkey (inOperand0),
+mProperty_aTemplate (inOperand1) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -10977,10 +10977,10 @@ GALGAS_gtlTemplateMap_2D_element GALGAS_gtlTemplateMap_2D_element::constructor_n
 typeComparisonResult GALGAS_gtlTemplateMap_2D_element::objectCompare (const GALGAS_gtlTemplateMap_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
   if (result == kOperandEqual) {
-    result = mAttribute_lkey.objectCompare (inOperand.mAttribute_lkey) ;
+    result = mProperty_lkey.objectCompare (inOperand.mProperty_lkey) ;
   }
   if (result == kOperandEqual) {
-    result = mAttribute_aTemplate.objectCompare (inOperand.mAttribute_aTemplate) ;
+    result = mProperty_aTemplate.objectCompare (inOperand.mProperty_aTemplate) ;
   }
   return result ;
 }
@@ -10988,14 +10988,14 @@ typeComparisonResult GALGAS_gtlTemplateMap_2D_element::objectCompare (const GALG
 //---------------------------------------------------------------------------------------------------------------------*
 
 bool GALGAS_gtlTemplateMap_2D_element::isValid (void) const {
-  return mAttribute_lkey.isValid () && mAttribute_aTemplate.isValid () ;
+  return mProperty_lkey.isValid () && mProperty_aTemplate.isValid () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_gtlTemplateMap_2D_element::drop (void) {
-  mAttribute_lkey.drop () ;
-  mAttribute_aTemplate.drop () ;
+  mProperty_lkey.drop () ;
+  mProperty_aTemplate.drop () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -11006,9 +11006,9 @@ void GALGAS_gtlTemplateMap_2D_element::description (C_String & ioString,
   if (! isValid ()) {
     ioString << " not built" ;
   }else{
-    mAttribute_lkey.description (ioString, inIndentation+1) ;
+    mProperty_lkey.description (ioString, inIndentation+1) ;
     ioString << ", " ;
-    mAttribute_aTemplate.description (ioString, inIndentation+1) ;
+    mProperty_aTemplate.description (ioString, inIndentation+1) ;
   }
   ioString << ">" ;
 }
@@ -11016,13 +11016,13 @@ void GALGAS_gtlTemplateMap_2D_element::description (C_String & ioString,
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstring GALGAS_gtlTemplateMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_lkey ;
+  return mProperty_lkey ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlTemplate GALGAS_gtlTemplateMap_2D_element::getter_aTemplate (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_aTemplate ;
+  return mProperty_aTemplate ;
 }
 
 
@@ -11073,7 +11073,7 @@ GALGAS_gtlTemplateMap_2D_element GALGAS_gtlTemplateMap_2D_element::extractObject
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlExpressionList_2D_element::GALGAS_gtlExpressionList_2D_element (void) :
-mAttribute_expression () {
+mProperty_expression () {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -11084,7 +11084,7 @@ GALGAS_gtlExpressionList_2D_element::~ GALGAS_gtlExpressionList_2D_element (void
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlExpressionList_2D_element::GALGAS_gtlExpressionList_2D_element (const GALGAS_gtlExpression & inOperand0) :
-mAttribute_expression (inOperand0) {
+mProperty_expression (inOperand0) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -11103,7 +11103,7 @@ GALGAS_gtlExpressionList_2D_element GALGAS_gtlExpressionList_2D_element::constru
 typeComparisonResult GALGAS_gtlExpressionList_2D_element::objectCompare (const GALGAS_gtlExpressionList_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
   if (result == kOperandEqual) {
-    result = mAttribute_expression.objectCompare (inOperand.mAttribute_expression) ;
+    result = mProperty_expression.objectCompare (inOperand.mProperty_expression) ;
   }
   return result ;
 }
@@ -11111,13 +11111,13 @@ typeComparisonResult GALGAS_gtlExpressionList_2D_element::objectCompare (const G
 //---------------------------------------------------------------------------------------------------------------------*
 
 bool GALGAS_gtlExpressionList_2D_element::isValid (void) const {
-  return mAttribute_expression.isValid () ;
+  return mProperty_expression.isValid () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_gtlExpressionList_2D_element::drop (void) {
-  mAttribute_expression.drop () ;
+  mProperty_expression.drop () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -11128,7 +11128,7 @@ void GALGAS_gtlExpressionList_2D_element::description (C_String & ioString,
   if (! isValid ()) {
     ioString << " not built" ;
   }else{
-    mAttribute_expression.description (ioString, inIndentation+1) ;
+    mProperty_expression.description (ioString, inIndentation+1) ;
   }
   ioString << ">" ;
 }
@@ -11136,7 +11136,7 @@ void GALGAS_gtlExpressionList_2D_element::description (C_String & ioString,
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlExpression GALGAS_gtlExpressionList_2D_element::getter_expression (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_expression ;
+  return mProperty_expression ;
 }
 
 
@@ -11187,7 +11187,7 @@ GALGAS_gtlExpressionList_2D_element GALGAS_gtlExpressionList_2D_element::extract
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_list_2D_element::GALGAS_list_2D_element (void) :
-mAttribute_value () {
+mProperty_value () {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -11198,7 +11198,7 @@ GALGAS_list_2D_element::~ GALGAS_list_2D_element (void) {
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_list_2D_element::GALGAS_list_2D_element (const GALGAS_gtlData & inOperand0) :
-mAttribute_value (inOperand0) {
+mProperty_value (inOperand0) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -11217,7 +11217,7 @@ GALGAS_list_2D_element GALGAS_list_2D_element::constructor_new (const GALGAS_gtl
 typeComparisonResult GALGAS_list_2D_element::objectCompare (const GALGAS_list_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
   if (result == kOperandEqual) {
-    result = mAttribute_value.objectCompare (inOperand.mAttribute_value) ;
+    result = mProperty_value.objectCompare (inOperand.mProperty_value) ;
   }
   return result ;
 }
@@ -11225,13 +11225,13 @@ typeComparisonResult GALGAS_list_2D_element::objectCompare (const GALGAS_list_2D
 //---------------------------------------------------------------------------------------------------------------------*
 
 bool GALGAS_list_2D_element::isValid (void) const {
-  return mAttribute_value.isValid () ;
+  return mProperty_value.isValid () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_list_2D_element::drop (void) {
-  mAttribute_value.drop () ;
+  mProperty_value.drop () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -11242,7 +11242,7 @@ void GALGAS_list_2D_element::description (C_String & ioString,
   if (! isValid ()) {
     ioString << " not built" ;
   }else{
-    mAttribute_value.description (ioString, inIndentation+1) ;
+    mProperty_value.description (ioString, inIndentation+1) ;
   }
   ioString << ">" ;
 }
@@ -11250,7 +11250,7 @@ void GALGAS_list_2D_element::description (C_String & ioString,
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlData GALGAS_list_2D_element::getter_value (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_value ;
+  return mProperty_value ;
 }
 
 
@@ -11300,10 +11300,130 @@ GALGAS_list_2D_element GALGAS_list_2D_element::extractObject (const GALGAS_objec
 
 //---------------------------------------------------------------------------------------------------------------------*
 
+GALGAS_lstringset_2D_element::GALGAS_lstringset_2D_element (void) :
+mProperty_lkey () {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_lstringset_2D_element::~ GALGAS_lstringset_2D_element (void) {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_lstringset_2D_element::GALGAS_lstringset_2D_element (const GALGAS_lstring & inOperand0) :
+mProperty_lkey (inOperand0) {
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_lstringset_2D_element GALGAS_lstringset_2D_element::constructor_default (UNUSED_LOCATION_ARGS) {
+  return GALGAS_lstringset_2D_element (GALGAS_lstring::constructor_default (HERE)) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_lstringset_2D_element GALGAS_lstringset_2D_element::constructor_new (const GALGAS_lstring & inOperand0 
+                                                                            COMMA_UNUSED_LOCATION_ARGS) {
+  GALGAS_lstringset_2D_element result ;
+  if (inOperand0.isValid ()) {
+    result = GALGAS_lstringset_2D_element (inOperand0) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+typeComparisonResult GALGAS_lstringset_2D_element::objectCompare (const GALGAS_lstringset_2D_element & inOperand) const {
+   typeComparisonResult result = kOperandEqual ;
+  if (result == kOperandEqual) {
+    result = mProperty_lkey.objectCompare (inOperand.mProperty_lkey) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+bool GALGAS_lstringset_2D_element::isValid (void) const {
+  return mProperty_lkey.isValid () ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_lstringset_2D_element::drop (void) {
+  mProperty_lkey.drop () ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void GALGAS_lstringset_2D_element::description (C_String & ioString,
+                                                const int32_t inIndentation) const {
+  ioString << "<struct @lstringset-element:" ;
+  if (! isValid ()) {
+    ioString << " not built" ;
+  }else{
+    mProperty_lkey.description (ioString, inIndentation+1) ;
+  }
+  ioString << ">" ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_lstring GALGAS_lstringset_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
+  return mProperty_lkey ;
+}
+
+
+
+//---------------------------------------------------------------------------------------------------------------------*
+//                                                                                                                     *
+//                                              @lstringset-element type                                               *
+//                                                                                                                     *
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor
+kTypeDescriptor_GALGAS_lstringset_2D_element ("lstringset-element",
+                                              NULL) ;
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+const C_galgas_type_descriptor * GALGAS_lstringset_2D_element::staticTypeDescriptor (void) const {
+  return & kTypeDescriptor_GALGAS_lstringset_2D_element ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+AC_GALGAS_root * GALGAS_lstringset_2D_element::clonedObject (void) const {
+  AC_GALGAS_root * result = NULL ;
+  if (isValid ()) {
+    macroMyNew (result, GALGAS_lstringset_2D_element (*this)) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_lstringset_2D_element GALGAS_lstringset_2D_element::extractObject (const GALGAS_object & inObject,
+                                                                          C_Compiler * inCompiler
+                                                                          COMMA_LOCATION_ARGS) {
+  GALGAS_lstringset_2D_element result ;
+  const GALGAS_lstringset_2D_element * p = (const GALGAS_lstringset_2D_element *) inObject.embeddedObject () ;
+  if (NULL != p) {
+    if (NULL != dynamic_cast <const GALGAS_lstringset_2D_element *> (p)) {
+      result = *p ;
+    }else{
+      inCompiler->castError ("lstringset-element", p->dynamicTypeDescriptor () COMMA_THERE) ;
+    }  
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
 GALGAS_gtlArgumentList_2D_element::GALGAS_gtlArgumentList_2D_element (void) :
-mAttribute_typed (),
-mAttribute_type (),
-mAttribute_name () {
+mProperty_typed (),
+mProperty_type (),
+mProperty_name () {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -11316,9 +11436,9 @@ GALGAS_gtlArgumentList_2D_element::~ GALGAS_gtlArgumentList_2D_element (void) {
 GALGAS_gtlArgumentList_2D_element::GALGAS_gtlArgumentList_2D_element (const GALGAS_bool & inOperand0,
                                                                       const GALGAS_type & inOperand1,
                                                                       const GALGAS_lstring & inOperand2) :
-mAttribute_typed (inOperand0),
-mAttribute_type (inOperand1),
-mAttribute_name (inOperand2) {
+mProperty_typed (inOperand0),
+mProperty_type (inOperand1),
+mProperty_name (inOperand2) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -11339,13 +11459,13 @@ GALGAS_gtlArgumentList_2D_element GALGAS_gtlArgumentList_2D_element::constructor
 typeComparisonResult GALGAS_gtlArgumentList_2D_element::objectCompare (const GALGAS_gtlArgumentList_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
   if (result == kOperandEqual) {
-    result = mAttribute_typed.objectCompare (inOperand.mAttribute_typed) ;
+    result = mProperty_typed.objectCompare (inOperand.mProperty_typed) ;
   }
   if (result == kOperandEqual) {
-    result = mAttribute_type.objectCompare (inOperand.mAttribute_type) ;
+    result = mProperty_type.objectCompare (inOperand.mProperty_type) ;
   }
   if (result == kOperandEqual) {
-    result = mAttribute_name.objectCompare (inOperand.mAttribute_name) ;
+    result = mProperty_name.objectCompare (inOperand.mProperty_name) ;
   }
   return result ;
 }
@@ -11353,15 +11473,15 @@ typeComparisonResult GALGAS_gtlArgumentList_2D_element::objectCompare (const GAL
 //---------------------------------------------------------------------------------------------------------------------*
 
 bool GALGAS_gtlArgumentList_2D_element::isValid (void) const {
-  return mAttribute_typed.isValid () && mAttribute_type.isValid () && mAttribute_name.isValid () ;
+  return mProperty_typed.isValid () && mProperty_type.isValid () && mProperty_name.isValid () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_gtlArgumentList_2D_element::drop (void) {
-  mAttribute_typed.drop () ;
-  mAttribute_type.drop () ;
-  mAttribute_name.drop () ;
+  mProperty_typed.drop () ;
+  mProperty_type.drop () ;
+  mProperty_name.drop () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -11372,11 +11492,11 @@ void GALGAS_gtlArgumentList_2D_element::description (C_String & ioString,
   if (! isValid ()) {
     ioString << " not built" ;
   }else{
-    mAttribute_typed.description (ioString, inIndentation+1) ;
+    mProperty_typed.description (ioString, inIndentation+1) ;
     ioString << ", " ;
-    mAttribute_type.description (ioString, inIndentation+1) ;
+    mProperty_type.description (ioString, inIndentation+1) ;
     ioString << ", " ;
-    mAttribute_name.description (ioString, inIndentation+1) ;
+    mProperty_name.description (ioString, inIndentation+1) ;
   }
   ioString << ">" ;
 }
@@ -11384,19 +11504,19 @@ void GALGAS_gtlArgumentList_2D_element::description (C_String & ioString,
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_bool GALGAS_gtlArgumentList_2D_element::getter_typed (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_typed ;
+  return mProperty_typed ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_type GALGAS_gtlArgumentList_2D_element::getter_type (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_type ;
+  return mProperty_type ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstring GALGAS_gtlArgumentList_2D_element::getter_name (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_name ;
+  return mProperty_name ;
 }
 
 
@@ -11447,8 +11567,8 @@ GALGAS_gtlArgumentList_2D_element GALGAS_gtlArgumentList_2D_element::extractObje
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlProcMap_2D_element::GALGAS_gtlProcMap_2D_element (void) :
-mAttribute_lkey (),
-mAttribute_procedure () {
+mProperty_lkey (),
+mProperty_procedure () {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -11460,8 +11580,8 @@ GALGAS_gtlProcMap_2D_element::~ GALGAS_gtlProcMap_2D_element (void) {
 
 GALGAS_gtlProcMap_2D_element::GALGAS_gtlProcMap_2D_element (const GALGAS_lstring & inOperand0,
                                                             const GALGAS_gtlProcedure & inOperand1) :
-mAttribute_lkey (inOperand0),
-mAttribute_procedure (inOperand1) {
+mProperty_lkey (inOperand0),
+mProperty_procedure (inOperand1) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -11488,10 +11608,10 @@ GALGAS_gtlProcMap_2D_element GALGAS_gtlProcMap_2D_element::constructor_new (cons
 typeComparisonResult GALGAS_gtlProcMap_2D_element::objectCompare (const GALGAS_gtlProcMap_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
   if (result == kOperandEqual) {
-    result = mAttribute_lkey.objectCompare (inOperand.mAttribute_lkey) ;
+    result = mProperty_lkey.objectCompare (inOperand.mProperty_lkey) ;
   }
   if (result == kOperandEqual) {
-    result = mAttribute_procedure.objectCompare (inOperand.mAttribute_procedure) ;
+    result = mProperty_procedure.objectCompare (inOperand.mProperty_procedure) ;
   }
   return result ;
 }
@@ -11499,14 +11619,14 @@ typeComparisonResult GALGAS_gtlProcMap_2D_element::objectCompare (const GALGAS_g
 //---------------------------------------------------------------------------------------------------------------------*
 
 bool GALGAS_gtlProcMap_2D_element::isValid (void) const {
-  return mAttribute_lkey.isValid () && mAttribute_procedure.isValid () ;
+  return mProperty_lkey.isValid () && mProperty_procedure.isValid () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_gtlProcMap_2D_element::drop (void) {
-  mAttribute_lkey.drop () ;
-  mAttribute_procedure.drop () ;
+  mProperty_lkey.drop () ;
+  mProperty_procedure.drop () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -11517,9 +11637,9 @@ void GALGAS_gtlProcMap_2D_element::description (C_String & ioString,
   if (! isValid ()) {
     ioString << " not built" ;
   }else{
-    mAttribute_lkey.description (ioString, inIndentation+1) ;
+    mProperty_lkey.description (ioString, inIndentation+1) ;
     ioString << ", " ;
-    mAttribute_procedure.description (ioString, inIndentation+1) ;
+    mProperty_procedure.description (ioString, inIndentation+1) ;
   }
   ioString << ">" ;
 }
@@ -11527,13 +11647,13 @@ void GALGAS_gtlProcMap_2D_element::description (C_String & ioString,
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstring GALGAS_gtlProcMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_lkey ;
+  return mProperty_lkey ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlProcedure GALGAS_gtlProcMap_2D_element::getter_procedure (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_procedure ;
+  return mProperty_procedure ;
 }
 
 
@@ -11584,8 +11704,8 @@ GALGAS_gtlProcMap_2D_element GALGAS_gtlProcMap_2D_element::extractObject (const 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlFuncMap_2D_element::GALGAS_gtlFuncMap_2D_element (void) :
-mAttribute_lkey (),
-mAttribute_function () {
+mProperty_lkey (),
+mProperty_function () {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -11597,8 +11717,8 @@ GALGAS_gtlFuncMap_2D_element::~ GALGAS_gtlFuncMap_2D_element (void) {
 
 GALGAS_gtlFuncMap_2D_element::GALGAS_gtlFuncMap_2D_element (const GALGAS_lstring & inOperand0,
                                                             const GALGAS_gtlFunction & inOperand1) :
-mAttribute_lkey (inOperand0),
-mAttribute_function (inOperand1) {
+mProperty_lkey (inOperand0),
+mProperty_function (inOperand1) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -11625,10 +11745,10 @@ GALGAS_gtlFuncMap_2D_element GALGAS_gtlFuncMap_2D_element::constructor_new (cons
 typeComparisonResult GALGAS_gtlFuncMap_2D_element::objectCompare (const GALGAS_gtlFuncMap_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
   if (result == kOperandEqual) {
-    result = mAttribute_lkey.objectCompare (inOperand.mAttribute_lkey) ;
+    result = mProperty_lkey.objectCompare (inOperand.mProperty_lkey) ;
   }
   if (result == kOperandEqual) {
-    result = mAttribute_function.objectCompare (inOperand.mAttribute_function) ;
+    result = mProperty_function.objectCompare (inOperand.mProperty_function) ;
   }
   return result ;
 }
@@ -11636,14 +11756,14 @@ typeComparisonResult GALGAS_gtlFuncMap_2D_element::objectCompare (const GALGAS_g
 //---------------------------------------------------------------------------------------------------------------------*
 
 bool GALGAS_gtlFuncMap_2D_element::isValid (void) const {
-  return mAttribute_lkey.isValid () && mAttribute_function.isValid () ;
+  return mProperty_lkey.isValid () && mProperty_function.isValid () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_gtlFuncMap_2D_element::drop (void) {
-  mAttribute_lkey.drop () ;
-  mAttribute_function.drop () ;
+  mProperty_lkey.drop () ;
+  mProperty_function.drop () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -11654,9 +11774,9 @@ void GALGAS_gtlFuncMap_2D_element::description (C_String & ioString,
   if (! isValid ()) {
     ioString << " not built" ;
   }else{
-    mAttribute_lkey.description (ioString, inIndentation+1) ;
+    mProperty_lkey.description (ioString, inIndentation+1) ;
     ioString << ", " ;
-    mAttribute_function.description (ioString, inIndentation+1) ;
+    mProperty_function.description (ioString, inIndentation+1) ;
   }
   ioString << ">" ;
 }
@@ -11664,13 +11784,13 @@ void GALGAS_gtlFuncMap_2D_element::description (C_String & ioString,
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstring GALGAS_gtlFuncMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_lkey ;
+  return mProperty_lkey ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlFunction GALGAS_gtlFuncMap_2D_element::getter_function (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_function ;
+  return mProperty_function ;
 }
 
 
@@ -11721,8 +11841,8 @@ GALGAS_gtlFuncMap_2D_element GALGAS_gtlFuncMap_2D_element::extractObject (const 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlGetterMap_2D_element::GALGAS_gtlGetterMap_2D_element (void) :
-mAttribute_lkey (),
-mAttribute_theGetter () {
+mProperty_lkey (),
+mProperty_theGetter () {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -11734,8 +11854,8 @@ GALGAS_gtlGetterMap_2D_element::~ GALGAS_gtlGetterMap_2D_element (void) {
 
 GALGAS_gtlGetterMap_2D_element::GALGAS_gtlGetterMap_2D_element (const GALGAS_lstring & inOperand0,
                                                                 const GALGAS_gtlGetter & inOperand1) :
-mAttribute_lkey (inOperand0),
-mAttribute_theGetter (inOperand1) {
+mProperty_lkey (inOperand0),
+mProperty_theGetter (inOperand1) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -11755,10 +11875,10 @@ GALGAS_gtlGetterMap_2D_element GALGAS_gtlGetterMap_2D_element::constructor_new (
 typeComparisonResult GALGAS_gtlGetterMap_2D_element::objectCompare (const GALGAS_gtlGetterMap_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
   if (result == kOperandEqual) {
-    result = mAttribute_lkey.objectCompare (inOperand.mAttribute_lkey) ;
+    result = mProperty_lkey.objectCompare (inOperand.mProperty_lkey) ;
   }
   if (result == kOperandEqual) {
-    result = mAttribute_theGetter.objectCompare (inOperand.mAttribute_theGetter) ;
+    result = mProperty_theGetter.objectCompare (inOperand.mProperty_theGetter) ;
   }
   return result ;
 }
@@ -11766,14 +11886,14 @@ typeComparisonResult GALGAS_gtlGetterMap_2D_element::objectCompare (const GALGAS
 //---------------------------------------------------------------------------------------------------------------------*
 
 bool GALGAS_gtlGetterMap_2D_element::isValid (void) const {
-  return mAttribute_lkey.isValid () && mAttribute_theGetter.isValid () ;
+  return mProperty_lkey.isValid () && mProperty_theGetter.isValid () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_gtlGetterMap_2D_element::drop (void) {
-  mAttribute_lkey.drop () ;
-  mAttribute_theGetter.drop () ;
+  mProperty_lkey.drop () ;
+  mProperty_theGetter.drop () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -11784,9 +11904,9 @@ void GALGAS_gtlGetterMap_2D_element::description (C_String & ioString,
   if (! isValid ()) {
     ioString << " not built" ;
   }else{
-    mAttribute_lkey.description (ioString, inIndentation+1) ;
+    mProperty_lkey.description (ioString, inIndentation+1) ;
     ioString << ", " ;
-    mAttribute_theGetter.description (ioString, inIndentation+1) ;
+    mProperty_theGetter.description (ioString, inIndentation+1) ;
   }
   ioString << ">" ;
 }
@@ -11794,13 +11914,13 @@ void GALGAS_gtlGetterMap_2D_element::description (C_String & ioString,
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstring GALGAS_gtlGetterMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_lkey ;
+  return mProperty_lkey ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlGetter GALGAS_gtlGetterMap_2D_element::getter_theGetter (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_theGetter ;
+  return mProperty_theGetter ;
 }
 
 
@@ -11851,8 +11971,8 @@ GALGAS_gtlGetterMap_2D_element GALGAS_gtlGetterMap_2D_element::extractObject (co
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlSetterMap_2D_element::GALGAS_gtlSetterMap_2D_element (void) :
-mAttribute_lkey (),
-mAttribute_theSetter () {
+mProperty_lkey (),
+mProperty_theSetter () {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -11864,8 +11984,8 @@ GALGAS_gtlSetterMap_2D_element::~ GALGAS_gtlSetterMap_2D_element (void) {
 
 GALGAS_gtlSetterMap_2D_element::GALGAS_gtlSetterMap_2D_element (const GALGAS_lstring & inOperand0,
                                                                 const GALGAS_gtlSetter & inOperand1) :
-mAttribute_lkey (inOperand0),
-mAttribute_theSetter (inOperand1) {
+mProperty_lkey (inOperand0),
+mProperty_theSetter (inOperand1) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -11885,10 +12005,10 @@ GALGAS_gtlSetterMap_2D_element GALGAS_gtlSetterMap_2D_element::constructor_new (
 typeComparisonResult GALGAS_gtlSetterMap_2D_element::objectCompare (const GALGAS_gtlSetterMap_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
   if (result == kOperandEqual) {
-    result = mAttribute_lkey.objectCompare (inOperand.mAttribute_lkey) ;
+    result = mProperty_lkey.objectCompare (inOperand.mProperty_lkey) ;
   }
   if (result == kOperandEqual) {
-    result = mAttribute_theSetter.objectCompare (inOperand.mAttribute_theSetter) ;
+    result = mProperty_theSetter.objectCompare (inOperand.mProperty_theSetter) ;
   }
   return result ;
 }
@@ -11896,14 +12016,14 @@ typeComparisonResult GALGAS_gtlSetterMap_2D_element::objectCompare (const GALGAS
 //---------------------------------------------------------------------------------------------------------------------*
 
 bool GALGAS_gtlSetterMap_2D_element::isValid (void) const {
-  return mAttribute_lkey.isValid () && mAttribute_theSetter.isValid () ;
+  return mProperty_lkey.isValid () && mProperty_theSetter.isValid () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_gtlSetterMap_2D_element::drop (void) {
-  mAttribute_lkey.drop () ;
-  mAttribute_theSetter.drop () ;
+  mProperty_lkey.drop () ;
+  mProperty_theSetter.drop () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -11914,9 +12034,9 @@ void GALGAS_gtlSetterMap_2D_element::description (C_String & ioString,
   if (! isValid ()) {
     ioString << " not built" ;
   }else{
-    mAttribute_lkey.description (ioString, inIndentation+1) ;
+    mProperty_lkey.description (ioString, inIndentation+1) ;
     ioString << ", " ;
-    mAttribute_theSetter.description (ioString, inIndentation+1) ;
+    mProperty_theSetter.description (ioString, inIndentation+1) ;
   }
   ioString << ">" ;
 }
@@ -11924,13 +12044,13 @@ void GALGAS_gtlSetterMap_2D_element::description (C_String & ioString,
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstring GALGAS_gtlSetterMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_lkey ;
+  return mProperty_lkey ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlSetter GALGAS_gtlSetterMap_2D_element::getter_theSetter (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_theSetter ;
+  return mProperty_theSetter ;
 }
 
 
@@ -11981,8 +12101,8 @@ GALGAS_gtlSetterMap_2D_element GALGAS_gtlSetterMap_2D_element::extractObject (co
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlThenElsifStatementList_2D_element::GALGAS_gtlThenElsifStatementList_2D_element (void) :
-mAttribute_condition (),
-mAttribute_instructionList () {
+mProperty_condition (),
+mProperty_instructionList () {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -11994,8 +12114,8 @@ GALGAS_gtlThenElsifStatementList_2D_element::~ GALGAS_gtlThenElsifStatementList_
 
 GALGAS_gtlThenElsifStatementList_2D_element::GALGAS_gtlThenElsifStatementList_2D_element (const GALGAS_gtlExpression & inOperand0,
                                                                                           const GALGAS_gtlInstructionList & inOperand1) :
-mAttribute_condition (inOperand0),
-mAttribute_instructionList (inOperand1) {
+mProperty_condition (inOperand0),
+mProperty_instructionList (inOperand1) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -12015,10 +12135,10 @@ GALGAS_gtlThenElsifStatementList_2D_element GALGAS_gtlThenElsifStatementList_2D_
 typeComparisonResult GALGAS_gtlThenElsifStatementList_2D_element::objectCompare (const GALGAS_gtlThenElsifStatementList_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
   if (result == kOperandEqual) {
-    result = mAttribute_condition.objectCompare (inOperand.mAttribute_condition) ;
+    result = mProperty_condition.objectCompare (inOperand.mProperty_condition) ;
   }
   if (result == kOperandEqual) {
-    result = mAttribute_instructionList.objectCompare (inOperand.mAttribute_instructionList) ;
+    result = mProperty_instructionList.objectCompare (inOperand.mProperty_instructionList) ;
   }
   return result ;
 }
@@ -12026,14 +12146,14 @@ typeComparisonResult GALGAS_gtlThenElsifStatementList_2D_element::objectCompare 
 //---------------------------------------------------------------------------------------------------------------------*
 
 bool GALGAS_gtlThenElsifStatementList_2D_element::isValid (void) const {
-  return mAttribute_condition.isValid () && mAttribute_instructionList.isValid () ;
+  return mProperty_condition.isValid () && mProperty_instructionList.isValid () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_gtlThenElsifStatementList_2D_element::drop (void) {
-  mAttribute_condition.drop () ;
-  mAttribute_instructionList.drop () ;
+  mProperty_condition.drop () ;
+  mProperty_instructionList.drop () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -12044,9 +12164,9 @@ void GALGAS_gtlThenElsifStatementList_2D_element::description (C_String & ioStri
   if (! isValid ()) {
     ioString << " not built" ;
   }else{
-    mAttribute_condition.description (ioString, inIndentation+1) ;
+    mProperty_condition.description (ioString, inIndentation+1) ;
     ioString << ", " ;
-    mAttribute_instructionList.description (ioString, inIndentation+1) ;
+    mProperty_instructionList.description (ioString, inIndentation+1) ;
   }
   ioString << ">" ;
 }
@@ -12054,13 +12174,13 @@ void GALGAS_gtlThenElsifStatementList_2D_element::description (C_String & ioStri
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlExpression GALGAS_gtlThenElsifStatementList_2D_element::getter_condition (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_condition ;
+  return mProperty_condition ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_gtlInstructionList GALGAS_gtlThenElsifStatementList_2D_element::getter_instructionList (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_instructionList ;
+  return mProperty_instructionList ;
 }
 
 
@@ -12111,8 +12231,8 @@ GALGAS_gtlThenElsifStatementList_2D_element GALGAS_gtlThenElsifStatementList_2D_
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_sortingKeyList_2D_element::GALGAS_sortingKeyList_2D_element (void) :
-mAttribute_key (),
-mAttribute_order () {
+mProperty_key (),
+mProperty_order () {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -12124,8 +12244,8 @@ GALGAS_sortingKeyList_2D_element::~ GALGAS_sortingKeyList_2D_element (void) {
 
 GALGAS_sortingKeyList_2D_element::GALGAS_sortingKeyList_2D_element (const GALGAS_lstring & inOperand0,
                                                                     const GALGAS_lsint & inOperand1) :
-mAttribute_key (inOperand0),
-mAttribute_order (inOperand1) {
+mProperty_key (inOperand0),
+mProperty_order (inOperand1) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -12152,10 +12272,10 @@ GALGAS_sortingKeyList_2D_element GALGAS_sortingKeyList_2D_element::constructor_n
 typeComparisonResult GALGAS_sortingKeyList_2D_element::objectCompare (const GALGAS_sortingKeyList_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
   if (result == kOperandEqual) {
-    result = mAttribute_key.objectCompare (inOperand.mAttribute_key) ;
+    result = mProperty_key.objectCompare (inOperand.mProperty_key) ;
   }
   if (result == kOperandEqual) {
-    result = mAttribute_order.objectCompare (inOperand.mAttribute_order) ;
+    result = mProperty_order.objectCompare (inOperand.mProperty_order) ;
   }
   return result ;
 }
@@ -12163,14 +12283,14 @@ typeComparisonResult GALGAS_sortingKeyList_2D_element::objectCompare (const GALG
 //---------------------------------------------------------------------------------------------------------------------*
 
 bool GALGAS_sortingKeyList_2D_element::isValid (void) const {
-  return mAttribute_key.isValid () && mAttribute_order.isValid () ;
+  return mProperty_key.isValid () && mProperty_order.isValid () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_sortingKeyList_2D_element::drop (void) {
-  mAttribute_key.drop () ;
-  mAttribute_order.drop () ;
+  mProperty_key.drop () ;
+  mProperty_order.drop () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -12181,9 +12301,9 @@ void GALGAS_sortingKeyList_2D_element::description (C_String & ioString,
   if (! isValid ()) {
     ioString << " not built" ;
   }else{
-    mAttribute_key.description (ioString, inIndentation+1) ;
+    mProperty_key.description (ioString, inIndentation+1) ;
     ioString << ", " ;
-    mAttribute_order.description (ioString, inIndentation+1) ;
+    mProperty_order.description (ioString, inIndentation+1) ;
   }
   ioString << ">" ;
 }
@@ -12191,13 +12311,13 @@ void GALGAS_sortingKeyList_2D_element::description (C_String & ioString,
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstring GALGAS_sortingKeyList_2D_element::getter_key (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_key ;
+  return mProperty_key ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lsint GALGAS_sortingKeyList_2D_element::getter_order (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_order ;
+  return mProperty_order ;
 }
 
 
@@ -12248,8 +12368,8 @@ GALGAS_sortingKeyList_2D_element GALGAS_sortingKeyList_2D_element::extractObject
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_numberList_2D_element::GALGAS_numberList_2D_element (void) :
-mAttribute_location (),
-mAttribute_value () {
+mProperty_location (),
+mProperty_value () {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -12261,8 +12381,8 @@ GALGAS_numberList_2D_element::~ GALGAS_numberList_2D_element (void) {
 
 GALGAS_numberList_2D_element::GALGAS_numberList_2D_element (const GALGAS_location & inOperand0,
                                                             const GALGAS_object_5F_t & inOperand1) :
-mAttribute_location (inOperand0),
-mAttribute_value (inOperand1) {
+mProperty_location (inOperand0),
+mProperty_value (inOperand1) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -12282,10 +12402,10 @@ GALGAS_numberList_2D_element GALGAS_numberList_2D_element::constructor_new (cons
 typeComparisonResult GALGAS_numberList_2D_element::objectCompare (const GALGAS_numberList_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
   if (result == kOperandEqual) {
-    result = mAttribute_location.objectCompare (inOperand.mAttribute_location) ;
+    result = mProperty_location.objectCompare (inOperand.mProperty_location) ;
   }
   if (result == kOperandEqual) {
-    result = mAttribute_value.objectCompare (inOperand.mAttribute_value) ;
+    result = mProperty_value.objectCompare (inOperand.mProperty_value) ;
   }
   return result ;
 }
@@ -12293,14 +12413,14 @@ typeComparisonResult GALGAS_numberList_2D_element::objectCompare (const GALGAS_n
 //---------------------------------------------------------------------------------------------------------------------*
 
 bool GALGAS_numberList_2D_element::isValid (void) const {
-  return mAttribute_location.isValid () && mAttribute_value.isValid () ;
+  return mProperty_location.isValid () && mProperty_value.isValid () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_numberList_2D_element::drop (void) {
-  mAttribute_location.drop () ;
-  mAttribute_value.drop () ;
+  mProperty_location.drop () ;
+  mProperty_value.drop () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -12311,9 +12431,9 @@ void GALGAS_numberList_2D_element::description (C_String & ioString,
   if (! isValid ()) {
     ioString << " not built" ;
   }else{
-    mAttribute_location.description (ioString, inIndentation+1) ;
+    mProperty_location.description (ioString, inIndentation+1) ;
     ioString << ", " ;
-    mAttribute_value.description (ioString, inIndentation+1) ;
+    mProperty_value.description (ioString, inIndentation+1) ;
   }
   ioString << ">" ;
 }
@@ -12321,13 +12441,13 @@ void GALGAS_numberList_2D_element::description (C_String & ioString,
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_location GALGAS_numberList_2D_element::getter_location (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_location ;
+  return mProperty_location ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_object_5F_t GALGAS_numberList_2D_element::getter_value (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_value ;
+  return mProperty_value ;
 }
 
 
@@ -12378,8 +12498,8 @@ GALGAS_numberList_2D_element GALGAS_numberList_2D_element::extractObject (const 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_implementationObjectMap_2D_element::GALGAS_implementationObjectMap_2D_element (void) :
-mAttribute_lkey (),
-mAttribute_type () {
+mProperty_lkey (),
+mProperty_type () {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -12391,8 +12511,8 @@ GALGAS_implementationObjectMap_2D_element::~ GALGAS_implementationObjectMap_2D_e
 
 GALGAS_implementationObjectMap_2D_element::GALGAS_implementationObjectMap_2D_element (const GALGAS_lstring & inOperand0,
                                                                                       const GALGAS_impType & inOperand1) :
-mAttribute_lkey (inOperand0),
-mAttribute_type (inOperand1) {
+mProperty_lkey (inOperand0),
+mProperty_type (inOperand1) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -12412,10 +12532,10 @@ GALGAS_implementationObjectMap_2D_element GALGAS_implementationObjectMap_2D_elem
 typeComparisonResult GALGAS_implementationObjectMap_2D_element::objectCompare (const GALGAS_implementationObjectMap_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
   if (result == kOperandEqual) {
-    result = mAttribute_lkey.objectCompare (inOperand.mAttribute_lkey) ;
+    result = mProperty_lkey.objectCompare (inOperand.mProperty_lkey) ;
   }
   if (result == kOperandEqual) {
-    result = mAttribute_type.objectCompare (inOperand.mAttribute_type) ;
+    result = mProperty_type.objectCompare (inOperand.mProperty_type) ;
   }
   return result ;
 }
@@ -12423,14 +12543,14 @@ typeComparisonResult GALGAS_implementationObjectMap_2D_element::objectCompare (c
 //---------------------------------------------------------------------------------------------------------------------*
 
 bool GALGAS_implementationObjectMap_2D_element::isValid (void) const {
-  return mAttribute_lkey.isValid () && mAttribute_type.isValid () ;
+  return mProperty_lkey.isValid () && mProperty_type.isValid () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_implementationObjectMap_2D_element::drop (void) {
-  mAttribute_lkey.drop () ;
-  mAttribute_type.drop () ;
+  mProperty_lkey.drop () ;
+  mProperty_type.drop () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -12441,9 +12561,9 @@ void GALGAS_implementationObjectMap_2D_element::description (C_String & ioString
   if (! isValid ()) {
     ioString << " not built" ;
   }else{
-    mAttribute_lkey.description (ioString, inIndentation+1) ;
+    mProperty_lkey.description (ioString, inIndentation+1) ;
     ioString << ", " ;
-    mAttribute_type.description (ioString, inIndentation+1) ;
+    mProperty_type.description (ioString, inIndentation+1) ;
   }
   ioString << ">" ;
 }
@@ -12451,13 +12571,13 @@ void GALGAS_implementationObjectMap_2D_element::description (C_String & ioString
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstring GALGAS_implementationObjectMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_lkey ;
+  return mProperty_lkey ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_impType GALGAS_implementationObjectMap_2D_element::getter_type (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_type ;
+  return mProperty_type ;
 }
 
 
@@ -12508,8 +12628,8 @@ GALGAS_implementationObjectMap_2D_element GALGAS_implementationObjectMap_2D_elem
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_enumValues_2D_element::GALGAS_enumValues_2D_element (void) :
-mAttribute_lkey (),
-mAttribute_subAttributes () {
+mProperty_lkey (),
+mProperty_subAttributes () {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -12521,8 +12641,8 @@ GALGAS_enumValues_2D_element::~ GALGAS_enumValues_2D_element (void) {
 
 GALGAS_enumValues_2D_element::GALGAS_enumValues_2D_element (const GALGAS_lstring & inOperand0,
                                                             const GALGAS_implementationObjectMap & inOperand1) :
-mAttribute_lkey (inOperand0),
-mAttribute_subAttributes (inOperand1) {
+mProperty_lkey (inOperand0),
+mProperty_subAttributes (inOperand1) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -12549,10 +12669,10 @@ GALGAS_enumValues_2D_element GALGAS_enumValues_2D_element::constructor_new (cons
 typeComparisonResult GALGAS_enumValues_2D_element::objectCompare (const GALGAS_enumValues_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
   if (result == kOperandEqual) {
-    result = mAttribute_lkey.objectCompare (inOperand.mAttribute_lkey) ;
+    result = mProperty_lkey.objectCompare (inOperand.mProperty_lkey) ;
   }
   if (result == kOperandEqual) {
-    result = mAttribute_subAttributes.objectCompare (inOperand.mAttribute_subAttributes) ;
+    result = mProperty_subAttributes.objectCompare (inOperand.mProperty_subAttributes) ;
   }
   return result ;
 }
@@ -12560,14 +12680,14 @@ typeComparisonResult GALGAS_enumValues_2D_element::objectCompare (const GALGAS_e
 //---------------------------------------------------------------------------------------------------------------------*
 
 bool GALGAS_enumValues_2D_element::isValid (void) const {
-  return mAttribute_lkey.isValid () && mAttribute_subAttributes.isValid () ;
+  return mProperty_lkey.isValid () && mProperty_subAttributes.isValid () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_enumValues_2D_element::drop (void) {
-  mAttribute_lkey.drop () ;
-  mAttribute_subAttributes.drop () ;
+  mProperty_lkey.drop () ;
+  mProperty_subAttributes.drop () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -12578,9 +12698,9 @@ void GALGAS_enumValues_2D_element::description (C_String & ioString,
   if (! isValid ()) {
     ioString << " not built" ;
   }else{
-    mAttribute_lkey.description (ioString, inIndentation+1) ;
+    mProperty_lkey.description (ioString, inIndentation+1) ;
     ioString << ", " ;
-    mAttribute_subAttributes.description (ioString, inIndentation+1) ;
+    mProperty_subAttributes.description (ioString, inIndentation+1) ;
   }
   ioString << ">" ;
 }
@@ -12588,13 +12708,13 @@ void GALGAS_enumValues_2D_element::description (C_String & ioString,
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstring GALGAS_enumValues_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_lkey ;
+  return mProperty_lkey ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_implementationObjectMap GALGAS_enumValues_2D_element::getter_subAttributes (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_subAttributes ;
+  return mProperty_subAttributes ;
 }
 
 
@@ -12645,8 +12765,8 @@ GALGAS_enumValues_2D_element GALGAS_enumValues_2D_element::extractObject (const 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_implementationMap_2D_element::GALGAS_implementationMap_2D_element (void) :
-mAttribute_lkey (),
-mAttribute_obj () {
+mProperty_lkey (),
+mProperty_obj () {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -12658,8 +12778,8 @@ GALGAS_implementationMap_2D_element::~ GALGAS_implementationMap_2D_element (void
 
 GALGAS_implementationMap_2D_element::GALGAS_implementationMap_2D_element (const GALGAS_lstring & inOperand0,
                                                                           const GALGAS_implementationObject & inOperand1) :
-mAttribute_lkey (inOperand0),
-mAttribute_obj (inOperand1) {
+mProperty_lkey (inOperand0),
+mProperty_obj (inOperand1) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -12686,10 +12806,10 @@ GALGAS_implementationMap_2D_element GALGAS_implementationMap_2D_element::constru
 typeComparisonResult GALGAS_implementationMap_2D_element::objectCompare (const GALGAS_implementationMap_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
   if (result == kOperandEqual) {
-    result = mAttribute_lkey.objectCompare (inOperand.mAttribute_lkey) ;
+    result = mProperty_lkey.objectCompare (inOperand.mProperty_lkey) ;
   }
   if (result == kOperandEqual) {
-    result = mAttribute_obj.objectCompare (inOperand.mAttribute_obj) ;
+    result = mProperty_obj.objectCompare (inOperand.mProperty_obj) ;
   }
   return result ;
 }
@@ -12697,14 +12817,14 @@ typeComparisonResult GALGAS_implementationMap_2D_element::objectCompare (const G
 //---------------------------------------------------------------------------------------------------------------------*
 
 bool GALGAS_implementationMap_2D_element::isValid (void) const {
-  return mAttribute_lkey.isValid () && mAttribute_obj.isValid () ;
+  return mProperty_lkey.isValid () && mProperty_obj.isValid () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_implementationMap_2D_element::drop (void) {
-  mAttribute_lkey.drop () ;
-  mAttribute_obj.drop () ;
+  mProperty_lkey.drop () ;
+  mProperty_obj.drop () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -12715,9 +12835,9 @@ void GALGAS_implementationMap_2D_element::description (C_String & ioString,
   if (! isValid ()) {
     ioString << " not built" ;
   }else{
-    mAttribute_lkey.description (ioString, inIndentation+1) ;
+    mProperty_lkey.description (ioString, inIndentation+1) ;
     ioString << ", " ;
-    mAttribute_obj.description (ioString, inIndentation+1) ;
+    mProperty_obj.description (ioString, inIndentation+1) ;
   }
   ioString << ">" ;
 }
@@ -12725,13 +12845,13 @@ void GALGAS_implementationMap_2D_element::description (C_String & ioString,
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstring GALGAS_implementationMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_lkey ;
+  return mProperty_lkey ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_implementationObject GALGAS_implementationMap_2D_element::getter_obj (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_obj ;
+  return mProperty_obj ;
 }
 
 
@@ -12782,8 +12902,8 @@ GALGAS_implementationMap_2D_element GALGAS_implementationMap_2D_element::extract
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_identifierMap_2D_element::GALGAS_identifierMap_2D_element (void) :
-mAttribute_lkey (),
-mAttribute_value () {
+mProperty_lkey (),
+mProperty_value () {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -12795,8 +12915,8 @@ GALGAS_identifierMap_2D_element::~ GALGAS_identifierMap_2D_element (void) {
 
 GALGAS_identifierMap_2D_element::GALGAS_identifierMap_2D_element (const GALGAS_lstring & inOperand0,
                                                                   const GALGAS_object_5F_t & inOperand1) :
-mAttribute_lkey (inOperand0),
-mAttribute_value (inOperand1) {
+mProperty_lkey (inOperand0),
+mProperty_value (inOperand1) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -12816,10 +12936,10 @@ GALGAS_identifierMap_2D_element GALGAS_identifierMap_2D_element::constructor_new
 typeComparisonResult GALGAS_identifierMap_2D_element::objectCompare (const GALGAS_identifierMap_2D_element & inOperand) const {
    typeComparisonResult result = kOperandEqual ;
   if (result == kOperandEqual) {
-    result = mAttribute_lkey.objectCompare (inOperand.mAttribute_lkey) ;
+    result = mProperty_lkey.objectCompare (inOperand.mProperty_lkey) ;
   }
   if (result == kOperandEqual) {
-    result = mAttribute_value.objectCompare (inOperand.mAttribute_value) ;
+    result = mProperty_value.objectCompare (inOperand.mProperty_value) ;
   }
   return result ;
 }
@@ -12827,14 +12947,14 @@ typeComparisonResult GALGAS_identifierMap_2D_element::objectCompare (const GALGA
 //---------------------------------------------------------------------------------------------------------------------*
 
 bool GALGAS_identifierMap_2D_element::isValid (void) const {
-  return mAttribute_lkey.isValid () && mAttribute_value.isValid () ;
+  return mProperty_lkey.isValid () && mProperty_value.isValid () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void GALGAS_identifierMap_2D_element::drop (void) {
-  mAttribute_lkey.drop () ;
-  mAttribute_value.drop () ;
+  mProperty_lkey.drop () ;
+  mProperty_value.drop () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -12845,9 +12965,9 @@ void GALGAS_identifierMap_2D_element::description (C_String & ioString,
   if (! isValid ()) {
     ioString << " not built" ;
   }else{
-    mAttribute_lkey.description (ioString, inIndentation+1) ;
+    mProperty_lkey.description (ioString, inIndentation+1) ;
     ioString << ", " ;
-    mAttribute_value.description (ioString, inIndentation+1) ;
+    mProperty_value.description (ioString, inIndentation+1) ;
   }
   ioString << ">" ;
 }
@@ -12855,13 +12975,13 @@ void GALGAS_identifierMap_2D_element::description (C_String & ioString,
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_lstring GALGAS_identifierMap_2D_element::getter_lkey (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_lkey ;
+  return mProperty_lkey ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_object_5F_t GALGAS_identifierMap_2D_element::getter_value (UNUSED_LOCATION_ARGS) const {
-  return mAttribute_value ;
+  return mProperty_value ;
 }
 
 

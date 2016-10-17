@@ -31,24 +31,35 @@
  * $Author$
  * $URL$
  */
-/* --------------------------------------------------------------------------
- *  Requirement  | Short description                  | Verified
- * --------------------------------------------------------------------------
- * SWS_Os_00606  | StartCore after StartOS returns    | Y : Test 1
+/* ----------------------------------------------------------------------------
+ * Verification tags
+ * ----------------------------------------------------------------------------
+ * {...}      : Verified by tests numbers (...)
+ * NoTimeout  : Verified if the execution did not timeout
+ * NoErr      : If a failure has not been reached
+ * Internal   : Cannot be tested here. Need to look at the code directly
+ * Trivial    : No need to be tested
+ * Goil       : Tested by Goil's Checks section
+ * TODO       : Test not written
+ */
+/* ----------------------------------------------------------------------------
+ *  Requirement  | Short description                  | Verification tags
+ * ----------------------------------------------------------------------------
+ * SWS_Os_00606  | StartCore after StartOS returns    | {1}
  *               | E_OS_ACCESS
- * SWS_Os_00607  | StartOS starts OS on calling core  | Y : t2 not executed
- * SWS_Os_00608  | AppModes shall be the same         | Not Tested
- * SWS_Os_00609  | If AppMode = DONOTCARE, then th    | Not Tested
+ * SWS_Os_00607  | StartOS starts OS on calling core  | NoErr
+ * SWS_Os_00608  | AppModes shall be the same         | Internal
+ * SWS_Os_00609  | If AppMode = DONOTCARE, then th    | Internal
  *               | AppMode is = to other cores.
- * SWS_Os_00610  | At least one AppMode != DONOTCARE  | Not Tested
- * SWS_Os_00611  | StartOS initializes IOC if any     | Not Tested
+ * SWS_Os_00610  | At least one AppMode != DONOTCARE  | Internal
+ * SWS_Os_00611  | StartOS initializes IOC if any     | Internal
  */
 
 #include "tpl_os.h"
 #include "embUnit.h"
 
-TestRef TaskManagementTest_seq2_t1_instance(void);
-TestRef TaskManagementTest_seq2_t2_instance(void);
+TestRef TaskManagementTest_t1_instance(void);
+TestRef TaskManagementTest_t2_instance(void);
 
 int main(void)
 {
@@ -80,13 +91,13 @@ void ShutdownHook(StatusType error)
 TASK(t1)
 {
   TestRunner_start();
-  TestRunner_runTest(TaskManagementTest_seq2_t1_instance());
+  TestRunner_runTest(TaskManagementTest_t1_instance());
   ShutdownOS(E_OK);
 }
 
 TASK(t2)
 {
-  TestRunner_runTest(TaskManagementTest_seq2_t2_instance());
+  TestRunner_runTest(TaskManagementTest_t2_instance());
 }
 
 /* End of file tasks_s2/tasks_s2.c */

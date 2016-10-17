@@ -324,9 +324,9 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlModule ;
 
 class cPtr_gtlModule : public acPtr_class {
 //--- Attributes
-  public : GALGAS_lstring mAttribute_name ;
-  public : GALGAS_gtlProcMap mAttribute_procedures ;
-  public : GALGAS_gtlFuncMap mAttribute_functions ;
+  public : GALGAS_lstring mProperty_name ;
+  public : GALGAS_gtlProcMap mProperty_procedures ;
+  public : GALGAS_gtlFuncMap mProperty_functions ;
 
 //--- Constructor
   public : cPtr_gtlModule (const GALGAS_lstring & in_name,
@@ -413,7 +413,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlEmitInstruction 
 
 class cPtr_gtlEmitInstruction : public cPtr_gtlInstruction {
 //--- Attributes
-  public : GALGAS_gtlExpression mAttribute_rValue ;
+  public : GALGAS_gtlExpression mProperty_rValue ;
 
 //--- Constructor
   public : cPtr_gtlEmitInstruction (const GALGAS_location & in_where,
@@ -504,9 +504,9 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlWriteToInstructi
 
 class cPtr_gtlWriteToInstruction : public cPtr_gtlInstruction {
 //--- Attributes
-  public : GALGAS_gtlExpression mAttribute_fileNameExpression ;
-  public : GALGAS_bool mAttribute_isExecutable ;
-  public : GALGAS_gtlInstructionList mAttribute_instructions ;
+  public : GALGAS_gtlExpression mProperty_fileNameExpression ;
+  public : GALGAS_bool mProperty_isExecutable ;
+  public : GALGAS_gtlInstructionList mProperty_instructions ;
 
 //--- Constructor
   public : cPtr_gtlWriteToInstruction (const GALGAS_location & in_where,
@@ -610,12 +610,12 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlTemplateInstruct
 
 class cPtr_gtlTemplateInstruction : public cPtr_gtlInstruction {
 //--- Attributes
-  public : GALGAS_lstring mAttribute_prefix ;
-  public : GALGAS_gtlExpression mAttribute_fileName ;
-  public : GALGAS_bool mAttribute_ifExists ;
-  public : GALGAS_bool mAttribute_isGlobal ;
-  public : GALGAS_gtlExpressionList mAttribute_arguments ;
-  public : GALGAS_gtlInstructionList mAttribute_instructionsIfNotFound ;
+  public : GALGAS_lstring mProperty_prefix ;
+  public : GALGAS_gtlExpression mProperty_fileName ;
+  public : GALGAS_bool mProperty_ifExists ;
+  public : GALGAS_bool mProperty_isGlobal ;
+  public : GALGAS_gtlExpressionList mProperty_arguments ;
+  public : GALGAS_gtlInstructionList mProperty_instructionsIfNotFound ;
 
 //--- Constructor
   public : cPtr_gtlTemplateInstruction (const GALGAS_location & in_where,
@@ -731,14 +731,14 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlForeachStatement
 
 class cPtr_gtlForeachStatementInstruction : public cPtr_gtlInstruction {
 //--- Attributes
-  public : GALGAS_lstring mAttribute_keyName ;
-  public : GALGAS_lstring mAttribute_variableName ;
-  public : GALGAS_lstring mAttribute_indexName ;
-  public : GALGAS_gtlExpression mAttribute_iterable ;
-  public : GALGAS_gtlInstructionList mAttribute_beforeList ;
-  public : GALGAS_gtlInstructionList mAttribute_betweenList ;
-  public : GALGAS_gtlInstructionList mAttribute_afterList ;
-  public : GALGAS_gtlInstructionList mAttribute_doList ;
+  public : GALGAS_lstring mProperty_keyName ;
+  public : GALGAS_lstring mProperty_variableName ;
+  public : GALGAS_lstring mProperty_indexName ;
+  public : GALGAS_gtlExpression mProperty_iterable ;
+  public : GALGAS_gtlInstructionList mProperty_beforeList ;
+  public : GALGAS_gtlInstructionList mProperty_betweenList ;
+  public : GALGAS_gtlInstructionList mProperty_afterList ;
+  public : GALGAS_gtlInstructionList mProperty_doList ;
 
 //--- Constructor
   public : cPtr_gtlForeachStatementInstruction (const GALGAS_location & in_where,
@@ -942,10 +942,10 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlForStatementInst
 
 class cPtr_gtlForStatementInstruction : public cPtr_gtlInstruction {
 //--- Attributes
-  public : GALGAS_lstring mAttribute_identifier ;
-  public : GALGAS_gtlExpressionList mAttribute_iterable ;
-  public : GALGAS_gtlInstructionList mAttribute_betweenList ;
-  public : GALGAS_gtlInstructionList mAttribute_doList ;
+  public : GALGAS_lstring mProperty_identifier ;
+  public : GALGAS_gtlExpressionList mProperty_iterable ;
+  public : GALGAS_gtlInstructionList mProperty_betweenList ;
+  public : GALGAS_gtlInstructionList mProperty_doList ;
 
 //--- Constructor
   public : cPtr_gtlForStatementInstruction (const GALGAS_location & in_where,
@@ -1060,15 +1060,15 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlLoopStatementIns
 
 class cPtr_gtlLoopStatementInstruction : public cPtr_gtlInstruction {
 //--- Attributes
-  public : GALGAS_lstring mAttribute_identifier ;
-  public : GALGAS_gtlExpression mAttribute_start ;
-  public : GALGAS_gtlExpression mAttribute_stop ;
-  public : GALGAS_gtlExpression mAttribute_step ;
-  public : GALGAS_sint_36__34_ mAttribute_upDown ;
-  public : GALGAS_gtlInstructionList mAttribute_beforeList ;
-  public : GALGAS_gtlInstructionList mAttribute_betweenList ;
-  public : GALGAS_gtlInstructionList mAttribute_afterList ;
-  public : GALGAS_gtlInstructionList mAttribute_doList ;
+  public : GALGAS_lstring mProperty_identifier ;
+  public : GALGAS_gtlExpression mProperty_start ;
+  public : GALGAS_gtlExpression mProperty_stop ;
+  public : GALGAS_gtlExpression mProperty_step ;
+  public : GALGAS_sint_36__34_ mProperty_upDown ;
+  public : GALGAS_gtlInstructionList mProperty_beforeList ;
+  public : GALGAS_gtlInstructionList mProperty_betweenList ;
+  public : GALGAS_gtlInstructionList mProperty_afterList ;
+  public : GALGAS_gtlInstructionList mProperty_doList ;
 
 //--- Constructor
   public : cPtr_gtlLoopStatementInstruction (const GALGAS_location & in_where,
@@ -1178,10 +1178,10 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlRepeatStatementI
 
 class cPtr_gtlRepeatStatementInstruction : public cPtr_gtlInstruction {
 //--- Attributes
-  public : GALGAS_gtlExpression mAttribute_limit ;
-  public : GALGAS_gtlExpression mAttribute_condition ;
-  public : GALGAS_gtlInstructionList mAttribute_continueList ;
-  public : GALGAS_gtlInstructionList mAttribute_doList ;
+  public : GALGAS_gtlExpression mProperty_limit ;
+  public : GALGAS_gtlExpression mProperty_condition ;
+  public : GALGAS_gtlInstructionList mProperty_continueList ;
+  public : GALGAS_gtlInstructionList mProperty_doList ;
 
 //--- Constructor
   public : cPtr_gtlRepeatStatementInstruction (const GALGAS_location & in_where,
@@ -1278,9 +1278,9 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlErrorStatementIn
 
 class cPtr_gtlErrorStatementInstruction : public cPtr_gtlInstruction {
 //--- Attributes
-  public : GALGAS_gtlVarPath mAttribute_identifier ;
-  public : GALGAS_bool mAttribute_hereInstead ;
-  public : GALGAS_gtlExpression mAttribute_errorMessage ;
+  public : GALGAS_gtlVarPath mProperty_identifier ;
+  public : GALGAS_bool mProperty_hereInstead ;
+  public : GALGAS_gtlExpression mProperty_errorMessage ;
 
 //--- Constructor
   public : cPtr_gtlErrorStatementInstruction (const GALGAS_location & in_where,
@@ -1375,9 +1375,9 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlWarningStatement
 
 class cPtr_gtlWarningStatementInstruction : public cPtr_gtlInstruction {
 //--- Attributes
-  public : GALGAS_gtlVarPath mAttribute_identifier ;
-  public : GALGAS_bool mAttribute_hereInstead ;
-  public : GALGAS_gtlExpression mAttribute_warningMessage ;
+  public : GALGAS_gtlVarPath mProperty_identifier ;
+  public : GALGAS_bool mProperty_hereInstead ;
+  public : GALGAS_gtlExpression mProperty_warningMessage ;
 
 //--- Constructor
   public : cPtr_gtlWarningStatementInstruction (const GALGAS_location & in_where,
@@ -1470,7 +1470,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlSortStatementIns
 
 class cPtr_gtlSortStatementInstruction : public cPtr_gtlAbstractSortInstruction {
 //--- Attributes
-  public : GALGAS_lsint mAttribute_order ;
+  public : GALGAS_lsint mProperty_order ;
 
 //--- Constructor
   public : cPtr_gtlSortStatementInstruction (const GALGAS_location & in_where,
@@ -1556,7 +1556,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlTabStatementInst
 
 class cPtr_gtlTabStatementInstruction : public cPtr_gtlInstruction {
 //--- Attributes
-  public : GALGAS_gtlExpression mAttribute_tabValue ;
+  public : GALGAS_gtlExpression mProperty_tabValue ;
 
 //--- Constructor
   public : cPtr_gtlTabStatementInstruction (const GALGAS_location & in_where,
@@ -1650,9 +1650,9 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_gtlSetterCallInstru
 
 class cPtr_gtlSetterCallInstruction : public cPtr_gtlInstruction {
 //--- Attributes
-  public : GALGAS_gtlVarPath mAttribute_target ;
-  public : GALGAS_lstring mAttribute_setterName ;
-  public : GALGAS_gtlExpressionList mAttribute_arguments ;
+  public : GALGAS_gtlVarPath mProperty_target ;
+  public : GALGAS_lstring mProperty_setterName ;
+  public : GALGAS_gtlExpressionList mProperty_arguments ;
 
 //--- Constructor
   public : cPtr_gtlSetterCallInstruction (const GALGAS_location & in_where,

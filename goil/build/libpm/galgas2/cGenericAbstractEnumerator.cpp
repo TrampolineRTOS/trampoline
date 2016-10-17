@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2010, ..., 2010 Pierre Molinaro.                                                                     *
+//  Copyright (C) 2010, ..., 2016 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -24,20 +24,17 @@
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-cGenericAbstractEnumerator::cGenericAbstractEnumerator (void) :
-mEnumerationArray (),
-mIndex (0) {
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
 cGenericAbstractEnumerator::~ cGenericAbstractEnumerator (void) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 const cCollectionElement * cGenericAbstractEnumerator::currentObjectPtr (LOCATION_ARGS) const {
-  return mEnumerationArray.pointerAtIndexForReadAccess (mIndex COMMA_THERE) ;
+  const uint32_t idx = (mOrder == kENUMERATION_UP)
+    ? mIndex
+    : mEnumerationArray.count () - 1 - mIndex
+  ;
+  return mEnumerationArray.pointerAtIndexForReadAccess (idx COMMA_THERE) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*

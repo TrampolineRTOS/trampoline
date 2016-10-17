@@ -1,0 +1,137 @@
+/**
+ * @file mc_autostart_s3.oil
+ *
+ * @section desc File description
+ *
+ * @section copyright Copyright
+ *
+ * Trampoline Test Suite
+ *
+ * Trampoline Test Suite is copyright (c) IRCCyN 2005-2007
+ * Trampoline Test Suite is protected by the French intellectual property law.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; version 2
+ * of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @section infos File informations
+ *
+ * $Date$
+ * $Rev$
+ * $Author$
+ * $URL$
+ */
+
+OIL_VERSION = "4.0" : "autostart_s3" ;
+
+#include <arch.oil>
+
+IMPLEMENTATION trampoline {
+  TASK {
+    UINT32 [1..10] PRIORITY = 1 ;
+  };
+};
+
+CPU test {
+  OS config {
+    BUILD = TRUE {
+      APP_SRC = "mc_autostart_s3.c";
+      APP_SRC = "task1_instance.c";
+      APP_SRC = "task2_instance.c";
+      TRAMPOLINE_BASE_PATH = "../../..";
+      APP_NAME = "mc_autostart_s3_exe";
+    };
+    SHUTDOWNHOOK = TRUE;
+    STATUS=EXTENDED;
+    SCALABILITYCLASS = SC4;
+  };
+
+  APPMODE std {};
+
+  APPLICATION MasterApplication
+  {
+    TASK = t1;
+    SCHEDULETABLE = t1_scheduleTable;
+    COUNTER = SystemCounter_core0;
+    TRUSTED = TRUE { TRUSTED_FUNCTION = t1_function; };
+    CORE = 0;
+  };
+  APPLICATION SlaveApplication
+  {
+    TASK = t2;
+    SCHEDULETABLE = t2_scheduleTable;
+    COUNTER = SystemCounter_core1;
+    TRUSTED = TRUE { TRUSTED_FUNCTION = t2_function; };
+    CORE = 1;
+  };
+
+  COUNTER SystemCounter_core0
+  {
+  };
+  COUNTER SystemCounter_core1
+  {
+  };
+
+  SPINLOCK sync
+  {
+    ACCESSING_APPLICATION = MasterApplication;
+    ACCESSING_APPLICATION = SlaveApplication;
+  };
+
+  SCHEDULETABLE t1_scheduleTable
+  {
+    COUNTER = SystemCounter_core0;
+    AUTOSTART = ABSOLUTE {
+      START = 3;
+      APPMODE = std;
+    };
+    LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE;
+    PERIODIC = FALSE;
+    LENGTH = 100;
+    EXPIRY_POINT t1_expiry {
+      OFFSET = 5;
+      ACTION = ACTIVATETASK { TASK = t1;};
+    };
+  };
+  SCHEDULETABLE t2_scheduleTable
+  {
+    COUNTER = SystemCounter_core1;
+    AUTOSTART = ABSOLUTE {
+      START = 2;
+      APPMODE = std;
+    };
+    LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE;
+    PERIODIC = FALSE;
+    LENGTH = 100;
+    EXPIRY_POINT t2_expiry {
+      OFFSET = 3;
+      ACTION = ACTIVATETASK { TASK = t2;};
+    };
+  };
+
+  TASK t1 {
+    AUTOSTART = FALSE;
+    PRIORITY = 1;
+    ACTIVATION = 1;
+    SCHEDULE = NON;
+  };
+  TASK t2 {
+    AUTOSTART = FALSE;
+    PRIORITY = 1;
+    ACTIVATION = 1;
+    SCHEDULE = NON;
+  };
+
+};
+
+/* End of file mc_autostart_s3.oil */

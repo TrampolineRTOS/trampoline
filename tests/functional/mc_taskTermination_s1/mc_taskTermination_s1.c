@@ -31,19 +31,30 @@
  * $Author$
  * $URL$
  */
+/* ----------------------------------------------------------------------------
+ * Verification tags
+ * ----------------------------------------------------------------------------
+ * {...}      : Verified by tests numbers (...)
+ * NoTimeout  : Verified if the execution did not timeout
+ * NoErr      : If a failure has not been reached
+ * Internal   : Cannot be tested here. Need to look at the code directly
+ * Trivial    : No need to be tested
+ * Goil       : Tested by Goil's Checks section
+ * TODO       : Test not written
+ */
 /* --------------------------------------------------------------------------
  *  Requirement  | Short description                  | Verified
  * --------------------------------------------------------------------------
- * SWS_Os_00614  | TerminateTask / ChainTask returns  | Y : Tests 1, 2, 3
+ * SWS_Os_00612  | TerminateTask / ChainTask returns  | {1,2,3}
  *               | with E_OS_SPINLOCK if has spinlock
- * SWS_Os_00615  | Spinlocks released after tp hook   | Y : Test 4
+ * SWS_Os_00613  | Spinlocks released after tp hook   | {4}, NoTimeout
  */
 
 #include "tpl_os.h"
 #include "embUnit.h"
 
-TestRef seq2_t1_instance(void);
-TestRef seq2_t2_instance(void);
+TestRef t1_instance(void);
+TestRef t2_instance(void);
 
 int main(void)
 {
@@ -93,19 +104,20 @@ TASK(t1)
 {
   TestRunner_start();
   ActivateTask(t2);
-  TestRunner_runTest(seq2_t1_instance());
+  TestRunner_runTest(t1_instance());
   ShutdownOS(E_OK);
 }
 
 TASK(t2)
 {
-  TestRunner_runTest(seq2_t2_instance());
+  TestRunner_runTest(t2_instance());
   /* Should not happen */
   while(1);
 }
 
 TASK(chain)
 {
+  addFailure("Chain task has been called...\n", __LINE__, __FILE__);
   /* Should not happen */
   while(1);
 }

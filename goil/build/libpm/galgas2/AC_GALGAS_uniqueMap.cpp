@@ -159,8 +159,7 @@ class cSharedUniqueMapRoot : public C_SharedObject {
                                               const uint32_t inLevel) const ;
 
 //--------------------------------- Internal method for enumeration
-  protected : VIRTUAL_IN_DEBUG void populateEnumerationArray (capCollectionElementArray & ioEnumerationArray,
-                                                              const typeEnumerationOrder inEnumerationOrder) const ;
+  protected : VIRTUAL_IN_DEBUG void populateEnumerationArray (capCollectionElementArray & ioEnumerationArray) const ;
 
 //--------------------------------- Comparison
   public : VIRTUAL_IN_DEBUG typeComparisonResult mapCompare (const cSharedUniqueMapRoot * inOperand) const ;
@@ -663,14 +662,14 @@ cUniqueMapNode * cSharedUniqueMapRoot::performInsert (capCollectionElement & inA
   if (inAttributes.isValid ()) {
     cMapElement * p = (cMapElement *) inAttributes.ptr () ;
     macroValidSharedObject (p, cMapElement) ;
-    const C_String key = p->mAttribute_lkey.mAttribute_string.stringValue () ;
+    const C_String key = p->mProperty_lkey.mProperty_string.stringValue () ;
   //--- Insert or replace
     bool extension = false ; // Unused here
     bool entryAlreadyExists = false ;
     cUniqueMapNode * matchingEntry = internalInsert (mRoot, key, inInitialState, inAttributes, entryAlreadyExists, extension) ;
     if (! entryAlreadyExists) {
       result = matchingEntry ;
-      matchingEntry->mDefinitionLocation = p->mAttribute_lkey.mAttribute_location ;
+      matchingEntry->mDefinitionLocation = p->mProperty_lkey.mProperty_location ;
       mNodeCount ++ ;
       switch (inShadowBehaviour) {
       case kMapAutomatonNoIssue :
@@ -681,9 +680,9 @@ cUniqueMapNode * cSharedUniqueMapRoot::performInsert (capCollectionElement & inA
         //--- Existing key
           cMapElement * me = (cMapElement *) matchingEntry->mAttributes.ptr () ;
           macroValidSharedObject (me, cMapElement) ;
-          const GALGAS_location lstring_existingKey_location = me->mAttribute_lkey.mAttribute_location ;
+          const GALGAS_location lstring_existingKey_location = me->mProperty_lkey.mProperty_location ;
         //--- Emit error message
-          inCompiler->semanticWarningWith_K_L_message (p->mAttribute_lkey, inShadowMessage.cString (HERE), lstring_existingKey_location COMMA_THERE) ;
+          inCompiler->semanticWarningWith_K_L_message (p->mProperty_lkey, inShadowMessage.cString (HERE), lstring_existingKey_location COMMA_THERE) ;
         }
         break ;
       case kMapAutomatonIssueError :
@@ -692,9 +691,9 @@ cUniqueMapNode * cSharedUniqueMapRoot::performInsert (capCollectionElement & inA
         //--- Existing key
           cMapElement * me = (cMapElement *) matchingEntry->mAttributes.ptr () ;
           macroValidSharedObject (me, cMapElement) ;
-          const GALGAS_location lstring_existingKey_location = me->mAttribute_lkey.mAttribute_location ;
+          const GALGAS_location lstring_existingKey_location = me->mProperty_lkey.mProperty_location ;
         //--- Emit error message
-          inCompiler->semanticErrorWith_K_L_message (p->mAttribute_lkey, inShadowMessage.cString (HERE), lstring_existingKey_location COMMA_THERE) ;
+          inCompiler->semanticErrorWith_K_L_message (p->mProperty_lkey, inShadowMessage.cString (HERE), lstring_existingKey_location COMMA_THERE) ;
         }
         break ;
       }
@@ -702,9 +701,9 @@ cUniqueMapNode * cSharedUniqueMapRoot::performInsert (capCollectionElement & inA
     //--- Existing key
       cMapElement * me = (cMapElement *) matchingEntry->mAttributes.ptr () ;
       macroValidSharedObject (me, cMapElement) ;
-      const GALGAS_location lstring_existingKey_location = me->mAttribute_lkey.mAttribute_location ;
+      const GALGAS_location lstring_existingKey_location = me->mProperty_lkey.mProperty_location ;
     //--- Emit error message
-      inCompiler->semanticErrorWith_K_L_message (p->mAttribute_lkey, inInsertErrorMessage, lstring_existingKey_location COMMA_THERE) ;
+      inCompiler->semanticErrorWith_K_L_message (p->mProperty_lkey, inInsertErrorMessage, lstring_existingKey_location COMMA_THERE) ;
     }
   }
   #ifndef DO_NOT_GENERATE_CHECKINGS
@@ -745,7 +744,7 @@ void AC_GALGAS_uniqueMap::insertInSharedMap (capCollectionElement & inAttributes
 void cSharedUniqueMapRoot::enterEdge (cUniqueMapNode * inSource,
                                       cUniqueMapNode * inTarget) {
   const structDependanceEdge e = {inSource, inTarget} ;
-  mDependenceEdges.addObjectIfUnique (e) ;
+  mDependenceEdges.appendObjectIfUnique (e) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -794,12 +793,12 @@ static void enterNodes (const cUniqueMapNode * inNode,
                         TC_UniqueArray <const cUniqueMapNode *> & ioNodeArray) {
   if (NULL != inNode) {
     enterNodes (inNode->mInfPtr, ioArray, ioNodeArray) ;
-    ioNodeArray.addObject (inNode) ;
+    ioNodeArray.appendObject (inNode) ;
     const int32_t idx = ioArray.count () ;
-    ioArray.addObject (cTopologicalSortElement ()) ;
+    ioArray.appendObject (cTopologicalSortElement ()) ;
     GALGAS_lstring lkey ;
-    lkey.mAttribute_string = inNode->mKey ;
-    lkey.mAttribute_location = inNode->mDefinitionLocation ;
+    lkey.mProperty_string = inNode->mKey ;
+    lkey.mProperty_location = inNode->mDefinitionLocation ;
     ioArray (idx COMMA_HERE).mKey = lkey ;
     enterNodes (inNode->mSupPtr, ioArray, ioNodeArray) ;
   }
@@ -820,7 +819,7 @@ void cSharedUniqueMapRoot::internalTopologicalSort (GALGAS_lstringlist & outSort
     cTopologicalSortElement & source = array (sourceNodeID COMMA_HERE) ;
     cTopologicalSortElement & target = array (targetNodeID COMMA_HERE) ;
     source.mDependencyCount ++ ;
-    target.mDependenceArray.addObject (sourceNodeID) ;
+    target.mDependenceArray.appendObject (sourceNodeID) ;
   }
 //--- Make exploration link
   for (int32_t i=1 ; i<array.count () ; i++) {
@@ -1003,7 +1002,7 @@ static void enterKeyInLStringList (cUniqueMapNode * inNode,
     cMapElement * p = (cMapElement *) inNode->mAttributes.ptr () ;
     if (NULL != p) {
       macroValidSharedObject (p, cMapElement) ;
-      ioResult.addAssign_operation (p->mAttribute_lkey COMMA_HERE) ;
+      ioResult.addAssign_operation (p->mProperty_lkey COMMA_HERE) ;
     }
     enterKeyInLStringList (inNode->mSupPtr, ioResult) ;
   }
@@ -1127,7 +1126,7 @@ GALGAS_location cSharedUniqueMapRoot::getter_locationForKey (const GALGAS_string
     }else{
       cMapElement * p = (cMapElement *) node->mAttributes.ptr () ;
       macroValidSharedObject (p, cMapElement) ;
-      result = p->mAttribute_lkey.mAttribute_location ;
+      result = p->mProperty_lkey.mProperty_location ;
     }
   }
   return result ;
@@ -1187,7 +1186,7 @@ static void emitErrorMessageForKey (const GALGAS_lstring & inKey,
                                     C_Compiler * inCompiler,
                                     const char * inSearchErrorMessage
                                     COMMA_LOCATION_ARGS) {
-  const C_String key = inKey.mAttribute_string.stringValue () ;
+  const C_String key = inKey.mProperty_string.stringValue () ;
 //--- Build error message
   C_String message ;
   bool perCentFound = false ;
@@ -1207,7 +1206,7 @@ static void emitErrorMessageForKey (const GALGAS_lstring & inKey,
     }
   }
 //--- Emit error message
-  const GALGAS_location key_location = inKey.mAttribute_location ;
+  const GALGAS_location key_location = inKey.mProperty_location ;
   inCompiler->semanticErrorAtLocation (key_location, message, TC_Array <C_FixItDescription> () COMMA_THERE) ;
 }
 
@@ -1249,9 +1248,9 @@ static void findNearestKeyForNode (const C_String & inKey,
     if (ioBestDistance > distance) {
       ioBestDistance = distance ;
       ioNearestKeyArray.setCountToZero () ;
-      ioNearestKeyArray.addObject (inCurrentNode->mKey) ;
+      ioNearestKeyArray.appendObject (inCurrentNode->mKey) ;
     }else if (ioBestDistance == distance) {
-      ioNearestKeyArray.addObject (inCurrentNode->mKey) ;
+      ioNearestKeyArray.appendObject (inCurrentNode->mKey) ;
     }
     findNearestKeyForNode (inKey, inCurrentNode->mInfPtr, ioBestDistance, ioNearestKeyArray) ;
     findNearestKeyForNode (inKey, inCurrentNode->mSupPtr, ioBestDistance, ioNearestKeyArray) ;
@@ -1287,7 +1286,7 @@ cUniqueMapNode * cSharedUniqueMapRoot::performSearch (const GALGAS_lstring & inK
                                                       COMMA_LOCATION_ARGS) const {
   cUniqueMapNode * result = NULL ;
   if (inKey.isValid ()) {
-    const C_String key = inKey.mAttribute_string.stringValue () ;
+    const C_String key = inKey.mProperty_string.stringValue () ;
     result = findEntryInMap (key, this) ;
     if (NULL == result) {
       TC_UniqueArray <C_String> nearestKeyArray ;
@@ -1344,15 +1343,15 @@ const cCollectionElement * AC_GALGAS_uniqueMap::performSearch (const GALGAS_lstr
         break ;
       case kMapAutomatonIssueWarning : {
         macroValidSharedObject (node->mAttributes.ptr (), cMapElement) ;
-        const GALGAS_location loc = inKey.mAttribute_location ;
-        const C_String warningMessage = buildIssueMessage (transition.mIssueMessage, inKey.mAttribute_string.stringValue ()) ;
+        const GALGAS_location loc = inKey.mProperty_location ;
+        const C_String warningMessage = buildIssueMessage (transition.mIssueMessage, inKey.mProperty_string.stringValue ()) ;
         inCompiler->semanticWarningAtLocation (loc, warningMessage COMMA_THERE) ;
         }
         break ;
       case kMapAutomatonIssueError : {
         macroValidSharedObject (node->mAttributes.ptr (), cMapElement) ;
-        const GALGAS_location loc = inKey.mAttribute_location ;
-        const C_String errorMessage = buildIssueMessage (transition.mIssueMessage, inKey.mAttribute_string.stringValue ()) ;
+        const GALGAS_location loc = inKey.mProperty_location ;
+        const C_String errorMessage = buildIssueMessage (transition.mIssueMessage, inKey.mProperty_string.stringValue ()) ;
         inCompiler->semanticErrorAtLocation (loc, errorMessage, TC_Array <C_FixItDescription> () COMMA_THERE) ;
         result = NULL ; // All output arguments will not be built
         }
@@ -1452,7 +1451,7 @@ cMapElement * cSharedUniqueMapRoot::searchForReadWriteAttribute (const GALGAS_ls
                                                                  COMMA_LOCATION_ARGS) {
   cMapElement * result = NULL ;
   if (inKey.isValid ()) {
-    const C_String key = inKey.mAttribute_string.stringValue () ;
+    const C_String key = inKey.mProperty_string.stringValue () ;
     cUniqueMapNode * node = findEntryInMap (key, this) ;
     if (NULL != node) {
       node->mAttributes.insulate () ;
@@ -1493,8 +1492,8 @@ typeComparisonResult cSharedUniqueMapRoot::mapCompare (const cSharedUniqueMapRoo
   }else if (count () < inOperand->count ()) {
     result = kFirstOperandGreaterThanSecond ;
   }else{
-    capCollectionElementArray array ; populateEnumerationArray (array, kEnumeration_up) ;
-    capCollectionElementArray operandArray ; inOperand->populateEnumerationArray (operandArray, kEnumeration_up) ;
+    capCollectionElementArray array ; populateEnumerationArray (array) ;
+    capCollectionElementArray operandArray ; inOperand->populateEnumerationArray (operandArray) ;
     for (uint32_t i=0 ; (i<array.count ()) && (kOperandEqual == result) ; i++) {
       result = array.objectAtIndex (i COMMA_HERE).compare (operandArray.objectAtIndex (i COMMA_HERE)) ;
     }
@@ -1942,14 +1941,14 @@ static void recursiveCheckAutomatonStates (const cUniqueMapNode * inNode,
         case kMapAutomatonIssueWarning : {
           const C_String warningMessage = buildIssueMessage (issue.mIssueMessage, inNode->mKey) ;
           macroValidSharedObject (inNode->mAttributes.ptr (), cMapElement) ;
-          const GALGAS_location loc = ((const cMapElement *) inNode->mAttributes.ptr ())->mAttribute_lkey.mAttribute_location ;
+          const GALGAS_location loc = ((const cMapElement *) inNode->mAttributes.ptr ())->mProperty_lkey.mProperty_location ;
           inCompiler->semanticWarningAtLocation (loc, warningMessage COMMA_THERE) ;
           }
           break ;
         case kMapAutomatonIssueError : {
           const C_String errorMessage = buildIssueMessage (issue.mIssueMessage, inNode->mKey) ;
           macroValidSharedObject (inNode->mAttributes.ptr (), cMapElement) ;
-          const GALGAS_location loc = ((const cMapElement *) inNode->mAttributes.ptr ())->mAttribute_lkey.mAttribute_location ;
+          const GALGAS_location loc = ((const cMapElement *) inNode->mAttributes.ptr ())->mProperty_lkey.mProperty_location ;
           inCompiler->semanticErrorAtLocation (loc, errorMessage, TC_Array <C_FixItDescription> () COMMA_THERE) ;
           }
           break ;
@@ -1993,7 +1992,7 @@ static void enterAscendingEnumeration (cUniqueMapNode * inNode,
   if (inNode != NULL) {
     enterAscendingEnumeration (inNode->mInfPtr, ioEnumerationArray) ;
     if (NULL != inNode->mAttributes.ptr ()) {
-      ioEnumerationArray.addObject (inNode->mAttributes) ;
+      ioEnumerationArray.appendObject (inNode->mAttributes) ;
     }
     enterAscendingEnumeration (inNode->mSupPtr, ioEnumerationArray) ;
   }
@@ -2001,45 +2000,21 @@ static void enterAscendingEnumeration (cUniqueMapNode * inNode,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-static void enterDescendingEnumeration (cUniqueMapNode * inNode,
-                                        capCollectionElementArray & ioEnumerationArray) {
-  if (inNode != NULL) {
-    enterDescendingEnumeration (inNode->mSupPtr, ioEnumerationArray) ;
-    if (NULL != inNode->mAttributes.ptr ()) {
-      ioEnumerationArray.addObject (inNode->mAttributes) ;
-    }
-    enterDescendingEnumeration (inNode->mInfPtr, ioEnumerationArray) ;
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void cSharedUniqueMapRoot::populateEnumerationArray (capCollectionElementArray & ioEnumerationArray,
-                                                     const typeEnumerationOrder inEnumerationOrder) const {
+void cSharedUniqueMapRoot::populateEnumerationArray (capCollectionElementArray & ioEnumerationArray) const {
   // printf ("MAP COUNT %u\n", count ()) ;
   ioEnumerationArray.setCapacity (mNodeCount) ;
-  switch (enumerationOrderValue (inEnumerationOrder)) {
-  case kENUMERATION_UP  :
-    enterAscendingEnumeration (mRoot, ioEnumerationArray) ;
-    break ;
-  case kENUMERATION_DOWN :
-    enterDescendingEnumeration (mRoot, ioEnumerationArray) ;
-    break ;
-  case kENUMERATION_ENTER_ORDER :
-  case kENUMERATION_REVERSE_ENTER_ORDER :
-    MF_RunTimeError ("invalid inEnumerationOrder %lld", enumerationOrderValue (inEnumerationOrder), 0) ;
-//    break ;
-  }
-  MF_Assert (mNodeCount == ioEnumerationArray.count (), "mNodeCount (%lld) != ioEnumerationArray.count () (%lld)", mNodeCount, ioEnumerationArray.count ()) ;
+  enterAscendingEnumeration (mRoot, ioEnumerationArray) ;
+  MF_Assert (mNodeCount == (uint32_t) ioEnumerationArray.count (),
+             "mNodeCount (%lld) != ioEnumerationArray.count () (%lld)",
+             mNodeCount, ioEnumerationArray.count ()) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void AC_GALGAS_uniqueMap::populateEnumerationArray (capCollectionElementArray & ioEnumerationArray,
-                                                    const typeEnumerationOrder inEnumerationOrder) const {
+void AC_GALGAS_uniqueMap::populateEnumerationArray (capCollectionElementArray & ioEnumerationArray) const {
   // printf ("MAP COUNT %u\n", count ()) ;
   if (isValid ()) {
-    mSharedMap->populateEnumerationArray (ioEnumerationArray, inEnumerationOrder) ;
+    mSharedMap->populateEnumerationArray (ioEnumerationArray) ;
   }
 }
 
@@ -2218,7 +2193,7 @@ GALGAS_lstring AC_GALGAS_uniqueMapProxy::getter_lkey (C_Compiler * inCompiler
   const cMapElement * p = getAttributeListPointer (inCompiler, "lkey" COMMA_THERE) ;
   if (NULL != p) {
     macroValidSharedObject (p, cMapElement) ;
-    result = p->mAttribute_lkey ;
+    result = p->mProperty_lkey ;
   }
   return result ;
 }
@@ -2320,10 +2295,10 @@ void AC_GALGAS_uniqueMapProxy::internalMakeRegularProxyBySearchingKey (const AC_
                                                                        C_Compiler * inCompiler
                                                                        COMMA_LOCATION_ARGS) {
   if (inKey.isValid ()) {
-    cUniqueMapNode * node = inMap.searchEntryInMap (inKey.mAttribute_string.stringValue ()) ;
+    cUniqueMapNode * node = inMap.searchEntryInMap (inKey.mProperty_string.stringValue ()) ;
     if (NULL == node) {
       TC_UniqueArray <C_String> nearestKeyArray ;
-      inMap.findNearestKey (inKey.mAttribute_string.stringValue (), nearestKeyArray) ;
+      inMap.findNearestKey (inKey.mProperty_string.stringValue (), nearestKeyArray) ;
       inCompiler->semanticErrorWith_K_message (inKey, nearestKeyArray, inSearchErrorMessage COMMA_THERE) ;
     }
     attachProxyToMapNode (node) ;
@@ -2341,7 +2316,7 @@ static cUniqueMapNode * internalInsertProxy (cUniqueMapNode * & ioRootPtr,
     capCollectionElement emptyAttributes ;
     macroMyNew (ioRootPtr, cUniqueMapNode (inKey, 0, emptyAttributes)) ;
     if (inLocation.isValidAndNotNowhere ()) {
-      ioRootPtr->mInvocationLocationArray.addObject (inLocation) ;
+      ioRootPtr->mInvocationLocationArray.appendObject (inLocation) ;
     }
     ioExtension = true ;
     matchingEntry = ioRootPtr ;
@@ -2379,7 +2354,7 @@ static cUniqueMapNode * internalInsertProxy (cUniqueMapNode * & ioRootPtr,
     }else{ // Ok, entry already exists
       matchingEntry = ioRootPtr ;
       if (inLocation.isValidAndNotNowhere () && (! ioRootPtr->isSolved ())) {
-        ioRootPtr->mInvocationLocationArray.addObject (inLocation) ;
+        ioRootPtr->mInvocationLocationArray.appendObject (inLocation) ;
       }
       ioExtension = false ;
     }

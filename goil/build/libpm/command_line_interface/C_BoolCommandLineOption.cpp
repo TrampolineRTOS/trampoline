@@ -146,8 +146,8 @@ void C_BoolCommandLineOption::getBoolOptionNameList (TC_UniqueArray <C_String> &
   C_BoolCommandLineOption * p = gFirstBoolCommand ;
   while (p != NULL) {
     if (p->mVisibleInGalgas) {
-      outArray.addObject (p->mDomainName) ;
-      outArray.addObject (p->mIdentifier) ;
+      outArray.appendObject (p->mDomainName) ;
+      outArray.appendObject (p->mIdentifier) ;
     }
     p = p->mNext ;
   }

@@ -199,7 +199,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlMetaClass ;
 
 class cMapElement_arxmlMetaClassMap : public cMapElement {
 //--- Map attributes
-  public : GALGAS_arxmlMetaClass mAttribute_mType ;
+  public : GALGAS_arxmlMetaClass mProperty_mType ;
 
 //--- Constructor
   public : cMapElement_arxmlMetaClassMap (const GALGAS_lstring & inKey,
@@ -227,8 +227,8 @@ class cMapElement_arxmlMetaClassMap : public cMapElement {
 
 class GALGAS_arxmlMetaClassMap_2D_element : public AC_GALGAS_root {
 //--------------------------------- Public data members
-  public : GALGAS_lstring mAttribute_lkey ;
-  public : GALGAS_arxmlMetaClass mAttribute_mType ;
+  public : GALGAS_lstring mProperty_lkey ;
+  public : GALGAS_arxmlMetaClass mProperty_mType ;
 
 
 //--------------------------------- Accessors
@@ -313,9 +313,9 @@ class GALGAS_arxmlMetaAttributeList : public AC_GALGAS_list {
   public : GALGAS_arxmlMetaAttributeList (void) ;
 
 //--------------------------------- List constructor used by listmap
-  public : GALGAS_arxmlMetaAttributeList (cSharedList * inSharedListPtr) ;
+  public : GALGAS_arxmlMetaAttributeList (const capCollectionElementArray & inSharedArray) ;
 
-//--------------------------------- Element constructor used by listmap
+//--------------------------------- Element constructor
   public : static void makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                   const class GALGAS_arxmlMetaAttribute & in_lAttribute
                                                   COMMA_LOCATION_ARGS) ;
@@ -436,9 +436,9 @@ class GALGAS_arxmlMetaElementList : public AC_GALGAS_list {
   public : GALGAS_arxmlMetaElementList (void) ;
 
 //--------------------------------- List constructor used by listmap
-  public : GALGAS_arxmlMetaElementList (cSharedList * inSharedListPtr) ;
+  public : GALGAS_arxmlMetaElementList (const capCollectionElementArray & inSharedArray) ;
 
-//--------------------------------- Element constructor used by listmap
+//--------------------------------- Element constructor
   public : static void makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                   const class GALGAS_arxmlMetaElement & in_lElement
                                                   COMMA_LOCATION_ARGS) ;
@@ -556,13 +556,13 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlMetaElementLis
 
 class cPtr_arxmlMetaClass : public acPtr_class {
 //--- Attributes
-  public : GALGAS_lstring mAttribute_name ;
-  public : GALGAS_bool mAttribute_isAbstract ;
-  public : GALGAS_arxmlMetaElementList mAttribute_lElement ;
-  public : GALGAS_arxmlMetaElementList mAttribute_lElementLegacy ;
-  public : GALGAS_arxmlMetaAttributeList mAttribute_lAttribute ;
-  public : GALGAS_arxmlMetaAttributeList mAttribute_lAttributeLegacy ;
-  public : GALGAS_lstring mAttribute_desc ;
+  public : GALGAS_lstring mProperty_name ;
+  public : GALGAS_bool mProperty_isAbstract ;
+  public : GALGAS_arxmlMetaElementList mProperty_lElement ;
+  public : GALGAS_arxmlMetaElementList mProperty_lElementLegacy ;
+  public : GALGAS_arxmlMetaAttributeList mProperty_lAttribute ;
+  public : GALGAS_arxmlMetaAttributeList mProperty_lAttributeLegacy ;
+  public : GALGAS_lstring mProperty_desc ;
 
 //--- Constructor
   public : cPtr_arxmlMetaClass (const GALGAS_lstring & in_name,
@@ -670,11 +670,11 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlMetaElement ;
 
 class cPtr_arxmlMetaElement : public acPtr_class {
 //--- Attributes
-  public : GALGAS_lstring mAttribute_name ;
-  public : GALGAS_lstring mAttribute_type ;
-  public : GALGAS_lstring mAttribute_minOccurs ;
-  public : GALGAS_lstring mAttribute_maxOccurs ;
-  public : GALGAS_lstring mAttribute_prefix ;
+  public : GALGAS_lstring mProperty_name ;
+  public : GALGAS_lstring mProperty_type ;
+  public : GALGAS_lstring mProperty_minOccurs ;
+  public : GALGAS_lstring mProperty_maxOccurs ;
+  public : GALGAS_lstring mProperty_prefix ;
 
 //--- Constructor
   public : cPtr_arxmlMetaElement (const GALGAS_lstring & in_name,
@@ -810,10 +810,10 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlMetaAttribute 
 
 class cPtr_arxmlMetaAttribute : public acPtr_class {
 //--- Attributes
-  public : GALGAS_lstring mAttribute_name ;
-  public : GALGAS_lstring mAttribute_type ;
-  public : GALGAS_lstring mAttribute_prefix ;
-  public : GALGAS_lstring mAttribute_use ;
+  public : GALGAS_lstring mProperty_name ;
+  public : GALGAS_lstring mProperty_type ;
+  public : GALGAS_lstring mProperty_prefix ;
+  public : GALGAS_lstring mProperty_use ;
 
 //--- Constructor
   public : cPtr_arxmlMetaAttribute (const GALGAS_lstring & in_name,
@@ -1032,9 +1032,9 @@ class GALGAS_arxmlMetaClasslist : public AC_GALGAS_list {
   public : GALGAS_arxmlMetaClasslist (void) ;
 
 //--------------------------------- List constructor used by listmap
-  public : GALGAS_arxmlMetaClasslist (cSharedList * inSharedListPtr) ;
+  public : GALGAS_arxmlMetaClasslist (const capCollectionElementArray & inSharedArray) ;
 
-//--------------------------------- Element constructor used by listmap
+//--------------------------------- Element constructor
   public : static void makeAttributesFromObjects (capCollectionElement & outAttributes,
                                                   const class GALGAS_arxmlMetaClass & in_lClass
                                                   COMMA_LOCATION_ARGS) ;
@@ -1152,7 +1152,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlMetaClasslist 
 
 class GALGAS_arxmlMetaClasslist_2D_element : public AC_GALGAS_root {
 //--------------------------------- Public data members
-  public : GALGAS_arxmlMetaClass mAttribute_lClass ;
+  public : GALGAS_arxmlMetaClass mProperty_lClass ;
 
 
 //--------------------------------- Accessors
@@ -1218,7 +1218,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlMetaClasslist_
 
 class GALGAS_arxmlMetaElementList_2D_element : public AC_GALGAS_root {
 //--------------------------------- Public data members
-  public : GALGAS_arxmlMetaElement mAttribute_lElement ;
+  public : GALGAS_arxmlMetaElement mProperty_lElement ;
 
 
 //--------------------------------- Accessors
@@ -1284,7 +1284,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlMetaElementLis
 
 class GALGAS_arxmlMetaAttributeList_2D_element : public AC_GALGAS_root {
 //--------------------------------- Public data members
-  public : GALGAS_arxmlMetaAttribute mAttribute_lAttribute ;
+  public : GALGAS_arxmlMetaAttribute mProperty_lAttribute ;
 
 
 //--------------------------------- Accessors
@@ -1674,7 +1674,7 @@ class GALGAS_gtlGetter callExtensionGetter_getGetter (const cPtr_library * inObj
 
 class cPtr_gtlGetter : public cPtr_gtlFunction {
 //--- Attributes
-  public : GALGAS_type mAttribute_targetType ;
+  public : GALGAS_type mProperty_targetType ;
 
 //--- Constructor
   public : cPtr_gtlGetter (const GALGAS_location & in_where,
@@ -1783,7 +1783,7 @@ class GALGAS_gtlSetter callExtensionGetter_getSetter (const cPtr_library * inObj
 
 class cPtr_gtlSetter : public cPtr_gtlExecutableEntity {
 //--- Attributes
-  public : GALGAS_type mAttribute_targetType ;
+  public : GALGAS_type mProperty_targetType ;
 
 //--- Constructor
   public : cPtr_gtlSetter (const GALGAS_location & in_where,

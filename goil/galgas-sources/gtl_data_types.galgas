@@ -2467,6 +2467,17 @@ override setter @gtlString performSetter
     @uint index = [[[arguments dataAtIndex !1] as @gtlInt value] uint]
     [!?value setCharacterAtIndex !charToSet !index]
     where = methodName
+  elsif "insertCharAtIndex" == methodName then
+    argumentsCheck(!methodName !charIntArguments() !arguments)
+    @char charToInsert = [[arguments dataAtIndex !0] as @gtlChar value]
+    @uint index = [[[arguments dataAtIndex !1] as @gtlInt value] uint]
+    [!?value insertCharacterAtIndex !charToInsert !index]
+    where = methodName
+  elsif "removeCharAtIndex" == methodName then
+    argumentsCheck(!methodName !intArgument() !arguments)
+    @uint index = [[[arguments dataAtIndex !0] as @gtlInt value] uint]
+    [!?value removeCharacterAtIndex ?* !index]
+    where = methodName
   elsif [lib setterExists !"string" !methodName] then
     @gtlData copy = self
     [[lib getSetter !"string" !methodName] callSetter
@@ -2796,7 +2807,13 @@ list @list { @gtlData value %setter }
 #-----------------------------------------------------------------------------*
 # Set type and operations on set
 #-----------------------------------------------------------------------------*
-class @gtlSet : @gtlData { @stringset value %setter }
+map @lstringset {
+  insert put error message "set element named '%K' is already declared in %L"
+  search get error message "there is no set element named '%K' to get"
+  remove del error message "there is no set element named '%K' to delete"
+}
+
+class @gtlSet : @gtlData { @lstringset value %setter }
 
 override getter @gtlSet desc
   ?let @uint tab
@@ -2808,7 +2825,7 @@ override getter @gtlSet desc
   before
     result += @string.stringWithSequenceOfCharacters{!' ' !tab+4}
   do
-    result += key
+    result += lkey
   between
     result += ", "
   after
@@ -2850,15 +2867,25 @@ override getter @gtlSet notOp   -> @gtlData result {
 }
 
 override getter @gtlSet addOp ?let @gtlData right -> @gtlData result {
-  @stringset set = value
-  set += ![right string]
+  @lstringset set = value
+  @lstring element = [right lstring]
+  if [set hasKey !element] then
+    [!?set del !element]
+  end
+  [!?set put ![right lstring]]
   result = @gtlSet.new { !where !emptylstring() !set }
 }
 
 override getter @gtlSet subOp ?let @gtlData right -> @gtlData result {
   if right is == @gtlSet then
+    @lstringset resultSet = value
+    for (lkey) in [right as @gtlSet value] do
+      if [resultSet hasKey !lkey] then
+        [!?resultSet del !lkey]
+      end
+    end
     result = @gtlSet.new {
-      !where !emptylstring() !value - [right as @gtlSet value]
+      !where !emptylstring() !resultSet
     }
   else
     error right : "set expected" : result
@@ -2879,8 +2906,14 @@ override getter @gtlSet modOp ?let @gtlData unused right -> @gtlData result {
 
 override getter @gtlSet andOp ?let @gtlData right -> @gtlData result {
   if right is == @gtlSet then
+    @lstringset resultSet = .emptyMap
+    for (rightKey) in [right as @gtlSet value] do
+      if [value hasKey !rightKey] then
+        [!?resultSet put !rightKey]
+      end
+    end
     result = @gtlSet.new {
-      !where !emptylstring() !value & [right as @gtlSet value]
+      !where !emptylstring() !resultSet
     }
   else
     error right : "set expected" : result
@@ -2889,8 +2922,14 @@ override getter @gtlSet andOp ?let @gtlData right -> @gtlData result {
 
 override getter @gtlSet orOp ?let @gtlData right -> @gtlData result {
   if right is == @gtlSet then
+    @lstringset resultSet = [right as @gtlSet value]
+    for (leftKey) in value do
+      if not [resultSet hasKey !leftKey] then
+        [!?resultSet put !leftKey]
+      end
+    end
     result = @gtlSet.new {
-      !where !emptylstring() !value | [right as @gtlSet value]
+      !where !emptylstring() !resultSet
     }
   else
     error right : "set expected" : result
@@ -3002,13 +3041,20 @@ override getter @gtlSet performGetter
       ![methodName location] !emptylstring() !.emptyList
     }
     for () in value do
-      [!?result appendItem !@gtlString.new { !where !emptylstring() !key }]
+      [!?result appendItem !@gtlString.new { !lkey !emptylstring() !lkey }]
     end
   elsif "contains"               == methodName then
     argumentsCheck(!methodName !anyArgument() !arguments)
     @string key = [[arguments dataAtIndex !0] string]
     result = @gtlBool.new {
       ![methodName location] !emptylstring() ![value hasKey !key]
+    }
+  elsif "elementNamed"           == methodName then
+    argumentsCheck(!methodName !anyArgument() !arguments)
+    @string key = [[arguments dataAtIndex !0] string]
+    @location loc = [value locationForKey !key]
+    result = @gtlString.new {
+      !loc !emptylstring() !key
     }
   elsif "isANumber" == methodName then
     argumentsCheck(!methodName !noArgument() !arguments)
@@ -3053,13 +3099,18 @@ override setter @gtlSet performSetter
     where = methodName
   elsif       "add"   == methodName then
     argumentsCheck(!methodName !anyArgument() !arguments)
-    @string key = [[arguments dataAtIndex !0] string]
-    value += !key
+    @lstring key = [[arguments dataAtIndex !0] lstring]
+    if [value hasKey !key] then
+      [!?value del !key]
+    end
+    [!?value put !key]
     where = methodName
   elsif      "remove" == methodName then
     argumentsCheck(!methodName !anyArgument() !arguments)
-    @string key = [[arguments dataAtIndex !0] string]
-    [!?value removeKey !key]
+    @lstring key = [[arguments dataAtIndex !0] lstring]
+    if [value hasKey !key] then
+      [!?value del !key]
+    end
     where = methodName
   elsif [lib setterExists !"set" !methodName] then
     @gtlData copy = self
@@ -3652,9 +3703,13 @@ override getter @gtlList performGetter
     result = @gtlMap.new { !where !emptylstring() !resultMap }
   elsif "set"                    == methodName then
     argumentsCheck(!methodName !noArgument() !arguments)
-    @stringset resultSet = .emptySet
+    @lstringset resultSet = .emptyMap
     for (item) in value do
-      resultSet += ![item string]
+      @lstring itemKey = [item lstring]
+      if [resultSet hasKey !itemKey] then
+        [!?resultSet del !itemKey]
+      end
+      [!?resultSet put !itemKey]
     end
     result = @gtlSet.new {
       !methodName !emptylstring() !resultSet
@@ -3662,10 +3717,14 @@ override getter @gtlList performGetter
   elsif "setBy"                    == methodName then
     argumentsCheck(!methodName !stringArgument() !arguments)
     @lstring key = [[arguments dataAtIndex !0] lstring]
-    @stringset resultSet = .emptySet
+    @lstringset resultSet = .emptyMap
     for (item) in value do
       [item structField !key ?@gtlData field]
-      resultSet += ![field string]
+      @lstring resKey = [field lstring]
+      if [resultSet hasKey !resKey] then
+        [!?resultSet del !resKey]
+      end
+      [!?resultSet put !resKey]
     end
     result = @gtlSet.new {
       !methodName !emptylstring() !resultSet

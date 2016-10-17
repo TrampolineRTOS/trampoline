@@ -36,20 +36,19 @@ class C_SharedObject {
   //--- Creation location
     public : const char * const mCreationFile ;
     public : const int mCreationLine ;
+  //--- Link between existing instances
+    private : C_SharedObject * mPtrToPreviousObject ;
+    private : C_SharedObject * mPtrToNextObject ;
   #endif
 
 //--- Object index
   public : const uint32_t mObjectIndex ;
 
-//--- Link between existing instances
-  private : C_SharedObject * mPtrToPreviousObject ;
-  private : C_SharedObject * mPtrToNextObject ;
-
 //--- Retain count
   private : mutable int32_t mRetainCount ;
 
-  public : inline int32_t retainCount (void) const { return mRetainCount ; }
-
+  public : inline bool isUniquelyReferenced (void) { return mRetainCount == 1 ; }
+  
   public : static void retain (const C_SharedObject * inObject COMMA_LOCATION_ARGS) ;
 
   public : static void release (const C_SharedObject * inObject COMMA_LOCATION_ARGS) ;
@@ -165,14 +164,14 @@ class C_SharedObject {
 //---------------------------------------------------------------------------------------------------------------------*
 
 #define macroUniqueSharedObject(PTR) \
-  { MF_Assert ((PTR)->retainCount () == 1, "retainCount () == %ld != 1", (PTR)->retainCount (), 0) ; }
+  { MF_Assert ((PTR)->isUniquelyReferenced (), "isUniquelyReferenced () is false", 0, 0) ; }
 
 //---------------------------------------------------------------------------------------------------------------------*
 //   macroUniqueSharedObjectThere                                                                                      *
 //---------------------------------------------------------------------------------------------------------------------*
 
 #define macroUniqueSharedObjectThere(PTR) \
-  { MF_AssertThere ((PTR)->retainCount () == 1, "retainCount () == %ld != 1", (PTR)->retainCount (), 0) ; }
+  { MF_AssertThere ((PTR)->isUniquelyReferenced (), "isUniquelyReferenced () is false", 0, 0) ; }
 
 //---------------------------------------------------------------------------------------------------------------------*
 

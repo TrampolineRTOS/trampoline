@@ -62,14 +62,14 @@ void C_Data::setCapacity (const int32_t inNewCapacity) {
 
 void C_Data::appendData (const C_Data & inData) {
   for (int32_t i=0 ; i<inData.mBinaryData.count () ; i++) {
-    mBinaryData.addObject (inData.mBinaryData (i COMMA_HERE)) ;
+    mBinaryData.appendObject (inData.mBinaryData (i COMMA_HERE)) ;
   }
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void C_Data::appendByte (const uint8_t inByte) {
-  mBinaryData.addObject (inByte) ;
+  mBinaryData.appendObject (inByte) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*

@@ -4,7 +4,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2008, ..., 2014 Pierre Molinaro.                                                                     *
+//  Copyright (C) 2008, ..., 2016 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -60,6 +60,7 @@ class cSharedMapRoot : public C_SharedObject {
 
 //--------------------------------- Copy a map
   protected : VIRTUAL_IN_DEBUG void copyFrom (const cSharedMapRoot * inSource) ;
+  protected : VIRTUAL_IN_DEBUG void copyCurrentAndOverridenMapsFrom (const cSharedMapRoot * inSource) ;
 
 //--------------------------------- Attribute read access
   private : VIRTUAL_IN_DEBUG const cMapNode * findNodeForKeyInMapOrInOverridenMaps (const GALGAS_string & inKey,
@@ -136,8 +137,7 @@ class cSharedMapRoot : public C_SharedObject {
                                               const uint32_t inLevel) const ;
 
 //--------------------------------- Internal method for enumeration
-  protected : VIRTUAL_IN_DEBUG void populateEnumerationArray (capCollectionElementArray & ioEnumerationArray,
-                                                              const typeEnumerationOrder inEnumerationOrder) const ;
+  protected : VIRTUAL_IN_DEBUG void populateEnumerationArray (capCollectionElementArray & ioEnumerationArray) const ;
 
 //--------------------------------- Comparison
   public : VIRTUAL_IN_DEBUG typeComparisonResult mapCompare (const cSharedMapRoot * inOperand) const ;
@@ -477,7 +477,7 @@ cCollectionElement * AC_GALGAS_map::readWriteAccessForWithInstructionWithErrorMe
   cCollectionElement * result = NULL ;
   if (isValid () && inKey.isValid ()) {
     insulate (HERE) ;
-    const C_String key = inKey.mAttribute_string.stringValue () ;
+    const C_String key = inKey.mProperty_string.stringValue () ;
     cMapNode * node = mSharedMap->findEntryInMap (key, mSharedMap) ;
     if (NULL == node) {
       TC_UniqueArray <C_String> nearestKeyArray ;
@@ -595,7 +595,7 @@ void cSharedMapRoot::performInsertOrReplace (const capCollectionElement & inAttr
   if (inAttributes.isValid ()) {
     const cMapElement * p = (cMapElement *) inAttributes.ptr () ;
     macroValidSharedObject (p, cMapElement) ;
-    const GALGAS_string string_key = p->mAttribute_lkey.mAttribute_string ;
+    const GALGAS_string string_key = p->mProperty_lkey.mProperty_string ;
     const C_String key = string_key.stringValue () ;
   //--- Insert or replace
     bool extension ; // Unused here
@@ -663,12 +663,54 @@ void cSharedMapRoot::copyFrom (const cSharedMapRoot * inSource) {
 //---------------------------------------------------------------------------------------------------------------------*
 
 void AC_GALGAS_map::insulate (LOCATION_ARGS) {
-  if ((NULL != mSharedMap) && (mSharedMap->retainCount () > 1)) {
+  if ((NULL != mSharedMap) && !mSharedMap->isUniquelyReferenced ()) {
     cSharedMapRoot * p = NULL ;
     macroMyNew (p, cSharedMapRoot (THERE)) ;
     p->copyFrom (mSharedMap) ;
     macroAssignSharedObject (mSharedMap, p) ;
     macroDetachSharedObject (p) ;
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void cSharedMapRoot::copyCurrentAndOverridenMapsFrom (const cSharedMapRoot * inSource) {
+  macroUniqueSharedObject (this) ;
+  #ifndef DO_NOT_GENERATE_CHECKINGS
+    inSource->checkMap (HERE) ;
+  #endif
+  macroValidSharedObject (inSource, cSharedMapRoot) ;
+  mCount = inSource->mCount ;
+  if (NULL != inSource->mRoot) {
+    macroMyNew (mRoot, cMapNode (inSource->mRoot)) ;
+  }
+  if (NULL != inSource->mOverridenMap) {
+    macroMyNew (mOverridenMap, cSharedMapRoot (HERE)) ;
+    mOverridenMap->copyCurrentAndOverridenMapsFrom (inSource->mOverridenMap) ;
+  }
+  #ifndef DO_NOT_GENERATE_CHECKINGS
+    checkMap (HERE) ;
+  #endif
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void AC_GALGAS_map::insulateCurrentAndOverridenMaps (LOCATION_ARGS) {
+  if (NULL != mSharedMap) {
+  //--- Perform a deep copy if any of the overriden maps is shared
+    bool performDeepCopy = !mSharedMap->isUniquelyReferenced () ;
+    cSharedMapRoot * overridenMap = mSharedMap->mOverridenMap ;
+    while ((NULL != overridenMap) && !performDeepCopy) {
+      performDeepCopy = !overridenMap->isUniquelyReferenced () ;
+      overridenMap = overridenMap->mOverridenMap ;
+    }
+    if (performDeepCopy) {
+      cSharedMapRoot * p = NULL ;
+      macroMyNew (p, cSharedMapRoot (THERE)) ;
+      p->copyCurrentAndOverridenMapsFrom (mSharedMap) ;
+      macroAssignSharedObject (mSharedMap, p) ;
+      macroDetachSharedObject (p) ;
+    }
   }
 }
 
@@ -746,7 +788,7 @@ cMapNode * cSharedMapRoot::performInsert (const capCollectionElement & inAttribu
   if (inAttributes.isValid ()) {
     cMapElement * p = (cMapElement *) inAttributes.ptr () ;
     macroValidSharedObject (p, cMapElement) ;
-    const C_String key = p->mAttribute_lkey.mAttribute_string.stringValue () ;
+    const C_String key = p->mProperty_lkey.mProperty_string.stringValue () ;
   //--- Insert or replace
     bool extension = false ; // Unused here
     bool entryAlreadyExists = false ;
@@ -762,18 +804,18 @@ cMapNode * cSharedMapRoot::performInsert (const capCollectionElement & inAttribu
         //--- Existing key
           cMapElement * me = (cMapElement *) matchingEntry->mAttributes.ptr () ;
           macroValidSharedObject (me, cMapElement) ;
-          const GALGAS_location lstring_existingKey_location = me->mAttribute_lkey.mAttribute_location ;
+          const GALGAS_location lstring_existingKey_location = me->mProperty_lkey.mProperty_location ;
         //--- Emit error message
-          inCompiler->semanticErrorWith_K_L_message (p->mAttribute_lkey, inShadowErrorMessage, lstring_existingKey_location COMMA_THERE) ;
+          inCompiler->semanticErrorWith_K_L_message (p->mProperty_lkey, inShadowErrorMessage, lstring_existingKey_location COMMA_THERE) ;
         }
       }
     }else{ // Error, entry already exists
     //--- Existing key
       cMapElement * me = (cMapElement *) matchingEntry->mAttributes.ptr () ;
       macroValidSharedObject (me, cMapElement) ;
-      const GALGAS_location lstring_existingKey_location = me->mAttribute_lkey.mAttribute_location ;
+      const GALGAS_location lstring_existingKey_location = me->mProperty_lkey.mProperty_location ;
     //--- Emit error message
-      inCompiler->semanticErrorWith_K_L_message (p->mAttribute_lkey, inInsertErrorMessage, lstring_existingKey_location COMMA_THERE) ;
+      inCompiler->semanticErrorWith_K_L_message (p->mProperty_lkey, inInsertErrorMessage, lstring_existingKey_location COMMA_THERE) ;
     }
   }
   #ifndef DO_NOT_GENERATE_CHECKINGS
@@ -876,7 +918,7 @@ static void enterKeyInLStringList (cMapNode * inNode,
     cMapElement * p = (cMapElement *) inNode->mAttributes.ptr () ;
     if (NULL != p) {
       macroValidSharedObject (p, cMapElement) ;
-      ioResult.addAssign_operation (p->mAttribute_lkey COMMA_HERE) ;
+      ioResult.addAssign_operation (p->mProperty_lkey COMMA_HERE) ;
     }
     enterKeyInLStringList (inNode->mSupPtr, ioResult) ;
   }
@@ -922,7 +964,7 @@ GALGAS_location cSharedMapRoot::locationForKey (const GALGAS_string & inKey,
     }else{
       cMapElement * p = (cMapElement *) node->mAttributes.ptr () ;
       macroValidSharedObject (p, cMapElement) ;
-      result = p->mAttribute_lkey.mAttribute_location ;
+      result = p->mProperty_lkey.mProperty_location ;
     }
   }
   return result ;
@@ -1049,9 +1091,9 @@ static void findNearestKeyForNode (const C_String & inKey,
     if (ioBestDistance > distance) {
       ioBestDistance = distance ;
       ioNearestKeyArray.setCountToZero () ;
-      ioNearestKeyArray.addObject (inCurrentNode->mKey) ;
+      ioNearestKeyArray.appendObject (inCurrentNode->mKey) ;
     }else if (ioBestDistance == distance) {
-      ioNearestKeyArray.addObject (inCurrentNode->mKey) ;
+      ioNearestKeyArray.appendObject (inCurrentNode->mKey) ;
     }
     findNearestKeyForNode (inKey, inCurrentNode->mInfPtr, ioBestDistance, ioNearestKeyArray) ;
     findNearestKeyForNode (inKey, inCurrentNode->mSupPtr, ioBestDistance, ioNearestKeyArray) ;
@@ -1079,7 +1121,7 @@ cMapNode * cSharedMapRoot::performSearch (const GALGAS_lstring & inKey,
                                           COMMA_LOCATION_ARGS) const {
   cMapNode * result = NULL ;
   if (inKey.isValid ()) {
-    const C_String key = inKey.mAttribute_string.stringValue () ;
+    const C_String key = inKey.mProperty_string.stringValue () ;
     result = findEntryInMap (key, this) ;
     if (NULL == result) {
       TC_UniqueArray <C_String> nearestKeyArray ;
@@ -1180,7 +1222,7 @@ cMapElement * AC_GALGAS_map::searchForReadWriteAttribute (const GALGAS_string & 
                                                           COMMA_LOCATION_ARGS) {
   cMapElement * result = NULL ;
   if (isValid ()) {
-    insulate (THERE) ;
+    insulateCurrentAndOverridenMaps (THERE) ;
     if (NULL != mSharedMap) {
       result = (cMapElement *) mSharedMap->searchForReadWriteAttribute (inKey, inCompiler COMMA_THERE) ;
     }
@@ -1203,7 +1245,7 @@ cMapElement * cSharedMapRoot::searchForReadWriteAttribute (const GALGAS_lstring 
   macroUniqueSharedObject (this) ;
   cMapElement * result = NULL ;
   if (inKey.isValid ()) {
-    const C_String key = inKey.mAttribute_string.stringValue () ;
+    const C_String key = inKey.mProperty_string.stringValue () ;
     cMapNode * node = findEntryInMap (key, this) ;
     if (NULL != node) {
       node->mAttributes.insulate () ;
@@ -1371,7 +1413,7 @@ void cSharedMapRoot::performRemove (GALGAS_lstring & inKey,
                                     COMMA_LOCATION_ARGS) {
   macroUniqueSharedObject (this) ;
   if (inKey.isValid ()) {
-    const C_String key = inKey.mAttribute_string.stringValue () ;
+    const C_String key = inKey.mProperty_string.stringValue () ;
     bool branchHasBeenRemoved = false ;
     cMapNode * node = internalRemoveEntry (key, mRoot, branchHasBeenRemoved) ;
     if (NULL == node) {
@@ -1394,7 +1436,7 @@ void cSharedMapRoot::performRemove (GALGAS_lstring & inKey,
         }
       }
     //--- Emit error message
-      const GALGAS_location key_location = inKey.mAttribute_location ;
+      const GALGAS_location key_location = inKey.mProperty_location ;
       inCompiler->semanticErrorAtLocation (key_location, message, TC_Array <C_FixItDescription> () COMMA_THERE) ;
     }else{ // Ok, found
       outResult = node->mAttributes ;
@@ -1437,8 +1479,8 @@ typeComparisonResult cSharedMapRoot::mapCompare (const cSharedMapRoot * inOperan
   }else if (count () > inOperand->count ()) {
     r = kFirstOperandGreaterThanSecond ;
   }else{
-    capCollectionElementArray array ; populateEnumerationArray (array, kEnumeration_up) ;
-    capCollectionElementArray operandArray ; inOperand->populateEnumerationArray (operandArray, kEnumeration_up) ;
+    capCollectionElementArray array ; populateEnumerationArray (array) ;
+    capCollectionElementArray operandArray ; inOperand->populateEnumerationArray (operandArray) ;
     for (uint32_t i=0 ; (i<array.count ()) && (kOperandEqual == r) ; i++) {
       r = array.objectAtIndex (i COMMA_HERE).compare (operandArray.objectAtIndex (i COMMA_HERE)) ;
     }
@@ -1501,7 +1543,7 @@ static void enterAscendingEnumeration (cMapNode * inNode,
   if (inNode != NULL) {
     enterAscendingEnumeration (inNode->mInfPtr, ioEnumerationArray) ;
     if (NULL != inNode->mAttributes.ptr ()) {
-      ioEnumerationArray.addObject (inNode->mAttributes) ;
+      ioEnumerationArray.appendObject (inNode->mAttributes) ;
     }
     enterAscendingEnumeration (inNode->mSupPtr, ioEnumerationArray) ;
   }
@@ -1509,44 +1551,19 @@ static void enterAscendingEnumeration (cMapNode * inNode,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-static void enterDescendingEnumeration (cMapNode * inNode,
-                                        capCollectionElementArray & ioEnumerationArray) {
-  if (inNode != NULL) {
-    enterDescendingEnumeration (inNode->mSupPtr, ioEnumerationArray) ;
-    if (NULL != inNode->mAttributes.ptr ()) {
-      ioEnumerationArray.addObject (inNode->mAttributes) ;
-    }
-    enterDescendingEnumeration (inNode->mInfPtr, ioEnumerationArray) ;
-  }
-}
-
-//---------------------------------------------------------------------------------------------------------------------*
-
-void cSharedMapRoot::populateEnumerationArray (capCollectionElementArray & ioEnumerationArray,
-                                               const typeEnumerationOrder inEnumerationOrder) const {
+void cSharedMapRoot::populateEnumerationArray (capCollectionElementArray & ioEnumerationArray) const {
   // printf ("MAP COUNT %u\n", count ()) ;
   ioEnumerationArray.setCapacity (mCount) ;
-  switch (enumerationOrderValue (inEnumerationOrder)) {
-  case kENUMERATION_UP  :
-    enterAscendingEnumeration (mRoot, ioEnumerationArray) ;
-    break ;
-  case kENUMERATION_DOWN :
-    enterDescendingEnumeration (mRoot, ioEnumerationArray) ;
-    break ;
-  case kENUMERATION_ENTER_ORDER :
-  case kENUMERATION_REVERSE_ENTER_ORDER :
-    MF_RunTimeError ("invalid inEnumerationOrder %lld", enumerationOrderValue (inEnumerationOrder), 0) ;
-  }
+  enterAscendingEnumeration (mRoot, ioEnumerationArray) ;
   MF_Assert (mCount == ioEnumerationArray.count (), "mCount (%lld) != ioEnumerationArray.count () (%lld)", mCount, ioEnumerationArray.count ()) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void AC_GALGAS_map::populateEnumerationArray (capCollectionElementArray & ioEnumerationArray,
-                                              const typeEnumerationOrder inEnumerationOrder) const {
+void AC_GALGAS_map::populateEnumerationArray (capCollectionElementArray & ioEnumerationArray) const {
   // printf ("MAP COUNT %u\n", count ()) ;
   if (isValid ()) {
-    mSharedMap->populateEnumerationArray (ioEnumerationArray, inEnumerationOrder) ;
+    mSharedMap->populateEnumerationArray (ioEnumerationArray) ;
   }
 }
 

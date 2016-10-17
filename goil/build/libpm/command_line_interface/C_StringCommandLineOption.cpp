@@ -187,8 +187,8 @@ C_PrologueEpilogue gReleaseString (NULL, C_StringCommandLineOption::releaseStrin
 void C_StringCommandLineOption::getStringOptionNameList (TC_UniqueArray <C_String> & outArray) {
   C_StringCommandLineOption * p = gFirstStringOption ;
   while (p != NULL) {
-    outArray.addObject (p->mDomainName) ;
-    outArray.addObject (p->mIdentifier) ;
+    outArray.appendObject (p->mDomainName) ;
+    outArray.appendObject (p->mIdentifier) ;
     p = p->mNext ;
   }
 }

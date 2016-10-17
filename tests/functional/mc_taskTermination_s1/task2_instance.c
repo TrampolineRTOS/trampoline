@@ -59,10 +59,10 @@ static void test_t2_instance(void)
 
   SyncAllCores(sync);
 
-  while(1); /* Wait for the tp watchdog to be called */
+  while(1); /* Wait for the tp watchdog to kill this task */
 }
 
-TestRef seq2_t2_instance(void)
+TestRef t2_instance(void)
 {
   EMB_UNIT_TESTFIXTURES(fixtures) {
     new_TestFixture("test_t2_instance",test_t2_instance)

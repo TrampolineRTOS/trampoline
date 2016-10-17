@@ -219,7 +219,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlCommentNode ;
 
 class cPtr_arxmlCommentNode : public cPtr_arxmlNode {
 //--- Attributes
-  public : GALGAS_lstring mAttribute_comment ;
+  public : GALGAS_lstring mProperty_comment ;
 
 //--- Constructor
   public : cPtr_arxmlCommentNode (const GALGAS_lstring & in_comment
@@ -1245,7 +1245,7 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlTextNode ;
 
 class cPtr_arxmlTextNode : public cPtr_arxmlNode {
 //--- Attributes
-  public : GALGAS_lstring mAttribute_text ;
+  public : GALGAS_lstring mProperty_text ;
 
 //--- Constructor
   public : cPtr_arxmlTextNode (const GALGAS_lstring & in_text
@@ -1719,10 +1719,10 @@ extern const C_galgas_type_descriptor kTypeDescriptor_GALGAS_arxmlMetaSimpletype
 
 class cPtr_arxmlMetaSimpletype : public acPtr_class {
 //--- Attributes
-  public : GALGAS_lstring mAttribute_name ;
-  public : GALGAS_restrictionType mAttribute_type ;
-  public : GALGAS_restrictionBaseType mAttribute_base ;
-  public : GALGAS_lstringlist mAttribute_values ;
+  public : GALGAS_lstring mProperty_name ;
+  public : GALGAS_restrictionType mProperty_type ;
+  public : GALGAS_restrictionBaseType mProperty_base ;
+  public : GALGAS_lstringlist mProperty_values ;
 
 //--- Constructor
   public : cPtr_arxmlMetaSimpletype (const GALGAS_lstring & in_name,

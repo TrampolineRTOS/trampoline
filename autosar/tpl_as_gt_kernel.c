@@ -144,49 +144,56 @@ FUNC(void, OS_CODE) tpl_sync_sched_table(
  * see paragraph 8.4.12 page 84 of
  * AUTOSAR/Specification of the Operating System v3.0
  */
+#if SCHEDTABLE_COUNT > 0
+FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_synchron(
+  VAR(tpl_schedtable_id, AUTOMATIC)   sched_table_id)
+{
+  VAR(tpl_status, AUTOMATIC) result = E_OK;
+  P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) st;
+
+  st = tpl_schedtable_table[sched_table_id];
+  if (st->b_desc.state == (tpl_schedtable_state)SCHEDULETABLE_STOPPED)
+  {
+    /*
+     * the schedule table is not already started,
+     * it is put in the waiting state until the global time is provided
+     */
+    st->b_desc.state = SCHEDULETABLE_WAITING;
+  }
+  else
+  {
+    /* the schedule table is already started, return the proper error code */
+    result = E_OS_STATE;
+  }
+
+  return result;
+}
+#endif
 FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_synchron_service(
   VAR(tpl_schedtable_id, AUTOMATIC)   sched_table_id)
 {
   VAR(tpl_status, AUTOMATIC) result = E_OK;
   GET_CURRENT_CORE_ID(core_id)
 
-#if SCHEDTABLE_COUNT > 0
-  P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) st;
-#endif
-
   LOCK_KERNEL()
-	
+
     /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
-	
-	STORE_SERVICE(OSServiceId_StartScheduleTableSynchron)
-  STORE_SCHEDTABLE_ID(sched_table_id)
-	
-  CHECK_SCHEDTABLE_ID_ERROR(sched_table_id,result)
-	
-	/* check access right */
-	CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(core_id,sched_table_id,result)
 
-	CHECK_SCHEDTABLE_SYNC_STRATEGY_DIFF_ERROR(sched_table_id, SCHEDTABLE_EXPLICIT_SYNC, result)
+  STORE_SERVICE(OSServiceId_StartScheduleTableSynchron)
+  STORE_SCHEDTABLE_ID(sched_table_id)
+
+  CHECK_SCHEDTABLE_ID_ERROR(sched_table_id,result)
+
+  /* check access right */
+  CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(core_id,sched_table_id,result)
+
+  CHECK_SCHEDTABLE_SYNC_STRATEGY_DIFF_ERROR(sched_table_id, SCHEDTABLE_EXPLICIT_SYNC, result)
 
 #if SCHEDTABLE_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
   {
-    st = tpl_schedtable_table[sched_table_id];
-
-    if (st->b_desc.state == (tpl_schedtable_state)SCHEDULETABLE_STOPPED)
-    {
-      /*
-       * the schedule table is not already started,
-       * it is put in the waiting state until the global time is provided
-       */
-      st->b_desc.state = SCHEDULETABLE_WAITING;
-    }
-    else
-    {
-      /* the schedule table is already started, return the proper error code */
-      result = E_OS_STATE;
-    }
+    result = tpl_start_schedule_table_synchron(sched_table_id);
   }
 #endif
 

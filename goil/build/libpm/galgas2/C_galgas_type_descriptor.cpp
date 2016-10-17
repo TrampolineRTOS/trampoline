@@ -66,7 +66,7 @@ void C_galgas_type_descriptor::recursiveGetSortedTypeList (C_galgas_type_descrip
                                                            TC_UniqueArray <C_galgas_type_descriptor *> & ioTypeList) {
   if (NULL != inRoot) {
     recursiveGetSortedTypeList (inRoot->mPreviousType, ioTypeList) ;
-    ioTypeList.addObject (inRoot) ;
+    ioTypeList.appendObject (inRoot) ;
     recursiveGetSortedTypeList (inRoot->mNextType, ioTypeList) ;  
   }
 }

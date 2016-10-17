@@ -214,7 +214,7 @@ void TC_LinkedList <TYPE>::copyIntoArray (TC_UniqueArray <TYPE> & outArray) {
   outArray.setCapacity (mCount) ;
   cElement * p = mTopItem ;
   while (p != NULL) {
-    outArray.addObject (p->mInfo) ;
+    outArray.appendObject (p->mInfo) ;
     p = p->mNextItem ;  
   }
 }

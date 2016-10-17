@@ -69,7 +69,7 @@ static const uint32_t kDisplayLength = 20 ;
 //---------------------------------------------------------------------------------------------------------------------*
 
 const char * galgasVersionString (void) {
-  return "3.2.12" ;
+  return "3.2.13" ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -292,7 +292,7 @@ static void analyze_one_option (const char * inCommand,
       #else
         fileName = inCommand ;
       #endif
-      outSourceFileArray.addObject (C_FileManager::absolutePathFromPath (fileName, "")) ;
+      outSourceFileArray.appendObject (C_FileManager::absolutePathFromPath (fileName, "")) ;
       found = true ;
     }
   }
@@ -356,7 +356,7 @@ static void analyze_one_option (const char * inCommand,
       for (int32_t i=firstChar ; i<fileLength ; i++) {
         fileName.appendUnicodeCharacter (TO_UNICODE ((szFile [i] == '\\') ? '/' : szFile [i]) COMMA_HERE) ;
       }
-      outSourceFileArray.addObject (fileName) ;
+      outSourceFileArray.appendObject (fileName) ;
     }
     ::free (currentDir) ;
   }

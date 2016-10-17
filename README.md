@@ -69,7 +69,7 @@ More examples are coming.
 
 ## Precompiled binaries of goil, the OIL compiler
 
-Updated to version 3.1.1 on october 05.
+Updated to version 3.1.2 on october 17.
 
 * Mac OS X: [goil-mac-os-x.zip](http://trampoline.rts-software.org/bin/goil-mac-os-x.zip)
 * Mac OS X Cocoa Application with editor: [CocoaGoil.app.zip](http://trampoline.rts-software.org/bin/CocoaGoil.app.zip)
@@ -80,3 +80,9 @@ Updated to version 3.1.1 on october 05.
 ## Useful links
 
 * [ARM development tools](https://launchpad.net/gcc-arm-embedded) compiled for various plateforms.
+
+For an unknown reason the OSEK-VDX portal is down since at least june. Here are copies of documents that was available for download:
+* [OIL specification](http://trampoline.rts-software.org/bin/oil25.pdf)
+* [OS specification](http://trampoline.rts-software.org/bin/os223.pdf)
+* [COM specification](http://trampoline.rts-software.org/bin/OSEKCOM303.pdf)
+* [ORTI A](http://trampoline.rts-software.org/bin/orti-a-22.pdf) and [ORTI B](http://trampoline.rts-software.org/bin/orti-b-22.pdf) specifications

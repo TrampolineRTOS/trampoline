@@ -361,8 +361,8 @@ void GALGAS_data::method_writeToExecutableFile (GALGAS_string inFilePath,
 
 class cCollectionElement_data : public cCollectionElement {
 //--- Private member
-  protected : GALGAS_uint mAttribute_data ;
-  public : inline GALGAS_uint attribute_data (void) const { return mAttribute_data ; }
+  protected : GALGAS_uint mProperty_data ;
+  public : inline GALGAS_uint attribute_data (void) const { return mProperty_data ; }
 
 //--- Default constructor
   public : cCollectionElement_data (const GALGAS_uint & inData
@@ -390,13 +390,13 @@ class cCollectionElement_data : public cCollectionElement {
 cCollectionElement_data::cCollectionElement_data (const GALGAS_uint & inData
                                                   COMMA_LOCATION_ARGS) :
 cCollectionElement (THERE),
-mAttribute_data (inData) {
+mProperty_data (inData) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 bool cCollectionElement_data::isValid (void) const {
-  return mAttribute_data.isValid () ;
+  return mProperty_data.isValid () ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -404,21 +404,21 @@ bool cCollectionElement_data::isValid (void) const {
 typeComparisonResult cCollectionElement_data::compare (const cCollectionElement * inOperand) const {
   const cCollectionElement_data * operand = (const cCollectionElement_data *) inOperand ;
   macroValidSharedObject (operand, cCollectionElement_data) ;
-  return mAttribute_data.objectCompare (operand->mAttribute_data) ;
+  return mProperty_data.objectCompare (operand->mProperty_data) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 cCollectionElement * cCollectionElement_data::copy (void) {
   cCollectionElement_data * p = NULL ;
-  macroMyNew (p, cCollectionElement_data (mAttribute_data COMMA_HERE)) ;
+  macroMyNew (p, cCollectionElement_data (mProperty_data COMMA_HERE)) ;
   return p ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
 void cCollectionElement_data::description (C_String & ioString, const int32_t inIndentation) const {
-  mAttribute_data.description (ioString, inIndentation) ;
+  mProperty_data.description (ioString, inIndentation) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -433,34 +433,16 @@ void cCollectionElement_data::description (C_String & ioString, const int32_t in
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void GALGAS_data::populateEnumerationArray (capCollectionElementArray & inEnumerationArray,
-                                            const typeEnumerationOrder inEnumerationOrder) const {
+void GALGAS_data::populateEnumerationArray (capCollectionElementArray & inEnumerationArray) const {
   const int32_t count = mData.length () ;
   inEnumerationArray.setCapacity ((uint32_t) count) ;
-  switch (enumerationOrderValue (inEnumerationOrder)) {
-  case kENUMERATION_UP:
-    for (int32_t i=0 ; i<count ; i++) {
-      cCollectionElement_data * p = NULL ;
-      macroMyNew (p, cCollectionElement_data (GALGAS_uint (mData (i COMMA_HERE)) COMMA_HERE)) ;
-      capCollectionElement object ;
-      object.setPointer (p) ;
-      macroDetachSharedObject (p) ;
-      inEnumerationArray.addObject (object) ;
-    }
-    break ;
-  case kENUMERATION_DOWN:
-    for (int32_t i=0 ; i<count ; i++) {
-      cCollectionElement_data * p = NULL ;
-      macroMyNew (p, cCollectionElement_data (GALGAS_uint (mData (mData.length () - i - 1 COMMA_HERE)) COMMA_HERE)) ;
-      capCollectionElement object ;
-      object.setPointer (p) ;
-      macroDetachSharedObject (p) ;
-      inEnumerationArray.addObject (object) ;
-    }
-    break ;
-  case kENUMERATION_ENTER_ORDER : case kENUMERATION_REVERSE_ENTER_ORDER:
-    MF_Assert (false, "invalid inEnumerationOrder %lld", enumerationOrderValue (inEnumerationOrder), 0) ;
-//    break ;
+  for (int32_t i=0 ; i<count ; i++) {
+    cCollectionElement_data * p = NULL ;
+    macroMyNew (p, cCollectionElement_data (GALGAS_uint (mData (i COMMA_HERE)) COMMA_HERE)) ;
+    capCollectionElement object ;
+    object.setPointer (p) ;
+    macroDetachSharedObject (p) ;
+    inEnumerationArray.appendObject (object) ;
   }
 }
 
@@ -468,8 +450,8 @@ void GALGAS_data::populateEnumerationArray (capCollectionElementArray & inEnumer
 
 cEnumerator_data::cEnumerator_data (const GALGAS_data & inEnumeratedObject,
                                     const typeEnumerationOrder inOrder) :
-cGenericAbstractEnumerator () {
-  inEnumeratedObject.populateEnumerationArray (mEnumerationArray, inOrder) ;
+cGenericAbstractEnumerator (inOrder) {
+  inEnumeratedObject.populateEnumerationArray (mEnumerationArray) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*

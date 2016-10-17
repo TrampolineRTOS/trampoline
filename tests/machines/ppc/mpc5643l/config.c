@@ -33,6 +33,7 @@
  */
 
 #include "tpl_app_define.h"
+#include "tpl_registers.h"
 
 #if WITH_AUTOSAR == YES
   #include "Os.h"
@@ -45,10 +46,10 @@
   #include "tpl_os_timeobj_kernel.h"
 #endif
 
-//#include "embUnit.h"
-//#include "config.h"
+#include "embUnit.h"
 
-extern void stdimpl_print(const char* string, ...);
+#define SOFT_IRQ_CORE0  0
+#define SOFT_IRQ_CORE1  0
 
 #if ALARM_COUNT > 0
 /*
@@ -92,17 +93,30 @@ void SyncAllCores(SpinlockIdType spinlock)
   retval = GetSpinlock(spinlock);
   if(retval != E_OK)
   {
-    stdimpl_print("Cannot get spinlock.\n");
+    addFailure("Cannot get spinlock.\n", __LINE__, __FILE__);
     return;
   }
   syncAllCores_maxCores--;
   retval = ReleaseSpinlock(spinlock);
   if(retval != E_OK)
   {
-    stdimpl_print("Cannot release spinlock.\n");
+    addFailure("Cannot release spinlock.\n", __LINE__, __FILE__);
     return;
   }
   while(syncAllCores_maxCores);
 }
 #endif /* (NUMBER_OF_CORES > 1) && (SPINLOCK_COUNT > 0) */
+
+void sendSoftwareIt(int to_core_id)
+{
+  if(to_core_id == 0)
+  {
+    TPL_INTC(0).SSCIR[SOFT_IRQ_CORE0] = INTC_SSCIR_SET;
+  }
+  else
+  {
+    TPL_INTC(1).SSCIR[SOFT_IRQ_CORE0] = INTC_SSCIR_SET;
+  }
+}
+
 
