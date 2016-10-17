@@ -1,10 +1,9 @@
-|=-----=[ Blink example ]=-----=|
+|=-----=[ Tracking example ]=-----=|
 
-This application is a simple periodic example which prints a periodic message on an UART console.
-This application can be launched with a bootloader that will be soon pushed on the GitHub.
+This application is a light tracking system built with an Arduino Duo.
+It communicates with an UART line with the Arduino board.
 
-For the moment the application must be copied on the Raspberry Pi 2 sdcard.
-It can be launched
+This application must be launched inside a XVisor guest.
 
 How to build the example:
 Generates the code:
@@ -17,5 +16,11 @@ Build:
 ./make.py
 ```
 ```
-cp firmware.elf.bin ~/vboxshare/freenivi/firmware.bin
+cp firmware.elf.bin <custom directory for building XVisor image>/firmware.bin
+```
+```
+arm-none-eabi-objdump -x firmware.elf > firmware.elf.hd
+```
+```
+arm-none-eabi-objdump -dS firmware.elf > firmware.elf.dump
 ```
