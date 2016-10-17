@@ -1155,7 +1155,7 @@ tpl_service.parameters.id.spinlock_id = (spinlockid);
 /*  No ISR and extended error checking (WITH_OS_EXTENDED == YES).
     Since there is no ISR2, there is no ISR2 level calling  */
 #if (ISR_COUNT == 0) && (WITH_OS_EXTENDED == YES)
-#   define CHECK_ISR2_CALL_LEVEL_ERROR(result)                          \
+#   define CHECK_ISR2_CALL_LEVEL_ERROR(result,core_id)                  \
     if (result == (tpl_status)E_OK)                                     \
     {                                                                   \
         result = (tpl_status)E_OS_CALLEVEL;                             \
@@ -1164,9 +1164,9 @@ tpl_service.parameters.id.spinlock_id = (spinlockid);
 
 /*  Any ISR and extended error checking (WITH_OS_EXTENDED == YES). */
 #if (ISR_COUNT > 0) && (WITH_OS_EXTENDED == YES)
-#   define CHECK_ISR2_CALL_LEVEL_ERROR(result)                          \
+#   define CHECK_ISR2_CALL_LEVEL_ERROR(result,core_id)                  \
     if ((result == (tpl_status)E_OK) &&                                 \
-        (tpl_current_os_state() != (tpl_os_state)OS_ISR2))  \
+        (tpl_current_os_state(CORE_ID_OR_NOTHING(core_id)) != (tpl_os_state)OS_ISR2))  \
     {                                                                   \
         result = (tpl_status)E_OS_CALLEVEL;                             \
     }
@@ -1174,7 +1174,7 @@ tpl_service.parameters.id.spinlock_id = (spinlockid);
 
 /*  no extended error checking (WITH_OS_EXTENDED == NO).    */
 #if WITH_OS_EXTENDED == NO
-#   define CHECK_ISR2_CALL_LEVEL_ERROR(result)
+#   define CHECK_ISR2_CALL_LEVEL_ERROR(result,core_id)
 #endif
 
 /**

@@ -233,7 +233,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void)
   CHECK_INTERRUPT_LOCK(result)
 
   /* check we are at the ISR2 level */
-  CHECK_ISR2_CALL_LEVEL_ERROR(result)
+  CHECK_ISR2_CALL_LEVEL_ERROR(result, core_id)
   /* check the ISR2 does not own a resource */
   CHECK_RUNNING_OWNS_REZ_ERROR(core_id, result)
 

@@ -295,84 +295,93 @@ FUNC(void, OS_CODE) tpl_process_schedtable(
  * see paragraph 8.4.8 page 80 of
  * AUTOSAR/Specification of the Operating System v3.0
  */
+#if SCHEDTABLE_COUNT > 0
+FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_rel(
+    VAR(tpl_schedtable_id, AUTOMATIC)   sched_table_id,
+    VAR(tpl_tick, AUTOMATIC)            offset
+)
+{
+  VAR(tpl_status, AUTOMATIC) result = E_OK;
+  P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) st;
+  P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) cnt;
+  VAR(tpl_tick, AUTOMATIC) date;
+  P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA) schedtable;
+
+  st = tpl_schedtable_table[sched_table_id];
+  /* MISRA RULE 45 VIOLATION: a tpl_time_obj_static* is cast to a
+     tpl_schedtable_static*. This cast behaves correctly because the first memeber
+     of tpl_schedula_table_static is a tpl_time_obj_static */
+  schedtable = (P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))(st->b_desc.stat_part);
+
+  if (st->b_desc.state == (tpl_schedtable_state)SCHEDULETABLE_STOPPED)
+  {
+    /*  the schedule table is not already started, proceed  */
+    cnt = st->b_desc.stat_part->counter;
+
+    /* if NO_SYNC, state = RUNNING
+       if EXPLICIT, state = RUNNING and ASYNC  */
+    st->b_desc.state = SCHEDULETABLE_RUNNING | SCHEDULETABLE_ASYNC;
+
+    date = cnt->current_date + offset + (schedtable->expiry[0])->offset;
+
+    /* if date > max_allowed_value, take the modulus */
+    if (date > cnt->max_allowed_value)
+    {
+      date = date - cnt->max_allowed_value - 1;
+    }
+    st->b_desc.date = date;
+    /* MISRA RULE 45 VIOLATION: a tpl_schedtable* is cast to a
+       tpl_time_obj*. This cast behaves correctly because the first member
+       of tpl_schedula_table is a tpl_time_obj */
+    tpl_insert_time_obj((tpl_time_obj *)st);
+  }
+  else
+  {
+    /* the schedule table is already started,
+       return the proper error code                        */
+    result = E_OS_STATE;
+  }
+  return result;
+}
+#endif
 FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_rel_service(
     VAR(tpl_schedtable_id, AUTOMATIC)   sched_table_id,
     VAR(tpl_tick, AUTOMATIC)            offset
 )
 {
-    VAR(tpl_status, AUTOMATIC) result = E_OK;
-    GET_CURRENT_CORE_ID(core_id)
+  VAR(tpl_status, AUTOMATIC) result = E_OK;
+  GET_CURRENT_CORE_ID(core_id)
+
+  /* check interrupts are not disabled by user    */
+  CHECK_INTERRUPT_LOCK(result)
+
+  LOCK_KERNEL()
+
+  STORE_SERVICE(OSServiceId_StartScheduleTableRel)
+  STORE_SCHEDTABLE_ID(sched_table_id)
+  STORE_TICK_1(offset)
+
+  CHECK_SCHEDTABLE_ID_ERROR(sched_table_id,result)
+
+  /* check access right */
+  CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(core_id,sched_table_id,result)
+
+  CHECK_SCHEDTABLE_OFFSET_VALUE(sched_table_id,offset,result)
+
+  CHECK_SCHEDTABLE_SYNC_STRATEGY_EQUAL_ERROR(sched_table_id, SCHEDTABLE_IMPLICIT_SYNC, result)
 
 #if SCHEDTABLE_COUNT > 0
-    P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) st;
-    P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) cnt;
-    VAR(tpl_tick, AUTOMATIC) date;
-    P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA) schedtable;
+  IF_NO_EXTENDED_ERROR(result)
+  {
+    result = tpl_start_schedule_table_rel(sched_table_id, offset);
+  }
 #endif
 
-    /* check interrupts are not disabled by user    */
-    CHECK_INTERRUPT_LOCK(result)
+  PROCESS_ERROR(result)
 
-    LOCK_KERNEL()
+  UNLOCK_KERNEL()
 
-    STORE_SERVICE(OSServiceId_StartScheduleTableRel)
-    STORE_SCHEDTABLE_ID(sched_table_id)
-    STORE_TICK_1(offset)
-
-    CHECK_SCHEDTABLE_ID_ERROR(sched_table_id,result)
-	
-	/* check access right */
-	CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(core_id,sched_table_id,result)
-	
-    CHECK_SCHEDTABLE_OFFSET_VALUE(sched_table_id,offset,result)
-
-	CHECK_SCHEDTABLE_SYNC_STRATEGY_EQUAL_ERROR(sched_table_id, SCHEDTABLE_IMPLICIT_SYNC, result)
-	
-#if SCHEDTABLE_COUNT > 0
-    IF_NO_EXTENDED_ERROR(result)
-	{
-		st = tpl_schedtable_table[sched_table_id];
-        /* MISRA RULE 45 VIOLATION: a tpl_time_obj_static* is cast to a
-           tpl_schedtable_static*. This cast behaves correctly because the first memeber
-           of tpl_schedula_table_static is a tpl_time_obj_static */
-		schedtable = (P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))(st->b_desc.stat_part);
-	
-		if (st->b_desc.state == (tpl_schedtable_state)SCHEDULETABLE_STOPPED)
-		{			
-		   		/*  the schedule table is not already started, proceed  */
-				cnt = st->b_desc.stat_part->counter;
-				
-				/* if NO_SYNC, state = RUNNING
-				   if EXPLICIT, state = RUNNING and ASYNC	*/
-				st->b_desc.state = SCHEDULETABLE_RUNNING | SCHEDULETABLE_ASYNC;
-				
-				date = cnt->current_date + offset + (schedtable->expiry[0])->offset; 
-				
-				/* if date > max_allowed_value, take the modulus */
-				if (date > cnt->max_allowed_value)
-				{
-					date = date - cnt->max_allowed_value - 1;
-				}
-				st->b_desc.date = date;
-				/* MISRA RULE 45 VIOLATION: a tpl_schedtable* is cast to a
-				   tpl_time_obj*. This cast behaves correctly because the first member
-				   of tpl_schedula_table is a tpl_time_obj */
-				tpl_insert_time_obj((tpl_time_obj *)st);
-		}
-		else
-		{
-			/*  the schedule table is already started,
-				return the proper error code                        */
-			result = E_OS_STATE;
-		}
-	}
-#endif
-
-    PROCESS_ERROR(result)
-
-    UNLOCK_KERNEL()
-
-    return result;
+  return result;
 }
 
 /*
@@ -381,99 +390,108 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_rel_service(
  * see paragraph 8.4.9 page 80 of
  * AUTOSAR/Specification of the Operating System v3.0
  */
+#if SCHEDTABLE_COUNT > 0
+FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_abs(
+    VAR(tpl_schedtable_id, AUTOMATIC)   sched_table_id,
+    VAR(tpl_tick, AUTOMATIC)            tick_val
+)
+{
+  VAR(tpl_status, AUTOMATIC) result = E_OK;
+  P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) st;
+  P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA) schedtable;
+  P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) cnt;
+  VAR(tpl_tick, AUTOMATIC) date;
+
+  st = tpl_schedtable_table[sched_table_id];
+  /* MISRA RULE 45 VIOLATION: a tpl_time_obj_static* is cast to a
+   tpl_schedtable_static*. This cast behaves correctly because the first memeber
+   of tpl_schedula_table_static is a tpl_time_obj_static */
+  schedtable = (P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))(st->b_desc.stat_part);
+  if (st->b_desc.state == (tpl_schedtable_state)SCHEDULETABLE_STOPPED)
+  {
+    /*  the schedule table is not already started, proceed  */
+    cnt = st->b_desc.stat_part->counter;
+
+    /* if NO_SYNC, state = RUNNING,
+     otherwise, state = RUNNING_AND_SYNCHRONOUS */
+    if (schedtable->sync_strat == SCHEDTABLE_IMPLICIT_SYNC)
+    {
+      st->b_desc.state = SCHEDULETABLE_RUNNING_AND_SYNCHRONOUS;
+    }
+    else
+    {
+      st->b_desc.state = SCHEDULETABLE_RUNNING | SCHEDULETABLE_ASYNC;
+    }
+
+    date = (tick_val + (schedtable->expiry[0])->offset);
+
+    /*printf("startstabs - tick_val=%d - (schedtable->expiry[0])->offset=%d - cnt->max_allowed_value=%d - cnt->current_date=%d\n",tick_val,(schedtable->expiry[0])->offset,cnt->max_allowed_value,cnt->current_date);*/
+    /* if <tick_val> is after current_date and first expiry point comes between current_date and <tick_val>
+      or if <tick_val> is before current_date and first expiry point comes after current_date
+      so, bootstrap is needed */
+    if ( ( (date > cnt->max_allowed_value) && ((date - (cnt->max_allowed_value + 1)) > cnt->current_date) ) ||
+       ( (tick_val < cnt->current_date) && (date > cnt->current_date) ) )
+    {
+      st->b_desc.state = st->b_desc.state | SCHEDULETABLE_BOOTSTRAP;
+    }
+
+    /* if date > max_allowed_value, take the modulus */
+    if ( date > cnt->max_allowed_value)
+    {
+      date -= (cnt->max_allowed_value + 1);
+    }
+    st->b_desc.date = date;
+    /*printf(" - date=%d - state=%d\n",st->b_desc.date,st->b_desc.state);*/
+    /* MISRA RULE 45 VIOLATION: a tpl_schedtable* is cast to a
+       tpl_time_obj*. This cast behaves correctly because the first memeber
+       of tpl_schedula_table is a tpl_time_obj */
+    tpl_insert_time_obj((tpl_time_obj *)st);
+  }
+  else
+  {
+      /*  the schedule table is already started,
+          return the proper error code                        */
+      result = E_OS_STATE;
+  }
+  return result;
+}
+#endif
 FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_abs_service(
     VAR(tpl_schedtable_id, AUTOMATIC)   sched_table_id,
     VAR(tpl_tick, AUTOMATIC)            tick_val
 )
 {
-    VAR(tpl_status, AUTOMATIC) result = E_OK;
-    GET_CURRENT_CORE_ID(core_id)
+  VAR(tpl_status, AUTOMATIC) result = E_OK;
+  GET_CURRENT_CORE_ID(core_id)
+
+  /* check interrupts are not disabled by user    */
+  CHECK_INTERRUPT_LOCK(result)
+
+  LOCK_KERNEL()
+
+  STORE_SERVICE(OSServiceId_StartScheduleTableAbs)
+  STORE_SCHEDTABLE_ID(sched_table_id)
+  STORE_TICK_1(tick_val)
+
+  CHECK_SCHEDTABLE_ID_ERROR(sched_table_id,result)
+
+  /* check access right */
+  CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(core_id,sched_table_id,result)
+
+  CHECK_SCHEDTABLE_TICK_VALUE(sched_table_id,tick_val,result)
 
 #if SCHEDTABLE_COUNT > 0
-    P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) st;
-    P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA) schedtable;
-    P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) cnt;
-    VAR(tpl_tick, AUTOMATIC) date;
+  IF_NO_EXTENDED_ERROR(result)
+  {
+    result = tpl_start_schedule_table_abs(sched_table_id, tick_val);
+  }
 #endif
 
-    /* check interrupts are not disabled by user    */
-    CHECK_INTERRUPT_LOCK(result)
+  PROCESS_ERROR(result)
 
-    LOCK_KERNEL()
+  UNLOCK_KERNEL()
 
-    STORE_SERVICE(OSServiceId_StartScheduleTableAbs)
-    STORE_SCHEDTABLE_ID(sched_table_id)
-    STORE_TICK_1(tick_val)
-
-    CHECK_SCHEDTABLE_ID_ERROR(sched_table_id,result)
-	
-	/* check access right */
-	CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(core_id,sched_table_id,result)
-	
-    CHECK_SCHEDTABLE_TICK_VALUE(sched_table_id,tick_val,result)
-
-#if SCHEDTABLE_COUNT > 0
-	IF_NO_EXTENDED_ERROR(result)
-	{
-		st = tpl_schedtable_table[sched_table_id];
-		/* MISRA RULE 45 VIOLATION: a tpl_time_obj_static* is cast to a
-	   tpl_schedtable_static*. This cast behaves correctly because the first memeber
-	   of tpl_schedula_table_static is a tpl_time_obj_static */
-		schedtable = (P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))(st->b_desc.stat_part);
-        if (st->b_desc.state == (tpl_schedtable_state)SCHEDULETABLE_STOPPED)
-        {
-            /*  the schedule table is not already started, proceed  */
-            cnt = st->b_desc.stat_part->counter;
-			
-			/* if NO_SYNC, state = RUNNING,
-			 otherwise, state = RUNNING_AND_SYNCHRONOUS */
-			if (schedtable->sync_strat == SCHEDTABLE_IMPLICIT_SYNC)
-			{
-				st->b_desc.state = SCHEDULETABLE_RUNNING_AND_SYNCHRONOUS;
-			}
-			else
-			{
-				st->b_desc.state = SCHEDULETABLE_RUNNING | SCHEDULETABLE_ASYNC;
-			}
-			
-			date = (tick_val + (schedtable->expiry[0])->offset);
-			
-			/*printf("startstabs - tick_val=%d - (schedtable->expiry[0])->offset=%d - cnt->max_allowed_value=%d - cnt->current_date=%d\n",tick_val,(schedtable->expiry[0])->offset,cnt->max_allowed_value,cnt->current_date);*/
-			/* if <tick_val> is after current_date and first expiry point comes between current_date and <tick_val>
-				or if <tick_val> is before current_date and first expiry point comes after current_date
-				so, bootstrap is needed */
-			if ( ( (date > cnt->max_allowed_value) && ((date - (cnt->max_allowed_value + 1)) > cnt->current_date) ) ||
-				 ( (tick_val < cnt->current_date) && (date > cnt->current_date) ) )
-			{
-				st->b_desc.state = st->b_desc.state | SCHEDULETABLE_BOOTSTRAP;
-			}
-			
-			/* if date > max_allowed_value, take the modulus */
-			if ( date > cnt->max_allowed_value)
-			{
-				date -= (cnt->max_allowed_value + 1);
-			}
-			st->b_desc.date = date;
-			/*printf(" - date=%d - state=%d\n",st->b_desc.date,st->b_desc.state);*/
-            /* MISRA RULE 45 VIOLATION: a tpl_schedtable* is cast to a
-               tpl_time_obj*. This cast behaves correctly because the first memeber
-               of tpl_schedula_table is a tpl_time_obj */
-            tpl_insert_time_obj((tpl_time_obj *)st);
-        }
-        else
-        {
-            /*  the schedule table is already started,
-                return the proper error code                        */
-            result = E_OS_STATE;
-        }
-	}
-#endif
-
-    PROCESS_ERROR(result)
-
-    UNLOCK_KERNEL()
-
-    return result;
+  return result;
 }
 
 /*
@@ -518,7 +536,7 @@ FUNC(tpl_status, OS_CODE) tpl_stop_schedule_table_service(
       {
         st->next->b_desc.state = SCHEDULETABLE_STOPPED;
       }
-      		
+
       /*
        * MISRA RULE 45 VIOLATION: a tpl_schedtable* is cast to a
        * tpl_time_obj*. This cast behaves correctly because the first member

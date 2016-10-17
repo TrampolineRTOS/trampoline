@@ -54,6 +54,9 @@
 #if ((WITH_IOC == YES) && (IOC_UNQUEUED_COUNT > 0))
 # include "tpl_ioc_unqueued_kernel.h"
 #endif
+#if SPINLOCK_COUNT > 0
+# include "tpl_as_spinlock_kernel.h"
+#endif
 
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -1199,14 +1202,14 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
         if (auto_time_obj->state == (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART_RELATIVE)
         {
           auto_time_obj->state = SCHEDULETABLE_STOPPED;
-          result = tpl_start_schedule_table_rel_service(i, auto_time_obj->date);
+          result = tpl_start_schedule_table_rel(i, auto_time_obj->date);
         }
         else
         {
           if (auto_time_obj->state == (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART_ABSOLUTE)
           {
             auto_time_obj->state = SCHEDULETABLE_STOPPED;
-            result = tpl_start_schedule_table_abs_service(i, auto_time_obj->date);
+            result = tpl_start_schedule_table_abs(i, auto_time_obj->date);
           }
 #if AUTOSAR_SC == 2 || AUTOSAR_SC == 4
           else
@@ -1214,7 +1217,7 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
             if (auto_time_obj->state == (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART_SYNCHRON)
             {
               auto_time_obj->state = SCHEDULETABLE_STOPPED;
-              result = tpl_start_schedule_table_synchron_service(i);
+              result = tpl_start_schedule_table_synchron(i);
             }
           }
 #endif
@@ -1244,6 +1247,10 @@ FUNC(void, OS_CODE) tpl_call_terminate_task_service(void)
      * service call OR by signal_handler.
      */
   }
+
+#if SPINLOCK_COUNT > 0
+  RELEASE_ALL_SPINLOCKS(core_id);
+#endif
 
 #if RESOURCE_COUNT > 0
   /* release resources if held */

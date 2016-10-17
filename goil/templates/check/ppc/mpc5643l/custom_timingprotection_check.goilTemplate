@@ -22,11 +22,13 @@
 # $URL$
 #
 
+let OS::TIMINGPROTECTION_WATCHDOG := exists OS::TIMINGPROTECTION_WATCHDOG
+                                     default (@())
+
 # -----------------------------------------------------------------------------
 # ERROR
 # The watchdog must use a pit channel or the decrementer
 #
-
 foreach watchdog in OS::TIMINGPROTECTION_WATCHDOG do
   if watchdog::SOURCE != "decrementer"
    & watchdog::SOURCE != "pit_ch0"
@@ -42,7 +44,6 @@ end foreach
 # ERROR
 # Watchdog must not have any other Counter on its source
 #
-
 foreach watchdog in OS::TIMINGPROTECTION_WATCHDOG do
   foreach counter in HARDWARECOUNTERS do
     if watchdog::NAME != counter::NAME

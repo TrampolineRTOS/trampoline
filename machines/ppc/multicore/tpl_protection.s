@@ -29,7 +29,6 @@
 #include "tpl_os_kernel_stack.h"
 #include "tpl_assembler.h"
 #include "tpl_os_definitions.h"
-#include "tpl_as_definitions.h"
 #include "tpl_app_define.h"
 #include "tpl_registers_asm.h"
 

@@ -1,0 +1,143 @@
+/**
+ * @file tasks_s2.oil
+ *
+ * @section desc File description
+ *
+ * @section copyright Copyright
+ *
+ * Trampoline Test Suite
+ *
+ * Trampoline Test Suite is copyright (c) IRCCyN 2005-2007
+ * Trampoline Test Suite is protected by the French intellectual property law.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; version 2
+ * of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @section infos File informations
+ *
+ * $Date$
+ * $Rev$
+ * $Author$
+ * $URL$
+ */
+
+OIL_VERSION = "4.0" : "tasks_s2" ;
+
+#include <arch.oil>
+
+IMPLEMENTATION trampoline {
+  TASK {
+    UINT32 [1..10] PRIORITY = 1 ;
+  };
+};
+
+CPU test {
+  OS config {
+    BUILD = TRUE {
+      APP_SRC = "mc_alarms_s1.c";
+      APP_SRC = "task1_instance.c";
+      APP_SRC = "task2_instance.c";
+      TRAMPOLINE_BASE_PATH = "../../..";
+      APP_NAME = "mc_alarms_s1_exe";
+    };
+    SHUTDOWNHOOK = TRUE;
+    STATUS=EXTENDED;
+  };
+
+  APPMODE std {};
+
+  APPLICATION MasterApplication
+  {
+    TASK = t1;
+    TASK = should_not_run;
+    ALARM = activate_task_accross_cores;
+    ALARM = set_event_accross_cores;
+    ALARM = should_not_expire;
+    COUNTER = SystemCounter_core0;
+    TRUSTED = TRUE { TRUSTED_FUNCTION = t1_function; };
+    CORE = 0;
+  };
+
+  APPLICATION SlaveApplication
+  {
+    TASK = t2;
+    COUNTER = SystemCounter_core1;
+    TRUSTED = TRUE { TRUSTED_FUNCTION = t2_function; };
+    CORE = 1;
+  };
+
+  COUNTER SystemCounter_core0
+  {
+  };
+  COUNTER SystemCounter_core1
+  {
+  };
+
+  SPINLOCK sync
+  {
+    ACCESSING_APPLICATION = MasterApplication;
+    ACCESSING_APPLICATION = SlaveApplication;
+  };
+
+  ALARM activate_task_accross_cores
+  {
+    AUTOSTART = FALSE;
+    ACTION = ACTIVATETASK { TASK = t2; };
+    COUNTER = SystemCounter_core0;
+  };
+
+  ALARM set_event_accross_cores
+  {
+    AUTOSTART = FALSE;
+    ACTION = SETEVENT { TASK = t2; EVENT = t2_event; };
+    COUNTER = SystemCounter_core0;
+  };
+
+  ALARM should_not_expire
+  {
+    AUTOSTART = FALSE;
+    ACTION = ACTIVATETASK { TASK = should_not_run; };
+    COUNTER = SystemCounter_core0;
+    ACCESSING_APPLICATION = SlaveApplication;
+  };
+
+  TASK t1 {
+    AUTOSTART = TRUE { APPMODE = std; };
+    PRIORITY = 1;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+
+  TASK should_not_run
+  {
+    AUTOSTART = FALSE;
+    PRIORITY = 2; /* Bigger priority to schedule t1 */
+    ACTIVATION = 1;
+    SCHEDULE = NON;
+  };
+
+  EVENT t2_event
+  {
+    MASK = AUTO;
+  };
+  TASK t2 {
+    AUTOSTART = FALSE;
+    PRIORITY = 1;
+    ACTIVATION = 1;
+    SCHEDULE = NON;
+    EVENT = t2_event;
+  };
+};
+
+/* End of file tasks_s2.oil */

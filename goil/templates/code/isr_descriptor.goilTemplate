@@ -11,7 +11,7 @@ FUNC(void, OS_APPL_CODE) % !isr::NAME %_function(void);
 #include "tpl_memmap.h"
 
 /*-----------------------------------------------------------------------------
- * Target specific structures
+ * Target specific structures of isr % !isr::NAME %
  */
 %
 display isr
@@ -89,8 +89,23 @@ if OS::NUMBER_OF_CORES > 1 then%
   /* ISR activation count     */  1,
   /* ISR type                */  IS_ROUTINE,
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
+%
+if exists isr::TIMING_PROTECTION default (false) then
+%
+  /* execution budget */        % !isr::TIMING_PROTECTION_S::EXECUTIONBUDGET %,
+  /* timeframe        */        % !isr::TIMING_PROTECTION_S::TIMEFRAME %,
   /* pointer to the timing
-     protection descriptor    */  $TIMING_PROT_REF$
+     protection descriptor    */ &timeprotect_% !isr::NAME %
+%
+else
+%
+  /* execution budget */        0,
+  /* timeframe        */        0,
+  /* pointer to the timing
+     protection descriptor    */ NULL
+%
+end if
+%
 #endif
 };
 
@@ -124,10 +139,7 @@ end if
 #endif /* WITH_OSAPPLICATION */
   /* activate count                 */  0,
   /* ISR priority                   */  % !isr::PRIORITY %,
-  /* ISR state                      */  SUSPENDED,
-#if WITH_AUTOSAR_TIMING_PROTECTION == YES
-  /* activation allowed             */  ,TRUE
-#endif
+  /* ISR state                      */  SUSPENDED
 };
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"

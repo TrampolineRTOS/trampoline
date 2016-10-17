@@ -53,7 +53,7 @@ static void test_t1_instance(void)
   SCHEDULING_CHECK_AND_EQUAL_INT(4, E_OK, r1);
 }
 
-TestRef seq2_t1_instance(void)
+TestRef t1_instance(void)
 {
   EMB_UNIT_TESTFIXTURES(fixtures) {
     new_TestFixture("test_t1_instance",test_t1_instance)

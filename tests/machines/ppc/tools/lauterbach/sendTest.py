@@ -42,7 +42,7 @@ exe = args.e.pop(0)
 # Load t32 library
 if ctypes.sizeof(ctypes.c_voidp)==4:
   t32api = ctypes.CDLL("./t32api.so")
-else
+else:
   t32api = ctypes.CDLL("./t32api64.so")
 
 # Set connexion configuration
