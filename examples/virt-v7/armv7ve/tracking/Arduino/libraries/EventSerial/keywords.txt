@@ -1,0 +1,27 @@
+#######################################
+# Syntax Coloring Map For RTC
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+CommandInterpreter	KEYWORD1
+Command	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+readString	KEYWORD2
+readByte	KEYWORD2
+readUnsignedInt	KEYWORD2
+readInt	KEYWORD2
+setPrompt	KEYWORD2
+addCommand	KEYWORD2
+update	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
