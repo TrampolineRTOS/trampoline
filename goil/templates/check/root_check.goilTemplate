@@ -23,7 +23,11 @@
 #
 
 if [SPINLOCK length] > 0 then
-  template if exists spinlock_check
+  template spinlock_check
+end if
+
+if [EVENT length] > 0 then
+  template event_check
 end if
 
 template if exists custom_check

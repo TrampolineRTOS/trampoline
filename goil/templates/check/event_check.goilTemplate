@@ -1,0 +1,46 @@
+%
+# @file event_check.goilTemplate
+#
+# @section desc File description
+#
+# Event Check template file for goil
+#
+# @section copyright Copyright
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN
+# Trampoline is protected by the French intellectual property law.
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# @section infos File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+# -----------------------------------------------------------------------------
+# ERROR
+# An Event does not belong to a task
+#
+foreach ev in EVENT do
+  let has_task := false
+
+  foreach task in TASK do
+    let t_events := mapof exists task::EVENT default ( @() ) by VALUE
+    if exists t_events[ev::NAME] then
+      let has_task := true
+    end if
+  end foreach
+
+  if not has_task then
+    error ev::NAME : "Event " + ev::NAME + " does not belong to any task."
+  end if
+end foreach
+
+%
+
+
