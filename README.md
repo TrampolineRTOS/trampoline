@@ -12,6 +12,8 @@ Its API is aligned with OSEK/VDX OS and AUTOSAR OS 4.1 standards.
 * posix: virtual platform for POSIX systems (tested on Linux and OS X)
 * avr: AVR 8 bits microcontrollers
 * ARM: ARM 32 bits instruction set
+* virt-v7
+  * Cortex-A9 - Cortex-A7 virtualized instruction set. This port is used with the hypervisor XVisor
 
 And we welcome external contributors to extend this list.
 
@@ -64,7 +66,9 @@ Some examples have been added (check examples):
   * **blink_2c_arxml**. Same as the two cores blink example but uses an arxml config file.
   * **button_2c**. Waits for a button input to light a led. Switch it off using Timing Protection watchdog. Multicore example.
   * **spinlocks**. Producer/Consumer example.
-
+* virt-v7 :
+  * **firmware**. Builds a firmware that can be used as a guest on XVisor.
+  
 More examples are coming.
 
 ## Precompiled binaries of goil, the OIL compiler
