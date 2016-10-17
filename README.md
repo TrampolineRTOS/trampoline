@@ -80,3 +80,9 @@ Updated to version 3.1.2 on october 17.
 ## Useful links
 
 * [ARM development tools](https://launchpad.net/gcc-arm-embedded) compiled for various plateforms.
+
+For an unknown reason teh OSEK-VDX portal is down since at least june. Here are copies of documents that was available for download:
+* [OIL specification](http://trampoline.rts-software.org/bin/oil25.pdf)
+* [OS specification](http://trampoline.rts-software.org/bin/os223.pdf)
+* [COM specification](http://trampoline.rts-software.org/bin/OSEKCOM303.pdf)
+* [ORTI A](http://trampoline.rts-software.org/bin/orti-a-22.pdf) and [ORTI B](http://trampoline.rts-software.org/bin/orti-b-22.pdf) specifications
