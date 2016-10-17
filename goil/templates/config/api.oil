@@ -208,6 +208,7 @@ CPU api {
     }  : "This service saves the recognition status of interrupts of category 2"
         "and disables the recognition of these interrupts.";
     SYSCALL CallTerminateISR2    {
+      HIDDEN = TRUE;
       KERNEL = tpl_call_terminate_isr2_service;
       LOCK_KERNEL = TRUE;
       CALLABLE_BY_ISR1 = FALSE;
