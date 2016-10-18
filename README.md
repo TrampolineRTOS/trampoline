@@ -68,12 +68,12 @@ Some examples have been added (check examples):
   * **spinlocks**. Producer/Consumer example.
 * virt-v7 :
   * **firmware**. Builds a firmware that can be used as a guest on XVisor.
-  
+
 More examples are coming.
 
 ## Precompiled binaries of goil, the OIL compiler
 
-Updated to version 3.1.2 on october 17.
+Updated to version 3.1.3 on october 18.
 
 * Mac OS X: [goil-mac-os-x.zip](http://trampoline.rts-software.org/bin/goil-mac-os-x.zip)
 * Mac OS X Cocoa Application with editor: [CocoaGoil.app.zip](http://trampoline.rts-software.org/bin/CocoaGoil.app.zip)
