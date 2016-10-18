@@ -59,11 +59,11 @@ arch_execute()
 # -----------------------------------------------------------------------------
 # arch_compile
 # -----------------------------------------------------------------------------
-#   Compile a test. In posix, we use a Makefile.
+#   Compile a test. In posix, we use a python script.
 #   $1 : file to execute
 arch_compile()
 {
-  make -s
+  ./build.py
 }
 
 # =============================================================================

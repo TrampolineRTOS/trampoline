@@ -63,7 +63,7 @@ CPU archPosixDefault
       CFLAGS = "-I../../embUnit";
       LDFLAGS = "-L../../lib -lembUnit";
       APP_SRC = "../../machines/posix/config.c";
-      SYSTEM = MAKE;
+      SYSTEM = PYTHON;
     };
   };
 };
