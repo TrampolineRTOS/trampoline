@@ -24,6 +24,7 @@ CPU only_one_periodic_task {
       TRAMPOLINE_BASE_PATH = "../../..";
       APP_NAME = "periodic_exe";
       LINKER = "gcc";
+      SYSTEM = PYTHON;
     };
   };
   

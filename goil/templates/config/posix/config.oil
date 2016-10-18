@@ -1,4 +1,5 @@
 IMPLEMENTATION posix {
+
   OS {
     BOOLEAN [
       TRUE {
@@ -31,5 +32,22 @@ IMPLEMENTATION posix {
     UINT32 PERIOD;
     MESSAGE_TYPE MESSAGE;
   };
+};
+
+CPU posix {
+
+  PLATFORM_FILES posix_port {
+    PATH = "posix";
+    CFILE = "tpl_machine_posix.c";
+    CFILE = "tpl_viper_interface.c";
+    CFILE = "tpl_posix_autosar.c";
+    CFILE = "tpl_posix_irq.c";
+    CFILE = "tpl_posix_context.c";
+  };
+
+  PLATFORM_FILES viper {
+    PATH = "../viper";
+  };
+
 };
 

@@ -264,11 +264,13 @@ foreach flags in exists OS::BUILD_S::PREASFLAGS default ( @() ) do
 preasflags += "% !flags::VALUE %".split()%
 end foreach
 
+if TARGET != "posix" then
 %
 
 #----------------------------------------------------------------------
 #--- Try to detect automatically the location of libc and libgcc
 #--- This supposes the compiler has a (something)-gcc name
+#--- for non posix target
 #----------------------------------------------------------------------
 if "gcc" in compiler:
   compilerFullPath = makefile.find_executable(compiler)
@@ -291,6 +293,9 @@ if "gcc" in compiler:
     #--- Add both to linker flags
     ldflags += ['-L' + libcPath, '-lc']
     ldflags += ['-L' + libgccPath, '-lgcc']
+%
+end if
+%
 #----------------------------------------------------------------------
 #--- Build the source files list
 #----------------------------------------------------------------------
