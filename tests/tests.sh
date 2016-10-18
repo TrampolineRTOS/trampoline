@@ -229,7 +229,7 @@ functional_test()
   fi
 
   tests_list=$(cat $FUNCTIONAL_TEST_SEQUENCE | grep "^\s*[^# ]")
-  total_tests_count=$(echo "$tests_list" | wc -l)
+  total_tests_count=$(echo "$tests_list" | wc -l | xargs)
   total_failed_tests=0
   failed_tests_list=""
 
@@ -246,7 +246,8 @@ functional_test()
 
     # display running test sequence on the standard output for the user and
     # in the log file to better understand failed tests
-    echo "> [$current_tests_count/$total_tests_count] : $i" | tee -a $FUNCTIONAL_RESULTS
+    format_string="> [%-${#total_tests_count}s/$total_tests_count] : $i\n"
+    printf "$format_string" $current_tests_count | tee -a $FUNCTIONAL_RESULTS
 
     # if a previous run of the test has already diagnosticated this test as
     # successful, ignore it
@@ -364,7 +365,7 @@ goil_test()
   > $GOIL_RESULTS
 
   tests_list=$(cat $GOIL_TEST_SEQUENCE | grep "^\s*[^# ]")
-  total_tests_count=$(echo "$tests_list" | wc -l)
+  total_tests_count=$(echo "$tests_list" | wc -l | xargs)
   current_tests_count=0
 
   echo "===================================================================="
@@ -380,7 +381,8 @@ goil_test()
 
     # display running test sequence on the standard output for the user and
     # in the log file to better understand failed tests
-    echo "> [$current_tests_count/$total_tests_count] : $i" | tee -a $GOIL_RESULTS
+    format_string="> [%-${#total_tests_count}s/$total_tests_count] : $i\n"
+    printf "$format_string" $current_tests_count | tee -a $GOIL_RESULTS
 
     err=$(goil --target=$target --templates=$TPL_GOILV2_DIR ${i}.oil 2>&1)
     retval=$?
