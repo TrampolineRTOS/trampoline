@@ -982,7 +982,8 @@ class GALGAS_goilContext : public GALGAS_gtlContext {
                                                             const class GALGAS_string & inOperand3,
                                                             const class GALGAS_stringlist & inOperand4,
                                                             const class GALGAS_gtlDataList & inOperand5,
-                                                            const class GALGAS_debuggerContext & inOperand6
+                                                            const class GALGAS_bool & inOperand6,
+                                                            const class GALGAS_debuggerContext & inOperand7
                                                             COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Comparison
@@ -1021,6 +1022,7 @@ class cPtr_goilContext : public cPtr_gtlContext {
                              const GALGAS_string & in_templateExtension,
                              const GALGAS_stringlist & in_importPath,
                              const GALGAS_gtlDataList & in_inputVars,
+                             const GALGAS_bool & in_propagateError,
                              const GALGAS_debuggerContext & in_debuggerContext
                              COMMA_LOCATION_ARGS) ;
 

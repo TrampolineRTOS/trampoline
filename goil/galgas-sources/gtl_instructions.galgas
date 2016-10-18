@@ -66,7 +66,6 @@ method @gtlInstructionList execute
          | [context watchOn !context !vars !lib] | errorCountIncreased then
         [!?context setBreakOnNext !true]
         [!?context setNextInstructionIndex !index]
-#        [instruction displayWithLocation ![context debuggerContext]]
         [!?context setDebugger !false]
         [!?context executeStepDoList !?context !?vars !?lib !?outputString]
         [!?context setDebugger !true]
@@ -74,7 +73,6 @@ method @gtlInstructionList execute
         loop (@uint.max)
           message [context promptStyle] + "gtl> " + endc()
           [!?context getCommand ?@string input]
-#          @string input = @string.newWithStdIn{}
           @gtlInstruction command
           @uint currentErrorCount = @uint.errorCount
           if [input stringByTrimmingWhiteSpaces] == "" then
@@ -103,7 +101,7 @@ method @gtlInstructionList execute
     for () in self do
       if @uint.errorCount == 0 then
         [instruction execute !?context !?vars !?lib !?outputString]
-        if @uint.errorCount != 0 then
+        if @uint.errorCount != 0 & [context propagateError] then
           error instruction : "runtime error"
         end
       end
@@ -881,6 +879,7 @@ override method @gtlErrorStatementInstruction execute
   @gtlData errorMessageData = [errorMessage eval !context !vars !lib] 
   if [errorMessageData dynamicType] == `@gtlString then
     error errorLocation : [errorMessageData as @gtlString value]
+    [!?context setPropagateError !false]
   else
     error [errorMessage location] : "string expected"
   end

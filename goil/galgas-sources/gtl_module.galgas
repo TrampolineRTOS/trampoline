@@ -185,7 +185,7 @@ method @gtlSetter callSetter
     ]
     @string outputString = ""
     [instructions execute !?context !?setterVariableMap !?lib !?outputString]
-    [setterVariableMap structField !selfName ?target]
+    [setterVariableMap structField !selfName ?target ?*]
   else
    error fromLocation : "setter call failed"
   end

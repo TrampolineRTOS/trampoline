@@ -236,8 +236,9 @@ abstract setter @gtlData performSetter
 method @gtlData structField
   ?let @lstring name
   !@gtlData     result
+  !@bool        found
 {
-  error name : "a " + [[self dynamicType] typeName] + " is not a struct" : result
+  error name : "a " + [[self dynamicType] typeName] + " is not a struct" : result, found
 }
 
 getter @gtlData resultField
@@ -3375,11 +3376,14 @@ override setter @gtlStruct performSetter
 override method @gtlStruct structField
   ?let @lstring name
   !@gtlData     result
+  !@bool        found
 {
   if [value hasKey !name] then
     [value get !name ?result]
+    found = true
   else
     result = @gtlUnconstructed.new { !name !emptylstring() }
+    found = false
   end
 }
 
@@ -3719,7 +3723,7 @@ override getter @gtlList performGetter
     @lstring key = [[arguments dataAtIndex !0] lstring]
     @lstringset resultSet = .emptyMap
     for (item) in value do
-      [item structField !key ?@gtlData field]
+      [item structField !key ?@gtlData field ?*]
       @lstring resKey = [field lstring]
       if [resultSet hasKey !resKey] then
         [!?resultSet del !resKey]

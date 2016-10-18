@@ -34,6 +34,7 @@ class @gtlContext {
   @string          templateExtension  %setter
   @stringlist      importPath
   @gtlDataList     inputVars          %setter
+  @bool            propagateError     %setter
   @debuggerContext debuggerContext    %setter
 }
 
@@ -47,6 +48,7 @@ func emptyContext
     !"gtl"
     !.emptyList
     !.emptyList
+    !true
     !defaultDebugSettings()
   }
 }

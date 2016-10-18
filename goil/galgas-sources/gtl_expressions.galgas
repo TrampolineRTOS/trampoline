@@ -185,7 +185,7 @@ override method @gtlVarItemField setInContext
   if [path length] == 0 then
     [!?context setStructField !field !newData]
   else
-    [context structField !field ?@gtlData data]
+    [context structField !field ?@gtlData data ?*]
     [[path itemAtIndex !0] setInContext
       !exeContext
       !?data
@@ -209,9 +209,13 @@ override getter @gtlVarItemField getInContext
   ?let @gtlVarPath path
   -> @gtlData result
 {
-  [context structField !field ?@gtlData data]
+  [context structField !field ?@gtlData data ?@bool found]
   if [path length] == 0 then
-    result = data
+    if found then
+      result = data
+    else
+      error data : "Variable or field does not exist" : result
+    end
   else
     result = [[path itemAtIndex !0] getInContext
       !exeContext
@@ -238,7 +242,7 @@ override getter @gtlVarItemField existsInContext
     if [path length] == 0 then
       result = true
     else
-      [context structField !field ?@gtlData subContext]
+      [context structField !field ?@gtlData subContext ?*]
       result = [[path itemAtIndex !0] existsInContext
         !exeContext
         !subContext
@@ -266,7 +270,7 @@ override method @gtlVarItemField deleteInContext
     if [path length] == 0 then
       [!?context deleteStructField !field]
     else
-      [context structField !field ?@gtlData data]
+      [context structField !field ?@gtlData data ?*]
       [[path itemAtIndex !0] deleteInContext
         !exeContext
         !?data
@@ -315,7 +319,7 @@ override method @gtlVarItemCollection setInContext
   cast [key eval !exeContext !vars !lib]
   case == @gtlString keyString:
     context = wantGtlStruct(!context)
-    [context structField !field ?@gtlData data]
+    [context structField !field ?@gtlData data ?*]
     data = wantGtlMap(!data)
     if [path length] == 0 then
       [!?data setMapItem !keyString !newData]
@@ -334,7 +338,7 @@ override method @gtlVarItemCollection setInContext
     [!?context setStructField !field !data]
   case == @gtlInt keyInt:
     context = wantGtlStruct(!context)
-    [context structField !field ?@gtlData data]
+    [context structField !field ?@gtlData data ?*]
     data = wantGtlList(!data)
     if [path length] == 0 then
       [!?data setItemAtIndex !newData !keyInt]
@@ -367,7 +371,7 @@ override getter @gtlVarItemCollection getInContext
   ?let @gtlVarPath path
   -> @gtlData result
 {
-  [context structField !field ?@gtlData collection]
+  [context structField !field ?@gtlData collection ?*]
   cast [key eval !exeContext !vars !lib]
   case == @gtlString keyString:
     if [path length] == 0 then
@@ -413,7 +417,7 @@ override getter @gtlVarItemCollection existsInContext
   ->@bool result
 {
   if [context hasStructField !field] then
-    [context structField !field ?@gtlData collection]
+    [context structField !field ?@gtlData collection ?*]
     cast [key eval !exeContext !vars !lib]
     case == @gtlString keyString:
       if [path length] == 0 then
@@ -470,7 +474,7 @@ override method @gtlVarItemCollection deleteInContext
   cast [key eval !exeContext !vars !lib]
   case == @gtlString keyString:
     if [context hasStructField !field] then
-      [context structField !field ?@gtlData data]
+      [context structField !field ?@gtlData data ?*]
       if [path length] == 0 then
         if [data hasMapItem !keyString] then
           [!?data deleteMapItem !keyString]
@@ -490,7 +494,7 @@ override method @gtlVarItemCollection deleteInContext
     end
   case == @gtlInt keyInt:
     if [context hasStructField !field] then
-      [context structField !field ?@gtlData data]
+      [context structField !field ?@gtlData data ?*]
       if [path length] == 0 then
         if [data hasItemAtIndex !keyInt] then
           [!?data deleteItemAtIndex !keyInt]

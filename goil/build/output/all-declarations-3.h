@@ -2561,6 +2561,7 @@ void callExtensionSetter_performSetter (class cPtr_gtlData * inObject,
 typedef void (*extensionMethodSignature_gtlData_structField) (const class cPtr_gtlData * inObject,
                                                               const class GALGAS_lstring constinArgument0,
                                                               class GALGAS_gtlData & outArgument1,
+                                                              class GALGAS_bool & outArgument2,
                                                               class C_Compiler * inCompiler
                                                               COMMA_LOCATION_ARGS) ;
 
@@ -2574,6 +2575,7 @@ void enterExtensionMethod_structField (const int32_t inClassIndex,
 void callExtensionMethod_structField (const class cPtr_gtlData * inObject,
                                       const GALGAS_lstring constin_name,
                                       GALGAS_gtlData & out_result,
+                                      GALGAS_bool & out_found,
                                       C_Compiler * inCompiler
                                       COMMA_LOCATION_ARGS) ;
 

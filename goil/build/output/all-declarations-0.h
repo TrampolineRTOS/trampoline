@@ -2078,7 +2078,8 @@ class GALGAS_gtlContext : public AC_GALGAS_class {
                                                            const class GALGAS_string & inOperand3,
                                                            const class GALGAS_stringlist & inOperand4,
                                                            const class GALGAS_gtlDataList & inOperand5,
-                                                           const class GALGAS_debuggerContext & inOperand6
+                                                           const class GALGAS_bool & inOperand6,
+                                                           const class GALGAS_debuggerContext & inOperand7
                                                            COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Comparison
@@ -2096,6 +2097,9 @@ class GALGAS_gtlContext : public AC_GALGAS_class {
 
   public : VIRTUAL_IN_DEBUG void setter_setPrefix (class GALGAS_lstring inArgument0
                                                    COMMA_LOCATION_ARGS) ;
+
+  public : VIRTUAL_IN_DEBUG void setter_setPropagateError (class GALGAS_bool inArgument0
+                                                           COMMA_LOCATION_ARGS) ;
 
   public : VIRTUAL_IN_DEBUG void setter_setTemplateDirectory (class GALGAS_string inArgument0
                                                               COMMA_LOCATION_ARGS) ;
@@ -2117,6 +2121,8 @@ class GALGAS_gtlContext : public AC_GALGAS_class {
   public : VIRTUAL_IN_DEBUG class GALGAS_string getter_path (LOCATION_ARGS) const ;
 
   public : VIRTUAL_IN_DEBUG class GALGAS_lstring getter_prefix (LOCATION_ARGS) const ;
+
+  public : VIRTUAL_IN_DEBUG class GALGAS_bool getter_propagateError (LOCATION_ARGS) const ;
 
   public : VIRTUAL_IN_DEBUG class GALGAS_string getter_templateDirectory (LOCATION_ARGS) const ;
 
@@ -2147,6 +2153,7 @@ class cPtr_gtlContext : public acPtr_class {
   public : GALGAS_string mProperty_templateExtension ;
   public : GALGAS_stringlist mProperty_importPath ;
   public : GALGAS_gtlDataList mProperty_inputVars ;
+  public : GALGAS_bool mProperty_propagateError ;
   public : GALGAS_debuggerContext mProperty_debuggerContext ;
 
 //--- Constructor
@@ -2156,6 +2163,7 @@ class cPtr_gtlContext : public acPtr_class {
                             const GALGAS_string & in_templateExtension,
                             const GALGAS_stringlist & in_importPath,
                             const GALGAS_gtlDataList & in_inputVars,
+                            const GALGAS_bool & in_propagateError,
                             const GALGAS_debuggerContext & in_debuggerContext
                             COMMA_LOCATION_ARGS) ;
 
@@ -2174,6 +2182,8 @@ class cPtr_gtlContext : public acPtr_class {
   public : VIRTUAL_IN_DEBUG GALGAS_stringlist getter_importPath (LOCATION_ARGS) const ;
   public : VIRTUAL_IN_DEBUG GALGAS_gtlDataList getter_inputVars (LOCATION_ARGS) const ;
   public : VIRTUAL_IN_DEBUG void setter_setInputVars (GALGAS_gtlDataList inValue COMMA_LOCATION_ARGS) ;
+  public : VIRTUAL_IN_DEBUG GALGAS_bool getter_propagateError (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setPropagateError (GALGAS_bool inValue COMMA_LOCATION_ARGS) ;
   public : VIRTUAL_IN_DEBUG GALGAS_debuggerContext getter_debuggerContext (LOCATION_ARGS) const ;
   public : VIRTUAL_IN_DEBUG void setter_setDebuggerContext (GALGAS_debuggerContext inValue COMMA_LOCATION_ARGS) ;
 //--- Description

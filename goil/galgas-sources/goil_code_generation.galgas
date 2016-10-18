@@ -688,13 +688,13 @@ override getter @goilContext fullPrefix
 {
   @string stringPrefix = prefix
   if "compiler" == stringPrefix then
-    [vars structField !lstring(!"COMPILER") ?@gtlData compiler]
+    [vars structField !lstring(!"COMPILER") ?@gtlData compiler ?*]
     stringPrefix += "/" + (compiler as @gtlString)
   elsif "linker" == stringPrefix then
-    [vars structField !lstring(!"LINKER") ?@gtlData linker]
+    [vars structField !lstring(!"LINKER") ?@gtlData linker ?*]
     stringPrefix += "/" + (linker as @gtlString)
   elsif "assembler" == stringPrefix then
-    [vars structField !lstring(!"ASSEMBLER") ?@gtlData assembler]
+    [vars structField !lstring(!"ASSEMBLER") ?@gtlData assembler ?*]
     stringPrefix += "/" + (assembler as @gtlString)
   elsif stringPrefix == "ROOT" then
     stringPrefix = ""
@@ -713,6 +713,7 @@ func emptyGoilContext
     !".gtl"
     !.emptyList
     !.emptyList
+    !true
     !defaultDebugSettings()
   }
 }
