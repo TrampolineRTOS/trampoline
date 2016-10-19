@@ -31,9 +31,9 @@
 #include "tpl_os.h"
 #include "tpl_app_define.h"
 #include "tpl_timers.h"
-#if WITH_ORTI == YES
-# include "tpl_orti.h"
-#endif
+//#if WITH_ORTI == YES
+//# include "tpl_orti.h"
+//#endif
 #if WITH_MULTICORE == YES
 # include "tpl_os_multicore_macros.h"
 #endif
@@ -299,13 +299,13 @@ FUNC(void, OS_CODE) tpl_fill_stack_pattern(void)
    * but that is the expected behavior, we want to access per byte the stack
    * MISRA RULE 17.4 VIOLATION: performing pointer arithmetic needed to compute stack address
    */
-  stack_top = (uint8*)(tpl_orti_system_stack_top);
-  stack_bottom = (uint8*)(tpl_orti_system_stack_bottom);
+  //stack_top = (uint8*)(tpl_orti_system_stack_top);
+  //stack_bottom = (uint8*)(tpl_orti_system_stack_bottom);
 
-  for(addr=(uint32*)stack_top; addr < (uint32*)stack_bottom; addr++)
-  {
-    *addr = TPL_FULL_STACK_PATTERN;
-  }
+  //for(addr=(uint32*)stack_top; addr < (uint32*)stack_bottom; addr++)
+  //{
+  //  *addr = TPL_FULL_STACK_PATTERN;
+  //}
 
 
 }

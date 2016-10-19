@@ -157,6 +157,10 @@ IMPLEMENTATION trampoline_common {
   OS {
     /* Standard OIL attributes */
     ENUM [STANDARD, EXTENDED] STATUS;
+    STRUCT {
+      STRING FILE = "orti.orti";
+      UINT32 CORE = 0;
+    } WITHORTI [];
     BOOLEAN STARTUPHOOK = FALSE;
     BOOLEAN ERRORHOOK = FALSE;
     BOOLEAN SHUTDOWNHOOK = FALSE;

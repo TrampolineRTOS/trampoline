@@ -46,6 +46,10 @@ TPL_EXTERN(tpl_release_kernel_lock)
 TPL_EXTERN(tpl_service_lock_kernel)
 TPL_EXTERN(tpl_kernel_stack_bottom)
 
+#if WITH_ORTI
+TPL_EXTERN(tpl_servicetrace)
+#endif
+
 TPL_GLOBAL(tpl_kernel_stack)
 TPL_GLOBAL(tpl_sc_handler)
 TPL_GLOBAL(tpl_enter_kernel)
@@ -408,6 +412,30 @@ TPL_GLOBAL_REF(tpl_sc_handler):
   e_stw     r11,PS_CR(r1)
   e_stw     r0,PS_R0(r1)
 
+#if WITH_ORTI
+  /* Set the service trace before entering the kernel */
+  se_mtar   r11,r5
+  se_mtar   r12,r6
+  /* Get the tpl_servicetrace addresse in r5 */
+# if WITH_MULTICORE == YES
+  mfspr     r6,spr_PIR
+  se_slwi   r6,2
+# endif
+  e_lis     r5,TPL_HIG(TPL_EXTERN_REF(tpl_servicetrace))
+  e_add16i  r5,TPL_LOW(TPL_EXTERN_REF(tpl_servicetrace))
+# if WITH_MULTICORE == YES
+  se_add    r5,r6
+  se_lwz    r5,0(r5)
+# endif
+  /* Bit0 = 1 = Inside syscall. Other bits = syscall id. */
+  e_slwi    r6,r0,1
+  se_addi   r6,0x1
+  se_stw    r6,0(r5)
+
+  se_mfar   r5,r11
+  se_mfar   r6,r12
+#endif
+
   /*
    * Does the stuff to enter in kernel
    */
@@ -427,7 +455,6 @@ TPL_GLOBAL_REF(tpl_sc_handler):
    * calling the service. This is needed because, beside
    * tpl_schedule, no service modify this variable. So an old value
    * is retained
-   * TODO? : This is not done
    */
   se_mtar   r11,r5
   se_mtar   r12,r6
@@ -440,7 +467,7 @@ TPL_GLOBAL_REF(tpl_sc_handler):
   e_add16i  r5,TPL_LOW(TPL_EXTERN_REF(tpl_kern))
 #if WITH_MULTICORE == YES
   se_add    r5,r6
-  e_lwz     r5,0(r5)
+  se_lwz    r5,0(r5)
 #endif
   e_stw     r5,KS_KERN_PTR(r1)            /* save the ptr for future use  */
 
@@ -540,6 +567,30 @@ no_context_switch:
   /*  restore the registers before returning                          */
 
   e_lwz     r0,PS_R0(r1)
+
+#if WITH_ORTI
+  /* Set the service trace after leaving the kernel */
+  se_mtar   r11,r5
+  se_mtar   r12,r6
+  /* Get the tpl_servicetrace addresse in r5 */
+# if WITH_MULTICORE == YES
+  mfspr     r6,spr_PIR
+  se_slwi   r6,2
+# endif
+  e_lis     r5,TPL_HIG(TPL_EXTERN_REF(tpl_servicetrace))
+  e_add16i  r5,TPL_LOW(TPL_EXTERN_REF(tpl_servicetrace))
+# if WITH_MULTICORE == YES
+  se_add    r5,r6
+  se_lwz    r5,0(r5)
+# endif
+  /* Bit0 = 0 = Left syscall. Other bits = syscall id. */
+  e_slwi    r6,r0,1
+  se_stw    r6,0(r5)
+
+  se_mfar   r5,r11
+  se_mfar   r6,r12
+#endif
+
   e_lwz     r11,PS_CR(r1)
   mtcr      r11
   e_lwz     r11,PS_LR(r1)

@@ -80,6 +80,7 @@ let IOC := exists IOC default (@())
 let TRANSACTION := exists TRANSACTION default (@())
 let OBJECT := exists OBJECT default (@())
 let SPINLOCK := exists SPINLOCK default (@())
+let OS::WITHORTI := exists OS::WITHORTI default (@())
 
 template if exists configCheck
 
@@ -1518,3 +1519,8 @@ template if exists custom_code in code
 write to PROJECT+"/stm_structure.c":
   template stm_structure_c in code
 end write
+
+if [OS::WITHORTI length] > 0 then
+  template orti in code
+end if
+
