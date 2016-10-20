@@ -121,16 +121,16 @@ let data_size_hash["UNSPECIFIED"]       := "UN"
 
 ## STATIC RAM
 +def sram_base=0x40000000 # Data, bss, task stacks
-+def sram_size=0x00009E00
-+def heap_base=0x40009E00
-+def heap_size=0x00000100
-+def heap_pend=0x40009F00
-+def stack_base=0x40009F00
-+def stack_size=0x80
-+def stack_pend=0x40009F80
-+def stack_p1_base=0x40009F80
-+def stack_p1_size=0x80
-+def stack_p1_pend=0x4000A000
++def sram_size=0x00010000
++def heap_base=0x4000D000 # Heap Unused
++def heap_size=0x00001000 # Heap Unused
++def heap_pend=0x4000E000 # Heap Unused
++def stack_base=0x4000E000
++def stack_size=0x1000
++def stack_pend=0x4000F000
++def stack_p1_base=0x4000F000
++def stack_p1_size=0x1000
++def stack_p1_pend=0x40010000
 
 +def sram2_base=0x50000000
 +def sram2_size=0x00010000
