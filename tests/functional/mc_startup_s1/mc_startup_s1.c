@@ -1,5 +1,5 @@
 /**
- * @file tasks_s2/tasks_s2.c
+ * @file mc_startup_s1/mc_startup_s1.c
  *
  * @section desc File description
  *
@@ -42,17 +42,35 @@
  * Goil       : Tested by Goil's Checks section
  * TODO       : Test not written
  */
-/* ----------------------------------------------------------------------------
- *  Requirement  | Short description                  | Verification tags
- * ----------------------------------------------------------------------------
- * SWS_Os_00668  | All Autostart Tasks are activated  | NoTimeout
+/* --------------------------------------------------------------------------
+ *  Requirement  | Description                         | Verification
+ * --------------------------------------------------------------------------
+ *  SWS_OS_00574 | Master core can activate cores.     | {1, 2}
+ *  SWS_OS_00575 | Slave core can activate cores.      | TODO : Need 3 cores
+ *  SWS_OS_00576 | ?                                   | ?
+ *  SWS_OS_00577 | Cores boot in master/slave mode     | Internal
+ *  SWS_OS_00578 | A slave core cannot enter in main   | Internal
+ *               | before being activated.             | {1, 2}
+ *  SWS_OS_00579 | Cores synched in StartOS before the | Internal
+ *               | scheduling and after the global     |
+ *               | StartupHook.                        |
+ *  SWS_OS_00580 | Cores synched before the global     | Internal
+ *               | StartupHook.                        |
+ *  SWS_OS_00581 | Global StartupHook called on all    | {3}
+ *               | cores after the first synch point   |
+ *  SWS_OS_00582 | Application specific startupHook    | Not Implemented
+ *               | called only in their cores          |
  */
 
-#include "Os.h"
+#include "tpl_os.h"
 #include "embUnit.h"
 
 TestRef t1_instance(void);
 TestRef t2_instance(void);
+TestRef c0_startup(void);
+TestRef c1_startup(void);
+
+uint32 coresInStartupHook[NUMBER_OF_CORES] = {0};
 
 int main(void)
 {
@@ -64,11 +82,13 @@ int main(void)
     case OS_CORE_ID_MASTER :
       TestRunner_start();
       SyncAllCores_Init();
+      TestRunner_runTest(c0_startup());
       StartCore(OS_CORE_ID_1, &rv);
       if(rv == E_OK)
         StartOS(OSDEFAULTAPPMODE);
       break;
     case OS_CORE_ID_1 :
+      TestRunner_runTest(c1_startup());
       StartOS(OSDEFAULTAPPMODE);
       break;
     default :
@@ -79,6 +99,11 @@ int main(void)
 # error "This is a multicore example. NUMBER_OF_CORES should be > 1"
 #endif
   return 0;
+}
+
+void StartupHook()
+{
+  coresInStartupHook[GetCoreID()] = 1;
 }
 
 void ShutdownHook(StatusType error)
@@ -106,4 +131,4 @@ TASK(t2)
   ShutdownOS(E_OK);
 }
 
-/* End of file tasks_s2/tasks_s2.c */
+/* End of file mc_startup_s1/mc_startup_s1.c */

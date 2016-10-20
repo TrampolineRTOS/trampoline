@@ -1,5 +1,5 @@
 /**
- * @file tasks_s2/tasks_s2.c
+ * @file mc_scheduling_s1/mc_scheduling_s1.c
  *
  * @section desc File description
  *
@@ -42,13 +42,14 @@
  * Goil       : Tested by Goil's Checks section
  * TODO       : Test not written
  */
-/* ----------------------------------------------------------------------------
- *  Requirement  | Short description                  | Verification tags
- * ----------------------------------------------------------------------------
- * SWS_Os_00668  | All Autostart Tasks are activated  | NoTimeout
+/* --------------------------------------------------------------------------
+ *  Requirement  | Description                         | Verification
+ * --------------------------------------------------------------------------
+ *  SWS_OS_00568 | Execute a TASK on each core.        | {1,3} No Timeout
+ *  SWS_OS_00569 | Scheduling on each core             | {1,3} No Timeout.
  */
 
-#include "Os.h"
+#include "tpl_os.h"
 #include "embUnit.h"
 
 TestRef t1_instance(void);
@@ -106,4 +107,9 @@ TASK(t2)
   ShutdownOS(E_OK);
 }
 
-/* End of file tasks_s2/tasks_s2.c */
+TASK(no_access)
+{
+  TerminateTask();
+}
+
+/* End of file mc_scheduling_s1/mc_scheduling_s1.c */

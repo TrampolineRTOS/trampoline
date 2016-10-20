@@ -1,5 +1,5 @@
 /**
- * @file tasks_s2/tasks_s2.c
+ * @file mc_taskActivation_s1/mc_taskActivation_s1.c
  *
  * @section desc File description
  *
@@ -42,13 +42,18 @@
  * Goil       : Tested by Goil's Checks section
  * TODO       : Test not written
  */
-/* ----------------------------------------------------------------------------
- *  Requirement  | Short description                  | Verification tags
- * ----------------------------------------------------------------------------
- * SWS_Os_00668  | All Autostart Tasks are activated  | NoTimeout
+/* --------------------------------------------------------------------------
+ *  Requirement  | Description                         | Verification
+ * --------------------------------------------------------------------------
+ *  SWS_OS_00596 | Activation of a task located on     | {1,2},NoTimeout,NoErr
+ *               | another core if access allows it.
+ *  SWS_OS_00598 | ActivateTask has to behave          | Internal
+ *               | synchronously.
+ *  SWS_OS_00599 | ActivateTask's error handler called | {1}
+ *               | in the calling core
  */
 
-#include "Os.h"
+#include "tpl_os.h"
 #include "embUnit.h"
 
 TestRef t1_instance(void);
@@ -106,4 +111,10 @@ TASK(t2)
   ShutdownOS(E_OK);
 }
 
-/* End of file tasks_s2/tasks_s2.c */
+TASK(no_access)
+{
+  addFailure("Access check failure !\n", __LINE__, __FILE__);
+  TerminateTask();
+}
+
+/* End of file mc_taskActivation_s1/mc_taskActivation_s1.c */

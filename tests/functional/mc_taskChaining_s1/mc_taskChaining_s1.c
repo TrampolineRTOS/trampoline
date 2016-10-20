@@ -1,5 +1,5 @@
 /**
- * @file tasks_s2/tasks_s2.c
+ * @file mc_taskChaining_s1/mc_taskChaining_s1.c
  *
  * @section desc File description
  *
@@ -42,13 +42,14 @@
  * Goil       : Tested by Goil's Checks section
  * TODO       : Test not written
  */
-/* ----------------------------------------------------------------------------
- *  Requirement  | Short description                  | Verification tags
- * ----------------------------------------------------------------------------
- * SWS_Os_00668  | All Autostart Tasks are activated  | NoTimeout
+/* --------------------------------------------------------------------------
+ *  Requirement  | Description                         | Verification
+ * --------------------------------------------------------------------------
+ *  SWS_OS_00600 | Possible to chain a task on another | {1,2},NoTimeout,NoErr
+ *               | Core.
  */
 
-#include "Os.h"
+#include "tpl_os.h"
 #include "embUnit.h"
 
 TestRef t1_instance(void);
@@ -97,13 +98,28 @@ void ShutdownHook(StatusType error)
 TASK(t1)
 {
   TestRunner_runTest(t1_instance());
+  /* Should not happen */
+  addFailure("ChainTask has failed !", __LINE__, __FILE__);
   ShutdownOS(E_OK);
 }
 
-TASK(t2)
+TASK(chain)
 {
   TestRunner_runTest(t2_instance());
   ShutdownOS(E_OK);
 }
 
-/* End of file tasks_s2/tasks_s2.c */
+DeclareSpinlock(end_of_tests);
+TASK(t2)
+{
+  SyncAllCores(end_of_tests);
+  ShutdownOS(E_OK);
+}
+
+TASK(no_access)
+{
+  addFailure("Access check failure !\n", __LINE__, __FILE__);
+  TerminateTask();
+}
+
+/* End of file mc_taskChaining_s1/mc_taskChaining_s1.c */

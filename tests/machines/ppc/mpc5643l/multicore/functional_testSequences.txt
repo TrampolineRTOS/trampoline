@@ -1,9 +1,48 @@
 ###############################################################################
 # Multicore
-# In accordance with AUTOSAR_SWS_OS : 7.9
+# In accordance with AUTOSAR_SWS_OS - Release 4.2.2 - Chapter 7.9
 
-#multicore_spinlocks_s1
-#multicore_spinlocks_s2
+## 7.9.2 Scheduling
+## [00568, 00569]
+mc_scheduling_s1
+
+## 7.9.3 Locatable entities (LE)
+## [00570, 00573] [00763, 00764]
+## OIL Checks
+
+## 7.9.4 Multi-Core start-up concept
+## [00574, 00582]
+## Not tested : Application specific StartupHook
+mc_startup_s1
+
+## 7.9.5 Cores under control of AUTOSAR OS
+## [00583]
+## Internal (OIL)
+
+## 7.9.6 Cores which are not controlled by the AUTOSAR OS
+## [00584, 00585]
+## Not tested : StartNonAutosarCore
+
+## 7.9.7 CoresShutdown
+## [00586, 00588][00562][00762]
+## Not tested : Application specific ShutdownHook
+## Not tested : ShutdownAllCores
+
+## 7.9.10 InterruptDisabling
+## [00590, 00595]
+## Internal
+
+## 7.9.11 TASK Activation
+## [00596, 00599]
+mc_taskActivation_s1
+
+## 7.9.12 TASK Chaining
+## [00600]
+mc_taskChaining_s1
+
+## 7.9.12 EVENT setting
+## [00602] [00605]
+mc_eventSetting_s1
 
 ## 7.9.15 Start of the OS
 ## [00606, 00611]
@@ -53,24 +92,23 @@ mc_alarms_s1
 
 ## 7.9.28 Schedule tables
 ## [00641, 00647]
-## TODO !
+mc_schedtables_s1
 
 ## 7.9.29 Spinlocks
 ## [00648, 00661]
 mc_spinlocks_s1
 
-## 7.9.30 Spinlocks - Offline Checks
+## 7.9.30 Offline Checks
 ## [00662, 00667]
 ## OIL Checks
 
 ## 7.9.31 AutoStart Objects
 ## [00668, 00670]
-## TODO !
 mc_autostart_s1
 mc_autostart_s2
 mc_autostart_s3
 
-###### Not testeds
+###### Monocore tests
 ## Memory/Timing protection tests
 #autosar_mp_s1
 #autosar_mp_s2
