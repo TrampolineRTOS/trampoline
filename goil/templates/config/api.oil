@@ -127,7 +127,7 @@ CPU api {
     } : "Terminate the calling task and activate task task_id";
     SYSCALL Schedule {
       KERNEL = tpl_schedule_service;
-      LOCK_KERNEL = FALSE;
+      LOCK_KERNEL = TRUE;
       CALLABLE_BY_ISR1 = FALSE;
       RETURN_TYPE = StatusType
         : "E_OK:          No error (Standard & Extended)\n"
