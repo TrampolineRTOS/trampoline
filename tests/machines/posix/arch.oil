@@ -60,8 +60,11 @@ CPU archPosixDefault
       LINKER = "gcc";
       CFLAGS = "-Werror -Wall -pedantic";
       CFLAGS = "-Wmissing-field-initializers";
+      CFLAGS = "-Wno-unused-but-set-variable";
       CFLAGS = "-I../../embUnit";
       LDFLAGS = "-L../../lib -lembUnit";
+      LDFLAGS = "-lrt";
+      LDFLAGS = "-lpthread";
       APP_SRC = "../../machines/posix/config.c";
       SYSTEM = PYTHON;
     };
