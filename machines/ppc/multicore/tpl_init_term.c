@@ -40,8 +40,12 @@
 
 #define USER_MODE 0x4000
 
+#if (TASK_COUNT > 0)
 extern FUNC(void, OS_CODE) CallTerminateTask();
+#endif
+#if (ISR_COUNT > 0)
 extern FUNC(void, OS_CODE) CallTerminateISR2();
+#endif
 
 #define OS_START_SEC_VAR_32BIT
 #include "tpl_memmap.h"
@@ -184,9 +188,15 @@ FUNC(void, OS_CODE) tpl_init_context(
    * in a 32bits variable, but as the Os is dependant on the target,
    * the behaviour is controled
    */
+#if (TASK_COUNT > 0) && (ISR_COUNT > 0)
   *stack_addr = (IS_ROUTINE == proc->type) ?
                 (uint32)(&CallTerminateISR2) :
                 (uint32)(&CallTerminateTask); /*  lr  */
+#elif (TASK_COUNT > 0)
+  *stack_addr = (uint32)(&CallTerminateTask);
+#elif (ISR_COUNT > 0)
+  *stack_addr = (uint32)(&CallTerminateISR2);
+#endif
   stack_addr++;
 
   *stack_addr = 0; /*  cr  */

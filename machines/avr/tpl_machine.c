@@ -26,6 +26,9 @@
 #include "tpl_os_kernel.h" /*tpl_stat_proc_table and tpl_proc_static*/
 #include "tpl_os.h"
 
+extern FUNC(void, OS_CODE) CallTerminateTask();
+extern FUNC(void, OS_CODE) CallTerminateISR2();
+
 /*
  * tpl_sleep is used by the idle task
  */
@@ -62,9 +65,9 @@ FUNC(void, OS_CODE) tpl_init_context(
 	{
 		AVR_PUSH((u16)(CallTerminateISR2) & 0xFF)
 		AVR_PUSH((u16)(CallTerminateISR2) >> 8)
-	} else {  //normal task. push TerminateTask();
-		AVR_PUSH((u16)(TerminateTask) & 0xFF)
-		AVR_PUSH((u16)(TerminateTask) >> 8)
+	} else {  //normal task. push CallTerminateTask();
+		AVR_PUSH((u16)(CallTerminateTask) & 0xFF)
+		AVR_PUSH((u16)(CallTerminateTask) >> 8)
 	}
 #ifdef __AVR_3_BYTE_PC__
 	AVR_PUSH(0)
