@@ -60,7 +60,7 @@ DeclareISR(isr1);
 static void test_t1_instance(void)
 {
 	ObjectAccessType result_obj_1, result_obj_2, result_obj_3, result_obj_4, result_obj_5, result_obj_6, result_obj_7, result_obj_8, result_obj_9, result_obj_10, result_obj_11, result_obj_12;
-	ObjectAccessType result_obj_13, result_obj_14, result_obj_15, result_obj_16, result_obj_17, result_obj_18, result_obj_19, result_obj_20, result_obj_21, result_obj_22;//, result_obj_23;
+	ObjectAccessType result_obj_13, result_obj_14, result_obj_15, result_obj_16, result_obj_17, result_obj_18, result_obj_19, result_obj_20, result_obj_21, result_obj_22;/*, result_obj_23;*/
 	ApplicationType result_app_1, result_app_2, result_app_3, result_app_4, result_app_5, result_app_6, result_app_7, result_app_8, result_app_9, result_app_10, result_app_11, result_app_12, result_app_13, result_app_14;
 	
 	SCHEDULING_CHECK_INIT(1);

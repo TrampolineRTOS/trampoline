@@ -23,7 +23,7 @@
  * $URL$
  */
 
-#include "tpl_os_internal_types.h" //pour tpl_core_id
+#include "tpl_os_internal_types.h" /* pour tpl_core_id */
 
 /**
  * @typedef tpl_stm_object_id

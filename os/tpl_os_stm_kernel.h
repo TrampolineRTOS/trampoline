@@ -22,10 +22,10 @@
  * $Author: audrey $
  * $URL: http://trampoline.rts-software.org/svn/trunk/os/tpl_os_stm.h $
  */
-//#include "tpl_compiler.h"
-#include "tpl_os_error.h" // pour core_id
+/* #include "tpl_compiler.h" */
+#include "tpl_os_error.h" /* pour core_id */
 
-//#include "tpl_os_stm.h"
+/* #include "tpl_os_stm.h" */
 #include "tpl_os_stm_internal_types.h"
 
 /**

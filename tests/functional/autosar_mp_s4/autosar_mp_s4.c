@@ -44,7 +44,7 @@
   #define OTHER_PERIPHERAL_ADRESS AT91C_TC0_RC /* i2c period */
 #elif TARGET_ARCH == ARCH_PPC
   VAR(u32, OS_CODE) PITC = 0;
-  // TODO : find register to the timer period for example
+  /* TODO : find register to the timer period for example */
   #define OWN_PERIPHERAL_ADRESS &PITC /* i2c period */
   #define OTHER_PERIPHERAL_ADRESS &PITC /* timer period */
 #elif TARGET_ARCH == ARCH_POSIX
@@ -123,7 +123,7 @@ TASK(t1_app_nontrusted1)
   printf("1.t1_app_nontrusted1 \n");
 #endif
   
-  // TODO (currently not supported by Trampoline) OS027
+  /* TODO (currently not supported by Trampoline) OS027 */
   
   /* OS081 : execute code in common section from all OS application -> YES */
   var1_t1_app_nontrusted1 = test_common_function(var1_t1_app_nontrusted1,var2_t1_app_nontrusted1);
@@ -169,7 +169,7 @@ TASK(t1_app_trusted1)
   printf("4.t1_app_trusted1 \n");
 #endif
   
-  // TODO (currently not supported by Trampoline) OS027
+  /* TODO (currently not supported by Trampoline) OS027 */
 
   /* OS081 : execute code in common section from all OS application -> YES */
   var1_t1_app_trusted1 = test_common_function(var1_t1_app_trusted1,var2_t1_app_trusted1);
