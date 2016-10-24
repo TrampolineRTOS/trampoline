@@ -38,8 +38,6 @@
 #include "tpl_os_kernel_stack.h"
 #include "tpl_registers.h"
 
-#define USER_MODE 0x4000
-
 #if (TASK_COUNT > 0)
 extern FUNC(void, OS_CODE) CallTerminateTask();
 #endif
@@ -131,6 +129,7 @@ FUNC(void, OS_CODE) tpl_init_context(
   CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA) proc = tpl_stat_proc_table[proc_id];
   P2VAR(ppc_integer_context, AUTOMATIC, OS_APPL_DATA) my_ic = proc->context.ic;
   P2VAR(tpl_stack_word, AUTOMATIC, OS_APPL_DATA) stack_addr = proc->stack.stack_zone;
+  VAR(uint32, OS_VAR) msr_mode = tpl_msr_start_value;
 
 
 /*  ic->cr = 0; */
@@ -142,13 +141,18 @@ FUNC(void, OS_CODE) tpl_init_context(
   */
 
   my_ic->srr0 = (uint32)proc->entry;
-#if (defined DEBUG_OS_MCU_IN_SUPERVISOR_MODE) || (WITH_MEMORY_PROTECTION == NO)
-  /* Keep MCU in Supervisor mode */
-  my_ic->srr1 = tpl_msr_start_value | EE_BIT_1;
-#else /* !DEBUG_OS_MCU_IN_SUPERVISOR_MODE */
-  /* Set MCU in User mode */
-  my_ic->srr1 = tpl_msr_start_value | EE_BIT_1 | USER_MODE;
-#endif /* DEBUG_OS_MCU_IN_SUPERVISOR_MODE */
+
+  /* External interrupt enabled */
+  msr_mode = msr_mode | EE_BIT_1;
+#if !(defined DEBUG_OS_MCU_IN_SUPERVISOR_MODE) && (WITH_MEMORY_PROTECTION == YES)
+  /* MSR in User mode */
+  msr_mode = msr_mode | PR_BIT_1;
+#endif
+#if (WITH_FLOAT == YES)
+  /* Floating-point available */
+  msr_mode = msr_mode | FP_BIT_1;
+#endif
+  my_ic->srr1 = msr_mode;
 
   /*  The stack pointer is computed by adding the base address of
       the stack to its size and by substracting the space needed

@@ -36,8 +36,10 @@
 /*=============================================================================
  * External interrupt bit mask in MSR
  */
-#define EE_BIT_1  0x8000
-#define RI_BIT_1  0x0002
+#define EE_BIT_1  0x8000    /* Interrupt enabled        */
+#define PR_BIT_1  0x4000    /* Processor can only execute user-level inst */
+#define FP_BIT_1  0x2000    /* Floating point instructions enabled */
+#define RI_BIT_1  0x0002    /* Interrupt is recoverable */
 
 /*=============================================================================
  * SEMA4 registers
