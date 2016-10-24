@@ -218,6 +218,9 @@ FUNC(void, OS_CODE) tpl_init_core(void)
     tpl_init_dec();
   }
 #endif
+#if WITH_ORTI == YES
+  tpl_fill_stack_pattern();
+#endif
 #if WITH_MEMORY_PROTECTION == YES
   tpl_init_mp();
 #endif
@@ -268,10 +271,6 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
   tpl_init_mode_entry_module();
 
   tpl_rgm_clear();
-
-#if WITH_ORTI == YES
-  tpl_fill_stack_pattern();
-#endif
 
   tpl_init_isr_prio();
 

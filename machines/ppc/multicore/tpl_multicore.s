@@ -138,5 +138,5 @@ TPL_SIZE(TPL_GLOBAL_REF(tpl_release_kernel_lock),$-TPL_GLOBAL_REF(tpl_release_ke
 
 #define OS_STOP_SEC_CODE
 #include "tpl_as_memmap.h"
-#endif // if WITH_MULTICORE == YES
+#endif /* if WITH_MULTICORE == YES */
 

@@ -183,11 +183,11 @@
   #define TPL_GLOBAL(var)    xdef _ ## var
   #define TPL_EXTERN_REF(var) _ ## var
   #define TPL_GLOBAL_REF(var) _ ## var
-  #define TPL_ALIGN(byte)     align byte
-  #define TPL_SPACE(bytes)    dcb.b bytes,0 //Initializes bytes with value 0
-  #define TPL_LONG(expr)      dc.b  expr
-  #define TPL_FILL(bytes)     dcb.b bytes,0
-  #define TPL_EQU(sym,val)    sym : equ val
+  #define TPL_ALIGN(byte)    align byte
+  #define TPL_SPACE(bytes)   dcb.b bytes,0 /* Initializes bytes with value 0 */
+  #define TPL_LONG(expr)     dc.b  expr
+  #define TPL_FILL(bytes)    dcb.b bytes,0
+  #define TPL_EQU(sym,val)   sym : equ val
   #define TPL_TYPE(sym,val)
   #define TPL_SIZE(sym,val)
   #define TPL_MACRO         macro

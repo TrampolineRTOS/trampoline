@@ -39,26 +39,6 @@
 /*****************************************************************************/
 /* VERSION CHECKING                                                          */
 /*****************************************************************************/
-#define OS_C_FILE_MAJOR_VERSION 1
-#define OS_C_FILE_MINOR_VERSION 0
-
-#if ((OS_SW_MAJOR_VERSION != OS_C_FILE_MAJOR_VERSION)   \
-     || (OS_SW_MINOR_VERSION != OS_C_FILE_MINOR_VERSION))
-#error "Os.h et Os.c files do not have the same version"
-#endif
-
-//#if ((OS_SW_MAJOR_VERSION != OS_CFG_H_FILE_MAJOR_VERSION)       \
-//     || (OS_SW_MINOR_VERSION != OS_CFG_H_FILE_MINOR_VERSION))
-//#error "Os.h et Os_Cfg.h files do not have the same version"
-//#endif
-
-/* Autosar version check between Os.h and configuration files */
-//#if ((OS_AR_RELEASE_MAJOR_VERSION != OS_CFG_H_FILE_AR_RELEASE_MAJOR_VERSION) \
-//     || (OS_AR_RELEASE_MINOR_VERSION != OS_CFG_H_FILE_AR_RELEASE_MINOR_VERSION) \
-//     || (OS_AR_RELEASE_REVISION_VERSION != OS_CFG_H_FILE_AR_RELEASE_REVISION_VERSION))
-//#error "Os.h and Os_Cfg.h files do not have the same AUTOSAR release version"
-//#endif
-
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 /**

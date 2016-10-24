@@ -608,5 +608,5 @@ invalid_service_id:
 TPL_TYPE(TPL_GLOBAL_REF(tpl_sc_handler),@function)
 TPL_SIZE(TPL_GLOBAL_REF(tpl_sc_handler),$-TPL_GLOBAL_REF(tpl_sc_handler))
 
-#endif // WITH_SYSTEM_CALL == YES
+#endif /* WITH_SYSTEM_CALL == YES */
 
