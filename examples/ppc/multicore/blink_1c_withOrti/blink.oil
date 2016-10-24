@@ -24,7 +24,7 @@ CPU blink {
 
   OS os {
     NUMBER_OF_CORES = 1;
-    WITHORTI orti { FILE = "orti.oil"; };
+    WITHORTI = TRUE { FILE = "blink.orti"; };
     SCALABILITYCLASS = AUTO;
     MEMMAP = TRUE {
       COMPILER  = cosmic;
@@ -43,7 +43,7 @@ CPU blink {
       SYSTEM    = PYTHON;
     };
     STACKMONITORING = FALSE;
-    STATUS          = STANDARD;
+    STATUS          = EXTENDED;
     USEVLE          = TRUE;
     USEGETSERVICEID = FALSE;
     USEPARAMETERACCESS = FALSE;
@@ -71,6 +71,7 @@ CPU blink {
     ISR = isr1;
     COUNTER = SystemCounter;
     ALARM = alarm_t1_app1;
+    ALARM = alarm_t2_app1;
     CORE = 0;
   };
 
@@ -80,7 +81,7 @@ CPU blink {
 
   COUNTER SystemCounter {
     TICKSPERBASE = 1;
-    MAXALLOWEDVALUE = 65535;
+    MAXALLOWEDVALUE = 0xFFF;
     MINCYCLE = 1;
     SOURCE = pit_ch0; /* Comment this to use the decrementer instead */
   };
@@ -94,8 +95,17 @@ CPU blink {
     ACTION = ACTIVATETASK { TASK = t1_app1;};
     AUTOSTART = TRUE {
       APPMODE = OsAppMode;
-      ALARMTIME = 300;
+      ALARMTIME = 100;
       CYCLETIME = 100;
+    };
+  };
+  ALARM alarm_t2_app1 {
+    COUNTER = SystemCounter;
+    ACTION = ACTIVATETASK { TASK = t2_app1;};
+    AUTOSTART = TRUE {
+      APPMODE = OsAppMode;
+      ALARMTIME = 250;
+      CYCLETIME = 200;
     };
   };
 
@@ -128,21 +138,20 @@ CPU blink {
   };
   ISR isr1 {
     SOURCE = IRQ0;
-    CATEGORY = 1;
+    CATEGORY = 2;
     PRIORITY = 5;
     RESOURCE = t1_resource;
   };
   MESSAGE t1_message_snd
   {
-    //MESSAGEPROPERTY = SEND_STATIC_INTERNAL{ CDATATYPE = "int";};
-    MESSAGEPROPERTY = SEND_ZERO_INTERNAL;
+    MESSAGEPROPERTY = SEND_STATIC_INTERNAL{ CDATATYPE = "int";};
   };
   MESSAGE t1_message_rcv
   {
-    MESSAGEPROPERTY = RECEIVE_ZERO_INTERNAL{
+    MESSAGEPROPERTY = RECEIVE_QUEUED_INTERNAL{
       SENDINGMESSAGE = t1_message_snd;
-      //INITIALVALUE = 10;
-      //QUEUESIZE = 10;
+      INITIALVALUE = 10;
+      QUEUESIZE = 10;
     };
   };
 

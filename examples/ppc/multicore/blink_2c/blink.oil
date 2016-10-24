@@ -24,6 +24,7 @@ CPU blink {
 
   OS os {
     NUMBER_OF_CORES = 2;
+    WITHORTI = TRUE { FILE = "blink.orti"; };
     SCALABILITYCLASS = AUTO;
     MEMMAP = TRUE {
       COMPILER  = cosmic;

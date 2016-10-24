@@ -37,6 +37,8 @@
 #define APP_Task_t1_app1_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 VAR(uint32, AUTOMATIC) led_state = 1;
+VAR(uint32, AUTOMATIC) snd_message = 0;
+VAR(uint32, AUTOMATIC) rcv_message = 0;
 #define APP_Task_t1_app1_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
@@ -61,12 +63,13 @@ FUNC(int, OS_APPL_CODE) main(void)
 #include "tpl_memmap.h"
 TASK(t1_app1)
 {
-    int plop = 3;
+    snd_message++;
 
     GetResource(t1_resource);
-    SendMessage(t1_message_rcv, &plop);
+    SendMessage(t1_message_rcv, &snd_message);
     led_state = !led_state;
     setLed(0, led_state);
+    ReleaseResource(t1_resource);
     TerminateTask();
 }
 #define APP_Task_t1_app1_STOP_SEC_CODE
@@ -76,8 +79,9 @@ TASK(t1_app1)
 #include "tpl_memmap.h"
 TASK(t2_app1)
 {
-    led_state = !led_state;
-    setLed(0, led_state);
+    GetResource(t1_resource);
+    ReceiveMessage(t1_message_rcv, &rcv_message);
+    ReleaseResource(t1_resource);
     TerminateTask();
 }
 #define APP_Task_t1_app1_STOP_SEC_CODE
