@@ -217,7 +217,18 @@ foreach appmode in APPMODE do
 between %,%
 end foreach
   %
-    ] CURRENTAPPMODE;
+    ] CURRENTAPPMODE;%
+if OS::NUMBER_OF_CORES > 1 & [SPINLOCK length] > 0 then%
+    CTYPE _vs_HELD_SPINLOCKS;
+    ENUM [
+      "NONE" = "-1",%
+foreach spinlock in SPINLOCK do%
+      "% !spinlock::NAME %" = "% !INDEX %"%
+between %,%
+end foreach
+  %
+    ] _vs_LAST_TAKEN_SPINLOCK;%
+end if%
   };
 
   TASK
@@ -332,6 +343,15 @@ end foreach
     ] KIND;
   };
 
+  _vs_SPINLOCK
+  {
+    STRING LOCKMETHOD;
+    ENUM [
+      "UNLOCKED" = 0,
+      "LOCKED"   = 1
+    ] STATE;
+  };
+
   /* ----------------------------------------------------------------------------
    * Architecture dependant orti implementation
    */
@@ -353,6 +373,11 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
   let orti_last_error := "tpl_last_error" + orti_core_a
   let orti_current_appmode := "application_mode" + orti_core_a
   let orti_service_trace := "tpl_servicetrace" + orti_core_a
+  let orti_held_spinlocks := "tpl_taken_spinlock_counter" + orti_core_a
+  let orti_last_taken_spinlock := orti_held_spinlocks + " ? "
+                                + "tpl_taken_spinlocks" + orti_core_a
+                                + "[" + orti_held_spinlocks + " - 1 ]"
+                                + ": -1"
 
   let orti_running_task_id := orti_tpl_kern + ".running_id"
   let orti_osname := "Trampoline_arch" + orti_core_a
@@ -365,7 +390,11 @@ OS Trampoline_arch% ![core_id string] %
   LASTERROR = "% !orti_last_error %";
   CURRENTAPPMODE = "% !orti_current_appmode %"
   VALID = "% !orti_running_task_id % != -1";
-  SERVICETRACE = "% !orti_service_trace %";
+  SERVICETRACE = "% !orti_service_trace %";%
+  if OS::NUMBER_OF_CORES > 1 & [SPINLOCK length] > 0 then%
+  _vs_HELD_SPINLOCKS = "% !orti_held_spinlocks %";
+  _vs_LAST_TAKEN_SPINLOCK = "% !orti_last_taken_spinlock %";%
+  end if%
 };
 %
 end loop
@@ -492,6 +521,16 @@ MESSAGECONTAINER % !message::NAME %
 };
 %
   end if
+end foreach
+
+foreach spinlock in SPINLOCK do
+%
+_vs_SPINLOCK % !spinlock::NAME %
+{
+  LOCKMETHOD = "% !spinlock::LOCKMETHOD %";
+  STATE = "% !spinlock::NAME %_spinlock_desc.state";
+};
+%
 end foreach
 
 %

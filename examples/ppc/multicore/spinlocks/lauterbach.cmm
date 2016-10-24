@@ -19,13 +19,15 @@
 ;  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 ;
 
-;set title
+;==============================================================================
+;       CONSTANTS DEFINITIONS
+
 TITLE "Multicore SMP spinlocks with MPC5643L"
 
-;set some constants
-&appPath="~~~~"                      ; Script directory
-&exePath="&appPath/spinlock_exe.elf"    ; Path to the executable
-&srcDir="~~~~"                       ; Location of the .o files
+&srcDir="~~~~"                              ; Location of the .o files
+&appPath="~~~~"                             ; Script directory
+&exePath="&appPath/spinlock_exe.elf"        ; Path to the executable
+&ortiPath="&appPath/spinlock/spinlock.orti" ; Path to the orti file
 
 ;==============================================================================
 ;       FLASH MEMORY PROGRAMMING
@@ -33,7 +35,6 @@ TITLE "Multicore SMP spinlocks with MPC5643L"
 DIALOG.YESNO "Program flash memory now?"
 LOCAL &progflash
 ENTRY &progflash
-
 
 IF &progflash
 (
@@ -119,30 +120,68 @@ MMU.Set TLB1 0x1 0x0 0x0 0x0
 ;set debug mode to HLL debugging
 Mode.Hll
 
-;stop core 1 on activation
-Core.Select 1
-break;
-Core.Select 0
-go
+;==============================================================================
+;       CODE EXECUTION
 
-;;open some windows and arrange
-;WinCLEAR
-;WinPOS 0.57143 0.46154 80. 28. 13. 1. W000
-;WinTABS 10. 10. 25. 62.
-;List.auto
+; Go main, the core0's MMU has to be initialized before opening ORTI windows.
+Core.select 0
+go main
 
-;WinPOS 85.429 0.53846 77. 20. 0. 0. W004
-;Register.view
+;;stop core 1 on activation
+;Core.Select 1
+;break;
+;Core.Select 0
 
-;WinPOS 1.0 43.462 80. 12. 5. 0. W003
-;Frame /Locals /Caller
 
-;IF POWERNEXUS()||SIMULATOR()
-;(
-;  WinPOS 85.429 24.615 80. 31. 6. 1. W004
-;  WinTABS 32.
-;  Trace.List
-;)
+;==============================================================================
+;       ORTI CONFIGURATION
+
+; Load ORTI File
+Task.ORTI "&ortiPath"
+
+; Clear windows
+WinCLEAR
+
+; Open some ORTI windows
+WinPOS 0x0 0x0 0x75 0x1
+Task.dos
+
+WinPOS 0x0 0x8 0x75 0x1
+Task.dtask
+
+WinPOS 0x0 0x10 0x75 0x1
+Task.dstack
+
+WinPOS 0x0 0x18 0x75 0x1
+Task.dalarm
+
+WinPOS 0x0 0x20 0x75 0x1
+Task.d_vs_counter
+
+WinPOS 0x0 0x28 0x75 0x1
+Task.d_vs_spinlock
+
+WinPOS 0x0 0x30 0x75 0xc
+Task.stack
+
+;==============================================================================
+;       OTHER WINDOWS
+
+; Core0 Code execution
+WinPOS 0x79 0x0 0x45 0x1a
+List.auto /CORE 0
+
+; Core0 Registers
+WinPOS 0xc2 0x0 0x4c 0x1c
+Register.view /CORE 0
+
+; Core1 Code execution
+WinPOS 0x79 0x20 0x45 0x1a
+List.auto /CORE 1
+
+; Core0 Registers
+WinPOS 0xc2 0x20 0x4c 0x1c
+Register.view /CORE 1
 
 ;;Usefull things to debug
 ;Tronchip.set IRPT ON          ; Break on interrupt entry

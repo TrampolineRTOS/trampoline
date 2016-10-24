@@ -24,6 +24,7 @@ CPU spinlock {
 
   OS os {
     NUMBER_OF_CORES = 2;
+    WITHORTI = TRUE { FILE = "spinlock.orti"; };
     SCALABILITYCLASS = AUTO;
     MEMMAP = TRUE {
       COMPILER  = cosmic;
