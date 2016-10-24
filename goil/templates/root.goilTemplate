@@ -80,7 +80,6 @@ let IOC := exists IOC default (@())
 let TRANSACTION := exists TRANSACTION default (@())
 let OBJECT := exists OBJECT default (@())
 let SPINLOCK := exists SPINLOCK default (@())
-let OS::WITHORTI := exists OS::WITHORTI default (@())
 
 template if exists configCheck
 
@@ -1520,7 +1519,14 @@ write to PROJECT+"/stm_structure.c":
   template stm_structure_c in code
 end write
 
-if [OS::WITHORTI length] > 0 then
-  template orti in code
+if OS::WITHORTI then
+  if OS::WITHORTI_S::FILE == "" then
+    let OS::WITHORTI_S::FILE := PROJECT + ".orti"
+    warning OS::WITHORTI : "Invalid or missing ORTI file name."
+                         + "Using default value : " + OS::WITHORTI_S::FILE
+  end if
+  write to PROJECT + "/" + OS::WITHORTI_S::FILE :
+    template orti in code
+  end write
 end if
 

@@ -56,9 +56,41 @@ STACK % !proc::NAME %_stack
   SIZE = "% !proc::STACKSIZE %";
   BASEADDRESS = "&(% !proc::NAME %_stack_zone[0])";
   STACKDIRECTION = "DOWN";
-  FILLPATTERN = "0xAAAAAAAAU";
+  FILLPATTERN = "0xAAAAAAAAU"; /* File tpl_machine.h */
 };
 %
 end foreach
+
+loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+%
+STACK kernel_stack_core% !core_id %
+{
+  SIZE = "2000"; /* File tpl_os_kernel_stack.h */
+  BASEADDRESS = "tpl_kernel_stack[% !core_id %]";
+  STACKDIRECTION = "DOWN";
+  FILLPATTERN = "0xAAAAAAAAU"; /* File tpl_machine.h */
+}
+%
+end loop
+
+%
+STACK startup_stack_core0
+{
+  SIZE = "0x1000"; /* ld script */
+  BASEADDRESS = "0x4000E000"; /* ld script */
+  STACKDIRECTION = "DOWN";
+  FILLPATTERN = "0x00000000U";
+}
 %
 
+if OS::NUMBER_OF_CORES > 1 then
+%
+STACK startup_stack_core1
+{
+  SIZE = "0x1000"; /* ld script */
+  BASEADDRESS = "0x4000F000"; /* ld script */
+  STACKDIRECTION = "DOWN";
+  FILLPATTERN = "0x00000000U";
+}
+%
+end if

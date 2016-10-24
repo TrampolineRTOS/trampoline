@@ -69,11 +69,14 @@ if ioc_unqueued_count > 0 then
   let APIUSED += APIMAP["ioc_unqueued"]
 end if
 
-foreach orti in OS::WITHORTI do
-  if not exists orti::FILE then
-    error orti::NAME : "File required."
-  end if
-  write to PROJECT + "/" + orti::FILE :
+let listOfApiFunc := @( )
+foreach api_sec in APIUSED do
+  foreach api_func in api_sec::SYSCALL do
+    let listOfApiFunc += api_func
+  end foreach
+end foreach
+sort listOfApiFunc by CALLABLE_BY_ISR1 >
+
 %
 /**
  * @file % !FILENAME %
@@ -100,41 +103,6 @@ foreach orti in OS::WITHORTI do
  * $Author$
  * $URL$
  */
-%
-# =============================================================================
-# Core dependant variables
-#
-let orti_tpl_kern
-let orti_last_error
-let orti_current_appmode
-let orti_service_trace
-if OS::NUMBER_OF_CORES > 1 then
-  let orti_core := exists orti::CORE default (0)
-  let orti_core_a := "[" + [orti_core string] + "]"
-  let orti_tpl_kern := "tpl_kern" + orti_core_a
-  let orti_last_error := "tpl_last_error" + orti_core_a
-  let orti_current_appmode := "application_mode" + orti_core_a
-  let orti_service_trace := "tpl_servicetrace" + orti_core_a
-else
-  let orti_tpl_kern := "tpl_kern"
-  let orti_last_error := "tpl_last_error"
-  let orti_current_appmode := "application_mode"
-  let orti_service_trace := "tpl_servicetrace"
-end if
-
-# =============================================================================
-# Other variables
-#
-let orti_running_task_id := orti_tpl_kern + ".running_id"
-
-let listOfApiFunc := @( )
-foreach api_sec in APIUSED do
-  foreach api_func in api_sec::SYSCALL do
-    let listOfApiFunc += api_func
-  end foreach
-end foreach
-sort listOfApiFunc by CALLABLE_BY_ISR1 >
-%
 
 VERSION
 {
@@ -216,6 +184,12 @@ end foreach
       "E_OS_RESOURCE"              =  6,
       "E_OS_STATE"                 =  7,
       "E_OS_VALUE"                 =  8,
+      "E_NOT_OK"                   =  9,
+      "E_COM_ID"                   = 10,
+      "E_COM_LENGTH"               = 11,
+      "E_COM_LIMIT"                = 12,
+      "E_COM_NOMSG"                = 13,
+      "E_COM_FILTERDOUR"           = 14,
       "E_OS_SERVICEID"             = 16,
       "E_OS_ILLEGAL_ADDRESS"       = 17,
       "E_OS_MISSINGEND"            = 18,
@@ -231,7 +205,7 @@ end foreach
       "E_OS_SPINLOCK"              = 28,
       "E_OS_LOST_DATA"             = 29,
       "E_OS_NO_DATA"               = 30
-    ] LASTERROR; // FIXME : Not generated
+    ] LASTERROR; /* FIXME : Not generated */
     ENUM [
       "NOAPPMODE" = "-1",%
 foreach appmode in APPMODE do
@@ -369,7 +343,21 @@ template if exists custom_orti_implementation
 /* ----------------------------------------------------------------------------
  * Definitions
  */
-OS Trampoline_arch
+%
+loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+  let orti_core_a := ""
+  if OS::NUMBER_OF_CORES > 1 then
+    let orti_core_a := "[" + [core_id string] + "]"
+  end if
+  let orti_tpl_kern := "tpl_kern" + orti_core_a
+  let orti_last_error := "tpl_last_error" + orti_core_a
+  let orti_current_appmode := "application_mode" + orti_core_a
+  let orti_service_trace := "tpl_servicetrace" + orti_core_a
+
+  let orti_running_task_id := orti_tpl_kern + ".running_id"
+  let orti_osname := "Trampoline_arch" + orti_core_a
+%
+OS Trampoline_arch% ![core_id string] %
 {
   RUNNINGTASK = "% !orti_running_task_id %";
   RUNNINGISR2 = "% !orti_running_task_id %";
@@ -379,8 +367,8 @@ OS Trampoline_arch
   VALID = "% !orti_running_task_id % != -1";
   SERVICETRACE = "% !orti_service_trace %";
 };
-
 %
+end loop
 
 foreach proc in PROCESSES do
   if proc::KIND == "Task" then
@@ -475,18 +463,21 @@ foreach message in MESSAGE do
     let queuecount := "1"
     let messagetype := "UNQUEUED"
     let firstelement := message::NAME + "_buffer"
+  elsif message::MESSAGEPROPERTY == "RECEIVE_QUEUED_INTERNAL" then
+    let show := true
+    let queuesize := [message::MESSAGEPROPERTY_S::QUEUESIZE string]
+    let messagetype := "QUEUED"
+    let queuecount := message::NAME + "_dyn_queue.size/"
+                    + message::NAME + "_message.queue.element_size"
+    let queueindex := message::NAME + "_dyn_queue.index/"
+                    + message::NAME + "_message.queue.element_size"
+    let firstelement := message::NAME + "_buffer[" + queueindex + "]"
   elsif message::MESSAGEPROPERTY == "RECEIVE_ZERO_INTERNAL" then
     let show := true
     let queuesize := "1"
     let queuecount := "1"
     let messagetype := "UNQUEUED"
     let firstelement := ""
-  elsif message::MESSAGEPROPERTY == "RECEIVE_QUEUED_INTERNAL" then
-    let show := true
-    let queuesize := [message::MESSAGEPROPERTY_S::QUEUESIZE string]
-    let queuecount := message::NAME + "_dyn_queue.size/" + message::NAME + "_message.queue.element_size"
-    let messagetype := "QUEUED"
-    let firstelement := message::NAME + "_buffer[" + message::NAME + "_dyn_queue.index]"
   end if
 
   if show then
@@ -515,6 +506,4 @@ template if exists custom_orti_definition
  * End of file % !FILENAME %
  */
 %
-  end write
-end foreach
 %

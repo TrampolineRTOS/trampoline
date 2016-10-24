@@ -78,7 +78,7 @@ end if%
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 %
-if [OS::WITHORTI length] > 0 then%
+if OS::WITHORTI then%
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"%
   if OS::NUMBER_OF_CORES > 1 then%
