@@ -25,11 +25,11 @@
 /*
  * Result codes
  */
-#define E_COM_ID        17
-#define E_COM_LENGTH    18
-#define E_COM_LIMIT     19
-#define E_COM_NOMSG     20
-#define E_COM_FILTEREDOUT 21
+#define E_COM_ID          10
+#define E_COM_LENGTH      11
+#define E_COM_LIMIT       12
+#define E_COM_NOMSG       13
+#define E_COM_FILTEREDOUT 14
 
 #if WITH_EXTERNAL_COM == YES
 /*
