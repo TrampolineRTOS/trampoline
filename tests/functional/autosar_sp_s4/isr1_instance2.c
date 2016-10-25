@@ -34,7 +34,6 @@
 
 /*Instance 2 of task isr1*/
 
-#include "embUnit.h"
 #include "Os.h"
 
 DeclareResource(Resource1);

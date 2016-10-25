@@ -50,7 +50,6 @@
  */
 
 #include "tpl_os.h"
-#include "embUnit.h"
 
 TestRef t1_instance(void);
 TestRef t2_instance(void);

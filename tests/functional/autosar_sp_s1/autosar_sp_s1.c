@@ -33,7 +33,6 @@
  */
 
 #include "Os.h"
-#include "embUnit.h"
 #include "config.h" /*for stdimpl_print*/
 
 TestRef AutosarSPTest_seq1_t1_instance(void);
@@ -118,13 +117,13 @@ TASK(t2)
 	ShutdownOS(E_OK);
 }
 
-ISR(isr1)
+ISR(softwareInterruptHandler0)
 {
 	TestRunner_runTest(AutosarSPTest_seq1_isr1_instance());
 }
 
 
-ISR(isr2)
+ISR(softwareInterruptHandler1)
 {
 	TestRunner_runTest(AutosarSPTest_seq1_isr2_instance());
 }

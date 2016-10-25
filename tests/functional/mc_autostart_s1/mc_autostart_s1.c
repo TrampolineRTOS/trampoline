@@ -49,7 +49,6 @@
  */
 
 #include "Os.h"
-#include "embUnit.h"
 
 TestRef t1_instance(void);
 TestRef t2_instance(void);

@@ -34,12 +34,10 @@
 
 /*Instance of task t1*/
 
-#include "embUnit.h"
 #include "Os.h"
 
 DeclareTask(t1);
 
-void tpl_send_it1(void);
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/
@@ -49,7 +47,7 @@ static void test_t1_instance(void)
 	StatusType result_inst_1;
 	
 	SCHEDULING_CHECK_STEP(1);
-	tpl_send_it1();
+	sendSoftwareIt(0, SOFT_IRQ0);
 	
 	SCHEDULING_CHECK_INIT(6);
 	ISRType_inst_1 = GetISRID();

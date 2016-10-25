@@ -34,10 +34,7 @@
 
 /*Instance 2 of error*/
 
-#include "embUnit.h"
 #include "Os.h"
-
-DeclareISR(isr1);
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/

@@ -53,7 +53,6 @@
  */
 
 #include "tpl_os.h"
-#include "embUnit.h"
 
 TestRef t1_instance(void);
 int user_number_of_cores = 0;

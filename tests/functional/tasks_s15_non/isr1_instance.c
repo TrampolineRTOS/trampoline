@@ -34,7 +34,6 @@
 
 /*Instance of isr1*/
 
-#include "embUnit.h"
 #include "tpl_os.h"
 
 DeclareTask(t1);

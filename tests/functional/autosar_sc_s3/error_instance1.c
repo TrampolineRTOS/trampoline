@@ -34,7 +34,6 @@
 
 /*Instance 1 of error*/
 
-#include "embUnit.h"
 #include "Os.h"
 
 DeclareCounter(Hardware_Counter);

@@ -34,7 +34,6 @@
 
 #include "config.h" /*Display information in the right way (printf on UNIX...)*/
 #include "tpl_os.h"
-#include "embUnit.h"
 
 TestRef EventMechanismTest_seq5_t1_instance(void);
 TestRef EventMechanismTest_seq5_t2_instance(void);
@@ -80,7 +79,7 @@ TASK(t5)
 	ShutdownOS(E_OK);
 }
 
-ISR(isr1)
+ISR(softwareInterruptHandler0)
 {
 	TestRunner_runTest(EventMechanismTest_seq5_isr1_instance());
 }

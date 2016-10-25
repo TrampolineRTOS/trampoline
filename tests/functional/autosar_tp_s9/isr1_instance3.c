@@ -35,11 +35,8 @@
 
 /*Instance 3 of ISR2 isr1*/
 
-#include "embUnit.h"
 #include "Os.h"
 
-void tpl_send_it1(void);
-void tpl_send_it2(void);
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/
@@ -47,9 +44,9 @@ static void test_isr1_instance3(void)
 {
    
   SCHEDULING_CHECK_STEP(8);
-  tpl_send_it2();
+  sendSoftwareIt(0, SOFT_IRQ1);
   
-  tpl_send_it1(); /* As isr1 is runnig, event if we call isr1 before the end of Time Frame,
+  sendSoftwareIt(0, SOFT_IRQ0); /* As isr1 is runnig, event if we call isr1 before the end of Time Frame,
    the call should be ignored and no Protection Hook should appear.*/
   
   SCHEDULING_CHECK_STEP(9);

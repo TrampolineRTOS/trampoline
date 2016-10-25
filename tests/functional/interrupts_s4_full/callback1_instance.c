@@ -34,10 +34,8 @@
 
 /*Instance of callback1*/
 
-#include "embUnit.h"
 #include "tpl_os.h"
 
-void tpl_send_it1(void);
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/
@@ -48,7 +46,7 @@ static void test_callback1_instance(void)
 	
 	SuspendAllInterrupts();
 	ResumeAllInterrupts();
-	tpl_send_it1();
+	sendSoftwareIt(0, SOFT_IRQ0);
 	
 	SCHEDULING_CHECK_STEP(3);
 	

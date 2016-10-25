@@ -69,7 +69,6 @@
  */
 
 #include "tpl_os.h"
-#include "embUnit.h"
 
 TestRef t1_instance(void);
 TestRef t2_instance(void);
@@ -105,7 +104,7 @@ int main(void)
 FUNC(ProtectionReturnType, OS_CODE) ProtectionHook(
   VAR(StatusType, AUTOMATIC) FatalError)
 {
-  sendSoftwareIt(1); /* Call the core1 ISR */
+  sendSoftwareIt(1, SOFT_IRQ0); /* Call the core1's ISR0 */
   return PRO_TERMINATETASKISR;
 }
 
@@ -122,14 +121,16 @@ void ShutdownHook(StatusType error)
   }
 }
 
-ISR(softwareInterruptHandler_Core0)
-{
-
-}
-ISR(softwareInterruptHandler_Core1)
+ISR(softwareInterruptHandler0_Core1)
 {
   TestRunner_runTest(isr_instance());
 }
+
+UNUSED_ISR(softwareInterruptHandler0_Core0)
+UNUSED_ISR(softwareInterruptHandler1_Core0)
+UNUSED_ISR(softwareInterruptHandler1_Core1)
+UNUSED_ISR(softwareInterruptHandler2_Core0)
+UNUSED_ISR(softwareInterruptHandler2_Core1)
 
 TASK(t1)
 {

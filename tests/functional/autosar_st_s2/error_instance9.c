@@ -34,7 +34,6 @@
 
 /*Instance 9 of error*/
 
-#include "embUnit.h"
 #include "Os.h"
 
 DeclareScheduleTable(sched3);

@@ -35,7 +35,6 @@
 
 /*Instance 2 of protection hook */
 
-#include "embUnit.h"
 #include "Os.h"
 
 extern StatusType Fatalerrorstatus;

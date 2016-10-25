@@ -34,7 +34,6 @@
 
 /*Instance of task t1*/
 
-#include "embUnit.h"
 #include "Os.h"
 
 DeclareAlarm(Alarm1);
@@ -53,7 +52,7 @@ DeclareScheduleTable(INVALID_SCHEDULETABLE);
 DeclareTask(t1);
 DeclareTask(t2);
 DeclareTask(INVALID_TASK);
-DeclareISR(isr1);
+DeclareISR(softwareInterruptHandler0);
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/
@@ -90,11 +89,11 @@ static void test_t1_instance(void)
 	SCHEDULING_CHECK_AND_EQUAL_INT(6, NO_ACCESS, result_obj_6);
 	
 	SCHEDULING_CHECK_INIT(7);
-	result_obj_7 = CheckObjectAccess(app2, OBJECT_ISR, isr1); 
+	result_obj_7 = CheckObjectAccess(app2, OBJECT_ISR, softwareInterruptHandler0); 
 	SCHEDULING_CHECK_AND_EQUAL_INT(7, ACCESS, result_obj_7);
 	
 	SCHEDULING_CHECK_INIT(8);
-	result_obj_8 = CheckObjectAccess(app1, OBJECT_ISR, isr1); 
+	result_obj_8 = CheckObjectAccess(app1, OBJECT_ISR, softwareInterruptHandler0); 
 	SCHEDULING_CHECK_AND_EQUAL_INT(8, NO_ACCESS, result_obj_8);
 	
 	
@@ -175,7 +174,7 @@ static void test_t1_instance(void)
 	SCHEDULING_CHECK_AND_EQUAL_INT(26, INVALID_OSAPPLICATION, result_app_4);
 	
 	SCHEDULING_CHECK_INIT(27);
-	result_app_5 = CheckObjectOwnership(OBJECT_ISR, isr1); 
+	result_app_5 = CheckObjectOwnership(OBJECT_ISR, softwareInterruptHandler0); 
 	SCHEDULING_CHECK_AND_EQUAL_INT(27, app2, result_app_5);
 	
 	

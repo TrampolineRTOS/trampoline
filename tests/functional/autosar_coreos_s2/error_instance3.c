@@ -34,7 +34,6 @@
 
 /*Instance 3 of error*/
 
-#include "embUnit.h"
 #include "Os.h"
 
 DeclareAlarm(Alarm_ActivateTask);

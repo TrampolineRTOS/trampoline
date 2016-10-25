@@ -34,7 +34,6 @@
 
 /*Instance of interruption isr1*/
 
-#include "embUnit.h"
 #include "tpl_os.h"
 
 DeclareResource(INVALID_RESOURCE);
@@ -42,8 +41,6 @@ DeclareResource(Resource1);
 DeclareResource(Resource2);
 DeclareResource(Resource3);
 
-void tpl_send_it2(void);
-void tpl_send_it3(void);
 
 /*test case:test the reaction of the system called with 
  an activation of a isr*/
@@ -75,9 +72,9 @@ static void test_isr1_instance(void)
 	result_inst_6 = GetResource(Resource2);
 	SCHEDULING_CHECK_AND_EQUAL_INT(7 , E_OK, result_inst_6);
 	
-	tpl_send_it2();
+	sendSoftwareIt(0, SOFT_IRQ1);
 	
-	tpl_send_it3();
+	sendSoftwareIt(0, SOFT_IRQ2);
 	/*it3 trigged*/
 	
 	SCHEDULING_CHECK_INIT(9);

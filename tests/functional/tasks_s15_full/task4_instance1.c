@@ -34,7 +34,6 @@
 
 /*Instance 1 of task t4*/
 
-#include "embUnit.h"
 #include "tpl_os.h"
 
 /*test case:test the reaction of the system called with 

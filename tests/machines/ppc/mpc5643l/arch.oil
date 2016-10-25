@@ -34,18 +34,13 @@
  * $URL$
  */
 
-/*  XXX : WARNING
- *        This file is included from an oil file located in one of the
- *        tests' directory. In that case, compiler relative paths are from the
- *        test's directory !
- */
+#include "../../common/arch.oil"
 
 IMPLEMENTATION archMpc5643l
 {
   TASK
   {
     UINT32 STACKSIZE = 1400;
-    UINT32 PRIORITY = 1;
   };
 
   ISR
@@ -69,19 +64,27 @@ CPU archMpc5643lCosmic
       COMPILER = cosmic;
       ASSEMBLER = cosmic_as;
     };
+
+    /* Build paths are from the test directory */
     BUILD = TRUE
     {
       COMPILER = "../../../examples/ppc/tools/cxvle_auto.py";
       ASSEMBLER = "../../../examples/ppc/tools/cxvle_auto.py";
       LINKER = "../../../examples/ppc/tools/clnk_auto.py";
-      CFLAGS = "-I../../embUnit";
-      //LDFLAGS = "-l ../../lib/libembUnit.a";
-      APP_SRC = "../../machines/ppc/mpc5643l/config.c";
       SYSTEM = PYTHON;
+      LIBRARY = archConfig;
     };
     USEVLE = TRUE;
     SYSTEM_CALL = TRUE;
     DEBUG = TRUE;
+  };
+
+  /* Lib paths are from the "TRAMPOLINE/machines" directory */
+  LIBRARY archConfig
+  {
+    PATH = "../tests/machines/ppc/mpc5643l/";
+    CHEADER = "archTestConfig.h";
+    CFILE = "archTestConfig.c";
   };
 };
 

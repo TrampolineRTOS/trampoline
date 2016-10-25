@@ -34,6 +34,7 @@
 
 OIL_VERSION = "3.1" : "autosar_app_s3";
 
+#include <softwareIT.oil>
 #include <arch.oil>
 
 IMPLEMENTATION trampoline {
@@ -77,10 +78,9 @@ CPU test {
     SCHEDULE = FULL;
   };
  
-  ISR isr1 {
+  ISR softwareInterruptHandler0 {
     CATEGORY = 2;
     PRIORITY = 1;
-    SOURCE = SIGTERM;
   };  
  
   COUNTER Software_Counter {
@@ -148,7 +148,9 @@ CPU test {
  
   APPLICATION app2 {
     COUNTER = Software_Counter2;
-    ISR = isr1;
+    ISR = softwareInterruptHandler0;
+    ISR = softwareInterruptHandler1;
+    ISR = softwareInterruptHandler2;
     SCHEDULETABLE = sched2;
     TASK = t2;
   };

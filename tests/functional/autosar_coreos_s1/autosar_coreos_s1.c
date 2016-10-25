@@ -33,7 +33,6 @@
  */
 
 #include "Os.h"
-#include "embUnit.h"
 
 TestRef AutosarCOREOSTest_seq1_t1_instance(void);
 TestRef AutosarCOREOSTest_seq1_error_instance1(void);

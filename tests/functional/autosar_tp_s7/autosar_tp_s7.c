@@ -34,7 +34,6 @@
 
 
 #include "Os.h"
-#include "embUnit.h"
 #include "config.h" /*for stdimpl_print*/
 
 TestRef AutosarTPTest_seq7_t1_instance(void);

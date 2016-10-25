@@ -34,7 +34,6 @@
 
 /*Instance 1 of posttask hook routine*/
 
-#include "embUnit.h"
 #include "tpl_os.h"
 #include "tpl_app_config.h" /*for OSMAXALLOWEDVALUE_Counter1...*/
 

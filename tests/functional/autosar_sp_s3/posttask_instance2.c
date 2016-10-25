@@ -34,7 +34,6 @@
 
 /*Instance 2 of posttask*/
 
-#include "embUnit.h"
 #include "tpl_os.h"
 
 /*test case:test the reaction of the system called with 

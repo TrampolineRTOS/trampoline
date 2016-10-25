@@ -34,7 +34,6 @@
 
 #include "config.h" /*Display information in the right way (printf on UNIX...)*/
 #include "tpl_os.h"
-#include "embUnit.h"
 
 
 TestRef COMInternalTest_seq6_t1_instance(void);

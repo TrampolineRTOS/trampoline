@@ -35,7 +35,6 @@
 
 /*Instance 1 of error hook */
 
-#include "embUnit.h"
 #include "Os.h"
 
 extern StatusType errorstatus;

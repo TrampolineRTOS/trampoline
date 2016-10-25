@@ -34,7 +34,6 @@
 
 /*Instance of task t1*/
 
-#include "embUnit.h"
 #include "tpl_os.h"
 
 DeclareTask(t1);
@@ -42,7 +41,6 @@ DeclareTask(t2);
 DeclareEvent(Event1);
 DeclareTask(INVALID_TASK);
 
-void tpl_send_it1(void);
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/
@@ -67,7 +65,7 @@ static void test_t1_instance(void)
 	result_inst_4 = ClearEvent(Event1);	
 	SCHEDULING_CHECK_AND_EQUAL_INT(4,E_OS_ACCESS, result_inst_4);
 	
-	tpl_send_it1();
+	sendSoftwareIt(0, SOFT_IRQ0);
 	
 	SCHEDULING_CHECK_INIT(7);
 	result_inst_6 = GetEvent(INVALID_TASK,&result_inst_5);

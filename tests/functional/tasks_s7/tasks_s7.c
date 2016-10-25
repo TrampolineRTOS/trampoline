@@ -34,7 +34,6 @@
 
 #include "config.h" /*Display information in the right way (printf on UNIX...)*/
 #include "tpl_os.h"
-#include "embUnit.h"
 
 TestRef TaskManagementTest_seq7_t1_instance1(void);
 TestRef TaskManagementTest_seq7_t1_instance2(void);

@@ -34,11 +34,8 @@
 
 /*Instance of task t1*/
 
-#include "embUnit.h"
 #include "tpl_os.h"
 
-void tpl_send_it1(void);
-void tpl_send_it2(void);
 
 /*test case:test the reaction of the system called with 
 an activation of a task*/
@@ -51,15 +48,15 @@ static void test_t1_instance(void)
 	EnableAllInterrupts();
 
 	DisableAllInterrupts();
-	tpl_send_it2();
-	tpl_send_it2();
-	tpl_send_it2();
+	sendSoftwareIt(0, SOFT_IRQ1);
+	sendSoftwareIt(0, SOFT_IRQ1);
+	sendSoftwareIt(0, SOFT_IRQ1);
 	
 	EnableAllInterrupts();
 
 	SCHEDULING_CHECK_STEP(3);
 
-	tpl_send_it2();
+	sendSoftwareIt(0, SOFT_IRQ1);
 	
 	SCHEDULING_CHECK_STEP(5);
 	
@@ -68,7 +65,7 @@ static void test_t1_instance(void)
 	SuspendAllInterrupts();
 	SuspendAllInterrupts();
 	SuspendAllInterrupts();
-	tpl_send_it2();
+	sendSoftwareIt(0, SOFT_IRQ1);
 	
 	ResumeAllInterrupts();
 	ResumeAllInterrupts();
@@ -76,7 +73,7 @@ static void test_t1_instance(void)
 	
 	SCHEDULING_CHECK_STEP(7);
 	
-	tpl_send_it2();
+	sendSoftwareIt(0, SOFT_IRQ1);
 	
 	SCHEDULING_CHECK_STEP(9);	
 	
@@ -85,7 +82,7 @@ static void test_t1_instance(void)
 	SuspendOSInterrupts();
 	SuspendOSInterrupts();
 	SuspendOSInterrupts();
-	tpl_send_it2();
+	sendSoftwareIt(0, SOFT_IRQ1);
 	
 	ResumeOSInterrupts();
 	ResumeOSInterrupts();
@@ -93,7 +90,7 @@ static void test_t1_instance(void)
 	
 	SCHEDULING_CHECK_STEP(11);
 	
-	tpl_send_it1();
+	sendSoftwareIt(0, SOFT_IRQ0);
 	
 	SCHEDULING_CHECK_STEP(27);
 	

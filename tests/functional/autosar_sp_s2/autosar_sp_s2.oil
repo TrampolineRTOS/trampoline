@@ -34,6 +34,7 @@
 
 OIL_VERSION = "3.1" : "autosar_sp_s2";
 
+#include <softwareIT.oil>
 #include <arch.oil>
 
 IMPLEMENTATION trampoline {
@@ -72,15 +73,13 @@ CPU test {
     ACTIVATION = 1;
     SCHEDULE = FULL;
   };
-  ISR isr1 {
+  ISR softwareInterruptHandler0 {
     CATEGORY = 2;
-    SOURCE = SIGTERM;
     PRIORITY = 1;
     STACKSIZE = 32768;
   };
-  ISR isr2 {
+  ISR softwareInterruptHandler1 {
     CATEGORY = 2;
-    SOURCE = SIGUSR2;
     PRIORITY = 2;
     STACKSIZE = 32768;
   };

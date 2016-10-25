@@ -34,7 +34,6 @@
 
 /*Instance of task t2*/
 
-#include "embUnit.h"
 #include "tpl_os.h"
 #include "tpl_com_definitions.h" /*for E_COM_NOMSG...*/
 

@@ -33,7 +33,6 @@
  */
 
 #include "config.h" /*Display information in the right way (printf on UNIX...)*/
-#include "embUnit.h"
 #include "tpl_os.h"
 
 TestRef TaskManagementTest_seq8_t1_instance1(void);

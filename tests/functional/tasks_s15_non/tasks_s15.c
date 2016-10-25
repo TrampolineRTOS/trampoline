@@ -33,7 +33,6 @@
  */
 
 #include "config.h" /*Display information in the right way (printf on UNIX...)*/
-#include "embUnit.h"
 #include "tpl_os.h"
 
 TestRef TaskManagementTest_seq16_t1_instance(void);
@@ -143,7 +142,7 @@ TASK(t8)
 	TestRunner_runTest(TaskManagementTest_seq16_t8_instance());
 }
 
-ISR(isr1)
+ISR(softwareInterruptHandler0)
 {
 	TestRunner_runTest(TaskManagementTest_seq16_isr1_instance());	
 }

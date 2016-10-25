@@ -32,7 +32,6 @@
  * $URL$
  */
 
-#include "embUnit.h"
 #include "tpl_os.h"
 
 TestRef EventMechanismTest_seq4_t1_instance(void);

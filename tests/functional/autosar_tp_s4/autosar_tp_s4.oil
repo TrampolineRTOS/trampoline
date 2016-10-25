@@ -80,10 +80,9 @@ IMPLEMENTATION trampoline {
   ACTIVATION = 1;
   SCHEDULE = FULL;
  };
- ISR isr1 {
+ ISR softwareInterruptHandler0 {
    CATEGORY = 2;
    PRIORITY = 1;
-   SOURCE = SIGTERM;
    TIMING_PROTECTION = TRUE {
      TIMEFRAME = 1;
      EXECUTIONTIME = 1000;
@@ -91,10 +90,9 @@ IMPLEMENTATION trampoline {
      MAXALLINTERRUPTLOCKTIME = 1;
    };
  };
- ISR isr2 {
+ ISR softwareInterruptHandler1 {
    CATEGORY = 2;
    PRIORITY = 2;
-   SOURCE = SIGUSR2;
    TIMING_PROTECTION = TRUE {
      TIMEFRAME = 1;
      EXECUTIONTIME = 1000;

@@ -32,7 +32,6 @@ TITLE "MPC5643L's test script launcher"
 &srcDir="&appPath"                   ; Location of the .o files
 &libembSrcDir="&appPath/../../embUnit"
 
-
 ;==============================================================================
 ;       FLASH MEMORY PROGRAMMING
 

@@ -46,11 +46,6 @@
   #include "tpl_os_timeobj_kernel.h"
 #endif
 
-#include "embUnit.h"
-
-#define SOFT_IRQ_CORE0  0
-#define SOFT_IRQ_CORE1  0
-
 #if ALARM_COUNT > 0
 /*
  * @def WaitActivationOneShotAlarm
@@ -127,16 +122,10 @@ void SyncAllCores_Init()
 }
 #endif /* (NUMBER_OF_CORES > 1) && (SPINLOCK_COUNT > 0) */
 
-void sendSoftwareIt(tpl_core_id to_core_id)
+#if ISR_COUNT > 0
+void sendSoftwareIt(uint32 to_core_id, uint32 channel)
 {
-  if(to_core_id == 0)
-  {
-    TPL_INTC(0).SSCIR[SOFT_IRQ_CORE0] = INTC_SSCIR_SET;
-  }
-  else
-  {
-    TPL_INTC(1).SSCIR[SOFT_IRQ_CORE1] = INTC_SSCIR_SET;
-  }
+  TPL_INTC(to_core_id).SSCIR[channel] = INTC_SSCIR_SET;
 }
-
+#endif
 

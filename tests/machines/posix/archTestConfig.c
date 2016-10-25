@@ -46,14 +46,22 @@
 	#include "tpl_os_timeobj_kernel.h"
 #endif
 
-#include "embUnit.h"
-#include "config.h"
-
 #include <sys/types.h>
 #include <signal.h>
 #include <unistd.h>
 #include <assert.h>
 
+#if ISR_COUNT > 0
+/* TODO : Multicore - Get CoreID's ipid */
+void sendSoftwareIt(uint32 to_core_id, uint32 channel)
+{
+  int ipid;
+  ipid = getpid();
+  kill(ipid, channel);
+}
+#endif
+
+#if 0
 /*
  * @def tpl_send_it1
  *
@@ -89,6 +97,7 @@ void tpl_send_it3(void){
 	ipid = getpid();
 	kill(ipid,SIGPIPE);
 }
+#endif
 
 /*
  * @def pending_signals

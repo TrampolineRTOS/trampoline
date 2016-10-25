@@ -34,6 +34,7 @@
 
 OIL_VERSION = "2.5" : "resources_s5";
 
+#include <softwareIT.oil>
 #include <arch.oil>
 
 IMPLEMENTATION trampoline {
@@ -70,25 +71,22 @@ CPU test {
     RESOURCE = Resource3;
   };
 
-  ISR isr1 {
+  ISR softwareInterruptHandler0 {
     CATEGORY = 2;
     PRIORITY = 1;
-    SOURCE = SIGTERM;
     RESOURCE = Resource1;
     RESOURCE = Resource2;
   }; 
 
-  ISR isr2 {
+  ISR softwareInterruptHandler1 {
     CATEGORY = 2;
     PRIORITY = 2;
-    SOURCE = SIGUSR2;
     RESOURCE = Resource1;
   }; 
  
-  ISR isr3 {
+  ISR softwareInterruptHandler2 {
     CATEGORY = 2;
     PRIORITY = 3;
-    SOURCE = SIGPIPE;
   };
  
   RESOURCE Resource1 {

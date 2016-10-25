@@ -35,7 +35,6 @@
 /*Instance of task t2*/
 
 #include "ioc_types.h"
-#include "embUnit.h"
 /*#include "test_hal.h"*/
 #include "tpl_os.h"
 

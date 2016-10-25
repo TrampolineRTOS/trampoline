@@ -34,10 +34,9 @@
 
 /*Instance 1 of error*/
 
-#include "embUnit.h"
 #include "Os.h"
 
-DeclareISR(isr1);
+DeclareISR(softwareInterruptHandler0);
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/
@@ -52,7 +51,7 @@ static void test_error_instance1(void)
 		
 	SCHEDULING_CHECK_INIT(5);
 	ISRType_inst_1 = GetISRID();
-	SCHEDULING_CHECK_AND_EQUAL_INT(5, isr1, ISRType_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(5, softwareInterruptHandler0, ISRType_inst_1);
 }
 
 /*create the test suite with all the test cases*/

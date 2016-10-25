@@ -1,0 +1,65 @@
+/**
+ * @file softwareIT.oil
+ *
+ * @section desc File description
+ *
+ * Trampoline Test Suite : Machine dependant oil configuration
+ *
+ * @section copyright Copyright
+ *
+ * Trampoline Test Suite
+ *
+ * Trampoline Test Suite is copyright (c) IRCCyN 2005-2007
+ * Trampoline Test Suite is protected by the French intellectual property law.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; version 2
+ * of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @section infos File informations
+ *
+ * $Date$
+ * $Rev$
+ * $Author$
+ * $URL$
+ */
+
+IMPLEMENTATION softITMpc5643l
+{
+  /* Can be modified in the test's oil file */
+  ISR
+  {
+    UINT32 [1, 2] CATEGORY = 1;
+    UINT32 PRIORITY = 1;
+  };
+
+};
+
+CPU softITMpc5643l
+{
+  ISR softwareInterruptHandler0
+  {
+    SOURCE = IRQ0;
+  };
+  ISR softwareInterruptHandler1
+  {
+    SOURCE = IRQ1;
+  };
+  ISR softwareInterruptHandler2
+  {
+    SOURCE = IRQ2;
+  };
+};
+
+
+

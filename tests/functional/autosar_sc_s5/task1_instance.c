@@ -34,10 +34,8 @@
 
 /*Instance of task t1*/
 
-#include "embUnit.h"
 #include "Os.h"
 
-void tpl_send_it1(void);
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/
@@ -45,7 +43,7 @@ static void test_t1_instance(void)
 {
 	SCHEDULING_CHECK_STEP(1);
 	
-	tpl_send_it1();
+	sendSoftwareIt(0, SOFT_IRQ0);
 	
 	SCHEDULING_CHECK_STEP(13);
 	

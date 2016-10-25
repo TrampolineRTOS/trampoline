@@ -35,7 +35,6 @@
 
 /*Instance 3 of task t1*/
 
-#include "embUnit.h"
 #include "Os.h"
 
 DeclareEvent(t1_event1);

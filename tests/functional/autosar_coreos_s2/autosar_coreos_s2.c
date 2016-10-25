@@ -33,7 +33,6 @@
  */
 
 #include "Os.h"
-#include "embUnit.h"
 
 TestRef AutosarCOREOSTest_seq2_t1_instance(void);
 TestRef AutosarCOREOSTest_seq2_isr1_instance(void);
@@ -93,7 +92,7 @@ TASK(t2)
 	stdimpl_print("instance error\n");
 }
 
-ISR(isr1)
+ISR(softwareInterruptHandler0)
 {
 	TestRunner_runTest(AutosarCOREOSTest_seq2_isr1_instance());
 }

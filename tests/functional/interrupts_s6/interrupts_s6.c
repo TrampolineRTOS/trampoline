@@ -33,7 +33,6 @@
  */
 
 #include "tpl_os.h"
-#include "embUnit.h"
 #include "config.h" /*for stdimpl_print*/
 
 TestRef InterruptProcessingTest_seq6_t1_instance(void);

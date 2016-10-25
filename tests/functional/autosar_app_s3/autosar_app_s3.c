@@ -33,7 +33,6 @@
  */
 
 #include "Os.h"
-#include "embUnit.h"
 
 TestRef AutosarAPPTest_seq3_t1_instance(void);
 
@@ -60,7 +59,7 @@ TASK(t2)
 	stdimpl_print("instance error\n");
 }
 
-ISR(isr1)
+ISR(softwareInterruptHandler0)
 {
 	stdimpl_print("instance error\n");
 }

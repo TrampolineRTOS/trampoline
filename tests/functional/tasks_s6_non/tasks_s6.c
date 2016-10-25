@@ -32,7 +32,6 @@
  * $URL$
  */
 
-#include "embUnit.h"
 #include "tpl_os.h"
 
 TestRef TaskManagementTest_seq6_t1_instance(void);

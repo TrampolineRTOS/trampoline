@@ -33,7 +33,6 @@
  */
 
 #include "Os.h"
-#include "embUnit.h"
 
 TestRef AutosarSPTest_seq3_t1_instance1(void);
 TestRef AutosarSPTest_seq3_t1_instance2(void);

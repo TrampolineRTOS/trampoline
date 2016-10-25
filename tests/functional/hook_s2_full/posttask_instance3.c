@@ -34,7 +34,6 @@
 
 /*Instance 3 of posttask hook routine*/
 
-#include "embUnit.h"
 #include "tpl_os.h"
 
 DeclareTask(t1);

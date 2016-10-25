@@ -33,7 +33,6 @@
  */
 
 #include "Os.h"
-#include "embUnit.h"
 
 TestRef AutosarCOREOSTest_seq3_t1_instance(void);
 TestRef AutosarCOREOSTest_seq3_isr1_instance(void);
@@ -82,7 +81,7 @@ TASK(t1)
 	ShutdownOS(E_OK);
 }
 
-ISR(isr1)
+ISR(softwareInterruptHandler0)
 {
 	TestRunner_runTest(AutosarCOREOSTest_seq3_isr1_instance());
 }

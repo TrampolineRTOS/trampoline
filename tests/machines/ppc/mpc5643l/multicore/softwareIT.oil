@@ -34,28 +34,43 @@
  * $URL$
  */
 
-/*  XXX : WARNING
- *        This file is included from an oil file located in one of the
- *        tests' directory. In that case, compiler relative paths are from the
- *        test's directory !
- */
-
-/* This defines two ISRS using software ITs */
-
-CPU watchdogMpc5643lMulticore
+IMPLEMENTATION SoftITMpc5643l
 {
-  ISR softwareInterruptHandler_Core0
+  /* Can be modified in the test's oil file */
+  ISR
   {
-    CATEGORY = 2; /* Can be modified in the test's oil file */
-    PRIORITY = 1;
-    SOURCE = IRQ0;
+    UINT32 [1, 2] CATEGORY = 1;
+    UINT32 PRIORITY = 1;
   };
-  ISR softwareInterruptHandler_Core1
-  {
-    CATEGORY = 2; /* Can be modified in the test's oil file */
-    PRIORITY = 1;
-    SOURCE = IRQ0;
-  };
+
 };
 
+CPU softITMpc5643l
+{
+  ISR softwareInterruptHandler0_Core0
+  {
+    SOURCE = IRQ0;
+  };
+  ISR softwareInterruptHandler1_Core0
+  {
+    SOURCE = IRQ1;
+  };
+  ISR softwareInterruptHandler2_Core0
+  {
+    SOURCE = IRQ2;
+  };
+
+  ISR softwareInterruptHandler0_Core1
+  {
+    SOURCE = IRQ0;
+  };
+  ISR softwareInterruptHandler1_Core1
+  {
+    SOURCE = IRQ1;
+  };
+  ISR softwareInterruptHandler2_Core1
+  {
+    SOURCE = IRQ2;
+  };
+};
 

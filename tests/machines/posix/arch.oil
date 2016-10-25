@@ -34,11 +34,7 @@
  * $URL$
  */
 
-/*  XXX : WARNING
- *        This file is included from an oil file located in one of the
- *        tests' directory. In that case, compiler relative paths are from the
- *        test's directory !
- */
+#include "../common/arch.oil"
 
 IMPLEMENTATION archPosix
 {
@@ -53,6 +49,7 @@ CPU archPosixDefault
 {
   OS defaultOS
   {
+    /* Build paths are from the test directory */
     BUILD = TRUE
     {
       COMPILER = "gcc";
@@ -61,13 +58,20 @@ CPU archPosixDefault
       CFLAGS = "-Werror -Wall -pedantic";
       CFLAGS = "-Wmissing-field-initializers";
       CFLAGS = "-Wno-unused-but-set-variable";
-      CFLAGS = "-I../../embUnit";
       LDFLAGS = "-L../../lib -lembUnit";
       LDFLAGS = "-lrt";
       LDFLAGS = "-lpthread";
-      APP_SRC = "../../machines/posix/config.c";
       SYSTEM = PYTHON;
+      LIBRARY = archConfig;
     };
+  };
+
+  /* Lib paths are from the "TRAMPOLINE/machines" directory */
+  LIBRARY archConfig
+  {
+    PATH = "../tests/machines/posix/";
+    CHEADER = "archTestConfig.h";
+    CFILE = "archTestConfig.c";
   };
 };
 

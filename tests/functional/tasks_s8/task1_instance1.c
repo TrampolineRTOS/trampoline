@@ -34,7 +34,6 @@
 
 /*Instance 1 of task t1*/
 
-#include "embUnit.h"
 #include "tpl_os.h"
 
 DeclareTask(t2);

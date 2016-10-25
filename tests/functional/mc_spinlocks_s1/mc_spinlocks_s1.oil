@@ -65,7 +65,9 @@ CPU test {
   {
     TASK = t1;
     COUNTER = SystemCounter_core0;
-    ISR = softwareInterruptHandler_Core0;
+    ISR = softwareInterruptHandler0_Core0;
+    ISR = softwareInterruptHandler1_Core0;
+    ISR = softwareInterruptHandler2_Core0;
     TRUSTED = TRUE { TRUSTED_FUNCTION = t1_function; };
     CORE = 0;
   };
@@ -74,11 +76,23 @@ CPU test {
   {
     TASK = t2;
     COUNTER = SystemCounter_core1;
-    ISR = softwareInterruptHandler_Core1;
+    ISR = softwareInterruptHandler0_Core1;
+    ISR = softwareInterruptHandler1_Core1;
+    ISR = softwareInterruptHandler2_Core1;
     TRUSTED = TRUE { TRUSTED_FUNCTION = t2_function; };
     CORE = 1;
   };
 
+  ISR softwareInterruptHandler0_Core0
+  {
+    PRIORITY = 1;
+    CATEGORY = 2;
+  };
+  ISR softwareInterruptHandler0_Core1
+  {
+    PRIORITY = 1;
+    CATEGORY = 2;
+  };
   COUNTER SystemCounter_core0
   {
   };

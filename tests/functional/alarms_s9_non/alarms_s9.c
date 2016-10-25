@@ -33,7 +33,6 @@
  */
 
 #include "tpl_os.h"
-#include "embUnit.h"
 
 TestRef AlarmsTest_seq9_t1_instance(void);
 TestRef AlarmsTest_seq9_t2_instance(void);
@@ -84,7 +83,7 @@ TASK(t5)
 	TestRunner_runTest(AlarmsTest_seq9_t5_instance());
 }
 
-ISR(isr1)
+ISR(softwareInterruptHandler0)
 {
 	TestRunner_runTest(AlarmsTest_seq9_isr1_instance());	
 }

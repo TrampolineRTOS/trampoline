@@ -34,7 +34,6 @@
 
 /*Instance 5 of interruption isr1*/
 
-#include "embUnit.h"
 #include "tpl_os.h"
 
 /*test case:test the reaction of the system called with 

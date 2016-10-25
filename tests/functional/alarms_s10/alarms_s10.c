@@ -33,7 +33,6 @@
  */
 
 #include "tpl_os.h"
-#include "embUnit.h"
 
 TestRef AlarmsTest_seq10_t1_instance(void);
 TestRef AlarmsTest_seq10_t2_instance(void);

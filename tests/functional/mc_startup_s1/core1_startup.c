@@ -32,7 +32,6 @@
  * $URL$
  */
 
-#include "embUnit.h"
 #include "Os.h"
 
 static void test_c1_startup(void)

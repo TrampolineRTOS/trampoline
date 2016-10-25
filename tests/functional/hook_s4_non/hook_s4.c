@@ -33,7 +33,6 @@
  */
 
 #include "tpl_os.h"
-#include "embUnit.h"
 #include "config.h" /*for stdimpl_print */
 
 TestRef HookTest_seq4_t1_instance(void);
@@ -134,7 +133,7 @@ TASK(t2)
 }
 
 
-ISR(isr1)
+ISR(softwareInterruptHandler0)
 {
 	instance_isr1++;
 	switch (instance_isr1)
@@ -158,7 +157,7 @@ ISR(isr1)
 	
 }
 
-ISR(isr2)
+ISR(softwareInterruptHandler1)
 {
 	instance_isr2++;
 	switch (instance_isr2)

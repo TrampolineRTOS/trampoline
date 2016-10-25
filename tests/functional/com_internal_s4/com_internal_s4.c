@@ -33,7 +33,6 @@
  */
 
 #include "tpl_os.h"
-#include "embUnit.h"
 
 TestRef COMInternalTest_seq4_t1_instance(void);
 TestRef COMInternalTest_seq4_t2_instance(void);

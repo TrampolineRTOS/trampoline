@@ -34,6 +34,7 @@
 
 OIL_VERSION = "2.5" : "interrupts_s1";
 
+#include <softwareIT.oil>
 #include <arch.oil>
 
 IMPLEMENTATION trampoline {
@@ -76,22 +77,19 @@ CPU test {
     SCHEDULE = FULL;
   };
 
-  ISR isr1 {
+  ISR softwareInterruptHandler0 {
     CATEGORY = 2;
     PRIORITY = 1;
-    SOURCE = SIGTERM;
   };
  
-  ISR isr2 {
+  ISR softwareInterruptHandler1 {
     CATEGORY = 2;
     PRIORITY = 2;
-    SOURCE = SIGUSR2;
   };
  
-  ISR isr3 {
+  ISR softwareInterruptHandler2 {
     CATEGORY = 2;
     PRIORITY = 3;
-    SOURCE = SIGPIPE;
   };
 };
 
