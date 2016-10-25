@@ -49,6 +49,12 @@ let data_size_hash["16"]                := "16"  # Alias
 let data_size_hash["8"]                 := "08"  # Alias
 let data_size_hash["BOOLEAN"]           := "BO"
 let data_size_hash["UNSPECIFIED"]       := "UN"
+
+# Create a default application if there is none
+if [APPLICATIONS length] == 0 then
+  let default_application := @{ NAME : "DefaultApplication" }
+  let APPLICATIONS += default_application
+end if
 %
 
 /*=============================================================================

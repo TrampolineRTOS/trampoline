@@ -69,23 +69,19 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
   let has_wdg := false
 
   # Get if the core has a task/isr timing protected
-  foreach application in APPLICATIONS do
-    if application::CORE == core_id then
-      foreach apptask in application::TASK do
-        let task := task_map[apptask::VALUE]
-        let task_tp := task::TIMING_PROTECTION
-        if task_tp then
-          let has_tp := true
-          let protected_task := task
-        end if
-      end foreach
-      foreach appisr in application::ISR do
-        let isr := isr_map[appisr::VALUE]
-        let isr_tp := isr::TIMING_PROTECTION
-        if isr_tp then
-          let has_tp := true
-        end if
-      end foreach
+  let core_tasks := getCoreAttributes(OS, APPLICATIONS, core_id, TASK, "TASK")
+  let core_isrs := getCoreAttributes(OS, APPLICATIONS, core_id, ISRS, "ISR")
+  foreach task in core_tasks do
+    let task_tp := task::TIMING_PROTECTION
+    if task_tp then
+      let has_tp := true
+      let protected_task := task
+    end if
+  end foreach
+  foreach isr in core_isrs do
+    let isr_tp := isr::TIMING_PROTECTION
+    if isr_tp then
+      let has_tp := true
     end if
   end foreach
 

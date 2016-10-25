@@ -40,16 +40,11 @@ let interrupt_map := mapof INTERRUPT by NAME
 
 loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
   let tick_sources := @( )
-  foreach application in APPLICATION do
-    if application::CORE == core_id then
-      foreach counter_name in exists application::COUNTER default (@( )) do
-        let counter := counter_map[counter_name::VALUE]
-        if counter::SOURCE != "decrementer"
-         & counter::TYPE == "HARDWARE" then
-          let interrupt := interrupt_map[counter::SOURCE]
-          let tick_sources[counter::SOURCE] := interrupt
-        end if
-      end foreach
+  let core_counters := getCoreAttributes(OS, APPLICATION, core_id, HARDWARECOUNTERS, "COUNTER")
+  foreach counter in core_counters do
+    if counter::SOURCE != "decrementer" then
+      let interrupt := interrupt_map[counter::SOURCE]
+      let tick_sources[counter::SOURCE] := interrupt
     end if
   end foreach
 
@@ -96,17 +91,7 @@ let counter_map   := mapof COUNTER by NAME
 loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
 
   ###### Get used counters
-  let used_counters := @( )
-  foreach application in APPLICATION do
-    if application::CORE == core_id then
-      ### Used counters
-      foreach counter_name in exists application::COUNTER default (@( )) do
-        let counter := counter_map[counter_name::VALUE]
-        let used_counters[counter::NAME] := counter
-      end foreach
-    end if
-  end foreach
-
+  let used_counters := getCoreAttributes(OS, APPLICATION, core_id, HARDWARECOUNTERS, "COUNTER")
   let used_watchdogs := @( )
   if OS::TIMINGPROTECTION then
     foreach watchdog in OS::TIMINGPROTECTION_WATCHDOG do
@@ -159,7 +144,6 @@ CONST(tpl_it_vector_entry, OS_CONST) tpl_it_table_%!core_id%[% !INTERRUPT_COUNT:
         ########## Counter Interrupt Checking
         foreach counter in used_counters do
           if counter::SOURCE == interrupt::NAME
-           & counter::TYPE == "HARDWARE"
            & not entryFound then
             if OS::NUMBER_OF_CORES > 1 then
 %  { (tpl_it_handler)tpl_tick_handler_% !interrupt::NAME %_%!core_id%, (void *)NULL }%
@@ -172,16 +156,13 @@ CONST(tpl_it_vector_entry, OS_CONST) tpl_it_table_%!core_id%[% !INTERRUPT_COUNT:
 
         ########## ISR Interrupt Checking
         foreach isr in ISRS do
-          foreach application in APPLICATION do
-            if application::CORE == core_id then
-              foreach app_isr in exists application::ISR default (@( )) do
-                if app_isr::VALUE == isr::NAME
-                 & isr::SOURCE == interrupt::NAME
-                 & not entryFound then
+          let core_isrs := getCoreAttributes(OS, APPLICATION, core_id, ISRS, "ISR")
+          foreach app_isr in core_isrs do
+            if app_isr::NAME == isr::NAME
+             & isr::SOURCE == interrupt::NAME
+             & not entryFound then
 %  { (tpl_it_handler)tpl_isr_handler_%!isr::NAME%, (void*)NULL }%
-                  let entryFound := true
-                end if
-              end foreach
+              let entryFound := true
             end if
           end foreach
         end foreach
@@ -226,15 +207,10 @@ let dec_map := @[]
 let counter_map   := mapof COUNTER by NAME
 
 loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
-  foreach application in APPLICATION do
-    if application::CORE == core_id then
-      foreach counter_name in exists application::COUNTER default (@( )) do
-        let counter := counter_map[counter_name::VALUE]
-        if counter::SOURCE == "decrementer"
-         & counter::TYPE == "HARDWARE" then
-          let dec_map[[core_id string]] := "tick"
-        end if
-      end foreach
+  let core_counters := getCoreAttributes(OS, APPLICATION, core_id, HARDWARECOUNTERS, "COUNTER")
+  foreach counter in core_counters do
+    if counter::SOURCE == "decrementer" then
+      let dec_map[[core_id string]] := "tick"
     end if
   end foreach
 

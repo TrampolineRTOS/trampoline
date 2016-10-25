@@ -42,3 +42,61 @@ func computeBinaryVector(vector, size) binary_vector
   end loop
 end func
 
+#----------------------------------------------------------------------------*
+# Multicore functions
+#----------------------------------------------------------------------------*
+
+# Get the core's attributes (tasks, isrs, ...)
+func getCoreAttributes (os, applications, core_id, attribute, att_name) vector
+  let vector := @()
+  if (os::NUMBER_OF_CORES) > 1 & ([applications length] > 0) then
+    let att_map := mapof attribute by NAME
+    foreach app in applications do
+      if app::CORE == core_id then
+        let app_map := [app map]
+        foreach att in exists app_map[att_name] default (@( )) do
+          if exists att_map[att::VALUE] then
+            let vector += att_map[att::VALUE]
+          end if
+        end foreach
+      end if
+    end foreach
+  else
+    let vector := attribute
+  end if
+end func
+
+# Get all core's attribute
+func getAllAttributes (os, applications, attribute, att_name) vector
+  let vector := @()
+  if (os::NUMBER_OF_CORES) > 1 & ([applications length] > 0) then
+    let att_map := mapof attribute by NAME
+    foreach app in applications do
+      let app_map := [app map]
+      foreach att in exists app_map[att_name] default (@( )) do
+        if exists att_map[att::VALUE] then
+          let vector += att_map[att::VALUE]
+        end if
+      end foreach
+    end foreach
+  else
+    let vector := attribute
+  end if
+end func
+
+# Get the attribute's belonging core
+func getOwnerCore (os, applications, att_name, att_value) core_id
+  if (os::NUMBER_OF_CORES) > 1 & ([applications length] > 0) then
+    foreach app in applications do
+      let app_map := [app map]
+      foreach att in exists app_map[att_name] default (@( )) do
+        if att::VALUE == att_value then
+          let core_id := app::CORE
+        end if
+      end foreach
+    end foreach
+  else
+    let core_id := 0
+  end if
+end func
+

@@ -29,6 +29,7 @@
 # further processing because existence test is not necessary
 
 let INTERCORE_INTERRUPT := exists INTERCORE_INTERRUPT default (@( ))
+
 %
 /*=============================================================================
  * External interrupts configuration structures
@@ -99,18 +100,14 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
 %
 # Get the maximum priority of used IRQs
 let max_irq_prio := @( )
-foreach app in APPLICATION do
-  if app::CORE == core_id then
-    foreach isr_app in exists app::ISR default (@( )) do
-      let isr := isr_map[isr_app::VALUE]
-      if exists max_irq_prio[isr::SOURCE] then
-        if max_irq_prio[isr::SOURCE]::PRIORITY < isr::PRIORITY then
-          let max_irq_prio[isr::SOURCE] := isr
-        end if
-      else
-        let max_irq_prio[isr::SOURCE] := isr
-      end if
-    end foreach
+let core_isrs := getCoreAttributes(OS, APPLICATIONS, core_id, ISRS, "ISR")
+foreach isr in core_isrs do
+  if exists max_irq_prio[isr::SOURCE] then
+    if max_irq_prio[isr::SOURCE]::PRIORITY < isr::PRIORITY then
+      let max_irq_prio[isr::SOURCE] := isr
+    end if
+  else
+    let max_irq_prio[isr::SOURCE] := isr
   end if
 end foreach
 
@@ -147,17 +144,12 @@ end foreach
 %
   let counter_map   := mapof COUNTER by NAME
 
-  foreach application in APPLICATION do
-    if application::CORE == core_id then
-      foreach counter_name in exists application::COUNTER default (@( )) do
-        let counter := counter_map[counter_name::VALUE]
-        if counter::SOURCE != "decrementer"
-         & counter::TYPE == "HARDWARE" then
-          let interrupt := interrupt_map[counter::SOURCE]
+  let core_counters := getCoreAttributes(OS, APPLICATIONS, core_id, HARDWARECOUNTERS, "COUNTER")
+  foreach counter in core_counters do
+    if counter::SOURCE != "decrementer" then
+      let interrupt := interrupt_map[counter::SOURCE]
 %  TPL_INTC(%!core_id%).PSR[% !interrupt::ID %] = % !TICK_PRIO %; /* % !counter::NAME % */
 %
-        end if
-      end foreach
     end if
   end foreach
 %
@@ -234,16 +226,11 @@ let channel_map["pit_ch3"] := "TPL_PIT_3"
 
 loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
   let used_interrupts := @( )
-  foreach application in APPLICATION do
-    if application::CORE == core_id then
-      foreach counter_name in exists application::COUNTER default (@( )) do
-        let counter := counter_map[counter_name::VALUE]
-        if counter::SOURCE != "decrementer"
-         & counter::TYPE == "HARDWARE" then
-          let interrupt := interrupt_map[counter::SOURCE]
-          let used_interrupts[counter::SOURCE] := interrupt
-        end if
-      end foreach
+  let core_counters := getCoreAttributes(OS, APPLICATIONS, core_id, HARDWARECOUNTERS, "COUNTER")
+  foreach counter in core_counters do
+    if counter::SOURCE != "decrementer" then
+      let interrupt := interrupt_map[counter::SOURCE]
+      let used_interrupts[counter::SOURCE] := interrupt
     end if
   end foreach
 
@@ -302,15 +289,7 @@ FUNC(tpl_bool, OS_CODE) tpl_isr_handler_% !isr::NAME %(void) {%
   if interrupt_map[isr::SOURCE]::TYPE == "SOFTWARE" then%
   /* Ack the software interruption */
 %
-    let isr_core := 0
-    foreach application in APPLICATION do
-      foreach app_isr in exists application::ISR default (@( )) do
-        if app_isr::VALUE == isr::NAME then
-          let isr_core := application::CORE
-        end if
-      end foreach
-    end foreach
-
+    let isr_core := getOwnerCore(OS, APPLICATIONS, "ISR", isr::NAME)
 %  TPL_INTC(% !isr_core %).SSCIR[% !interrupt_map[isr::SOURCE]::ID %] = INTC_SSCIR_CLR;
 %
   end if
