@@ -635,3 +635,39 @@ end loop
 
 @*
 
+#===========================================
+#             Include cosmic libraries
+%
+let csmc_float_lib := "libf.ppc"
+let csmc_int_lib := "libi.ppc"
+let csmc_machine_lib := "libm.ppc"
+if exists OS::USEVLE default (false) then
+  let csmc_float_lib := "libfv.ppc"
+  let csmc_int_lib := "libiv.ppc"
+  let csmc_machine_lib := "libmv.ppc"
+end if
+
+let usefloat := false
+if exists OS::HASFLOAT default (false) then
+  foreach task in TASKS do
+    if exists task::USEFLOAT default (false) then
+      let usefloat := true
+    end if
+  end foreach
+
+  foreach isr in ISRS do
+    if exists isr::USEFLOAT default (false) then
+      let usefloat := true
+    end if
+  end foreach
+end if
+
+if usefloat then%
+# Float library
+% !csmc_float_lib
+end if%
+# Integer library
+% !csmc_int_lib %
+# Machine library
+% !csmc_machine_lib %
+
