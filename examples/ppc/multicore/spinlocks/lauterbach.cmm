@@ -144,7 +144,8 @@ WinCLEAR
 
 ; Open some ORTI windows
 WinPOS 0x0 0x0 0x75 0x1
-Task.dos
+; Task.dos                ; Trace32's selected Core
+Task.d_vs_os              ; All cores
 
 WinPOS 0x0 0x8 0x75 0x1
 Task.dtask

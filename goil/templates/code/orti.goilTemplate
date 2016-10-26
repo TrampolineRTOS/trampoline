@@ -234,6 +234,126 @@ end foreach
     ] _vs_LAST_TAKEN_SPINLOCK[];%
 end if%
   };
+  /* XXX : OS is replicated to display all cores' informations in multicore */
+  _vs_OS
+  {%
+if OS::NUMBER_OF_CORES > 1 then%
+    /* In accordance with Lauterbach's ORTI_SMP_Proposal_v4 extension */
+    CTYPE "int" vs_SMP_NUMCPU, "Number of CPUs";%
+end if%
+    CTYPE VALID[];
+    ENUM [
+%
+foreach proc in PROCESSES do
+  if proc::KIND == "Task" then
+%      "% !proc::NAME %" = % !INDEX %,
+%
+  else
+%      "X" = % !INDEX %,
+%
+  end if
+end foreach
+
+if OS::NUMBER_OF_CORES > 1 then
+  loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+%      "idle_% !core_id %" = % !([PROCESSES length] + core_id)
+  between %,
+%
+  end loop
+else
+%      "idle" = % ![PROCESSES length]
+end if
+%
+    ] RUNNINGTASK[];
+    ENUM [
+%
+foreach proc in PROCESSES do
+  if proc::KIND == "ISR" then
+%      "% !proc::NAME %" = % !INDEX %,
+%
+  else
+%      "X" = % !INDEX %,
+%
+  end if
+end foreach
+
+if OS::NUMBER_OF_CORES > 1 then
+  loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+%      "X" = % !([PROCESSES length] + core_id)
+  between %,
+%
+  end loop
+else
+%      "X" = % ![PROCESSES length]
+end if
+%
+    ] RUNNINGISR2[];
+    CTYPE RUNNINGTASKPRIORITY[];
+    TOTRACE ENUM [
+%
+foreach api in listOfApiFunc do
+%      "% !api::NAME %" = % !(INDEX * 2)
+between %,
+%
+end foreach
+%
+    ] SERVICETRACE[];
+    ENUM [
+      "E_OK"                       =  0,
+      "E_OS_ACCESS"                =  1,
+      "E_OS_CALLEVEL"              =  2,
+      "E_OS_ID"                    =  3,
+      "E_OS_LIMIT"                 =  4,
+      "E_OS_NOFUNC"                =  5,
+      "E_OS_RESOURCE"              =  6,
+      "E_OS_STATE"                 =  7,
+      "E_OS_VALUE"                 =  8,
+      "E_NOT_OK"                   =  9,
+      "E_COM_ID"                   = 10,
+      "E_COM_LENGTH"               = 11,
+      "E_COM_LIMIT"                = 12,
+      "E_COM_NOMSG"                = 13,
+      "E_COM_FILTERDOUR"           = 14,
+      "E_OS_SERVICEID"             = 16,
+      "E_OS_ILLEGAL_ADDRESS"       = 17,
+      "E_OS_MISSINGEND"            = 18,
+      "E_OS_DISABLEDINT"           = 19,
+      "E_OS_STACKFAULT"            = 20,
+      "E_OS_PROTECTION_MEMORY"     = 21,
+      "E_OS_PROTECTION_TIME"       = 22,
+      "E_OS_PROTECTION_ARRIVAL"    = 23,
+      "E_OS_PROTECTION_LOCKED"     = 24,
+      "E_OS_PROTECTION_EXCEPTION"  = 25,
+      "E_OS_INTERFERENCE_DEADLOCK" = 26,
+      "E_OS_NESTING_DEADLOCK"      = 27,
+      "E_OS_SPINLOCK"              = 28,
+      "E_OS_LOST_DATA"             = 29,
+      "E_OS_NO_DATA"               = 30
+    ] LASTERROR[]; /* FIXME : Not generated */
+    ENUM [
+      "NOAPPMODE" = "-1",%
+foreach appmode in APPMODE do
+  if (appmode::DEFAULT) | ([APPMODE length] == 1) then%
+      "OSDEFAULTAPPMODE" = "% !INDEX %"%
+  else %
+      "% !appmode::NAME %" = "% !INDEX %"%
+  end if
+between %,%
+end foreach
+  %
+    ] CURRENTAPPMODE[];%
+if OS::NUMBER_OF_CORES > 1 & [SPINLOCK length] > 0 then%
+    CTYPE _vs_HELD_SPINLOCKS[];
+    ENUM [
+      "NONE" = "-1",%
+foreach spinlock in SPINLOCK do%
+      "% !spinlock::NAME %" = "% !INDEX %"%
+between %,%
+end foreach
+  %
+    ] _vs_LAST_TAKEN_SPINLOCK[];%
+end if%
+  };
 
   TASK
   {
@@ -407,6 +527,47 @@ between%
 end loop%
 };
 %
+if OS::NUMBER_OF_CORES > 1 then%
+/* Replicated code in multicore to display all Core's informations at the
+ * same time.
+ */%
+  loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+%
+_vs_OS CORE_% !core_id %
+{%
+    let orti_core_a := ""
+    if OS::NUMBER_OF_CORES > 1 then
+      let orti_core_a := "[" + [core_id string] + "]"
+    end if
+    let orti_tpl_kern := "tpl_kern" + orti_core_a
+    let orti_last_error := "tpl_last_error" + orti_core_a
+    let orti_current_appmode := "application_mode" + orti_core_a
+    let orti_service_trace := "tpl_servicetrace" + orti_core_a
+    let orti_held_spinlocks := "tpl_taken_spinlock_counter" + orti_core_a
+    let orti_last_taken_spinlock := orti_held_spinlocks + " ? "
+                                  + "tpl_taken_spinlocks" + orti_core_a
+                                  + "[" + orti_held_spinlocks + " - 1 ]"
+                                  + ": -1"
+
+    let orti_running_task_id := orti_tpl_kern + ".running_id"
+    let orti_osname := "Trampoline_arch" + orti_core_a
+%
+  vs_SMP_NUMCPU = "% !OS::NUMBER_OF_CORES %";
+  RUNNINGTASK% !orti_core_a % = "% !orti_running_task_id %";
+  RUNNINGISR2% !orti_core_a % = "% !orti_running_task_id %";
+  RUNNINGTASKPRIORITY% !orti_core_a % = "tpl_dyn_proc_table[% !orti_running_task_id %].priority";
+  LASTERROR% !orti_core_a % = "% !orti_last_error %";
+  CURRENTAPPMODE% !orti_core_a % = "% !orti_current_appmode %"
+  VALID% !orti_core_a % = "% !orti_running_task_id % != -1";
+  SERVICETRACE% !orti_core_a % = "% !orti_service_trace %";%
+    if OS::NUMBER_OF_CORES > 1 & [SPINLOCK length] > 0 then%
+  _vs_HELD_SPINLOCKS% !orti_core_a % = "% !orti_held_spinlocks %";
+  _vs_LAST_TAKEN_SPINLOCK% !orti_core_a % = "% !orti_last_taken_spinlock %";%
+    end if%
+};
+%
+  end loop
+end if
 foreach proc in PROCESSES do
   if proc::KIND == "Task" then
 %
