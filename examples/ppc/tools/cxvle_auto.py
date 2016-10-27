@@ -12,6 +12,7 @@ C_CONST_FLAGS = (
                  " +debug"      # debug flags
                  " +warn"       # enable warnings
                  " -p -ku"      # keep unused static
+                 " -g -m"       #
 #                " -v"          # verbose
                  " -no"         # FIXME : Optimizer disabled
                  " +modv"       # VLE Mode
@@ -76,6 +77,10 @@ def c_call(args) :
         command = command + " -a " + " '-o " + "".join(args.o) + "'"
 
     command = command + " " + "".join(args.c)
+
+    print("\n#==============================================================================")
+    print("# " + "".join(args.c) + "\n")
+    print(command)
 
     process = subprocess.Popen([command], universal_newlines=True, shell=True)
     process.wait()
