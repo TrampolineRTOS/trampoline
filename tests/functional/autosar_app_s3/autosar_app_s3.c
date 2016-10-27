@@ -56,12 +56,14 @@ TASK(t1)
 
 TASK(t2)
 {
-	stdimpl_print("instance error\n");
+	addFailure("instance error\n", __LINE__, __FILE__);
 }
 
 ISR(softwareInterruptHandler0)
 {
-	stdimpl_print("instance error\n");
+	addFailure("instance error\n", __LINE__, __FILE__);
 }
+UNUSED_ISR(softwareInterruptHandler1)
+UNUSED_ISR(softwareInterruptHandler2)
 
 /* End of file autosar_app_s3/autosar_app_s3.c */

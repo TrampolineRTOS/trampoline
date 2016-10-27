@@ -87,7 +87,7 @@ TASK(t1)
 		}
 		default:
 		{
-			stdimpl_print("instance error\n");
+			addFailure("instance error\n", __LINE__, __FILE__);
 			break;
 		}
 	}

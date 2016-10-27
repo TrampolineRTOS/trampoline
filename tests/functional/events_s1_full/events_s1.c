@@ -65,5 +65,7 @@ ISR(softwareInterruptHandler0)
 {
 	TestRunner_runTest(EventMechanismTest_seq1_isr1_instance());
 }
+UNUSED_ISR(softwareInterruptHandler1)
+UNUSED_ISR(softwareInterruptHandler2)
 
 /* End of file events_s1_full/events_s1.c */

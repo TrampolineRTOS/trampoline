@@ -77,12 +77,14 @@ ISR(softwareInterruptHandler0)
 		}
 		default:
 		{
-			stdimpl_print("Instance error \n");
+			addFailure("Instance error \n", __LINE__, __FILE__);
 			break;
 		}
 	}
 	
 }
+UNUSED_ISR(softwareInterruptHandler1)
+UNUSED_ISR(softwareInterruptHandler2)
 
 void CallBack1_callback(void)
 {

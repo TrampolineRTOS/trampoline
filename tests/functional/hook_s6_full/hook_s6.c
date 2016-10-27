@@ -97,5 +97,6 @@ ISR(softwareInterruptHandler1)
 	TestRunner_runTest(HookTest_seq6_isr2_instance());
 	ShutdownOS(E_OK);
 }
+UNUSED_ISR(softwareInterruptHandler2)
 
 /* End of file hook_s6_full/hook_s6.c */

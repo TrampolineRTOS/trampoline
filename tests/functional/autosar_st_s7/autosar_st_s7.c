@@ -33,7 +33,6 @@
  */
 
 #include "Os.h"
-#include "config.h"
 
 TestRef AutosarSTTest_seq7_t1_instance(void);
 TestRef AutosarSTTest_seq7_t2_instance1(void);
@@ -76,7 +75,7 @@ void ErrorHook(StatusType error)
 		}
 		default:
 		{
-			stdimpl_print("instance error\n");
+			addFailure("instance error\n", __LINE__, __FILE__);
 			break;
 		}
 	}
@@ -104,7 +103,7 @@ TASK(t2)
 		}
 		default:
 		{
-			stdimpl_print("instance error\n");
+			addFailure("instance error\n", __LINE__, __FILE__);
 			break;
 		}
 	}

@@ -59,7 +59,7 @@ TASK(t1)
 
 TASK(t2)
 {
-	stdimpl_print("instance error\n");
+	addFailure("instance error\n", __LINE__, __FILE__);
 }
 
 TASK(t3)
@@ -80,7 +80,7 @@ TASK(t3)
 		}
 		default:
 		{
-			stdimpl_print("Instance error");
+			addFailure("Instance error", __LINE__, __FILE__);
 			break;
 		}
 	}

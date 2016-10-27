@@ -2,19 +2,6 @@ OIL_VERSION = "4.0";
 
 #include <arch.oil>
 
-IMPLEMENTATION trampoline {
-
-    /* This fix the default STACKSIZE of tasks */
-    TASK {
-        UINT32 STACKSIZE = 32768 ;
-    } ;
-
-    /* This fix the default STACKSIZE of ISRs */
-    ISR {
-        UINT32 STACKSIZE = 32768 ;
-    } ;
-};
-
 CPU tp1 {
     /* This is the configuration of the operating system */
     OS config {

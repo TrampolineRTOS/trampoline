@@ -40,12 +40,12 @@ IMPLEMENTATION archMpc5643l
 {
   TASK
   {
-    UINT32 STACKSIZE = 1400;
+    UINT32 STACKSIZE = 800;
   };
 
   ISR
   {
-    UINT32 STACKSIZE = 1400;
+    UINT32 STACKSIZE = 800;
   };
 
   COUNTER
@@ -77,6 +77,7 @@ CPU archMpc5643lCosmic
     USEVLE = TRUE;
     SYSTEM_CALL = TRUE;
     DEBUG = TRUE;
+    WITHORTI = TRUE {FILE = "trampoline.orti";};
   };
 
   /* Lib paths are from the "TRAMPOLINE/machines" directory */
@@ -86,6 +87,14 @@ CPU archMpc5643lCosmic
     CHEADER = "archTestConfig.h";
     CFILE = "archTestConfig.c";
   };
+
+  /* Lib paths are from the "TRAMPOLINE/machines" directory */
+  //LIBRARY cosmic
+  //{
+  //  PATH = "../tests/machines/ppc/mpc5643l/";
+  //  CHEADER = "archTestConfig.h";
+  //  CFILE = "archTestConfig.c";
+  //};
 };
 
 /*

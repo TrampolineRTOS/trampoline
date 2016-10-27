@@ -33,7 +33,6 @@
  */
 
 #include "Os.h"
-#include "config.h"
 
 TestRef AutosarSTSTest_seq13_t1_instance(void);
 TestRef AutosarSTSTest_seq13_t2_instance1(void);
@@ -87,7 +86,7 @@ TASK(t2)
 		}
 		default:
 		{
-			stdimpl_print("instance error\n");
+			addFailure("instance error\n", __LINE__, __FILE__);
 			break;
 		}
 	}

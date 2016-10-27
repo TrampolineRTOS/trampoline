@@ -34,7 +34,6 @@
 
 
 #include "Os.h"
-#include "config.h" /*for stdimpl_print*/
 
 TestRef AutosarTPTest_seq9_t1_instance(void);
 TestRef AutosarTPTest_seq9_isr1_instance1(void);
@@ -62,7 +61,7 @@ void ShutdownHook(StatusType error)
 
 void ErrorHook(StatusType error)
 {
-  stdimpl_print("ErrorHook : Instance error\n");	
+  addFailure("ErrorHook : Instance error\n", __LINE__, __FILE__);	
 }
 
 
@@ -102,7 +101,7 @@ ISR(softwareInterruptHandler0)
 		}
 		default:
 		{
-			stdimpl_print("isr1 : Instance error\n");
+			addFailure("isr1 : Instance error\n", __LINE__, __FILE__);
 			break;
 		}
 	}
@@ -125,7 +124,7 @@ ISR(softwareInterruptHandler1)
 		}
 		default:
 		{
-			stdimpl_print("isr2 : Instance error\n");
+			addFailure("isr2 : Instance error\n", __LINE__, __FILE__);
 			break;
 		}
 	}

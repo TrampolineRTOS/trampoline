@@ -75,6 +75,7 @@ ISR(softwareInterruptHandler1)
 {
 	TestRunner_runTest(AutosarSPTest_seq2_isr2_instance());
 }
+UNUSED_ISR(softwareInterruptHandler2)
 
 
 /* End of file autosar_sp_s2/autosar_sp_s2.c */

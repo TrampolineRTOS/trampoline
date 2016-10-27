@@ -71,5 +71,6 @@ ISR(softwareInterruptHandler1)
 {
 	TestRunner_runTest(InterruptProcessingTest_seq2_isr2_instance());
 }
+UNUSED_ISR(softwareInterruptHandler2)
 
 /* End of file interrupts_s2/interrupts_s2.c */

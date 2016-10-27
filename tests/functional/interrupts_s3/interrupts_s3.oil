@@ -83,7 +83,6 @@ CPU test {
   ISR softwareInterruptHandler1 {
     CATEGORY = 2;
     PRIORITY = 1;
-    SOURCE = SIGUSR2;
   };
 };
 

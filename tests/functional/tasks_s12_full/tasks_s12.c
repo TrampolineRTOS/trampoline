@@ -32,7 +32,6 @@
  * $URL$
  */
 
-#include "config.h" /*Display information in the right way (printf on UNIX...)*/
 #include "tpl_os.h"
 
 TestRef TaskManagementTest_seq12_t1_instance(void);
@@ -85,7 +84,7 @@ TASK(t2)
 		}
 		default:
 		{
-			stdimpl_print("Instance error \n");
+			addFailure("Instance error \n", __LINE__, __FILE__);
 			break;
 		}
 	}
@@ -114,7 +113,7 @@ TASK(t3)
 		}
 		default:
 		{
-			stdimpl_print("Instance error \n");
+			addFailure("Instance error \n", __LINE__, __FILE__);
 			break;
 		}
 	}

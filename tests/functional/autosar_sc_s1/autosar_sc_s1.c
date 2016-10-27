@@ -62,7 +62,7 @@ void ErrorHook(void)
 		}
 		default:
 		{
-			stdimpl_print("instance error\n");
+			addFailure("instance error\n", __LINE__, __FILE__);
 			break;
 		}
 	}

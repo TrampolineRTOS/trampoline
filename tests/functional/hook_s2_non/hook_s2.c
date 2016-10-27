@@ -102,7 +102,7 @@ void ErrorHook(void)
 		}
 		default:
 		{
-			stdimpl_print("Instance error");
+			addFailure("Instance error", __LINE__, __FILE__);
 			break;
 		}
 	}
@@ -137,7 +137,7 @@ void PreTaskHook(void)
 		}
 		default:
 		{
-			stdimpl_print("Instance error");
+			addFailure("Instance error", __LINE__, __FILE__);
 			break;
 		}
 	}
@@ -165,7 +165,7 @@ void PostTaskHook(void)
 		}
 		default:
 		{
-			stdimpl_print("Instance error");
+			addFailure("Instance error", __LINE__, __FILE__);
 			break;
 		}
 	}

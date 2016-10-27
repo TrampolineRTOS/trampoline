@@ -54,6 +54,7 @@ arch_execute()
 {
   TESTDIR=$(pwd -P)
   EXENAME="$(basename $TESTDIR)_exe"
+  ORTIPATH="$TESTDIR/$(basename $TESTDIR)/trampoline.orti"
   OUTPUT=$TESTDIR/output  # The script lauterbach.cmm writes the output here
   RETVAL=$TESTDIR/retval  # The script lauterbach.cmm writes the retval here
 
@@ -63,7 +64,7 @@ arch_execute()
   # Go to Lauterbach's scripts directory
   cd ../../machines/ppc/tools/lauterbach
   # Send the test to trace32
-  ./sendTest.py -d $TESTDIR -e $EXENAME
+  ./sendTest.py -d $TESTDIR -e $EXENAME -o $ORTIPATH
   # Go back to the test directory
   cd $TESTDIR
   # Get execution's return value
@@ -97,7 +98,7 @@ arch_compile()
 
   # Cosmic Software requires libraries to be enumerated in the link script...
   echo "../../lib/libembUnit.a" >> $(basename $1)/script.lkf
-  rm $EXENAME
+  rm -f $EXENAME
   ./build.py
   # Set the elf as the executable
   mv $ELFNAME $EXENAME

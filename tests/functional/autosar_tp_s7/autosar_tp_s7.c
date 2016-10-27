@@ -34,7 +34,6 @@
 
 
 #include "Os.h"
-#include "config.h" /*for stdimpl_print*/
 
 TestRef AutosarTPTest_seq7_t1_instance(void);
 TestRef AutosarTPTest_seq7_t2_instance(void);
@@ -56,7 +55,7 @@ void ShutdownHook(StatusType error)
 
 void ErrorHook(StatusType error)
 {
-  stdimpl_print("ErrorHook : Instance error\n");	
+  addFailure("ErrorHook : Instance error\n", __LINE__, __FILE__);	
 }
 
 ProtectionReturnType ProtectionHook(StatusType Fatalerror)

@@ -24,6 +24,7 @@ TITLE "MPC5643L's test script launcher"
 ;Parameters are taken from the python script sendTest.py
 ;appPath contains the test directory
 ;exeName contains the name of the executable
+;ortiPath contains the path to the orti file
 
 ;;set some constants
 &exePath="&appPath/&exeName"    ; Path to the executable
@@ -116,6 +117,10 @@ MMU.Set TLB1 0x1 0x0 0x0 0x0
 ;set debug mode to HLL debugging
 Mode.Hll
 
+;
+go main
+task.orti "&ortiPath"
+
 ;breakpoint at the end of the program
 break.set tpl_shutdown /Program
 ;breakpoint at the end of the print function
@@ -134,7 +139,7 @@ WHILE &continue
   IF STATE.RUN()
   (
     ; Execution is still going on but the timeout has been reached
-    BREAK
+    RESET
     WRITE #1 "2"
     &continue=FALSE()
   )

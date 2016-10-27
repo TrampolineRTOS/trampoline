@@ -34,7 +34,6 @@
 
 
 #include "Os.h"
-#include "config.h" /*for stdimpl_print*/
 
 TestRef AutosarTPTest_seq6_t1_instance(void);
 TestRef AutosarTPTest_seq6_error_instance(void);

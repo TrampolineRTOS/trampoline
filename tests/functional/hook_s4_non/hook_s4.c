@@ -33,7 +33,6 @@
  */
 
 #include "tpl_os.h"
-#include "config.h" /*for stdimpl_print */
 
 TestRef HookTest_seq4_t1_instance(void);
 TestRef HookTest_seq4_t2_instance(void);
@@ -150,7 +149,7 @@ ISR(softwareInterruptHandler0)
 		}
 		default: 
 		{
-			stdimpl_print("instance error");
+			addFailure("instance error", __LINE__, __FILE__);
 			break;
 		}
 	}
@@ -174,10 +173,11 @@ ISR(softwareInterruptHandler1)
 		}
 		default: 
 		{
-			stdimpl_print("instance error");
+			addFailure("instance error", __LINE__, __FILE__);
 			break;
 		}
 	}
 }
+UNUSED_ISR(softwareInterruptHandler2)
 
 /* End of file hook_s4_non/hook_s4.c */

@@ -40,7 +40,6 @@ DeclareAlarm(Alarm1);
 DeclareAlarm(INVALID_ALARM);
 DeclareApplication(app1);
 DeclareApplication(app2);
-DeclareApplication(INVALID_OSAPPLICATION);
 DeclareCounter(Software_Counter);
 DeclareCounter(INVALID_COUNTER);
 DeclareResource(Resource1);
@@ -63,7 +62,7 @@ static void test_t1_instance(void)
 	ApplicationType result_app_1, result_app_2, result_app_3, result_app_4, result_app_5, result_app_6, result_app_7, result_app_8, result_app_9, result_app_10, result_app_11, result_app_12, result_app_13, result_app_14;
 	
 	SCHEDULING_CHECK_INIT(1);
-	result_obj_1 = CheckObjectAccess(INVALID_OSAPPLICATION, OBJECT_TASK, t1); 
+	result_obj_1 = CheckObjectAccess(INVALID_OSAPPLICATION_ID, OBJECT_TASK, t1); 
 	SCHEDULING_CHECK_AND_EQUAL_INT(1, NO_ACCESS, result_obj_1);
 	
 	SCHEDULING_CHECK_INIT(2);
@@ -158,11 +157,11 @@ static void test_t1_instance(void)
 	
 	SCHEDULING_CHECK_INIT(23);
 	result_app_1 = CheckObjectOwnership(OBJECT_TYPE_COUNT, t1); 
-	SCHEDULING_CHECK_AND_EQUAL_INT(23, INVALID_OSAPPLICATION, result_app_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(23, INVALID_OSAPPLICATION_ID, result_app_1);
 	
 	SCHEDULING_CHECK_INIT(24);
 	result_app_2 = CheckObjectOwnership(OBJECT_TASK, INVALID_TASK); 
-	SCHEDULING_CHECK_AND_EQUAL_INT(24, INVALID_OSAPPLICATION, result_app_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(24, INVALID_OSAPPLICATION_ID, result_app_2);
 	
 	SCHEDULING_CHECK_INIT(25);
 	result_app_3 = CheckObjectOwnership(OBJECT_TASK, t1); 
@@ -171,7 +170,7 @@ static void test_t1_instance(void)
 	
 	SCHEDULING_CHECK_INIT(26);
 	result_app_4 = CheckObjectOwnership(OBJECT_ISR, INVALID_ISR); 
-	SCHEDULING_CHECK_AND_EQUAL_INT(26, INVALID_OSAPPLICATION, result_app_4);
+	SCHEDULING_CHECK_AND_EQUAL_INT(26, INVALID_OSAPPLICATION_ID, result_app_4);
 	
 	SCHEDULING_CHECK_INIT(27);
 	result_app_5 = CheckObjectOwnership(OBJECT_ISR, softwareInterruptHandler0); 
@@ -180,7 +179,7 @@ static void test_t1_instance(void)
 	
 	SCHEDULING_CHECK_INIT(28);
 	result_app_6 = CheckObjectOwnership(OBJECT_ALARM, INVALID_ALARM); 
-	SCHEDULING_CHECK_AND_EQUAL_INT(28, INVALID_OSAPPLICATION, result_app_6);
+	SCHEDULING_CHECK_AND_EQUAL_INT(28, INVALID_OSAPPLICATION_ID, result_app_6);
 	
 	SCHEDULING_CHECK_INIT(29);
 	result_app_7 = CheckObjectOwnership(OBJECT_ALARM, Alarm1); 
@@ -189,7 +188,7 @@ static void test_t1_instance(void)
 	
 	SCHEDULING_CHECK_INIT(30);
 	result_app_8 = CheckObjectOwnership(OBJECT_RESOURCE, INVALID_RESOURCE); 
-	SCHEDULING_CHECK_AND_EQUAL_INT(30, INVALID_OSAPPLICATION, result_app_8);
+	SCHEDULING_CHECK_AND_EQUAL_INT(30, INVALID_OSAPPLICATION_ID, result_app_8);
 	
 	SCHEDULING_CHECK_INIT(31);
 	result_app_9 = CheckObjectOwnership(OBJECT_RESOURCE, Resource1); 
@@ -197,12 +196,12 @@ static void test_t1_instance(void)
 	
 	SCHEDULING_CHECK_INIT(32);
 	result_app_10 = CheckObjectOwnership(OBJECT_RESOURCE, RES_SCHEDULER); 
-	SCHEDULING_CHECK_AND_EQUAL_INT(32, INVALID_OSAPPLICATION, result_app_10);
+	SCHEDULING_CHECK_AND_EQUAL_INT(32, INVALID_OSAPPLICATION_ID, result_app_10);
 	
 	
 	SCHEDULING_CHECK_INIT(33);
 	result_app_11 = CheckObjectOwnership(OBJECT_SCHEDULETABLE, INVALID_SCHEDULETABLE); 
-	SCHEDULING_CHECK_AND_EQUAL_INT(33, INVALID_OSAPPLICATION, result_app_11);
+	SCHEDULING_CHECK_AND_EQUAL_INT(33, INVALID_OSAPPLICATION_ID, result_app_11);
 	
 	SCHEDULING_CHECK_INIT(34);
 	result_app_12 = CheckObjectOwnership(OBJECT_SCHEDULETABLE, sched1); 
@@ -211,7 +210,7 @@ static void test_t1_instance(void)
 	
 	SCHEDULING_CHECK_INIT(35);
 	result_app_13 = CheckObjectOwnership(OBJECT_COUNTER, INVALID_COUNTER); 
-	SCHEDULING_CHECK_AND_EQUAL_INT(35, INVALID_OSAPPLICATION, result_app_13);
+	SCHEDULING_CHECK_AND_EQUAL_INT(35, INVALID_OSAPPLICATION_ID, result_app_13);
 	
 	SCHEDULING_CHECK_INIT(36);
 	result_app_14 = CheckObjectOwnership(OBJECT_COUNTER, Software_Counter); 

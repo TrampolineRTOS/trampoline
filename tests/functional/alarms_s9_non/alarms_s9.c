@@ -87,6 +87,9 @@ ISR(softwareInterruptHandler0)
 {
 	TestRunner_runTest(AlarmsTest_seq9_isr1_instance());	
 }
+UNUSED_ISR(softwareInterruptHandler1)
+UNUSED_ISR(softwareInterruptHandler2)
+
 
 void CallBackC_callback(void)
 {
@@ -105,7 +108,7 @@ void CallBackC_callback(void)
 		}
 		default:
 		{
-			stdimpl_print("Instance error \n");
+			addFailure("Instance error \n", __LINE__, __FILE__);
 			break;
 		}
 	}

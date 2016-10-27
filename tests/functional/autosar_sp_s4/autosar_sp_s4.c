@@ -71,7 +71,7 @@ void ErrorHook(StatusType error)
 		}
 		default:
 		{
-			stdimpl_print("Instance error");
+			addFailure("Instance error", __LINE__, __FILE__);
 			break;
 		}
 	}
@@ -106,7 +106,7 @@ ISR(softwareInterruptHandler0)
 		}
 		default:
 		{
-			stdimpl_print("Instance error");
+			addFailure("Instance error", __LINE__, __FILE__);
 			break;
 		}
 	}

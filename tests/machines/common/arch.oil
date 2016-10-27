@@ -67,5 +67,6 @@ CPU common
   {
     PATH = "../tests/machines/common";
     CHEADER = "commonTestConfig.h";
+    CFILE = "commonTestConfig.c";
   };
 };

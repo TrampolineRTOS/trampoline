@@ -32,7 +32,6 @@
  * $URL$
  */
 
-#include "config.h" /*Display information in the right way (printf on UNIX...)*/
 #include "tpl_os.h"
 
 TestRef TaskManagementTest_seq16_t1_instance(void);
@@ -82,7 +81,7 @@ TASK(t2)
 			ShutdownOS(E_OK);
 			break;
 		default:
-			stdimpl_print("Instance error");
+			addFailure("Instance error", __LINE__, __FILE__);
 			break;
 	}
 }
@@ -99,7 +98,7 @@ TASK(t3)
 			TestRunner_runTest(TaskManagementTest_seq16_t3_instance2());
 			break;
 		default:
-			stdimpl_print("Instance error");
+			addFailure("Instance error", __LINE__, __FILE__);
 			break;
 	}
 }
@@ -116,7 +115,7 @@ TASK(t4)
 			TestRunner_runTest(TaskManagementTest_seq16_t4_instance2());
 			break;
 		default:
-			stdimpl_print("Instance error");
+			addFailure("Instance error", __LINE__, __FILE__);
 			break;
 	}
 }
@@ -146,5 +145,7 @@ ISR(softwareInterruptHandler0)
 {
 	TestRunner_runTest(TaskManagementTest_seq16_isr1_instance());	
 }
+UNUSED_ISR(softwareInterruptHandler1)
+UNUSED_ISR(softwareInterruptHandler2)
 
 /* End of file tasks_s15_full/tasks_s15.c */

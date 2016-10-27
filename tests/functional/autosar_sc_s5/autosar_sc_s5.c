@@ -61,5 +61,7 @@ ISR(softwareInterruptHandler0)
 {
 	TestRunner_runTest(AutosarSCTest_seq5_isr1_instance());
 }
+UNUSED_ISR(softwareInterruptHandler1)
+UNUSED_ISR(softwareInterruptHandler2)
 
 /* End of file autosar_sc_s5/autosar_sc_s5.c */

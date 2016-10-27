@@ -32,7 +32,6 @@
  * $URL$
  */
 
-#include "config.h" /*Display information in the right way (printf on UNIX...)*/
 #include "tpl_os.h"
 
 TestRef HookTest_seq1_startup_instance(void);
@@ -58,7 +57,7 @@ void ShutdownHook(StatusType error)
 
 TASK(t1)
 {
-	stdimpl_print("instance error");
+	addFailure("instance error", __LINE__, __FILE__);
 }
 
 /* End of file hook_s1_full/hook_s1.c */

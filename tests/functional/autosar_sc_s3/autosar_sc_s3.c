@@ -92,7 +92,7 @@ void ErrorHook(StatusType error)
 		}
 		default:
 		{
-			stdimpl_print("Instance error");
+			addFailure("Instance error", __LINE__, __FILE__);
 			break;
 		}
 	}

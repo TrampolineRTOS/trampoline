@@ -65,5 +65,7 @@ ISR(softwareInterruptHandler0)
 {
 	TestRunner_runTest(TaskManagementTest_seq1_isr1_instance());
 }
+UNUSED_ISR(softwareInterruptHandler1)
+UNUSED_ISR(softwareInterruptHandler2)
 
 /* End of file tasks_s1_non/tasks_s1.c */
