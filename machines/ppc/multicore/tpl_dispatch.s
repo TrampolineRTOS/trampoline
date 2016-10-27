@@ -492,6 +492,23 @@ TPL_GLOBAL_REF(tpl_sc_handler):
    */
   e_stw     r3,KS_RETURN_CODE(r1)
 
+ /*
+  * Check if the reentrancy counter is not greater than 1
+  * No context switch shall occur if we're not leaving the kernel after
+  * this call.
+  */
+  se_mtar   r11,r5
+  se_mtar   r12,r6
+  mfspr     r6,spr_PIR
+  se_slwi   r6,2
+  e_lis     r5,TPL_HIG(TPL_GLOBAL_REF(tpl_reentrancy_counter))
+  e_add16i  r5,TPL_LOW(TPL_GLOBAL_REF(tpl_reentrancy_counter))
+  se_add    r5,r6
+  se_lwz    r6,0(r5)     /*  get the value of the counter */
+  se_cmpi   r6,1
+  se_mfar   r5,r11
+  se_mfar   r6,r12
+  e_bne     no_context_switch
   /*
    * Check the tpl_need_switch variable
    * to see if a switch should occur
@@ -543,16 +560,14 @@ call_tpl_run_elected:
   e_lwz     r3,0(r11)                     /* get s_running (it has been changed by tpl_run_elected) */
   e_bl      TPL_EXTERN_REF(tpl_load_context)
 
-
-  /* TODO */
-no_context_switch:
-
   /*
    * Reset the tpl_need_switch variable to NO_NEED_SWITCH
    */
   e_lwz     r11,KS_KERN_PTR(r1)
   e_li      r12,NO_NEED_SWITCH
   e_stb     r12,24(r11)
+
+no_context_switch:
 
   /*
    * r3 is restored (ie get back the return code)

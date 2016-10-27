@@ -40,6 +40,7 @@ TPL_EXTERN(tpl_call_protection_hook)
 TPL_EXTERN(tpl_set_process_mp)
 TPL_EXTERN(tpl_kern)
 TPL_EXTERN(tpl_mpu)
+TPL_EXTERN(tpl_reentrancy_counter)
 
 #if (WITH_VLE == YES)
 TPL_VLE_ON
@@ -172,6 +173,23 @@ machine_check_error:
   e_li      r3,E_OS_PROTECTION_MEMORY
   e_bl      TPL_EXTERN_REF(tpl_call_protection_hook)
 
+ /*
+  * Check if the reentrancy counter is not greater than 1
+  * No context switch shall occur if we're not leaving the kernel after
+  * this call.
+  */
+  se_mtar   r11,r5
+  se_mtar   r12,r6
+  mfspr     r6,spr_PIR
+  se_slwi   r6,2
+  e_lis     r5,TPL_HIG(TPL_EXTERN_REF(tpl_reentrancy_counter))
+  e_add16i  r5,TPL_LOW(TPL_EXTERN_REF(tpl_reentrancy_counter))
+  se_add    r5,r6
+  se_lwz    r6,0(r5)     /*  get the value of the counter */
+  se_cmpi   r6,1
+  se_mfar   r5,r11
+  se_mfar   r6,r12
+  e_bne     no_context_switch
   /*
    * test tpl_need_switch to see if a rescheduling occured
    */
