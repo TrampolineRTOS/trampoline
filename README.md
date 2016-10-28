@@ -65,6 +65,7 @@ Some examples have been added (check examples):
   * **blink_1c_withOrti**. Blinks a LED using an alarm and a task. Creates an orti file.
   * **blink_2c**. Blinks two leds using two synchronized cores with one task and one alarm per core.
   * **blink_2c_arxml**. Same as the two cores blink example but uses an arxml config file.
+  * **blink_2c_opticks**. Same as the two cores blink example but optimizes ticks.
   * **button_2c**. Waits for a button input to light a led. Switch it off using Timing Protection watchdog. Multicore example.
   * **spinlocks**. Producer/Consumer example.
 * virt-v7 :
