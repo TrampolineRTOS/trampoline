@@ -46,6 +46,17 @@ end foreach
 
 # -----------------------------------------------------------------------------
 # ERROR
+# Frequency must not be 0
+#
+foreach counter in HARDWARECOUNTERS do
+  if counter::FREQUENCY == 0 then
+    error counter::FREQUENCY : "Invalid frequency for hardware counter "
+                               + counter::NAME
+  end if
+end foreach
+
+# -----------------------------------------------------------------------------
+# ERROR
 # Two hardware counters that uses the same channel must have the same frequency
 #
 
@@ -63,3 +74,127 @@ foreach counter in HARDWARECOUNTERS do
   end if
 end foreach
 
+# -----------------------------------------------------------------------------
+# ERROR
+# If Optimizeticks is enabled, a shared counter and at least one local source
+# must be defined. All of these sources must come from the pit.
+if exists OS::OPTIMIZETICKS default (false) then
+  let pit_sources := @[ ]
+  let pit_sources["pit_ch0"] := true
+  let pit_sources["pit_ch1"] := true
+  let pit_sources["pit_ch2"] := true
+  let pit_sources["pit_ch3"] := true
+
+  # Sharedsource exists ?
+  if not exists OS::OPTIMIZETICKS_S::SHAREDSOURCE then
+    error OS::OPTIMIZETICKS : "Optimizeticks : "
+      + "OPTIMIZETICKS set to true but no SHAREDSOURCE."
+  end if
+
+  # Is it a pit source ?
+  if not exists pit_sources[OS::OPTIMIZETICKS_S::SHAREDSOURCE] then
+    error OS::OPTIMIZETICKS_S::SHAREDSOURCE : "Optimizeticks : "
+      + "OPTIMIZETICKS sources must be pit channels."
+  end if
+
+  # At least one slavesource ?
+  if not exists OS::OPTIMIZETICKS_S::SLAVESOURCE then
+    error OS::OPTIMIZETICKS_S : "Optimizeticks : "
+      + "At least one SLAVESOURCE must be defined."
+  end if
+
+  foreach source in exists OS::OPTIMIZETICKS_S::SLAVESOURCE default(@( ))
+  do
+    # Core exists ?
+    if not exists source::CORE then
+      error source::NAME : "Optimizeticks : "
+        + "CORE must be defined for all local sources."
+    end if
+    if source::CORE >= OS::NUMBER_OF_CORES then
+      error source::CORE : "Optimizeticks : "
+        + "Core_id does not exists. Core id range : 0 to "
+        + [OS::NUMBER_OF_CORES - 1 string]
+    end if
+
+    # Is the source from the pit ?
+    if not exists source::SOURCE then
+      error source::NAME : "Optimizeticks : "
+        + "A pit source must be defined for all local sources"
+    end if
+    if not exists pit_sources[source::SOURCE] then
+      error source::SOURCE : "Optimizeticks : "
+        + "OPTIMIZETICKS sources must be pit channels."
+    end if
+
+  end foreach
+end if
+
+# -----------------------------------------------------------------------------
+# ERROR
+# If Optimizeticks is enabled, the slavesources must not be used by any counter
+if exists OS::OPTIMIZETICKS default (false) then
+  let sharedsource := OS::OPTIMIZETICKS_S::SHAREDSOURCE
+  foreach source in OS::OPTIMIZETICKS_S::SLAVESOURCE do
+    foreach counter in COUNTERS
+    do
+      if counter::SOURCE == source::SOURCE then
+        error counter::SOURCE : "The slavesource " + source::SOURCE + " is"
+          + " reserved for kernel uses."
+      end if
+    end foreach
+  end foreach
+end if
+
+# -----------------------------------------------------------------------------
+# ERROR
+# If Optimizeticks is enabled, all the used optimized timers must have the same
+# frequency.
+if exists OS::OPTIMIZETICKS default (false) then
+  let frequency := OS::OPTIMIZETICKS_S::FREQUENCY
+
+  foreach source in exists OS::OPTIMIZETICKS_S::SLAVESOURCE default(@( ))
+  do
+    foreach counter in HARDWARECOUNTERS do
+      if counter::SOURCE == source::SOURCE then
+        if frequency != counter::FREQUENCY then
+          error counter::FREQUENCY : "Optimizeticks : "
+            + "Optimized counters must have the same frequency as the "
+            + "sharedcounter's."
+        end if
+      end if
+    end foreach
+  end foreach
+
+end if
+
+# -----------------------------------------------------------------------------
+# ERROR
+# If Optimizeticks is enabled, each local pit channel must only be used by its
+# core.
+#
+if exists OS::OPTIMIZETICKS default (false) then
+  let counter_map := mapof COUNTERS by NAME
+
+  foreach source in exists OS::OPTIMIZETICKS_S::SLAVESOURCE default(@( ))
+  do
+    foreach other_source in exists OS::OPTIMIZETICKS_S::SLAVESOURCE default(@( ))
+    do
+      if source::NAME != other_source::NAME
+       & source::SOURCE == other_source::SOURCE
+       & source::CORE   != other_source::CORE then
+        error source::SOURCE : "Optimizeticks : "
+          + "Source reserved for multiple cores."
+      end if
+    end foreach
+
+    let core_counters := getCoreAttributes(OS, APPLICATION, source::CORE, COUNTERS, "COUNTER")
+    foreach counter in core_counters do
+      if counter::SOURCE == source::SOURCE then
+        error counter::VALUE : "Optimizeticks : "
+          + "A counter using the pit channel " + source::SOURCE
+          + " reserved for core " +[source::CORE string]
+          + " belongs to the core " + [application::CORE string]
+      end if
+    end foreach
+  end foreach
+end if

@@ -31,6 +31,7 @@ foreach counter in used_counters do
     let number_of_pit_used := number_of_pit_used + 1
   end if
 end foreach
+
 %
 /*-----------------------------------------------------------------------------
  *  Timer channel possible values
@@ -117,4 +118,3 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
 end loop
 
 %
-

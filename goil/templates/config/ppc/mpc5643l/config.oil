@@ -20,6 +20,17 @@ IMPLEMENTATION mpc5643l {
       IDENTIFIER SOURCE;
       UINT32 FREQUENCY = 120000;
     } TIMINGPROTECTION_WATCHDOG [];
+    BOOLEAN [
+      TRUE {
+        INTERRUPT_TYPE SHAREDSOURCE;
+        UINT32 FREQUENCY = 120000;
+        STRUCT {
+          UINT32 CORE;
+          INTERRUPT_TYPE SOURCE;
+        } SLAVESOURCE [];
+      },
+      FALSE
+    ] OPTIMIZETICKS = FALSE;
   };
 
   TASK [] {
@@ -57,7 +68,7 @@ CPU mpc5643l_interrupt {
   INTERRUPT IRQ4    { ID = 4; TYPE = SOFTWARE; };
   INTERRUPT IRQ5    { ID = 5; TYPE = SOFTWARE; };
   INTERRUPT IRQ6    { ID = 6; TYPE = SOFTWARE; };
-  INTERRUPT IRQ7    { ID = 7; TYPE = SOFTWARE; }; // Intercore Reserved in multicore
+  INTERRUPT IRQ7    { ID = 7; TYPE = SOFTWARE; }; /* Intercore Reserved in multicore */
 
   /* Hardware timer interrupts */
 

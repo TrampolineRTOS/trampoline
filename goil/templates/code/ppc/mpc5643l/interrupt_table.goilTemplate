@@ -7,6 +7,24 @@ let INTERCORE_INTERRUPT := exists INTERCORE_INTERRUPT default (@( ))
 let OS::TIMINGPROTECTION_WATCHDOG := exists OS::TIMINGPROTECTION_WATCHDOG
                                      default (@())
 
+# OPTIMTICKS GLOBAL DEFINITIONS
+# A Core has a its slave source enabled only if it has at least one hardware
+# counter on the master source.
+let optimticks_slavesources := @[ ]
+let optimticks_optimizedsource := ""
+if exists OS::OPTIMIZETICKS default(false) then
+  let optimticks_optimizedsource := OS::OPTIMIZETICKS_S::SHAREDSOURCE
+  foreach slavesource in OS::OPTIMIZETICKS_S::SLAVESOURCE do
+    let core_counters := getCoreAttributes(OS, APPLICATION, slavesource::CORE, HARDWARECOUNTERS, "COUNTER")
+    foreach counter in core_counters do
+      if counter::SOURCE == optimticks_optimizedsource then
+        let optimticks_slavesources[[slavesource::CORE string]] := slavesource::SOURCE
+      end if
+    end foreach
+  end foreach
+end if
+let optimticks_numberofcores := [optimticks_slavesources length]
+
 %
 /*-----------------------------------------------------------------------------
  * Interrupt specific structures
@@ -47,6 +65,11 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
       let tick_sources[counter::SOURCE] := interrupt
     end if
   end foreach
+
+  if exists optimticks_slavesources[[core_id string]] then
+    let interrupt_name := optimticks_slavesources[[core_id string]]
+    let tick_sources[interrupt_name] := interrupt_map[interrupt_name]
+  end if
 
   foreach interrupt in tick_sources do
     if OS::NUMBER_OF_CORES > 1 then
@@ -166,6 +189,21 @@ CONST(tpl_it_vector_entry, OS_CONST) tpl_it_table_%!core_id%[% !INTERRUPT_COUNT:
             end if
           end foreach
         end foreach
+
+        ######### Optimizeticks : slavesource
+        if exists optimticks_slavesources[[core_id string]] then
+          let slavesource_name := optimticks_slavesources[[core_id string]]
+          if (interrupt::NAME == slavesource_name) then
+            if OS::NUMBER_OF_CORES > 1 then
+              %  { (tpl_it_handler)tpl_tick_handler_% !interrupt::NAME %_%!core_id%, (void *)NULL }%
+              let entryFound := true
+            else # Monocore
+              %  { (tpl_it_handler)tpl_tick_handler_% !interrupt::NAME %, (void *)NULL }%
+              let entryFound := true
+            end if
+            let entryFound := true
+          end if
+        end if
 
       end if
     end foreach

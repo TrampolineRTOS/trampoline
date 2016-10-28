@@ -150,6 +150,10 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_synchron(
 {
   VAR(tpl_status, AUTOMATIC) result = E_OK;
   P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) st;
+  /* Tick optimization :
+   * A syscall must update counters before using a timeobj's structures
+   */
+  TPL_UPDATE_COUNTERS((tpl_time_obj *)st);
 
   st = tpl_schedtable_table[sched_table_id];
   if (st->b_desc.state == (tpl_schedtable_state)SCHEDULETABLE_STOPPED)
@@ -245,6 +249,10 @@ FUNC(tpl_status, OS_CODE) tpl_sync_schedule_table_service(
 #if SCHEDTABLE_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
   {
+    /* Tick optimization :
+     * A syscall must update counters before using a timeobj's structures
+     */
+    TPL_UPDATE_COUNTERS((tpl_time_obj *)st);
     st = tpl_schedtable_table[sched_table_id];
 
     /* if schedule table is waiting, start it, else if running synchronize it */
@@ -304,6 +312,10 @@ FUNC(tpl_status, OS_CODE) tpl_set_schedule_table_async_service(
 #if SCHEDTABLE_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
   {
+    /* Tick optimization :
+     * A syscall must update counters before using a timeobj's structures
+     */
+    TPL_UPDATE_COUNTERS((tpl_time_obj *)st);
     st = tpl_schedtable_table[sched_table_id];
     /*
      * MISRA RULE 45 VIOLATION: a tpl_time_obj_static* is cast to a

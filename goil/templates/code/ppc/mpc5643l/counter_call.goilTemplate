@@ -4,6 +4,25 @@
 # further processing because existence test is not necessary
 
 let INTERCORE_INTERRUPT := exists INTERCORE_INTERRUPT default (@( ))
+
+# OPTIMTICKS GLOBAL DEFINITIONS
+# A Core has a its slave source enabled only if it has at least one hardware
+# counter on the master source.
+let optimticks_slavesources := @[ ]
+let optimticks_optimizedsource := ""
+if exists OS::OPTIMIZETICKS default(false) then
+  let optimticks_optimizedsource := OS::OPTIMIZETICKS_S::SHAREDSOURCE
+  foreach slavesource in OS::OPTIMIZETICKS_S::SLAVESOURCE do
+    let core_counters := getCoreAttributes(OS, APPLICATION, slavesource::CORE, HARDWARECOUNTERS, "COUNTER")
+    foreach counter in core_counters do
+      if counter::SOURCE == optimticks_optimizedsource then
+        let optimticks_slavesources[[slavesource::CORE string]] := slavesource::SOURCE
+      end if
+    end foreach
+  end foreach
+end if
+let optimticks_numberofcores := [optimticks_slavesources length]
+
 %
 #include "tpl_os_kernel.h"          /* tpl_schedule */
 #include "tpl_os_timeobj_kernel.h"  /* tpl_counter_tick */
@@ -11,16 +30,41 @@ let INTERCORE_INTERRUPT := exists INTERCORE_INTERRUPT default (@( ))
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
-
 %
+
 ###############################################################################
-#   tpl_call_counter_tick -- Monocore
-#
-# One function per interrupt channel used. Each function must call
-# tpl_counter_tick for each hardware counter that uses this interrupt channel.
+# Function prototypes
 #
 
-if OS::NUMBER_OF_CORES == 1 then
+# Intercore handlers
+foreach intercore_interrupt in INTERCORE_INTERRUPT do
+%FUNC(tpl_bool, OS_CODE) tpl_intercore_handler_% !intercore_interrupt::NAME %(void);
+%
+end foreach
+
+# Optimizeticks - tpl_update_counters
+if exists OS::OPTIMIZETICKS default (false) then
+  if OS::NUMBER_OF_CORES == 1 then
+%FUNC(void, OS_CODE) tpl_update_counters();
+%
+  else
+    loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+      if exists optimticks_slavesources[[core_id string]] then
+%STATIC FUNC(void, OS_CODE) tpl_update_counters_core% !core_id %();
+%
+      end if
+    end loop
+  end if
+end if
+
+
+loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+###############################################################################
+#   tpl_call_counter_tick -- Monocore/Multicore
+#
+# TODO : Document this
+#
+#
   let counter_map   := mapof COUNTER by NAME
   let interrupt_map := mapof INTERRUPT by NAME
 
@@ -30,73 +74,102 @@ if OS::NUMBER_OF_CORES == 1 then
     let used_interrupts[counter::SOURCE] := interrupt
   end foreach
 
+  let slave_source := ""
+  let optimized_source := ""
+  if exists optimticks_slavesources[[core_id string]] then
+    let optimized_source := OS::OPTIMIZETICKS_S::SHAREDSOURCE
+    let slave_source := optimticks_slavesources[[core_id string]]
+  end if
+
   # Create the function for each used interrupt in this core
-  foreach interrupt in used_interrupts do
+  foreach interrupt in used_interrupts do%
+FUNC(void, OS_CODE) tpl_call_counter_tick_% !interrupt::NAME %_%!core_id%(void)
+{%
+    if interrupt::NAME == optimized_source & slave_source != "" then
+######### INCREMENT COUNTERS - Optimizeticks
+      let frequency := OS::OPTIMIZETICKS_S::FREQUENCY
+      let pit_channel_map := @[ ]
+      let pit_channel_map["pit_ch0"] := "TPL_PIT_0"
+      let pit_channel_map["pit_ch1"] := "TPL_PIT_1"
+      let pit_channel_map["pit_ch2"] := "TPL_PIT_2"
+      let pit_channel_map["pit_ch3"] := "TPL_PIT_3"%
+  /*** Begin Tick optimization ***/
+  VAR(sint32, AUTOMATIC) tick;
+  VAR(sint32, AUTOMATIC) next_tick = -1;
+
+  /* Ignore this timer's IRQs */
+  TPL_INTC(% !core_id %).PSR[% !interrupt::ID %] = 0;
+
+  /* Update the counters */%
+        if OS::NUMBER_OF_CORES > 1 then%
+  tpl_update_counters_core% !core_id %();%
+        else%
+  tpl_update_counters();%
+        end if
+
+        let core_counters := getCoreAttributes(OS, APPLICATION, core_id, HARDWARECOUNTERS, "COUNTER")
+        foreach counter in core_counters do
+          if counter::SOURCE == interrupt::NAME then%
+  /* Get the necessary number of ticks to activate the next alarm with this
+   * counter.
+   */
+  tick = tpl_time_before_next_tick(&% !counter::NAME %_counter_desc);
+
+  /* Necessary number of ticks to activate the next alarm using all the
+   * counters that have this hardware source.
+   */
+  if((next_tick == -1) || ((tick != -1) && (tick < next_tick)))
+  {
+    next_tick = tick;
+  }
 %
-FUNC(void, OS_CODE) tpl_call_counter_tick_% !interrupt::NAME %(void)
-{
+          end if
+        end foreach
 %
-    foreach counter in HARDWARECOUNTERS do
-      if counter::SOURCE == interrupt::NAME then
-%  tpl_counter_tick(&% !counter::NAME %_counter_desc);
-%
-      end if
-    end foreach
-%
+  if(next_tick != -1)
+  {
+    /* Set the timer to interrupt at the next alarm date
+     * We're using the frequency of the sharedcounter.
+     */
+    next_tick--;
+    PIT_LVR(% !pit_channel_map[slave_source] %) = next_tick * % !frequency %;
+    /* Ack pending interrupt if any and enable timer and interrupts */
+    PIT_FR(% !pit_channel_map[slave_source] %) = PIT_FR_TIF;
+    PIT_CR(% !pit_channel_map[slave_source] %) = PIT_CR_TIE | PIT_CR_TEN;
+  }
+  else
+  {
+    /* If there is no alarm, do not enable the source. Set the LVR to 0 so the
+     * next "elapsed_ticks calculation" returns 0
+     */
+    PIT_LVR(% !pit_channel_map[slave_source] %) = 0;
+    /* Keep the master source up so we're not lost in time */
+    tpl_enable_sharedsource(% !core_id %);
+  }
+
+  /*** End Tick optimization ***/%
+
+    else
+######### INCREMENT COUNTERS - Default
+      # Call tpl_counter tick for each counter using this interrupt in this core
+      let core_counters := getCoreAttributes(OS, APPLICATION, core_id, HARDWARECOUNTERS, "COUNTER")
+      foreach counter in core_counters do
+        if counter::SOURCE == interrupt::NAME then%
+    tpl_counter_tick(&% !counter::NAME %_counter_desc);%
+        end if
+      end foreach
+    end if
+
+######## SCHEDULE & ENABLE CONTEXT SWITCH
+  if OS::NUMBER_OF_CORES == 1 then%
+
   if (tpl_kern.need_schedule)
   {
     tpl_schedule_from_running();
     LOCAL_SWITCH_CONTEXT(0)
   }
-}
 %
-  end foreach
-else
-
-###############################################################################
-#   tpl_call_counter_tick -- Multicore
-#
-# Same but each core must have a separate function. A core must not call
-# tpl_counter_tick for an hardwarecounter that belongs to another core. However
-# one core can (and must sometimes) modify the Alarm of another core, so the
-# execution of this function must be atomic (kernel locked).
-#
-
-foreach intercore_interrupt in INTERCORE_INTERRUPT do
-%FUNC(tpl_bool, OS_CODE) tpl_intercore_handler_% !intercore_interrupt::NAME %(void);
-%
-end foreach
-
-  let counter_map   := mapof COUNTER by NAME
-  let interrupt_map := mapof INTERRUPT by NAME
-
-  # Get used counter source for each core
-  loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
-    let used_interrupts := @( )
-
-    let core_counters := getCoreAttributes(OS, APPLICATION, core_id, COUNTERS, "COUNTER")
-    foreach counter in core_counters do
-      if counter::TYPE == "HARDWARE" then
-        let interrupt := interrupt_map[counter::SOURCE]
-        let used_interrupts[counter::SOURCE] := interrupt
-      end if
-    end foreach
-
-    # Create the function for each used interrupt in this core
-    foreach interrupt in used_interrupts do
-%
-FUNC(void, OS_CODE) tpl_call_counter_tick_% !interrupt::NAME %_% !core_id %(void)
-{
-%
-    # Call tpl_counter tick for each counter using this interrupt in this core
-    let core_counters := getCoreAttributes(OS, APPLICATION, core_id, COUNTERS, "COUNTER")
-    foreach counter in core_counters do
-      if counter::SOURCE == interrupt::NAME
-       & counter::TYPE == "HARDWARE" then%
-  tpl_counter_tick(&% !counter::NAME %_counter_desc);%
-      end if
-    end foreach
-%
+  else%
 
   tpl_multi_schedule();
   tpl_dispatch_context_switch();
@@ -106,22 +179,22 @@ FUNC(void, OS_CODE) tpl_call_counter_tick_% !interrupt::NAME %_% !core_id %(void
    * let's ack any pending intercore it.
    * FIXME : The check for a pending interrupt should be wrapped, so we
    * could use this file as a generic counter call file
-   */
-%   foreach intercore_interrupt in INTERCORE_INTERRUPT do
+   */%
+    foreach intercore_interrupt in INTERCORE_INTERRUPT do
       if intercore_interrupt::CORE == core_id then%
-  if (TPL_INTC(% !core_id %).SSCIR[% !interrupt_map[intercore_interrupt::SOURCE]::ID %]) {
+  if (TPL_INTC(% !core_id %).SSCIR[% !interrupt_map[intercore_interrupt::SOURCE]::ID %])
+  {
     tpl_intercore_handler_% !intercore_interrupt::NAME %();
   }
 %
       end if
     end foreach
-%
+  end if%
 }
 %
-    end foreach
-  end loop
-end if
+  end foreach
 
+end loop
 %
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
