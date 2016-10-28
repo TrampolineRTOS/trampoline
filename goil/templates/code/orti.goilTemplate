@@ -53,7 +53,6 @@ end if
 # Multicore
 if OS::NUMBER_OF_CORES > 1 then
   let APIUSED += APIMAP["multicore"]
-  warning here: "Adding multicore"
 
   if [SPINLOCK length] > 0 then
     let APIUSED += APIMAP["spinlock"]
@@ -604,9 +603,9 @@ foreach alarm in ALARM do
 %
 ALARM % !alarm::NAME %
 {
-    ALARMTIME = "tpl_alarm_table[% !INDEX %]->date";
-    CYCLETIME = "tpl_alarm_table[% !INDEX %]->cycle";
-    STATE = "tpl_alarm_table[% !INDEX %]->state";
+    ALARMTIME = "% !alarm::NAME %_alarm_desc.date";
+    CYCLETIME = "% !alarm::NAME %_alarm_desc.cycle";
+    STATE = "% !alarm::NAME %_alarm_desc.state";
     ACTION = "% ! alarm_action %";
     COUNTER = "% !alarm::COUNTER %";
 };
@@ -625,8 +624,8 @@ foreach resource in REGULARRESOURCES do
 %
 RESOURCE % !resource::NAME %
 {
-  STATE = "tpl_resource_table[% !INDEX %]->owner != -1";
-  LOCKER = "tpl_resource_table[% !INDEX %]->owner";
+  STATE = "% !resource::NAME %_rez_desc.owner != -1";
+  LOCKER = "% !resource::NAME %_rez_desc.owner";
   PRIORITY = "% !resource_prio %";
 };
 %
@@ -637,13 +636,13 @@ foreach counter in COUNTERS do
 _vs_COUNTER % !counter::NAME %
 {
   SOURCE = "% !counter::SOURCE %";
-  MINCYCLE = "tpl_counter_table[% !INDEX %]->min_cycle";
-  TICK = "tpl_counter_table[% !INDEX %]->current_tick";
-  TICK_PER_BASE = "tpl_counter_table[% !INDEX %]->ticks_per_base";
-  DATE = "tpl_counter_table[% !INDEX %]->current_date";
-  MAX = "tpl_counter_table[% !INDEX %]->max_allowed_value";%
+  MINCYCLE = "% !counter::NAME %_counter_desc.min_cycle";
+  TICK = "% !counter::NAME %_counter_desc.current_tick";
+  TICK_PER_BASE = "% !counter::NAME %_counter_desc.ticks_per_base";
+  DATE = "% !counter::NAME %_counter_desc.current_date";
+  MAX = "% !counter::NAME %_counter_desc.max_allowed_value";%
   if AUTOSAR then%
-  KIND = "tpl_counter_table[% !INDEX %]->kind";%
+  KIND = "% !counter::NAME %_counter_desc.kind";%
   end if%
 };
 %
