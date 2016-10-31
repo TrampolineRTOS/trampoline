@@ -126,7 +126,7 @@ FUNC(void, OS_CODE) tpl_call_counter_tick_% !interrupt::NAME %_%!core_id%(void)
           end if
         end foreach
 %
-  if(next_tick != -1)
+  if(next_tick > 1)
   {
     /* Set the timer to interrupt at the next alarm date
      * We're using the frequency of the sharedcounter.
@@ -139,11 +139,12 @@ FUNC(void, OS_CODE) tpl_call_counter_tick_% !interrupt::NAME %_%!core_id%(void)
   }
   else
   {
-    /* If there is no alarm, do not enable the source. Set the LVR to 0 so the
-     * next "elapsed_ticks calculation" returns 0
+    /* If there is no alarm, or if an alarm will expire in one tick, we don't
+     * need the slave source.
      */
+    /* Set the LVR to 0 so the next "elapsed_ticks calculation" returns 0*/
     PIT_LVR(% !pit_channel_map[slave_source] %) = 0;
-    /* Keep the master source up so we're not lost in time */
+    /* Keep the master source up */
     tpl_enable_sharedsource(% !core_id %);
   }
 

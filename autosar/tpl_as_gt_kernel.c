@@ -170,6 +170,11 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_synchron(
     result = E_OS_STATE;
   }
 
+  /* Tick optimization :
+   * A syscall must enable the mastersource after finishing using the timeobj
+   * structure.
+   */
+  TPL_ENABLE_SHAREDSOURCE((tpl_time_obj *)st);
   return result;
 }
 #endif
@@ -264,6 +269,12 @@ FUNC(tpl_status, OS_CODE) tpl_sync_schedule_table_service(
     {
       tpl_sync_sched_table(&(st->b_desc), value);
     }
+
+    /* Tick optimization :
+     * A syscall must enable the mastersource after finishing using the timeobj
+     * structure.
+     */
+    TPL_ENABLE_SHAREDSOURCE((tpl_time_obj *)st);
   }
 #endif
 	
@@ -330,6 +341,12 @@ FUNC(tpl_status, OS_CODE) tpl_set_schedule_table_async_service(
       st->b_desc.state = SCHEDULETABLE_RUNNING | SCHEDULETABLE_ASYNC;
       /*st->deviation = 0;*/
     }
+
+    /* Tick optimization :
+     * A syscall must enable the mastersource after finishing using the timeobj
+     * structure.
+     */
+    TPL_ENABLE_SHAREDSOURCE((tpl_time_obj *)st);
   }
 #endif
 	

@@ -312,11 +312,11 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_rel(
      tpl_schedtable_static*. This cast behaves correctly because the first memeber
      of tpl_schedula_table_static is a tpl_time_obj_static */
   schedtable = (P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))(st->b_desc.stat_part);
+  /* A syscall must update counters before using a timeobj's structures */
+  TPL_UPDATE_COUNTERS((tpl_time_obj *)st);
 
   if (st->b_desc.state == (tpl_schedtable_state)SCHEDULETABLE_STOPPED)
   {
-    /* A syscall must update counters before using a timeobj's structures */
-    TPL_UPDATE_COUNTERS((tpl_time_obj *)st);
     /*  the schedule table is not already started, proceed  */
     cnt = st->b_desc.stat_part->counter;
 
@@ -343,6 +343,12 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_rel(
        return the proper error code                        */
     result = E_OS_STATE;
   }
+
+  /* Tick optimization :
+   * A syscall must enable the mastersource after finishing using the timeobj
+   * structure.
+   */
+  TPL_ENABLE_SHAREDSOURCE((tpl_time_obj *)st);
   return result;
 }
 #endif
@@ -409,10 +415,10 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_abs(
    tpl_schedtable_static*. This cast behaves correctly because the first memeber
    of tpl_schedula_table_static is a tpl_time_obj_static */
   schedtable = (P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))(st->b_desc.stat_part);
+  /* A syscall must update counters before using a timeobj's structures */
+  TPL_UPDATE_COUNTERS((tpl_time_obj *)st);
   if (st->b_desc.state == (tpl_schedtable_state)SCHEDULETABLE_STOPPED)
   {
-    /* A syscall must update counters before using a timeobj's structures */
-    TPL_UPDATE_COUNTERS((tpl_time_obj *)st);
     /*  the schedule table is not already started, proceed  */
     cnt = st->b_desc.stat_part->counter;
 
@@ -457,6 +463,12 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_abs(
           return the proper error code                        */
       result = E_OS_STATE;
   }
+
+  /* Tick optimization :
+   * A syscall must enable the mastersource after finishing using the timeobj
+   * structure.
+   */
+  TPL_ENABLE_SHAREDSOURCE((tpl_time_obj *)st);
   return result;
 }
 #endif

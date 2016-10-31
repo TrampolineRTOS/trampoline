@@ -135,13 +135,6 @@ FUNC(void, OS_CODE) tpl_insert_time_obj(
             }
         }
     }
-
-#if TPL_OPTIMIZE_TICKS == YES
-    /* Enable the sharedsource to force a next tick prediction for the core
-     * which has it's counter's timeobj queues modified by this call.
-     */
-    TPL_ENABLE_SHAREDSOURCE(time_obj);
-#endif
 }
 
 /*
@@ -183,13 +176,6 @@ FUNC(void, OS_CODE) tpl_remove_time_obj(
     {
         counter->next_to = counter->first_to;
     }
-
-#if TPL_OPTIMIZE_TICKS == YES
-    /* Enable the sharedsource to force a next tick prediction for the core
-     * which has it's counter's timeobj queues modified by this call.
-     */
-    TPL_ENABLE_SHAREDSOURCE(time_obj);
-#endif
 }
 
 /*

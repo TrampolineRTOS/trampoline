@@ -183,6 +183,12 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
     {
       result = E_OS_NOFUNC;
     }
+
+    /* Tick optimization :
+     * A syscall must enable the mastersource after finishing using the timeobj
+     * structure.
+     */
+    TPL_ENABLE_SHAREDSOURCE(alarm);
   }
 #endif
 
@@ -254,6 +260,12 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
       /*  the alarm is in use, return the proper error code   */
       result = E_OS_STATE;
     }
+
+    /* Tick optimization :
+     * A syscall must enable the mastersource after finishing using the timeobj
+     * structure.
+     */
+    TPL_ENABLE_SHAREDSOURCE(alarm);
   }
 #endif
 
@@ -322,6 +334,12 @@ FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
       /*  the alarm is in use, return the proper error code   */
       result = E_OS_STATE;
     }
+
+    /* Tick optimization :
+     * A syscall must enable the mastersource after finishing using the timeobj
+     * structure.
+     */
+    TPL_ENABLE_SHAREDSOURCE(alarm);
   }
 #endif
 
@@ -379,6 +397,12 @@ FUNC(tpl_status, OS_CODE) tpl_cancel_alarm_service(
     {
       result = E_OS_NOFUNC;
     }
+
+    /* Tick optimization :
+     * A syscall must enable the mastersource after finishing using the timeobj
+     * structure.
+     */
+    TPL_ENABLE_SHAREDSOURCE(alarm);
   }
 #endif
 
