@@ -293,29 +293,7 @@ if OS::STATUS == "EXTENDED" then%
 /*-----------------------------------------------------------------------------
  *  Tick optimization
  */
-%
-# A Core has a its slave source enabled only if it has at least one hardware
-# counter on the optimized source.
-let optimticks_optimizedsource := ""
-let optimticks_slavesources := @[ ]
-if exists OS::OPTIMIZETICKS default(false) then
-  let optimticks_optimizedsource := OS::OPTIMIZETICKS_S::SHAREDSOURCE
-  foreach slavesource in OS::OPTIMIZETICKS_S::SLAVESOURCE do
-    let core_counters := getCoreAttributes(OS,
-                                           APPLICATION,
-                                           slavesource::CORE,
-                                           HARDWARECOUNTERS, "COUNTER")
-    foreach counter in core_counters do
-      if counter::SOURCE == optimticks_optimizedsource then
-        let optimticks_slavesources[[slavesource::CORE string]] := slavesource::SOURCE
-      end if
-    end foreach
-  end foreach
-end if
-%
-#define TPL_OPTIMIZE_TICKS     % !yesNo([optimticks_slavesources length] > 0) %
-
-
+#define TPL_OPTIMIZE_TICKS % !yesNo(exists OS::OPTIMIZETICKS default (false)) %
 %
 template if exists custom_app_define_h
 %
