@@ -235,27 +235,35 @@ FUNC(void, OS_CODE) tpl_enable_sharedsource(VAR(uint16, OS_APPL_DATA) core_id)
 #
 # Different cases to enter this function :
 #
-# Slave channel's | Slave channel | Cause                   | Elapsed ticks
-# Interrupt flag  | enabled       |                         |
-# =============================================================================
-# Disabled        | Disabled      | master counter has been | 1
-#                 |               | unmasked by a service   |
-#                 |               | call or it is the first |
-#                 |               | tick of the OS          |
-# -----------------------------------------------------------------------------
-# Disabled        | Enabled       | timeobj struct modified | Slave's channel's
-#                 |               | by a service call.      | current elapsed
-#                 |               |                         | ticks
-# -----------------------------------------------------------------------------
-# Enabled         | Disabled      | Slave channel's handler | Slave's channel
-#                 |               | has been executed       | max ticks + 1
-# -----------------------------------------------------------------------------
-# Enabled         | Enabled       | timeobj struct modified | Slave's channel
-#                 |               | by a service call. The  | max ticks
-#                 |               | slave source ticked     |
-#                 |               | during the service call |
-#                 |               | (extremely rare)        |
-# -----------------------------------------------------------------------------
+# Master   | Slave channel's | Slave channel | Cause                   | Elapsed ticks
+# Enabled  | Interrupt flag  | enabled       |                         |
+# ========================================================================================
+# Enabled  | Disabled        | DontCare      | Multiple call of this   | 0
+#          |                 |               | function during the     |
+#          |                 |               | same tick               |
+# ----------------------------------------------------------------------------------------
+# Enabled  | Enabled         | DontCare      | Call by the service     | Slave's channel's
+#          |                 |               | between the slave tick  | max ticks
+#          |                 |               | and the master tick     |
+# ----------------------------------------------------------------------------------------
+# Disabled | Disabled        | Disabled      | master counter has been | 1
+#          |                 |               | unmasked by a service   |
+#          |                 |               | call or it is the first |
+#          |                 |               | tick of the OS          |
+# ----------------------------------------------------------------------------------------
+# Disabled | Disabled        | Enabled       | timeobj struct modified | Slave's channel's
+#          |                 |               | by a service call.      | current elapsed
+#          |                 |               |                         | ticks
+# ----------------------------------------------------------------------------------------
+# Disabled | Enabled         | Disabled      | Slave channel's handler | Slave's channel
+#          |                 |               | has been executed       | max ticks + 1
+# ----------------------------------------------------------------------------------------
+# Disabled | Enabled         | Enabled       | timeobj struct modified | Slave's channel
+#          |                 |               | by a service call. The  | max ticks
+#          |                 |               | slave source ticked     |
+#          |                 |               | during the service call |
+#          |                 |               | (extremely rare)        |
+# ----------------------------------------------------------------------------------------
 
 %
 /* tpl_update_counters
@@ -293,25 +301,30 @@ FUNC(void, OS_CODE) tpl_update_counters(VAR(uint16, OS_APPL_DATA) core_id)%
       end if%
 {
   VAR(tpl_bool, AUTOMATIC) slave_enabled = PIT_CR(% !slave_source %);
+  VAR(tpl_bool, AUTOMATIC) master_enabled = TPL_INTC(% !core_id %).PSR[% !interrupt_map[mastersource]::ID %] != 0;
   VAR(tpl_bool, AUTOMATIC) slave_it_flag;
-  VAR(tpl_tick, AUTOMATIC) elapsed_ticks;
+  VAR(tpl_tick, AUTOMATIC) elapsed_ticks = 0;
 
-  /*
-   * If the master source is not ignored, we've already updated the counters
-   * during this tick period and we're waiting for the master source to tick.
-   * Just return.
-   */
-  if(TPL_INTC(% !core_id %).PSR[% !interrupt_map[mastersource]::ID %] != 0)
-  {
-    return;
-  }
-
-  /* Disable source before reading any value from the source's decrementer
+  /* Disable slavesource before reading any value from the source's decrementer
    * registers. */
   PIT_CR(% !slave_source %) = 0;
   slave_it_flag = PIT_FR(% !slave_source %);
 
-  if(!slave_it_flag && !slave_enabled)
+  if(master_enabled && !slave_it_flag )
+  {
+    return; /* elapsed_ticks = 0 */
+  }
+  else if (  (master_enabled && slave_it_flag)
+          || (slave_it_flag && slave_enabled))
+  {
+    /* A service call want to change the order of a counter's timeobjs and
+     * the slave counter has ticked during the service call.
+     */
+    elapsed_ticks = PIT_LVR(% !slave_source %) / % !frequency %;
+    /* Ack interrupt */
+    PIT_FR(% !slave_source %) = PIT_FR_TIF;
+  }
+  else if(!slave_it_flag && !slave_enabled)
   {
     /* Master's handler called after a service call or first os's tick. */
     elapsed_ticks = 1; /* FIXME : Not only coming from service calls ! */
@@ -330,12 +343,6 @@ FUNC(void, OS_CODE) tpl_update_counters(VAR(uint16, OS_APPL_DATA) core_id)%
   }
   else
   {
-    /* A service call want to change the order of a counter's timeobjs and
-     * the slave counter has ticked during the service call.
-     */
-    elapsed_ticks = PIT_LVR(% !slave_source %) / % !frequency %;
-    /* Ack interrupt */
-    PIT_FR(% !slave_source %) = PIT_FR_TIF;
   }
 
   if(elapsed_ticks > 0)
