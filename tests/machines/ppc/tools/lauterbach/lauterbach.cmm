@@ -122,19 +122,21 @@ MMU.Set TLB1 0x1 0x0 0x0 0x0
 Mode.Hll
 
 ;==============================================================================
-;       CODE EXECUTION
-
-; Go main, the core0's MMU has to be initialized before opening ORTI windows.
-Core.select 0
-go main
-
-;==============================================================================
 ;       ORTI CONFIGURATION
 ; ONLY IF YOU WANT TO DEBUG THINGS
 
-; Load ORTI File
+;; Monocore
+;; Go main, the core0's MMU has to be initialized before opening ORTI windows.
+;Core.select 0
+;go main
+;; Multicore
+;; Go main, the core0's MMU has to be initialized before opening ORTI windows.
+;Core.select 1
+;go main
+;
+;; Load ORTI File
 ;Task.ORTI "&ortiPath"
-
+;
 ;; Clear windows
 ;WinCLEAR
 ;
@@ -169,11 +171,7 @@ go main
 ;WinPOS 0x79 0x20 0x90 0x14
 ;Task.stack
 
-;==============================================================================
-;       OTHER WINDOWS
-; ONLY IF YOU WANT TO DEBUG THINGS
-
-; Core0 Code execution
+;; Core0 Code
 ;WinPOS 0x79 0x0 0x45 0x1a
 ;List.auto /CORE 0
 ;
