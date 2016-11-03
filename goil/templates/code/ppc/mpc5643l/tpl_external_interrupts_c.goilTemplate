@@ -289,7 +289,7 @@ FUNC(void, OS_CODE) tpl_enable_sharedsource(VAR(uint16, OS_APPL_DATA) core_id)
 STATIC FUNC(void, OS_CODE) tpl_update_counters_core% !core_id %()%
       else
 %
-FUNC(void, OS_CODE) tpl_update_counters()%
+FUNC(void, OS_CODE) tpl_update_counters(VAR(uint16, OS_APPL_DATA) core_id)%
       end if%
 {
   VAR(tpl_bool, AUTOMATIC) slave_enabled = PIT_CR(% !slave_source %);
