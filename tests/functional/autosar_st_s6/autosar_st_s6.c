@@ -33,7 +33,6 @@
  */
 
 #include "Os.h"
-#include "embUnit.h"
 #include "config.h"
 
 TestRef AutosarSTTest_seq6_t1_instance(void);

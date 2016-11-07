@@ -32,9 +32,7 @@
  * $URL$
  */
 
-#include "config.h" /*Display information in the right way (printf on UNIX...)*/
 #include "tpl_os.h"
-#include "embUnit.h"
 
 
 TestRef COMInternalTest_seq6_t1_instance(void);
@@ -107,7 +105,7 @@ TASK(t2)
 			TestRunner_runTest(COMInternalTest_seq6_t2_instance3());
 			break;
 		default:
-			stdimpl_print("instance error\n");
+			addFailure("instance error\n", __LINE__, __FILE__);
 			break;
 	}
 }
@@ -124,7 +122,7 @@ TASK(t3)
 			TestRunner_runTest(COMInternalTest_seq6_t3_instance2());
 			break;
 		default:
-			stdimpl_print("instance error\n");
+			addFailure("instance error\n", __LINE__, __FILE__);
 			break;
 	}
 }
@@ -152,7 +150,7 @@ TASK(t5)
 			TestRunner_runTest(COMInternalTest_seq6_t5_instance4());
 			break;
 		default:
-			stdimpl_print("instance error\n");
+			addFailure("instance error\n", __LINE__, __FILE__);
 			break;
 	}	
 	
@@ -170,7 +168,7 @@ TASK(t6)
 			TestRunner_runTest(COMInternalTest_seq6_t6_instance2());
 			break;
 		default:
-			stdimpl_print("instance error\n");
+			addFailure("instance error\n", __LINE__, __FILE__);
 			break;
 	}
 	
@@ -188,7 +186,7 @@ TASK(t7)
 			TestRunner_runTest(COMInternalTest_seq6_t7_instance2());
 			break;
 		default:
-			stdimpl_print("instance error\n");
+			addFailure("instance error\n", __LINE__, __FILE__);
 			break;
 	}
 }
@@ -205,7 +203,7 @@ TASK(t8)
 			TestRunner_runTest(COMInternalTest_seq6_t8_instance2());
 			break;
 		default:
-			stdimpl_print("instance error\n");
+			addFailure("instance error\n", __LINE__, __FILE__);
 			break;
 	}
 }
@@ -225,7 +223,7 @@ TASK(t9)
 			TestRunner_runTest(COMInternalTest_seq6_t9_instance3());
 			break;
 		default:
-			stdimpl_print("instance error\n");
+			addFailure("instance error\n", __LINE__, __FILE__);
 			break;
 	}
 }

@@ -34,12 +34,6 @@
  * $URL$
  */
 
-/*  XXX : WARNING
- *        This file is included from an oil file located in one of the
- *        tests' directory. In that case, compiler relative paths are from the
- *        test's directory !
- */
-
 /* Include the monocore's IMPLEMENTATION */
 #include "../arch.oil"
 

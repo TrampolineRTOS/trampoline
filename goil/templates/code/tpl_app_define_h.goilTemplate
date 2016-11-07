@@ -41,6 +41,7 @@
 #define TARGET_BOARD                     "% !BOARD %"
 #define NUMBER_OF_CORES                  % !exists OS::NUMBER_OF_CORES default (1) %
 #define WITH_OS_EXTENDED                 % !yesNo(OS::STATUS == "EXTENDED") %
+#define WITH_ORTI                        % !yesNo(OS::WITHORTI) %
 #define WITH_STARTUP_HOOK                % !yesNo(OS::STARTUPHOOK) %
 #define WITH_SHUTDOWN_HOOK               % !yesNo(OS::SHUTDOWNHOOK) %
 #define WITH_ERROR_HOOK                  % !yesNo(OS::ERRORHOOK) %
@@ -289,6 +290,10 @@ if OS::STATUS == "EXTENDED" then%
 #define NUMBER_OF_OBJECTS                 % ![OBJECT length] %
 #define NUMBER_OF_TRANSACTIONS            % ![TRANSACTION length] %
 
+/*-----------------------------------------------------------------------------
+ *  Tick optimization
+ */
+#define TPL_OPTIMIZE_TICKS % !yesNo(exists OS::OPTIMIZETICKS default (false)) %
 %
 template if exists custom_app_define_h
 %

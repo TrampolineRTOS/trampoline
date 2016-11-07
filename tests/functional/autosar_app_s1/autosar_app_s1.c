@@ -33,7 +33,6 @@
  */
 
 #include "Os.h"
-#include "embUnit.h"
 
 TestRef AutosarAPPTest_seq1_t1_instance1(void);
 TestRef AutosarAPPTest_seq1_t1_instance2(void);
@@ -88,7 +87,7 @@ TASK(t1)
 		}
 		default:
 		{
-			stdimpl_print("instance error\n");
+			addFailure("instance error\n", __LINE__, __FILE__);
 			break;
 		}
 	}

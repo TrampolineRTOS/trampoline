@@ -33,7 +33,6 @@
  */
 
 #include "tpl_os.h"
-#include "embUnit.h"
 
 TestRef InterruptProcessingTest_seq1_t1_instance(void);
 TestRef InterruptProcessingTest_seq1_isr1_instance(void);
@@ -70,12 +69,12 @@ TASK(t1)
 	ShutdownOS(E_OK);
 }
 
-ISR(isr1)
+ISR(softwareInterruptHandler0)
 {
 	TestRunner_runTest(InterruptProcessingTest_seq1_isr1_instance());
 }
 
-ISR(isr2)
+ISR(softwareInterruptHandler1)
 {
 	
 	instance_isr2 ++;
@@ -138,7 +137,7 @@ ISR(isr2)
 		}
 		default:
 		{
-			stdimpl_print("Instance error \n");
+			addFailure("Instance error \n", __LINE__, __FILE__);
 			break;
 		}
 	}
@@ -147,7 +146,7 @@ ISR(isr2)
 	
 }
 
-ISR(isr3)
+ISR(softwareInterruptHandler2)
 {
 	TestRunner_runTest(InterruptProcessingTest_seq1_isr3_instance());
 }

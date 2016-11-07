@@ -34,6 +34,7 @@
 
 OIL_VERSION = "3.1" : "autosar_coreos_s3";
 
+#include <softwareIT.oil>
 #include <arch.oil>
 
 IMPLEMENTATION trampoline {
@@ -71,9 +72,8 @@ CPU test {
     SCHEDULE = FULL;
   };
 
-  ISR isr1 {
+  ISR softwareInterruptHandler0 {
     CATEGORY = 2;
-    SOURCE = SIGTERM;
     PRIORITY = 1;
   };
 };

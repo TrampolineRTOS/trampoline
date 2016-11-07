@@ -34,7 +34,6 @@
 
 /*Instance of callback*/
 
-#include "embUnit.h"
 #include "tpl_os.h"
 
 DeclareTask(t2);

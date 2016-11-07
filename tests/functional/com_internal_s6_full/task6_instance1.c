@@ -34,7 +34,6 @@
 
 /*Instance 1 of task t6*/
 
-#include "embUnit.h"
 #include "tpl_os.h"
 
 DeclareMessage(rm_maskednewequalsmaskedold);

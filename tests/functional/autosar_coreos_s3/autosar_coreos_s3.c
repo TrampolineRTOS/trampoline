@@ -33,7 +33,6 @@
  */
 
 #include "Os.h"
-#include "embUnit.h"
 
 TestRef AutosarCOREOSTest_seq3_t1_instance(void);
 TestRef AutosarCOREOSTest_seq3_isr1_instance(void);
@@ -64,7 +63,7 @@ void ErrorHook(void)
 		}
 		default:
 		{
-			stdimpl_print("instance error\n");
+			addFailure("instance error\n", __LINE__, __FILE__);
 			break;
 		}
 	}
@@ -82,9 +81,11 @@ TASK(t1)
 	ShutdownOS(E_OK);
 }
 
-ISR(isr1)
+ISR(softwareInterruptHandler0)
 {
 	TestRunner_runTest(AutosarCOREOSTest_seq3_isr1_instance());
 }
+UNUSED_ISR(softwareInterruptHandler1)
+UNUSED_ISR(softwareInterruptHandler2)
 
 /* End of file autosar_coreos_s3/autosar_alarm_s1.c */

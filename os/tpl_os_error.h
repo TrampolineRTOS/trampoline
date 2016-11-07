@@ -37,6 +37,24 @@
 #include "tpl_as_application.h"
 #endif
 
+#if WITH_ORTI == YES
+
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+# if NUMBER_OF_CORES > 1
+extern VAR(tpl_status, OS_VAR) tpl_last_error[NUMBER_OF_CORES];
+#define TPL_LAST_ERROR(core) tpl_last_error[core]
+# else
+extern VAR(tpl_status, OS_VAR) tpl_last_error;
+#define TPL_LAST_ERROR(core) tpl_last_error
+# endif
+
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+#endif
+
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 extern FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void);
@@ -1004,12 +1022,31 @@ tpl_service.parameters.id.spinlock_id = (spinlockid);
  * This maccro generates the code to call the error hook, when
  * an error occured, if the #WITH_ERROR_HOOK flag is defined.
  *
+ * It sets the "last_error" variable if the WITH_ORTI flag is defined
+ *
  * @param error the error code variable to check
  */
 #if WITH_ERROR_HOOK == YES
-#define PROCESS_ERROR(error)                    \
-    if ((error) != E_OK) { \
-        tpl_call_error_hook(error);             \
+#define PROCESS_ERROR_ERRHOOK(error) tpl_call_error_hook(error);
+#else
+#define PROCESS_ERROR_ERRHOOK(error)
+#endif
+
+#if WITH_ORTI == YES
+#define PROCESS_ERROR_ORTI(error) \
+  {                               \
+    GET_CURRENT_CORE_ID(core_id)  \
+    TPL_LAST_ERROR(core_id) = error;  \
+  }
+#else
+#define PROCESS_ERROR_ORTI(error)
+#endif
+
+#if (WITH_ERROR_HOOK == YES) || (WITH_ORTI == YES)
+#define PROCESS_ERROR(error)       \
+    if ((error) != E_OK) {         \
+      PROCESS_ERROR_ERRHOOK(error) \
+      PROCESS_ERROR_ORTI(error)    \
     }
 #else
 #define PROCESS_ERROR(error)

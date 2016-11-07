@@ -34,7 +34,6 @@
 
 /*Instance of comcallback routine*/
 
-#include "embUnit.h"
 #include "tpl_os.h"
 
 DeclareMessage(rm_comcallback);

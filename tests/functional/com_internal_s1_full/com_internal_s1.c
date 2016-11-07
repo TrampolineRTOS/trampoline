@@ -32,9 +32,7 @@
  * $URL$
  */
 
-#include "config.h" /*Display information in the right way (printf on UNIX...)*/
 #include "tpl_os.h"
-#include "embUnit.h"
 
 TestRef COMInternalTest_seq1_t1_instance(void);
 TestRef COMInternalTest_seq1_t2_instance(void);
@@ -78,7 +76,7 @@ void COMErrorHook(StatusType error){
 			TestRunner_runTest(COMInternalTest_seq1_comerror_instance5());
 			break;
 		default:
-			stdimpl_print("instance error\n");
+			addFailure("instance error\n", __LINE__, __FILE__);
 			break;
 	}
 	

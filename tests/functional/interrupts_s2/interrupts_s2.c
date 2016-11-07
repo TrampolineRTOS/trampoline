@@ -33,7 +33,6 @@
  */
 
 #include "tpl_os.h"
-#include "embUnit.h"
 
 TestRef InterruptProcessingTest_seq2_t1_instance(void);
 TestRef InterruptProcessingTest_seq2_t2_instance(void);
@@ -63,14 +62,15 @@ TASK(t2)
 	ShutdownOS(E_OK);
 }
 
-ISR(isr1)
+ISR(softwareInterruptHandler0)
 {
 	TestRunner_runTest(InterruptProcessingTest_seq2_isr1_instance());
 }
 
-ISR(isr2)
+ISR(softwareInterruptHandler1)
 {
 	TestRunner_runTest(InterruptProcessingTest_seq2_isr2_instance());
 }
+UNUSED_ISR(softwareInterruptHandler2)
 
 /* End of file interrupts_s2/interrupts_s2.c */

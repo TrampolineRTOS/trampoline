@@ -34,13 +34,11 @@
 
 /*Instance of task t1*/
 
-#include "embUnit.h"
 #include "tpl_os.h"
 
 DeclareTask(t2);
 DeclareTask(INVALID_TASK);
 
-void tpl_send_it1(void);
 
 /*test case:test the reaction of the system called with 
 an activation of a task*/
@@ -89,7 +87,7 @@ static void test_t1_instance(void)
 	result_inst_11 = ReleaseResource(RES_SCHEDULER);
 	SCHEDULING_CHECK_AND_EQUAL_INT(14,E_OK, result_inst_11);
 	
-	tpl_send_it1();
+	sendSoftwareIt(0, SOFT_IRQ0);
 	
 	SCHEDULING_CHECK_STEP(19);
 }

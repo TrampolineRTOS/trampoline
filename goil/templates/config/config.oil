@@ -157,6 +157,12 @@ IMPLEMENTATION trampoline_common {
   OS {
     /* Standard OIL attributes */
     ENUM [STANDARD, EXTENDED] STATUS;
+    BOOLEAN [
+      TRUE {
+        STRING FILE = "";
+      },
+      FALSE
+    ] WITHORTI = FALSE;
     BOOLEAN STARTUPHOOK = FALSE;
     BOOLEAN ERRORHOOK = FALSE;
     BOOLEAN SHUTDOWNHOOK = FALSE;

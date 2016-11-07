@@ -33,7 +33,6 @@
  */
 
 #include "Os.h"
-#include "embUnit.h"
 
 TestRef AutosarSCTest_seq1_t1_instance(void);
 TestRef AutosarSCTest_seq1_error_instance1(void);
@@ -63,7 +62,7 @@ void ErrorHook(void)
 		}
 		default:
 		{
-			stdimpl_print("instance error\n");
+			addFailure("instance error\n", __LINE__, __FILE__);
 			break;
 		}
 	}

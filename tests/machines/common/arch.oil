@@ -1,0 +1,72 @@
+/**
+ * @file arch.oil
+ *
+ * @section desc File description
+ *
+ * Trampoline Test Suite : Machine dependant oil configuration
+ *
+ * @section copyright Copyright
+ *
+ * Trampoline Test Suite
+ *
+ * Trampoline Test Suite is copyright (c) IRCCyN 2005-2007
+ * Trampoline Test Suite is protected by the French intellectual property law.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; version 2
+ * of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @section infos File informations
+ *
+ * $Date$
+ * $Rev$
+ * $Author$
+ * $URL$
+ */
+
+IMPLEMENTATION common
+{
+  TASK
+  {
+    UINT32 PRIORITY = 1;
+  };
+
+  ISR
+  {
+    UINT32 PRIORITY = 1;
+  };
+};
+
+CPU common
+{
+  OS commonOS {
+    BUILD = TRUE
+    {
+      LIBRARY = commonConfig;
+      LIBRARY = embUnit;
+    };
+  };
+
+  /* Lib paths are from the "TRAMPOLINE/machines" directory */
+  LIBRARY embUnit
+  {
+    PATH = "../tests/embUnit/";
+    CHEADER = "embUnit.h";
+  };
+  LIBRARY commonConfig
+  {
+    PATH = "../tests/machines/common";
+    CHEADER = "commonTestConfig.h";
+    CFILE = "commonTestConfig.c";
+  };
+};

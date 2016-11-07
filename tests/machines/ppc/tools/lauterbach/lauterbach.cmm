@@ -19,11 +19,16 @@
 ;  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 ;
 
-;set title
-TITLE "MPC5643L's test script launcher"
 ;Parameters are taken from the python script sendTest.py
 ;appPath contains the test directory
 ;exeName contains the name of the executable
+;ortiPath contains the path to the orti file
+
+;==============================================================================
+;       CONSTANTS DEFINITIONS
+
+;set title
+TITLE "MPC5643L's test script launcher"
 
 ;;set some constants
 &exePath="&appPath/&exeName"    ; Path to the executable
@@ -31,7 +36,6 @@ TITLE "MPC5643L's test script launcher"
 &retval="&appPath/retval"       ; File that'll contain the return value
 &srcDir="&appPath"                   ; Location of the .o files
 &libembSrcDir="&appPath/../../embUnit"
-
 
 ;==============================================================================
 ;       FLASH MEMORY PROGRAMMING
@@ -117,11 +121,79 @@ MMU.Set TLB1 0x1 0x0 0x0 0x0
 ;set debug mode to HLL debugging
 Mode.Hll
 
+;==============================================================================
+;       ORTI CONFIGURATION
+; ONLY IF YOU WANT TO DEBUG THINGS
+
+;; Monocore
+;; Go main, the core0's MMU has to be initialized before opening ORTI windows.
+;Core.select 0
+;go main
+;; Multicore
+;; Go main, the core0's MMU has to be initialized before opening ORTI windows.
+;Core.select 1
+;go main
+;
+;; Load ORTI File
+;Task.ORTI "&ortiPath"
+;
+;; Clear windows
+;WinCLEAR
+;
+;; Open some ORTI windows
+;WinPOS 0x0 0x0 0x75 0x1
+;Task.dos
+;
+;WinPOS 0x0 0x8 0x75 0x1
+;Task.dtask
+;
+;WinPOS 0x0 0x10 0x75 0x1
+;Task.d_vs_isr
+;
+;WinPOS 0x0 0x18 0x75 0x1
+;Task.dstack
+;
+;WinPOS 0x0 0x20 0x75 0x1
+;Task.dalarm
+;
+;WinPOS 0x0 0x28 0x75 0x1
+;Task.dresource
+;
+;WinPOS 0x0 0x30 0x75 0x1
+;Task.d_vs_counter
+;
+;WinPOS 0x0 0x38 0x75 0x1
+;Task.dcontext
+;
+;WinPOS 0x79 0x38 0x90 0x1
+;Data.View %Var test_number
+;
+;WinPOS 0x79 0x20 0x90 0x14
+;Task.stack
+
+;; Core0 Code
+;WinPOS 0x79 0x0 0x45 0x1a
+;List.auto /CORE 0
+;
+;; Core0 Registers
+;WinPOS 0xc2 0x0 0x4c 0x1c
+;Register.view /CORE 0
+
+;==============================================================================
+;       Set Breakpoints
+
 ;breakpoint at the end of the program
 break.set tpl_shutdown /Program
 ;breakpoint at the end of the print function
 break.set symbol.END(stdimpl_print)
+
+;==============================================================================
+;       Start test
+
 go.direct
+
+;==============================================================================
+;       Get output & exit return value
 
 OPEN #1 &retval /Create
 OPEN #2 &output /Create
@@ -135,7 +207,7 @@ WHILE &continue
   IF STATE.RUN()
   (
     ; Execution is still going on but the timeout has been reached
-    BREAK
+    RESET
     WRITE #1 "2"
     &continue=FALSE()
   )
@@ -161,8 +233,6 @@ WHILE &continue
 
 CLOSE #1
 CLOSE #2
-
-;tell the root test script the execution is done
 
 ENDDO
 

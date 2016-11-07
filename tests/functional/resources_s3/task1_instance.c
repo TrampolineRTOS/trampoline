@@ -34,7 +34,6 @@
 
 /*Instance of task t1*/
 
-#include "embUnit.h"
 #include "tpl_os.h"
 #include "config.h"
 

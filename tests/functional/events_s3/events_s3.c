@@ -33,7 +33,6 @@
  */
 
 #include "tpl_os.h"
-#include "embUnit.h"
 
 TestRef EventMechanismTest_seq3_t1_instance(void);
 TestRef EventMechanismTest_seq3_t2_instance(void);

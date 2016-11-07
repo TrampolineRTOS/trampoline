@@ -34,10 +34,9 @@
 
 /*Instance of task t1*/
 
-#include "embUnit.h"
 #include "Os.h"
 
-DeclareISR(isr1);
+DeclareISR(softwareInterruptHandler0);
 DeclareTask(t1);
 
 /*test case:test the reaction of the system called with 
@@ -49,7 +48,7 @@ static void test_isr1_instance(void)
 	
 	SCHEDULING_CHECK_INIT(2);
 	ISRType_inst_1 = GetISRID();
-	SCHEDULING_CHECK_AND_EQUAL_INT(2, isr1, ISRType_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(2, softwareInterruptHandler0, ISRType_inst_1);
 	
 	SCHEDULING_CHECK_INIT(3);
 	result_inst_1 = ActivateTask(t1);

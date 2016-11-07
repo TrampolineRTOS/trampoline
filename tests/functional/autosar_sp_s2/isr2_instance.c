@@ -35,7 +35,6 @@
 
 /*Instance of task isr1*/
 
-#include "embUnit.h"
 #include "Os.h"
 #include "tpl_as_isr.h"
 

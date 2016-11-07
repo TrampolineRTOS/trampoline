@@ -34,6 +34,7 @@
 
 OIL_VERSION = "2.5" : "hook_s4";
 
+#include <softwareIT.oil>
 #include <arch.oil>
 
 IMPLEMENTATION trampoline {
@@ -83,16 +84,14 @@ CPU test {
     SCHEDULE = NON;
   };
  
-  ISR isr1 {
+  ISR softwareInterruptHandler0 {
     CATEGORY = 2;
     PRIORITY = 1;
-    SOURCE = SIGTERM;
   };
 
-  ISR isr2 {
+  ISR softwareInterruptHandler1 {
     CATEGORY = 2;
     PRIORITY = 2;
-    SOURCE = SIGUSR2;
   };
 };
 

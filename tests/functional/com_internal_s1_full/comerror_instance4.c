@@ -34,7 +34,6 @@
 
 /*Instance 4 of com error*/
 
-#include "embUnit.h"
 #include "tpl_os.h"
 #include "tpl_com_error.h" /*for COMErrorGetServiceId()*/
 

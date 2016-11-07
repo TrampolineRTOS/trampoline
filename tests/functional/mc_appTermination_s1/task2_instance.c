@@ -34,7 +34,6 @@
 
 /*Instance of task t2*/
 
-#include "embUnit.h"
 #include "Os.h"
 
 DeclareSpinlock(spin0);

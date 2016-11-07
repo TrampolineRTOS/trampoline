@@ -33,7 +33,6 @@
  */
 
 #include "tpl_os.h"
-#include "embUnit.h"
 
 TestRef AlarmsTest_seq4_t1_instance(void);
 TestRef AlarmsTest_seq4_callback_instance1(void);
@@ -82,7 +81,7 @@ void CallBackC_callback(void)
 		}
 		default:
 		{
-			stdimpl_print("Instance error");
+			addFailure("Instance error", __LINE__, __FILE__);
 			break;
 		}
 	}

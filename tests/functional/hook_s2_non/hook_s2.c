@@ -33,7 +33,6 @@
  */
 
 #include "tpl_os.h"
-#include "embUnit.h"
 
 TestRef HookTest_seq2_error_instance1(void);
 TestRef HookTest_seq2_error_instance2(void);
@@ -103,7 +102,7 @@ void ErrorHook(void)
 		}
 		default:
 		{
-			stdimpl_print("Instance error");
+			addFailure("Instance error", __LINE__, __FILE__);
 			break;
 		}
 	}
@@ -138,7 +137,7 @@ void PreTaskHook(void)
 		}
 		default:
 		{
-			stdimpl_print("Instance error");
+			addFailure("Instance error", __LINE__, __FILE__);
 			break;
 		}
 	}
@@ -166,7 +165,7 @@ void PostTaskHook(void)
 		}
 		default:
 		{
-			stdimpl_print("Instance error");
+			addFailure("Instance error", __LINE__, __FILE__);
 			break;
 		}
 	}

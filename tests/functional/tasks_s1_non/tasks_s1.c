@@ -33,7 +33,6 @@
  */
 
 #include "tpl_os.h"
-#include "embUnit.h"
 
 TestRef TaskManagementTest_seq1_t1_instance(void);
 TestRef TaskManagementTest_seq1_t2_instance(void);
@@ -62,9 +61,11 @@ TASK(t2)
 	TestRunner_runTest(TaskManagementTest_seq1_t2_instance());
 }
 
-ISR(isr1)
+ISR(softwareInterruptHandler0)
 {
 	TestRunner_runTest(TaskManagementTest_seq1_isr1_instance());
 }
+UNUSED_ISR(softwareInterruptHandler1)
+UNUSED_ISR(softwareInterruptHandler2)
 
 /* End of file tasks_s1_non/tasks_s1.c */

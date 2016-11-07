@@ -35,7 +35,6 @@
 /*Instance 3 of task t1*/
 
 #include "tpl_os.h"
-#include "embUnit.h"
 
 /*test case:test the reaction of the system called with 
 an activation of a task*/

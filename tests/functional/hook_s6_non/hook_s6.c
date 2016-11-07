@@ -33,7 +33,6 @@
  */
 
 #include "tpl_os.h"
-#include "embUnit.h"
 
 TestRef HookTest_seq6_t1_instance(void);
 TestRef HookTest_seq6_isr1_instance(void);
@@ -88,15 +87,16 @@ TASK(t1)
 	TestRunner_runTest(HookTest_seq6_t1_instance());
 }
 
-ISR(isr1)
+ISR(softwareInterruptHandler0)
 {
 	TestRunner_runTest(HookTest_seq6_isr1_instance());
 }
 
-ISR(isr2)
+ISR(softwareInterruptHandler1)
 {
 	TestRunner_runTest(HookTest_seq6_isr2_instance());
 	ShutdownOS(E_OK);
 }
+UNUSED_ISR(softwareInterruptHandler2)
 
 /* End of file hook_s6_non/hook_s6.c */

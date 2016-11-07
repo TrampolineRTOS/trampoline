@@ -34,8 +34,6 @@
 
 
 #include "Os.h"
-#include "embUnit.h"
-#include "config.h" /*for stdimpl_print*/
 
 TestRef AutosarTPTest_seq9_t1_instance(void);
 TestRef AutosarTPTest_seq9_isr1_instance1(void);
@@ -63,7 +61,7 @@ void ShutdownHook(StatusType error)
 
 void ErrorHook(StatusType error)
 {
-  stdimpl_print("ErrorHook : Instance error\n");	
+  addFailure("ErrorHook : Instance error\n", __LINE__, __FILE__);	
 }
 
 
@@ -81,7 +79,7 @@ TASK(t1)
   ShutdownOS(E_OK);
 }
 
-ISR(isr1)
+ISR(softwareInterruptHandler0)
 {
   instance_isr1++;
 	switch (instance_isr1)
@@ -103,13 +101,13 @@ ISR(isr1)
 		}
 		default:
 		{
-			stdimpl_print("isr1 : Instance error\n");
+			addFailure("isr1 : Instance error\n", __LINE__, __FILE__);
 			break;
 		}
 	}
 }
 
-ISR(isr2)
+ISR(softwareInterruptHandler1)
 { 
   instance_isr2++;
 	switch (instance_isr2)
@@ -126,7 +124,7 @@ ISR(isr2)
 		}
 		default:
 		{
-			stdimpl_print("isr2 : Instance error\n");
+			addFailure("isr2 : Instance error\n", __LINE__, __FILE__);
 			break;
 		}
 	}

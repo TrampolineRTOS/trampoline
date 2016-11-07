@@ -35,11 +35,8 @@
 
 /*Instance 1 of task t1*/
 
-#include "embUnit.h"
 #include "Os.h"
 
-void tpl_send_it1(void);
-void tpl_send_it2(void);
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/
@@ -47,22 +44,22 @@ static void test_t1_instance(void)
 {
  
   SCHEDULING_CHECK_STEP(1);
-  tpl_send_it1(); /* Start inter-arrival time */ 
+  sendSoftwareIt(0, SOFT_IRQ0); /* Start inter-arrival time */ 
   
   SCHEDULING_CHECK_STEP(3);
   /* Wait isr1 Time Frame elapsed */
-  tpl_send_it1();
+  sendSoftwareIt(0, SOFT_IRQ0);
   
   SCHEDULING_CHECK_STEP(5);
   /* Don't Wait isr1 Time Frame elapsed */
-  tpl_send_it1(); /* --> ProtectionHook */
+  sendSoftwareIt(0, SOFT_IRQ0); /* --> ProtectionHook */
   
   SCHEDULING_CHECK_STEP(7);
   /* Wait isr1 Time Frame elapsed */
-  tpl_send_it1();
+  sendSoftwareIt(0, SOFT_IRQ0);
   
   SCHEDULING_CHECK_STEP(11);
-  tpl_send_it2(); /* if ISR2 Time Frame are started from the activation point, this should not result in a ProtectionHook */
+  sendSoftwareIt(0, SOFT_IRQ1); /* if ISR2 Time Frame are started from the activation point, this should not result in a ProtectionHook */
   
   SCHEDULING_CHECK_STEP(13);
 

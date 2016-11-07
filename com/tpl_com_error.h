@@ -174,10 +174,27 @@ extern tpl_com_service_call_descriptor tpl_com_service;
  * code at all if the flag is off.
  */
 #if WITH_COM_ERROR_HOOK == YES
+#define PROCESS_COM_ERROR_ERRHOOK(error) tpl_call_com_error_hook(error);
+#else
+#define PROCESS_COM_ERROR_ERRHOOK(error)
+#endif
+
+#if WITH_ORTI == YES
+#define PROCESS_COM_ERROR_ORTI(error) \
+  {                                   \
+    GET_CURRENT_CORE_ID(core_id)      \
+    TPL_LAST_ERROR(core_id) = error;  \
+  }
+#else
+#define PROCESS_COM_ERROR_ORTI(error)
+#endif
+
+#if (WITH_COM_ERROR_HOOK == YES) || (WITH_ORTI == YES)
 #define PROCESS_COM_ERROR(error)        \
-    if (error != E_OK) {            \
-        tpl_call_com_error_hook(error); \
-	}                               
+  if (error != E_OK) {                  \
+      PROCESS_COM_ERROR_ERRHOOK(error)  \
+      PROCESS_COM_ERROR_ORTI(error)     \
+  }
 #else
 #define PROCESS_COM_ERROR(error)
 #endif

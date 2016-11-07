@@ -33,7 +33,6 @@
  */
 
 #include "tpl_os.h"
-#include "embUnit.h"
 
 TestRef AlarmsTest_seq2_t1_instance(void);
 TestRef AlarmsTest_seq2_t2_instance1(void);
@@ -82,7 +81,7 @@ TASK(t2)
 		}
 		default:
 		{
-			stdimpl_print("Instance error");
+			addFailure("Instance error", __LINE__, __FILE__);
 			break;
 		}
 	}

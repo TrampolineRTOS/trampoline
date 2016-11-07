@@ -29,32 +29,64 @@
 # further processing because existence test is not necessary
 
 let INTERCORE_INTERRUPT := exists INTERCORE_INTERRUPT default (@( ))
+
+let pit_channel_map := @[ ]
+let pit_channel_map["pit_ch0"] := "TPL_PIT_0"
+let pit_channel_map["pit_ch1"] := "TPL_PIT_1"
+let pit_channel_map["pit_ch2"] := "TPL_PIT_2"
+let pit_channel_map["pit_ch3"] := "TPL_PIT_3"
+
+# OPTIMTICKS GLOBAL DEFINITIONS
+# A Core has a its slave source enabled only if it has at least one hardware
+# counter on the master source.
+let optimticks_slavesources := @[ ]
+let optimticks_optimizedsource := ""
+if exists OS::OPTIMIZETICKS default(false) then
+  let optimticks_optimizedsource := OS::OPTIMIZETICKS_S::SHAREDSOURCE
+  foreach slavesource in OS::OPTIMIZETICKS_S::SLAVESOURCE do
+    let core_counters := getCoreAttributes(OS, APPLICATION, slavesource::CORE, HARDWARECOUNTERS, "COUNTER")
+    foreach counter in core_counters do
+      if counter::SOURCE == optimticks_optimizedsource then
+        let optimticks_slavesources[[slavesource::CORE string]] := slavesource::SOURCE
+      end if
+    end foreach
+  end foreach
+end if
+let optimticks_numberofcores := [optimticks_slavesources length]
+
 %
 /*=============================================================================
  * External interrupts configuration structures
  */
 %
-let ISR_MAX_PRIO := 15
-let TICK_PRIO := 0
-let WDT_PRIO := 0
+let ISR_MAX_PRIO   := 15
+let SHAREDSOURCE_PRIO   := 0
+let TICK_PRIO      := 0
+let WDT_PRIO       := 0
 let INTERCORE_PRIO := 0
 
 # Timing protection has highest priority
 if OS::TIMINGPROTECTION then
-  let WDT_PRIO := ISR_MAX_PRIO
+  let WDT_PRIO     := ISR_MAX_PRIO
   let ISR_MAX_PRIO := ISR_MAX_PRIO - 1
 end if
 
 # Tick timers
 if [COUNTERS length] > 0 then
-  let TICK_PRIO := ISR_MAX_PRIO
+  let TICK_PRIO    := ISR_MAX_PRIO
   let ISR_MAX_PRIO := ISR_MAX_PRIO - 1
+end if
+
+# Ticks optimization
+if exists OS::OPTIMIZETICKS default (false) then
+  let SHAREDSOURCE_PRIO := ISR_MAX_PRIO
+  let ISR_MAX_PRIO      := ISR_MAX_PRIO - 1
 end if
 
 # Intercore
 if OS::NUMBER_OF_CORES > 1 then
   let INTERCORE_PRIO := ISR_MAX_PRIO
-  let ISR_MAX_PRIO := ISR_MAX_PRIO - 1
+  let ISR_MAX_PRIO   := ISR_MAX_PRIO - 1
 end if
 
 # ISRS will take the remaining priorities
@@ -62,6 +94,7 @@ end if
 %
 /*-----------------------------------------------------------------------------
  *  IRQ priorities : - Ticks                        : % !TICK_PRIO %
+ *                   - Sharedsource (Optimizeticks) : % !SHAREDSOURCE_PRIO %
  *                   - Watchdog                     : % !WDT_PRIO %
  *                   - Intercore                    : % !INTERCORE_PRIO %
  *                   - ISRS                         : [1, % !ISR_MAX_PRIO %]
@@ -99,18 +132,14 @@ loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
 %
 # Get the maximum priority of used IRQs
 let max_irq_prio := @( )
-foreach app in APPLICATION do
-  if app::CORE == core_id then
-    foreach isr_app in exists app::ISR default (@( )) do
-      let isr := isr_map[isr_app::VALUE]
-      if exists max_irq_prio[isr::SOURCE] then
-        if max_irq_prio[isr::SOURCE]::PRIORITY < isr::PRIORITY then
-          let max_irq_prio[isr::SOURCE] := isr
-        end if
-      else
-        let max_irq_prio[isr::SOURCE] := isr
-      end if
-    end foreach
+let core_isrs := getCoreAttributes(OS, APPLICATIONS, core_id, ISRS, "ISR")
+foreach isr in core_isrs do
+  if exists max_irq_prio[isr::SOURCE] then
+    if max_irq_prio[isr::SOURCE]::PRIORITY < isr::PRIORITY then
+      let max_irq_prio[isr::SOURCE] := isr
+    end if
+  else
+    let max_irq_prio[isr::SOURCE] := isr
   end if
 end foreach
 
@@ -147,17 +176,12 @@ end foreach
 %
   let counter_map   := mapof COUNTER by NAME
 
-  foreach application in APPLICATION do
-    if application::CORE == core_id then
-      foreach counter_name in exists application::COUNTER default (@( )) do
-        let counter := counter_map[counter_name::VALUE]
-        if counter::SOURCE != "decrementer"
-         & counter::TYPE == "HARDWARE" then
-          let interrupt := interrupt_map[counter::SOURCE]
+  let core_counters := getCoreAttributes(OS, APPLICATIONS, core_id, HARDWARECOUNTERS, "COUNTER")
+  foreach counter in core_counters do
+    if counter::SOURCE != "decrementer" then
+      let interrupt := interrupt_map[counter::SOURCE]
 %  TPL_INTC(%!core_id%).PSR[% !interrupt::ID %] = % !TICK_PRIO %; /* % !counter::NAME % */
 %
-        end if
-      end foreach
     end if
   end foreach
 %
@@ -172,26 +196,202 @@ end foreach
 %
     end if
   end foreach
+
+  if exists optimticks_slavesources[[core_id string]] then
+    let interrupt := interrupt_map[optimticks_slavesources[[core_id string]]]
+%
+   /* Optimize_ticks
+    *
+    *
+    */
+   TPL_INTC(%!core_id%).PSR[% !interrupt::ID %] = % !SHAREDSOURCE_PRIO %;
+%
+  end if
 end loop
 %
+
 }
+%
+
+###############################################################################
+#   Optimizeticks -- tpl_enable_sharedsource
+#
+# This function is called when a core's timeobj structure has been changed to
+# stop ignoring the sharedcounter's interrupts.
+#
+
+if exists OS::OPTIMIZETICKS default(false) then
+  let sharedcounter := OS::OPTIMIZETICKS_S::SHAREDSOURCE
+%
+FUNC(void, OS_CODE) tpl_enable_sharedsource(VAR(uint16, OS_APPL_DATA) core_id)
+{
+  PIT_FR(% !pit_channel_map[sharedcounter] %) = PIT_FR_TIF;
+  TPL_INTC(core_id).PSR[% !interrupt_map[sharedcounter]::ID %] = % !TICK_PRIO %; /* shared counter */
+}
+%
+
+###############################################################################
+#   Optimizeticks -- tpl_update_counters
+#
+# Different cases to enter this function :
+#
+# Master   | Slave channel's | Slave channel | Cause                   | Elapsed ticks
+# Enabled  | Interrupt flag  | enabled       |                         |
+# ========================================================================================
+# Enabled  | Disabled        | DontCare      | Multiple call of this   | 0
+#          |                 |               | function during the     |
+#          |                 |               | same tick               |
+# ----------------------------------------------------------------------------------------
+# Enabled  | Enabled         | DontCare      | Call by the service     | Slave's channel's
+#          |                 |               | between the slave tick  | max ticks
+#          |                 |               | and the master tick     |
+# ----------------------------------------------------------------------------------------
+# Disabled | Disabled        | Disabled      | master counter has been | 1
+#          |                 |               | unmasked by a service   |
+#          |                 |               | call or it is the first |
+#          |                 |               | tick of the OS          |
+# ----------------------------------------------------------------------------------------
+# Disabled | Disabled        | Enabled       | timeobj struct modified | Slave's channel's
+#          |                 |               | by a service call.      | current elapsed
+#          |                 |               |                         | ticks
+# ----------------------------------------------------------------------------------------
+# Disabled | Enabled         | Disabled      | Slave channel's handler | Slave's channel
+#          |                 |               | has been executed       | max ticks + 1
+# ----------------------------------------------------------------------------------------
+# Disabled | Enabled         | Enabled       | timeobj struct modified | Slave's channel
+#          |                 |               | by a service call. The  | max ticks
+#          |                 |               | slave source ticked     |
+#          |                 |               | during the service call |
+#          |                 |               | (extremely rare)        |
+# ----------------------------------------------------------------------------------------
 
 %
+/* tpl_update_counters
+ *
+ * This function is called eiter by the handlers or when any timeobj chainlist
+ * has been modified by a service call (SuspendAlarm, ...).
+ *
+ * It updates the value of the counters with the current time using the core's
+ * slave channels and disables the slave channel.
+ *
+ */
+%
+
+  loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+    let interrupt_map := mapof INTERRUPT by NAME
+    let mastersource := OS::OPTIMIZETICKS_S::SHAREDSOURCE
+    let frequency := OS::OPTIMIZETICKS_S::FREQUENCY
+    let pit_channel_map := @[ ]
+    let pit_channel_map["pit_ch0"] := "TPL_PIT_0"
+    let pit_channel_map["pit_ch1"] := "TPL_PIT_1"
+    let pit_channel_map["pit_ch2"] := "TPL_PIT_2"
+    let pit_channel_map["pit_ch3"] := "TPL_PIT_3"
+    let slave_source := ""
+    if exists optimticks_slavesources[[core_id string]] then
+     let slave_source := pit_channel_map[optimticks_slavesources[[core_id string]]]
+    end if
+
+    if slave_source != "" then
+      if OS::NUMBER_OF_CORES > 1 then
+%
+STATIC FUNC(void, OS_CODE) tpl_update_counters_core% !core_id %()%
+      else
+%
+FUNC(void, OS_CODE) tpl_update_counters(VAR(uint16, OS_APPL_DATA) core_id)%
+      end if%
+{
+  VAR(tpl_bool, AUTOMATIC) slave_enabled = PIT_CR(% !slave_source %);
+  VAR(tpl_bool, AUTOMATIC) master_enabled = TPL_INTC(% !core_id %).PSR[% !interrupt_map[mastersource]::ID %] != 0;
+  VAR(tpl_bool, AUTOMATIC) slave_it_flag;
+  VAR(tpl_tick, AUTOMATIC) elapsed_ticks = 0;
+
+  /* Disable slavesource before reading any value from the source's decrementer
+   * registers. */
+  PIT_CR(% !slave_source %) = 0;
+  slave_it_flag = PIT_FR(% !slave_source %);
+
+  if(master_enabled && !slave_it_flag )
+  {
+    return; /* elapsed_ticks = 0 */
+  }
+  else if (  (master_enabled && slave_it_flag)
+          || (slave_it_flag && slave_enabled))
+  {
+    /* A service call want to change the order of a counter's timeobjs and
+     * the slave counter has ticked during the service call.
+     */
+    elapsed_ticks = PIT_LVR(% !slave_source %) / % !frequency %;
+    /* Ack interrupt */
+    PIT_FR(% !slave_source %) = PIT_FR_TIF;
+  }
+  else if(!slave_it_flag && !slave_enabled)
+  {
+    /* Master's handler called after a service call or first os's tick. */
+    elapsed_ticks = 1; /* FIXME : Not only coming from service calls ! */
+  }
+  else if(!slave_it_flag && slave_enabled)
+  {
+    /* A service call want to change the order of a counter's timeobjs */
+    elapsed_ticks = (PIT_LVR(% !slave_source %) - PIT_CVR(% !slave_source %)) / % !frequency %;
+  }
+  else if(slave_it_flag && !slave_enabled)
+  {
+    /* Master's handler called after the slave's handler */
+    elapsed_ticks = (PIT_LVR(% !slave_source %) / % !frequency %) + 1;
+    /* Ack interrupt */
+    PIT_FR(% !slave_source %) = PIT_FR_TIF;
+  }
+  else
+  {
+  }
+
+  if(elapsed_ticks > 0)
+  {
+  /* Increment counters. */%
+    let core_counters := getCoreAttributes(OS, APPLICATION, core_id, HARDWARECOUNTERS, "COUNTER")
+    foreach counter in core_counters do
+      if counter::SOURCE == mastersource then%
+    tpl_increment_counter(&% !counter::NAME %_counter_desc, elapsed_ticks - 1);
+    tpl_counter_tick(&% !counter::NAME %_counter_desc);%
+      end if
+    end foreach%
+  }
+}
+%
+    end if
+  end loop
+
+  if OS::NUMBER_OF_CORES > 1 then
+%
+FUNC(void, OS_CODE) tpl_update_counters(VAR(uint16, OS_APPL_DATA) core_id)
+{%
+    loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+      if exists optimticks_slavesources[[core_id string]] then
+%
+  if(core_id == % !core_id %)
+  {
+    tpl_update_counters_core% !core_id %();
+  }%
+      end if
+    end loop
+%
+}
+%
+  end if
+end if
+
 ###############################################################################
 #   tpl_load_pits
 #
 
-let channel_map := @( )
-let channel_map["pit_ch0"] := "TPL_PIT_0"
-let channel_map["pit_ch1"] := "TPL_PIT_1"
-let channel_map["pit_ch2"] := "TPL_PIT_2"
-let channel_map["pit_ch3"] := "TPL_PIT_3"
-
 # Get a list of used pit channels (with no duplicates)
 let used_pit_channels := @( )
+
 foreach counter in HARDWARECOUNTERS do
-  if counter::SOURCE != "decrementer" then
-    let used_pit_channels[counter::SOURCE] := counter
+  if exists pit_channel_map[counter::SOURCE] then
+    let pit_struct::FREQUENCY := counter::FREQUENCY
+    let pit_struct::SOURCE    := counter::SOURCE
+    let used_pit_channels[pit_struct::SOURCE] := pit_struct
   end if
 end foreach
 
@@ -203,18 +403,15 @@ if [used_pit_channels length] > 0 then
  * start the channel
  */
 FUNC(void, OS_CODE) tpl_load_pits(void)
-{
-%
-foreach counter in used_pit_channels do
-  let channel := channel_map[counter::SOURCE]
-%  /* Counter % !counter::SOURCE % */
-  PIT_LVR(% !channel %) = % !counter::FREQUENCY %;
+{%
+foreach pit_channel in used_pit_channels do
+  let channel := pit_channel_map[pit_channel::SOURCE]%
+  /* Source % !pit_channel::SOURCE % */
+  PIT_LVR(% !channel %) = % !pit_channel::FREQUENCY %;
   PIT_FR(% !channel %) = PIT_FR_TIF;
   PIT_CR(% !channel %) = PIT_CR_TEN | PIT_CR_TIE;
-
 %
-end foreach
-%
+end foreach%
 }
 %
 end if
@@ -226,59 +423,66 @@ end if
 let counter_map   := mapof COUNTER by NAME
 let interrupt_map := mapof INTERRUPT by NAME
 
-let channel_map := @( )
-let channel_map["pit_ch0"] := "TPL_PIT_0"
-let channel_map["pit_ch1"] := "TPL_PIT_1"
-let channel_map["pit_ch2"] := "TPL_PIT_2"
-let channel_map["pit_ch3"] := "TPL_PIT_3"
-
 loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
   let used_interrupts := @( )
-  foreach application in APPLICATION do
-    if application::CORE == core_id then
-      foreach counter_name in exists application::COUNTER default (@( )) do
-        let counter := counter_map[counter_name::VALUE]
-        if counter::SOURCE != "decrementer"
-         & counter::TYPE == "HARDWARE" then
-          let interrupt := interrupt_map[counter::SOURCE]
-          let used_interrupts[counter::SOURCE] := interrupt
-        end if
-      end foreach
+  let core_counters := getCoreAttributes(OS, APPLICATIONS, core_id, HARDWARECOUNTERS, "COUNTER")
+  foreach counter in core_counters do
+    if counter::SOURCE != "decrementer" then
+      let interrupt := interrupt_map[counter::SOURCE]
+      let used_interrupts[counter::SOURCE] := interrupt
     end if
   end foreach
 
+  let slave_source := ""
+  if exists optimticks_slavesources[[core_id string]] then
+    let slave_source := optimticks_slavesources[[core_id string]]
+    let used_interrupts[slave_source] := interrupt_map[slave_source]
+  end if
+
   foreach interrupt in used_interrupts do
     if OS::NUMBER_OF_CORES > 1 then
-%FUNC(tpl_bool, OS_CODE) tpl_tick_handler_% !interrupt::NAME%_% !core_id %(void)
-{
-  /* FIXME : This date counter works only if there is one hardware counter per
-   *         core.
-   */
-  GET_CURRENT_DATE(%!core_id%) = GET_CURRENT_DATE(%!core_id%) + 1;
-  /* Clear interrupt flag */
-  PIT_FR(% !channel_map[interrupt::NAME] %) = PIT_FR_TIF;
-  tpl_call_counter_tick_% !interrupt::NAME %_% !core_id %();
-
-  /* return true to restore cpu priority */
-  return TRUE;
-}
 %
+FUNC(tpl_bool, OS_CODE) tpl_tick_handler_% !interrupt::NAME%_% !core_id %(void)
+{%
     else
-%FUNC(tpl_bool, OS_CODE) tpl_tick_handler_% !interrupt::NAME%(void)
-{
+%
+FUNC(tpl_bool, OS_CODE) tpl_tick_handler_% !interrupt::NAME%(void)
+{%
+    end if%
   /* FIXME : This date counter works only if there is one hardware counter per
    *         core.
    */
   GET_CURRENT_DATE(%!core_id%) = GET_CURRENT_DATE(%!core_id%) + 1;
-  /* Clear interrupt flag */
-  PIT_FR(% !channel_map[interrupt::NAME] %) = PIT_FR_TIF;
-  tpl_call_counter_tick_% !interrupt::NAME %();
+
+%
+  if exists pit_channel_map[interrupt::NAME] then
+    if slave_source != interrupt::NAME then
+%  /* Clear interrupt flag */
+  PIT_FR(% !pit_channel_map[interrupt::NAME] %) = PIT_FR_TIF;%
+    else
+%  /* Optimizeticks : Disable channel source */
+  PIT_CR(% !pit_channel_map[interrupt::NAME] %) = 0;%
+    end if
+  else
+    warning interrupt::NAME : "Please add the register to clear in case of "
+                          + " interrupt from source " + [interrupt::ID string]%
+  /* TODO : The register to be cleared for a % !interrupt::NAME % interrupt is
+   *        unknown.
+   */%
+  end if
+
+  if slave_source == interrupt::NAME then%
+  /* This source has to enable the optimized one */
+  tpl_enable_sharedsource(%!core_id%);%
+  else%
+  /* Call counter tick */
+  tpl_call_counter_tick_% !interrupt::NAME %_% !core_id %();%
+  end if%
 
   /* return true to restore cpu priority */
   return TRUE;
 }
 %
-    end if
   end foreach
 end loop
 
@@ -302,15 +506,7 @@ FUNC(tpl_bool, OS_CODE) tpl_isr_handler_% !isr::NAME %(void) {%
   if interrupt_map[isr::SOURCE]::TYPE == "SOFTWARE" then%
   /* Ack the software interruption */
 %
-    let isr_core := 0
-    foreach application in APPLICATION do
-      foreach app_isr in exists application::ISR default (@( )) do
-        if app_isr::VALUE == isr::NAME then
-          let isr_core := application::CORE
-        end if
-      end foreach
-    end foreach
-
+    let isr_core := getOwnerCore(OS, APPLICATIONS, "ISR", isr::NAME)
 %  TPL_INTC(% !isr_core %).SSCIR[% !interrupt_map[isr::SOURCE]::ID %] = INTC_SSCIR_CLR;
 %
   end if

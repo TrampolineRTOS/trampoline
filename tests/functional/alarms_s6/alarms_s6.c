@@ -32,9 +32,7 @@
  * $URL$
  */
 
-#include "config.h" /*Display information in the right way (printf on UNIX...)*/
 #include "tpl_os.h"
-#include "embUnit.h"
 
 int instance_t1 = 0;
 
@@ -78,7 +76,7 @@ TASK(t2)
 		}
 		default:
 		{
-			stdimpl_print("Instance error \n");
+			addFailure("Instance error \n", __LINE__, __FILE__);
 			break;
 		}
 	}

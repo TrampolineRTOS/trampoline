@@ -33,7 +33,6 @@
  */
 
 #include "tpl_os.h"
-#include "embUnit.h"
 
 TestRef ResourceManagementTest_seq5_t1_instance(void);
 TestRef ResourceManagementTest_seq5_isr1_instance(void);
@@ -58,17 +57,17 @@ TASK(t1)
 	ShutdownOS(E_OK);
 }
 
-ISR(isr1)
+ISR(softwareInterruptHandler0)
 {
 	TestRunner_runTest(ResourceManagementTest_seq5_isr1_instance());
 }
 
-ISR(isr2)
+ISR(softwareInterruptHandler1)
 {
 	TestRunner_runTest(ResourceManagementTest_seq5_isr2_instance());
 }
 
-ISR(isr3)
+ISR(softwareInterruptHandler2)
 {
 	TestRunner_runTest(ResourceManagementTest_seq5_isr3_instance());
 }

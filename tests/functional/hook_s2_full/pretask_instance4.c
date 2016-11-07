@@ -34,7 +34,6 @@
 
 /*Instance 4 of pretask hook routine*/
 
-#include "embUnit.h"
 #include "tpl_os.h"
 
 DeclareTask(t2);

@@ -34,7 +34,6 @@
 
 /*Instance 4 of error*/
 
-#include "embUnit.h"
 #include "Os.h"
 
 DeclareCounter(Software_Counter);

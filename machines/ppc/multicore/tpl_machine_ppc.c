@@ -31,37 +31,11 @@
 #include "tpl_os.h"
 #include "tpl_app_define.h"
 #include "tpl_timers.h"
-#if WITH_ORTI == YES
-# include "tpl_orti.h"
-#endif
 #if WITH_MULTICORE == YES
 # include "tpl_os_multicore_macros.h"
 #endif
 #include "tpl_app_custom_types.h"
 #include "tpl_registers.h"
-
-/*****************************************************************************/
-/* VERSION CHECKING                                                          */
-/*****************************************************************************/
-#define OS_C_FILE_MAJOR_VERSION 1
-#define OS_C_FILE_MINOR_VERSION 0
-
-#if ((OS_SW_MAJOR_VERSION != OS_C_FILE_MAJOR_VERSION)   \
-     || (OS_SW_MINOR_VERSION != OS_C_FILE_MINOR_VERSION))
-#error "Os.h et Os.c files do not have the same version"
-#endif
-
-//#if ((OS_SW_MAJOR_VERSION != OS_CFG_H_FILE_MAJOR_VERSION)       \
-//     || (OS_SW_MINOR_VERSION != OS_CFG_H_FILE_MINOR_VERSION))
-//#error "Os.h et Os_Cfg.h files do not have the same version"
-//#endif
-
-/* Autosar version check between Os.h and configuration files */
-//#if ((OS_AR_RELEASE_MAJOR_VERSION != OS_CFG_H_FILE_AR_RELEASE_MAJOR_VERSION) \
-//     || (OS_AR_RELEASE_MINOR_VERSION != OS_CFG_H_FILE_AR_RELEASE_MINOR_VERSION) \
-//     || (OS_AR_RELEASE_REVISION_VERSION != OS_CFG_H_FILE_AR_RELEASE_REVISION_VERSION))
-//#error "Os.h and Os_Cfg.h files do not have the same AUTOSAR release version"
-//#endif
 
 #define OS_START_SEC_VAR_32BIT
 #include "tpl_memmap.h"
@@ -184,9 +158,10 @@ FUNC(tpl_bool, OS_CODE) tpl_check_stack_pointer(
     return ret;
 }
 
-// FIXME : The file os/tpl_machine_interface.h must be updated with
-//         using stack as an argument instead of proc_id, as it is
-//         written in autosar/tpl_as_stack_monitor.c
+/* FIXME : The file os/tpl_machine_interface.h must be updated with
+ *         using stack as an argument instead of proc_id, as it is
+ *         written in autosar/tpl_as_stack_monitor.c
+ */
 #if 0
 /**
  * tpl_check_stack_footprint checks the footprint at the bottom of
@@ -215,8 +190,7 @@ FUNC(tpl_bool, OS_CODE) tpl_check_stack_footprint(
 
     return ret;
 }
-#endif
-
+#else
 FUNC(uint8, OS_CODE) tpl_check_stack_footprint(
   CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
@@ -237,10 +211,8 @@ FUNC(uint8, OS_CODE) tpl_check_stack_footprint(
 
     return ret;
 }
-
+#endif
 #endif /* WITH_STACK_MONITORING */
-
-
 
 #if WITH_ORTI == YES
 /**
@@ -250,6 +222,7 @@ FUNC(uint8, OS_CODE) tpl_check_stack_footprint(
  */
 FUNC(void, OS_CODE) tpl_fill_stack_pattern(void)
 {
+  GET_CURRENT_CORE_ID(core_id)
   P2VAR(uint32, AUTOMATIC, OS_VAR) addr;
   P2VAR(uint8, AUTOMATIC, OS_VAR) stack_top;
   P2VAR(uint8, AUTOMATIC, OS_VAR) stack_bottom;
@@ -257,56 +230,66 @@ FUNC(void, OS_CODE) tpl_fill_stack_pattern(void)
 
 
 #if TASK_COUNT > 0
-  for (i = 0; i < TASK_COUNT; i++)
-  {
-    /*
-     * MISRA RULE 11.4 VIOLATION: casting from uint32* to uint8*,
-     * but that is the expected behavior, we want to access per byte the stack
-     * MISRA RULE 17.4 VIOLATION: performing pointer arithmetic needed to compute stack address
-     */
-    stack_top = (uint8*)((tpl_stat_proc_table[i]->stack.stack_zone));
-    stack_bottom = stack_top + (tpl_stat_proc_table[i]->stack.stack_size);
-
-    for(addr=(uint32*)stack_top; addr < (uint32*)stack_bottom; addr++)
+for (i = 0; i < TASK_COUNT; i++) {
+# if NUMBER_OF_CORES > 1
+    /* In multicore, we must check if the task belongs to the core */
+    if (tpl_stat_proc_table[i]->core_id == core_id)
+# endif
     {
-      *addr = TPL_FULL_STACK_PATTERN;
-    }
+      /*
+       * MISRA RULE 11.4 VIOLATION: casting from uint32* to uint8*, but that is
+       * the expected behavior, we want to access per byte the stack
+       * MISRA RULE 17.4 VIOLATION: performing pointer arithmetic needed to
+       * compute stack address
+       */
+      stack_top = (uint8*)((tpl_stat_proc_table[i]->stack.stack_zone));
+      stack_bottom = stack_top + (tpl_stat_proc_table[i]->stack.stack_size);
 
+      for(addr=(uint32*)stack_top; addr < (uint32*)stack_bottom; addr++)
+      {
+        *addr = TPL_FULL_STACK_PATTERN;
+      }
+    }
   }
 #endif
 
 #if ISR_COUNT > 0
   for (i = TASK_COUNT; i < TASK_COUNT + ISR_COUNT; i++)
   {
-    /*
-     * MISRA RULE 11.4 VIOLATION: casting from uint32* to uint8*,
-     * but that is the expected behavior, we want to access per byte the stack
-     */
-    stack_top = (uint8*)((tpl_stat_proc_table[i]->stack.stack_zone));
-    stack_bottom = stack_top + tpl_stat_proc_table[i]->stack.stack_size;
-
-    for(addr=(uint32*)stack_top; addr < (uint32*)stack_bottom; addr++)
+# if NUMBER_OF_CORES > 1
+    /* In multicore, we must check if the task belongs to the core */
+    if (tpl_stat_proc_table[i]->core_id == core_id)
+# endif
     {
-      *addr = TPL_FULL_STACK_PATTERN;
-    }
+      /*
+       * MISRA RULE 11.4 VIOLATION: casting from uint32* to uint8*, but that is
+       * the expected behavior, we want to access per byte the stack
+       */
+      stack_top = (uint8*)((tpl_stat_proc_table[i]->stack.stack_zone));
+      stack_bottom = stack_top + tpl_stat_proc_table[i]->stack.stack_size;
 
+      for(addr=(uint32*)stack_top; addr < (uint32*)stack_bottom; addr++)
+      {
+        *addr = TPL_FULL_STACK_PATTERN;
+      }
+    }
   }
 #endif
 
   /* fill system stack */
   /*
-   * MISRA RULE 11.4 VIOLATION: casting from uint32* to uint8*,
-   * but that is the expected behavior, we want to access per byte the stack
-   * MISRA RULE 17.4 VIOLATION: performing pointer arithmetic needed to compute stack address
+   * MISRA RULE 11.4 VIOLATION: casting from uint32* to uint8*, but that is the
+   * expected behavior, we want to access per byte the stack
+   * MISRA RULE 17.4 VIOLATION: performing pointer arithmetic needed to compute
+   * stack address
    */
-  stack_top = (uint8*)(tpl_orti_system_stack_top);
-  stack_bottom = (uint8*)(tpl_orti_system_stack_bottom);
+  stack_top = (uint8*)(GET_KERNEL_STACK(core_id));
+  stack_bottom = (uint8*)(GET_KERNEL_STACK_BOTTOM(core_id));
 
   for(addr=(uint32*)stack_top; addr < (uint32*)stack_bottom; addr++)
   {
     *addr = TPL_FULL_STACK_PATTERN;
   }
-
 
 }
 #endif
@@ -517,8 +500,6 @@ STATIC FUNC(void, OS_CODE) tpl_get_spin_lock(
     TPL_SEMA4(0).GATE[lock] = core_lock;
     current_value = TPL_SEMA4(0).GATE[lock];
   } while(current_value != core_lock);
-
-
 }
 
 

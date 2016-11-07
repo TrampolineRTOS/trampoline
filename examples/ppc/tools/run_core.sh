@@ -5,6 +5,7 @@
 
 # Reset shell script invocation counter
 OPTIND=1
+TIMEOUT_EXIT_FAILURE=124
 
 print_help() {
     echo "Usage : $0 [ARG]"
@@ -36,8 +37,13 @@ remote_compile() {
     echo "Syncing sources"
     rsync -avz --delete $LOCAL_TRAMPOLINE/ $RSYNC_EXCLUDE $SSH_SERVER:$REMOTE_TRAMPOLINE
     echo "Compiling on remote server"
-    ssh $SSH_SERVER "cd $REMOTE_EXAMPLE_DIR;
-                     $BUILD_TIMEOUT ./build.py;"
+    retval=$TIMEOUT_EXIT_FAILURE
+    while [ $retval -eq $TIMEOUT_EXIT_FAILURE ]; do
+      ssh $SSH_SERVER "cd $REMOTE_EXAMPLE_DIR;
+                       $BUILD_TIMEOUT ./build.py;"
+      retval=$?
+    done
+
     echo "Retrieve output files"
     scp -r $SSH_SERVER:$REMOTE_EXAMPLE_DIR/{${BUILD_OUTPUT// /,}} .
 }

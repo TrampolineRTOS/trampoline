@@ -77,6 +77,19 @@ end if%
 
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
-
+%
+if OS::WITHORTI then%
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"%
+  if OS::NUMBER_OF_CORES > 1 then%
+VAR(uint32, OS_VAR) tpl_servicetrace[NUMBER_OF_CORES];%
+  else%
+VAR(uint32, OS_VAR) tpl_servicetrace;%
+  end if%
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+%
+end if
+%
 /* End of file tpl_dispatch_table.c */
 

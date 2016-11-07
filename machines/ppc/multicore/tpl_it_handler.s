@@ -47,6 +47,7 @@ TPL_EXTERN(tpl_leave_kernel)
 TPL_EXTERN(tpl_it_id)
 TPL_EXTERN(tpl_ack_irq)
 TPL_EXTERN(tpl_run_elected)
+TPL_EXTERN(tpl_reentrancy_counter)
 
 #if (WITH_VLE == YES)
 TPL_VLE_ON
@@ -229,6 +230,23 @@ no_prio_restore:
   e_lwz       r0,0(r1)
   e_addi      r1,r1,44
 
+ /*
+  * Check if the reentrancy counter is not greater than 1
+  * No context switch shall occur if we're not leaving the kernel after
+  * this call.
+  */
+  se_mtar   r11,r5
+  se_mtar   r12,r6
+  mfspr     r6,spr_PIR
+  se_slwi   r6,2
+  e_lis     r5,TPL_HIG(TPL_EXTERN_REF(tpl_reentrancy_counter))
+  e_add16i  r5,TPL_LOW(TPL_EXTERN_REF(tpl_reentrancy_counter))
+  se_add    r5,r6
+  se_lwz    r6,0(r5)     /*  get the value of the counter */
+  se_cmpi   r6,1
+  se_mfar   r5,r11
+  se_mfar   r6,r12
+  e_bne     no_context_switch
   /*
    * test tpl_need_switch to see if a rescheduling occured
    */
@@ -284,8 +302,6 @@ call_tpl_run_elected:
    */
   e_lwz       r3,KS_RETURN_CODE(r1)
 
-no_context_switch:
-
   /*
    * Reset the tpl_need_switch variable to NO_NEED_SWITCH
    */
@@ -293,6 +309,7 @@ no_context_switch:
   e_li      r12,NO_NEED_SWITCH
   e_stb     r12,24(r11)
 
+no_context_switch:
 
   /*
    * does the stuff to leave the kernel

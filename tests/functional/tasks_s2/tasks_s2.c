@@ -33,7 +33,6 @@
  */
 
 #include "tpl_os.h"
-#include "embUnit.h"
 
 TestRef TaskManagementTest_seq2_t1_instance(void);
 TestRef TaskManagementTest_seq2_t2_instance(void);

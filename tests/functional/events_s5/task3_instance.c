@@ -34,10 +34,8 @@
 
 /*Instance of task t3*/
 
-#include "embUnit.h"
 #include "tpl_os.h"
 
-void tpl_send_it1(void);
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/
@@ -46,7 +44,7 @@ static void test_t3_instance(void)
 	StatusType result_inst_1;
 	
 	SCHEDULING_CHECK_STEP(5);
-	tpl_send_it1();
+	sendSoftwareIt(0, SOFT_IRQ0);
 	
 	SCHEDULING_CHECK_INIT(18);
 	result_inst_1 = TerminateTask();

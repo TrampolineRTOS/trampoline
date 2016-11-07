@@ -130,28 +130,28 @@ TASK(t1_app_nontrusted1)
    - trusted - write
    */
   var_t1_app_nontrusted1 = t2_app_nontrusted1_stack_zone[1];
-  // TODO : CALL PROTECTION_HOOK
+  /* TODO : CALL PROTECTION_HOOK */
   t2_app_nontrusted1_stack_zone[1] = var_t1_app_nontrusted1;
-  // TODO : CALL PROTECTION_HOOK
+  /* TODO : CALL PROTECTION_HOOK */
   
   var_t1_app_nontrusted1 = t1_app_nontrusted2_stack_zone[1];
-  // TODO : CALL PROTECTION_HOOK
+  /* TODO : CALL PROTECTION_HOOK */
   t1_app_nontrusted2_stack_zone[1] = var_t1_app_nontrusted1;
-  // TODO : CALL PROTECTION_HOOK
+  /* TODO : CALL PROTECTION_HOOK */
   
   var_t1_app_nontrusted1 = t1_app_trusted1_stack_zone[1];
-  // TODO : CALL PROTECTION_HOOK
+  /* TODO : CALL PROTECTION_HOOK */
   t1_app_trusted1_stack_zone[1] = var_t1_app_nontrusted1;
-  // TODO : CALL PROTECTION_HOOK
+  /* TODO : CALL PROTECTION_HOOK */
     
   /* OS198 : (read/)write OS's stack section from non-trusted OS application -> NO (!! This test is specific dependant)
    - read
    - write   
    */
   var_t1_app_nontrusted1 = RANDOM_STACK_ADRESS;
-  // TODO : CALL PROTECTION_HOOK
+  /* TODO : CALL PROTECTION_HOOK */
   RANDOM_STACK_ADRESS = var_t1_app_nontrusted1;
-  // TODO : CALL PROTECTION_HOOK
+  /* TODO : CALL PROTECTION_HOOK */
 
   
   WaitEvent(Event1);

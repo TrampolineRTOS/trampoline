@@ -162,6 +162,10 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
   IF_NO_EXTENDED_ERROR(result)
   {
     alarm = tpl_alarm_table[alarm_id];
+    /* Tick optimization :
+     * A syscall must update counters before using a timeobj's structures
+     */
+    TPL_UPDATE_COUNTERS(alarm);
 
     /*  verify the alarm is active  */
     if (alarm->state == (tpl_time_obj_state)ALARM_ACTIVE)
@@ -179,6 +183,12 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
     {
       result = E_OS_NOFUNC;
     }
+
+    /* Tick optimization :
+     * A syscall must enable the mastersource after finishing using the timeobj
+     * structure.
+     */
+    TPL_ENABLE_SHAREDSOURCE(alarm);
   }
 #endif
 
@@ -225,6 +235,10 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
   IF_NO_EXTENDED_ERROR(result)
   {
     alarm = tpl_alarm_table[alarm_id];
+    /* Tick optimization :
+     * A syscall must update counters before using a timeobj's structures
+     */
+    TPL_UPDATE_COUNTERS(alarm);
 
     if (alarm->state == (tpl_time_obj_state)ALARM_SLEEP)
     {
@@ -246,6 +260,12 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
       /*  the alarm is in use, return the proper error code   */
       result = E_OS_STATE;
     }
+
+    /* Tick optimization :
+     * A syscall must enable the mastersource after finishing using the timeobj
+     * structure.
+     */
+    TPL_ENABLE_SHAREDSOURCE(alarm);
   }
 #endif
 
@@ -295,6 +315,10 @@ FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
   IF_NO_EXTENDED_ERROR(result)
   {
     alarm = tpl_alarm_table[alarm_id];
+    /* Tick optimization :
+     * A syscall must update counters before using a timeobj's structures
+     */
+    TPL_UPDATE_COUNTERS(alarm);
 
     if (alarm->state == (tpl_time_obj_state)ALARM_SLEEP)
     {
@@ -310,6 +334,12 @@ FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
       /*  the alarm is in use, return the proper error code   */
       result = E_OS_STATE;
     }
+
+    /* Tick optimization :
+     * A syscall must enable the mastersource after finishing using the timeobj
+     * structure.
+     */
+    TPL_ENABLE_SHAREDSOURCE(alarm);
   }
 #endif
 
@@ -352,6 +382,10 @@ FUNC(tpl_status, OS_CODE) tpl_cancel_alarm_service(
   IF_NO_EXTENDED_ERROR(result)
   {
     alarm = tpl_alarm_table[alarm_id];
+    /* Tick optimization :
+     * A syscall must update counters before using a timeobj's structures
+     */
+    TPL_UPDATE_COUNTERS(alarm);
 
     if (alarm->state == (tpl_time_obj_state)ALARM_ACTIVE)
     {
@@ -363,6 +397,12 @@ FUNC(tpl_status, OS_CODE) tpl_cancel_alarm_service(
     {
       result = E_OS_NOFUNC;
     }
+
+    /* Tick optimization :
+     * A syscall must enable the mastersource after finishing using the timeobj
+     * structure.
+     */
+    TPL_ENABLE_SHAREDSOURCE(alarm);
   }
 #endif
 

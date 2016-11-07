@@ -1,0 +1,154 @@
+OIL_VERSION = "4.0";
+
+IMPLEMENTATION trampoline {
+
+    /* This fix the default STACKSIZE of tasks */
+    TASK {
+        UINT32 STACKSIZE = 800 ;
+    } ;
+
+    /* This fix the default STACKSIZE of ISRs */
+    ISR {
+        UINT32 STACKSIZE = 800 ;
+    } ;
+
+};
+
+CPU blink {
+
+  APPMODE OsAppMode {};
+
+  /* ==========================================================================
+   *    OS
+   */
+
+  OS os {
+    NUMBER_OF_CORES = 2;
+    WITHORTI = TRUE { FILE = "blink.orti"; };
+    SCALABILITYCLASS = AUTO;
+    MEMMAP = TRUE {
+      COMPILER  = cosmic;
+      LINKER    = cosmic_ld { SCRIPT = "script.lkf"; };
+      ASSEMBLER = cosmic_as;
+      MEMORY_PROTECTION = FALSE;
+    };
+    OPTIMIZETICKS = TRUE {
+      SHAREDSOURCE = pit_ch0;
+      SLAVESOURCE optick_c0 {
+        CORE   = 0;
+        SOURCE = pit_ch1;
+      };
+      SLAVESOURCE optick_c1 {
+        CORE   = 1;
+        SOURCE = pit_ch2;
+      };
+    };
+    BUILD = TRUE {
+      TRAMPOLINE_BASE_PATH = "../../../..";
+      APP_SRC   = "blink.c";
+      APP_NAME  = "blink_exe";
+      COMPILER  = "../../tools/cxvle_auto.py";
+      ASSEMBLER = "../../tools/cxvle_auto.py";
+      LINKER    = "../../tools/clnk_auto.py";
+      COPIER    = "undefcop";
+      SYSTEM    = PYTHON;
+    };
+    STACKMONITORING = FALSE;
+    STATUS          = STANDARD;
+    USEVLE          = TRUE;
+    USEGETSERVICEID = FALSE;
+    USEPARAMETERACCESS = FALSE;
+    USERESSCHEDULER = TRUE;
+    ERRORHOOK       = FALSE;
+    POSTTASKHOOK    = FALSE;
+    PRETASKHOOK     = FALSE;
+    PROTECTIONHOOK  = FALSE;
+    SHUTDOWNHOOK    = FALSE;
+    STARTUPHOOK     = FALSE;
+    SYSTEM_CALL     = TRUE;
+    DEBUG           = TRUE;
+  };
+
+  /* ==========================================================================
+   *    APPLICATION
+   */
+
+  APPLICATION application1 {
+    TASK = t1_app1;
+    COUNTER = Core0_counter0;
+    ALARM = alarm_t1_app1;
+    CORE = 0;
+  };
+
+  APPLICATION application2 {
+    TASK = t1_app2;
+    COUNTER = Core1_counter0;
+    ALARM = alarm_t1_app2;
+    CORE = 1;
+  };
+
+  /* ==========================================================================
+   *    COUNTER
+   */
+  COUNTER Core0_counter0 {
+    TICKSPERBASE = 1;
+    MAXALLOWEDVALUE = 65535;
+    MINCYCLE = 1;
+    SOURCE = pit_ch0; /* We have to use the pit to synch the cores */
+  };
+
+  COUNTER Core1_counter0 {
+    TICKSPERBASE = 1;
+    MAXALLOWEDVALUE = 65535;
+    MINCYCLE = 1;
+    SOURCE = pit_ch0; /* We use the same pit channel so both alarms are synched */
+  };
+
+  /* ==========================================================================
+   *    ALARM
+   */
+
+  ALARM alarm_t1_app1 {
+    COUNTER = Core0_counter0;
+    ACTION = ACTIVATETASK { TASK = t1_app2;};
+    AUTOSTART = TRUE {
+      APPMODE = OsAppMode;
+      ALARMTIME = 256;
+      CYCLETIME = 128;
+    };
+  };
+
+  ALARM alarm_t1_app2 {
+    COUNTER = Core1_counter0;
+    ACTION = ACTIVATETASK { TASK = t1_app1;};
+    AUTOSTART = TRUE {
+      APPMODE = OsAppMode;
+      ALARMTIME = 256;
+      CYCLETIME = 256;
+    };
+  };
+
+  /* ==========================================================================
+   *    TASK
+   */
+
+  TASK t1_app1 {
+    ACTIVATION = 1;
+    PRIORITY = 5;
+    SCHEDULE = FULL;
+    ACCESSING_APPLICATION = application1;
+    AUTOSTART = FALSE;
+    USEFLOAT = FALSE;
+  };
+
+  TASK t1_app2 {
+    ACTIVATION = 1;
+    PRIORITY = 5;
+    SCHEDULE = FULL;
+    ACCESSING_APPLICATION = application2;
+    AUTOSTART = FALSE;
+    USEFLOAT = FALSE;
+  };
+
+};
+

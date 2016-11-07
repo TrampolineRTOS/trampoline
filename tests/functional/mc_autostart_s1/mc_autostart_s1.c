@@ -48,8 +48,7 @@
  * SWS_Os_00668  | All Autostart Tasks are activated  | NoTimeout
  */
 
-#include "tpl_os.h"
-#include "embUnit.h"
+#include "Os.h"
 
 TestRef t1_instance(void);
 TestRef t2_instance(void);

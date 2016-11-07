@@ -464,8 +464,8 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
       error message::NAME : "Message "+message::NAME+" does not belong to any Application"
     else
       let app := [message_map[message::NAME] first]
-      let message::APPLICATION := app::VALUE
-      let mess_with_app += resource
+      let message::APPLICATION := app
+      let mess_with_app += message
     end if
   end foreach
   let MESSAGE := mess_with_app
@@ -1097,7 +1097,7 @@ foreach receive_message_list in receiver do
       end if
     elsif receive_message::MESSAGEPROPERTY == "RECEIVE_ZERO_INTERNAL" then
       let send_message_name := receive_message::MESSAGEPROPERTY_S::SENDINGMESSAGE
-      let send_message := sender[sen_message_name]
+      let send_message := sender[send_message_name]
       if send_message::MESSAGEPROPERTY != "SEND_ZERO_INTERNAL" &
          send_message::MESSAGEPROPERTY != "SEND_ZERO_EXTERNAL"
       then
@@ -1518,3 +1518,15 @@ template if exists custom_code in code
 write to PROJECT+"/stm_structure.c":
   template stm_structure_c in code
 end write
+
+if OS::WITHORTI then
+  if OS::WITHORTI_S::FILE == "" then
+    let OS::WITHORTI_S::FILE := PROJECT + ".orti"
+    warning OS::WITHORTI : "Invalid or missing ORTI file name."
+                         + "Using default value : " + OS::WITHORTI_S::FILE
+  end if
+  write to PROJECT + "/" + OS::WITHORTI_S::FILE :
+    template orti in code
+  end write
+end if
+

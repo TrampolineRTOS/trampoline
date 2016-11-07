@@ -34,10 +34,8 @@
 
 /*Instance of error*/
 
-#include "embUnit.h"
 #include "tpl_os.h"
 
-void tpl_send_it1(void);
 
 extern int posttask_instance;
 
@@ -50,9 +48,9 @@ static void test_error_instance(void)
 	
 	SCHEDULING_CHECK_STEP(test_start + 2);
 	
-	tpl_send_it1();
+	sendSoftwareIt(0, SOFT_IRQ0);
 	SuspendAllInterrupts();
-	tpl_send_it1();
+	sendSoftwareIt(0, SOFT_IRQ0);
 	ResumeAllInterrupts();
 }
 

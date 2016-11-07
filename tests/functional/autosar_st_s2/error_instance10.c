@@ -34,7 +34,6 @@
 
 /*Instance 10 of error*/
 
-#include "embUnit.h"
 #include "Os.h"
 
 DeclareScheduleTable(INVALID_SCHEDULETABLE);

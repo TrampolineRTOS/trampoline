@@ -34,7 +34,6 @@
 
 /*Instance of task t1*/
 
-#include "embUnit.h"
 #include "Os.h"
 
 static void test_t1_instance(void)

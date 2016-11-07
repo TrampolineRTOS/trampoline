@@ -35,12 +35,10 @@
 
 /*Instance of task t1*/
 
-#include "embUnit.h"
 #include "Os.h"
 
 DeclareTask(t2);
 
-void tpl_send_it2(void);
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/
@@ -56,21 +54,21 @@ static void test_t1_instance(void)
 	DisableAllInterrupts();
 	
 	/*check interrupts disabled*/
-	tpl_send_it2();
+	sendSoftwareIt(0, SOFT_IRQ1);
 	
 	SCHEDULING_CHECK_INIT(3);
 	result_inst_2 = TerminateTask();
 	SCHEDULING_CHECK_AND_EQUAL_INT(4,E_OS_DISABLEDINT , result_inst_2);
 
 	/*check interrupts disabled*/
-	tpl_send_it2();	
+	sendSoftwareIt(0, SOFT_IRQ1);	
 
 	SCHEDULING_CHECK_INIT(5);
 	result_inst_3 = TerminateTask();
 	SCHEDULING_CHECK_AND_EQUAL_INT(6,E_OS_DISABLEDINT , result_inst_3);
 
 	/*check interrupts disabled*/
-	tpl_send_it2();	
+	sendSoftwareIt(0, SOFT_IRQ1);	
 	
 	/* check PostTaskHook OS052 */
 	

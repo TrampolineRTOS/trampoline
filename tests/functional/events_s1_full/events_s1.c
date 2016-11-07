@@ -33,7 +33,6 @@
  */
 
 #include "tpl_os.h"
-#include "embUnit.h"
 
 TestRef EventMechanismTest_seq1_t1_instance(void);
 TestRef EventMechanismTest_seq1_t2_instance(void);
@@ -62,9 +61,11 @@ TASK(t2)
 	ShutdownOS(E_OK);
 }
 
-ISR(isr1)
+ISR(softwareInterruptHandler0)
 {
 	TestRunner_runTest(EventMechanismTest_seq1_isr1_instance());
 }
+UNUSED_ISR(softwareInterruptHandler1)
+UNUSED_ISR(softwareInterruptHandler2)
 
 /* End of file events_s1_full/events_s1.c */

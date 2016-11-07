@@ -1,0 +1,96 @@
+%
+
+foreach proc in PROCESSES do
+%
+CONTEXT % !proc::NAME %_context
+{
+  ADDRESS = "&(% !proc::NAME %_int_context)";
+  SIZE  = "320";
+  VALID = "tpl_dyn_proc_table[% !INDEX %]->state != 2"; /* != RUNNING */
+  _CPU_CR    = "% !proc::NAME %_int_context.cr";
+  _CPU_XER   = "% !proc::NAME %_int_context.xer";
+  _CPU_LR    = "% !proc::NAME %_int_context.lr";
+  _CPU_CTR   = "% !proc::NAME %_int_context.ctr";
+  _CPU_SRR0  = "% !proc::NAME %_int_context.srr0";
+  _CPU_SRR1  = "% !proc::NAME %_int_context.srr1";
+  _CPU_GPR0  = "% !proc::NAME %_int_context.gpr[0]";
+  _CPU_GPR1  = "% !proc::NAME %_int_context.gpr[1]";
+  _CPU_GPR2  = "% !proc::NAME %_int_context.gpr[2]";
+  _CPU_GPR3  = "% !proc::NAME %_int_context.gpr[3]";
+  _CPU_GPR4  = "% !proc::NAME %_int_context.gpr[4]";
+  _CPU_GPR5  = "% !proc::NAME %_int_context.gpr[5]";
+  _CPU_GPR6  = "% !proc::NAME %_int_context.gpr[6]";
+  _CPU_GPR7  = "% !proc::NAME %_int_context.gpr[7]";
+  _CPU_GPR8  = "% !proc::NAME %_int_context.gpr[8]";
+  _CPU_GPR9  = "% !proc::NAME %_int_context.gpr[9]";
+  _CPU_GPR10 = "% !proc::NAME %_int_context.gpr[10]";
+  _CPU_GPR11 = "% !proc::NAME %_int_context.gpr[11]";
+  _CPU_GPR12 = "% !proc::NAME %_int_context.gpr[12]";
+  _CPU_GPR13 = "% !proc::NAME %_int_context.gpr[13]";
+  _CPU_GPR14 = "% !proc::NAME %_int_context.gpr[14]";
+  _CPU_GPR15 = "% !proc::NAME %_int_context.gpr[15]";
+  _CPU_GPR16 = "% !proc::NAME %_int_context.gpr[16]";
+  _CPU_GPR17 = "% !proc::NAME %_int_context.gpr[17]";
+  _CPU_GPR18 = "% !proc::NAME %_int_context.gpr[18]";
+  _CPU_GPR19 = "% !proc::NAME %_int_context.gpr[19]";
+  _CPU_GPR20 = "% !proc::NAME %_int_context.gpr[20]";
+  _CPU_GPR21 = "% !proc::NAME %_int_context.gpr[21]";
+  _CPU_GPR22 = "% !proc::NAME %_int_context.gpr[22]";
+  _CPU_GPR23 = "% !proc::NAME %_int_context.gpr[23]";
+  _CPU_GPR24 = "% !proc::NAME %_int_context.gpr[24]";
+  _CPU_GPR25 = "% !proc::NAME %_int_context.gpr[25]";
+  _CPU_GPR26 = "% !proc::NAME %_int_context.gpr[26]";
+  _CPU_GPR27 = "% !proc::NAME %_int_context.gpr[27]";
+  _CPU_GPR28 = "% !proc::NAME %_int_context.gpr[28]";
+  _CPU_GPR29 = "% !proc::NAME %_int_context.gpr[29]";
+  _CPU_GPR30 = "% !proc::NAME %_int_context.gpr[30]";
+  _CPU_GPR31 = "% !proc::NAME %_int_context.gpr[31]";
+};
+%
+end foreach
+
+foreach proc in PROCESSES do
+%
+STACK % !proc::NAME %_stack
+{
+  SIZE = "% !proc::STACKSIZE %";
+  BASEADDRESS = "&(% !proc::NAME %_stack_zone[0])";
+  STACKDIRECTION = "DOWN";
+  FILLPATTERN = "0xAAAAAAAAU"; /* File tpl_machine.h */
+};
+%
+end foreach
+
+loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do
+%
+STACK kernel_stack_core% !core_id %
+{
+  SIZE = "2000"; /* File tpl_os_kernel_stack.h */
+  BASEADDRESS = "tpl_kernel_stack[% !core_id %]";
+  STACKDIRECTION = "DOWN";
+  FILLPATTERN = "0xAAAAAAAAU"; /* File tpl_machine.h */
+}
+%
+end loop
+
+%
+STACK startup_stack_core0
+{
+  SIZE = "0x1000"; /* ld script */
+  BASEADDRESS = "0x4000E000"; /* ld script */
+  STACKDIRECTION = "DOWN";
+  FILLPATTERN = "0x00000000U";
+}
+%
+
+if OS::NUMBER_OF_CORES > 1 then
+%
+STACK startup_stack_core1
+{
+  SIZE = "0x1000"; /* ld script */
+  BASEADDRESS = "0x4000F000"; /* ld script */
+  STACKDIRECTION = "DOWN";
+  FILLPATTERN = "0x00000000U";
+}
+%
+end if

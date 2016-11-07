@@ -35,7 +35,6 @@
 
 /*Instance 1 of ISR2 isr2*/
 
-#include "embUnit.h"
 #include "Os.h"
 
 /*test case:test the reaction of the system called with 

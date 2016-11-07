@@ -35,6 +35,7 @@
 OIL_VERSION = "2.5" : "events_s5";
 
 #include <arch.oil>
+#include <softwareIT.oil>
 
 IMPLEMENTATION trampoline {
   OS {
@@ -103,10 +104,9 @@ CPU test {
     EVENT = Event1;
   };
 
-  ISR isr1 {
+  ISR softwareInterruptHandler0 {
     CATEGORY = 2;
     PRIORITY = 1;
-    SOURCE = SIGTERM;
   };
  
   EVENT Event1 {

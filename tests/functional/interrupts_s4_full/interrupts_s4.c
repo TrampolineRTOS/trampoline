@@ -33,7 +33,6 @@
  */
 
 #include "tpl_os.h"
-#include "embUnit.h"
 
 TestRef InterruptsTest_seq4_t1_instance(void);
 TestRef InterruptsTest_seq4_isr1_instance1(void);
@@ -61,7 +60,7 @@ TASK(t1)
 	ShutdownOS(E_OK);
 }
 
-ISR(isr1)
+ISR(softwareInterruptHandler0)
 {
 	instance_isr1 ++;
 	switch(instance_isr1)
@@ -78,12 +77,14 @@ ISR(isr1)
 		}
 		default:
 		{
-			stdimpl_print("Instance error \n");
+			addFailure("Instance error \n", __LINE__, __FILE__);
 			break;
 		}
 	}
 	
 }
+UNUSED_ISR(softwareInterruptHandler1)
+UNUSED_ISR(softwareInterruptHandler2)
 
 void CallBack1_callback(void)
 {

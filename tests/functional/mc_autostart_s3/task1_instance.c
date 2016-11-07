@@ -32,7 +32,6 @@
  * $URL$
  */
 
-#include "embUnit.h"
 #include "Os.h"
 
 DeclareSpinlock(sync);

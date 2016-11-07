@@ -33,14 +33,6 @@
 #include "tpl_os_kernel_stack.h"
 #include "tpl_registers.h"
 
-//#define OS_AR_RELEASE_MAJOR_VERSION     4
-//#define OS_AR_RELEASE_MINOR_VERSION     0
-//#define OS_AR_RELEASE_REVISION_VERSION  2
-
-#define OS_SW_MAJOR_VERSION  1
-#define OS_SW_MINOR_VERSION  0
-#define OS_SW_PATCH_VERSION  0
-
 #define IDLE_STACK_SIZE 200
 
 typedef uint32 tpl_stack_word;

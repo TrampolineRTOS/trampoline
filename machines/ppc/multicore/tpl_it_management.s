@@ -98,7 +98,7 @@ TPL_GLOBAL_REF(tpl_init_ivpr):
   e_add16i  r4,TPL_LOW(TPL_EXTERN_REF(_IVPR_VECBASE))
   mtspr   spr_IVPR,r4
 
-//#if TARGET_CHIP == "MPC5643" || TARGET_CHIP == "MPC5646" || TARGET_CHIP == "MPC5668" || TARGET_CHIP == "MPC5646C"
+/* #if TARGET_CHIP == "MPC5643" || TARGET_CHIP == "MPC5646" || TARGET_CHIP == "MPC5668" || TARGET_CHIP == "MPC5646C" */
   e_lis     r4,TPL_HIG(TPL_EXTERN_REF(_IVOR0_OFFSET))
   e_add16i  r4,TPL_LOW(TPL_EXTERN_REF(_IVOR0_OFFSET))
   mtspr     spr_IVOR0,r4
@@ -171,7 +171,7 @@ TPL_GLOBAL_REF(tpl_init_ivpr):
   e_add16i  r4,TPL_LOW(TPL_EXTERN_REF(_IVOR34_OFFSET))
   mtspr     spr_IVOR34,r4
 
-//#endif
+/* #endif */
 
   se_lwz    r5,4(r1)
   se_lwz    r4,0(r1)

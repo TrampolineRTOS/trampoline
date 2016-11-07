@@ -34,7 +34,6 @@
 
 /*Instance of task t1*/
 
-#include "embUnit.h"
 #include "Os.h"
 
 extern int user_number_of_cores;

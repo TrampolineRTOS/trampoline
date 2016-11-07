@@ -216,6 +216,35 @@ FUNC(void, OS_CODE) tpl_remove_time_obj(
 FUNC(void, OS_CODE) tpl_counter_tick(
     P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter);
 
+#if TPL_OPTIMIZE_TICKS == YES
+FUNC(tpl_tick, OS_CODE) tpl_time_before_next_tick(
+  P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter);
+
+FUNC(void, OS_CODE) tpl_increment_counter(
+  P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter,
+  VAR(tpl_tick, AUTOMATIC) ticks);
+
+extern FUNC(void, OS_CODE) tpl_enable_sharedsource(
+  VAR(uint16, OS_APPL_DATA) core_id);
+extern FUNC(void, OS_CODE) tpl_update_counters(
+  VAR(uint16, OS_APPL_DATA) core_id);
+
+# if NUMBER_OF_CORES == 1
+#  define TPL_ENABLE_SHAREDSOURCE(a_time_obj) tpl_enable_sharedsource(0)
+#  define TPL_UPDATE_COUNTERS(a_time_obj) tpl_update_counters(0)
+# else /* NUMBER_OF_CORES > 1 */
+extern VAR(tpl_core_id, OS_VAR) tpl_core_id_for_app[APP_COUNT];
+#  define TPL_ENABLE_SHAREDSOURCE(a_time_obj)                                  \
+   tpl_enable_sharedsource(tpl_core_id_for_app[a_time_obj->stat_part->app_id])
+#  define TPL_UPDATE_COUNTERS(a_time_obj)                                      \
+   tpl_update_counters(tpl_core_id_for_app[a_time_obj->stat_part->app_id])
+# endif /* NUMBER_OF_CORES */
+
+#else /* TPL_OPTIMIZE_TICS == NO */
+# define TPL_ENABLE_SHAREDSOURCE(a_time_obj)
+# define TPL_UPDATE_COUNTERS(a_time_obj)
+#endif
+
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 

@@ -34,10 +34,7 @@
 
 /*Instance 8 of pretask*/
 
-#include "embUnit.h"
 #include "tpl_os.h"
-
-void tpl_send_it1(void);
 
 /*test case:test the reaction of the system called with 
 an activation of a isr*/
@@ -45,9 +42,9 @@ static void test_pretask_instance8(void)
 {
 	SCHEDULING_CHECK_STEP(10);
 	
-	tpl_send_it1();
+	sendSoftwareIt(0, SOFT_IRQ0);
 	SuspendAllInterrupts();
-	tpl_send_it1();
+	sendSoftwareIt(0, SOFT_IRQ0);
 	ResumeAllInterrupts();
 }
 

@@ -313,5 +313,5 @@ TPL_SIZE(TPL_GLOBAL_REF(tpl_exit_trusted_function_service),$-TPL_GLOBAL_REF(tpl_
 #define OS_STOP_SEC_CODE
 #include "tpl_as_memmap.h"
 
-#endif // End if TRUSTED_FCT_COUNT > 0
+#endif /* End if TRUSTED_FCT_COUNT > 0 */
 

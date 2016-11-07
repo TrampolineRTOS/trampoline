@@ -31,6 +31,23 @@
 #include "tpl_os_multicore_macros.h"
 #include "tpl_os_kernel.h"
 
+
+#if WITH_ORTI == YES
+
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+# if NUMBER_OF_CORES > 1
+VAR(tpl_status, OS_VAR) tpl_last_error[NUMBER_OF_CORES];
+# else
+VAR(tpl_status, OS_VAR) tpl_last_error = 0;
+# endif
+
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+#endif
+
 #if WITH_ERROR_HOOK == YES
 
 #define OS_START_SEC_VAR_UNSPECIFIED

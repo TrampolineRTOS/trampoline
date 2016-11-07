@@ -107,7 +107,7 @@ FUNC(void, OS_CODE) tpl_start_os_service(
 {
   GET_CURRENT_CORE_ID(core_id)
 
-#if (WITH_ERROR_HOOK == YES) || (WITH_OS_EXTENDED == YES)
+#if (WITH_ERROR_HOOK == YES) || (WITH_OS_EXTENDED == YES) | (WITH_ORTI == YES)
   /*  init the error to no error  */
   VAR(tpl_status, AUTOMATIC) result = E_OK;
 #endif

@@ -34,7 +34,6 @@
 
 /*Instance of interruption isr3*/
 
-#include "embUnit.h"
 #include "tpl_os.h"
 
 DeclareResource(Resource1);

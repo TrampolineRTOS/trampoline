@@ -34,8 +34,6 @@
 
 
 #include "Os.h"
-#include "embUnit.h"
-#include "config.h" /*for stdimpl_print*/
 
 TestRef AutosarTPTest_seq8_t1_instance1(void);
 TestRef AutosarTPTest_seq8_t1_instance2(void);
@@ -58,7 +56,7 @@ void ShutdownHook(StatusType error)
 
 void ErrorHook(StatusType error)
 {
-  stdimpl_print("ErrorHook : Instance error\n");	
+  addFailure("ErrorHook : Instance error\n", __LINE__, __FILE__);	
 }
 
 ProtectionReturnType ProtectionHook(StatusType Fatalerror)
@@ -94,7 +92,7 @@ TASK(t1)
       }
       default:
       {
-        stdimpl_print("t1 : Instance error\n");
+        addFailure("t1 : Instance error\n", __LINE__, __FILE__);
         break;
       }
     }

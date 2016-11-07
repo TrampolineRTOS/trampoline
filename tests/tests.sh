@@ -57,14 +57,14 @@ REMOTE_TPL_DIR=""
 # Rsync excluded directories (when copying trampoline)
 RSYNC_EXCLUDE="--exclude .git
                --exclude documentation
-               --exclude goil
-               --exclude examples"
+               --exclude goil"
 # Compilation timeout
 REMOTE_BUILD_TIMEOUT="timeout 6s"
 TIMEOUT_EXIT_FAILURE=124
+TIMEOUT_MAX_ATTEMPT=5
 
 # Get object files too
-GET_BUILD=false
+GETBUILD=false
 
 # -----------------------------------------------------------------------------
 # Arch
@@ -153,7 +153,17 @@ arch_remote_compile()
 
   # Remote Compile
   retval=$TIMEOUT_EXIT_FAILURE
+  maxattempt=0
   while [ $retval -eq $TIMEOUT_EXIT_FAILURE ]; do
+    # retry ?
+    maxattempt=$(($maxattempt + 1))
+    if [ $maxattempt -gt $TIMEOUT_MAX_ATTEMPT ]; then
+      out=""
+      err="Compilation Timeout."
+      break
+    fi
+
+    # Compile & get output/error
     out=$(ssh $server "cd $REMOTE_TEST_DIR;
              $REMOTE_BUILD_TIMEOUT $REMOTE_ARCH_SCRIPT arch_compile $@;" 2>tmp)
     retval=$?
@@ -161,9 +171,11 @@ arch_remote_compile()
     rm tmp
   done
 
-  # Get produced files
-  scp -q $server:$REMOTE_TEST_DIR/${i}_exe .
-  # Get builds
+  # Get produced exe
+  if [ "$err" = "" ]; then
+    scp -q $server:$REMOTE_TEST_DIR/${i}_exe .
+  fi
+  # Get build
   if $GETBUILD ; then
     scp -rq $server:$REMOTE_TEST_DIR/build .
   fi
@@ -188,7 +200,15 @@ print_help()
     echo "  -g  : Goil tests."
     echo "  -a  : Functional and goil tests (equivalent to -gf)."
     echo "  -c  : Clean"
+    echo "  -v  : Verbose"
     echo "  -h  : print_help"
+}
+
+verbose_print()
+{
+  if $verbose; then
+    echo "$@"
+  fi
 }
 
 # ----------------------------------------------------------------------------
@@ -252,7 +272,7 @@ functional_test()
     # if a previous run of the test has already diagnosticated this test as
     # successful, ignore it
     if [ -e .success ]; then
-        echo "  Already succeded. Clean to retest." | tee -a $FUNCTIONAL_RESULTS
+        echo "  Already succeded. Clean or delete the .success file to restart the test sequence." | tee -a $FUNCTIONAL_RESULTS
         continue
     fi
 
@@ -276,6 +296,7 @@ functional_test()
     # if Makefile doesn't exist -> do goil
     #if ! [ -e Makefile ]
     #then
+      verbose_print "goil --target=$target ${i}.oil"
       err=$(goil --target=$target ${i}.oil 2>&1)
       retval=$?
     #fi
@@ -347,12 +368,12 @@ functional_test()
   done
   cd $SCRIPT_DIR
 
-  echo "===================================================================="
-  echo "= Functional tests results"
-  echo "= Log file : $FUNCTIONAL_RESULTS"
-  echo "= Total failed tests : $total_failed_tests"
+  echo "====================================================================" | tee -a $FUNCTIONAL_RESULTS
+  echo "= Functional tests results" | tee -a $FUNCTIONAL_RESULTS
+  echo "= Log file : $FUNCTIONAL_RESULTS" | tee -a $FUNCTIONAL_RESULTS
+  echo "= Total failed tests : $total_failed_tests" | tee -a $FUNCTIONAL_RESULTS
   if [ $total_failed_tests -ne 0 ]; then
-    echo "= Failed tests : $failed_tests_list"
+    echo "= Failed tests : $failed_tests_list" | tee -a $FUNCTIONAL_RESULTS
   fi
 }
 
@@ -414,9 +435,10 @@ server=$DEFAULTSERVER
 test_functional=false
 test_goil=false
 clean=false
+verbose=false
 
 # Parameters reading
-while getopts "t:r:fgach" OPT; do
+while getopts "t:r:fgacvh" OPT; do
   case "$OPT" in
     t) target=$OPTARG;;
     r) server=$OPTARG;;
@@ -425,6 +447,7 @@ while getopts "t:r:fgach" OPT; do
     a) test_functional=true;
        test_goil=true;;
     c) clean=true;;
+    v) verbose=true;;
     h) print_help;
        exit 0;;
     *) echo "Unknown parameter or wrong number of arguments";
@@ -459,6 +482,7 @@ if [ ! "$server" = "" ]; then
   if [ "$REMOTE_TPL_DIR" = "" ]; then
     echo "${C_RED}Fatal Error: Requested a server compilation but server's"\
          "trampoline directory is not set !$C_NOC"
+    echo "Please set the variable REMOTE_TPL_DIR in the script file."
     exit 1
   fi
 fi

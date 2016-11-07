@@ -32,9 +32,7 @@
  * $URL$
  */
 
-#include "config.h" /*Display information in the right way (printf on UNIX...)*/
 #include "tpl_os.h"
-#include "embUnit.h"
 
 TestRef TaskManagementTest_seq7_t1_instance1(void);
 TestRef TaskManagementTest_seq7_t1_instance2(void);
@@ -82,7 +80,7 @@ TASK(t1)
 		}
 		default:
 		{
-			stdimpl_print("Instance error \n");
+			addFailure("Instance error \n", __LINE__, __FILE__);
 			break;
 		}
 	}
@@ -105,7 +103,7 @@ TASK(t2)
 		}
 		default:
 		{
-			stdimpl_print("Instance error \n");
+			addFailure("Instance error \n", __LINE__, __FILE__);
 			break;
 		}
 	}
@@ -128,7 +126,7 @@ TASK(t3)
 		}
 		default:
 		{
-			stdimpl_print("Instance error \n");
+			addFailure("Instance error \n", __LINE__, __FILE__);
 			break;
 		}
 	}

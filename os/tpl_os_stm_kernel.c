@@ -85,13 +85,13 @@ FUNC(StatusType, OS_CODE) tpl_stm_begin_read_tx_service()
 
  LOCK_KERNEL()
 
- // a compléter
+ /* a compléter */
 
  UNLOCK_KERNEL()
 #else
  LOCK_KERNEL()
 
- // a compléter
+ /* a compléter */
 
  UNLOCK_KERNEL()
 #endif
@@ -158,7 +158,7 @@ FUNC(StatusType, OS_CODE) tpl_stm_end_write_tx_service(){
  *
  */
 FUNC(StatusType, OS_CODE) update(P2VAR(tpl_stm_tx_descriptor, AUTOMATIC, OS_APPL_DATA) tx, CONST(ObjectType, AUTOMATIC) object_id){
- // a compléter
+ /* a compléter */
 };
 
 /*
@@ -199,7 +199,7 @@ FUNC(StatusType, OS_CODE) read_obj(CONST(tpl_stm_core_id, OS_APPL_DATA) coreid_t
 
   if ((INSTANCE(trans_table[coreid_tx2].status) == instance) && (STATUS(trans_table[coreid_tx2].status) < TXS_INACTIVE))
   {
-	//ATOMIC
+	/* ATOMIC */
 	if (trans_table[coreid_tx1].read_set[object_id] == &object_table[object_id])
 		trans_table[coreid_tx1].read_set[object_id] = object_table[object_id].copy_table[read_copy_index];
   }
@@ -242,7 +242,7 @@ uint32 instance;
 	update(writer_table[object_id], object_id);
   }
 
-  //ATOMIC(&trans_table[core_id].read_set[object_id], NULL, &object_table[object_id]);  /*inutile car déjà initialisé ainsi dans le template STM-HRT*/
+  /* ATOMIC(&trans_table[core_id].read_set[object_id], NULL, &object_table[object_id]);  // inutile car déjà initialisé ainsi dans le template STM-HRT */
   instance = INSTANCE(trans_table[core_id].status);
   read_obj(core_id, core_id, object_id, instance);
   SET_ACCESS_VECTOR(trans_table[core_id].access_vector, object_id);

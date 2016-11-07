@@ -32,9 +32,7 @@
  * $URL$
  */
 
-#include "config.h" /*Display information in the right way (printf on UNIX...)*/
 #include "tpl_os.h"
-#include "embUnit.h"
 
 TestRef EventMechanismTest_seq5_t1_instance(void);
 TestRef EventMechanismTest_seq5_t2_instance(void);
@@ -71,7 +69,7 @@ TASK(t3)
 
 TASK(t4)
 {
-	stdimpl_print("error instance");
+	addFailure("error instance", __LINE__, __FILE__);
 }
 
 TASK(t5)
@@ -80,9 +78,11 @@ TASK(t5)
 	ShutdownOS(E_OK);
 }
 
-ISR(isr1)
+ISR(softwareInterruptHandler0)
 {
 	TestRunner_runTest(EventMechanismTest_seq5_isr1_instance());
 }
+UNUSED_ISR(softwareInterruptHandler1)
+UNUSED_ISR(softwareInterruptHandler2)
 
 /* End of file events_s5/events_s5.c */

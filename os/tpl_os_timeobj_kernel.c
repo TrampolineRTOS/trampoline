@@ -404,6 +404,60 @@ FUNC(void, OS_CODE) tpl_counter_tick(
   }
 }
 
+#if TPL_OPTIMIZE_TICKS == YES
+FUNC(tpl_tick, OS_CODE) tpl_time_before_next_tick(
+  P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter)
+{
+  P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)  t_obj;
+  VAR(tpl_tick, AUTOMATIC)                      date;
+
+  t_obj = counter->next_to;
+  if(counter->next_to == NULL) return -1; /* FIXME : 0 is a possible value */
+
+  /* FIXME : Ternaire ? */
+  date = counter->next_to->date;
+  if(date < counter->current_date){
+    date += counter->max_allowed_value + 1;
+  }
+  date -= counter->current_date;
+
+  return (date - 1 ) * counter->ticks_per_base
+       + (counter->ticks_per_base - counter->current_tick);
+}
+
+FUNC(void, OS_CODE) tpl_increment_counter(
+  P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter,
+  VAR(tpl_tick, AUTOMATIC) ticks)
+{
+  VAR(tpl_tick, AUTOMATIC) date;
+  VAR(tpl_tick, AUTOMATIC) i;
+
+  if (tpl_counters_enabled)
+  {
+    /* FIXME Should be done without a for */
+    for(i = 0; i < ticks; i++)
+    {
+      /*  inc the current tick value of the counter     */
+      counter->current_tick++;
+      /*  if tickperbase is reached, the counter is inc */
+      if (counter->current_tick == counter->ticks_per_base)
+      {
+        date = counter->current_date;
+        date++;
+        if (date > counter->max_allowed_value)
+        {
+          date = 0;
+        }
+        counter->current_date = date;
+        counter->current_tick = 0;
+
+        TRACE_COUNTER(counter)
+      }
+    }
+  }
+}
+#endif
+
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 

@@ -41,7 +41,7 @@
 
 extern FUNC(void, OS_CODE) tpl_init_pit(void);
 
-#if 0
+#if 0 /* Moved to generated functions */
 extern FUNC(void, OS_CODE) tpl_load_pit(
   VAR(uint8, AUTOMATIC) pit,
   VAR(uint32, AUTOMATIC) ticks);

@@ -35,10 +35,8 @@
 
 /*Instance of task isr1*/
 
-#include "embUnit.h"
 #include "Os.h"
 
-void tpl_send_it2(void);
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/
@@ -49,7 +47,7 @@ static void test_isr1_instance(void)
 	
 	/*check interrupts disabled*/
 	SCHEDULING_CHECK_STEP(3);
-	tpl_send_it2();
+	sendSoftwareIt(0, SOFT_IRQ1);
 	
 	SCHEDULING_CHECK_STEP(4);
 	

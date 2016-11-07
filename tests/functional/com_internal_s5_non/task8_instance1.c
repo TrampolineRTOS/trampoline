@@ -34,7 +34,6 @@
 
 /*Instance of task t8*/
 
-#include "embUnit.h"
 #include "tpl_os.h"
 #include "config.h" /*Display information in the right way (printf on UNIX...)*/
 

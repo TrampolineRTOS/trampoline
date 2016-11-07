@@ -17,6 +17,12 @@ let data_size_hash["16BIT"]             := "16"
 let data_size_hash["8BIT"]              := "08"
 let data_size_hash["BOOLEAN"]           := "BO"
 let data_size_hash["UNSPECIFIED"]       := "UN"
+
+# Create a default application if there is none
+if [APPLICATIONS length] == 0 then
+  let default_application := @{ NAME : "DefaultApplication" }
+  let APPLICATIONS += default_application
+end if
 %
 
 #  /******************************\
@@ -121,16 +127,16 @@ let data_size_hash["UNSPECIFIED"]       := "UN"
 
 ## STATIC RAM
 +def sram_base=0x40000000 # Data, bss, task stacks
-+def sram_size=0x00009E00
-+def heap_base=0x40009E00
-+def heap_size=0x00000100
-+def heap_pend=0x40009F00
-+def stack_base=0x40009F00
-+def stack_size=0x80
-+def stack_pend=0x40009F80
-+def stack_p1_base=0x40009F80
-+def stack_p1_size=0x80
-+def stack_p1_pend=0x4000A000
++def sram_size=0x00010000
++def heap_base=0x4000D000 # Heap Unused
++def heap_size=0x00001000 # Heap Unused
++def heap_pend=0x4000E000 # Heap Unused
++def stack_base=0x4000E000
++def stack_size=0x1000
++def stack_pend=0x4000F000
++def stack_p1_base=0x4000F000
++def stack_p1_size=0x1000
++def stack_p1_pend=0x40010000
 
 +def sram2_base=0x50000000
 +def sram2_size=0x00010000
@@ -628,4 +634,40 @@ end loop
 #             Include files
 
 @*
+
+#===========================================
+#             Include cosmic libraries
+%
+let csmc_float_lib := "libf.ppc"
+let csmc_int_lib := "libi.ppc"
+let csmc_machine_lib := "libm.ppc"
+if exists OS::USEVLE default (false) then
+  let csmc_float_lib := "libfv.ppc"
+  let csmc_int_lib := "libiv.ppc"
+  let csmc_machine_lib := "libmv.ppc"
+end if
+
+let usefloat := false
+if exists OS::HASFLOAT default (false) then
+  foreach task in TASKS do
+    if exists task::USEFLOAT default (false) then
+      let usefloat := true
+    end if
+  end foreach
+
+  foreach isr in ISRS do
+    if exists isr::USEFLOAT default (false) then
+      let usefloat := true
+    end if
+  end foreach
+end if
+
+if usefloat then%
+# Float library
+% !csmc_float_lib
+end if%
+# Integer library
+% !csmc_int_lib %
+# Machine library
+% !csmc_machine_lib %
 

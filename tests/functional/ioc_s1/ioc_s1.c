@@ -34,7 +34,6 @@
 
 #include "ioc_types.h"
 #include "Os.h"
-#include "embUnit.h"
 /*#include "test_hal.h"*/
 
 #define APP_Task_t1_START_SEC_CODE
@@ -122,7 +121,7 @@ TASK(t2)
     }
     default:
     {
-      stdimpl_print("Instance error \n");
+      addFailure("Instance error \n", __LINE__, __FILE__);
       break;
     }
   }

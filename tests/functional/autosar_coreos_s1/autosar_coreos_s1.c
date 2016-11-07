@@ -33,7 +33,6 @@
  */
 
 #include "Os.h"
-#include "embUnit.h"
 
 TestRef AutosarCOREOSTest_seq1_t1_instance(void);
 TestRef AutosarCOREOSTest_seq1_error_instance1(void);
@@ -69,7 +68,7 @@ void ErrorHook(void)
 		}
 		default:
 		{
-			stdimpl_print("instance error\n");
+			addFailure("instance error\n", __LINE__, __FILE__);
 			break;
 		}
 	}
@@ -89,6 +88,6 @@ TASK(t1)
 
 TASK(t2)
 {
-	stdimpl_print("instance error\n");
+	addFailure("instance error\n", __LINE__, __FILE__);
 }
 /* End of file autosar_coreos_s1/autosar_coreos_s1.c */

@@ -33,7 +33,6 @@
  */
 
 #include "Os.h"
-#include "embUnit.h"
 
 TestRef AutosarSCTest_seq4_t1_instance(void);
 TestRef AutosarSCTest_seq4_isr1_instance(void);
@@ -62,9 +61,11 @@ TASK(t1)
 	ShutdownOS(E_OK);
 }
 
-ISR(isr1)
+ISR(softwareInterruptHandler0)
 {
 	TestRunner_runTest(AutosarSCTest_seq4_isr1_instance());
 }
+UNUSED_ISR(softwareInterruptHandler1)
+UNUSED_ISR(softwareInterruptHandler2)
 
 /* End of file autosar_sc_s4/autosar_sc_s4.c */

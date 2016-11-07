@@ -34,7 +34,6 @@
 
 /*Instance 6 of error*/
 
-#include "embUnit.h"
 #include "Os.h"
 
 DeclareCounter(INVALID_COUNTER);

@@ -34,11 +34,8 @@
 
 /*Instance of interruption isr1*/
 
-#include "embUnit.h"
 #include "tpl_os.h"
 
-void tpl_send_it2(void);
-void tpl_send_it3(void);
 
 /*test case:test the reaction of the system called with 
 an activation of a isr*/
@@ -50,15 +47,15 @@ static void test_isr1_instance(void)
 	EnableAllInterrupts();
 	
 	DisableAllInterrupts();
-	tpl_send_it2();
-	tpl_send_it2();
-	tpl_send_it2();
+	sendSoftwareIt(0, SOFT_IRQ1);
+	sendSoftwareIt(0, SOFT_IRQ1);
+	sendSoftwareIt(0, SOFT_IRQ1);
 	
 	EnableAllInterrupts();
 	
 	SCHEDULING_CHECK_STEP(14);
 	
-	tpl_send_it2();
+	sendSoftwareIt(0, SOFT_IRQ1);
 	
 	SCHEDULING_CHECK_STEP(16);
 	
@@ -67,7 +64,7 @@ static void test_isr1_instance(void)
 	SuspendAllInterrupts();
 	SuspendAllInterrupts();
 	SuspendAllInterrupts();
-	tpl_send_it2();
+	sendSoftwareIt(0, SOFT_IRQ1);
 	
 	ResumeAllInterrupts();
 	ResumeAllInterrupts();
@@ -75,7 +72,7 @@ static void test_isr1_instance(void)
 	
 	SCHEDULING_CHECK_STEP(18);
 	
-	tpl_send_it2();
+	sendSoftwareIt(0, SOFT_IRQ1);
 	
 	SCHEDULING_CHECK_STEP(20);
 	
@@ -84,7 +81,7 @@ static void test_isr1_instance(void)
 	SuspendOSInterrupts();
 	SuspendOSInterrupts();
 	SuspendOSInterrupts();
-	tpl_send_it2();
+	sendSoftwareIt(0, SOFT_IRQ1);
 	
 	ResumeOSInterrupts();
 	ResumeOSInterrupts();
@@ -92,7 +89,7 @@ static void test_isr1_instance(void)
 	
 	SCHEDULING_CHECK_STEP(22);
 	
-	tpl_send_it3();
+	sendSoftwareIt(0, SOFT_IRQ2);
 	
 	SCHEDULING_CHECK_STEP(26);
 	

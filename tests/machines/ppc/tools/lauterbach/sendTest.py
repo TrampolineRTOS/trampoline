@@ -33,11 +33,14 @@ parser.add_argument('-d', metavar="testDir", type=str, nargs=1,
                     required=True, help='test directory')
 parser.add_argument('-e', metavar="exe", type=str, nargs=1,
                     required=True, help='executable name')
+parser.add_argument('-o', metavar="orti", type=str, nargs=1,
+                    required=True, help='orti file')
 args = parser.parse_args()
 
 # Get arguments
 testDir = args.d.pop(0)
 exe = args.e.pop(0)
+orti = args.o.pop(0)
 
 # Load t32 library
 if ctypes.sizeof(ctypes.c_voidp)==4:
@@ -56,6 +59,7 @@ t32api.T32_Attach(1)
 # Set application path and exe name in lauterbach.cmm
 t32api.T32_Cmd(b"&appPath=\"" + testDir + "\"")
 t32api.T32_Cmd(b"&exeName=\"" + exe + "\"")
+t32api.T32_Cmd(b"&ortiPath=\"" + orti + "\"")
 # Run lauterbach.cmm
 t32api.T32_Cmd(b"do lauterbach.cmm")
 

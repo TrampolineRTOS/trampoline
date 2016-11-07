@@ -44,6 +44,9 @@ extern void test_toggle(void);
 #if TASK_COUNT > 0
 extern FUNC(void, OS_CODE) CallTerminateTask(void);
 #endif
+#if ISR_COUNT > 0
+extern FUNC(void, OS_CODE) CallTerminateISR2();
+#endif
 
 /*
  * Kernel entry counter

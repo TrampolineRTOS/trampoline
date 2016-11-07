@@ -35,13 +35,10 @@
 
 /*Instance of task isr1*/
 
-#include "embUnit.h"
 #include "Os.h"
 
 DeclareResource(Resource1);
 
-void tpl_send_it2(void);
-void tpl_send_it3(void);
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/
@@ -53,11 +50,11 @@ static void test_isr1_instance1(void)
 	result_inst_1 = GetResource(Resource1);	
 	SCHEDULING_CHECK_AND_EQUAL_INT(2,E_OK, result_inst_1);
 	
-	tpl_send_it2();
+	sendSoftwareIt(0, SOFT_IRQ1);
 	
 	SCHEDULING_CHECK_STEP(3);
 	
-	tpl_send_it3();
+	sendSoftwareIt(0, SOFT_IRQ2);
 	
 	SCHEDULING_CHECK_STEP(5);	
 	

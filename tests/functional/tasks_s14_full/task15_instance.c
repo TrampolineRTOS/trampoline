@@ -34,7 +34,6 @@
 
 /*Instance of task t15*/
 
-#include "embUnit.h"
 #include "tpl_os.h"
 
 DeclareEvent(Task15_Event1);

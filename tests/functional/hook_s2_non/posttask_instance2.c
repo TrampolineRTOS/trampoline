@@ -34,7 +34,6 @@
 
 /*Instance 2 of posttask hook routine*/
 
-#include "embUnit.h"
 #include "tpl_os.h"
 
 DeclareAlarm(Alarm1);

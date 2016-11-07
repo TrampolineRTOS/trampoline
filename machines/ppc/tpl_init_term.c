@@ -33,7 +33,8 @@
 #include "tpl_os_error.h"
 #include "tpl_os.h"
 
-extern P2FUNC(void, OS_CODE, CallTerminateTask);
+extern FUNC(void, OS_CODE) CallTerminateTask();
+extern FUNC(void, OS_CODE) CallTerminateISR2();
 
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"

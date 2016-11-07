@@ -34,7 +34,6 @@
 
 /*Instance of task t8*/
 
-#include "embUnit.h"
 #include "tpl_os.h"
 
 DeclareEvent(Task8_Event1);

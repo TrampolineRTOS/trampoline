@@ -35,13 +35,14 @@
 OIL_VERSION = "2.5" : "tasks_s1" ;
 
 #include <arch.oil>
+#include <softwareIT.oil>
 
 IMPLEMENTATION trampoline {
 
   OS {
     ENUM [EXTENDED] STATUS;
   };
- 
+
   TASK {
     UINT32 [1..10] PRIORITY = 1 ;
   };
@@ -77,11 +78,10 @@ CPU test {
     ACTIVATION = 1;
     SCHEDULE = FULL;
   };
-  
-  ISR isr1 {
+
+  ISR softwareInterruptHandler0 {
     CATEGORY = 2;
     PRIORITY = 1;
-    SOURCE = SIGTERM;
   };
 };
 

@@ -33,8 +33,6 @@
  */
 
 #include "tpl_os.h"
-#include "embUnit.h"
-#include "config.h" /*for stdimpl_print*/
 
 TestRef InterruptProcessingTest_seq6_t1_instance(void);
 TestRef InterruptProcessingTest_seq6_isr1_instance(void);
@@ -167,7 +165,7 @@ void ErrorHook(StatusType error)
 		}		
 		default:
 		{
-			stdimpl_print("Instance error");
+			addFailure("Instance error", __LINE__, __FILE__);
 			break;
 		}
 	}
@@ -183,12 +181,12 @@ TASK(t1)
 
 TASK(t2)
 {
-	stdimpl_print("instance error");
+	addFailure("instance error", __LINE__, __FILE__);
 }
 
 TASK(t3)
 {
-	stdimpl_print("instance error");
+	addFailure("instance error", __LINE__, __FILE__);
 }
 
 /* End of file interrupts_s6/interrupts_s6.c */

@@ -34,7 +34,6 @@
 
 /*Instance of task t1*/
 
-#include "embUnit.h"
 #include "tpl_os.h"
 
 DeclareAlarm(Alarm1);
@@ -42,7 +41,6 @@ DeclareEvent(Event1);
 DeclareResource(Resource1);
 DeclareTask(t2);
 
-void tpl_send_it1(void);
 
 /*test case:test the reaction of the system called with 
 an activation of a task*/

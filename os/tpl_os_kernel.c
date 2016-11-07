@@ -1155,7 +1155,7 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
     if (tpl_task_app_mode[i] & app_mode_mask)
     {
 # if NUMBER_OF_CORES > 1
-      // In multicore, we must check if the task belongs to the core
+      /* In multicore, we must check if the task belongs to the core */
       if (tpl_stat_proc_table[i]->core_id == core_id)
 # endif
       {
@@ -1174,7 +1174,7 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
     {
       auto_time_obj = (P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA))tpl_alarm_table[i];
 # if (NUMBER_OF_CORES > 1) && (WITH_OSAPPLICATION == YES)
-      // In multicore, we must check if the alarm belongs to the core
+      /* In multicore, we must check if the alarm belongs to the core */
       if (tpl_core_id_for_app[auto_time_obj->stat_part->app_id] == core_id)
 # endif
       {
@@ -1195,7 +1195,7 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
       auto_time_obj =
         (P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA))tpl_schedtable_table[i];
 # if (NUMBER_OF_CORES > 1) && (WITH_OSAPPLICATION == YES)
-      // In multicore, we must check if the schedule table belongs to the core
+      /* In multicore, we must check if the schedule table belongs to the core */
       if (tpl_core_id_for_app[auto_time_obj->stat_part->app_id] == core_id)
 # endif
       {

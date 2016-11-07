@@ -34,7 +34,6 @@
 
 /*Instance of task t3*/
 
-#include "embUnit.h"
 #include "tpl_os.h"
 
 DeclareMessage(rm_setevent);
