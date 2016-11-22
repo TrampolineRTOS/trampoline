@@ -153,7 +153,7 @@ void arm_cmd_vars(int argc, char **argv) {
 		tpl_proc_state save_proc_state;
 
 	if (argc != 1) {
-		arm_puts ("startos: no parameters required\n");
+		arm_puts ("vars: no parameters required\n");
 		return;
 	}
 
