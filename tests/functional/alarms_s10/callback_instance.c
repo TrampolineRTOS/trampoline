@@ -47,7 +47,7 @@ static void test_callback_instance(void)
 	
 	SCHEDULING_CHECK_INIT(2);
 	result_inst_1 = ActivateTask(t2);
-	SCHEDULING_CHECK_AND_EQUAL_INT(3,E_OK, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(3, E_OS_CALLEVEL, result_inst_1);
 
 	
 }

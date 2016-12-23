@@ -29,6 +29,7 @@ static char  cmdline[1024];
 #define MSG_TX_ENVOI_POSITION        "digitalWrite"
 #define MSG_TX_ENVOI_DIRECTION_HIGH  "HIGH"
 #define MSG_TX_ENVOI_DIRECTION_LOW   "LOW"
+#define MSG_TX_ENVOI_DIRECTION_NO    "NO"
 
 /* Les ports utilisés */
 #define MSG_TX_PORT_A0             "A0"
@@ -133,7 +134,11 @@ TASK(control) {
 	if (dir == 1) {
 		arm_puts(MSG_TX_ENVOI_DIRECTION_LOW);
 	} else {
+		if (dir == 2) {
+			arm_puts(MSG_TX_ENVOI_DIRECTION_NO);
+		} else {
 		arm_puts(MSG_TX_ENVOI_DIRECTION_HIGH);
+		}
 	}
 	arm_puts(MSG_TX_FIN);
 
