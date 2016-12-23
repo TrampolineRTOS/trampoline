@@ -39,15 +39,14 @@
 /**
  * @def SIZE_OF_IDLE_TASK
  *
- * The size of the stack of the idle task which is also the stack
- * used for machine startup
+ * The size of the stack of the idle task
  */
 #define IDLE_STACK_SIZE  300
 
 struct TPL_CONTEXT {
 	arm_core_context	*cc;
 #ifdef WITH_FLOAT
-    arm_float_context	*fc;
+  arm_float_context	*fc;
 #endif
 };
 

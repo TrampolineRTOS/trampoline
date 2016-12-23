@@ -34,7 +34,7 @@ CPU thumb2_ressource {
   PLATFORM_FILES cortex {
     PATH = "cortex";
     CFILE = "tpl_machine_cortex.c";
-    CFILE = "tpl_system_call.S";
+    CFILE = "tpl_sc_handler.S";
     CFILE = "tpl_ctx_switch.S";
     CFILE = "tpl_startup.S";
   };
@@ -43,20 +43,124 @@ CPU thumb2_ressource {
     PATH = "cortex/CMSIS/Include";
   };
 
-  INTERRUPT InitialSPValue { VECT = 0; EXCEPTION = TRUE; VECTOR_TYPE = REFERENCE { NAME = "&_estack"; }; ACK = FALSE; };
-  INTERRUPT Reset          { VECT = 1; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "tpl_reset_handler"; }; };
-  INTERRUPT NMI            { VECT = 2; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NMI_Handler"; }; };
-  INTERRUPT HardFault      { VECT = 3; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "HardFault_Handler"; }; };
-  INTERRUPT MemManage      { VECT = 4; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "MemManage_Handler"; }; };
-  INTERRUPT BusFault       { VECT = 5; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "BusFault_Handler"; }; };
-  INTERRUPT UsageFault     { VECT = 6; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "UsageFault_Handler"; }; };
-  INTERRUPT Reserved1      { VECT = 7; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
-  INTERRUPT Reserved2      { VECT = 8; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
-  INTERRUPT Reserved3      { VECT = 9; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
-  INTERRUPT Reserved4      { VECT = 10; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
-  INTERRUPT SVCall         { VECT = 11; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "tpl_primary_syscall_handler"; }; };
-  INTERRUPT DebugMonitor   { VECT = 12; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "DebugMonitor_Handler"; }; };
-  INTERRUPT Reserved5      { VECT = 13; EXCEPTION = TRUE; VECTOR_TYPE = HANDLER { NAME =  "NONE"; }; };
-  INTERRUPT PendSV         { VECT = 14; VECTOR_TYPE = HANDLER { NAME =  "PendSV_Handler"; }; };
+  INTERRUPT InitialSPValue {
+    VECT = 0;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = REFERENCE {
+      NAME = "&_estack";
+    };
+    ACK = FALSE;
+  };
+
+  INTERRUPT Reset {
+    VECT = 1;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "tpl_reset_handler";
+    };
+  };
+  
+  INTERRUPT NMI {
+    VECT = 2;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "NMI_Handler";
+    };
+  };
+  
+  INTERRUPT HardFault {
+    VECT = 3;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "HardFault_Handler";
+    };
+  };
+  
+  INTERRUPT MemManage {
+    VECT = 4;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "MemManage_Handler";
+    };
+  };
+  
+  INTERRUPT BusFault {
+    VECT = 5;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "BusFault_Handler";
+    };
+  };
+  
+  INTERRUPT UsageFault {
+    VECT = 6;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "UsageFault_Handler";
+    };
+  };
+  
+  INTERRUPT Reserved1 {
+    VECT = 7;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "NONE";
+    };
+  };
+
+  INTERRUPT Reserved2 {
+    VECT = 8;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "NONE";
+    };
+  };
+  
+  INTERRUPT Reserved3 {
+    VECT = 9;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "NONE";
+    };
+  };
+  
+  INTERRUPT Reserved4 {
+    VECT = 10;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "NONE";
+    };
+  };
+
+  INTERRUPT SVCall {
+    VECT = 11;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "tpl_sc_handler";
+    };
+  };
+
+  INTERRUPT DebugMonitor {
+    VECT = 12;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "DebugMonitor_Handler";
+    };
+  };
+
+  INTERRUPT Reserved5 {
+    VECT = 13;
+    EXCEPTION = TRUE;
+    VECTOR_TYPE = HANDLER {
+      NAME = "NONE";
+    };
+  };
+
+  INTERRUPT PendSV {
+    VECT = 14;
+    VECTOR_TYPE = HANDLER {
+      NAME = "PendSV_Handler";
+    };
+  };
 };
 
