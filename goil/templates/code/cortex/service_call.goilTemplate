@@ -6,15 +6,13 @@
 .type   % !exists api_func::ACTUAL default ( api_func::NAME ) %, \%function
 % !exists api_func::ACTUAL default ( api_func::NAME ) %:
     /*-------------------------------------------------------------------------
-     * Check the VECTACTIVE field of the ICSR
-     * (Interrupt Control and Status Register)
+     * Check the ISR_NUMBER field of the PSR
      * If 0 we are in thread mode and the system call is done by a svc
      * If not 0 we are in handler mode and the system call is done by
      * a function call
      */
-    ldr  r3,=SCB
-    ldr  r3,[r3,#ICSR]
-    ldr  r12,=VECTACTIVE_MASK
+    mrs  r3,PSR
+    ldr  r12,=ISR_NUMBER_MASK
     ands r3,r3,r12
     bne  % !api_func::NAME %_direct_call
     /*-------------------------------------------------------------------------
