@@ -1,2 +1,4 @@
-	.extern nested_kernel_entrance_counter
+.equ SCB, 0xE000ED00
+.equ ICSR, 0x04
+.equ VECTACTIVE_MASK, 0x000001FF
 

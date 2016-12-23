@@ -1,47 +1,39 @@
- /* 
+
+ /*============================================================================
   * Service % !api_func::NAME %
   */
 .global % !exists api_func::ACTUAL default ( api_func::NAME ) %
 .type   % !exists api_func::ACTUAL default ( api_func::NAME ) %, \%function
 % !exists api_func::ACTUAL default ( api_func::NAME ) %:
-  /* manage reentrance of kernel */
-  ldr r3, =nested_kernel_entrance_counter
-  ldr r3, [r3]
-  cmp r3,#1 /* If nested_kernel_entrance_counter is greater or equal than 1 */
-            /* then we are in Handler mode and we must call the service with a direct call to the function */
-  beq % !api_func::NAME %_direct_call%
-# The service is called by a SVC or a PendSV depending on the value of api_func::CALLABLE_BY_ISR1
-%
-% !api_func::NAME %_exception_call:
-%
-if not api_func::CALLABLE_BY_ISR1 then
-%
-  /* Exception call to the service : use SVC exception */
-  movs r3,#% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME %
-  svc #% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME
-else
-%  /* Exception call to the service :
-   * If the call comes from an ISR1 then use direct call
-   * Else the call comes from a task or an ISR2 and then use the svc exception
-   */
-  ldr r3, =service_call_from_isr1
-  cmp r3, #0
-  bcs % !api_func::NAME %_direct_call
-  /* Exception call to the service : use SVC exception */
-  movs r3,#% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME %
-  svc #% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME
-end if
-%
-  b % !api_func::NAME %_exit_call
-  /* Procedural call to the service */
+    /*-------------------------------------------------------------------------
+     * Check the VECTACTIVE field of the ICSR
+     * (Interrupt Control and Status Register)
+     * If 0 we are in thread mode and the system call is done by a svc
+     * If not 0 we are in handler mode and the system call is done by
+     * a function call
+     */
+    ldr  r3,=SCB
+    ldr  r3,[r3,#ICSR]
+    ldr  r12,=VECTACTIVE_MASK
+    ands r3,r3,r12
+    bne  % !api_func::NAME %_direct_call
+    /*-------------------------------------------------------------------------
+     * We are in thread mode so we set r3 to the identifier of the service
+     * and we do a svc
+     */
+    movs r3,#% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME %
+    svc  #% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME%
+    /*-------------------------------------------------------------------------
+     * return from the service wrapper
+     */
+    bx   lr
 % !api_func::NAME %_direct_call:
-  /* get the appropriate system call address into R3 */
-  ldr r3, =tpl_dispatch_table
-  ldr r3, [r3, #% !api_sec::ID_PREFIX %ServiceId_% !api_func::NAME %<<2]
-  /* call the service  */
-  push {lr}
-  blx r3
-  pop {pc}
-  /* Function call */
-% !api_func::NAME %_exit_call:
-  bx lr
+    /*-------------------------------------------------------------------------
+     * We are in handler mode so we do a simple function call
+     */
+    push {lr}
+    bl   % !api_func::KERNEL%
+    /*-------------------------------------------------------------------------
+     * return from the service wrapper
+     */
+    pop  {pc}
