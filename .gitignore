@@ -10,3 +10,12 @@
 *.dep
 ##Mac OS X stuff
 .DS_Store
+##LaTeX stuff
+*.aux
+*.log
+*.idx
+*.bbl
+*.blg
+*.synctex.gz
+*.toc
+*.out
