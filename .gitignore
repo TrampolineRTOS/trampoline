@@ -8,4 +8,5 @@
 ##build stuff
 *.o
 *.dep
-
+##Mac OS X stuff
+.DS_Store
