@@ -206,6 +206,9 @@ FUNC(void, OS_CODE) tpl_init_context(
   l_tpl_context->gpr10 =
   l_tpl_context->gpr11 = OS_STACK_PATTERN;
 
+  /*
+   * Paint the registers on the exception frame : r0, r1, r2, r3 and r12
+   */
   for (i = 0; i < GPR_ON_EXCEPTION_FRAME; i++)
   {
     exception_frame[i] = OS_STACK_PATTERN;

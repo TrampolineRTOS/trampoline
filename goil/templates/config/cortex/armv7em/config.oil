@@ -16,6 +16,11 @@ CPU armv7em {
     CFILE = "tpl_vectors.c";
     CFILE = "tpl_external_interrupts.c";
   };
+
+  PLATFORM_FILES cortex_m4 {
+    PATH = "cortex/armv7em";
+    CFILE = "tpl_ctx_switch.S";
+  };
 };
 
 

@@ -15,6 +15,7 @@ CPU armv7m {
     CFILE = "tpl_primary_irq.S";
     CFILE = "tpl_vectors.c";
     CFILE = "tpl_external_interrupts.c";
+    CFILE = "tpl_ctx_switch.S";
   };
 };
 
