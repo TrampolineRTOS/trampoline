@@ -96,7 +96,7 @@
 
 /*=============================================================================
  * tpl_save_context is used to save the context of the running task.
- * It is used from the system call handler and from interrupt handlers.
+ * It is used from the system call handler.
  *
  * r0 contains a pointer to the static descriptor of the running task.
  * r1-r3 are working registers
@@ -192,7 +192,7 @@ tpl_load_context:
      * Load the PSP
      */
     ldr r2,[r1,#CTX_PSP]
-    msr PSP,r2
+    msr psp,r2
 
     bx   lr
 

@@ -72,7 +72,7 @@
  * The system call handler assumes the following:
  *
  * 1 - The process stack is populated according to the Cortex M standard
- * 
+ *
  * +------------------+
  * | R0               | <- PSP
  * +------------------+
@@ -249,3 +249,7 @@ tpl_sc_handler_invalid_service_id:
      */
     bx lr
 
+#define OS_STOP_SEC_CODE
+#include "tpl_as_memmap.h"
+
+/* End of file tpl_sc_handler.S */

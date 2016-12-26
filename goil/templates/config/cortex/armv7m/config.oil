@@ -17,6 +17,12 @@ CPU armv7m {
     CFILE = "tpl_external_interrupts.c";
     CFILE = "tpl_ctx_switch.S";
   };
+
+  PLATFORM_FILES cortex_m3 {
+    PATH = "cortex/armv7m";
+    CFILE = "tpl_ctx_switch.S";
+    CFILE = "tpl_ctx_switch_under_it.S";
+  };
 };
 
 

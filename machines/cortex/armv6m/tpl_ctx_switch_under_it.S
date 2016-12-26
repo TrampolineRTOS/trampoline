@@ -1,5 +1,5 @@
 /**
- * @file tpl_ctx_switch.S
+ * @file tpl_ctx_switch_under_it.S
  *
  * @section descr File description
  *
@@ -60,54 +60,52 @@
  * The second part is stored in a structure defined in tpl_machine_cortex.h   *
  * with a pointer from the static task descriptor                             *
  * +------------------+                                                       *
- * | R4               | <- CTX_GPR4                                           *
+ * | R4               | <- CTX_GPR4 (0)                                       *
  * +------------------+                                                       *
- * | R5               | <- CTX_GPR5                                           *
+ * | R5               | <- CTX_GPR5 (4)                                       *
  * +------------------+                                                       *
- * | R6               | <- CTX_GPR6                                           *
+ * | R6               | <- CTX_GPR6 (8)                                       *
  * +------------------+                                                       *
- * | R7               | <- CTX_GPR7                                           *
+ * | R7               | <- CTX_GPR7 (12)                                      *
  * +------------------+                                                       *
- * | R8               | <- CTX_GPR8                                           *
+ * | R8               | <- CTX_GPR8 (16)                                      *
  * +------------------+                                                       *
- * | R9               | <- CTX_GPR9                                           *
+ * | R9               | <- CTX_GPR9 (20)                                      *
  * +------------------+                                                       *
- * | R10              | <- CTX_GPR10                                          *
+ * | R10              | <- CTX_GPR10 (24)                                     *
  * +------------------+                                                       *
- * | R11              | <- CTX_GPR11                                          *
+ * | R11              | <- CTX_GPR11 (28)                                     *
  * +------------------+                                                       *
- * | PSP (R13)        | <- CTX_PSP                                            *
+ * | PSP (R13)        | <- CTX_PSP (32)                                       *
  * +------------------+                                                       *
  *----------------------------------------------------------------------------*
  */
 
- #define CTX_GPR4    0
- #define CTX_GPR5    4
- #define CTX_GPR6    8
- #define CTX_GPR7    12
- #define CTX_GPR8    16
- #define CTX_GPR9    20
- #define CTX_GPR10   24
- #define CTX_GPR11   28
- #define CTX_PSP     32
+#define CTX_GPR4    0
+#define CTX_GPR5    4
+#define CTX_GPR6    8
+#define CTX_GPR7    12
+#define CTX_GPR8    16
+#define CTX_GPR9    20
+#define CTX_GPR10   24
+#define CTX_GPR11   28
+#define CTX_PSP     32
 
- #define INT_CONTEXT   0
- #define FLOAT_CONTEXT 4
+#define INT_CONTEXT   0
+#define FLOAT_CONTEXT 4
 
 /*=============================================================================
- * tpl_save_context is used to save the context of the running task.
- * It is used from the system call handler and from interrupt handlers.
+ * tpl_save_context_under_it is used to save the context of the running task.
+ * It is used from interrupt handlers.
  *
  * r0 contains a pointer to the static descriptor of the running task.
  * r1-r3 are working registers
- * values to be saved in r4 and r5 are not in these registers but have been
- * saved on the MSP.
  */
 
-.global tpl_save_context
-.type   tpl_save_context, %function
+.global tpl_save_context_under_it
+.type   tpl_save_context_under_it, %function
 
-tpl_save_context:
+tpl_save_context_under_it:
     /*-------------------------------------------------------------------------
      * Get a the pointer to the integer context from the pointer to the
      * static descriptor of the running task
@@ -115,23 +113,13 @@ tpl_save_context:
     ldr r1,[r0,#INT_CONTEXT]
 
     /*-------------------------------------------------------------------------
-     * Retrieve r4 and r5 from the stack, they have been saved in the
-     * tpl_sc_handler.
+     * Save r4-r11
      */
-    ldr r2,[sp,#KS_R4]
-    str r2,[r1,#CTX_GPR4]
-
-    /*-------------------------------------------------------------------------
-     * Retrieve r5 and save it
-     */
-    ldr r2,[sp,#KS_R5]
-    str r2,[r1,#CTX_GPR5]
-
-    /*-------------------------------------------------------------------------
-     * Save r6-r11
-     */
+    str r4,[r1,#CTX_GPR4]
+    str r5,[r1,#CTX_GPR5]
     str r6,[r1,#CTX_GPR6]
     str r7,[r1,#CTX_GPR7]
+
     /*
      * For ARMv6-M, the store instruction cannot use high registers
      * so they are copied one by one into r2 to be stored.
@@ -154,18 +142,19 @@ tpl_save_context:
     bx  lr
 
 /*=============================================================================
- * tpl_load_context is used to load the context of (not yet) the running task.
- * It is used from the system call handler and from interrupt handlers.
+ * tpl_load_context_under_it is used to load the context of (not yet)
+ * the running task.
+ *
+ * It is used from interrupt handlers.
  *
  * r0 contains a pointer to the static descriptor of the running task.
  * r1-r3 are working registers
- * values to be loaded into r4 and r5 are put in the MSP.
  */
 
-.global tpl_load_context
-.type   tpl_load_context, %function
+.global tpl_load_context_under_it
+.type   tpl_load_context_under_it, %function
 
-tpl_load_context:
+tpl_load_context_under_it:
     /*-------------------------------------------------------------------------
      * Get a the pointer to the integer context from the pointer to the
      * static descriptor of the running task
@@ -173,24 +162,13 @@ tpl_load_context:
     ldr r1,[r0,#INT_CONTEXT]
 
     /*-------------------------------------------------------------------------
-     * Put r4 into the stack. It will be put back in r4 by the tpl_sc_handler
-     * tpl_sc_handler.
+     * load r4-r11
      */
-    ldr r2,[r1,#CTX_GPR4]
-    str r2,[sp,#KS_R4]
-
-    /*-------------------------------------------------------------------------
-     * Put r5 into the stack. It will be put back in r5 by the tpl_sc_handler
-     * tpl_sc_handler.
-     */
-    ldr r2,[r1,#CTX_GPR5]
-    str r2,[sp,#KS_R5]
-
-    /*-------------------------------------------------------------------------
-     * load r6-r11
-     */
+    ldr r4,[r1,#CTX_GPR4]
+    ldr r5,[r1,#CTX_GPR5]
     ldr r6,[r1,#CTX_GPR6]
     ldr r7,[r1,#CTX_GPR7]
+
     /*
      * For ARMv6-M, the load instruction cannot use high registers
      * so they are loaded one by one into r2 to be moved into the register.
@@ -210,7 +188,7 @@ tpl_load_context:
     ldr r2,[r1,#CTX_PSP]
     msr psp,r2
 
-    bx   lr
+    bx  lr
 
 #define OS_STOP_SEC_CODE
 #include "tpl_as_memmap.h"

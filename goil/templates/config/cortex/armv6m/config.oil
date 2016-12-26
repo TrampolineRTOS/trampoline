@@ -18,6 +18,7 @@ CPU armv6m {
     PATH = "cortex/armv6m";
     CFILE = "sys_handlers.c";
     CFILE = "tpl_ctx_switch.S";
+    CFILE = "tpl_ctx_switch_under_it.S";
   };
 };
 

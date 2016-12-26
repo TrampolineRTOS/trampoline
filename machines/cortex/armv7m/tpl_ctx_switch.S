@@ -60,43 +60,43 @@
  * The second part is stored in a structure defined in tpl_machine_cortex.h   *
  * with a pointer from the static task descriptor                             *
  * +------------------+                                                       *
- * | R4               | <- CTX_GPR4                                           *
+ * | R4               | <- CTX_GPR4 (0)                                       *
  * +------------------+                                                       *
- * | R5               | <- CTX_GPR5                                           *
+ * | R5               | <- CTX_GPR5 (4)                                       *
  * +------------------+                                                       *
- * | R6               | <- CTX_GPR6                                           *
+ * | R6               | <- CTX_GPR6 (8)                                       *
  * +------------------+                                                       *
- * | R7               | <- CTX_GPR7                                           *
+ * | R7               | <- CTX_GPR7 (12)                                      *
  * +------------------+                                                       *
- * | R8               | <- CTX_GPR8                                           *
+ * | R8               | <- CTX_GPR8 (16)                                      *
  * +------------------+                                                       *
- * | R9               | <- CTX_GPR9                                           *
+ * | R9               | <- CTX_GPR9 (20)                                      *
  * +------------------+                                                       *
- * | R10              | <- CTX_GPR10                                          *
+ * | R10              | <- CTX_GPR10 (24)                                     *
  * +------------------+                                                       *
- * | R11              | <- CTX_GPR11                                          *
+ * | R11              | <- CTX_GPR11 (28)                                     *
  * +------------------+                                                       *
- * | PSP (R13)        | <- CTX_PSP                                            *
+ * | PSP (R13)        | <- CTX_PSP (32)                                       *
  * +------------------+                                                       *
  *----------------------------------------------------------------------------*
  */
 
- #define CTX_GPR4    0
- #define CTX_GPR5    4
- #define CTX_GPR6    8
- #define CTX_GPR7    12
- #define CTX_GPR8    16
- #define CTX_GPR9    20
- #define CTX_GPR10   24
- #define CTX_GPR11   28
- #define CTX_PSP     32
+#define CTX_GPR4    0
+#define CTX_GPR5    4
+#define CTX_GPR6    8
+#define CTX_GPR7    12
+#define CTX_GPR8    16
+#define CTX_GPR9    20
+#define CTX_GPR10   24
+#define CTX_GPR11   28
+#define CTX_PSP     32
 
- #define INT_CONTEXT   0
- #define FLOAT_CONTEXT 4
+#define INT_CONTEXT   0
+#define FLOAT_CONTEXT 4
 
 /*=============================================================================
  * tpl_save_context is used to save the context of the running task.
- * It is used from the system call handler and from interrupt handlers.
+ * It is used from the system call handler.
  *
  * r0 contains a pointer to the static descriptor of the running task.
  * r1-r3 are working registers
@@ -192,7 +192,7 @@ tpl_load_context:
      * Load the PSP
      */
     ldr r2,[r1,#CTX_PSP]
-    msr PSP,r2
+    msr psp,r2
 
     bx   lr
 
