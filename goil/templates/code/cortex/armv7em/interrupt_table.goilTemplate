@@ -79,10 +79,6 @@ foreach objList in objForIRQ do
   end foreach
 end foreach
 
-%
-extern volatile VAR (uint32, OS_VAR) service_call_from_isr1;
-%
-
 let indexISR2 := 0
 foreach objList in objForIRQ do
   let objList_KEY := KEY
@@ -96,9 +92,7 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
   foreach obj in objList do
     if obj::KIND == "ISR" then
       if obj::CATEGORY == 1 then
-%  service_call_from_isr1++;
-  % !obj::NAME %_function();
-  service_call_from_isr1--;
+%  %    !obj::NAME %_function();
 %
       end if
     end if

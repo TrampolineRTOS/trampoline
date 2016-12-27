@@ -7,16 +7,14 @@
  *
  * @section copyright Copyright
  *
- * Trampoline OS
+ * Trampoline RTOS
  *
- *  Trampoline is copyright (c) IRCCyN 2005-2009
- *  Autosar extension is copyright (c) IRCCyN and ESEO 2007-2009
- *  Trampoline and its Autosar extension are protected by the
- *  French intellectual property law.
+ * Trampoline is copyright (c)
+ * CNRS, University of Nantes, Ecole Centrale de Nantes
+ * Trampoline is protected by the French intellectual property law.
  *
- *  This software is distributed under a dual licencing scheme
- *  1 - The Lesser GNU Public Licence v2 (LGPLv2)
- *  2 - The BSD Licence
+ * This software is distributed under the GNU Public Licence V2.
+ * Check the LICENSE file in the root directory of Trampoline
  *
  * @section infos File informations
  *
@@ -49,7 +47,7 @@ __STATIC_INLINE FUNC(uint32, OS_CODE) tpl_configure_systick(
   if (priority > (1 << PRIO_BITS_IN_NVIC) - 1) return (E_OS_VALUE);
   /* Reload value ok, set reload register */
   SysTick->LOAD = ticks - 1;
-  /* Set priority to 14 as the SVC priority */
+  /* Set priority */
   NVIC_SetPriority(SysTick_IRQn, priority);
   /* Load the SysTick Counter Value */
   SysTick->VAL = 0;

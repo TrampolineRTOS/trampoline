@@ -41,3 +41,8 @@ write to PROJECT."/tpl_external_interrupts.c":
  let EXTENSIONSECONDSTAGE := "c"
  template if exists tpl_external_interrupts_c in code
 end write
+
+write to PROJECT."/tpl_init_it_priority.c":
+ let EXTENSIONSECONDSTAGE := "c"
+ template if exists tpl_init_it_priority_c in code
+end write

@@ -3,7 +3,7 @@
 //                                                                                                                     *
 //  This file is part of libpm library                                                                                 *
 //                                                                                                                     *
-//  Copyright (C) 2010, ..., 2015 Pierre Molinaro.                                                                     *
+//  Copyright (C) 2010, ..., 2016 Pierre Molinaro.                                                                     *
 //                                                                                                                     *
 //  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                                                                       *
 //                                                                                                                     *
@@ -72,6 +72,16 @@ void GALGAS_application::description (C_String & ioString,
 
 GALGAS_bool GALGAS_application::constructor_verboseOutput (UNUSED_LOCATION_ARGS) {
   return GALGAS_bool (verboseOutput ()) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+GALGAS_string GALGAS_application::constructor_system (UNUSED_LOCATION_ARGS) {
+  #if COMPILE_FOR_WINDOWS == 1
+    return GALGAS_string ("windows") ;
+  #else
+    return GALGAS_string ("unix") ;
+  #endif
 }
 
 //---------------------------------------------------------------------------------------------------------------------*

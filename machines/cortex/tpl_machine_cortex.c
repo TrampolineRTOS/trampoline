@@ -55,6 +55,7 @@ extern FUNC(void, OS_CODE) CallTerminateISR2();
  * Generated functions prototypes
  */
 extern FUNC(void, OS_CODE) tpl_init_external_interrupts();
+extern FUNC(void, OS_CODE) tpl_init_it_priority();
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -69,6 +70,7 @@ FUNC (void, OS_CODE) tpl_init_machine_specific (void)
 {
   tpl_set_systick_timer();
 	tpl_init_external_interrupts();
+  tpl_init_it_priority();
   /*
    * Set the SVC priority to 14
    */
@@ -82,17 +84,6 @@ FUNC (void, OS_CODE) tpl_init_machine_specific (void)
    * Execute ISB after changing CONTROL (architectural recommendation)
    */
   __ISB();
-}
-
-/*
- * As kernel mode is non-interruptible, these function does nothing
- */
-FUNC(void, OS_CODE) tpl_get_task_lock (void)
-{
-}
-
-FUNC(void, OS_CODE) tpl_release_task_lock (void)
-{
 }
 
 /**
