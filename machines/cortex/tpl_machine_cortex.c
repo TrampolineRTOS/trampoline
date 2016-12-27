@@ -70,9 +70,9 @@ FUNC (void, OS_CODE) tpl_init_machine_specific (void)
   tpl_set_systick_timer();
 	tpl_init_external_interrupts();
   /*
-   * Set the SVC priority to 6 - average
+   * Set the SVC priority to 14
    */
-  NVIC_SetPriority(SVCall_IRQn, 6);
+  NVIC_SetPriority(SVCall_IRQn, 14);
   /*
    * Switch to use PSP, unprivileged state
    */
