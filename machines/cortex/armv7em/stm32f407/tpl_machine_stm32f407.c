@@ -34,15 +34,23 @@
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
+/*
+ * The NVIC in the STM32F407 uses 4 bits to store priorities
+ */
+static const uint32 PRIO_BITS_IN_NVIC = 4;
+
 __STATIC_INLINE FUNC(uint32, OS_CODE) tpl_configure_systick(
-  CONST(uint32, AUTOMATIC) ticks)
+  CONST(uint32, AUTOMATIC) ticks,
+  CONST(uint32, AUTOMATIC) priority)
 {
   /* Reload value impossible */
-  if ((ticks - 1) > SysTick_LOAD_RELOAD_Msk) return (E_OS_VALUE);
+  if ((ticks - 1) > SysTick_LOAD_RELOAD_Msk) return (E_OS_NOFUNC);
+  /* priority impossible */
+  if (priority > (1 << PRIO_BITS_IN_NVIC) - 1) return (E_OS_VALUE);
   /* Reload value ok, set reload register */
   SysTick->LOAD = ticks - 1;
   /* Set priority to 14 as the SVC priority */
-  NVIC_SetPriority (SysTick_IRQn, 14);
+  NVIC_SetPriority(SysTick_IRQn, priority);
   /* Load the SysTick Counter Value */
   SysTick->VAL = 0;
   /* Enable SysTick IRQ and SysTick Timer */
@@ -55,8 +63,9 @@ __STATIC_INLINE FUNC(uint32, OS_CODE) tpl_configure_systick(
 
 FUNC(void, OS_CODE) tpl_set_systick_timer()
 {
-	if (tpl_configure_systick(SystemCoreClock / 1000) == E_OS_VALUE)
+	if (tpl_configure_systick(SystemCoreClock / 1000, 14) != E_OK)
 	{
+    /* Failed to initialize Systick, fall back in an infinite loop */
 		while(1);
 	}
 }
