@@ -29,6 +29,10 @@ IMPLEMENTATION thumb2_ressource {
   INTERRUPT_COUNT {
     UINT32 IT_TABLE_SIZE;
   };
+  
+  CORTEX {
+    UINT32 PRIO_BITS;
+  };
 };
 
 CPU thumb2_ressource {
