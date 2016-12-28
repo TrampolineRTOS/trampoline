@@ -35,11 +35,26 @@
 #endif
 #include "tpl_os_interrupt.h"
 
-#define OS_START_SEC_VAR_UNSPECIFIED
+#define OS_START_SEC_VAR_8BIT
+#include "tpl_memmap.h"
+
+tpl_bool tpl_isr2_disabled = FALSE;
+
+#define OS_STOP_SEC_VAR_8BIT
+#include "tpl_memmap.h"
+
+#define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
 extern void decPeriode(void);
 extern void test_toggle(void);
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+
+#define API_START_SEC_CODE
+#include "tpl_memmap.h"
 
 #if TASK_COUNT > 0
 extern FUNC(void, OS_CODE) CallTerminateTask(void);
@@ -48,7 +63,10 @@ extern FUNC(void, OS_CODE) CallTerminateTask(void);
 extern FUNC(void, OS_CODE) CallTerminateISR2();
 #endif
 
-#define OS_STOP_SEC_VAR_UNSPECIFIED
+#define API_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+#define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
 /*
@@ -57,8 +75,6 @@ extern FUNC(void, OS_CODE) CallTerminateISR2();
 extern FUNC(void, OS_CODE) tpl_init_external_interrupts();
 extern FUNC(void, OS_CODE) tpl_init_it_priority();
 
-#define OS_START_SEC_CODE
-#include "tpl_memmap.h"
 FUNC (void, OS_CODE) tpl_init_machine_generic (void)
 {
 #if WITH_MEMORY_PROTECTION == YES
@@ -84,22 +100,6 @@ FUNC (void, OS_CODE) tpl_init_machine_specific (void)
    * Execute ISB after changing CONTROL (architectural recommendation)
    */
   __ISB();
-}
-
-/**
- * Enable interrupts
- */
-void tpl_enable_interrupts(void)
-{
-  ENABLE_IRQ();
-}
-
-/**
- * Disable interrupts
- */
-void tpl_disable_interrupts(void)
-{
-  DISABLE_IRQ();
 }
 
 /*

@@ -46,6 +46,7 @@ CPU thumb2_ressource {
     CFILE = "tpl_machine_cortex.c";
     CFILE = "tpl_sc_handler.S";
     CFILE = "tpl_startup.S";
+    CFILE = "tpl_interrupts.S";
   };
   
   PLATFORM_FILES cortex_cmsis {

@@ -32,7 +32,6 @@ sort ISRS1 by PRIORITY <
 # 15 is used for all ISR2 handlers
 # 14 is used for the SVC and the SysTick
 # 1-13 are used for the ISR1
-# 0 is used for the SVC when interrupts are disabled
 
 let current_priority := 14
 let prioritizedISR1 := @()
