@@ -115,48 +115,59 @@ tpl_sc_handler:
      * 1 - The service identifier is checked to prevent crashes if it has
      *     a wrong value
      */
-    cmp  r3,#SYSCALL_COUNT
-    bhs  tpl_sc_handler_invalid_service_id
+    cmp   r3,#SYSCALL_COUNT
+    bhs   tpl_sc_handler_invalid_service_id
+
+    /*-------------------------------------------------------------------------
+     * 1a - The service identifier is checked again for xxxInterrupt services
+     *      that are callable by ISR1. If it is callable by ISR1, interrupts
+     *      are disabled.
+     */
+    cmp   r3,#SYSCALL_COUNT_ISR1
+    bhs   not_callable_by_isr1
+    cpsid i
+
+not_callable_by_isr1:
 
     /*-------------------------------------------------------------------------
      * 2 - Build the kernel stack frame, see file tpl_os_kernel_stack.h
      */
-    sub  sp,sp,#KS_FOOTPRINT
+    sub   sp,sp,#KS_FOOTPRINT
 
     /*-------------------------------------------------------------------------
      * 3 - Save working registers in the master stack frame.
      *     We need a couple of low register to work and to be compatible
      *     with armv6m. We choose r4 and r5
      */
-    str  r4,[sp,#KS_R4]
-    str  r5,[sp,#KS_R5]
+    str   r4,[sp,#KS_R4]
+    str   r5,[sp,#KS_R5]
 
     /*-------------------------------------------------------------------------
      * 4 - Save the link register, in armv6m, the source register of a store
      *     must be r0-r7, so we use r4 (already saved) to copy lr
      */
-    mov  r4,lr
-    str  r4,[sp,#KS_LR]
+    mov   r4,lr
+    str   r4,[sp,#KS_LR]
 
     /*-------------------------------------------------------------------------
      * 6 - Reset the tpl_kern variables
      */
-    ldr  r4,=tpl_kern
-    mov  r5,#NO_NEED_SWITCH_NOR_SCHEDULE
-    strb r5,[r4,#TPL_KERN_OFFSET_NEED_SWITCH]
-    strb r5,[r4,#TPL_KERN_OFFSET_NEED_SCHEDULE]
+    ldr   r4,=tpl_kern
+    mov   r5,#NO_NEED_SWITCH_NOR_SCHEDULE
+    strb  r5,[r4,#TPL_KERN_OFFSET_NEED_SWITCH]
+    strb  r5,[r4,#TPL_KERN_OFFSET_NEED_SCHEDULE]
 
     /*-------------------------------------------------------------------------
      * 7 - Get the function pointer to the service
      */
-    ldr  r4,=tpl_dispatch_table
-    lsl  r3,r3,#2
-    ldr  r3,[r4,r3]
+    ldr   r4,=tpl_dispatch_table
+    lsl   r3,r3,#2
+    ldr   r3,[r4,r3]
 
     /*-------------------------------------------------------------------------
      * 8 - Service call
      */
-    blx  r3
+    blx   r3
 
     /*-----------------------------------------------------------------------*
      * From here, r1, r2 and r3 are available as working register            *
@@ -167,41 +178,41 @@ tpl_sc_handler:
      * 9 - Copy back the result to the saved r0 on the process stack
      *     r0 is at the top of the process stack
      */
-    mrs  r4,psp
-    str  r0,[r4]
+    mrs   r4,psp
+    str   r0,[r4]
 
     /*-------------------------------------------------------------------------
      * 10 - Check the context switch condition in tpl_kern
      */
-    ldr  r4,=tpl_kern
-    ldrb r5,[r4,#TPL_KERN_OFFSET_NEED_SWITCH]
-    cmp  r5,#NO_NEED_SWITCH
-    beq  tpl_sc_handler_no_context_switch
+    ldr   r4,=tpl_kern
+    ldrb  r5,[r4,#TPL_KERN_OFFSET_NEED_SWITCH]
+    cmp   r5,#NO_NEED_SWITCH
+    beq   tpl_sc_handler_no_context_switch
 
     /*-------------------------------------------------------------------------
      * 11 - Prepare the call to tpl_run_elected by setting r0 to 0, aka no save
      */
-    movs r0,#0
+    movs  r0,#0
 
     /*-------------------------------------------------------------------------
      * 12 - Check the save condition
      */
-    movs r4,#NEED_SAVE
-    tst  r5,r4
-    beq  tpl_sc_handler_no_save_running_context /* bit of NEED_SAVE set to 0 */
+    movs  r4,#NEED_SAVE
+    tst   r5,r4
+    beq   tpl_sc_handler_no_save_running_context /* bit of NEED_SAVE set to 0 */
 
     /*-------------------------------------------------------------------------
      * 13 - Save context
      *      Load in r0 the pointer to the static descriptor of the running task
      */
-    ldr  r0,=tpl_kern
-    ldr  r0,[r0,#TPL_KERN_OFFSET_S_RUNNING]
-    bl   tpl_save_context
+    ldr   r0,=tpl_kern
+    ldr   r0,[r0,#TPL_KERN_OFFSET_S_RUNNING]
+    bl    tpl_save_context
 
     /*-------------------------------------------------------------------------
      * 14 - Prepare the call to tpl_run_elected by setting r0 to 1
      */
-    movs r0,#1
+    movs  r0,#1
 
 tpl_sc_handler_no_save_running_context:
 
@@ -210,16 +221,16 @@ tpl_sc_handler_no_save_running_context:
      *      The argument is a boolean which is true if the task is
      *      preempted. see stages 11 and 14 above.
      */
-    bl   tpl_run_elected
+    bl    tpl_run_elected
 
     /*-------------------------------------------------------------------------
      * 16 - Load context
      *      Load in r0 the pointer to the context of the running task.
      *      It has been changed by tpl_run_elected
      */
-    ldr  r0,=tpl_kern
-    ldr  r0,[r0,#TPL_KERN_OFFSET_S_RUNNING]
-    bl   tpl_load_context
+    ldr   r0,=tpl_kern
+    ldr   r0,[r0,#TPL_KERN_OFFSET_S_RUNNING]
+    bl    tpl_load_context
 
 tpl_sc_handler_no_context_switch:
 
@@ -227,27 +238,34 @@ tpl_sc_handler_no_context_switch:
      * 18 - Restore the link register from the kernel stack.
      *      Symetric of stages 4
      */
-    ldr  r4,[sp,#KS_LR]
-    mov  lr,r4
+    ldr   r4,[sp,#KS_LR]
+    mov   lr,r4
 
     /*-------------------------------------------------------------------------
      * 19 - Restore r4 and r5 from the kernel stack.
      *      Symetric of stage 3
      */
-    ldr  r5,[sp,#KS_R5]
-    ldr  r4,[sp,#KS_R4]
+    ldr   r5,[sp,#KS_R5]
+    ldr   r4,[sp,#KS_R4]
 
     /*-------------------------------------------------------------------------
      * 20 - Deallocate frame on the MSP
      */
-    add  sp,sp,#KS_FOOTPRINT
+    add   sp,sp,#KS_FOOTPRINT
+
+    /*-------------------------------------------------------------------------
+     * 20b - Enable interrupts. This can be done without checking it has been
+     *       disabled in 1a because application level interrupt masking is
+     *       done using the BASEPRI register.
+     */
+    cpsie i
 
 tpl_sc_handler_invalid_service_id:
 
     /*-------------------------------------------------------------------------
      * 21 - Return from the SVC
      */
-    bx lr
+    bx    lr
 
 #define OS_STOP_SEC_CODE
 #include "tpl_as_memmap.h"
