@@ -61,8 +61,9 @@ foreach objList in objForIRQ do
   let objList_KEY := KEY
   foreach obj in objList do
     if obj::KIND == "ISR" then
-      if obj::CATEGORY == 1 & not thereAreISR1 then
-        let thereAreISR1 := true
+      if obj::CATEGORY == 1 #& not thereAreISR1
+      then
+#        let thereAreISR1 := true
 %extern FUNC(void, OS_CODE) % !obj::NAME %_function(void);
 %
       end if
