@@ -69,7 +69,15 @@
 #include "tpl_as_memmap.h"
 
 /*=============================================================================
- * The system call handler assumes the following:
+ * The system call handler is executed when the application (Task or ISR2)
+ * executes a SVC by calling a service. The microcontroler is configured
+ * in non priviledged thread / priviledged handler with a thread (process)
+ * stack (pointed by PSP) and a handler (kernel) stack (pointed by MSP).
+ * Switching from process stack to kernel stack is done automatically when
+ * a SVC is executed and switching from the kernel stack to the process stack
+ * is done automatically when returning from the SVC handler (tpl_sc_handler).
+ *
+ * It assumes the following:
  *
  * 1 - The process stack is populated according to the Cortex M standard
  *
@@ -93,12 +101,13 @@
  *
  * 2 - The system call wrapper uses r3 to pass the identifier of the service.
  *     This identifier is used as an index in a function pointer table, each of
- *     these function pointer being a service of Trampoline
+ *     these function pointer being a service of Trampoline. Services callable
+ *     by ISR1 are the 6 first (so correspond to identifiers 0-5)
  *
  * 3 - registers r0, r1 and r2 contains, according to the ABI, the arguments
  *     of the service (in Trampoline, a service is limited to 3 arguments).
- *     As a result registers r0, r1 and r2 should not be changed by the system
- *     call handler but may be changed after the call of the service.
+ *     As a result registers r0, r1 and r2 should not be changed by the SVC
+ *     handler but may be changed after the call of the service (step 8).
  */
 
 .global tpl_sc_handler
@@ -120,12 +129,13 @@ tpl_sc_handler:
 
     /*-------------------------------------------------------------------------
      * 1a - The service identifier is checked again for xxxInterrupt services
-     *      that are callable by ISR1. If it is callable by ISR1, interrupts
-     *      are disabled.
+     *      that are callable by ISR1. If the service  is callable by ISR1,
+     *      interrupts are disabled before calling the service so that it
+     *      can't be interrupted by an ISR1.
      */
     cmp   r3,#SYSCALL_COUNT_ISR1
     bhs   not_callable_by_isr1
-    cpsid i
+    cpsid i   /* set PRIMASK */
 
 not_callable_by_isr1:
 
@@ -258,7 +268,7 @@ tpl_sc_handler_no_context_switch:
      *       disabled in 1a because application level interrupt masking is
      *       done using the BASEPRI register.
      */
-    cpsie i
+    cpsie i   /* clear PRIMASK */
 
 tpl_sc_handler_invalid_service_id:
 
