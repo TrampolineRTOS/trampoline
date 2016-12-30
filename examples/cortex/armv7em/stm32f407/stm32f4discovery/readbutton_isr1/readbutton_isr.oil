@@ -61,6 +61,17 @@ CPU readbutton_isr {
     AUTOSTART = FALSE;
   };
 
+  ALARM button_scanner {
+    COUNTER = SystemCounter;
+    ACTION = ACTIVATETASK {
+      TASK = read_button;
+    };
+    AUTOSTART = TRUE {
+      APPMODE = std;
+      ALARMTIME = 50;
+      CYCLETIME = 50;
+    };
+  };
   /*
    * Connect a category 2 ISR to the user button (the blue one)
    * of the board.

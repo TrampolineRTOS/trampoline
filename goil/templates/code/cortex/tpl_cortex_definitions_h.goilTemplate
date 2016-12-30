@@ -36,7 +36,29 @@ else
  */
 %
     let isr2_prio := (1 << CORTEX::PRIO_BITS) - 1
+    let svc_prio := isr2_prio - 1
+    let isr1_prio := 1
 %
+/*
+ * Priorities are unshifted and intended to be used in NVIC_SetPriority
+ */
+#define ISR2_IT_PRIO_UNSHIFTED%
+    tab 40 - [[isr2_prio string] length]
+    !isr2_prio
+%
+#define SVC_EXC_PRIO_UNSHIFTED%
+    tab 40 - [[svc_prio string] length]
+    !svc_prio
+%
+#define COUNTER_PRIO_UNSHIFTED%
+    tab 40 - [[svc_prio string] length]
+    !svc_prio
+%
+#define ISR1_IT_PRIO_UNSHIFTED%
+    tab 40 - [[isr1_prio string] length]
+    !isr1_prio
+%
+
 /*
  * Priorities are shifted and intended to be stored in BASEPRI
  */
@@ -45,25 +67,24 @@ else
     !isr2_prio << (8 - CORTEX::PRIO_BITS)
     tab 40
     %/* Unshifted priority: % !isr2_prio tab 70%*/%
-    let svc_prio := isr2_prio - 1
 %
-#define SVC_EXC_PRIO %
+#define SVC_EXC_PRIO%
     tab 30 - [[svc_prio << (8 - CORTEX::PRIO_BITS) string] length]
     !svc_prio << (8 - CORTEX::PRIO_BITS)
     tab 40
     %/* Unshifted priority: % !svc_prio tab 70%*/%
 %
-#define COUNTER_PRIO %
+#define COUNTER_PRIO%
     tab 30 - [[svc_prio << (8 - CORTEX::PRIO_BITS) string] length]
     !svc_prio << (8 - CORTEX::PRIO_BITS)
     tab 40
     %/* Unshifted priority: % !svc_prio tab 70%*/%
 %
-#define ISR1_IT_PRIO %
-    tab 30 - [[1 << (8 - CORTEX::PRIO_BITS) string] length]
-    !1 << (8 - CORTEX::PRIO_BITS)
+#define ISR1_IT_PRIO%
+    tab 30 - [[isr1_prio << (8 - CORTEX::PRIO_BITS) string] length]
+    !isr1_prio << (8 - CORTEX::PRIO_BITS)
     tab 40
-    %/* Unshifted priority: 1% tab 70%*/%
+    %/* Unshifted priority: % !isr1_prio tab 70%*/%
   end if
 end if
 

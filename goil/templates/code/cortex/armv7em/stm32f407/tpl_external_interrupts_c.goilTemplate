@@ -25,6 +25,7 @@
  */
 
 #include "tpl_machine.h"
+#include "tpl_cortex_definitions.h"
 
 %
 #
@@ -201,8 +202,43 @@ between%
 %
 end foreach
 
-# Program the NVIC. On this target, the priority of kernel (SVC) and Systick
-# are set to 0 (the highest available). So All priorities are set 0
+# Program the NVIC. The priority depends on the kind of object. For counters,
+# priority is set to COUNTER_PRIO_UNSHIFTED, for ISR2, it is set to
+# ISR2_IT_PRIO_UNSHIFTED and for ISR1, it is set according to the ISR1
+# priority.
+
+sort ISRS1 by PRIORITY <
+
+let isr1_prio := (1 << CORTEX::PRIO_BITS) - 2
+let last_isr1_prio := -1
+
+let prioForChannel := @[]
+foreach name, channel in USED_EXTI do
+  foreach obj in ITOBJ do
+    if obj::SOURCE == name then
+    
+      let prio
+
+      if exists obj::CATEGORY then
+        if obj::CATEGORY == 2 then
+          let prio := "ISR2_IT_PRIO_UNSHIFTED"
+        else
+          let prio := obj::SOURCE + "_Priority"
+        end if
+      else
+        let prio := "COUNTER_PRIO_UNSHIFTED"
+      end if
+
+      if exists prioForChannel[name] then
+        if prioForChannel[name] != prio then
+          error obj::SOURCE : "Uncompatible priority for sources"
+        end if
+      else
+        let prioForChannel[name] := prio
+      end if
+    end if 
+  end foreach
+end foreach
 
 foreach src in USED_EXTI
 before%
@@ -213,7 +249,8 @@ before%
 %
 do%
   NVIC_InitDef.NVIC_IRQChannel = % !KEY %n;
-  NVIC_InitDef.NVIC_IRQChannelPreemptionPriority = 0x00;% tab 60 %/* Set priority% tab 88 %*/
+  NVIC_InitDef.NVIC_IRQChannelPreemptionPriority =
+    % !prioForChannel[KEY]%;% tab 60 %/* Set priority% tab 88 %*/
   NVIC_InitDef.NVIC_IRQChannelSubPriority = 0x00;% tab 60 %/* Set sub priority% tab 88 %*/
   NVIC_InitDef.NVIC_IRQChannelCmd = ENABLE;% tab 60 %/* Enable interrupt% tab 88 %*/
   NVIC_Init(&NVIC_InitDef);% tab 60 %/* Add to NVIC% tab 88 %*/%
