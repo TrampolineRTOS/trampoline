@@ -186,7 +186,7 @@ FUNC(void, OS_CODE) tpl_suspend_os_interrupts_service(void)
 {
   GET_CURRENT_CORE_ID(core_id)
 
-  tpl_disable_interrupts();
+  tpl_disable_os_interrupts();
 
   GET_LOCK_CNT_FOR_CORE(tpl_locking_depth,core_id)++;
 
@@ -212,7 +212,7 @@ FUNC(void, OS_CODE) tpl_resume_os_interrupts_service(void)
 
 		if (0 == GET_LOCK_CNT_FOR_CORE(tpl_locking_depth,core_id))
 		{
-			tpl_enable_interrupts();
+			tpl_enable_os_interrupts();
 		}
 	}
 }
