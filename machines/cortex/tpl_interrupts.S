@@ -192,7 +192,7 @@ tpl_enable_interrupts_do_nothing:
 
 tpl_disable_os_interrupts:
     /*-------------------------------------------------------------------------
-     * 1 - Whatever state we are in, is2_dis is set to true.
+     * 1 - Whatever state we are in, tpl_isr2_disabled is set to true.
      */
     movs r0,#1
     ldr  r1,=tpl_isr2_disabled
@@ -222,7 +222,7 @@ tpl_disable_os_interrupts_no_change:
 
 tpl_enable_os_interrupts:
     /*-------------------------------------------------------------------------
-     * 1 - Whatever state we are in, is2_dis is set to false.
+     * 1 - Whatever state we are in, tpl_isr2_disabled is set to false.
      */
     movs r0,#0
     ldr  r1,=tpl_isr2_disabled
