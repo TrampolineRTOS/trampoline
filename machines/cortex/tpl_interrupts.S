@@ -38,6 +38,14 @@
 #include "tpl_asm_definitions.h"
 #include "tpl_cortex_definitions.h"
 
+#define OS_START_SEC_VAR_8BIT
+#include "tpl_memmap.h"
+
+.extern tpl_isr2_disabled
+
+#define OS_STOP_SEC_VAR_8BIT
+#include "tpl_memmap.h"
+
 /*-----------------------------------------------------------------------------
  * the code starts here
  */
@@ -120,7 +128,7 @@
 
 tpl_disable_interrupts:
     /*-------------------------------------------------------------------------
-     * Whatever state we are in and whatever the is2_dis value is,
+     * Whatever state we are in and whatever the tpl_isr2_disabled value is,
      * the new state is ISR1_IT_PRIO and is2_dis is not set, so
      * no test is done
      */
@@ -151,6 +159,7 @@ tpl_enable_interrupts:
      * 2 - Check the tpl_isr2_disabled variable
      */
     ldr  r0,=tpl_isr2_disabled
+    ldr  r0,[r0]
     cmp  r0,#0
     beq  tpl_enable_interrupts_isr2_not_disabled
 

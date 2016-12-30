@@ -46,7 +46,9 @@ TASK(blink)
 
 ISR(isr_button)
 {
+  DisableAllInterrupts();
   ledToggle(RED);
+  EnableAllInterrupts();
 }
 #define APP_ISR_isr_button_STOP_SEC_CODE
 #include "tpl_memmap.h"
