@@ -85,6 +85,15 @@ else
     !isr1_prio << (8 - CORTEX::PRIO_BITS)
     tab 40
     %/* Unshifted priority: % !isr1_prio tab 70%*/%
+%
+
+/*
+ * Priority of SVC_EXC_PRIO shifted to fit in SHPR2
+ */
+#define SVC_EXC_PRIO_SHPR2%
+    tab 40 - [[(svc_prio << (8 - CORTEX::PRIO_BITS)) << 24 string] length]
+    ![(svc_prio << (8 - CORTEX::PRIO_BITS)) << 24 hexString]
+    
   end if
 end if
 

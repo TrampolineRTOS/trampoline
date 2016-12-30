@@ -26,6 +26,8 @@ TASK(read_button)
       a = 0;
     }
   }
+  DisableAllInterrupts();
+  EnableAllInterrupts();
   TerminateTask();
 }
 #define APP_Task_read_button_STOP_SEC_CODE

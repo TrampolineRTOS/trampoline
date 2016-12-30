@@ -59,19 +59,35 @@
  * Prioritities are set in the following order (from lower urgency to higher
  * urgency):
  *
- *   +----------------------------------+
- *   |            Tasks, ISR2           |
- *   +----------------------------------+
- *   |           ISR2 handlers          | <- ISR2_IT_PRIO
- *   +----------------------------------+
- *   | SVC, COUNTERS (Systick included) | <- SVC_PRIO
- *   +----------------------------------+
- *   |              ISR1 1              |
- *   +----------------------------------+
- *   |               ...                |
- *   +----------------------------------+
- *   |              ISR1 n              | <- ISR1_IT_PRIO
- *   +----------------------------------+
+ *   +-----------------------------------+
+ *   |            Tasks, ISR2            |
+ *   +-----------------------------------+
+ *   |           ISR2 handlers           | <- ISR2_IT_PRIO
+ *   +-----------------------------------+
+ *   | SVCe, COUNTERS (Systick included) | <- SVC_PRIO
+ *   +-----------------------------------+
+ *   |              ISR1 1               |
+ *   +-----------------------------------+
+ *   |               ...                 |
+ *   +-----------------------------------+
+ *   |              ISR1 n               | <- ISR1_IT_PRIO
+ *   +-----------------------------------+
+ *   |              SVCd                 | <- 0
+ *   +-----------------------------------+
+ *
+ * SVCe is the priority used for SVC when all interrupts are not disabled
+ * SVCd is the priority used for SVC when all interrupts are disabled.
+ *
+ * DISCUSSION.
+ *
+ * When a task or an ISR2 Calls DisableAllInterrupts, it does so with SVCe
+ * having the SVC_PRIO priority. The service set the BASEPRI register to 1. As
+ * a result a SVC having the SVC_PRIO priority cannot be called anymore (a
+ * Hardfault would occur). So, to be able to call EnableAllInterrupt, the SVC
+ * need to have a priority greater (value lower) than 1. So the SVCd priority
+ * is 0.
+ * tpl_disable_interrupt set the SVC priority to 0 and tpl_enable_interrupts
+ * reset it to SVC_PRIO.
  *
  * 3 modes are supported in interrupt enabling/desabling.
  *
@@ -92,29 +108,35 @@
  *                                v
  *                         +------+------+
  *                 +-------+             +-------+
- *       Enable_OS |       | Enabled (0) |       | Enable
+ *       Enable_OS |       | Enabled (0) |       | Enable / prio(SVC):=SVC_PRIO
  *                 +------>+             +<------+
  *                         ++-+------+-+-+
- *                          | ^      | |
+ *                          | ^      ^ |
  *           Disable_OS/    | |      | +------------+
  *           isr2_dis:=true | |      |              |
  *          +---------------+ |      +-----------+  |
- *          |                 | isr2_dis==false/ |  | Disable
+ *          |                 | isr2_dis==false/ |  | Disable / prio(SVC):=0
  *          |  +---------------           Enable |  |
- *          |  | Enable_OS/                      |  |
- *          |  | isr2_dis:=false                 |  | +-------+ Enable_OS/
- *          v  |                                 |  v |       | isr2_dis:=false
- *       +--+--+--------+    Disable     +-------+--+-+-+     |
+ *          |  | Enable_OS/          prio(SVC):= |  |
+ *          |  | isr2_dis:=false        SVC_PRIO |  | +-------+ Enable_OS/
+ *          v  |             Disable /           |  v |       | isr2_dis:=false
+ *       +--+--+--------+  prio(SVC):=0  +-------+--+-+-+     |
  *       |              +--------------->+              +<----+
  *       | ISR2_IT_PRIO |                | ISR1_IT_PRIO |
  *    +->|              +<---------------+              +<----+
  *    |  +----+-----+---+ isr_dis==true/ +---+-----+--+-+     | Disable_OS/
- *    |    |  ^     |     Enable             ^     |  |       | isr2_dis:=true
- *    +----+  |     |                        |     |  +-------+
- *  Enable    +-----+                        +-----+
- *           Disable_OS                      Disable
+ *    |    |  ^     |     Enable /           ^     |  |       | isr2_dis:=true
+ *    |    |  +-----+   prio(SVC):=SVC_PRIO  |     |  +-------+
+ *    +----+  Disable_OS                     +-----+
+ *  Enable                                   Disable /
+ *                                         prio(SVC):=0
  *
  */
+
+/*-----------------------------------------------------------------------------
+ * SHPR2 contains the priority of the SVC. This is in the leftmost byte
+ */
+.equ SHPR2, 0xE000ED1C
 
 /*=============================================================================
  * tpl_disable_interrupts disables all the interrupts by setting the BASEPRI
@@ -129,11 +151,21 @@
 tpl_disable_interrupts:
     /*-------------------------------------------------------------------------
      * Whatever state we are in and whatever the tpl_isr2_disabled value is,
-     * the new state is ISR1_IT_PRIO and is2_dis is not set, so
+     * the new state is ISR1_IT_PRIO and tpl_isr2_disabled is not set, so
      * no test is done
      */
     movs r0,#ISR1_IT_PRIO
     msr  basepri,r0
+
+    /*-------------------------------------------------------------------------
+     * Set the priority of the SVC to 0
+     */
+    ldr r0,=SHPR2
+    ldr r1,[r0]
+    ldr r2,=0x00FFFFFF
+    and r1,r2
+    str r1,[r0]
+
     bx   lr
 
 /*=============================================================================
@@ -154,6 +186,15 @@ tpl_enable_interrupts:
     mrs  r0,basepri
     cmp  r0,#ISR1_IT_PRIO
     bne  tpl_enable_interrupts_do_nothing
+
+    /*-------------------------------------------------------------------------
+     * 1a - Reset the priority of SVC to SVC_PRIO
+     */
+    ldr r0,=SHPR2
+    ldr r1,[r0]
+    ldr r2,=SVC_EXC_PRIO_SHPR2
+    orr r1,r2
+    str r1,[r0]
 
     /*-------------------------------------------------------------------------
      * 2 - Check the tpl_isr2_disabled variable
