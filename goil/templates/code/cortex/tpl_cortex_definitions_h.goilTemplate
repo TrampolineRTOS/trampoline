@@ -22,7 +22,7 @@
 %
 
 # Check the CORTEX object exists
-let svc_prio := 0
+let kernel_prio := 0
 if not exists CORTEX then
   error EOF: "Missing CORTEX object in the config.oil of " + TARGET
 else
@@ -34,25 +34,17 @@ else
  * File generated for target % !TARGET %
  * Number of priority bits : % tab 35 !CORTEX::PRIO_BITS %
  */
+#define PRIO_BITS_IN_NVIC% tab 40 !CORTEX::PRIO_BITS%
 %
-    let isr2_prio := (1 << CORTEX::PRIO_BITS) - 1
-    let svc_prio := isr2_prio - 1
+    let kernel_prio := (1 << CORTEX::PRIO_BITS) - 1
     let isr1_prio := 1
 %
 /*
  * Priorities are unshifted and intended to be used in NVIC_SetPriority
  */
-#define ISR2_IT_PRIO_UNSHIFTED%
-    tab 40 - [[isr2_prio string] length]
-    !isr2_prio
-%
-#define SVC_EXC_PRIO_UNSHIFTED%
-    tab 40 - [[svc_prio string] length]
-    !svc_prio
-%
-#define COUNTER_PRIO_UNSHIFTED%
-    tab 40 - [[svc_prio string] length]
-    !svc_prio
+#define KERNEL_PRIO_UNSHIFTED%
+    tab 40 - [[kernel_prio string] length]
+    !kernel_prio
 %
 #define ISR1_IT_PRIO_UNSHIFTED%
     tab 40 - [[isr1_prio string] length]
@@ -62,23 +54,11 @@ else
 /*
  * Priorities are shifted and intended to be stored in BASEPRI
  */
-#define ISR2_IT_PRIO %
-    tab 30 - [[isr2_prio << (8 - CORTEX::PRIO_BITS) string] length]
-    !isr2_prio << (8 - CORTEX::PRIO_BITS)
+#define KERNEL_PRIO%
+    tab 30 - [[kernel_prio << (8 - CORTEX::PRIO_BITS) string] length]
+    !kernel_prio << (8 - CORTEX::PRIO_BITS)
     tab 40
-    %/* Unshifted priority: % !isr2_prio tab 70%*/%
-%
-#define SVC_EXC_PRIO%
-    tab 30 - [[svc_prio << (8 - CORTEX::PRIO_BITS) string] length]
-    !svc_prio << (8 - CORTEX::PRIO_BITS)
-    tab 40
-    %/* Unshifted priority: % !svc_prio tab 70%*/%
-%
-#define COUNTER_PRIO%
-    tab 30 - [[svc_prio << (8 - CORTEX::PRIO_BITS) string] length]
-    !svc_prio << (8 - CORTEX::PRIO_BITS)
-    tab 40
-    %/* Unshifted priority: % !svc_prio tab 70%*/%
+    %/* Unshifted priority: % !kernel_prio tab 70%*/%
 %
 #define ISR1_IT_PRIO%
     tab 30 - [[isr1_prio << (8 - CORTEX::PRIO_BITS) string] length]
@@ -88,11 +68,11 @@ else
 %
 
 /*
- * Priority of SVC_EXC_PRIO shifted to fit in SHPR2
+ * Priority of KERNEL_PRIO shifted to fit in SHPR2
  */
-#define SVC_EXC_PRIO_SHPR2%
-    tab 40 - [[(svc_prio << (8 - CORTEX::PRIO_BITS)) << 24 string] length]
-    ![(svc_prio << (8 - CORTEX::PRIO_BITS)) << 24 hexString]
+#define KERNEL_PRIO_SHPR2%
+    tab 40 - [[(kernel_prio << (8 - CORTEX::PRIO_BITS)) << 24 string] length]
+    ![(kernel_prio << (8 - CORTEX::PRIO_BITS)) << 24 hexString]
     
   end if
 end if
@@ -104,11 +84,11 @@ sort ISRS1 by PRIORITY <
 
 #------------------------------------------------------------------------------*
 # Compute their new priority 
-# ISR2_IT_PRIO is used for all ISR2 handlers
+# ISR2_IT_PRIO is used for all ISR2 handlers when OS interrupts are disabled
 # SVC_EXC_PRIO is used for the SVC and the SysTick
 # SVC_EXC_PRIO - 1 to 1 are used for the ISR1
 
-let current_priority := svc_prio
+let current_priority := kernel_prio
 let prioritizedISR1 := @()
 let previous_priority := -1
 foreach isr in ISRS1 do
@@ -131,9 +111,9 @@ let ITmap := [INTERRUPT mapBy: "NAME"]
 %
 
 /*
- * Interrupt numbers for interrupt sources used by ISR category 1
+ * Interrupt numbers for interrupt sources used by ISR
  */%
-foreach isr in prioritizedISR1 do
+foreach isr in ISR do
   if exists ITmap[isr::SOURCE] then
     let interrupt := ITmap[isr::SOURCE]
     if interrupt::SETPRIO == true then
@@ -147,13 +127,15 @@ foreach isr in prioritizedISR1 do
   end if
 end foreach
 
+foreach isr in prioritizedISR1
+before
 %
 
 /*
  * Computed priorities for interrupt sources used by ISR category 1
  * Priorities are unshifted and intended to be used in NVIC_SetPriority
  */%
-foreach isr in prioritizedISR1 do
+do
   if exists ITmap[isr::SOURCE] then
     let interrupt := ITmap[isr::SOURCE]
     if interrupt::SETPRIO == true then

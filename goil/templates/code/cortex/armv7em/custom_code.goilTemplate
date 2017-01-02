@@ -42,8 +42,8 @@ write to PROJECT."/tpl_external_interrupts.c":
  template if exists tpl_external_interrupts_c in code
 end write
 
-write to PROJECT."/tpl_init_it_priority.c":
- template if exists tpl_init_it_priority_c in code
+write to PROJECT."/tpl_app_interrupts.c":
+ template if exists tpl_app_interrupts_c in code
 end write
 
 write to PROJECT."/tpl_cortex_definitions.h":

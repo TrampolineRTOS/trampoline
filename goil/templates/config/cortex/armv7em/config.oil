@@ -21,7 +21,7 @@ CPU armv7em {
     CFILE = "tpl_primary_irq.S";
     CFILE = "tpl_vectors.c";
     CFILE = "tpl_external_interrupts.c";
-    CFILE = "tpl_init_it_priority.c";
+    CFILE = "tpl_app_interrupts.c";
   };
 
   PLATFORM_FILES cortex_m4 {
