@@ -98,43 +98,43 @@ GALGAS_char GALGAS_char::constructor_default (UNUSED_LOCATION_ARGS) {
     waitForRawInput () ;
   //--- Get character
     uint8_t c = '\0' ;
-    read (STDIN_FILENO, & c, 1) ;
+    ssize_t unusedResult __attribute__ ((unused)) = read (STDIN_FILENO, & c, 1) ;
   //--- ASCII ?
     uint32_t unicodeChar = c ;
     if ((unicodeChar & 0xE0) == 0xC0) { // 2 bytes
       unicodeChar &= 0x1F ;
       unicodeChar <<= 6 ;
       waitForRawInput () ;
-      read (STDIN_FILENO, & c, 1) ;
+      unusedResult = read (STDIN_FILENO, & c, 1) ;
       c &= 0x3F ;
       unicodeChar |= c ;
     }else if ((unicodeChar & 0xF0) == 0xE0) { // 3 bytes
       unicodeChar &= 0x0F ;
       unicodeChar <<= 6 ;
       waitForRawInput () ;
-      read (STDIN_FILENO, & c, 1) ;
+      unusedResult = read (STDIN_FILENO, & c, 1) ;
       c &= 0x3F ;
       unicodeChar |= c ;
       unicodeChar <<= 6 ;
       waitForRawInput () ;
-      read (STDIN_FILENO, & c, 1) ;
+      unusedResult = read (STDIN_FILENO, & c, 1) ;
       c &= 0x3F ;
       unicodeChar |= c ;
     }else if ((unicodeChar & 0xF8) == 0xF0) { // 4 bytes
       unicodeChar &= 0x0F ;
       unicodeChar <<= 6 ;
       waitForRawInput () ;
-      read (STDIN_FILENO, & c, 1) ;
+      unusedResult = read (STDIN_FILENO, & c, 1) ;
       c &= 0x3F ;
       unicodeChar |= c ;
       unicodeChar <<= 6 ;
       waitForRawInput () ;
-      read (STDIN_FILENO, & c, 1) ;
+      unusedResult = read (STDIN_FILENO, & c, 1) ;
       c &= 0x3F ;
       unicodeChar |= c ;
       unicodeChar <<= 6 ;
       waitForRawInput () ;
-      read (STDIN_FILENO, & c, 1) ;
+      unusedResult = read (STDIN_FILENO, & c, 1) ;
       c &= 0x3F ;
       unicodeChar |= c ;
     }
@@ -216,9 +216,11 @@ GALGAS_uint GALGAS_char::getter_uint (UNUSED_LOCATION_ARGS) const {
 //---------------------------------------------------------------------------------------------------------------------*
 
 GALGAS_bool GALGAS_char::getter_isalnum (UNUSED_LOCATION_ARGS) const {
-  return GALGAS_bool (((UNICODE_VALUE (mCharValue) >= '0') && (UNICODE_VALUE (mCharValue) <= '9')) 
-                             || ((UNICODE_VALUE (mCharValue) >= 'a') && (UNICODE_VALUE (mCharValue) <= 'z'))
-                             || ((UNICODE_VALUE (mCharValue) >= 'A') && (UNICODE_VALUE (mCharValue) <= 'Z'))) ;
+  return GALGAS_bool (
+      ((UNICODE_VALUE (mCharValue) >= '0') && (UNICODE_VALUE (mCharValue) <= '9'))
+   || ((UNICODE_VALUE (mCharValue) >= 'a') && (UNICODE_VALUE (mCharValue) <= 'z'))
+   || ((UNICODE_VALUE (mCharValue) >= 'A') && (UNICODE_VALUE (mCharValue) <= 'Z'))
+  ) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
