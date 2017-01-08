@@ -2399,6 +2399,26 @@ void AC_GALGAS_uniqueMapProxy::internalMakeProxy (AC_GALGAS_uniqueMap & ioMap,
 
 //---------------------------------------------------------------------------------------------------------------------*
 
+void AC_GALGAS_uniqueMapProxy::internalMakeOptionalProxy (AC_GALGAS_uniqueMap & ioMap,
+                                                          const GALGAS_lstring & inKey
+                                                          COMMA_LOCATION_ARGS) {
+  drop () ;
+  if (inKey.isValid ()) {
+    const C_String key = inKey.getter_string (THERE).stringValue () ;
+    if (key.length() == 0) {
+      makeNullProxy (THERE) ;
+    }else{
+      cUniqueMapNode * node = ioMap.performInsertProxy (key,
+                                                        inKey.getter_location (THERE)
+                                                        COMMA_THERE) ;
+      macroValidPointer (node) ;
+      attachProxyToMapNode (node) ;
+    }
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
 void AC_GALGAS_uniqueMapProxy::internalMakeProxyFromString (AC_GALGAS_uniqueMap & ioMap,
                                                             const GALGAS_string & inKey
                                                             COMMA_LOCATION_ARGS) {
