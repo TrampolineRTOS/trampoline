@@ -288,7 +288,7 @@ FUNC(void, OS_CODE) % !KEY %_ClearFlag(void)
     end foreach
     foreach line in lineList
     do
-      !line::VALUE
+      !line
     between
       % | %
     end foreach
