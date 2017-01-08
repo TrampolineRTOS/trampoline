@@ -158,7 +158,7 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
   foreach obj in objList do
     if not ackDone then
       if obj::ACK then
-        let ackDone := true
+#        let ackDone := true
         if exists it_map[objList_KEY]::ACK_S::TEMPLATE_S::NAME then
           template (it_map[objList_KEY],obj) if exists from
             it_map[objList_KEY]::ACK_S::TEMPLATE_S::NAME or
