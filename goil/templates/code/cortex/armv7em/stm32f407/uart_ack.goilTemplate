@@ -1,0 +1,30 @@
+%
+#
+# Template to generate an acknowledge sequence for an USART
+# with the CTS event, that is USART1, 2, 3 and 6.
+# 
+
+input(it,obj)
+
+# Only the LIN break and CTS may be ack automatically
+
+let uartName := [it::NAME leftSubString: 6]
+let bitForFlag := @[
+  "LBD" : 8,
+  "CTS" : 9
+]
+
+if exists obj::SOURCE_S then
+  let flagList := @()
+  let commentList := @()
+  foreach ev in obj::SOURCE_S::EVFLAG do
+    if exists bitForFlag[ev::VALUE] then
+      let commentList += ev::VALUE
+      let flagList += "1U << " + [bitForFlag[ev::VALUE] string]
+    end if
+  end foreach
+%
+  /* Clear flag(s) % ![commentList componentsJoinedByString:", "] % */
+  % !uartName %->SR = ~(%![flagList componentsJoinedByString: " | "]%) & 0x3FFU;%
+end if
+

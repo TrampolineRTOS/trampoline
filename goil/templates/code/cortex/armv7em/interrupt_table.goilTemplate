@@ -1,7 +1,4 @@
-#include "tpl_machine.h"
 
-%
-%
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 %
@@ -80,6 +77,11 @@ foreach objList in objForIRQ do
   end foreach
 end foreach
 
+#
+# Build a map for interrupt sources
+#
+let it_map := [INTERRUPT mapBy: "NAME"]
+
 let indexISR2 := 0
 foreach objList in objForIRQ do
   let objList_KEY := KEY
@@ -88,20 +90,26 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
 {
 %
   # ISR1
-%  /* ISR1s */
-%
+%  /* ISR1s */%
   foreach obj in objList do
     if obj::KIND == "ISR" then
       if obj::CATEGORY == 1 then
-%  %    !obj::NAME %_function();
-%
+        if exists it_map[objList_KEY]::VECTOR_TYPE_S::TEMPLATE_S::NAME then
+          template (it_map[objList_KEY],obj) if exists from
+            it_map[objList_KEY]::VECTOR_TYPE_S::TEMPLATE_S::NAME or%
+  %!obj::NAME %_function();%
+          end template
+        else%
+  %!obj::NAME %_function();%
+        end if
       end if
     end if
   end foreach
 
   # ISR2 and COUNTER
   # Test for ISR2
-%  /* ISR2s */
+%
+  /* ISR2s */
 %
   let thereAreISR2forThisObjList := false
   foreach obj in objList do
@@ -146,19 +154,24 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
   # ACK
 %  /* ACK */
 %
-  # If there is at least one ISR2 then ack of IRQ must be done when the ISR2 is done
-  # that is to say the ack must be done when calling tpl_terminate_isr2_service
   let ackDone := false
   foreach obj in objList do
     if not ackDone then
       if obj::ACK then
         let ackDone := true
-%  %!objList_KEY%_ClearFlag();
-%
+        if exists it_map[objList_KEY]::ACK_S::TEMPLATE_S::NAME then
+          template (it_map[objList_KEY],obj) if exists from
+            it_map[objList_KEY]::ACK_S::TEMPLATE_S::NAME or
+%  %!objList_KEY%_ClearFlag();%
+          end template
+        else
+%  %!objList_KEY%_ClearFlag();%
+        end if        
       end if
     end if
   end foreach
-%}
+%
+}
 %
 end foreach
 %

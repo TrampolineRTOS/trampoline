@@ -7826,29 +7826,29 @@ static GALGAS_gtlData extensionGetter_applicationDefinition_templateData (const 
         GALGAS_gtlData var_attrs_9383 = callExtensionGetter_fieldMap ((const cPtr_objectAttributes *) enumerator_9357.current_attributes (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 322)) ;
         {
         var_objs_9280.insulate (HERE) ;
-        cPtr_gtlList * ptr_9423 = (cPtr_gtlList *) var_objs_9280.ptr () ;
-        callExtensionSetter_appendItem ((cPtr_gtlList *) ptr_9423, var_attrs_9383, inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 323)) ;
+        cPtr_gtlList * ptr_9432 = (cPtr_gtlList *) var_objs_9280.ptr () ;
+        callExtensionSetter_appendItem ((cPtr_gtlList *) ptr_9432, var_attrs_9383, inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 324)) ;
         }
         enumerator_9357.gotoNextObject () ;
       }
       {
       result_cfg.insulate (HERE) ;
-      cPtr_gtlData * ptr_9465 = (cPtr_gtlData *) result_cfg.ptr () ;
-      callExtensionSetter_setStructField ((cPtr_gtlData *) ptr_9465, enumerator_8968.current_lkey (HERE), var_objs_9280, inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 325)) ;
+      cPtr_gtlData * ptr_9474 = (cPtr_gtlData *) result_cfg.ptr () ;
+      callExtensionSetter_setStructField ((cPtr_gtlData *) ptr_9474, enumerator_8968.current_lkey (HERE), var_objs_9280, inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 326)) ;
       }
     }else if (kBoolFalse == test_2) {
-      const enumGalgasBool test_3 = GALGAS_bool (kIsEqual, enumerator_8968.current_objectsOfKind (HERE).getter_objects (SOURCE_FILE ("systemConfig.galgas", 331)).getter_count (SOURCE_FILE ("systemConfig.galgas", 331)).objectCompare (GALGAS_uint ((uint32_t) 1U))).boolEnum () ;
+      const enumGalgasBool test_3 = GALGAS_bool (kIsEqual, enumerator_8968.current_objectsOfKind (HERE).getter_objects (SOURCE_FILE ("systemConfig.galgas", 332)).getter_count (SOURCE_FILE ("systemConfig.galgas", 332)).objectCompare (GALGAS_uint ((uint32_t) 1U))).boolEnum () ;
       if (kBoolTrue == test_3) {
-        GALGAS_gtlData var_attrs_9630 = GALGAS_gtlStruct::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 332)), enumerator_8968.current_lkey (HERE), GALGAS_gtlVarMap::constructor_emptyMap (SOURCE_FILE ("systemConfig.galgas", 332))  COMMA_SOURCE_FILE ("systemConfig.galgas", 332)) ;
-        cEnumerator_objectKindMap enumerator_9718 (enumerator_8968.current_objectsOfKind (HERE).getter_objects (SOURCE_FILE ("systemConfig.galgas", 333)), kENUMERATION_UP) ;
-        while (enumerator_9718.hasCurrentObject ()) {
-          var_attrs_9630 = callExtensionGetter_fieldMap ((const cPtr_objectAttributes *) enumerator_9718.current_attributes (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 334)) ;
-          enumerator_9718.gotoNextObject () ;
+        GALGAS_gtlData var_attrs_9639 = GALGAS_gtlStruct::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("systemConfig.galgas", 333)), enumerator_8968.current_lkey (HERE), GALGAS_gtlVarMap::constructor_emptyMap (SOURCE_FILE ("systemConfig.galgas", 333))  COMMA_SOURCE_FILE ("systemConfig.galgas", 333)) ;
+        cEnumerator_objectKindMap enumerator_9727 (enumerator_8968.current_objectsOfKind (HERE).getter_objects (SOURCE_FILE ("systemConfig.galgas", 334)), kENUMERATION_UP) ;
+        while (enumerator_9727.hasCurrentObject ()) {
+          var_attrs_9639 = callExtensionGetter_fieldMap ((const cPtr_objectAttributes *) enumerator_9727.current_attributes (HERE).ptr (), inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 335)) ;
+          enumerator_9727.gotoNextObject () ;
         }
         {
         result_cfg.insulate (HERE) ;
-        cPtr_gtlData * ptr_9788 = (cPtr_gtlData *) result_cfg.ptr () ;
-        callExtensionSetter_setStructField ((cPtr_gtlData *) ptr_9788, enumerator_8968.current_lkey (HERE), var_attrs_9630, inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 336)) ;
+        cPtr_gtlData * ptr_9797 = (cPtr_gtlData *) result_cfg.ptr () ;
+        callExtensionSetter_setStructField ((cPtr_gtlData *) ptr_9797, enumerator_8968.current_lkey (HERE), var_attrs_9639, inCompiler COMMA_SOURCE_FILE ("systemConfig.galgas", 337)) ;
         }
       }
     }

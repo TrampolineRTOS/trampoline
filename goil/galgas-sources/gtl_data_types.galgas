@@ -3733,6 +3733,19 @@ override getter @gtlList performGetter
     result = @gtlSet.new {
       !methodName !emptylstring() !resultSet
     }
+  elsif "componentsJoinedByString" == methodName then
+    argumentsCheck(!methodName !stringArgument() !arguments)
+    @string joiner = [[arguments dataAtIndex !0] string]
+    @string stringResult = ""
+    for (item) in value
+    do
+      stringResult = stringResult + [item string]
+    between
+      stringResult = stringResult + joiner
+    end
+    result = @gtlString.new {
+      ![methodName location] !emptylstring() !stringResult
+    }
   elsif "type"                   == methodName then
     argumentsCheck(!methodName !noArgument() !arguments)
     result = @gtlType.new {

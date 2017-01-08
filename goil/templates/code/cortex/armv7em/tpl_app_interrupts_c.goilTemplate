@@ -86,7 +86,8 @@ FUNC(void, OS_CODE) tpl_disable_os_interrupts(void)
 {%
 let icer_index := 0
 let vector := ISR2_vector
-repeat ( [ISR2_vector numberOfBytes] / 4 )
+println ISR2_vector
+repeat ( [ISR2_vector numberOfBytes] / 4 + 1)
 while vector != 0 do
   let register_content := vector & lower32bitsMask
   if register_content != 0 then
@@ -107,7 +108,7 @@ FUNC(void, OS_CODE) tpl_enable_os_interrupts(void)
 {%
 let icer_index := 0
 let vector := ISR2_vector
-repeat ( [ISR2_vector numberOfBytes] / 4 )
+repeat ( [ISR2_vector numberOfBytes] / 4 + 1)
 while vector != 0 do
   let register_content := vector & lower32bitsMask
   if register_content != 0 then

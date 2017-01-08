@@ -20,10 +20,26 @@ IMPLEMENTATION thumb2_ressource {
     UINT32 VECT;
     BOOLEAN EXCEPTION = FALSE;
     ENUM [
-      HANDLER { STRING NAME; },
-      REFERENCE { STRING NAME; }
+      HANDLER {
+        STRING NAME;
+        BOOLEAN [
+          TRUE { STRING NAME; },
+          FALSE
+        ] TEMPLATE = FALSE;
+      },
+      REFERENCE {
+        STRING NAME;
+      }
     ] VECTOR_TYPE;
-    BOOLEAN ACK = TRUE;
+    BOOLEAN [
+      TRUE { 
+        BOOLEAN [
+          TRUE { STRING NAME; },
+          FALSE
+        ] TEMPLATE = FALSE;
+      },
+      FALSE
+    ] ACK = TRUE;
   };
   
   INTERRUPT_COUNT {

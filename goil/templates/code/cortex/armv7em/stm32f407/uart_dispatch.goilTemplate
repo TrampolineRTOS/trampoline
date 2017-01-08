@@ -1,0 +1,55 @@
+%
+#
+# Template to generate an dispatch dequence for each
+# event of the USART with the CTS event, that is USART1, 2, 3 and 6.
+# 
+
+input(it,obj)
+
+let usartName := [it::NAME leftSubString: 6]
+
+let bitForFlag := @[
+  "TXE"  : 7,
+  "TC"   : 6,
+  "RXNE" : 5,
+  "ORE"  : 3,
+  "IDLE" : 4,
+  "PE"   : 0,
+  "NF"   : 2,
+  "FE"   : 1,
+  "LBD"  : 8,
+  "CTS"  : 9
+]
+let bitForEnable := @[
+  "TXE"  : @{ BIT:  7, REG: "CR1" },
+  "TC"   : @{ BIT:  6, REG: "CR1" },
+  "RXNE" : @{ BIT:  5, REG: "CR1" },
+  "ORE"  : @{ BIT:  0, REG: "CR3" },
+  "IDLE" : @{ BIT:  4, REG: "CR1" },
+  "PE"   : @{ BIT:  8, REG: "CR1" },
+  "NF"   : @{ BIT:  0, REG: "CR3" },
+  "FE"   : @{ BIT:  0, REG: "CR3" },
+  "LBD"  : @{ BIT:  6, REG: "CR2" },
+  "CTS"  : @{ BIT: 10, REG: "CR3" }
+]
+
+if exists obj::SOURCE_S then
+  let flagList := @()
+  let enableList := @()
+  foreach ev in obj::SOURCE_S::EVFLAG do
+    if exists bitForFlag[ev::VALUE] then
+      let flagList += "1U << " + [bitForFlag[ev::VALUE] string]
+      let enableList += bitForEnable[ev::VALUE]
+    end if
+  end foreach
+%
+  if ((% !usartName %->SR & (% ![flagList componentsJoinedByString: " | "]%)) &&
+      %
+    foreach enableBit in enableList do
+      %(% !usartName %->% !enableBit::REG % & (1U << % !enableBit::BIT %))%
+    between % || %
+    end foreach
+      %)
+    %!obj::NAME %_function();%
+end if
+

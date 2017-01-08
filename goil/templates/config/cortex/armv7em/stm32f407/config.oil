@@ -355,6 +355,7 @@ CPU stm32f407 {
     INTERRUPT USART1_IRQ {
       VECT = 53;
       SETPRIO = TRUE { NUMBER = 37; };
+      ACK = TRUE { TEMPLATE = TRUE { NAME = "uart_ack"; }; };
       VECTOR_TYPE = HANDLER {
         NAME = "USART1_Handler";
       };
@@ -363,6 +364,7 @@ CPU stm32f407 {
     INTERRUPT USART2_IRQ {
       VECT = 54;
       SETPRIO = TRUE { NUMBER = 38; };
+      ACK = TRUE { TEMPLATE = TRUE { NAME = "uart_ack"; }; };
       VECTOR_TYPE = HANDLER {
         NAME = "USART2_Handler";
       };
@@ -371,8 +373,10 @@ CPU stm32f407 {
     INTERRUPT USART3_IRQ {
       VECT = 55;
       SETPRIO = TRUE { NUMBER = 39; };
+      ACK = TRUE { TEMPLATE = TRUE { NAME = "uart_ack"; }; };
       VECTOR_TYPE = HANDLER {
         NAME = "USART3_Handler";
+        TEMPLATE = TRUE { NAME = "uart_dispatch"; };
       };
     } : "USART3 global Interrupt";
     
@@ -475,6 +479,7 @@ CPU stm32f407 {
     INTERRUPT UART4_IRQ {
       VECT = 68;
       SETPRIO = TRUE { NUMBER = 52; };
+      ACK = TRUE { TEMPLATE = TRUE { NAME = "uart_no_cts_ack"; }; };
       VECTOR_TYPE = HANDLER {
         NAME = "UART4_Handler";
       };
@@ -483,6 +488,11 @@ CPU stm32f407 {
     INTERRUPT UART5_IRQ {
       VECT = 69;
       SETPRIO = TRUE { NUMBER = 53; };
+      ACK = TRUE {
+        TEMPLATE = TRUE {
+          NAME = "uart_no_cts_ack";
+        };
+      };
       VECTOR_TYPE = HANDLER {
         NAME =  "UART5_Handler";
       };
@@ -627,6 +637,7 @@ CPU stm32f407 {
     INTERRUPT USART6_IRQ {
       VECT = 87;
       SETPRIO = TRUE { NUMBER = 71; };
+      ACK = TRUE { TEMPLATE = TRUE { NAME = "uart_ack"; }; };
       VECTOR_TYPE = HANDLER {
         NAME = "USART6_Handler";
       };

@@ -53,6 +53,8 @@ FUNC(void, OS_CODE) tpl_init_external_interrupts()
 # look for EXTIx_IRQ interrupt sources in COUNTERS and ISR
 let ITOBJ := COUNTER | ISR
 
+let filteredItObj := @()
+
 # Check subattributes are defined for EXTIxxx it sources
 # This should be done by goil according to the IMPLEMENTATION but currently
 # a bug prevents this checking
@@ -61,6 +63,8 @@ foreach obj in ITOBJ do
     if [obj::SOURCE leftSubString: 4] == "EXTI" then
       if not exists obj::SOURCE_S then
         error obj::SOURCE : "External Interrupts need PIN (EXTI0_IRQ to EXTI4_IRQ) or PINONx (EXTI9_5_IRQ or EXTI15_10_IRQ) with x being the interrupt line number"
+      else
+        let filteredItObj += obj
       end if
     end if
   end if
@@ -70,7 +74,7 @@ let USED_EXTI := @[ ]
 
 # Check for sanity of the description and gather multiple pins for EXTI9_5_IRQ
 # and EXTI15_10_IRQ
-foreach obj in ITOBJ do
+foreach obj in filteredItObj do
   if not exists USED_EXTI[obj::SOURCE] then
     if exists obj::SOURCE_S then
       let USED_EXTI[obj::SOURCE] := mapof obj::SOURCE_S end
@@ -203,9 +207,8 @@ between%
 end foreach
 
 # Program the NVIC. The priority depends on the kind of object. For counters,
-# priority is set to COUNTER_PRIO_UNSHIFTED, for ISR2, it is set to
-# ISR2_IT_PRIO_UNSHIFTED and for ISR1, it is set according to the ISR1
-# priority.
+# and ISR2, priority is set to KERNEL_PRIO_UNSHIFTED and for ISR1, it is set
+# according to the ISR1 priority.
 
 sort ISRS1 by PRIORITY <
 
@@ -214,19 +217,19 @@ let last_isr1_prio := -1
 
 let prioForChannel := @[]
 foreach name, channel in USED_EXTI do
-  foreach obj in ITOBJ do
+  foreach obj in filteredItObj do
     if obj::SOURCE == name then
     
       let prio
 
       if exists obj::CATEGORY then
         if obj::CATEGORY == 2 then
-          let prio := "ISR2_IT_PRIO_UNSHIFTED"
+          let prio := "KERNEL_PRIO_UNSHIFTED"
         else
           let prio := obj::SOURCE + "_Priority"
         end if
       else
-        let prio := "COUNTER_PRIO_UNSHIFTED"
+        let prio := "KERNEL_PRIO_UNSHIFTED"
       end if
 
       if exists prioForChannel[name] then
