@@ -20,7 +20,7 @@ CPU readbutton_isr {
       TRAMPOLINE_BASE_PATH = "../../../../../..";
       APP_SRC = "testDisableEnable.c";
       APP_NAME = "testDisableEnable_exe";
-      CFLAGS  = "-O0"; 
+      CFLAGS  = "-O3"; 
       LDFLAGS = "-Map=testDisableEnable.map";
       COMPILER = "arm-none-eabi-gcc";
       ASSEMBLER = "arm-none-eabi-as";
