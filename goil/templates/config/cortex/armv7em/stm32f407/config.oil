@@ -6,7 +6,26 @@ IMPLEMENTATION stm32f407 {
       FALSE
     ] SETPRIO = FALSE;
   };
-
+  
+  DEVICE_KIND [] {
+    STRUCT {
+      UINT32 OFFSET;
+      ENUM [ BYTE, HALFWORD, WORD, DOUBLEWORD ] SIZE;
+      STRUCT {
+        UINT32 LOC;
+      } BIT [];
+      STRUCT {
+        UINT32 START;
+        UINT32 STOP;
+      } FIELD [];
+    } REGISTER [];
+  };
+  
+  DEVICE [] {
+    DEVICE_KIND_TYPE KIND;
+    UINT32 ADDRESS;
+    INTERRUPT_TYPE VECTOR;
+  };
 };
 
 CPU stm32f407 {
@@ -18,6 +37,115 @@ CPU stm32f407 {
     
     CORTEX stm32f407 {
       PRIO_BITS = 4;
+      CLOCK = 168000000;
+    };
+    
+    /*
+     * STM USART device
+     */
+    DEVICE_KIND USART {
+      REGISTER SR {
+        OFFSET = 0x00;
+        SIZE = HALFWORD;
+        BIT CTS  { LOC = 9; } : "Clear To Send flag";
+        BIT LBD  { LOC = 8; } : "Line Break Detected flag";
+        BIT TXE  { LOC = 7; };
+        BIT TC   { LOC = 6; };
+        BIT RXNE { LOC = 5; };
+        BIT IDLE { LOC = 4; };
+        BIT ORE  { LOC = 3; };
+        BIT NF   { LOC = 2; };
+        BIT FE   { LOC = 1; };
+        BIT PE   { LOC = 0; };
+      };
+      REGISTER DR {
+        OFFSET = 0x04;
+        SIZE = HALFWORD;
+      };
+      REGISTER BRR {
+        OFFSET = 0x08;
+        SIZE = HALFWORD;
+        FIELD DIV_Mantissa { START = 15; STOP = 4; };
+        FIELD DIV_Fraction { START = 3; STOP = 0; };
+      };
+      REGISTER CR1 {
+        OFFSET = 0x0C;
+        SIZE = HALFWORD;
+        BIT OVER8  { LOC = 15; };
+        BIT UE     { LOC = 13; };
+        BIT M      { LOC = 12; };
+        BIT WAKE   { LOC = 11; };
+        BIT PCE    { LOC = 10; };
+        BIT PS     { LOC = 9;  };
+        BIT PEIE   { LOC = 8;  };
+        BIT TXEIE  { LOC = 7;  };
+        BIT TCIE   { LOC = 6;  };
+        BIT RXNEIE { LOC = 5;  };
+        BIT IDLEIE { LOC = 4;  };
+        BIT TE     { LOC = 3;  };
+        BIT RE     { LOC = 2;  };
+        BIT RWU    { LOC = 1;  };
+        BIT SBK    { LOC = 0;  };
+      };
+      REGISTER CR2 {
+        OFFSET = 0x10;
+        SIZE = HALFWORD;
+        BIT LINEN  { LOC = 14; };
+        FIELD STOP { START = 13; STOP = 12; };
+        BIT CLKEN  { LOC = 11; };
+        BIT CPOL   { LOC = 10; };
+        BIT CPHA   { LOC = 9;  };
+        BIT LBCL   { LOC = 8;  };
+        BIT LBDIE  { LOC = 6;  };
+        BIT LBDL   { LOC = 5;  };
+        FIELD ADD  { START = 3; STOP = 0; };
+      };
+      REGISTER CR3 {
+        OFFSET = 0x14;
+        SIZE = HALFWORD;
+        BIT ONEBIT { LOC = 11; };
+        BIT CTSIE  { LOC = 10; };
+        BIT CTSE   { LOC = 9;  };
+        BIT RTSE   { LOC = 8;  };
+        BIT DMAT   { LOC = 7;  };
+        BIT DMAR   { LOC = 6;  };
+        BIT SCEN   { LOC = 5;  };
+        BIT NACK   { LOC = 4;  };
+        BIT HDSEL  { LOC = 3;  };
+        BIT IRLP   { LOC = 2;  };
+        BIT IREN   { LOC = 1;  };
+        BIT EIE    { LOC = 0;  };
+      } : "Control Register 3";
+      REGISTER GTPR {
+        OFFSET = 0x18;
+        SIZE = HALFWORD;
+        FIELD GT  { START = 15; STOP = 8; };
+        FIELD PSC { START = 7; STOP = 0;  };
+      };
+    };
+
+    DEVICE USART1 {
+      KIND = USART;
+      ADDRESS = 0x40011000;
+      VECTOR = USART1_IRQ;
+    };
+
+    DEVICE USART2 {
+      KIND = USART;
+      ADDRESS = 0x40004400; 
+      VECTOR = USART2_IRQ;
+    };
+
+    DEVICE USART3 {
+      KIND = USART;
+      ADDRESS = 0x40004800; 
+      VECTOR = USART3_IRQ;
+    };
+
+    DEVICE USART6 {
+      KIND = USART;
+      ADDRESS = 0x40011400; 
+      VECTOR = USART1_IRQ;
     };
 
     INTERRUPT_COUNT nb_it {

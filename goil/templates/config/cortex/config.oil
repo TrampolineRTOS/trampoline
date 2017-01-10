@@ -47,7 +47,8 @@ IMPLEMENTATION thumb2_ressource {
   };
   
   CORTEX {
-    UINT32 PRIO_BITS;
+    UINT32 PRIO_BITS; /* Number of bits in interrupt priority */
+    UINT32 CLOCK;     /* Clock frequency in Hz                */
   };
 };
 
