@@ -160,7 +160,7 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
       if obj::ACK then
 #        let ackDone := true
         if exists it_map[objList_KEY]::ACK_S::TEMPLATE_S::NAME then
-          template (it_map[objList_KEY],obj) if exists from
+          template (it_map[objList_KEY],obj,DEVICE,DEVICE_KIND) if exists from
             it_map[objList_KEY]::ACK_S::TEMPLATE_S::NAME or
 %  %!objList_KEY%_ClearFlag();%
           end template

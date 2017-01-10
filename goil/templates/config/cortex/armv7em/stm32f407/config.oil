@@ -19,6 +19,10 @@ IMPLEMENTATION stm32f407 {
         UINT32 STOP;
       } FIELD [];
     } REGISTER [];
+    STRUCT {
+      IDENTIFIER ENABLE [];
+      BOOLEAN ACK = FALSE;
+    } EVENT [];
   };
   
   DEVICE [] {
@@ -48,6 +52,99 @@ CPU stm32f407 {
         OFFSET = 0x00;
         SIZE = HALFWORD;
         BIT CTS  { LOC = 9; } : "Clear To Send flag";
+        BIT LBD  { LOC = 8; } : "Line Break Detected flag";
+        BIT TXE  { LOC = 7; };
+        BIT TC   { LOC = 6; };
+        BIT RXNE { LOC = 5; };
+        BIT IDLE { LOC = 4; };
+        BIT ORE  { LOC = 3; };
+        BIT NF   { LOC = 2; };
+        BIT FE   { LOC = 1; };
+        BIT PE   { LOC = 0; };
+      } : "Status Register";
+      REGISTER DR {
+        OFFSET = 0x04;
+        SIZE = HALFWORD;
+      } : "Data Register";
+      REGISTER BRR {
+        OFFSET = 0x08;
+        SIZE = HALFWORD;
+        FIELD DIV_Mantissa { START = 15; STOP = 4; };
+        FIELD DIV_Fraction { START = 3; STOP = 0; };
+      } : "Baud Rate Register";
+      REGISTER CR1 {
+        OFFSET = 0x0C;
+        SIZE = HALFWORD;
+        BIT OVER8  { LOC = 15; };
+        BIT UE     { LOC = 13; };
+        BIT M      { LOC = 12; };
+        BIT WAKE   { LOC = 11; };
+        BIT PCE    { LOC = 10; };
+        BIT PS     { LOC = 9;  };
+        BIT PEIE   { LOC = 8;  };
+        BIT TXEIE  { LOC = 7;  };
+        BIT TCIE   { LOC = 6;  };
+        BIT RXNEIE { LOC = 5;  };
+        BIT IDLEIE { LOC = 4;  };
+        BIT TE     { LOC = 3;  };
+        BIT RE     { LOC = 2;  };
+        BIT RWU    { LOC = 1;  };
+        BIT SBK    { LOC = 0;  };
+      } : "Control Register 1";
+      REGISTER CR2 {
+        OFFSET = 0x10;
+        SIZE = HALFWORD;
+        BIT LINEN  { LOC = 14; };
+        FIELD STOP { START = 13; STOP = 12; };
+        BIT CLKEN  { LOC = 11; };
+        BIT CPOL   { LOC = 10; };
+        BIT CPHA   { LOC = 9;  };
+        BIT LBCL   { LOC = 8;  };
+        BIT LBDIE  { LOC = 6;  };
+        BIT LBDL   { LOC = 5;  };
+        FIELD ADD  { START = 3; STOP = 0; };
+      } : "Control Register 2";
+      REGISTER CR3 {
+        OFFSET = 0x14;
+        SIZE = HALFWORD;
+        BIT ONEBIT { LOC = 11; };
+        BIT CTSIE  { LOC = 10; };
+        BIT CTSE   { LOC = 9;  };
+        BIT RTSE   { LOC = 8;  };
+        BIT DMAT   { LOC = 7;  };
+        BIT DMAR   { LOC = 6;  };
+        BIT SCEN   { LOC = 5;  };
+        BIT NACK   { LOC = 4;  };
+        BIT HDSEL  { LOC = 3;  };
+        BIT IRLP   { LOC = 2;  };
+        BIT IREN   { LOC = 1;  };
+        BIT EIE    { LOC = 0;  };
+      } : "Control Register 3";
+      REGISTER GTPR {
+        OFFSET = 0x18;
+        SIZE = HALFWORD;
+        FIELD GT  { START = 15; STOP = 8; };
+        FIELD PSC { START = 7; STOP = 0;  };
+      } : "Guard Time and Prescaler Register";
+      EVENT TXE  { ENABLE = TXEIE;                };
+      EVENT CTS  { ENABLE = CTSIE; ACK = TRUE;    };
+      EVENT TC   { ENABLE = TCIE;                 };
+      EVENT RXNE { ENABLE = RXNEIE;               };
+      EVENT ORE  { ENABLE = RXNEIE; ENABLE = EIE; };
+      EVENT IDLE { ENABLE = IDLEIE;               };
+      EVENT PE   { ENABLE = PEIE;                 };
+      EVENT LBD  { ENABLE = LBDIE; ACK = TRUE;    };
+      EVENT NF   { ENABLE = EIE;                  };
+      EVENT FE   { ENABLE = EIE;                  };
+    };
+    
+    /*
+     * STM UART device (no hardware control flow)
+     */
+    DEVICE_KIND UART {
+      REGISTER SR {
+        OFFSET = 0x00;
+        SIZE = HALFWORD;
         BIT LBD  { LOC = 8; } : "Line Break Detected flag";
         BIT TXE  { LOC = 7; };
         BIT TC   { LOC = 6; };
@@ -91,11 +188,7 @@ CPU stm32f407 {
         OFFSET = 0x10;
         SIZE = HALFWORD;
         BIT LINEN  { LOC = 14; };
-        FIELD STOP { START = 13; STOP = 12; };
-        BIT CLKEN  { LOC = 11; };
-        BIT CPOL   { LOC = 10; };
-        BIT CPHA   { LOC = 9;  };
-        BIT LBCL   { LOC = 8;  };
+        BIT STOP   { LOC = 13; };
         BIT LBDIE  { LOC = 6;  };
         BIT LBDL   { LOC = 5;  };
         FIELD ADD  { START = 3; STOP = 0; };
@@ -104,24 +197,22 @@ CPU stm32f407 {
         OFFSET = 0x14;
         SIZE = HALFWORD;
         BIT ONEBIT { LOC = 11; };
-        BIT CTSIE  { LOC = 10; };
-        BIT CTSE   { LOC = 9;  };
-        BIT RTSE   { LOC = 8;  };
         BIT DMAT   { LOC = 7;  };
         BIT DMAR   { LOC = 6;  };
-        BIT SCEN   { LOC = 5;  };
-        BIT NACK   { LOC = 4;  };
         BIT HDSEL  { LOC = 3;  };
         BIT IRLP   { LOC = 2;  };
         BIT IREN   { LOC = 1;  };
         BIT EIE    { LOC = 0;  };
       } : "Control Register 3";
-      REGISTER GTPR {
-        OFFSET = 0x18;
-        SIZE = HALFWORD;
-        FIELD GT  { START = 15; STOP = 8; };
-        FIELD PSC { START = 7; STOP = 0;  };
-      };
+      EVENT TXE  { ENABLE = TXEIE;                };
+      EVENT TC   { ENABLE = TCIE;                 };
+      EVENT RXNE { ENABLE = RXNEIE;               };
+      EVENT ORE  { ENABLE = RXNEIE; ENABLE = EIE; };
+      EVENT IDLE { ENABLE = IDLEIE;               };
+      EVENT PE   { ENABLE = PEIE;                 };
+      EVENT LBD  { ENABLE = LBDIE; ACK = TRUE;    };
+      EVENT NF   { ENABLE = EIE;                  };
+      EVENT FE   { ENABLE = EIE;                  };
     };
 
     DEVICE USART1 {
@@ -142,10 +233,22 @@ CPU stm32f407 {
       VECTOR = USART3_IRQ;
     };
 
+    DEVICE UART4 {
+      KIND = UART;
+      ADDRESS = 0x40004C00; 
+      VECTOR = UART4_IRQ;
+    };
+
+    DEVICE UART5 {
+      KIND = UART;
+      ADDRESS = 0x40005000; 
+      VECTOR = UART5_IRQ;
+    };
+
     DEVICE USART6 {
       KIND = USART;
       ADDRESS = 0x40011400; 
-      VECTOR = USART1_IRQ;
+      VECTOR = USART6_IRQ;
     };
 
     INTERRUPT_COUNT nb_it {
@@ -486,6 +589,7 @@ CPU stm32f407 {
       ACK = TRUE { TEMPLATE = TRUE { NAME = "uart_ack"; }; };
       VECTOR_TYPE = HANDLER {
         NAME = "USART1_Handler";
+        TEMPLATE = TRUE { NAME = "uart_dispatch"; };
       };
     } : "USART1 global Interrupt";
     
@@ -495,6 +599,7 @@ CPU stm32f407 {
       ACK = TRUE { TEMPLATE = TRUE { NAME = "uart_ack"; }; };
       VECTOR_TYPE = HANDLER {
         NAME = "USART2_Handler";
+        TEMPLATE = TRUE { NAME = "uart_dispatch"; };
       };
     } : "USART2 global Interrupt";
     
@@ -607,9 +712,14 @@ CPU stm32f407 {
     INTERRUPT UART4_IRQ {
       VECT = 68;
       SETPRIO = TRUE { NUMBER = 52; };
-      ACK = TRUE { TEMPLATE = TRUE { NAME = "uart_no_cts_ack"; }; };
+      ACK = TRUE {
+        TEMPLATE = TRUE {
+          NAME = "uart_ack";
+        };
+      };
       VECTOR_TYPE = HANDLER {
         NAME = "UART4_Handler";
+        TEMPLATE = TRUE { NAME = "uart_dispatch"; };
       };
     } : "UART4 global Interrupt";
     
@@ -618,11 +728,12 @@ CPU stm32f407 {
       SETPRIO = TRUE { NUMBER = 53; };
       ACK = TRUE {
         TEMPLATE = TRUE {
-          NAME = "uart_no_cts_ack";
+          NAME = "uart_ack";
         };
       };
       VECTOR_TYPE = HANDLER {
         NAME =  "UART5_Handler";
+        TEMPLATE = TRUE { NAME = "uart_dispatch"; };
       };
     } : "UART5 global Interrupt";
     
@@ -768,6 +879,7 @@ CPU stm32f407 {
       ACK = TRUE { TEMPLATE = TRUE { NAME = "uart_ack"; }; };
       VECTOR_TYPE = HANDLER {
         NAME = "USART6_Handler";
+        TEMPLATE = TRUE { NAME = "uart_dispatch"; };
       };
     } : "USART6 global interrupt";
     
