@@ -24,6 +24,8 @@
 #
 #---------------------------------------------------------------------------*
 
+# 3.1.6    Updated to GTL 3.0.11. expression data type, where list getter and
+#          where map getter. Added elementAtIndex list getter
 # 3.1.5    Updated to GTL 3.0.10. componentsJoinedByString list getter
 # 3.1.4    Added a EOF variable in the data passed to GTL. EOF location is
 #          at the end of the OIL file. EOF value is the location string.
@@ -54,7 +56,7 @@
 #          string
 # 2.1.20   Added -o and -r options to goil
 
-project (3:1:5) -> "goil" {
+project (3:1:6) -> "goil" {
 
   %makefile-macosx
   %makefile-unix

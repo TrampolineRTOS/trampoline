@@ -63,10 +63,10 @@ list goilTemplateKeyWordList style keywordsStyle error message "the '%K' keyword
   "print", "println", "repeat", "sort", "step", "tab", "template", 
   "then", "to", "true", "typeof", "up", "yes", "warning", "while", "write",
   "executable", "variables", "getter", "unlet", "setter", "libraries", "input",
-  "break"
+  "break", "__VARS__"
 }
 
-rule 'a'->'z' |  'A'->'Z' {
+rule 'a'->'z' |  'A'->'Z' | '_' {
   repeat
     enterCharacterIntoString ( !?identifierString !*)
     enterCharacterIntoString ( !?tokenString !*)
@@ -94,7 +94,7 @@ list galgasDelimitorsList style delimitersStyle error message "the '%K' delimito
     "/",    "!=",   ">=",      "&",     "<=",      "{",     "}",
     "<",     "^",   ">>",      "~",     "<-",     "<<",     "@",   "*=",
     "/=",   "&=",   "|=",    "<<=",    ">>=",   "mod=",     "^=",  "@[",
-    "@(",   "@{",   "[!",     "@!"
+    "@(",   "@{",   "[!",     "@!",     "@?"
 }
 
 rule list galgasDelimitorsList

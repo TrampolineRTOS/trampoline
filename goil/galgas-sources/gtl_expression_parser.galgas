@@ -664,6 +664,26 @@ rule <gtl_factor>
 
 #------------------------------------------------------------------------------*
 
+rule <gtl_factor>
+  !@gtlExpression expression
+{
+  $@?$
+  <gtl_expression> ?@gtlExpression exp
+  $?$
+  expression = @gtlTerminal.new { !.here !@gtlExpr.new { !.here !emptylstring() !exp } }
+}
+
+#------------------------------------------------------------------------------*
+
+rule <gtl_factor>
+  !@gtlExpression expression
+{
+  $__VARS__$
+  expression = @gtlAllVarsRef.new { !.here }
+}
+
+#------------------------------------------------------------------------------*
+
 rule <gtl_variable>
   !@gtlVarPath path
 {

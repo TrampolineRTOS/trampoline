@@ -1,12 +1,29 @@
 %
 #
-# Template to generate an dispatch dequence for each
+# Template to generate an dispatch sequence for each
 # event of the USART with the CTS event, that is USART1, 2, 3 and 6.
 # 
 
-input(it,obj)
+input(it,obj,DEVICE,DEVICE_KIND)
 
-let usartName := [it::NAME leftSubString: 6]
+let USART := [
+  [DEVICE where: @? __item__::VECTOR == NAME ?, @{ NAME : it::NAME }]
+  first
+]
+
+let USART_DESC := [
+  [DEVICE_KIND where: @? __item__::NAME == KIND ?, @{ KIND: USART::KIND }]
+  first
+]
+
+let FLAGS := @[]
+foreach reg in exists USART_DESC::REGISTER default ( @() ) do
+  foreach bit in exists reg::BIT default ( @() ) do
+    let FLAGS[bit::NAME] := @{ REG : reg::NAME, LOC : bit::LOC }
+  end foreach
+end foreach
+
+display FLAGS
 
 let bitForFlag := @[
   "TXE"  : 7,
@@ -43,10 +60,10 @@ if exists obj::SOURCE_S then
     end if
   end foreach
 %
-  if ((% !usartName %->SR & (% ![flagList componentsJoinedByString: " | "]%)) &&
+  if ((% !USART::NAME %->SR & (% ![flagList componentsJoinedByString: " | "]%)) &&
       %
     foreach enableBit in enableList do
-      %(% !usartName %->% !enableBit::REG % & (1U << % !enableBit::BIT %))%
+      %(% !USART::NAME %->% !enableBit::REG % & (1U << % !enableBit::BIT %))%
     between % || %
     end foreach
       %)

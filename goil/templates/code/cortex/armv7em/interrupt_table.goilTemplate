@@ -95,7 +95,7 @@ FUNC(void, OS_CODE) % !objList_KEY %_Handler(void)
     if obj::KIND == "ISR" then
       if obj::CATEGORY == 1 then
         if exists it_map[objList_KEY]::VECTOR_TYPE_S::TEMPLATE_S::NAME then
-          template (it_map[objList_KEY],obj) if exists from
+          template (it_map[objList_KEY],obj,DEVICE,DEVICE_KIND) if exists from
             it_map[objList_KEY]::VECTOR_TYPE_S::TEMPLATE_S::NAME or%
   %!obj::NAME %_function();%
           end template

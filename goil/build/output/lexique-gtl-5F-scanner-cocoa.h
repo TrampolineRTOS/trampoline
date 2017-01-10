@@ -92,6 +92,7 @@ enum {gtl_scanner_1_,
   gtl_scanner_1_libraries,
   gtl_scanner_1_input,
   gtl_scanner_1_break,
+  gtl_scanner_1__5F__5F_VARS_5F__5F_,
   gtl_scanner_1__2A_,
   gtl_scanner_1__7C_,
   gtl_scanner_1__2C_,
@@ -136,7 +137,8 @@ enum {gtl_scanner_1_,
   gtl_scanner_1__40__28_,
   gtl_scanner_1__40__7B_,
   gtl_scanner_1__5B__21_,
-  gtl_scanner_1__40__21_
+  gtl_scanner_1__40__21_,
+  gtl_scanner_1__40__3F_
 } ;
 
 //---------------------------------------------------------------------------------------------------------------------*
