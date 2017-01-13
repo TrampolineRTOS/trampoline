@@ -1,12 +1,5 @@
 IMPLEMENTATION stm32f407 {
 
-  INTERRUPT [] { 
-    BOOLEAN [
-      TRUE  { INT32 NUMBER; },
-      FALSE
-    ] SETPRIO = FALSE;
-  };
-  
   DEVICE_KIND [] {
     STRUCT {
       UINT32 OFFSET;

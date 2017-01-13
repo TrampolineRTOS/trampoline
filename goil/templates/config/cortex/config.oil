@@ -40,6 +40,10 @@ IMPLEMENTATION thumb2_ressource {
       },
       FALSE
     ] ACK = TRUE;
+    BOOLEAN [
+      TRUE  { INT32 NUMBER; },
+      FALSE
+    ] SETPRIO = FALSE;
   };
   
   INTERRUPT_COUNT {
