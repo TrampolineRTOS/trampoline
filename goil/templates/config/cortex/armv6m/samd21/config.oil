@@ -1,6 +1,10 @@
 CPU samd21 {
 
-  
+    CORTEX samd21 {
+      PRIO_BITS = 2;
+      CLOCK = 48000000;
+    };
+     
     BUILDOPTIONS buildOptionsForSamD21 {
        COMMONFLAGS = "-D__SAMD21J18A__"; //processor def.
     };

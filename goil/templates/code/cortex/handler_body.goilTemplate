@@ -18,7 +18,7 @@ tpl_primary_irq_handler_% !handlerSource %:
      * 2 - Reset the tpl_kern variables
      */
     ldr  r0,=tpl_kern
-    mov  r1,#NO_NEED_SWITCH_NOR_SCHEDULE
+    movs r1,#NO_NEED_SWITCH_NOR_SCHEDULE
     strb r1,[r0,#TPL_KERN_OFFSET_NEED_SWITCH]
     strb r1,[r0,#TPL_KERN_OFFSET_NEED_SCHEDULE]
 
@@ -64,12 +64,8 @@ tpl_primary_irq_handler_% !handlerSource %:
 tpl_% !handlerSource %_no_context_switch:
 
     /*-------------------------------------------------------------------------
-     * 8 - pop LR that was saved at stage 1
+     * 8 - pop LR that was saved at stage 1 into PC and return from the handler
      */
-    pop  {lr}
+    pop  {pc}
 
-    /*-------------------------------------------------------------------------
-     * 9 - Return from the handler
-     */
-    bx lr
 /*---------------------------------------------------------------------------*/

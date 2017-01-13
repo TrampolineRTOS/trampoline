@@ -117,11 +117,11 @@ tpl_disable_interrupts:
     /*-------------------------------------------------------------------------
      * Set the priority of the SVC to 0
      */
-    ldr r0,=SHPR2
-    ldr r1,[r0]
-    ldr r2,=0x00FFFFFF
-    and r1,r2
-    str r1,[r0]
+    ldr  r0,=SHPR2
+    ldr  r1,[r0]
+    ldr  r2,=0x00FFFFFF
+    ands r1,r2
+    str  r1,[r0]
 
     bx   lr
 
@@ -139,19 +139,19 @@ tpl_enable_interrupts:
     /*-------------------------------------------------------------------------
      * 1 - Reset the priority of SVC to KERNEL_PRIO
      */
-    ldr r0,=SHPR2
-    ldr r1,[r0]
-    ldr r2,=KERNEL_PRIO_SHPR2
-    orr r1,r2
-    str r1,[r0]
+    ldr  r0,=SHPR2
+    ldr  r1,[r0]
+    ldr  r2,=KERNEL_PRIO_SHPR2
+    orrs r1,r2
+    str  r1,[r0]
 
     /*-------------------------------------------------------------------------
      * 2 - reset BASEPRI to 0
      */
-    movs r0,#0
-    msr  basepri,r0
+    movs  r0,#0
+    msr   basepri,r0
 
-    bx   lr
+    bx    lr
 
 /*-----------------------------------------------------------------------------
  * the code ends here

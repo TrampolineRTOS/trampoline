@@ -66,6 +66,13 @@ CPU thumb2_ressource {
     CFILE = "tpl_interrupts.S";
   };
   
+  GENERATED_FILES cortex_m4 {
+    CFILE = "tpl_primary_irq.S";
+    CFILE = "tpl_vectors.c";
+    CFILE = "tpl_external_interrupts.c";
+    CFILE = "tpl_app_interrupts.c";
+  };
+
   PLATFORM_FILES cortex_cmsis {
     PATH = "cortex/CMSIS/Include";
   };

@@ -17,13 +17,6 @@ CPU armv7em {
     ACK = FALSE;
   };
 
-  GENERATED_FILES cortex_m4 {
-    CFILE = "tpl_primary_irq.S";
-    CFILE = "tpl_vectors.c";
-    CFILE = "tpl_external_interrupts.c";
-    CFILE = "tpl_app_interrupts.c";
-  };
-
   PLATFORM_FILES cortex_m4 {
     PATH = "cortex/armv7em";
     CFILE = "tpl_ctx_switch.S";

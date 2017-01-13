@@ -163,7 +163,7 @@ not_callable_by_isr1:
      * 6 - Reset the tpl_kern variables
      */
     ldr   r4,=tpl_kern
-    mov   r5,#NO_NEED_SWITCH_NOR_SCHEDULE
+    movs  r5,#NO_NEED_SWITCH_NOR_SCHEDULE
     strb  r5,[r4,#TPL_KERN_OFFSET_NEED_SWITCH]
     strb  r5,[r4,#TPL_KERN_OFFSET_NEED_SCHEDULE]
 
@@ -171,7 +171,7 @@ not_callable_by_isr1:
      * 7 - Get the function pointer to the service
      */
     ldr   r4,=tpl_dispatch_table
-    lsl   r3,r3,#2
+    lsls  r3,r3,#2
     ldr   r3,[r4,r3]
 
     /*-------------------------------------------------------------------------

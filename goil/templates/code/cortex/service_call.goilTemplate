@@ -11,9 +11,8 @@
      * If not 0 we are in handler mode and the system call is done by
      * a function call
      */
-    mrs  r3,PSR
-    ldr  r12,=ISR_NUMBER_MASK
-    ands r3,r3,r12
+    mrs  r3,IPSR
+    cmp  r3,#0
     bne  % !api_func::NAME %_direct_call
     /*-------------------------------------------------------------------------
      * We are in thread mode so we set r3 to the identifier of the service
