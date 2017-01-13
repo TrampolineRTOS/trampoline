@@ -1,7 +1,7 @@
 # Trampoline
 
 Trampoline is a static RTOS for small embedded systems.
-Its API is aligned with OSEK/VDX OS and AUTOSAR OS 4.1 standards.
+Its API is aligned with OSEK/VDX OS and AUTOSAR OS 4.2 standards.
 
 5 platforms are supported by now :
 
@@ -28,7 +28,7 @@ Trampoline runs on the following plateforms :
 | NXP LPC2294                  | ARM7               | 1     | Olimex LPC-L2294-1MB              |
 | NXP / Freescale MK20DX256    | Cortex-M4          | 1     | Teensy31                          |
 | NXP / Freescale MPC564xL     | Power Architecture | 2     | XPC56XX EVB + XPC56XL MINI-MODULE |
-| STMicroelectronics STM32F4xx | Cortex-M4          | 1     | STM32F4DISCOVERY                  |
+| STMicroelectronics STM32F4xx | Cortex-M4          | 1     | STM32F4DISCOVERY with STM32F407VG |
 | MicroSemi SmartFusion2       | Cortex-M3          | 1     | starterKit                        |
 
 Some examples have been added (check examples):
