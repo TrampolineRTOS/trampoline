@@ -21,6 +21,7 @@ CPU armv7em {
     PATH = "cortex/armv7em";
     CFILE = "tpl_ctx_switch.S";
     CFILE = "tpl_ctx_switch_under_it.S";
+    CFILE = "tpl_interrupts.S";
   };
 };
 

@@ -3,7 +3,7 @@
  *
  * @section desc File description
  *
- * Startup code called just after reset of cpu. This code then calls the 
+ * Startup code called just after reset of cpu. This code then calls the
  *
  * @section copyright Copyright
  *
@@ -39,10 +39,10 @@
  * The cpu starts in privileged thread mode using MSP.
  * 1 - Copy MSP into PSP
  * 2 - Switch to use PSP
- * Just after the modification of CONTROL register (set to use both PSP and MSP) 
+ * Just after the modification of CONTROL register (set to use both PSP and MSP)
  * the cpu will use PSP. So we MUST initialize PSP with a temporary value otherwise
  * the startup will crash.
- * We can initialize PSP with the current value of MSP because PSP will be updated 
+ * We can initialize PSP with the current value of MSP because PSP will be updated
  * with the stack of running processes. The first process to run is the idle task.
  *
  * @param

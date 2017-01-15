@@ -54,7 +54,7 @@ before
 do
 %
   /* Init the priority of % !isr::SOURCE % */
-  NVIC_SetPriority(% !isr::SOURCE%_Number, KERNEL_PRIO_UNSHIFTED);%
+  NVIC_SetPriority(% !isr::SOURCE%_Number, OS_ISR_PRIO_UNSHIFTED);%
 end foreach
 %
 }

@@ -35,6 +35,12 @@
 #endif
 #include "tpl_os_interrupt.h"
 
+/*
+ * Include the tpl_cortex_defenitions.h generated header that set the
+ * priority of various Handlers
+ */
+#include "tpl_cortex_definitions.h"
+
 #define OS_START_SEC_VAR_8BIT
 #include "tpl_memmap.h"
 
@@ -85,12 +91,12 @@ FUNC (void, OS_CODE) tpl_init_machine_generic (void)
 FUNC (void, OS_CODE) tpl_init_machine_specific (void)
 {
   tpl_set_systick_timer();
-	tpl_init_external_interrupts();
+  tpl_init_external_interrupts();
   tpl_init_it_priority();
   /*
-   * Set the SVC priority to 14
+   * Set the SVC priority to KERNEL_PRIO
    */
-  NVIC_SetPriority(SVCall_IRQn, 14);
+  NVIC_SetPriority(SVCall_IRQn, KERNEL_PRIO_UNSHIFTED);
   /*
    * Switch to use PSP, unprivileged state
    */

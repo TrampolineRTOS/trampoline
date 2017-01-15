@@ -46,6 +46,10 @@ else
     tab 40 - [[kernel_prio string] length]
     !kernel_prio
 %
+#define OS_ISR_PRIO_UNSHIFTED%
+    tab 40 - [[kernel_prio string] length]
+    !kernel_prio
+%
 #define ISR1_IT_PRIO_UNSHIFTED%
     tab 40 - [[isr1_prio string] length]
     !isr1_prio
@@ -55,6 +59,12 @@ else
  * Priorities are shifted and intended to be stored in BASEPRI
  */
 #define KERNEL_PRIO%
+    tab 30 - [[kernel_prio << (8 - CORTEX::PRIO_BITS) string] length]
+    !kernel_prio << (8 - CORTEX::PRIO_BITS)
+    tab 40
+    %/* Unshifted priority: % !kernel_prio tab 70%*/%
+%
+#define OS_ISR_PRIO%
     tab 30 - [[kernel_prio << (8 - CORTEX::PRIO_BITS) string] length]
     !kernel_prio << (8 - CORTEX::PRIO_BITS)
     tab 40

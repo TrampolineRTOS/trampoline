@@ -67,7 +67,6 @@ CPU thumb2_ressource {
     CFILE = "tpl_machine_cortex.c";
     CFILE = "tpl_sc_handler.S";
     CFILE = "tpl_startup.S";
-    CFILE = "tpl_interrupts.S";
   };
   
   GENERATED_FILES cortex_m4 {
