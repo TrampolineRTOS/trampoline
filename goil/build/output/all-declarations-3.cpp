@@ -4893,7 +4893,7 @@ static void extensionMethod_gtlTemplate_execute (const cPtr_gtlTemplate * inObje
                                                  COMMA_UNUSED_LOCATION_ARGS) {
   const cPtr_gtlTemplate * object = inObject ;
   macroValidSharedObject (object, cPtr_gtlTemplate) ;
-  extensionMethod_execute (object->mProperty_program, ioArgument_context, ioArgument_vars, ioArgument_lib, ioArgument_outputString, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 227)) ;
+  extensionMethod_execute (object->mProperty_program, ioArgument_context, ioArgument_vars, ioArgument_lib, ioArgument_outputString, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 271)) ;
 }
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -5237,7 +5237,7 @@ static GALGAS_bool extensionGetter_library_functionExists (const cPtr_library * 
   GALGAS_bool result_exists ; // Returned variable
   const cPtr_library * object = inObject ;
   macroValidSharedObject (object, cPtr_library) ;
-  result_exists = object->mProperty_funcMap.getter_hasKey (constinArgument_name.getter_string (SOURCE_FILE ("gtl_types.galgas", 288)) COMMA_SOURCE_FILE ("gtl_types.galgas", 288)) ;
+  result_exists = object->mProperty_funcMap.getter_hasKey (constinArgument_name.getter_string (SOURCE_FILE ("gtl_types.galgas", 332)) COMMA_SOURCE_FILE ("gtl_types.galgas", 332)) ;
 //---
   return result_exists ;
 }
@@ -5320,7 +5320,7 @@ static GALGAS_gtlFunction extensionGetter_library_getFunction (const cPtr_librar
   GALGAS_gtlFunction result_aFunction ; // Returned variable
   const cPtr_library * object = inObject ;
   macroValidSharedObject (object, cPtr_library) ;
-  object->mProperty_funcMap.method_get (constinArgument_name, result_aFunction, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 295)) ;
+  object->mProperty_funcMap.method_get (constinArgument_name, result_aFunction, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 339)) ;
 //---
   return result_aFunction ;
 }
@@ -5400,7 +5400,7 @@ static void extensionSetter_library_putFunction (cPtr_library * inObject,
   cPtr_library * object = inObject ;
   macroValidSharedObject (object, cPtr_library) ;
   {
-  object->mProperty_funcMap.setter_put (constinArgument_name, constinArgument_aFunction, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 302)) ;
+  object->mProperty_funcMap.setter_put (constinArgument_name, constinArgument_aFunction, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 346)) ;
   }
 }
 //---------------------------------------------------------------------------------------------------------------------*
@@ -5482,7 +5482,7 @@ static GALGAS_bool extensionGetter_library_getterExists (const cPtr_library * in
   GALGAS_bool result_exists ; // Returned variable
   const cPtr_library * object = inObject ;
   macroValidSharedObject (object, cPtr_library) ;
-  result_exists = object->mProperty_getterMap.getter_hasKey (constinArgument_type.add_operation (constinArgument_name.getter_string (SOURCE_FILE ("gtl_types.galgas", 310)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 310)) COMMA_SOURCE_FILE ("gtl_types.galgas", 310)) ;
+  result_exists = object->mProperty_getterMap.getter_hasKey (constinArgument_type.add_operation (constinArgument_name.getter_string (SOURCE_FILE ("gtl_types.galgas", 354)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 354)) COMMA_SOURCE_FILE ("gtl_types.galgas", 354)) ;
 //---
   return result_exists ;
 }
@@ -5567,7 +5567,7 @@ static GALGAS_gtlGetter extensionGetter_library_getGetter (const cPtr_library * 
   GALGAS_gtlGetter result_aGetter ; // Returned variable
   const cPtr_library * object = inObject ;
   macroValidSharedObject (object, cPtr_library) ;
-  object->mProperty_getterMap.method_get (GALGAS_lstring::constructor_new (constinArgument_type.add_operation (constinArgument_name.getter_string (SOURCE_FILE ("gtl_types.galgas", 318)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 318)), constinArgument_name.getter_location (SOURCE_FILE ("gtl_types.galgas", 318))  COMMA_SOURCE_FILE ("gtl_types.galgas", 318)), result_aGetter, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 318)) ;
+  object->mProperty_getterMap.method_get (GALGAS_lstring::constructor_new (constinArgument_type.add_operation (constinArgument_name.getter_string (SOURCE_FILE ("gtl_types.galgas", 362)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 362)), constinArgument_name.getter_location (SOURCE_FILE ("gtl_types.galgas", 362))  COMMA_SOURCE_FILE ("gtl_types.galgas", 362)), result_aGetter, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 362)) ;
 //---
   return result_aGetter ;
 }
@@ -5647,7 +5647,7 @@ static void extensionSetter_library_putGetter (cPtr_library * inObject,
   cPtr_library * object = inObject ;
   macroValidSharedObject (object, cPtr_library) ;
   {
-  object->mProperty_getterMap.setter_put (constinArgument_name, constinArgument_aGetter, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 325)) ;
+  object->mProperty_getterMap.setter_put (constinArgument_name, constinArgument_aGetter, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 369)) ;
   }
 }
 //---------------------------------------------------------------------------------------------------------------------*
@@ -5729,7 +5729,7 @@ static GALGAS_bool extensionGetter_library_setterExists (const cPtr_library * in
   GALGAS_bool result_exists ; // Returned variable
   const cPtr_library * object = inObject ;
   macroValidSharedObject (object, cPtr_library) ;
-  result_exists = object->mProperty_setterMap.getter_hasKey (constinArgument_type.add_operation (constinArgument_name.getter_string (SOURCE_FILE ("gtl_types.galgas", 333)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 333)) COMMA_SOURCE_FILE ("gtl_types.galgas", 333)) ;
+  result_exists = object->mProperty_setterMap.getter_hasKey (constinArgument_type.add_operation (constinArgument_name.getter_string (SOURCE_FILE ("gtl_types.galgas", 377)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 377)) COMMA_SOURCE_FILE ("gtl_types.galgas", 377)) ;
 //---
   return result_exists ;
 }
@@ -5814,7 +5814,7 @@ static GALGAS_gtlSetter extensionGetter_library_getSetter (const cPtr_library * 
   GALGAS_gtlSetter result_aSetter ; // Returned variable
   const cPtr_library * object = inObject ;
   macroValidSharedObject (object, cPtr_library) ;
-  object->mProperty_setterMap.method_get (GALGAS_lstring::constructor_new (constinArgument_type.add_operation (constinArgument_name.getter_string (SOURCE_FILE ("gtl_types.galgas", 341)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 341)), constinArgument_name.getter_location (SOURCE_FILE ("gtl_types.galgas", 341))  COMMA_SOURCE_FILE ("gtl_types.galgas", 341)), result_aSetter, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 341)) ;
+  object->mProperty_setterMap.method_get (GALGAS_lstring::constructor_new (constinArgument_type.add_operation (constinArgument_name.getter_string (SOURCE_FILE ("gtl_types.galgas", 385)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 385)), constinArgument_name.getter_location (SOURCE_FILE ("gtl_types.galgas", 385))  COMMA_SOURCE_FILE ("gtl_types.galgas", 385)), result_aSetter, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 385)) ;
 //---
   return result_aSetter ;
 }
@@ -5894,7 +5894,7 @@ static void extensionSetter_library_putSetter (cPtr_library * inObject,
   cPtr_library * object = inObject ;
   macroValidSharedObject (object, cPtr_library) ;
   {
-  object->mProperty_setterMap.setter_put (constinArgument_name, constinArgument_aSetter, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 348)) ;
+  object->mProperty_setterMap.setter_put (constinArgument_name, constinArgument_aSetter, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 392)) ;
   }
 }
 //---------------------------------------------------------------------------------------------------------------------*
@@ -5974,7 +5974,7 @@ static GALGAS_bool extensionGetter_library_hasImport (const cPtr_library * inObj
   GALGAS_bool result_result ; // Returned variable
   const cPtr_library * object = inObject ;
   macroValidSharedObject (object, cPtr_library) ;
-  result_result = object->mProperty_doneImports.getter_hasKey (constinArgument_importPath COMMA_SOURCE_FILE ("gtl_types.galgas", 355)) ;
+  result_result = object->mProperty_doneImports.getter_hasKey (constinArgument_importPath COMMA_SOURCE_FILE ("gtl_types.galgas", 399)) ;
 //---
   return result_result ;
 }
@@ -6051,7 +6051,7 @@ static void extensionSetter_library_doImport (cPtr_library * inObject,
                                               COMMA_UNUSED_LOCATION_ARGS) {
   cPtr_library * object = inObject ;
   macroValidSharedObject (object, cPtr_library) ;
-  object->mProperty_doneImports.addAssign_operation (constinArgument_importPath  COMMA_SOURCE_FILE ("gtl_types.galgas", 361)) ;
+  object->mProperty_doneImports.addAssign_operation (constinArgument_importPath  COMMA_SOURCE_FILE ("gtl_types.galgas", 405)) ;
 }
 //---------------------------------------------------------------------------------------------------------------------*
 
@@ -6137,7 +6137,7 @@ static void extensionSetter_library_getTemplate (cPtr_library * inObject,
   cPtr_library * object = inObject ;
   macroValidSharedObject (object, cPtr_library) ;
   {
-  extensionSetter_getTemplate (object->mProperty_templateMap, constinArgument_context, inArgument_path, inArgument_ifExists, ioArgument_lib, outArgument_found, outArgument_result, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 373)) ;
+  extensionSetter_getTemplate (object->mProperty_templateMap, constinArgument_context, inArgument_path, inArgument_ifExists, ioArgument_lib, outArgument_found, outArgument_result, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 417)) ;
   }
 }
 //---------------------------------------------------------------------------------------------------------------------*

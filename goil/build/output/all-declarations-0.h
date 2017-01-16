@@ -2076,10 +2076,11 @@ class GALGAS_gtlContext : public AC_GALGAS_class {
                                                            const class GALGAS_string & inOperand1,
                                                            const class GALGAS_string & inOperand2,
                                                            const class GALGAS_string & inOperand3,
-                                                           const class GALGAS_stringlist & inOperand4,
-                                                           const class GALGAS_gtlDataList & inOperand5,
-                                                           const class GALGAS_bool & inOperand6,
-                                                           const class GALGAS_debuggerContext & inOperand7
+                                                           const class GALGAS_string & inOperand4,
+                                                           const class GALGAS_stringlist & inOperand5,
+                                                           const class GALGAS_gtlDataList & inOperand6,
+                                                           const class GALGAS_bool & inOperand7,
+                                                           const class GALGAS_debuggerContext & inOperand8
                                                            COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Comparison
@@ -2107,6 +2108,9 @@ class GALGAS_gtlContext : public AC_GALGAS_class {
   public : VIRTUAL_IN_DEBUG void setter_setTemplateExtension (class GALGAS_string inArgument0
                                                               COMMA_LOCATION_ARGS) ;
 
+  public : VIRTUAL_IN_DEBUG void setter_setUserTemplateDirectory (class GALGAS_string inArgument0
+                                                                  COMMA_LOCATION_ARGS) ;
+
 
 //--------------------------------- Instance Methods
 //--------------------------------- Class Methods
@@ -2127,6 +2131,8 @@ class GALGAS_gtlContext : public AC_GALGAS_class {
   public : VIRTUAL_IN_DEBUG class GALGAS_string getter_templateDirectory (LOCATION_ARGS) const ;
 
   public : VIRTUAL_IN_DEBUG class GALGAS_string getter_templateExtension (LOCATION_ARGS) const ;
+
+  public : VIRTUAL_IN_DEBUG class GALGAS_string getter_userTemplateDirectory (LOCATION_ARGS) const ;
 
 
 //--------------------------------- Introspection
@@ -2150,6 +2156,7 @@ class cPtr_gtlContext : public acPtr_class {
   public : GALGAS_lstring mProperty_prefix ;
   public : GALGAS_string mProperty_path ;
   public : GALGAS_string mProperty_templateDirectory ;
+  public : GALGAS_string mProperty_userTemplateDirectory ;
   public : GALGAS_string mProperty_templateExtension ;
   public : GALGAS_stringlist mProperty_importPath ;
   public : GALGAS_gtlDataList mProperty_inputVars ;
@@ -2160,6 +2167,7 @@ class cPtr_gtlContext : public acPtr_class {
   public : cPtr_gtlContext (const GALGAS_lstring & in_prefix,
                             const GALGAS_string & in_path,
                             const GALGAS_string & in_templateDirectory,
+                            const GALGAS_string & in_userTemplateDirectory,
                             const GALGAS_string & in_templateExtension,
                             const GALGAS_stringlist & in_importPath,
                             const GALGAS_gtlDataList & in_inputVars,
@@ -2177,6 +2185,8 @@ class cPtr_gtlContext : public acPtr_class {
   public : VIRTUAL_IN_DEBUG void setter_setPath (GALGAS_string inValue COMMA_LOCATION_ARGS) ;
   public : VIRTUAL_IN_DEBUG GALGAS_string getter_templateDirectory (LOCATION_ARGS) const ;
   public : VIRTUAL_IN_DEBUG void setter_setTemplateDirectory (GALGAS_string inValue COMMA_LOCATION_ARGS) ;
+  public : VIRTUAL_IN_DEBUG GALGAS_string getter_userTemplateDirectory (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG void setter_setUserTemplateDirectory (GALGAS_string inValue COMMA_LOCATION_ARGS) ;
   public : VIRTUAL_IN_DEBUG GALGAS_string getter_templateExtension (LOCATION_ARGS) const ;
   public : VIRTUAL_IN_DEBUG void setter_setTemplateExtension (GALGAS_string inValue COMMA_LOCATION_ARGS) ;
   public : VIRTUAL_IN_DEBUG GALGAS_stringlist getter_importPath (LOCATION_ARGS) const ;

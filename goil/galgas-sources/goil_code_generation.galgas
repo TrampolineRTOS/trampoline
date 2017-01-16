@@ -710,6 +710,7 @@ func emptyGoilContext
     !emptylstring()
     !""
     !""
+    !""
     !".gtl"
     !.emptyList
     !.emptyList
@@ -740,6 +741,10 @@ proc generate_all
           @gtlContext context = emptyGoilContext()
           [!?context setTemplateDirectory
             !templates_directory(!"")
+          ]
+          [!?context setUserTemplateDirectory
+            ![@string.stringWithSourceFilePath stringByDeletingLastPathComponent]
+             + "/templates"
           ]
           [!?context setTemplateExtension
             !"goilTemplate"

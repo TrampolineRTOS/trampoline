@@ -24,7 +24,8 @@
 #
 #---------------------------------------------------------------------------*
 
-# 3.1.6    Updated to GTL 3.0.11. expression data type, where list getter and
+# 3.1.7    Updated to GTL 3.0.12. Added a user template directory
+# 3.1.6    Updated to GTL 3.0.11. Expression data type, where list getter and
 #          where map getter. Added elementAtIndex list getter
 # 3.1.5    Updated to GTL 3.0.10. componentsJoinedByString list getter
 # 3.1.4    Added a EOF variable in the data passed to GTL. EOF location is
@@ -56,7 +57,7 @@
 #          string
 # 2.1.20   Added -o and -r options to goil
 
-project (3:1:6) -> "goil" {
+project (3:1:7) -> "goil" {
 
   %makefile-macosx
   %makefile-unix

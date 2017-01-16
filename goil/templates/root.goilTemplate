@@ -27,7 +27,7 @@ import "vectors"
 #------------------------------------------------------------------------------*
 # Check goil version is ok
 #
-let NEEDED_VERSION := "3.1.6"
+let NEEDED_VERSION := "3.1.7"
 
 if version() != NEEDED_VERSION then
   error here : "Goil version " + NEEDED_VERSION + " required"
@@ -1529,3 +1529,5 @@ if OS::WITHORTI then
     template orti in code
   end write
 end if
+
+template test in code

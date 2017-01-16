@@ -8649,7 +8649,7 @@ C_PrologueEpilogue gGetter_goilContext_fullPrefix (defineExtensionGetter_goilCon
 GALGAS_goilContext function_emptyGoilContext (C_Compiler * inCompiler
                                               COMMA_UNUSED_LOCATION_ARGS) {
   GALGAS_goilContext result_context ; // Returned variable
-  result_context = GALGAS_goilContext::constructor_new (function_emptylstring (inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 710)), GALGAS_string::makeEmptyString (), GALGAS_string::makeEmptyString (), GALGAS_string (".gtl"), GALGAS_stringlist::constructor_emptyList (SOURCE_FILE ("goil_code_generation.galgas", 714)), GALGAS_gtlDataList::constructor_emptyList (SOURCE_FILE ("goil_code_generation.galgas", 715)), GALGAS_bool (true), function_defaultDebugSettings (inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 717))  COMMA_SOURCE_FILE ("goil_code_generation.galgas", 709)) ;
+  result_context = GALGAS_goilContext::constructor_new (function_emptylstring (inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 710)), GALGAS_string::makeEmptyString (), GALGAS_string::makeEmptyString (), GALGAS_string::makeEmptyString (), GALGAS_string (".gtl"), GALGAS_stringlist::constructor_emptyList (SOURCE_FILE ("goil_code_generation.galgas", 715)), GALGAS_gtlDataList::constructor_emptyList (SOURCE_FILE ("goil_code_generation.galgas", 716)), GALGAS_bool (true), function_defaultDebugSettings (inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 718))  COMMA_SOURCE_FILE ("goil_code_generation.galgas", 709)) ;
 //---
   return result_context ;
 }
@@ -8689,38 +8689,41 @@ C_galgas_function_descriptor functionDescriptor_emptyGoilContext ("emptyGoilCont
 void routine_generate_5F_all (GALGAS_gtlData inArgument_cfg,
                               C_Compiler * inCompiler
                               COMMA_UNUSED_LOCATION_ARGS) {
-  GALGAS_string var_temp_5F_dir_23403 = function_templates_5F_directory (GALGAS_string ("code"), inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 734)) ;
-  const enumGalgasBool test_0 = GALGAS_bool (kIsNotEqual, var_temp_5F_dir_23403.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+  GALGAS_string var_temp_5F_dir_23411 = function_templates_5F_directory (GALGAS_string ("code"), inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 735)) ;
+  const enumGalgasBool test_0 = GALGAS_bool (kIsNotEqual, var_temp_5F_dir_23411.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
   if (kBoolTrue == test_0) {
-    GALGAS_string var_target_23481 = GALGAS_string (gOption_goil_5F_options_target_5F_platform.getter_value ()) ;
-    const enumGalgasBool test_1 = GALGAS_bool (kIsNotEqual, var_target_23481.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
+    GALGAS_string var_target_23489 = GALGAS_string (gOption_goil_5F_options_target_5F_platform.getter_value ()) ;
+    const enumGalgasBool test_1 = GALGAS_bool (kIsNotEqual, var_target_23489.objectCompare (GALGAS_string::makeEmptyString ())).boolEnum () ;
     if (kBoolTrue == test_1) {
-      GALGAS_gtlContext var_context_23585 = function_emptyGoilContext (inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 740)) ;
+      GALGAS_gtlContext var_context_23593 = function_emptyGoilContext (inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 741)) ;
       {
-      var_context_23585.setter_setTemplateDirectory (function_templates_5F_directory (GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 742)) COMMA_SOURCE_FILE ("goil_code_generation.galgas", 741)) ;
+      var_context_23593.setter_setTemplateDirectory (function_templates_5F_directory (GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 743)) COMMA_SOURCE_FILE ("goil_code_generation.galgas", 742)) ;
       }
       {
-      var_context_23585.setter_setTemplateExtension (GALGAS_string ("goilTemplate") COMMA_SOURCE_FILE ("goil_code_generation.galgas", 744)) ;
+      var_context_23593.setter_setUserTemplateDirectory (GALGAS_string::constructor_stringWithSourceFilePath (inCompiler  COMMA_SOURCE_FILE ("goil_code_generation.galgas", 746)).getter_stringByDeletingLastPathComponent (SOURCE_FILE ("goil_code_generation.galgas", 746)).add_operation (GALGAS_string ("/templates"), inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 746)) COMMA_SOURCE_FILE ("goil_code_generation.galgas", 745)) ;
       }
       {
-      var_context_23585.insulate (HERE) ;
-      cPtr_gtlContext * ptr_23801 = (cPtr_gtlContext *) var_context_23585.ptr () ;
-      callExtensionSetter_addModulePath ((cPtr_gtlContext *) ptr_23801, function_templates_5F_directory (GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 748)), GALGAS_string ("lib"), inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 747)) ;
+      var_context_23593.setter_setTemplateExtension (GALGAS_string ("goilTemplate") COMMA_SOURCE_FILE ("goil_code_generation.galgas", 749)) ;
       }
       {
-      var_context_23585.setter_setPath (GALGAS_string (gOption_goil_5F_options_target_5F_platform.getter_value ()) COMMA_SOURCE_FILE ("goil_code_generation.galgas", 751)) ;
+      var_context_23593.insulate (HERE) ;
+      cPtr_gtlContext * ptr_23977 = (cPtr_gtlContext *) var_context_23593.ptr () ;
+      callExtensionSetter_addModulePath ((cPtr_gtlContext *) ptr_23977, function_templates_5F_directory (GALGAS_string::makeEmptyString (), inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 753)), GALGAS_string ("lib"), inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 752)) ;
       }
-      GALGAS_library var_lib_24029 = function_emptyLib (inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 755)) ;
-      GALGAS_string var_goilLog_24072 = function_invokeGTL (GALGAS_gtlString::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("goil_code_generation.galgas", 758)), function_lstring (GALGAS_string ("root template filename"), inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 759)), GALGAS_string (gOption_goil_5F_options_root.getter_value ())  COMMA_SOURCE_FILE ("goil_code_generation.galgas", 757)), var_context_23585, inArgument_cfg, inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 756)) ;
+      {
+      var_context_23593.setter_setPath (GALGAS_string (gOption_goil_5F_options_target_5F_platform.getter_value ()) COMMA_SOURCE_FILE ("goil_code_generation.galgas", 756)) ;
+      }
+      GALGAS_library var_lib_24205 = function_emptyLib (inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 760)) ;
+      GALGAS_string var_goilLog_24248 = function_invokeGTL (GALGAS_gtlString::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("goil_code_generation.galgas", 763)), function_lstring (GALGAS_string ("root template filename"), inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 764)), GALGAS_string (gOption_goil_5F_options_root.getter_value ())  COMMA_SOURCE_FILE ("goil_code_generation.galgas", 762)), var_context_23593, inArgument_cfg, inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 761)) ;
       const enumGalgasBool test_2 = GALGAS_bool (gOption_goil_5F_options_generate_5F_log.getter_value ()).boolEnum () ;
       if (kBoolTrue == test_2) {
-        var_goilLog_24072.method_writeToFile (GALGAS_string ("goil.log"), inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 767)) ;
+        var_goilLog_24248.method_writeToFile (GALGAS_string ("goil.log"), inCompiler COMMA_SOURCE_FILE ("goil_code_generation.galgas", 772)) ;
       }
     }else if (kBoolFalse == test_1) {
-      inCompiler->printMessage (GALGAS_string ("No target platform given, compiling aborted\n")  COMMA_SOURCE_FILE ("goil_code_generation.galgas", 771)) ;
+      inCompiler->printMessage (GALGAS_string ("No target platform given, compiling aborted\n")  COMMA_SOURCE_FILE ("goil_code_generation.galgas", 776)) ;
     }
   }else if (kBoolFalse == test_0) {
-    inCompiler->printMessage (GALGAS_string ("No template directory defined, compiling aborted\n")  COMMA_SOURCE_FILE ("goil_code_generation.galgas", 774)) ;
+    inCompiler->printMessage (GALGAS_string ("No template directory defined, compiling aborted\n")  COMMA_SOURCE_FILE ("goil_code_generation.galgas", 779)) ;
   }
 }
 
