@@ -27,10 +27,23 @@
 % !api_func::NAME %_direct_call:
     /*-------------------------------------------------------------------------
      * We are in handler mode so we do a simple function call
-     */
+     */%
+    #
+    # If the service can be interrupted by a higher urgency ISR1, we have
+    # to disable interrupts.
+    #
+    if api_func::CALLABLE_BY_ISR1 then%
+    cpsid i   /* set PRIMASK */%
+    end if%
     push {lr}
     bl   % !api_func::KERNEL%
     /*-------------------------------------------------------------------------
      * return from the service wrapper
-     */
+     */%
+    #
+    # Symmetrically interrupts are enabled
+    #
+    if api_func::CALLABLE_BY_ISR1 then%
+    cpsie i   /* clear PRIMASK */%
+    end if%
     pop  {pc}
