@@ -152,6 +152,9 @@ void tpl_disable_interrupts(void)
 
 }
 
+void tpl_os_disable_interrupts(void) {}
+void tpl_os_enable_interrupts(void) {}
+
 /*
  * tpl_init_context initialize a context to prepare a task to run.
  * It sets up the stack and the entry point
