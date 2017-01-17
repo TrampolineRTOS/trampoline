@@ -1529,5 +1529,3 @@ if OS::WITHORTI then
     template orti in code
   end write
 end if
-
-template test in code
