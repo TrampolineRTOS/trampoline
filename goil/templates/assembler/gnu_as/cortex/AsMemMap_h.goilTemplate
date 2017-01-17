@@ -35,11 +35,10 @@
 #ifdef OS_START_SEC_CODE
   #undef OS_START_SEC_CODE
   #ifdef CURRENT_LINKER_CODE_SECTION
-    #error "Starting a .osCode while a section is already started"
+    #error "Starting a .osCode section while a section is already started"
   #else
     #undef MEMMAP_ERROR
-    .text
-    .section ".osCode", "ax"
+.section .osCode, "ax"
     #define CURRENT_LINKER_CODE_SECTION
   #endif
 #endif
@@ -57,10 +56,10 @@
 #ifdef OS_START_SEC_VECTBL
   #undef OS_START_SEC_VECTBL
   #ifdef CURRENT_LINKER_CODE_SECTION
-    #error "Starting a .osCode while a section is already started"
+    #error "Starting a .vectbl section while a section is already started"
   #else
     #undef MEMMAP_ERROR
-    .section ".vectbl", "ax"
+.section .vectbl, "ax"
     #define CURRENT_LINKER_CODE_SECTION
   #endif
 #endif
@@ -81,7 +80,7 @@
     #error "Starting a .osVar data section while a section is already started"
   #else
     #undef MEMMAP_ERROR
-    .section ".osVar", "ax"
+.section .osVar, "aw"
     #define CURRENT_LINKER_DATA_SECTION
   #endif
 #endif
@@ -104,7 +103,7 @@
     #error "Starting a .osConst data section while a section is already started"
   #else
     #undef MEMMAP_ERROR
-    .section ".osConst", "ax"
+.section .osConst, "a"
     #define CURRENT_LINKER_DATA_SECTION
   #endif
 #endif
@@ -122,10 +121,10 @@
 #ifdef OS_START_SEC_STACKS
   #undef OS_START_SEC_STACKS
   #ifdef CURRENT_LINKER_DATA_SECTION
-    #error "Starting a .osConst data section while a section is already started"
+    #error "Starting a .stacks data section while a section is already started"
   #else
     #undef MEMMAP_ERROR
-    .section ".stacks", "ax"
+.section .stacks, "aw"
     #define CURRENT_LINKER_DATA_SECTION
   #endif
 #endif
@@ -145,10 +144,10 @@
 #ifdef OS_START_LTORG
   #undef OS_START_LTORG
   #ifdef CURRENT_LINKER_LTORG
-    #error "Starting a .ltorg while one is already started"
+    #error "Starting a .ltorg section while one is already started"
   #else
     #undef MEMMAP_ERROR
-    .ltorg
+.ltorg
     #define CURRENT_LINKER_LTORG
   #endif
 #endif
@@ -166,10 +165,10 @@
 #ifdef OS_START_SEC_TEXT
   #undef OS_START_SEC_TEXT
   #ifdef CURRENT_LINKER_CODE_SECTION
-    #error "Starting a .text while a section is already started"
+    #error "Starting a .text section while a section is already started"
   #else
     #undef MEMMAP_ERROR
-    .text
+.text
     #define CURRENT_LINKER_CODE_SECTION
   #endif
 #endif
@@ -191,7 +190,7 @@
   #else
     #undef MEMMAP_ERROR
     #undef CURRENT_LINKER_CODE_SECTION_NAME
-    .section ".osApiCode", "ax"
+.section .osApiCode, "ax"
     #define CURRENT_LINKER_CODE_SECTION
   #endif
 #endif
@@ -212,7 +211,7 @@
     #error "Starting a .osApiConst section while a section is already started"
   #else
     #undef MEMMAP_ERROR
-    .section ".osApiConst", "a"
+.section .osApiConst, "a"
     #define CURRENT_LINKER_DATA_SECTION
   #endif
 #endif

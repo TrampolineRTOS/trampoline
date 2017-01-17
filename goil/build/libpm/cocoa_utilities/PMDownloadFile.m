@@ -147,7 +147,8 @@
   [mCancelButton setTarget:nil] ;
   [mCancelButton setAction:NULL] ;
   [mCancelButton setEnabled:NO] ;
-  objc_msgSend (mDelegate, mDownloadDidEndSelector, self) ;
+//  objc_msgSend (mDelegate, mDownloadDidEndSelector, self) ;
+  [mDelegate performSelector:@selector (mDownloadDidEndSelector:) withObject:self] ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*

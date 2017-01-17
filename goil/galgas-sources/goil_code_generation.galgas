@@ -710,6 +710,7 @@ func emptyGoilContext
     !emptylstring()
     !""
     !""
+    !""
     !".gtl"
     !.emptyList
     !.emptyList
@@ -737,28 +738,13 @@ proc generate_all
       @string target = [option goil_options.target_platform value]
       if target != "" then
 
-          # Build a template instruction
-#          @gtlTemplateInstruction rootTemplateInstruction = .new {
-#            !.here
-#            !""
-#            !emptylstring()
-#            !@gtlTerminal.new {
-#              !.here
-#              !@gtlString.new { 
-#                !.here 
-#                !lstring(!"root template filename") 
-#                ![option goil_options.root value]
-#              }
-#            }
-#            !false       # should always exist
-#            !true        # global template
-#            !.emptyList  # no argument
-#            !.emptyList  # no instruction if not found
-#          }
-                    
           @gtlContext context = emptyGoilContext()
           [!?context setTemplateDirectory
             !templates_directory(!"")
+          ]
+          [!?context setUserTemplateDirectory
+            ![@string.stringWithSourceFilePath stringByDeletingLastPathComponent]
+             + "/templates"
           ]
           [!?context setTemplateExtension
             !"goilTemplate"
@@ -782,33 +768,10 @@ proc generate_all
             !cfg
           )
           
-#          [rootTemplateInstruction execute
-#            !?context
-#            !?cfg
-#            !?lib
-#            !?goilLog
-#          ]
-
           if [option goil_options.generate_log value] then
             [goilLog writeToFile !"goil.log"]
           end
           
-          # write the result to files
-#          @string directory := projectName[];
-#          
-#          @string types_file := "tpl_app_custom_types.h";
-#
-#          @uint error_count := [@uint errorCount];
-#
-#          types_file := directory . "/" . types_file;
-#
-#          if error_count == 0 then
-#              if [option .verbose_output value] then
-#                  message "creating " . types_file . "\n";
-#              end if;
-#              [types makeDirectoryAndWriteToFile !types_file];
-#
-#          end if;
       else
           message "No target platform given, compiling aborted\n"
       end

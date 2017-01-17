@@ -146,6 +146,16 @@ private func %once anyArgument     -> @gtlTypedArgumentList result
   result = .listWithValue { !`@gtlData }
 }
 
+private func %once structArgument  -> @gtlTypedArgumentList result
+{
+  result = .listWithValue { !`@gtlStruct }
+} 
+
+private func %once expressionArgument  -> @gtlTypedArgumentList result
+{
+  result = .listWithValue { !`@gtlExpr }
+} 
+
 private proc argumentsCheck
   ?let @lstring methodName
   ?@gtlTypedArgumentList abstractArgumentList
@@ -3624,6 +3634,14 @@ override getter @gtlList performGetter
   elsif "last"                   == methodName then
     argumentsCheck(!methodName !noArgument() !arguments)
     [value last ?result]
+  elsif "elementAtIndex"         == methodName then
+    argumentsCheck(!methodName !intArgument() !arguments)
+    @uint index = [[arguments dataAtIndex !0] int]
+    if index < [value length] then
+      result = [value valueAtIndex !index]
+    else
+      error methodName : "index out of bounds" : result
+    end
   elsif "subListTo"              == methodName then
     argumentsCheck(!methodName !intArgument() !arguments)
     @uint index = [[arguments dataAtIndex !0] int]
@@ -3733,6 +3751,19 @@ override getter @gtlList performGetter
     result = @gtlSet.new {
       !methodName !emptylstring() !resultSet
     }
+  elsif "componentsJoinedByString" == methodName then
+    argumentsCheck(!methodName !stringArgument() !arguments)
+    @string joiner = [[arguments dataAtIndex !0] string]
+    @string stringResult = ""
+    for (item) in value
+    do
+      stringResult = stringResult + [item string]
+    between
+      stringResult = stringResult + joiner
+    end
+    result = @gtlString.new {
+      ![methodName location] !emptylstring() !stringResult
+    }
   elsif "type"                   == methodName then
     argumentsCheck(!methodName !noArgument() !arguments)
     result = @gtlType.new {
@@ -3748,6 +3779,41 @@ override getter @gtlList performGetter
     result = @gtlString.new {
       !meta !emptylstring() !meta
     }
+  elsif "where" == methodName then
+    if [arguments length] < 1 | [arguments length] > 2 then
+      error methodName : "where expects 1 ou 2 arguments. " +
+                         [arguments length] + " arguments provided." : result
+    else
+      if [[arguments dataAtIndex !0] dynamicType] != `@gtlExpr then
+        error methodName : "expression expected for argument 1" : result
+      else
+        @gtlStruct vars
+        if [arguments length] == 2 then
+          if [[arguments dataAtIndex !1] dynamicType] != `@gtlStruct then
+            error methodName : "struct expected for argument 1" : vars
+          else
+            vars = [arguments dataAtIndex !1] as @gtlStruct
+          end
+        else
+          vars = .new { !where !emptylstring() !.emptyMap }
+        end
+        @gtlExpression expr = [[arguments dataAtIndex !0] as @gtlExpr value]
+        @list resultList = .emptyList
+        for (item) in value
+        do
+          [!?vars setStructField !@lstring.new {!"__item__" ![item where]} !item]
+          @gtlData evalResult = [expr eval !context !vars !lib]
+          if [evalResult bool] then
+            resultList += !item
+          end
+        end
+        result = @gtlList.new {
+          !methodName
+          !emptylstring()
+          !resultList
+        }
+      end
+    end
   elsif [lib getterExists !"list" !methodName] then
     result = [[lib getGetter !"list" !methodName] callGetter
       ![methodName location]
@@ -4046,6 +4112,41 @@ override getter @gtlMap performGetter
       resultList += !item
     end
     result = @gtlList.new { !where !emptylstring() !resultList }
+  elsif "where" == methodName then
+    if [arguments length] < 1 | [arguments length] > 2 then
+      error methodName : "where expects 1 ou 2 arguments. " +
+                         [arguments length] + " arguments provided." : result
+    else
+      if [[arguments dataAtIndex !0] dynamicType] != `@gtlExpr then
+        error methodName : "expression expected for argument 1" : result
+      else
+        @gtlStruct vars
+        if [arguments length] == 2 then
+          if [[arguments dataAtIndex !1] dynamicType] != `@gtlStruct then
+            error methodName : "struct expected for argument 1" : vars
+          else
+            vars = [arguments dataAtIndex !1] as @gtlStruct
+          end
+        else
+          vars = .new { !where !emptylstring() !.emptyMap }
+        end
+        @gtlExpression expr = [[arguments dataAtIndex !0] as @gtlExpr value]
+        @gtlVarMap resultMap = .emptyMap
+        for (key item) in value
+        do
+          [!?vars setStructField !@lstring.new {!"__item__" ![item where]} !item]
+          @gtlData evalResult = [expr eval !context !vars !lib]
+          if [evalResult bool] then
+            [!?resultMap put !key !item]
+          end
+        end
+        result = @gtlMap.new {
+          !methodName
+          !emptylstring()
+          !resultMap
+        }
+      end
+    end
   elsif "description" == methodName then
     argumentsCheck(!methodName !noArgument() !arguments)
     result = @gtlString.new {
@@ -4132,3 +4233,337 @@ override getter @gtlMap hasMapItem
 {
   result = [value hasKey !name]
 }
+
+#-----------------------------------------------------------------------------*
+# Expression type and operations on maps
+#-----------------------------------------------------------------------------*
+class @gtlExpr : @gtlData { @gtlExpression value %setter }
+
+override getter @gtlExpr desc
+  ?let @uint tab
+  -> @string result
+{
+  result =  @string.stringWithSequenceOfCharacters{!' ' !tab} +
+    "expression: @? " + [value stringRepresentation] + " ?\n"
+}
+
+override getter @gtlExpr string -> @string result {
+  error where : "expression forbidden" : result
+}
+
+override getter @gtlExpr lstring -> @lstring result {
+  error where : "expression forbidden" : result
+}
+
+override getter @gtlExpr bool    -> @bool result {
+  error where : "cannot cast an expression to a bool" : result
+}
+
+override getter @gtlExpr int     -> @bigint result {
+  error where : "cannot cast an expression to an int" : result
+}
+
+override getter @gtlExpr float   -> @double result {
+  error where : "cannot cast an expression to a float" : result
+}
+
+override getter @gtlExpr plusOp  -> @gtlData result {
+  result = self
+}
+
+override getter @gtlExpr minusOp -> @gtlData result {
+  result = @gtlExpr.new {
+    !where
+    !emptylstring()
+    !@gtlMinusExpression.new { !where !value }
+  }
+}
+
+override getter @gtlExpr notOp   -> @gtlData result {
+  result = @gtlExpr.new {
+    !where
+    !emptylstring()
+    !@gtlNotExpression.new { !where !value }
+  }
+}
+
+override getter @gtlExpr addOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlExpr then
+    result = @gtlExpr.new {
+      !where
+      !emptylstring()
+      !@gtlAddExpression.new { !where !value ![right as @gtlExpr value] }
+    }
+  else
+    error [right where] : "Expression expected" : result
+  end
+}
+
+override getter @gtlExpr subOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlExpr then
+    result = @gtlExpr.new {
+      !where
+      !emptylstring()
+      !@gtlSubstractExpression.new { !where !value ![right as @gtlExpr value] }
+    }
+  else
+    error [right where] : "Expression expected" : result
+  end
+}
+
+override getter @gtlExpr mulOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlExpr then
+    result = @gtlExpr.new {
+      !where
+      !emptylstring()
+      !@gtlMultiplyExpression.new { !where !value ![right as @gtlExpr value] }
+    }
+  else
+    error [right where] : "Expression expected" : result
+  end
+}
+
+override getter @gtlExpr divOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlExpr then
+    result = @gtlExpr.new {
+      !where
+      !emptylstring()
+      !@gtlDivideExpression.new { !where !value ![right as @gtlExpr value] }
+    }
+  else
+    error [right where] : "Expression expected" : result
+  end
+}
+
+override getter @gtlExpr modOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlExpr then
+    result = @gtlExpr.new {
+      !where
+      !emptylstring()
+      !@gtlModulusExpression.new { !where !value ![right as @gtlExpr value] }
+    }
+  else
+    error [right where] : "Expression expected" : result
+  end
+}
+
+override getter @gtlExpr andOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlExpr then
+    result = @gtlExpr.new {
+      !where
+      !emptylstring()
+      !@gtlAndExpression.new { !where !value ![right as @gtlExpr value] }
+    }
+  else
+    error [right where] : "Expression expected" : result
+  end
+}
+
+override getter @gtlExpr orOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlExpr then
+    result = @gtlExpr.new {
+      !where
+      !emptylstring()
+      !@gtlOrExpression.new { !where !value ![right as @gtlExpr value] }
+    }
+  else
+    error [right where] : "Expression expected" : result
+  end
+}
+
+override getter @gtlExpr xorOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlExpr then
+    result = @gtlExpr.new {
+      !where
+      !emptylstring()
+      !@gtlXorExpression.new { !where !value ![right as @gtlExpr value] }
+    }
+  else
+    error [right where] : "Expression expected" : result
+  end
+}
+
+override getter @gtlExpr slOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlExpr then
+    result = @gtlExpr.new {
+      !where
+      !emptylstring()
+      !@gtlShiftLeftExpression.new { !where !value ![right as @gtlExpr value] }
+    }
+  else
+    error [right where] : "Expression expected" : result
+  end
+}
+
+override getter @gtlExpr srOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlExpr then
+    result = @gtlExpr.new {
+      !where
+      !emptylstring()
+      !@gtlShiftRightExpression.new { !where !value ![right as @gtlExpr value] }
+    }
+  else
+    error [right where] : "Expression expected" : result
+  end
+}
+
+override getter @gtlExpr neqOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlExpr then
+    result = @gtlExpr.new {
+      !where
+      !emptylstring()
+      !@gtlNotEqualExpression.new { !where !value ![right as @gtlExpr value] }
+    }
+  else
+    error [right where] : "Expression expected" : result
+  end
+}
+
+override getter @gtlExpr eqOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlExpr then
+    result = @gtlExpr.new {
+      !where
+      !emptylstring()
+      !@gtlEqualExpression.new { !where !value ![right as @gtlExpr value] }
+    }
+  else
+    error [right where] : "Expression expected" : result
+  end
+}
+
+override getter @gtlExpr gtOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlExpr then
+    result = @gtlExpr.new {
+      !where
+      !emptylstring()
+      !@gtlGreaterThanExpression.new { !where !value ![right as @gtlExpr value] }
+    }
+  else
+    error [right where] : "Expression expected" : result
+  end
+}
+
+override getter @gtlExpr geOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlExpr then
+    result = @gtlExpr.new {
+      !where
+      !emptylstring()
+      !@gtlGreaterOrEqualExpression.new { !where !value ![right as @gtlExpr value] }
+    }
+  else
+    error [right where] : "Expression expected" : result
+  end
+}
+
+override getter @gtlExpr ltOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlExpr then
+    result = @gtlExpr.new {
+      !where
+      !emptylstring()
+      !@gtlLowerThanExpression.new { !where !value ![right as @gtlExpr value] }
+    }
+  else
+    error [right where] : "Expression expected" : result
+  end
+}
+
+override getter @gtlExpr leOp ?let @gtlData right -> @gtlData result {
+  if right is == @gtlExpr then
+    result = @gtlExpr.new {
+      !where
+      !emptylstring()
+      !@gtlLowerOrEqualExpression.new { !where !value ![right as @gtlExpr value] }
+    }
+  else
+    error [right where] : "Expression expected" : result
+  end
+}
+
+override getter @gtlExpr embeddedType -> @type result
+{
+  error where : "expression forbidden as built in function argument" : result
+}
+
+override method @gtlExpr addMyValue ?!@objectlist objectList
+{
+  objectList += ![value object]
+}
+
+#-----------------------------------------------------------------------------*
+# Performs a getter on a @gtlBool
+#-----------------------------------------------------------------------------*
+override getter @gtlExpr performGetter
+  ?let @lstring     methodName
+  ?let @gtlDataList arguments
+  ?let @gtlContext  context
+  ?let @library     lib
+  ->@gtlData        result
+{
+  if     [methodName string] == "eval" then
+    argumentsCheck(!methodName !structArgument() !arguments)
+    @gtlData vars = [arguments dataAtIndex !0]
+    result = [value eval !context !vars !lib]
+  elsif "type"                   == methodName then
+    argumentsCheck(!methodName !noArgument() !arguments)
+    result = @gtlType.new {
+      ![methodName location] !emptylstring() ![self dynamicType]
+    }
+  elsif "isANumber" == methodName then
+    argumentsCheck(!methodName !noArgument() !arguments)
+    result = @gtlBool.new {
+      ![methodName location] !emptylstring() !false
+    }
+  elsif "description" == methodName then
+    argumentsCheck(!methodName !noArgument() !arguments)
+    result = @gtlString.new {
+      !meta !emptylstring() !meta
+    }
+  elsif [lib getterExists !"expression" !methodName] then
+    result = [[lib getGetter !"expression" !methodName] callGetter
+      ![methodName location]
+      !context
+      !lib
+      !self
+      !arguments
+    ]
+  else
+    error methodName : "unknown getter '" + methodName +"' for expression target"
+      : result
+  end
+}
+
+#-----------------------------------------------------------------------------*
+# Performs a setter on a @@gtlBool
+#-----------------------------------------------------------------------------*
+override setter @gtlExpr performSetter
+  ?let @lstring     methodName
+  ?let @gtlDataList arguments
+  ?let @gtlContext  context
+  ?let @library     lib
+{
+  if "setDescription" == methodName then
+    argumentsCheck(!methodName !stringArgument() !arguments)
+    @gtlString descriptionToSet = [arguments dataAtIndex !0] as @gtlString
+    [!?self setMeta !descriptionToSet]
+    where = methodName
+  elsif       "touch" == methodName then
+    argumentsCheck(!methodName !noArgument() !arguments)
+    where = methodName
+  elsif [lib setterExists !"expression" !methodName] then
+    @gtlData copy = self
+    [[lib getSetter !"expression" !methodName] callSetter
+      ![methodName location]
+      !context
+      !lib
+      !?copy
+      !arguments
+    ]
+    value = [copy as @gtlExpr value]
+    where = [copy where]
+    meta  = [copy meta]
+  else
+    error methodName : "unknown setter '" + methodName +"' for expression target"
+  end
+}
+
+

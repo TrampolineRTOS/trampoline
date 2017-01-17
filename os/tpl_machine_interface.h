@@ -81,16 +81,31 @@ extern FUNC(void, OS_CODE) tpl_init_context(
 /**
  * @internal
  *
- * tpl_disable_interrupts disable all interrupts
+ * tpl_disable_interrupts disables all interrupts
  */
 extern FUNC(void, OS_CODE) tpl_disable_interrupts(void);
 
 /**
  * @internal
  *
- * tpl_enable_interrupts disable all interrupts
+ * tpl_enable_interrupts enables all interrupts
  */
 extern FUNC(void, OS_CODE) tpl_enable_interrupts(void);
+
+/**
+ * @internal
+ *
+ * tpl_disable_os_interrupts disables os interrupts
+ */
+extern FUNC(void, OS_CODE) tpl_disable_os_interrupts(void);
+
+/**
+ * @internal
+ *
+ * tpl_enable_os_interrupts enables os interrupts
+ */
+extern FUNC(void, OS_CODE) tpl_enable_os_interrupts(void);
+
 
 /**
  * @internal

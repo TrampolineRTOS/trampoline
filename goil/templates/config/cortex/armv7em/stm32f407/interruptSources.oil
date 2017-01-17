@@ -161,9 +161,15 @@ ENUM [
   I2C2_ER_IRQ,
   SPI1_IRQ,
   SPI2_IRQ,
-  USART1_IRQ,
-  USART2_IRQ,
-  USART3_IRQ,
+  USART1_IRQ {
+    ENUM [ TXE, CTS, TC, RXNE, ORE, IDLE, PE, LBD, NF, FE ] EVFLAG[];
+  },
+  USART2_IRQ {
+    ENUM [ TXE, CTS, TC, RXNE, ORE, IDLE, PE, LBD, NF, FE ] EVFLAG[];
+  },
+  USART3_IRQ {
+    ENUM [ TXE, CTS, TC, RXNE, ORE, IDLE, PE, LBD, NF, FE ] EVFLAG[];
+  },
   EXTI15_10_IRQ {
     ENUM [
       PA10 { #include <sensibility.oil> },      
@@ -245,8 +251,12 @@ ENUM [
   SDIO_IRQ,
   TIM5_IRQ,
   SPI3_IRQ,
-  UART4_IRQ,
-  UART5_IRQ,
+  UART4_IRQ {
+    ENUM [ TXE, TC, RXNE, ORE, IDLE, PE, LBD, NF, FE ] EVFLAG[];
+  },
+  UART5_IRQ {
+    ENUM [ TXE, TC, RXNE, ORE, IDLE, PE, LBD, NF, FE ] EVFLAG[];
+  },
   TIM6_DAC_IRQ,
   TIM7_IRQ,
   DMA2_Stream0_IRQ,
@@ -264,7 +274,9 @@ ENUM [
   DMA2_Stream5_IRQ,
   DMA2_Stream6_IRQ,
   DMA2_Stream7_IRQ,
-  USART6_IRQ,
+  USART6_IRQ {
+    ENUM [ TXE, CTS, TC, RXNE, ORE, IDLE, PE, LBD, NF, FE ] EVFLAG[];
+  },
   I2C3_EV_IRQ,
   I2C3_ER_IRQ,
   OTG_HS_EP1_OUT_IRQ,

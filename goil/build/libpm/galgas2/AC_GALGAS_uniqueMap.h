@@ -142,6 +142,10 @@ class AC_GALGAS_uniqueMapProxy : public AC_GALGAS_root {
                                                        const GALGAS_lstring & inKey
                                                        COMMA_LOCATION_ARGS) ;
 
+  protected : VIRTUAL_IN_DEBUG void internalMakeOptionalProxy (AC_GALGAS_uniqueMap & ioMap,
+                                                               const GALGAS_lstring & inKey
+                                                               COMMA_LOCATION_ARGS) ;
+
   protected : VIRTUAL_IN_DEBUG void internalMakeProxyFromString (AC_GALGAS_uniqueMap & ioMap,
                                                                  const GALGAS_string & inKey
                                                                  COMMA_LOCATION_ARGS) ;

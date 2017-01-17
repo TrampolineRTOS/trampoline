@@ -2186,6 +2186,8 @@ class GALGAS_application : public AC_GALGAS_root {
 
   public : static class GALGAS__32_stringlist constructor_stringOptionNameList (LOCATION_ARGS) ;
 
+  public : static class GALGAS_string constructor_system (LOCATION_ARGS) ;
+
   public : static class GALGAS_string constructor_uintOptionCommentString (const class GALGAS_string & inOperand0,
                                                                            const class GALGAS_string & inOperand1
                                                                            COMMA_LOCATION_ARGS) ;

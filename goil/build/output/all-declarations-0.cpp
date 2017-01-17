@@ -385,13 +385,13 @@ GALGAS_string extensionGetter_stringByAppendingPath (const GALGAS_string & inObj
     result_result = constinArgument_pathToAppend ;
   }else if (kBoolFalse == test_1) {
     const GALGAS_string temp_2 = inObject ;
-    const enumGalgasBool test_3 = GALGAS_bool (kIsEqual, temp_2.getter_lastCharacter (inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 151)).objectCompare (GALGAS_char (TO_UNICODE (47)))).boolEnum () ;
+    const enumGalgasBool test_3 = GALGAS_bool (kIsEqual, temp_2.getter_lastCharacter (inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 195)).objectCompare (GALGAS_char (TO_UNICODE (47)))).boolEnum () ;
     if (kBoolTrue == test_3) {
       const GALGAS_string temp_4 = inObject ;
-      result_result = temp_4.add_operation (constinArgument_pathToAppend, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 152)) ;
+      result_result = temp_4.add_operation (constinArgument_pathToAppend, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 196)) ;
     }else if (kBoolFalse == test_3) {
       const GALGAS_string temp_5 = inObject ;
-      result_result = temp_5.add_operation (GALGAS_char (TO_UNICODE (47)).getter_string (SOURCE_FILE ("gtl_types.galgas", 154)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 154)).add_operation (constinArgument_pathToAppend, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 154)) ;
+      result_result = temp_5.add_operation (GALGAS_char (TO_UNICODE (47)).getter_string (SOURCE_FILE ("gtl_types.galgas", 198)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 198)).add_operation (constinArgument_pathToAppend, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 198)) ;
     }
   }
 //---
@@ -711,14 +711,14 @@ void extensionSetter_replaceOrCreate (GALGAS_gtlVarMap & ioObject,
                                       C_Compiler * inCompiler
                                       COMMA_UNUSED_LOCATION_ARGS) {
   const GALGAS_gtlVarMap temp_0 = ioObject ;
-  const enumGalgasBool test_1 = temp_0.getter_hasKey (constinArgument_key.getter_string (SOURCE_FILE ("gtl_types.galgas", 183)) COMMA_SOURCE_FILE ("gtl_types.galgas", 183)).boolEnum () ;
+  const enumGalgasBool test_1 = temp_0.getter_hasKey (constinArgument_key.getter_string (SOURCE_FILE ("gtl_types.galgas", 227)) COMMA_SOURCE_FILE ("gtl_types.galgas", 227)).boolEnum () ;
   if (kBoolTrue == test_1) {
     {
-    ioObject.setter_setValueForKey (constinArgument_data, constinArgument_key.getter_string (SOURCE_FILE ("gtl_types.galgas", 184)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 184)) ;
+    ioObject.setter_setValueForKey (constinArgument_data, constinArgument_key.getter_string (SOURCE_FILE ("gtl_types.galgas", 228)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 228)) ;
     }
   }else if (kBoolFalse == test_1) {
     {
-    ioObject.setter_put (constinArgument_key, constinArgument_data, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 186)) ;
+    ioObject.setter_put (constinArgument_key, constinArgument_data, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 230)) ;
     }
   }
 }
@@ -737,15 +737,15 @@ void extensionSetter_replaceOrCreateAtLevel (GALGAS_gtlVarMap & ioObject,
                                              C_Compiler * inCompiler
                                              COMMA_UNUSED_LOCATION_ARGS) {
   const GALGAS_gtlVarMap temp_0 = ioObject ;
-  const enumGalgasBool test_1 = temp_0.getter_hasKeyAtLevel (constinArgument_key.getter_string (SOURCE_FILE ("gtl_types.galgas", 195)), constinArgument_level COMMA_SOURCE_FILE ("gtl_types.galgas", 195)).boolEnum () ;
+  const enumGalgasBool test_1 = temp_0.getter_hasKeyAtLevel (constinArgument_key.getter_string (SOURCE_FILE ("gtl_types.galgas", 239)), constinArgument_level COMMA_SOURCE_FILE ("gtl_types.galgas", 239)).boolEnum () ;
   if (kBoolTrue == test_1) {
     {
-    GALGAS_gtlData joker_5051 ; // Joker input parameter
-    ioObject.setter_del (constinArgument_key, joker_5051, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 196)) ;
+    GALGAS_gtlData joker_6210 ; // Joker input parameter
+    ioObject.setter_del (constinArgument_key, joker_6210, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 240)) ;
     }
   }
   {
-  ioObject.setter_put (constinArgument_key, constinArgument_data, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 198)) ;
+  ioObject.setter_put (constinArgument_key, constinArgument_data, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 242)) ;
   }
 }
 
@@ -1676,30 +1676,30 @@ void extensionSetter_getTemplate (GALGAS_gtlTemplateMap & ioObject,
   outArgument_found.drop () ; // Release 'out' argument
   outArgument_result.drop () ; // Release 'out' argument
   const GALGAS_gtlTemplateMap temp_0 = ioObject ;
-  const enumGalgasBool test_1 = temp_0.getter_hasKey (inArgument_path.getter_string (SOURCE_FILE ("gtl_types.galgas", 244)) COMMA_SOURCE_FILE ("gtl_types.galgas", 244)).boolEnum () ;
+  const enumGalgasBool test_1 = temp_0.getter_hasKey (inArgument_path.getter_string (SOURCE_FILE ("gtl_types.galgas", 288)) COMMA_SOURCE_FILE ("gtl_types.galgas", 288)).boolEnum () ;
   if (kBoolTrue == test_1) {
     outArgument_found = GALGAS_bool (true) ;
     const GALGAS_gtlTemplateMap temp_2 = ioObject ;
-    temp_2.method_get (inArgument_path, outArgument_result, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 246)) ;
+    temp_2.method_get (inArgument_path, outArgument_result, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 290)) ;
   }else if (kBoolFalse == test_1) {
-    const enumGalgasBool test_3 = inArgument_path.mProperty_string.getter_fileExists (SOURCE_FILE ("gtl_types.galgas", 248)).boolEnum () ;
+    const enumGalgasBool test_3 = inArgument_path.mProperty_string.getter_fileExists (SOURCE_FILE ("gtl_types.galgas", 292)).boolEnum () ;
     if (kBoolTrue == test_3) {
       outArgument_found = GALGAS_bool (true) ;
-      GALGAS_gtlInstructionList var_program_6788 ;
-      var_program_6788.drop () ;
-      cGrammar_gtl_5F_grammar::_performSourceFileParsing_ (inCompiler, inArgument_path, constinArgument_context, ioArgument_lib, var_program_6788  COMMA_SOURCE_FILE ("gtl_types.galgas", 250)) ;
-      outArgument_result = GALGAS_gtlTemplate::constructor_new (inArgument_path.getter_string (SOURCE_FILE ("gtl_types.galgas", 254)), var_program_6788  COMMA_SOURCE_FILE ("gtl_types.galgas", 254)) ;
+      GALGAS_gtlInstructionList var_program_7947 ;
+      var_program_7947.drop () ;
+      cGrammar_gtl_5F_grammar::_performSourceFileParsing_ (inCompiler, inArgument_path, constinArgument_context, ioArgument_lib, var_program_7947  COMMA_SOURCE_FILE ("gtl_types.galgas", 294)) ;
+      outArgument_result = GALGAS_gtlTemplate::constructor_new (inArgument_path.getter_string (SOURCE_FILE ("gtl_types.galgas", 298)), var_program_7947  COMMA_SOURCE_FILE ("gtl_types.galgas", 298)) ;
       {
-      ioObject.setter_put (inArgument_path, outArgument_result, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 255)) ;
+      ioObject.setter_put (inArgument_path, outArgument_result, inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 299)) ;
       }
     }else if (kBoolFalse == test_3) {
       outArgument_found = GALGAS_bool (false) ;
       const enumGalgasBool test_4 = inArgument_ifExists.boolEnum () ;
       if (kBoolTrue == test_4) {
-        outArgument_result = GALGAS_gtlTemplate::constructor_new (inArgument_path.getter_string (SOURCE_FILE ("gtl_types.galgas", 259)), GALGAS_gtlInstructionList::constructor_emptyList (SOURCE_FILE ("gtl_types.galgas", 259))  COMMA_SOURCE_FILE ("gtl_types.galgas", 259)) ;
+        outArgument_result = GALGAS_gtlTemplate::constructor_new (inArgument_path.getter_string (SOURCE_FILE ("gtl_types.galgas", 303)), GALGAS_gtlInstructionList::constructor_emptyList (SOURCE_FILE ("gtl_types.galgas", 303))  COMMA_SOURCE_FILE ("gtl_types.galgas", 303)) ;
       }else if (kBoolFalse == test_4) {
         TC_Array <C_FixItDescription> fixItArray5 ;
-        inCompiler->emitSemanticError (inArgument_path.getter_location (SOURCE_FILE ("gtl_types.galgas", 261)), GALGAS_string ("template file not found at \"").add_operation (inArgument_path.getter_string (SOURCE_FILE ("gtl_types.galgas", 261)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 261)).add_operation (GALGAS_string ("\""), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 261)), fixItArray5  COMMA_SOURCE_FILE ("gtl_types.galgas", 261)) ;
+        inCompiler->emitSemanticError (inArgument_path.getter_location (SOURCE_FILE ("gtl_types.galgas", 305)), GALGAS_string ("template file not found at \"").add_operation (inArgument_path.getter_string (SOURCE_FILE ("gtl_types.galgas", 305)), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 305)).add_operation (GALGAS_string ("\""), inCompiler COMMA_SOURCE_FILE ("gtl_types.galgas", 305)), fixItArray5  COMMA_SOURCE_FILE ("gtl_types.galgas", 305)) ;
         outArgument_result.drop () ; // Release error dropped variable
       }
     }
@@ -5201,6 +5201,9 @@ static const char * gSyntaxErrorMessage_gtl_5F_scanner_input = "the 'input' keyw
 //--- Syntax error message for terminal '$break$' :
 static const char * gSyntaxErrorMessage_gtl_5F_scanner_break = "the 'break' keyword" ;
 
+//--- Syntax error message for terminal '$__VARS__$' :
+static const char * gSyntaxErrorMessage_gtl_5F_scanner__5F__5F_VARS_5F__5F_ = "the '__VARS__' keyword" ;
+
 //--- Syntax error message for terminal '$*$' :
 static const char * gSyntaxErrorMessage_gtl_5F_scanner__2A_ = "the '*' delimitor" ;
 
@@ -5336,12 +5339,15 @@ static const char * gSyntaxErrorMessage_gtl_5F_scanner__5B__21_ = "the '[!' deli
 //--- Syntax error message for terminal '$@!$' :
 static const char * gSyntaxErrorMessage_gtl_5F_scanner__40__21_ = "the '@!' delimitor" ;
 
+//--- Syntax error message for terminal '$@?$' :
+static const char * gSyntaxErrorMessage_gtl_5F_scanner__40__3F_ = "the '@\?' delimitor" ;
+
 //---------------------------------------------------------------------------------------------------------------------*
 //                getMessageForTerminal                                                                                *
 //---------------------------------------------------------------------------------------------------------------------*
 
 C_String C_Lexique_gtl_5F_scanner::getMessageForTerminal (const int16_t inTerminalIndex) const {
-  static const char * syntaxErrorMessageArray [113] = {kEndOfSourceLexicalErrorMessage,
+  static const char * syntaxErrorMessageArray [115] = {kEndOfSourceLexicalErrorMessage,
     gSyntaxErrorMessage_gtl_5F_scanner_identifier,
     gSyntaxErrorMessage_gtl_5F_scanner_literal_5F_enum,
     gSyntaxErrorMessage_gtl_5F_scanner_literal_5F_double,
@@ -5409,6 +5415,7 @@ C_String C_Lexique_gtl_5F_scanner::getMessageForTerminal (const int16_t inTermin
     gSyntaxErrorMessage_gtl_5F_scanner_libraries,
     gSyntaxErrorMessage_gtl_5F_scanner_input,
     gSyntaxErrorMessage_gtl_5F_scanner_break,
+    gSyntaxErrorMessage_gtl_5F_scanner__5F__5F_VARS_5F__5F_,
     gSyntaxErrorMessage_gtl_5F_scanner__2A_,
     gSyntaxErrorMessage_gtl_5F_scanner__7C_,
     gSyntaxErrorMessage_gtl_5F_scanner__2C_,
@@ -5453,7 +5460,8 @@ C_String C_Lexique_gtl_5F_scanner::getMessageForTerminal (const int16_t inTermin
     gSyntaxErrorMessage_gtl_5F_scanner__40__28_,
     gSyntaxErrorMessage_gtl_5F_scanner__40__7B_,
     gSyntaxErrorMessage_gtl_5F_scanner__5B__21_,
-    gSyntaxErrorMessage_gtl_5F_scanner__40__21_} ;
+    gSyntaxErrorMessage_gtl_5F_scanner__40__21_,
+    gSyntaxErrorMessage_gtl_5F_scanner__40__3F_} ;
   return syntaxErrorMessageArray [inTerminalIndex] ;
 }
 
@@ -5719,6 +5727,13 @@ static const utf32 kUnicodeString_gtl_5F_scanner__40__28_ [] = {
   TO_UNICODE (0)
 } ;
 
+//--- Unicode string for '$_40__3F_$'
+static const utf32 kUnicodeString_gtl_5F_scanner__40__3F_ [] = {
+  TO_UNICODE ('@'),
+  TO_UNICODE ('\?'),
+  TO_UNICODE (0)
+} ;
+
 //--- Unicode string for '$_40__5B_$'
 static const utf32 kUnicodeString_gtl_5F_scanner__40__5B_ [] = {
   TO_UNICODE ('@'),
@@ -5789,6 +5804,19 @@ static const utf32 kUnicodeString_gtl_5F_scanner__5E_ [] = {
 static const utf32 kUnicodeString_gtl_5F_scanner__5E__3D_ [] = {
   TO_UNICODE ('^'),
   TO_UNICODE ('='),
+  TO_UNICODE (0)
+} ;
+
+//--- Unicode string for '$_5F__5F_VARS_5F__5F_$'
+static const utf32 kUnicodeString_gtl_5F_scanner__5F__5F_VARS_5F__5F_ [] = {
+  TO_UNICODE ('_'),
+  TO_UNICODE ('_'),
+  TO_UNICODE ('V'),
+  TO_UNICODE ('A'),
+  TO_UNICODE ('R'),
+  TO_UNICODE ('S'),
+  TO_UNICODE ('_'),
+  TO_UNICODE ('_'),
   TO_UNICODE (0)
 } ;
 
@@ -6391,7 +6419,7 @@ static const utf32 kUnicodeString_gtl_5F_scanner__7E_ [] = {
 //             Key words table 'galgasDelimitorsList'                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const int32_t ktable_size_gtl_5F_scanner_galgasDelimitorsList = 45 ;
+static const int32_t ktable_size_gtl_5F_scanner_galgasDelimitorsList = 46 ;
 
 static const C_unicode_lexique_table_entry ktable_for_gtl_5F_scanner_galgasDelimitorsList [ktable_size_gtl_5F_scanner_galgasDelimitorsList] = {
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_scanner__21_, 1, C_Lexique_gtl_5F_scanner::kToken__21_),
@@ -6431,6 +6459,7 @@ static const C_unicode_lexique_table_entry ktable_for_gtl_5F_scanner_galgasDelim
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_scanner__3E__3E_, 2, C_Lexique_gtl_5F_scanner::kToken__3E__3E_),
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_scanner__40__21_, 2, C_Lexique_gtl_5F_scanner::kToken__40__21_),
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_scanner__40__28_, 2, C_Lexique_gtl_5F_scanner::kToken__40__28_),
+  C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_scanner__40__3F_, 2, C_Lexique_gtl_5F_scanner::kToken__40__3F_),
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_scanner__40__5B_, 2, C_Lexique_gtl_5F_scanner::kToken__40__5B_),
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_scanner__40__7B_, 2, C_Lexique_gtl_5F_scanner::kToken__40__7B_),
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_scanner__5B__21_, 2, C_Lexique_gtl_5F_scanner::kToken__5B__21_),
@@ -6449,7 +6478,7 @@ int16_t C_Lexique_gtl_5F_scanner::search_into_galgasDelimitorsList (const C_Stri
 //             Key words table 'goilTemplateKeyWordList'                            *
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const int32_t ktable_size_gtl_5F_scanner_goilTemplateKeyWordList = 56 ;
+static const int32_t ktable_size_gtl_5F_scanner_goilTemplateKeyWordList = 57 ;
 
 static const C_unicode_lexique_table_entry ktable_for_gtl_5F_scanner_goilTemplateKeyWordList [ktable_size_gtl_5F_scanner_goilTemplateKeyWordList] = {
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_scanner_by, 2, C_Lexique_gtl_5F_scanner::kToken_by),
@@ -6502,6 +6531,7 @@ static const C_unicode_lexique_table_entry ktable_for_gtl_5F_scanner_goilTemplat
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_scanner_foreach, 7, C_Lexique_gtl_5F_scanner::kToken_foreach),
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_scanner_println, 7, C_Lexique_gtl_5F_scanner::kToken_println),
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_scanner_warning, 7, C_Lexique_gtl_5F_scanner::kToken_warning),
+  C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_scanner__5F__5F_VARS_5F__5F_, 8, C_Lexique_gtl_5F_scanner::kToken__5F__5F_VARS_5F__5F_),
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_scanner_emptymap, 8, C_Lexique_gtl_5F_scanner::kToken_emptymap),
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_scanner_template, 8, C_Lexique_gtl_5F_scanner::kToken_template),
   C_unicode_lexique_table_entry (kUnicodeString_gtl_5F_scanner_emptylist, 9, C_Lexique_gtl_5F_scanner::kToken_emptylist),
@@ -6876,6 +6906,11 @@ C_String C_Lexique_gtl_5F_scanner::getCurrentTokenString (const cToken * inToken
       s.appendCString ("break") ;
       s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
       break ;
+    case kToken__5F__5F_VARS_5F__5F_:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("__VARS__") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
     case kToken__2A_:
       s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
       s.appendCString ("*") ;
@@ -7101,6 +7136,11 @@ C_String C_Lexique_gtl_5F_scanner::getCurrentTokenString (const cToken * inToken
       s.appendCString ("@!") ;
       s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
       break ;
+    case kToken__40__3F_:
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      s.appendCString ("@\?") ;
+      s.appendUnicodeCharacter (TO_UNICODE ('$') COMMA_HERE) ;
+      break ;
     default:
       break ;
     }
@@ -7130,7 +7170,7 @@ static const cTemplateDelimiter gtl_5F_scanner_kTemplateReplacementArray [3] = {
 //            Terminal Symbols as end of script in template mark                                                       *
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const bool gtl_5F_scanner_kEndOfScriptInTemplateArray [112] = {
+static const bool gtl_5F_scanner_kEndOfScriptInTemplateArray [114] = {
   false /* identifier */,
   false /* literal_enum */,
   false /* literal_double */,
@@ -7198,6 +7238,7 @@ static const bool gtl_5F_scanner_kEndOfScriptInTemplateArray [112] = {
   false /* libraries */,
   false /* input */,
   false /* break */,
+  false /* __VARS__ */,
   false /* * */,
   false /* | */,
   false /* , */,
@@ -7242,7 +7283,8 @@ static const bool gtl_5F_scanner_kEndOfScriptInTemplateArray [112] = {
   false /* @( */,
   false /* @{ */,
   false /* [! */,
-  false /* @! */
+  false /* @! */,
+  false /* @? */
 } ;
 
 
@@ -7301,7 +7343,7 @@ bool C_Lexique_gtl_5F_scanner::parseLexicalToken (void) {
     token.mLexicalAttribute_uint_33__32_value = 0 ;
     mTokenStartLocation = mCurrentLocation ;
     try{
-      if (testForInputUTF32CharRange (TO_UNICODE ('a'), TO_UNICODE ('z')) || testForInputUTF32CharRange (TO_UNICODE ('A'), TO_UNICODE ('Z'))) {
+      if (testForInputUTF32CharRange (TO_UNICODE ('a'), TO_UNICODE ('z')) || testForInputUTF32CharRange (TO_UNICODE ('A'), TO_UNICODE ('Z')) || testForInputUTF32Char (TO_UNICODE ('_'))) {
         do {
           ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_identifierString, previousChar ()) ;
           ::scanner_routine_enterCharacterIntoString (*this, token.mLexicalAttribute_tokenString, previousChar ()) ;
@@ -7352,6 +7394,9 @@ bool C_Lexique_gtl_5F_scanner::parseLexicalToken (void) {
         enterToken (token) ;
       }else if (testForInputUTF32String (kUnicodeString_gtl_5F_scanner__40__5B_, 2, true)) {
         token.mTokenCode = kToken__40__5B_ ;
+        enterToken (token) ;
+      }else if (testForInputUTF32String (kUnicodeString_gtl_5F_scanner__40__3F_, 2, true)) {
+        token.mTokenCode = kToken__40__3F_ ;
         enterToken (token) ;
       }else if (testForInputUTF32String (kUnicodeString_gtl_5F_scanner__40__28_, 2, true)) {
         token.mTokenCode = kToken__40__28_ ;
@@ -8069,6 +8114,7 @@ GALGAS_stringlist C_Lexique_gtl_5F_scanner::symbols (LOCATION_ARGS) {
   result.addAssign_operation (GALGAS_string ("libraries") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string ("input") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string ("break") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("__VARS__") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string ("*") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string ("|") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string (",") COMMA_THERE) ;
@@ -8114,6 +8160,7 @@ GALGAS_stringlist C_Lexique_gtl_5F_scanner::symbols (LOCATION_ARGS) {
   result.addAssign_operation (GALGAS_string ("@{") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string ("[!") COMMA_THERE) ;
   result.addAssign_operation (GALGAS_string ("@!") COMMA_THERE) ;
+  result.addAssign_operation (GALGAS_string ("@\?") COMMA_THERE) ;
   return result ;
 }
 
@@ -8168,6 +8215,7 @@ static void getKeywordsForIdentifier_gtl_5F_scanner (const C_String & inIdentifi
     ioList.appendObject (">>") ;
     ioList.appendObject ("@!") ;
     ioList.appendObject ("@(") ;
+    ioList.appendObject ("@\?") ;
     ioList.appendObject ("@[") ;
     ioList.appendObject ("@{") ;
     ioList.appendObject ("[!") ;
@@ -8230,6 +8278,7 @@ static void getKeywordsForIdentifier_gtl_5F_scanner (const C_String & inIdentifi
     ioList.appendObject ("foreach") ;
     ioList.appendObject ("println") ;
     ioList.appendObject ("warning") ;
+    ioList.appendObject ("__VARS__") ;
     ioList.appendObject ("emptymap") ;
     ioList.appendObject ("template") ;
     ioList.appendObject ("emptylist") ;
@@ -8251,7 +8300,7 @@ __attribute__ ((unused)) (getKeywordLists_gtl_5F_scanner, getKeywordsForIdentifi
 //---------------------------------------------------------------------------------------------------------------------*
 
 uint32_t C_Lexique_gtl_5F_scanner::styleIndexForTerminal (const int32_t inTerminalIndex) const {
-  static const uint32_t kTerminalSymbolStyles [113] = {0,
+  static const uint32_t kTerminalSymbolStyles [115] = {0,
     0 /* gtl_scanner_1_identifier */,
     0 /* gtl_scanner_1_literal_5F_enum */,
     5 /* gtl_scanner_1_literal_5F_double */,
@@ -8319,6 +8368,7 @@ uint32_t C_Lexique_gtl_5F_scanner::styleIndexForTerminal (const int32_t inTermin
     1 /* gtl_scanner_1_libraries */,
     1 /* gtl_scanner_1_input */,
     1 /* gtl_scanner_1_break */,
+    1 /* gtl_scanner_1__5F__5F_VARS_5F__5F_ */,
     2 /* gtl_scanner_1__2A_ */,
     2 /* gtl_scanner_1__7C_ */,
     2 /* gtl_scanner_1__2C_ */,
@@ -8363,7 +8413,8 @@ uint32_t C_Lexique_gtl_5F_scanner::styleIndexForTerminal (const int32_t inTermin
     2 /* gtl_scanner_1__40__28_ */,
     2 /* gtl_scanner_1__40__7B_ */,
     2 /* gtl_scanner_1__5B__21_ */,
-    2 /* gtl_scanner_1__40__21_ */
+    2 /* gtl_scanner_1__40__21_ */,
+    2 /* gtl_scanner_1__40__3F_ */
   } ;
   return (inTerminalIndex >= 0) ? kTerminalSymbolStyles [inTerminalIndex] : 0 ;
 }
@@ -10386,37 +10437,74 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_variable_i32_ (GALGAS_gtlVarPath & outArgument_path,
+void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i32_ (GALGAS_gtlExpression & outArgument_expression,
+                                                                                               C_Lexique_gtl_5F_scanner * inCompiler) {
+  outArgument_expression.drop () ; // Release 'out' argument
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__40__3F_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 670)) ;
+  GALGAS_gtlExpression var_exp_18817 ;
+  nt_gtl_5F_expression_ (var_exp_18817, inCompiler) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3F_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 672)) ;
+  outArgument_expression = GALGAS_gtlTerminal::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 673)), GALGAS_gtlExpr::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 673)), function_emptylstring (inCompiler COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 673)), var_exp_18817  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 673))  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 673)) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i32_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__40__3F_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 670)) ;
+  nt_gtl_5F_expression_parse (inCompiler) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3F_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 672)) ;
+  inCompiler->resetTemplateString () ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i33_ (GALGAS_gtlExpression & outArgument_expression,
+                                                                                               C_Lexique_gtl_5F_scanner * inCompiler) {
+  outArgument_expression.drop () ; // Release 'out' argument
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5F__5F_VARS_5F__5F_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 681)) ;
+  outArgument_expression = GALGAS_gtlAllVarsRef::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 682))  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 682)) ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_factor_i33_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5F__5F_VARS_5F__5F_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 681)) ;
+  inCompiler->resetTemplateString () ;
+}
+
+//---------------------------------------------------------------------------------------------------------------------*
+
+void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_variable_i34_ (GALGAS_gtlVarPath & outArgument_path,
                                                                                                  C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_path.drop () ; // Release 'out' argument
-  outArgument_path = GALGAS_gtlVarPath::constructor_emptyList (SOURCE_FILE ("gtl_expression_parser.galgas", 670)) ;
+  outArgument_path = GALGAS_gtlVarPath::constructor_emptyList (SOURCE_FILE ("gtl_expression_parser.galgas", 690)) ;
   bool repeatFlag_0 = true ;
   while (repeatFlag_0) {
-    GALGAS_lstring var_variableName_18837 = inCompiler->synthetizedAttribute_tokenString () ;
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 672)) ;
+    GALGAS_lstring var_variableName_19304 = inCompiler->synthetizedAttribute_tokenString () ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 692)) ;
     switch (select_gtl_5F_expression_5F_parser_21 (inCompiler)) {
     case 1: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5B_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 674)) ;
-      GALGAS_gtlExpression var_expression_18912 ;
-      nt_gtl_5F_expression_ (var_expression_18912, inCompiler) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 676)) ;
-      outArgument_path.addAssign_operation (GALGAS_gtlVarItemCollection::constructor_new (var_variableName_18837, var_expression_18912  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 677))  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 677)) ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5B_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 694)) ;
+      GALGAS_gtlExpression var_expression_19379 ;
+      nt_gtl_5F_expression_ (var_expression_19379, inCompiler) ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 696)) ;
+      outArgument_path.addAssign_operation (GALGAS_gtlVarItemCollection::constructor_new (var_variableName_19304, var_expression_19379  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 697))  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 697)) ;
       switch (select_gtl_5F_expression_5F_parser_22 (inCompiler)) {
       case 1: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5B_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 679)) ;
-        GALGAS_gtlExpression var_expression_19074 ;
-        nt_gtl_5F_expression_ (var_expression_19074, inCompiler) ;
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 681)) ;
-        outArgument_path.addAssign_operation (GALGAS_gtlVarItemSubCollection::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 682)), var_expression_19074  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 682))  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 682)) ;
+        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5B_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 699)) ;
+        GALGAS_gtlExpression var_expression_19541 ;
+        nt_gtl_5F_expression_ (var_expression_19541, inCompiler) ;
+        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 701)) ;
+        outArgument_path.addAssign_operation (GALGAS_gtlVarItemSubCollection::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 702)), var_expression_19541  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 702))  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 702)) ;
         bool repeatFlag_1 = true ;
         while (repeatFlag_1) {
           switch (select_gtl_5F_expression_5F_parser_23 (inCompiler)) {
           case 2: {
-            inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5B_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 685)) ;
-            GALGAS_gtlExpression var_expression_19256 ;
-            nt_gtl_5F_expression_ (var_expression_19256, inCompiler) ;
-            inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 687)) ;
-            outArgument_path.addAssign_operation (GALGAS_gtlVarItemSubCollection::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 688)), var_expression_19256  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 688))  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 688)) ;
+            inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5B_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 705)) ;
+            GALGAS_gtlExpression var_expression_19723 ;
+            nt_gtl_5F_expression_ (var_expression_19723, inCompiler) ;
+            inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 707)) ;
+            outArgument_path.addAssign_operation (GALGAS_gtlVarItemSubCollection::constructor_new (GALGAS_location::constructor_here (inCompiler  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 708)), var_expression_19723  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 708))  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 708)) ;
           } break ;
           default:
             repeatFlag_1 = false ;
@@ -10431,14 +10519,14 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
       }
     } break ;
     case 2: {
-      outArgument_path.addAssign_operation (GALGAS_gtlVarItemField::constructor_new (var_variableName_18837  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 693))  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 693)) ;
+      outArgument_path.addAssign_operation (GALGAS_gtlVarItemField::constructor_new (var_variableName_19304  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 713))  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 713)) ;
     } break ;
     default:
       break ;
     }
     switch (select_gtl_5F_expression_5F_parser_20 (inCompiler)) {
     case 2: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3A__3A_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 696)) ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3A__3A_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 716)) ;
     } break ;
     default:
       repeatFlag_0 = false ;
@@ -10449,27 +10537,27 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_variable_i32_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
+void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_variable_i34_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
   bool repeatFlag_0 = true ;
   while (repeatFlag_0) {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 672)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 692)) ;
     switch (select_gtl_5F_expression_5F_parser_21 (inCompiler)) {
     case 1: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5B_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 674)) ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5B_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 694)) ;
       nt_gtl_5F_expression_parse (inCompiler) ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 676)) ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 696)) ;
       switch (select_gtl_5F_expression_5F_parser_22 (inCompiler)) {
       case 1: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5B_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 679)) ;
+        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5B_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 699)) ;
         nt_gtl_5F_expression_parse (inCompiler) ;
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 681)) ;
+        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 701)) ;
         bool repeatFlag_1 = true ;
         while (repeatFlag_1) {
           switch (select_gtl_5F_expression_5F_parser_23 (inCompiler)) {
           case 2: {
-            inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5B_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 685)) ;
+            inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5B_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 705)) ;
             nt_gtl_5F_expression_parse (inCompiler) ;
-            inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 687)) ;
+            inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__5D_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 707)) ;
           } break ;
           default:
             repeatFlag_1 = false ;
@@ -10490,7 +10578,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
     }
     switch (select_gtl_5F_expression_5F_parser_20 (inCompiler)) {
     case 2: {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3A__3A_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 696)) ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3A__3A_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 716)) ;
     } break ;
     default:
       repeatFlag_0 = false ;
@@ -10502,15 +10590,15 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_variable_5F_or_5F_here_i33_ (GALGAS_gtlVarPath & outArgument_path,
+void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_variable_5F_or_5F_here_i35_ (GALGAS_gtlVarPath & outArgument_path,
                                                                                                                GALGAS_bool & outArgument_hereInstead,
                                                                                                                C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_path.drop () ; // Release 'out' argument
   outArgument_hereInstead.drop () ; // Release 'out' argument
   switch (select_gtl_5F_expression_5F_parser_24 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_here) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 707)) ;
-    outArgument_path = GALGAS_gtlVarPath::constructor_emptyList (SOURCE_FILE ("gtl_expression_parser.galgas", 707)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_here) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 727)) ;
+    outArgument_path = GALGAS_gtlVarPath::constructor_emptyList (SOURCE_FILE ("gtl_expression_parser.galgas", 727)) ;
     outArgument_hereInstead = GALGAS_bool (true) ;
   } break ;
   case 2: {
@@ -10524,10 +10612,10 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_variable_5F_or_5F_here_i33_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
+void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_variable_5F_or_5F_here_i35_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
   switch (select_gtl_5F_expression_5F_parser_24 (inCompiler)) {
   case 1: {
-    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_here) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 707)) ;
+    inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_here) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 727)) ;
   } break ;
   case 2: {
     nt_gtl_5F_variable_parse (inCompiler) ;
@@ -10540,34 +10628,34 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_argument_5F_list_i34_ (GALGAS_gtlArgumentList & outArgument_arguments,
+void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_argument_5F_list_i36_ (GALGAS_gtlArgumentList & outArgument_arguments,
                                                                                                          C_Lexique_gtl_5F_scanner * inCompiler) {
   outArgument_arguments.drop () ; // Release 'out' argument
-  outArgument_arguments = GALGAS_gtlArgumentList::constructor_emptyList (SOURCE_FILE ("gtl_expression_parser.galgas", 719)) ;
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__28_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 720)) ;
+  outArgument_arguments = GALGAS_gtlArgumentList::constructor_emptyList (SOURCE_FILE ("gtl_expression_parser.galgas", 739)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__28_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 740)) ;
   switch (select_gtl_5F_expression_5F_parser_25 (inCompiler)) {
   case 1: {
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
-      GALGAS_lstring var_argumentName_19978 = inCompiler->synthetizedAttribute_tokenString () ;
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 723)) ;
+      GALGAS_lstring var_argumentName_20445 = inCompiler->synthetizedAttribute_tokenString () ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 743)) ;
       switch (select_gtl_5F_expression_5F_parser_27 (inCompiler)) {
       case 1: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3A_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 725)) ;
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__40_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 725)) ;
-        GALGAS_lstring var_typeName_20043 = inCompiler->synthetizedAttribute_tokenString () ;
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 725)) ;
-        outArgument_arguments.addAssign_operation (GALGAS_bool (true), extensionGetter_gtlType (var_typeName_20043, inCompiler COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 726)), var_argumentName_19978  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 726)) ;
+        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3A_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 745)) ;
+        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__40_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 745)) ;
+        GALGAS_lstring var_typeName_20510 = inCompiler->synthetizedAttribute_tokenString () ;
+        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 745)) ;
+        outArgument_arguments.addAssign_operation (GALGAS_bool (true), extensionGetter_gtlType (var_typeName_20510, inCompiler COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 746)), var_argumentName_20445  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 746)) ;
       } break ;
       case 2: {
-        outArgument_arguments.addAssign_operation (GALGAS_bool (false), GALGAS_type (& kTypeDescriptor_GALGAS_gtlData), var_argumentName_19978  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 728)) ;
+        outArgument_arguments.addAssign_operation (GALGAS_bool (false), GALGAS_type (& kTypeDescriptor_GALGAS_gtlData), var_argumentName_20445  COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 748)) ;
       } break ;
       default:
         break ;
       }
       switch (select_gtl_5F_expression_5F_parser_26 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2C_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 730)) ;
+        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2C_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 750)) ;
       } break ;
       default:
         repeatFlag_0 = false ;
@@ -10580,23 +10668,23 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
   default:
     break ;
   }
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__29_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 733)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__29_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 753)) ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
 
-void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_argument_5F_list_i34_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__28_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 720)) ;
+void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5F_argument_5F_list_i36_parse (C_Lexique_gtl_5F_scanner * inCompiler) {
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__28_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 740)) ;
   switch (select_gtl_5F_expression_5F_parser_25 (inCompiler)) {
   case 1: {
     bool repeatFlag_0 = true ;
     while (repeatFlag_0) {
-      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 723)) ;
+      inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 743)) ;
       switch (select_gtl_5F_expression_5F_parser_27 (inCompiler)) {
       case 1: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3A_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 725)) ;
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__40_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 725)) ;
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 725)) ;
+        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__3A_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 745)) ;
+        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__40_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 745)) ;
+        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken_identifier) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 745)) ;
       } break ;
       case 2: {
       } break ;
@@ -10605,7 +10693,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
       }
       switch (select_gtl_5F_expression_5F_parser_26 (inCompiler)) {
       case 2: {
-        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2C_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 730)) ;
+        inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__2C_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 750)) ;
       } break ;
       default:
         repeatFlag_0 = false ;
@@ -10618,7 +10706,7 @@ void cParser_gtl_5F_expression_5F_parser::rule_gtl_5F_expression_5F_parser_gtl_5
   default:
     break ;
   }
-  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__29_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 733)) ;
+  inCompiler->acceptTerminal (ACCEPT_TERMINAL (C_Lexique_gtl_5F_scanner::kToken__29_) COMMA_SOURCE_FILE ("gtl_expression_parser.galgas", 753)) ;
   inCompiler->resetTemplateString () ;
 }
 

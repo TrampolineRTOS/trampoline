@@ -6,8 +6,11 @@ CPU buildOptions {
     /*
      * Common flags for C and C++ compiling
      */
-    COMMONFLAGS = "-g";                           // Produce debugging information
-    COMMONFLAGS = "-Wall";                        // All warnings on
+     
+    // Produce debugging information
+    COMMONFLAGS = "-g";
+    // All warnings on
+    COMMONFLAGS = "-Wall";                        
     COMMONFLAGS = "-Wno-unused-but-set-variable"; // Except unused variables
     COMMONFLAGS = "-Wmissing-field-initializers"; // Struct initialized with incorrect number of fiels
     COMMONFLAGS = "-mcpu=cortex-m4";              // Compile for cortex-m4
@@ -15,6 +18,7 @@ CPU buildOptions {
     COMMONFLAGS = "-mfloat-abi=soft";             // Floating point numbers are computed in software
     COMMONFLAGS = "-mfpu=fpv4-sp-d16";            // Truly obscure option to set. Check http://stackoverflow.com/questions/19464556/how-to-link-gcc-options-to-the-arm-mcu-fpu-datasheet
     COMMONFLAGS = "-nostartfiles";                // Default startfiles (crt0.c) are not used
+    COMMONFLAGS = "-fno-builtin";                 // Do not used built in gcc functions
     COMMONFLAGS = "--specs=nosys.specs";          // 
     COMMONFLAGS = "-fno-exceptions";              // No exceptions managed
     COMMONFLAGS = "-nostdlib";                    // Do not used implicitely the standard libraries to link

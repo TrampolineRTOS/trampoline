@@ -91,7 +91,7 @@ static NSArray * kTemplateDefinitionArray_gtl_5F_scanner ;
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const BOOL kEndOfScriptInTemplateArray_gtl_5F_scanner [112] = {
+static const BOOL kEndOfScriptInTemplateArray_gtl_5F_scanner [114] = {
   NO /* identifier */,
   NO /* literal_enum */,
   NO /* literal_double */,
@@ -159,6 +159,7 @@ static const BOOL kEndOfScriptInTemplateArray_gtl_5F_scanner [112] = {
   NO /* libraries */,
   NO /* input */,
   NO /* break */,
+  NO /* __VARS__ */,
   NO /* * */,
   NO /* | */,
   NO /* , */,
@@ -203,7 +204,8 @@ static const BOOL kEndOfScriptInTemplateArray_gtl_5F_scanner [112] = {
   NO /* @( */,
   NO /* @{ */,
   NO /* [! */,
-  NO /* @! */
+  NO /* @! */,
+  NO /* @? */
 } ;
 
 
@@ -213,7 +215,7 @@ static const BOOL kEndOfScriptInTemplateArray_gtl_5F_scanner [112] = {
 //                                                                                                                     *
 //---------------------------------------------------------------------------------------------------------------------*
 
-static const C_cocoa_lexique_table_entry ktable_for_gtl_5F_scanner_goilTemplateKeyWordList [56] = {
+static const C_cocoa_lexique_table_entry ktable_for_gtl_5F_scanner_goilTemplateKeyWordList [57] = {
   {"by", gtl_scanner_1_by},
   {"do", gtl_scanner_1_do},
   {"if", gtl_scanner_1_if},
@@ -264,6 +266,7 @@ static const C_cocoa_lexique_table_entry ktable_for_gtl_5F_scanner_goilTemplateK
   {"foreach", gtl_scanner_1_foreach},
   {"println", gtl_scanner_1_println},
   {"warning", gtl_scanner_1_warning},
+  {"__VARS__", gtl_scanner_1__5F__5F_VARS_5F__5F_},
   {"emptymap", gtl_scanner_1_emptymap},
   {"template", gtl_scanner_1_template},
   {"emptylist", gtl_scanner_1_emptylist},
@@ -273,7 +276,7 @@ static const C_cocoa_lexique_table_entry ktable_for_gtl_5F_scanner_goilTemplateK
 } ;
 
 static NSInteger search_into_gtl_5F_scanner_goilTemplateKeyWordList (NSString * inSearchedString) {
-  return searchStringInTable (inSearchedString, ktable_for_gtl_5F_scanner_goilTemplateKeyWordList, 56) ;
+  return searchStringInTable (inSearchedString, ktable_for_gtl_5F_scanner_goilTemplateKeyWordList, 57) ;
 }
 
 
@@ -315,7 +318,7 @@ static NSInteger search_into_gtl_5F_scanner_goilTemplateKeyWordList (NSString * 
       [mLexicalAttribute_tokenString setString:@""] ;
       mLexicalAttribute_uint32value = 0 ;
       mTokenStartLocation = mCurrentLocation ;
-      if (scanningOk && ([self testForInputFromChar:97 toChar:122] || [self testForInputFromChar:65 toChar:90])) {
+      if (scanningOk && ([self testForInputFromChar:97 toChar:122] || [self testForInputFromChar:65 toChar:90] || [self testForInputChar:95])) {
         do {
           scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_identifierString, mPreviousChar) ;
           scanner_cocoa_routine_enterCharacterIntoString (& scanningOk, mLexicalAttribute_tokenString, mPreviousChar) ;
@@ -357,6 +360,8 @@ static NSInteger search_into_gtl_5F_scanner_goilTemplateKeyWordList (NSString * 
         mTokenCode = gtl_scanner_1__40__7B_ ;
       }else if (scanningOk && [self testForInputString:@"@[" advance:YES]) {
         mTokenCode = gtl_scanner_1__40__5B_ ;
+      }else if (scanningOk && [self testForInputString:@"@\?" advance:YES]) {
+        mTokenCode = gtl_scanner_1__40__3F_ ;
       }else if (scanningOk && [self testForInputString:@"@(" advance:YES]) {
         mTokenCode = gtl_scanner_1__40__28_ ;
       }else if (scanningOk && [self testForInputString:@"@!" advance:YES]) {
@@ -780,7 +785,7 @@ static NSInteger search_into_gtl_5F_scanner_goilTemplateKeyWordList (NSString * 
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (NSUInteger) terminalVocabularyCount {
-  return 112 ;
+  return 114 ;
 }
 
 //---------------------------------------------------------------------------------------------------------------------*
@@ -810,7 +815,7 @@ static NSInteger search_into_gtl_5F_scanner_goilTemplateKeyWordList (NSString * 
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (NSUInteger) styleIndexForTerminal: (NSInteger) inTerminal {
-  static const NSUInteger kTerminalSymbolStyles [113] = {0,
+  static const NSUInteger kTerminalSymbolStyles [115] = {0,
     0 /* gtl_scanner_1_identifier */,
     0 /* gtl_scanner_1_literal_5F_enum */,
     5 /* gtl_scanner_1_literal_5F_double */,
@@ -878,6 +883,7 @@ static NSInteger search_into_gtl_5F_scanner_goilTemplateKeyWordList (NSString * 
     1 /* gtl_scanner_1_libraries */,
     1 /* gtl_scanner_1_input */,
     1 /* gtl_scanner_1_break */,
+    1 /* gtl_scanner_1__5F__5F_VARS_5F__5F_ */,
     2 /* gtl_scanner_1__2A_ */,
     2 /* gtl_scanner_1__7C_ */,
     2 /* gtl_scanner_1__2C_ */,
@@ -922,7 +928,8 @@ static NSInteger search_into_gtl_5F_scanner_goilTemplateKeyWordList (NSString * 
     2 /* gtl_scanner_1__40__28_ */,
     2 /* gtl_scanner_1__40__7B_ */,
     2 /* gtl_scanner_1__5B__21_ */,
-    2 /* gtl_scanner_1__40__21_ */
+    2 /* gtl_scanner_1__40__21_ */,
+    2 /* gtl_scanner_1__40__3F_ */
   } ;
   return kTerminalSymbolStyles [inTerminal] ;
 }
@@ -934,7 +941,7 @@ static NSInteger search_into_gtl_5F_scanner_goilTemplateKeyWordList (NSString * 
 //---------------------------------------------------------------------------------------------------------------------*
 
 - (BOOL) atomicSelectionForToken: (NSUInteger) inTokenIndex {
-  static const BOOL kTerminalAtomicSelection [113] = {NO,
+  static const BOOL kTerminalAtomicSelection [115] = {NO,
     YES /* gtl_scanner_1_identifier */,
     YES /* gtl_scanner_1_literal_5F_enum */,
     YES /* gtl_scanner_1_literal_5F_double */,
@@ -1002,6 +1009,7 @@ static NSInteger search_into_gtl_5F_scanner_goilTemplateKeyWordList (NSString * 
     YES /* gtl_scanner_1_libraries */,
     YES /* gtl_scanner_1_input */,
     YES /* gtl_scanner_1_break */,
+    YES /* gtl_scanner_1__5F__5F_VARS_5F__5F_ */,
     YES /* gtl_scanner_1__2A_ */,
     YES /* gtl_scanner_1__7C_ */,
     YES /* gtl_scanner_1__2C_ */,
@@ -1046,7 +1054,8 @@ static NSInteger search_into_gtl_5F_scanner_goilTemplateKeyWordList (NSString * 
     YES /* gtl_scanner_1__40__28_ */,
     YES /* gtl_scanner_1__40__7B_ */,
     YES /* gtl_scanner_1__5B__21_ */,
-    YES /* gtl_scanner_1__40__21_ */
+    YES /* gtl_scanner_1__40__21_ */,
+    YES /* gtl_scanner_1__40__3F_ */
   } ;
   return kTerminalAtomicSelection [inTokenIndex] ;
 }

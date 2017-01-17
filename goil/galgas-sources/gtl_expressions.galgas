@@ -933,6 +933,20 @@ override getter @gtlVarRef eval
 }
 
 #=============================================================================*
+# class for a reference to the special __VARS__ variable
+#-----------------------------------------------------------------------------*
+class @gtlAllVarsRef : @gtlExpression {}
+
+override getter @gtlAllVarsRef eval
+  ?let @gtlContext unused context
+  ?let @gtlData           vars
+  ?let @library    unused lib
+  -> @gtlData result
+{
+  result = vars
+}
+
+#=============================================================================*
 # classes for unary expressions
 #-----------------------------------------------------------------------------*
 # @gtlParenthesizedExpression : ( son )

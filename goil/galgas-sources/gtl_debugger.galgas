@@ -928,6 +928,13 @@ override getter @gtlVarRef stringRepresentation
   result = [variableName stringRepresentation]
 }
 
+#-----------------------------------------------------------------------------*
+override getter @gtlAllVarsRef stringRepresentation
+  ->@string result
+{
+  result = "__VARS__"
+}
+
 #=============================================================================*
 abstract getter @gtlData stringRepresentation
   ->@string
@@ -1046,6 +1053,13 @@ override getter @gtlSet stringRepresentation
     result = result + ", "
   end
   result = result + " !"
+}
+  
+#-----------------------------------------------------------------------------*
+override getter @gtlExpr stringRepresentation
+  ->@string result
+{
+  result = "@? " + [value stringRepresentation] + " ?"
 }
   
 #=============================================================================*
