@@ -156,18 +156,18 @@ not_callable_by_isr1:
     str   r5,[sp,#KS_R5]
 
     /*-------------------------------------------------------------------------
-     * 4 - Save the link register, in armv6m, the source register of a store
-     *     must be r0-r7, so we use r4 (already saved) to copy lr
-     */
-    mov   r4,lr
-    str   r4,[sp,#KS_LR]
-
-    /*-------------------------------------------------------------------------
-     * 5 - inform the fabric we are entering the kernel
+     * 4 - inform the fabric we are entering the kernel
      */
     ldr   r4,=AD_REG_OS_INSTRU
     movs  r5,#__ID_CALL_HANDLER
     str   r5,[r4]
+
+    /*-------------------------------------------------------------------------
+     * 5 - Save the link register, in armv6m, the source register of a store
+     *     must be r0-r7, so we use r4 (already saved) to copy lr
+     */
+    mov   r4,lr
+    str   r4,[sp,#KS_LR]
 
     /*-------------------------------------------------------------------------
      * 6 - Reset the tpl_kern variables
