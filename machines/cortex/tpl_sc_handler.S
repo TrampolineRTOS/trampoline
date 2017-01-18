@@ -31,11 +31,14 @@
 #include "tpl_asm_definitions.h"
 #include "tpl_os_kernel_stack.h"
 #include "tpl_service_ids.h"
+#include "tpl_fabric_definitions.h"
 
 .equ  NO_NEED_SWITCH_NOR_SCHEDULE, 0
 .equ  NO_NEED_SWITCH, 0
 .equ  NEED_SWITCH, 1
 .equ  NEED_SAVE, 2
+
+.equ  __ID_CALL_HANDLER, ID_CALL_HANDLER
 
 /*-----------------------------------------------------------------------------
  * the tpl_sc_handler uses tpl_kern
@@ -160,6 +163,13 @@ not_callable_by_isr1:
     str   r4,[sp,#KS_LR]
 
     /*-------------------------------------------------------------------------
+     * 5 - inform the fabric we are entering the kernel
+     */
+    ldr   r4,=AD_REG_OS_INSTRU
+    movs  r5,#__ID_CALL_HANDLER
+    str   r5,[r4]
+
+    /*-------------------------------------------------------------------------
      * 6 - Reset the tpl_kern variables
      */
     ldr   r4,=tpl_kern
@@ -244,12 +254,20 @@ tpl_sc_handler_no_save_running_context:
 
 tpl_sc_handler_no_context_switch:
 
+
     /*-------------------------------------------------------------------------
-     * 18 - Restore the link register from the kernel stack.
+     * 17 - Restore the link register from the kernel stack.
      *      Symetric of stages 4
      */
     ldr   r4,[sp,#KS_LR]
     mov   lr,r4
+
+    /*-------------------------------------------------------------------------
+     * 18 - inform the fabric we are leaving the kernel
+     */
+    ldr   r4,=AD_REG_OS_INSTRU
+    movs  r5,#__ID_CALL_HANDLER
+    str   r5,[r4]
 
     /*-------------------------------------------------------------------------
      * 19 - Restore r4 and r5 from the kernel stack.
