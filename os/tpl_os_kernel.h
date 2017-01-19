@@ -261,11 +261,21 @@ typedef struct
  * should be saved.
  */
   VAR(uint8, TYPEDEF)                         need_switch;
+#if (LEVEL_KERNEL_MONITORING >= 1) /* whith kernel monitoring */
+  VAR(uint8, TYPEDEF)                         no_use1;
+  VAR(uint8, TYPEDEF)                         no_use2;
+  VAR(uint8, TYPEDEF)                         no_use3;
+#endif
 
 /**
  * Boolean used to notify a rescheduling should be done
  */
   VAR(tpl_bool, TYPEDEF)                      need_schedule;
+#if (LEVEL_KERNEL_MONITORING >= 1) /* whith kernel monitoring */
+  VAR(uint8, TYPEDEF)                         no_use4;
+  VAR(uint8, TYPEDEF)                         no_use5;
+  VAR(uint8, TYPEDEF)                         no_use6;
+#endif
 
 #if WITH_MEMORY_PROTECTION == YES
 /**

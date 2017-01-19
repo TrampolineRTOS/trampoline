@@ -421,3 +421,21 @@ SECTIONS {
 
   .ARM.attributes 0 : { *(.ARM.attributes) }
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*                                    Fabric Smartfusion2                     */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+SECTIONS
+{
+  /* placing my named section at given address: */
+  .FPGA :
+  {
+   *(.FPGA)
+   *(.FPGA.tplKern) 
+   KEEP(*(.FPGA.OsInstru))
+  } > fabric
+ 
+  /* other placements follow here... */
+}

@@ -9,7 +9,11 @@ if OS::NUMBER_OF_CORES == 1 then %
  * tpl_kern gather informations on the current executing object and
  * the previous one
  */
+#if (LEVEL_KERNEL_MONITORING >= 1) /* with kernel monitoring by fabric */
+VAR(tpl_kern_state, OS_VAR) tpl_kern __attribute__((section(".FPGA.tplKern"))) =
+#else
 VAR(tpl_kern_state, OS_VAR) tpl_kern =
+#endif
 {
   NULL,                      /* no running task static descriptor   */
   &IDLE_TASK_task_stat_desc, /* elected task to run is idle task    */
@@ -18,7 +22,17 @@ VAR(tpl_kern_state, OS_VAR) tpl_kern =
   INVALID_PROC_ID,           /* no running task so no ID            */
   INVALID_PROC_ID,           /* idle task has no ID                 */
   NO_NEED_SWITCH,            /* no context switch needed at start   */
+#if (LEVEL_KERNEL_MONITORING >= 1) /* with kernel monitoring by fabric */
+  0x00,						 /*padding*/
+  0x00,						 /*padding*/
+  0x00,						 /*padding*/
+#endif  
   FALSE,                     /* no schedule needed at start         */
+#if (LEVEL_KERNEL_MONITORING >= 1) /* with kernel monitoring by fabric */
+  0x00,						 /*padding*/
+  0x00,						 /*padding*/
+  0x00,						 /*padding*/
+#endif 
 #if WITH_MEMORY_PROTECTION == YES
   1,                         /* at early system startup, we run in  */
                              /*  kernel mode, so in trusted mode    */

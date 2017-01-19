@@ -36,8 +36,11 @@
 .equ TPL_KERN_OFFSET_RUNNING_ID, 16
 .equ TPL_KERN_OFFSET_ELECTED_ID, 20
 .equ TPL_KERN_OFFSET_NEED_SWITCH, 24
+#if (LEVEL_KERNEL_MONITORING >= 1) /* with kernel monitoring by fabric */
+.equ TPL_KERN_OFFSET_NEED_SCHEDULE, 28
+#else
 .equ TPL_KERN_OFFSET_NEED_SCHEDULE, 25
-
+#endif 
 /*
  * ARM modes codes
  */
