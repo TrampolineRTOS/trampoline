@@ -20,10 +20,10 @@ FUNC(void, OS_CODE) tpl_tick_% !interrupt::NAME %()
 {
 %
     do
-      %  tpl_counter_tick(&% !cpt_fct::VALUE %_counter_desc);
+      %  tpl_counter_tick(&% !cpt_fct %_counter_desc);
 %
     after %
-  
+
   if (tpl_kern.need_schedule)
   {
     tpl_schedule_from_running();
