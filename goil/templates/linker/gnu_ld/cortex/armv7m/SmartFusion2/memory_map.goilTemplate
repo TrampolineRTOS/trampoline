@@ -13,7 +13,7 @@ MEMORY
     /* SmartFusion2 internal eSRAM */
     ram (rwx) : ORIGIN = 0x20000000, LENGTH = 64k
 	/*SmartFusion2 Fabric */
-	fpga (rwx) : ORIGINE = 0x50000000, LENGTH = 64k
+	fabric (rwx) : ORIGIN = 0x50000000, LENGTH = 64k
 }
 
 RAM_START_ADDRESS   = 0x20000000;       /* Must be the same value MEMORY region ram ORIGIN above. */
