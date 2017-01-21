@@ -207,7 +207,7 @@ between%
 end foreach
 
 # Program the NVIC. The priority depends on the kind of object. For counters,
-# and ISR2, priority is set to KERNEL_PRIO_UNSHIFTED and for ISR1, it is set
+# and ISR2, priority is set to OS_ISR_PRIO_UNSHIFTED and for ISR1, it is set
 # according to the ISR1 priority.
 
 sort ISRS1 by PRIORITY <
@@ -224,12 +224,12 @@ foreach name, channel in USED_EXTI do
 
       if exists obj::CATEGORY then
         if obj::CATEGORY == 2 then
-          let prio := "KERNEL_PRIO_UNSHIFTED"
+          let prio := "OS_ISR_PRIO_UNSHIFTED"
         else
           let prio := obj::SOURCE + "_Priority"
         end if
       else
-        let prio := "KERNEL_PRIO_UNSHIFTED"
+        let prio := "OS_ISR_PRIO_UNSHIFTED"
       end if
 
       if exists prioForChannel[name] then
