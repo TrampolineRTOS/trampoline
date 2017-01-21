@@ -47,6 +47,7 @@
  *
  * @param
  */
+    .section  .osCode
 	.global tpl_reset_handler
 	.type tpl_reset_handler, %function
 tpl_reset_handler:
