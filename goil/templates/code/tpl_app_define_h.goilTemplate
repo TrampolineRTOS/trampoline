@@ -94,17 +94,11 @@ if USECOM then%
 #define WITH_COM_STARTCOMEXTENSION       % !yesNo(exists COM::COMSTARTCOMEXTENSION default (false)) %
 #define WITH_COM_EXTENDED                % !yesNo((exists COM::COMSTATUS default ("COMSTANDARD")) == "COMEXTENDED")
 end if
-if [ioc_reordered length] > 0 then
 %
-#define WITH_IOC                         YES%
-else
-%
-#define WITH_IOC                         NO%
-end if
-%
+#define WITH_IOC                         % !yesNo([ioc_reordered length] > 0) %
 #define WITH_MODULES_INIT                NO
 #define WITH_INIT_BOARD                  % !yesNo(exists OS::INITBOARD default (false)) %
-
+#define WITH_ISR2_PRIORITY_MASKING       % !yesNo(exists OS::ISR2_PRIORITY_MASKING default(false)) %
 
 /*=============================================================================
  * Defines related to the key part of a ready list entry.
@@ -225,7 +219,18 @@ if [ioc_reordered length] > 0 then
 #define IOC_UNQUEUED_COUNT 0
 %end if
 
+if OS::ISR2_PRIORITY_MASKING & [ISRS2 length] > 0 then
 %
+/*-----------------------------------------------------------------------------
+ * Lowest priority of ISR2
+ */%
+  sort ISRS2 by PRIORITY <
+  let firstISR2 := [ISRS2 first]
+%
+#define ISR2_LOWEST_PRIO % !firstISR2::PRIORITY
+end if
+%
+
 /*-----------------------------------------------------------------------------
  * Priority of RES_SCHEDULER
  */

@@ -14,6 +14,7 @@ CPU buildOptions {
     COMMONFLAGS = "-mthumb";                      // Thumb instruction set
     COMMONFLAGS = "-mfloat-abi=soft";             // Floating point numbers are computed in software
     COMMONFLAGS = "-nostartfiles";                // Default startfiles (crt0.c) are not used
+    COMMONFLAGS = "-fno-builtin";                 // Do not used built in gcc functions
     COMMONFLAGS = "--specs=nosys.specs";          // 
     COMMONFLAGS = "-fno-exceptions";              // No exceptions managed
     COMMONFLAGS = "-nostdlib";                    // Do not used implicitely the standard libraries to link
